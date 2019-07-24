@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
 use oxField;
+use OxidEsales\EshopCommunity\Internal\Templating\TraditionalEngineInterface;
 use OxidEsales\Eshop\Application\Model\BasketItem;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Price;
@@ -1079,7 +1080,7 @@ class EmailTest extends \OxidTestCase
     public function testSendOrderEmailToOwnerCorrectSenderReceiver()
     {
         $oSmartyMock = $this->getMock("Smarty", array("fetch"));
-        $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(true));
+        $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(''));
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getSmarty"));
         $oEmail->expects($this->once())->method("_sendMail")->will($this->returnValue(true));
@@ -1108,7 +1109,7 @@ class EmailTest extends \OxidTestCase
     public function testSendSuggestMailCorrectSender()
     {
         $oSmartyMock = $this->getMock("Smarty", array("fetch"));
-        $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(true));
+        $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(''));
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("send", "_getSmarty"));
         $oEmail->expects($this->once())->method("send")->will($this->returnValue(true));
@@ -1365,5 +1366,46 @@ class EmailTest extends \OxidTestCase
     private function isReviewLinkIncluded($body): bool
     {
         return false !== strpos($body, 'cl=review');
+    }
+
+    /**
+     * Check that render method returns expected template name.
+     * Could be useful as an integrational test to test that template from controller is set to template engine
+     *
+     * @param $expectedTemplate
+     *
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
+    private function getTemplateRendererMock($expectedTemplate)
+    {
+        $renderer = $this->getMockBuilder(TemplateRendererInterface::class)
+            ->setMethods(['renderTemplate', 'renderFragment', 'exists', 'getTemplateEngine'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $renderer->expects($this->any())->method('renderTemplate')->with($this->equalTo($expectedTemplate));
+        $renderer->expects($this->any())->method('getTemplateEngine')->will($this->returnValue((object)[]));
+
+        return $renderer;
+    }
+
+    /**
+     * Check that render method returns expected template name.
+     * Could be useful as an integrational test to test that template from controller is set to template engine
+     *
+     * @param $expectedTemplate
+     *
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
+    private function getContainerMock($serviceName, $serviceMock)
+    {
+        $container = $this->getMockBuilder(ContainerInterface::class)
+            ->setMethods(['get', 'has'])
+            ->getMock();
+        $container->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo($serviceName))
+            ->will($this->returnValue($serviceMock));
+
+        return $container;
     }
 }

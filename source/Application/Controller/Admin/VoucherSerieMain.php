@@ -46,9 +46,8 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
     protected $viewId = 'voucherserie_main';
 
     /**
-     * Executes parent method parent::render(), creates oxvoucherserie object,
-     * passes data to Smarty engine and returns name of template file
-     * "voucherserie_list.tpl".
+     * Executes parent method parent::render(), creates VoucherSerie object
+     * and returns the name of the template file.
      *
      * @return string
      */

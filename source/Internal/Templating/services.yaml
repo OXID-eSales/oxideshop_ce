@@ -1,0 +1,36 @@
+services:
+  OxidEsales\Eshop\Core\Config:
+    class: OxidEsales\Eshop\Core\Config
+    factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
+  OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface:
+    class: OxidEsales\EshopCommunity\Internal\Templating\TemplateRenderer
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineInterface'
+    public: true
+    tags: ['templating']
+  OxidEsales\EshopCommunity\Internal\Templating\TemplateNameResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Templating\LegacyTemplateNameResolver
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Templating\TemplateNameResolver'
+  OxidEsales\EshopCommunity\Internal\Templating\TemplateNameResolver:
+    class: OxidEsales\EshopCommunity\Internal\Templating\TemplateNameResolver
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineInterface'
+  OxidEsales\EshopCommunity\Internal\Templating\TemplateFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Templating\TemplateFileLocator
+    arguments:
+      - '@OxidEsales\Eshop\Core\Config'
+  OxidEsales\EshopCommunity\Internal\Templating\AdminTemplateFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Templating\AdminTemplateFileLocator
+    arguments:
+      - '@OxidEsales\Eshop\Core\Config'
+  oxid_esales.templating.template.loader:
+    class: OxidEsales\EshopCommunity\Internal\Templating\TemplateLoader
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Templating\TemplateFileLocator'
+      - '@OxidEsales\EshopCommunity\Internal\Templating\TemplateNameResolverInterface'
+  oxid_esales.templating.admin.template.loader:
+    class: OxidEsales\EshopCommunity\Internal\Templating\TemplateLoader
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Templating\AdminTemplateFileLocator'
+      - '@OxidEsales\EshopCommunity\Internal\Templating\TemplateNameResolverInterface'

@@ -6,7 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
 
 /**
  * Admin systeminfo manager.
@@ -35,7 +36,6 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             $aClassVars = get_object_vars($myConfig);
             $aSystemInfo = [];
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
-            $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
             foreach ($aClassVars as $name => $value) {
                 if (gettype($value) == "object") {
                     continue;
@@ -50,14 +50,16 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
                 $aSystemInfo[$name] = $value;
                 //echo( "$name = $value <br>");
             }
-            $oSmarty->assign("oViewConf", $this->_aViewData["oViewConf"]);
-            $oSmarty->assign("oView", $this->_aViewData["oView"]);
-            $oSmarty->assign("shop", $this->_aViewData["shop"]);
-            $oSmarty->assign("isdemo", $myConfig->isDemoShop());
-            $oSmarty->assign("aSystemInfo", $aSystemInfo);
+            $context = [
+                "oViewConf" => $this->_aViewData["oViewConf"],
+                "oView" => $this->_aViewData["oView"],
+                "shop" => $this->_aViewData["shop"],
+                "isdemo" => $myConfig->isDemoShop(),
+                "aSystemInfo" => $aSystemInfo
+            ];
 
             ob_start();
-            echo $oSmarty->fetch("systeminfo.tpl");
+            echo $this->getRenderer()->renderTemplate("systeminfo.tpl", $context);
             echo("<br><br>");
 
             phpinfo();
@@ -67,6 +69,18 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
         } else {
             return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
         }
+    }
+
+    /**
+     * @internal
+     *
+     * @return TemplateRendererInterface
+     */
+    private function getRenderer()
+    {
+        return $this->getContainer()
+            ->get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
     }
 
     /**

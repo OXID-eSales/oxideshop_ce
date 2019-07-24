@@ -112,4 +112,12 @@ class ShopAdapter implements ShopAdapterInterface
     {
         return NamespaceInformationProvider::classBelongsToShopEditionNamespace($namespace);
     }
+
+    /**
+     * @return \Smarty
+     */
+    public function getSmartyInstance(): \Smarty
+    {
+        return Registry::getUtilsView()->getSmarty();
+    }
 }

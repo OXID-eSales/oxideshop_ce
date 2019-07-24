@@ -6,7 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Smarty renderer class
@@ -25,14 +26,19 @@ class SmartyRenderer
      */
     public function renderTemplate($sTemplateName, $aViewData = [])
     {
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
+        $renderer = $this->getContainer()
+            ->get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
+        return $renderer->renderTemplate($sTemplateName, $aViewData);
+    }
 
-        foreach ($aViewData as $key => $value) {
-            $oSmarty->assign($key, $value);
-        }
-
-        $sBody = $oSmarty->fetch($sTemplateName);
-
-        return $sBody;
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    private function getContainer()
+    {
+        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
     }
 }

@@ -752,7 +752,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     {
         $longFieldName = $this->_getFieldLongName($fieldName);
 
-        return $this->$longFieldName->value;
+        return ($this->$longFieldName instanceof Field) ? $this->$longFieldName->value : null;
     }
 
     /**

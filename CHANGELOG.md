@@ -125,7 +125,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleActivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Module\Setup\Event\FinalizingModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\Module\ShopModuleSetting\Event\ShopModuleSettingChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Module\Setting\Event\SettingChangedEvent`
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent`
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent`
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent`

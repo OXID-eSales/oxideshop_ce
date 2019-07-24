@@ -138,6 +138,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         //encode sensitive data
+        $sEncodedValue = '';
         if ($sValue = $this->oxuserpayments__oxvalue->value) {
             // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
             // No need to explicitly force master here.

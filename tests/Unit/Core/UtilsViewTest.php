@@ -506,6 +506,63 @@ class UtilsViewTest extends \OxidTestCase
         }
     }
 
+    /**
+     * Initialize the fixture.
+     *
+     * @return null
+     */
+
+    public function testFillCommonSmartyPropertiesANDSmartyCompileCheckDemoShop()
+    {
+        $config = oxNew(\OxidEsales\Eshop\Core\Config::class);
+
+        $config->setConfigParam('iDebug', 1);
+        $config->setConfigParam('blDemoShop', 1);
+
+        $templatesDirectories = [];
+
+        $tplDir = $config->getTemplateDir($config->isAdmin());
+        if ($tplDir) {
+            $templatesDirectories[] = $tplDir;
+        }
+
+        $tplDir = $config->getOutDir() . $config->getConfigParam('sTheme') . "/tpl/";
+        if ($tplDir && !in_array($tplDir, $templatesDirectories)) {
+            $templatesDirectories[] = $tplDir;
+        }
+
+        $config->setConfigParam('sCompileDir', $this->getCompileDirectory());
+
+        $smarty = $this->getMock('\Smarty', ['register_resource', 'register_prefilter']);
+        $smarty->expects($this->once())->method('register_resource')
+            ->with(
+                $this->equalTo('ox'),
+                $this->equalTo(
+                    [
+                        'ox_get_template',
+                        'ox_get_timestamp',
+                        'ox_get_secure',
+                        'ox_get_trusted',
+                    ]
+                )
+            );
+        $smarty->expects($this->once())->method('register_prefilter')
+            ->with($this->equalTo('smarty_prefilter_oxblock'));
+
+        $utilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
+        $utilsView->setConfig($config);
+        $utilsView->UNITfillCommonSmartyProperties($smarty);
+        $utilsView->UNITsmartyCompileCheck($smarty);
+
+        $smarty = new \smarty();
+        $mockedConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isProductiveMode']);
+        $mockedConfig->expects($this->once())->method('isProductiveMode')->will($this->returnValue(true));
+        $utilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
+        $utilsView->setConfig($mockedConfig);
+        $utilsView->UNITsmartyCompileCheck($smarty);
+        $this->assertFalse($smarty->compile_check);
+    }
+
     public function testParseThroughSmartyInDiffLang()
     {
         $smarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();

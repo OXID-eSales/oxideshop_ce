@@ -6,9 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
-use oxUBase;
-use oxRssFeed;
+use OxidEsales\Eshop\Application\Model\RssFeed;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
 
 /**
  * Shop RSS page.
@@ -18,7 +18,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     /**
      * current rss object
      *
-     * @var oxRssFeed
+     * @var RssFeed
      */
     protected $_oRss = null;
 
@@ -44,14 +44,14 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     protected $_sThisTemplate = 'widget/rss.tpl';
 
     /**
-     * get oxRssFeed
+     * get RssFeed
      *
-     * @return oxRssFeed
+     * @return RssFeed
      */
     protected function _getRssFeed()
     {
         if (!$this->_oRss) {
-            $this->_oRss = oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
+            $this->_oRss = oxNew(RssFeed::class);
         }
 
         return $this->_oRss;
@@ -67,26 +67,35 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     {
         parent::render();
 
-        $oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
-
+        $renderer = $this->getRenderer();
+        // TODO: can we move it?
         // #2873: In demoshop for RSS we set php_handling to SMARTY_PHP_PASSTHRU
         // as SMARTY_PHP_REMOVE removes not only php tags, but also xml
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            $oSmarty->php_handling = SMARTY_PHP_PASSTHRU;
+            $renderer->php_handling = SMARTY_PHP_PASSTHRU;
         }
 
-        foreach (array_keys($this->_aViewData) as $sViewName) {
-            $oSmarty->assign($sViewName, $this->_aViewData[$sViewName]);
-        }
-
+        $this->_aViewData['oxEngineTemplateId'] = $this->getViewId();
         // return rss xml, no further processing
         $sCharset = \OxidEsales\Eshop\Core\Registry::getLang()->translateString("charset");
         \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: text/xml; charset=" . $sCharset);
         \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit(
             $this->_processOutput(
-                $oSmarty->fetch($this->_sThisTemplate, $this->getViewId())
+                $renderer->renderTemplate($this->_sThisTemplate, $this->_aViewData)
             )
         );
+    }
+
+    /**
+     * @internal
+     *
+     * @return TemplateRendererInterface
+     */
+    private function getRenderer()
+    {
+        return $this->getContainer()
+            ->get(TemplateRendererBridgeInterface::class)
+            ->getTemplateRenderer();
     }
 
     /**

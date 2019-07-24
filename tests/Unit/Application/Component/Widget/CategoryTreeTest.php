@@ -5,47 +5,23 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
+use OxidEsales\TestingLibrary\UnitTestCase;
+
 /**
  * Tests for oxwCategoryTree class
  */
-class CategoryTreeTest extends \OxidTestCase
-{
-
-    /**
-     * Testing oxwCategoryTree::render()
-     *
-     * @return null
-     */
-    public function testRender()
+class CategoryTreeTest extends UnitTestCase
     {
-        $oCategoryTree = oxNew('oxwCategoryTree');
-        $this->assertEquals('widget/sidebar/categorytree.tpl', $oCategoryTree->render());
-    }
-
     /**
-     * Testing oxwCategoryTree::render()
-     *
-     * @return null
-     */
-    public function testRenderDifferentTemplate()
-    {
-        $this->getConfig()->setConfigParam('sTheme', 'azure');
-
-        $oCategoryTree = oxNew('oxwCategoryTree');
-        $oCategoryTree->setViewParameters(array("sWidgetType" => "header"));
-        $this->assertEquals('widget/header/categorylist.tpl', $oCategoryTree->render());
-    }
-
-    /**
-     * Testing oxwCategoryTree::getDeepLevel()
+     * Testing OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::getDeepLevel()
      *
      * @return null
      */
     public function testGetDeepLevel()
     {
-        $oCategoryTree = oxNew('oxwCategoryTree');
-        $oCategoryTree->setViewParameters(array("deepLevel" => 2));
-        $this->assertEquals(2, $oCategoryTree->getDeepLevel());
+        $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
+        $categoryTree->setViewParameters(array("deepLevel" => 2));
+        $this->assertEquals(2, $categoryTree->getDeepLevel());
     }
 
     public function testChecksIfContentCategoryNotReturned()
@@ -58,7 +34,7 @@ class CategoryTreeTest extends \OxidTestCase
     public function testChecksIfContentCategoryReturned()
     {
         $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
-        $_GET['oxcid'] = 'test';
+        $this->setRequestParameter('oxcid', 'test');
 
         $this->assertSame('test', $categoryTree->getContentCategory());
     }

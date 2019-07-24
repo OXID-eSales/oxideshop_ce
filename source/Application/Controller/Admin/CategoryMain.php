@@ -28,8 +28,8 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     const NEW_CATEGORY_ID = "-1";
 
     /**
-     * Loads article category data, passes it to Smarty engine, returns
-     * name of template file "category_main.tpl".
+     * Loads article category data,
+     * returns the name of the template file.
      *
      * @return string
      */

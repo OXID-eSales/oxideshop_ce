@@ -333,30 +333,60 @@ class SystemRequirementsTest extends \OxidTestCase
         );
     }
 
+    public function testCheckTemplateBlockIfTemplateDoNotExists()
+    {
+        $systemRequirements = new SystemRequirements();
+
+        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test.tpl', 'nonimportanthere'));
+    }
+
     /**
      * base functionality test
+     *
+     * @dataProvider dataProviderCheckTemplateBlock
      */
-    public function testCheckTemplateBlock()
+    public function testCheckTemplateBlock($templateContent, $blockName, $result)
     {
-        /** @var Config|PHPUnit\Framework\MockObject\MockObject $configMock */
-        $configMock = $this->getMock(Config::class, array('getTemplatePath'));
+        $templateLoader = $this->getMockBuilder(\OxidEsales\EshopCommunity\Internal\Templating\TemplateLoader::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['exists', 'getContext'])
+            ->getMock();
+        $templateLoader->expects($this->any())
+            ->method('exists')
+            ->will($this->returnValue(true));
+        $templateLoader->expects($this->any())
+            ->method('getContext')
+            ->will($this->returnValue($templateContent));
 
-        $testTemplate = $this->createFile('checkTemplateBlock.tpl', '[{block name="block1"}][{/block}][{block name="block2"}][{/block}]');
+        $container = $this->getMockBuilder(ContainerInterface::class)
+            ->setMethods(['get', 'has'])
+            ->getMock();
+        $container->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo('oxid_esales.templating.template.loader'))
+            ->will($this->returnValue($templateLoader));
+        $systemRequirements = $this->getMockBuilder(SystemRequirements::class)
+            ->setMethods(['getContainer'])
+            ->getMock();
+        $systemRequirements->expects($this->any())
+            ->method('getContainer')
+            ->will($this->returnValue($container));
 
-        $map = array(
-            array('test0', false, dirname($testTemplate) . '/nonexistingfile.tpl'),
-            array('test0', true, dirname($testTemplate) . '/nonexistingblock.tpl'),
-            array('test1', false, $testTemplate),
-        );
-        $configMock->expects($this->any())->method('getTemplatePath')->will($this->returnValueMap($map));
+        $this->assertSame($result, $systemRequirements->UNITcheckTemplateBlock('tests.tpl', $blockName));
+    }
 
-        $systemRequirements = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
-        Registry::set(Config::class, $configMock);
+    /**
+     * @return array
+     */
+    public function dataProviderCheckTemplateBlock()
+    {
+        $templateContent = '[{block name="block1"}][{/block}][{block name="block2"}][{/block}]';
 
-        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test0', 'nonimportanthere'));
-        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block1'));
-        $this->assertTrue($systemRequirements->UNITcheckTemplateBlock('test1', 'block2'));
-        $this->assertFalse($systemRequirements->UNITcheckTemplateBlock('test1', 'block3'));
+        return [
+            [$templateContent, 'block1', true],
+            [$templateContent, 'block2', true],
+            [$templateContent, 'block3', false],
+        ];
     }
 
     /**

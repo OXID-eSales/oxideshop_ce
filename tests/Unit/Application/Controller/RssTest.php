@@ -5,6 +5,9 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\RssFeed;
+use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use \oxTestModules;
@@ -42,14 +45,13 @@ class RssTest extends \OxidTestCase
 
     public function testGetRssFeed()
     {
-        $oRssFeed = (object) array('x' => 'a');
-        oxTestModules::addModuleObject('oxRssFeed', $oRssFeed);
-
-        $this->assertSame($oRssFeed, oxNew('rss')->UNITgetRssFeed());
+        $rssFeed = oxNew('rss')->UNITgetRssFeed();
+        $this->assertInstanceOf(RssFeed::class, $rssFeed);
     }
 
     public function testRender()
     {
+        ContainerFactory::resetContainer();
         $oSmarty = $this->getMock('Smarty', array('assign', 'fetch'));
         $oSmarty->expects($this->any())->method('assign');
         $oSmarty->expects($this->once())->method('fetch')->with($this->equalTo('widget/rss.tpl'), $this->equalTo('viewid'))->will($this->returnValue('smarty processed xml'));

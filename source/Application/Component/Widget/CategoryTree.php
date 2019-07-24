@@ -8,6 +8,7 @@ namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Templating\TemplateLoaderInterface;
 
 /**
  * Category tree widget.
@@ -42,7 +43,9 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
 
         if ($sTpl = $this->getViewParameter("sWidgetType")) {
             $sTemplateName = 'widget/' . basename($sTpl) . '/categorylist.tpl';
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getTemplatePath($sTemplateName, $this->isAdmin())) {
+            /** @var TemplateLoaderInterface $templateLoader */
+            $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
+            if ($templateLoader->exists($sTemplateName)) {
                 $this->_sThisTemplate = $sTemplateName;
             }
         }

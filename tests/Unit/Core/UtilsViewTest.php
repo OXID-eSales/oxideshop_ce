@@ -556,7 +556,7 @@ class UtilsViewTest extends \OxidTestCase
 
         $smarty = new \smarty();
         $mockedConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, ['isProductiveMode']);
-        $mockedConfig->expects($this->once())->method('isProductiveMode')->will($this->returnValue(true));
+        $mockedConfig->expects($this->any())->method('isProductiveMode')->will($this->returnValue(true));
         $utilsView = oxNew(\OxidEsales\Eshop\Core\UtilsView::class);
         Registry::set(Config::class, $mockedConfig);
         $utilsView->UNITsmartyCompileCheck($smarty);

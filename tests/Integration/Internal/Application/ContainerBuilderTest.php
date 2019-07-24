@@ -19,7 +19,6 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::COMMUNITY);
-        $context->setGeneratedServicesFilePath("nonexiting.yaml");
         $container = $this->makeContainer($context);
 
         $this->assertSame('CE service!', $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
@@ -29,7 +28,6 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::PROFESSIONAL);
-        $context->setGeneratedServicesFilePath("nonexiting.yaml");
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for PE!',
@@ -40,7 +38,6 @@ class ContainerBuilderTest extends TestCase
     {
         $context = $this->makeContextStub();
         $context->setEdition(EditionSelector::ENTERPRISE);
-        $context->setGeneratedServicesFilePath("nonexiting.yaml");
         $container = $this->makeContainer($context);
 
         $this->assertSame('Service overwriting for EE!',
@@ -90,6 +87,8 @@ class ContainerBuilderTest extends TestCase
         $context->setCommunityEditionSourcePath(__DIR__ . '/Fixtures/CE');
         $context->setProfessionalEditionRootPath(__DIR__ . '/Fixtures/PE');
         $context->setEnterpriseEditionRootPath(__DIR__ . '/Fixtures/EE');
+        $context->setGeneratedServicesFilePath("nonexiting.yaml");
+        $context->setConfigurableServicesFilePath('nonexisting.yaml');
         return $context;
     }
 }

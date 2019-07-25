@@ -5,6 +5,7 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Field;
 use \oxUser;
 use \oxTestModules;
 
@@ -163,10 +164,13 @@ class InviteTest extends \OxidTestCase
     {
         $this->getConfig()->setConfigParam("blInvitationsEnabled", true);
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\InviteController::class, array("getUser"));
-        $oView->expects($this->any())->method('getUser')->will($this->returnValue(new oxUser()));
+        $user = oxNew('oxuser');
+        $user->oxuser__oxpassword = new Field("testPassword");
 
-        $this->assertEquals('page/privatesales/invite.tpl', $oView->render());
+        $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\InviteController::class, array("getUser"));
+        $view->expects($this->any())->method('getUser')->will($this->returnValue($user));
+
+        $this->assertEquals('page/privatesales/invite.tpl', $view->render());
     }
 
     /**

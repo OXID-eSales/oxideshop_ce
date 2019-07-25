@@ -14,7 +14,7 @@ use oxRegistry;
  * Collects some article base information, sets default recommendation text,
  * sends suggestion mail to user.
  */
-class InviteController extends \OxidEsales\Eshop\Application\Controller\FrontendController
+class InviteController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
     /**
      * Current class template name.
@@ -89,9 +89,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\Frontend
             return;
         }
 
-        parent::render();
-
-        return $this->getUser() ? $this->_sThisTemplate : $this->_sThisLoginTemplate;
+        return parent::render();
     }
 
     /**

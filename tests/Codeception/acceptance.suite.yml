@@ -1,0 +1,37 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - Asserts
+        - \OxidEsales\EshopCommunity\Tests\Codeception\Helper\Acceptance
+        - WebDriver:
+            url: '%SHOP_URL%'
+            browser: firefox
+            port: '%SELENIUM_SERVER_PORT%'
+            window_size: 1920x1080
+            clear_cookies: true
+        - Db:
+            dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
+            user: '%DB_USERNAME%'
+            password: '%DB_PASSWORD%'
+            port: '%DB_PORT%'
+            dump: '%DUMP_PATH%'
+            mysql_config: '%MYSQL_CONFIG_PATH%'
+            populate: true # run populator before all tests
+            cleanup: true # run populator before each test
+            populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
+        - \OxidEsales\Codeception\Module\Oxideshop:
+            depends:
+              - WebDriver
+              - Db
+        - \OxidEsales\Codeception\Module\Database:
+            config_key: 'fq45QS09_fqyx09239QQ'
+            depends: Db
+        - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
+            shop_path: '%SHOP_SOURCE_PATH%'
+            paths: 'Application/views/flow'

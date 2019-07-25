@@ -8,11 +8,20 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao
     public: false
     autowire: true
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+
+  OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ShopConfigurationCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ClassPropertyShopConfigurationCache
+    public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDao
     public: false
     autowire: true
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
 
   oxid_esales.module.configuration.node:
     class: Symfony\Component\Config\Definition\NodeInterface
@@ -23,7 +32,7 @@ services:
 
   oxid_esales.module.configuration.project_configuration_yaml_file_locator:
     class: Symfony\Component\Config\FileLocator
-    public: false
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper

@@ -10,6 +10,8 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ClassExtensionChainBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ClassExtensionChainBridge
     public: true
+    arguments:
+      $classExtensionChainService: '@oxid_esales.module.setup.class_extension_chain_service'
 
   OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationService

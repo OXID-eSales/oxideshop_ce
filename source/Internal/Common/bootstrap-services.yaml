@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
 
   oxid_esales.common.storage.flock_store_lock_factory:
     class: Symfony\Component\Lock\Factory
@@ -8,13 +11,18 @@ services:
   oxid_esales.common.storage.flock_store:
     class: Symfony\Component\Lock\Store\FlockStore
 
+  oxid_esales.common.file_locator:
+    class: Symfony\Component\Config\FileLocator
+
   oxid_esales.symfony.file_system:
     class: Symfony\Component\Filesystem\Filesystem
 
   OxidEsales\EshopCommunity\Internal\Common\FileSystem\FinderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Common\FileSystem\FinderFactory
-    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Common\Storage\YamlFileStorageFactory
-    autowire: true
+    arguments:
+      - '@oxid_esales.common.file_locator'
+      - '@oxid_esales.common.storage.flock_store_lock_factory'
+      - '@oxid_esales.symfony.file_system'

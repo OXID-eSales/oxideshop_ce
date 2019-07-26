@@ -73,6 +73,10 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProvider
 
+  OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper
+    autowire: true
+
   oxid_esales.module.metadata.datamapper.metadatamapper:
     class: OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataMapper
 

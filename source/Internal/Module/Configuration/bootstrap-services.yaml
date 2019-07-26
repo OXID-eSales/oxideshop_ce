@@ -30,10 +30,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition\TreeBuilderFactory
 
-  oxid_esales.module.configuration.project_configuration_yaml_file_locator:
-    class: Symfony\Component\Config\FileLocator
-    public: true
-
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper
     arguments:

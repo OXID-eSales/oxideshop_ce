@@ -202,7 +202,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $oUser->login($sUser, $sPassword, $sCookie);
             $this->setLoginStatus(USER_LOGIN_SUCCESS);
         } catch (\OxidEsales\Eshop\Core\Exception\UserException $oEx) {
-            // for login component send excpetion text to a custom component (if defined)
+            // for login component send exception text to a custom component (if defined)
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, '', false);
 
             return 'user';

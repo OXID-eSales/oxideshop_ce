@@ -18,3 +18,10 @@ services:
     autowire: true
     tags:
     - { name: 'console.command', command: 'oe:module:install-configuration' }
+
+  OxidEsales\EshopCommunity\Internal\Module\Command\ActivateConfiguredModulesCommand:
+    class: OxidEsales\EshopCommunity\Internal\Module\Command\ActivateConfiguredModulesCommand
+    public: false
+    autowire: true
+    tags:
+      - { name: 'console.command', command: 'oe:module:activate-configured-modules' }

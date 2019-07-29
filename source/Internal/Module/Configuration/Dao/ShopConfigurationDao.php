@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterfac
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ShopConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ShopConfigurationNotFoundException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -76,12 +77,20 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     }
 
     /**
-     * @param int $shopId
+     * @param int    $shopId
      * @param string $environment
+     *
      * @return ShopConfiguration
+     * @throws ShopConfigurationNotFoundException
      */
     public function get(int $shopId, string $environment): ShopConfiguration
     {
+        if (!$this->isShopIdExists($shopId, $environment)) {
+            throw new ShopConfigurationNotFoundException(
+                'ShopId ' . $shopId . ' does not exist'
+            );
+        }
+
         if ($this->cache->exists($environment, $shopId)) {
             $shopConfiguration = $this->cache->get($environment, $shopId);
         } else {
@@ -110,7 +119,9 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
 
     /**
      * @param string $environment
+     *
      * @return ShopConfiguration[]
+     * @throws ShopConfigurationNotFoundException
      */
     public function getAll(string $environment): array
     {
@@ -199,5 +210,18 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
             $this->node->normalize($storage->get())
         );
         return $shopConfiguration;
+    }
+
+    /**
+     * @param int    $shopId
+     * @param string $environment
+     *
+     * @return bool
+     */
+    private function isShopIdExists(int $shopId, string $environment): bool
+    {
+        $shopIds = $this->getShopIds($environment);
+
+        return in_array($shopId, $shopIds);
     }
 }

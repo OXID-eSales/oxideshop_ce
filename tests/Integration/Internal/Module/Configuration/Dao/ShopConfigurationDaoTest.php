@@ -40,17 +40,17 @@ final class ShopConfigurationDaoTest extends TestCase
 
         $this->assertEquals(
             $shopConfigurationWithModule,
-            $shopConfigurationDao->get( 1, 'prod')
+            $shopConfigurationDao->get(1, 'prod')
         );
 
         $this->assertEquals(
             $shopConfiguration,
-            $shopConfigurationDao->get( 2, 'prod')
+            $shopConfigurationDao->get(2, 'prod')
         );
 
         $this->assertEquals(
             $shopConfigurationForAnotherEnvironment,
-            $shopConfigurationDao->get( 1, 'dev')
+            $shopConfigurationDao->get(1, 'dev')
         );
     }
 
@@ -74,9 +74,8 @@ final class ShopConfigurationDaoTest extends TestCase
 
         $this->assertEquals(
             new ShopConfiguration(),
-            $shopConfigurationDao->get( 1, 'prod')
+            $shopConfigurationDao->get(1, 'prod')
         );
-
 
         $shopConfigurationDao->save(new ShopConfiguration(), 3, 'prod');
 
@@ -108,5 +107,31 @@ final class ShopConfigurationDaoTest extends TestCase
         $yamlStorage->save(['incorrectKey']);
 
         $shopConfigurationDao->get(1, 'prod');
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ShopConfigurationNotFoundException
+     */
+    public function testGetIncorrectShopId(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 2, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 3, 'prod');
+
+        $shopConfigurationDao->get(99, 'prod');
+    }
+
+    public function testGetCorrectShopId(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+
+        $shopConfiguration = $shopConfigurationDao->get(1, 'prod');
+
+        $this->assertSame(
+            $shopConfiguration,
+            $shopConfigurationDao->get(1, 'prod')
+        );
     }
 }

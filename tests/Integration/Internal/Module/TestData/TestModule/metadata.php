@@ -13,7 +13,7 @@ $sMetadataVersion = '2.1';
  * Module information
  */
 $aModule = array(
-    'id'           => 'testModule',
+    'id'           => 'test-module',
     'thumbnail'    => 'picture.png',
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',

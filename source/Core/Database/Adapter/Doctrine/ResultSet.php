@@ -84,14 +84,17 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * Returns an array containing all of the result set rows
      *
+     * @param integer $iFetchArguments controlls how PDO should format result array.
+     * @param integer $sFetchClass will initiate a class for each row if needed.
+     *
      * @return array
      */
-    public function fetchAll()
+    public function fetchAll($iFetchArguments = null, $sFetchClass = null)
     {
         $this->close();
         $this->getStatement()->execute();
 
-        return $this->getStatement()->fetchAll();
+        return $this->getStatement()->fetchAll($iFetchArguments, $iFetchClass);
     }
 
     /**

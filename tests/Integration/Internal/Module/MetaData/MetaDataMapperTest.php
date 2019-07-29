@@ -100,7 +100,7 @@ class MetaDataMapperTest extends TestCase
         $classExtensions = [];
 
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
-            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            $classExtensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
         }
         $this->assertSame(
             $expectedModuleData['extend'],
@@ -256,7 +256,7 @@ class MetaDataMapperTest extends TestCase
 
         $classExtensions = [];
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
-            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            $classExtensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
         }
 
         $this->assertSame(
@@ -384,7 +384,7 @@ class MetaDataMapperTest extends TestCase
         $classExtensions = [];
 
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
-            $classExtensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            $classExtensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
         }
 
         $this->assertEquals(

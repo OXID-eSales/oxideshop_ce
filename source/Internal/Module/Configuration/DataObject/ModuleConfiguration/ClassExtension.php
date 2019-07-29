@@ -14,38 +14,38 @@ class ClassExtension
     /**
      * @var string
      */
-    private $shopClassNamespace;
+    private $ShopClassName;
 
     /**
      * @var string
      */
-    private $moduleExtensionClassNamespace;
+    private $moduleExtensionClassName;
 
     /**
      * ClassExtension constructor.
      *
-     * @param string $shopClassNamespace
-     * @param string $moduleExtensionClassNamespace
+     * @param string $ShopClassName
+     * @param string $moduleExtensionClassName
      */
-    public function __construct(string $shopClassNamespace, string $moduleExtensionClassNamespace)
+    public function __construct(string $ShopClassName, string $moduleExtensionClassName)
     {
-        $this->shopClassNamespace = $shopClassNamespace;
-        $this->moduleExtensionClassNamespace = $moduleExtensionClassNamespace;
+        $this->ShopClassName = $ShopClassName;
+        $this->moduleExtensionClassName = $moduleExtensionClassName;
     }
 
     /**
      * @return string
      */
-    public function getShopClassNamespace(): string
+    public function getShopClassName(): string
     {
-        return $this->shopClassNamespace;
+        return $this->ShopClassName;
     }
 
     /**
      * @return string
      */
-    public function getModuleExtensionClassNamespace(): string
+    public function getModuleExtensionClassName(): string
     {
-        return $this->moduleExtensionClassNamespace;
+        return $this->moduleExtensionClassName;
     }
 }

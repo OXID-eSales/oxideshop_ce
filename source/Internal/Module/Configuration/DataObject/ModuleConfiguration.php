@@ -408,7 +408,23 @@ class ModuleConfiguration
     public function hasClassExtension(string $namespace): bool
     {
         foreach ($this->getClassExtensions() as $classExtension) {
-            if ($classExtension->getModuleExtensionClassNamespace() === $namespace) {
+            if ($classExtension->getModuleExtensionClassName() === $namespace) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $shopClassNamespace
+     *
+     * @return bool
+     */
+    public function extendsShopClass(string $shopClassNamespace): bool
+    {
+        foreach ($this->getClassExtensions() as $classExtension) {
+            if ($classExtension->getShopClassName() === $shopClassNamespace) {
                 return true;
             }
         }

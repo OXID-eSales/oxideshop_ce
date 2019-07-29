@@ -80,10 +80,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         foreach ($moduleConfigurations as $moduleConfiguration) {
             if ($moduleConfiguration->hasClassExtensions()) {
                 foreach ($moduleConfiguration->getClassExtensions() as $extensions) {
-                    if (!isset($moduleExtensions[$extensions->getShopClassNamespace()])) {
-                        $moduleExtensions[$extensions->getShopClassNamespace()] = $extensions->getModuleExtensionClassNamespace();
+                    if (!isset($moduleExtensions[$extensions->getShopClassName()])) {
+                        $moduleExtensions[$extensions->getShopClassName()] = $extensions->getModuleExtensionClassName();
                     } else {
-                        $moduleExtensions[$extensions->getShopClassNamespace()] .= '&' . $extensions->getModuleExtensionClassNamespace();
+                        $moduleExtensions[$extensions->getShopClassName()] .= '&' . $extensions->getModuleExtensionClassName();
                     }
                 }
             }
@@ -146,10 +146,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         foreach ($moduleConfigurations as $moduleConfiguration) {
             if ($moduleConfiguration->hasClassExtensions()) {
                 foreach ($moduleConfiguration->getClassExtensions() as $extensions) {
-                    if (!isset($extendedClasses[$extensions->getShopClassNamespace()])) {
-                        $extendedClasses[$extensions->getShopClassNamespace()] = $extensions->getModuleExtensionClassNamespace();
+                    if (!isset($extendedClasses[$extensions->getShopClassName()])) {
+                        $extendedClasses[$extensions->getShopClassName()] = $extensions->getModuleExtensionClassName();
                     } else {
-                        $extendedClasses[$extensions->getShopClassNamespace()] .= '&' . $extensions->getModuleExtensionClassNamespace();
+                        $extendedClasses[$extensions->getShopClassName()] .= '&' . $extensions->getModuleExtensionClassName();
                     }
                 }
             }
@@ -253,7 +253,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         foreach ($disabledModules as $module) {
             if ($module->hasClassExtensions()) {
                 foreach ($module->getClassExtensions() as $extensionClass) {
-                    $disabledModuleClasses[] = $extensionClass->getModuleExtensionClassNamespace();
+                    $disabledModuleClasses[] = $extensionClass->getModuleExtensionClassName();
                 }
             }
         }
@@ -656,10 +656,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
             if ($moduleConfiguration->hasClassExtensions()) {
                 foreach ($moduleConfiguration->getClassExtensions() as $extensions) {
-                    if (!isset($extendedClasses[$extensions->getShopClassNamespace()])) {
-                        $extendedClasses[$extensions->getShopClassNamespace()] = $extensions->getModuleExtensionClassNamespace();
+                    if (!isset($extendedClasses[$extensions->getShopClassName()])) {
+                        $extendedClasses[$extensions->getShopClassName()] = $extensions->getModuleExtensionClassName();
                     } else {
-                        $extendedClasses[$extensions->getShopClassNamespace()] .= '&' . $extensions->getModuleExtensionClassNamespace();
+                        $extendedClasses[$extensions->getShopClassName()] .= '&' . $extensions->getModuleExtensionClassName();
                     }
                 }
             }

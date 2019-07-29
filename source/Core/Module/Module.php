@@ -194,7 +194,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         if ($moduleConfiguration->hasClassExtensions()) {
             foreach ($moduleConfiguration->getClassExtensions() as $extension) {
-                $extensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+                $extensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
             }
         }
 
@@ -589,7 +589,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data = [];
 
         foreach ($moduleConfiguration->getClassExtensions() as $extension) {
-            $data[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+            $data[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
         }
 
         return $data;

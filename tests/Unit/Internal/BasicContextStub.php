@@ -211,6 +211,13 @@ class BasicContextStub implements BasicContextInterface
     }
 
     /**
+     * @param string $path
+     */
+    public function setModulesPath(string $path)
+    {
+        $this->modulesPath = $path;
+    }
+    /**
      * @return array
      */
     public function getBackwardsCompatibilityClassMap(): array

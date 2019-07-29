@@ -35,6 +35,7 @@ services:
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.events_module_setting_validator']]
+      - [addValidator, ['@oxid_esales.module.setup.validator.services_yaml_validator']]
 
   oxid_esales.module.setup.version_module_setting_handler:
       class: OxidEsales\EshopCommunity\Internal\Module\Setup\Handler\ModuleVersionHandler
@@ -92,6 +93,9 @@ services:
 
   oxid_esales.module.setup.validator.events_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\EventsValidator
+
+  oxid_esales.module.setup.validator.services_yaml_validator:
+    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\ServicesYamlValidator
 
   oxid_esales.module.setup.service.eventsubscriber.dispatch_legacy_events_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber

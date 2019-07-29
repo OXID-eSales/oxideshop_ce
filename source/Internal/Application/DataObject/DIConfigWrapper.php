@@ -37,10 +37,10 @@ class DIConfigWrapper
 
     /**
      * @param string $importFilePath
-     *
+     * @throws NoServiceYamlException
      * @return void
      */
-    public function addImport(string $importFilePath)
+    public function addImport(string $importFilePath): void
     {
         $normalizedImportPath = $this->normalizePath($importFilePath);
 

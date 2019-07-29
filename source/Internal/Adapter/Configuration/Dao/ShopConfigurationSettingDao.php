@@ -12,6 +12,8 @@ use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -39,21 +41,29 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     private $shopAdapter;
 
     /**
+     * @var EventDispatcherInterface $eventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
      * @param ShopSettingEncoderInterface  $shopSettingEncoder
      * @param ShopAdapterInterface         $shopAdapter
+     * @param EventDispatcherInterface     $eventDispatcher
      */
     public function __construct(
         QueryBuilderFactoryInterface    $queryBuilderFactory,
         ContextInterface                $context,
         ShopSettingEncoderInterface     $shopSettingEncoder,
-        ShopAdapterInterface            $shopAdapter
+        ShopAdapterInterface            $shopAdapter,
+        EventDispatcherInterface        $eventDispatcher
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;
         $this->shopSettingEncoder = $shopSettingEncoder;
         $this->shopAdapter = $shopAdapter;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -86,6 +96,8 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             ]);
 
         $queryBuilder->execute();
+
+        $this->eventDispatcher->dispatch(ShopConfigurationChangedEvent::NAME, new ShopConfigurationChangedEvent($shopConfigurationSetting->getName(), $shopConfigurationSetting->getShopId()));
     }
 
     /**

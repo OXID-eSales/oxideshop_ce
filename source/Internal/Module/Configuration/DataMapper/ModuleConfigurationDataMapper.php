@@ -160,7 +160,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
 
         if ($configuration->hasClassExtensions()) {
             foreach ($configuration->getClassExtensions() as $extension) {
-                $extensions[$extension->getShopClassNamespace()] = $extension->getModuleExtensionClassNamespace();
+                $extensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
             }
         }
 

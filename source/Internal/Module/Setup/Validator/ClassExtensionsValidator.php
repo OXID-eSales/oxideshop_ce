@@ -39,8 +39,8 @@ class ClassExtensionsValidator implements ModuleConfigurationValidatorInterface
     {
         if ($configuration->hasClassExtensions()) {
             foreach ($configuration->getClassExtensions() as $extension) {
-                if ($this->shopAdapter->isNamespace($extension->getShopClassNamespace())) {
-                    $this->validateClassToBePatchedNamespace($extension->getShopClassNamespace());
+                if ($this->shopAdapter->isNamespace($extension->getShopClassName())) {
+                    $this->validateClassToBePatchedNamespace($extension->getShopClassName());
                 }
             }
         }

@@ -55,7 +55,7 @@ class ClassExtensionsChain implements \IteratorAggregate
     public function addExtensions(array $extensions) : void
     {
         foreach ($extensions as $extension) {
-            $this->addExtensionToChain($extension);
+            $this->addExtension($extension);
         }
     }
 
@@ -66,8 +66,8 @@ class ClassExtensionsChain implements \IteratorAggregate
      */
     public function removeExtension(ClassExtension $classExtension): void
     {
-        $extended = $classExtension->getShopClassNamespace();
-        $extension = $classExtension->getModuleExtensionClassNamespace();
+        $extended = $classExtension->getShopClassName();
+        $extension = $classExtension->getModuleExtensionClassName();
         
         if (false === array_key_exists($extended, $this->chain) ||
             false === \array_search($extension, $this->chain[$extended], true)) {
@@ -89,16 +89,32 @@ class ClassExtensionsChain implements \IteratorAggregate
     /**
      * @param ClassExtension $extension
      */
-    private function addExtensionToChain(ClassExtension $extension): void
+    public function addExtension(ClassExtension $extension): void
     {
-        if (array_key_exists($extension->getShopClassNamespace(), $this->chain)) {
-            array_push(
-                $this->chain[$extension->getShopClassNamespace()],
-                $extension->getModuleExtensionClassNamespace()
-            );
+        if (array_key_exists($extension->getShopClassName(), $this->chain)) {
+            if (!$this->isModuleExtensionClassNameExistsInChain($extension)) {
+                array_push(
+                    $this->chain[$extension->getShopClassName()],
+                    $extension->getModuleExtensionClassName()
+                );
+            }
         } else {
-            $this->chain[$extension->getShopClassNamespace()] = [$extension->getModuleExtensionClassNamespace()];
+            $this->chain[$extension->getShopClassName()] = [$extension->getModuleExtensionClassName()];
         }
+    }
+
+    /**
+     * @param ClassExtension $extension
+     *
+     * @return bool
+     */
+    private function isModuleExtensionClassNameExistsInChain(ClassExtension $extension): bool
+    {
+        if (in_array($extension->getModuleExtensionClassName(), $this->chain[$extension->getShopClassName()])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

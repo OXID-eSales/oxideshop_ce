@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 /**
  * @internal
  */
-class ChainTest extends TestCase
+class ClassExtensionsChainTest extends TestCase
 {
     public function testAddExtensionsIfChainIsEmpty()
     {
@@ -62,8 +62,19 @@ class ChainTest extends TestCase
                 new ClassExtension(
                     'extendedClass',
                     'secondExtension'
+                ),
+                new ClassExtension(
+                    'extendedClass',
+                    'firstExtension'
                 )
             ]
+        );
+
+        $chain->addExtension(
+            new ClassExtension(
+                'extendedClass',
+                'firstExtension'
+            )
         );
 
         $this->assertEquals(

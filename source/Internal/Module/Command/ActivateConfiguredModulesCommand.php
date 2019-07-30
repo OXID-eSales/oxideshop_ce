@@ -49,13 +49,7 @@ class ActivateConfiguredModulesCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setDescription(
-                'Activates configured modules.'
-            )
-            ->setHelp(
-                'Activates all modules configured in the project configuration.'
-            );
+        $this->setDescription('Activates configured modules.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -91,7 +85,7 @@ class ActivateConfiguredModulesCommand extends Command
         if (!$this->hasConfiguredModules($shopConfiguration)) {
             $output->writeln('<info>The shop with id ' . $shopId . ' doesn\'t have configured modules.</info>');
         } else {
-            $output->writeln('<info>Activate modules for the shop with id ' . $shopId . '</info>');
+            $output->writeln('<info>Activating modules for the shop with id ' . $shopId . ':</info>');
 
             foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
                 if ($moduleConfiguration->isAutoActive()) {
@@ -117,7 +111,7 @@ class ActivateConfiguredModulesCommand extends Command
         ModuleConfiguration $moduleConfiguration,
         int $shopId
     ): void {
-        $output->writeln('<info>Activate module with id ' . $moduleConfiguration->getId() . '</info>');
+        $output->writeln('<info>Activating module with id ' . $moduleConfiguration->getId() . '</info>');
         try {
             $this->moduleActivationService->activate($moduleConfiguration->getId(), $shopId);
         } catch (\Exception $exception) {

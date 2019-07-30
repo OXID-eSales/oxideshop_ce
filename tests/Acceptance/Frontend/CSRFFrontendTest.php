@@ -13,6 +13,13 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
  */
 class CSRFFrontendTest extends FrontendTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->clearCookies();
+    }
+
     public function testAddToBasketWithoutCSRFToken(): void
     {
         $this->openShop();
@@ -44,22 +51,20 @@ class CSRFFrontendTest extends FrontendTestCase
 
     private function assertBasketIsEmpty(): void
     {
-        $this->open($this->getTestConfig()->getShopUrl() . 'en/cart/');
+        $this->open($this->_getShopUrl(['cl' => 'basket']));
         $this->assertEquals('%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%', $this->getText('breadCrumb'));
         $this->assertTextPresent('%BASKET_EMPTY%');
     }
 
     private function assertBasketIsNotEmpty(): void
     {
-        $this->open($this->getTestConfig()->getShopUrl() . 'en/cart/');
+        $this->open($this->_getShopUrl(['cl' => 'basket']));
         $this->assertEquals('%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%', $this->getText('breadCrumb'));
         $this->assertTextNotPresent('%BASKET_EMPTY%');
     }
 
     private function addToBasketWithoutCSRFToken(): void
     {
-        $testConfig = $this->getTestConfig();
-        $url = $testConfig->getShopUrl() . 'index.php?';
         $data = [
             'actcontrol' => 'start',
             'lang'       => '1',
@@ -69,8 +74,8 @@ class CSRFFrontendTest extends FrontendTestCase
             'anid'       => 'dc5ffdf380e15674b56dd562a7cb6aec',
             'am'         => 1
         ];
-        $query = http_build_query($data);
+        $url = $this->_getShopUrl($data);
 
-        $this->open($url . $query);
+        $this->open($url);
     }
 }

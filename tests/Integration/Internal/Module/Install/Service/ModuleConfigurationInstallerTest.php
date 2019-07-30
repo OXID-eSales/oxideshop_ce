@@ -76,7 +76,7 @@ class ModuleConfigurationInstallerTest extends TestCase
 
         $this->assertSame(
             'myModules/TestModule',
-            $shopConfiguration->getModuleConfiguration('testModule')->getPath()
+            $shopConfiguration->getModuleConfiguration('test-module')->getPath()
         );
     }
 
@@ -95,7 +95,7 @@ class ModuleConfigurationInstallerTest extends TestCase
 
         $this->assertSame(
             'myModules/TestModule',
-            $shopConfiguration->getModuleConfiguration('testModule')->getPath()
+            $shopConfiguration->getModuleConfiguration('test-module')->getPath()
         );
     }
 
@@ -108,7 +108,7 @@ class ModuleConfigurationInstallerTest extends TestCase
 
         foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
             $this->assertContains(
-                'testModule',
+                'test-module',
                 $shopConfiguration->getModuleIdsOfModuleConfigurations()
             );
         }

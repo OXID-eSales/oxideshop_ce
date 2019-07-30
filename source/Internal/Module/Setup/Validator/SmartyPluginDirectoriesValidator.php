@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotExistentException;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\DirectoryNotReadableException;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSettingNotValidException;
@@ -57,7 +57,7 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
             if ($this->isEmptyArray($directories)) {
                 throw new ModuleSettingNotValidException(
                     'Module setting ' .
-                    ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES .
+                    SmartyPluginDirectoriesDataMapper::MAPPING_KEY .
                     ' must be of type array but ' .
                     gettype($directories[0]) .
                     ' given'

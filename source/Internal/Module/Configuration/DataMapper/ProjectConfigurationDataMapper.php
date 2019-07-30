@@ -56,8 +56,10 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
      * @param ProjectConfiguration $projectConfiguration
      * @param array                $environmentsData
      */
-    private function setEnvironmentConfigurations(ProjectConfiguration $projectConfiguration, array $environmentsData)
-    {
+    private function setEnvironmentConfigurations(
+        ProjectConfiguration $projectConfiguration,
+        array $environmentsData
+    ) : void {
         foreach ($environmentsData as $environmentName => $environmentData) {
             $environmentConfiguration = new EnvironmentConfiguration();
 
@@ -76,7 +78,7 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
      * @param EnvironmentConfiguration $environmentConfiguration
      * @param array                    $shopsData
      */
-    private function setShopsConfiguration(EnvironmentConfiguration $environmentConfiguration, array $shopsData)
+    private function setShopsConfiguration(EnvironmentConfiguration $environmentConfiguration, array $shopsData) : void
     {
         foreach ($shopsData as $shopId => $shopData) {
             $environmentConfiguration->addShopConfiguration(

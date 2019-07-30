@@ -6,8 +6,15 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Definition;
 
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationMappingKeys;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\NodeInterface;
 
@@ -58,25 +65,25 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                             ->end()
                             ->scalarNode('email')
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::CLASS_EXTENSIONS)
+                            ->arrayNode(ClassExtensionsDataMapper::MAPPING_KEY)
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::TEMPLATES)
+                            ->arrayNode(TemplatesDataMapper::MAPPING_KEY)
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::CONTROLLERS)
+                            ->arrayNode(ControllersDataMapper::MAPPING_KEY)
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::SMARTY_PLUGIN_DIRECTORIES)
+                            ->arrayNode(SmartyPluginDirectoriesDataMapper::MAPPING_KEY)
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::EVENTS)
+                            ->arrayNode(EventsDataMapper::MAPPING_KEY)
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::CLASSES_WITHOUT_NAMESPACE)
+                            ->arrayNode(ClassesWithoutNamespaceDataMapper::MAPPING_KEY)
                                 ->scalarPrototype()->end()
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::TEMPLATE_BLOCKS)
+                            ->arrayNode(TemplateBlocksDataMapper::MAPPING_KEY)
                                 ->arrayPrototype()
                                     ->children()
                                         ->scalarNode(TemplateBlocksMappingKeys::BLOCK_NAME)
@@ -92,7 +99,7 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            ->arrayNode(ModuleConfigurationMappingKeys::SETTING)
+                            ->arrayNode(ModuleSettingsDataMapper::MAPPING_KEY)
                                 ->arrayPrototype()
                                     ->children()
                                         ->scalarNode('group')

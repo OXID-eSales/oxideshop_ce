@@ -88,7 +88,7 @@ class ActivateConfiguredModulesCommand extends Command
             $output->writeln('<info>Activating modules for the shop with id ' . $shopId . ':</info>');
 
             foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
-                if ($moduleConfiguration->isAutoActive()) {
+                if ($moduleConfiguration->isConfigured()) {
                     $this->activateModule($output, $moduleConfiguration, $shopId);
                 }
             }
@@ -98,7 +98,7 @@ class ActivateConfiguredModulesCommand extends Command
     private function hasConfiguredModules(ShopConfiguration $shopConfiguration): bool
     {
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
-            if ($moduleConfiguration->isAutoActive()) {
+            if ($moduleConfiguration->isConfigured()) {
                 return true;
             }
         }

@@ -98,7 +98,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
         $this->stateService->setActive($moduleId, $shopId);
 
-        $moduleConfiguration->setAutoActive(true);
+        $moduleConfiguration->setConfigured(true);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
         $this->classExtensionChainService->updateChain($shopId);
@@ -135,7 +135,7 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
         $this->stateService->setDeactivated($moduleId, $shopId);
 
-        $moduleConfiguration->setAutoActive(false);
+        $moduleConfiguration->setConfigured(false);
         $this->moduleConfigurationDao->save($moduleConfiguration, $shopId);
 
         $this->classExtensionChainService->updateChain($shopId);

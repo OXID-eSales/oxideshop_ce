@@ -72,13 +72,13 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $moduleToActivate
             ->setId('toActivate')
             ->setPath('any')
-            ->setAutoActive(true);
+            ->setConfigured(true);
 
         $moduleToStayInactive = new ModuleConfiguration();
         $moduleToStayInactive
             ->setId('stayInactive')
             ->setPath('any')
-            ->setAutoActive(false);
+            ->setConfigured(false);
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleToActivate);

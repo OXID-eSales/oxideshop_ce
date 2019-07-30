@@ -83,7 +83,7 @@ class ModuleActivationServiceTest extends TestCase
         $this->assertFalse($moduleStateService->isActive($this->testModuleId, $this->shopId));
     }
 
-    public function testSetAutoActiveInModuleConfiguration()
+    public function testSetConfiguredInModuleConfiguration()
     {
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
@@ -93,12 +93,12 @@ class ModuleActivationServiceTest extends TestCase
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
         $moduleConfiguration = $moduleConfigurationDao->get($this->testModuleId, $this->shopId);
 
-        $this->assertTrue($moduleConfiguration->isAutoActive());
+        $this->assertTrue($moduleConfiguration->isConfigured());
 
         $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
         $moduleConfiguration = $moduleConfigurationDao->get($this->testModuleId, $this->shopId);
 
-        $this->assertFalse($moduleConfiguration->isAutoActive());
+        $this->assertFalse($moduleConfiguration->isConfigured());
     }
 
     public function testClassExtensionChainUpdate()

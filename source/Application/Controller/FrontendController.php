@@ -17,6 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface;
+use OxidEsales\EshopCommunity\Core\SortingValidator;
 use oxManufacturer;
 use oxManufacturerList;
 use oxPrice;
@@ -919,18 +920,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function getUserSelectedSorting()
     {
-        $sortDirections = ['desc', 'asc'];
-
         $request = Registry::get(\OxidEsales\Eshop\Core\Request::class);
         $sortBy = $request->getRequestParameter($this->getSortOrderByParameterName());
         $sortOrder = $request->getRequestParameter($this->getSortOrderParameterName());
 
-        if ($sortBy &&
-            $sortOrder &&
-            Registry::getUtils()->isValidAlpha($sortOrder) &&
-            in_array(Str::getStr()->strtolower($sortOrder), $sortDirections) &&
-            in_array($sortBy, $this->getSortColumns())
-        ) {
+        if ((new SortingValidator())->isValid($sortBy, $sortOrder)) {
             return ['sortby' => $sortBy, 'sortdir' => $sortOrder];
         }
     }
@@ -1447,11 +1441,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         $sorting = $this->getSorting($ident);
         if (is_array($sorting)) {
-            $sortBy = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteIdentifier($sorting['sortby']);
             $sortDir = isset($sorting['sortdir']) ? $sorting['sortdir'] : '';
-            $sortString = trim($sortBy . ' ' . $sortDir);
-
-            return $sortString;
+            if ($this->isAllowedSortingOrder($sortDir)) {
+                $sortBy = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteIdentifier($sorting['sortby']);
+                return trim($sortBy . ' ' . $sortDir);
+            }
         }
     }
 
@@ -3024,5 +3018,16 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $compareController = oxNew(\OxidEsales\Eshop\Application\Controller\CompareController::class);
 
         return $compareController->getCompareItemsCnt();
+    }
+
+    /**
+     * @param string $sortOrder
+     *
+     * @return array
+     */
+    private function isAllowedSortingOrder($sortOrder)
+    {
+        $allowedSortOrders = array_merge((new SortingValidator)->getSortingOrders(), ['']);
+        return in_array(strtolower($sortOrder), $allowedSortOrders);
     }
 }

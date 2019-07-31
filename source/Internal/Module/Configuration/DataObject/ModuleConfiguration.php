@@ -421,7 +421,7 @@ class ModuleConfiguration
      *
      * @return bool
      */
-    public function extendsShopClass(string $shopClassNamespace): bool
+    public function isExtendingShopClass(string $shopClassNamespace): bool
     {
         foreach ($this->getClassExtensions() as $classExtension) {
             if ($classExtension->getShopClassName() === $shopClassNamespace) {

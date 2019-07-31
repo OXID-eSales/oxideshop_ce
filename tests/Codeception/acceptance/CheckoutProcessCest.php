@@ -26,7 +26,7 @@ class CheckoutProcessCest
 
         //add Product to basket
         $basketItem1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 1,
             'price' => '50,00 €'
@@ -36,14 +36,14 @@ class CheckoutProcessCest
         $homePage = $homePage->seeMiniBasketContains([$basketItem1], '50,00 €', 1);
 
         $basketItem1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 2,
             'price' => '100,00 €'
         ];
 
         $basketItem2 = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'amount' => 1,
             'price' => '100,00 €'
@@ -81,14 +81,14 @@ class CheckoutProcessCest
         $homePage = $I->openShop()->loginUser($userData['userLoginName'], $userData['userPassword']);
 
         $basketItem1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 5,
             'totalPrice' => '250,00 €'
         ];
 
         $basketItem2 = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'amount' => 1,
             'totalPrice' => '100,00 €'
@@ -110,7 +110,7 @@ class CheckoutProcessCest
         $I->see(Translator::translate("ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK"));
 
         $basketItem1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 3,
             'totalPrice' => '150,00 €'
@@ -165,7 +165,7 @@ class CheckoutProcessCest
 
         $I->updateConfigInDatabase('iMinOrderPrice', '49', 'str');
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 1,
             'totalPrice' => '50,00 €'
@@ -215,14 +215,14 @@ class CheckoutProcessCest
         $I->wantToTest('bundled product');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 1,
             'totalPrice' => '50,00 €'
         ];
 
         $bundledProductData = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'amount' => '+1'
         ];

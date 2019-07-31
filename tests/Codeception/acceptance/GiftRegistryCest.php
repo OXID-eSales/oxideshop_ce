@@ -27,7 +27,7 @@ class GiftRegistryCest
         $I->updateConfigInDatabase('bl_showWishlist', true);
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -94,7 +94,7 @@ class GiftRegistryCest
         $I->updateConfigInDatabase('bl_showWishlist', true);
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -167,7 +167,7 @@ class GiftRegistryCest
         $I->updateConfigInDatabase('bl_showWishlist', false);
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'

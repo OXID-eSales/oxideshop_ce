@@ -59,7 +59,7 @@ class ReviewAndRatingCest
         $this->prepareReviewDataForProduct($I, '1002', 'testUser', $reviewData);
         $this->prepareReviewDataForProduct($I, '1002-1', 'testUser', $reviewData2);
 
-        $detailsPage = $productNavigation->openProductDetailsPage(1002);
+        $detailsPage = $productNavigation->openProductDetailsPage('1002');
         $I->see(Translator::translate('MESSAGE_LOGIN_TO_WRITE_REVIEW'));
         $detailsPage->seeUserProductReviewAndRating(
             1,
@@ -99,6 +99,7 @@ class ReviewAndRatingCest
             'OXUSERID' => $userId,
             'OXLANG' => '1',
             'OXRATING' => $review['rating'],
+            'OXCREATE' => '2008-04-03 00:00:00',
         ];
 
         $I->haveInDatabase('oxreviews', $reviewData);

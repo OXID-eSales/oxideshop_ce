@@ -97,7 +97,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use oxideshop.log in place of EXCEPTION_LOG in comments/translations [PR-708](https://github.com/OXID-eSales/oxideshop_ce/pull/708)
 - Fixed the code to fit PSR-2 [PR-711](https://github.com/OXID-eSales/oxideshop_ce/pull/711)
 - Improved form validation [#0006924](https://bugs.oxid-esales.com/view.php?id=6924)
-- Fix typo in comment [PR-717](https://github.com/OXID-eSales/oxideshop_ce/pull/717)
+- Fix typo in comment [PR-717](https://github.com/OXID-eSales/oxideshop_ce/pull/717) [PR-719](https://github.com/OXID-eSales/oxideshop_ce/pull/719)
 - Remove unnecessary parameters in addErrorToDisplay function call in ForgetPasswordController [PR-716](https://github.com/OXID-eSales/oxideshop_ce/pull/716)
 
 ### Added

@@ -72,7 +72,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
         try {
             call_user_func([$this, $sLocfnc], $oLocatorTarget, $oCurrArticle);
-        }catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->_sType = '';
             getLogger()->warning('Locator Type is wrong ' . $this->_sType);
         }

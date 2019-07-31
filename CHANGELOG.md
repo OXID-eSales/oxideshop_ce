@@ -97,6 +97,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use oxideshop.log in place of EXCEPTION_LOG in comments/translations [PR-708](https://github.com/OXID-eSales/oxideshop_ce/pull/708)
 - Fixed the code to fit PSR-2 [PR-711](https://github.com/OXID-eSales/oxideshop_ce/pull/711)
 - Improved form validation [#0006924](https://bugs.oxid-esales.com/view.php?id=6924)
+- Fix typo in comment [PR-717](https://github.com/OXID-eSales/oxideshop_ce/pull/717)
+- Remove unnecessary parameters in addErrorToDisplay function call in ForgetPasswordController [PR-716](https://github.com/OXID-eSales/oxideshop_ce/pull/716)
 
 ### Added
 - New methods:
@@ -174,6 +176,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Running tests on travis against all php versions [PR-700](https://github.com/OXID-eSales/oxideshop_ce/pull/700)
 - Travis runs phpcs and tests scripts with calling the php directly, not relying on script shebang anymore.
 - Updated Yui library components to version 2.9
+- Do not trust input from outside for listtype. Catch PHP Fatal error and show normal page. [PR-714](https://github.com/OXID-eSales/oxideshop_ce/pull/714)
 
 ### Removed
 - Removed old not used blAutoSearchOnCat option from shop_config tab [PR-654](https://github.com/OXID-eSales/oxideshop_ce/pull/654)

@@ -69,7 +69,13 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     public function setLocatorData($oCurrArticle, $oLocatorTarget)
     {
         $sLocfnc = "_set{$this->_sType}LocatorData";
-        $this->$sLocfnc($oLocatorTarget, $oCurrArticle);
+
+        try {
+            call_user_func([$this, $sLocfnc], $oLocatorTarget, $oCurrArticle);
+        }catch (\Exception $e) {
+            $this->_sType = '';
+            getLogger()->warning('Locator Type is wrong ' . $this->_sType);
+        }
 
         // passing list type to view
         $oLocatorTarget->setListType($this->_sType);

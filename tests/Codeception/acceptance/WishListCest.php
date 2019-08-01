@@ -24,7 +24,7 @@ class WishListCest
         $I->wantToTest('if product compare functionality is enabled');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -85,7 +85,7 @@ class WishListCest
         $I->wantToTest('user wish list functionality, if a variant of product was added');
 
         $productData = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
             'price' => 'from 15,00 €'

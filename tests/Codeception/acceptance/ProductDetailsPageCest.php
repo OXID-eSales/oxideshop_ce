@@ -22,7 +22,7 @@ class ProductDetailsPageCest
         $I->wantToTest('product navigation in details page');
 
         $productData = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
             'price' => '100,00 € *'
@@ -58,7 +58,7 @@ class ProductDetailsPageCest
         $I->wantToTest('product information in details page');
 
         $productData = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
             'price' => '100,00 € *'
@@ -99,7 +99,7 @@ class ProductDetailsPageCest
         $I->wantTo('send the product suggestion email');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -140,7 +140,7 @@ class ProductDetailsPageCest
         $I->wantToTest('product price alert functionality');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -156,7 +156,7 @@ class ProductDetailsPageCest
         $I->see($productData['title']);
 
         //disabling price alert for product(1000)
-        $I->updateInDatabase('oxarticles', ["oxblfixedprice" => 1], ["OXID" => 1000]);
+        $I->updateInDatabase('oxarticles', ["oxblfixedprice" => 1], ["OXID" => '1000']);
 
         //open details page
         $productNavigation->openProductDetailsPage($productData['id']);
@@ -176,7 +176,7 @@ class ProductDetailsPageCest
         $I->wantToTest('product variant selection and order in details page');
 
         $productData = [
-            'id' => 1002,
+            'id' => '1002',
             'title' => 'Test product 2 [EN] šÄßüл',
             'description' => 'Test product 2 short desc [EN] šÄßüл',
             'price' => 'from 55,00 € *'
@@ -249,14 +249,14 @@ class ProductDetailsPageCest
         $I->wantToTest('Product\'s accessories');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
         ];
 
         $accessoryData = [
-            'id' => 1002,
+            'id' => '1002',
             'title' => 'Test product 2 [EN] šÄßüл',
             'description' => 'Test product 2 short desc [EN] šÄßüл',
             'price' => 'from 55,00 €'
@@ -285,14 +285,14 @@ class ProductDetailsPageCest
         $I->wantToTest('similar products on details page');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
         ];
 
         $similarProductData = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
             'price' => '100,00 € *'
@@ -321,14 +321,14 @@ class ProductDetailsPageCest
         $I->wantToTest('Product\'s crossselling on details page');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
         ];
 
         $crossSellingProductData = [
-            'id' => 1002,
+            'id' => '1002',
             'title' => 'Test product 2 [EN] šÄßüл',
             'description' => 'Test product 2 short desc [EN] šÄßüл',
             'price' => 'from 55,00 €'
@@ -359,7 +359,7 @@ class ProductDetailsPageCest
         $I->wantToTest('multidimensional variants functionality in details page');
 
         $productData = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
             'price' => 'from 15,00 € *'
@@ -454,7 +454,7 @@ class ProductDetailsPageCest
         $I->wantToTest('multidimensional variants functionality in lists');
 
         $productData = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
             'price' => 'from 15,00 €'
@@ -483,6 +483,8 @@ class ProductDetailsPageCest
             'OXID' => '1001411',
             'OXLONGDESC' => 'Test description',
             'OXLONGDESC_1' => 'Test description',
+            'OXLONGDESC_2' => '',
+            'OXLONGDESC_3' => '',
         ];
         $I->haveInDatabase('oxartextends', $data);
 
@@ -496,7 +498,7 @@ class ProductDetailsPageCest
         $I->haveInDatabase('oxobject2attribute', $data);
 
         $productData = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
             'price' => 'from 15,00 € *'
@@ -560,7 +562,7 @@ class ProductDetailsPageCest
         $I->updateConfigInDatabase('blUseMultidimensionVariants', '');
 
         $productData = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
             'price' => 'from 15,00 €'
@@ -574,7 +576,7 @@ class ProductDetailsPageCest
         $detailsPage = $searchListPage->selectVariant(1, 'S | black | material');
 
         $productData = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
             'price' => '15,00 €'
@@ -589,7 +591,7 @@ class ProductDetailsPageCest
         $I->updateInDatabase('oxarticles', ["OXSTOCK" => 1], ["OXID" => '1001422']);
 
         $productData = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл S | white',
             'description' => '13 EN description šÄßüл',
             'price' => '15,00 €'
@@ -623,14 +625,14 @@ class ProductDetailsPageCest
         $this->preparePriceGroupDataForUser($I, $userData['userId'], 'oxidpricea');
 
         $productData1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
         ];
 
         $productData2 = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
             'price' => '100,00 € *'
@@ -643,7 +645,7 @@ class ProductDetailsPageCest
             ->seeProductData($productData2, 2);
 
         $productData1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '35,00 € *'
@@ -664,14 +666,14 @@ class ProductDetailsPageCest
             ->openBasket();
 
         $productData1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 3,
             'totalPrice' => '105,00 €'
         ];
 
         $productData2 = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'amount' => 1,
             'totalPrice' => '100,00 €'
@@ -698,7 +700,7 @@ class ProductDetailsPageCest
         $this->preparePriceGroupDataForUser($I, $userData['userId'], 'oxidpricec');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -717,7 +719,7 @@ class ProductDetailsPageCest
             ->seeProductData($productData, 1);
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '55,00 € *'
@@ -736,7 +738,7 @@ class ProductDetailsPageCest
 
         //amount price discount added to the C price
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 5,
             'totalPrice' => '220,00 €'
@@ -761,7 +763,7 @@ class ProductDetailsPageCest
         $this->preparePriceGroupDataForUser($I, $userData['userId'], 'oxidpriceb');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -772,7 +774,7 @@ class ProductDetailsPageCest
             ->seeProductData($productData, 1);
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '45,00 € *'
@@ -787,7 +789,7 @@ class ProductDetailsPageCest
             ->openBasket();
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'amount' => 2,
             'totalPrice' => '90,00 €'
@@ -810,7 +812,7 @@ class ProductDetailsPageCest
         $I->wantToTest('product amount price');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'

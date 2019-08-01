@@ -12,7 +12,6 @@ use Twig\Environment;
  * Class InsertNewBasketItemLogicTwig
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
 {

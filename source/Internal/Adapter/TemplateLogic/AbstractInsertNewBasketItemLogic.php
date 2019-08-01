@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
  * Class AbstractInsertNewBasketItemLogic
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 abstract class AbstractInsertNewBasketItemLogic
 {

@@ -23,7 +23,7 @@ class ProductCompareCest
         $I->wantToTest('if product compare functionality is enabled');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
@@ -69,21 +69,21 @@ class ProductCompareCest
         $I->wantToTest('user product compare list functionality');
 
         $productData1 = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'
         ];
 
         $productData2 = [
-            'id' => 1001,
+            'id' => '1001',
             'title' => 'Test product 1 [EN] šÄßüл',
             'description' => 'Test product 1 short desc [EN] šÄßüл',
             'price' => '100,00 € *'
         ];
 
         $productData3 = [
-            'id' => 10014,
+            'id' => '10014',
             'title' => '14 EN product šÄßüл',
             'description' => '13 EN description šÄßüл',
             'price' => 'from 15,00 € *'
@@ -168,7 +168,7 @@ class ProductCompareCest
         $I->updateConfigInDatabase('bl_showCompareList', false);
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'

@@ -11,8 +11,6 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Class FormatCurrencyLogicTest
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class FormatCurrencyLogicTest extends UnitTestCase
 {

@@ -23,7 +23,7 @@ class ListmaniaCest
         $I->wantToTest('creation of the listmania');
 
         $productData = [
-            'id' => 1000,
+            'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
             'description' => 'Test product 0 short desc [EN] šÄßüл',
             'price' => '50,00 € *'

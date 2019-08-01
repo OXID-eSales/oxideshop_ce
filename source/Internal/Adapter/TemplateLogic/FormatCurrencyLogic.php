@@ -10,8 +10,6 @@ use stdClass;
 
 /**
  * Class FormatCurrencyLogic
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class FormatCurrencyLogic
 {

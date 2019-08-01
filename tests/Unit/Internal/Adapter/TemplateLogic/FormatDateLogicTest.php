@@ -12,8 +12,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class FormatDateLogicTest
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class FormatDateLogicTest extends TestCase
 {

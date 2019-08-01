@@ -12,7 +12,6 @@ use OxidEsales\Eshop\Core\Registry;
  * Class FormatPriceLogic
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 class FormatPriceLogic
 {

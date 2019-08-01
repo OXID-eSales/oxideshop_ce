@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
  * Class FormatTimeLogic
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 class FormatTimeLogic
 {

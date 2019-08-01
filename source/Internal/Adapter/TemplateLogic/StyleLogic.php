@@ -8,8 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
 
 /**
  * Class AddUrlParametersLogic
- *
- * @author Jędrzej Skoczek (j.skoczek@createit.pl)
  */
 class StyleLogic
 {

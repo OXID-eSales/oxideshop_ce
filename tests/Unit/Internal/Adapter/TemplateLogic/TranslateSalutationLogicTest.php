@@ -11,8 +11,6 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Class TranslateSalutationLogic
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class TranslateSalutationLogicTest extends UnitTestCase
 {

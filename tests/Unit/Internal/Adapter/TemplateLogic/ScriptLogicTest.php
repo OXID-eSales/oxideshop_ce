@@ -13,8 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class ScriptLogicTest
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class ScriptLogicTest extends TestCase
 {

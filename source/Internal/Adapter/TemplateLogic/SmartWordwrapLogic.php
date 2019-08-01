@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
  * Class SmartWordwrapLogic
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 class SmartWordwrapLogic
 {

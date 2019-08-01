@@ -11,8 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class TruncateLogicTest
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class TruncateLogicTest extends TestCase
 {

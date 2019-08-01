@@ -12,7 +12,6 @@ use Smarty;
  * Class InsertNewBasketItemLogicSmarty
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
 {

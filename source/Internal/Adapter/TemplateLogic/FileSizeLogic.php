@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
  * Class FileSizeLogic
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 class FileSizeLogic
 {

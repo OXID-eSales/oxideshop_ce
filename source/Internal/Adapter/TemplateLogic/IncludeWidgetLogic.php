@@ -12,7 +12,6 @@ use OxidEsales\EshopCommunity\Core\WidgetControl;
  * Class IncludeWidgetLogic
  *
  * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
- * @author  Jędrzej Skoczek
  */
 class IncludeWidgetLogic
 {

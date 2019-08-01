@@ -11,8 +11,6 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * Class WordwrapLogicTest
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class WordwrapLogicTest extends UnitTestCase
 {

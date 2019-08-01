@@ -8,8 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
 
 /**
  * Class TruncateLogic
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class TruncateLogic
 {

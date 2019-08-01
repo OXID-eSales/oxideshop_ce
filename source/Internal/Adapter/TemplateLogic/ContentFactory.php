@@ -10,8 +10,6 @@ use OxidEsales\EshopCommunity\Application\Model\Content;
 
 /**
  * Class ContentFactory
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class ContentFactory
 {

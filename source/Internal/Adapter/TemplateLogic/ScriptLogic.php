@@ -8,8 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic;
 
 /**
  * Class ScriptLogic
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class ScriptLogic
 {

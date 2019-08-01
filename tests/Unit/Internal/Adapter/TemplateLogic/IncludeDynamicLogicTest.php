@@ -11,8 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class IncludeDynamicLogicTest
- *
- * @author Tomasz Kowalewski (t.kowalewski@createit.pl)
  */
 class IncludeDynamicLogicTest extends TestCase
 {

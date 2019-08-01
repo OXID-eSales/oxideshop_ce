@@ -997,7 +997,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _prepareModifiedPrice($dPrice)
     {
-        $this->_preparePrice($dPrice, $this->getArticleVat());
+        $dPrice = $this->_preparePrice($dPrice, $this->getArticleVat());
 
         return $dPrice;
     }

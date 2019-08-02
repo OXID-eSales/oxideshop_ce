@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.5.0] - Unreleased
+
+### Added
+ - oe-console command: oe:module:activate-configured-modules
+ 
 ## [6.4.0] - 2019-08-02
 
 ### Fixed

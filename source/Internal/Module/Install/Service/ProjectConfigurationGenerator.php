@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 
@@ -45,27 +44,20 @@ class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInte
      */
     public function generate()
     {
-        $projectConfiguration = new ProjectConfiguration();
-
-        $projectConfiguration->addEnvironmentConfiguration(
-            $this->context->getEnvironment(),
-            $this->createEnvironmentConfiguration()
-        );
-
-        $this->projectConfigurationDao->save($projectConfiguration);
+        $this->projectConfigurationDao->save($this->createProjectConfiguration());
     }
 
     /**
-     * @return EnvironmentConfiguration
+     * @return ProjectConfiguration
      */
-    private function createEnvironmentConfiguration(): EnvironmentConfiguration
+    private function createProjectConfiguration(): ProjectConfiguration
     {
-        $environmentConfiguration = new EnvironmentConfiguration();
+        $projectConfiguration = new ProjectConfiguration();
 
         foreach ($this->context->getAllShopIds() as $shopId) {
-            $environmentConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
+            $projectConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
         }
 
-        return $environmentConfiguration;
+        return $projectConfiguration;
     }
 }

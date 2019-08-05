@@ -109,8 +109,7 @@ class ModuleActivateCommand extends Command
     private function isInstalled(string $moduleId): bool
     {
         $shopConfiguration = $this->shopConfigurationDao->get(
-            $this->context->getCurrentShopId(),
-            $this->context->getEnvironment()
+            $this->context->getCurrentShopId()
         );
         
         return $shopConfiguration->hasModuleConfiguration($moduleId);

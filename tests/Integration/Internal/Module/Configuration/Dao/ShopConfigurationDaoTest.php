@@ -30,61 +30,53 @@ final class ShopConfigurationDaoTest extends TestCase
 
         $shopConfigurationWithModule = new ShopConfiguration();
         $shopConfigurationWithModule->addModuleConfiguration($module);
-        $shopConfigurationDao->save($shopConfigurationWithModule, 1, 'prod');
+        $shopConfigurationDao->save($shopConfigurationWithModule, 1);
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfigurationDao->save($shopConfiguration, 2, 'prod');
-
-        $shopConfigurationForAnotherEnvironment = new ShopConfiguration();
-        $shopConfigurationDao->save($shopConfigurationForAnotherEnvironment, 1, 'dev');
+        $shopConfigurationDao->save($shopConfiguration, 2);
 
         $this->assertEquals(
             $shopConfigurationWithModule,
-            $shopConfigurationDao->get(1, 'prod')
+            $shopConfigurationDao->get(1)
         );
 
         $this->assertEquals(
             $shopConfiguration,
-            $shopConfigurationDao->get(2, 'prod')
-        );
-
-        $this->assertEquals(
-            $shopConfigurationForAnotherEnvironment,
-            $shopConfigurationDao->get(1, 'dev')
+            $shopConfigurationDao->get(2)
         );
     }
 
     public function testGetAlwaysReturnsTheSameObjectIfConfigurationWasNotChanged(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
-        $shopConfiguration = $shopConfigurationDao->get(1, 'prod');
+        $shopConfiguration = $shopConfigurationDao->get(1);
 
         $this->assertSame(
             $shopConfiguration,
-            $shopConfigurationDao->get(1, 'prod')
+            $shopConfigurationDao->get(1)
         );
     }
 
     public function testGetAll(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
         $this->assertEquals(
             new ShopConfiguration(),
-            $shopConfigurationDao->get(1, 'prod')
+            $shopConfigurationDao->get(1)
         );
 
-        $shopConfigurationDao->save(new ShopConfiguration(), 3, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 3);
 
         $this->assertEquals(
             [
                 1 => new ShopConfiguration(),
                 3 => new ShopConfiguration(),
             ],
-            $shopConfigurationDao->getAll('prod')
+            $shopConfigurationDao->getAll()
         );
     }
 
@@ -94,19 +86,18 @@ final class ShopConfigurationDaoTest extends TestCase
     public function testWithIncorrectNode(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
         $yamlStorage = $this->get(FileStorageFactoryInterface::class)->create(
             Path::join(
                 $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory(),
-                'prod',
                 'shops/1.yaml'
             )
         );
 
         $yamlStorage->save(['incorrectKey']);
 
-        $shopConfigurationDao->get(1, 'prod');
+        $shopConfigurationDao->get(1);
     }
 
     /**

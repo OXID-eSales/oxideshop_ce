@@ -30,14 +30,6 @@ class BasicContext implements BasicContextInterface
     private $facts;
 
     /**
-     * @return string
-     */
-    public function getEnvironment(): string
-    {
-        return 'production';
-    }
-
-    /**
      * @todo change placement of container cache file and move logic to Facts.
      * @return string
      */

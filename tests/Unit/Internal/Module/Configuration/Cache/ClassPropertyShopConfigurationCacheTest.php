@@ -17,28 +17,28 @@ final class ClassPropertyShopConfigurationCacheTest extends TestCase
         $configuration = new ShopConfiguration();
 
         $cache = new ClassPropertyShopConfigurationCache();
-        $cache->put('dev', 2, $configuration);
+        $cache->put(2, $configuration);
 
-        $this->assertSame($configuration, $cache->get('dev', 2));
+        $this->assertSame($configuration, $cache->get(2));
     }
 
     public function testExists(): void
     {
         $cache = new ClassPropertyShopConfigurationCache();
 
-        $this->assertFalse($cache->exists('dev', 1));
+        $this->assertFalse($cache->exists(1));
 
-        $cache->put('dev', 1, new ShopConfiguration());
+        $cache->put(1, new ShopConfiguration());
 
-        $this->assertTrue($cache->exists('dev', 1));
+        $this->assertTrue($cache->exists(1));
     }
 
     public function testEvict(): void
     {
         $cache = new ClassPropertyShopConfigurationCache();
-        $cache->put('dev', 3, new ShopConfiguration());
-        $cache->evict('dev', 3);
+        $cache->put(3, new ShopConfiguration());
+        $cache->evict(3);
 
-        $this->assertFalse($cache->exists('dev', 3));
+        $this->assertFalse($cache->exists(3));
     }
 }

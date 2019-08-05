@@ -13,23 +13,22 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
  */
 interface ShopConfigurationDaoInterface
 {
+
     /**
      * @param int $shopId
-     * @param string $environment
+     *
      * @return ShopConfiguration
      */
-    public function get(int $shopId, string $environment): ShopConfiguration;
+    public function get(int $shopId): ShopConfiguration;
 
     /**
      * @param ShopConfiguration $shopConfiguration
-     * @param int $shopId
-     * @param string $environment
+     * @param int               $shopId
      */
-    public function save(ShopConfiguration $shopConfiguration, int $shopId, string $environment): void;
+    public function save(ShopConfiguration $shopConfiguration, int $shopId): void;
 
     /**
-     * @param string $environment
      * @return ShopConfiguration[]
      */
-    public function getAll(string $environment): array;
+    public function getAll(): array;
 }

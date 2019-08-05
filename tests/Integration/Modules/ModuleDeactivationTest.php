@@ -404,9 +404,8 @@ class ModuleDeactivationTest extends BaseModuleTestCase
         $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
         $projectConfiguration = $projectConfigurationDao->getConfiguration();
 
-        foreach ($projectConfiguration->getEnvironmentConfigurations() as $environmentConfiguration) {
-            $environmentConfiguration->addShopConfiguration(2, new ShopConfiguration());
-        }
+        $projectConfiguration->addShopConfiguration(2, new ShopConfiguration());
+
 
         $projectConfigurationDao->save($projectConfiguration);
     }

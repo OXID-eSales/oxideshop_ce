@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 
 /**
@@ -35,9 +34,11 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
      */
     public function toData(ProjectConfiguration $configuration): array
     {
-        return [
-            'environments' => $this->getEnvironmentConfigurationsData($configuration),
-        ];
+        $data = [];
+
+        $data['shops'] = $this->getShopsConfigurationData($configuration);
+
+        return $data;
     }
 
     /**
@@ -47,41 +48,30 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
     public function fromData(array $data): ProjectConfiguration
     {
         $projectConfiguration = new ProjectConfiguration();
-        $this->setEnvironmentConfigurations($projectConfiguration, $data['environments']);
+        $this->setProjectConfiguration($projectConfiguration, $data);
 
         return $projectConfiguration;
     }
 
     /**
      * @param ProjectConfiguration $projectConfiguration
-     * @param array                $environmentsData
+     * @param array                $data
      */
-    private function setEnvironmentConfigurations(
-        ProjectConfiguration $projectConfiguration,
-        array $environmentsData
-    ) : void {
-        foreach ($environmentsData as $environmentName => $environmentData) {
-            $environmentConfiguration = new EnvironmentConfiguration();
-
-            if (isset($environmentData['shops'])) {
-                $this->setShopsConfiguration($environmentConfiguration, $environmentData['shops']);
-            }
-
-            $projectConfiguration->addEnvironmentConfiguration(
-                $environmentName,
-                $environmentConfiguration
-            );
+    private function setProjectConfiguration(ProjectConfiguration $projectConfiguration, array $data)
+    {
+        if (isset($data['shops'])) {
+            $this->setShopsConfiguration($projectConfiguration, $data['shops']);
         }
     }
 
     /**
-     * @param EnvironmentConfiguration $environmentConfiguration
-     * @param array                    $shopsData
+     * @param ProjectConfiguration $projectConfiguration
+     * @param array                $shopsData
      */
-    private function setShopsConfiguration(EnvironmentConfiguration $environmentConfiguration, array $shopsData) : void
+    private function setShopsConfiguration(ProjectConfiguration $projectConfiguration, array $shopsData)
     {
         foreach ($shopsData as $shopId => $shopData) {
-            $environmentConfiguration->addShopConfiguration(
+            $projectConfiguration->addShopConfiguration(
                 $shopId,
                 $this->shopConfigurationDataMapper->fromData($shopData)
             );
@@ -89,29 +79,15 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
     }
 
     /**
-     * @param ProjectConfiguration $configuration
+     * @param ProjectConfiguration $projectConfiguration
+     *
      * @return array
      */
-    private function getEnvironmentConfigurationsData(ProjectConfiguration $configuration): array
+    private function getShopsConfigurationData(ProjectConfiguration $projectConfiguration): array
     {
         $data = [];
 
-        foreach ($configuration->getEnvironmentConfigurations() as $environmentName => $environmentConfiguration) {
-            $data[$environmentName]['shops'] = $this->getShopsConfigurationData($environmentConfiguration);
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param EnvironmentConfiguration $environmentConfiguration
-     * @return array
-     */
-    private function getShopsConfigurationData(EnvironmentConfiguration $environmentConfiguration): array
-    {
-        $data = [];
-
-        foreach ($environmentConfiguration->getShopConfigurations() as $shopId => $shopConfiguration) {
+        foreach ($projectConfiguration->getShopConfigurations() as $shopId => $shopConfiguration) {
             $data[$shopId] = $this->shopConfigurationDataMapper->toData($shopConfiguration);
         }
 

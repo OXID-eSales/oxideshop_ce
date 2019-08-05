@@ -20,7 +20,6 @@ use Webmozart\PathUtil\Path;
 class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 {
     private $shopId;
-    private $environment;
     private $moduleId = 'testmodule';
     private $moduleTargetPath = 'testmodule';
     private $workingDirectoryBackup;
@@ -30,7 +29,6 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     {
         $context = $this->get(ContextInterface::class);
         $this->shopId = $context->getCurrentShopId();
-        $this->environment = $context->getEnvironment();
         $this->workingDirectoryBackup = getcwd();
         $this->setWorkingDirectoryForConsole(__DIR__);
 

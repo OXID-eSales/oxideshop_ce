@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Dat
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -23,19 +22,10 @@ class ProjectConfigurationDataMapperTest extends TestCase
     public function testEnvironmentsMapping()
     {
         $configurationData = [
-            'environments'  => [
-                'dev' => [
-                    'shops' => [],
-                ],
-                'prod' => [
-                    'shops' => [],
-                ],
-            ],
+            'shops' => [],
         ];
 
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
-        $projectConfiguration->addEnvironmentConfiguration('prod', new EnvironmentConfiguration());
 
         $projectConfigurationDataMapper = new ProjectConfigurationDataMapper(
             $this->getMockBuilder(ShopConfigurationDataMapperInterface::class)->getMock()
@@ -55,26 +45,16 @@ class ProjectConfigurationDataMapperTest extends TestCase
     public function testShopsMapping()
     {
         $configurationData = [
-            'environments'  => [
-                'dev' => [
-                    'shops' => [
-                        '1' => [],
-                        '2' => [],
-                    ],
-                ],
+            'shops' => [
+                '1' => [],
+                '2' => [],
             ],
         ];
 
         $projectConfiguration = new ProjectConfiguration();
 
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration(1, new ShopConfiguration());
-        $environmentConfiguration->addShopConfiguration(2, new ShopConfiguration());
-
-        $projectConfiguration->addEnvironmentConfiguration(
-            'dev',
-            $environmentConfiguration
-        );
+        $projectConfiguration->addShopConfiguration(1, new ShopConfiguration());
+        $projectConfiguration->addShopConfiguration(2, new ShopConfiguration());
 
         $shopConfigurationDataMapper = $this
             ->getMockBuilder(ShopConfigurationDataMapperInterface::class)

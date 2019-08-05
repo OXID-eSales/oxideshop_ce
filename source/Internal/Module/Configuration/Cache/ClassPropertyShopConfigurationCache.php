@@ -14,27 +14,27 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfi
 class ClassPropertyShopConfigurationCache implements ShopConfigurationCacheInterface
 {
     /**
-     * @var string[]
+     * @var ShopConfiguration[]
      */
     private $cache;
 
-    public function put(string $environment, int $shopId, ShopConfiguration $configuration): void
+    public function put(int $shopId, ShopConfiguration $configuration): void
     {
-        $this->cache[$environment][$shopId] = $configuration;
+        $this->cache[$shopId] = $configuration;
     }
 
-    public function get(string $environment, int $shopId): ShopConfiguration
+    public function get(int $shopId): ShopConfiguration
     {
-        return $this->cache[$environment][$shopId];
+        return $this->cache[$shopId];
     }
 
-    public function exists(string $environment, int $shopId): bool
+    public function exists(int $shopId): bool
     {
-        return isset($this->cache[$environment][$shopId]);
+        return isset($this->cache[$shopId]);
     }
 
-    public function evict(string $environment, int $shopId): void
+    public function evict(int $shopId): void
     {
-        unset($this->cache[$environment][$shopId]);
+        unset($this->cache[$shopId]);
     }
 }

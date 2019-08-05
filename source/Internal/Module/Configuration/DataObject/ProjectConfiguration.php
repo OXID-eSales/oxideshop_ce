@@ -13,60 +13,58 @@ use DomainException;
  */
 class ProjectConfiguration
 {
-    /** @var array */
-    private $environmentConfigurations = [];
+    /** @var ShopConfiguration[] */
+    private $projectConfiguration = [];
+
+    /**
+     * @param int $shopId
+     *
+     * @return ShopConfiguration
+     */
+    public function getShopConfiguration(int $shopId): ShopConfiguration
+    {
+        if (array_key_exists($shopId, $this->projectConfiguration)) {
+            return $this->projectConfiguration[$shopId];
+        }
+        throw new DomainException('There is no configuration for shop id ' . $shopId);
+    }
 
     /**
      * @return array
      */
-    public function getNamesOfEnvironmentConfigurations(): array
+    public function getShopConfigurations(): array
     {
-        return array_keys($this->environmentConfigurations);
+        return $this->projectConfiguration;
     }
 
     /**
-     * @return EnvironmentConfiguration[]
+     * @return array
      */
-    public function getEnvironmentConfigurations(): array
+    public function getShopConfigurationIds() :array
     {
-        return $this->environmentConfigurations;
+        return array_keys($this->projectConfiguration);
     }
 
     /**
-     * @param string $name
-     *
-     * @throws DomainException
-     *
-     * @return EnvironmentConfiguration
+     * @param int               $shopId
+     * @param ShopConfiguration $shopConfiguration
      */
-    public function getEnvironmentConfiguration(string $name): EnvironmentConfiguration
+    public function addShopConfiguration(int $shopId, ShopConfiguration $shopConfiguration): void
     {
-        if (array_key_exists($name, $this->environmentConfigurations)) {
-            return $this->environmentConfigurations[$name];
-        }
-        throw new DomainException('There is no environment configuration with name ' . $name);
+        $this->projectConfiguration[$shopId] = $shopConfiguration;
     }
 
     /**
-     * @param string                   $name
-     * @param EnvironmentConfiguration $environmentConfiguration
-     */
-    public function addEnvironmentConfiguration(string $name, EnvironmentConfiguration $environmentConfiguration)
-    {
-        $this->environmentConfigurations[$name] = $environmentConfiguration;
-    }
-
-    /**
-     * @param string $name
+     * @param int $shopId
      *
      * @throws DomainException
      */
-    public function deleteEnvironmentConfiguration(string $name)
+    public function deleteShopConfiguration(int $shopId): void
     {
-        if (array_key_exists($name, $this->environmentConfigurations)) {
-            unset($this->environmentConfigurations[$name]);
+        if (array_key_exists($shopId, $this->projectConfiguration)) {
+            unset($this->projectConfiguration[$shopId]);
         } else {
-            throw new DomainException('There is no environment configuration with name ' . $name);
+            throw new DomainException('There is no configuration for shop id ' . $shopId);
         }
     }
 }

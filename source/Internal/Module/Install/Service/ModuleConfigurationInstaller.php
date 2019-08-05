@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectCo
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Module\MetaData\Service\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Webmozart\PathUtil\Path;
@@ -78,6 +79,8 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     /**
      * @param string $moduleSourcePath
      * @param string $moduleTargetPath
+     *
+     * @throws InvalidMetaDataException
      */
     public function install(string $moduleSourcePath, string $moduleTargetPath)
     {
@@ -94,19 +97,17 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
 
     /**
      * @param string $moduleFullPath
+     *
      * @return bool
+     * @throws InvalidMetaDataException
      */
     public function isInstalled(string $moduleFullPath): bool
     {
         $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleFullPath));
         $moduleConfiguration = $this->metadataMapper->fromData($metadata);
-
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
-        $environmentConfiguration = $projectConfiguration->getEnvironmentConfiguration(
-            $this->context->getEnvironment()
-        );
 
-        foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
+        foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
             /** @var $shopConfiguration ShopConfiguration */
             if ($shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {
                 return true;
@@ -127,11 +128,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         ProjectConfiguration $projectConfiguration
     ): ProjectConfiguration {
 
-        $environmentConfiguration = $projectConfiguration->getEnvironmentConfiguration(
-            $this->context->getEnvironment()
-        );
-
-        foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
+        foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
             $this->moduleConfigurationMergingService->merge($shopConfiguration, $moduleConfiguration);
         }
 

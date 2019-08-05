@@ -8,7 +8,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Install\Se
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
@@ -71,7 +70,6 @@ class ModuleConfigurationInstallerTest extends TestCase
         $shopConfiguration = $this
             ->projectConfigurationDao
             ->getConfiguration()
-            ->getEnvironmentConfiguration($this->getEnvironment())
             ->getShopConfiguration(1);
 
         $this->assertSame(
@@ -90,7 +88,6 @@ class ModuleConfigurationInstallerTest extends TestCase
         $shopConfiguration = $this
             ->projectConfigurationDao
             ->getConfiguration()
-            ->getEnvironmentConfiguration($this->getEnvironment())
             ->getShopConfiguration(1);
 
         $this->assertSame(
@@ -103,8 +100,7 @@ class ModuleConfigurationInstallerTest extends TestCase
     {
         $environmentConfiguration = $this
             ->projectConfigurationDao
-            ->getConfiguration()
-            ->getEnvironmentConfiguration($this->getEnvironment());
+            ->getConfiguration();
 
         foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
             $this->assertContains(
@@ -128,18 +124,10 @@ class ModuleConfigurationInstallerTest extends TestCase
 
         $shopConfigurationWithoutChain = new ShopConfiguration();
 
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $environmentConfiguration->addShopConfiguration(1, $shopConfigurationWithChain);
-        $environmentConfiguration->addShopConfiguration(2, $shopConfigurationWithoutChain);
-
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration($this->getEnvironment(), $environmentConfiguration);
+        $projectConfiguration->addShopConfiguration(1, $shopConfigurationWithChain);
+        $projectConfiguration->addShopConfiguration(2, $shopConfigurationWithoutChain);
 
         $this->projectConfigurationDao->save($projectConfiguration);
-    }
-
-    private function getEnvironment(): string
-    {
-        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

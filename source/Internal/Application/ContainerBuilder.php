@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Application\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\GraphQlTypePass;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
@@ -52,7 +51,6 @@ class ContainerBuilder
     {
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
-        $symfonyContainer->addCompilerPass(new GraphQlTypePass());
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
         $this->loadServiceFiles($symfonyContainer);
         $this->loadEditionServices($symfonyContainer);

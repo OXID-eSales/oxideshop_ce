@@ -70,7 +70,7 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
         $yamlArray = [];
 
         if (file_exists($path)) {
-            $yamlArray = Yaml::parse(file_get_contents($path)) ?? [];
+            $yamlArray = Yaml::parse(file_get_contents($path), Yaml::PARSE_CUSTOM_TAGS) ?? [];
         }
 
         return new DIConfigWrapper($yamlArray);

@@ -38,7 +38,7 @@ class ModuleConfiguration
     /**
      * @var bool
      */
-    private $autoActive = false;
+    private $configured = false;
 
     /**
      * @var array
@@ -250,18 +250,18 @@ class ModuleConfiguration
     /**
      * @return bool
      */
-    public function isAutoActive(): bool
+    public function isConfigured(): bool
     {
-        return $this->autoActive;
+        return $this->configured;
     }
 
     /**
-     * @param bool $autoActive
+     * @param bool $configured
      * @return ModuleConfiguration
      */
-    public function setAutoActive(bool $autoActive): ModuleConfiguration
+    public function setConfigured(bool $configured): ModuleConfiguration
     {
-        $this->autoActive = $autoActive;
+        $this->configured = $configured;
 
         return $this;
     }
@@ -421,7 +421,7 @@ class ModuleConfiguration
      *
      * @return bool
      */
-    public function extendsShopClass(string $shopClassNamespace): bool
+    public function isExtendingShopClass(string $shopClassNamespace): bool
     {
         foreach ($this->getClassExtensions() as $classExtension) {
             if ($classExtension->getShopClassName() === $shopClassNamespace) {

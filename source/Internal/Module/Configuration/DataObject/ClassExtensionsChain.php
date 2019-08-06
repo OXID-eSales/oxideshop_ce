@@ -92,7 +92,7 @@ class ClassExtensionsChain implements \IteratorAggregate
     public function addExtension(ClassExtension $extension): void
     {
         if (array_key_exists($extension->getShopClassName(), $this->chain)) {
-            if (!$this->isModuleExtensionClassNameExistsInChain($extension)) {
+            if (!$this->isModuleExtensionClassNameInChain($extension)) {
                 array_push(
                     $this->chain[$extension->getShopClassName()],
                     $extension->getModuleExtensionClassName()
@@ -108,7 +108,7 @@ class ClassExtensionsChain implements \IteratorAggregate
      *
      * @return bool
      */
-    private function isModuleExtensionClassNameExistsInChain(ClassExtension $extension): bool
+    private function isModuleExtensionClassNameInChain(ClassExtension $extension): bool
     {
         if (in_array($extension->getModuleExtensionClassName(), $this->chain[$extension->getShopClassName()])) {
             return true;

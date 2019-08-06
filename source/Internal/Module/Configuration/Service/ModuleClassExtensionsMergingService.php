@@ -90,7 +90,7 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
 
         foreach ($existentModuleConfiguration->getClassExtensions() as $existingExtension) {
             foreach ($moduleConfiguration->getClassExtensions() as $newExtension) {
-                if ($this->areExtensionsSame($existingExtension, $newExtension)) {
+                if ($this->areExtensionsEqual($existingExtension, $newExtension)) {
                     $this->replaceExistingExtension($chain, $existingExtension, $newExtension);
                 }
             }
@@ -117,7 +117,7 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
                 $moduleConfiguration->getId()
             );
 
-            if (!$existentModuleConfiguration->extendsShopClass($classExtension->getShopClassName())) {
+            if (!$existentModuleConfiguration->isExtendingShopClass($classExtension->getShopClassName())) {
                 $chain->addExtension($classExtension);
             }
         }
@@ -148,7 +148,7 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
      *
      * @return bool
      */
-    private function areExtensionsSame(ClassExtension $existingExtension, ClassExtension $newExtension): bool
+    private function areExtensionsEqual(ClassExtension $existingExtension, ClassExtension $newExtension): bool
     {
         return $existingExtension->getShopClassName() === $newExtension->getShopClassName()
                && $existingExtension->getModuleExtensionClassName() !==

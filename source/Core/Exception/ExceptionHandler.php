@@ -7,6 +7,8 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Logger\LoggerServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Utility\Context;
 
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)
@@ -76,8 +78,11 @@ class ExceptionHandler
         } catch (\Throwable $loggerException) {
             /**
              * Logger is broken because of exception.
-             * Throw original exception in order to show the root cause of a problem.
+             * Try again to log original exception in order to show the root cause of a problem.
              */
+            $loggerServiceFactory = new LoggerServiceFactory(new Context(Registry::getConfig()));
+            $logger = $loggerServiceFactory->getLogger();
+            $logger->error($this->getFormattedException($exception));
         }
 
         if ($this->_iDebug || defined('OXID_PHP_UNIT')) {

@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
 use PDO;
 use Psr\Log\LogLevel;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -43,7 +44,7 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogFilePath(): string
     {
-        return $this->config->getLogsDir() . 'oxideshop.log';
+        return Path::join($this->config->getLogsDir(), 'oxideshop.log');
     }
 
     /**

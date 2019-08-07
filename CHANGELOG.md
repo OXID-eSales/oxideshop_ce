@@ -72,7 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent`
 - Interface:
     - `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface` as the new default 
-      for hashing passwords.
+      for hashing passwords. See https://docs.oxid-esales.com/developer/en/6.2/project/password_hashing.html
 - Constants
     - `\OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT`
 - Directory

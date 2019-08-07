@@ -82,7 +82,7 @@ class ExceptionHandler
              */
             $loggerServiceFactory = new LoggerServiceFactory(new Context(Registry::getConfig()));
             $logger = $loggerServiceFactory->getLogger();
-            $logger->error($this->getFormattedException($exception));
+            $logger->error($exception);
         }
 
         if ($this->_iDebug || defined('OXID_PHP_UNIT')) {

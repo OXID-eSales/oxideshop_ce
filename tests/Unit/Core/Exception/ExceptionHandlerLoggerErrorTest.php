@@ -101,16 +101,19 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
 
     public function testErrorLoggingOnFailingDIContainer()
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('My test exception');
 
         $exceptionHandler = new ExceptionHandler();
         $exception = new \Exception('My test exception');
-        $exceptionHandler->handleUncaughtException($exception);
-
-        // Check logfile
-        $log = file_get_contents($this->logFileName);
-        $this->assertTrue(strpos($log, 'My test exception') !== false);
+        $exceptionThrown = false;
+        try {
+            $exceptionHandler->handleUncaughtException($exception);
+        } catch (\Throwable $t) {
+            $exceptionThrown = true;
+            $this->assertEquals('My test exception', $t->getMessage());
+            $log = file_get_contents($this->logFileName);
+            $this->assertTrue(strpos($log, 'My test exception') !== false);
+        }
+        $this->assertTrue($exceptionThrown);
     }
 
 }

@@ -117,7 +117,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface` was added as the new default 
   for hashing passwords. Hashing passwords with MD5 and SHA512 is still supported in order support login with 
-  older password hashes.
+  older password hashes. Therefor the methods and classes below might not be compatible with the current passhword hash 
+  any more:
     - `\OxidEsales\EshopCommunity\Application\Model\User::_dbLogin`
     - `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQuery`
     - `\OxidEsales\EshopCommunity\Application\Model\User::_getLoginQueryHashedWithMD5`

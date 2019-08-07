@@ -1242,7 +1242,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool   $isAdmin  admin/non admin mode
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
-     *                                        was added as the new default for hashing passwords.
+     *                                        was added as the new default for hashing passwords. Hashing passwords with
+     *                                        MD5 and SHA512 is still supported in order support login with older
+     *                                        password hashes. Therefor this method might not be
+     *                                        compatible with the current passhword hash any more.
      *
      * @return string
      */
@@ -1276,7 +1279,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool   $isAdmin
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
-     *                                        was added as the new default for hashing passwords.
+     *                                        was added as the new default for hashing passwords. Hashing passwords with
+     *                                        MD5 and SHA512 is still supported in order support login with older
+     *                                        password hashes. Therefor this method might not be
+     *                                        compatible with the current passhword hash any more.
      *
      * @return string
      */
@@ -1963,7 +1969,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sPassword password to encode
      * @param string $sSalt     any unique string value
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
-     *                                        was added as the new default for hashing passwords.
+     *                                        was added as the new default for hashing passwords. Hashing passwords with
+     *                                        MD5 and SHA512 is still supported in order support login with older
+     *                                        password hashes. Therefor this method might not be
+     *                                        compatible with the current passhword hash any more.
      *
 
      *
@@ -2249,8 +2258,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws UserException
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
-     *                                        was added as the new default for hashing passwords.
-     * against the password hash
+     *                                        was added as the new default for hashing passwords. Hashing passwords with
+     *                                        MD5 and SHA512 is still supported in order support login with older
+     *                                        password hashes. Therefor this method might not be
+     *                                        compatible with the current passhword hash any more.
      *
      * @return void
      */
@@ -2561,7 +2572,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string            $shopCondition
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
-     *                                        was added as the new default for hashing passwords.
+     *                                        was added as the new default for hashing passwords. Hashing passwords with
+     *                                        MD5 and SHA512 is still supported in order support login with older
+     *                                        password hashes. Therefor this method might not be
+     *                                        compatible with the current passhword hash any more.
      *
      * @return string
      */
@@ -2582,7 +2596,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param DatabaseInterface $databaseb
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
-     *                                        was added as the new default for hashing passwords.
+     *                                        was added as the new default for hashing passwords. Hashing passwords with
+     *                                        MD5 and SHA512 is still supported in order support login with older
+     *                                        password hashes. Therefor this method might not be
+     *                                        compatible with the current passhword hash any more.
      *
      * @return string
      */

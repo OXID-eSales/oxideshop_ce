@@ -63,14 +63,14 @@ class ActivateConfiguredModulesCommand extends Command
 
     private function activateModulesForOneShop(OutputInterface $output, int $shopId): void
     {
-        $shopConfiguration = $this->shopConfigurationDao->get($shopId, $this->context->getEnvironment());
+        $shopConfiguration = $this->shopConfigurationDao->get($shopId);
 
         $this->activateModulesForShop($output, $shopConfiguration, $shopId);
     }
 
     private function activateModuleForAllShops(OutputInterface $output): void
     {
-        $shopConfigurations = $this->shopConfigurationDao->getAll($this->context->getEnvironment());
+        $shopConfigurations = $this->shopConfigurationDao->getAll();
 
         foreach ($shopConfigurations as $shopId => $shopConfiguration) {
             $this->activateModulesForShop($output, $shopConfiguration, $shopId);

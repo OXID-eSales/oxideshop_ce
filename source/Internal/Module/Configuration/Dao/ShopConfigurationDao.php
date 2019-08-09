@@ -108,8 +108,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     {
         $this->cache->evict($shopId);
 
-        $storage = $this->getDataFromStorage($shopId);
-
+        $storage = $this->getStorage($shopId);
         $storage->save(
             $this->shopConfigurationMapper->toData($shopConfiguration)
         );
@@ -153,7 +152,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      *
      * @return ArrayStorageInterface
      */
-    private function getDataFromStorage(int $shopId): ArrayStorageInterface
+    private function getStorage(int $shopId): ArrayStorageInterface
     {
         return $this->fileStorageFactory->create(
             $this->getShopConfigurationFilePath($shopId)
@@ -171,6 +170,16 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     }
 
     /**
+     * @param int $shopId
+     *
+     * @return string
+     */
+    private function getEnvironmentConfigurationFilePath(int $shopId): string
+    {
+        return $this->getEnvironmentConfigurationDirectory() . $shopId . '.yaml';
+    }
+
+    /**
      * @return string
      */
     private function getShopsConfigurationDirectory(): string
@@ -179,13 +188,11 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    private function hasShops(): bool
+    private function getEnvironmentConfigurationDirectory(): string
     {
-        return $this->fileSystem->exists(
-            $this->getShopsConfigurationDirectory()
-        );
+        return $this->context->getProjectConfigurationDirectory() . '/environment/';
     }
 
     /**
@@ -195,10 +202,13 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private function getConfigurationFromStorage(int $shopId): ShopConfiguration
     {
-        $storage = $this->getDataFromStorage($shopId);
+        $data = array_replace_recursive(
+            $this->getShopConfigurationData($shopId),
+            $this->getEnvironmentShopConfigurationData($shopId)
+        );
 
         $shopConfiguration = $this->shopConfigurationMapper->fromData(
-            $this->node->normalize($storage->get())
+            $this->node->normalize($data)
         );
         return $shopConfiguration;
     }
@@ -209,10 +219,30 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      *
      * @return bool
      */
-    private function isShopIdExists(int $shopId, string $environment): bool
+    private function isShopIdExists(int $shopId): bool
     {
-        $shopIds = $this->getShopIds($environment);
+        return in_array($shopId, $this->getShopIds(), true);
+    }
 
-        return in_array($shopId, $shopIds);
+    /**
+     * @param int $shopId
+     * @return array
+     */
+    private function getShopConfigurationData(int $shopId): array
+    {
+        return $this->getStorage($shopId)->get();
+    }
+
+    /**
+     * @param int $shopId
+     * @return array
+     */
+    private function getEnvironmentShopConfigurationData(int $shopId): array
+    {
+        $storage = $this->fileStorageFactory->create(
+            $this->getEnvironmentConfigurationFilePath($shopId)
+        );
+
+        return $storage->get();
     }
 }

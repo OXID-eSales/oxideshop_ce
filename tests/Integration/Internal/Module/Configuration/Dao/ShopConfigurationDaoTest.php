@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
@@ -128,6 +129,9 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
+    /**
+     * @throws ModuleConfigurationNotFoundException
+     */
     public function testEnvironmentShopConfigurationFileOverwritesShopConfiguration(): void
     {
         $this->prepareTestEnvironmentShopConfigurationFile();
@@ -158,6 +162,38 @@ final class ShopConfigurationDaoTest extends TestCase
                 ->getModuleSetting('settingToOverwrite')
                 ->getValue()
         );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testBadShopConfigurationFile(): void
+    {
+        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
+        $storage = $fileStorageFactory->create(
+            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/shops/1.yaml'
+        );
+        $storage->save(["test"=>"test"]);
+
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->get(1);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testBadEnvironmentConfigurationFile(): void
+    {
+        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
+        $storage = $fileStorageFactory->create(
+            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/environment/1.yaml'
+        );
+        $storage->save(["test"=>"test"]);
+
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
+
+        $shopConfigurationDao->get(1);
     }
 
     private function prepareTestEnvironmentShopConfigurationFile(): void

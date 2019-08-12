@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ShopConfigurat
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ShopConfigurationNotFoundException;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -184,7 +185,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private function getShopsConfigurationDirectory(): string
     {
-        return $this->context->getProjectConfigurationDirectory() . '/shops/';
+        return $this->context->getProjectConfigurationDirectory() . 'shops/';
     }
 
     /**
@@ -192,30 +193,34 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private function getEnvironmentConfigurationDirectory(): string
     {
-        return $this->context->getProjectConfigurationDirectory() . '/environment/';
+        return $this->context->getProjectConfigurationDirectory() . 'environment/';
     }
 
     /**
      * @param int $shopId
      *
      * @return ShopConfiguration
+     * @throws \Exception
      */
     private function getConfigurationFromStorage(int $shopId): ShopConfiguration
     {
-        $data = array_replace_recursive(
+        $data = $this->mergeShopConfigurationDataWithEnvironmentData(
             $this->getShopConfigurationData($shopId),
             $this->getEnvironmentShopConfigurationData($shopId)
         );
 
-        $shopConfiguration = $this->shopConfigurationMapper->fromData(
-            $this->node->normalize($data)
-        );
-        return $shopConfiguration;
+        return $this->shopConfigurationMapper->fromData($data);
+    }
+
+    private function mergeShopConfigurationDataWithEnvironmentData(
+        array $shopConfigurationData,
+        array $environmentShopConfigurationData
+    ): array {
+        return array_replace_recursive($shopConfigurationData, $environmentShopConfigurationData);
     }
 
     /**
-     * @param int    $shopId
-     * @param string $environment
+     * @param int $shopId
      *
      * @return bool
      */
@@ -226,16 +231,29 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
 
     /**
      * @param int $shopId
+     *
      * @return array
+     * @throws \Exception
      */
     private function getShopConfigurationData(int $shopId): array
     {
-        return $this->getStorage($shopId)->get();
+        try {
+            $data = $this->node->normalize($this->getStorage($shopId)->get());
+        } catch (InvalidConfigurationException $exception) {
+            throw new InvalidConfigurationException(
+                'File ' . $this->getShopConfigurationFilePath($shopId) . ' is broken: ' . $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
+        }
+        return $data;
     }
 
     /**
      * @param int $shopId
+     *
      * @return array
+     * @throws \Exception
      */
     private function getEnvironmentShopConfigurationData(int $shopId): array
     {
@@ -243,6 +261,16 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
             $this->getEnvironmentConfigurationFilePath($shopId)
         );
 
-        return $storage->get();
+        try {
+            $data = $this->node->normalize($storage->get());
+        } catch (InvalidConfigurationException $exception) {
+            throw new InvalidConfigurationException(
+                'File ' .
+                $this->getEnvironmentConfigurationFilePath($shopId) .
+                ' is broken: ' . $exception->getMessage()
+            );
+        }
+
+        return $data;
     }
 }

@@ -72,6 +72,7 @@ class BasicContext implements BasicContextInterface
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function getEdition(): string
     {
@@ -144,7 +145,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getProjectConfigurationDirectory(): string
     {
-        return $this->getConfigurationDirectoryPath() . 'project_configuration/';
+        return $this->getConfigurationDirectoryPath();
     }
 
     /**

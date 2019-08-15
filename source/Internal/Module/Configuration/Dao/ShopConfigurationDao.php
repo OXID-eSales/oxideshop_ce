@@ -137,11 +137,13 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     {
         $shopIds = [];
 
-        $dir = new \DirectoryIterator($this->getShopsConfigurationDirectory());
+        if (file_exists($this->getShopsConfigurationDirectory())) {
+            $dir = new \DirectoryIterator($this->getShopsConfigurationDirectory());
 
-        foreach ($dir as $fileInfo) {
-            if ($fileInfo->isFile()) {
-                $shopIds[] = (int)$fileInfo->getFilename();
+            foreach ($dir as $fileInfo) {
+                if ($fileInfo->isFile()) {
+                    $shopIds[] = (int)$fileInfo->getFilename();
+                }
             }
         }
 
@@ -272,5 +274,17 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         }
 
         return $data;
+    }
+
+    /**
+     * delete all shops configuration
+     */
+    public function deleteAll(): void
+    {
+        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
+            $this->fileSystem->remove(
+                $this->getShopsConfigurationDirectory()
+            );
+        }
     }
 }

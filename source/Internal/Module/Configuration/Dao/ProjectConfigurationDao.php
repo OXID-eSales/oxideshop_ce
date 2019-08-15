@@ -65,7 +65,7 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
      */
     public function save(ProjectConfiguration $configuration)
     {
-        $this->deleteProjectConfiguration();
+        $this->shopConfigurationDao->deleteAll();
 
         foreach ($configuration->getShopConfigurations() as $shopId => $shopConfiguration) {
             $this->shopConfigurationDao->save($shopConfiguration, $shopId);
@@ -95,13 +95,6 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
         }
 
         return $projectConfiguration;
-    }
-
-    private function deleteProjectConfiguration(): void
-    {
-        $this->fileSystem->remove(
-            $this->context->getProjectConfigurationDirectory()
-        );
     }
 
     private function projectConfigurationDirectoryExists(): bool

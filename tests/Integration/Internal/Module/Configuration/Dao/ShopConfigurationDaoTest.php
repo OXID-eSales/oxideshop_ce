@@ -215,4 +215,22 @@ final class ShopConfigurationDaoTest extends TestCase
             ]
         ]);
     }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ShopConfigurationNotFoundException
+     */
+    public function testDeleteAll(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
+        $shopConfigurationDao->save(new ShopConfiguration(), 2);
+        $shopConfigurationDao->save(new ShopConfiguration(), 3);
+
+        $shopConfigurationDao->deleteAll();
+
+        $this->assertEquals(
+            [],
+            $shopConfigurationDao->get(1)
+        );
+    }
 }

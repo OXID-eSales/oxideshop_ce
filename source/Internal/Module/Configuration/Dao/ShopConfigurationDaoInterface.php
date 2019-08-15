@@ -31,4 +31,9 @@ interface ShopConfigurationDaoInterface
      * @return ShopConfiguration[]
      */
     public function getAll(): array;
+
+    /**
+     * delete all shop configurations
+     */
+    public function deleteAll(): void;
 }

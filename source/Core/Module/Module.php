@@ -35,6 +35,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getMetaDataVersion()
     {
+        if ($this->metaDataVersion === null) {
+            $metadataPath = $this->getModuleFullPath($this->getId()) . '/metadata.php';
+            $this->includeModuleMetaData($metadataPath);
+        }
+
         return $this->metaDataVersion;
     }
 
@@ -101,18 +106,13 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
             $container = ContainerFactory::getInstance()->getContainer();
             $moduleConfiguration = $container->get(ModuleConfigurationDaoBridgeInterface::class)->get($moduleId);
-            $sMetadataPath = $this->getModuleFullPath($moduleId) . "/metadata.php";
 
-            if (is_readable($sMetadataPath) && $moduleConfiguration) {
-                $this->_aModule = $this->convertModuleConfigurationToArray($moduleConfiguration);
-                $this->includeModuleMetaData($sMetadataPath);
+            $this->_aModule = $this->convertModuleConfigurationToArray($moduleConfiguration);
+            $this->_blRegistered = true;
+            $this->_blMetadata = true;
+            $this->_aModule['active'] = $this->isActive();
 
-                $this->_blRegistered = true;
-                $this->_blMetadata = true;
-                $this->_aModule['active'] = $this->isActive();
-
-                return true;
-            }
+            return true;
         } catch (ModuleConfigurationNotFoundException $e) {
             return false;
         }

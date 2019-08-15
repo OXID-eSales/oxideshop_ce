@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use stdClass;
 use oxOnlineModulesNotifierRequest;
 
@@ -61,24 +62,30 @@ class OnlineModuleVersionNotifier
      */
     protected function _prepareModulesInformation()
     {
-        $aPreparedModules = [];
-        $aModules = $this->_getModules();
-        foreach ($aModules as $oModule) {
+        $preparedModules = [];
+
+        $container = ContainerFactory::getInstance()->getContainer();
+        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
+        $moduleActivationBridge = $container->get(ModuleActivationBridgeInterface::class);
+
+        foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
             /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
 
-            $oPreparedModule = new stdClass();
-            $oPreparedModule->id = $oModule->getId();
-            $oPreparedModule->version = $oModule->getInfo('version');
+            $preparedModule = new stdClass();
+            $preparedModule->id = $moduleConfiguration->getId();
+            $preparedModule->version = $moduleConfiguration->getVersion();
 
-            $oPreparedModule->activeInShops = new stdClass();
-            $oPreparedModule->activeInShops->activeInShop = [];
-            if ($oModule->isActive()) {
-                $oPreparedModule->activeInShops->activeInShop[] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
+            $preparedModule->activeInShops = new stdClass();
+            $preparedModule->activeInShops->activeInShop = [];
+            if ($moduleActivationBridge->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {
+                $preparedModule
+                    ->activeInShops
+                    ->activeInShop[] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
             }
-            $aPreparedModules[] = $oPreparedModule;
+            $preparedModules[] = $preparedModule;
         }
 
-        return $aPreparedModules;
+        return $preparedModules;
     }
 
     /**
@@ -107,22 +114,13 @@ class OnlineModuleVersionNotifier
     }
 
     /**
+     * @deprecated since v6.4.0 (09-08-2019). Use ShopConfigurationDaoBridgeInterface
+     *
      * Returns shops array of modules.
      *
      * @return array
      */
     protected function _getModules()
-    {
-        $aModules = $this->getInstalledModules();
-        ksort($aModules);
-
-        return $aModules;
-    }
-
-    /**
-     * @return array
-     */
-    private function getInstalledModules(): array
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
@@ -134,6 +132,8 @@ class OnlineModuleVersionNotifier
             $module->load($moduleConfiguration->getId());
             $modules[$moduleConfiguration->getId()] = $module;
         }
+
+        ksort($modules);
 
         return $modules;
     }

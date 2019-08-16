@@ -1,4 +1,7 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
 
   Doctrine\DBAL\Connection:
     factory: ['OxidEsales\EshopCommunity\Internal\Common\Factory\ConnectionFactory', get]

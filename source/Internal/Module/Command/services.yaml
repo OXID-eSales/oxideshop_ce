@@ -1,4 +1,8 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
+
   oxid_esales.command.module_activate_command:
     class: OxidEsales\EshopCommunity\Internal\Module\Command\ModuleActivateCommand
     public: false

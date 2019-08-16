@@ -1,4 +1,8 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
+
   OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge
     public: true

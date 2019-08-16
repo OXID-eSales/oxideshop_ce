@@ -1,4 +1,8 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
+
   oxid_esales.review.product_rating_mapper:
     class: OxidEsales\EshopCommunity\Internal\Review\DataMapper\ProductRatingDataMapper
     public: false

@@ -1,7 +1,12 @@
 services:
+  _defaults:
+    autowire: true
+    public: false
+
   OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstaller
     autowire: true
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleFilesInstaller
@@ -18,3 +23,4 @@ services:
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface'
     autowire: true
+    public: true

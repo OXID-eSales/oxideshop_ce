@@ -568,17 +568,19 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-     * not registered user makes order. later someone else registers with same email.
-     * already creted order is edited (added some products). #1696
+     * Not registered user makes order. Later someone else registers with same email.
+     * Already created order is edited (added some products). #1696
      *
      * @group adminFunctionality
+     * @group flow-theme
      */
     public function testEditingNotRegisteredUserOrder()
     {
+        $this->activateTheme('flow');
         //not registered user creates the order
         $this->addToBasket("1001");
 
-        $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
+        $this->clickAndWait("//button[contains(text(), '%CONTINUE_TO_NEXT_STEP%')]");
         $this->clickAndWait("//div[@id='optionNoRegistration']//button");
 
         $this->type("userLoginName", "example01@oxid-esales.dev");
@@ -593,10 +595,10 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->type("orderRemark", "remark text");
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         $this->click("payment_oxidcashondel");
-        $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
+        $this->clickAndWait("//button[contains(text(), '%CONTINUE_TO_NEXT_STEP%')]");
         $this->assertTextPresent("%WHAT_I_WANTED_TO_SAY% remark text");
-        $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
-        $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
+        $this->click("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
+        $this->clickAndWait("//form[@id='orderConfirmAgbBottom']//button");
 
         //someone creates acc with same info and email
         $this->clearCache();

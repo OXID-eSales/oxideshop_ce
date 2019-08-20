@@ -354,18 +354,24 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         //selecting category
         $sQ = "select $sCatView.oxleft, $sCatView.oxright, $sCatView.oxrootid from $sO2CView as oxobject2category left join $sCatView on $sCatView.oxid = oxobject2category.oxcatnid ";
-        $sQ .= "where oxobject2category.oxobjectid=" . $oDB->quote($oArticle->getId()) . " and $sCatView.oxactive = 1 order by oxobject2category.oxtime ";
+        $sQ .= "where oxobject2category.oxobjectid = :oxobjectid and $sCatView.oxactive = 1 order by oxobject2category.oxtime ";
 
-        $oRs = $oDB->select($sQ);
+        $oRs = $oDB->select($sQ, [
+            ':oxobjectid' => $oArticle->getId()
+        ]);
         if ($oRs != false && $oRs->count() > 0) {
             $sLeft = $oRs->fields[0];
             $sRight = $oRs->fields[1];
             $sRootId = $oRs->fields[2];
 
             //selecting all parent category titles
-            $sQ = "select oxtitle from $sCatView where oxright >= {$sRight} and oxleft <= {$sLeft} and oxrootid = '{$sRootId}' order by oxleft ";
+            $sQ = "select oxtitle from $sCatView where oxright >= :oxright and oxleft <= :oxleft and oxrootid = :oxrootid order by oxleft ";
 
-            $oRs = $oDB->select($sQ);
+            $oRs = $oDB->select($sQ, [
+                ':oxright' => $sRight,
+                ':oxleft' => $sLeft,
+                ':oxrootid' => $sRootId
+            ]);
             if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     if ($sCatStr) {
@@ -397,9 +403,11 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         //selecting category
         $sQ = "select $sCatView.oxtitle from $sO2CView as oxobject2category left join $sCatView on $sCatView.oxid = oxobject2category.oxcatnid ";
-        $sQ .= "where oxobject2category.oxobjectid=" . $oDB->quote($oArticle->getId()) . " and $sCatView.oxactive = 1 order by oxobject2category.oxtime ";
+        $sQ .= "where oxobject2category.oxobjectid = :oxobjectid and $sCatView.oxactive = 1 order by oxobject2category.oxtime ";
 
-        return $oDB->getOne($sQ);
+        return $oDB->getOne($sQ, [
+            ':oxobjectid' => $oArticle->getId()
+        ]);
     }
 
     /**
@@ -783,11 +791,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
                     // now load each tree
                     $sSQL = "SELECT s.oxid, s.oxtitle,
                              s.oxparentid, count( * ) AS LEVEL FROM $sCatView v,
-                             $sCatView s WHERE s.oxrootid = '" . $oRs->fields[0] . "' and
-                             v.oxrootid='" . $oRs->fields[0] . "' and s.oxleft BETWEEN
+                             $sCatView s WHERE s.oxrootid = :oxrootid and
+                             v.oxrootid = :oxrootid and s.oxleft BETWEEN
                              v.oxleft AND v.oxright AND s.oxhidden = '0' GROUP BY s.oxleft order by level";
 
-                    $oRs2 = $oDb->select($sSQL);
+                    $oRs2 = $oDb->select($sSQL, [
+                        ':oxrootid' => $oRs->fields[0]
+                    ]);
                     if ($oRs2 != false && $oRs2->count() > 0) {
                         while (!$oRs2->EOF) {
                             // store it

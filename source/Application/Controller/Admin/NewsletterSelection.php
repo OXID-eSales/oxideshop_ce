@@ -90,14 +90,16 @@ class NewsletterSelection extends \OxidEsales\Eshop\Application\Controller\Admin
                 $sShopId = $this->getConfig()->getShopID();
                 $sQ = "select count(*) from ( select oxnewssubscribed.oxemail as _icnt from oxnewssubscribed left join
                    oxobject2group on oxobject2group.oxobjectid = oxnewssubscribed.oxuserid
-                   where ( oxobject2group.oxshopid = '{$sShopId}'
+                   where ( oxobject2group.oxshopid = :oxshopid
                    or oxobject2group.oxshopid is null ) and {$sSelectGroups} and
                    oxnewssubscribed.oxdboptin = 1 and ( not ( oxnewssubscribed.oxemailfailed = '1') )
-                   and (not(oxnewssubscribed.oxemailfailed = '1')) and oxnewssubscribed.oxshopid = '{$sShopId}'
+                   and (not(oxnewssubscribed.oxemailfailed = '1')) and oxnewssubscribed.oxshopid = :oxshopid
                    group by oxnewssubscribed.oxemail ) as _tmp";
 
                 // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                $this->_iUserCount = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
+                $this->_iUserCount = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
+                    ':oxshopid' => $sShopId
+                ]);
             }
         }
 

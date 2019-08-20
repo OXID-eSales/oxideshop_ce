@@ -50,11 +50,14 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         $sSynchArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
 
         $sOxid = ($sArtId) ? $sArtId : $sSynchArtId;
-        $sQ = "select oxparentid from {$sArtViewName} where oxid = " . $oDb->quote($sOxid) . " and oxparentid != '' ";
+        $sQ = "select oxparentid from {$sArtViewName} where oxid = :oxid and oxparentid != '' ";
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
-               "where oxobjectid = " . $oDb->quote($sOxid) . ") = 0";
+               "where oxobjectid = :oxobjectid) = 0";
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
-        $sParentId = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
+        $sParentId = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
+            ':oxid' => $sOxid,
+            ':oxobjectid' => $sOxid
+        ]);
 
         // all selectlists article is in
         $sQAdd = " from oxobject2selectlist left join {$sSLViewName} " .
@@ -121,9 +124,11 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                 $oNew->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($soxId);
                 $oNew->$sSelectetionIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
 
-                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  {$database->quote($soxId)} ";
+                $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid = :oxobjectid";
 
-                $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
+                $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql, [
+                    ':oxobjectid' => $soxId
+                ]));
                 $oNew->save();
             }
 

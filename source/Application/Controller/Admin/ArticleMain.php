@@ -235,8 +235,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _resetCategoriesCounter($sArticleId)
     {
         $oDb = DatabaseProvider::getDb();
-        $sQ = "select oxcatnid from oxobject2category where oxobjectid = " . $oDb->quote($sArticleId);
-        $oRs = $oDb->select($sQ);
+        $sQ = "select oxcatnid from oxobject2category where oxobjectid = :oxobjectid";
+        $oRs = $oDb->select($sQ, [
+            ':oxobjectid' => $sArticleId
+        ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $this->resetCounter("catArticle", $oRs->fields[0]);
@@ -333,8 +335,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oDb = DatabaseProvider::getDb();
 
             //copy variants
-            $sQ = "select oxid from oxarticles where oxparentid = " . $oDb->quote($sOldId);
-            $oRs = $oDb->select($sQ);
+            $sQ = "select oxid from oxarticles where oxparentid = :oxparentid";
+            $oRs = $oDb->select($sQ, [
+                ':oxparentid' => $sOldId
+            ]);
             if ($oRs !== false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $this->copyArticle($oRs->fields[0], $myUtilsObject->generateUid(), $sNewId);
@@ -376,8 +380,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oDb = DatabaseProvider::getDb();
 
         $sO2CView = getViewName('oxobject2category');
-        $sQ = "select oxcatnid, oxtime from {$sO2CView} where oxobjectid = " . $oDb->quote($sOldId);
-        $oRs = $oDb->select($sQ);
+        $sQ = "select oxcatnid, oxtime from {$sO2CView} where oxobjectid = :oxobjectid";
+        $oRs = $oDb->select($sQ, [
+            ':oxobjectid' => $sOldId
+        ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $uniqueId = $myUtilsObject->generateUid();
@@ -401,8 +407,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
 
-        $sQ = "select oxid from oxobject2attribute where oxobjectid = " . $oDb->quote($sOldId);
-        $oRs = $oDb->select($sQ);
+        $sQ = "select oxid from oxobject2attribute where oxobjectid = :oxobjectid";
+        $oRs = $oDb->select($sQ, [
+            ':oxobjectid' => $sOldId
+        ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 // #1055A
@@ -428,8 +436,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = " . $oDb->quote($sOldId);
-        $oRs = $oDb->select($sQ);
+        $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = :oxartid";
+        $oRs = $oDb->select($sQ, [
+            ':oxartid' => $sOldId
+        ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $oFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
@@ -456,8 +466,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
 
-        $sQ = "select oxselnid from oxobject2selectlist where oxobjectid = " . $oDb->quote($sOldId);
-        $oRs = $oDb->select($sQ);
+        $sQ = "select oxselnid from oxobject2selectlist where oxobjectid = :oxobjectid";
+        $oRs = $oDb->select($sQ, [
+            ':oxobjectid' => $sOldId
+        ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $sUid = $myUtilsObject->generateUID();
@@ -481,8 +493,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
 
-        $sQ = "select oxobjectid from oxobject2article where oxarticlenid = " . $oDb->quote($sOldId);
-        $oRs = $oDb->select($sQ);
+        $sQ = "select oxobjectid from oxobject2article where oxarticlenid = :oxarticlenid";
+        $oRs = $oDb->select($sQ, [
+            ':oxarticlenid' => $sOldId
+        ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $sUid = $myUtilsObject->generateUID();
@@ -506,8 +520,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
 
-        $sQ = "select oxobjectid from oxaccessoire2article where oxarticlenid= " . $oDb->quote($sOldId);
-        $oRs = $oDb->select($sQ);
+        $sQ = "select oxobjectid from oxaccessoire2article where oxarticlenid = :oxarticlenid";
+        $oRs = $oDb->select($sQ, [
+            ':oxarticlenid' => $sOldId
+        ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $sUId = $myUtilsObject->generateUid();
@@ -531,9 +547,12 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $sShopId = $this->getConfig()->getShopId();
         $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oPriceList->init("oxbase", "oxprice2article");
-        $sQ = "select * from oxprice2article where oxartid = '{$sOldId}' and oxshopid = '{$sShopId}' " .
+        $sQ = "select * from oxprice2article where oxartid = :oxartid and oxshopid = :oxshopid " .
               "and (oxamount > 0 or oxamountto > 0) order by oxamount ";
-        $oPriceList->selectString($sQ);
+        $oPriceList->selectString($sQ, [
+            ':oxartid' => $sOldId,
+            ':oxshopid' => $sShopId
+        ]);
         if ($oPriceList->count()) {
             foreach ($oPriceList as $oItem) {
                 $oItem->oxprice2article__oxid->setValue($oItem->setId());

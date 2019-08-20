@@ -49,8 +49,9 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
              FROM {$sTable} 
              WHERE OXACTIVE = 1 AND OXTYPE = 0
                 AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
-                AND OXSHOPID = " . DatabaseProvider::getDb()->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . "
-             ORDER BY OXLOADID ASC"
+                AND OXSHOPID = :OXSHOPID
+             ORDER BY OXLOADID ASC",
+            [':OXSHOPID' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")]
         );
 
         return $oContentList;

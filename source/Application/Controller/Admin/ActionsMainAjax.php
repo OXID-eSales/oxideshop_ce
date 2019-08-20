@@ -181,11 +181,16 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $sArtTable = $this->_getViewName('oxarticles');
         $sQ = "select max(oxactions2article.oxsort) from oxactions2article join {$sArtTable} " .
               "on {$sArtTable}.oxid=oxactions2article.oxartid " .
-              "where oxactions2article.oxactionid = " . $database->quote($soxId) .
-              " and oxactions2article.oxshopid = '" . $myConfig->getShopId() .
-              "'and $sArtTable.oxid is not null";
+              "where oxactions2article.oxactionid = :oxactionid " .
+              "and oxactions2article.oxshopid = :oxshopid " .
+              "and $sArtTable.oxid is not null";
 
-        $iSort = ((int) $database->getOne($sQ)) + 1;
+        $parameters = [
+            ':oxactionid' => $soxId,
+            ':oxshopid' => $myConfig->getShopId()
+        ];
+
+        $iSort = ((int) $database->getOne($sQ, $parameters)) + 1;
 
         $articleAdded = false;
         if ($soxId && $soxId != "-1" && is_array($aArticles)) {
@@ -214,12 +219,15 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $sArtTable = $this->_getViewName('oxarticles');
         $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSelect = "select * from $sArtTable left join oxactions2article on $sArtTable.oxid=oxactions2article.oxartid ";
-        $sSelect .= "where oxactions2article.oxactionid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sSelId) .
-                    " and oxactions2article.oxshopid = '" . $myConfig->getShopID() . "' " . $this->_getSorting();
+        $sSelect .= "where oxactions2article.oxactionid = :oxactionid " .
+                    "and oxactions2article.oxshopid = :oxshopid " . $this->_getSorting();
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxactions2article");
-        $oList->selectString($sSelect);
+        $oList->selectString($sSelect, [
+            ':oxactionid' => $sSelId,
+            ':oxshopid' => $myConfig->getShopID()
+        ]);
 
         // fixing indexes
         $iSelCnt = 0;

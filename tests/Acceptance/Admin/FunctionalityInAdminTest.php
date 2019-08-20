@@ -43,6 +43,11 @@ class FunctionalityInAdminTest extends AdminTestCase
         unset($this->errorsInPage["ERROR: Tran"]);
     }
 
+    private function revertSkippedTranslationCheck(): void
+    {
+        $this->errorsInPage['ERROR: Tran'] = 'Missing translation for constant (ERROR: Translation for...)';
+    }
+
     /**
      * Testing downloadable product in admin ant frontend
      *
@@ -906,6 +911,8 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("1 Hits for [LT] \"1001\"", $this->getHeadingText("//h1"));
         $this->clickAndWait("searchList_1");
         $this->assertEquals("Item #: 1001", $this->getText("productArtnum"));
+
+        $this->revertSkippedTranslationCheck();
     }
 
     /**

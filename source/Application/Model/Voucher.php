@@ -286,14 +286,18 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             if (!$oSeries->oxvoucherseries__oxallowotherseries->value) {
                 // just search for vouchers with different series
                 $sSql = "select 1 from oxvouchers where oxvouchers.oxid in ($sIds) and ";
-                $sSql .= "oxvouchers.oxvoucherserieid != " . $oDb->quote($this->oxvouchers__oxvoucherserieid->value);
-                $blAvailable &= !$oDb->getOne($sSql);
+                $sSql .= "oxvouchers.oxvoucherserieid != :notoxvoucherserieid";
+                $blAvailable &= !$oDb->getOne($sSql, [
+                    ':notoxvoucherserieid' => $this->oxvouchers__oxvoucherserieid->value
+                ]);
             } else {
                 // search for vouchers with different series and those vouchers do not allow other series
                 $sSql = "select 1 from oxvouchers left join oxvoucherseries on oxvouchers.oxvoucherserieid=oxvoucherseries.oxid ";
-                $sSql .= "where oxvouchers.oxid in ($sIds) and oxvouchers.oxvoucherserieid != " . $oDb->quote($this->oxvouchers__oxvoucherserieid->value);
+                $sSql .= "where oxvouchers.oxid in ($sIds) and oxvouchers.oxvoucherserieid != :notoxvoucherserieid ";
                 $sSql .= "and not oxvoucherseries.oxallowotherseries";
-                $blAvailable &= !$oDb->getOne($sSql);
+                $blAvailable &= !$oDb->getOne($sSql, [
+                    ':notoxvoucherserieid' => $this->oxvouchers__oxvoucherserieid->value
+                ]);
             }
             if (!$blAvailable) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
@@ -395,11 +399,17 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oSeries = $this->getSerie();
         if (!$oSeries->oxvoucherseries__oxallowuseanother->value) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sSelect = 'select count(*) from ' . $this->getViewName() . ' where oxuserid = ' . $oDb->quote($oUser->oxuser__oxid->value) . ' and ';
-            $sSelect .= 'oxvoucherserieid = ' . $oDb->quote($this->oxvouchers__oxvoucherserieid->value) . ' and ';
+            $sSelect = 'select count(*) from ' . $this->getViewName() . ' 
+                where oxuserid = :oxuserid and ';
+            $sSelect .= 'oxvoucherserieid = :oxvoucherserieid and ';
             $sSelect .= '((oxorderid is not NULL and oxorderid != "") or (oxdateused is not NULL and oxdateused != 0)) ';
 
-            if ($oDb->getOne($sSelect)) {
+            $params = [
+                ':oxuserid' => $oUser->oxuser__oxid->value,
+                ':oxvoucherserieid' => $this->oxvouchers__oxvoucherserieid->value
+            ];
+
+            if ($oDb->getOne($sSelect, $params)) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
                 $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES');
                 $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
@@ -491,8 +501,12 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oSeries = $this->getSerie();
-        $sSelect = "select 1 from oxobject2discount where oxdiscountid = " . $oDb->quote($oSeries->getId()) . " and oxtype = 'oxarticles'";
-        $blOk = ( bool ) $oDb->getOne($sSelect);
+        $sSelect = "select 1 from oxobject2discount 
+            where oxdiscountid = :oxdiscountid and oxtype = :oxtype";
+        $blOk = ( bool ) $oDb->getOne($sSelect, [
+            ':oxdiscountid' => $oSeries->getId(),
+            ':oxtype' => 'oxarticles'
+        ]);
 
         return $blOk;
     }
@@ -506,8 +520,12 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oSeries = $this->getSerie();
-        $sSelect = "select 1 from oxobject2discount where oxdiscountid = " . $oDb->quote($oSeries->getId()) . " and oxtype = 'oxcategories'";
-        $blOk = ( bool ) $oDb->getOne($sSelect);
+        $sSelect = "select 1 from oxobject2discount 
+            where oxdiscountid = :oxdiscountid and oxtype = :oxtype";
+        $blOk = ( bool ) $oDb->getOne($sSelect, [
+            ':oxdiscountid' => $oSeries->getId(),
+            ':oxtype' => 'oxcategories'
+        ]);
 
         return $blOk;
     }

@@ -40,11 +40,14 @@ class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getIdByCode($sCode, $sCountryId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $params = [
+            ':oxisoalpha2' => $sCode,
+            ':oxcountryid' => $sCountryId
+        ];
 
-        return $oDb->getOne(
-            "SELECT oxid FROM oxstates WHERE oxisoalpha2 = " . $oDb->quote($sCode) .
-            " AND oxcountryid = " . $oDb->quote($sCountryId)
-        );
+        return $oDb->getOne("SELECT oxid FROM oxstates 
+            WHERE oxisoalpha2 = :oxisoalpha2 
+              AND oxcountryid = :oxcountryid", $params);
     }
 
     /**
@@ -57,8 +60,12 @@ class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getTitleById($iStateId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "SELECT oxtitle FROM " . getViewName("oxstates") . " WHERE oxid = " . $oDb->quote($iStateId);
-        $sStateTitle = $oDb->getOne($sQ);
+        $sQ = "SELECT oxtitle FROM " . getViewName("oxstates") . " 
+            WHERE oxid = :oxid";
+
+        $sStateTitle = $oDb->getOne($sQ, [
+            ':oxid' => $iStateId
+        ]);
 
         return (string) $sStateTitle;
     }

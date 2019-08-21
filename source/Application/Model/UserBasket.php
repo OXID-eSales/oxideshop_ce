@@ -153,17 +153,20 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sViewName = $oArticle->getViewName();
 
-        $sSelect = "select oxuserbasketitems.* from oxuserbasketitems left join $sViewName on oxuserbasketitems.oxartid = $sViewName.oxid ";
+        $sSelect = "select oxuserbasketitems.* from oxuserbasketitems 
+            left join $sViewName on oxuserbasketitems.oxartid = $sViewName.oxid ";
         if ($blActiveCheck) {
             $sSelect .= 'and ' . $oArticle->getSqlActiveSnippet() . ' ';
         }
-        $sSelect .= "where oxuserbasketitems.oxbasketid = '" . $this->getId() . "' and $sViewName.oxid is not null ";
+        $sSelect .= "where oxuserbasketitems.oxbasketid = :oxbasketid and $sViewName.oxid is not null ";
 
         $sSelect .= " order by oxartnum, oxsellist, oxpersparam ";
 
         $oItems = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oItems->init('oxuserbasketitem');
-        $oItems->selectstring($sSelect);
+        $oItems->selectstring($sSelect, [
+            ':oxbasketid' => $this->getId()
+        ]);
 
         foreach ($oItems as $oItem) {
             $sKey = $this->_getItemKey($oItem->oxuserbasketitems__oxartid->value, $oItem->getSelList(), $oItem->getPersParams());

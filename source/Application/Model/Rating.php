@@ -56,8 +56,17 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
             $oDb->execute("delete from oxratings where oxtimestamp < '$sExpDate'");
         }
-        $sSelect = "select oxid from oxratings where oxuserid = " . $oDb->quote($sUserId) . " and oxtype=" . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId);
-        if ($oDb->getOne($sSelect)) {
+        $sSelect = "select oxid from oxratings 
+            where oxuserid = :oxuserid 
+                and oxtype = :oxtype 
+                and oxobjectid = :oxobjectid";
+        $params = [
+            ':oxuserid' => $sUserId,
+            ':oxtype' => $sType,
+            ':oxobjectid' => $sObjectId
+        ];
+
+        if ($oDb->getOne($sSelect, $params)) {
             return false;
         }
 
@@ -76,11 +85,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getRatingAverage($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
-        $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
+        $sQuerySnipet = " AND `oxobjectid` = :oxobjectid";
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
-            $sQuerySnipet = " AND ( `oxobjectid` = " . $oDb->quote($sObjectId) . " OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
+            $sQuerySnipet = " AND ( `oxobjectid` = :oxobjectid OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
         }
 
         $sSelect = "
@@ -88,12 +95,17 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
                 AVG(`oxrating`)
             FROM `oxreviews`
             WHERE `oxrating` > 0
-                 AND `oxtype` = " . $oDb->quote($sType)
+                 AND `oxtype` = :oxtype"
                    . $sQuerySnipet . "
             LIMIT 1";
 
+        $params = [
+            ':oxobjectid' => $sObjectId,
+            ':oxtype' => $sType
+        ];
+
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        if ($fRating = $database->getOne($sSelect)) {
+        if ($fRating = $database->getOne($sSelect, $params)) {
             $fRating = round($fRating, 1);
         }
 
@@ -111,11 +123,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getRatingCount($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
-        $sQuerySnipet = " AND `oxobjectid` = " . $oDb->quote($sObjectId);
+        $sQuerySnipet = " AND `oxobjectid` = :oxobjectid";
         if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
-            $sQuerySnipet = " AND ( `oxobjectid` = " . $oDb->quote($sObjectId) . " OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
+            $sQuerySnipet = " AND ( `oxobjectid` = :oxobjectid OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
         }
 
         $sSelect = "
@@ -123,13 +133,16 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
                 COUNT(*)
             FROM `oxreviews`
             WHERE `oxrating` > 0
-                AND `oxtype` = " . $oDb->quote($sType)
+                AND `oxtype` = :oxtype"
                    . $sQuerySnipet . "
             LIMIT 1";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $iCount = $masterDb->getOne($sSelect);
+        $iCount = $masterDb->getOne($sSelect, [
+            ':oxobjectid' => $sObjectId,
+            ':oxtype' => $sType
+        ]);
 
         return $iCount;
     }

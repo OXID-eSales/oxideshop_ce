@@ -146,8 +146,12 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if (is_null($this->_aArtIds)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=" . $oDb->quote($this->getId()) . " and oxtype = 'oxarticles'";
-            $aArtIds = $oDb->getCol($sQ);
+            $sQ = "select oxobjectid from oxobject2delivery 
+                where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
+            $aArtIds = $oDb->getCol($sQ, [
+                ':oxdeliveryid' => $this->getId(),
+                ':oxtype' => 'oxarticles'
+            ]);
             $this->_aArtIds = $aArtIds;
         }
 
@@ -163,8 +167,12 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if (is_null($this->_aCatIds)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=" . $oDb->quote($this->getId()) . " and oxtype = 'oxcategories'";
-            $aCatIds = $oDb->getCol($sQ);
+            $sQ = "select oxobjectid from oxobject2delivery 
+                where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
+            $aCatIds = $oDb->getCol($sQ, [
+                ':oxdeliveryid' => $this->getId(),
+                ':oxtype' => 'oxcategories'
+            ]);
             $this->_aCatIds = $aCatIds;
         }
 
@@ -472,8 +480,11 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getIdByName($sTitle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "SELECT `oxid` FROM `" . getViewName('oxdelivery') . "` WHERE `oxtitle` = " . $oDb->quote($sTitle);
-        $sId = $oDb->getOne($sQ);
+        $sQ = "SELECT `oxid` FROM `" . getViewName('oxdelivery') . "` 
+            WHERE `oxtitle` = :oxtitle";
+        $sId = $oDb->getOne($sQ, [
+            ':oxtitle' => $sTitle
+        ]);
 
         return $sId;
     }
@@ -494,10 +505,13 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                     `oxcountry`.`oxisoalpha2`
                 FROM `oxcountry`
                     LEFT JOIN `oxobject2delivery` ON `oxobject2delivery`.`oxobjectid` = `oxcountry`.`oxid`
-                WHERE `oxobject2delivery`.`oxdeliveryid` = " . $oDb->quote($this->getId()) . "
-                    AND `oxobject2delivery`.`oxtype` = 'oxcountry'";
+                WHERE `oxobject2delivery`.`oxdeliveryid` = :oxdeliveryid
+                    AND `oxobject2delivery`.`oxtype` = :oxtype";
 
-            $rs = $oDb->getCol($sSelect);
+            $rs = $oDb->getCol($sSelect, [
+                ':oxdeliveryid' => $this->getId(),
+                ':oxtype' => 'oxcountry'
+            ]);
             $this->_aCountriesISO = $rs;
         }
 

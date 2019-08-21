@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfiguratio
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\ModuleEvents;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
@@ -129,13 +128,7 @@ class ModuleEventsTest extends TestCase
 
         $this->get(ShopConfigurationDaoInterface::class)->save(
             $shopConfiguration,
-            $this->shopId,
-            $this->getEnvironment()
+            $this->shopId
         );
-    }
-
-    private function getEnvironment(): string
-    {
-        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

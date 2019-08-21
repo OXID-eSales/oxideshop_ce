@@ -84,11 +84,9 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $shopConfiguration->addModuleConfiguration($moduleToActivate);
         $shopConfiguration->addModuleConfiguration($moduleToStayInactive);
 
-        $env = $this->get(ContextInterface::class)->getEnvironment();
-
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save($shopConfiguration, 1, $env);
-        $shopConfigurationDao->save($shopConfiguration, 2, $env);
+        $shopConfigurationDao->save($shopConfiguration, 1);
+        $shopConfigurationDao->save($shopConfiguration, 2);
     }
 
     private function executeCommand(array $input): void

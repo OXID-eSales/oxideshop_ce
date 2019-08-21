@@ -12,7 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ClassExtensionsChain;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
@@ -23,9 +22,6 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
@@ -107,65 +103,6 @@ class ProjectConfigurationDaoTest extends TestCase
         $this->assertTrue($projectConfigurationDao->isConfigurationEmpty());
     }
 
-    public function testConfigurationNotIsEmptyIfAtLeastOneEnvironmentPresents(): void
-    {
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
-
-        $projectConfigurationDao = $this
-            ->getContainer()
-            ->get(ProjectConfigurationDaoInterface::class);
-
-        $projectConfigurationDao->save($projectConfiguration);
-
-        $this->assertEquals(
-            $projectConfiguration,
-            $projectConfigurationDao->getConfiguration()
-        );
-
-        $this->assertFalse($projectConfigurationDao->isConfigurationEmpty());
-    }
-
-    public function testSaveEmptyEnvironment(): void
-    {
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('someEnvironment', new EnvironmentConfiguration());
-        $projectConfiguration->addEnvironmentConfiguration('andAnotherEnvironment', new EnvironmentConfiguration());
-
-        $projectConfigurationDao = $this
-            ->getContainer()
-            ->get(ProjectConfigurationDaoInterface::class);
-
-        $projectConfigurationDao->save($projectConfiguration);
-
-        $this->assertEquals(
-            $projectConfiguration,
-            $projectConfigurationDao->getConfiguration()
-        );
-    }
-
-    public function testDeleteEnvironment(): void
-    {
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('toDelete', new EnvironmentConfiguration());
-        $projectConfiguration->addEnvironmentConfiguration('dev', new EnvironmentConfiguration());
-
-        $projectConfigurationDao = $this
-            ->getContainer()
-            ->get(ProjectConfigurationDaoInterface::class);
-
-        $projectConfigurationDao->save($projectConfiguration);
-
-        $projectConfiguration->deleteEnvironmentConfiguration('toDelete');
-
-        $projectConfigurationDao->save($projectConfiguration);
-
-        $this->assertEquals(
-            $projectConfiguration,
-            $projectConfigurationDao->getConfiguration()
-        );
-    }
-
     public function testProjectConfigurationSaving(): void
     {
         $projectConfigurationDao = $this
@@ -213,11 +150,13 @@ class ProjectConfigurationDaoTest extends TestCase
         $moduleConfiguration
             ->addController(
                 new Controller(
-                    'originalClassNamespace', 'moduleClassNamespace'
+                    'originalClassNamespace',
+                    'moduleClassNamespace'
                 )
             )->addController(
                 new Controller(
-                    'otherOriginalClassNamespace', 'moduleClassNamespace'
+                    'otherOriginalClassNamespace',
+                    'moduleClassNamespace'
                 )
             )
             ->addTemplate(new Template('originalTemplate', 'moduleTemplate'))
@@ -268,17 +207,9 @@ class ProjectConfigurationDaoTest extends TestCase
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
         $shopConfiguration->setClassExtensionsChain($classExtensionChain);
 
-        $devEnvironmentConfiguration = new EnvironmentConfiguration();
-        $devEnvironmentConfiguration->addShopConfiguration(1, $shopConfiguration);
-        $devEnvironmentConfiguration->addShopConfiguration(2, $shopConfiguration);
-
-        $prodEnvironmentConfiguration = new EnvironmentConfiguration();
-        $prodEnvironmentConfiguration->addShopConfiguration(1, $shopConfiguration);
-        $prodEnvironmentConfiguration->addShopConfiguration(3, new ShopConfiguration());
-
         $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration('dev', $devEnvironmentConfiguration);
-        $projectConfiguration->addEnvironmentConfiguration('prod', $prodEnvironmentConfiguration);
+        $projectConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $projectConfiguration->addShopConfiguration(2, $shopConfiguration);
 
         return $projectConfiguration;
     }

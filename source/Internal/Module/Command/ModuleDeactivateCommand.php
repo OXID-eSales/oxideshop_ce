@@ -114,8 +114,7 @@ class ModuleDeactivateCommand extends Command
         $shopConfiguration = $this
             ->shopConfigurationDao
             ->get(
-                $this->context->getCurrentShopId(),
-                $this->context->getEnvironment()
+                $this->context->getCurrentShopId()
             );
 
         return $shopConfiguration->hasModuleConfiguration($moduleId);

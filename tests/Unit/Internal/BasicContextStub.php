@@ -27,7 +27,6 @@ class BasicContextStub implements BasicContextInterface
     private $shopRootPath;
     private $configFilePath;
     private $projectConfigurationDirectory;
-    private $environment;
     private $backwardsCompatibilityClassMap;
 
     public function __construct()
@@ -46,16 +45,7 @@ class BasicContextStub implements BasicContextInterface
         $this->modulesPath = $basicContext->getModulesPath();
         $this->configFilePath = $basicContext->getConfigFilePath();
         $this->shopRootPath = $basicContext->getShopRootPath();
-        $this->environment = $basicContext->getEnvironment();
         $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnvironment(): string
-    {
-        return $this->environment;
     }
 
     /**
@@ -80,14 +70,6 @@ class BasicContextStub implements BasicContextInterface
     public function getContainerCacheFilePath(): string
     {
         return $this->containerCacheFilePath;
-    }
-
-    /**
-     * @param string $containerCacheFilePath
-     */
-    public function setContainerCacheFilePath(string $containerCacheFilePath)
-    {
-        $this->containerCacheFilePath = $containerCacheFilePath;
     }
 
     /**

@@ -30,14 +30,6 @@ class BasicContext implements BasicContextInterface
     private $facts;
 
     /**
-     * @return string
-     */
-    public function getEnvironment(): string
-    {
-        return 'production';
-    }
-
-    /**
      * @todo change placement of container cache file and move logic to Facts.
      * @return string
      */
@@ -80,6 +72,7 @@ class BasicContext implements BasicContextInterface
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function getEdition(): string
     {
@@ -152,7 +145,7 @@ class BasicContext implements BasicContextInterface
      */
     public function getProjectConfigurationDirectory(): string
     {
-        return $this->getConfigurationDirectoryPath() . 'project_configuration/';
+        return $this->getConfigurationDirectoryPath();
     }
 
     /**

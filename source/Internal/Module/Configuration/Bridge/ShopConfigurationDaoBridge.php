@@ -42,8 +42,7 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
     public function get(): ShopConfiguration
     {
         return $this->shopConfigurationDao->get(
-            $this->context->getCurrentShopId(),
-            $this->context->getEnvironment()
+            $this->context->getCurrentShopId()
         );
     }
 
@@ -54,8 +53,7 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
     {
         $this->shopConfigurationDao->save(
             $shopConfiguration,
-            $this->context->getCurrentShopId(),
-            $this->context->getEnvironment()
+            $this->context->getCurrentShopId()
         );
     }
 }

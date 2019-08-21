@@ -10,14 +10,12 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Dat
 
 use DomainException;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
 
 class ProjectConfigurationTest extends TestCase
 {
-    /**
-     * @var ProjectConfiguration
-     */
+    /** @var ProjectConfiguration */
     private $projectConfiguration;
 
     protected function setUp()
@@ -26,63 +24,55 @@ class ProjectConfigurationTest extends TestCase
         $this->projectConfiguration = new ProjectConfiguration();
     }
 
-    public function testGetNamesOfEnvironmentConfigurations()
+    public function testGetShopConfiguration()
     {
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
-        $this->projectConfiguration->addEnvironmentConfiguration('Production', $environmentConfiguration);
-
-        $this->assertEquals(
-            ['Testing', 'Production'],
-            $this->projectConfiguration->getNamesOfEnvironmentConfigurations()
-        );
+        $shopConfiguration = new ShopConfiguration();
+        $this->projectConfiguration->addShopConfiguration(0, $shopConfiguration);
+        $this->assertSame($shopConfiguration, $this->projectConfiguration->getShopConfiguration(0));
     }
 
-    public function testDeleteEnvironment()
+    public function testGetShopConfigurations()
     {
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
-        $this->projectConfiguration->addEnvironmentConfiguration('Production', $environmentConfiguration);
-        $this->projectConfiguration->deleteEnvironmentConfiguration('Testing');
-
-        $this->assertEquals(['Production'], $this->projectConfiguration->getNamesOfEnvironmentConfigurations());
-    }
-
-    public function testDeleteEnvironmentThrowsExceptionIfEnvironmentDoesNotExist()
-    {
-        $this->expectException(DomainException::class);
-        $this->projectConfiguration->deleteEnvironmentConfiguration('Testing');
-    }
-
-    public function testGetEnvironmentConfiguration()
-    {
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
-
-        $this->assertSame(
-            $environmentConfiguration,
-            $this->projectConfiguration->getEnvironmentConfiguration('Testing')
-        );
-    }
-
-    public function testGetEnvironmentConfigurations()
-    {
-        $environmentConfiguration = new EnvironmentConfiguration();
-        $this->projectConfiguration->addEnvironmentConfiguration('Testing', $environmentConfiguration);
-        $this->projectConfiguration->addEnvironmentConfiguration('Once more', $environmentConfiguration);
+        $shopConfiguration = new ShopConfiguration();
+        $this->projectConfiguration->addShopConfiguration(0, $shopConfiguration);
+        $this->projectConfiguration->addShopConfiguration(1, $shopConfiguration);
 
         $this->assertSame(
             [
-                'Testing'   => $environmentConfiguration,
-                'Once more' => $environmentConfiguration,
+                0 => $shopConfiguration,
+                1 => $shopConfiguration,
             ],
-            $this->projectConfiguration->getEnvironmentConfigurations()
+            $this->projectConfiguration->getShopConfigurations()
         );
     }
 
-    public function testGetEnvironmentConfigurationThrowsExceptionIfEnvironmentDoesNotExist()
+
+    public function testGetShopConfigurationThrowsExceptionWithNotExistingShopId()
     {
         $this->expectException(DomainException::class);
-        $this->projectConfiguration->getEnvironmentConfiguration('Testing');
+        $this->projectConfiguration->getShopConfiguration(0);
+    }
+
+    public function testGetShopIdsOfShopConfigurations()
+    {
+        $shopConfiguration = new ShopConfiguration();
+        $this->projectConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $this->projectConfiguration->addShopConfiguration(2, $shopConfiguration);
+        $this->assertEquals([1,2], $this->projectConfiguration->getShopConfigurationIds());
+    }
+
+    public function testDeleteShopConfiguration()
+    {
+        $shopConfiguration = new ShopConfiguration();
+        $this->projectConfiguration->addShopConfiguration(1, $shopConfiguration);
+        $this->projectConfiguration->addShopConfiguration(2, $shopConfiguration);
+        $this->projectConfiguration->deleteShopConfiguration(1);
+        $this->assertEquals([2], $this->projectConfiguration->getShopConfigurationIds());
+    }
+
+    public function testDeleteShopConfigurationThrowsExceptionWithNotExistingShopId()
+    {
+        $this->expectException(DomainException::class);
+        $this->projectConfiguration->deleteShopConfiguration(0);
     }
 }

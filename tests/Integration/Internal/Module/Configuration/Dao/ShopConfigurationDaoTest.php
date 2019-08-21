@@ -6,11 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
@@ -30,61 +33,53 @@ final class ShopConfigurationDaoTest extends TestCase
 
         $shopConfigurationWithModule = new ShopConfiguration();
         $shopConfigurationWithModule->addModuleConfiguration($module);
-        $shopConfigurationDao->save($shopConfigurationWithModule, 1, 'prod');
+        $shopConfigurationDao->save($shopConfigurationWithModule, 1);
 
         $shopConfiguration = new ShopConfiguration();
-        $shopConfigurationDao->save($shopConfiguration, 2, 'prod');
-
-        $shopConfigurationForAnotherEnvironment = new ShopConfiguration();
-        $shopConfigurationDao->save($shopConfigurationForAnotherEnvironment, 1, 'dev');
+        $shopConfigurationDao->save($shopConfiguration, 2);
 
         $this->assertEquals(
             $shopConfigurationWithModule,
-            $shopConfigurationDao->get(1, 'prod')
+            $shopConfigurationDao->get(1)
         );
 
         $this->assertEquals(
             $shopConfiguration,
-            $shopConfigurationDao->get(2, 'prod')
-        );
-
-        $this->assertEquals(
-            $shopConfigurationForAnotherEnvironment,
-            $shopConfigurationDao->get(1, 'dev')
+            $shopConfigurationDao->get(2)
         );
     }
 
     public function testGetAlwaysReturnsTheSameObjectIfConfigurationWasNotChanged(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
-        $shopConfiguration = $shopConfigurationDao->get(1, 'prod');
+        $shopConfiguration = $shopConfigurationDao->get(1);
 
         $this->assertSame(
             $shopConfiguration,
-            $shopConfigurationDao->get(1, 'prod')
+            $shopConfigurationDao->get(1)
         );
     }
 
     public function testGetAll(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
         $this->assertEquals(
             new ShopConfiguration(),
-            $shopConfigurationDao->get(1, 'prod')
+            $shopConfigurationDao->get(1)
         );
 
-        $shopConfigurationDao->save(new ShopConfiguration(), 3, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 3);
 
         $this->assertEquals(
             [
                 1 => new ShopConfiguration(),
                 3 => new ShopConfiguration(),
             ],
-            $shopConfigurationDao->getAll('prod')
+            $shopConfigurationDao->getAll()
         );
     }
 
@@ -94,19 +89,18 @@ final class ShopConfigurationDaoTest extends TestCase
     public function testWithIncorrectNode(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
         $yamlStorage = $this->get(FileStorageFactoryInterface::class)->create(
             Path::join(
                 $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory(),
-                'prod',
                 'shops/1.yaml'
             )
         );
 
         $yamlStorage->save(['incorrectKey']);
 
-        $shopConfigurationDao->get(1, 'prod');
+        $shopConfigurationDao->get(1);
     }
 
     /**
@@ -115,23 +109,128 @@ final class ShopConfigurationDaoTest extends TestCase
     public function testGetIncorrectShopId(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
-        $shopConfigurationDao->save(new ShopConfiguration(), 2, 'prod');
-        $shopConfigurationDao->save(new ShopConfiguration(), 3, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
+        $shopConfigurationDao->save(new ShopConfiguration(), 2);
+        $shopConfigurationDao->save(new ShopConfiguration(), 3);
 
-        $shopConfigurationDao->get(99, 'prod');
+        $shopConfigurationDao->get(99);
     }
 
     public function testGetCorrectShopId(): void
     {
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1, 'prod');
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
-        $shopConfiguration = $shopConfigurationDao->get(1, 'prod');
+        $shopConfiguration = $shopConfigurationDao->get(1);
 
         $this->assertSame(
             $shopConfiguration,
-            $shopConfigurationDao->get(1, 'prod')
+            $shopConfigurationDao->get(1)
+        );
+    }
+
+    /**
+     * @throws ModuleConfigurationNotFoundException
+     */
+    public function testEnvironmentShopConfigurationFileOverwritesShopConfiguration(): void
+    {
+        $this->prepareTestEnvironmentShopConfigurationFile();
+
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+
+        $setting = new Setting();
+        $setting
+            ->setName('settingToOverwrite')
+            ->setValue('value')
+            ->setType('int');
+
+        $module = new ModuleConfiguration();
+        $module
+            ->setId('testModule')
+            ->setPath('test')
+            ->addModuleSetting($setting);
+
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($module);
+        $shopConfigurationDao->save($shopConfiguration, 1);
+
+        $this->assertSame(
+            'overwrittenValue',
+            $shopConfigurationDao
+                ->get(1)
+                ->getModuleConfiguration('testModule')
+                ->getModuleSetting('settingToOverwrite')
+                ->getValue()
+        );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testBadShopConfigurationFile(): void
+    {
+        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
+        $storage = $fileStorageFactory->create(
+            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/shops/1.yaml'
+        );
+        $storage->save(["test"=>"test"]);
+
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->get(1);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testBadEnvironmentConfigurationFile(): void
+    {
+        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
+        $storage = $fileStorageFactory->create(
+            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/environment/1.yaml'
+        );
+        $storage->save(["test"=>"test"]);
+
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
+
+        $shopConfigurationDao->get(1);
+    }
+
+    private function prepareTestEnvironmentShopConfigurationFile(): void
+    {
+        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
+        $storage = $fileStorageFactory->create(
+            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/environment/1.yaml'
+        );
+
+        $storage->save([
+            'modules' => [
+                'testModule' => [
+                    ModuleSettingsDataMapper::MAPPING_KEY => [
+                        'settingToOverwrite' => [
+                            'value' => 'overwrittenValue',
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ShopConfigurationNotFoundException
+     */
+    public function testDeleteAll(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
+        $shopConfigurationDao->save(new ShopConfiguration(), 2);
+        $shopConfigurationDao->save(new ShopConfiguration(), 3);
+
+        $shopConfigurationDao->deleteAll();
+
+        $this->assertEquals(
+            [],
+            $shopConfigurationDao->get(1)
         );
     }
 }

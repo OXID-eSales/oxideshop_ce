@@ -23,7 +23,6 @@ use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
@@ -272,7 +271,7 @@ class ModuleActivationServiceTest extends TestCase
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
         $shopConfigurationDao = $this->container->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save($shopConfiguration, $this->shopId, $this->getEnvironment());
+        $shopConfigurationDao->save($shopConfiguration, $this->shopId);
     }
 
     /**
@@ -290,10 +289,5 @@ class ModuleActivationServiceTest extends TestCase
         $container->compile();
 
         return $container;
-    }
-
-    private function getEnvironment(): string
-    {
-        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 
@@ -38,13 +39,15 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
     /**
      * @param string $moduleId
      * @param int    $shopId
+     *
      * @return ModuleConfiguration
+     * @throws ModuleConfigurationNotFoundException
      */
     public function get(string $moduleId, int $shopId): ModuleConfiguration
     {
         return $this
             ->shopConfigurationDao
-            ->get($shopId, $this->context->getEnvironment())
+            ->get($shopId)
             ->getModuleConfiguration($moduleId);
     }
 
@@ -56,10 +59,10 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
     {
         $shopConfiguration = $this
             ->shopConfigurationDao
-            ->get($shopId, $this->context->getEnvironment());
+            ->get($shopId);
 
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
-        $this->shopConfigurationDao->save($shopConfiguration, $shopId, $this->context->getEnvironment());
+        $this->shopConfigurationDao->save($shopConfiguration, $shopId);
     }
 }

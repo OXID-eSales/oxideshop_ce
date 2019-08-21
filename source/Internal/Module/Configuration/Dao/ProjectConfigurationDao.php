@@ -7,11 +7,9 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -67,13 +65,10 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
      */
     public function save(ProjectConfiguration $configuration)
     {
-        $this->deleteAllEnvironments();
+        $this->shopConfigurationDao->deleteAll();
 
-        foreach ($configuration->getEnvironmentConfigurations() as $environment => $environmentConfiguration) {
-            $this->createEnvironmentDirectory($environment);
-            foreach ($environmentConfiguration->getShopConfigurations() as $shopId => $shopConfiguration) {
-                $this->shopConfigurationDao->save($shopConfiguration, $shopId, $environment);
-            }
+        foreach ($configuration->getShopConfigurations() as $shopId => $shopConfiguration) {
+            $this->shopConfigurationDao->save($shopConfiguration, $shopId);
         }
     }
 
@@ -82,8 +77,7 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
      */
     public function isConfigurationEmpty(): bool
     {
-        return $this->projectConfigurationDirectoryExists() === false
-            || empty($this->getEnvironments());
+        return $this->projectConfigurationDirectoryExists() === false;
     }
 
     /**
@@ -93,55 +87,14 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
     {
         $projectConfiguration = new ProjectConfiguration();
 
-        foreach ($this->getEnvironments() as $environment) {
-            $environmentConfiguration = new EnvironmentConfiguration();
-
-            foreach ($this->shopConfigurationDao->getAll($environment) as $shopId => $shopConfiguration) {
-                $environmentConfiguration->addShopConfiguration(
-                    $shopId,
-                    $shopConfiguration
-                );
-            }
-
-            $projectConfiguration->addEnvironmentConfiguration($environment, $environmentConfiguration);
+        foreach ($this->shopConfigurationDao->getAll() as $shopId => $shopConfiguration) {
+            $projectConfiguration->addShopConfiguration(
+                $shopId,
+                $shopConfiguration
+            );
         }
 
         return $projectConfiguration;
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getEnvironments(): array
-    {
-        $environments = [];
-
-        $dir = new \DirectoryIterator($this->context->getProjectConfigurationDirectory());
-
-        foreach ($dir as $fileinfo) {
-            if ($fileinfo->isDir() && !$fileinfo->isDot()) {
-                $environments[] = $fileinfo->getFilename();
-            }
-        }
-
-        return $environments;
-    }
-
-    /**
-     * @param string $environment
-     */
-    private function createEnvironmentDirectory(string $environment): void
-    {
-        $this->fileSystem->mkdir(
-            Path::join($this->context->getProjectConfigurationDirectory(), $environment)
-        );
-    }
-
-    private function deleteAllEnvironments(): void
-    {
-        $this->fileSystem->remove(
-            $this->context->getProjectConfigurationDirectory()
-        );
     }
 
     private function projectConfigurationDirectoryExists(): bool

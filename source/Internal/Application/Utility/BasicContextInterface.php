@@ -15,11 +15,6 @@ interface BasicContextInterface
     /**
      * @return string
      */
-    public function getEnvironment(): string;
-
-    /**
-     * @return string
-     */
     public function getContainerCacheFilePath(): string;
 
     /**

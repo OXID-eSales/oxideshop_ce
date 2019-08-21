@@ -55,7 +55,7 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
      */
     public function getActiveExtensionChain(int $shopId): ClassExtensionsChain
     {
-        $shopConfiguration = $this->shopConfigurationDao->get($shopId, $this->context->getEnvironment());
+        $shopConfiguration = $this->shopConfigurationDao->get($shopId);
         $classExtensionChain = $shopConfiguration->getClassExtensionsChain();
 
         $activeExtensions = [];

@@ -10,7 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurat
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -48,13 +47,7 @@ class ModuleConfigurationDaoTest extends TestCase
     {
         $this->get(ShopConfigurationDaoInterface::class)->save(
             new ShopConfiguration(),
-            1,
-            $this->getEnvironment()
+            1
         );
-    }
-
-    private function getEnvironment(): string
-    {
-        return $this->get(ContextInterface::class)->getEnvironment();
     }
 }

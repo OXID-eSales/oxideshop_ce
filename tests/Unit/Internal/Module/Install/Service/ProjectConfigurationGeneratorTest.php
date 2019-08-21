@@ -7,7 +7,6 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Install;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\EnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ProjectConfigurationGenerator;
@@ -20,7 +19,6 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ProjectConfigurationGeneratorTest extends TestCase
 {
-    private $environment = 'prod';
     private $shops = [1, 2, 3];
 
     public function testGenerateDefaultConfiguration()
@@ -40,14 +38,11 @@ class ProjectConfigurationGeneratorTest extends TestCase
 
     private function getExpectedDefaultProjectConfiguration(array $shops): ProjectConfiguration
     {
-        $environmentConfiguration = new EnvironmentConfiguration();
+        $projectConfiguration = new ProjectConfiguration();
 
         foreach ($shops as $shopId) {
-            $environmentConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
+            $projectConfiguration->addShopConfiguration($shopId, new ShopConfiguration());
         }
-
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addEnvironmentConfiguration($this->environment, $environmentConfiguration);
 
         return $projectConfiguration;
     }
@@ -58,7 +53,6 @@ class ProjectConfigurationGeneratorTest extends TestCase
     private function getContext(): MockObject
     {
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
-        $context->method('getEnvironment')->willReturn($this->environment);
         $context->method('getAllShopIds')->willReturn($this->shops);
 
         return $context;

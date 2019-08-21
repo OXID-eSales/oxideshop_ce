@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ShopConfigurat
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Exception\ShopConfigurationNotFoundException;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -77,25 +78,24 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     }
 
     /**
-     * @param int    $shopId
-     * @param string $environment
+     * @param int $shopId
      *
      * @return ShopConfiguration
      * @throws ShopConfigurationNotFoundException
      */
-    public function get(int $shopId, string $environment): ShopConfiguration
+    public function get(int $shopId): ShopConfiguration
     {
-        if (!$this->isShopIdExists($shopId, $environment)) {
+        if (!$this->isShopIdExists($shopId)) {
             throw new ShopConfigurationNotFoundException(
                 'ShopId ' . $shopId . ' does not exist'
             );
         }
 
-        if ($this->cache->exists($environment, $shopId)) {
-            $shopConfiguration = $this->cache->get($environment, $shopId);
+        if ($this->cache->exists($shopId)) {
+            $shopConfiguration = $this->cache->get($shopId);
         } else {
-            $shopConfiguration = $this->getConfigurationFromStorage($shopId, $environment);
-            $this->cache->put($environment, $shopId, $shopConfiguration);
+            $shopConfiguration = $this->getConfigurationFromStorage($shopId);
+            $this->cache->put($shopId, $shopConfiguration);
         }
 
         return $shopConfiguration;
@@ -103,51 +103,46 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
 
     /**
      * @param ShopConfiguration $shopConfiguration
-     * @param int $shopId
-     * @param string $environment
+     * @param int               $shopId
      */
-    public function save(ShopConfiguration $shopConfiguration, int $shopId, string $environment): void
+    public function save(ShopConfiguration $shopConfiguration, int $shopId): void
     {
-        $this->cache->evict($environment, $shopId);
+        $this->cache->evict($shopId);
 
-        $storage = $this->getDataFromStorage($shopId, $environment);
-
+        $storage = $this->getStorage($shopId);
         $storage->save(
             $this->shopConfigurationMapper->toData($shopConfiguration)
         );
     }
 
     /**
-     * @param string $environment
-     *
      * @return ShopConfiguration[]
      * @throws ShopConfigurationNotFoundException
      */
-    public function getAll(string $environment): array
+    public function getAll(): array
     {
         $configurations = [];
 
-        foreach ($this->getShopIds($environment) as $shopId) {
-            $configurations[$shopId] = $this->get($shopId, $environment);
+        foreach ($this->getShopIds() as $shopId) {
+            $configurations[$shopId] = $this->get($shopId);
         }
 
         return $configurations;
     }
 
     /**
-     * @param string $environment
      * @return int[]
      */
-    private function getShopIds(string $environment): array
+    private function getShopIds(): array
     {
         $shopIds = [];
 
-        if ($this->hasShops($environment)) {
-            $dir = new \DirectoryIterator($this->getShopsConfigurationDirectory($environment));
+        if (file_exists($this->getShopsConfigurationDirectory())) {
+            $dir = new \DirectoryIterator($this->getShopsConfigurationDirectory());
 
-            foreach ($dir as $fileinfo) {
-                if ($fileinfo->isFile()) {
-                    $shopIds[] = (int)$fileinfo->getFilename();
+            foreach ($dir as $fileInfo) {
+                if ($fileInfo->isFile()) {
+                    $shopIds[] = (int)$fileInfo->getFilename();
                 }
             }
         }
@@ -157,71 +152,139 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
 
     /**
      * @param int $shopId
-     * @param string $environment
+     *
      * @return ArrayStorageInterface
      */
-    private function getDataFromStorage(int $shopId, string $environment): ArrayStorageInterface
+    private function getStorage(int $shopId): ArrayStorageInterface
     {
         return $this->fileStorageFactory->create(
-            $this->getShopConfigurationFilePath($shopId, $environment)
+            $this->getShopConfigurationFilePath($shopId)
         );
     }
 
     /**
      * @param int $shopId
-     * @param string $environment
+     *
      * @return string
      */
-    private function getShopConfigurationFilePath(int $shopId, string $environment): string
+    private function getShopConfigurationFilePath(int $shopId): string
     {
-        return $this->getShopsConfigurationDirectory($environment) . $shopId . '.yaml';
-    }
-
-    /**
-     * @param string $environment
-     * @return string
-     */
-    private function getShopsConfigurationDirectory(string $environment): string
-    {
-        return $this->context->getProjectConfigurationDirectory() . $environment . '/shops/';
-    }
-
-    /**
-     * @param string $environment
-     * @return bool
-     */
-    private function hasShops(string $environment): bool
-    {
-        return $this->fileSystem->exists(
-            $this->getShopsConfigurationDirectory($environment)
-        );
+        return $this->getShopsConfigurationDirectory() . $shopId . '.yaml';
     }
 
     /**
      * @param int $shopId
-     * @param string $environment
+     *
+     * @return string
+     */
+    private function getEnvironmentConfigurationFilePath(int $shopId): string
+    {
+        return $this->getEnvironmentConfigurationDirectory() . $shopId . '.yaml';
+    }
+
+    /**
+     * @return string
+     */
+    private function getShopsConfigurationDirectory(): string
+    {
+        return $this->context->getProjectConfigurationDirectory() . 'shops/';
+    }
+
+    /**
+     * @return string
+     */
+    private function getEnvironmentConfigurationDirectory(): string
+    {
+        return $this->context->getProjectConfigurationDirectory() . 'environment/';
+    }
+
+    /**
+     * @param int $shopId
+     *
      * @return ShopConfiguration
+     * @throws \Exception
      */
-    private function getConfigurationFromStorage(int $shopId, string $environment): ShopConfiguration
+    private function getConfigurationFromStorage(int $shopId): ShopConfiguration
     {
-        $storage = $this->getDataFromStorage($shopId, $environment);
-
-        $shopConfiguration = $this->shopConfigurationMapper->fromData(
-            $this->node->normalize($storage->get())
+        $data = $this->mergeShopConfigurationDataWithEnvironmentData(
+            $this->getShopConfigurationData($shopId),
+            $this->getEnvironmentShopConfigurationData($shopId)
         );
-        return $shopConfiguration;
+
+        return $this->shopConfigurationMapper->fromData($data);
+    }
+
+    private function mergeShopConfigurationDataWithEnvironmentData(
+        array $shopConfigurationData,
+        array $environmentShopConfigurationData
+    ): array {
+        return array_replace_recursive($shopConfigurationData, $environmentShopConfigurationData);
     }
 
     /**
-     * @param int    $shopId
-     * @param string $environment
+     * @param int $shopId
      *
      * @return bool
      */
-    private function isShopIdExists(int $shopId, string $environment): bool
+    private function isShopIdExists(int $shopId): bool
     {
-        $shopIds = $this->getShopIds($environment);
+        return in_array($shopId, $this->getShopIds(), true);
+    }
 
-        return in_array($shopId, $shopIds);
+    /**
+     * @param int $shopId
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function getShopConfigurationData(int $shopId): array
+    {
+        try {
+            $data = $this->node->normalize($this->getStorage($shopId)->get());
+        } catch (InvalidConfigurationException $exception) {
+            throw new InvalidConfigurationException(
+                'File ' . $this->getShopConfigurationFilePath($shopId) . ' is broken: ' . $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
+        }
+        return $data;
+    }
+
+    /**
+     * @param int $shopId
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function getEnvironmentShopConfigurationData(int $shopId): array
+    {
+        $storage = $this->fileStorageFactory->create(
+            $this->getEnvironmentConfigurationFilePath($shopId)
+        );
+
+        try {
+            $data = $this->node->normalize($storage->get());
+        } catch (InvalidConfigurationException $exception) {
+            throw new InvalidConfigurationException(
+                'File ' .
+                $this->getEnvironmentConfigurationFilePath($shopId) .
+                ' is broken: ' . $exception->getMessage()
+            );
+        }
+
+        return $data;
+    }
+
+    /**
+     * delete all shops configuration
+     */
+    public function deleteAll(): void
+    {
+        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
+            $this->fileSystem->remove(
+                $this->getShopsConfigurationDirectory()
+            );
+        }
     }
 }

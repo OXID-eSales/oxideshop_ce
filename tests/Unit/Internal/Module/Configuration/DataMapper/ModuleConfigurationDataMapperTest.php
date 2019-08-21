@@ -59,9 +59,8 @@ class ModuleConfigurationDataMapperTest extends TestCase
                 'onActivate'   => 'MyEvents::onActivate'
             ],
             ModuleSettingsDataMapper::MAPPING_KEY => [
-                [
+                'name' => [
                     'group'         => 'name',
-                    'name'          => 'name',
                     'type'          => 'type',
                     'value'         => true,
                     'position'      => 4,
@@ -165,15 +164,13 @@ class ModuleConfigurationDataMapperTest extends TestCase
             [
                 'data' => [
                     ModuleSettingsDataMapper::MAPPING_KEY => [
-                        [
+                        'testEmptyBoolConfig' => [
                             'group' => 'settingsEmpty',
-                            'name' => 'testEmptyBoolConfig',
                             'type' => 'bool',
                             'value' => 'false'
                         ],
-                        [
+                        'testFilledAArrConfig' => [
                             'group' => 'settingsFilled',
-                            'name' => 'testFilledAArrConfig',
                             'type' => 'aarr',
                             'value' => ['key1' => 'option1', 'key2' => 'option2']
                         ]

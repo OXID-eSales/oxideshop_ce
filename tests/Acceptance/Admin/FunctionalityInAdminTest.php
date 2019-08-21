@@ -12,17 +12,8 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 /** Admin interface functionality. */
 class FunctionalityInAdminTest extends AdminTestCase
 {
-    /** @var array To store translation error value. */
-    private $translationError = [];
-
-    /**
-     * Set translation error value if some case would change it.
-     */
-    public function setUp()
-    {
-        $this->translationError = $this->errorsInPage["ERROR: Tran"];
-        parent::setUp();
-    }
+    /** @var string To store translation error value. */
+    private $translationError = '';
 
     /**
      * Restore translation error value as some case might change it.
@@ -38,14 +29,12 @@ class FunctionalityInAdminTest extends AdminTestCase
      * Some translations might be missing as tests add new language.
      * In these cases no need to check if everything is translated.
      */
-    private function skipTranslationCheck()
+    private function skipTranslationCheck(): void
     {
+        $this->translationError = !empty($this->errorsInPage["ERROR: Tran"])
+            ? $this->errorsInPage["ERROR: Tran"]
+            : $this->translationError;
         unset($this->errorsInPage["ERROR: Tran"]);
-    }
-
-    private function revertSkippedTranslationCheck(): void
-    {
-        $this->errorsInPage['ERROR: Tran'] = 'Missing translation for constant (ERROR: Translation for...)';
     }
 
     /**
@@ -911,8 +900,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->assertEquals("1 Hits for [LT] \"1001\"", $this->getHeadingText("//h1"));
         $this->clickAndWait("searchList_1");
         $this->assertEquals("Item #: 1001", $this->getText("productArtnum"));
-
-        $this->revertSkippedTranslationCheck();
     }
 
     /**

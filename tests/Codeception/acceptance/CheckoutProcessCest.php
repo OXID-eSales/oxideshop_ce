@@ -65,6 +65,102 @@ class CheckoutProcessCest
         $breadCrumbName = Translator::translate("PAY");
         $paymentCheckoutPage->seeOnBreadCrumb($breadCrumbName);
     }
+
+    /**
+     * @group basketfrontend
+     *
+     * @param AcceptanceTester $I
+     */
+    public function createOrder(AcceptanceTester $I)
+    {
+        $I->wantToTest("simple order steps (without any special cases)");
+        $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
+        $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
+        $basket = new Basket($I);
+
+        $userData = $this->getExistingUserData();
+
+        $basketItem1 = [
+            'id' => '1001',
+            'title' => 'Test product 1 [EN] šÄßüл',
+            'amount' => 1,
+            'totalPrice' => '100,00 €'
+        ];
+
+        $basketItem2 = [
+            'id' => '1002-2',
+            'title' => 'Test product 2 [EN] šÄßüл',
+            'amount' => 1,
+            'totalPrice' => '67,00 €'
+        ];
+
+        //add Product to basket
+        $basket->addProductToBasket($basketItem1['id'], 1);
+        $basket->addProductToBasket($basketItem2['id'], 1);
+
+        $homePage = $I->openShop()->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
+        $basketPage = $basketPage->addCouponToBasket('123123');
+        $basketPage = $basketPage->openGiftSelection(1)
+            ->selectWrapping(1, 'testwrapping')
+            ->selectCard('testcard')
+            ->addGreetingMessage('Greeting card text')
+            ->submitChanges();
+        $I->see('Greeting card text');
+        $userCheckoutPage = $basketPage->goToNextStep();
+        $paymentPage = $userCheckoutPage->enterOrderRemark('remark text')->goToNextStep();
+
+        $I->see(Translator::translate("SELECT_SHIPPING_METHOD"));
+
+        $orderPage = $paymentPage->selectPayment('oxidcashondel')
+            ->goToNextStep()
+            ->validateRemarkText('remark text');
+
+        $I->see('Test wrapping [EN] šÄßüл');
+        $I->see('Greeting card text');
+        $I->dontSee(Translator::translate('HERE_YOU_CAN_ENETER_MESSAGE'));
+        $userCheckoutPage = $orderPage->editUserAddress();
+        $orderPage = $userCheckoutPage->enterOrderRemark('my message')->goToNextStep()->goToNextStep();
+        $orderPage->validateRemarkText('my message');
+
+        $paymentPage = $orderPage->editPaymentMethod();
+        $orderPage = $paymentPage->selectPayment('oxidpayadvance')->goToNextStep();
+
+        $orderPage->validateShippingMethod('Standard');
+        $orderPage->validatePaymentMethod('Cash in advance');
+        $paymentPage = $orderPage->editPaymentMethod();
+        $orderPage = $paymentPage->selectPayment('oxidcashondel')->goToNextStep();
+
+        $orderPage->validateShippingMethod('Standard');
+        $orderPage->validatePaymentMethod('COD (Cash on Delivery)');
+        $orderPage->validateOrderItems([$basketItem1, $basketItem2]);
+        $orderPage->validateCoupon('123123', '-83,50 €');
+        $orderPage->validateVat(['4,55 €', '5,35 €']);
+        $I->see('73,60 €', $orderPage->basketSummaryNet);
+        $I->see('167,00 €', $orderPage->basketSummaryGross);
+        $I->see('0,00 €', $orderPage->basketShippingGross);
+        $I->see('7,50 €', $orderPage->basketPaymentGross);
+        $I->see('0,90 €', $orderPage->basketWrappingGross);
+        $I->see('0,20 €', $orderPage->basketGiftCardGross);
+        $I->see('92,10 €', $orderPage->basketTotalPrice);
+
+
+
+
+      /*  $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"), "price with discount not shown in basket");
+        $this->assertEquals("136,40 €", $this->getText("basketTotalNetto"), "Net price changed or didn't displayed");
+        $this->assertEquals("8,29 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"), "VAT 10% changed");
+        $this->assertEquals("10,16 €", $this->getText("//div[@id='basketSummary']//tr[5]/td"), "VAT 19%changed");
+        $this->assertEquals("163,00 €", $this->getText("basketTotalProductsGross"), "Brut price changed or didn't displayed");
+        $this->assertEquals("%COUPON% (%NUMBER_2% 222222)", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]/th")), "Coupon changed or didn't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"), "Shipping price changed or didn't displayed");
+        $this->assertEquals("7,50 €", $this->getText("basketPaymentGross"), "Payment price changed or didn't displayed");
+        $this->assertEquals("0,90 €", $this->getText("basketWrappingGross"), "Wrapping price changed or didn't displayed");
+        $this->assertEquals("0,20 €", $this->getText("basketGiftCardGross"), "Card price changed or didn't displayed");
+        $this->assertEquals("163,45 €", $this->getText("basketGrandTotal"), "Grand total price changed or didn't displayed");*/
+
+    }
+
     /**
      * @group basketfrontend
      *

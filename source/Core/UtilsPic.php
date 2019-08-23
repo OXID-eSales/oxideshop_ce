@@ -142,9 +142,11 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
-        $query = "select count(*) from $sTable where $sField = " . $masterDb->quote($sPicName) . " group by $sField ";
+        $query = "SELECT count(*) FROM $sTable WHERE $sField = :picturename group by $sField ";
 
-        return $masterDb->getOne($query);
+        return $masterDb->getOne($query, [
+            ':picturename' => $masterDb->quote($sPicName)
+        ]);
     }
 
     /**

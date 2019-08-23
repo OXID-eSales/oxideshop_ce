@@ -71,9 +71,11 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $this->_oGroups = oxNew('oxlist', 'oxgroups');
             $sViewName = getViewName("oxgroups", $this->getLanguage());
             $sSelect = "select {$sViewName}.* from {$sViewName}, oxobject2group ";
-            $sSelect .= "where oxobject2group.oxobjectid='$sOxid' ";
+            $sSelect .= "where oxobject2group.oxobjectid = :oxobjectid ";
             $sSelect .= "and oxobject2group.oxgroupsid={$sViewName}.oxid ";
-            $this->_oGroups->selectString($sSelect);
+            $this->_oGroups->selectString($sSelect, [
+                ':oxobjectid' => $sOxid
+            ]);
         }
 
         return $this->_oGroups;

@@ -28,7 +28,6 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
-        $sShopId = $this->getConfig()->getShopId();
 
         $oOrderFile->addFieldName('oxorderfiles__oxarticletitle');
         $oOrderFile->addFieldName('oxorderfiles__oxarticleartnum');
@@ -46,13 +45,16 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
                         LEFT JOIN `oxorderarticles` ON `oxorderarticles`.`oxid` = `oxorderfiles`.`oxorderarticleid`
                         LEFT JOIN `oxfiles` ON `oxfiles`.`oxid` = `oxorderfiles`.`oxfileid`
                         LEFT JOIN `oxorder` ON `oxorder`.`oxid` = `oxorderfiles`.`oxorderid`
-                    WHERE `oxorder`.`oxuserid` = '" . $sUserId . "'
-                        AND `oxorderfiles`.`oxshopid` = '" . $sShopId . "'
+                    WHERE `oxorder`.`oxuserid` = :oxuserid
+                        AND `oxorderfiles`.`oxshopid` = :oxshopid
                         AND `oxorder`.`oxstorno` = 0
                         AND `oxorderarticles`.`oxstorno` = 0
                     ORDER BY `oxorder`.`oxordernr`";
 
-        $this->selectString($sSql);
+        $this->selectString($sSql, [
+            ':oxuserid' => $sUserId,
+            ':oxshopid' => $this->getConfig()->getShopId()
+        ]);
     }
 
     /**
@@ -64,7 +66,6 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
-        $sShopId = $this->getConfig()->getShopId();
 
         $oOrderFile->addFieldName('oxorderfiles__oxarticletitle');
         $oOrderFile->addFieldName('oxorderfiles__oxarticleartnum');
@@ -76,9 +77,12 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
                     FROM `oxorderfiles`
                         LEFT JOIN `oxorderarticles` ON `oxorderarticles`.`oxid` = `oxorderfiles`.`oxorderarticleid`
                         LEFT JOIN `oxfiles` ON `oxfiles`.`oxid` = `oxorderfiles`.`oxfileid`
-                    WHERE `oxorderfiles`.`oxorderid` = '" . $sOrderId . "' AND `oxorderfiles`.`oxshopid` = '" . $sShopId . "'
+                    WHERE `oxorderfiles`.`oxorderid` = :oxorderid AND `oxorderfiles`.`oxshopid` = :oxshopid
                         AND `oxorderarticles`.`oxstorno` = 0";
 
-        $this->selectString($sSql);
+        $this->selectString($sSql, [
+            ':oxorderid' => $sOrderId,
+            ':oxshopid' => $this->getConfig()->getShopId()
+        ]);
     }
 }

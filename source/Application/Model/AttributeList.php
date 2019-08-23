@@ -95,13 +95,17 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             $sSelect = "select {$sAttrViewName}.`oxid`, {$sAttrViewName}.`oxtitle`, o2a.`oxvalue` from {$sViewName} as o2a ";
             $sSelect .= "left join {$sAttrViewName} on {$sAttrViewName}.oxid = o2a.oxattrid ";
-            $sSelect .= "where o2a.oxobjectid = '%s' and o2a.oxvalue != '' ";
+            $sSelect .= "where o2a.oxobjectid = :oxobjectid and o2a.oxvalue != '' ";
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";
 
-            $aAttributes = $oDb->getAll(sprintf($sSelect, $sArticleId));
+            $aAttributes = $oDb->getAll($sSelect, [
+                ':oxobjectid' => $sArticleId
+            ]);
 
             if ($sParentId) {
-                $aParentAttributes = $oDb->getAll(sprintf($sSelect, $sParentId));
+                $aParentAttributes = $oDb->getAll($sSelect, [
+                    ':oxobjectid' => $sParentId
+                ]);
                 $aAttributes = $this->_mergeAttributes($aAttributes, $aParentAttributes);
             }
 
@@ -125,13 +129,17 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             $sSelect = "select o2a.*, {$sAttrViewName}.* from $sViewName as o2a ";
             $sSelect .= "left join {$sAttrViewName} on {$sAttrViewName}.oxid = o2a.oxattrid ";
-            $sSelect .= "where o2a.oxobjectid = '%s' and {$sAttrViewName}.oxdisplayinbasket  = 1 and o2a.oxvalue != '' ";
+            $sSelect .= "where o2a.oxobjectid = :oxobjectid and {$sAttrViewName}.oxdisplayinbasket  = 1 and o2a.oxvalue != '' ";
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";
 
-            $aAttributes = $oDb->getAll(sprintf($sSelect, $sArtId));
+            $aAttributes = $oDb->getAll($sSelect, [
+                ':oxobjectid' => $sArtId
+            ]);
 
             if ($sParentId) {
-                $aParentAttributes = $oDb->getAll(sprintf($sSelect, $sParentId));
+                $aParentAttributes = $oDb->getAll($sSelect, [
+                    ':oxobjectid' => $sParentId
+                ]);
                 $aAttributes = $this->_mergeAttributes($aAttributes, $aParentAttributes);
             }
 
@@ -165,17 +173,18 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sArtIds .= $oDb->quote($sId);
             }
 
-            $sActCatQuoted = $oDb->quote($sCategoryId);
             $sAttTbl = getViewName('oxattribute', $iLang);
             $sO2ATbl = getViewName('oxobject2attribute', $iLang);
             $sC2ATbl = getViewName('oxcategory2attribute', $iLang);
 
             $sSelect = "SELECT DISTINCT att.oxid, att.oxtitle, o2a.oxvalue " .
                        "FROM $sAttTbl as att, $sO2ATbl as o2a ,$sC2ATbl as c2a " .
-                       "WHERE att.oxid = o2a.oxattrid AND c2a.oxobjectid = $sActCatQuoted AND c2a.oxattrid = att.oxid AND o2a.oxvalue !='' AND o2a.oxobjectid IN ($sArtIds) " .
+                       "WHERE att.oxid = o2a.oxattrid AND c2a.oxobjectid = :oxobjectid AND c2a.oxattrid = att.oxid AND o2a.oxvalue !='' AND o2a.oxobjectid IN ($sArtIds) " .
                        "ORDER BY c2a.oxsort , att.oxpos, att.oxtitle, o2a.oxvalue";
 
-            $rs = $oDb->select($sSelect);
+            $rs = $oDb->select($sSelect, [
+                ':oxobjectid' => $sCategoryId
+            ]);
 
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF && list($sAttId, $sAttTitle, $sAttValue) = $rs->fields) {

@@ -315,10 +315,12 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (!$this->isUploaded()) {
             return false;
         }
-        $sHash = $this->oxfiles__oxstorehash->value;
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $iCount = $oDb->getOne(
-            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote($sHash)
+            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = :oxstorehash',
+            [
+                ':oxstorehash' => $this->oxfiles__oxstorehash->value
+            ]
         );
         if (!$iCount) {
             $sPath = $this->getStoreLocation();
@@ -381,8 +383,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_blHasValidDownloads == null) {
             $this->_blHasValidDownloads = false;
-            $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
-            $sFileId = $this->getId();
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -391,13 +391,17 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
                      FROM `oxorderfiles`
                         LEFT JOIN `oxorderarticles` ON `oxorderarticles`.`oxid` = `oxorderfiles`.`oxorderarticleid`
                         LEFT JOIN `oxorder` ON `oxorder`.`oxid` = `oxorderfiles`.`oxorderid`
-                     WHERE `oxorderfiles`.`oxfileid` = " . $oDb->quote($sFileId) . "
+                     WHERE `oxorderfiles`.`oxfileid` = :oxfileid
                         AND ( ! `oxorderfiles`.`oxmaxdownloadcount` OR `oxorderfiles`.`oxmaxdownloadcount` > `oxorderfiles`.`oxdownloadcount`)
-                        AND ( `oxorderfiles`.`oxvaliduntil` = '0000-00-00 00:00:00' OR `oxorderfiles`.`oxvaliduntil` > '{$sNow}' )
+                        AND ( `oxorderfiles`.`oxvaliduntil` = '0000-00-00 00:00:00' OR `oxorderfiles`.`oxvaliduntil` > :oxvaliduntil )
                         AND `oxorder`.`oxstorno` = 0
                         AND `oxorderarticles`.`oxstorno` = 0";
+            $params = [
+                ':oxfileid' => $this->getId(),
+                ':oxvaliduntil' => date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime())
+            ];
 
-            if ($oDb->getOne($sSql)) {
+            if ($oDb->getOne($sSql, $params)) {
                 $this->_blHasValidDownloads = true;
             }
         }

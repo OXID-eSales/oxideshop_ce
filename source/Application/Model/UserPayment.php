@@ -218,9 +218,14 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
         $blGet = false;
         if ($oUser && $sPaymentType != null) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = 'select oxpaymentid from oxorder where oxpaymenttype=' . $oDb->quote($sPaymentType) . ' and
-                    oxuserid=' . $oDb->quote($oUser->getId()) . ' order by oxorderdate desc';
-            if (($sOxId = $oDb->getOne($sQ))) {
+            $sQ = 'select oxpaymentid from oxorder where oxpaymenttype = :oxpaymenttype and
+                    oxuserid = :oxuserid order by oxorderdate desc';
+            $params = [
+                ':oxpaymenttype' => $sPaymentType,
+                ':oxuserid' => $oUser->getId()
+            ];
+
+            if (($sOxId = $oDb->getOne($sQ, $params))) {
                 $blGet = $this->load($sOxId);
             }
         }

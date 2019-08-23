@@ -40,8 +40,10 @@ class OrderArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = "SELECT oxorderarticles.* FROM oxorder ";
         $sSelect .= "left join oxorderarticles on oxorderarticles.oxorderid = oxorder.oxid ";
         $sSelect .= "left join oxarticles on oxorderarticles.oxartid = oxarticles.oxid ";
-        $sSelect .= "WHERE oxorder.oxuserid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOxId);
+        $sSelect .= "WHERE oxorder.oxuserid = :oxuserid";
 
-        $this->selectString($sSelect);
+        $this->selectString($sSelect, [
+            ':oxuserid' => $sOxId
+        ]);
     }
 }

@@ -1138,9 +1138,12 @@ class SystemRequirements
         $config = $this->getConfig();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $query = "select * from oxtplblocks where oxactive=1 and oxshopid=? and oxtheme in ('', ?)";
+        $query = "select * from oxtplblocks where oxactive = 1 and oxshopid = :oxshopid and oxtheme in ('', :oxtheme)";
 
-        return $database->select($query, [$config->getShopId(), $activeThemeId]);
+        return $database->select($query, [
+            ':oxshopid' => $config->getShopId(),
+            ':oxtheme' => $activeThemeId
+        ]);
     }
 
     /**

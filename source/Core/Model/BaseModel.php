@@ -292,8 +292,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                 try {
                     if ($this->_aInnerLazyCache === null) {
                         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-                        $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = ' . $database->quote($id);
-                        $queryResult = $database->select($query);
+                        $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = :oxid';
+                        $queryResult = $database->select($query, [
+                            ':oxid' => $id
+                        ]);
                         if ($queryResult && $queryResult->count()) {
                             $this->_aInnerLazyCache = array_change_key_case($queryResult->fields, CASE_UPPER);
                             if (array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
@@ -427,8 +429,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         if ($this->getId() && in_array($fieldName, $this->getFieldNames())) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $tableName = $this->getCoreTableName();
-            $quotedOxid = $database->quote($this->getId());
-            $title = $database->getOne("select `{$fieldName}` from `{$tableName}` where `oxid` = {$quotedOxid}");
+            $title = $database->getOne("select `{$fieldName}` from `{$tableName}` where `oxid` = :oxid", [
+                ':oxid' => $this->getId()
+            ]);
             $fieldValue = "{$tableName}__{$fieldName}";
             $currentTime = $this->$fieldValue->value;
 
@@ -909,9 +912,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $viewName = $this->getCoreTableName();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = " . $database->quote($oxid);
+        $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = :oxid";
 
-        return ( bool ) $database->getOne($query);
+        return ( bool ) $database->getOne($query, [
+            ':oxid' => $oxid
+        ]);
     }
 
     /**

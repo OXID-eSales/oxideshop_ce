@@ -204,6 +204,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function selectDataById($id)
     {
+        //todo: prepare
         $query = "SELECT " . $this->config->getDecodeValueQuery() .
             " as oxvarvalue FROM oxconfig WHERE oxvarname = ? AND oxshopid = ? FOR UPDATE";
 
@@ -223,12 +224,13 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function selectAllData()
     {
-        $query = "SELECT oxvarname, " . $this->config->getDecodeValueQuery() .
-            " as oxvarvalue FROM oxconfig WHERE oxvarname like ? AND oxshopid = ?";
+        $query = "SELECT oxvarname, " . $this->config->getDecodeValueQuery() . " as oxvarvalue
+                    FROM oxconfig
+                    WHERE oxvarname like :oxvarname AND oxshopid = :oxshopid";
 
         $parameter = [
-            self::CONFIG_NAME_FOR_SERVER_INFO."%",
-            $this->config->getBaseShopId()
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . "%",
+            ':oxshopid' => $this->config->getBaseShopId()
         ];
 
         $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);

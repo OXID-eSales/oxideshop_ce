@@ -163,17 +163,10 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 
         // moving
         $sSub = "select $sObjectid, MD5( LOWER( oxseourl ) ), oxshopid, oxlang, now() from oxseo
-                 where {$sType} oxobjectid = :oxobjectid
-                 and oxshopid = :oxshopid
-                 and oxlang = :oxlang
-                 and oxexpired = :oxexpired";
+                 where {$sType} oxobjectid = " . $oDb->quote($sId) . " and oxshopid = " . $oDb->quote($iShopId) . " and
+                 oxlang = {$iLang} and oxexpired = '1'";
         $sQ = "replace oxseohistory ( oxobjectid, oxident, oxshopid, oxlang, oxinsert ) {$sSub}";
-        $oDb->execute($sQ, [
-            ':oxobjectid' => $sId,
-            ':oxshopid' => $iShopId,
-            ':oxlang' => $iLang,
-            ':oxexpired' => '1',
-        ]);
+        $oDb->execute($sQ);
     }
 
     /**
@@ -311,29 +304,19 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
             $sBaseSeoUrl = $oStr->substr($sSeoUrl, 0, $oStr->strlen($sSeoUrl) - $oStr->strlen($sExt));
         }
 
+        $iShopId = $this->getConfig()->getShopId();
         $iCnt = 0;
         $sCheckSeoUrl = $this->_trimUrl($sSeoUrl);
-
-        $params = [
-            ':oxshopid' => $this->getConfig()->getShopId(),
-            ':oxident' => $this->_getSeoIdent($sCheckSeoUrl)
-        ];
-        $sQ = "select 1 from oxseo where oxshopid = :oxshopid";
+        $sQ = "select 1 from oxseo where oxshopid = '{$iShopId}'";
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // skipping self
         if ($sObjectId && isset($iObjectLang)) {
             $iObjectLang = (int) $iObjectLang;
-            $sQ .= " and not (oxobjectid = :oxobjectid and oxlang = :oxlang)";
-            $params = array_merge($params, [
-                ':oxobjectid' => $sObjectId,
-                ':oxlang' => $iObjectLang
-            ]);
+            $sQ .= " and not (oxobjectid = " . $oDb->quote($sObjectId) . " and oxlang = $iObjectLang)";
         }
 
-        $sQ .= " and oxident = :oxident";
-
-        while ($oDb->getOne($sQ, $params)) {
+        while ($oDb->getOne($sQ . " and oxident= " . $oDb->quote($this->_getSeoIdent($sCheckSeoUrl)))) {
             $sAdd = '';
             if (self::$_sPrefix) {
                 $sAdd = self::$_sSeparator . self::$_sPrefix;
@@ -345,10 +328,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 
             $sSeoUrl = $sBaseSeoUrl . $sAdd . $sExt;
             $sCheckSeoUrl = $this->_trimUrl($sSeoUrl);
-
-            $params = array_merge($params, [
-                ':oxident' => $this->_getSeoIdent($sCheckSeoUrl)
-            ]);
         }
 
         return $sSeoUrl;
@@ -378,30 +357,22 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         if (!isset(self::$_aFixedCache[$sType][$iShopId][$sId][$iLang])) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-            $params = [
-                ':oxtype' => $sType,
-                ':oxobjectid' => $sId,
-                ':oxshopid' => $iShopId,
-                ':oxlang' => $iLang
-            ];
-
             $sQ = "SELECT `oxfixed`
                 FROM `oxseo`
-                WHERE `oxtype` = :oxtype
-                   AND `oxobjectid` = :oxobjectid
-                   AND `oxshopid` = :oxshopid
-                   AND `oxlang` = :oxlang";
+                WHERE `oxtype` = " . $oDb->quote($sType) . "
+                   AND `oxobjectid` = " . $oDb->quote($sId) . "
+                   AND `oxshopid` = " . $oDb->quote($iShopId) . "
+                   AND `oxlang` = '{$iLang}'";
 
+            $sParams = $sParams ? $oDb->quote($sParams) : "''";
             if ($sParams && $blStrictParamsCheck) {
-                $sQ .= " AND `oxparams` = :oxparams";
-                $params[':oxparams'] = $sParams;
+                $sQ .= " AND `oxparams` = {$sParams}";
             } else {
                 $sQ .= " ORDER BY `oxparams` ASC";
             }
-
             $sQ .= " LIMIT 1";
 
-            self::$_aFixedCache[$sType][$iShopId][$sId][$iLang] = (bool) $oDb->getOne($sQ, $params);
+            self::$_aFixedCache[$sType][$iShopId][$sId][$iLang] = (bool) $oDb->getOne($sQ);
         }
 
         return self::$_aFixedCache[$sType][$iShopId][$sId][$iLang];
@@ -554,9 +525,8 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 
         $sQ .= " LIMIT 1";
 
-
         // caching to avoid same queries..
-        $sIdent = md5($sQ);
+        $sIdent = md5(serialize($params));
 
         // looking in cache
         if (($sSeoUrl = $this->_loadFromCache($sIdent, $sType, $iLang, $iShopId, $sParams)) === false) {

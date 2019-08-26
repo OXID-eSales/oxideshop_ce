@@ -286,8 +286,14 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         // first checking of field exists at all
         if ($oDb->getOne("show columns from {$sTable} where field = 'oxseoid'")) {
             // if field exists - searching for object id
-            if ($sObjectId = $oDb->getOne("select oxid from {$sTable} where oxseoid = " . $oDb->quote($sSeoId))) {
-                return $oDb->getOne("select oxseourl from oxseo where oxtype = " . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId) . " and oxlang = " . $oDb->quote($iLanguage) . " ");
+            if ($sObjectId = $oDb->getOne("select oxid from {$sTable} where oxseoid = :oxseoid", [
+                ':oxseoid' => $sSeoId
+            ])) {
+                return $oDb->getOne("select oxseourl from oxseo where oxtype = :oxtype and oxobjectid = :oxobjectid and oxlang = :oxlang", [
+                    ':oxtype' => $sType,
+                    ':oxobjectid' => $sObjectId,
+                    ':oxlang' => $iLanguage,
+                ]);
             }
         }
     }

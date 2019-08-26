@@ -325,7 +325,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         if ($sObjectId && isset($iObjectLang)) {
             $iObjectLang = (int) $iObjectLang;
             $sQ .= " and not (oxobjectid = :oxobjectid and oxlang = :oxlang)";
-            array_push($params, [
+            $params = array_merge($params, [
                 ':oxobjectid' => $sObjectId,
                 ':oxlang' => $iObjectLang
             ]);
@@ -392,7 +392,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                    AND `oxshopid` = :oxshopid
                    AND `oxlang` = :oxlang";
 
-            $sParams = $sParams ? $oDb->quote($sParams) : "''";
             if ($sParams && $blStrictParamsCheck) {
                 $sQ .= " AND `oxparams` = :oxparams";
                 $params[':oxparams'] = $sParams;
@@ -776,7 +775,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                 oxlang = :oxlang";
 
         if ($sParams) {
-            $sQ .= " and oxparams = :oxparams";
+            $sQ .= " and oxparams = :oxparams ";
             $params[':oxparams'] = $sParams;
         }
 
@@ -1088,7 +1087,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                         ':oxshopid' => $iShopId,
                         ':oxlang' => $iLang
                     ]);
-
                     if (!$result) {
                         $this->_copyToHistory($sOldObjectId, $iShopId, $iLang, 'static', $sObjectId);
                     }

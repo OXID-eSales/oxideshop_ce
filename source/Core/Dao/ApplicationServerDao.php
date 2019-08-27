@@ -204,13 +204,14 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function selectDataById($id)
     {
-        //todo: prepare
         $query = "SELECT " . $this->config->getDecodeValueQuery() .
-            " as oxvarvalue FROM oxconfig WHERE oxvarname = ? AND oxshopid = ? FOR UPDATE";
+            " as oxvarvalue FROM oxconfig 
+            WHERE oxvarname = :oxvarname 
+              AND oxshopid = :oxshopid FOR UPDATE";
 
         $parameter = [
-            self::CONFIG_NAME_FOR_SERVER_INFO.$id,
-            $this->config->getBaseShopId()
+            ":oxvarname" => self::CONFIG_NAME_FOR_SERVER_INFO.$id,
+            ":oxshopid" => $this->config->getBaseShopId()
         ];
 
         $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);

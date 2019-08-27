@@ -526,7 +526,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sQ .= " LIMIT 1";
 
         // caching to avoid same queries..
-        $sIdent = md5(serialize($params));
+        $sIdent = md5("_loadFromDb" . serialize($params));
 
         // looking in cache
         if (($sSeoUrl = $this->_loadFromCache($sIdent, $sType, $iLang, $iShopId, $sParams)) === false) {

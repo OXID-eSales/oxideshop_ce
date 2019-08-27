@@ -557,7 +557,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
                     where oxshopid = :oxshopid and ";
 
         if ($module) {
-            $select .= " oxmodule LIKE " . $db->quote($module . "%");
+            $select .= " oxmodule LIKE :oxmodule";
+            $params[':oxmodule'] = $module . "%";
         } else {
             $select .= "oxmodule = ''";
         }

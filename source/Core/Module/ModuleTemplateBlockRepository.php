@@ -64,7 +64,7 @@ class ModuleTemplateBlockRepository
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         return $db->getAll($sql, [
-            ':oxshopid'       => $shopId,
+            ':oxshopid' => $shopId,
             ':oxtemplate' => $shopTemplateName
         ]);
     }

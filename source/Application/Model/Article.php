@@ -4562,8 +4562,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             ':articleId' => $articleId
         ]);
 
-        $sDelete = 'delete from oxratings where oxobjectid = ' . $quotedArticleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxratings where oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
         $sDelete = 'delete from oxaccessoire2article where oxobjectid = ' . $quotedArticleId . ' or oxarticlenid = ' . $quotedArticleId . ' ';
         $oDb->execute($sDelete);

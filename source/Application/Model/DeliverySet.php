@@ -52,7 +52,9 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb->execute('delete from oxobject2payment where oxobjectid = :oxid', [
             ':oxid' => $sOxId
         ]);
-        $oDb->execute('delete from oxobject2delivery where oxdeliveryid = ' . $sOxIdQuoted);
+        $oDb->execute('delete from oxobject2delivery where oxdeliveryid = :oxid', [
+            ':oxid' => $sOxId
+        ]);
         $oDb->execute('delete from oxdel2delset where oxdelsetid = ' . $sOxIdQuoted);
 
         return parent::delete($sOxId);

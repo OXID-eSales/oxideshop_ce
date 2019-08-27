@@ -20,6 +20,8 @@ class DIConfigWrapper
     const RESOURCE_KEY = 'resource';
     const IMPORTS_SECTION = 'imports';
 
+    private $sectionDefaults = [self::SERVICE_SECTION => ['_defaults' => ['public' => false, 'autowire' => true]]];
+
     /**
      * @var array
      */
@@ -264,7 +266,12 @@ class DIConfigWrapper
     private function addSectionIfMissing($section)
     {
         if (!array_key_exists($section, $this->configArray)) {
-            $this->configArray[$section] = [];
+            if (array_key_exists($section, $this->sectionDefaults)) {
+                $this->configArray[$section] = $this->sectionDefaults[$section];
+            }
+            else {
+                $this->configArray[$section] = [];
+            }
         }
     }
 }

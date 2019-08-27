@@ -189,9 +189,12 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         if ($sOXID) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "delete from oxobject2list where oxobjectid = " . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId());
+            $sQ = "delete from oxobject2list where oxobjectid = :oxobjectid and oxlistid = :oxlistid";
 
-            return $oDb->execute($sQ);
+            return $oDb->execute($sQ, [
+                ':oxobjectid' => $sOXID,
+                ':oxlistid' => $this->getId()
+            ]);
         }
     }
 

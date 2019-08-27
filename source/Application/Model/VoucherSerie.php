@@ -120,8 +120,10 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function deleteVoucherList()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = 'delete from oxvouchers where oxvoucherserieid = ' . $oDb->quote($this->getId());
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxvouchers where oxvoucherserieid = :oxvoucherserieid';
+        $oDb->execute($sDelete, [
+            ':oxvoucherserieid' => $this->getId()
+        ]);
     }
 
     /**

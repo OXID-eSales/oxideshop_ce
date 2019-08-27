@@ -82,8 +82,10 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function unsetUserGroups()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = 'delete from oxobject2group where oxobjectid = ' . $oDb->quote($this->getId());
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2group where oxobjectid = :oxobjectid';
+        $oDb->execute($sDelete, [
+            ':oxobjectid' => $this->getId()
+        ]);
     }
 
     /**

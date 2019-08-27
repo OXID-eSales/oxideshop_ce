@@ -315,7 +315,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
             // A. removing assigned:
             // - deliveries
-            $oDb->execute("delete from oxobject2delivery where oxobject2delivery.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2delivery where oxobject2delivery.oxobjectid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
             // - discounts
             $oDb->execute("delete from oxobject2discount where oxobject2discount.oxobjectid=$sOxidQuoted ");
 

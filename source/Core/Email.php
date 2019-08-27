@@ -2258,7 +2258,7 @@ class Email extends PHPMailer
           WHERE `OXACTIVE` = 1 
           AND `OXUSERNAME` = :oxusername 
           AND `OXPASSWORD` != ''";
-        if ($this->getConfig()->getConfigParam('blMallUsers')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallUsers')) {
             $select .= " ORDER BY OXSHOPID = :oxshopid DESC";
         } else {
             $select .= " AND OXSHOPID = :oxshopid";

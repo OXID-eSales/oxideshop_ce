@@ -89,11 +89,11 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
             ':oxartid' => $sArticleId
         ];
 
-        if ($this->getConfig()->getConfigParam('blMallInterchangeArticles')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallInterchangeArticles')) {
             $sShopSelect = '1';
         } else {
             $sShopSelect = " `oxshopid` = :oxshopid ";
-            $params[':oxshopid'] = $this->getConfig()->getShopId();
+            $params[':oxshopid'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         }
 
         $sSql = "SELECT * FROM `oxprice2article` 

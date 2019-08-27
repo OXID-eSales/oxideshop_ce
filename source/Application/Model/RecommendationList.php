@@ -252,7 +252,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
 
-            $iCnt = $this->getConfig()->getConfigParam('iNrofCrossellArticles');
+            $iCnt = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCrossellArticles');
 
             $oRecommList->setSqlLimit(0, $iCnt);
 
@@ -266,7 +266,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $sSelect .= " ) DESC, count( lists.oxid ) DESC";
 
             $oRecommList->selectString($sSelect, [
-                ':oxshopid' => $this->getConfig()->getShopId()
+                ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
             ]);
 
             stopProfile(__FUNCTION__);

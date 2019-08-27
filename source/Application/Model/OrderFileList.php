@@ -53,7 +53,7 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->selectString($sSql, [
             ':oxuserid' => $sUserId,
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
         ]);
     }
 
@@ -82,7 +82,7 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->selectString($sSql, [
             ':oxorderid' => $sOrderId,
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
         ]);
     }
 }

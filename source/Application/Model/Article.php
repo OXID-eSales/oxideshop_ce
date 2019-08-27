@@ -3461,7 +3461,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = :oxartid";
 
-            if (!$this->getConfig()->getConfigParam('blVariantParentBuyable') && $blAddFromParent) {
+            if (!Registry::getConfig()->getConfigParam('blVariantParentBuyable') && $blAddFromParent) {
                 $sQ .= " OR `oxartId` = :oxparentid";
             }
 

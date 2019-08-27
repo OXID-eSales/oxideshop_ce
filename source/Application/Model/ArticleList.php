@@ -276,7 +276,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $sShopID = $this->getConfig()->getShopId();
+        $sShopID = Registry::getConfig()->getShopId();
         $sActionID = strtolower($sActionID);
 
         //echo $sSelect;

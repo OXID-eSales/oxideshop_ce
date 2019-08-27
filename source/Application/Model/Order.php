@@ -1532,7 +1532,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sQ = 'select max(oxorder.oxinvoicenr) from oxorder 
             where oxorder.oxshopid = :oxshopid ';
         $params = [
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => Registry::getConfig()->getShopId()
         ];
 
         return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
@@ -1548,7 +1548,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sQ = 'select max(cast(oxorder.oxbillnr as unsigned)) from oxorder 
             where oxorder.oxshopid = :oxshopid ';
         $params = [
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => Registry::getConfig()->getShopId()
         ];
 
         return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
@@ -1630,7 +1630,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         $params = [
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => Registry::getConfig()->getShopId()
         ];
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
@@ -1654,7 +1654,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         $params = [
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => Registry::getConfig()->getShopId()
         ];
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
@@ -1825,7 +1825,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             order by oxorder.oxorderdate desc ';
 
         $sLastPaymentId = $masterDb->getOne($sQ, [
-            ':oxshopid' => $this->getConfig()->getShopId(),
+            ':oxshopid' => Registry::getConfig()->getShopId(),
             ':oxuserid' => $sUserId
         ]);
 

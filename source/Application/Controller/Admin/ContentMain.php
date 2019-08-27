@@ -225,7 +225,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         } elseif ($masterDb->getOne("select oxid from oxcontents where oxloadid = :oxloadid and oxid != :oxid and oxshopid = :oxshopid", [
             ':oxloadid' => $sIdent,
             ':oxid' => $sOxId,
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
         ])) {
             $blAllow = true;
         }

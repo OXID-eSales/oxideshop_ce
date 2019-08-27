@@ -688,7 +688,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sShopSelect = '';
         if (!$this->_blMallUsers && $this->oxuser__oxrights->value != 'malladmin') {
             $sShopSelect = ' AND oxshopid = :oxshopid ';
-            $params[':oxshopid'] = $this->getConfig()->getShopId();
+            $params[':oxshopid'] = Registry::getConfig()->getShopId();
         }
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
@@ -765,7 +765,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $iCnt = (int) $oDb->getOne($sQ, [
                 ':oxuserid' => $this->getId(),
                 ':oxorderdate' => $this->oxuser__oxregister->value,
-                ':oxshopid' => $this->getConfig()->getShopId()
+                ':oxshopid' => Registry::getConfig()->getShopId()
             ]);
         }
 
@@ -1873,7 +1873,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oRecommList->init('oxrecommlist');
         $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
-        $iShopId = $this->getConfig()->getShopId();
+        $iShopId = Registry::getConfig()->getShopId();
         $sSelect = 'select * from oxrecommlists 
             where oxuserid = :oxuserid 
                 and oxshopid = :oxshopid';
@@ -1903,7 +1903,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_iCntRecommLists === null || $sOx) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $this->_iCntRecommLists = 0;
-            $iShopId = $this->getConfig()->getShopId();
+            $iShopId = Registry::getConfig()->getShopId();
             $sSelect = 'select count(oxid) from oxrecommlists 
                 where oxuserid = :oxuserid and oxshopid = :oxshopid';
             $this->_iCntRecommLists = $oDb->getOne($sSelect, [
@@ -2193,7 +2193,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $termsSql = "select 1 from oxacceptedterms where oxuserid = :oxuserid and oxshopid = :oxshopid";
         return (bool) $oDb->getOne($termsSql, [
             ':oxuserid' => $this->getId(),
-            ':oxshopid' => $this->getConfig()->getShopId()
+            ':oxshopid' => Registry::getConfig()->getShopId()
         ]);
     }
 

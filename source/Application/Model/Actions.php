@@ -66,8 +66,12 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         // remove actions from articles also
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = "delete from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxartid = " . $oDb->quote($articleId) . " and oxshopid = '" . $this->getShopId() . "'";
-        $iRemovedArticles = $oDb->execute($sDelete);
+        $sDelete = "delete from oxactions2article where oxactionid = :oxactionid and oxartid = :oxartid and oxshopid = :oxshopid";
+        $iRemovedArticles = $oDb->execute($sDelete, [
+            ':oxactionid' => $this->getId(),
+            ':oxartid' => $articleId,
+            ':oxshopid' => $this->getShopId()
+        ]);
 
         return (bool) $iRemovedArticles;
     }

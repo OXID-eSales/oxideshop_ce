@@ -217,7 +217,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sIdQuoted = $oDb->quote($oCategory->getId());
         $oDb->execute("update oxseo, (select oxseourl from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcategory') as test set oxseo.oxexpired=1 where oxseo.oxseourl like concat(test.oxseourl, '%') and (oxtype = 'oxcategory' or oxtype = 'oxarticle')");
-        $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = $sIdQuoted");
+        $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = :oxparams", [
+            ':oxparams' => $oCategory->getId()
+        ]);
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcategory'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
         $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");

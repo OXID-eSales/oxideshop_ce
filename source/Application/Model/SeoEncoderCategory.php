@@ -220,7 +220,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = :oxparams", [
             ':oxparams' => $oCategory->getId()
         ]);
-        $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcategory'");
+        $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'", [
+            ':oxobjectid' => $oCategory->getId()
+        ]);
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
         $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
     }

@@ -39,11 +39,13 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $this->_aViewData['edit'] = $oShop;
 
         // loading static seo urls
-        $sQ = "select oxstdurl, oxobjectid from oxseo where oxtype='static' and oxshopid=" . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oShop->getId()) . " group by oxobjectid order by oxstdurl";
+        $sQ = "select oxstdurl, oxobjectid from oxseo where oxtype='static' and oxshopid = :oxshopid group by oxobjectid order by oxstdurl";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init('oxbase', 'oxseo');
-        $oList->selectString($sQ);
+        $oList->selectString($sQ, [
+            ':oxshopid' => $oShop->getId()
+        ]);
 
         $this->_aViewData['aStaticUrls'] = $oList;
 
@@ -71,8 +73,11 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
             $this->_aViewData['sActSeoObject'] = $sActObject;
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-            $sQ = "select oxseourl, oxlang from oxseo where oxobjectid = " . $oDb->quote($sActObject) . " and oxshopid = " . $oDb->quote($iShopId);
-            $oRs = $oDb->select($sQ);
+            $sQ = "select oxseourl, oxlang from oxseo where oxobjectid = :oxobjectid and oxshopid = :oxshopid";
+            $oRs = $oDb->select($sQ, [
+                ':oxobjectid' => $sActObject,
+                ':oxshopid' => $iShopId
+            ]);
             if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $aSeoUrls[$oRs->fields['oxlang']] = [$sActObject, $oRs->fields['oxseourl']];

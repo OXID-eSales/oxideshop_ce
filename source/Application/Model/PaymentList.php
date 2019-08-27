@@ -160,9 +160,11 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sQ = "select $sTable.*, oxobject2payment.oxobjectid from $sTable left join (select oxobject2payment.* from oxobject2payment where oxobject2payment.oxtype = 'rdfapayment') as oxobject2payment on oxobject2payment.oxpaymentid=$sTable.oxid ";
         $sQ .= "where $sTable.oxactive = 1 ";
         if ($dPrice !== null) {
-            $sQ .= "and $sTable.oxfromamount <= " . $oDb->quote($dPrice) . " and $sTable.oxtoamount >= " . $oDb->quote($dPrice);
+            $sQ .= "and $sTable.oxfromamount <= :amount and $sTable.oxtoamount >= :amount";
         }
-        $rs = $oDb->select($sQ);
+        $rs = $oDb->select($sQ, [
+            ':amount' => $dPrice
+        ]);
         if ($rs != false && $rs->count() > 0) {
             $oSaved = clone $this->getBaseObject();
             while (!$rs->EOF) {

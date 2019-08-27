@@ -448,9 +448,11 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             $iEnglishId = array_search("en", $aLangIds);
             if (false !== $iEnglishId) {
                 $sViewName = getViewName("oxcountry", $iEnglishId);
-                $sQ = "select oxtitle from {$sViewName} where oxisoalpha2 = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sCountryCode);
+                $sQ = "select oxtitle from {$sViewName} where oxisoalpha2 = :oxisoalpha2";
                 // Value does not change that often, reading from slave is ok here (see ESDEV-3804 and ESDEV-3822).
-                $sCountryName = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ);
+                $sCountryName = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
+                    ':oxisoalpha2' => $sCountryCode
+                ]);
                 if ($sCountryName) {
                     $sCountry = $sCountryName;
                 }

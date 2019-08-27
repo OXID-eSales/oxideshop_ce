@@ -36,7 +36,9 @@ class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
                 SELECT {$sSelectFields}, `oxcountry`.`oxtitle` AS oxcountry
                 FROM oxaddress
                 LEFT JOIN {$sViewName} AS oxcountry ON oxaddress.oxcountryid = oxcountry.oxid
-                WHERE oxaddress.oxuserid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sUserId);
-        $this->selectString($sSelect);
+                WHERE oxaddress.oxuserid = :oxuserid";
+        $this->selectString($sSelect, [
+            ':oxuserid' => $sUserId
+        ]);
     }
 }

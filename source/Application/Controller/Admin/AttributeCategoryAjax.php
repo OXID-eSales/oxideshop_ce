@@ -128,9 +128,11 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
                 $oNewGroup->$sObjectIdField = new \OxidEsales\Eshop\Core\Field($sAdd);
                 $oNewGroup->$sAttributeIdField = new \OxidEsales\Eshop\Core\Field($oAttribute->$sOxIdField->value);
 
-                $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ";
+                $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = :oxobjectid";
 
-                $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql));
+                $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql, [
+                    ':oxobjectid' => $sAdd
+                ]));
                 $oNewGroup->save();
             }
         }

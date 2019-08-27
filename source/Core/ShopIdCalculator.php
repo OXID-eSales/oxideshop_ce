@@ -79,15 +79,16 @@ class ShopIdCalculator
 
         $aMap = [];
 
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sConfKey = $this->_getConfKey();
 
-        $sSelect = "SELECT oxshopid, oxvarname, DECODE( oxvarvalue , " . $oDb->quote($sConfKey) . " ) as oxvarvalue " .
+        $sSelect = "SELECT oxshopid, oxvarname, DECODE( oxvarvalue , :configkey ) as oxvarvalue " .
             "FROM oxconfig WHERE oxvarname in ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $oRs = $masterDb->select($sSelect, false);
+        $oRs = $masterDb->select($sSelect, [
+            ':configkey' => $sConfKey
+        ]);
 
         if ($oRs && $oRs->count() > 0) {
             while (!$oRs->EOF) {

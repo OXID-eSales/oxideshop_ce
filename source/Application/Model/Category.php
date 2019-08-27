@@ -794,7 +794,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         }
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        return $oDb->getOne('select oxrootid from ' . getViewName('oxcategories') . ' where oxid = ' . $oDb->quote($sCategoryId));
+        return $oDb->getOne('select oxrootid from ' . getViewName('oxcategories') . ' where oxid = :oxid', [
+            ':oxid' => $sCategoryId
+        ]);
     }
 
     /**
@@ -882,7 +884,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
         // No need to explicitly force master here.
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sOldParentID = $database->getOne("select oxparentid from oxcategories where oxid = " . $database->quote($this->getId()));
+        $sOldParentID = $database->getOne("select oxparentid from oxcategories where oxid = :oxid", [
+            ':oxid' => $this->getId()
+        ]);
 
         if ($this->_blIsSeoObject && $this->isAdmin()) {
             \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->markRelatedAsExpired($this);
@@ -905,14 +909,18 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
             $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
-            $sNewRootID = $database->getOne("select oxrootid from oxcategories where oxid = " . $database->quote($this->oxcategories__oxparentid->value));
+            $sNewRootID = $database->getOne("select oxrootid from oxcategories where oxid = :oxid", [
+                ':oxid' => $this->oxcategories__oxparentid->value
+            ]);
 
             //If empty rootID, we set it to categorys oxid
             if ($sNewRootID == "") {
                 //echo "<br>* ) Creating new root tree ( {$this->_sOXID} )";
                 $sNewRootID = $this->getId();
             }
-            $sNewParentLeft = $database->getOne("select oxleft from oxcategories where oxid = " . $database->quote($this->oxcategories__oxparentid->value));
+            $sNewParentLeft = $database->getOne("select oxleft from oxcategories where oxid = :oxid", [
+                ':oxid' => $this->oxcategories__oxparentid->value
+            ]);
 
             //if(!$sNewParentLeft){
             //the current node has become root node, (oxrootid == "oxrootid")
@@ -1138,8 +1146,10 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
         $sTable = $this->getViewName();
         $sField = "`{$sTable}`.`{$sField}`";
-        $sSql = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = ? AND `OXPARENTID` != 'oxrootid'";
-        $aResult = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol($sSql, [$sOXID]);
+        $sSql = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = :oxrootid AND `OXPARENTID` != 'oxrootid'";
+        $aResult = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol($sSql, [
+            ':oxrootid' => $sOXID
+        ]);
 
         return $aResult;
     }

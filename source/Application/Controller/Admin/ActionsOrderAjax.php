@@ -58,12 +58,13 @@ class ActionsOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     public function setSorting()
     {
         $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sQuotedSelectionId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sSelId);
-        $sSelect = "select * from oxobject2selectlist where oxobjectid= {$sQuotedSelectionId} order by oxsort";
+        $sSelect = "select * from oxobject2selectlist where oxobjectid = :oxobjectid order by oxsort";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxobject2selectlist");
-        $oList->selectString($sSelect);
+        $oList->selectString($sSelect, [
+            ':oxobjectid' => $sSelId
+        ]);
 
         // fixing indexes
         $iSelCnt = 0;

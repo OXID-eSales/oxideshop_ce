@@ -137,10 +137,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                 $sProdIds = "";
                 foreach ($aArticles as $sAdd) {
                     // check, if it's already in, then don't add it again
-                    $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= "
-                               . $database->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $database->quote($sAdd) . "";
+                    $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid = :oxcatnid "
+                               . " and oxobject2category.oxobjectid = :oxobjectid";
                     // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    if ($database->getOne($sSelect, false, false)) {
+                    if ($database->getOne($sSelect, [':oxcatnid' => $sCategoryID, ':oxobjectid' => $sAdd])) {
                         continue;
                     }
 

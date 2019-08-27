@@ -43,8 +43,15 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function addArticle($articleId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select max(oxsort) from oxactions2article where oxactionid = " . $oDb->quote($this->getId()) . " and oxshopid = '" . $this->getShopId() . "'";
-        $iSort = ((int) $oDb->getOne($sQ)) + 1;
+        $sQ = "select max(oxsort) 
+                from oxactions2article 
+                where oxactionid = :oxactionid and oxshopid = :oxshopid";
+
+        $params = [
+            ':oxactionid' => $this->getId(),
+            ':oxshopid' => $this->getShopId()
+        ];
+        $iSort = ((int)$oDb->getOne($sQ, $params)) + 1;
 
         $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oNewGroup->init('oxactions2article');
@@ -226,8 +233,11 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $articleId = $database->getOne(
             'select oxobjectid from oxobject2action ' .
-            'where oxactionid=' . $database->quote($this->getId()) .
-            ' and oxclass="oxarticle"'
+            'where oxactionid = :oxactionid and oxclass = :oxclass',
+            [
+                ':oxactionid' => $this->getId(),
+                ':oxclass' => 'oxarticle'
+            ]
         );
 
         return $articleId;

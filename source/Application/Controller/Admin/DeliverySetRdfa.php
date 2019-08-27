@@ -95,8 +95,10 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
     {
         $oDb = DatabaseProvider::getDb();
         $aRDFaDeliveries = [];
-        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfadeliveryset" ';
-        $rs = $oDb->select($sSelect);
+        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid = :oxdeliveryid and oxtype = "rdfadeliveryset" ';
+        $rs = $oDb->select($sSelect, [
+            ':oxdeliveryid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")
+        ]);
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {
                 $aRDFaDeliveries[] = $rs->fields[0];

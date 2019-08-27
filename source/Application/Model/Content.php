@@ -307,7 +307,9 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 if ($this->_sParentCatId === null) {
                     $this->_sParentCatId = false;
                     $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                    $sParentId = $oDb->getOne("select oxparentid from oxcategories where oxid = " . $oDb->quote($this->oxcontents__oxcatid->value));
+                    $sParentId = $oDb->getOne("select oxparentid from oxcategories where oxid = :oxid", [
+                        ':oxid' => $this->oxcontents__oxcatid->value
+                    ]);
                     if ($sParentId && 'oxrootid' != $sParentId) {
                         $this->_sParentCatId = $sParentId;
                     }

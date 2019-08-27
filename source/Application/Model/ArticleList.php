@@ -276,8 +276,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $sShopID = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-        $sActionID = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote(strtolower($sActionID));
+        $sShopID = $this->getConfig()->getShopId();
+        $sActionID = strtolower($sActionID);
 
         //echo $sSelect;
         $oBaseObject = $this->getBaseObject();
@@ -293,11 +293,16 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = "select $sArticleFields from oxactions2article
                               left join $sArticleTable on $sArticleTable.oxid = oxactions2article.oxartid
                               left join $sViewName on $sViewName.oxid = oxactions2article.oxactionid
-                              where oxactions2article.oxshopid = '$sShopID' and oxactions2article.oxactionid = $sActionID and $sActiveSql
-                              and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet() . "
+                              where oxactions2article.oxshopid = :oxshopid  
+                                  and oxactions2article.oxactionid = :oxactionid 
+                                  and $sActiveSql
+                                  and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet() . "
                               order by oxactions2article.oxsort $sLimit";
 
-        $this->selectString($sSelect);
+        $this->selectString($sSelect, [
+            ':oxshopid' => $sShopID,
+            ':oxactionid' => $sActionID
+        ]);
     }
 
     /**
@@ -319,11 +324,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
 
-        $sArticleId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId);
-
         $sSelect = "SELECT $sArticleTable.*
                         FROM $sArticleTable INNER JOIN oxobject2article ON oxobject2article.oxobjectid=$sArticleTable.oxid ";
-        $sSelect .= "WHERE oxobject2article.oxarticlenid = $sArticleId ";
+        $sSelect .= "WHERE oxobject2article.oxarticlenid = :oxarticlenid ";
         $sSelect .= " AND " . $oBaseObject->getSqlActiveSnippet();
 
         // #525 bidirectional cross selling
@@ -332,24 +335,26 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 (
                     SELECT $sArticleTable.* FROM $sArticleTable
                         INNER JOIN oxobject2article AS O2A1 on
-                            ( O2A1.oxobjectid = $sArticleTable.oxid AND O2A1.oxarticlenid = $sArticleId )
+                            ( O2A1.oxobjectid = $sArticleTable.oxid AND O2A1.oxarticlenid = :oxarticlenid )
                     WHERE 1
                     AND " . $oBaseObject->getSqlActiveSnippet() . "
-                    AND ($sArticleTable.oxid != $sArticleId)
+                    AND ($sArticleTable.oxid != :oxarticlenid)
                 )
                 UNION
                 (
                     SELECT $sArticleTable.* FROM $sArticleTable
                         INNER JOIN oxobject2article AS O2A2 ON
-                            ( O2A2.oxarticlenid = $sArticleTable.oxid AND O2A2.oxobjectid = $sArticleId )
+                            ( O2A2.oxarticlenid = $sArticleTable.oxid AND O2A2.oxobjectid = :oxarticlenid )
                     WHERE 1
                     AND " . $oBaseObject->getSqlActiveSnippet() . "
-                    AND ($sArticleTable.oxid != $sArticleId)
+                    AND ($sArticleTable.oxid != :oxarticlenid)
                 )";
         }
 
         $this->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));
-        $this->selectString($sSelect);
+        $this->selectString($sSelect, [
+            ':oxarticlenid' => $sArticleId
+        ]);
     }
 
     /**
@@ -368,18 +373,19 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $sArticleId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId);
-
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
 
-        $sSelect = "select $sArticleTable.* from oxaccessoire2article left join $sArticleTable on oxaccessoire2article.oxobjectid=$sArticleTable.oxid ";
-        $sSelect .= "where oxaccessoire2article.oxarticlenid = $sArticleId ";
+        $sSelect = "select $sArticleTable.* from oxaccessoire2article 
+            left join $sArticleTable on oxaccessoire2article.oxobjectid=$sArticleTable.oxid ";
+        $sSelect .= "where oxaccessoire2article.oxarticlenid = :oxarticlenid ";
         $sSelect .= " and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet();
         //sorting articles
         $sSelect .= " order by oxaccessoire2article.oxsort";
 
-        $this->selectString($sSelect);
+        $this->selectString($sSelect, [
+            ':oxarticlenid' => $sArticleId
+        ]);
     }
 
     /**
@@ -787,9 +793,11 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
                 // Collect article id's for later recalculation.
                 $sQ = "SELECT `oxid` FROM `oxarticles`
-                   WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
+                   WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= :oxupdatepricetime";
 
-                $aUpdatedArticleIds = $database->getCol($sQ);
+                $aUpdatedArticleIds = $database->getCol($sQ, [
+                    ':oxupdatepricetime' => $sCurrUpdateTime
+                ]);
 
                 // updating oxarticles
                 $blUpdated = $this->updateOxArticles($sCurrUpdateTime, $database);

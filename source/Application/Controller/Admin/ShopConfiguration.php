@@ -214,9 +214,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 from oxconfig as cfg
                     left join oxconfigdisplay as disp
                         on cfg.oxmodule=disp.oxcfgmodule and cfg.oxvarname=disp.oxcfgvarname
-                where cfg.oxshopid = '$sShopId'
-                    and cfg.oxmodule=" . $oDb->quote($sModule) . "
-                order by disp.oxpos, cfg.oxvarname"
+                where cfg.oxshopid = :oxshopid
+                    and cfg.oxmodule = :oxmodule
+                order by disp.oxpos, cfg.oxvarname",
+            [
+                ':oxshopid' => $sShopId,
+                ':oxmodule' => $sModule
+            ]
         );
 
         if ($rs != false && $rs->count() > 0) {

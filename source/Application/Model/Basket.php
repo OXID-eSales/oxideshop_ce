@@ -2847,15 +2847,20 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         $sCatTable = getViewName('oxcategories');
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sParentId = $oDb->getOne("select oxparentid from oxarticles where oxid = " . $oDb->quote($sProductId));
+        $sParentId = $oDb->getOne("select oxparentid from oxarticles where oxid = :oxid", [
+            ':oxid' => $sProductId
+        ]);
         $sProductId = $sParentId ? $sParentId : $sProductId;
 
         $sQ = "select 1 from {$sO2CTable}
                  left join {$sCatTable} on {$sCatTable}.oxid = {$sO2CTable}.oxcatnid
-                 where {$sO2CTable}.oxobjectid = " . $oDb->quote($sProductId) . " and
-                       {$sCatTable}.oxrootid = " . $oDb->quote($sRootCatId);
+                 where {$sO2CTable}.oxobjectid = :oxobjectid and
+                       {$sCatTable}.oxrootid = :oxrootid";
 
-        return (bool) $oDb->getOne($sQ);
+        return (bool) $oDb->getOne($sQ, [
+            ':oxobjectid' => $sProductId,
+            ':oxrootid' => $sRootCatId
+        ]);
     }
 
     /**

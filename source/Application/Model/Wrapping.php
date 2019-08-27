@@ -116,8 +116,13 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oEntries = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oEntries->init('oxwrapping');
         $sWrappingViewName = getViewName('oxwrapping');
-        $sSelect = "select * from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sWrapType);
-        $oEntries->selectString($sSelect);
+        $sSelect = "select * from $sWrappingViewName 
+            where $sWrappingViewName.oxactive = :oxactive
+              and $sWrappingViewName.oxtype = :oxtype";
+        $oEntries->selectString($sSelect, [
+            ':oxactive' => '1',
+            ':oxtype' => $sWrapType
+        ]);
 
         return $oEntries;
     }
@@ -133,9 +138,14 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $sWrappingViewName = getViewName('oxwrapping');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select count(*) from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . $oDb->quote($sWrapType);
+        $sQ = "select count(*) from $sWrappingViewName 
+            where $sWrappingViewName.oxactive = :oxactive 
+              and $sWrappingViewName.oxtype = :oxtype";
 
-        return (int) $oDb->getOne($sQ);
+        return (int) $oDb->getOne($sQ, [
+            ':oxactive' => '1',
+            ':oxtype' => $sWrapType
+        ]);
     }
 
     /**

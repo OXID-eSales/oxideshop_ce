@@ -73,11 +73,13 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
            oxnewssubscribed.oxfname, oxnewssubscribed.oxlname, oxnewssubscribed.oxemailfailed
            from oxnewssubscribed left join oxobject2group on
            oxobject2group.oxobjectid = oxnewssubscribed.oxuserid where
-           ( oxobject2group.oxshopid = '{$sShopId}' or oxobject2group.oxshopid is null ) and
-           $sQGroups and oxnewssubscribed.oxdboptin = 1 and oxnewssubscribed.oxshopid = '{$sShopId}'
+           ( oxobject2group.oxshopid = :oxshopid or oxobject2group.oxshopid is null ) and
+           $sQGroups and oxnewssubscribed.oxdboptin = 1 and oxnewssubscribed.oxshopid = :oxshopid
            group by oxnewssubscribed.oxemail";
 
-        $oRs = $oDB->selectLimit($sQ, 100, $iStart);
+        $oRs = $oDB->selectLimit($sQ, 100, $iStart, [
+            ':oxshopid' => $sShopId
+        ]);
         $blContinue = ($oRs != false && $oRs->count() > 0);
 
         if ($blContinue) {
@@ -89,7 +91,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
 
                     // must check if such user is in DB
                     // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    if (!\OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne("select oxid from oxuser where oxid = " . $oDB->quote($sUserId))) {
+                    if (!\OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne("select oxid from oxuser where oxid = :oxid", [':oxid' => $sUserId])) {
                         $sUserId = null;
                     }
 

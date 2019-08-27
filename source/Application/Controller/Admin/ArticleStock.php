@@ -73,9 +73,11 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
             $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oPriceList->init('oxbase', "oxprice2article");
-            $sQ = "select * from oxprice2article where oxartid = '{$soxId}' " .
+            $sQ = "select * from oxprice2article where oxartid = :oxartid " .
                   "and {$sShopSelect} and (oxamount > 0 or oxamountto > 0) order by oxamount ";
-            $oPriceList->selectstring($sQ);
+            $oPriceList->selectstring($sQ, [
+                ':oxartid' => $soxId
+            ]);
 
             $this->_aViewData["amountprices"] = $oPriceList;
         }

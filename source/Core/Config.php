@@ -549,15 +549,24 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $moduleSql = $module ? " oxmodule LIKE " . $db->quote($module . "%") : " oxmodule='' ";
-        $onlyVarsSql = $this->_getConfigParamsSelectSnippet($onlyVars);
-
+        $params = [
+          ':oxshopid' => $shopID
+        ];
         $select = "select
                         oxvarname, oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue
                     from oxconfig
-                    where oxshopid = '$shopID' and " . $moduleSql . $onlyVarsSql;
+                    where oxshopid = :oxshopid and ";
 
-        $result = $db->getAll($select);
+        if ($module) {
+            $select .= " oxmodule LIKE :oxmodule";
+            $params[':oxmodule'] = $module . "%";
+        } else {
+            $select .= "oxmodule = ''";
+        }
+
+        $select .= $this->_getConfigParamsSelectSnippet($onlyVars);
+
+        $result = $db->getAll($select, $params);
 
         foreach ($result as $value) {
             $varName = $value[0];
@@ -1872,8 +1881,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$shopId}' and oxmodule = '{$module}' and oxvarname = " . $db->quote($varName);
-        $rs = $db->select($query);
+        $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname";
+        $rs = $db->select($query, [
+            ':oxshopid' => $shopId,
+            ':oxmodule' => $module,
+            ':oxvarname' => $varName
+        ]);
 
         if ($rs != false && $rs->count() > 0) {
             return $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
@@ -1925,8 +1938,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $productive = $this->getConfigParam('blProductive');
         if (!isset($productive)) {
-            $query = 'select oxproductive from oxshops where oxid = "' . $this->getShopId() . '"';
-            $productive = ( bool ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query);
+            $query = 'select oxproductive from oxshops where oxid = :oxid';
+            $productive = ( bool ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [
+                ':oxid' => $this->getShopId()
+            ]);
             $this->setConfigParam('blProductive', $productive);
         }
 

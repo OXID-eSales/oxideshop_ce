@@ -137,7 +137,7 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
                 $oNewGroup->init("oxobject2selectlist");
                 $oNewGroup->oxobject2selectlist__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
                 $oNewGroup->oxobject2selectlist__oxselnid = new \OxidEsales\Eshop\Core\Field($soxId);
-                $oNewGroup->oxobject2selectlist__oxsort = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid =  " . $database->quote($sAdd) . " "));
+                $oNewGroup->oxobject2selectlist__oxsort = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne("select max(oxsort) + 1 from oxobject2selectlist where oxobjectid = :oxobjectid", [':oxobjectid' => $sAdd]));
                 $oNewGroup->save();
 
                 $this->onArticleAddToSelectionList($sAdd);

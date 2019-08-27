@@ -70,10 +70,12 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $sCountryId = $this->getId();
         $sViewName = getViewName("oxstates", $this->getLanguage());
-        $sQ = "select * from {$sViewName} where `oxcountryid` = '$sCountryId' order by `oxtitle`  ";
+        $sQ = "select * from {$sViewName} where `oxcountryid` = :oxcountryid order by `oxtitle`  ";
         $this->_aStates = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $this->_aStates->init("oxstate");
-        $this->_aStates->selectString($sQ);
+        $this->_aStates->selectString($sQ, [
+            ':oxcountryid' => $sCountryId
+        ]);
 
         return $this->_aStates;
     }
@@ -89,7 +91,9 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        return $oDb->getOne("select oxid from oxcountry where oxisoalpha2 = " . $oDb->quote($sCode));
+        return $oDb->getOne("select oxid from oxcountry where oxisoalpha2 = :oxisoalpha2", [
+            ':oxisoalpha2' => $sCode
+        ]);
     }
 
     /**

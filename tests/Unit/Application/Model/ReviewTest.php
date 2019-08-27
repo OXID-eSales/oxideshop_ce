@@ -132,12 +132,12 @@ class ReviewTest extends \OxidTestCase
         oxTestModules::addFunction('oxlist', 'selectString($sql, array $parameters = array())', '{$this->selectArgs = $aA;$o=oxNew("oxreview");$o->oxreviews__oxcreate=oxNew("oxField");$o->oxreviews__oxtext=oxNew("oxField");$this->_aArray = array($o);}');
         $oObj = oxNew('oxreview');
         $oList = $oObj->loadList('checktype', array('aId', 'lalaId'));
-        $this->assertEquals("select oxreviews.* from oxreviews where oxreviews.oxtype = 'checktype' and oxreviews.oxobjectid in ( 'aId', 'lalaId' ) and oxreviews.oxlang = '0' and oxreviews.oxtext != \"\"  order by oxreviews.oxcreate desc ", $oList->selectArgs[0]);
+        $this->assertEquals("select oxreviews.* from oxreviews where oxreviews.oxtype = :oxtype and oxreviews.oxobjectid in ( 'aId', 'lalaId' ) and oxreviews.oxlang = :oxlang and oxreviews.oxtext != \"\"  order by oxreviews.oxcreate desc ", $oList->selectArgs[0]);
         $this->assertTrue($oList[0]->oxreviews__oxcreate->convertToFormattedDbDate);
         $this->assertTrue($oList[0]->oxreviews__oxtext->convertToPseudoHtml);
 
         $oList = $oObj->loadList('checktype', array('aId', 'lalaId'), 1, 4);
-        $this->assertEquals("select oxreviews.* from oxreviews where oxreviews.oxtype = 'checktype' and oxreviews.oxobjectid in ( 'aId', 'lalaId' ) and oxreviews.oxlang = '4' order by oxreviews.oxcreate desc ", $oList->selectArgs[0]);
+        $this->assertEquals("select oxreviews.* from oxreviews where oxreviews.oxtype = :oxtype and oxreviews.oxobjectid in ( 'aId', 'lalaId' ) and oxreviews.oxlang = :oxlang order by oxreviews.oxcreate desc ", $oList->selectArgs[0]);
         $this->assertTrue($oList[0]->oxreviews__oxcreate->convertToFormattedDbDate);
         $this->assertTrue($oList[0]->oxreviews__oxtext->convertToPseudoHtml);
     }

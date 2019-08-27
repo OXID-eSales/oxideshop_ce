@@ -315,13 +315,20 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
             if (($billingCountry == $deliveryCountry) || (!$billingCountry && $deliveryCountry) || ($billingCountry && !$deliveryCountry)) {
                 $billingCountry = $billingCountry ? $billingCountry : $deliveryCountry;
-                $query = "select oxactive from oxcountry where oxid = " . $database->quote($billingCountry) . " ";
+                $query = "select oxactive from oxcountry where oxid = :oxbillingid";
+                $params = [
+                    ':oxbillingid' => $billingCountry
+                ];
             } else {
-                $query = "select ( select oxactive from oxcountry where oxid = " . $database->quote($billingCountry) . " ) and
-                              ( select oxactive from oxcountry where oxid = " . $database->quote($deliveryCountry) . " ) ";
+                $query = "select ( select oxactive from oxcountry where oxid = :oxbillingid ) and
+                              ( select oxactive from oxcountry where oxid = :oxdeliveryid ) ";
+                $params = [
+                    ':oxbillingid' => $billingCountry,
+                    ':oxdeliveryid' => $deliveryCountry,
+                ];
             }
 
-            if (!$database->getOne($query)) {
+            if (!$database->getOne($query, $params)) {
                 $exception = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
                 $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 

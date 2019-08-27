@@ -149,8 +149,11 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
         $module = $this->getModuleConfigId($moduleId);
 
         $decodeValueQuery = $config->getDecodeValueQuery();
-        $moduleConfigsQuery = "SELECT oxvarname, oxvartype, {$decodeValueQuery} as oxvardecodedvalue FROM oxconfig WHERE oxmodule = ? AND oxshopid = ?";
-        $dbConfigs = $db->getAll($moduleConfigsQuery, [$module, $shopId]);
+        $moduleConfigsQuery = "SELECT oxvarname, oxvartype, {$decodeValueQuery} as oxvardecodedvalue FROM oxconfig WHERE oxmodule = :oxmodule AND oxshopid = :oxshopid";
+        $dbConfigs = $db->getAll($moduleConfigsQuery, [
+            ':oxmodule' => $module,
+            ':oxshopid' => $shopId
+        ]);
 
         $result = [];
         foreach ($dbConfigs as $oneModuleConfig) {

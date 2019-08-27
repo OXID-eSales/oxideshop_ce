@@ -209,8 +209,10 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // select from non-multilanguage core view (all ml tables joined to one)
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $query = "select * from " . getViewName($this->_sCoreTable, -1, -1) . " where oxid = " . $db->quote($this->getId());
-        $rs = $db->getAll($query);
+        $query = "select * from " . getViewName($this->_sCoreTable, -1, -1) . " where oxid = :oxid";
+        $rs = $db->getAll($query, [
+            ':oxid' => $this->getId()
+        ]);
 
         $notInLang = $languages;
 

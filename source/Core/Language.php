@@ -1352,16 +1352,20 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
+        $params = [
+            ':oxvarname' => $sParamName
+        ];
         $sQuery = "
             select " . $oConfig->getDecodeValueQuery() . " as oxvarvalue
             from oxconfig
-            where oxvarname = '{$sParamName}' ";
+            where oxvarname = :oxvarname";
 
         if (!empty($sShopId)) {
-            $sQuery .= " and oxshopid = '{$sShopId}' limit 1";
+            $sQuery .= " and oxshopid = :oxshopid limit 1";
+            $params[':oxshopid'] = $sShopId;
         }
 
-        return $oDb->getAll($sQuery);
+        return $oDb->getAll($sQuery, $params);
     }
 
     /**

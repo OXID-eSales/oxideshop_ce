@@ -2256,18 +2256,18 @@ class Email extends PHPMailer
         $select = "SELECT `OXID` 
           FROM `oxuser` 
           WHERE `OXACTIVE` = 1 
-          AND `OXUSERNAME` = ? 
+          AND `OXUSERNAME` = :oxusername 
           AND `OXPASSWORD` != ''";
-        if (Registry::getConfig()->getConfigParam('blMallUsers')) {
-            $select .= "ORDER BY OXSHOPID = ? DESC";
+        if ($this->getConfig()->getConfigParam('blMallUsers')) {
+            $select .= " ORDER BY OXSHOPID = :oxshopid DESC";
         } else {
-            $select .= "AND OXSHOPID = ?";
+            $select .= " AND OXSHOPID = :oxshopid";
         }
-        $sOxId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne(
-            $select,
-            [$userName,
-             $shopId]
-        );
+
+        $sOxId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($select, [
+            ':oxusername' => $userName,
+            ':oxshopid'   => $shopId
+        ]);
 
         return $sOxId;
     }

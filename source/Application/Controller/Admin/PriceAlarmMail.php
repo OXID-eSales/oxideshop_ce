@@ -34,8 +34,10 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $query = "
             SELECT oxprice, oxartid
             FROM oxpricealarm
-            WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId' ";
-        $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query);
+            WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = :oxshopid";
+        $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query, [
+            ':oxshopid' => $shopId
+        ]);
         if ($result != false && $result->count() > 0) {
             $simpleCache = [];
             while (!$result->EOF) {

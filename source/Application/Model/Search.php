@@ -127,9 +127,15 @@ class Search extends \OxidEsales\Eshop\Core\Base
             $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             $sCatTable = $oCategory->getViewName();
 
-            $sQ = "select 1 from $sCatTable where $sCatTable.oxid = " . $oDb->quote($sInitialSearchCat) . " ";
+            $sQ = "select 1 from $sCatTable 
+                where $sCatTable.oxid = :oxid ";
             $sQ .= "and " . $oCategory->getSqlActiveSnippet();
-            if (!$oDb->getOne($sQ)) {
+
+            $params = [
+                ':oxid' => $sInitialSearchCat
+            ];
+
+            if (!$oDb->getOne($sQ, $params)) {
                 return;
             }
         }
@@ -140,9 +146,15 @@ class Search extends \OxidEsales\Eshop\Core\Base
             $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             $sVndTable = $oVendor->getViewName();
 
-            $sQ = "select 1 from $sVndTable where $sVndTable.oxid = " . $oDb->quote($sInitialSearchVendor) . " ";
+            $sQ = "select 1 from $sVndTable 
+                where $sVndTable.oxid = :oxid ";
             $sQ .= "and " . $oVendor->getSqlActiveSnippet();
-            if (!$oDb->getOne($sQ)) {
+
+            $params = [
+                ':oxid' => $sInitialSearchVendor
+            ];
+
+            if (!$oDb->getOne($sQ, $params)) {
                 return;
             }
         }
@@ -153,9 +165,15 @@ class Search extends \OxidEsales\Eshop\Core\Base
             $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             $sManTable = $oManufacturer->getViewName();
 
-            $sQ = "select 1 from $sManTable where $sManTable.oxid = " . $oDb->quote($sInitialSearchManufacturer) . " ";
+            $sQ = "select 1 from $sManTable 
+                where $sManTable.oxid = :oxid ";
             $sQ .= "and " . $oManufacturer->getSqlActiveSnippet();
-            if (!$oDb->getOne($sQ)) {
+
+            $params = [
+                ':oxid' => $sInitialSearchManufacturer
+            ];
+
+            if (!$oDb->getOne($sQ, $params)) {
                 return;
             }
         }

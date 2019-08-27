@@ -255,12 +255,16 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $categoryViewName = getViewName("oxobject2category");
+
         // add main category caching;
-        $sQ = "select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = " . $oDb->quote($sArtId) . " order by oxtime";
-        $sIdent = md5($sQ);
+        $sQ = "select oxcatnid from " . $categoryViewName . " where oxobjectid = :oxobjectid order by oxtime";
+        $sIdent = md5($categoryViewName . $sArtId);
 
         if (($sMainCatId = $this->_loadFromCache($sIdent, "oxarticle")) === false) {
-            $sMainCatId = $oDb->getOne($sQ);
+            $sMainCatId = $oDb->getOne($sQ, [
+                ':oxobjectid' => $sArtId
+            ]);
             // storing in cache
             $this->_saveInCache($sIdent, $sMainCatId, "oxarticle");
         }
@@ -336,8 +340,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 // looking in cache ..
                 if (!isset(self::$_aTitleCache[$sParentId])) {
                     $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                    $sQ = "select oxtitle from " . $oArticle->getViewName() . " where oxid = " . $oDb->quote($sParentId);
-                    self::$_aTitleCache[$sParentId] = $oDb->getOne($sQ);
+                    $sQ = "select oxtitle from " . $oArticle->getViewName() . " where oxid = :oxid";
+                    self::$_aTitleCache[$sParentId] = $oDb->getOne($sQ, [
+                        ':oxid' => $sParentId
+                    ]);
                 }
                 $sTitle = self::$_aTitleCache[$sParentId];
             }

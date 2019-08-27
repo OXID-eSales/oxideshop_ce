@@ -171,9 +171,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sSelect = 'select oxdesc from oxobject2list where oxlistid = ' . $oDb->quote($this->getId()) . ' and oxobjectid = ' . $oDb->quote($sOXID);
+        $sSelect = 'select oxdesc from oxobject2list 
+            where oxlistid = :oxlistid and oxobjectid = :oxobjectid';
 
-        return $oDb->getOne($sSelect);
+        return $oDb->getOne($sSelect, [
+            ':oxlistid' => $this->getId(),
+            ':oxobjectid' => $sOXID
+        ]);
     }
 
     /**
@@ -210,7 +214,15 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-            if (!$database->getOne("select oxid from oxobject2list where oxobjectid=" . $database->quote($sOXID) . " and oxlistid=" . $database->quote($this->getId()))) {
+            $sql = "select oxid from oxobject2list 
+                where oxobjectid = :oxobjectid 
+                    and oxlistid = :oxlistid";
+            $params = [
+                ':oxobjectid' => $sOXID,
+                ':oxlistid' => $this->getId()
+            ];
+
+            if (!$database->getOne($sql, $params)) {
                 $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
                 $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
                 $blAdd = $database->execute($sQ);
@@ -240,21 +252,22 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
 
-            $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-            $iCnt = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCrossellArticles');
+            $iCnt = $this->getConfig()->getConfigParam('iNrofCrossellArticles');
 
             $oRecommList->setSqlLimit(0, $iCnt);
 
             $sSelect = "SELECT distinct lists.* FROM oxobject2list AS o2l_lists";
             $sSelect .= " LEFT JOIN oxobject2list AS o2l_count ON o2l_lists.oxlistid = o2l_count.oxlistid";
             $sSelect .= " LEFT JOIN oxrecommlists as lists ON o2l_lists.oxlistid = lists.oxid";
-            $sSelect .= " WHERE o2l_lists.oxobjectid IN ( $sIds ) and lists.oxshopid ='$iShopId'";
+            $sSelect .= " WHERE o2l_lists.oxobjectid IN ( $sIds ) and lists.oxshopid = :oxshopid";
             $sSelect .= " GROUP BY lists.oxid order by (";
             $sSelect .= " SELECT count( order1.oxobjectid ) FROM oxobject2list AS order1";
             $sSelect .= " WHERE order1.oxobjectid IN ( $sIds ) AND o2l_lists.oxlistid = order1.oxlistid";
             $sSelect .= " ) DESC, count( lists.oxid ) DESC";
 
-            $oRecommList->selectString($sSelect);
+            $oRecommList->selectString($sSelect, [
+                ':oxshopid' => $this->getConfig()->getShopId()
+            ]);
 
             stopProfile(__FUNCTION__);
 

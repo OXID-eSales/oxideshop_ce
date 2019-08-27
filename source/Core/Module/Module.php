@@ -488,7 +488,10 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = :oxmodule AND oxshopid = :oxshopid", [
+            ':oxmodule' => $sModuleId,
+            ':oxshopid' => $sShopId
+        ]);
     }
 
     /**

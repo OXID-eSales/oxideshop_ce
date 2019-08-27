@@ -311,14 +311,16 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _getArticles($blExcludeCanceled = false)
     {
         $sSelect = "SELECT `oxorderarticles`.* FROM `oxorderarticles`
-                        WHERE `oxorderarticles`.`oxorderid` = '" . $this->getId() . "'" .
+                        WHERE `oxorderarticles`.`oxorderid` = :oxorderid" .
                    ($blExcludeCanceled ? " AND `oxorderarticles`.`oxstorno` != 1 " : " ") . "
                         ORDER BY `oxorderarticles`.`oxartid`, `oxorderarticles`.`oxselvariant`, `oxorderarticles`.`oxpersparam` ";
 
         // order articles
         $oArticles = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oArticles->init('oxorderarticle');
-        $oArticles->selectString($sSelect);
+        $oArticles->selectString($sSelect, [
+            ':oxorderid' => (string) $this->getId()
+        ]);
 
         return $oArticles;
     }
@@ -1407,8 +1409,10 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->_oOrderBasket->setSkipVouchersChecking(true);
 
             // add previously used vouchers
-            $sQ = 'select oxid from oxvouchers where oxorderid = ' . $oDb->quote($this->getId());
-            $aVouchers = $oDb->getAll($sQ);
+            $sQ = 'select oxid from oxvouchers where oxorderid = :oxorderid';
+            $aVouchers = $oDb->getAll($sQ, [
+                ':oxorderid' => $this->getId()
+            ]);
             foreach ($aVouchers as $aVoucher) {
                 $this->_oOrderBasket->addVoucher($aVoucher['oxid']);
             }
@@ -1525,9 +1529,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getInvoiceNum()
     {
-        $sQ = 'select max(oxorder.oxinvoicenr) from oxorder where oxorder.oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" ';
+        $sQ = 'select max(oxorder.oxinvoicenr) from oxorder 
+            where oxorder.oxshopid = :oxshopid ';
+        $params = [
+            ':oxshopid' => $this->getConfig()->getShopId()
+        ];
 
-        return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, false) + 1);
+        return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
     }
 
     /**
@@ -1537,9 +1545,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getNextBillNum()
     {
-        $sQ = 'select max(cast(oxorder.oxbillnr as unsigned)) from oxorder where oxorder.oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" ';
+        $sQ = 'select max(cast(oxorder.oxbillnr as unsigned)) from oxorder 
+            where oxorder.oxshopid = :oxshopid ';
+        $params = [
+            ':oxshopid' => $this->getConfig()->getShopId()
+        ];
 
-        return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, false) + 1);
+        return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
     }
 
     /**
@@ -1586,8 +1598,11 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $aVouchers = [];
-        $sSelect = "select oxvouchernr from oxvouchers where oxorderid = " . $oDb->quote($this->oxorder__oxid->value);
-        $rs = $oDb->select($sSelect);
+        $sSelect = "select oxvouchernr from oxvouchers 
+            where oxorderid = :oxorderid";
+        $rs = $oDb->select($sSelect, [
+            ':oxorderid' => $this->oxorder__oxid->value
+        ]);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $aVouchers[] = $rs->fields['oxvouchernr'];
@@ -1608,14 +1623,18 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getOrderSum($blToday = false)
     {
         $sSelect = 'select sum(oxtotalordersum / oxcurrate) from oxorder where ';
-        $sSelect .= 'oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" and oxorder.oxstorno != "1" ';
+        $sSelect .= 'oxshopid = :oxshopid and oxorder.oxstorno != "1" ';
 
         if ($blToday) {
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
         }
 
+        $params = [
+            ':oxshopid' => $this->getConfig()->getShopId()
+        ];
+
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return ( double ) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect);
+        return ( double ) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect, $params);
     }
 
     /**
@@ -1628,14 +1647,18 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getOrderCnt($blToday = false)
     {
         $sSelect = 'select count(*) from oxorder where ';
-        $sSelect .= 'oxshopid = "' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '"  and oxorder.oxstorno != "1" ';
+        $sSelect .= 'oxshopid = :oxshopid  and oxorder.oxstorno != "1" ';
 
         if ($blToday) {
             $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
         }
 
+        $params = [
+            ':oxshopid' => $this->getConfig()->getShopId()
+        ];
+
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return ( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect);
+        return ( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect, $params);
     }
 
 
@@ -1654,7 +1677,10 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        if ($masterDb->getOne('select oxid from oxorder where oxid = ' . $masterDb->quote($sOxId))) {
+        $params = [
+            ':oxid' => $sOxId
+        ];
+        if ($masterDb->getOne('select oxid from oxorder where oxid = :oxid', $params)) {
             return true;
         }
 
@@ -1793,8 +1819,15 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $sQ = 'select oxorder.oxpaymenttype from oxorder where oxorder.oxshopid="' . \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() . '" and oxorder.oxuserid=' . $masterDb->quote($sUserId) . ' order by oxorder.oxorderdate desc ';
-        $sLastPaymentId = $masterDb->getOne($sQ);
+        $sQ = 'select oxorder.oxpaymenttype from oxorder 
+            where oxorder.oxshopid = :oxshopid 
+                and oxorder.oxuserid = :oxuserid 
+            order by oxorder.oxorderdate desc ';
+
+        $sLastPaymentId = $masterDb->getOne($sQ, [
+            ':oxshopid' => $this->getConfig()->getShopId(),
+            ':oxuserid' => $sUserId
+        ]);
 
         return $sLastPaymentId;
     }
@@ -2076,11 +2109,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oDelSet = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
         $sTable = $oDelSet->getViewName();
 
-        $sQ = "select 1 from {$sTable} where {$sTable}.oxid=" .
-              $masterDb->quote($oBasket->getShippingId()) . " and " . $oDelSet->getSqlActiveSnippet();
+        $sQ = "select 1 from {$sTable} where {$sTable}.oxid = :oxid and " . $oDelSet->getSqlActiveSnippet();
+        $params = [
+            ':oxid' => $oBasket->getShippingId()
+        ];
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        if (!$masterDb->getOne($sQ)) {
+        if (!$masterDb->getOne($sQ, $params)) {
             // throwing exception
             return self::ORDER_STATE_INVALIDDELIVERY;
         }
@@ -2256,11 +2291,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             from 
                 {$tableName}
             where 
-                {$tableName}.oxid = {$masterDb->quote($paymentId)}
+                {$tableName}.oxid = :oxid
                 and {$paymentModel->getSqlActiveSnippet()}
         ";
 
-        return (bool) $masterDb->getOne($sql);
+        return (bool) $masterDb->getOne($sql, [
+            ':oxid' => $paymentId
+        ]);
     }
 
     /**

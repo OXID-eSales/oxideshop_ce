@@ -826,9 +826,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             ($sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid'))
         ) {
             $sTable = getViewName('oxuser');
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "select 1 from $sTable where MD5( CONCAT( " . $oDb->quote($sAdminSid) . ", {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sPrevId);
-            $blCan = (bool) $oDb->getOne($sQ);
+            $sQ = "SELECT 1 FROM $sTable WHERE MD5( CONCAT( :adminsid, {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = :previd";
+            $blCan = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
+                ':adminsid' => $sAdminSid,
+                ':previd'   => $sPrevId
+            ]);
         }
 
         return $blCan;
@@ -935,7 +937,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        return $database->getOne("select oxrights from oxuser where oxid = " . $database->quote($userOxId));
+        return $database->getOne("SELECT oxrights FROM oxuser WHERE oxid = :oxid ", [
+            ':oxid' => $userOxId
+        ]);
     }
 
     /**
@@ -949,7 +953,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        return $database->getOne("select oxid from oxshops where oxid = " . $database->quote($oxId));
+        return $database->getOne("SELECT oxid FROM oxshops WHERE oxid = :oxid", [
+            ':oxid' => $oxId
+        ]);
     }
 
     /**

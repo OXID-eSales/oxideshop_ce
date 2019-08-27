@@ -163,8 +163,11 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
         // #1592A. must take real value
-        $sQ = 'select oxstock from oxarticles where oxid = ' . $masterDb->quote($this->oxorderarticles__oxartid->value);
-        $iStockCount = ( float ) $masterDb->getOne($sQ);
+        $sQ = 'select oxstock from oxarticles 
+            where oxid = :oxid';
+        $iStockCount = ( float ) $masterDb->getOne($sQ, [
+            ':oxid' => $this->oxorderarticles__oxartid->value
+        ]);
 
         $iStockCount += $dAddAmount;
 
@@ -270,8 +273,11 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-        $sQ = "select oxparentid from " . $oArticle->getViewName() . " where oxid=" . $oDb->quote($this->getProductId());
-        $this->oxarticles__oxparentid = new \OxidEsales\Eshop\Core\Field($oDb->getOne($sQ));
+        $sQ = "select oxparentid from " . $oArticle->getViewName() . " 
+            where oxid = :oxid";
+        $this->oxarticles__oxparentid = new \OxidEsales\Eshop\Core\Field($oDb->getOne($sQ, [
+            ':oxid' => $this->getProductId()
+        ]));
 
         return $this->oxarticles__oxparentid->value;
     }

@@ -86,8 +86,10 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $activeAlarmsQuery =
             "SELECT oxprice, oxartid FROM oxpricealarm
-                    WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId'";
-        $result = $database->select($activeAlarmsQuery);
+                    WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = :oxshopid";
+        $result = $database->select($activeAlarmsQuery, [
+            ':oxshopid' => $shopId
+        ]);
         $count = 0;
         while ($result != false && !$result->EOF) {
             $alarmPrice = $result->fields['oxprice'];
@@ -116,8 +118,10 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $alarmsQuery =
             "SELECT oxid, oxemail, oxartid, oxprice FROM oxpricealarm
-            WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = '$shopId'";
-        $result = $database->selectLimit($alarmsQuery, $limit, $start);
+            WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = :oxshopid";
+        $result = $database->selectLimit($alarmsQuery, $limit, $start, [
+            ':oxshopid' => $shopId
+        ]);
         while ($result != false && !$result->EOF) {
             $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $article->load($result->fields['oxartid']);

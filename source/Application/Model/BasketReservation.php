@@ -273,7 +273,12 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
         $iStartTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iPsBasketReservationTimeout');
 
-        $oRs = $database->select("select oxid from oxuserbaskets where oxtitle = 'reservations' and oxupdate <= $iStartTime limit $iLimit", false);
+        $parameters = [
+            ':oxtitle' => 'reservations',
+            ':oxupdate' => $iStartTime
+        ];
+        $oRs = $database->select("select oxid from oxuserbaskets 
+            where oxtitle = :oxtitle and oxupdate <= :oxupdate limit $iLimit", $parameters);
         if ($oRs->EOF) {
             return;
         }

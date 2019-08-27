@@ -302,7 +302,6 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             // delete entry
             $blRet = parent::delete($sOXID);
 
-            $sOxidQuoted = $oDb->quote($sOXID);
             // delete links to articles
             $oDb->execute("delete from oxobject2category where oxobject2category.oxcatnid = :oxid", [
                 ':oxid' => $sOXID
@@ -319,7 +318,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 ':oxid' => $sOXID
             ]);
             // - discounts
-            $oDb->execute("delete from oxobject2discount where oxobject2discount.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2discount where oxobject2discount.oxobjectid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
 
             \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->onDeleteCategory($this);
         }

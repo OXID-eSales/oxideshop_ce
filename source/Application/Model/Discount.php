@@ -78,7 +78,9 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $oDb->execute('delete from oxobject2discount where oxobject2discount.oxdiscountid = ' . $oDb->quote($sOXID));
+        $oDb->execute('delete from oxobject2discount where oxobject2discount.oxdiscountid = :oxdiscountid', [
+            ':oxdiscountid' => $sOXID
+        ]);
 
         return parent::delete($sOXID);
     }

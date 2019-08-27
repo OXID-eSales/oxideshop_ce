@@ -62,8 +62,10 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             ':oxid' => $sOXID
         ]);
 
-        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = ' . $oDb->quote($sOXID);
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = :oxid';
+        $oDb->execute($sDelete, [
+            ':oxid' => $sOXID
+        ]);
 
         $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = :oxid';
         $rs = $oDb->execute($sDelete, [

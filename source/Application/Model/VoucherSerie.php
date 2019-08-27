@@ -94,8 +94,10 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function unsetDiscountRelations()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxdiscountid = ' . $oDb->quote($this->getId());
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxdiscountid = :oxdiscountid';
+        $oDb->execute($sDelete, [
+            ':oxdiscountid' => $this->getId()
+        ]);
     }
 
     /**

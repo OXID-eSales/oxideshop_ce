@@ -857,7 +857,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         } else {
             // @TODO the following statements make no sense and should be removed: oxuser__oxid is freshly created and the conditions will never match
             // dropping/cleaning old delivery address/payment info
-            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote($this->oxuser__oxid->value));
+            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = :oxuserid", [
+                ':oxuserid' => $this->oxuser__oxid->value
+            ]);
             $oDb->execute("update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxusername->value) . " where oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxid->value));
         }
 

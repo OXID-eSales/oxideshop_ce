@@ -4529,8 +4529,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $quotedArticleId = $oDb->quote($articleId);
-
         //remove other records
         $sDelete = 'delete from oxobject2article where oxarticlenid = :articleId or oxobjectid = :articleId';
         $oDb->execute($sDelete, [
@@ -4585,7 +4583,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         //delete the record
         foreach ($this->_getLanguageSetTables("oxartextends") as $sSetTbl) {
-            $oDb->execute("delete from $sSetTbl where oxid = {$quotedArticleId}");
+            $oDb->execute("delete from $sSetTbl where oxid = :articleId", [
+                ':articleId' => $articleId
+            ]);
         }
 
         $sDelete = 'delete from oxactions2article where oxartid = :articleId';

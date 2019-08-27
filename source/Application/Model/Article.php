@@ -4578,8 +4578,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             ':articleId' => $articleId
         ]);
 
-        $sDelete = 'delete from oxartextends where oxid = ' . $quotedArticleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxartextends where oxid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
         //delete the record
         foreach ($this->_getLanguageSetTables("oxartextends") as $sSetTbl) {

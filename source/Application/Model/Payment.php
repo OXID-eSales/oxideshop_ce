@@ -381,7 +381,9 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             // deleting payment related data
-            $rs = $oDb->execute("delete from oxobject2payment where oxpaymentid = " . $oDb->quote($sOxId));
+            $rs = $oDb->execute("delete from oxobject2payment where oxpaymentid = :oxpaymentid", [
+                ':oxpaymentid' => $sOxId
+            ]);
 
             return $rs->EOF;
         }

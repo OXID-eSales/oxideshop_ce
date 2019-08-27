@@ -99,7 +99,9 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
         $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcontent'", [
             ':oxobjectid' => $sId
         ]);
-        $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
+        $oDb->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
+            ':oxobjectid' => $sId
+        ]);
         $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
     }
 

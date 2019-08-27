@@ -97,7 +97,9 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
         // remove selectlists from articles also
         if ($blRemove = parent::delete($sOXID)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $oDb->execute("delete from oxobject2selectlist where oxselnid = " . $oDb->quote($sOXID) . " ");
+            $oDb->execute("delete from oxobject2selectlist where oxselnid = :oxselnid", [
+                ':oxselnid' => $sOXID
+            ]);
         }
 
         return $blRemove;

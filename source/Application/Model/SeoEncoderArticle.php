@@ -578,7 +578,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sIdQuoted = $oDb->quote($oArticle->getId());
-        $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxarticle'");
+        $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxarticle'", [
+            ':oxobjectid' => $oArticle->getId()
+        ]);
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
         $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
     }

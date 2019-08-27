@@ -309,7 +309,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             ]);
 
             // #657 ADDITIONAL delete links to attributes
-            $oDb->execute("delete from oxcategory2attribute where oxcategory2attribute.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxcategory2attribute where oxcategory2attribute.oxobjectid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
 
             // A. removing assigned:
             // - deliveries

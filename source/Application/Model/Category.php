@@ -304,7 +304,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
 
             $sOxidQuoted = $oDb->quote($sOXID);
             // delete links to articles
-            $oDb->execute("delete from oxobject2category where oxobject2category.oxcatnid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2category where oxobject2category.oxcatnid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
 
             // #657 ADDITIONAL delete links to attributes
             $oDb->execute("delete from oxcategory2attribute where oxcategory2attribute.oxobjectid=$sOxidQuoted ");

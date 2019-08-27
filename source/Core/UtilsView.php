@@ -182,6 +182,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
             $oEx->setStackTrace($oEr->getTraceAsString());
             $oEx->setDebug($blFull);
             $oEr = $oEx;
+        } elseif ($oEr instanceof \Throwable) {
+            // assuming that a string was given
+            $sTmp = $oEr;
+            $oEr = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
+            $oEr->setMessage($sTmp->getTraceAsString());
         } elseif ($oEr && !($oEr instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError)) {
             // assuming that a string was given
             $sTmp = $oEr;

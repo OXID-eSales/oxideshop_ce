@@ -73,15 +73,16 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // remove attributes from articles also
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sOxidQuoted = $oDb->quote($sOXID);
         $sDelete = "delete from oxobject2attribute where oxattrid = :oxattrid";
         $oDb->execute($sDelete, [
             ':oxattrid' => $sOXID
         ]);
 
         // #657 ADDITIONAL removes attribute connection to category
-        $sDelete = "delete from oxcategory2attribute where oxattrid = " . $sOxidQuoted;
-        $oDb->execute($sDelete);
+        $sDelete = "delete from oxcategory2attribute where oxattrid = :oxattrid";
+        $oDb->execute($sDelete, [
+            ':oxattrid' => $sOXID
+        ]);
 
         return parent::delete($sOXID);
     }

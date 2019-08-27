@@ -108,9 +108,9 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     public function save(ShopConfiguration $shopConfiguration, int $shopId): void
     {
         $this->cache->evict($shopId);
+        $this->backupAndRemoveEnvironmentConfigurationFile($shopId);
 
-        $storage = $this->getStorage($shopId);
-        $storage->save(
+        $this->getStorage($shopId)->save(
             $this->shopConfigurationMapper->toData($shopConfiguration)
         );
     }
@@ -128,6 +128,18 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         }
 
         return $configurations;
+    }
+
+    /**
+     * delete all shops configuration
+     */
+    public function deleteAll(): void
+    {
+        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
+            $this->fileSystem->remove(
+                $this->getShopsConfigurationDirectory()
+            );
+        }
     }
 
     /**
@@ -259,32 +271,35 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private function getEnvironmentShopConfigurationData(int $shopId): array
     {
-        $storage = $this->fileStorageFactory->create(
-            $this->getEnvironmentConfigurationFilePath($shopId)
-        );
+        $data = [];
 
-        try {
-            $data = $this->node->normalize($storage->get());
-        } catch (InvalidConfigurationException $exception) {
-            throw new InvalidConfigurationException(
-                'File ' .
-                $this->getEnvironmentConfigurationFilePath($shopId) .
-                ' is broken: ' . $exception->getMessage()
+        $configurationFilePath = $this->getEnvironmentConfigurationFilePath($shopId);
+
+        if ($this->fileSystem->exists($configurationFilePath)) {
+            $storage = $this->fileStorageFactory->create(
+                $this->getEnvironmentConfigurationFilePath($shopId)
             );
+
+            try {
+                $data = $this->node->normalize($storage->get());
+            } catch (InvalidConfigurationException $exception) {
+                throw new InvalidConfigurationException(
+                    'File ' .
+                    $this->getEnvironmentConfigurationFilePath($shopId) .
+                    ' is broken: ' . $exception->getMessage()
+                );
+            }
         }
 
         return $data;
     }
 
-    /**
-     * delete all shops configuration
-     */
-    public function deleteAll(): void
+    private function backupAndRemoveEnvironmentConfigurationFile(int $shopId): void
     {
-        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
-            $this->fileSystem->remove(
-                $this->getShopsConfigurationDirectory()
-            );
+        $path = $this->getEnvironmentConfigurationFilePath($shopId);
+
+        if ($this->fileSystem->exists($path)) {
+            $this->fileSystem->rename($path, $path . '.bak');
         }
     }
 }

@@ -6,7 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
@@ -129,13 +128,8 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
-    /**
-     * @throws ModuleConfigurationNotFoundException
-     */
-    public function testEnvironmentShopConfigurationFileOverwritesShopConfiguration(): void
+    public function testEnvironmentShopConfigurationFileOverwritesShopConfigurationBeforeSaving(): void
     {
-        $this->prepareTestEnvironmentShopConfigurationFile();
-
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
 
         $setting = new Setting();
@@ -154,8 +148,45 @@ final class ShopConfigurationDaoTest extends TestCase
         $shopConfiguration->addModuleConfiguration($module);
         $shopConfigurationDao->save($shopConfiguration, 1);
 
+        $this->prepareTestEnvironmentShopConfigurationFile();
+
         $this->assertSame(
             'overwrittenValue',
+            $shopConfigurationDao
+                ->get(1)
+                ->getModuleConfiguration('testModule')
+                ->getModuleSetting('settingToOverwrite')
+                ->getValue()
+        );
+    }
+
+    public function testSavingOverwritesValueFromEnvironmentShopConfigurationFile(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+
+        $setting = new Setting();
+        $setting
+            ->setName('settingToOverwrite')
+            ->setValue('value')
+            ->setType('int');
+
+        $module = new ModuleConfiguration();
+        $module
+            ->setId('testModule')
+            ->setPath('test')
+            ->addModuleSetting($setting);
+
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($module);
+        $shopConfigurationDao->save($shopConfiguration, 1);
+
+        $this->prepareTestEnvironmentShopConfigurationFile();
+
+        $setting->setValue('newValueAfterSaving');
+        $shopConfigurationDao->save($shopConfiguration, 1);
+
+        $this->assertSame(
+            'newValueAfterSaving',
             $shopConfigurationDao
                 ->get(1)
                 ->getModuleConfiguration('testModule')
@@ -184,14 +215,14 @@ final class ShopConfigurationDaoTest extends TestCase
      */
     public function testBadEnvironmentConfigurationFile(): void
     {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 1);
+
         $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
         $storage = $fileStorageFactory->create(
             $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/environment/1.yaml'
         );
         $storage->save(["test"=>"test"]);
-
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
         $shopConfigurationDao->get(1);
     }

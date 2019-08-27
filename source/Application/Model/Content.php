@@ -407,7 +407,10 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             // dropping expired..
-            $oDb->execute("delete from oxacceptedterms where oxshopid='{$sShopId}' and oxtermversion != " . $oDb->quote($sVersion));
+            $oDb->execute("delete from oxacceptedterms where oxshopid = :oxshopid and oxtermversion != :notoxtermversion", [
+                ':oxshopid' => $sShopId,
+                ':notoxtermversion' => $sVersion
+            ]);
         }
 
         return $blSaved;

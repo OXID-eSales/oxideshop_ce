@@ -4547,8 +4547,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             ':articleId' => $articleId
         ]);
 
-        $sDelete = 'delete from oxobject2selectlist where oxobjectid = ' . $quotedArticleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2selectlist where oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
         $sDelete = 'delete from oxprice2article where oxartid = ' . $quotedArticleId . ' ';
         $oDb->execute($sDelete);

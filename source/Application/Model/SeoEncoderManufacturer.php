@@ -126,7 +126,9 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sIdQuoted = $oDb->quote($oManufacturer->getId());
-        $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxmanufacturer'");
+        $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxmanufacturer'", [
+            ':oxobjectid' => $oManufacturer->getId()
+        ]);
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
         $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
     }

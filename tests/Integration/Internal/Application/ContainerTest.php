@@ -68,9 +68,6 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
      */
     public function testCacheIsUsed()
     {
-        $this->markTestSkipped('Can\'t be tested anymore because the original container cache is already ' .
-            'loaded when this test is called due to graphql problem workaround');
-
         // Prepare the dummy cache
         $cachedummy = <<<EOT
 <?php

@@ -99,8 +99,10 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         $oDb = DatabaseProvider::getDb();
         $aRDFaPayments = [];
-        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfapayment" ';
-        $rs = $oDb->select($sSelect);
+        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid = :oxpaymentid and oxtype = "rdfapayment" ';
+        $rs = $oDb->select($sSelect, [
+            ':oxpaymentid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")
+        ]);
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {
                 $aRDFaPayments[] = $rs->fields[0];

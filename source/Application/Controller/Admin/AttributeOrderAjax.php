@@ -56,11 +56,13 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
     public function setSorting()
     {
         $sSelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSelect = "select * from oxcategory2attribute where oxobjectid= " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sSelId) . " order by oxsort";
+        $sSelect = "select * from oxcategory2attribute where oxobjectid = :oxobjectid order by oxsort";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxcategory2attribute");
-        $oList->selectString($sSelect);
+        $oList->selectString($sSelect, [
+            ':oxobjectid' => $sSelId
+        ]);
 
         // fixing indexes
         $iSelCnt = 0;

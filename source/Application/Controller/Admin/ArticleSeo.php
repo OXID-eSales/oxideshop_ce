@@ -151,11 +151,12 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $sView = getViewName('oxobject2category');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $sSqlForPriceCategories = $oArticle->getSqlForPriceCategories('oxid');
-        $sQuotesArticleId = $oDb->quote($oArticle->getId());
         $sQ = "select oxobject2category.oxcatnid as oxid from {$sView} as oxobject2category " .
-              "where oxobject2category.oxobjectid=" . $sQuotesArticleId . " union " . $sSqlForPriceCategories;
+              "where oxobject2category.oxobjectid = :oxobjectid union " . $sSqlForPriceCategories;
 
-        $oRs = $oDb->select($sQ);
+        $oRs = $oDb->select($sQ, [
+            ':oxobjectid' => $oArticle->getId()
+        ]);
         if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
@@ -377,10 +378,15 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $sParam = $this->processParam($this->getActCatId());
 
         $sQ = "select oxfixed from oxseo where
-                   oxseo.oxobjectid = " . $oDb->quote($sId) . " and
-                   oxseo.oxshopid = '{$iShopId}' and oxseo.oxlang = {$iLang} and oxparams = " . $oDb->quote($sParam);
+                   oxseo.oxobjectid = :oxobjectid and
+                   oxseo.oxshopid = :oxshopid and oxseo.oxlang = :oxlang and oxparams = :oxparams";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
+        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
+            ':oxobjectid' => $sId,
+            ':oxshopid' => $iShopId,
+            ':oxlang' => $iLang,
+            ':oxparams' => $sParam
+        ]);
     }
 }

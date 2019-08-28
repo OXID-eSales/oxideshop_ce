@@ -70,7 +70,10 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $urlParameters = false;
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $resultSet = $database->select("select oxstdurl, oxlang from oxseo where oxident=" . $database->quote($key) . " and oxshopid='$shopId' limit 1");
+        $resultSet = $database->select("select oxstdurl, oxlang from oxseo where oxident = :oxident and oxshopid = :oxshopid limit 1", [
+            ':oxident' => $key,
+            ':oxshopid' => $shopId
+        ]);
         if (!$resultSet->EOF) {
             // primary seo language changed ?
             $urlParameters = $this->parseStdUrl($resultSet->fields['oxstdurl']);
@@ -109,7 +112,10 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $key = $this->_getIdent($seoUrl, true);
 
         $url = false;
-        $resultSet = $database->select("select oxobjectid, oxlang from oxseohistory where oxident = " . $database->quote($key) . " and oxshopid = '{$shopId}' limit 1");
+        $resultSet = $database->select("select oxobjectid, oxlang from oxseohistory where oxident = :oxident and oxshopid = :oxshopid limit 1", [
+            ':oxident' => $key,
+            ':oxshopid' => $shopId
+        ]);
         if (!$resultSet->EOF) {
             // updating hit info (oxtimestamp field will be updated automatically)
             $database->execute("update oxseohistory set oxhits = oxhits + 1 where oxident = " . $database->quote($key) . " and oxshopid = '{$shopId}' limit 1");
@@ -160,11 +166,23 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     protected function _getSeoUrl($sObjectId, $iLang, $iShopId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $aInfo = $oDb->getRow("select oxseourl, oxtype from oxseo where oxobjectid =  " . $oDb->quote($sObjectId) . " and oxlang =  " . $oDb->quote($iLang) . " and oxshopid = " . $oDb->quote($iShopId) . " order by oxparams limit 1");
+        $aInfo = $oDb->getRow("select oxseourl, oxtype from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid order by oxparams limit 1", [
+            ':oxobjectid' => $sObjectId,
+            ':oxlang' => $iLang,
+            ':oxshopid' => $iShopId,
+        ]);
+
         if ('oxarticle' == $aInfo['oxtype']) {
-            $sMainCatId = $oDb->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = " . $oDb->quote($sObjectId) . " order by oxtime");
+            $sMainCatId = $oDb->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = :oxobjectid order by oxtime", [
+                ':oxobjectid' => $sObjectId
+            ]);
             if ($sMainCatId) {
-                $sUrl = $oDb->getOne("select oxseourl from oxseo where oxobjectid =  " . $oDb->quote($sObjectId) . " and oxlang =  " . $oDb->quote($iLang) . " and oxshopid = " . $oDb->quote($iShopId) . " and oxparams = " . $oDb->quote($sMainCatId) . "  order by oxexpired");
+                $sUrl = $oDb->getOne("select oxseourl from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid  and oxparams = :oxparams order by oxexpired", [
+                    ':oxobjectid' => $sObjectId,
+                    ':oxlang' => $iLang,
+                    ':oxshopid' => $iShopId,
+                    ':oxparams' => $sMainCatId,
+                ]);
                 if ($sUrl) {
                     return $sUrl;
                 }
@@ -268,8 +286,14 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         // first checking of field exists at all
         if ($oDb->getOne("show columns from {$sTable} where field = 'oxseoid'")) {
             // if field exists - searching for object id
-            if ($sObjectId = $oDb->getOne("select oxid from {$sTable} where oxseoid = " . $oDb->quote($sSeoId))) {
-                return $oDb->getOne("select oxseourl from oxseo where oxtype = " . $oDb->quote($sType) . " and oxobjectid = " . $oDb->quote($sObjectId) . " and oxlang = " . $oDb->quote($iLanguage) . " ");
+            if ($sObjectId = $oDb->getOne("select oxid from {$sTable} where oxseoid = :oxseoid", [
+                ':oxseoid' => $sSeoId
+            ])) {
+                return $oDb->getOne("select oxseourl from oxseo where oxtype = :oxtype and oxobjectid = :oxobjectid and oxlang = :oxlang", [
+                    ':oxtype' => $sType,
+                    ':oxobjectid' => $sObjectId,
+                    ':oxlang' => $iLanguage,
+                ]);
             }
         }
     }

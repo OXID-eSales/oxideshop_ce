@@ -1467,16 +1467,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sSLViewName = getViewName('oxselectlist');
 
             $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
-                   where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
+                   where oxobject2selectlist.oxobjectid = :oxobjectid order by oxobject2selectlist.oxsort";
 
             // all selectlists this article has
             $oLists = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oLists->init('oxselectlist');
-            $oLists->selectString(sprintf($sQ, $oDb->quote($this->getId())));
+            $oLists->selectString($sQ, [':oxobjectid' => $this->getId()]);
 
             //#1104S if this is variant ant it has no selectlists, trying with parent
             if ($oLists->count() == 0 && $this->oxarticles__oxparentid->value) {
-                $oLists->selectString(sprintf($sQ, $oDb->quote($this->oxarticles__oxparentid->value)));
+                $oLists->selectString($sQ, [':oxobjectid' => $this->oxarticles__oxparentid->value]);
             }
 
             // We do not need to calculate price here as there are method to get current article vat
@@ -1587,7 +1587,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sSLViewName = getViewName('oxselectlist');
 
             $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
-                   where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
+                   where oxobject2selectlist.oxobjectid = :oxobjectid order by oxobject2selectlist.oxsort";
 
             if (($iLimit = (int) $iLimit)) {
                 $sQ .= " limit $iLimit ";
@@ -1603,11 +1603,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oList->init('oxselectlist');
             $oList->getBaseObject()->setVat($dVat);
-            $oList->selectString(sprintf($sQ, $oDb->quote($this->getId())));
+            $oList->selectString($sQ, [':oxobjectid' => $this->getId()]);
 
             //#1104S if this is variant and it has no selectlists, trying with parent
             if ($oList->count() == 0 && $this->oxarticles__oxparentid->value) {
-                $oList->selectString(sprintf($sQ, $oDb->quote($this->oxarticles__oxparentid->value)));
+                $oList->selectString($sQ, [':oxobjectid' => $this->oxarticles__oxparentid->value]);
             }
 
             self::$_aSelections[$sId] = $oList->count() ? $oList : false;
@@ -1689,8 +1689,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $oBaseObj->setLanguage($sLanguage);
             }
 
-            $sSql = "select * from " . $oBaseObj->getViewName() . " where oxparentid = '{$sId}' order by oxsort ";
-            $oVariants->selectString($sSql);
+            $sSql = "select * from " . $oBaseObj->getViewName() . " 
+                where oxparentid = :oxparentid 
+                order by oxsort ";
+            $oVariants->selectString($sSql, [':oxparentid' => $sId]);
 
             //if we have variants then depending on config option the parent may be non buyable
             if (!$this->getConfig()->getConfigParam('blVariantParentBuyable') && ($oVariants->count() > 0)) {
@@ -1990,9 +1992,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sO2CView = getViewName('oxobject2category', $this->getLanguage());
             $sViewName = getViewName('oxcategories', $this->getLanguage());
-            $sSelect = "select 1 from $sO2CView as $sO2CView left join {$sViewName} on {$sViewName}.oxid = $sO2CView.oxcatnid
-                         where $sO2CView.oxobjectid=" . $oDb->quote($this->getId()) . " and {$sViewName}.oxactive = 1 and {$sViewName}.oxskipdiscounts = '1' ";
-            $this->_blSkipDiscounts = ($oDb->getOne($sSelect) == 1);
+            $sSelect = "select 1 from $sO2CView as $sO2CView 
+                left join {$sViewName} on {$sViewName}.oxid = $sO2CView.oxcatnid
+                where $sO2CView.oxobjectid = :oxobjectid 
+                    and {$sViewName}.oxactive = :oxactive 
+                    and {$sViewName}.oxskipdiscounts = :oxskipdiscounts ";
+            $params = [
+                ':oxobjectid' => $this->getId(),
+                ':oxactive' => 1,
+                ':oxskipdiscounts' => 1
+            ];
+            $this->_blSkipDiscounts = ($oDb->getOne($sSelect, $params) == 1);
         }
 
         return $this->_blSkipDiscounts;
@@ -2203,8 +2213,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->beforeUpdate();
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $query = 'select oxstock from oxarticles where oxid = ' . $database->quote($this->getId()) . ' FOR UPDATE ';
-        $actualStock = $database->getOne($query);
+        $query = 'select oxstock 
+            from oxarticles 
+            where oxid = :oxid FOR UPDATE ';
+        $actualStock = $database->getOne($query, [
+            ':oxid' => $this->getId()
+        ]);
 
         $iStockCount = $actualStock - $dAmount;
         if (!$blAllowNegativeStock && ($iStockCount < 0)) {
@@ -2416,8 +2430,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             //getting parent id
             if (!isset($parentArticleId)) {
                 $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                $sQ = 'select oxparentid from oxarticles where oxid = ' . $oDb->quote($articleId);
-                $parentArticleId = $oDb->getOne($sQ);
+                $sQ = 'select oxparentid from oxarticles where oxid = :oxid';
+                $parentArticleId = $oDb->getOne($sQ, [
+                    ':oxid' => $articleId
+                ]);
             }
             //if we have parent id then update stock
             if ($parentArticleId) {
@@ -2476,9 +2492,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         // fetching DB info as its up-to-date
-        $sQ = 'select oxstock, oxstockflag from oxarticles where oxid = ' . $oDb->quote($this->getId());
+        $sQ = 'select oxstock, oxstockflag from oxarticles 
+            where oxid = :oxid';
         $sQ .= $selectForUpdate ? ' FOR UPDATE ' : '';
-        $rs = $oDb->select($sQ);
+        $rs = $oDb->select($sQ, [
+            ':oxid' => $this->getId()
+        ]);
 
         $iOnStock = 0;
         if ($rs !== false && $rs->count() > 0) {
@@ -2536,7 +2555,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sViewName = getViewName('oxartextends', $this->getLanguage());
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sDbValue = $oDb->getOne("select oxlongdesc from {$sViewName} where oxid = " . $oDb->quote($sOxid));
+            $sDbValue = $oDb->getOne("select oxlongdesc from {$sViewName} where oxid = :oxid", [
+                ':oxid' => $sOxid
+            ]);
 
             if ($sDbValue != false) {
                 $this->_oLongDesc->setValue($sDbValue, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2796,8 +2817,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_aMediaUrls->getBaseObject()->setLanguage($this->getLanguage());
 
             $sViewName = getViewName("oxmediaurls", $this->getLanguage());
-            $sQ = "select * from {$sViewName} where oxobjectid = '" . $this->getId() . "'";
-            $this->_aMediaUrls->selectString($sQ);
+            $sQ = "select * from {$sViewName} where oxobjectid = :oxobjectid";
+            $this->_aMediaUrls->selectString($sQ, [
+                ':oxobjectid' => $this->getId()
+            ]);
         }
 
         return $this->_aMediaUrls;
@@ -3445,15 +3468,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($this->_aArticleFiles === null) {
             $this->_aArticleFiles = false;
 
-            $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = '" . $this->getId() . "'";
+            $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = :oxartid";
 
             if (!$this->getConfig()->getConfigParam('blVariantParentBuyable') && $blAddFromParent) {
-                $sQ .= " OR `oxartId` = '" . $this->oxarticles__oxparentid->value . "'";
+                $sQ .= " OR `oxartId` = :oxparentid";
             }
 
             $oArticleFiles = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oArticleFiles->init("oxfile");
-            $oArticleFiles->selectString($sQ);
+            $oArticleFiles->selectString($sQ, [
+                ':oxartid' => $this->getId(),
+                ':oxparentid' => $this->oxarticles__oxparentid->value
+            ]);
             $this->_aArticleFiles = $oArticleFiles;
         }
 
@@ -3684,7 +3710,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
             $sArticleTable = $this->getViewName($blForceCoreTable);
 
-            return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne("select 1 from $sArticleTable where oxparentid='{$sId}'");
+            $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            return (bool)$db->getOne("select 1 from $sArticleTable where oxparentid = :oxparentid", [
+                ':oxparentid' => $sId
+            ]);
         }
 
         return false;
@@ -3940,9 +3969,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $sActiveSqlSnippet = " and " . $this->getSqlActiveSnippet(true);
             }
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-            $sQ = "select oxid from " . $this->getViewName(true) . " where oxparentid = " . $oDb->quote($sId) .
-                  $sActiveSqlSnippet . " order by oxsort";
-            $oRs = $oDb->select($sQ);
+            $sQ = "select oxid from " . $this->getViewName(true) . " 
+                where oxparentid = :oxparentid" . $sActiveSqlSnippet . " order by oxsort";
+            $oRs = $oDb->select($sQ, [
+                ':oxparentid' => $sId
+            ]);
             if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $aSelect[] = reset($oRs->fields);
@@ -4011,12 +4042,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         // we do not use lists here as we don't need this overhead right now
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sSelect = 'select oxattrid from oxobject2attribute where oxobject2attribute.oxobjectid=' . $oDb->quote($this->getId());
+        $sSelect = 'select oxattrid from oxobject2attribute 
+            where oxobject2attribute.oxobjectid = :oxobjectid';
         if ($this->getParentId()) {
-            $sSelect .= ' OR oxobject2attribute.oxobjectid=' . $oDb->quote($this->getParentId());
+            $sSelect .= ' OR oxobject2attribute.oxobjectid = :oxparentid';
         }
         $sAttributeSql = '';
-        $aAttributeIds = $oDb->getCol($sSelect);
+        $aAttributeIds = $oDb->getCol($sSelect, [
+            ':oxobjectid' => $this->getId(),
+            ':oxparentid' => $this->getParentId()
+        ]);
         if (is_array($aAttributeIds) && count($aAttributeIds)) {
             $aAttributeIds = array_unique($aAttributeIds);
             $iCnt = count($aAttributeIds);
@@ -4053,9 +4088,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sSelect = "select oxobjectid from oxobject2attribute as t1 where
                     ( $sAttributeSql )
                     and t1.oxobjectid NOT IN (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aExcludeIds)) . ")
-                    group by t1.oxobjectid having count(*) >= $iHitMin LIMIT 0, 20";
+                    group by t1.oxobjectid having count(*) >= :minhit LIMIT 0, 20";
 
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol($sSelect);
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol($sSelect, [
+            ':minhit' => $iHitMin
+        ]);
     }
 
     /**
@@ -4127,7 +4164,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // adding variants
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $oRs = $oDb->select("select oxid from {$sArtTable} where oxparentid = " . $oDb->quote($sParentIdForVariants) . " and oxid != " . $oDb->quote($this->oxarticles__oxid->value));
+
+        $params = [
+            ':oxparentid' => $sParentIdForVariants,
+            ':oxid' => $this->oxarticles__oxid->value
+        ];
+        $oRs = $oDb->select("select oxid from {$sArtTable} 
+            where oxparentid = :oxparentid 
+            and oxid != :oxid ", $params);
         if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $sIn .= ", " . $oDb->quote(current($oRs->fields)) . " ";
@@ -4586,8 +4630,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($sOXID) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             //collect variants to remove recursively
-            $query= 'select oxid from ' . $this->getViewName() . ' where oxparentid = ?';
-            $rs = $database->select($query, [$sOXID]);
+            $query= 'select oxid from ' . $this->getViewName() . ' where oxparentid = :oxparentid';
+            $rs = $database->select($query, [
+                ':oxparentid' => $sOXID
+            ]);
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
@@ -4655,14 +4701,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $query = 'SELECT oxstock, oxvendorid, oxmanufacturerid FROM oxarticles WHERE oxid = ?';
-            $rs = $database->select($query, [$parentId]);
+            $query = 'SELECT oxstock, oxvendorid, oxmanufacturerid FROM oxarticles WHERE oxid = :oxid';
+            $rs = $database->select($query, [
+                ':oxid' => $parentId
+            ]);
             $oldStock = $rs->fields[0];
             $vendorId = $rs->fields[1];
             $manufacturerId = $rs->fields[2];
 
-            $query = 'SELECT SUM(oxstock) FROM ' . $this->getViewName(true) . ' WHERE oxparentid = ? AND ' . $this->getSqlActiveSnippet(true) . ' AND oxstock > 0 ';
-            $stock = (float) $database->getOne($query, [$parentId]);
+            $query = 'SELECT SUM(oxstock) FROM ' . $this->getViewName(true) . ' 
+                WHERE oxparentid = :oxparentid 
+                AND ' . $this->getSqlActiveSnippet(true) . ' 
+                AND oxstock > 0 ';
+            $stock = (float) $database->getOne($query, [
+                ':oxparentid' => $parentId
+            ]);
 
             $query = 'UPDATE oxarticles SET oxvarstock = ? WHERE oxid = ?';
             $database->execute($query, [$stock, $parentId]);
@@ -4713,8 +4766,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-            $query = "SELECT COUNT(*) AS varcount FROM oxarticles WHERE oxparentid = ?";
-            $varCount = (int) $database->getOne($query, [$parentId]);
+            $query = "SELECT COUNT(*) AS varcount FROM oxarticles WHERE oxparentid = :oxparentid";
+            $varCount = (int) $database->getOne($query, [
+                ':oxparentid' => $parentId
+            ]);
 
             $query = "UPDATE oxarticles SET oxvarcount = ? WHERE oxid = ?";
             $database->execute($query, [$varCount, $parentId]);
@@ -4737,8 +4792,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 FROM ' . $this->getViewName(true) . ' AS `oxarticles`
                     LEFT JOIN ' . $this->getViewName(true) . ' AS `p` ON ( `p`.`oxid` = `oxarticles`.`oxparentid` AND `p`.`oxprice` > 0 )
                 WHERE ' . $this->getSqlActiveSnippet(true) . '
-                    AND ( `oxarticles`.`oxparentid` = ' . $database->quote($sParentId) . ' )';
-            $aPrices = $database->getRow($sQ);
+                    AND ( `oxarticles`.`oxparentid` = :oxparentid )';
+            $aPrices = $database->getRow($sQ, [
+                ':oxparentid' => $sParentId
+            ]);
             if (isset($aPrices['varminprice'], $aPrices['varmaxprice'])) {
                 $sQ = '
                     UPDATE `oxarticles`
@@ -4948,9 +5005,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
                     $sSql .= ' FROM ' . $this->getViewName(true) . '
                     WHERE ' . $this->getSqlActiveSnippet(true) . '
-                        AND ( `oxparentid` = ' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getId()) . ' )';
+                        AND ( `oxparentid` = :oxparentid )';
 
-                    $dPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSql);
+                    $dPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSql, [
+                        ':oxparentid' => $this->getId()
+                    ]);
                 }
             }
 
@@ -4984,9 +5043,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
                     $sSql .= ' FROM ' . $this->getViewName(true) . '
                         WHERE ' . $this->getSqlActiveSnippet(true) . '
-                            AND ( `oxparentid` = ' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getId()) . ' )';
+                            AND ( `oxparentid` = :oxparentid )';
 
-                    $dPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSql);
+                    $dPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSql, [
+                        ':oxparentid' => $this->getId()
+                    ]);
                 }
             }
 

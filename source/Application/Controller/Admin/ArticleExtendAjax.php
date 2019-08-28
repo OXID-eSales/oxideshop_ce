@@ -167,9 +167,10 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
             foreach ($categoriesToAdd as $sAdd) {
                 // check, if it's already in, then don't add it again
-                $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category where oxobject2category.oxcatnid= "
-                           . $database->quote($sAdd) . " and oxobject2category.oxobjectid = " . $database->quote($oxId) . " ";
-                if ($database->getOne($sSelect)) {
+                $sSelect = "select 1 from " . $objectToCategoryView . " as oxobject2category " .
+                    "where oxobject2category.oxcatnid = :oxcatnid " .
+                    "and oxobject2category.oxobjectid = :oxobjectid";
+                if ($database->getOne($sSelect, [':oxcatnid' => $sAdd, ':oxobjectid' => $oxId])) {
                     continue;
                 }
 

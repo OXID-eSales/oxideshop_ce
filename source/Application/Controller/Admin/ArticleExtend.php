@@ -277,9 +277,11 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $isVariantSelectionEnabled = $config->getConfigParam('blVariantsSelection');
         $bundleIdField = 'oxarticles__oxbundleid';
         $query .= $isVariantSelectionEnabled ? '' : " and {$articleTable}.oxparentid = '' ";
-        $query .= " and {$articleTable}.oxid = " . $database->quote($article->$bundleIdField->value);
+        $query .= " and {$articleTable}.oxid = :oxid";
 
-        $resultFromDatabase = $database->select($query);
+        $resultFromDatabase = $database->select($query, [
+            ':oxid' => $article->$bundleIdField->value
+        ]);
         if ($resultFromDatabase != false && $resultFromDatabase->count() > 0) {
             while (!$resultFromDatabase->EOF) {
                 $articleNumber = new \OxidEsales\Eshop\Core\Field($resultFromDatabase->fields[1]);

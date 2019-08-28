@@ -91,8 +91,12 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function getSubscribedUserIdByEmail($email)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sEmailAddressQuoted = $database->quote($email);
-        $userOxid = $database->getOne("select oxid from oxnewssubscribed where oxemail = {$sEmailAddressQuoted} ");
+        $params = [
+            ':oxemail' => (string) $email
+        ];
+
+        $userOxid = $database->getOne("select oxid from oxnewssubscribed 
+            where oxemail = :oxemail ", $params);
 
         return $userOxid;
     }
@@ -107,7 +111,13 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function loadFromUserId($sOxUserId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed where oxuserid = {$oDb->quote($sOxUserId)} and oxshopid = {$oDb->quote($this->getConfig()->getShopId())}");
+        $params = [
+            ':oxuserid' => $sOxUserId,
+            ':oxshopid' => $this->getConfig()->getShopId()
+        ];
+
+        $sOxId = $oDb->getOne("select oxid from oxnewssubscribed 
+            where oxuserid = :oxuserid and oxshopid = :oxshopid", $params);
 
         return $this->load($sOxId);
     }

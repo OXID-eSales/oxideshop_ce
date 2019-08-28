@@ -118,7 +118,7 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
             // checking if all articles were moved from one
             $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
-            $sSelect .= "where $sO2CView.oxcatnid = " . DatabaseProvider::getDb()->quote($soxId);
+            $sSelect .= "where $sO2CView.oxcatnid = :oxcatnid";
             if (count($aSkipArt)) {
                 $sSelect .= " and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
                 $sSelect .= "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
@@ -126,7 +126,9 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
             // simply echoing "1" if some items found, and 0 if nothing was found
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            echo (int) DatabaseProvider::getMaster()->getOne($sSelect);
+            echo (int) DatabaseProvider::getMaster()->getOne($sSelect, [
+                ':oxcatnid' => $soxId
+            ]);
         }
     }
 
@@ -157,12 +159,14 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
             // checking if all articles were moved from one
             $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
-            $sSelect .= "where $sO2CView.oxcatnid = " . DatabaseProvider::getDb()->quote($soxId) . " and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
+            $sSelect .= "where $sO2CView.oxcatnid = :oxcatnid and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
             $sSelect .= "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aOrdArt)) . " ) ";
 
             // simply echoing "1" if some items found, and 0 if nothing was found
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            echo (int) DatabaseProvider::getMaster()->getOne($sSelect);
+            echo (int) DatabaseProvider::getMaster()->getOne($sSelect, [
+                ':oxcatnid' => $soxId
+            ]);
         }
     }
 
@@ -186,10 +190,12 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $aNewOrder = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("neworder_sess");
             if (is_array($aNewOrder) && count($aNewOrder)) {
                 $sO2CView = $this->_getViewName('oxobject2category');
-                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid='" . $oCategory->getId() . "' and $sO2CView.oxobjectid in (" . implode(", ", DatabaseProvider::getDb()->quoteArray($aNewOrder)) . " )";
+                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid = :oxcatnid and $sO2CView.oxobjectid in (" . implode(", ", DatabaseProvider::getDb()->quoteArray($aNewOrder)) . " )";
                 $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
                 $oList->init("oxbase", "oxobject2category");
-                $oList->selectString($sSelect);
+                $oList->selectString($sSelect, [
+                    ':oxcatnid' => $oCategory->getId()
+                ]);
 
                 // setting new position
                 foreach ($oList as $oObj) {

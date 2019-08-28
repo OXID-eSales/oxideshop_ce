@@ -324,12 +324,16 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
             $sTable = $oCategory->getViewName();
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
             $sQ = "select {$sTable}.oxtitle as oxtitle from {$sTable}
-                       where {$sTable}.oxleft <= " . $oDb->quote($oCategory->oxcategories__oxleft->value) . " and
-                             {$sTable}.oxright >= " . $oDb->quote($oCategory->oxcategories__oxright->value) . " and
-                             {$sTable}.oxrootid = " . $oDb->quote($oCategory->oxcategories__oxrootid->value) . "
+                       where {$sTable}.oxleft <= :oxleft and
+                             {$sTable}.oxright >= :oxright and
+                             {$sTable}.oxrootid = :oxrootid
                        order by {$sTable}.oxleft";
 
-            $oRs = $oDb->select($sQ);
+            $oRs = $oDb->select($sQ, [
+                ':oxleft' => $oCategory->oxcategories__oxleft->value,
+                ':oxright' => $oCategory->oxcategories__oxright->value,
+                ':oxrootid' => $oCategory->oxcategories__oxrootid->value,
+            ]);
             if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     if ($sCatPath) {

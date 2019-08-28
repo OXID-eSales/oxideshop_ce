@@ -107,9 +107,11 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // performance
         $sSelect = "select {$sViewName}.* from {$sViewName}, oxobject2group
-                where oxobject2group.oxobjectid='" . $this->getId() . "'
+                where oxobject2group.oxobjectid = :oxobjectid
                 and oxobject2group.oxgroupsid={$sViewName}.oxid ";
-        $this->_oGroups->selectString($sSelect);
+        $this->_oGroups->selectString($sSelect, [
+            ':oxobjectid' => $this->getId()
+        ]);
 
         return $this->_oGroups;
     }

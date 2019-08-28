@@ -307,11 +307,13 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sTable = getViewName('oxdeliveryset');
         if ($sDelId) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sSubSql = "( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelsetid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelid = " . $oDb->quote($sDelId) . " ) as $sTable";
+            $sSubSql = "( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelsetid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelid = :oxdelid ) as $sTable";
         } else {
             $sSubSql = $sTable;
         }
         $sQ = "select $sTable.*, oxobject2delivery.oxobjectid from $sSubSql left join (select oxobject2delivery.* from oxobject2delivery where oxobject2delivery.oxtype = 'rdfadeliveryset' ) as oxobject2delivery on oxobject2delivery.oxdeliveryid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " ";
-        $this->selectString($sQ);
+        $this->selectString($sQ, [
+            ':oxdelid' => $sDelId
+        ]);
     }
 }

@@ -145,11 +145,15 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $iShopId = $this->getConfig()->getShopId();
 
         $sQ = "select oxfixed from oxseo where
-                   oxseo.oxobjectid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getEditObjectId()) . " and
-                   oxseo.oxshopid = '{$iShopId}' and oxseo.oxlang = {$iLang} and oxparams = '' ";
+                   oxseo.oxobjectid = :oxobjectid and
+                   oxseo.oxshopid = :oxshopid and oxseo.oxlang = :oxlang and oxparams = '' ";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
+        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
+            ':oxobjectid' => $this->getEditObjectId(),
+            ':oxshopid' => $iShopId,
+            ':oxlang' => $iLang
+        ]);
     }
 
     /**

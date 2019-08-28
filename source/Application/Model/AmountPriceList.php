@@ -79,19 +79,26 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _loadFromDb()
     {
         $sArticleId = $this->getArticle()->getId();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
         if (!$this->isAdmin() && $this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
             $sArticleId = $this->getArticle()->getParentId();
         }
 
+        $params = [
+            ':oxartid' => $sArticleId
+        ];
+
         if ($this->getConfig()->getConfigParam('blMallInterchangeArticles')) {
             $sShopSelect = '1';
         } else {
-            $sShopSelect = " `oxshopid` = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->getConfig()->getShopId()) . " ";
+            $sShopSelect = " `oxshopid` = :oxshopid ";
+            $params[':oxshopid'] = $this->getConfig()->getShopId();
         }
 
-        $sSql = "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId) . " AND $sShopSelect ORDER BY `oxamount` ";
+        $sSql = "SELECT * FROM `oxprice2article` 
+            WHERE `oxartid` = :oxartid AND $sShopSelect ORDER BY `oxamount` ";
 
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
+        return $db->getAll($sSql, $params);
     }
 }

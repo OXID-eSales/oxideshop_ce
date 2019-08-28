@@ -630,7 +630,9 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         // Get sub categories of root categories
         $database->execute("update oxcategories set oxrootid = " . $database->quote($thisRoot) . " where oxparentid = " . $database->quote($oxRootId));
-        $rs = $database->select("select oxid, oxparentid from oxcategories where oxparentid = " . $database->quote($oxRootId) . " order by oxsort", false);
+        $rs = $database->select("select oxid, oxparentid from oxcategories where oxparentid = :oxparentid order by oxsort", [
+            ':oxparentid' => $oxRootId
+        ]);
         // If there are sub categories
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
@@ -639,7 +641,9 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sActOxidQuoted = $database->quote($actOxid);
 
                 // Get the data of the parent category to the current Cat
-                $rs3 = $database->select("select oxrootid, oxright from oxcategories where oxid = " . $database->quote($parentId), false);
+                $rs3 = $database->select("select oxrootid, oxright from oxcategories where oxid = :oxid", [
+                    ':oxid' => $parentId
+                ]);
                 while (!$rs3->EOF) {
                     $parentOxRootId = $rs3->fields[0];
                     $parentRight = (int) $rs3->fields[1];

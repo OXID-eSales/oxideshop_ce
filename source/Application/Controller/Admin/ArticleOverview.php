@@ -54,9 +54,11 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
             // position in top ten
             $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
-                       "where oxordershopid = '{$sShopID}' group by oxartid order by cnt desc";
+                       "where oxordershopid = :oxordershopid group by oxartid order by cnt desc";
 
-            $rs = $oDB->select($sSelect);
+            $rs = $oDB->select($sSelect, [
+                ':oxordershopid' => $sShopID
+            ]);
             $iTopPos = 0;
             $iPos = 0;
             if ($rs != false && $rs->count() > 0) {

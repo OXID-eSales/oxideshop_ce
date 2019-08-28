@@ -118,11 +118,13 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
         $sSql = "SELECT c.oxvat
                  FROM $sCatT AS c, $sO2C AS o2c
                  WHERE c.oxid=o2c.oxcatnid AND
-                       o2c.oxobjectid = " . $oDb->quote($oArticle->getId()) . " AND
+                       o2c.oxobjectid = :oxobjectid AND
                        c.oxvat IS NOT NULL
                  ORDER BY o2c.oxtime ";
 
-        $fVat = $oDb->getOne($sSql);
+        $fVat = $oDb->getOne($sSql, [
+            ':oxobjectid' => $oArticle->getId()
+        ]);
         if ($fVat !== false && $fVat !== null) {
             return $fVat;
         }

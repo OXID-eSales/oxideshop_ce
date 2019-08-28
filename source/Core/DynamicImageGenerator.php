@@ -417,10 +417,14 @@ namespace OxidEsales\EshopCommunity\Core {
                     $decodeField = $config->getDecodeValueQuery();
 
                     // selecting shop which image quality matches user given
-                    $q = "select oxshopid from oxconfig where oxvarname = 'sDefaultImageQuality' and
-                       {$decodeField} = " . $db->quote($quality);
+                    $q = "select oxshopid
+                            from oxconfig
+                            where oxvarname = 'sDefaultImageQuality' and
+                       {$decodeField} = :quality";
 
-                    $shopIdsArray = $db->getAll($q);
+                    $shopIdsArray = $db->getAll($q, [
+                        ':quality' => $quality
+                    ]);
 
                     // building query:
                     // shop id

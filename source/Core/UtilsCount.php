@@ -135,9 +135,11 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $sQ = "SELECT COUNT( DISTINCT $sTable.`oxid` )
                FROM $sO2CView
                    INNER JOIN $sTable ON $sO2CView.`oxobjectid` = $sTable.`oxid` AND $sTable.`oxparentid` = ''
-               WHERE $sO2CView.`oxcatnid` = " . $oDb->quote($sCatId) . " AND " . $oArticle->getSqlActiveSnippet();
+               WHERE $sO2CView.`oxcatnid` = :oxcatnid AND " . $oArticle->getSqlActiveSnippet();
 
-        $aCache[$sCatId][$sActIdent] = $oDb->getOne($sQ);
+        $aCache[$sCatId][$sActIdent] = $oDb->getOne($sQ, [
+            ':oxcatnid' => $sCatId
+        ]);
 
         $this->_setCatCache($aCache);
 
@@ -160,12 +162,21 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $sTable = $oArticle->getViewName();
 
-        $sSelect = "select count({$sTable}.oxid) from {$sTable} where oxvarminprice >= 0 ";
-        $sSelect .= $dPriceTo ? "and oxvarminprice <= " . (double) $dPriceTo . " " : " ";
-        $sSelect .= $dPriceFrom ? "and oxvarminprice  >= " . (double) $dPriceFrom . " " : " ";
-        $sSelect .= "and {$sTable}.oxissearch = 1 and " . $oArticle->getSqlActiveSnippet();
+        $params = [];
+        $sSelect = "SELECT count({$sTable}.oxid) FROM {$sTable} WHERE oxvarminprice >= 0";
+        if ($dPriceTo) {
+            $sSelect .= " AND oxvarminprice <= :oxvarpriceto";
+            $params[':oxvarpriceto'] = (double) $dPriceTo;
+        }
 
-        $aCache[$sCatId][$sActIdent] = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
+        if ($dPriceFrom) {
+            $sSelect .= " AND oxvarminprice  >= :oxvarpricefrom";
+            $params[':oxvarpricefrom'] = (double) $dPriceFrom;
+        }
+
+        $sSelect .=  " AND {$sTable}.oxissearch = 1 AND " . $oArticle->getSqlActiveSnippet();
+
+        $aCache[$sCatId][$sActIdent] = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect, $params);
 
         $this->_setCatCache($aCache);
 
@@ -265,9 +276,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         // select each Manufacturer articles count
         //#3485
-        $sQ = "select count($sArtTable.oxid) from $sArtTable where $sArtTable.oxparentid = '' and oxmanufacturerid = '$sMnfId' and " . $oArticle->getSqlActiveSnippet();
-
-        $iValue = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ);
+        $sQ = "SELECT count($sArtTable.oxid) FROM $sArtTable WHERE $sArtTable.oxparentid = '' AND oxmanufacturerid = :manufacturerId AND " . $oArticle->getSqlActiveSnippet();
+        $iValue = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
+            ':manufacturerId' => $sMnfId
+        ]);
 
         $aCache[$sMnfId][$sActIdent] = (int) $iValue;
 
@@ -306,10 +318,13 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         // loading from cache
         if ($aCatData = $this->_getCatCache()) {
             $sTable = getViewName('oxcategories');
-            $sSelect = "select $sTable.oxid from $sTable where " . (double) $iPrice . " >= $sTable.oxpricefrom and " . (double) $iPrice . " <= $sTable.oxpriceto ";
+            $sSelect = "SELECT $sTable.oxid FROM $sTable WHERE :oxpricefrom >= $sTable.oxpricefrom AND :oxpriceto <= $sTable.oxpriceto ";
 
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->select($sSelect, false);
+            $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->select($sSelect, [
+                ':oxpricefrom' => (double) $iPrice,
+                ':oxpriceto' => (double) $iPrice
+            ]);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     if (isset($aCatData[$rs->fields[0]])) {

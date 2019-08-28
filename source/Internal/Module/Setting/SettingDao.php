@@ -238,7 +238,9 @@ class SettingDao implements SettingDaoInterface
         $result = $queryBuilder->execute()->fetch();
 
         if (false === $result) {
-            throw new EntryDoesNotExistDaoException();
+            throw new EntryDoesNotExistDaoException(
+                'Setting ' . $name . ' for the module ' . $moduleId . ' doesn\'t exist in the shop with id ' . $shopId
+            );
         }
 
         return $result;

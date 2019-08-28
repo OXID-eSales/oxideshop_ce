@@ -97,7 +97,13 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
 
         $queryBuilder->execute();
 
-        $this->eventDispatcher->dispatch(ShopConfigurationChangedEvent::NAME, new ShopConfigurationChangedEvent($shopConfigurationSetting->getName(), $shopConfigurationSetting->getShopId()));
+        $this->eventDispatcher->dispatch(
+            ShopConfigurationChangedEvent::NAME,
+            new ShopConfigurationChangedEvent(
+                $shopConfigurationSetting->getName(),
+                $shopConfigurationSetting->getShopId()
+            )
+        );
     }
 
     /**
@@ -124,7 +130,9 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
         $result = $queryBuilder->execute()->fetch();
 
         if (false === $result) {
-            throw new EntryDoesNotExistDaoException();
+            throw new EntryDoesNotExistDaoException(
+                'Setting ' . $name . ' doesn\'t exist in the shop with id ' . $shopId
+            );
         }
 
         $setting = new ShopConfigurationSetting();

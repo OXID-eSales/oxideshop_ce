@@ -80,7 +80,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $sArticleId = $this->getArticle()->getId();
 
-        if (!$this->isAdmin() && $this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
+        if ($this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
             $sArticleId = $this->getArticle()->getParentId();
         }
 

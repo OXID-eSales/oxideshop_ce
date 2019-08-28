@@ -66,6 +66,7 @@ class ContainerFactory
         } else {
             $this->getCompiledSymfonyContainer();
             $this->saveContainerToCache($cacheFilePath);
+            $this->loadContainerFromCache($cacheFilePath);
         }
     }
 

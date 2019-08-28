@@ -1426,16 +1426,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $this->setHeader("Content-Type: text/html; charset=UTF-8");
 
         $sReturn = "Page not found.";
-        try {
-            $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
-            $oView->init();
-            $oView->render();
-            $oView->setClassName('oxUBase');
-            $oView->addTplParam('sUrl', $sUrl);
-            if ($sRet = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutput('message/err_404.tpl', $oView)) {
-                $sReturn = $sRet;
-            }
-        } catch (Exception $e) {
+        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
+        $oView->init();
+        $oView->render();
+        $oView->setClassName('oxUBase');
+        $oView->addTplParam('sUrl', $sUrl);
+        if ($sRet = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutput('message/err_404.tpl', $oView)) {
+            $sReturn = $sRet;
         }
         $this->showMessageAndExit($sReturn);
     }

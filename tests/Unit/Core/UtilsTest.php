@@ -1160,24 +1160,26 @@ class UtilsTest extends \OxidTestCase
 
     /**
      * Test case for oxUtils::handlePageNotFoundError.
+     *
+     * A rendering exception indicates that the shop itself is not working, so
+     * the exception should be passed through and end up in the error log.
      */
     public function testHandlePageNotFoundErrorWithUrlAndRenderException()
     {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Some rendering exception');
+
         oxTestModules::addFunction('oxutils', 'showMessageAndExit', '{$this->showMessageAndExitCall[] = $aA; }');
         oxTestModules::addFunction('oxutils', 'setHeader', '{$this->setHeaderCall[] = $aA;}');
         oxTestModules::addFunction('oxUtilsView', 'getTemplateOutput', '{$this->getTemplateOutputCall[] = $aA; return "msg_".count($this->getTemplateOutputCall);}');
 
-        oxTestModules::addFunction('oxUBase', 'render', '{throw new Exception();}');
+        oxTestModules::addFunction(
+            'oxUBase',
+            'render',
+            '{throw new Exception(\'Some rendering exception\');}');
 
         oxRegistry::getUtils()->handlePageNotFoundError('url aa');
-        $this->assertNull(\OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutputCall);
-        $this->assertEquals(1, count(oxRegistry::getUtils()->showMessageAndExitCall));
-        $this->assertEquals('Page not found.', oxRegistry::getUtils()->showMessageAndExitCall[0][0]);
-        $expectedHeaders = array(
-            array('HTTP/1.0 404 Not Found'),
-            array('Content-Type: text/html; charset=UTF-8')
-        );
-        $this->assertEquals($expectedHeaders, oxRegistry::getUtils()->setHeaderCall);
+
     }
 
     public function testToPhpFileCache()

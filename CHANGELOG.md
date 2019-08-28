@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - oe-console command: oe:module:activate-configured-modules
  
+### Changed
+- Most of SELECT queries do use prepared statements
+ 
 ## [6.4.0] - 2019-08-02
 
 ### Fixed

@@ -1,6 +1,6 @@
 language: php
 
-dist: precise
+dist: xenial
 
 notifications:
   email: false
@@ -37,18 +37,21 @@ before_install:
   - sudo apt-get update
 
 before_script:
-  # apache setup (http://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP)
+  # remove xdebug
+  - phpenv config-rm xdebug.ini
+  # apache setup (https://docs.travis-ci.com/user/languages/php/#apache--php)
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   # enable php-fpm
-  - cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - if [[ $(phpenv version-name) = 7.* ]]; then cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf; fi;
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - if [[ $(phpenv version-name) = 7.* ]]; then sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf; fi;
   - sudo a2enmod rewrite actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars
+  - sudo chown -R travis:travis /var/lib/apache2/fastcgi
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  - phpenv config-rm xdebug.ini
-  # configure apache virtual host
-  - echo "$(curl -fsSL https://gist.githubusercontent.com/adriankirchner/197e3d13ccfb680f8942/raw/5b36cd3740cc05adb1c9d5c0568c851dd7700dcc/gistfile1.apacheconf)" | sudo tee /etc/apache2/sites-available/default > /dev/null
-  - sudo sed -e "s|%TRAVIS_BUILD_DIR%|$(pwd)/source|g" --in-place /etc/apache2/sites-available/default
+  # configure apache virtual hosts
+  - sudo cp .travis.sites_conf /etc/apache2/sites-available/000-default.conf
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)/source?g" --in-place /etc/apache2/sites-available/000-default.conf
   - sudo service apache2 restart
 
   # database setup

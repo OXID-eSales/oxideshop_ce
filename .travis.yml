@@ -11,8 +11,6 @@ php:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: "7.1"
 
 # TRAVIS_ERROR_LEVEL = E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_STRICT
 env: TRAVIS_ERROR_LEVEL=22519 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/" OXID_ESHOP_CS_THRESHOLD=14

@@ -1543,7 +1543,6 @@ class ArticleTest extends \OxidTestCase
         $sOxid = oxDb::getDb()->getOne("Select oxid from oxarticles where oxid = '_testArt2'");
         $this->assertEquals('_testArt2', $sOxid);
         $this->assertTrue($oArticle->oxarticles__oxinsert->value >= $now);
-        $this->assertTrue($oArticle->oxarticles__oxtimestamp->value >= $now);
         $this->assertEquals('oxarticle', $oArticle->oxarticles__oxsubclass->value);
     }
 

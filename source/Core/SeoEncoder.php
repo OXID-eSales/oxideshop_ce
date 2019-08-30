@@ -1213,11 +1213,14 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      */
     public function deleteSeoEntry($objectId, $shopId, $language, $type)
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $query = "delete from oxseo where oxobjectid = :oxobjectid and oxshopid = :oxshopid and oxlang = :oxlang and oxtype = :oxtype";
 
-        $query = "delete from oxseo where oxobjectid = " . $database->quote($objectId) . " and oxshopid = " . $database->quote($shopId) . " and oxlang = " . $database->quote($language) . " and oxtype = " . $database->quote($type) . " ";
-
-        $this->executeDatabaseQuery($query);
+        $this->executeDatabaseQuery($query, [
+            ':oxobjectid' => $objectId,
+            ':oxshopid' => $shopId,
+            ':oxlang' => $language,
+            ':oxtype' => $type,
+        ]);
     }
 
     /**

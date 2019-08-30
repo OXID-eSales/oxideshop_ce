@@ -1867,8 +1867,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $configKeyQuoted = $db->quote($this->getConfigParam('sConfigKey'));
         $newOXIDdQuoted = $db->quote(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID());
 
-        $query = "delete from oxconfig where oxshopid = $shopIdQuoted and oxvarname = $varNameQuoted and oxmodule = $moduleQuoted";
-        $db->execute($query);
+        $query = "delete from oxconfig where oxshopid = :oxshopid and oxvarname = :oxvarname and oxmodule = :oxmodule";
+        $db->execute($query, [
+            ':oxshopid' => $shopId,
+            ':oxvarname' => $varName,
+            ':oxmodule' => $module,
+        ]);
 
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values($newOXIDdQuoted, $shopIdQuoted, $moduleQuoted, $varNameQuoted, $varTypeQuoted, ENCODE( $varValueQuoted, $configKeyQuoted) )";

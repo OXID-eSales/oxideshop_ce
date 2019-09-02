@@ -1226,13 +1226,14 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     /**
      * Execute a query on the database.
      *
-     * @param string $query The command to execute on the database.
+     * @param string $query  The command to execute on the database.
+     * @param array  $params Parameters used in prepare statement.
      */
-    protected function executeDatabaseQuery($query)
+    protected function executeDatabaseQuery($query, $params = [])
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $database->execute($query);
+        $database->execute($query, $params);
     }
 
     /**

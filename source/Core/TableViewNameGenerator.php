@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Generates view name for given table name.
  */
@@ -24,12 +26,12 @@ class TableViewNameGenerator
     public function __construct($config = null, $language = null)
     {
         if (!$config) {
-            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $config = Registry::getConfig();
         }
         $this->config = $config;
 
         if (!$language) {
-            $language = \OxidEsales\Eshop\Core\Registry::getLang();
+            $language = Registry::getLang();
         }
         $this->language = $language;
     }
@@ -47,13 +49,10 @@ class TableViewNameGenerator
      */
     public function getViewName($table, $languageId = null, $shopId = null)
     {
-        $config = $this->getConfig();
-
-        if (!$config->getConfigParam('blSkipViewUsage')) {
-            $language = $this->getLanguage();
-            $languageId = $languageId !== null ? $languageId : $language->getBaseLanguage();
-            $shopId = $shopId !== null ? $shopId : $config->getShopId();
-            $isMultiLang = in_array($table, $language->getMultiLangTables());
+        if (!$this->config->getConfigParam('blSkipViewUsage')) {
+            $languageId = $languageId !== null ? $languageId : $this->language->getBaseLanguage();
+            $shopId = $shopId !== null ? $shopId : $this->config->getShopId();
+            $isMultiLang = in_array($table, $this->language->getMultiLangTables());
             $viewSuffix = $this->getViewSuffix($table, $languageId, $shopId, $isMultiLang);
 
             if ($viewSuffix || (($languageId == -1 || $shopId == -1) && $isMultiLang)) {
@@ -78,7 +77,7 @@ class TableViewNameGenerator
     {
         $viewSuffix = '';
         if ($languageId != -1 && $isMultiLang) {
-            $languageAbbreviation = $this->getLanguage()->getLanguageAbbr($languageId);
+            $languageAbbreviation = $this->language->getLanguageAbbr($languageId);
             $viewSuffix .= "_{$languageAbbreviation}";
         }
 
@@ -87,6 +86,7 @@ class TableViewNameGenerator
 
     /**
      * @return \OxidEsales\Eshop\Core\Config
+     * @deprecated
      */
     protected function getConfig()
     {
@@ -95,6 +95,7 @@ class TableViewNameGenerator
 
     /**
      * @return \OxidEsales\Eshop\Core\Language
+     * @deprecated
      */
     protected function getLanguage()
     {

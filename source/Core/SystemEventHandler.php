@@ -300,14 +300,14 @@ class SystemEventHandler
      */
     protected function getAppServerService()
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $database, Registry::getConfig());
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
-
         $appServerService = oxNew(
             \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-            $appServerDao,
-            $utilsServer,
+            oxNew(
+                \OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class,
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb(),
+                Registry::getConfig()
+            ),
+            oxNew(\OxidEsales\Eshop\Core\UtilsServer::class),
             \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
         );
 

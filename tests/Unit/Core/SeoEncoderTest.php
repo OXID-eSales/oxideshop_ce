@@ -895,10 +895,18 @@ class SeoEncoderTest extends \OxidTestCase
         $language = 'zzz';
         $type = 'ggg';
 
-        $expectedQuery = "delete from oxseo where oxobjectid = '{$objectId}' and oxshopid = '{$shopId}' and oxlang = '{$language}' and oxtype = '{$type}' ";
+        $expectedQuery = "delete from oxseo where oxobjectid = :oxobjectid and oxshopid = :oxshopid and oxlang = :oxlang and oxtype = :oxtype";
 
         $encoderMock = $this->getMock(\OxidEsales\Eshop\Core\SeoEncoder::class, array('executeDatabaseQuery'));
-        $encoderMock->expects($this->once())->method('executeDatabaseQuery')->with($this->equalTo($expectedQuery));
+        $encoderMock->expects($this->once())->method('executeDatabaseQuery')->with(
+            $this->equalTo($expectedQuery),
+            $this->equalTo([
+                ':oxobjectid' => 'xxx',
+                ':oxshopid' => 'yyy',
+                ':oxlang' => 'zzz',
+                ':oxtype' => 'ggg'
+            ])
+        );
 
         $encoderMock->deleteSeoEntry($objectId, $shopId, $language, $type);
     }

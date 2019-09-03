@@ -859,8 +859,9 @@ class ViewConfigTest extends \OxidTestCase
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTopActiveView"));
         $oConfig->expects($this->once())->method("getTopActiveView")->will($this->returnValue($oView));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $viewConfig = oxNew(ViewConfig::class);
+
+        Registry::set(Config::class, $oConfig);
+        $oViewConfig = oxNew(ViewConfig::class);
 
         $this->assertEquals("testViewClass", $oViewConfig->getTopActiveClassName());
     }

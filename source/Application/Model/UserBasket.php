@@ -328,8 +328,10 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($sOXID && ($blDelete = parent::delete($sOXID))) {
             // cleaning up related data
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "delete from oxuserbasketitems where oxbasketid = " . $oDb->quote($sOXID);
-            $oDb->execute($sQ);
+            $sQ = "delete from oxuserbasketitems where oxbasketid = :oxbasketid";
+            $oDb->execute($sQ, [
+                ':oxbasketid' => $sOXID
+            ]);
             $this->_aBasketItems = null;
         }
 

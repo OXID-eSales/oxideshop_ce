@@ -81,7 +81,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sArticleId = $this->getArticle()->getId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        if (!$this->isAdmin() && $this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
+        if ($this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
             $sArticleId = $this->getArticle()->getParentId();
         }
 

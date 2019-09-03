@@ -1871,7 +1871,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $db->execute($query, [
             ':oxshopid' => $shopId,
             ':oxvarname' => $varName,
-            ':oxmodule' => $module,
+            ':oxmodule' => $module ?: ''
         ]);
 
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)

@@ -358,16 +358,14 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetTopActionClassName()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
-        $oView->expects($this->once())->method("getClassName")->will($this->returnValue("testViewClass"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getActionClassName"));
+        $oView->expects($this->once())->method("getActionClassName")->will($this->returnValue("testAction"));
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTopActiveView"));
         $oConfig->expects($this->once())->method("getTopActiveView")->will($this->returnValue($oView));
 
-        $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getConfig"));
-        $oViewConfig->expects($this->once())->method("getConfig")->will($this->returnValue($oConfig));
-
-        $this->assertEquals("testViewClass", $oViewConfig->getTopActiveClassName());
+        $viewConfig = oxNew(ViewConfig::class);
+        $this->assertEquals("testAction", $viewConfig->getTopActionClassName());
     }
 
     public function testGetShowBasketTimeoutWhenFunctionalityIsOnAndTimeLeft()

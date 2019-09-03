@@ -1953,7 +1953,7 @@ class ViewConfigTest extends \OxidTestCase
         $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));
 
         Registry::set(Config::class, $oConfig);
-        $oViewConfig = oxNew(ViewConfig::class);
+        $oViewConf = oxNew(ViewConfig::class);
 
         $this->assertEquals($sTest, $oViewConf->getActiveClassName());
     }

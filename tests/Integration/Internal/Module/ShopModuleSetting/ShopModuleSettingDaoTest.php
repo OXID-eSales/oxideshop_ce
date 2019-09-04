@@ -24,6 +24,10 @@ class SettingDaoTest extends TestCase
 
     /**
      * @dataProvider settingValueDataProvider
+     *
+     * @param string $name
+     * @param string $type
+     * @param        $value
      */
     public function testSave(string $name, string $type, $value)
     {
@@ -189,6 +193,10 @@ class SettingDaoTest extends TestCase
      * Checks if DAO is compatible with OxidEsales\Eshop\Core\Config
      *
      * @dataProvider settingValueDataProvider
+     *
+     * @param string $name
+     * @param string $type
+     * @param        $value
      */
     public function testBackwardsCompatibility(string $name, string $type, $value)
     {

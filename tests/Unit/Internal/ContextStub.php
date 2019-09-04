@@ -6,22 +6,32 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
+use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 class ContextStub extends BasicContextStub implements ContextInterface
 {
-    private $logLevel = 'error';
-
-    private $logFilePath = 'log.txt';
-
-    private $currentShopId = 1;
-
-    private $shopIds = [1];
+    private $logLevel;
+    private $logFilePath;
+    private $currentShopId;
+    private $shopIds;
+    private $configurationEncryptionKey;
+    private $requiredContactFormFields = [];
 
     /**
-     * @var array
+     * ContextStub constructor.
      */
-    private $requiredContactFormFields = [];
+    public function __construct()
+    {
+        parent::__construct();
+        $context = ContainerFactory::getInstance()->getContainer()->get(ContextInterface::class);
+        $this->logLevel = $context->getLogLevel();
+        $this->shopIds = $context->getAllShopIds();
+        $this->currentShopId = $context->getCurrentShopId();
+        $this->configurationEncryptionKey = $context->getConfigurationEncryptionKey();
+        $this->logFilePath = $context->getLogFilePath();
+    }
+
 
     /**
      * @param string $logLevel
@@ -92,7 +102,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
      */
     public function getConfigurationEncryptionKey(): string
     {
-        return '';
+        return $this->configurationEncryptionKey;
     }
 
     /**
@@ -102,14 +112,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
     {
         return $this->shopIds;
     }
-    /**
-     * @return string
-     */
-    public function getContainerCacheFile(): string
-    {
-        return '';
-    }
-
 
     /**
      * @return integer

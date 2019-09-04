@@ -1412,13 +1412,12 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $idKey = \OxidEsales\Eshop\Core\Registry::getUtils()->getArrFldName($coreTableName . '.oxid');
         $this->$idKey = new Field($this->getId(), Field::T_RAW);
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
+        
         $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
-                     " where {$coreTableName}.oxid = " . $database->quote($this->getId());
+                       " where {$coreTableName}.oxid = :id";
 
         $this->beforeUpdate();
-        $this->executeDatabaseQuery($updateQuery);
+        $this->executeDatabaseQuery($updateQuery, [':id' => $this->getId()]);
 
         return true;
     }
@@ -1427,14 +1426,15 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Execute a query on the database.
      *
      * @param string $query The command to execute on the database.
+     * @param array  $params Parameters to fill the querry
      *
      * @return int The number of affected rows.
      */
-    protected function executeDatabaseQuery($query)
+    protected function executeDatabaseQuery($query, $params = [])
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        return $database->execute($query);
+        return $database->execute($query, $params);
     }
 
     /**

@@ -102,10 +102,12 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
     public function removeArticleBundle()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQuotedChosenArt = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'));
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  {$sQuotedChosenArt} ";
-        $oDb->Execute($sQ);
+        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid = :oxid ";
+        $oDb->Execute(
+            $sQ,
+            [':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid')]
+        );
     }
 
     /**
@@ -114,11 +116,15 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
     public function addArticleBundle()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQuotedChosenArt = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxbundleid'));
-        $sQuotedOxId = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'));
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid =  {$sQuotedChosenArt} " .
-              "where oxarticles.oxid  =  {$sQuotedOxId} ";
-        $oDb->Execute($sQ);
+        $sQ = "update oxarticles set oxarticles.oxbundleid = :oxbundleid " .
+              "where oxarticles.oxid  = :oxid ";
+        $oDb->Execute(
+            $sQ,
+            [
+                ':oxbundleid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxbundleid'),
+                ':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid')
+            ]
+        );
     }
 }

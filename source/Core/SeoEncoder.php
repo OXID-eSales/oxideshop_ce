@@ -537,10 +537,11 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                 if ($oRs->fields['oxexpired'] && ($oRs->fields['oxtype'] == 'static' || $oRs->fields['oxtype'] == 'dynamic')) {
                     // if expired - copying to history, marking as not expired
                     $this->_copyToHistory($sId, $iShopId, $iLang);
-                    $oDb->execute(
-                        "update oxseo set oxexpired = 0 where oxobjectid = ? and oxlang = ? and oxshopid = ?",
-                        [$sId, $iLang, $iShopId]
-                    );
+                    $oDb->execute("update oxseo set oxexpired = 0 where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid", [
+                        ':oxobjectid' => $sId,
+                        ':oxlang' => $iLang,
+                        ':oxshopid' => $iShopId
+                    ]);
                     $sSeoUrl = $oRs->fields['oxseourl'];
                 } elseif (!$oRs->fields['oxexpired'] || $oRs->fields['oxfixed']) {
                     // if seo url is available and is valid
@@ -723,7 +724,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sQtedType = $oDb->quote($sType);
         $sQtedSeoUrl = $oDb->quote($sSeoUrl);
         $sQtedStdUrl = $oDb->quote($sStdUrl);
-        $sQtedParams = $oDb->quote($sParams);
         $sQtedIdent = $oDb->quote($sIdent);
 
         // transferring old url, thus current url will be regenerated
@@ -758,12 +758,18 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                 // fixed state change
                 $sFixed = isset($blFixed) ? ", oxfixed = " . ((int) $blFixed) . " " : '';
                 // nothing was changed - setting expired status back to 0
-                $sSql = "update oxseo set oxexpired = 0 {$sFixed} where oxtype = {$sQtedType} and
-                          oxobjectid = {$sQtedObjectId} and oxshopid = {$iQtedShopId} and oxlang = {$iLang} ";
-                $sSql .= $sParams ? " and oxparams = {$sQtedParams} " : '';
+                $sSql = "update oxseo set oxexpired = 0 {$sFixed} where oxtype = :oxtype and
+                          oxobjectid = :oxobjectid and oxshopid = :oxshopid and oxlang = :oxlang ";
+                $sSql .= $sParams ? " and oxparams = :oxparams " : '';
                 $sSql .= " limit 1";
 
-                return $this->executeQuery($sSql);
+                return $this->executeQuery($sSql, [
+                    ':oxtype' => $sType,
+                    ':oxobjectid' => $sObjectId,
+                    ':oxshopid' => $iShopId,
+                    ':oxlang' => $iLang,
+                    ':oxparams' => $sParams
+                ]);
             } elseif ($oRs->fields['oxexpired']) {
                 // copy to history
                 $this->_copyToHistory($sObjectId, $iShopId, $iLang, $sType);
@@ -789,15 +795,16 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      * Returns false when the query fail, otherwise return true
      *
      * @param string $query Query to execute.
+     * @param array  $params
      *
      * @return bool
      */
-    protected function executeQuery($query)
+    protected function executeQuery($query, $params = [])
     {
         $dataBase = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $success = true;
         try {
-            $dataBase->execute($query);
+            $dataBase->execute($query, $params);
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             $exception->debugOut();
             $success = false;
@@ -952,8 +959,8 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sWhere .= !is_null($iLang) ? ($sWhere ? " and oxlang = '{$iLang}'" : "where oxlang = '{$iLang}'") : '';
         $sWhere .= $sParams ? ($sWhere ? " and {$sParams}" : "where {$sParams}") : '';
 
-        $sQ = "update oxseo set oxexpired =  " . $oDb->quote($iExpStat) . " $sWhere ";
-        $oDb->execute($sQ);
+        $sQ = "update oxseo set oxexpired = :oxexpired $sWhere";
+        $oDb->execute($sQ, [':oxexpired' => $iExpStat]);
     }
 
     /**

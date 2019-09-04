@@ -43,7 +43,7 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
         ];
 
         foreach ($this->dataMappers as $dataMapper) {
-            $data = array_merge($dataMapper->toData($configuration), $data);
+            $data = array_merge($data, $dataMapper->toData($configuration));
         }
 
         return $data;

@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
@@ -26,14 +27,25 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
     private $shopConfigurationDao;
 
     /**
-     * ShopConfigurationDaoBridge constructor.
-     * @param ContextInterface $context
-     * @param ShopConfigurationDaoInterface $shopConfigurationDao
+     * @var ShopEnvironmentConfigurationDaoInterface
      */
-    public function __construct(ContextInterface $context, ShopConfigurationDaoInterface $shopConfigurationDao)
-    {
+    private $shopEnvironmentConfigurationDao;
+
+    /**
+     * ShopConfigurationDaoBridge constructor.
+     *
+     * @param ContextInterface                         $context
+     * @param ShopConfigurationDaoInterface            $shopConfigurationDao
+     * @param ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
+     */
+    public function __construct(
+        ContextInterface $context,
+        ShopConfigurationDaoInterface $shopConfigurationDao,
+        ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
+    ) {
         $this->context = $context;
         $this->shopConfigurationDao = $shopConfigurationDao;
+        $this->shopEnvironmentConfigurationDao = $shopEnvironmentConfigurationDao;
     }
 
     /**
@@ -55,5 +67,7 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
             $shopConfiguration,
             $this->context->getCurrentShopId()
         );
+
+        $this->shopEnvironmentConfigurationDao->remove($this->context->getCurrentShopId());
     }
 }

@@ -9,7 +9,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
@@ -26,6 +28,7 @@ class TestContainerFactory
     {
         $this->prepareVFS();
         $this->context = $this->getBasicContextStub();
+        $this->context = $this->getContextStub();
     }
 
     public function create(): SymfonyContainerBuilder
@@ -35,6 +38,7 @@ class TestContainerFactory
         $container = $containerBuilder->getContainer();
         $container = $this->setAllServicesAsPublic($container);
         $container = $this->setBasicContextStub($container);
+        $container = $this->setContextStub($container);
 
         return $container;
     }
@@ -56,9 +60,25 @@ class TestContainerFactory
         return $container;
     }
 
+    private function setContextStub(SymfonyContainerBuilder $container): SymfonyContainerBuilder
+    {
+        $container->set(ContextInterface::class, $this->context);
+        $container->autowire(ContextInterface::class, ContextStub::class);
+
+        return $container;
+    }
+
     private function getBasicContextStub(): BasicContextStub
     {
         $context = new BasicContextStub();
+        $context->setProjectConfigurationDirectory($this->getTestProjectConfigurationDirectory());
+
+        return $context;
+    }
+
+    private function getContextStub(): ContextStub
+    {
+        $context = new ContextStub();
         $context->setProjectConfigurationDirectory($this->getTestProjectConfigurationDirectory());
 
         return $context;

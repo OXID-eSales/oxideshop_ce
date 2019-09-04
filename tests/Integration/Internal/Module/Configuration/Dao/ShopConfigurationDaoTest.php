@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configurat
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
@@ -160,41 +159,6 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
-    public function testSavingOverwritesValueFromEnvironmentShopConfigurationFile(): void
-    {
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-
-        $setting = new Setting();
-        $setting
-            ->setName('settingToOverwrite')
-            ->setValue('value')
-            ->setType('int');
-
-        $module = new ModuleConfiguration();
-        $module
-            ->setId('testModule')
-            ->setPath('test')
-            ->addModuleSetting($setting);
-
-        $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->addModuleConfiguration($module);
-        $shopConfigurationDao->save($shopConfiguration, 1);
-
-        $this->prepareTestEnvironmentShopConfigurationFile();
-
-        $setting->setValue('newValueAfterSaving');
-        $shopConfigurationDao->save($shopConfiguration, 1);
-
-        $this->assertSame(
-            'newValueAfterSaving',
-            $shopConfigurationDao
-                ->get(1)
-                ->getModuleConfiguration('testModule')
-                ->getModuleSetting('settingToOverwrite')
-                ->getValue()
-        );
-    }
-
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
@@ -225,26 +189,6 @@ final class ShopConfigurationDaoTest extends TestCase
         $storage->save(["test"=>"test"]);
 
         $shopConfigurationDao->get(1);
-    }
-
-    private function prepareTestEnvironmentShopConfigurationFile(): void
-    {
-        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
-        $storage = $fileStorageFactory->create(
-            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/environment/1.yaml'
-        );
-
-        $storage->save([
-            'modules' => [
-                'testModule' => [
-                    ModuleSettingsDataMapper::MAPPING_KEY => [
-                        'settingToOverwrite' => [
-                            'value' => 'overwrittenValue',
-                        ]
-                    ]
-                ]
-            ]
-        ]);
     }
 
     /**

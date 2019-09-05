@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 class ShopConfigurationDaoBridgeTest extends TestCase
 {
     use ContainerTrait;
-
     /**
      * @var string
      */
@@ -45,7 +44,7 @@ class ShopConfigurationDaoBridgeTest extends TestCase
         );
     }
 
-    public function testSavingOverwritesValueFromEnvironmentShopConfigurationFile(): void
+    public function testSavingRemoveEnvironmentFile(): void
     {
         $shopConfigurationDaoBridge = $this->get(ShopConfigurationDaoBridgeInterface::class);
 
@@ -75,99 +74,6 @@ class ShopConfigurationDaoBridgeTest extends TestCase
                 ->getModuleSetting('settingToOverwrite')
                 ->getValue()
         );
-    }
-
-    public function testSavingRemoveEnvironmentFile()
-    {
-        $shopConfigurationDaoBridge = $this->get(ShopConfigurationDaoBridgeInterface::class);
-
-        $originalSetting = new Setting();
-        $originalSetting
-            ->setName('settingToOverwrite')
-            ->setValue('originalValue')
-            ->setType('int');
-
-        $module = new ModuleConfiguration();
-        $module
-            ->setId($this->testModuleId)
-            ->setPath('test')
-            ->addModuleSetting($originalSetting);
-
-        $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->addModuleConfiguration($module);
-        $shopConfigurationDaoBridge->save($shopConfiguration);
-
-        $this->prepareTestEnvironmentShopConfigurationFile();
-
-        $this->assertSame(
-            'overwrittenValue',
-            $shopConfigurationDaoBridge
-                ->get()
-                ->getModuleConfiguration($this->testModuleId)
-                ->getModuleSetting('settingToOverwrite')
-                ->getValue()
-        );
-
-        $shopConfigurationDaoBridge->save($shopConfiguration);
-
-        $this->assertSame(
-            'originalValue',
-            $shopConfigurationDaoBridge
-                ->get()
-                ->getModuleConfiguration($this->testModuleId)
-                ->getModuleSetting('settingToOverwrite')
-                ->getValue()
-        );
-    }
-
-    /**
-     * First create environment file and check if values are overwritten
-     * Second save and see if environment file is removed and change to .bak
-     * Third save again check if the environment file backup could be overwritten
-     */
-    public function testSavingOverwriteAlreadyBackupEnvironmentFile()
-    {
-        $shopConfigurationDaoBridge = $this->get(ShopConfigurationDaoBridgeInterface::class);
-
-        $originalSetting = new Setting();
-        $originalSetting
-            ->setName('settingToOverwrite')
-            ->setValue('originalValue')
-            ->setType('int');
-
-        $module = new ModuleConfiguration();
-        $module
-            ->setId($this->testModuleId)
-            ->setPath('test')
-            ->addModuleSetting($originalSetting);
-
-        $shopConfiguration = new ShopConfiguration();
-        $shopConfiguration->addModuleConfiguration($module);
-        $shopConfigurationDaoBridge->save($shopConfiguration);
-
-        $this->prepareTestEnvironmentShopConfigurationFile();
-
-        $this->assertSame(
-            'overwrittenValue',
-            $shopConfigurationDaoBridge
-                ->get()
-                ->getModuleConfiguration($this->testModuleId)
-                ->getModuleSetting('settingToOverwrite')
-                ->getValue()
-        );
-
-        $shopConfigurationDaoBridge->save($shopConfiguration);
-
-        $this->assertSame(
-            'originalValue',
-            $shopConfigurationDaoBridge
-                ->get()
-                ->getModuleConfiguration($this->testModuleId)
-                ->getModuleSetting('settingToOverwrite')
-                ->getValue()
-        );
-
-        $this->prepareTestEnvironmentShopConfigurationFile();
 
         $shopConfigurationDaoBridge->save($shopConfiguration);
 

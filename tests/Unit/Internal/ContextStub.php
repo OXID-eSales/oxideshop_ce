@@ -32,7 +32,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->logFilePath = $context->getLogFilePath();
     }
 
-
     /**
      * @param string $logLevel
      */
@@ -111,38 +110,5 @@ class ContextStub extends BasicContextStub implements ContextInterface
     public function getAllShopIds(): array
     {
         return $this->shopIds;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPasswordHashingBcryptCost(): int
-    {
-        /** The 'cost' option defines the CPU cost of hash generation. For testing the minimal possible value is chosen */
-        return 4;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPasswordHashingArgon2MemoryCost(): int
-    {
-        return 1024;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPasswordHashingArgon2TimeCost(): int
-    {
-        return 2;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPasswordHashingArgon2Threads(): int
-    {
-        return 2;
     }
 }

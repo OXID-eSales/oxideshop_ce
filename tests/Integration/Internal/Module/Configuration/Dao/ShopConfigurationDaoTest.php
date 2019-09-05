@@ -9,8 +9,11 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configurat
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
@@ -18,6 +21,11 @@ use Webmozart\PathUtil\Path;
 final class ShopConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
+
+    /**
+     * @var string
+     */
+    private $testModuleId = 'testModuleId';
 
     public function testSave(): void
     {
@@ -43,6 +51,38 @@ final class ShopConfigurationDaoTest extends TestCase
         $this->assertEquals(
             $shopConfiguration,
             $shopConfigurationDao->get(2)
+        );
+    }
+
+    public function testEnvironmentConfigurationOverwritesShopConfiguration(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+
+        $originalSetting = new Setting();
+        $originalSetting
+            ->setName('settingToOverwrite')
+            ->setValue('originalValue')
+            ->setType('int');
+
+        $module = new ModuleConfiguration();
+        $module
+            ->setId($this->testModuleId)
+            ->setPath('test')
+            ->addModuleSetting($originalSetting);
+
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($module);
+        $shopConfigurationDao->save($shopConfiguration, 1);
+
+        $this->prepareTestEnvironmentShopConfigurationFile();
+
+        $this->assertSame(
+            'overwrittenValue',
+            $shopConfigurationDao
+                ->get(1)
+                ->getModuleConfiguration($this->testModuleId)
+                ->getModuleSetting('settingToOverwrite')
+                ->getValue()
         );
     }
 
@@ -174,5 +214,26 @@ final class ShopConfigurationDaoTest extends TestCase
             [],
             $shopConfigurationDao->get(1)
         );
+    }
+
+    private function prepareTestEnvironmentShopConfigurationFile(): void
+    {
+        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
+        $storage = $fileStorageFactory->create(
+            $this->get(ContextInterface::class)
+                ->getProjectConfigurationDirectory() . 'environment/1.yaml'
+        );
+
+        $storage->save([
+            'modules' => [
+                $this->testModuleId => [
+                    ModuleSettingsDataMapper::MAPPING_KEY => [
+                        'settingToOverwrite' => [
+                            'value' => 'overwrittenValue',
+                        ]
+                    ]
+                ]
+            ]
+        ]);
     }
 }

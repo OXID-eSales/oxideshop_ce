@@ -7,13 +7,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Common\Storage\FileStorageFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -22,46 +17,47 @@ final class ShopEnvironmentConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    /**
-     * @var string
-     */
-    private $testModuleId = 'testModuleId';
-
-    public function testSave(): void
+    public function testGet(): void
     {
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $this->prepareTestEnvironmentShopConfigurationFile();
+        $environmentConfiguration = $this->get(ShopEnvironmentConfigurationDaoInterface::class)->get(1);
+        $expectedEnvironmentConfiguration = [
+            'modules' => [
+                'testModuleId' => [
+                    ModuleSettingsDataMapper::MAPPING_KEY => [
+                        'settingToOverwrite' => [
+                            'value' => 'overwrittenValue',
+                        ]
+                    ]
+                ]
+            ]
+        ];
 
-        $module = new ModuleConfiguration();
-        $module
-            ->setId('test')
-            ->setPath('test');
+        $this->assertEquals($expectedEnvironmentConfiguration, $environmentConfiguration);
+    }
 
-        $shopConfigurationWithModule = new ShopConfiguration();
-        $shopConfigurationWithModule->addModuleConfiguration($module);
-        $shopConfigurationDao->save($shopConfigurationWithModule, 1);
+    public function testRemove(): void
+    {
+        $this->prepareTestEnvironmentShopConfigurationFile();
 
-        $shopConfiguration = new ShopConfiguration();
-        $shopConfigurationDao->save($shopConfiguration, 2);
+        $this->get(ShopEnvironmentConfigurationDaoInterface::class)->remove(1);
 
-        $this->assertEquals(
-            $shopConfigurationWithModule,
-            $shopConfigurationDao->get(1)
-        );
+        $environmentConfiguration = $this->get(ShopEnvironmentConfigurationDaoInterface::class)->get(1);
 
-        $this->assertEquals(
-            $shopConfiguration,
-            $shopConfigurationDao->get(2)
-        );
+        $this->assertEquals([], $environmentConfiguration);
+    }
+
+    public function testRemoveOverwriteAlreadyBackupEnvironmentFile(): void
+    {
+        $this->prepareTestEnvironmentShopConfigurationFile();
+        $this->get(ShopEnvironmentConfigurationDaoInterface::class)->remove(1);
+
+        $this->prepareTestEnvironmentShopConfigurationFile();
+        $this->get(ShopEnvironmentConfigurationDaoInterface::class)->remove(1);
     }
 
     public function testRemoveWithNonExistingEnvironmentFile(): void
     {
-        $this->get(ShopEnvironmentConfigurationDaoInterface::class)->remove(1);
-    }
-
-    public function testRemoveExistingEnvironmentFile(): void
-    {
-        $this->prepareTestEnvironmentShopConfigurationFile();
         $this->get(ShopEnvironmentConfigurationDaoInterface::class)->remove(1);
     }
 
@@ -75,7 +71,7 @@ final class ShopEnvironmentConfigurationDaoTest extends TestCase
 
         $storage->save([
             'modules' => [
-                $this->testModuleId => [
+                'testModuleId'=> [
                     ModuleSettingsDataMapper::MAPPING_KEY => [
                         'settingToOverwrite' => [
                             'value' => 'overwrittenValue',

@@ -94,11 +94,14 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 
                 $config->saveShopConfVar($type, $name, $value, $shopId, $module);
 
-                $deleteSql = "DELETE FROM `oxconfigdisplay` WHERE OXCFGMODULE=" . $db->quote($module) . " AND OXCFGVARNAME=" . $db->quote($name);
+                $deleteSql = "DELETE FROM `oxconfigdisplay` WHERE OXCFGMODULE = :oxcfgmodule AND OXCFGVARNAME = :oxcfgvarname";
                 $insertSql = "INSERT INTO `oxconfigdisplay` (`OXID`, `OXCFGMODULE`, `OXCFGVARNAME`, `OXGROUPING`, `OXVARCONSTRAINT`, `OXPOS`) " .
                 "VALUES ('{$oxid}', " . $db->quote($module) . ", " . $db->quote($name) . ", " . $db->quote($group) . ", " . $db->quote($constraints) . ", " . $db->quote($position) . ")";
 
-                $db->execute($deleteSql);
+                $db->execute($deleteSql, [
+                    ':oxcfgmodule' => $module,
+                    ':oxcfgvarname' => $name,
+                ]);
                 $db->execute($insertSql);
             }
         }
@@ -192,17 +195,18 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     protected function removeModuleConfigs($moduleId, $configsToRemove)
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $quotedShopId = $db->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
-        $quotedModuleId = $db->quote($this->getModuleConfigId($moduleId));
 
         $quotedConfigsToRemove = array_map([$db, 'quote'], $configsToRemove);
         $deleteSql = "DELETE
                        FROM `oxconfig`
-                       WHERE oxmodule = $quotedModuleId AND
-                             oxshopid = $quotedShopId AND
+                       WHERE oxmodule = :oxmodule AND
+                             oxshopid = :oxshopid AND
                              oxvarname IN (" . implode(", ", $quotedConfigsToRemove) . ")";
 
-        $db->execute($deleteSql);
+        $db->execute($deleteSql, [
+            ':oxmodule' => $this->getModuleConfigId($moduleId),
+            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),
+        ]);
     }
 
     /**

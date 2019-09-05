@@ -268,8 +268,7 @@ class DIConfigWrapper
         if (!array_key_exists($section, $this->configArray)) {
             if (array_key_exists($section, $this->sectionDefaults)) {
                 $this->configArray[$section] = $this->sectionDefaults[$section];
-            }
-            else {
+            } else {
                 $this->configArray[$section] = [];
             }
         }

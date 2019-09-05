@@ -81,14 +81,11 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     {
         unset($this->appServer[$id]);
 
-        $query = "DELETE FROM oxconfig WHERE oxvarname = ? and oxshopid = ?";
-
-        $parameter = [
-            self::CONFIG_NAME_FOR_SERVER_INFO.$id,
-            $this->config->getBaseShopId()
-        ];
-
-        $this->database->execute($query, $parameter);
+        $query = "DELETE FROM oxconfig WHERE oxvarname = :oxvarname and oxshopid = :oxshopid";
+        $this->database->execute($query, [
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $id,
+            ':oxshopid' => $this->config->getBaseShopId()
+        ]);
     }
 
     /**

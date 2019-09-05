@@ -225,10 +225,11 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $this->resetContentCache();
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sPriceId = $oDb->quote(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("priceid"));
         $articleId = $this->getEditObjectId();
-        $sId = $oDb->quote($articleId);
-        $oDb->execute("delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}");
+        $oDb->execute("delete from oxprice2article where oxid = :oxid and oxartid = :oxartid", [
+            ':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("priceid"),
+            ':oxartid' => $articleId
+        ]);
 
         $this->onArticleAmountPriceChange($articleId);
     }

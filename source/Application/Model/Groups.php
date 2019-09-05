@@ -52,17 +52,25 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // deleting related data records
-        $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = ' . $oDb->quote($sOXID);
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = :oxid';
+        $oDb->execute($sDelete, [
+            ':oxid' => $sOXID
+        ]);
 
-        $sDelete = 'delete from oxobject2delivery where oxobject2delivery.oxobjectid = ' . $oDb->quote($sOXID);
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2delivery where oxobject2delivery.oxobjectid = :oxid';
+        $oDb->execute($sDelete, [
+            ':oxid' => $sOXID
+        ]);
 
-        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = ' . $oDb->quote($sOXID);
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = :oxid';
+        $oDb->execute($sDelete, [
+            ':oxid' => $sOXID
+        ]);
 
-        $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = ' . $oDb->quote($sOXID);
-        $rs = $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = :oxid';
+        $rs = $oDb->execute($sDelete, [
+            ':oxid' => $sOXID
+        ]);
 
         return $rs->EOF;
     }

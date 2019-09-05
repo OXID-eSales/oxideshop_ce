@@ -311,8 +311,10 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "delete from `oxobject2delivery` where `oxobject2delivery`.`oxdeliveryid` = " . $oDb->quote($sOxId);
-        $oDb->execute($sQ);
+        $sQ = "delete from `oxobject2delivery` where `oxobject2delivery`.`oxdeliveryid` = :oxdeliveryid";
+        $oDb->execute($sQ, [
+            ':oxdeliveryid' => $sOxId
+        ]);
 
         return parent::delete($sOxId);
     }

@@ -53,8 +53,10 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
         // Delete old mappings
         $oDb = DatabaseProvider::getDb();
         $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
-        $sSql = "DELETE FROM oxobject2delivery WHERE oxdeliveryid = " . $oDb->quote($sOxIdParameter) . " AND OXTYPE = 'rdfadeliveryset'";
-        $oDb->execute($sSql);
+        $sSql = "DELETE FROM oxobject2delivery WHERE oxdeliveryid = :oxdeliveryid AND OXTYPE = 'rdfadeliveryset'";
+        $oDb->execute($sSql, [
+            ':oxdeliveryid' => $sOxIdParameter
+        ]);
 
         // Save new mappings
         foreach ($aRDFaDeliveries as $sDelivery) {

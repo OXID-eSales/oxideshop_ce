@@ -95,10 +95,15 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
     public function onDeleteContent($sId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sIdQuoted = $oDb->quote($sId);
-        $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcontent'");
-        $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
-        $oDb->execute("delete from oxseohistory where oxobjectid = $sIdQuoted");
+        $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcontent'", [
+            ':oxobjectid' => $sId
+        ]);
+        $oDb->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
+            ':oxobjectid' => $sId
+        ]);
+        $oDb->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
+            ':oxobjectid' => $sId
+        ]);
     }
 
     /**

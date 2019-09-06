@@ -802,8 +802,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $coreTable = $this->getCoreTableName();
-        $deleteQuery = "delete from {$coreTable} where oxid = " . $database->quote($oxid);
-        $affectedRows = $database->execute($deleteQuery);
+        $deleteQuery = "delete from {$coreTable} where oxid = :oxid";
+        $affectedRows = $database->execute($deleteQuery, [
+            ':oxid' => $oxid
+        ]);
         if ($blDelete = (bool) $affectedRows) {
             $this->onChange(ACTION_DELETE, $oxid);
         }

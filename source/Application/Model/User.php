@@ -898,7 +898,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         } else {
             // @TODO the following statements make no sense and should be removed: oxuser__oxid is freshly created and the conditions will never match
             // dropping/cleaning old delivery address/payment info
-            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote($this->oxuser__oxid->value));
+            $oDb->execute("delete from oxaddress where oxaddress.oxuserid = :oxuserid", [
+                ':oxuserid' => $this->oxuser__oxid->value
+            ]);
             $oDb->execute("update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxusername->value) . " where oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxid->value));
         }
 
@@ -2506,10 +2508,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function deleteUserFromGroups(DatabaseInterface $database)
     {
-        $database->execute(
-            'delete from oxobject2group where oxobject2group.oxobjectid = ?',
-            [$this->getId()]
-        );
+        $database->execute('delete from oxobject2group where oxobject2group.oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $this->getId()
+        ]);
     }
 
     /**
@@ -2519,10 +2520,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function deleteDeliveries(DatabaseInterface $database)
     {
-        $database->execute(
-            'delete from oxobject2delivery where oxobjectid = ?',
-            [$this->getId()]
-        );
+        $database->execute('delete from oxobject2delivery where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $this->getId()
+        ]);
     }
 
     /**
@@ -2532,10 +2532,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function deleteDiscounts(DatabaseInterface $database)
     {
-        $database->execute(
-            'delete from oxobject2discount where oxobjectid = ?',
-            [$this->getId()]
-        );
+        $database->execute('delete from oxobject2discount where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $this->getId()
+        ]);
     }
 
     /**
@@ -2545,10 +2544,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     private function deleteAcceptedTerms(DatabaseInterface $database)
     {
-        $database->execute(
-            'delete from oxacceptedterms where oxuserid = ?',
-            [$this->getId()]
-        );
+        $database->execute('delete from oxacceptedterms where oxuserid = :oxuserid', [
+            ':oxuserid' => $this->getId()
+        ]);
     }
 
     /**

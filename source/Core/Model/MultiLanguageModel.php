@@ -607,11 +607,12 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         $deleted = parent::delete($oxid);
         if ($deleted) {
             $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $oxid = $db->quote($oxid);
 
             //delete the record
             foreach ($this->_getLanguageSetTables() as $setTbl) {
-                $db->execute("delete from {$setTbl} where oxid = {$oxid}");
+                $db->execute("delete from {$setTbl} where oxid = :oxid", [
+                    ':oxid' => $oxid
+                ]);
             }
         }
 

@@ -184,6 +184,9 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         // active shop id
         $shopId = $this->getEditObjectId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $db->execute("delete from oxseo where oxtype='static' and oxobjectid = " . $db->quote($staticUrlId) . " and oxshopid = " . $db->quote($shopId));
+        $db->execute("delete from oxseo where oxtype='static' and oxobjectid = :oxobjectid and oxshopid = :oxshopid", [
+            ':oxobjectid' => $staticUrlId,
+            ':oxshopid' => $shopId
+        ]);
     }
 }

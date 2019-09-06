@@ -150,7 +150,9 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         if (($blDelete = parent::delete($sOXID))) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             // cleaning up related data
-            $oDb->execute("delete from oxobject2list where oxlistid = " . $oDb->quote($sOXID));
+            $oDb->execute("delete from oxobject2list where oxlistid = :oxlistid", [
+                ':oxlistid' => $sOXID
+            ]);
             $this->onDelete();
         }
 
@@ -191,9 +193,12 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         if ($sOXID) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "delete from oxobject2list where oxobjectid = " . $oDb->quote($sOXID) . " and oxlistid=" . $oDb->quote($this->getId());
+            $sQ = "delete from oxobject2list where oxobjectid = :oxobjectid and oxlistid = :oxlistid";
 
-            return $oDb->execute($sQ);
+            return $oDb->execute($sQ, [
+                ':oxobjectid' => $sOXID,
+                ':oxlistid' => $this->getId()
+            ]);
         }
     }
 

@@ -124,11 +124,12 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         // removing all
         if (is_array($categoriesToRemove) && count($categoriesToRemove)) {
-            $query = "delete from oxobject2category where oxobject2category.oxobjectid= "
-                  . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($oxId) . " and ";
+            $query = "delete from oxobject2category where oxobject2category.oxobjectid = :oxobjectid and ";
             $query = $this->updateQueryForRemovingArticleFromCategory($query);
             $query .= " oxcatnid in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($categoriesToRemove)) . ')';
-            $dataBase->Execute($query);
+            $dataBase->Execute($query, [
+                ':oxobjectid' => $oxId
+            ]);
 
             // updating oxtime values
             $this->_updateOxTime($oxId);

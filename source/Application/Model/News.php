@@ -120,7 +120,9 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         if ($blDelete = parent::delete($sOxid)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = " . $oDb->quote($sOxid));
+            $oDb->execute("delete from oxobject2group where oxobject2group.oxobjectid = :oxobjectid", [
+                ':oxobjectid' => $sOxid
+            ]);
         }
 
         return $blDelete;

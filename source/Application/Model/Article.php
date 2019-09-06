@@ -4567,51 +4567,75 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $articleId = $oDb->quote($articleId);
-
         //remove other records
-        $sDelete = 'delete from oxobject2article where oxarticlenid = ' . $articleId . ' or oxobjectid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2article where oxarticlenid = :articleId or oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxobject2attribute where oxobjectid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2attribute where oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxobject2category where oxobjectid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2category where oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxobject2selectlist where oxobjectid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2selectlist where oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxprice2article where oxartid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxprice2article where oxartid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxreviews where oxtype="oxarticle" and oxobjectid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxreviews where oxtype="oxarticle" and oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxratings where oxobjectid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxratings where oxobjectid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxaccessoire2article where oxobjectid = ' . $articleId . ' or oxarticlenid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxaccessoire2article where oxobjectid = :articleId or oxarticlenid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
         //#1508C - deleting oxobject2delivery entries added
-        $sDelete = 'delete from oxobject2delivery where oxobjectid = ' . $articleId . ' and oxtype=\'oxarticles\' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2delivery where oxobjectid = :articleId and oxtype=\'oxarticles\' ';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxartextends where oxid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxartextends where oxid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
         //delete the record
         foreach ($this->_getLanguageSetTables("oxartextends") as $sSetTbl) {
-            $oDb->execute("delete from $sSetTbl where oxid = {$articleId}");
+            $oDb->execute("delete from $sSetTbl where oxid = :articleId", [
+                ':articleId' => $articleId
+            ]);
         }
 
-        $sDelete = 'delete from oxactions2article where oxartid = ' . $articleId . ' ';
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxactions2article where oxartid = :articleId';
+        $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
 
-        $sDelete = 'delete from oxobject2list where oxobjectid = ' . $articleId . ' ';
+        $sDelete = 'delete from oxobject2list where oxobjectid = :articleId';
 
-        return $oDb->execute($sDelete);
+        return $oDb->execute($sDelete, [
+            ':articleId' => $articleId
+        ]);
     }
 
     /**

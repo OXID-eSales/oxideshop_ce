@@ -302,18 +302,25 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             // delete entry
             $blRet = parent::delete($sOXID);
 
-            $sOxidQuoted = $oDb->quote($sOXID);
             // delete links to articles
-            $oDb->execute("delete from oxobject2category where oxobject2category.oxcatnid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2category where oxobject2category.oxcatnid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
 
             // #657 ADDITIONAL delete links to attributes
-            $oDb->execute("delete from oxcategory2attribute where oxcategory2attribute.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxcategory2attribute where oxcategory2attribute.oxobjectid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
 
             // A. removing assigned:
             // - deliveries
-            $oDb->execute("delete from oxobject2delivery where oxobject2delivery.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2delivery where oxobject2delivery.oxobjectid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
             // - discounts
-            $oDb->execute("delete from oxobject2discount where oxobject2discount.oxobjectid=$sOxidQuoted ");
+            $oDb->execute("delete from oxobject2discount where oxobject2discount.oxobjectid = :oxid", [
+                ':oxid' => $sOXID
+            ]);
 
             \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->onDeleteCategory($this);
         }

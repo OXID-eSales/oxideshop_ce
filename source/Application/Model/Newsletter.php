@@ -83,8 +83,11 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if ($blDeleted) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sDelete = "delete from oxobject2group where oxobject2group.oxshopid = '" . $this->getShopId() . "' and oxobject2group.oxobjectid = " . $oDb->quote($sOxId);
-            $oDb->execute($sDelete);
+            $sDelete = "delete from oxobject2group where oxobject2group.oxshopid = :oxshopid and oxobject2group.oxobjectid = :oxobjectid";
+            $oDb->execute($sDelete, [
+                ':oxshopid' => $this->getShopId(),
+                ':oxobjectid' => $sOxId
+            ]);
         }
 
         return $blDeleted;

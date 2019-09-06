@@ -108,8 +108,9 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         $oDb->Execute(
             'delete from oxobject2action '
-            . 'where oxactionid=' . $oDb->quote($sActionId)
-            . ' and oxclass = "oxarticle"'
+            . 'where oxactionid = :oxactionid'
+            . ' and oxclass = "oxarticle"',
+            [':oxactionid' => $sActionId]
         );
     }
 
@@ -124,8 +125,9 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         $oDb->Execute(
             'delete from oxobject2action '
-            . 'where oxactionid=' . $oDb->quote($sActionId)
-            . ' and oxclass = "oxarticle"'
+            . 'where oxactionid = :oxactionid'
+            . ' and oxclass = "oxarticle"',
+            [':oxactionid' => $sActionId]
         );
 
         $oObject2Promotion = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);

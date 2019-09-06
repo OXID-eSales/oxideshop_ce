@@ -84,8 +84,10 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function unsetUserGroups()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = 'delete from oxobject2group where oxobjectid = ' . $oDb->quote($this->getId());
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2group where oxobjectid = :oxobjectid';
+        $oDb->execute($sDelete, [
+            ':oxobjectid' => $this->getId()
+        ]);
     }
 
     /**
@@ -94,8 +96,10 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function unsetDiscountRelations()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxdiscountid = ' . $oDb->quote($this->getId());
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxdiscountid = :oxdiscountid';
+        $oDb->execute($sDelete, [
+            ':oxdiscountid' => $this->getId()
+        ]);
     }
 
     /**
@@ -121,8 +125,10 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function deleteVoucherList()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = 'delete from oxvouchers where oxvoucherserieid = ' . $oDb->quote($this->getId());
-        $oDb->execute($sDelete);
+        $sDelete = 'delete from oxvouchers where oxvoucherserieid = :oxvoucherserieid';
+        $oDb->execute($sDelete, [
+            ':oxvoucherserieid' => $this->getId()
+        ]);
     }
 
     /**

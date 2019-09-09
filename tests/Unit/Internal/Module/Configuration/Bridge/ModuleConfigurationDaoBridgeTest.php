@@ -8,13 +8,14 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Module\Configuration\Bri
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridge;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
 class ModuleConfigurationDaoBridgeTest extends TestCase
 {
-    public function testGet()
+    public function testGet(): void
     {
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
         $context
@@ -27,11 +28,14 @@ class ModuleConfigurationDaoBridgeTest extends TestCase
             ->method('get')
             ->with('testModuleId', 1789);
 
-        $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao);
+        $shopEnvironmentConfigurationDao =
+            $this->getMockBuilder(ShopEnvironmentConfigurationDaoInterface::class)->getMock();
+
+        $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao, $shopEnvironmentConfigurationDao);
         $bridge->get('testModuleId');
     }
 
-    public function testSave()
+    public function testSave(): void
     {
         $context = $this->getMockBuilder(ContextInterface::class)->getMock();
         $context
@@ -46,7 +50,11 @@ class ModuleConfigurationDaoBridgeTest extends TestCase
             ->method('save')
             ->with($moduleConfiguration, 1799);
 
-        $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao);
+        $shopEnvironmentConfigurationDao =
+            $this->getMockBuilder(ShopEnvironmentConfigurationDaoInterface::class)->getMock();
+        $shopEnvironmentConfigurationDao->expects($this->once())->method('remove');
+
+        $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao, $shopEnvironmentConfigurationDao);
         $bridge->save($moduleConfiguration);
     }
 }

@@ -53,13 +53,18 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     private $node;
 
     /**
-     * ShopConfigurationDao constructor.
-     * @param ShopConfigurationDataMapperInterface $shopConfigurationMapper
-     * @param FileStorageFactoryInterface $fileStorageFactory
-     * @param BasicContextInterface $context
-     * @param ShopConfigurationCacheInterface $cache
-     * @param Filesystem $fileSystem
-     * @param NodeInterface $node
+     * @var ShopEnvironmentConfigurationDaoInterface
+     */
+    private $shopEnvironmentConfigurationDao;
+
+    /**
+     * @param ShopConfigurationDataMapperInterface     $shopConfigurationMapper
+     * @param FileStorageFactoryInterface              $fileStorageFactory
+     * @param BasicContextInterface                    $context
+     * @param ShopConfigurationCacheInterface          $cache
+     * @param Filesystem                               $fileSystem
+     * @param NodeInterface                            $node
+     * @param ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
      */
     public function __construct(
         ShopConfigurationDataMapperInterface $shopConfigurationMapper,
@@ -67,7 +72,8 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         BasicContextInterface $context,
         ShopConfigurationCacheInterface $cache,
         Filesystem $fileSystem,
-        NodeInterface $node
+        NodeInterface $node,
+        ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
     ) {
         $this->shopConfigurationMapper = $shopConfigurationMapper;
         $this->fileStorageFactory = $fileStorageFactory;
@@ -75,6 +81,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         $this->cache = $cache;
         $this->fileSystem = $fileSystem;
         $this->node = $node;
+        $this->shopEnvironmentConfigurationDao = $shopEnvironmentConfigurationDao;
     }
 
     /**
@@ -109,8 +116,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     {
         $this->cache->evict($shopId);
 
-        $storage = $this->getStorage($shopId);
-        $storage->save(
+        $this->getStorage($shopId)->save(
             $this->shopConfigurationMapper->toData($shopConfiguration)
         );
     }
@@ -128,6 +134,18 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         }
 
         return $configurations;
+    }
+
+    /**
+     * delete all shops configuration
+     */
+    public function deleteAll(): void
+    {
+        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
+            $this->fileSystem->remove(
+                $this->getShopsConfigurationDirectory()
+            );
+        }
     }
 
     /**
@@ -172,15 +190,6 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         return $this->getShopsConfigurationDirectory() . $shopId . '.yaml';
     }
 
-    /**
-     * @param int $shopId
-     *
-     * @return string
-     */
-    private function getEnvironmentConfigurationFilePath(int $shopId): string
-    {
-        return $this->getEnvironmentConfigurationDirectory() . $shopId . '.yaml';
-    }
 
     /**
      * @return string
@@ -188,14 +197,6 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     private function getShopsConfigurationDirectory(): string
     {
         return $this->context->getProjectConfigurationDirectory() . 'shops/';
-    }
-
-    /**
-     * @return string
-     */
-    private function getEnvironmentConfigurationDirectory(): string
-    {
-        return $this->context->getProjectConfigurationDirectory() . 'environment/';
     }
 
     /**
@@ -208,7 +209,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     {
         $data = $this->mergeShopConfigurationDataWithEnvironmentData(
             $this->getShopConfigurationData($shopId),
-            $this->getEnvironmentShopConfigurationData($shopId)
+            $this->shopEnvironmentConfigurationDao->get($shopId)
         );
 
         return $this->shopConfigurationMapper->fromData($data);
@@ -249,42 +250,5 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
             );
         }
         return $data;
-    }
-
-    /**
-     * @param int $shopId
-     *
-     * @return array
-     * @throws \Exception
-     */
-    private function getEnvironmentShopConfigurationData(int $shopId): array
-    {
-        $storage = $this->fileStorageFactory->create(
-            $this->getEnvironmentConfigurationFilePath($shopId)
-        );
-
-        try {
-            $data = $this->node->normalize($storage->get());
-        } catch (InvalidConfigurationException $exception) {
-            throw new InvalidConfigurationException(
-                'File ' .
-                $this->getEnvironmentConfigurationFilePath($shopId) .
-                ' is broken: ' . $exception->getMessage()
-            );
-        }
-
-        return $data;
-    }
-
-    /**
-     * delete all shops configuration
-     */
-    public function deleteAll(): void
-    {
-        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
-            $this->fileSystem->remove(
-                $this->getShopsConfigurationDirectory()
-            );
-        }
     }
 }

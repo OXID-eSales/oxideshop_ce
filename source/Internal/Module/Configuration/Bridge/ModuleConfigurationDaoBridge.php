@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
@@ -26,14 +27,23 @@ class ModuleConfigurationDaoBridge implements ModuleConfigurationDaoBridgeInterf
     private $moduleConfigurationDao;
 
     /**
-     * ModuleConfigurationDaoBridge constructor.
-     * @param ContextInterface                $context
-     * @param ModuleConfigurationDaoInterface $moduleConfigurationDao
+     * @var ShopEnvironmentConfigurationDaoInterface
      */
-    public function __construct(ContextInterface $context, ModuleConfigurationDaoInterface $moduleConfigurationDao)
-    {
+    private $shopEnvironmentConfigurationDao;
+
+    /**
+     * @param ContextInterface                         $context
+     * @param ModuleConfigurationDaoInterface          $moduleConfigurationDao
+     * @param ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
+     */
+    public function __construct(
+        ContextInterface $context,
+        ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
+    ) {
         $this->context = $context;
         $this->moduleConfigurationDao = $moduleConfigurationDao;
+        $this->shopEnvironmentConfigurationDao = $shopEnvironmentConfigurationDao;
     }
 
     /**
@@ -51,5 +61,6 @@ class ModuleConfigurationDaoBridge implements ModuleConfigurationDaoBridgeInterf
     public function save(ModuleConfiguration $moduleConfiguration)
     {
         $this->moduleConfigurationDao->save($moduleConfiguration, $this->context->getCurrentShopId());
+        $this->shopEnvironmentConfigurationDao->remove($this->context->getCurrentShopId());
     }
 }

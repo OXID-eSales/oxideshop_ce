@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao
+    arguments:
+      $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
+      $mapper: '@oxid_esales.review.product_rating_mapper'
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDao
+    arguments:
+      $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
+      $mapper: '@oxid_esales.review.rating_mapper'
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ReviewDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ReviewDao
+    arguments:
+      $queryBuilderFactory: '@OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface'
+      $mapper: '@oxid_esales.review.review_mapper'

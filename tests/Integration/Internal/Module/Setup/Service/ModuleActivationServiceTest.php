@@ -25,6 +25,7 @@ use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleActivationServ
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEvent;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use PHPUnit\Framework\TestCase;
@@ -33,6 +34,8 @@ use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleCon
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @internal
@@ -46,6 +49,7 @@ class ModuleActivationServiceTest extends TestCase
     private $shopId = 1;
     private $testModuleId = 'testModuleId';
     private $databaseRestorer;
+    private $testContainerFactory = null;
 
     use ContainerTrait;
 
@@ -135,7 +139,7 @@ class ModuleActivationServiceTest extends TestCase
         );
     }
 
-    public function testActivationOfModuleServices()
+   public function testActivationOfModuleServices()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $this->persistModuleConfiguration($moduleConfiguration);
@@ -147,6 +151,44 @@ class ModuleActivationServiceTest extends TestCase
             SomeModuleService::class,
             $this->setupAndConfigureContainer()->get(SomeModuleService::class)
         );
+    }
+
+    /**
+     * This checks the deactivation of the module by asserting that the test event
+     * is not handled any more.
+     *
+     * As a side effect this tests also that the deactivation works in such a way
+     * that shop aware services do not throw exceptions when the module is not
+     * active any more.
+     *
+     * @throws \OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ModuleSetupException
+     */
+    public function testDeActivationOfModuleServices()
+    {
+        $moduleConfiguration = $this->getTestModuleConfiguration();
+        $this->persistModuleConfiguration($moduleConfiguration);
+
+        /** @var ModuleActivationServiceInterface $moduleActivationService */
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+        $moduleActivationService->activate($this->testModuleId, $this->shopId);
+
+        // We need a new container to assert that the even subscriber now is active
+        $this->container = $this->setupAndConfigureContainer();
+        /** @var EventDispatcher $eventDispatcher */
+        $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
+        /** @var TestEvent $event */
+        $event = $eventDispatcher->dispatch(TestEvent::NAME, new TestEvent());
+        $this->assertTrue($event->isHandled());
+
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+        $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
+
+        // Again we need a new container to assert that our changes worked
+        $this->container = $this->setupAndConfigureContainer();
+        $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
+        $event = $eventDispatcher->dispatch(TestEvent::NAME, new TestEvent());
+        $this->assertFalse($event->isHandled());
+
     }
 
     /**
@@ -281,7 +323,10 @@ class ModuleActivationServiceTest extends TestCase
      */
     private function setupAndConfigureContainer()
     {
-        $container = (new TestContainerFactory())->create();
+        if ($this->testContainerFactory === null) {
+            $this->testContainerFactory = new TestContainerFactory();
+        }
+        $container = $this->testContainerFactory->create();
 
         $container->set(ModulePathResolverInterface::class, $this->getModulePathResolverMock());
         $container->autowire(ModulePathResolverInterface::class, ModulePathResolver::class);

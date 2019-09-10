@@ -8,20 +8,20 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule;
 
 use OxidEsales\EshopCommunity\Internal\Application\Events\AbstractShopAwareEventSubscriber;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @internal
  */
 class TestEventSubscriber extends AbstractShopAwareEventSubscriber
 {
-    public function handleEvent(Event $event)
+    public function handleEvent(TestEvent $event)
     {
+        $event->handle();
         return $event;
     }
 
     public static function getSubscribedEvents()
     {
-        return ['eventname' => 'handleEvent'];
+        return [TestEvent::NAME => 'handleEvent'];
     }
 }

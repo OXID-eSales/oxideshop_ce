@@ -171,7 +171,7 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
         $this->shopActivationService->deactivateModuleServices($this->testModuleId, 5);
 
-        $this->assertArrayHasKey('imports', $this->projectYamlArray);
+        $this->assertArrayNotHasKey('imports', $this->projectYamlArray);
         $this->assertArrayNotHasKey('services', $this->projectYamlArray);
     }
 

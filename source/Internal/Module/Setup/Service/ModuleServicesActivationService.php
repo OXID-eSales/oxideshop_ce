@@ -107,17 +107,36 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
 
         $projectConfig = $this->dao->loadProjectConfigFile();
 
-        /** @var DIServiceWrapper $service */
+        // The removal of the import works only if there are shop aware services
+        // defined. Otherwise the import stays in the configuration (but it does no harm)
+        $notActiveAnyMore = $this->cleanupShopAwareServices($projectConfig, $moduleConfig, $shopId);
+        if ($notActiveAnyMore) {
+            $projectConfig->removeImport($moduleConfigFile);
+        }
+
+        $this->dao->saveProjectConfigFile($projectConfig);
+    }
+
+    private function cleanupShopAwareServices(
+        DIConfigWrapper $projectConfig,
+        DIConfigWrapper $moduleConfig,
+        int $shopId
+    ) {
+        $notActiveAnyMore = false;
+
         foreach ($moduleConfig->getServices() as $service) {
             if (!$service->isShopAware()) {
                 continue;
             }
             $service = $projectConfig->getService($service->getKey());
-            $service->removeActiveShops([$shopId]);
+            $stillActiveShops = $service->removeActiveShops([$shopId]);
+            if (sizeof($stillActiveShops) === 0) {
+                $notActiveAnyMore = true;
+            }
             $projectConfig->addOrUpdateService($service);
         }
 
-        $this->dao->saveProjectConfigFile($projectConfig);
+        return $notActiveAnyMore;
     }
 
     /**

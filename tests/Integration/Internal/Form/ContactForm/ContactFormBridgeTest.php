@@ -4,12 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Form\ContactForm;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Contact\Form;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
 
 class ContactFormBridgeTest extends \PHPUnit\Framework\TestCase
 {

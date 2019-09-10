@@ -4,12 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Form\ContactForm;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfiguration;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormConfigurationFactory;
+use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 class ContactFormConfigurationFactoryTest extends \PHPUnit\Framework\TestCase

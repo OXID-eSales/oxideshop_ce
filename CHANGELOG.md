@@ -84,7 +84,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent`
 - Interface:
-    - `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface` as the new default 
+    - `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface` as the new default 
       for hashing passwords. See https://docs.oxid-esales.com/developer/en/6.2/project/password_hashing.html
 - Constants
     - `\OxidEsales\EshopCommunity\Application\Model\User::USER_COOKIE_SALT`
@@ -128,7 +128,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The value for the password salt will not be stored in the database column `oxuser.OXPASSSALT` anymore, but in the password hash itself  
 
 ### Deprecated
-- `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface` was added as the new default 
+- `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface` was added as the new default 
   for hashing passwords. Hashing passwords with MD5 and SHA512 is still supported in order support login with 
   older password hashes. Therefor the methods and classes below might not be compatible with the current passhword hash 
   any more:

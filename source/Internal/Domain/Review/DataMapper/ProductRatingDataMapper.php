@@ -6,53 +6,52 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 
 /**
  * @internal
  */
-class ProductRatingDataMapper implements EntityMapperInterface
+class ProductRatingDataMapper implements ProductRatingDataMapperInterface
 {
     /**
-     * @param ProductRating $object
+     * @param ProductRating $productRating
      * @param array         $data
      *
      * @return ProductRating
      */
-    public function map($object, $data)
+    public function map(ProductRating $productRating, array $data): ProductRating
     {
-        $object
+        $productRating
             ->setProductId($data['OXID'])
             ->setRatingAverage($data['OXRATING'])
             ->setRatingCount($data['OXRATINGCNT']);
 
-        return $object;
+        return $productRating;
     }
 
     /**
-     * @param ProductRating $object
+     * @param ProductRating $productRating
      *
      * @return array
      */
-    public function getData($object)
+    public function getData(ProductRating $productRating): array
     {
         return [
-            'OXID'          => $object->getProductId(),
-            'OXRATING'      => $object->getRatingAverage(),
-            'OXRATINGCNT'   => $object->getRatingCount(),
+            'OXID'        => $productRating->getProductId(),
+            'OXRATING'    => $productRating->getRatingAverage(),
+            'OXRATINGCNT' => $productRating->getRatingCount(),
         ];
     }
 
     /**
-     * @param ProductRating $object
+     * @param ProductRating $productRating
      *
      * @return array
      */
-    public function getPrimaryKey($object)
+    public function getPrimaryKey(ProductRating $productRating): array
     {
         return [
-            'OXID' => $object->getProductId(),
+            'OXID' => $productRating->getProductId(),
         ];
     }
 }

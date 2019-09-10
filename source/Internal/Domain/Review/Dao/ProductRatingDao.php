@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoException;
 
@@ -22,20 +22,20 @@ class ProductRatingDao implements ProductRatingDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * @var EntityMapperInterface
+     * @var ProductRatingDataMapperInterface
      */
-    private $mapper;
+    private $productRatingMapper;
 
     /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param EntityMapperInterface        $mapper
+     * @param QueryBuilderFactoryInterface     $queryBuilderFactory
+     * @param ProductRatingDataMapperInterface $productRatingMapper
      */
     public function __construct(
         QueryBuilderFactoryInterface    $queryBuilderFactory,
-        EntityMapperInterface           $mapper
+        ProductRatingDataMapperInterface           $productRatingMapper
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->mapper = $mapper;
+        $this->productRatingMapper = $productRatingMapper;
     }
 
     /**
@@ -49,7 +49,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->set('OXRATING', ':OXRATING')
             ->set('OXRATINGCNT', ':OXRATINGCNT')
             ->where('OXID = :OXID')
-            ->setParameters($this->mapper->getData($productRating));
+            ->setParameters($this->productRatingMapper->getData($productRating));
 
         $queryBuilder->execute();
     }
@@ -58,6 +58,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
      * @param string $productId
      *
      * @return ProductRating
+     * @throws InvalidObjectIdDaoException
      */
     public function getProductRatingById($productId)
     {
@@ -75,7 +76,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->setMaxResults(1)
             ->setParameter('productId', $productId);
 
-        return $this->mapper->map(
+        return $this->productRatingMapper->map(
             new ProductRating(),
             $queryBuilder->execute()->fetch()
         );

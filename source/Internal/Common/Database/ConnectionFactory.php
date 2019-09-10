@@ -4,11 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Common\Factory;
+namespace OxidEsales\EshopCommunity\Internal\Common\Database;
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 
 /**
  * Factory for the Symfony DI container to fetch the database
@@ -18,12 +19,13 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
  */
 class ConnectionFactory
 {
-
     /**
      * Uses reflection to fetch the database connection from
      * the DatabaseProvider.
      *
      * @return Connection
+     * @throws DatabaseConnectionException
+     * @throws \ReflectionException
      */
     public static function get()
     {

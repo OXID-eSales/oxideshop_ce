@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ReviewDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Review;
 
 /**
@@ -22,20 +22,20 @@ class ReviewDao implements ReviewDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * @var EntityMapperInterface
+     * @var ReviewDataMapperInterface
      */
-    private $mapper;
+    private $reviewDataMapper;
 
     /**
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param EntityMapperInterface        $mapper
+     * @param ReviewDataMapperInterface    $reviewDataMapper
      */
     public function __construct(
         QueryBuilderFactoryInterface    $queryBuilderFactory,
-        EntityMapperInterface           $mapper
+        ReviewDataMapperInterface           $reviewDataMapper
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->mapper = $mapper;
+        $this->reviewDataMapper = $reviewDataMapper;
     }
 
     /**
@@ -84,7 +84,7 @@ class ReviewDao implements ReviewDaoInterface
 
         foreach ($reviewsData as $reviewData) {
             $review = new Review();
-            $reviews[] = $this->mapper->map($review, $reviewData);
+            $reviews[] = $this->reviewDataMapper->map($review, $reviewData);
         }
 
         return $reviews;

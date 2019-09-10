@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
 /**
@@ -22,20 +22,20 @@ class RatingDao implements RatingDaoInterface
     private $queryBuilderFactory;
 
     /**
-     * @var EntityMapperInterface
+     * @var RatingDataMapperInterface
      */
-    private $mapper;
+    private $ratingDataMapper;
 
     /**
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param EntityMapperInterface        $mapper
+     * @param RatingDataMapperInterface    $ratingDataMapper
      */
     public function __construct(
         QueryBuilderFactoryInterface    $queryBuilderFactory,
-        EntityMapperInterface           $mapper
+        RatingDataMapperInterface           $ratingDataMapper
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->mapper = $mapper;
+        $this->ratingDataMapper = $ratingDataMapper;
     }
 
     /**
@@ -110,7 +110,7 @@ class RatingDao implements RatingDaoInterface
 
         foreach ($ratingsData as $ratingData) {
             $rating = new Rating();
-            $ratings->add($this->mapper->map($rating, $ratingData));
+            $ratings->add($this->ratingDataMapper->map($rating, $ratingData));
         }
 
         return $ratings;

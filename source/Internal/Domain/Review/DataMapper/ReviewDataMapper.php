@@ -6,23 +6,22 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Review;
 
 /**
  * @internal
  */
-class ReviewDataMapper implements EntityMapperInterface
+class ReviewDataMapper implements ReviewDataMapperInterface
 {
     /**
-     * @param Review $object
+     * @param Review $review
      * @param array  $data
      *
      * @return Review
      */
-    public function map($object, $data)
+    public function map(Review $review, array $data): Review
     {
-        $object
+        $review
             ->setId($data['OXID'])
             ->setRating($data['OXRATING'])
             ->setText($data['OXTEXT'])
@@ -31,36 +30,36 @@ class ReviewDataMapper implements EntityMapperInterface
             ->setType($data['OXTYPE'])
             ->setCreatedAt($data['OXTIMESTAMP']);
 
-        return $object;
+        return $review;
     }
 
     /**
-     * @param Review $object
+     * @param Review $review
      *
      * @return array
      */
-    public function getData($object)
+    public function getData(Review $review): array
     {
         return [
-            'OXID'          => $object->getId(),
-            'OXRATING'      => $object->getRating(),
-            'OXTEXT'        => $object->getText(),
-            'OXOBJECTID'    => $object->getObjectId(),
-            'OXUSERID'      => $object->getUserId(),
-            'OXTYPE'        => $object->getType(),
-            'OXTIMESTAMP'   => $object->getCreatedAt(),
+            'OXID'        => $review->getId(),
+            'OXRATING'    => $review->getRating(),
+            'OXTEXT'      => $review->getText(),
+            'OXOBJECTID'  => $review->getObjectId(),
+            'OXUSERID'    => $review->getUserId(),
+            'OXTYPE'      => $review->getType(),
+            'OXTIMESTAMP' => $review->getCreatedAt(),
         ];
     }
 
     /**
-     * @param Review $object
+     * @param Review $review
      *
      * @return array
      */
-    public function getPrimaryKey($object)
+    public function getPrimaryKey(Review $review): array
     {
         return [
-            'OXID' => $object->getId(),
+            'OXID' => $review->getId(),
         ];
     }
 }

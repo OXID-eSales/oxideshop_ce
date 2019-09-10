@@ -6,23 +6,22 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Common\DataMapper\EntityMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
 /**
  * @internal
  */
-class RatingDataMapper implements EntityMapperInterface
+class RatingDataMapper implements RatingDataMapperInterface
 {
     /**
-     * @param Rating $object
+     * @param Rating $rating
      * @param array  $data
      *
      * @return Rating
      */
-    public function map($object, $data)
+    public function map(Rating $rating, array $data): Rating
     {
-        $object
+        $rating
             ->setId($data['OXID'])
             ->setRating($data['OXRATING'])
             ->setObjectId($data['OXOBJECTID'])
@@ -30,23 +29,23 @@ class RatingDataMapper implements EntityMapperInterface
             ->setType($data['OXTYPE'])
             ->setCreatedAt($data['OXTIMESTAMP']);
 
-        return $object;
+        return $rating;
     }
 
     /**
-     * @param Rating $object
+     * @param Rating $rating
      *
      * @return array
      */
-    public function getData($object)
+    public function getData(Rating $rating): array
     {
         return [
-            'OXID'          => $object->getId(),
-            'OXRATING'      => $object->getRating(),
-            'OXOBJECTID'    => $object->getObjectId(),
-            'OXUSERID'      => $object->getUserId(),
-            'OXTYPE'        => $object->getType(),
-            'OXTIMESTAMP'   => $object->getCreatedAt(),
+            'OXID'        => $rating->getId(),
+            'OXRATING'    => $rating->getRating(),
+            'OXOBJECTID'  => $rating->getObjectId(),
+            'OXUSERID'    => $rating->getUserId(),
+            'OXTYPE'      => $rating->getType(),
+            'OXTIMESTAMP' => $rating->getCreatedAt(),
         ];
     }
 
@@ -55,7 +54,7 @@ class RatingDataMapper implements EntityMapperInterface
      *
      * @return array
      */
-    public function getPrimaryKey($object)
+    public function getPrimaryKey(Rating $object): array
     {
         return [
             'OXID' => $object->getId(),

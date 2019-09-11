@@ -229,8 +229,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
 
             if (!$database->getOne($sql, $params)) {
                 $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
-                $sQ = "insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( '$sUid', " . $database->quote($sOXID) . ", " . $database->quote($this->getId()) . ", " . $database->quote($sDesc) . " )";
-                $blAdd = $database->execute($sQ);
+                $sQ = "insert into oxobject2list (oxid, oxobjectid, oxlistid, oxdesc) values (:oxid, :oxobjectid, :oxlistid, :oxdesc)";
+                $blAdd = $database->execute($sQ, [
+                    ':oxid' => $sUid,
+                    ':oxobjectid' => $sOXID,
+                    ':oxlistid' => $this->getId(),
+                    ':oxdesc' => $sDesc
+                ]);
             }
         }
 

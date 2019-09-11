@@ -474,9 +474,13 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             while (!$oRs->EOF) {
                 $sUid = $myUtilsObject->generateUID();
                 $sId = $oRs->fields[0];
-                $sSql = "insert into oxobject2selectlist (oxid, oxobjectid, oxselnid) " .
-                        "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sNewId) . ", " . $oDb->quote($sId) . ") ";
-                $oDb->execute($sSql);
+                $sSql = "INSERT INTO oxobject2selectlist (oxid, oxobjectid, oxselnid) " .
+                        "VALUES (:oxid, :oxobjectid, :oxselnid)";
+                $oDb->execute($sSql, [
+                    ':oxid' => $sUid,
+                    ':oxobjectid' => $sNewId,
+                    ':oxselnid' => $sId,
+                ]);
                 $oRs->fetchRow();
             }
         }
@@ -501,9 +505,13 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             while (!$oRs->EOF) {
                 $sUid = $myUtilsObject->generateUID();
                 $sId = $oRs->fields[0];
-                $sSql = "insert into oxobject2article (oxid, oxobjectid, oxarticlenid) " .
-                       "VALUES (" . $oDb->quote($sUid) . ", " . $oDb->quote($sId) . ", " . $oDb->quote($sNewId) . " ) ";
-                $oDb->execute($sSql);
+                $sSql = "INSERT INTO oxobject2article (oxid, oxobjectid, oxarticlenid) " .
+                        "VALUES (:oxid, :oxobjectid, :oxarticlenid)";
+                $oDb->execute($sSql, [
+                    ':oxid' => $sUid,
+                    ':oxobjectid' => $sId,
+                    ':oxarticlenid' => $sNewId
+                ]);
                 $oRs->fetchRow();
             }
         }
@@ -528,9 +536,13 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             while (!$oRs->EOF) {
                 $sUId = $myUtilsObject->generateUid();
                 $sId = $oRs->fields[0];
-                $sSql = "insert into oxaccessoire2article (oxid, oxobjectid, oxarticlenid) " .
-                        "VALUES (" . $oDb->quote($sUId) . ", " . $oDb->quote($sId) . ", " . $oDb->quote($sNewId) . ") ";
-                $oDb->execute($sSql);
+                $sSql = "INSERT INTO oxaccessoire2article (oxid, oxobjectid, oxarticlenid) " .
+                        "VALUES (:oxid, :oxobjectid, :oxarticlenid)";
+                $oDb->execute($sSql, [
+                    ':oxid' => $sUId,
+                    ':oxobjectid' => $sId,
+                    ':oxarticlenid' => $sNewId
+                ]);
                 $oRs->fetchRow();
             }
         }

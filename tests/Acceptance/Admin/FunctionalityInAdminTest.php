@@ -839,6 +839,8 @@ class FunctionalityInAdminTest extends AdminTestCase
      */
     public function testLoginToAdminInOtherLang()
     {
+        $shopUrl = $this->getTestConfig()->getShopUrl();
+
         $this->loginAdmin();
         $this->waitForText("Welcome to the OXID eShop Admin");
         $this->frame("navigation");
@@ -866,6 +868,26 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->checkForErrors();
         $this->assertElementPresent("link=Stammdaten");
         $this->assertElementPresent("link=Shopeinstellungen");
+
+        $this->getMinkSession()->restart();
+        $this->openNewWindow($shopUrl . "admin");
+        $this->clickAndWait("//input[@type='submit']");
+        $url = $this->getLocation();
+
+        $this->getMinkSession()->restart();
+        $this->openNewWindow($shopUrl . "admin");
+        $this->open($url);
+        $this->type("usr", "admin@myoxideshop.com");
+        $this->type("pwd", "admin0303");
+        $this->select("lng", "English");
+        $this->select("prf", "Standard");
+        $this->clickAndWait("//input[@type='submit']");
+        $this->assertElementPresent("//frame[@id='navigation']");
+
+        $this->getMinkSession()->restart();
+        $this->openNewWindow($shopUrl . "admin");
+        $this->open($url);
+        $this->assertElementNotPresent("//frame[@id='navigation']");
     }
 
     /**

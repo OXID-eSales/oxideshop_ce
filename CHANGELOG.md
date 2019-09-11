@@ -7,10 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.5.0] - Unreleased
 
 ### Added
- - oe-console command: oe:module:activate-configured-modules
+- oe-console command: oe:module:activate-configured-modules
  
 ### Changed
 - Most of SELECT and DELETE queries do use prepared statements
+
+### Fixed
+- Metadata 1.2 support
  
 ## [6.4.0] - 2019-08-02
 

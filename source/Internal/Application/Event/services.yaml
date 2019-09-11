@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Application\Event\ConfigurationChangedEventSubscriber:
+    class: OxidEsales\EshopCommunity\Internal\Application\Event\ConfigurationChangedEventSubscriber
+    tags: ['kernel.event_subscriber']

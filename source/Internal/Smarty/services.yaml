@@ -30,9 +30,9 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Smarty\Bridge\SmartyEngineBridge
   smarty.smarty_engine_factory:
     class: OxidEsales\EshopCommunity\Internal\Smarty\Legacy\LegacySmartyEngineFactory
-  OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineInterface:
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface:
     class: OxidEsales\EshopCommunity\Internal\Smarty\Legacy\LegacySmartyEngine
     factory: 'smarty.smarty_engine_factory:getTemplateEngine'
-  OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface:
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Smarty\Bridge\SmartyTemplateRendererBridge
     public: true

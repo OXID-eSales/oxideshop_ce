@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 use oxConfig;
 use OxidEsales\Eshop\Application\Controller\Admin\ModuleList;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Module\Install\DataObject\OxidEshopPackage;
-use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
 class ModuleListTest extends \OxidTestCase

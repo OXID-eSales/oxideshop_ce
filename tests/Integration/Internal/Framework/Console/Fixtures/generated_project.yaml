@@ -1,0 +1,13 @@
+services:
+
+  oxid_esales.tests.integration.internal.console.fixtures.test_command:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\Fixtures\TestCommand
+    public: true
+    tags:
+      - { name: 'console.command', command: 'oe:tests:test-command' }
+
+  oxid_esales.tests.integration.internal.console.fixtures.test_command_change_name:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\Fixtures\TestCommand
+    public: true
+    tags:
+    - { name: 'console.command', command: 'oe:tests:test-command-changed-name' }

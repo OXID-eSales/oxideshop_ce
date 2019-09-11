@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Review\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface;
 
@@ -14,7 +14,7 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider invalidProductIdsProvider
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException
      */
     public function testGetProductByIdWithInvalidId($invalidProductId)
     {

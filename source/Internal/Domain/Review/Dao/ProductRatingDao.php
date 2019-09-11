@@ -6,10 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
-use OxidEsales\EshopCommunity\Internal\Common\Exception\InvalidObjectIdDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
 /**
  * @internal

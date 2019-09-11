@@ -6,12 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfiguration;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfiguration;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 
 /**

@@ -7,7 +7,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use modDB;
 use OxidEsales\EshopCommunity\Core\Controller\BaseController;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use \oxRegistry;
 
 class WidgetControlTest extends \OxidTestCase

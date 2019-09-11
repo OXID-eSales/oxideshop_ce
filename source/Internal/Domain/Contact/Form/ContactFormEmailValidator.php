@@ -6,9 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormFieldInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormFieldInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
 
 /**

@@ -7,14 +7,14 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
-use OxidEsales\EshopCommunity\Internal\Common\Form\RequiredFieldsValidator;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfiguration;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfiguration;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\RequiredFieldsValidator;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormFactory;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 
 class ContactFormFactoryTest extends \PHPUnit\Framework\TestCase
 {

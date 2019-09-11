@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Common\Exception\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
 /**
  * @internal

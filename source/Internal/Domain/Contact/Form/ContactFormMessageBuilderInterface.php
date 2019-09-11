@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 
 /**
  * Class ContactFormMessageInterface

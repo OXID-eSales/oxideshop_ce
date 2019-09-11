@@ -14,8 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Module\Setting\Event\SettingChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');

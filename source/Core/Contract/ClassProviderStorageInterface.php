@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
 /**
  * Interface for Handling the storing/loading of the metadata controller field of the modules.
  *
- * @deprecated since v6.4.0 (2019-03-22); Use `OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
+ * @deprecated since v6.4.0 (2019-03-22); Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
  * @internal Do not make a module extension for this class.
  * @see      https://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */

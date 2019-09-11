@@ -6,14 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Common\Form\Form;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormField;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormFieldInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormValidatorInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\Form;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormFieldInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 
 /**
  * Class ContactFormFactory

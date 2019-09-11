@@ -7,8 +7,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Contact\Form;
 
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Common\Form\FormInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
 
 class ContactFormBridgeTest extends \PHPUnit\Framework\TestCase

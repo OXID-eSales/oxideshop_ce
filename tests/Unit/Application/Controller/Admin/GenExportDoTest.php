@@ -5,8 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -58,7 +58,7 @@ class GenExportDoTest extends \OxidTestCase
             ->getMock();
         $bridge->expects($this->any())->method('getTemplateRenderer')->will($this->returnValue($renderer));
 
-        $container = $this->getContainerMock('OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface', $bridge);
+        $container = $this->getContainerMock('OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface', $bridge);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\GenericExportDo::class, array("getOneArticle", "write", "getViewId", "getContainer"));
         $oView->expects($this->once())->method('getOneArticle')->will($this->returnValue($article));

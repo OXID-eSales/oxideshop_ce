@@ -19,7 +19,7 @@ services:
         $requiredFieldsValidator: '@common.form.required_fields_validator'
 
   form.contact_form.contact_form_configuration:
-      class: OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfiguration
+      class: OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfiguration
       factory: 'form.contact_form.contact_form_configuration_factory:getFormConfiguration'
 
   form.contact_form.contact_form_email_validator:

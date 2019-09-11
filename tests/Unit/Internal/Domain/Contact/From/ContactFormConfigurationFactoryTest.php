@@ -6,9 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfiguration;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 

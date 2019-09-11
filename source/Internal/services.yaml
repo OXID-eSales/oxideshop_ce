@@ -1,12 +1,7 @@
 imports:
     - { resource: Application/services.yaml }
     - { resource: Utility/services.yaml }
-    - { resource: Logger/services.yaml }
-    - { resource: Common/services.yaml }
+    - { resource: Framework/services.yaml }
     - { resource: Domain/services.yaml }
     - { resource: Adapter/services.yaml }
-    - { resource: Console/services.yaml }
-    - { resource: Module/services.yaml }
     - { resource: Smarty/services.yaml }
-    - { resource: Templating/services.yaml }
-    - { resource: Theme/services.yaml }

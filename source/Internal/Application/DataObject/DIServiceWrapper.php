@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Application\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface;
 use OxidEsales\EshopCommunity\Internal\DIProjectConfig\Exception\MissingUpdateCallException;
 
 /**

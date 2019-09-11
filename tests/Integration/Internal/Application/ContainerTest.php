@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Application;
 
 use Monolog\Logger;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Application\Events\ShopAwareEventDispatcher;
+use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher;
 use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use Psr\Container\ContainerInterface;

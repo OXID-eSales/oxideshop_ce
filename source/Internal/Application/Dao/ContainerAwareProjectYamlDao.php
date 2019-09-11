@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Application\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Application\Events\ProjectYamlChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Application\Event\ProjectYamlChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;

@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Internal\Smarty;
 
 use OxidEsales\EshopCommunity\Internal\Smarty\Bridge\SmartyEngineBridge;
 use OxidEsales\EshopCommunity\Internal\Smarty\Configuration\SmartyConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateEngineInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
 /**
  * Class SmartyEngineFactory

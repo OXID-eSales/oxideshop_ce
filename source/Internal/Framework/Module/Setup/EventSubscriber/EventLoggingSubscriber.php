@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Event\ConfigurationErrorEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -36,18 +35,10 @@ class EventLoggingSubscriber implements EventSubscriberInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @param ConfigurationErrorEvent $event
-     */
-    public function logConfigurationError(ConfigurationErrorEvent $event)
+    public function logConfigurationError(ServicesYamlConfigurationErrorEvent $event): void
     {
-        $logLevelMap = [$event::ERROR_LEVEL_ERROR => LogLevel::ERROR,
-            $event::ERROR_LEVEL_WARN => LogLevel::WARNING,
-            $event::ERROR_LEVEL_INFO => LogLevel::INFO,
-            $event::ERROR_LEVEL_DEBUG => LogLevel::DEBUG];
-
         $this->logger->log(
-            $logLevelMap[$event->getErrorLevel()],
+            LogLevel::ERROR,
             $event->getErrorMessage() . ' (' . $event->getConfigurationFilePath() . ')'
         );
     }

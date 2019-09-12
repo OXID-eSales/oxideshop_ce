@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Event\ConfigurationErrorEvent;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Class ServicesYamlConfigurationErrorEvent
@@ -15,21 +15,46 @@ use OxidEsales\EshopCommunity\Internal\Framework\Event\ConfigurationErrorEvent;
  * This event is dispatched when there are not loadable service classes
  * found in a services.yaml file.
  */
-class ServicesYamlConfigurationErrorEvent extends ConfigurationErrorEvent
+class ServicesYamlConfigurationErrorEvent extends Event
 {
     const NAME = self::class;
 
     /**
-     * ServicesYamlConfigurationErrorEvent constructor.
-     *
+     * @var string $errorMessage
+     */
+    private $errorMessage;
+
+    /**
+     * @var string $configurationFilePath
+     */
+    private $configurationFilePath;
+
+    /**
+     * @param int    $errorLevel
+     * @param string $errorMessage
      * @param string $configurationFilePath
      */
-    public function __construct($configurationFilePath)
+    public function __construct(string $errorMessage, string $configurationFilePath)
     {
-        parent::__construct(
-            self::ERROR_LEVEL_ERROR,
-            'There are undefined classes in the config.yaml file',
-            $configurationFilePath
-        );
+        $this->errorMessage = $errorMessage;
+        $this->configurationFilePath = $configurationFilePath;
+    }
+
+    /**
+     * Returns the file that is misconfigured
+     *
+     * @return string
+     */
+    public function getConfigurationFilePath(): string
+    {
+        return $this->configurationFilePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMessage(): string
+    {
+        return $this->errorMessage;
     }
 }

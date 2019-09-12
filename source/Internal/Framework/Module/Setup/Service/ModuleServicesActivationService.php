@@ -180,7 +180,10 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         if (!$moduleConfig->checkServiceClassesCanBeLoaded()) {
             $this->eventDispatcher->dispatch(
                 ServicesYamlConfigurationErrorEvent::NAME,
-                new ServicesYamlConfigurationErrorEvent($moduleConfigFile)
+                new ServicesYamlConfigurationErrorEvent(
+                    'Service class can not be loaded',
+                    $moduleConfigFile
+                )
             );
             throw new ServicesYamlConfigurationError();
         }

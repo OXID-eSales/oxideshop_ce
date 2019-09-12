@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlExcept
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\ServicesYamlConfigurationErrorEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ServicesYamlConfigurationError;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -37,19 +39,34 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
     private $modulePathResolver;
 
     /**
+     * @var ModuleStateServiceInterface
+     */
+    private $moduleStateService;
+
+    /**
+     * @var ContextInterface
+     */
+    private $context;
+
+    /**
      * ModuleServicesActivationService constructor.
-     * @param ProjectYamlDaoInterface     $dao
-     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ProjectYamlDaoInterface $dao
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ModulePathResolverInterface $modulePathResolver
+     * @param ModuleStateServiceInterface $moduleStateService
      */
     public function __construct(
         ProjectYamlDaoInterface $dao,
         EventDispatcherInterface $eventDispatcher,
-        ModulePathResolverInterface $modulePathResolver
+        ModulePathResolverInterface $modulePathResolver,
+        ModuleStateServiceInterface $moduleStateService,
+        ContextInterface $context
     ) {
         $this->dao = $dao;
         $this->eventDispatcher = $eventDispatcher;
         $this->modulePathResolver = $modulePathResolver;
+        $this->moduleStateService = $moduleStateService;
+        $this->context = $context;
     }
 
     /**
@@ -107,14 +124,26 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
 
         $projectConfig = $this->dao->loadProjectConfigFile();
 
-        // The removal of the import works only if there are shop aware services
-        // defined. Otherwise the import stays in the configuration (but it does no harm)
-        $notActiveAnyMore = $this->cleanupShopAwareServices($projectConfig, $moduleConfig, $shopId);
-        if ($notActiveAnyMore) {
+        $this->cleanupShopAwareServices($projectConfig, $moduleConfig, $shopId);
+
+        if ($this->isLastActiveShop($moduleId, $shopId)) {
             $projectConfig->removeImport($moduleConfigFile);
         }
 
         $this->dao->saveProjectConfigFile($projectConfig);
+    }
+
+    private function isLastActiveShop(string $moduleId, int $currentShopId): bool
+    {
+        foreach ($this->context->getAllShopIds() as $shopId) {
+            if ($shopId === $currentShopId) {
+                continue;
+            }
+            if ($this->moduleStateService->isActive($moduleId, $shopId)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private function cleanupShopAwareServices(
@@ -122,21 +151,14 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         DIConfigWrapper $moduleConfig,
         int $shopId
     ) {
-        $notActiveAnyMore = false;
-
         foreach ($moduleConfig->getServices() as $service) {
             if (!$service->isShopAware()) {
                 continue;
             }
             $service = $projectConfig->getService($service->getKey());
-            $stillActiveShops = $service->removeActiveShops([$shopId]);
-            if (sizeof($stillActiveShops) === 0) {
-                $notActiveAnyMore = true;
-            }
+            $service->removeActiveShops([$shopId]);
             $projectConfig->addOrUpdateService($service);
         }
-
-        return $notActiveAnyMore;
     }
 
     /**

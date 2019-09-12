@@ -7,7 +7,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\State;
 
 use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,12 +19,22 @@ class ModuleStateServiceTest extends TestCase
 {
     use ContainerTrait;
 
+    private $moduleStateService;
+    
     public function setUp()
     {
-        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+        $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
-        if ($moduleStateService->isActive('testModuleId', 1)) {
-            $moduleStateService->setDeactivated('testModuleId', 1);
+        /** @var ContextStub $contextStub */
+        $contextStub = $this->container->get(ContextInterface::class);
+        $contextStub->setAllShopIds([1,2]);
+
+        if ($this->moduleStateService->isActive('testModuleId', 1)) {
+            $this->moduleStateService->setDeactivated('testModuleId', 1);
+        }
+
+        if ($this->moduleStateService->isActive('testModuleId', 2)) {
+            $this->moduleStateService->setDeactivated('testModuleId', 2);
         }
 
         parent::setUp();
@@ -30,16 +42,21 @@ class ModuleStateServiceTest extends TestCase
 
     public function testSetActive()
     {
-        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
-
         $this->assertFalse(
-            $moduleStateService->isActive('testModuleId', 1)
+            $this->moduleStateService->isActive('testModuleId', 1)
+        );
+        $this->assertFalse(
+            $this->moduleStateService->isActive('testModuleId', 2)
         );
 
-        $moduleStateService->setActive('testModuleId', 1);
+        $this->moduleStateService->setActive('testModuleId', 1);
+        $this->moduleStateService->setActive('testModuleId', 2);
 
         $this->assertTrue(
-            $moduleStateService->isActive('testModuleId', 1)
+            $this->moduleStateService->isActive('testModuleId', 1)
+        );
+        $this->assertTrue(
+            $this->moduleStateService->isActive('testModuleId', 2)
         );
     }
 
@@ -48,22 +65,22 @@ class ModuleStateServiceTest extends TestCase
      */
     public function testSetActiveIfActiveStateIsAlreadySet()
     {
-        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
-
-        $moduleStateService->setActive('testModuleId', 1);
-        $moduleStateService->setActive('testModuleId', 1);
+        $this->moduleStateService->setActive('testModuleId', 1);
+        $this->moduleStateService->setActive('testModuleId', 1);
     }
 
     public function testSetDeactivated()
     {
-        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+        $this->moduleStateService->setActive('testModuleId', 1);
+        $this->moduleStateService->setActive('testModuleId', 2);
 
-        $moduleStateService->setActive('testModuleId', 1);
-
-        $moduleStateService->setDeactivated('testModuleId', 1);
+        $this->moduleStateService->setDeactivated('testModuleId', 1);
+        $this->assertFalse($this->moduleStateService->isNotActiveInAnyShop('testModuleId'));
+        $this->moduleStateService->setDeactivated('testModuleId', 2);
+        $this->assertTrue($this->moduleStateService->isNotActiveInAnyShop('testModuleId'));
 
         $this->assertFalse(
-            $moduleStateService->isActive('testModuleId', 1)
+            $this->moduleStateService->isActive('testModuleId', 1)
         );
     }
 
@@ -72,8 +89,9 @@ class ModuleStateServiceTest extends TestCase
      */
     public function testSetDeactivatedIfActiveStateIsNotSet()
     {
-        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+        $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
-        $moduleStateService->setDeactivated('testModuleId', 1);
+        $this->moduleStateService->setDeactivated('testModuleId', 1);
     }
+
 }

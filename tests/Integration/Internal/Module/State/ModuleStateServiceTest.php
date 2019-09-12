@@ -72,12 +72,8 @@ class ModuleStateServiceTest extends TestCase
     public function testSetDeactivated()
     {
         $this->moduleStateService->setActive('testModuleId', 1);
-        $this->moduleStateService->setActive('testModuleId', 2);
 
         $this->moduleStateService->setDeactivated('testModuleId', 1);
-        $this->assertFalse($this->moduleStateService->isNotActiveInAnyShop('testModuleId'));
-        $this->moduleStateService->setDeactivated('testModuleId', 2);
-        $this->assertTrue($this->moduleStateService->isNotActiveInAnyShop('testModuleId'));
 
         $this->assertFalse(
             $this->moduleStateService->isActive('testModuleId', 1)

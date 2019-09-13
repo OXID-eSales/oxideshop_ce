@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - oe-console command: oe:module:activate-configured-modules
+ - Added new parameter to `executeQuery` method in `SeoEncoder` which allows to pass prepared statements parameters
  
 ### Changed
-- Most of SELECT, DELETE and UPDATE queries do use prepared statements
+- Most of SELECT, DELETE, UPDATE and INSERT queries do use prepared statements
 
 ### Fixed
 - Metadata 1.2 support

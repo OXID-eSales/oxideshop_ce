@@ -179,15 +179,15 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     protected function insert($appServer)
     {
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-               values(?, ?, '', ?, ?, ENCODE( ?, ?) )";
+                  values (:oxid, :oxshopid, '', :oxvarname, :oxvartype, ENCODE(:value, :key))";
 
         $parameter = [
-            \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
-            $this->config->getBaseShopId(),
-            self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
-            'arr',
-            $this->convertAppServerToConfigOption($appServer),
-            $this->config->getConfigParam('sConfigKey')
+            ':oxid' => \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
+            ':oxshopid' => $this->config->getBaseShopId(),
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
+            ':oxvartype' => 'arr',
+            ':value' => $this->convertAppServerToConfigOption($appServer),
+            ':key' => $this->config->getConfigParam('sConfigKey')
         ];
 
         $this->database->execute($query, $parameter);

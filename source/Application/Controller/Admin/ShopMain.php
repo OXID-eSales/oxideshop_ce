@@ -199,15 +199,17 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
                 if (!in_array($configName, $nonCopyVars)) {
                     $newId = $utilsObject->generateUID();
                     $insertNewConfigQuery =
-                        "insert into oxconfig
-                        (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule) values ( '$newId', " . $db->quote($shop->getId())
-                        . ", " . $db->quote($shopConfiguration->fields[0])
-                        . ", " . $db->quote($shopConfiguration->fields[1])
-                        . ",  ENCODE( " . $db->quote($shopConfiguration->fields[2])
-                        . ", '" . $config->getConfigParam('sConfigKey')
-                        . "')"
-                        . ", " . $db->quote($shopConfiguration->fields[3]) . " )";
-                    $db->execute($insertNewConfigQuery);
+                        "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule)
+                         values (:oxid, :oxshopid, :oxvarname, :oxvartype, ENCODE(:value, :key), :oxmodule)";
+                    $db->execute($insertNewConfigQuery, [
+                        ':oxid' => $newId,
+                        ':oxshopid' => $shop->getId(),
+                        ':oxvarname' => $shopConfiguration->fields[0],
+                        ':oxvartype' => $shopConfiguration->fields[1],
+                        ':value' => $shopConfiguration->fields[2],
+                        ':key' => $config->getConfigParam('sConfigKey'),
+                        ':oxmodule' => $shopConfiguration->fields[3]
+                    ]);
                 }
                 $shopConfiguration->fetchRow();
             }

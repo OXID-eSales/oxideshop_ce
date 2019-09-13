@@ -38,8 +38,8 @@ class Counter
             $nextCounter = $currentCounter + 1;
 
             /** Insert or increment the the counter */
-            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, 1) ON DUPLICATE KEY UPDATE `oxcount` = `oxcount` + 1";
-            $database->execute($query, [$ident]);
+            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (:oxident, 1) ON DUPLICATE KEY UPDATE `oxcount` = `oxcount` + 1";
+            $database->execute($query, [':oxident' => $ident]);
 
             $database->commitTransaction();
         } catch (Exception $exception) {
@@ -75,8 +75,8 @@ class Counter
             ]);
 
             /** Insert or update the counter, if the value to be updated is greater, than the current value */
-            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `oxcount` = IF(? > oxcount, ?, oxcount)";
-            $result = $database->execute($query, [$ident, $count, $count, $count ]);
+            $query = "INSERT INTO `oxcounters` (`oxident`, `oxcount`) VALUES (:oxident, :oxcount) ON DUPLICATE KEY UPDATE `oxcount` = IF(:oxcount > oxcount, :oxcount, oxcount)";
+            $result = $database->execute($query, [':oxident' => $ident, ':oxcount' => $count]);
 
             $database->commitTransaction();
         } catch (Exception $exception) {

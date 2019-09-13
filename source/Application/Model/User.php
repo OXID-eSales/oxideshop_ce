@@ -2301,10 +2301,13 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($sUserId && is_array($aRecEmail) && count($aRecEmail) > 0) {
             //iserting statistics about invitation
             $sDate = Registry::getUtilsDate()->formatDBDate(date("Y-m-d"), true);
-            $aRecEmail = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRecEmail);
             foreach ($aRecEmail as $sRecEmail) {
-                $sSql = "INSERT INTO oxinvitations SET oxuserid = " . $oDb->quote($sUserId) . ", oxemail = $sRecEmail,  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
-                $oDb->execute($sSql);
+                $sSql = "INSERT INTO oxinvitations SET oxuserid = :oxuserid, oxemail = :oxemail, oxdate = :oxdate, oxpending = '1', oxaccepted = '0', oxtype = '1'";
+                $oDb->execute($sSql, [
+                    ':oxuserid' => $sUserId,
+                    ':oxemail' => $sRecEmail,
+                    ':oxdate' => $sDate
+                ]);
             }
         }
     }

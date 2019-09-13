@@ -586,8 +586,11 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _setOrderStatus($sStatus)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = 'update oxorder set oxtransstatus=' . $oDb->quote($sStatus) . ' where oxid=' . $oDb->quote($this->getId());
-        $oDb->execute($sQ);
+        $sQ = 'update oxorder set oxtransstatus = :oxtransstatus where oxid = :oxid';
+        $oDb->execute($sQ, [
+            ':oxtransstatus' => $sStatus,
+            ':oxid' => $this->getId()
+        ]);
 
         //updating order object
         $this->oxorder__oxtransstatus = new \OxidEsales\Eshop\Core\Field($sStatus, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -1096,9 +1099,12 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
-        $sQ = 'update oxorder set oxorderdate=' . $oDb->quote($sDate) . ' where oxid=' . $oDb->quote($this->getId());
+        $sQ = 'update oxorder set oxorderdate = :oxorderdate where oxid = :oxid';
         $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field($sDate, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $oDb->execute($sQ);
+        $oDb->execute($sQ, [
+            ':oxorderdate' => $sDate,
+            ':oxid' => $this->getId()
+        ]);
     }
 
     /**
@@ -1271,8 +1277,11 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $iCnt = oxNew(\OxidEsales\Eshop\Core\Counter::class)->getNext($this->_getCounterIdent());
-        $sQ = "update oxorder set oxordernr = ? where oxid = ?";
-        $blUpdate = ( bool ) $oDb->execute($sQ, [$iCnt, $this->getId()]);
+        $sQ = "update oxorder set oxordernr = :oxordernr where oxid = :oxid";
+        $blUpdate = ( bool ) $oDb->execute($sQ, [
+            ':oxordernr' => $iCnt,
+            ':oxid' => $this->getId()
+        ]);
 
         if ($blUpdate) {
             $this->oxorder__oxordernr = new \OxidEsales\Eshop\Core\Field($iCnt);

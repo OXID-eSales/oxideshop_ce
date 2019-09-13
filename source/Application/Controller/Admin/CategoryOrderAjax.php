@@ -228,12 +228,10 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             }
 
             $oDb = DatabaseProvider::getDb();
-
-            $sQuotedCategoryId = $oDb->quote($oCategory->getId());
-
             $sSqlShopFilter = $this->updateQueryFilterForResetCategoryArticlesOrder();
-            $sSelect = "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid = {$sQuotedCategoryId} {$sSqlShopFilter}";
-            $oDb->execute($sSelect);
+
+            $sSelect = "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid = :id {$sSqlShopFilter}";
+            $oDb->execute($sSelect, [':id' => $oCategory->getId()]);
 
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('neworder_sess', null);
 

@@ -303,7 +303,9 @@ class Database extends Core
         $sBaseShopId = $this->getInstance("Setup")->getShopId();
 
         $oPdo->exec("update oxcountry set oxactive = '0'");
-        $oPdo->exec("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
+
+        $oUpdate = $oPdo->prepare("update oxcountry set oxactive = '1' where oxid = :countryLang");
+        $oUpdate->execute([':countryLang' => $sCountryLang]);
 
         $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");

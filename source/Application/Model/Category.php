@@ -285,19 +285,25 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             $myUtilsPic->safePictureDelete($this->oxcategories__oxicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('CICO'), 'oxcategories', 'oxicon');
             $myUtilsPic->safePictureDelete($this->oxcategories__oxpromoicon->value, $sDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType('PICO'), 'oxcategories', 'oxpromoicon');
 
-            $sAdd = " and oxshopid = '" . $this->getShopId() . "' ";
+            $query = "UPDATE oxcategories SET OXLEFT = OXLEFT - 2
+                      WHERE OXROOTID = :oxrootid AND
+                            OXLEFT > :oxleft AND
+                            OXSHOPID = :oxshopid";
+            $oDb->execute($query, [
+                ':oxrootid' => $this->oxcategories__oxrootid->value,
+                ':oxleft' => (int) $this->oxcategories__oxleft->value,
+                ':oxshopid' => $this->getShopId()
+            ]);
 
-            $oDb->execute(
-                "UPDATE oxcategories SET OXLEFT = OXLEFT - 2
-                                           WHERE  OXROOTID = " . $oDb->quote($this->oxcategories__oxrootid->value) . "
-                            AND OXLEFT >   " . ((int) $this->oxcategories__oxleft->value) . $sAdd
-            );
-
-            $oDb->execute(
-                "UPDATE oxcategories SET OXRIGHT = OXRIGHT - 2
-                                           WHERE  OXROOTID = " . $oDb->quote($this->oxcategories__oxrootid->value) . "
-                            AND OXRIGHT >   " . ((int) $this->oxcategories__oxright->value) . $sAdd
-            );
+            $query = "UPDATE oxcategories SET OXRIGHT = OXRIGHT - 2
+                      WHERE OXROOTID = :oxrootid AND
+                            OXRIGHT > :oxright AND
+                            OXSHOPID = :oxshopid";
+            $oDb->execute($query, [
+                ':oxrootid' => $this->oxcategories__oxrootid->value,
+                ':oxright' => (int) $this->oxcategories__oxright->value,
+                ':oxshopid' => $this->getShopId()
+            ]);
 
             // delete entry
             $blRet = parent::delete($sOXID);
@@ -837,23 +843,29 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 return false;
             }
 
-            $sAdd = " and oxshopid = '" . $this->getShopId() . "' ";
-
             // update existing nodes
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $oDb->execute(
-                "UPDATE oxcategories SET OXLEFT = OXLEFT + 2
-                                           WHERE  OXROOTID = " . $oDb->quote($oParent->oxcategories__oxrootid->value) . "
-                            AND OXLEFT >   " . ((int) $oParent->oxcategories__oxright->value) . "
-                            AND OXRIGHT >= " . ((int) $oParent->oxcategories__oxright->value) . $sAdd
-            );
+            $query = "UPDATE oxcategories SET OXLEFT = OXLEFT + 2
+                      WHERE OXROOTID = :oxrootid AND
+                            OXLEFT > :oxleft AND
+                            OXRIGHT >= :oxright AND
+                            OXSHOPID = :oxshopid ";
+            $oDb->execute($query, [
+                ':oxrootid' => $oParent->oxcategories__oxrootid->value,
+                ':oxleft' => (int) $oParent->oxcategories__oxright->value,
+                ':oxright' => (int) $oParent->oxcategories__oxright->value,
+                ':oxshopid' => $this->getShopId()
+            ]);
 
-
-            $oDb->execute(
-                "UPDATE oxcategories SET OXRIGHT = OXRIGHT + 2
-                                           WHERE  OXROOTID = " . $oDb->quote($oParent->oxcategories__oxrootid->value) . "
-                            AND OXRIGHT >= " . ((int) $oParent->oxcategories__oxright->value) . $sAdd
-            );
+            $query = "UPDATE oxcategories SET OXRIGHT = OXRIGHT + 2
+                      WHERE OXROOTID = :oxrootid AND
+                            OXRIGHT >= :oxright AND
+                            OXSHOPID = :oxshopid";
+            $oDb->execute($query, [
+                ':oxrootid' => $oParent->oxcategories__oxrootid->value,
+                ':oxright' => (int) $oParent->oxcategories__oxright->value,
+                ':oxshopid' => $this->getShopId()
+            ]);
 
             if (!$this->getId()) {
                 $this->setId();
@@ -941,8 +953,11 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 //echo "<br>* ) Can't asign category to it's child";
 
                 //Restoring old parentid, stoping further actions
-                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = " . $database->quote($sOldParentID) . " WHERE oxid = " . $database->quote($this->getId());
-                $database->execute($sRestoreOld);
+                $sRestoreOld = "UPDATE oxcategories SET OXPARENTID = :oxparentid WHERE oxid = :oxid";
+                $database->execute($sRestoreOld, [
+                    ':oxparentid' => $sOldParentID,
+                    ':oxid' => $this->getId()
+                ]);
 
                 return false;
             }
@@ -961,8 +976,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             $sAddNew = " and oxshopid = '" . $this->getShopId() . "' and OXROOTID = " . $database->quote($sNewRootID) . ";";
 
             //Updating everything after new position
-            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iTreeSize . ") WHERE OXLEFT >= " . $iMoveAfter . $sAddNew);
-            $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + " . $iTreeSize . ") WHERE OXRIGHT >= " . $iMoveAfter . $sAddNew);
+            $params = [':treeSize' => $iTreeSize, ':offset' => $iMoveAfter];
+            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + :treeSize) WHERE OXLEFT >= :offset" . $sAddNew, $params);
+            $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT + :treeSize) WHERE OXRIGHT >= :offset" . $sAddNew, $params);
             //echo "<br>1.) + $iTreeSize, >= $iMoveAfter";
 
             $sChangeRootID = "";
@@ -972,12 +988,19 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
             }
 
             //Updating subtree
-            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT + " . $iDelta . "), OXRIGHT = (OXRIGHT + " . $iDelta . ") " . $sChangeRootID . " WHERE OXLEFT >= " . $sOldParentLeft . " AND OXRIGHT <= " . $sOldParentRight . $sAddOld);
+            $query = "UPDATE oxcategories SET OXLEFT = (OXLEFT + :delta), OXRIGHT = (OXRIGHT + :delta) " . $sChangeRootID .
+                     "WHERE OXLEFT >= :oxleft AND OXRIGHT <= :oxright" . $sAddOld;
+            $database->execute($query, [
+                ':delta' => $iDelta,
+                ':oxleft' => $sOldParentLeft,
+                ':oxright' => $sOldParentRight
+            ]);
             //echo "<br>2.) + $iDelta, >= $sOldParentLeft and <= $sOldParentRight";
 
             //Updating everything after old position
-            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - " . $iTreeSize . ") WHERE OXLEFT >=   " . ($sOldParentRight + 1) . $sAddOld);
-            $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - " . $iTreeSize . ") WHERE OXRIGHT >=   " . ($sOldParentRight + 1) . $sAddOld);
+            $params = [':treeSize' => $iTreeSize, ':offset' => $sOldParentRight + 1];
+            $database->execute("UPDATE oxcategories SET OXLEFT = (OXLEFT - :treeSize) WHERE OXLEFT >= :offset" . $sAddOld, $params);
+            $database->execute("UPDATE oxcategories SET OXRIGHT = (OXRIGHT - :treeSize) WHERE OXRIGHT >= :offset" . $sAddOld, $params);
             //echo "<br>3.) - $iTreeSize, >= ".($sOldParentRight+1);
         }
 

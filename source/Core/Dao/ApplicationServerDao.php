@@ -158,13 +158,14 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     protected function update($appServer)
     {
-        $query = "UPDATE oxconfig SET oxvarvalue=ENCODE( ?, ?) WHERE oxvarname = ? and oxshopid = ?";
+        $query = "UPDATE oxconfig SET oxvarvalue = ENCODE(:value, :key)
+                  WHERE oxvarname = :oxvarname and oxshopid = :oxshopid";
 
         $parameter = [
-            $this->convertAppServerToConfigOption($appServer),
-            $this->config->getConfigParam('sConfigKey'),
-            self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
-            $this->config->getBaseShopId()
+            ':value' => $this->convertAppServerToConfigOption($appServer),
+            ':key' => $this->config->getConfigParam('sConfigKey'),
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
+            ':oxshopid' => $this->config->getBaseShopId()
         ];
 
         $this->database->execute($query, $parameter);

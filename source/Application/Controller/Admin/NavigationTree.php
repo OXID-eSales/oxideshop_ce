@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
+use oxRegistry;
 use DOMXPath;
 use DOMDocument;
 use DOMElement;
@@ -452,16 +452,21 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns array with paths + names ox menu xml files. Paths are checked
+     * Returns array witn pathes + names ox manu xml files. Paths are checked
      *
      * @return array
      */
     protected function _getMenuFiles()
     {
-        $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
-        $fullAdminDir = $editionPathSelector->getViewsDirectory() . $adminThemeName . DIRECTORY_SEPARATOR;
+        $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
         $menuFile = $fullAdminDir . 'menu.xml';
+
+        $tmpDir = $myConfig->getConfigParam('sCompileDir');
+        $dynLang = $this->_getDynMenuLang();
+        $localDynPath = "{$tmpDir}{$dynLang}_dynscreen.xml";
 
         // including std file
         if (file_exists($menuFile)) {
@@ -475,8 +480,8 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         // including module menu files
         $path = getShopBasePath();
-        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-        $activeModuleInfo = $moduleList->getActiveModuleInfo();
+        $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
+        $activeModuleInfo = $modulelist->getActiveModuleInfo();
         if (is_array($activeModuleInfo)) {
             foreach ($activeModuleInfo as $modulePath) {
                 $fullPath = $path . "modules/" . $modulePath;

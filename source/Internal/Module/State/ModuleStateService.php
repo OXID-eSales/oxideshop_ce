@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Module\State;
 
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use function in_array;
 
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface;
@@ -27,8 +28,9 @@ class ModuleStateService implements ModuleStateServiceInterface
      * ModuleStateService constructor.
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
-    public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
-    {
+    public function __construct(
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
+    ) {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 

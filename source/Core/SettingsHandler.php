@@ -96,13 +96,20 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 
                 $deleteSql = "DELETE FROM `oxconfigdisplay` WHERE OXCFGMODULE = :oxcfgmodule AND OXCFGVARNAME = :oxcfgvarname";
                 $insertSql = "INSERT INTO `oxconfigdisplay` (`OXID`, `OXCFGMODULE`, `OXCFGVARNAME`, `OXGROUPING`, `OXVARCONSTRAINT`, `OXPOS`) " .
-                "VALUES ('{$oxid}', " . $db->quote($module) . ", " . $db->quote($name) . ", " . $db->quote($group) . ", " . $db->quote($constraints) . ", " . $db->quote($position) . ")";
+                             "VALUES (:oxid, :oxcfgmodule, :oxcfgvarname, :oxgrouping, :oxvarconstraint, :oxpos)";
 
                 $db->execute($deleteSql, [
                     ':oxcfgmodule' => $module,
                     ':oxcfgvarname' => $name,
                 ]);
-                $db->execute($insertSql);
+                $db->execute($insertSql, [
+                    ':oxid' => $oxid,
+                    ':oxcfgmodule' => $module,
+                    ':oxcfgvarname' => $name,
+                    ':oxgrouping' => $group,
+                    ':oxvarconstraint' => $constraints,
+                    ':oxpos' => $position,
+                ]);
             }
         }
     }

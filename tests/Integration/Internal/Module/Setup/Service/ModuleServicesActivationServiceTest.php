@@ -13,8 +13,11 @@ use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ServicesYamlConfigurationError;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationService;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Service\ModuleServicesActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateService;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEventSubscriber;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,7 +47,15 @@ class ModuleServicesActivationServiceTest extends TestCase
      */
     private $shopActivationService;
 
+    /**
+     * @var ContextStub
+     */
+    private $contextStub;
+
     private $projectYamlArray = [];
+
+    /** @var ModuleStateService|MockObject */
+    private $moduleStateService;
 
     public function setUp()
     {
@@ -53,6 +64,7 @@ class ModuleServicesActivationServiceTest extends TestCase
             ->method('saveProjectConfigFile')
             ->willReturnCallback([$this, 'saveProjectYaml']);
 
+        /** @var ModulePathResolverInterface|MockObject $modulePathResolver */
         $modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
         $modulePathResolver
             ->method('getFullModulePathFromConfiguration')
@@ -61,7 +73,18 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->eventDispatcher = $this->getMockBuilder(EventDispatcherInterface::class)
             ->getMock();
 
-        $this->shopActivationService = new ModuleServicesActivationService($this->projectYamlDao, $this->eventDispatcher, $modulePathResolver);
+        $this->moduleStateService = $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock();
+
+        $this->contextStub = new ContextStub();
+        $this->contextStub->setAllShopIds([1,5]);
+
+        $this->shopActivationService = new ModuleServicesActivationService(
+            $this->projectYamlDao,
+            $this->eventDispatcher,
+            $modulePathResolver,
+            $this->moduleStateService,
+            $this->contextStub
+        );
     }
 
     /** Callback function for mock to catch the given parameter */
@@ -127,6 +150,8 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->projectYamlDao->method('loadProjectConfigFile')->willReturn($projectConfig);
         $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
 
+        $this->moduleStateService->method('isActive')->willReturn(true);
+
         $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
 
         $this->assertProjectYamlHasImport($this->getTestModuleServiceYamlPath());
@@ -168,10 +193,14 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->projectYamlDao->method('loadProjectConfigFile')->willReturn($projectConfig);
         $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
 
-        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
-        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 5);
+        $this->moduleStateService->method('isActive')->will($this->onConsecutiveCalls(true, false));
 
+        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
         $this->assertArrayHasKey('imports', $this->projectYamlArray);
+        $this->assertArrayHasKey('services', $this->projectYamlArray);
+
+        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 5);
+        $this->assertArrayNotHasKey('imports', $this->projectYamlArray);
         $this->assertArrayNotHasKey('services', $this->projectYamlArray);
     }
 

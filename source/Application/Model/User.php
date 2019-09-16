@@ -902,7 +902,14 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDb->execute("delete from oxaddress where oxaddress.oxuserid = :oxuserid", [
                 ':oxuserid' => $this->oxuser__oxid->value
             ]);
-            $oDb->execute("update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxusername->value) . " where oxuserpayments.oxuserid = " . $oDb->quote($this->oxuser__oxid->value));
+
+            $query = "update oxuserpayments
+                      set oxuserpayments.oxuserid = :newUserId
+                      where oxuserpayments.oxuserid = :oldUserId";
+            $oDb->execute($query, [
+                ':newUserId' => $this->oxuser__oxusername->value,
+                ':oldUserId' => $this->oxuser__oxid->value,
+            ]);
         }
 
         return $newUserId;
@@ -2243,7 +2250,15 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->oxuser__oxpoints = new Field($iPoints, Field::T_RAW);
             if ($blSet = $this->save()) {
                 // updating users statistics
-                $masterDb->execute("UPDATE oxinvitations SET oxpending = '0', oxaccepted = '1' where oxuserid = " . $masterDb->quote($sUserId) . " and md5(oxemail) = " . $masterDb->quote($sRecEmail));
+                $query = "UPDATE oxinvitations
+                          SET oxpending = '0',
+                              oxaccepted = '1'
+                          WHERE oxuserid = :oxuserid AND
+                                md5(oxemail) = :oxemail";
+                $masterDb->execute($query, [
+                    ':oxuserid' => $sUserId,
+                    ':oxemail' => $sRecEmail
+                ]);
                 $oInvUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
                 if ($oInvUser->load($sUserId)) {
                     $blSet = $oInvUser->setCreditPointsForInviter();
@@ -2287,10 +2302,13 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($sUserId && is_array($aRecEmail) && count($aRecEmail) > 0) {
             //iserting statistics about invitation
             $sDate = Registry::getUtilsDate()->formatDBDate(date("Y-m-d"), true);
-            $aRecEmail = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRecEmail);
             foreach ($aRecEmail as $sRecEmail) {
-                $sSql = "INSERT INTO oxinvitations SET oxuserid = " . $oDb->quote($sUserId) . ", oxemail = $sRecEmail,  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
-                $oDb->execute($sSql);
+                $sSql = "INSERT INTO oxinvitations SET oxuserid = :oxuserid, oxemail = :oxemail, oxdate = :oxdate, oxpending = '1', oxaccepted = '0', oxtype = '1'";
+                $oDb->execute($sSql, [
+                    ':oxuserid' => $sUserId,
+                    ':oxemail' => $sRecEmail,
+                    ':oxdate' => $sDate
+                ]);
             }
         }
     }

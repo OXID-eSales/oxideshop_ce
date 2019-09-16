@@ -111,4 +111,12 @@ class ContextStub extends BasicContextStub implements ContextInterface
     {
         return $this->shopIds;
     }
+
+    /**
+     * @param array $shopIds
+     */
+    public function setAllShopIds(array $shopIds)
+    {
+        $this->shopIds = $shopIds;
+    }
 }

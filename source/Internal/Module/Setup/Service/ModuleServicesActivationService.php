@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlExcept
 use OxidEsales\EshopCommunity\Internal\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Event\ServicesYamlConfigurationErrorEvent;
 use OxidEsales\EshopCommunity\Internal\Module\Setup\Exception\ServicesYamlConfigurationError;
+use OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -37,19 +39,34 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
     private $modulePathResolver;
 
     /**
+     * @var ModuleStateServiceInterface
+     */
+    private $moduleStateService;
+
+    /**
+     * @var ContextInterface
+     */
+    private $context;
+
+    /**
      * ModuleServicesActivationService constructor.
-     * @param ProjectYamlDaoInterface     $dao
-     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ProjectYamlDaoInterface $dao
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ModulePathResolverInterface $modulePathResolver
+     * @param ModuleStateServiceInterface $moduleStateService
      */
     public function __construct(
         ProjectYamlDaoInterface $dao,
         EventDispatcherInterface $eventDispatcher,
-        ModulePathResolverInterface $modulePathResolver
+        ModulePathResolverInterface $modulePathResolver,
+        ModuleStateServiceInterface $moduleStateService,
+        ContextInterface $context
     ) {
         $this->dao = $dao;
         $this->eventDispatcher = $eventDispatcher;
         $this->modulePathResolver = $modulePathResolver;
+        $this->moduleStateService = $moduleStateService;
+        $this->context = $context;
     }
 
     /**
@@ -107,7 +124,33 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
 
         $projectConfig = $this->dao->loadProjectConfigFile();
 
-        /** @var DIServiceWrapper $service */
+        $this->cleanupShopAwareServices($projectConfig, $moduleConfig, $shopId);
+
+        if ($this->isLastActiveShop($moduleId, $shopId)) {
+            $projectConfig->removeImport($moduleConfigFile);
+        }
+
+        $this->dao->saveProjectConfigFile($projectConfig);
+    }
+
+    private function isLastActiveShop(string $moduleId, int $currentShopId): bool
+    {
+        foreach ($this->context->getAllShopIds() as $shopId) {
+            if ($shopId === $currentShopId) {
+                continue;
+            }
+            if ($this->moduleStateService->isActive($moduleId, $shopId)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private function cleanupShopAwareServices(
+        DIConfigWrapper $projectConfig,
+        DIConfigWrapper $moduleConfig,
+        int $shopId
+    ) {
         foreach ($moduleConfig->getServices() as $service) {
             if (!$service->isShopAware()) {
                 continue;
@@ -116,8 +159,6 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
             $service->removeActiveShops([$shopId]);
             $projectConfig->addOrUpdateService($service);
         }
-
-        $this->dao->saveProjectConfigFile($projectConfig);
     }
 
     /**

@@ -537,10 +537,11 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                 if ($oRs->fields['oxexpired'] && ($oRs->fields['oxtype'] == 'static' || $oRs->fields['oxtype'] == 'dynamic')) {
                     // if expired - copying to history, marking as not expired
                     $this->_copyToHistory($sId, $iShopId, $iLang);
-                    $oDb->execute(
-                        "update oxseo set oxexpired = 0 where oxobjectid = ? and oxlang = ? and oxshopid = ?",
-                        [$sId, $iLang, $iShopId]
-                    );
+                    $oDb->execute("update oxseo set oxexpired = 0 where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid", [
+                        ':oxobjectid' => $sId,
+                        ':oxlang' => $iLang,
+                        ':oxshopid' => $iShopId
+                    ]);
                     $sSeoUrl = $oRs->fields['oxseourl'];
                 } elseif (!$oRs->fields['oxexpired'] || $oRs->fields['oxfixed']) {
                     // if seo url is available and is valid
@@ -706,7 +707,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      */
     protected function _saveToDb($sType, $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId = null, $blFixed = null, $sParams = null)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         if ($iShopId === null) {
             $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         }
@@ -716,15 +716,6 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sStdUrl = $this->_trimUrl($sStdUrl);
         $sSeoUrl = $this->_trimUrl($sSeoUrl);
         $sIdent = $this->_getSeoIdent($sSeoUrl);
-
-        // transferring old url, thus current url will be regenerated
-        $sQtedObjectId = $oDb->quote($sObjectId);
-        $iQtedShopId = $oDb->quote($iShopId);
-        $sQtedType = $oDb->quote($sType);
-        $sQtedSeoUrl = $oDb->quote($sSeoUrl);
-        $sQtedStdUrl = $oDb->quote($sStdUrl);
-        $sQtedParams = $oDb->quote($sParams);
-        $sQtedIdent = $oDb->quote($sIdent);
 
         // transferring old url, thus current url will be regenerated
 
@@ -758,12 +749,18 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
                 // fixed state change
                 $sFixed = isset($blFixed) ? ", oxfixed = " . ((int) $blFixed) . " " : '';
                 // nothing was changed - setting expired status back to 0
-                $sSql = "update oxseo set oxexpired = 0 {$sFixed} where oxtype = {$sQtedType} and
-                          oxobjectid = {$sQtedObjectId} and oxshopid = {$iQtedShopId} and oxlang = {$iLang} ";
-                $sSql .= $sParams ? " and oxparams = {$sQtedParams} " : '';
+                $sSql = "update oxseo set oxexpired = 0 {$sFixed} where oxtype = :oxtype and
+                          oxobjectid = :oxobjectid and oxshopid = :oxshopid and oxlang = :oxlang ";
+                $sSql .= $sParams ? " and oxparams = :oxparams " : '';
                 $sSql .= " limit 1";
 
-                return $this->executeQuery($sSql);
+                return $this->executeQuery($sSql, [
+                    ':oxtype' => $sType,
+                    ':oxobjectid' => $sObjectId,
+                    ':oxshopid' => $iShopId,
+                    ':oxlang' => $iLang,
+                    ':oxparams' => $sParams
+                ]);
             } elseif ($oRs->fields['oxexpired']) {
                 // copy to history
                 $this->_copyToHistory($sObjectId, $iShopId, $iLang, $sType);
@@ -771,17 +768,24 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         }
 
         // inserting new or updating
-        $sParams = $sParams ? $oDb->quote($sParams) : '""';
-        $blFixed = (int) $blFixed;
-
         $sQ = "insert into oxseo
                     (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed, oxexpired, oxparams)
                 values
-                    ( {$sQtedObjectId}, {$sQtedIdent}, {$iQtedShopId}, {$iLang}, {$sQtedStdUrl}, {$sQtedSeoUrl}, {$sQtedType}, '$blFixed', '0', {$sParams} )
+                    (:oxobjectid, :oxident, :oxshopid, :oxlang, :oxstdurl, :oxseourl, :oxtype, :oxfixed, '0', :oxparams)
                 on duplicate key update
-                    oxobjectid = {$sQtedObjectId}, oxident = {$sQtedIdent}, oxstdurl = {$sQtedStdUrl}, oxseourl = {$sQtedSeoUrl}, oxfixed = '$blFixed', oxexpired = '0'";
+                    oxobjectid = :oxobjectid, oxident = :oxident, oxstdurl = :oxstdurl, oxseourl = :oxseourl, oxfixed = :oxfixed, oxexpired = '0'";
 
-        return $this->executeQuery($sQ);
+        return $this->executeQuery($sQ, [
+            ':oxobjectid' => $sObjectId ?? '',
+            ':oxident' => $sIdent,
+            ':oxshopid' => $iShopId,
+            ':oxlang' => $iLang,
+            ':oxstdurl' => $sStdUrl,
+            ':oxseourl' => $sSeoUrl,
+            ':oxtype' => $sType,
+            ':oxfixed' => (int) $blFixed,
+            ':oxparams' => $sParams ?: ''
+        ]);
     }
 
     /**
@@ -789,15 +793,16 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      * Returns false when the query fail, otherwise return true
      *
      * @param string $query Query to execute.
+     * @param array  $params
      *
      * @return bool
      */
-    protected function executeQuery($query)
+    protected function executeQuery($query, $params = [])
     {
         $dataBase = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $success = true;
         try {
-            $dataBase->execute($query);
+            $dataBase->execute($query, $params);
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             $success = false;
@@ -952,8 +957,8 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sWhere .= !is_null($iLang) ? ($sWhere ? " and oxlang = '{$iLang}'" : "where oxlang = '{$iLang}'") : '';
         $sWhere .= $sParams ? ($sWhere ? " and {$sParams}" : "where {$sParams}") : '';
 
-        $sQ = "update oxseo set oxexpired =  " . $oDb->quote($iExpStat) . " $sWhere ";
-        $oDb->execute($sQ);
+        $sQ = "update oxseo set oxexpired = :oxexpired $sWhere";
+        $oDb->execute($sQ, [':oxexpired' => $iExpStat]);
     }
 
     /**
@@ -1108,9 +1113,13 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             foreach (array_keys(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageIds()) as $iLang) {
                 $sQ = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype )
-                       select MD5( LOWER( CONCAT( " . $oDb->quote($iShopId) . ", oxstdurl ) ) ), MD5( LOWER( oxseourl ) ),
-                       " . $oDb->quote($iShopId) . ", oxlang, oxstdurl, oxseourl, oxtype from oxseo where oxshopid = '{$iBaseShopId}' and oxtype = 'static' and oxlang='$iLang' ";
-                $oDb->execute($sQ);
+                       select MD5( LOWER( CONCAT( :shopId, oxstdurl ) ) ), MD5( LOWER( oxseourl ) ),
+                       :shopId, oxlang, oxstdurl, oxseourl, oxtype from oxseo where oxshopid = :baseShopId and oxtype = 'static' and oxlang = :lang";
+                $oDb->execute($sQ, [
+                    ':shopId' => $iShopId,
+                    ':baseShopId' => $iBaseShopId,
+                    ':lang' => $iLang
+                ]);
             }
         }
     }
@@ -1170,26 +1179,37 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         if ($this->_saveToDb($sType, $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId, $blFixed, $sParams)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-            //
-            $sQtedObjectId = $oDb->quote($sAltObjectId ? $sAltObjectId : $sObjectId);
-            $iQtedShopId = $oDb->quote($iShopId);
-
             $oStr = getStr();
             if ($sKeywords !== false) {
-                $sKeywords = $oDb->quote($oStr->htmlspecialchars($this->encodeString($oStr->strip_tags($sKeywords), false, $iLang)));
+                $sKeywords = $oStr->htmlspecialchars($this->encodeString($oStr->strip_tags($sKeywords), false, $iLang));
             }
 
             if ($sDescription !== false) {
-                $sDescription = $oDb->quote($oStr->htmlspecialchars($oStr->strip_tags($sDescription)));
+                $sDescription = $oStr->htmlspecialchars($oStr->strip_tags($sDescription));
             }
 
             $sQ = "insert into oxobject2seodata
-                       ( oxobjectid, oxshopid, oxlang, oxkeywords, oxdescription )
+                       (oxobjectid, oxshopid, oxlang, oxkeywords, oxdescription)
                    values
-                       ( {$sQtedObjectId}, {$iQtedShopId}, {$iLang}, " . ($sKeywords ? $sKeywords : "''") . ", " . ($sDescription ? $sDescription : "''") . " )
+                       (:oxobjectid, :oxshopid, :oxlang, :insertKeywords, :insertDescription)
                    on duplicate key update
-                       oxkeywords = " . ($sKeywords ? $sKeywords : "oxkeywords") . ", oxdescription = " . ($sDescription ? $sDescription : "oxdescription");
-            $oDb->execute($sQ);
+                       oxkeywords = :updateKeywords, oxdescription = :updateDescription";
+
+            $objectId = $sAltObjectId ?: $sObjectId;
+            $insertKeywords = $sKeywords ?: '';
+            $insertDescription = $sDescription ?: '';
+            $updateKeywords = ($sKeywords || $sKeywords == '') ? $sKeywords : 'oxkeywords';
+            $updateDescription = ($sDescription || $sDescription == '') ? $sDescription : 'oxdescription';
+
+            $oDb->execute($sQ, [
+                ':oxobjectid' => $objectId,
+                ':oxshopid' => $iShopId,
+                ':oxlang' => $iLang,
+                ':insertKeywords' => $insertKeywords,
+                ':insertDescription' => $insertDescription,
+                ':updateKeywords' => $updateKeywords,
+                ':updateDescription' => $updateDescription,
+            ]);
         }
     }
 

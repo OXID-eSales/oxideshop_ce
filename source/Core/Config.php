@@ -1839,13 +1839,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $shopIdQuoted = $db->quote($shopId);
-        $moduleQuoted = $db->quote($module);
-        $varNameQuoted = $db->quote($varName);
-        $varTypeQuoted = $db->quote($varType);
-        $varValueQuoted = $db->quote($value);
-        $configKeyQuoted = $db->quote($this->getConfigParam('sConfigKey'));
-        $newOXIDdQuoted = $db->quote(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID());
+        $newOXID = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
 
         $query = "delete from oxconfig where oxshopid = :oxshopid and oxvarname = :oxvarname and oxmodule = :oxmodule";
         $db->execute($query, [
@@ -1855,8 +1849,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
         ]);
 
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-               values($newOXIDdQuoted, $shopIdQuoted, $moduleQuoted, $varNameQuoted, $varTypeQuoted, ENCODE( $varValueQuoted, $configKeyQuoted) )";
-        $db->execute($query);
+                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, ENCODE(:value, :key))";
+        $db->execute($query, [
+            ':oxid' => $newOXID,
+            ':oxshopid' => $shopId,
+            ':oxmodule' => $module ?: '',
+            ':oxvarname' => $varName,
+            ':oxvartype' => $varType,
+            ':value' => $value ?? '',
+            ':key' => $this->getConfigParam('sConfigKey'),
+        ]);
 
         $this->informServicesAfterConfigurationChanged($varName, $shopId, $module);
     }

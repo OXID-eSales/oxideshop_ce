@@ -158,13 +158,14 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     protected function update($appServer)
     {
-        $query = "UPDATE oxconfig SET oxvarvalue=ENCODE( ?, ?) WHERE oxvarname = ? and oxshopid = ?";
+        $query = "UPDATE oxconfig SET oxvarvalue = ENCODE(:value, :key)
+                  WHERE oxvarname = :oxvarname and oxshopid = :oxshopid";
 
         $parameter = [
-            $this->convertAppServerToConfigOption($appServer),
-            $this->config->getConfigParam('sConfigKey'),
-            self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
-            $this->config->getBaseShopId()
+            ':value' => $this->convertAppServerToConfigOption($appServer),
+            ':key' => $this->config->getConfigParam('sConfigKey'),
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
+            ':oxshopid' => $this->config->getBaseShopId()
         ];
 
         $this->database->execute($query, $parameter);
@@ -178,15 +179,15 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     protected function insert($appServer)
     {
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-               values(?, ?, '', ?, ?, ENCODE( ?, ?) )";
+                  values (:oxid, :oxshopid, '', :oxvarname, :oxvartype, ENCODE(:value, :key))";
 
         $parameter = [
-            \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
-            $this->config->getBaseShopId(),
-            self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
-            'arr',
-            $this->convertAppServerToConfigOption($appServer),
-            $this->config->getConfigParam('sConfigKey')
+            ':oxid' => \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
+            ':oxshopid' => $this->config->getBaseShopId(),
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
+            ':oxvartype' => 'arr',
+            ':value' => $this->convertAppServerToConfigOption($appServer),
+            ':key' => $this->config->getConfigParam('sConfigKey')
         ];
 
         $this->database->execute($query, $parameter);

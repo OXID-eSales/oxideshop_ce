@@ -303,7 +303,9 @@ class Database extends Core
         $sBaseShopId = $this->getInstance("Setup")->getShopId();
 
         $oPdo->exec("update oxcountry set oxactive = '0'");
-        $oPdo->exec("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
+
+        $oUpdate = $oPdo->prepare("update oxcountry set oxactive = '1' where oxid = :countryLang");
+        $oUpdate->execute([':countryLang' => $sCountryLang]);
 
         $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
@@ -311,14 +313,15 @@ class Database extends Core
         // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
 
         $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values(:oxid, :shopId, :name, :type, ENCODE( :value, '{$oConfk->sConfigKey}'))");
+                                             values (:oxid, :shopId, :name, :type, ENCODE(:value, :key))");
         $oInsert->execute(
             [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
                 'name' => 'blSendTechnicalInformationToOxid',
                 'type' => 'bool',
-                'value' => $blSendTechnicalInformationToOxid
+                'value' => $blSendTechnicalInformationToOxid,
+                'key' => $oConfk->sConfigKey
             ]
         );
 
@@ -328,7 +331,8 @@ class Database extends Core
                 'shopId' => $sBaseShopId,
                 'name' => 'blCheckForUpdates',
                 'type' => 'bool',
-                'value' => $blCheckForUpdates
+                'value' => $blCheckForUpdates,
+                'key' => $oConfk->sConfigKey
             ]
         );
 
@@ -338,7 +342,8 @@ class Database extends Core
                 'shopId' => $sBaseShopId,
                 'name' => 'sDefaultLang',
                 'type' => 'str',
-                'value' => $sShopLang
+                'value' => $sShopLang,
+                'key' => $oConfk->sConfigKey
             ]
         );
 
@@ -365,7 +370,8 @@ class Database extends Core
                     'shopId' => $sBaseShopId,
                     'name' => 'aLanguageParams',
                     'type' => 'aarr',
-                    'value' => $sValue
+                    'value' => $sValue,
+                    'key' => $oConfk->sConfigKey
                 ]
             );
         }

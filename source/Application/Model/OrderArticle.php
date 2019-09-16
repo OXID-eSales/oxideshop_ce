@@ -141,7 +141,10 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field($iStockCount);
-            $oDb->execute('update oxarticles set oxarticles.oxstock = ' . $oDb->quote($iStockCount) . ' where oxarticles.oxid = ' . $oDb->quote($this->oxorderarticles__oxartid->value));
+            $oDb->execute('update oxarticles set oxarticles.oxstock = :oxstock where oxarticles.oxid = :oxid', [
+                ':oxstock' => $iStockCount,
+                ':oxid' => $this->oxorderarticles__oxartid->value
+            ]);
             $oArticle->onChange(ACTION_UPDATE_STOCK);
         }
 

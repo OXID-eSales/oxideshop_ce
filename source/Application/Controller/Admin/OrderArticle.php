@@ -241,8 +241,8 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "update oxorderarticles set oxstorno = " . $oDb->quote($oArticle->oxorderarticles__oxstorno->value) . " where oxid = " . $oDb->quote($sOrderArtId);
-        $oDb->execute($sQ);
+        $sQ = "update oxorderarticles set oxstorno = :oxstorno where oxid = :oxid";
+        $oDb->execute($sQ, [':oxstorno' => $oArticle->oxorderarticles__oxstorno->value, ':oxid' => $sOrderArtId]);
 
         //get article id
         $sQ = "select oxartid from oxorderarticles where oxid = :oxid";

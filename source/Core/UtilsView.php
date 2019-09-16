@@ -17,7 +17,6 @@ use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
-use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
 use Smarty;
 
 /**
@@ -579,10 +578,10 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         $themeId = $this->getConfig()->getConfigParam('sTheme');
         if ($this->isAdmin()) {
-            $themeId = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+            $themeId = 'admin';
         }
 
-        return $themePath . $themeId . DIRECTORY_SEPARATOR . 'tpl' . DIRECTORY_SEPARATOR;
+        return $themePath . $themeId . "/tpl/";
     }
 
     /**

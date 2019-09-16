@@ -11,4 +11,3 @@ imports:
     - { resource: Authentication/services.yaml }
     - { resource: Smarty/services.yaml }
     - { resource: Templating/services.yaml }
-    - { resource: Theme/services.yaml }

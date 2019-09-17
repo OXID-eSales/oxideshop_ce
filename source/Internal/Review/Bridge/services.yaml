@@ -6,16 +6,12 @@ services:
   OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewBridge
     public: true
-    autowire: true
   OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Review\Bridge\UserRatingBridge
     public: true
-    autowire: true
   OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridge
     public: true
-    autowire: true
   OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Review\Bridge\UserReviewAndRatingBridge
     public: true
-    autowire: true

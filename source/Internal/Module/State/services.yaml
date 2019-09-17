@@ -5,5 +5,4 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateService
-    autowire: true
     public: true

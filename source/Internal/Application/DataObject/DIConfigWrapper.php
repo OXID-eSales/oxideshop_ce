@@ -186,7 +186,7 @@ class DIConfigWrapper
     }
 
     /**
-     * @return array
+     * @return DIServiceWrapper[]
      */
     public function getServices(): array
     {

@@ -5,12 +5,10 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ModuleConfigurationDao
-    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDao
     public: true
-    autowire: true
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 
@@ -20,16 +18,12 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopConfigurationDao
-    public: false
-    autowire: true
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ShopEnvironmentConfigurationDao
-    public: false
-    autowire: true
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
@@ -45,13 +39,11 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ProjectConfigurationDataMapper
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface'
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ShopConfigurationDataMapper
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface'
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
@@ -92,16 +84,9 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleConfigurationMergingService
-    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\SettingsMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\SettingsMergingService
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Service\ModuleClassExtensionsMergingService
-    public: false
-
-  OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\Cache:
-    class: OxidEsales\EshopCommunity\Internal\Module\Configuration\Cache\ClassPropertyShopConfigurationCache
-    public: false

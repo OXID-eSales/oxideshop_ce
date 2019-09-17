@@ -7,5 +7,4 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Module\Install\Service\ProjectConfigurationGenerator
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface'
-    autowire: true
     public: true

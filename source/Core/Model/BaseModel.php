@@ -1412,12 +1412,13 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $idKey = \OxidEsales\Eshop\Core\Registry::getUtils()->getArrFldName($coreTableName . '.oxid');
         $this->$idKey = new Field($this->getId(), Field::T_RAW);
-        
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
         $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
-                       " where {$coreTableName}.oxid = :id";
+                       " where {$coreTableName}.oxid = " . $database->quote($this->getId());
 
         $this->beforeUpdate();
-        $this->executeDatabaseQuery($updateQuery, [':id' => $this->getId()]);
+        $this->executeDatabaseQuery($updateQuery);
 
         return true;
     }

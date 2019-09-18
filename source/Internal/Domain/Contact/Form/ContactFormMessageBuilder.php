@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 
 /**

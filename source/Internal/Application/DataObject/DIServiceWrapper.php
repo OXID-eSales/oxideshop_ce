@@ -18,7 +18,7 @@ class DIServiceWrapper
 
     const SET_ACTIVE_SHOPS_METHOD = 'setActiveShops';
     const SET_CONTEXT_METHOD = 'setContext';
-    const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface';
+    const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface';
 
     /** @var  string $key */
     private $key;

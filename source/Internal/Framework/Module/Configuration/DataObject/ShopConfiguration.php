@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\Exception\ModuleConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\ModuleConfigurationNotFoundException;
 
 /**
  * @internal

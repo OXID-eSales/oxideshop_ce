@@ -8,8 +8,6 @@ services:
     factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface'
     public: true
     tags: ['templating']
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolverInterface:
@@ -18,8 +16,6 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver'
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface'
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator
     arguments:

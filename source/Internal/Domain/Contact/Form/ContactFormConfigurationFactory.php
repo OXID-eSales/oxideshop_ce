@@ -12,7 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * Class ContactFormConfigurationFactory

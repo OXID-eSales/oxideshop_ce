@@ -2476,7 +2476,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_onChangeStockResetCount($articleId);
         }
 
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent($this));
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent($this));
     }
 
     /**

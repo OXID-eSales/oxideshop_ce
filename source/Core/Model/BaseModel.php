@@ -17,15 +17,13 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxObjectException;
 use \OxidEsales\Eshop\Core\Field;
-use Psr\Container\ContainerInterface;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelUpdateEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelDeleteEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelDeleteEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelInsertEvent;
 
 /**
  * Class BaseModel

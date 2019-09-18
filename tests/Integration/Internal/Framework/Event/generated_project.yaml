@@ -1,6 +1,6 @@
 services:
 
-  OxidEsales\EshopCommunity\Internal\Utility\ContextInterface:
+  OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:
     class: OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub
     autowire: true
     public: false
@@ -12,7 +12,7 @@ services:
       $stopPropagation: false
     calls:
       - [setActiveShops, [[1]]]
-      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface']]
+      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface']]
     tags:
       - { name: kernel.event_subscriber }
 
@@ -23,7 +23,7 @@ services:
       $stopPropagation: true
     calls:
       - [setActiveShops, [[1, 2]]]
-      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface']]
+      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface']]
     tags:
       - { name: kernel.event_subscriber }
 
@@ -34,6 +34,6 @@ services:
       $stopPropagation: false
     calls:
       - [setActiveShops, [[1, 2]]]
-      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface']]
+      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface']]
     tags:
       - { name: kernel.event_subscriber }

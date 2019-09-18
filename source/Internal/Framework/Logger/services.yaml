@@ -8,7 +8,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
     arguments:
       $loggerName: 'OXID Logger'
-      $context: '@OxidEsales\EshopCommunity\Internal\Utility\ContextInterface'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
   OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\LoggerFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
   Monolog\Logger:

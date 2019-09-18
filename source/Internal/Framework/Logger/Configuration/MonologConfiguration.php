@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Utility\Context;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
 /**
  * @internal

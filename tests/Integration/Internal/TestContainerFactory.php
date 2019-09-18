@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;

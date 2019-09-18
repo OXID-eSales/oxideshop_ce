@@ -1,7 +1,7 @@
 imports:
     - { resource: Application/services.yaml }
-    - { resource: Utility/services.yaml }
     - { resource: Framework/services.yaml }
     - { resource: Domain/services.yaml }
-    - { resource: Adapter/services.yaml }
-    - { resource: Smarty/services.yaml }
+    - { resource: Transition/Adapter/services.yaml }
+    - { resource: Transition/Smarty/services.yaml }
+    - { resource: Transition/Utility/services.yaml }

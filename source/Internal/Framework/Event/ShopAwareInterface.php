@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Event;
 
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * Interface ShopAwareEventSubscriberInterface

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
 
-use OxidEsales\EshopCommunity\Internal\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 /**

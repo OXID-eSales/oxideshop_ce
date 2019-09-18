@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologCon
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Psr\Log\LoggerInterface;
 
 /**

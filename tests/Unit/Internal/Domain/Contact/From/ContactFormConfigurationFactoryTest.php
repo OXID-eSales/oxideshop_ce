@@ -10,7 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigur
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormConfigurationFactory;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ContactFormConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
 {

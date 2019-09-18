@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Most of SELECT, DELETE, UPDATE and INSERT queries do use prepared statements
 
+### Removed
+- Not used files anymore:
+  - source/xd_receiver.htm [PR-689](https://github.com/OXID-eSales/oxideshop_ce/pull/689)
+
 ### Fixed
 - Metadata 1.2 support
  

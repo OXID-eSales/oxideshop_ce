@@ -28,14 +28,15 @@ class MonologConfiguration implements MonologConfigurationInterface
     /**
      * MonologConfiguration constructor.
      *
-     * @param string  $loggerName
-     * @param Context $context
+     * @param string $loggerName
+     * @param string $logFilePath
+     * @param string $logLevel
      */
-    public function __construct($loggerName, $context)
+    public function __construct($loggerName, $logFilePath, $logLevel)
     {
         $this->loggerName = $loggerName;
-        $this->logFilePath = $context->getLogFilePath();
-        $this->logLevel = $context->getLogLevel();
+        $this->logFilePath = $logFilePath;
+        $this->logLevel = $logLevel;
     }
 
 

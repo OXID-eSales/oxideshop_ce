@@ -18,6 +18,8 @@ use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use PDO;
 
 /**
@@ -25,7 +27,8 @@ use PDO;
  *
  * @package OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
  *
- * @deprecated since v6.5.0 (2019-09-24); Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
+ * @deprecated since v6.5.0 (2019-09-24);
+ *             Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
  */
 class Database implements DatabaseInterface
 {
@@ -96,12 +99,6 @@ class Database implements DatabaseInterface
     public function connect()
     {
         $connection = null;
-
-        /**
-         * @todo we need a SQLLogger that logs to a (CSV?) file, as we probably do not want to log into the database.
-         *
-         * $configuration->setSQLLogger(new EchoSQLLogger());
-         */
 
         try {
             $connection = $this->getConnectionFromDriverManager();
@@ -1384,6 +1381,11 @@ class Database implements DatabaseInterface
     {
         $configuration = new Configuration();
         $connectionParameters = $this->getConnectionParameters();
+
+        $container = ContainerFactory::getInstance()->getContainer();
+        $configuration->setSQLLogger(
+            $container->get(DatabaseLoggerFactoryInterface::class)->getDatabaseLogger()
+        );
 
         return DriverManager::getConnection($connectionParameters, $configuration);
     }

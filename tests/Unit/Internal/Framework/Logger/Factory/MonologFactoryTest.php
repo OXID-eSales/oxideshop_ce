@@ -21,7 +21,8 @@ class MonologFactoryTest extends \PHPUnit\Framework\TestCase
 
         $configuration = new MonologConfiguration(
             'testLogger',
-            $context
+            $context->getLogFilePath(),
+            $context->getLogLevel()
         );
 
         $validator = new PsrLoggerConfigurationValidator();

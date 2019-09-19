@@ -32,4 +32,31 @@ interface ContextInterface extends BasicContextInterface
      * @return string
      */
     public function getConfigurationEncryptionKey(): string;
+
+    /**
+     * @return bool
+     */
+    public function isEnabledAdminQueryLog(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool;
+
+    /**
+     * @return string
+     */
+    public function getAdminLogFilePath(): string;
+
+    /**
+     * @return array
+     */
+    public function getSkipLogTags(): array;
+
+    /**
+     * @return string
+     *
+     * @throws AdminUserNotFoundException
+     */
+    public function getAdminUserId(): string;
 }

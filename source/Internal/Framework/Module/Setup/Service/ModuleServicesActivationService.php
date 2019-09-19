@@ -6,10 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
-use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Container\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ServicesYamlConfigurationError;
@@ -75,7 +75,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      * @param string $moduleId
      * @param int    $shopId
      * @return void
-     * @throws \OxidEsales\EshopCommunity\Internal\Application\Exception\MissingServiceException
+     * @throws \OxidEsales\EshopCommunity\Internal\Container\Exception\MissingServiceException
      */
     public function activateModuleServices(string $moduleId, int $shopId)
     {
@@ -109,7 +109,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      * @param string $moduleId
      * @param int    $shopId
      * @return void
-     * @throws \OxidEsales\EshopCommunity\Internal\Application\Exception\MissingServiceException
+     * @throws \OxidEsales\EshopCommunity\Internal\Container\Exception\MissingServiceException
      */
     public function deactivateModuleServices(string $moduleId, int $shopId)
     {

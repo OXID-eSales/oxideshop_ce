@@ -39,6 +39,6 @@ class SmartyRenderer
      */
     private function getContainer()
     {
-        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        return \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
     }
 }

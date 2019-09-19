@@ -39,5 +39,5 @@ if ($shopId !== 0) {
 $bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
 require_once $bootstrapFilePath;
 
-$factory = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance();
+$factory = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance();
 $factory->getContainer()->get(OxidEsales\EshopCommunity\Internal\Framework\Console\ExecutorInterface::class)->execute();

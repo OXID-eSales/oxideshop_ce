@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * Class ShopConfigurationChangedEvent
  *
- * @package OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event
+ * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Event
  */
 class ShopConfigurationChangedEvent extends Event
 {

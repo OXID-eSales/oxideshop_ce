@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Facts;

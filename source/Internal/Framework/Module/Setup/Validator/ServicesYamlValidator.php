@@ -6,10 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Application\Exception\NoServiceYamlException;
-use OxidEsales\EshopCommunity\Internal\Application\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Container\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use Symfony\Component\DependencyInjection\Definition;
 use Webmozart\PathUtil\Path;

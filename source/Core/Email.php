@@ -406,7 +406,7 @@ class Email extends PHPMailer
      */
     protected function getContainer()
     {
-        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        return \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
     }
 
     /**

@@ -1,0 +1,8 @@
+services:
+  SomeModule\Events\TestEventSubscriber:
+    class: SomeModule\Events\TestEventSubscriber
+    arguments: { $someService: '@SomeModule\Service\SomeOtherService' }
+    tags: [{ name: kernel.event_subscriber }]
+imports:
+  -
+    resource: /var/www/oxideshop/tests/Unit/Internal/Container/Service/Testmodule/services.yaml

@@ -6,9 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setup\Service;
 
-use OxidEsales\EshopCommunity\Internal\Application\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Application\DataObject\DIServiceWrapper;
+use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIServiceWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ServicesYamlConfigurationError;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationService;

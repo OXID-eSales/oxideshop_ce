@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Changed
 - Most of SELECT, DELETE, UPDATE and INSERT queries do use prepared statements
+- Use 301(moved permanently) redirect on missing slash in the url - we had 302(moved temporary) earlier [PR-722](https://github.com/OXID-eSales/oxideshop_ce/pull/722)
 
 ### Removed
 - Not used files anymore:

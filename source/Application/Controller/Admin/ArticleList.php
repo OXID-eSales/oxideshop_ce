@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Article;
 use oxRegistry;
 use oxDb;
 
@@ -32,6 +33,40 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     protected $_sListType = 'oxarticlelist';
 
     /**
+     * @return bool|string
+     */
+    private function getServerDateTime()
+    {
+        $sDateTimeAsTimestamp = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+        $sDateTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBTimestamp($sDateTimeAsTimestamp);
+
+        return $sDateTime;
+    }
+
+    /**
+     * @param bool|string $sDateTime
+     * @param bool        $blUseTimeCheck
+     * @param Article     $oArticle
+     *
+     * @return bool
+     */
+    private function isArticleActive($sDateTime, $blUseTimeCheck, $oArticle)
+    {
+        if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactive) && $oArticle->oxarticles__oxactive->value === '1') {
+            return true;
+        } else {
+            if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactivefrom) &&
+                isset($oArticle->oxarticles__oxactiveto) && $blUseTimeCheck &&
+                $oArticle->oxarticles__oxactivefrom->value <= $sDateTime &&
+                $oArticle->oxarticles__oxactiveto->value >= $sDateTime) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Collects articles base data and passes them according to filtering rules,
      * returns name of template file "article_list.tpl".
      *
@@ -43,6 +78,8 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         $sPwrSearchFld = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("pwrsearchfld");
         $sPwrSearchFld = $sPwrSearchFld ? strtolower($sPwrSearchFld) : "oxtitle";
 
+        $sDateTime = $this->getServerDateTime();
+        $blUseTimeCheck = $this->getConfig()->getConfigParam('blUseTimeCheck');
         $oArticle = null;
         $oList = $this->getItemList();
         if ($oList) {
@@ -60,6 +97,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
                     }
                 }
 
+                $oArticle->showActiveCheckInAdminPanel = $this->isArticleActive($sDateTime, $blUseTimeCheck, $oArticle);
                 $oArticle->pwrsearchval = $oArticle->$sFieldName->value;
                 $oList[$key] = $oArticle;
             }
@@ -107,8 +145,14 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      */
     public function getSearchFields()
     {
-        $aSkipFields = ["oxblfixedprice", "oxvarselect", "oxamitemid",
-                            "oxamtaskid", "oxpixiexport", "oxpixiexported"];
+        $aSkipFields = [
+            "oxblfixedprice",
+            "oxvarselect",
+            "oxamitemid",
+            "oxamtaskid",
+            "oxpixiexport",
+            "oxpixiexported"
+        ];
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         return array_diff($oArticle->getFieldNames(), $aSkipFields);

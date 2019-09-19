@@ -52,7 +52,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      */
     private function isArticleActive($sDateTime, $blUseTimeCheck, $oArticle)
     {
-        if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactive) && $oArticle->oxarticles__oxactive->value === 1) {
+        if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactive) && $oArticle->oxarticles__oxactive->value === '1') {
             return true;
         } else {
             if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactivefrom) &&

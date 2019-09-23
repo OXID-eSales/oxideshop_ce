@@ -110,10 +110,6 @@ class UtilsPicTest extends \OxidTestCase
 
         // resizing according to height param
         $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
-
-        // checking if works with "gd 1"
-        $this->getConfig()->setConfigParam('iUseGDVersion', 1);
-        $this->assertTrue($this->_resizeImageTest($sTestImageFilePNG, $sTestImageFileResizedPNG, 21, 10));
     }
 
     protected function _resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
@@ -124,7 +120,7 @@ class UtilsPicTest extends \OxidTestCase
             $this->fail($sMsg);
         }
         //actual test
-        if (!(\OxidEsales\Eshop\Core\Registry::getUtilsPic()->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight, $this->getConfig()->getConfigParam('iUseGDVersion'), false))) {
+        if (!(\OxidEsales\Eshop\Core\Registry::getUtilsPic()->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight))) {
             $this->fail("Failed to call resizeImage()");
         }
 

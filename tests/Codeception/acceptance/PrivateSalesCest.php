@@ -24,7 +24,7 @@ class PrivateSalesCest
     {
         $I->wantToTest('invitations functionality of the private sales.');
 
-        $I->updateConfigInDatabase('iUseGDVersion', '0', 'str');
+        $I->updateConfigInDatabase('iUseGDVersion', '2', 'str');
 
         //enabling functionality
         $I->updateConfigInDatabase('blInvitationsEnabled', true, 'bool');

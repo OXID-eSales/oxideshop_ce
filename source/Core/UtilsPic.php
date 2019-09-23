@@ -35,19 +35,15 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      */
     public function resizeImage($sSrc, $sTarget, $iDesiredWidth, $iDesiredHeight)
     {
-        // use this GD Version
-        if (($iUseGDVersion = getGdVersion()) && function_exists('imagecreate') &&
-            file_exists($sSrc) && ($aImageInfo = @getimagesize($sSrc))
-        ) {
+        if (file_exists($sSrc) && ($aImageInfo = @getimagesize($sSrc))) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             list($iWidth, $iHeight) = calcImageSize($iDesiredWidth, $iDesiredHeight, $aImageInfo[0], $aImageInfo[1]);
 
-            return $this->_resize($aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, $iUseGDVersion, $myConfig->getConfigParam('blDisableTouch'), $myConfig->getConfigParam('sDefaultImageQuality'));
+            return $this->_resize($aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, getGdVersion(), $myConfig->getConfigParam('blDisableTouch'), $myConfig->getConfigParam('sDefaultImageQuality'));
         }
 
         return false;
     }
-
 
     /**
      * deletes the given picutre and checks before if the picture is deletable
@@ -184,7 +180,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param int    $iNewHeight      new height
      * @param int    $iOriginalWidth  original width
      * @param int    $iOriginalHeigth original height
-     * @param int    $iGDVer          GD packet version
+     * @param int    $iGDVer          GD packet version @deprecated
      * @param bool   $blDisableTouch  false if "touch()" should be called
      *
      * @return bool
@@ -203,7 +199,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param string $sTarget           Resized Image target
      * @param int    $iNewWidth         Resized Image's width
      * @param int    $iNewHeight        Resized Image's height
-     * @param mixed  $iGdVer            used GDVersion, if null or false returns false
+     * @param mixed  $iGdVer            used GDVersion, if null or false returns false @deprecated
      * @param bool   $blDisableTouch    false if "touch()" should be called for gif resizing
      * @param string $iDefQuality       quality for "imagejpeg" function
      *
@@ -248,7 +244,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param int    $iNewHeight        new height of the image
      * @param array  $aImageInfo        additional info
      * @param string $sTarget           target file path
-     * @param int    $iGdVer            used gd version
+     * @param int    $iGdVer            used gd version @deprecated
      * @param bool   $blDisableTouch    wether Touch() should be called or not
      *
      * @return null

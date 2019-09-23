@@ -108,15 +108,4 @@ class ClassProviderStorage implements ClassProviderStorageInterface
 
         return $result;
     }
-
-    /**
-     * Get the config object.
-     *
-     * @return \OxidEsales\Eshop\Core\Config
-     * @deprecated
-     */
-    private function getConfig()
-    {
-        return Registry::getConfig();
-    }
 }

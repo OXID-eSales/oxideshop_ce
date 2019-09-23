@@ -286,7 +286,8 @@ class SystemEventHandler
      * Return Config from registry.
      *
      * @return \OxidEsales\Eshop\Core\Config
-     * @deprecated
+     *
+     * @deprecated since v6.5.0 (2019-09-20); Use `\OxidEsales\Eshop\Core\Registry::getConfig()`
      */
     protected function getConfig()
     {

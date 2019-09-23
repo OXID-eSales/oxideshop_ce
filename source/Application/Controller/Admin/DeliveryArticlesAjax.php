@@ -54,11 +54,15 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     protected function _getQuery()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $request = \OxidEsales\Eshop\Core\Registry::getRequest();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
+
+        $sDelId = $request->getRequestParameter('oxid');
+        $sSynchDelId = $request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDelId) {

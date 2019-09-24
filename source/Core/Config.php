@@ -7,10 +7,10 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
-use oxConnectionException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
@@ -1239,7 +1239,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($admin) {
-            $theme = 'admin';
+            $theme = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         }
 
         if ($dir != $this->_sTemplateDir) {

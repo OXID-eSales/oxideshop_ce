@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
 use stdClass;
 use OxidEsales\Eshop\Core\Registry;
 
@@ -347,16 +348,23 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function getAdminTplLanguageArray()
     {
         if ($this->_aAdminTplLanguageArray === null) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-            $aLangArray = $this->getLanguageArray();
+            $langArray = $this->getLanguageArray();
             $this->_aAdminTplLanguageArray = [];
 
-            $sSourceDir = $myConfig->getAppDir() . 'views/admin/';
-            foreach ($aLangArray as $iLangKey => $oLang) {
-                $sFilePath = "{$sSourceDir}{$oLang->abbr}/lang.php";
-                if (file_exists($sFilePath) && is_readable($sFilePath)) {
-                    $this->_aAdminTplLanguageArray[$iLangKey] = $oLang;
+            $adminThemeName = $this->getContainer()
+                ->get(AdminThemeBridgeInterface::class)
+                ->getActiveTheme();
+            $sourceDirectory =
+                $config->getAppDir() .
+                'views' . DIRECTORY_SEPARATOR .
+                $adminThemeName . DIRECTORY_SEPARATOR;
+
+            foreach ($langArray as $langKey => $language) {
+                $filePath = $sourceDirectory . $language->abbr . DIRECTORY_SEPARATOR . 'lang.php';
+                if (file_exists($filePath) && is_readable($filePath)) {
+                    $this->_aAdminTplLanguageArray[$langKey] = $language;
                 }
             }
         }
@@ -772,39 +780,47 @@ class Language extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns array with paths where admin language files are stored
      *
-     * @param int $iLang active language
+     * @param int $activeLanguage The active language
      *
      * @return array
      */
-    protected function _getAdminLangFilesPathArray($iLang)
+    protected function _getAdminLangFilesPathArray($activeLanguage)
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $aLangFiles = [];
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $langFiles = [];
 
-        $sAppDir = $oConfig->getAppDir();
-        $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($iLang);
+        $appDirectory = $config->getAppDir();
+        $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
 
-        $aModulePaths = [];
-        $aModulePaths = array_merge($aModulePaths, $this->_getActiveModuleInfo());
-        $aModulePaths = array_merge($aModulePaths, $this->_getDisabledModuleInfo());
+        $modulePaths = [];
+        $modulePaths = array_merge($modulePaths, $this->_getActiveModuleInfo());
+        $modulePaths = array_merge($modulePaths, $this->_getDisabledModuleInfo());
 
         // admin lang files
-        $sAdminPath = $sAppDir . 'views/admin/' . $sLang;
-        $aLangFiles[] = $sAdminPath . "/lang.php";
-        $aLangFiles[] = $sAppDir . 'translations/' . $sLang . '/translit_lang.php';
-        $aLangFiles = $this->_appendLangFile($aLangFiles, $sAdminPath);
+        $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+        $adminPath = $appDirectory .
+            'views' . DIRECTORY_SEPARATOR .
+            $adminThemeName . DIRECTORY_SEPARATOR .
+            $language;
+
+        $langFiles[] = $adminPath . DIRECTORY_SEPARATOR . 'lang.php';
+        $langFiles[] = $appDirectory .
+            'translations' . DIRECTORY_SEPARATOR .
+            $language . DIRECTORY_SEPARATOR .
+            'translit_lang.php';
+        $langFiles = $this->_appendLangFile($langFiles, $adminPath);
 
         // themes options lang files
-        $sThemePath = $sAppDir . 'views/*/' . $sLang;
-        $aLangFiles = $this->_appendLangFile($aLangFiles, $sThemePath, "options");
+        $themePath = $appDirectory . 'views/*/' . $language;
+        $langFiles = $this->_appendLangFile($langFiles, $themePath, "options");
 
         // module language files
-        $aLangFiles = $this->_appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, true);
+        $langFiles = $this->_appendModuleLangFiles($langFiles, $modulePaths, $language, true);
 
         // custom language files
-        $aLangFiles = $this->_appendCustomLangFiles($aLangFiles, $sLang, true);
+        $langFiles = $this->_appendCustomLangFiles($langFiles, $language, true);
 
-        return count($aLangFiles) ? $aLangFiles : false;
+        return count($langFiles) ? $langFiles : false;
     }
 
     /**
@@ -833,31 +849,44 @@ class Language extends \OxidEsales\Eshop\Core\Base
     /**
      * Appends Custom language files cust_lang.php
      *
-     * @param array  $aLangFiles existing language files
-     * @param string $sLang      language abbreviation
-     * @param bool   $blForAdmin add files for admin
+     * @param array  $languageFiles existing language files
+     * @param string $language      language abbreviation
+     * @param bool   $forAdmin      add files for admin
      *
      * @return array
      */
-    protected function _appendCustomLangFiles($aLangFiles, $sLang, $blForAdmin = false)
+    protected function _appendCustomLangFiles($languageFiles, $language, $forAdmin = false)
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $sAppDir = $oConfig->getAppDir();
-        $sTheme = $oConfig->getConfigParam("sTheme");
-        $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
-
-        if ($blForAdmin) {
-            $aLangFiles[] = $sAppDir . 'views/admin/' . $sLang . '/cust_lang.php';
+        if ($forAdmin) {
+            $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+            $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
         } else {
-            if ($sTheme) {
-                $aLangFiles[] = $sAppDir . 'views/' . $sTheme . '/' . $sLang . '/cust_lang.php';
+            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+            if ($config->getConfigParam("sTheme")) {
+                $languageFiles[] = $this->getCustomFilePath($language, $config->getConfigParam("sTheme"));
             }
-            if ($sCustomTheme) {
-                $aLangFiles[] = $sAppDir . 'views/' . $sCustomTheme . '/' . $sLang . '/cust_lang.php';
+            if ($config->getConfigParam("sCustomTheme")) {
+                $languageFiles[] = $this->getCustomFilePath($language, $config->getConfigParam("sCustomTheme"));
             }
         }
 
-        return $aLangFiles;
+        return $languageFiles;
+    }
+
+    /**
+     * @param int    $language  The language index
+     * @param string $themeName The name of the theme
+     *
+     * @return string
+     */
+    private function getCustomFilePath($language, $themeName)
+    {
+        $config = $this->getConfig();
+        return $config->getAppDir() .
+            'views' . DIRECTORY_SEPARATOR .
+            $themeName . DIRECTORY_SEPARATOR  .
+            $language . DIRECTORY_SEPARATOR .
+            'cust_lang.php';
     }
 
     /**
@@ -966,36 +995,67 @@ class Language extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns language map array
      *
-     * @param int  $iLang   language index
-     * @param bool $blAdmin admin mode [default NULL]
+     * @param int  $language   language index
+     * @param bool $isAdmin admin mode [default NULL]
      *
      * @return array
      */
-    protected function _getLanguageMap($iLang, $blAdmin = null)
+    protected function _getLanguageMap($language, $isAdmin = null)
     {
-        $blAdmin = isset($blAdmin) ? $blAdmin : $this->isAdmin();
-        $sKey = $iLang . ((int) $blAdmin);
-        if (!isset($this->_aLangMap[$sKey])) {
-            $this->_aLangMap[$sKey] = [];
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $isAdmin = isset($isAdmin) ? $isAdmin : $this->isAdmin();
+        $key = $language . ((int) $isAdmin);
+        if (!isset($this->_aLangMap[$key])) {
+            $this->_aLangMap[$key] = [];
+            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-            $sMapFile = '';
-            $sParentMapFile = $myConfig->getAppDir() . '/views/' . ($blAdmin ? 'admin' : $myConfig->getConfigParam("sTheme")) . '/' . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($iLang) . '/map.php';
-            $sCustomThemeMapFile = $myConfig->getAppDir() . '/views/' . ($blAdmin ? 'admin' : $myConfig->getConfigParam("sCustomTheme")) . '/' . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($iLang) . '/map.php';
+            $mapFile = '';
+            $parentThemeDirectory = $this->getRealThemeName($config->getConfigParam("sTheme"), $isAdmin);
+            $customThemeDirectory = $this->getRealThemeName($config->getConfigParam("sCustomTheme"), $isAdmin);
 
-            if (file_exists($sCustomThemeMapFile) && is_readable($sCustomThemeMapFile)) {
-                $sMapFile = $sCustomThemeMapFile;
-            } elseif (file_exists($sParentMapFile) && is_readable($sParentMapFile)) {
-                $sMapFile = $sParentMapFile;
+            $parentMapFile = $this->getLanguageMappingFilePath($language, $parentThemeDirectory);
+            $customThemeMapFile = $this->getLanguageMappingFilePath($language, $customThemeDirectory);
+
+            if (file_exists($customThemeMapFile) && is_readable($customThemeMapFile)) {
+                $mapFile = $customThemeMapFile;
+            } elseif (file_exists($parentMapFile) && is_readable($parentMapFile)) {
+                $mapFile = $parentMapFile;
             }
 
-            if ($sMapFile) {
-                include $sMapFile;
-                $this->_aLangMap[$sKey] = $aMap;
+            if ($mapFile) {
+                include $mapFile;
+                $this->_aLangMap[$key] = $aMap;
             }
         }
 
-        return $this->_aLangMap[$sKey];
+        return $this->_aLangMap[$key];
+    }
+
+    /**
+     * @param int    $language  The language index
+     * @param string $themeName The name of the theme
+     *
+     * @return string
+     */
+    private function getLanguageMappingFilePath($language, $themeName)
+    {
+        $config = $this->getConfig();
+        return $config->getAppDir() . DIRECTORY_SEPARATOR .
+            'views' . DIRECTORY_SEPARATOR .
+            $themeName . DIRECTORY_SEPARATOR .
+            Registry::getLang()->getLanguageAbbr($language) . DIRECTORY_SEPARATOR .
+            'map.php';
+    }
+
+    /**
+     * @param bool   $isAdmin   The admin mode [default NULL]
+     * @param string $themeName The name of the theme
+     *
+     * @return string
+     */
+    private function getRealThemeName($themeName, $isAdmin = null)
+    {
+        $adminTheme = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+        return ($isAdmin ? $adminTheme : $themeName);
     }
 
     /**

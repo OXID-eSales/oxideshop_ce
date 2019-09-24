@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
 use DOMXPath;
 use DOMDocument;
 use DOMElement;
@@ -381,14 +381,15 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns array witn pathes + names ox manu xml files. Paths are checked
+     * Returns array with paths + names ox menu xml files. Paths are checked
      *
      * @return array
      */
     protected function _getMenuFiles()
     {
+        $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         $editionPathSelector = new EditionPathProvider(new EditionRootPathProvider(new EditionSelector()));
-        $fullAdminDir = $editionPathSelector->getViewsDirectory() . 'admin' . DIRECTORY_SEPARATOR;
+        $fullAdminDir = $editionPathSelector->getViewsDirectory() . $adminThemeName . DIRECTORY_SEPARATOR;
         $menuFile = $fullAdminDir . 'menu.xml';
 
         // including std file
@@ -403,8 +404,8 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         // including module menu files
         $path = getShopBasePath();
-        $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-        $activeModuleInfo = $modulelist->getActiveModuleInfo();
+        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
+        $activeModuleInfo = $moduleList->getActiveModuleInfo();
         if (is_array($activeModuleInfo)) {
             foreach ($activeModuleInfo as $modulePath) {
                 $fullPath = $path . "modules/" . $modulePath;

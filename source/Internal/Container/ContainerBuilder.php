@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Internal\Container;
 
 use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Container\Service\ProjectYamlImportService;
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContext;
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;

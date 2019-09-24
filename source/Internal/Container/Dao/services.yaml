@@ -6,3 +6,4 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Container\Dao\ContainerAwareProjectYamlDao
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'

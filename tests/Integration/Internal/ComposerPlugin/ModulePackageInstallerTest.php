@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ComposerPlugin;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ModulePackageInstaller;
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;

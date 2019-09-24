@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\Utility;
+namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 /**
  * Contains necessary methods to provide basic information about the application.

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Container\Service;
 
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 /**
  * @internal

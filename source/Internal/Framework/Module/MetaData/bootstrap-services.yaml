@@ -88,6 +88,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider
+    arguments:
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper

@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\Service;
 
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataNormalizer;
@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDat
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MetaDataProviderTest extends TestCase
 {

@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Service
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\Service\ShopStateService;
 use OxidEsales\EshopCommunity\Internal\Container\Service\ShopStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 

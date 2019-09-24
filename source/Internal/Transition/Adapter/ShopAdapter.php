@@ -12,7 +12,6 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\ModuleNotLoadableException;
 
 /**
  * @internal
@@ -45,8 +44,6 @@ class ShopAdapter implements ShopAdapterInterface
 
     /**
      * @param string $moduleId
-     *
-     * @throws ModuleNotLoadableException
      */
     public function invalidateModuleCache(string $moduleId)
     {

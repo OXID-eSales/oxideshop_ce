@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Smarty;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 /**
  * Class SmartyContext

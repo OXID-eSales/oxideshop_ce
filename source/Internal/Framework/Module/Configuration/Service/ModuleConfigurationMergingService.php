@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\ModuleConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
@@ -46,7 +46,7 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
      * @throws ExtensionNotInChainException
      *
      * @return ShopConfiguration
-     * @throws \OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception\ModuleConfigurationNotFoundException
+     * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException
      */
     public function merge(

@@ -32,7 +32,6 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
     /**
      * @param string $serviceDir
-     *
      */
     public function addImport(string $serviceDir)
     {

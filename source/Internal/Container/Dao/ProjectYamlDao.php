@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Container\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 

@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception;
 
 /**
  * @internal

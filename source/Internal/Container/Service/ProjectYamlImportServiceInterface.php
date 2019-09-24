@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Container\Service;
  */
 interface ProjectYamlImportServiceInterface
 {
-
     /**
      * @param string $serviceDir
      *

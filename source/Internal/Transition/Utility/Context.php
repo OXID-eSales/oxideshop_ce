@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Internal\Container\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use PDO;
 use Psr\Log\LogLevel;
 use Webmozart\PathUtil\Path;

@@ -16,5 +16,5 @@ interface QueryBuilderFactoryInterface
     /**
      * @return QueryBuilder
      */
-    public function create();
+    public function create(): QueryBuilder;
 }

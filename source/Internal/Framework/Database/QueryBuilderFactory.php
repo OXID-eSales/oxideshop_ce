@@ -33,7 +33,7 @@ class QueryBuilderFactory implements QueryBuilderFactoryInterface
      *
      * @return QueryBuilder
      */
-    public function create()
+    public function create(): QueryBuilder
     {
         $this->connection->setFetchMode(PDO::FETCH_ASSOC);
 

@@ -24,6 +24,8 @@ use PDO;
  * The doctrine implementation of our database.
  *
  * @package OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
+ *
+ * @deprecated since v6.5.0 (2019-09-24); Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
  */
 class Database implements DatabaseInterface
 {

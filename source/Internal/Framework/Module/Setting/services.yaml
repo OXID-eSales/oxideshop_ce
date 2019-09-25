@@ -5,3 +5,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Bridge\ModuleSettingBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Bridge\ModuleSettingBridge
+    public: true
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Helper\ModuleIdPreparatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Helper\ModuleIdPreparator

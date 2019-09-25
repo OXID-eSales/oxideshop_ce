@@ -43,6 +43,6 @@ class SettingDaoTest extends TestCase
             $transactionService
         );
 
-        $shopModuleSettingDao->save(new Setting());
+        $shopModuleSettingDao->save(new Setting(), '', 0);
     }
 }

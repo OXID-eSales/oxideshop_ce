@@ -5,5 +5,3 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDao
-    autowire: true
-    public: false

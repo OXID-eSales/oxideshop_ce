@@ -5,17 +5,12 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter
-    autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Dao\ShopConfigurationSettingDao
-    autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Utility\ShopSettingEncoderInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Utility\ShopSettingEncoder
-    public: false
 
   # TemplateLogic
 

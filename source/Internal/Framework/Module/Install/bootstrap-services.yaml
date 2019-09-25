@@ -5,7 +5,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstaller
-    autowire: true
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface:
@@ -13,17 +12,14 @@ services:
     arguments:
       $fileSystemService: '@oxid_esales.symfony.file_system'
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
-    autowire: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstaller
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
-    autowire: true
 
   oxid_esales.module.install.service.installed_shop_project_configuration_generator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ProjectConfigurationGenerator
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
-    autowire: true
     public: true

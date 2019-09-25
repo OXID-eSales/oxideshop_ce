@@ -5,5 +5,3 @@ services:
 
   common.form.required_fields_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Form\RequiredFieldsValidator
-    autowire: true
-    public: false

@@ -5,10 +5,7 @@ services:
 
   oxid_esales.review.product_rating_mapper:
     class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapper
-    public: false
   oxid_esales.review.rating_mapper:
     class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapper
-    public: false
   oxid_esales.review.review_mapper:
     class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ReviewDataMapper
-    public: false

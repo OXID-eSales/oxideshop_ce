@@ -6,14 +6,9 @@ services:
   Doctrine\DBAL\Connection:
     factory: ['OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactory', get]
     class: Doctrine\DBAL\Connection
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactory
-    autowire: true
-    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionService
-    autowire: true
-    public: false

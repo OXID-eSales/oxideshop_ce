@@ -5,4 +5,3 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver
-    autowire: true

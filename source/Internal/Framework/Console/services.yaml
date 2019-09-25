@@ -16,5 +16,3 @@ services:
 
   oxid_esales.console.commands_provider.services_commands_provider:
     class: OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\ServicesCommandsProvider
-    public: false
-    autowire: true

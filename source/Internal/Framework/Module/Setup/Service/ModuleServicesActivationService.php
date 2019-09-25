@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverI
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ServicesYamlConfigurationError;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

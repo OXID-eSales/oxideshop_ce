@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;

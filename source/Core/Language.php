@@ -881,7 +881,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function getCustomFilePath($language, $themeName)
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         return $config->getAppDir() .
             'views' . DIRECTORY_SEPARATOR .
             $themeName . DIRECTORY_SEPARATOR  .
@@ -1038,7 +1038,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function getLanguageMappingFilePath($language, $themeName)
     {
-        $config = $this->getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         return $config->getAppDir() . DIRECTORY_SEPARATOR .
             'views' . DIRECTORY_SEPARATOR .
             $themeName . DIRECTORY_SEPARATOR .

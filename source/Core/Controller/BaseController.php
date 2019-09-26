@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
+use Psr\Container\ContainerInterface;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -905,7 +906,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     protected function getContainer()
     {
-        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        return \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
     }
 
     /**

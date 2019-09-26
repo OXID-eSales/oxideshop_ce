@@ -7,8 +7,8 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Logger\LoggerServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Utility\Context;
+use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)

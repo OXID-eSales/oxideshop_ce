@@ -6,8 +6,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\RssFeed;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use \oxTestModules;
 
 class RssTest extends \OxidTestCase

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\EshopCommunity\Internal\Review\Bridge\ProductRatingBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeInterface;
 
 /**
  * Article rate manager.

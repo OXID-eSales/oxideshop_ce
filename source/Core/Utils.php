@@ -1109,7 +1109,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $session->freeze();
         $this->commitFileCache();
 
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\ApplicationExitEvent());
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent());
 
         if ($this->isSearchEngine()) {
             $header = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\Header::class);

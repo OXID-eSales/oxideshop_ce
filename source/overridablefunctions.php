@@ -6,7 +6,6 @@
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
-use OxidEsales\EshopCommunity\Internal\Application\Container;
 
 if (!defined('ESHOP_CONFIG_FILE')) {
     define('ESHOP_CONFIG_FILE', 'config.inc.php');
@@ -204,7 +203,7 @@ if (!function_exists('getLogger')) {
      */
     function getLogger()
     {
-        $container = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
 
         return $container->get(\Psr\Log\LoggerInterface::class);
     }

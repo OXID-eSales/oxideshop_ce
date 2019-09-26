@@ -1,6 +1,0 @@
-services:
-  _defaults:
-    autowire: true
-
-  some.key:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setup\Validator\NonExisting

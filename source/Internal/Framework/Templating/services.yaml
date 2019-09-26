@@ -1,0 +1,38 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\Eshop\Core\Config:
+    class: OxidEsales\Eshop\Core\Config
+    factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
+    public: true
+    tags: ['templating']
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\LegacyTemplateNameResolver
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver'
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator
+    arguments:
+      - '@OxidEsales\Eshop\Core\Config'
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\AdminTemplateFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\AdminTemplateFileLocator
+    arguments:
+      - '@OxidEsales\Eshop\Core\Config'
+  oxid_esales.templating.template.loader:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoader
+    public: true
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolverInterface'
+  oxid_esales.templating.admin.template.loader:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoader
+    public: true
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\AdminTemplateFileLocator'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolverInterface'

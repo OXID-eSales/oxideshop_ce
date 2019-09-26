@@ -1,0 +1,129 @@
+parameters:
+  oxid_esales.module.metadata.service.metadata_schemata:
+    '1.0':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      13: files
+    '1.1':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      12: events
+      13: files
+    '1.2':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      12: events
+      13: files
+    '2.0':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      10: controllers
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      12: events
+    '2.1':
+      0: id
+      1: version
+      2: title
+      3: description
+      4: lang
+      5: thumbnail
+      6: author
+      7: url
+      8: email
+      9: extend
+      10: controllers
+      11: templates
+      blocks: [theme, template, block, file, position]
+      settings: [group, name, type, value, constraints, position]
+      12: events
+      13: smartyPluginDirectories
+
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider
+    arguments:
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper
+
+  oxid_esales.module.metadata.datamapper.metadatamapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataSchemataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataSchemataProvider
+    arguments:
+      - '%oxid_esales.module.metadata.service.metadata_schemata%'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataNormalizerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataNormalizer
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorAggregate
+    arguments:
+      - '@oxid_esales.module.meta_data.validator.module_id_validator'
+      - '@oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator'
+
+  oxid_esales.module.meta_data.validator.shop_module_setting_boolean_validator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleSettingBooleanValidator
+
+  oxid_esales.module.meta_data.validator.module_id_validator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleIdValidator
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterAggregate
+    arguments:
+      - '@oxid_esales.module.meta_data.converter.shop_module_settings_boolean_converter'
+
+  oxid_esales.module.meta_data.converter.shop_module_settings_boolean_converter:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\ModuleSettingsBooleanConverter

@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  oxid_esales.review.product_rating_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapper
+  oxid_esales.review.rating_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapper
+  oxid_esales.review.review_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ReviewDataMapper

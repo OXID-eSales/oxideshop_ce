@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterRequestProcessedEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global

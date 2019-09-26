@@ -9,9 +9,9 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
  * Admin article main deliveryset manager.
@@ -72,7 +72,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     /**
      * return module filter for config variables
      *
-     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Module package
+     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Framework\Module package
      *
      * @return string
      */
@@ -88,7 +88,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *      'constraints' => constraints list as array[name] = constraint
      *      'grouping'    => grouping info as array[name] = grouping
      *
-     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Module package
+     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Framework\Module package
      *
      * @param array $aModuleSettings settings array from module metadata
      *

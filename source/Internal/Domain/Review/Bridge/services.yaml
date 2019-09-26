@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewBridge
+    public: true
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridge
+    public: true
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridge
+    public: true
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridge
+    public: true

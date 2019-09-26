@@ -1,0 +1,39 @@
+services:
+
+  OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:
+    class: OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber1:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber
+    public: true
+    arguments:
+      $stopPropagation: false
+    calls:
+      - [setActiveShops, [[1]]]
+      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface']]
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber2:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber
+    public: true
+    arguments:
+      $stopPropagation: true
+    calls:
+      - [setActiveShops, [[1, 2]]]
+      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface']]
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber3:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber
+    public: true
+    arguments:
+      $stopPropagation: false
+    calls:
+      - [setActiveShops, [[1, 2]]]
+      - [setContext, ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface']]
+    tags:
+      - { name: kernel.event_subscriber }

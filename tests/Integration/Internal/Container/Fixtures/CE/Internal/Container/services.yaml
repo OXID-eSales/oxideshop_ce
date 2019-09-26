@@ -1,0 +1,18 @@
+services:
+  oxid_esales.tests.internal.dummy_executor:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\DummyExecutor
+    public: true
+
+  query_type_factory:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\Internal\Application\DummyGraphQLTypeFactory
+
+  query_type_key:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\Internal\Application\DummyGraphQLType
+    tags: ['graphql_query_type']
+
+  mutation_type_factory:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\Internal\Application\DummyGraphQLTypeFactory
+
+  mutation_type_key:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\Internal\Application\DummyGraphQLType
+    tags: ['graphql_mutation_type']

@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
 use OxidEsales\Eshop\Core\Exception\ObjectException;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
 /**
  * Main shop actions controller. Processes user actions, logs

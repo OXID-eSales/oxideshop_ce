@@ -1,0 +1,9 @@
+imports:
+  - { resource: Logger/services.yaml }
+  - { resource: Templating/services.yaml }
+  - { resource: Theme/services.yaml }
+  - { resource: Console/services.yaml }
+  - { resource: Module/services.yaml }
+  - { resource: Event/services.yaml }
+  - { resource: Database/services.yaml }
+  - { resource: Form/services.yaml }

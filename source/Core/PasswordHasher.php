@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Hash password together with salt, using set hash algorithm
  *
- * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Authentication\Bridge\PasswordServiceBridgeInterface`
+ * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface`
  *                                        was added as the new default for hashing passwords. Hashing passwords with
  *                                        MD5 and SHA512 is still supported in order support login with older
  *                                        password hashes. Therefor this class might not be

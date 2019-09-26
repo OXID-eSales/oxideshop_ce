@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use Exception;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
 
 /**
  * Class manages category articles

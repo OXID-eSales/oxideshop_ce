@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Console\ExecutorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Console\Executor
+    public: true
+    arguments:
+      - '@oxid_esales.console.symfony.component.console.application'
+      - '@oxid_esales.console.commands_provider.services_commands_provider'
+
+  oxid_esales.console.symfony.component.console.application:
+    class: Symfony\Component\Console\Application
+    public: true
+
+  oxid_esales.console.commands_provider.services_commands_provider:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider\ServicesCommandsProvider

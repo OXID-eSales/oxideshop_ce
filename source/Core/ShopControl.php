@@ -9,14 +9,14 @@ use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use oxOutput;
 use oxSystemComponentException;
 use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeHeadersSendEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
 
 /**
  * Main shop actions controller. Processes user actions, logs

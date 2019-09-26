@@ -347,7 +347,7 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testCheckTemplateBlock($templateContent, $blockName, $result)
     {
-        $templateLoader = $this->getMockBuilder(\OxidEsales\EshopCommunity\Internal\Templating\TemplateLoader::class)
+        $templateLoader = $this->getMockBuilder(\OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoader::class)
             ->disableOriginalConstructor()
             ->setMethods(['exists', 'getContext'])
             ->getMock();

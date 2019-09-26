@@ -11,7 +11,7 @@ use OxidEsales\Eshop\Core\Registry;
 /**
  * Class FormatPriceLogic
  *
- * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
+ * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
  */
 class FormatPriceLogic
 {

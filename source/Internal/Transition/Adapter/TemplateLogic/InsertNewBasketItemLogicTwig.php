@@ -11,7 +11,7 @@ use Twig\Environment;
 /**
  * Class InsertNewBasketItemLogicTwig
  *
- * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
+ * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
  */
 class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
 {

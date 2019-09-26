@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 /**
  * Class FileSizeLogic
  *
- * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
+ * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
  */
 class FileSizeLogic
 {

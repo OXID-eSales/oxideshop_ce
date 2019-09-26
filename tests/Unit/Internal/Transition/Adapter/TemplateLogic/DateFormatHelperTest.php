@@ -34,7 +34,7 @@ class DateFormatHelperTest extends TestCase
      * @param string $expectedFormat
      *
      * @dataProvider provider
-     * @covers       \OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic\DateFormatHelper::fixWindowsTimeFormat
+     * @covers       \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper::fixWindowsTimeFormat
      */
     public function testFixWindowsTimeFormat($format, $timestamp, $expectedFormat)
     {

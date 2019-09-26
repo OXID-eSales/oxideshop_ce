@@ -11,7 +11,7 @@ use Smarty;
 /**
  * Class InsertNewBasketItemLogicSmarty
  *
- * @package OxidEsales\EshopCommunity\Internal\Adapter\TemplateLogic
+ * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
  */
 class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
 {

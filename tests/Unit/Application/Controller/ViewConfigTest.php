@@ -379,13 +379,20 @@ class ViewConfigTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTopActiveView"));
         $oConfig->expects($this->once())->method("getTopActiveView")->will($this->returnValue($oView));
 
+        Registry::set(Config::class, $oConfig);
         $oViewConfig = oxNew(ViewConfig::class);
+
         $this->assertEquals("testAction", $oViewConfig->getTopActionClassName());
+        
+        Registry::set(Config::class, null);
     }
 
     public function testGetShowBasketTimeoutWhenFunctionalityIsOnAndTimeLeft()
     {
-        $this->getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blPsBasketReservationEnabled', true);
+        
+        Registry::set(Config::class, $oConfig);
 
         $oR = $this->getMock('stdclass', array('getTimeLeft'));
         $oR->expects($this->once())->method('getTimeLeft')->will($this->returnValue(5));
@@ -397,6 +404,8 @@ class ViewConfigTest extends \OxidTestCase
         $oViewConfig->expects($this->any())->method('getSession')->will($this->returnValue($oS));
 
         $this->assertEquals(true, $oViewConfig->getShowBasketTimeout());
+
+        Registry::set(Config::class, null);
     }
 
     public function testGetShowBasketTimeoutWhenFunctionalityIsOnAndTimeExpired()

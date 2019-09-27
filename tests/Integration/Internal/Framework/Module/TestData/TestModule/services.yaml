@@ -1,0 +1,9 @@
+services:
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\TestEventSubscriber:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\TestEventSubscriber
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\SomeModuleService:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\SomeModuleService

@@ -737,9 +737,9 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             // updating stock reminder state
             if ($this->count()) {
-                $sQ = "update {$sTable} set oxremindactive = '2' where {$sTable}.oxid in ( " . implode(",", $aArtIds) . " ) and
+                $sQ = "update {$sTable} set oxremindactive = '2' where :tableName in ( " . implode(",", $aArtIds) . " ) and 
                               oxremindactive = '1' and oxstock <= oxremindamount";
-                $oDb->execute($sQ);
+                $oDb->execute($sQ, [':tableName' => $sTable . '.oxid']);
             }
         }
     }

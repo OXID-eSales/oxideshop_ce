@@ -1,13 +1,7 @@
 imports:
-    - { resource: Application/services.yaml }
-    - { resource: Utility/services.yaml }
-    - { resource: Logger/services.yaml }
-    - { resource: Common/services.yaml }
-    - { resource: Review/services.yaml }
-    - { resource: Form/services.yaml }
-    - { resource: Adapter/services.yaml }
-    - { resource: Console/services.yaml }
-    - { resource: Module/services.yaml }
-    - { resource: Authentication/services.yaml }
-    - { resource: Smarty/services.yaml }
-    - { resource: Templating/services.yaml }
+    - { resource: Container/services.yaml }
+    - { resource: Framework/services.yaml }
+    - { resource: Domain/services.yaml }
+    - { resource: Transition/Adapter/services.yaml }
+    - { resource: Transition/Smarty/services.yaml }
+    - { resource: Transition/Utility/services.yaml }

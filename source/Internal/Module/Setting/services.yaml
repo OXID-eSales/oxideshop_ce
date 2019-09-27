@@ -1,9 +1,0 @@
-services:
-  _defaults:
-    autowire: true
-    public: false
-
-  OxidEsales\EshopCommunity\Internal\Module\Setting\SettingDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\Setting\SettingDao
-    autowire: true
-    public: false

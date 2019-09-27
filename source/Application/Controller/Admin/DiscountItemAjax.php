@@ -107,8 +107,11 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $soxId = $this->getConfig()->getRequestParameter('oxid');
         $aChosenArt = $this->_getActionIds('oxdiscount.oxitmartid');
         if (is_array($aChosenArt)) {
-            $sQ = "update oxdiscount set oxitmartid = '' where oxid = ? and oxitmartid = ?";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [$soxId, reset($aChosenArt)]);
+            $sQ = "update oxdiscount set oxitmartid = '' where oxid = :oxid and oxitmartid = :oxitmartid";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [
+                ':oxid' => $soxId,
+                ':oxitmartid' => reset($aChosenArt)
+            ]);
         }
     }
 
@@ -120,8 +123,11 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
         $soxId = $this->getConfig()->getRequestParameter('synchoxid');
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
-            $sQ = "update oxdiscount set oxitmartid = ? where oxid = ?";
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [reset($aChosenArt), $soxId]);
+            $sQ = "update oxdiscount set oxitmartid = :oxitmartid where oxid = :oxid";
+            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [
+                ':oxitmartid' => reset($aChosenArt),
+                ':oxid' => $soxId
+            ]);
         }
     }
 

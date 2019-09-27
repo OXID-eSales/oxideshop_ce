@@ -1,0 +1,21 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+  OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\LoggerConfigurationValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator
+  OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfigurationInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
+    arguments:
+      $loggerName: 'OXID Logger'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+  OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
+  Monolog\Logger:
+    class: Monolog\Logger
+    factory: 'OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:create'
+  Psr\Log\LoggerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper
+    arguments:
+      $logger: '@Monolog\Logger'
+    public: true

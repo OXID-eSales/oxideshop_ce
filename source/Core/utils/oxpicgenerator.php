@@ -27,20 +27,14 @@ if (!function_exists("copyAlteredImage")) {
      * @param int    $iNewWidth         new width of the image
      * @param int    $iNewHeight        new height of the image
      * @param array  $aImageInfo        additional info
-     * @param string $sTarget           target file path
-     * @param int    $iGdVer            used gd version
+     * @param string $sTarget           target file path @deprecated
+     * @param int    $iGdVer            used gd version @deprecated
      *
      * @return bool
      */
     function copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)
     {
-        if ($iGdVer == 1) {
-            $blSuccess = imagecopyresized($sDestinationImage, $sSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1]);
-        } else {
-            $blSuccess = imagecopyresampled($sDestinationImage, $sSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1]);
-        }
-
-        return $blSuccess;
+        return imagecopyresampled($sDestinationImage, $sSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1]);
     }
 }
 
@@ -138,7 +132,7 @@ if (!function_exists("resizeGif")) {
      * @param int    $iHeight         new height
      * @param int    $iOriginalWidth  original width
      * @param int    $iOriginalHeight original height
-     * @param int    $iGDVer          GD library version
+     * @param int    $iGDVer          GD library version @deprecated
      *
      * @return string | false
      */
@@ -147,18 +141,14 @@ if (!function_exists("resizeGif")) {
         $aResult = checkSizeAndCopy($sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeight);
         if (is_array($aResult)) {
             list($iNewWidth, $iNewHeight) = $aResult;
-            $hDestinationImage = ($iGDVer == 1) ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
+            $hDestinationImage = imagecreatetruecolor($iNewWidth, $iNewHeight);
             $hSourceImage = imagecreatefromgif($sSrc);
 
             $iFillColor = imagecolorresolve($hDestinationImage, 255, 255, 255);
             imagefill($hDestinationImage, 0, 0, $iFillColor);
             imagecolortransparent($hDestinationImage, $iFillColor);
 
-            if ($iGDVer == 1) {
-                imagecopyresized($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
-            } else {
-                imagecopyresampled($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
-            }
+            imagecopyresampled($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
 
             imagegif($hDestinationImage, $sTarget);
             imagedestroy($hDestinationImage);
@@ -180,7 +170,7 @@ if (!function_exists("resizePng")) {
      * @param int      $iWidth            new width
      * @param int      $iHeight           new height
      * @param int      $aImageInfo        original width
-     * @param int      $iGdVer            GD library version
+     * @param int      $iGdVer            GD library version @deprecated
      * @param resource $hDestinationImage destination image handle
      *
      * @return string | false
@@ -191,7 +181,7 @@ if (!function_exists("resizePng")) {
         if (is_array($aResult)) {
             list($iNewWidth, $iNewHeight) = $aResult;
             if ($hDestinationImage === null) {
-                $hDestinationImage = $iGdVer == 1 ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
+                $hDestinationImage = imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
             $hSourceImage = imagecreatefrompng($sSrc);
             if (!imageistruecolor($hSourceImage)) {
@@ -227,7 +217,7 @@ if (!function_exists("resizeJpeg")) {
      * @param int      $iWidth            new width
      * @param int      $iHeight           new height
      * @param int      $aImageInfo        original width
-     * @param int      $iGdVer            GD library version
+     * @param int      $iGdVer            GD library version @deprecated
      * @param resource $hDestinationImage destination image handle
      * @param int      $iDefQuality       new image quality
      *
@@ -239,7 +229,7 @@ if (!function_exists("resizeJpeg")) {
         if (is_array($aResult)) {
             list($iNewWidth, $iNewHeight) = $aResult;
             if ($hDestinationImage === null) {
-                $hDestinationImage = $iGdVer == 1 ? imagecreate($iNewWidth, $iNewHeight) : imagecreatetruecolor($iNewWidth, $iNewHeight);
+                $hDestinationImage = imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
             $hSourceImage = imagecreatefromstring(file_get_contents($sSrc));
             if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {

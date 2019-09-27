@@ -118,7 +118,13 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         ]);
         if (!$resultSet->EOF) {
             // updating hit info (oxtimestamp field will be updated automatically)
-            $database->execute("update oxseohistory set oxhits = oxhits + 1 where oxident = " . $database->quote($key) . " and oxshopid = '{$shopId}' limit 1");
+            $database->execute(
+                "update oxseohistory set oxhits = oxhits + 1 where oxident = :oxident and oxshopid = :oxshopid limit 1",
+                [
+                    ':oxident' => $key,
+                    ':oxshopid' => $shopId
+                ]
+            );
 
             // fetching new url
             $url = $this->_getSeoUrl($resultSet->fields['oxobjectid'], $resultSet->fields['oxlang'], $shopId);
@@ -316,7 +322,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 
         // this should not happen on most cases, because this redirect is handled by .htaccess
         if ($sParams && !$oStr->preg_match('/\.html$/', $sParams) && !$oStr->preg_match('/\/$/', $sParams)) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($this->getConfig()->getShopURL() . $sParams . '/', false);
+            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sParams . '/', false, 301);
         }
 
         return $sParams;

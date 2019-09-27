@@ -31,7 +31,7 @@ class CategoryTreeTest extends UnitTestCase
     public function testRenderDifferentTemplate()
     {
         $this->setConfigParam('sTheme', 'azure');
-        \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->resetContainer();
+        \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->resetContainer();
 
         $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
         $categoryTree->setViewParameters(array("sWidgetType" => "header"));

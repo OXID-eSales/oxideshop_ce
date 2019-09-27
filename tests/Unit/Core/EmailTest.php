@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
 use oxField;
-use OxidEsales\EshopCommunity\Internal\Templating\TraditionalEngineInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TraditionalEngineInterface;
 use OxidEsales\Eshop\Application\Model\BasketItem;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Price;

@@ -1,0 +1,95 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDao
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDao
+    public: true
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ShopConfigurationCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ClassPropertyShopConfigurationCache
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDao
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationDao
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+
+  oxid_esales.module.configuration.node:
+    class: Symfony\Component\Config\Definition\NodeInterface
+    factory: 'OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Definition\TreeBuilderFactoryInterface:create'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Definition\TreeBuilderFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Definition\TreeBuilderFactory
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ProjectConfigurationDataMapper
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ShopConfigurationDataMapper
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
+    arguments:
+      - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
+      - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
+      - '@oxid_esales.module.configuration.class_extensions_data_mapper'
+      - '@oxid_esales.module.configuration.controllers_data_mapper'
+      - '@oxid_esales.module.configuration.events_data_mapper'
+      - '@oxid_esales.module.configuration.module_settings_data_mapper'
+      - '@oxid_esales.module.configuration.smarty_plugin_directories_data_mapper'
+      - '@oxid_esales.module.configuration.template_blocks_data_mapper'
+      - '@oxid_esales.module.configuration.templates_data_mapper'
+
+  oxid_esales.module.configuration.classses_without_namespace_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper
+
+  oxid_esales.module.configuration.class_extensions_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper
+
+  oxid_esales.module.configuration.controllers_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper
+
+  oxid_esales.module.configuration.events_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper
+
+  oxid_esales.module.configuration.module_settings_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleSettingsDataMapper
+
+  oxid_esales.module.configuration.smarty_plugin_directories_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper
+
+  oxid_esales.module.configuration.template_blocks_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksDataMapper
+
+  oxid_esales.module.configuration.templates_data_mapper:
+      class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingService
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\SettingsMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\SettingsMergingService
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleClassExtensionsMergingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleClassExtensionsMergingService

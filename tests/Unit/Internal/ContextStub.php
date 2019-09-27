@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ContextStub extends BasicContextStub implements ContextInterface
 {
@@ -110,5 +110,13 @@ class ContextStub extends BasicContextStub implements ContextInterface
     public function getAllShopIds(): array
     {
         return $this->shopIds;
+    }
+
+    /**
+     * @param array $shopIds
+     */
+    public function setAllShopIds(array $shopIds)
+    {
+        $this->shopIds = $shopIds;
     }
 }

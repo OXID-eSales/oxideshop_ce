@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  Symfony\Component\EventDispatcher\EventDispatcherInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareEventDispatcher
+    public: true

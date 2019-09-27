@@ -7,15 +7,15 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
-use oxConnectionException;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
-use OxidEsales\EshopCommunity\Internal\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Module\Setting\Event\SettingChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Theme\Event\ThemeSettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Event\ShopConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 
 //max integer
 define('MAX_64BIT_INTEGER', '18446744073709551615');
@@ -1235,7 +1235,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($admin) {
-            $theme = 'admin';
+            $theme = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         }
 
         if ($dir != $this->_sTemplateDir) {
@@ -1859,13 +1859,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $shopIdQuoted = $db->quote($shopId);
-        $moduleQuoted = $db->quote($module);
-        $varNameQuoted = $db->quote($varName);
-        $varTypeQuoted = $db->quote($varType);
-        $varValueQuoted = $db->quote($value);
-        $configKeyQuoted = $db->quote($this->getConfigParam('sConfigKey'));
-        $newOXIDdQuoted = $db->quote(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID());
+        $newOXID = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
 
         $query = "delete from oxconfig where oxshopid = :oxshopid and oxvarname = :oxvarname and oxmodule = :oxmodule";
         $db->execute($query, [
@@ -1875,8 +1869,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
         ]);
 
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-               values($newOXIDdQuoted, $shopIdQuoted, $moduleQuoted, $varNameQuoted, $varTypeQuoted, ENCODE( $varValueQuoted, $configKeyQuoted) )";
-        $db->execute($query);
+                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, ENCODE(:value, :key))";
+        $db->execute($query, [
+            ':oxid' => $newOXID,
+            ':oxshopid' => $shopId,
+            ':oxmodule' => $module ?: '',
+            ':oxvarname' => $varName,
+            ':oxvartype' => $varType,
+            ':value' => $value ?? '',
+            ':key' => $this->getConfigParam('sConfigKey'),
+        ]);
 
         $this->informServicesAfterConfigurationChanged($varName, $shopId, $module);
     }

@@ -1222,7 +1222,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $dRatingCnt = (int) ($dOldCnt + 1);
         // oxarticles.oxtimestamp = oxarticles.oxtimestamp to keep old timestamp value
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $oDb->execute('update oxarticles set oxarticles.oxrating = ' . $dRating . ',oxarticles.oxratingcnt = ' . $dRatingCnt . ', oxarticles.oxtimestamp = oxarticles.oxtimestamp where oxarticles.oxid = ' . $oDb->quote($this->getId()));
+        $query = "update oxarticles
+                  set oxarticles.oxrating = :oxrating,
+                      oxarticles.oxratingcnt = :oxratingcnt,
+                      oxarticles.oxtimestamp = oxarticles.oxtimestamp
+                  where oxarticles.oxid = :oxid";
+        $oDb->execute($query, [
+            ':oxrating' => $dRating,
+            ':oxratingcnt' => $dRatingCnt,
+            ':oxid' => $this->getId()
+        ]);
     }
 
     /**
@@ -2227,9 +2236,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
         $this->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field($iStockCount);
 
-        $query = 'update oxarticles set oxarticles.oxstock = ' . $database->quote($iStockCount) .
-                 ' where oxarticles.oxid = ' . $database->quote($this->getId());
-        $database->execute($query);
+        $query = 'update oxarticles set oxarticles.oxstock = :oxstock where oxarticles.oxid = :oxid';
+        $database->execute($query, [
+            ':oxstock' => $iStockCount,
+            ':oxid' => $this->getId()
+        ]);
         $this->onChange(ACTION_UPDATE_STOCK);
 
         return $dAmount;
@@ -2254,7 +2265,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             //updating by SQL query, due to wrong behaviour if saving article using not admin mode
             $dAmount = (double) $dAmount;
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $rs = $oDb->execute("update oxarticles set oxarticles.oxsoldamount = oxarticles.oxsoldamount + $dAmount where oxarticles.oxid = " . $oDb->quote($this->oxarticles__oxid->value));
+            $query = "update oxarticles
+                      set oxarticles.oxsoldamount = (oxarticles.oxsoldamount + :amount)
+                      where oxarticles.oxid = :oxid";
+            $rs = $oDb->execute($query, [
+                ':oxid' => $this->oxarticles__oxid->value,
+                ':amount' => $dAmount
+            ]);
         } elseif ($this->oxarticles__oxparentid->value) {
             // article is variant - should be updated this article parent amount
             $oUpdateArticle = $this->getParentArticle();
@@ -2274,8 +2291,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function disableReminder()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $query = "update oxarticles set oxarticles.oxremindactive = 2 where oxarticles.oxid = :oxid";
 
-        return (bool) $oDb->execute("update oxarticles set oxarticles.oxremindactive = 2 where oxarticles.oxid = " . $oDb->quote($this->oxarticles__oxid->value));
+        return (bool) $oDb->execute($query, [':oxid' => $this->oxarticles__oxid->value]);
     }
 
     /**
@@ -2458,7 +2476,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $this->_onChangeStockResetCount($articleId);
         }
 
-        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent($this));
+        $this->dispatchEvent(new \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent($this));
     }
 
     /**
@@ -3216,16 +3234,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // check if it is parent article
         if (!$this->isVariant() && $this->_hasAnyVariant()) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sOxId = $oDb->quote($this->getId());
-            $sOxShopId = $oDb->quote($this->getShopId());
-            $iRemindActive = $oDb->quote($this->oxarticles__oxremindactive->value);
-            $sUpdate = "
-                update oxarticles
-                    set oxremindactive = $iRemindActive
-                    where oxparentid = $sOxId and
-                          oxshopid = $sOxShopId
-            ";
-            $oDb->execute($sUpdate);
+            $sUpdate = "update oxarticles
+                        set oxremindactive = :oxremindactive
+                        where oxparentid = :oxparentid and
+                              oxshopid = :oxshopid";
+            $oDb->execute($sUpdate, [
+                ':oxremindactive' => $this->oxarticles__oxremindactive->value,
+                ':oxparentid' => $this->getId(),
+                ':oxshopid' => $this->getShopId()
+            ]);
         }
     }
 
@@ -4741,8 +4758,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 ':oxparentid' => $parentId
             ]);
 
-            $query = 'UPDATE oxarticles SET oxvarstock = ? WHERE oxid = ?';
-            $database->execute($query, [$stock, $parentId]);
+            $query = 'UPDATE oxarticles SET oxvarstock = :oxvarstock WHERE oxid = :oxid';
+            $database->execute($query, [
+                ':oxvarstock' => $stock,
+                ':oxid' => $parentId
+            ]);
 
             //now lets update category counts
             //first detect stock status change for this article (to or from 0)
@@ -4795,8 +4815,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 ':oxparentid' => $parentId
             ]);
 
-            $query = "UPDATE oxarticles SET oxvarcount = ? WHERE oxid = ?";
-            $database->execute($query, [$varCount, $parentId]);
+            $query = "UPDATE oxarticles SET oxvarcount = :oxvarcount WHERE oxid = :oxid";
+            $database->execute($query, [
+                ':oxvarcount' => $varCount,
+                ':oxid' => $parentId
+            ]);
         }
     }
 
@@ -4824,10 +4847,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $sQ = '
                     UPDATE `oxarticles`
                     SET
-                        `oxvarminprice` = ' . $database->quote($aPrices['varminprice']) . ',
-                        `oxvarmaxprice` = ' . $database->quote($aPrices['varmaxprice']) . '
+                        `oxvarminprice` = :oxvarminprice,
+                        `oxvarmaxprice` = :oxvarmaxprice
                     WHERE
-                        `oxid` = ' . $database->quote($sParentId);
+                        `oxid` = :oxid';
+                $params = [
+                    ':oxvarminprice' => $aPrices['varminprice'],
+                    ':oxvarmaxprice' => $aPrices['varmaxprice'],
+                    ':oxid' => $sParentId
+                ];
             } else {
                 $sQ = '
                     UPDATE `oxarticles`
@@ -4835,9 +4863,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                         `oxvarminprice` = `oxprice`,
                         `oxvarmaxprice` = `oxprice`
                     WHERE
-                        `oxid` = ' . $database->quote($sParentId);
+                        `oxid` = :oxid';
+                $params = [':oxid' => $sParentId];
             }
-            $database->execute($sQ);
+            $database->execute($sQ, $params);
         }
     }
 
@@ -5144,9 +5173,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $sSql = "UPDATE `oxarticles` SET ";
         $sSql .= implode(', ', $sSqlSets) . '';
-        $sSql .= " WHERE `oxparentid` = " . $oDb->quote($this->getId());
+        $sSql .= " WHERE `oxparentid` = :oxparentid";
 
-        return $oDb->execute($sSql);
+        return $oDb->execute($sSql, [':oxparentid' => $this->getId()]);
     }
 
     /**

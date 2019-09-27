@@ -197,21 +197,25 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         // update sub cats
         $sQ = "update oxseo as seo1, (select oxid from oxcategories 
             where oxrootid = :oxrootid 
-            and oxleft > " . ((int) $aCatInfo[0][1]) . " 
-            and oxright < " . ((int) $aCatInfo[0][2]) . ") as seo2 
+            and oxleft > :oxleft 
+            and oxright < :oxright ) as seo2 
                 set seo1.oxexpired = '1' where seo1.oxtype = 'oxcategory' and seo1.oxobjectid = seo2.oxid";
         $oDb->execute($sQ, [
-            ':oxrootid' => $aCatInfo[0][0]
+            ':oxrootid' => $aCatInfo[0][0],
+            ':oxleft' => (int) $aCatInfo[0][1],
+            ':oxright' => (int) $aCatInfo[0][2]
         ]);
 
         // update subarticles
-        $sQ = "update oxseo as seo1, (select o2c.oxobjectid as id from oxcategories as cat left join oxobject2category"
-              ." as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid = :oxrootid and cat.oxleft >= "
-              .((int) $aCatInfo[0][1])." and cat.oxright <= ".((int) $aCatInfo[0][2]).") as seo2 "
+        $sQ = "update oxseo as seo1, (select o2c.oxobjectid as id from oxcategories as cat left join oxobject2category "
+              ."as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid = :oxrootid and cat.oxleft >= :oxleft "
+              ."and cat.oxright <= :oxright) as seo2 "
               ."set seo1.oxexpired = '1' where seo1.oxtype = 'oxarticle' and seo1.oxobjectid = seo2.id "
               ."and seo1.oxfixed = 0";
         $oDb->execute($sQ, [
-            ':oxrootid' => $aCatInfo[0][0]
+            ':oxrootid' => $aCatInfo[0][0],
+            ':oxleft' => (int) $aCatInfo[0][1],
+            ':oxright' => (int) $aCatInfo[0][2]
         ]);
     }
 
@@ -223,7 +227,6 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
     public function onDeleteCategory($oCategory)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sIdQuoted = $oDb->quote($oCategory->getId());
         $params = [
             ':oxobjectid' => $oCategory->getId()
         ];

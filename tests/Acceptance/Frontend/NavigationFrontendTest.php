@@ -1156,7 +1156,7 @@ class NavigationFrontendTest extends FrontendTestCase
     public function testFrontendContact()
     {
         //In admin Set option (Installed GDLib Version) if "value" => ""
-        $this->callShopSC("oxConfig", null, null, array("iUseGDVersion" => array("type" => "str", "value" => 0)));
+        $this->callShopSC("oxConfig", null, null, array("iUseGDVersion" => array("type" => "str", "value" => 2)));
 
         $this->clearCache();
         $this->openShop();

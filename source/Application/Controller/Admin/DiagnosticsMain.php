@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxFileCheckerResult;
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 
 /**
  * Checks Version of System files.

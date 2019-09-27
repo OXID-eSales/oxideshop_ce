@@ -6,6 +6,9 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridgeInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Find the translation files in given module.
@@ -31,14 +34,16 @@ class ModuleTranslationPathFinder
         $fullPath = $this->getModulesDirectory() . $modulePath;
 
         if ($this->hasUppercaseApplicationDirectory($fullPath)) {
-            $fullPath .= '/Application';
+            $fullPath .= DIRECTORY_SEPARATOR . 'Application';
         } else {
             if ($this->hasLowercaseApplicationDirectory($fullPath)) {
-                $fullPath .= '/application';
+                $fullPath .= DIRECTORY_SEPARATOR . 'application';
             }
         }
-        $fullPath .= ($admin) ? '/views/admin/' : '/translations/';
-        $fullPath .= $language;
+        $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
+        $languageDirectory = ($admin) ? 'views' . DIRECTORY_SEPARATOR .  $adminThemeName : 'translations';
+        $fullPath .= DIRECTORY_SEPARATOR . $languageDirectory;
+        $fullPath .= DIRECTORY_SEPARATOR . $language;
 
         return $fullPath;
     }
@@ -89,5 +94,15 @@ class ModuleTranslationPathFinder
     protected function directoryExists($path)
     {
         return file_exists($path);
+    }
+
+    /**
+     * @internal
+     *
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

@@ -7,7 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use \OxidEsales\EshopCommunity\Internal\ShopEvents\AllCookiesRemovedEvent;
+use \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AllCookiesRemovedEvent;
 
 /**
  * CMS - loads pages and displays it

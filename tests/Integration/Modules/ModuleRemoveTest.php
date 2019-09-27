@@ -5,8 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use oxModuleList;
 use PHPUnit\Framework\MockObject\MockObject;
 

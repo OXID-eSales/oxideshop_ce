@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule;
 
-use OxidEsales\EshopCommunity\Internal\Application\Events\AbstractShopAwareEventSubscriber;
+use OxidEsales\EshopCommunity\Internal\Framework\Event\AbstractShopAwareEventSubscriber;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

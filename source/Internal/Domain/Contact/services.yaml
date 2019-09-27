@@ -1,0 +1,42 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface:
+      class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridge
+      arguments:
+        $contactFormFactory: '@form.contact_form.contact_form_factory'
+        $contactFormMessageBuilder: '@OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormMessageBuilderInterface'
+        $contactFormConfiguration: '@form.contact_form.contact_form_configuration'
+      public: true
+
+  form.contact_form.contact_form_factory:
+      class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormFactory
+      arguments:
+        $contactFormConfiguration: '@form.contact_form.contact_form_configuration'
+        $contactFormEmailValidator: '@form.contact_form.contact_form_email_validator'
+        $requiredFieldsValidator: '@common.form.required_fields_validator'
+
+  form.contact_form.contact_form_configuration:
+      class: OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfiguration
+      factory: 'form.contact_form.contact_form_configuration_factory:getFormConfiguration'
+
+  form.contact_form.contact_form_email_validator:
+      class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator
+      arguments:
+        - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface'
+
+  OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormMessageBuilderInterface:
+      class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormMessageBuilder
+      arguments:
+        - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface'
+
+  form.contact_form.contact_form_configuration_factory:
+      class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormConfigurationFactory
+      arguments:
+        - '@form.contact_form.contact_form_fields_configuration_data_provider'
+        - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+
+  form.contact_form.contact_form_fields_configuration_data_provider:
+      class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormFieldsConfigurationDataProvider

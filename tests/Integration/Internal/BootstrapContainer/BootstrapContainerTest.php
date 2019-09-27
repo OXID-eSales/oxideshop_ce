@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\BootstrapContainer;
 
-use OxidEsales\EshopCommunity\Internal\Application\BootstrapContainer\BootstrapContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainer\BootstrapContainerFactory;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use Psr\Container\ContainerInterface;
 

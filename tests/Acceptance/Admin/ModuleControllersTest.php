@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Module\Install\Service\ModuleConfigurationInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
 /**

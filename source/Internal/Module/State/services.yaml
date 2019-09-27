@@ -1,9 +1,0 @@
-services:
-  _defaults:
-    autowire: true
-    public: false
-
-  OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Module\State\ModuleStateService
-    autowire: true
-    public: true

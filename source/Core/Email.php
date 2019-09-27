@@ -10,8 +10,8 @@ use Exception;
 use OxidEsales\Eshop\Application\Model\OrderFileList;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 
 /**
@@ -406,7 +406,7 @@ class Email extends PHPMailer
      */
     protected function getContainer()
     {
-        return \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        return \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
     }
 
     /**

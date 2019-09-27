@@ -7,8 +7,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\RssFeed;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
 /**
  * Shop RSS page.

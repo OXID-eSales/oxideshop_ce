@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao
+
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDao
+
+  OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ReviewDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ReviewDao

@@ -122,8 +122,11 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if ($sVoucherID) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "update oxvouchers set oxreserved = " . time() . " where oxid = " . $oDb->quote($sVoucherID);
-            $oDb->Execute($sQ);
+            $sQ = "update oxvouchers set oxreserved = :oxreserved where oxid = :oxid";
+            $oDb->execute($sQ, [
+                ':oxreserved' => time(),
+                ':oxid' => $sVoucherID
+            ]);
         }
     }
 
@@ -137,8 +140,8 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if ($sVoucherID) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "update oxvouchers set oxreserved = 0 where oxid = " . $oDb->quote($sVoucherID);
-            $oDb->Execute($sQ);
+            $sQ = "update oxvouchers set oxreserved = 0 where oxid = :oxid";
+            $oDb->execute($sQ, [':oxid' => $sVoucherID]);
         }
     }
 

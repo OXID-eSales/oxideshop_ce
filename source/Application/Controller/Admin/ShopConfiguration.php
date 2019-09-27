@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\EshopCommunity\Internal\Common\FormConfiguration\FieldConfigurationInterface;
-use OxidEsales\EshopCommunity\Internal\Form\ContactForm\ContactFormBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
 use Exception;
 
 /**

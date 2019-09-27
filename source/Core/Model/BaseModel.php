@@ -17,15 +17,13 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
-use OxidEsales\EshopCommunity\Internal\Application\ContainerFactory;
 use oxObjectException;
 use \OxidEsales\Eshop\Core\Field;
-use Psr\Container\ContainerInterface;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelUpdateEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelDeleteEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent;
-use OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelDeleteEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelInsertEvent;
 
 /**
  * Class BaseModel
@@ -1415,7 +1413,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $updateQuery = "update {$coreTableName} set " . $this->_getUpdateFields() .
-                     " where {$coreTableName}.oxid = " . $database->quote($this->getId());
+                       " where {$coreTableName}.oxid = " . $database->quote($this->getId());
 
         $this->beforeUpdate();
         $this->executeDatabaseQuery($updateQuery);
@@ -1427,14 +1425,15 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Execute a query on the database.
      *
      * @param string $query The command to execute on the database.
+     * @param array  $params Parameters to fill the querry
      *
      * @return int The number of affected rows.
      */
-    protected function executeDatabaseQuery($query)
+    protected function executeDatabaseQuery($query, $params = [])
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        return $database->execute($query);
+        return $database->execute($query, $params);
     }
 
     /**

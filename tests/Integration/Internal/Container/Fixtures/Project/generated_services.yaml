@@ -1,0 +1,4 @@
+services:
+  oxid_esales.tests.internal.dummy_executor:
+    class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\Project\DummyExecutor
+    public: true

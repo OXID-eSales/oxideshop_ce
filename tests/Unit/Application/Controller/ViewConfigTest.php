@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ViewConfig;
 use OxidEsales\EshopCommunity\Application\Model\CountryList;
 use oxTestModules;
@@ -108,7 +109,7 @@ class ViewConfigTest extends \OxidTestCase
             ->method('detectLanguageByBrowser')
             ->will($this->returnValue($iDefaultBrowserLanguage));
 
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
+        Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
@@ -1098,7 +1099,7 @@ class ViewConfigTest extends \OxidTestCase
 
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getFormLang"));
         $oLang->expects($this->once())->method("getFormLang")->will($this->returnValue($sLang));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
+        Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getViewConfigParam", "getSession", "setViewConfigParam"));
         $oViewConf->expects($this->once())->method("getViewConfigParam")->with($this->equalTo("hiddensid"))->will($this->returnValue(null));
@@ -1772,7 +1773,7 @@ class ViewConfigTest extends \OxidTestCase
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getRemoteAddress"));
         $oUtils->expects($this->once())->method("getRemoteAddress")->will($this->returnValue($sTest));
 
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtils);
+        Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtils);
 
         $oViewConf = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getViewConfigParam", "setViewConfigParam"));
         $oViewConf->expects($this->once())->method("getViewConfigParam")->with($this->equalTo("ip"))->will($this->returnValue(null));
@@ -1931,7 +1932,7 @@ class ViewConfigTest extends \OxidTestCase
         $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("getLanguageAbbr"));
         $oLang->expects($this->once())->method("getLanguageAbbr")->will($this->returnValue($sTest));
 
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
+        Registry::set(\OxidEsales\Eshop\Core\Language::class, $oLang);
 
         $oViewConf = oxNew('oxViewConfig');
         $this->assertEquals($sTest, $oViewConf->getActLanguageAbbr());
@@ -2280,7 +2281,7 @@ class ViewConfigTest extends \OxidTestCase
 
         $session->expects($this->once())->method('isSessionStarted')->will($this->returnValue($isSessionStarted));
         $session->expects($this->exactly($callTimes))->method('getSessionChallengeToken')->will($this->returnValue($token));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+        Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         /** @var oxViewConfig $viewConfig */
         $viewConfig = oxNew('oxViewConfig');

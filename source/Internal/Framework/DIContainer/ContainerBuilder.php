@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -30,10 +29,6 @@ class ContainerBuilder
      * @var BasicContextInterface
      */
     private $context;
-
-    private $serviceFilePaths = [
-        'services.yaml', '..' . DIRECTORY_SEPARATOR . 'services.yaml'
-    ];
 
     /**
      * @param BasicContextInterface $context
@@ -52,29 +47,10 @@ class ContainerBuilder
         $symfonyContainer = new SymfonyContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
-        $this->loadServiceFiles($symfonyContainer);
         $this->loadEditionServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
 
         return $symfonyContainer;
-    }
-
-    /**
-     * @param SymfonyContainerBuilder $symfonyContainer
-     * @throws \Exception
-     */
-    private function loadServiceFiles(SymfonyContainerBuilder $symfonyContainer)
-    {
-        foreach ($this->serviceFilePaths as $partialPath) {
-            $fullPath = Path::join(
-                $this->context->getCommunityEditionSourcePath(),
-                'Internal',
-                'Container',
-                $partialPath
-            );
-            $loader = new YamlFileLoader($symfonyContainer, new FileLocator(Path::getDirectory($fullPath)));
-            $loader->load(Path::getFilename($fullPath));
-        }
     }
 
     /**
@@ -117,7 +93,7 @@ class ContainerBuilder
     {
         foreach ($this->getEditionsRootPaths() as $path) {
             $servicesLoader = new YamlFileLoader($symfonyContainer, new FileLocator($path));
-            $servicesLoader->load('Internal/Container/services.yaml');
+            $servicesLoader->load('Internal/services.yaml');
         }
     }
 

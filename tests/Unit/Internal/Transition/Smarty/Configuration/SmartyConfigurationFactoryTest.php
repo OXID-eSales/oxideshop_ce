@@ -6,13 +6,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyPluginsDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyPrefiltersDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyResourcesDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartySecuritySettingsDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartySettingsDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContextInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyConfigurationFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPluginsDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPrefiltersDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyResourcesDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartySecuritySettingsDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartySettingsDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory;
 
 class SmartyConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
 {

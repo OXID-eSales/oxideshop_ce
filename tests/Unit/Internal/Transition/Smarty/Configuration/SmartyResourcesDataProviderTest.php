@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Smarty\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyResourcesDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyResourcesDataProvider;
 
 class SmartyResourcesDataProviderTest extends \PHPUnit\Framework\TestCase
 {

@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyPrefiltersDataProvider;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPrefiltersDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartyPrefiltersDataProviderTest extends \PHPUnit\Framework\TestCase
 {

@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Bridge\SmartyTemplateRendererBridge;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyTemplateRendererBridge;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
 class SmartyTemplateRendererBridgeTest extends \PHPUnit\Framework\TestCase

@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Smarty\Extension;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Extension\CacheResourcePlugin;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\CacheResourcePlugin;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class CacheResourcePluginTest extends \PHPUnit\Framework\TestCase
 {

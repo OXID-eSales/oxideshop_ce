@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty\Legacy;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Legacy\LegacySmartyEngine;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy\LegacySmartyEngine;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

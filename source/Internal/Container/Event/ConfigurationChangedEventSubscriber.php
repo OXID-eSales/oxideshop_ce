@@ -4,9 +4,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event;
+namespace OxidEsales\EshopCommunity\Internal\Container\Event;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event\ProjectYamlChangedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -14,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ConfigurationChangedEventSubscriber implements EventSubscriberInterface
 {
-
     /**
      * @param ProjectYamlChangedEvent $event
      */

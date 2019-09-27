@@ -4,9 +4,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Theme\Bridge;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Theme\Bridge\AdminThemeBridge;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridge;
 
 class AdminThemeBridgeTest extends \PHPUnit\Framework\TestCase
 {

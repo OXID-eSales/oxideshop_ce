@@ -4,10 +4,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface;
-use OxidEsales\EshopCommunity\Internal\Container\Exception\MissingUpdateCallException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingUpdateCallException;
 
 /**
  * @internal

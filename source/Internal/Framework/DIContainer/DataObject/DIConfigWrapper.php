@@ -4,12 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Container\Exception\SystemServiceOverwriteException;
-use OxidEsales\EshopCommunity\Internal\Container\Exception\MissingServiceException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingServiceException;
 use Psr\Container\ContainerInterface;
-use OxidEsales\EshopCommunity\Internal\Container\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 
 /**
  * @internal

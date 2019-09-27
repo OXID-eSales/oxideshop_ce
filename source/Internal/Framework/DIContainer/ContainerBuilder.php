@@ -4,10 +4,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
-use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDao;
-use OxidEsales\EshopCommunity\Internal\Container\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;

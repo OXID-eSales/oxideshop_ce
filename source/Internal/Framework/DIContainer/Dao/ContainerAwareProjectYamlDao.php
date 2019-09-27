@@ -4,10 +4,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\Dao;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Container\Event\ProjectYamlChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event\ProjectYamlChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;

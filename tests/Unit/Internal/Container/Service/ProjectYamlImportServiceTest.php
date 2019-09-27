@@ -6,10 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Container\Service;
 
-use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Container\Exception\NoServiceYamlException;
-use OxidEsales\EshopCommunity\Internal\Container\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

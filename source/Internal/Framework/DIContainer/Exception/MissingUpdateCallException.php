@@ -4,13 +4,13 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception;
 
 /**
- * Class MissingServiceException
+ * Class MissingUpdateCallException
  *
  * @package OxidEsales\EshopCommunity\Internal\DIProjectConfig\Exception
  */
-class MissingServiceException extends \Exception
+class MissingUpdateCallException extends \Exception
 {
 }

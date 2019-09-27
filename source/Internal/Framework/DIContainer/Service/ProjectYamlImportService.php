@@ -4,9 +4,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
-use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 
 /**
  * @internal

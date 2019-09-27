@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\Event;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

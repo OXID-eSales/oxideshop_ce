@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Container\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
 /**
  * @internal

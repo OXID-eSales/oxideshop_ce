@@ -682,8 +682,8 @@ class ViewConfigTest extends \OxidTestCase
             ->getMock();
         $oConfigStub->method('isThemeOption')->willReturn('true');
 
+        Registry::set(Config::class, $oConfig);
         $oViewConfig = oxNew(ViewConfig::class);
-        $oViewConfig->setConfig($oConfigStub);
 
         $oViewConfig->getConfig()->setConfigParam('someParameter', 'someValue');
         $this->assertEquals('someValue', $oViewConfig->getViewThemeParam('someParameter'));
@@ -691,6 +691,7 @@ class ViewConfigTest extends \OxidTestCase
         /** Set and read the value again to discover caching issues */
         $oViewConfig->getConfig()->setConfigParam('someParameter', 'otherValue');
         $this->assertEquals('otherValue', $oViewConfig->getViewThemeParam('someParameter'));
+        Registry::set(Config::class, null);
     }
 
     /**

@@ -24,7 +24,7 @@ class MailValidator
     public function getMailValidationRule()
     {
         if (is_null($this->_sMailValidationRule)) {
-            $this->_sMailValidationRule = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
+            $this->_sMailValidationRule = "/^(\w+([\.\-\+]){0,1})+\@(\w+([\.\-]){0,1})+([A-Za-z]{2,64})$/i";
         }
 
         return $this->_sMailValidationRule;

@@ -415,7 +415,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param array                                      $aPaymentList payments array
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
      */
-    protected function _setValues(& $aPaymentList, $oBasket = null)
+    protected function _setValues(&$aPaymentList, $oBasket = null)
     {
         if (is_array($aPaymentList)) {
             foreach ($aPaymentList as $oPayment) {

@@ -421,7 +421,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    public function validatePaymentInputData($paymentId, & $dynamicValue)
+    public function validatePaymentInputData($paymentId, &$dynamicValue)
     {
         $validationResult = true;
 

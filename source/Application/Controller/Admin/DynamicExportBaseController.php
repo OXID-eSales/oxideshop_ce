@@ -496,7 +496,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return mixed
      */
-    public function getOneArticle($iCnt, & $blContinue)
+    public function getOneArticle($iCnt, &$blContinue)
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -869,7 +869,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return object
      */
-    protected function _initArticle($sHeapTable, $iCnt, & $blContinue)
+    protected function _initArticle($sHeapTable, $iCnt, &$blContinue)
     {
         $oRs = $this->getDb()->selectLimit("select oxid from $sHeapTable", 1, $iCnt);
         if ($oRs != false && $oRs->count() > 0) {

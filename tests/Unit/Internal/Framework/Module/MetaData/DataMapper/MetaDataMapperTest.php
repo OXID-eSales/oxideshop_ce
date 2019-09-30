@@ -67,6 +67,33 @@ class MetaDataMapperTest extends TestCase
         );
     }
 
+    public function testSettingPositionIsConvertedToInt(): void
+    {
+        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
+        $moduleConfiguration = $metaDataDataMapper->fromData(
+            [
+                'metaDataVersion' => '1.1',
+                'metaDataFilePath' => 'sdasd',
+                'moduleData' => [
+                    'id' => 'some',
+                    'settings' => [
+                        [
+                            'name'  => 'setting',
+                            'type'  => 'bool',
+                            'value' => 'true',
+                            'position' => '2'
+                        ],
+                    ]
+                ]
+            ]
+        );
+
+        $this->assertSame(
+            2,
+            $moduleConfiguration->getModuleSetting('setting')->getPositionInGroup()
+        );
+    }
+
     protected function setUp()
     {
         parent::setUp();

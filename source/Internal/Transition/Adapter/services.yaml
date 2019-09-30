@@ -6,11 +6,11 @@ services:
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter
 
-  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Dao\ShopConfigurationSettingDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Dao\ShopConfigurationSettingDao
+  OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDao
 
-  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Utility\ShopSettingEncoderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Utility\ShopSettingEncoder
+  OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder
 
   # TemplateLogic
 

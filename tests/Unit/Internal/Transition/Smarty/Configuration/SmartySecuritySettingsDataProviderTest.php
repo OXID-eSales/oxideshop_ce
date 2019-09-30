@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Smarty\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartySecuritySettingsDataProvider;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartySecuritySettingsDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartySecuritySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
 {

@@ -6,9 +6,8 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\Configuration\Utility;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Utility;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Utility\ShopSettingEncoder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,7 +42,7 @@ class ShopSettingEncoderTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Transition\Adapter\Configuration\Exception\InvalidShopSettingValueException
+     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Config\Exception\InvalidShopSettingValueException
      */
     public function testEncodingInvalidValue()
     {

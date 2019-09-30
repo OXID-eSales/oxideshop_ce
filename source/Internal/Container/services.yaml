@@ -1,10 +1,8 @@
-imports:
-    - { resource: Dao/services.yaml }
-    - { resource: Service/services.yaml }
-    - { resource: Event/services.yaml }
-    - { resource: ../Framework/FileSystem/bootstrap-services.yaml }
-    - { resource: ../Framework/Module/Install/bootstrap-services.yaml }
-    - { resource: ../Framework/Module/MetaData/bootstrap-services.yaml }
-    - { resource: ../Framework/Module/Configuration/bootstrap-services.yaml }
-    - { resource: ../Transition/Utility/bootstrap-services.yaml }
-    - { resource: ../Framework/Event/services.yaml }
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Container\Event\ConfigurationChangedEventSubscriber:
+    class: OxidEsales\EshopCommunity\Internal\Container\Event\ConfigurationChangedEventSubscriber
+    tags: ['kernel.event_subscriber']

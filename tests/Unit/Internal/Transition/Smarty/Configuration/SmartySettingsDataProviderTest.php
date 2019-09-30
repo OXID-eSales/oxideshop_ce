@@ -7,8 +7,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty\Configuration;
 
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartySettingsDataProvider;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartySettingsDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 class SmartySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
 {

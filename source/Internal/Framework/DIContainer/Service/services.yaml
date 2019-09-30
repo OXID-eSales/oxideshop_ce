@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    public: false
+    autowire: true
+  OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateService
+    arguments:
+      $anyUnifiedNamespace: '\OxidEsales\Eshop\Core\Registry'
+      $basicContext: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+    public: true

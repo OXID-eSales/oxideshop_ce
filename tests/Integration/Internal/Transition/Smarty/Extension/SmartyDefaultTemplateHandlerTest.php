@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty\Extension;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Extension\SmartyDefaultTemplateHandler;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension\SmartyDefaultTemplateHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoaderInterface;
 
 class SmartyDefaultTemplateHandlerTest extends \PHPUnit\Framework\TestCase

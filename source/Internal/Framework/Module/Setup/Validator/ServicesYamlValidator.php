@@ -6,9 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilder;
-use OxidEsales\EshopCommunity\Internal\Container\Dao\ProjectYamlDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Container\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use Symfony\Component\DependencyInjection\Definition;

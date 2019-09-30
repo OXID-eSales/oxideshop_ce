@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContext;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 
 class SmartyContextTest extends \PHPUnit\Framework\TestCase

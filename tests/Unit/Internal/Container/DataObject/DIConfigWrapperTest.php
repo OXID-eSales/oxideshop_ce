@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Container\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Container\DataObject\DIConfigWrapper;
-use OxidEsales\EshopCommunity\Internal\Container\Exception\SystemServiceOverwriteException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 

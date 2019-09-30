@@ -8,11 +8,11 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Smarty;
 
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyConfigurationFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyBuilder;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContext;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Configuration\SmartyConfigurationFactory;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 
 class SmartyBuilderTest extends \PHPUnit\Framework\TestCase

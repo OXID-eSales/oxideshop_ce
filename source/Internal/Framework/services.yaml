@@ -7,3 +7,5 @@ imports:
   - { resource: Event/services.yaml }
   - { resource: Database/services.yaml }
   - { resource: Form/services.yaml }
+  - { resource: DIContainer/services.yaml }
+  - { resource: Smarty/services.yaml }

@@ -6,8 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\Bridge\SmartyEngineBridge;
-use OxidEsales\EshopCommunity\Internal\Transition\Smarty\SmartyEngine;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridge;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyEngine;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

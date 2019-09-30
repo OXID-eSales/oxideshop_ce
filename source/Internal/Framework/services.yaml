@@ -8,3 +8,4 @@ imports:
   - { resource: Database/services.yaml }
   - { resource: Form/services.yaml }
   - { resource: DIContainer/services.yaml }
+  - { resource: Smarty/services.yaml }

@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 use oxConfig;
 use OxidEsales\Eshop\Application\Controller\Admin\ModuleList;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -55,5 +57,43 @@ class ModuleListTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $aModulesNames = array_keys($aViewData['mylist']);
         $this->assertSame('testmodule', current($aModulesNames));
+    }
+
+    public function testModulesSortedByTitle(): void
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
+
+        $moduleA = new ModuleConfiguration();
+        $moduleA
+            ->setId('a')
+            ->setPath('some')
+            ->setTitle(['en' => 'A']);
+
+        $moduleB = new ModuleConfiguration();
+        $moduleB
+            ->setId('b')
+            ->setPath('some')
+            ->setTitle(['en' => 'B']);
+
+        $shopConfiguration->addModuleConfiguration($moduleB);
+        $shopConfiguration->addModuleConfiguration($moduleA);
+
+        $container->get(ShopConfigurationDaoBridgeInterface::class)->save($shopConfiguration);
+
+        $moduleList = oxNew(ModuleList::class);
+        $moduleList->render();
+
+        $modules = $moduleList->getViewData()['mylist'];
+
+        $this->assertSame(
+            'A',
+            $modules[0]->getTitle()
+        );
+
+        $this->assertSame(
+            'B',
+            $modules[1]->getTitle()
+        );
     }
 }

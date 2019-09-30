@@ -96,7 +96,7 @@ class Request
      *
      * @return mixed
      */
-    public function checkParamSpecialChars(& $sValue, $aRaw = null)
+    public function checkParamSpecialChars(&$sValue, $aRaw = null)
     {
         if (is_object($sValue)) {
             return $sValue;

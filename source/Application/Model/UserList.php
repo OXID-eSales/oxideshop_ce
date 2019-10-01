@@ -38,13 +38,13 @@ class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $quotedSearchStr = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");
+        $quotedSearchStr = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("$sSearchStr");
 
         $sSelect = "select oxuser.oxid, oxuser.oxfname, oxuser.oxlname from oxuser ";
         $sSelect .= "left join oxuserbaskets on oxuserbaskets.oxuserid = oxuser.oxid ";
         $sSelect .= "where oxuserbaskets.oxid is not null and oxuserbaskets.oxtitle = 'wishlist' ";
         $sSelect .= "and oxuserbaskets.oxpublic = 1 ";
-        $sSelect .= "and ( oxuser.oxusername like $quotedSearchStr or oxuser.oxlname like $quotedSearchStr)";
+        $sSelect .= "and ( oxuser.oxusername = $quotedSearchStr or oxuser.oxlname = $quotedSearchStr)";
         $sSelect .= "and ( select 1 from oxuserbasketitems where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid limit 1)";
 
         $this->selectString($sSelect);

@@ -24,7 +24,7 @@ class UserlistTest extends \OxidTestCase
         $oUser->setId('user1');
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oUser->oxuser__oxusername = new oxField('user1', oxField::T_RAW);
+        $oUser->oxuser__oxusername = new oxField('user1@gmail.com', oxField::T_RAW);
         $oUser->save();
 
 
@@ -32,7 +32,7 @@ class UserlistTest extends \OxidTestCase
         $oUser->setId('user2');
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
         $oUser->oxuser__oxshopid = new oxField(2, oxField::T_RAW);
-        $oUser->oxuser__oxusername = new oxField('user2', oxField::T_RAW);
+        $oUser->oxuser__oxusername = new oxField('user2@yahoo.com', oxField::T_RAW);
         $oUser->save();
 
         $oBasket = oxNew('OxUserBasket');
@@ -98,27 +98,29 @@ class UserlistTest extends \OxidTestCase
         $this->assertEquals($iUserCount, $oUserList->count());
     }
 
-    public function testLoadWishlistUsersExactUser()
+    /**
+     * @dataProvider loadWishListUsersDataProvider
+     * @param $searchText
+     * @param $expectResult
+     */
+    public function testLoadWishListUsers($searchText, $expectResult)
     {
         // selecting count from DB
         $oUserList = oxNew('oxuserlist');
-        $oUserList->loadWishlistUsers('user2');
-        $this->assertEquals(1, $oUserList->count());
+
+        $oUserList->loadWishlistUsers($searchText);
+        $this->assertEquals($expectResult, $oUserList->count());
     }
 
-    public function testLoadWishlistUsers()
+    public function loadWishListUsersDataProvider()
     {
-        // selecting count from DB
-        $oUserList = oxNew('oxuserlist');
-        $oUserList->loadWishlistUsers('user');
-        $this->assertEquals(2, $oUserList->count());
-    }
-
-    public function testLoadWishlistUsersEmptySearch()
-    {
-        // selecting count from DB
-        $oUserList = oxNew('oxuserlist');
-        $oUserList->loadWishlistUsers(null);
-        $this->assertEquals(0, $oUserList->count());
+        return array(
+            array('user1@gmail.com', 1),
+            array('user2@yahoo.com', 1),
+            array('user', 0),
+            array('@', 0),
+            array('@yahoo', 0),
+            array('@gmail.com', 0),
+        );
     }
 }

@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Load amount price list same way on frontend and backend [#0006671](https://bugs.oxid-esales.com/view.php?id=6671) [PR-712](https://github.com/OXID-eSales/oxideshop_ce/pull/712)
 - Show product active check in admin panel when activation date has been set [#0006966](https://bugs.oxid-esales.com/view.php?id=6966)
 
+### Security
+- [Bug 6698](https://bugs.oxid-esales.com/view.php?id=6698)
+
 ## [6.3.5] - 2019-07-30
 
 ### Security

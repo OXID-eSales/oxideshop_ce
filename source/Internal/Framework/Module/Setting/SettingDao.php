@@ -6,8 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Helper\ModuleIdPreparator;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Helper\ModuleIdPreparatorInterface;
 use function is_string;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
@@ -45,32 +43,24 @@ class SettingDao implements SettingDaoInterface
     private $transactionService;
 
     /**
-     * @var ModuleIdPreparatorInterface
-     */
-    private $moduleIdPreparator;
-
-    /**
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ContextInterface $context
-     * @param ShopSettingEncoderInterface $shopSettingEncoder
-     * @param ShopAdapterInterface $shopAdapter
-     * @param TransactionServiceInterface $transactionService
-     * @param ModuleIdPreparatorInterface $moduleIdPreparator
+     * @param ContextInterface             $context
+     * @param ShopSettingEncoderInterface  $shopSettingEncoder
+     * @param ShopAdapterInterface         $shopAdapter
+     * @param TransactionServiceInterface  $transactionService
      */
     public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory,
-        ContextInterface $context,
-        ShopSettingEncoderInterface $shopSettingEncoder,
-        ShopAdapterInterface $shopAdapter,
-        TransactionServiceInterface $transactionService,
-        ModuleIdPreparatorInterface $moduleIdPreparator
+        QueryBuilderFactoryInterface    $queryBuilderFactory,
+        ContextInterface                $context,
+        ShopSettingEncoderInterface     $shopSettingEncoder,
+        ShopAdapterInterface            $shopAdapter,
+        TransactionServiceInterface     $transactionService
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;
         $this->shopSettingEncoder = $shopSettingEncoder;
         $this->shopAdapter = $shopAdapter;
         $this->transactionService = $transactionService;
-        $this->moduleIdPreparator = $moduleIdPreparator;
     }
 
     /**
@@ -178,7 +168,7 @@ class SettingDao implements SettingDaoInterface
             ])
             ->setParameters([
                 'id'        => $this->shopAdapter->generateUniqueId(),
-                'moduleId'  => $this->moduleIdPreparator->prepare($moduleId),
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
                 'shopId'    => $shopId,
                 'name'      => $shopModuleSetting->getName(),
                 'type'      => $shopModuleSetting->getType(),
@@ -211,7 +201,7 @@ class SettingDao implements SettingDaoInterface
             ])
             ->setParameters([
                 'id'            => $this->shopAdapter->generateUniqueId(),
-                'moduleId'      => $this->moduleIdPreparator->prepare($moduleId),
+                'moduleId'      => $this->getPrefixedModuleId($moduleId),
                 'name'          => $shopModuleSetting->getName(),
                 'groupName'     => $shopModuleSetting->getGroupName(),
                 'position'      => $shopModuleSetting->getPositionInGroup(),
@@ -240,7 +230,7 @@ class SettingDao implements SettingDaoInterface
             ->andWhere('oxvarname = :name')
             ->setParameters([
                 'shopId'    => $shopId,
-                'moduleId'  => $this->moduleIdPreparator->prepare($moduleId),
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
                 'name'      => $name,
                 'key'       => $this->context->getConfigurationEncryptionKey(),
             ]);
@@ -270,7 +260,7 @@ class SettingDao implements SettingDaoInterface
             ->where('oxcfgmodule = :moduleId')
             ->andWhere('oxcfgvarname = :name')
             ->setParameters([
-                'moduleId'  => $this->moduleIdPreparator->prepare($moduleId),
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
                 'name'      => $name,
             ]);
 
@@ -295,7 +285,7 @@ class SettingDao implements SettingDaoInterface
             ->setParameters([
                 'shopId'    => $shopId,
                 'name'      => $shopModuleSetting->getName(),
-                'moduleId'  => $this->moduleIdPreparator->prepare($moduleId),
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
             ]);
 
         $queryBuilder->execute();
@@ -313,10 +303,19 @@ class SettingDao implements SettingDaoInterface
             ->where('oxcfgmodule = :moduleId')
             ->andWhere('oxcfgvarname = :name')
             ->setParameters([
-                'moduleId'  => $this->moduleIdPreparator->prepare($moduleId),
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
                 'name'      => $shopModuleSetting->getName(),
             ]);
 
         $queryBuilder->execute();
+    }
+
+    /**
+     * @param string $moduleId
+     * @return string
+     */
+    private function getPrefixedModuleId(string $moduleId): string
+    {
+        return 'module:' . $moduleId;
     }
 }

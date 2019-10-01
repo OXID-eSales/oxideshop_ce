@@ -41,8 +41,7 @@ class SettingDaoTest extends TestCase
             $this->getMockBuilder(ContextInterface::class)->getMock(),
             $this->getMockBuilder(ShopSettingEncoderInterface::class)->getMock(),
             $this->getMockBuilder(ShopAdapterInterface::class)->getMock(),
-            $transactionService,
-            $this->getMockBuilder(ModuleIdPreparator::class)->getMock()
+            $transactionService
         );
 
         $shopModuleSettingDao->save(new Setting(), '', 0);

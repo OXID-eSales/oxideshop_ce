@@ -227,6 +227,9 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                         if ($moduleSetting->getType() === 'aarr') {
                             $value = $this->_multilineToAarray($value);
                         }
+                        if ($moduleSetting->getType() === 'arr') {
+                            $value = $this->_multilineToArray($value);
+                        }
                         if ($moduleSetting->getType() === 'bool') {
                             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                         }

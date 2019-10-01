@@ -216,7 +216,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                 }
 
                 if (isset($data['position'])) {
-                    $setting->setPositionInGroup($data['position']);
+                    $setting->setPositionInGroup((int)$data['position']);
                 }
 
                 $moduleConfiguration->addModuleSetting($setting);

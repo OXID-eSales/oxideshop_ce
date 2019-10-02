@@ -9,9 +9,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setting;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -108,11 +111,34 @@ class SettingDaoTest extends TestCase
     /**
      * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException
      */
-    public function testGetNonExistentSetting()
+    public function testGetSettingNotExistingInOxConfigTableThrowsException()
     {
         $settingDao = $this->getSettingDao();
 
         $settingDao->get('onExistentSetting', 'moduleId', 1);
+    }
+
+    public function testGetSettingNotExistingInOxConfigdisplayTableReturnsSettingFromOxconfigTable()
+    {
+        $shopModuleSetting = new Setting();
+        $shopModuleSetting
+            ->setModuleId('testModuleId')
+            ->setShopId(1)
+            ->setName('third')
+            ->setType('arr')
+            ->setValue('third')
+            ->setGroupName('testGroup')
+            ->setPositionInGroup(5);
+
+        $shopModuleSettingFromOxConfig = clone($shopModuleSetting);
+        $shopModuleSettingFromOxConfig
+            ->setGroupName('')
+            ->setPositionInGroup(0);
+
+        $this->saveDataToOxConfigTable($shopModuleSetting);
+
+        $settingDao = $this->getSettingDao();
+        $this->assertEquals($shopModuleSettingFromOxConfig, $settingDao->get('third', 'testModuleId', 1));
     }
 
     /**
@@ -284,5 +310,51 @@ class SettingDaoTest extends TestCase
             ]);
 
         return $queryBuilder->execute()->rowCount();
+    }
+
+    /**
+     * @param Setting $shopModuleSetting
+     */
+    private function saveDataToOxConfigTable(Setting $shopModuleSetting)
+    {
+        $shopAdapter = $this->get(ShopAdapterInterface::class);
+        $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+        $context = $this->get(ContextInterface::class);
+
+        $queryBuilder = $queryBuilderFactory->create();
+        $queryBuilder
+            ->insert('oxconfig')
+            ->values([
+                'oxid'          => ':id',
+                'oxmodule'      => ':moduleId',
+                'oxshopid'      => ':shopId',
+                'oxvarname'     => ':name',
+                'oxvartype'     => ':type',
+                'oxvarvalue'    => 'encode(:value, :key)',
+            ])
+            ->setParameters([
+                'id'        => $shopAdapter->generateUniqueId(),
+                'moduleId'  => $this->getPrefixedModuleId($shopModuleSetting->getModuleId()),
+                'shopId'    => $shopModuleSetting->getShopId(),
+                'name'      => $shopModuleSetting->getName(),
+                'type'      => $shopModuleSetting->getType(),
+                'value'     => $shopSettingEncoder->encode(
+                    $shopModuleSetting->getType(),
+                    $shopModuleSetting->getValue()
+                ),
+                'key'       => $context->getConfigurationEncryptionKey(),
+            ]);
+
+        $queryBuilder->execute();
+    }
+
+    /**
+     * @param string $moduleId
+     * @return string
+     */
+    private function getPrefixedModuleId(string $moduleId): string
+    {
+        return 'module:' . $moduleId;
     }
 }

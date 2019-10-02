@@ -56,6 +56,7 @@ class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
         }
 
         $modules = $this->sortModulesByTitleAlphabetically($modules);
+        $modules = $this->convertModulesToAssociativeArray($modules);
 
         return $modules;
     }
@@ -69,6 +70,22 @@ class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
         usort($modules, function ($a, $b) {
             return strcmp($a->getTitle(), $b->getTitle());
         });
+
         return $modules;
+    }
+
+    /**
+     * @param array $modules
+     * @return array
+     */
+    private function convertModulesToAssociativeArray(array $modules): array
+    {
+        $modulesAssociativeArray = [];
+
+        foreach ($modules as $module) {
+            $modulesAssociativeArray[$module->getId()] = $module;
+        }
+
+        return $modulesAssociativeArray;
     }
 }

@@ -114,8 +114,6 @@ class SettingDaoTest extends TestCase
     {
         $shopModuleSetting = new Setting();
         $shopModuleSetting
-            ->setModuleId('testModuleId')
-            ->setShopId(1)
             ->setName('third')
             ->setType('arr')
             ->setValue('third')
@@ -127,7 +125,7 @@ class SettingDaoTest extends TestCase
             ->setGroupName('')
             ->setPositionInGroup(0);
 
-        $this->saveDataToOxConfigTable($shopModuleSetting);
+        $this->saveDataToOxConfigTable($shopModuleSetting, 'testModuleId', 1);
 
         $settingDao = $this->getSettingDao();
         $this->assertEquals($shopModuleSettingFromOxConfig, $settingDao->get('third', 'testModuleId', 1));
@@ -296,10 +294,7 @@ class SettingDaoTest extends TestCase
         return $queryBuilder->execute()->rowCount();
     }
 
-    /**
-     * @param Setting $shopModuleSetting
-     */
-    private function saveDataToOxConfigTable(Setting $shopModuleSetting)
+    private function saveDataToOxConfigTable(Setting $shopModuleSetting, string $moduleId, int $shopId)
     {
         $shopAdapter = $this->get(ShopAdapterInterface::class);
         $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
@@ -319,8 +314,8 @@ class SettingDaoTest extends TestCase
             ])
             ->setParameters([
                 'id'        => $shopAdapter->generateUniqueId(),
-                'moduleId'  => $this->getPrefixedModuleId($shopModuleSetting->getModuleId()),
-                'shopId'    => $shopModuleSetting->getShopId(),
+                'moduleId'  => $this->getPrefixedModuleId($moduleId),
+                'shopId'    => $shopId,
                 'name'      => $shopModuleSetting->getName(),
                 'type'      => $shopModuleSetting->getType(),
                 'value'     => $shopSettingEncoder->encode(

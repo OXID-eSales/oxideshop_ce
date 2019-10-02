@@ -266,7 +266,7 @@ class SettingDao implements SettingDaoInterface
 
         $result = $queryBuilder->execute()->fetch();
 
-        return ($result === false) ? [] : $result;
+        return $result ?: [];
     }
 
     /**

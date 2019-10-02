@@ -52,9 +52,23 @@ class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
             $module = oxNew(Module::class);
             $module->load($moduleConfiguration->getId());
-            $modules[$moduleConfiguration->getId()] = $module;
+            $modules[] = $module;
         }
 
+        $modules = $this->sortModulesByTitleAlphabetically($modules);
+
+        return $modules;
+    }
+
+    /**
+     * @param array $modules
+     * @return array
+     */
+    private function sortModulesByTitleAlphabetically(array $modules): array
+    {
+        usort($modules, function ($a, $b) {
+            return strcmp($a->getTitle(), $b->getTitle());
+        });
         return $modules;
     }
 }

@@ -222,15 +222,10 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             foreach ($multiLangFields as $fieldId => $multiLangIds) {
                 foreach ($multiLangIds as $multiLangId) {
                     $fieldName = ($multiLangId == 0) ? $fieldId : $fieldId . '_' . $multiLangId;
-                    if ($rs[0][$fieldName]) {
-                        unset($notInLang[$multiLangId]);
-                        continue;
-                    }
-                    if ($rs[0][strtolower($fieldName)]) {
-                        unset($notInLang[$multiLangId]);
-                        continue;
-                    }
-                    if ($rs[0][strtoupper($fieldName)]) {
+                    if ($rs[0][$fieldName] 
+                        || $rs[0][strtolower($fieldName)] 
+                        || $rs[0][strtoupper($fieldName)]) 
+                    {
                         unset($notInLang[$multiLangId]);
                         continue;
                     }                    

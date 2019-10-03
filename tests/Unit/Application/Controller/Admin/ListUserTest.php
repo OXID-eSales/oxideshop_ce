@@ -6,6 +6,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DOMDocument;
+use OxidEsales\Eshop\Application\Controller\Admin\NavigationTree;
 
 /**
  * Tests for List_User class
@@ -33,11 +34,11 @@ class ListUserTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("getDomXml"));
-        $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument));
+        $oNavTree = $this->getMock(NavigationTree::class, array("getDomXml"));
+        $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument()));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("getNavigation"));
-        $oView->expects($this->at($iCnt++))->method('getNavigation')->will($this->returnValue($oNavTree));
+        $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavTree));
         $this->assertEquals("list_user.tpl", $oView->render());
     }
 }

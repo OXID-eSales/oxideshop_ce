@@ -307,9 +307,8 @@ class ShopControlTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('render'));
         $oView->expects($this->once())->method('render')->will($this->returnValue('wrongTpl'));
 
-        $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, array('process', 'addVersionTags'));
+        $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, array('process'));
         $oOut->expects($this->once())->method('process');
-        $oOut->expects($this->any())->method('addVersionTags')->will($this->returnValue(true));
 
         $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array("isAdmin", '_getOutputManager', '_isDebugMode'), array(), '', false);
         $oControl->expects($this->any())->method('isAdmin')->will($this->returnValue(false));

@@ -601,7 +601,7 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("0800 111114", $this->getValue("invadr[oxuser__oxmobfon]"));
         $this->assertEquals("0800 111113", $this->getValue("invadr[oxuser__oxprivfon]"));
         $this->assertEquals("01", $this->getValue("invadr[oxuser__oxbirthdate][day]"));
-        $this->assertEquals("01", $this->getValue("invadr[oxuser__oxbirthdate][month]"));
+        $this->assertEquals("1", $this->getValue("invadr[oxuser__oxbirthdate][month]"));
         $this->assertEquals("1980", $this->getValue("invadr[oxuser__oxbirthdate][year]"));
         $this->assertEquals("off", $this->getValue("subscribeNewsletter"));
 

@@ -20,7 +20,7 @@ use Webmozart\PathUtil\Path;
 class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 {
     private $shopId;
-    private $moduleId = 'testmodule';
+    private $testModuleId = 'testmodule';
     private $moduleTargetPath = 'testmodule';
     private $workingDirectoryBackup;
     private $workingDirectory;
@@ -50,9 +50,9 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
 
-        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->testModuleId, $this->shopId);
         $this->assertSame(
-            $this->moduleId,
+            $this->testModuleId,
             $moduleConfiguration->getId()
         );
     }
@@ -73,9 +73,9 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
             $this->executeModuleInstallCommand($relativeModulePath)
         );
 
-        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->testModuleId, $this->shopId);
         $this->assertSame(
-            $this->moduleId,
+            $this->testModuleId,
             $moduleConfiguration->getId()
         );
     }
@@ -91,7 +91,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
 
-        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->testModuleId, $this->shopId);
         $this->assertSame(
             $this->moduleTargetPath,
             $moduleConfiguration->getPath()
@@ -114,7 +114,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 
         $this->assertContains(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
 
-        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->moduleId, $this->shopId);
+        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->testModuleId, $this->shopId);
         $this->assertSame(
             $this->moduleTargetPath,
             $moduleConfiguration->getPath()
@@ -165,7 +165,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     private function installTestModuleFiles()
     {
         $this->get(ModuleFilesInstallerInterface::class)->install(
-            new OxidEshopPackage($this->moduleId, $this->getTestModuleSourcePath())
+            new OxidEshopPackage($this->testModuleId, $this->getTestModuleSourcePath())
         );
     }
 

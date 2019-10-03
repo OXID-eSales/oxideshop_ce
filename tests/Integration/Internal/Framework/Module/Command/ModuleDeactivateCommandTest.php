@@ -8,48 +8,53 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleDeactivateCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
+final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
 {
-    public function testModuleDeactivation()
+    public function testModuleDeactivation(): void
     {
-        $moduleId = 'testmodule';
-        $this->installModule($moduleId);
-        $this->activateModule($moduleId);
+        $this->installTestModule();
+        $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
 
         $consoleOutput = $this->execute(
             $this->getApplication(),
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $moduleId])
+            new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $this->moduleId])
         );
 
-        $this->assertSame(sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED, $moduleId) . PHP_EOL, $consoleOutput);
+        $this->assertSame(
+            sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED, $this->moduleId) . PHP_EOL,
+            $consoleOutput
+        );
 
         $module = oxNew(Module::class);
-        $module->load($moduleId);
+        $module->load($this->moduleId);
         $this->assertFalse($module->isActive());
 
         $this->cleanupTestData();
     }
 
-    public function testWhenModuleNotActive()
+    public function testWhenModuleNotActive(): void
     {
-        $moduleId = 'testmodule';
-        $this->installModule($moduleId);
+        $this->installTestModule();
 
         $consoleOutput = $this->execute(
             $this->getApplication(),
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $moduleId])
+            new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $this->moduleId])
         );
 
-        $this->assertSame(sprintf(ModuleDeactivateCommand::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . PHP_EOL, $consoleOutput);
+        $this->assertSame(
+            sprintf(ModuleDeactivateCommand::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $this->moduleId) . PHP_EOL,
+            $consoleOutput
+        );
 
         $this->cleanupTestData();
     }
 
-    public function testNonExistingModuleActivation()
+    public function testNonExistingModuleActivation(): void
     {
         $moduleId = 'test';
         $consoleOutput = $this->execute(
@@ -58,6 +63,9 @@ class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
             new ArrayInput(['command' => 'oe:module:deactivate', 'module-id' => $moduleId])
         );
 
-        $this->assertSame(sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId) . PHP_EOL, $consoleOutput);
+        $this->assertSame(
+            sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId) . PHP_EOL,
+            $consoleOutput
+        );
     }
 }

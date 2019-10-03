@@ -86,7 +86,7 @@ class ModuleListTest extends \OxidTestCase
         $moduleList = oxNew(ModuleList::class);
         $moduleList->render();
 
-        $modules = $moduleList->getViewData()['mylist'];
+        $modules = array_values($moduleList->getViewData()['mylist']);
 
         $this->assertSame(
             'A',

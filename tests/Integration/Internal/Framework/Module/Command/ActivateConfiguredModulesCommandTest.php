@@ -51,7 +51,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->prepareTestModuleConfigurations(true, 1, []);
 
         $this->executeCommand([
-            'command' => 'oe:module:activate-configured-modules',
+            'command' => 'oe:module:apply-configuration',
         ]);
 
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
@@ -66,7 +66,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->prepareTestModuleConfigurations(false, 1, []);
 
         $this->executeCommand([
-            'command' => 'oe:module:activate-configured-modules',
+            'command' => 'oe:module:apply-configuration',
         ]);
 
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
@@ -84,7 +84,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->prepareTestModuleConfigurations(true, 1, [$moduleSetting]);
 
         $this->executeCommand([
-            'command' => 'oe:module:activate-configured-modules',
+            'command' => 'oe:module:apply-configuration',
         ]);
 
         $this->assertTrue(
@@ -102,7 +102,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->prepareTestModuleConfigurations(true, 2, []);
 
         $this->executeCommand([
-            'command' => 'oe:module:activate-configured-modules',
+            'command' => 'oe:module:apply-configuration',
         ]);
 
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);

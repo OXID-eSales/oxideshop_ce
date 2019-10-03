@@ -15,7 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ActivateConfiguredModulesCommand extends Command
+class ApplyModulesConfigurationCommand extends Command
 {
     /**
      * @var ShopConfigurationDaoInterface
@@ -46,44 +46,44 @@ class ActivateConfiguredModulesCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Activates configured modules.');
+        $this->setDescription('Applies configuration for installed modules.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->hasOption('shop-id') && $input->getOption('shop-id')) {
-            $this->activateModulesForOneShop($output, (int) $input->getOption('shop-id'));
+            $this->applyModulesConfigurationForOneShop($output, (int) $input->getOption('shop-id'));
         } else {
-            $this->activateModuleForAllShops($output);
+            $this->applyModulesConfigurationForAllShops($output);
         }
     }
 
-    private function activateModulesForOneShop(OutputInterface $output, int $shopId): void
+    private function applyModulesConfigurationForOneShop(OutputInterface $output, int $shopId): void
     {
         $shopConfiguration = $this->shopConfigurationDao->get($shopId);
 
-        $this->activateModulesForShop($output, $shopConfiguration, $shopId);
+        $this->applyModulesConfigurationForShop($output, $shopConfiguration, $shopId);
     }
 
-    private function activateModuleForAllShops(OutputInterface $output): void
+    private function applyModulesConfigurationForAllShops(OutputInterface $output): void
     {
         $shopConfigurations = $this->shopConfigurationDao->getAll();
 
         foreach ($shopConfigurations as $shopId => $shopConfiguration) {
-            $this->activateModulesForShop($output, $shopConfiguration, $shopId);
+            $this->applyModulesConfigurationForShop($output, $shopConfiguration, $shopId);
         }
     }
 
-    private function activateModulesForShop(
+    private function applyModulesConfigurationForShop(
         OutputInterface $output,
         ShopConfiguration $shopConfiguration,
         int $shopId
     ): void {
-        $output->writeln('<info>Activating modules for the shop with id ' . $shopId . ':</info>');
+        $output->writeln('<info>Applying modules configuration for the shop with id ' . $shopId . ':</info>');
 
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
             $output->writeln(
-                '<info>Activating module with id '
+                '<info>Applying configuration for module with id '
                 . $moduleConfiguration->getId()
                 . '</info>'
             );
@@ -129,7 +129,7 @@ class ActivateConfiguredModulesCommand extends Command
     {
         $output->writeln(
             '<error>'
-            . 'Module wasn\'t activated. An exception occurred: '
+            . 'Module configuration wasn\'t applied. An exception occurred: '
             . \get_class($exception) . ' '
             . $exception->getMessage()
             . '</error>'

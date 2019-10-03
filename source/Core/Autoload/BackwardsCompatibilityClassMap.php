@@ -496,7 +496,6 @@ return [
     'oxinputvalidator'                    => 'OxidEsales\\Eshop\\Core\\InputValidator',
     'oxldap'                              => 'OxidEsales\\Eshop\\Core\\LDAP',
     'oxlang'                              => 'OxidEsales\\Eshop\\Core\\Language',
-    'oxmailvalidator'                     => 'OxidEsales\\Eshop\\Core\\MailValidator',
     'oxbase'                              => 'OxidEsales\\Eshop\\Core\\Model\\BaseModel',
     'oxlist'                              => 'OxidEsales\\Eshop\\Core\\Model\\ListModel',
     'oxi18n'                              => 'OxidEsales\\Eshop\\Core\\Model\\MultiLanguageModel',

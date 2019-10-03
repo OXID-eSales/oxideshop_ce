@@ -654,7 +654,7 @@ class EmailTest extends \OxidTestCase
     }
 
     /*
-     * Test setting reply to with empty value. Should assign deffault reply to address
+     * Test setting reply to with empty value. Should assign default reply to address
      */
     public function testSetReplyToWithNoParams()
     {

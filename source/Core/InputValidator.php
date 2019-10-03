@@ -186,12 +186,24 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         }
 
         // invalid email address ?
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($email)) {
+        if (!$this->isValidEmail($email)) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'));
 
             return $this->addValidationError("oxuser__oxusername", $exception);
         }
+    }
+
+    /**
+     * @param strgin $email
+     * @return bool
+     */
+    public function isValidEmail($email)
+    {
+        if (!is_string($email) || !strlen($email)) {
+            return false;
+        }
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /**

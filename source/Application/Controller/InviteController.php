@@ -149,14 +149,14 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\AccountC
 
         //validating entered emails
         foreach ($aParams["rec_email"] as $sRecipientEmail) {
-            if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($sRecipientEmail)) {
+            if (!oxNew(\OxidEsales\Eshop\Core\InputValidator::class)->isValidEmail($sRecipientEmail)) {
                 $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
                 return;
             }
         }
 
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
+        if (!oxNew(\OxidEsales\Eshop\Core\InputValidator::class)->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
             return;

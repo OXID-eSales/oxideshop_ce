@@ -13,7 +13,7 @@ use oxDeliveryList;
 use oxDeliverySetList;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
-use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Registry;
 use oxPaymentList;
 use oxRegistry;
@@ -892,7 +892,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
 
-        if (!isset($parameters['email']) || !oxNew(MailValidator::class)->isValidEmail($parameters['email'])) {
+        if (!isset($parameters['email']) || !oxNew(InputValidator::class)->isValidEmail($parameters['email'])) {
             $this->_iPriceAlarmStatus = 0;
             return;
         }

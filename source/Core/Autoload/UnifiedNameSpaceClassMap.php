@@ -2853,12 +2853,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\MailValidator'                                        => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\MailValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Model\BaseModel'                                      => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Model\BaseModel::class,
         'isAbstract'       => false,

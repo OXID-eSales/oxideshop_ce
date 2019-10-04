@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Metadata 1.2 support
+
+### Security
+- [Bug 6698](https://bugs.oxid-esales.com/view.php?id=6698)
  
 ## [6.4.0] - 2019-08-02
 

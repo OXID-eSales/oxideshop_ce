@@ -42,11 +42,11 @@ class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect .= "left join oxuserbaskets on oxuserbaskets.oxuserid = oxuser.oxid ";
         $sSelect .= "where oxuserbaskets.oxid is not null and oxuserbaskets.oxtitle = 'wishlist' ";
         $sSelect .= "and oxuserbaskets.oxpublic = 1 ";
-        $sSelect .= "and ( oxuser.oxusername like :search or oxuser.oxlname like :search)";
+        $sSelect .= "and ( oxuser.oxusername = :search or oxuser.oxlname = :search)";
         $sSelect .= "and ( select 1 from oxuserbasketitems where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid limit 1)";
 
         $this->selectString($sSelect, [
-            ':search' => "%$sSearchStr%"
+            ':search' => "$sSearchStr"
         ]);
     }
 }

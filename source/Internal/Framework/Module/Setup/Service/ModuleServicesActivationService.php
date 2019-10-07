@@ -17,9 +17,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @internal
- */
 class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
 

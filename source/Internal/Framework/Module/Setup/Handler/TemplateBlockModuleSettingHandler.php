@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\Templa
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
-/**
- * @internal
- */
 class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
     /**

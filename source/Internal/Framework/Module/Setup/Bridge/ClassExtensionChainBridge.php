@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ExtensionChainServiceInterface;
 
-/**
- * @internal
- */
 class ClassExtensionChainBridge implements ClassExtensionChainBridgeInterface
 {
     /**

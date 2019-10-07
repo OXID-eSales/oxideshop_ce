@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceIn
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionException;
 use OxidEsales\Eshop\Application\Model\Rating;
 
-/**
-  * @internal
- */
 class UserRatingBridge implements UserRatingBridgeInterface
 {
     /**

@@ -6,9 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Annotation\StableAnnotation;
+
 /**
- * Interface UserReviewBridgeInterface
- * @internal
+ * @stable
+ * @see StableAnnotation
  */
 interface UserReviewBridgeInterface
 {

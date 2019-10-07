@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
 
-/**
- * Class ModuleSetupEvent
- *
- * @internal
- */
 class BeforeModuleDeactivationEvent extends ModuleSetupEvent
 {
     const NAME = self::class;

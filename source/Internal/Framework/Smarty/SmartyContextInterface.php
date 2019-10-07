@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 
-/**
- * Interface SmartyContextInterface
- *
- * @package OxidEsales\EshopCommunity\Internal\Smarty
- */
 interface SmartyContextInterface
 {
     /**

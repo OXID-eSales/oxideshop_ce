@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception;
 
-/**
- * Class MissingServiceException
- *
- * @package OxidEsales\EshopCommunity\Internal\DIProjectConfig\Exception
- */
 class MissingServiceException extends \Exception
 {
 }

@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem;
 
 use Symfony\Component\Finder\Finder;
 
-/**
- * @internal
- */
 class FinderFactory implements FinderFactoryInterface
 {
     /**

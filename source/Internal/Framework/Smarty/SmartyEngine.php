@@ -9,10 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
-/**
- * Class SmartyEngine
- * @package OxidEsales\EshopCommunity\Internal\Smarty
- */
 class SmartyEngine implements TemplateEngineInterface
 {
     /**

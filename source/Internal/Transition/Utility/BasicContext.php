@@ -14,7 +14,6 @@ use Webmozart\PathUtil\Path;
 
 /**
  * @inheritdoc
- * @internal
  */
 class BasicContext implements BasicContextInterface
 {

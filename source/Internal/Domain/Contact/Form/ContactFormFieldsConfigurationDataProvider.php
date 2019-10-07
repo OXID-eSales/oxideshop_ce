@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 
-/**
- * Class ContactFormFieldsConfigurationDataProvider
- */
 class ContactFormFieldsConfigurationDataProvider implements FormFieldsConfigurationDataProviderInterface
 {
     /**

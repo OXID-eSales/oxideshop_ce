@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception;
 
-/**
- * @internal
- */
 class MetaDataVersionException extends \Exception
 {
 }

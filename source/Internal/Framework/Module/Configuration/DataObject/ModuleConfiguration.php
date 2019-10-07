@@ -15,9 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 
-/**
- * @internal
- */
 class ModuleConfiguration
 {
     /**

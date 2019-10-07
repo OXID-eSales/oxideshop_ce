@@ -109,7 +109,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationService
-    public: true
 
   oxid_esales.module.setup.class_extension_chain_service:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainService

@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-/**
- * @internal
- */
 class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainResolverInterface
 {
     /**

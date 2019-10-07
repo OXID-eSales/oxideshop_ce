@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory;
 
 use Psr\Log\LoggerInterface;
 
-/**
- * @internal
- */
 interface LoggerFactoryInterface
 {
     /**

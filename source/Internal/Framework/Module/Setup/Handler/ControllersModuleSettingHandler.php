@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingTy
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
-/**
- * @internal
- */
 class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
     /**

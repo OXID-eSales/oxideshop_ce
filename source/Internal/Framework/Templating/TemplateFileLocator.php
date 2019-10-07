@@ -8,10 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
 use OxidEsales\Eshop\Core\Config;
 
-/**
- * Class TemplateFileLocator
- * @internal
- */
 class TemplateFileLocator implements TemplateFileLocatorInterface
 {
     /**

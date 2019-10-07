@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Serv
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 
-/**
- * @internal
- */
 interface SettingsMergingServiceInterface
 {
     /**

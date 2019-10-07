@@ -8,10 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 
-/**
- * Class ContactFormMessageInterface
- * @internal
- */
 interface ContactFormMessageBuilderInterface
 {
     /**

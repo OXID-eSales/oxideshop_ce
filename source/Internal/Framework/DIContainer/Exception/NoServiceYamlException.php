@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception;
 
-/**
- * Class NoServiceYamlException
- *
- * @package OxidEsales\EshopCommunity\Internal\ProjectDIConfig\Exception
- */
 class NoServiceYamlException extends \Exception
 {
 }

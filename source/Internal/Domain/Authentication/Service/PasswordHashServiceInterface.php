@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service;
 
-/**
- * @internal
- */
 interface PasswordHashServiceInterface
 {
     /**

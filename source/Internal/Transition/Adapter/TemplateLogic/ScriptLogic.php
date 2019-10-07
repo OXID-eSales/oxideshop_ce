@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
-/**
- * Class ScriptLogic
- */
 class ScriptLogic
 {
     /**

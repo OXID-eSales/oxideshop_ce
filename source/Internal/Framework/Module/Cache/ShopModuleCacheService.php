@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
-/**
- * @internal
- */
 class ShopModuleCacheService implements ModuleCacheServiceInterface
 {
 

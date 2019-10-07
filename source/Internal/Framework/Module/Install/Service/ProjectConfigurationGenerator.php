@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Projec
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 
-/**
- * @internal
- */
 class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInterface
 {
     /**

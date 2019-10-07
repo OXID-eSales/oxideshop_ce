@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
-/**
- * Class AbstractInsertNewBasketItemLogic
- *
- * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
- */
 abstract class AbstractInsertNewBasketItemLogic
 {
 

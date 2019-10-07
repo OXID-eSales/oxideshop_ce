@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingMo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ModuleSetupEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @internal
- */
 class InvalidateModuleCacheEventSubscriber implements EventSubscriberInterface
 {
     /**

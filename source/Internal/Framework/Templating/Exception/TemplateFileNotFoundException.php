@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception;
 
-/**
- * @internal
- */
 class TemplateFileNotFoundException extends \Exception
 {
 }

@@ -10,9 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use Webmozart\PathUtil\Path;
 
-/**
- * @internal
- */
 class ModulePathResolver implements ModulePathResolverInterface
 {
     /**

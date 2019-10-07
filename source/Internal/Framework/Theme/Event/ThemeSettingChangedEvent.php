@@ -10,11 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class ThemeSettingChangedEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Theme\Event
- */
 class ThemeSettingChangedEvent extends Event
 {
     const NAME = self::class;

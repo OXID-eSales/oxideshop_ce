@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration;
 
-/**
- * @internal
- */
 interface MonologConfigurationInterface extends PsrLoggerConfigurationInterface
 {
     /**

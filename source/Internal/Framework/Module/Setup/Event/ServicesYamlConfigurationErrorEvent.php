@@ -10,8 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ServicesYamlConfigurationErrorEvent
- *
  * This event is dispatched when there are not loadable service classes
  * found in a services.yaml file.
  */

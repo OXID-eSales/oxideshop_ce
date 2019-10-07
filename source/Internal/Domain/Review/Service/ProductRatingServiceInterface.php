@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Service;
 
-/**
- * Interface ProductRatingServiceInterface
- * @internal
- */
 interface ProductRatingServiceInterface
 {
     /**

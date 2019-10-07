@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
 use Doctrine\DBAL\Connection;
 
-/**
- * @internal
- */
 class TransactionService implements TransactionServiceInterface
 {
     /**

@@ -10,10 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Form\FormFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 
-/**
- * Class ContactFormBridge
- * @internal
- */
 class ContactFormBridge implements ContactFormBridgeInterface
 {
     /**

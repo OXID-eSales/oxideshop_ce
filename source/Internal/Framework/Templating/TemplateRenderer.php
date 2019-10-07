@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
-/**
- * Class TemplateRenderer
- */
 class TemplateRenderer implements TemplateRendererInterface
 {
     /**

@@ -12,9 +12,6 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @internal
- */
 class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDaoInterface
 {
     /**

@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
-/**
- * Interface TemplateFileLocatorInterface
- * @internal
- */
 interface TemplateFileLocatorInterface
 {
     /**

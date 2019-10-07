@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service;
 
 use function is_string;
 
-/**
- * @internal
- */
 class MetaDataNormalizer implements MetaDataNormalizerInterface
 {
     /**

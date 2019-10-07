@@ -9,11 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class BeforeModelDeleteEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\ShopEvents
- */
 class BeforeModelDeleteEvent extends Event
 {
     const NAME = self::class;

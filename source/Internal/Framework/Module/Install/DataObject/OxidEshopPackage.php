@@ -7,9 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject;
 
-/**
- * @internal
- */
 class OxidEshopPackage
 {
     /**

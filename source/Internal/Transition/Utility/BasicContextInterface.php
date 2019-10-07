@@ -8,7 +8,8 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 /**
  * Contains necessary methods to provide basic information about the application.
- * @internal
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface BasicContextInterface
 {

@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
-/**
- * @internal
- */
 class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
     /**

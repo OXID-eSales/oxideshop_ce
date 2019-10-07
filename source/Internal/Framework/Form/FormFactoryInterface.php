@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Form;
 
-/**
- * @internal
- */
 interface FormFactoryInterface
 {
     /**

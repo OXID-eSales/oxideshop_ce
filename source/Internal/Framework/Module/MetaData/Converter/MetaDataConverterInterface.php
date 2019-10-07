@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter;
 
-/**
- * @internal
- */
 interface MetaDataConverterInterface
 {
     public function convert(array $metaData): array;

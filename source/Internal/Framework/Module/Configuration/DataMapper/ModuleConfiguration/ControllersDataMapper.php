@@ -10,9 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
-/**
- * @internal
- */
 class ControllersDataMapper implements ModuleConfigurationDataMapperInterface
 {
     public const MAPPING_KEY = 'controllers';

@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\PsrLoggerConfigurationInterface;
 use Psr\Log\LogLevel;
 
-/**
- * @internal
- */
 class PsrLoggerConfigurationValidator implements LoggerConfigurationValidatorInterface
 {
     /**

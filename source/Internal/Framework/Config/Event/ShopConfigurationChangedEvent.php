@@ -10,8 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ShopConfigurationChangedEvent
- *
  * @package OxidEsales\EshopCommunity\Internal\Framework\Config\Event
  */
 class ShopConfigurationChangedEvent extends Event

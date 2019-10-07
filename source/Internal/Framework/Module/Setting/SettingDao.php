@@ -15,9 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInte
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-/**
- * @internal
- */
 class SettingDao implements SettingDaoInterface
 {
     /**

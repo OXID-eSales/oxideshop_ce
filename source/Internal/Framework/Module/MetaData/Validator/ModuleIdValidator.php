@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
 
-/**
- * @internal
- */
 class ModuleIdValidator implements MetaDataValidatorInterface
 {
     /**

@@ -14,10 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormFieldsConfigurationDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-/**
- * Class ContactFormConfigurationFactory
- * @internal
- */
 class ContactFormConfigurationFactory implements FormConfigurationFactoryInterface
 {
     /**

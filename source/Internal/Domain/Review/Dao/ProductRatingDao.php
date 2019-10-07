@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDat
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
-/**
- * @internal
- */
 class ProductRatingDao implements ProductRatingDaoInterface
 {
     /**

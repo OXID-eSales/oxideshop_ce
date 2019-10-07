@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper;
 
 use Psr\Log\LoggerInterface;
 
-/**
- * @internal
- */
 class LoggerWrapper implements LoggerInterface
 {
     /**

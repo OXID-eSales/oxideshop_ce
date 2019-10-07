@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Storage;
 
-/**
- * @internal
- */
 interface FileStorageFactoryInterface
 {
     public function create(string $filePath): ArrayStorageInterface;

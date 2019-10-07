@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 
-/**
- * @internal
- */
 interface ShopConfigurationDataMapperInterface
 {
     /**

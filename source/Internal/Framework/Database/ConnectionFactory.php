@@ -14,8 +14,6 @@ use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 /**
  * Factory for the Symfony DI container to fetch the database
  * connection.
- *
- * @internal
  */
 class ConnectionFactory
 {

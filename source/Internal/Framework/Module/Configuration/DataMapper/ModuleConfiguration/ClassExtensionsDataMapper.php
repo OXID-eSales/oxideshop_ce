@@ -10,9 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
-/**
- * @internal
- */
 class ClassExtensionsDataMapper implements ModuleConfigurationDataMapperInterface
 {
     public const MAPPING_KEY = 'classExtensions';

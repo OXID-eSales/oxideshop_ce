@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
-/**
- * @internal
- */
 class DICallWrapper
 {
     const METHOD_KEY = 'method';

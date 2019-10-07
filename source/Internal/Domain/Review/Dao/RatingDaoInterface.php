@@ -9,10 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
-/**
- * Interface RatingDaoInterface
- * @internal
- */
 interface RatingDaoInterface
 {
     /**

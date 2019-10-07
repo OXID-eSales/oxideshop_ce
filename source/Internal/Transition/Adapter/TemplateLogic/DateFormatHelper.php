@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
-/**
- * Class DateFormatHelper
- *
- * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
- */
 class DateFormatHelper
 {
 

@@ -8,10 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * Interface ReviewAndRatingMergingServiceInterface
- * @internal
- */
 interface ReviewAndRatingMergingServiceInterface
 {
     /**

@@ -10,9 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
-/**
- * @internal
- */
 class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 {
     /**

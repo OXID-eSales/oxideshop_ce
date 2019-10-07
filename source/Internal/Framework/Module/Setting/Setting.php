@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
 
-/**
- * @internal
- */
 class Setting
 {
     /**

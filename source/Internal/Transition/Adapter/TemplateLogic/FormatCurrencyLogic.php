@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 use stdClass;
 
-/**
- * Class FormatCurrencyLogic
- */
 class FormatCurrencyLogic
 {
 

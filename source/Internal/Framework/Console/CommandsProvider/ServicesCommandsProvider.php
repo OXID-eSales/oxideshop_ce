@@ -10,10 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Console\AbstractShopAwareComman
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * Provides commands as services.
- * @internal
- */
 class ServicesCommandsProvider implements CommandsProviderInterface
 {
     /**

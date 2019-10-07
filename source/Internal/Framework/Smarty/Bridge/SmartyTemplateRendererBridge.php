@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
-/**
- * Class SmartyTemplateRendererBridge
- */
 class SmartyTemplateRendererBridge implements TemplateRendererBridgeInterface
 {
     /**

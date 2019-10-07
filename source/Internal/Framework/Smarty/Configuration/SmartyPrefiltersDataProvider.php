@@ -8,10 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
-/**
- * Class SmartyPrefiltersDataProvider
- * @package OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration
- */
 class SmartyPrefiltersDataProvider implements SmartyPrefiltersDataProviderInterface
 {
     /**

@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 
-/**
- * @internal
- */
 class ProductRatingDataMapper implements ProductRatingDataMapperInterface
 {
     /**

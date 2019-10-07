@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service;
 
-/**
- * @internal
- */
 interface MetaDataSchemataProviderInterface
 {
     /**

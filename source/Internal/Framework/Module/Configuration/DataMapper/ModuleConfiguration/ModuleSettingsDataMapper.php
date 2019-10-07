@@ -10,9 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 
-/**
- * @internal
- */
 class ModuleSettingsDataMapper implements ModuleConfigurationDataMapperInterface
 {
     public const MAPPING_KEY = 'moduleSettings';

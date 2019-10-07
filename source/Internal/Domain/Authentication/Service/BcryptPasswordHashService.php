@@ -9,11 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface;
 
-/**
- * Class BcryptPasswordHashService
- *
- * @internal
- */
 class BcryptPasswordHashService implements PasswordHashServiceInterface
 {
     /**

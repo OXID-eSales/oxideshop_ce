@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 
-/**
- * @internal
- */
 class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperInterface
 {
     /**

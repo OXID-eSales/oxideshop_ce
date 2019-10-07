@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 
-/**
- * @internal
- */
 interface ActiveClassExtensionChainResolverInterface
 {
     /**

@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * @internal
- */
 class ProjectYamlChangedEvent extends Event
 {
     const NAME = self::class;

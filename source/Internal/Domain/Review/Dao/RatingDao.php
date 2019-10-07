@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
-/**
- * @internal
- */
 class RatingDao implements RatingDaoInterface
 {
     /**

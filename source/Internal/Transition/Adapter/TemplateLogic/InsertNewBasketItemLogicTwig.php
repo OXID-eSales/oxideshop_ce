@@ -8,11 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 use Twig\Environment;
 
-/**
- * Class InsertNewBasketItemLogicTwig
- *
- * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
- */
 class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
 {
     /**

@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-/**
- * @internal
- */
 class ModuleConfigurationDaoBridge implements ModuleConfigurationDaoBridgeInterface
 {
     /**

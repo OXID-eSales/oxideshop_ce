@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
-/**
- * Interface SmartyPluginsDataProviderInterface
- * @package OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration
- */
 interface SmartyPluginsDataProviderInterface
 {
     /**

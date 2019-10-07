@@ -8,10 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 
-/**
- * Interface ProductDaoInterface
- * @internal
- */
 interface ProductRatingDaoInterface
 {
     /**

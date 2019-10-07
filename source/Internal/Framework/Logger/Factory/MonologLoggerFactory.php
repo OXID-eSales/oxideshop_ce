@@ -15,9 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologCon
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\LoggerConfigurationValidatorInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * @internal
- */
 class MonologLoggerFactory implements LoggerFactoryInterface
 {
     /**

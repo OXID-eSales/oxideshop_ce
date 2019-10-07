@@ -8,10 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\TemplateFileNotFoundException;
 
-/**
- * Class TemplateLoader
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating
- */
 class TemplateLoader implements TemplateLoaderInterface
 {
     /**

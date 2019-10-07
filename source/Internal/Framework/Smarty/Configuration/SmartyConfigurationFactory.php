@@ -8,11 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
-/**
- * Class SmartyConfigurationFactory
- *
- * @package OxidEsales\EshopCommunity\Internal\Smarty
- */
 class SmartyConfigurationFactory implements SmartyConfigurationFactoryInterface
 {
     /**

@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 
-/**
- * @internal
- */
 interface ProjectYamlDaoInterface
 {
     /**

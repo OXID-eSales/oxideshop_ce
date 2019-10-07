@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
-/**
-  * @internal
- */
 class RatingCalculatorService implements RatingCalculatorServiceInterface
 {
     /**

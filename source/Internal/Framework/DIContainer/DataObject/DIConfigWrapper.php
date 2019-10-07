@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingSe
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 
-/**
- * @internal
- */
 class DIConfigWrapper
 {
     const SERVICE_SECTION = 'services';

@@ -5,11 +5,6 @@
  */
 namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
-/**
- * Trait ModelChangeEventTrait
- *
- * @package OxidEsales\EshopCommunity\Internal\ShopEvents
- */
 trait ModelChangeEventTrait
 {
     /**

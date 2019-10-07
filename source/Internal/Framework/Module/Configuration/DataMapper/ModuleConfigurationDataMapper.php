@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
-/**
- * @internal
- */
 class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInterface
 {
     /** @var ModuleConfigurationDataMapperInterface[] */

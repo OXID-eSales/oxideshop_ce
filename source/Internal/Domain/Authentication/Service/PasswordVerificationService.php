@@ -8,11 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface;
 
-/**
- * Class PasswordVerificationService
- *
- * @internal
- */
 class PasswordVerificationService implements PasswordVerificationServiceInterface
 {
     /**

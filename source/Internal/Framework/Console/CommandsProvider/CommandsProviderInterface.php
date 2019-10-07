@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider;
 
-/**
- * Provides commands classes.
- * @internal
- */
 interface CommandsProviderInterface
 {
     /**

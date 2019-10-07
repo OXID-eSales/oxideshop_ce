@@ -9,11 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class BeforeModelUpdateEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\ShopEvents
- */
 class BeforeModelUpdateEvent extends Event
 {
     const NAME = self::class;

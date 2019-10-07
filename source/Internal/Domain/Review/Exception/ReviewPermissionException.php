@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Exception;
 
-/**
-  * @internal
- */
 class ReviewPermissionException extends \Exception
 {
 }

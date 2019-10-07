@@ -36,6 +36,7 @@ class UserRatingBridge implements UserRatingBridgeInterface
      * @param string $ratingId
      *
      * @throws RatingPermissionException
+     * @throws EntryDoesNotExistDaoException
      */
     public function deleteRating($userId, $ratingId)
     {

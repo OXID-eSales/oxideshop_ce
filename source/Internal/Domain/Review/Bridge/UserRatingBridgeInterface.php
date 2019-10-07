@@ -6,6 +6,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionException;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+
 /**
  * @stable
  * @see OxidEsales/EshopCommunity/Internal/README.md
@@ -17,6 +20,9 @@ interface UserRatingBridgeInterface
      *
      * @param string $userId
      * @param string $ratingId
+     *
+     * @throws RatingPermissionException
+     * @throws EntryDoesNotExistDaoException
      */
     public function deleteRating($userId, $ratingId);
 }

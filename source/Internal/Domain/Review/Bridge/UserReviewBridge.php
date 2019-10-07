@@ -36,6 +36,7 @@ class UserReviewBridge implements UserReviewBridgeInterface
      * @param string $reviewId
      *
      * @throws ReviewPermissionException
+     * @throws EntryDoesNotExistDaoException
      */
     public function deleteReview($userId, $reviewId)
     {

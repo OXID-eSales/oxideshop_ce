@@ -40,6 +40,7 @@ interface BasicContextInterface
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function getEdition(): string;
 

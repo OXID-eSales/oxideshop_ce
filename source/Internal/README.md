@@ -18,18 +18,18 @@ keep them stable for patch versions, because nobody should be afraid to install 
 
 ##### Container
 
-Consists of all classes that handling dependency injection container
+Consists of all classes that enable traditional code to access throw container to `Internal` namespace.
 
 ##### Domain
 
-Consists of all packages that directly works with business logic
+Consists of all packages that directly works with business logic.
 
 ##### Framework
 
-Consists of all technical stuff mostly classes that related to the core
+Consists of Application infrastructure classes that not include business logic.
 
 ##### Transition
 
-Consists of classes that handling with traditional code
+Consists of all classes that enable `Internal` namespace to access traditional code.
 
 For more information check the developer documentation.

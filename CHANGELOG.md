@@ -83,12 +83,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - oe-console command: oe:module:activate-configured-modules
- - Added new parameter to `executeQuery` method in `SeoEncoder` which allows to pass prepared statements parameters
+- Added new parameter to `executeQuery` method in `SeoEncoder` which allows to pass prepared statements parameters
+- `OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface`  
  
 ### Changed
 - Most of SELECT, DELETE, UPDATE and INSERT queries do use prepared statements
 - Use 301(moved permanently) redirect on missing slash in the url - we had 302(moved temporary) earlier [PR-722](https://github.com/OXID-eSales/oxideshop_ce/pull/722)
 - Updated jQuery library in admin panel to 3.4.1
+
+### Deprecated
+- `OxidEsales\EshopCommunity\Core\DatabaseProvider`
+- `OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database`
+- `OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet`
+- `OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface`
+- `OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface`
 
 ### Removed
 - Support of GD1 library dropped [PR-672](https://github.com/OXID-eSales/oxideshop_ce/pull/672)
@@ -97,9 +105,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Metadata 1.2 support
-
+- Fix issue with fetch_mode_changing. [Bug 6892](https://bugs.oxid-esales.com/view.php?id=6892)
+ 
 ### Security
-- [Bug 6698](https://bugs.oxid-esales.com/view.php?id=6698)
+ - [Bug 6698](https://bugs.oxid-esales.com/view.php?id=6698)
  
 ## [6.4.0] - 2019-08-02
 

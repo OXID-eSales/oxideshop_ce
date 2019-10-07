@@ -33,6 +33,7 @@ class QueryBuilderFactoryTest extends \PHPUnit\Framework\TestCase
     {
         $connection = $this
             ->getMockBuilder(Connection::class)
+            ->setMethods(['setFetchMode'])
             ->disableOriginalConstructor()
             ->getMock();
 

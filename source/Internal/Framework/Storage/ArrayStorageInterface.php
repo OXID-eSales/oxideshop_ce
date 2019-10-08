@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Storage;
 
-/**
- * @internal
- */
 interface ArrayStorageInterface
 {
     /**

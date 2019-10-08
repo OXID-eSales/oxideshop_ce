@@ -11,9 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class ThemeSettingChangedEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Theme\Event
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class ThemeSettingChangedEvent extends Event
 {

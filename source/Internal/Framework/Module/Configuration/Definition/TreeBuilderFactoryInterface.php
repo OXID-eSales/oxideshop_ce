@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Defi
 
 use Symfony\Component\Config\Definition\NodeInterface;
 
-/**
- * @internal
- */
 interface TreeBuilderFactoryInterface
 {
     /**

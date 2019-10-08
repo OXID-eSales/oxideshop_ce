@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 
-/**
- * @internal
- */
 class EventsValidator implements ModuleConfigurationValidatorInterface
 {
     /** @var array $validEvents */

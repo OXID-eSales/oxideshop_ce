@@ -10,10 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
-/**
-  *
- * @internal
- */
 class ContainerFactory
 {
     /**

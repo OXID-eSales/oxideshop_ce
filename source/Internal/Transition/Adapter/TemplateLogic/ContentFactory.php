@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Application\Model\Content;
 
-/**
- * Class ContentFactory
- */
 class ContentFactory
 {
 

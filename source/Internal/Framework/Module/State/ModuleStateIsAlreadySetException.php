@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\State;
 
-/**
- * @internal
- */
 class ModuleStateIsAlreadySetException extends \Exception
 {
 }

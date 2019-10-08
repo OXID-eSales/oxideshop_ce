@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service;
 
-/**
- * Class PasswordVerificationService
- *
- * @internal
- */
 interface PasswordVerificationServiceInterface
 {
     /**

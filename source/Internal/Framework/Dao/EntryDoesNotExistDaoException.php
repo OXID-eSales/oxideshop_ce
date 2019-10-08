@@ -7,7 +7,8 @@
 namespace OxidEsales\EshopCommunity\Internal\Framework\Dao;
 
 /**
- * @internal
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class EntryDoesNotExistDaoException extends \Exception
 {

@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModule
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * @internal
- */
 class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
 {
     /**

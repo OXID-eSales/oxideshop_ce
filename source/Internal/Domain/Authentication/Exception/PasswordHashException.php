@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception;
 
-/**
- * Class PasswordHashException
- */
 class PasswordHashException extends \Exception
 {
 }

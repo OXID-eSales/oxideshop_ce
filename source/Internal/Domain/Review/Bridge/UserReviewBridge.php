@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserReviewServiceIn
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewPermissionException;
 use OxidEsales\Eshop\Application\Model\Review;
 
-/**
-  * @internal
- */
 class UserReviewBridge implements UserReviewBridgeInterface
 {
     /**
@@ -39,6 +36,7 @@ class UserReviewBridge implements UserReviewBridgeInterface
      * @param string $reviewId
      *
      * @throws ReviewPermissionException
+     * @throws EntryDoesNotExistDaoException
      */
     public function deleteReview($userId, $reviewId)
     {

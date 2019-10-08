@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception;
 
-/**
- * Class MissingUpdateCallException
- *
- * @package OxidEsales\EshopCommunity\Internal\DIProjectConfig\Exception
- */
 class MissingUpdateCallException extends \Exception
 {
 }

@@ -12,11 +12,6 @@ use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\ShopControl;
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class BeforeHeadersSendEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\ShopEvents
- */
 class BeforeHeadersSendEvent extends Event
 {
     const NAME = self::class;

@@ -12,11 +12,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Class EventLoggingSubscriber
- *
- * @package OxidEsales\EshopCommunity\Internal\ProjectDIConfig\EventSubscriber
- */
 class EventLoggingSubscriber implements EventSubscriberInterface
 {
 

@@ -8,13 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 
-/**
- * Interface ModuleFilesInstallerInterface
- *
- * @internal
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Install
- */
 interface ModuleFilesInstallerInterface
 {
     /**

@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\SettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
 
-/**
- * @internal
- */
 class ModuleSettingBooleanValidator implements MetaDataValidatorInterface
 {
     private const ALLOWED_VALUES = [

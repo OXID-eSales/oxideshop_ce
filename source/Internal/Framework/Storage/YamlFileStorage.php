@@ -12,9 +12,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Lock\Factory;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * Class YamlFileDao
- */
 class YamlFileStorage implements ArrayStorageInterface
 {
     /**

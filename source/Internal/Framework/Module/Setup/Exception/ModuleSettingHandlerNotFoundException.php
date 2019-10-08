@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception;
 
-/**
- * @internal
- */
 class ModuleSettingHandlerNotFoundException extends \Exception
 {
 }

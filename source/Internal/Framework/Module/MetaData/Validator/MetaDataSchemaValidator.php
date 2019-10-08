@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataSchemataProviderInterface;
 
-/**
- * @internal
- */
 class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
 {
     /**

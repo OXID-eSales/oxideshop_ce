@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception;
 
-/**
- * @internal
- */
 class SystemServiceOverwriteException extends \Exception
 {
 }

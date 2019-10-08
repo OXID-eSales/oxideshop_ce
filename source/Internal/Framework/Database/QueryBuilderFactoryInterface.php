@@ -9,7 +9,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 /**
- * @internal
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface QueryBuilderFactoryInterface
 {

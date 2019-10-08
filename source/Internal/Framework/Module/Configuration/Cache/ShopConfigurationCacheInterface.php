@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cach
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 
-/**
- * @internal
- */
 interface ShopConfigurationCacheInterface
 {
     public function put(int $shopId, ShopConfiguration $configuration): void;

@@ -10,9 +10,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 
-/**
- * @internal
- */
 class TemplateBlocksDataMapper implements ModuleConfigurationDataMapperInterface
 {
     public const MAPPING_KEY = 'templateBlocks';

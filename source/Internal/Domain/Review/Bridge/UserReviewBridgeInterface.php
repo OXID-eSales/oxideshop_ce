@@ -6,9 +6,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewPermissionException;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+
 /**
- * Interface UserReviewBridgeInterface
- * @internal
+ * @stable
+ * @see StableAnnotation
  */
 interface UserReviewBridgeInterface
 {
@@ -17,6 +20,9 @@ interface UserReviewBridgeInterface
      *
      * @param string $userId
      * @param string $reviewId
+     *
+     * @throws ReviewPermissionException
+     * @throws EntryDoesNotExistDaoException
      */
     public function deleteReview($userId, $reviewId);
 }

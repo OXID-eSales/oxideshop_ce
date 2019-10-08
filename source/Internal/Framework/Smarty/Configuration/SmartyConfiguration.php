@@ -6,11 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
-/**
- * Class SmartyConfiguration
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration
- */
 class SmartyConfiguration implements SmartyConfigurationInterface
 {
     /**

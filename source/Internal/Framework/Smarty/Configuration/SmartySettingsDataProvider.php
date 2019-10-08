@@ -9,10 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
-/**
- * Class SmartySettingsDataProvider
- * @package OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration
- */
 class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
 {
     /**

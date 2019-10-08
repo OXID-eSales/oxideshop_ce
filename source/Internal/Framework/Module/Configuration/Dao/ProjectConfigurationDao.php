@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @internal
- */
 class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
 {
     /**

@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception;
 
-/**
- * @internal
- */
 class ShopConfigurationNotFoundException extends \Exception
 {
 

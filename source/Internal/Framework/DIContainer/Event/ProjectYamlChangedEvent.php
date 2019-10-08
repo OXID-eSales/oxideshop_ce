@@ -9,7 +9,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * @internal
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class ProjectYamlChangedEvent extends Event
 {

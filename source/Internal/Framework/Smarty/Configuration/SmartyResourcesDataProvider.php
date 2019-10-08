@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
-/**
- * Class SmartyResourcesDataProvider
- * @package OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration
- */
 class SmartyResourcesDataProvider implements SmartyResourcesDataProviderInterface
 {
     /**

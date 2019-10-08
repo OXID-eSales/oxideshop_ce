@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfi
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * @internal
- */
 class LoggerServiceFactory
 {
     /**

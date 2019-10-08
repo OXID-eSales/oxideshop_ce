@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceIn
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionException;
 use OxidEsales\Eshop\Application\Model\Rating;
 
-/**
-  * @internal
- */
 class UserRatingBridge implements UserRatingBridgeInterface
 {
     /**
@@ -39,6 +36,7 @@ class UserRatingBridge implements UserRatingBridgeInterface
      * @param string $ratingId
      *
      * @throws RatingPermissionException
+     * @throws EntryDoesNotExistDaoException
      */
     public function deleteRating($userId, $ratingId)
     {

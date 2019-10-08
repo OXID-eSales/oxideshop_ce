@@ -11,10 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConf
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
-/**
- * Class SmartyEngineFactory
- * @package OxidEsales\EshopCommunity\Internal\Smarty
- */
 class SmartyEngineFactory implements TemplateEngineFactoryInterface
 {
     /**

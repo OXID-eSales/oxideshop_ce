@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
 
-/**
- * @internal
- */
 class ModuleSettingsBooleanConverter implements MetaDataConverterInterface
 {
     private const CONVERSION_MAP = [

@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Container;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
-/**
- * @internal
- */
 class ContainerBuilderFactory
 {
     /**

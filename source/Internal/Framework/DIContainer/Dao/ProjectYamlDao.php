@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * @internal
- */
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
     /**

@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge;
 
-/**
- * Interface SmartyEngineBridgeInterface
- * @internal
- */
 interface SmartyEngineBridgeInterface
 {
     /**

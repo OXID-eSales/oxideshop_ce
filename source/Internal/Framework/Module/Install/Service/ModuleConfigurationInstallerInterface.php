@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
-/**
- * @internal
- */
 interface ModuleConfigurationInstallerInterface
 {
     /**

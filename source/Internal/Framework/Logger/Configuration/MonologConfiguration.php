@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
-/**
- * @internal
- */
 class MonologConfiguration implements MonologConfigurationInterface
 {
     /**

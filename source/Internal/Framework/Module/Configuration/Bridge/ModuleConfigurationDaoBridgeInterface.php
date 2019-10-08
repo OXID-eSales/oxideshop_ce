@@ -9,7 +9,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Brid
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
- * @internal
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface ModuleConfigurationDaoBridgeInterface
 {

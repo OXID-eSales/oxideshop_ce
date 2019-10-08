@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject;
 
-/**
- * @internal
- */
 class ShopSettingType
 {
     const BOOLEAN           = 'bool';

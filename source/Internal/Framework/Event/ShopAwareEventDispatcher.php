@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Event;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-/**
- * Class ShopAwareEventDispatcher
- */
 class ShopAwareEventDispatcher extends EventDispatcher
 {
     /**

@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge;
 
-/**
- * @internal
- */
 class AdminThemeBridge implements AdminThemeBridgeInterface
 {
     /**

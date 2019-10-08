@@ -13,15 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 
-/**
- * Class SmartyPluginDirectoriesModuleSettingValidator
- *
- * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
- *
- * @ignore   This class will not be included in documentation.
- *
- */
 class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorInterface
 {
     /**

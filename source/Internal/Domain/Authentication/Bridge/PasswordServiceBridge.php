@@ -10,7 +10,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordHas
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationServiceInterface;
 
 /**
- * @internal
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class PasswordServiceBridge implements PasswordServiceBridgeInterface
 {

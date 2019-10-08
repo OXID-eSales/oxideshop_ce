@@ -11,9 +11,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Exception\InvalidShopSet
 use function unserialize;
 use function serialize;
 
-/**
- * @internal
- */
 class ShopSettingEncoder implements ShopSettingEncoderInterface
 {
     /**

@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 
-/**
- * @internal
- */
 interface MetaDataProviderInterface
 {
     /**

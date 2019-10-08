@@ -7,9 +7,8 @@
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
 
 /**
- * Class ModuleSetupEvent
- *
- * @internal
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class BeforeModuleDeactivationEvent extends ModuleSetupEvent
 {

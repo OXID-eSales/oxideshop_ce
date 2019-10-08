@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 
-/**
- * Interface ContactFormBridgeInterface
- */
 interface ContactFormBridgeInterface
 {
     /**

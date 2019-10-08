@@ -15,10 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Form\FormValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfigurationInterface;
 
-/**
- * Class ContactFormFactory
- * @internal
- */
 class ContactFormFactory implements FormFactoryInterface
 {
     /**

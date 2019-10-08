@@ -10,9 +10,6 @@ use PDO;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
-/**
- * @internal
- */
 class QueryBuilderFactory implements QueryBuilderFactoryInterface
 {
     /**

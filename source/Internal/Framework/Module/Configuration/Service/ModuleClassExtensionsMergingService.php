@@ -13,9 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
 
-/**
- * @internal
- */
 class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergingServiceInterface
 {
     /**

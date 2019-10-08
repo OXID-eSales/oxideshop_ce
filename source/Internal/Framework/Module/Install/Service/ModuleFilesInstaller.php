@@ -13,11 +13,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Webmozart\PathUtil\Path;
 
-/**
- * Class ModuleFilesInstaller
- *
- * @internal
- */
 class ModuleFilesInstaller implements ModuleFilesInstallerInterface
 {
     /** @var BasicContextInterface $context */

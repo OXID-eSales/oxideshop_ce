@@ -11,9 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * Class SettingChangedEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event
+ * @stable
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class SettingChangedEvent extends Event
 {

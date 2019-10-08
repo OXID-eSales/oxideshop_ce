@@ -8,11 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 use Smarty;
 
-/**
- * Class InsertNewBasketItemLogicSmarty
- *
- * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic
- */
 class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
 {
     /**

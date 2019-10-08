@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
 
-/**
- * Class SmartyBuilder
- * @package OxidEsales\EshopCommunity\Internal\Smarty
- */
 class SmartyBuilder implements SmartyBuilderInterface
 {
     /**

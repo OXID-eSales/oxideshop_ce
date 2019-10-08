@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command activates module by module id.
- * @internal
  */
 class ModuleActivateCommand extends Command
 {

@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * @internal
- */
 abstract class ModuleSetupEvent extends Event
 {
     /** @var int */

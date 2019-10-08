@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
-/**
- * Interface TemplateEngineFactoryInterface
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating
- */
 interface TemplateEngineFactoryInterface
 {
     /**

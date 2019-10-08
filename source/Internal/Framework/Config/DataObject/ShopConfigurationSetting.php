@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject;
 
-/**
- * @internal
- */
 class ShopConfigurationSetting
 {
     const MODULE_CLASS_EXTENSIONS           = 'aModuleExtensions';

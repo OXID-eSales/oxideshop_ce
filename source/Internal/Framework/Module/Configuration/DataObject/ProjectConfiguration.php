@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 use DomainException;
 
-/**
- * @internal
- */
 class ProjectConfiguration
 {
     /** @var ShopConfiguration[] */

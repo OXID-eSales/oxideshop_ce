@@ -18,9 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDat
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Webmozart\PathUtil\Path;
 
-/**
- * @internal
- */
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
     /**

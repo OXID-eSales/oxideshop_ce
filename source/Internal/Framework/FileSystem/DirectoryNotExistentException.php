@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem;
 
-/**
- * @internal
- */
 class DirectoryNotExistentException extends \Exception
 {
 }

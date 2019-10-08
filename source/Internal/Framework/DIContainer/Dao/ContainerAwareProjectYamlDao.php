@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-/**
- * @internal
- */
 class ContainerAwareProjectYamlDao extends ProjectYamlDao
 {
     /**

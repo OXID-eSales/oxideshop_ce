@@ -13,9 +13,6 @@ use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 
-/**
- * @internal
- */
 class ShopAdapter implements ShopAdapterInterface
 {
     /**

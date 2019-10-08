@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\PsrLoggerConfigurationInterface;
 
-/**
- * @internal
- */
 interface LoggerConfigurationValidatorInterface
 {
     /**

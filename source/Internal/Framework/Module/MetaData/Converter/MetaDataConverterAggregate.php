@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter;
 
-/**
- * @internal
- */
 class MetaDataConverterAggregate implements MetaDataConverterInterface
 {
     /**

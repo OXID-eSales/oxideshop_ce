@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPoli
 
 /**
  * Hashes with the ARGON2I algorithm
- *
- * @internal
- *
  */
 class Argon2IPasswordHashService implements PasswordHashServiceInterface
 {

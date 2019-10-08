@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
-/**
- * @internal
- */
 class ModuleTargetPathIsMissingException extends \Exception
 {
 

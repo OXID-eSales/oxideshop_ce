@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Service;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterface;
 
-/**
-  * @internal
- */
 class ProductRatingService implements ProductRatingServiceInterface
 {
     /**

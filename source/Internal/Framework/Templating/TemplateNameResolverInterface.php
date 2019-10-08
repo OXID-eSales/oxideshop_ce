@@ -6,10 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 
-/**
- * Interface TemplateNameResolverInterface
- * @internal
- */
 interface TemplateNameResolverInterface
 {
     /**

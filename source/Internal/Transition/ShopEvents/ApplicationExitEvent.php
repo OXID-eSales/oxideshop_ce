@@ -10,11 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * Class ApplicationExitEvent
- *
- * @package OxidEsales\EshopCommunity\Internal\ShopEvents
- */
 class ApplicationExitEvent extends Event
 {
     const NAME = self::class;

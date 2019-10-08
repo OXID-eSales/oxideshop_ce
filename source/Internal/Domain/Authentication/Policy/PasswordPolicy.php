@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\PasswordPolicyException;
 
-/**
- * Class PasswordPolicy
- */
 class PasswordPolicy implements PasswordPolicyInterface
 {
     /**

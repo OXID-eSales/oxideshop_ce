@@ -6,9 +6,6 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration;
 
-/**
- * @internal
- */
 class TemplateBlocksMappingKeys
 {
     public const SHOP_TEMPLATE_PATH = 'template';

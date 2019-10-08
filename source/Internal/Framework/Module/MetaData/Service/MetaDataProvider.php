@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Inval
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @internal
- */
 class MetaDataProvider implements MetaDataProviderInterface
 {
     const METADATA_ID = 'id';

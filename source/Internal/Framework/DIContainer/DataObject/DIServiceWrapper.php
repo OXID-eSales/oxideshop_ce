@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingUpdateCallException;
 
-/**
- * @internal
- */
 class DIServiceWrapper
 {
     const CALLS_SECTION = 'calls';

@@ -8,9 +8,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingServiceInterface;
 
-/**
- * @internal
- */
 class ProductRatingBridge implements ProductRatingBridgeInterface
 {
     /**

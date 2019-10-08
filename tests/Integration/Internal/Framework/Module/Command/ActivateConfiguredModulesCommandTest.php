@@ -9,9 +9,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use Symfony\Component\Console\Input\ArrayInput;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -28,6 +32,8 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->databaseRestorer = new DatabaseRestorer();
         $this->databaseRestorer->dumpDB(__CLASS__);
 
+        $this->installTestModule();
+
         parent::setUp();
     }
 
@@ -35,57 +41,95 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
     {
         $this->databaseRestorer->restoreDB(__CLASS__);
 
+        $this->cleanupTestData();
+
         parent::tearDown();
     }
 
-    public function testActivateProperModulesInAllShops(): void
+    public function testModuleActivation(): void
     {
-        $this->prepareTestModuleConfigurations();
+        $this->prepareTestModuleConfigurations(true, 1, []);
 
         $this->executeCommand([
-            'command' => 'oe:module:activate-configured-modules',
+            'command' => 'oe:module:apply-configuration',
+        ]);
+
+        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+        $this->assertTrue(
+            $moduleStateService->isActive($this->moduleId, 1)
+        );
+    }
+
+    public function testModuleDeactivation(): void
+    {
+        $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
+        $this->prepareTestModuleConfigurations(false, 1, []);
+
+        $this->executeCommand([
+            'command' => 'oe:module:apply-configuration',
+        ]);
+
+        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
+        $this->assertFalse(
+            $moduleStateService->isActive($this->moduleId, 1)
+        );
+    }
+
+    public function testModuleReactivation(): void
+    {
+        $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
+
+        $moduleSetting = new Setting();
+        $moduleSetting->setName('testSetting')->setValue(true);
+        $this->prepareTestModuleConfigurations(true, 1, [$moduleSetting]);
+
+        $this->executeCommand([
+            'command' => 'oe:module:apply-configuration',
+        ]);
+
+        $this->assertTrue(
+            $this->get(ModuleStateServiceInterface::class)->isActive($this->moduleId, 1)
+        );
+
+        $settingsDao = $this->get(SettingDaoInterface::class);
+        $settingValue = $settingsDao->get('testSetting', $this->moduleId, 1)->getValue();
+        $this->assertSame('1', $settingValue);
+    }
+
+    public function testModuleActivationInAllShops(): void
+    {
+        $this->prepareTestModuleConfigurations(true, 1, []);
+        $this->prepareTestModuleConfigurations(true, 2, []);
+
+        $this->executeCommand([
+            'command' => 'oe:module:apply-configuration',
         ]);
 
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
         $this->assertTrue(
-            $moduleStateService->isActive('toActivate', 1)
-        );
-
-        $this->assertFalse(
-            $moduleStateService->isActive('stayInactive', 1)
+            $moduleStateService->isActive($this->moduleId, 1)
         );
 
         $this->assertTrue(
-            $moduleStateService->isActive('toActivate', 2)
-        );
-
-        $this->assertFalse(
-            $moduleStateService->isActive('stayInactive', 2)
+            $moduleStateService->isActive($this->moduleId, 2)
         );
     }
 
-    private function prepareTestModuleConfigurations(): void
+    private function prepareTestModuleConfigurations(bool $isConfigured, int $shopId, array $settings): void
     {
         $moduleToActivate = new ModuleConfiguration();
         $moduleToActivate
-            ->setId('toActivate')
-            ->setPath('any')
-            ->setConfigured(true);
-
-        $moduleToStayInactive = new ModuleConfiguration();
-        $moduleToStayInactive
-            ->setId('stayInactive')
-            ->setPath('any')
-            ->setConfigured(false);
+            ->setId($this->moduleId)
+            ->setPath(Path::join($this->modulesPath, $this->moduleId))
+            ->setModuleSettings($settings)
+            ->setConfigured($isConfigured);
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleToActivate);
-        $shopConfiguration->addModuleConfiguration($moduleToStayInactive);
 
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save($shopConfiguration, 1);
-        $shopConfigurationDao->save($shopConfiguration, 2);
+        $shopConfigurationDao->save($shopConfiguration, $shopId);
     }
 
     private function executeCommand(array $input): void

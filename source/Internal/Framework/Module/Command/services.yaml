@@ -17,7 +17,7 @@ services:
     tags:
     - { name: 'console.command', command: 'oe:module:install-configuration' }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ActivateConfiguredModulesCommand:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ActivateConfiguredModulesCommand
+  oxid_esales.command.apply_modules_configuration_command:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ApplyModulesConfigurationCommand
     tags:
-      - { name: 'console.command', command: 'oe:module:activate-configured-modules' }
+      - { name: 'console.command', command: 'oe:module:apply-configuration' }

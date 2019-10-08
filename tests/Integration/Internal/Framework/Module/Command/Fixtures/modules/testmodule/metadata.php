@@ -13,7 +13,10 @@ $sMetadataVersion = '2.1';
  * Module information
  */
 $aModule = array(
-    'id'           => 'testmodule',
-    'version'      => '1.0',
-    'author'       => 'OXID eSales AG',
+    'id' => 'testmodule',
+    'version' => '1.0',
+    'author' => 'OXID eSales AG',
+    'settings' => [
+        ['group' => 'test', 'name' => 'testSetting', 'type' => 'bool', 'value' => false],
+    ],
 );

@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.5.0] - Unreleased
 
 ### Added
-- oe-console command: oe:module:activate-configured-modules
+- oe-console command: oe:module:apply-configuration
 - Added new parameter to `executeQuery` method in `SeoEncoder` which allows to pass prepared statements parameters
 - `OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface`  
  

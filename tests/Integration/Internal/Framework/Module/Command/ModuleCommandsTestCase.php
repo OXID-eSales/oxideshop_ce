@@ -12,17 +12,24 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\ConsoleTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\PathUtil\Path;
 
+/**
+ * @internal
+ */
 class ModuleCommandsTestCase extends TestCase
 {
     use ContainerTrait;
     use ConsoleTrait;
+
+    protected $modulesPath = __DIR__ . '/Fixtures/modules/';
+
+    protected $moduleId = 'testmodule';
 
     /**
      * @return Application
@@ -35,10 +42,10 @@ class ModuleCommandsTestCase extends TestCase
         return $application;
     }
 
-    protected function cleanupTestData()
+    protected function cleanupTestData(): void
     {
         $fileSystem = new Filesystem();
-        $fileSystem->remove(Registry::getConfig()->getModulesDir() . '/testmodule');
+        $fileSystem->remove(Path::join(Registry::getConfig()->getModulesDir(), $this->moduleId));
 
         $activeModules = new ShopConfigurationSetting();
         $activeModules
@@ -50,22 +57,15 @@ class ModuleCommandsTestCase extends TestCase
         $this->get(ShopConfigurationSettingDaoInterface::class)->save($activeModules);
     }
 
-    protected function installModule(string $id)
+    protected function installTestModule(): void
     {
         $this
             ->get(ModuleInstallerInterface::class)
             ->install(
                 new OxidEshopPackage(
-                    $id,
-                    __DIR__ . '/Fixtures/modules/' . $id
+                    $this->moduleId,
+                    Path::join($this->modulesPath, $this->moduleId)
                 )
             );
-    }
-
-    protected function activateModule(string $id)
-    {
-        $this
-            ->get(ModuleActivationBridgeInterface::class)
-            ->activate($id, 1);
     }
 }

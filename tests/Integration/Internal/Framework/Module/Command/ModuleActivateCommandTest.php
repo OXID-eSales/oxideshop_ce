@@ -11,47 +11,51 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleActivateCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class ModuleActivateCommandTest extends ModuleCommandsTestCase
+final class ModuleActivateCommandTest extends ModuleCommandsTestCase
 {
-    public function testModuleActivation()
+    public function testModuleActivation(): void
     {
-        $moduleId = 'testmodule';
-        $this->installModule($moduleId);
+        $this->installTestModule();
 
         $consoleOutput = $this->execute(
             $this->getApplication(),
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $moduleId])
+            new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $this->moduleId])
         );
 
-        $this->assertSame(sprintf(ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED, $moduleId) . PHP_EOL, $consoleOutput);
+        $this->assertSame(
+            sprintf(ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED, $this->moduleId) . PHP_EOL,
+            $consoleOutput
+        );
 
         $module = oxNew(Module::class);
-        $module->load($moduleId);
+        $module->load($this->moduleId);
         $this->assertTrue($module->isActive());
 
         $this->cleanupTestData();
     }
 
-    public function testWhenModuleAlreadyActive()
+    public function testWhenModuleAlreadyActive(): void
     {
-        $moduleId = 'testmodule';
-        $this->installModule($moduleId);
+        $this->installTestModule();
 
-        $this->get(ModuleActivationBridgeInterface::class)->activate($moduleId, 1);
+        $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
 
         $consoleOutput = $this->execute(
             $this->getApplication(),
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $moduleId])
+            new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $this->moduleId])
         );
 
-        $this->assertSame(sprintf(ModuleActivateCommand::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId) . PHP_EOL, $consoleOutput);
+        $this->assertSame(
+            sprintf(ModuleActivateCommand::MESSAGE_MODULE_ALREADY_ACTIVE, $this->moduleId) . PHP_EOL,
+            $consoleOutput
+        );
 
         $this->cleanupTestData();
     }
 
-    public function testNonExistingModuleActivation()
+    public function testNonExistingModuleActivation(): void
     {
         $moduleId = 'test';
         $consoleOutput = $this->execute(
@@ -60,6 +64,9 @@ class ModuleActivateCommandTest extends ModuleCommandsTestCase
             new ArrayInput(['command' => 'oe:module:activate', 'module-id' => $moduleId])
         );
 
-        $this->assertSame(sprintf(ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId) . PHP_EOL, $consoleOutput);
+        $this->assertSame(
+            sprintf(ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId) . PHP_EOL,
+            $consoleOutput
+        );
     }
 }

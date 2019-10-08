@@ -11,11 +11,11 @@ services:
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
   OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
-  Monolog\Logger:
+  oxid_esales.monolog.logger:
     class: Monolog\Logger
     factory: 'OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:create'
   Psr\Log\LoggerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper
     arguments:
-      $logger: '@Monolog\Logger'
+      $logger: '@oxid_esales.monolog.logger'
     public: true

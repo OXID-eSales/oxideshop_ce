@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.2.3] - 2019-07-30
 
+### Fixed
+- Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
+
 ### Security
 - [Bug 7002](https://bugs.oxid-esales.com/view.php?id=7002)
 

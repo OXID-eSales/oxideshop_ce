@@ -3,9 +3,9 @@ services:
     autowire: true
     public: false
 
-  oxid_esales.review.product_rating_mapper:
+  OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapper
-  oxid_esales.review.rating_mapper:
+  OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapper
-  oxid_esales.review.review_mapper:
+  OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ReviewDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ReviewDataMapper

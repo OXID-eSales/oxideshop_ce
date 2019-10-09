@@ -4,10 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.2.3] - 2019-07-30
+## [6.2.4] - Unreleased
 
 ### Fixed
 - Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
+
+## [6.2.3] - 2019-07-30
 
 ### Security
 - [Bug 7002](https://bugs.oxid-esales.com/view.php?id=7002)

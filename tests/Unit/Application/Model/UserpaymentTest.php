@@ -127,16 +127,6 @@ class UserpaymentTest extends \OxidTestCase
     }
 
     /**
-     * Testing if object type is correct and payment key is correctly generated
-     */
-    public function testOxUserPayment()
-    {
-        $oUpay = oxNew('oxuserpayment');
-        $this->assertEquals('oxuserpayment', $oUpay->getClassName());
-        $this->assertEquals(oxRegistry::getUtils()->strRot13('fq45QS09_fqyx09239QQ'), $oUpay->getPaymentKey('_sPaymentKey'));
-    }
-
-    /**
      * Testing if constructor sets _blStoreCreditCardInfo from oxConfig param
      */
     public function testConstructor()
@@ -157,15 +147,6 @@ class UserpaymentTest extends \OxidTestCase
         $oUpay = oxNew('oxuserpayment');
         $oUpay->load('_testOxId');
         $this->assertEquals('Nachnahme', $oUpay->oxpayments__oxdesc->value);
-    }
-
-    /**
-     * Checking if payment encryption key is good
-     */
-    public function testGetPaymentKey()
-    {
-        $oUpay = oxNew('oxuserpayment');
-        $this->assertEquals(oxRegistry::getUtils()->strRot13('fq45QS09_fqyx09239QQ'), $oUpay->getPaymentKey());
     }
 
     /**

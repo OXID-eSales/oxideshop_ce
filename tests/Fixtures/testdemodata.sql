@@ -788,7 +788,7 @@ INSERT INTO `oxcategory2attribute` (`OXID`, `OXOBJECTID`, `OXATTRID`, `OXSORT`) 
 # Data for table `oxconfig`
 #
 INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES
-  ('ctf0430a9569214ea666264457dbb3c0', 1, '', 'blEnableDownloads', 'bool', 0x07);
+  ('ctf0430a9569214ea666264457dbb3c0', 1, '', 'blEnableDownloads', 'bool', '1');
 
 #
 # Data for table `oxcounters`

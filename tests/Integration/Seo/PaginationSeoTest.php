@@ -77,7 +77,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     protected function tearDown()
     {
         //restore theme, do it directly in database as it might be dummy 'basic' theme
-        $query = "UPDATE `oxconfig` SET `OXVARVALUE` = encode('" . $this->origTheme . "', 'fq45QS09_fqyx09239QQ') WHERE `OXVARNAME` = 'sTheme'";
+        $query = "UPDATE `oxconfig` SET `OXVARVALUE` = " . $this->origTheme . " WHERE `OXVARNAME` = 'sTheme'";
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
 
         $this->cleanRegistry();

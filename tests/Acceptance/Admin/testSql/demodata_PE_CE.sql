@@ -1,10 +1,10 @@
 SET @@session.sql_mode = '';
 
 # Activate en and de languages
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba832f744c5786a371d9df33778f956ef30fb1e8bb85d97b3b5de43e6bad688dfc6f63a8af34b33290cdd6fc889c8e77cfee0e8a17ade6b94130fda30d062d03e35d8d1bda1c2dc4dd5281fcb1c9538cf114050a3e7118e16151bfe94f5a0706d2eb3d9ff8b4a24f88963788f5dd1c33c573a1ebe3f5b06c072c6a373aaecb11755d907b50a79bbac613054871af686a7d3dbe0b6e1a3e292a109e2f5bc31bcd26ebbe42dac8c9cac3fa53c6fae3c8c7c3c113a4f1a8823d13c78c27dc WHERE `OXVARNAME` = 'aLanguageParams';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'a:2:{s:2:"de";a:4:{s:6:"baseId";i:0;s:6:"active";s:1:"1";s:4:"sort";s:1:"1";s:7:"default";b:0;}s:2:"en";a:4:{s:6:"baseId";i:1;s:6:"active";s:1:"1";s:4:"sort";s:1:"2";s:7:"default";s:1:"1";}}' WHERE `OXVARNAME` = 'aLanguageParams';
 
 # Set en as default language
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'sDefaultLang';
+UPDATE `oxconfig` SET `OXVARVALUE` = '1' WHERE `OXVARNAME` = 'sDefaultLang';
 
 # Activate all coutries
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXISOALPHA2` in ('DE', 'AT', 'CH', 'GB', 'US');
@@ -398,29 +398,29 @@ REPLACE INTO `oxobject2discount` (`OXID`,                        `OXDISCOUNTID`,
                                 ('eac5b1e16a20dd19cd8beebe1f6', 'testvoucher2',    '1003',                       'oxarticles');
 
 #updating oxconfig settings
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x07a1       WHERE `OXVARNAME` = 'dDefaultVAT';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xde         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfUseSelectlistPrice';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'bl_perfShowActionCatArticleCnt';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blOtherCountryOrder';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'blCheckTemplates';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blDisableNavBars';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blAllowUnevenAmounts';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x07         WHERE `OXVARNAME` = 'blConfirmAGB';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba222b70e349f0c9d1aba6133981af1e8d79724d7309a19dd3eed099418943829510e114c4f6ffcb2543f5856ec4fea325d58b96e406decb977395c57d7cc79eec7f9f8dd6e30e2f68d198bd9d079dbe8b4f WHERE `OXVARNAME` = 'aNrofCatArticles';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dbace29724a51b6af7d09aac117301142e91c3c5b7eed9a850f85c1e3d58739aa9ea92523f05320a95060d60d57fbb027bad88efdaa0b928ebcd6aacf58084d31dd6ed5e718b833f1079b3805d28203f284492955c82cea3405879ea7588ec610ccde56acede495 WHERE `OXVARNAME` = 'aInterfaceProfiles';
+UPDATE `oxconfig` SET `OXVARVALUE` = '19'       WHERE `OXVARNAME` = 'dDefaultVAT';
+UPDATE `oxconfig` SET `OXVARVALUE` = '0'         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'   WHERE `OXVARNAME` = 'bl_perfUseSelectlistPrice';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'false' WHERE `OXVARNAME` = 'bl_perfShowActionCatArticleCnt';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'   WHERE `OXVARNAME` = 'blOtherCountryOrder';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'false' WHERE `OXVARNAME` = 'blCheckTemplates';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'   WHERE `OXVARNAME` = 'blDisableNavBars';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'   WHERE `OXVARNAME` = 'blAllowUnevenAmounts';
+UPDATE `oxconfig` SET `OXVARVALUE` = '1'         WHERE `OXVARNAME` = 'blConfirmAGB';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'a:6:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";i:4;s:1:"2";i:5;s:1:"1";}' WHERE `OXVARNAME` = 'aNrofCatArticles';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'a:4:{s:8:"Standard";s:2:"10";s:8:"1024x768";s:2:"10";s:9:"1280x1024";s:2:"17";s:9:"1600x1200";s:2:"22";}' WHERE `OXVARNAME` = 'aInterfaceProfiles';
 DELETE FROM `oxconfig` WHERE `OXVARNAME`='blBasketExcludeEnabled';
 REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('fb54', 1, '', 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
-                       ('fh90', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
-                       ('a910', 1, '', 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
-                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
-                       ('d084', 1, '', 'iMinOrderPrice',                'str',        0xfba4),
-                       ('33bd', 1, '', 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
-                       ('3c9f', 1, '', 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
-                       ('24d5', 1, '', 'bl_rssBargain',                 'bool',       0x07),
-                       ('2bf5', 1, '', 'bl_rssRecommLists',             'bool',       0x07),
-                       ('64i5', 1, '', 'bl_rssRecommListArts',          'bool',       0x07),
+                       ('fb54', 1, '', 'perf_LoadFullVariantsInLists',  'bool',       'false'),
+                       ('fh90', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       'true'),
+                       ('a910', 1, '', 'blLoadSelectBoxAlways',         'bool',       'true'),
+                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       'true'),
+                       ('d084', 1, '', 'iMinOrderPrice',                'str',        '49'),
+                       ('33bd', 1, '', 'blOverrideZeroABCPrices',       'bool',       'true'),
+                       ('3c9f', 1, '', 'blShowOrderButtonOnTop',        'bool',       'true'),
+                       ('24d5', 1, '', 'bl_rssBargain',                 'bool',       '1'),
+                       ('2bf5', 1, '', 'bl_rssRecommLists',             'bool',       '1'),
+                       ('64i5', 1, '', 'bl_rssRecommListArts',          'bool',       '1'),
                        ('c5iu', 1, '', 'blVariantParentBuyable',        'bool',       ''),
                        ('czzz', 1, '', 'blShowVariantReviews',          'bool',       ''),
                        ('a6ba', 1, '', 'blOrderDisWithoutReg',          'bool',       ''),

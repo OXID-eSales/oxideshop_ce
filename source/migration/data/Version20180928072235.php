@@ -72,6 +72,6 @@ class Version20180928072235 extends AbstractMigration
         $facts = new Facts();
         $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
 
-        return $configFile->getVar('sConfigKey') ?? Config::DEFAULT_CONFIG_KEY;
+        return $configFile->getVar('sConfigKey') ?? (defined('Config::DEFAULT_CONFIG_KEY') ? Config::DEFAULT_CONFIG_KEY : 'fq45QS09_fqyx09239QQ');
     }
 }

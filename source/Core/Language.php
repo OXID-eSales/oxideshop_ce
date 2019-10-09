@@ -1419,7 +1419,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             ':oxvarname' => $sParamName
         ];
         $sQuery = "
-            select " . $oConfig->getDecodeValueQuery() . " as oxvarvalue
+            select oxvarvalue
             from oxconfig
             where oxvarname = :oxvarname";
 

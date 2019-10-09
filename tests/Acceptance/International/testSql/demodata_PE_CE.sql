@@ -329,35 +329,35 @@ INSERT INTO `oxwrapping` (`OXID`,         `OXSHOPID`,  `OXACTIVE`, `OXACTIVE_1`,
                          ('testwrap5',    1, 1,          0,            0,            0,           'WRAP',   '2 EN Gift Wrapping šųößлы',      '[last] DE Gift Wrapping šųößлы', 5);
 
 #updating oxconfig settings
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfUseSelectlistPrice';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'bl_perfShowActionCatArticleCnt';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blOtherCountryOrder';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'blCheckTemplates';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blDisableNavBars';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blAllowUnevenAmounts';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x07         WHERE `OXVARNAME` = 'blConfirmAGB';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x07a1       WHERE `OXVARNAME` = 'dDefaultVAT';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xde         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
-#UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba852e75e64cf5ccd4aea5675a0d492fe42584187fbf8c9b11d3b01306b7f34f3e85a640802d63112081e17db027a004c2dc41dc0f34e296365c35ff74e3bb70693767b16bd7114149643668c6b3b9e95da86203264a2444c2881030198857baaa8be9b555b284a88db85ad196bed825c4cf572b2d3b38b50619fd949938aa1d1e21a66ac76896cbf6f9d004781e610189bf1163dc03c89fb6078b WHERE `OXVARNAME` = 'aCurrencies';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba222b70e349f0c9d1aba6133981af1e8d79724d7309a19dd3eed099418943829510e114c4f6ffcb2543f5856ec4fea325d58b96e406decb977395c57d7cc79eec7f9f8dd6e30e2f68d198bd9d079dbe8b4f WHERE `OXVARNAME` = 'aNrofCatArticles';
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dbace29724a51b6af7d09aac117301142e91c3c5b7eed9a850f85c1e3d58739aa9ea92523f05320a95060d60d57fbb027bad88efdaa0b928ebcd6aacf58084d31dd6ed5e718b833f1079b3805d28203f284492955c82cea3405879ea7588ec610ccde56acede495 WHERE `OXVARNAME` = 'aInterfaceProfiles';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'  WHERE `OXVARNAME` = 'bl_perfUseSelectlistPrice';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'false' WHERE `OXVARNAME` = 'bl_perfShowActionCatArticleCnt';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'  WHERE `OXVARNAME` = 'blOtherCountryOrder';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'false' WHERE `OXVARNAME` = 'blCheckTemplates';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'  WHERE `OXVARNAME` = 'blDisableNavBars';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'true'  WHERE `OXVARNAME` = 'blAllowUnevenAmounts';
+UPDATE `oxconfig` SET `OXVARVALUE` = '1'     WHERE `OXVARNAME` = 'blConfirmAGB';
+UPDATE `oxconfig` SET `OXVARVALUE` = '19'    WHERE `OXVARNAME` = 'dDefaultVAT';
+UPDATE `oxconfig` SET `OXVARVALUE` = '0'     WHERE `OXVARNAME` = 'iNewBasketItemMessage';
+#UPDATE `oxconfig` SET `OXVARVALUE` = 'a:3:{i:0;s:38:"EUR@ 1.00@ ,@ .@ <small>EUR</small>@ 2";i:1;s:38:"GBP@ 0.68@ .@  @ <small>GBP</small>@ 2";i:2;s:38:"CHF@ 1.47@ ,@ .@ <small>CHF</small>@ 2";}' WHERE `OXVARNAME` = 'aCurrencies';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'a:6:{i:0;s:2:"10";i:1;s:2:"20";i:2;s:2:"50";i:3;s:3:"100";i:4;s:1:"2";i:5;s:1:"1";}' WHERE `OXVARNAME` = 'aNrofCatArticles';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'a:4:{s:8:"Standard";s:2:"10";s:8:"1024x768";s:2:"10";s:9:"1280x1024";s:2:"17";s:9:"1600x1200";s:2:"22";}' WHERE `OXVARNAME` = 'aInterfaceProfiles';
 
 INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('fb547ac17e4a10201.92066345', 1, '', 'perf_LoadFullVariantsInLists',  'bool',       0x7900fdf51e),
-                       ('35796d0bdbbda3bb54fcd0fb84', 1, '', 'iMinOrderPrice',                'str',        0xfba4),
-                       ('fb547ac17e4a910c8.33968384', 1, '', 'blLoadSelectBoxAlways',         'bool',       0x93ea1218),
-                       ('fb547ac17e4a97dd3.93417742', 1, '', 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
-                       ('33bd5512d7d7366681eb850502', 1, '', 'blOverrideZeroABCPrices',       'bool',       0x93ea1218),
-                       ('34d266d01313cf456a4a1d2c9f', 1, '', 'blShowOrderButtonOnTop',        'bool',       0x93ea1218),
-                       ('fb547ac17e4a5ba72.64297620', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       0x93ea1218),
-                       ('2b456gjk7156737a6edc6814c5', 1, '', 'bl_rssBargain',                 'bool',       0x07),
-                       ('2bpte85227eb159aedc68164c5', 1, '', 'bl_rssRecommLists',             'bool',       0x07),
-                       ('2b7lojk77123rtdskdj68164c5', 1, '', 'bl_rssRecommListArts',          'bool',       0x07);
+                       ('fb547ac17e4a10201.92066345', 1, '', 'perf_LoadFullVariantsInLists',  'bool',       'false'),
+                       ('35796d0bdbbda3bb54fcd0fb84', 1, '', 'iMinOrderPrice',                'str',        '49'),
+                       ('fb547ac17e4a910c8.33968384', 1, '', 'blLoadSelectBoxAlways',         'bool',       'true'),
+                       ('fb547ac17e4a97dd3.93417742', 1, '', 'blPerfNoBasketSaving',          'bool',       'true'),
+                       ('33bd5512d7d7366681eb850502', 1, '', 'blOverrideZeroABCPrices',       'bool',       'true'),
+                       ('34d266d01313cf456a4a1d2c9f', 1, '', 'blShowOrderButtonOnTop',        'bool',       'true'),
+                       ('fb547ac17e4a5ba72.64297620', 1, '', 'bl_perfLoadSelectListsInAList', 'bool',       'true'),
+                       ('2b456gjk7156737a6edc6814c5', 1, '', 'bl_rssBargain',                 'bool',       '1'),
+                       ('2bpte85227eb159aedc68164c5', 1, '', 'bl_rssRecommLists',             'bool',       '1'),
+                       ('2b7lojk77123rtdskdj68164c5', 1, '', 'bl_rssRecommListArts',          'bool',       '1');
 
 #azure theme config
 DELETE FROM `oxconfig` WHERE `OXMODULE` = 'theme:azure' AND `OXVARNAME` = 'iTopNaviCatCount';
 INSERT INTO `oxconfig` (`OXID`,                       `OXSHOPID`,   `OXMODULE`,    `OXVARNAME`,        `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('bd9f44ba4062387b0678d3ad7a', 1, 'theme:azure', 'iTopNaviCatCount', 'str',        0xb0);
+                       ('bd9f44ba4062387b0678d3ad7a', 1, 'theme:azure', 'iTopNaviCatCount', 'str',        '3');
 
 #updating smtp and email information
 UPDATE `oxshops` SET `OXPRODUCTIVE` = 0, `OXINFOEMAIL` = 'example_test@oxid-esales.dev', `OXORDEREMAIL` = 'example_test@oxid-esales.dev', `OXOWNEREMAIL` = 'example_test@oxid-esales.dev', `OXSMTP` = 'localhost', `OXDEFCAT` = '' WHERE `OXID` = 1;

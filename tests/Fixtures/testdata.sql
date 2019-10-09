@@ -1,10 +1,10 @@
 SET @@session.sql_mode = '';
 
 # Reset theme in config
-UPDATE `oxconfig` SET `OXVARVALUE` = encode('basic', 'fq45QS09_fqyx09239QQ') WHERE `OXVARNAME` = 'sTheme';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'basic' WHERE `OXVARNAME` = 'sTheme';
 
 # Activate en and de languages
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba832f744c5786a371d9df33778f9525f408b6efbc82de7c3c5ae3396caa6f8afb6864afa833b43597cad1fb8f9b8970c8e9098d10aae1be4637faa40a012a04e45a8a1cdd1b2ac3da558638600e58acf70fe8c192b668995bb533dac95be7af7d343b3a9c9b8daeaf4d637f065895346773476d667de331fe40d18765d4b98faf7375e1090587d8dd4bf98ad5005eb30666410920 WHERE `OXVARNAME` = 'aLanguageParams';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'a:2:{s:2:"de";a:3:{s:6:"baseId";i:0;s:6:"active";s:1:"1";s:4:"sort";s:1:"1";}s:2:"en";a:3:{s:6:"baseId";i:1;s:6:"active";s:1:"1";s:4:"sort";s:1:"2";}}' WHERE `OXVARNAME` = 'aLanguageParams';
 
 # Activate all coutries
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXISOALPHA2` in ('DE', 'AT', 'CH', 'GB', 'US');

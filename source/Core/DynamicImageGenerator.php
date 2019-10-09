@@ -414,13 +414,11 @@ namespace OxidEsales\EshopCommunity\Core {
 
                 // any name matching path?
                 if ($names) {
-                    $decodeField = $config->getDecodeValueQuery();
-
                     // selecting shop which image quality matches user given
                     $q = "select oxshopid
                             from oxconfig
                             where oxvarname = 'sDefaultImageQuality' and
-                       {$decodeField} = :quality";
+                            oxvarvalue = :quality";
 
                     $shopIdsArray = $db->getAll($q, [
                         ':quality' => $quality
@@ -439,7 +437,7 @@ namespace OxidEsales\EshopCommunity\Core {
                         $checkSize = "$width*$height";
 
                         // selecting config variables to check
-                        $q = "select oxvartype, {$decodeField} as oxvarvalue from oxconfig
+                        $q = "select oxvartype, oxvarvalue from oxconfig
                            where oxvarname in ( {$names} ) and oxshopid in ( {$shopIds} ) order by oxshopid";
 
                         $values = $db->getAll($q);

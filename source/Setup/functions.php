@@ -159,7 +159,6 @@ if (!class_exists("Conf", false)) {
         public function __construct()
         {
             $config = new \OxidEsales\EshopCommunity\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
-            $this->sConfigKey = $config->getVar('sConfigKey') ?: \OxidEsales\EshopCommunity\Core\Config::DEFAULT_CONFIG_KEY;
         }
     }
 }

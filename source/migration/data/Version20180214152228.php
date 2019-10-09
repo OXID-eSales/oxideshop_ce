@@ -24,7 +24,7 @@ class Version20180214152228 extends AbstractMigration
     {
         $facts = new Facts();
         $configFile = new ConfigFile($facts->getSourcePath().'/config.inc.php');
-        $configKey = !is_null($configFile->getVar('sConfigKey')) ? $configFile->getVar('sConfigKey') : Config::DEFAULT_CONFIG_KEY;
+        $configKey = $configFile->getVar('sConfigKey') ?? (defined('Config::DEFAULT_CONFIG_KEY') ? Config::DEFAULT_CONFIG_KEY : 'fq45QS09_fqyx09239QQ');
         $settingName = 'blAllowSuggestArticle';
 
         $this->addSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`)

@@ -288,8 +288,6 @@ class Database extends Core
         /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
 
-        $oConfk = new Conf();
-
         $oPdo = $this->getConnection();
 
         $blSendTechnicalInformationToOxid = true;
@@ -313,15 +311,14 @@ class Database extends Core
         // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
 
         $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                             values (:oxid, :shopId, :name, :type, ENCODE(:value, :key))");
+                                             values (:oxid, :shopId, :name, :type, :value)");
         $oInsert->execute(
             [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
                 'name' => 'blSendTechnicalInformationToOxid',
                 'type' => 'bool',
-                'value' => $blSendTechnicalInformationToOxid,
-                'key' => $oConfk->sConfigKey
+                'value' => $blSendTechnicalInformationToOxid
             ]
         );
 
@@ -331,8 +328,7 @@ class Database extends Core
                 'shopId' => $sBaseShopId,
                 'name' => 'blCheckForUpdates',
                 'type' => 'bool',
-                'value' => $blCheckForUpdates,
-                'key' => $oConfk->sConfigKey
+                'value' => $blCheckForUpdates
             ]
         );
 
@@ -342,15 +338,14 @@ class Database extends Core
                 'shopId' => $sBaseShopId,
                 'name' => 'sDefaultLang',
                 'type' => 'str',
-                'value' => $sShopLang,
-                'key' => $oConfk->sConfigKey
+                'value' => $sShopLang
             ]
         );
 
-        $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
+        $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oSession);
 
         //set only one active language
-        $oStatement = $oPdo->query("select oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
+        $oStatement = $oPdo->query("select oxvarname, oxvartype, oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
         if ($oStatement && false !== ($aRow = $oStatement->fetch())) {
             if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
                 $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
@@ -370,8 +365,7 @@ class Database extends Core
                     'shopId' => $sBaseShopId,
                     'name' => 'aLanguageParams',
                     'type' => 'aarr',
-                    'value' => $sValue,
-                    'key' => $oConfk->sConfigKey
+                    'value' => $sValue
                 ]
             );
         }
@@ -456,10 +450,9 @@ class Database extends Core
      * @param Utilities $utilities  Setup utilities
      * @param string    $baseShopId Shop id
      * @param array     $parameters Parameters
-     * @param Conf      $configKey  Config key loader
      * @param Session   $session    Setup session manager
      */
-    protected function addConfigValueIfShopInfoShouldBeSent($utilities, $baseShopId, $parameters, $configKey, $session)
+    protected function addConfigValueIfShopInfoShouldBeSent($utilities, $baseShopId, $parameters, $session)
     {
         $blSendShopDataToOxid = isset($parameters["blSendShopDataToOxid"]) ? $parameters["blSendShopDataToOxid"] : $session->getSessionParam('blSendShopDataToOxid');
 
@@ -467,7 +460,7 @@ class Database extends Core
         $this->execSql("delete from oxconfig where oxvarname = 'blSendShopDataToOxid'");
         $this->execSql(
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                             values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $configKey->sConfigKey . "'))"
+                             values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', '$blSendShopDataToOxid')"
         );
     }
 }

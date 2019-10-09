@@ -189,8 +189,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $nonCopyVars = $this->_getNonCopyConfigVars();
 
         $selectShopConfigurationQuery =
-            "select oxvarname, oxvartype,
-            DECODE( oxvarvalue, " . $db->quote($config->getConfigParam('sConfigKey')) . ") as oxvarvalue, oxmodule
+            "select oxvarname, oxvartype, oxvarvalue, oxmodule
             from oxconfig where oxshopid = '1'";
         $shopConfiguration = $db->select($selectShopConfigurationQuery);
         if ($shopConfiguration != false && $shopConfiguration->count() > 0) {
@@ -200,14 +199,13 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
                     $newId = $utilsObject->generateUID();
                     $insertNewConfigQuery =
                         "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule)
-                         values (:oxid, :oxshopid, :oxvarname, :oxvartype, ENCODE(:value, :key), :oxmodule)";
+                         values (:oxid, :oxshopid, :oxvarname, :oxvartype, :value, :oxmodule)";
                     $db->execute($insertNewConfigQuery, [
                         ':oxid' => $newId,
                         ':oxshopid' => $shop->getId(),
                         ':oxvarname' => $shopConfiguration->fields[0],
                         ':oxvartype' => $shopConfiguration->fields[1],
                         ':value' => $shopConfiguration->fields[2],
-                        ':key' => $config->getConfigParam('sConfigKey'),
                         ':oxmodule' => $shopConfiguration->fields[3]
                     ]);
                 }

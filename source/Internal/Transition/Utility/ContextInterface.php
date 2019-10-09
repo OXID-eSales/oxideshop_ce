@@ -29,11 +29,6 @@ interface ContextInterface extends BasicContextInterface
     public function getRequiredContactFormFields(): array;
 
     /**
-     * @return string
-     */
-    public function getConfigurationEncryptionKey(): string;
-
-    /**
      * @return bool
      */
     public function isEnabledAdminQueryLog(): bool;

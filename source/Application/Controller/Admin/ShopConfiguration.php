@@ -204,9 +204,9 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $rs = $database->select(
             "select cfg.oxvarname,
                     cfg.oxvartype,
-                    DECODE( cfg.oxvarvalue, " . $database->quote($config->getConfigParam('sConfigKey')) . ") as oxvarvalue,
-                        disp.oxvarconstraint,
-                        disp.oxgrouping
+                    cfg.oxvarvalue,
+                    disp.oxvarconstraint,
+                    disp.oxgrouping
                 from oxconfig as cfg
                     left join oxconfigdisplay as disp
                         on cfg.oxmodule=disp.oxcfgmodule and cfg.oxvarname=disp.oxcfgvarname

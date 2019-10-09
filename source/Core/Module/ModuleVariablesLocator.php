@@ -95,22 +95,6 @@ class ModuleVariablesLocator
     }
 
     /**
-     * Returns configuration key. This method is independent from oxConfig functionality.
-     *
-     * @return string
-     */
-    protected function getConfigurationKey()
-    {
-        if (Registry::instanceExists(\OxidEsales\Eshop\Core\ConfigFile::class)) {
-            $config = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
-        } else {
-            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . '/config.inc.php');
-            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $config);
-        }
-        return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
-    }
-
-    /**
      * Returns shop module variable value directly from database.
      *
      * @param string $name Module variable name
@@ -123,11 +107,9 @@ class ModuleVariablesLocator
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
         $shopId = $this->getShopIdCalculator()->getShopId();
-        $configKey = $this->getConfigurationKey();
 
-        $query = "SELECT DECODE( oxvarvalue , :configkey ) FROM oxconfig WHERE oxvarname = :oxvarname AND oxshopid = :oxshopid";
+        $query = "SELECT oxvarvalue FROM oxconfig WHERE oxvarname = :oxvarname AND oxshopid = :oxshopid";
         $value = $masterDb->getOne($query, [
-            ':configkey' => $configKey,
             ':oxvarname' => $name,
             ':oxshopid'  => $shopId
         ]);

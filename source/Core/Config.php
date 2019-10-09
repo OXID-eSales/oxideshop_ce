@@ -28,8 +28,6 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  */
 class Config extends \OxidEsales\Eshop\Core\Base
 {
-    const DEFAULT_CONFIG_KEY = 'fq45QS09_fqyx09239QQ';
-
     // this column of params are defined in config.inc.php file,
     // so for backwards compatibility. names starts without underscore
 
@@ -294,9 +292,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected $_blInit = false;
 
-    /** @var string Default configuration encryption key for database values. */
-    protected $sConfigKey = self::DEFAULT_CONFIG_KEY;
-
     /**
      * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
      *
@@ -553,7 +548,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
           ':oxshopid' => $shopID
         ];
         $select = "select
-                        oxvarname, oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue
+                        oxvarname, oxvartype, oxvarvalue
                     from oxconfig
                     where oxshopid = :oxshopid and ";
 
@@ -1849,7 +1844,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         ]);
 
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, ENCODE(:value, :key))";
+                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, :value)";
         $db->execute($query, [
             ':oxid' => $newOXID,
             ':oxshopid' => $shopId,
@@ -1857,7 +1852,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             ':oxvarname' => $varName,
             ':oxvartype' => $varType,
             ':value' => $value ?? '',
-            ':key' => $this->getConfigParam('sConfigKey'),
         ]);
 
         $this->informServicesAfterConfigurationChanged($varName, $shopId, $module);
@@ -1887,7 +1881,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname";
+        $query = "select oxvartype, oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname";
         $rs = $db->select($query, [
             ':oxshopid' => $shopId,
             ':oxmodule' => $module,
@@ -1921,18 +1915,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         return $value;
-    }
-
-    /**
-     * Returns decode query part user to decode config field value
-     *
-     * @param string $fieldName field name, default "oxvarvalue" [optional]
-     *
-     * @return string
-     */
-    public function getDecodeValueQuery($fieldName = "oxvarvalue")
-    {
-        return " DECODE( {$fieldName}, '" . $this->getConfigParam('sConfigKey') . "') ";
     }
 
     /**

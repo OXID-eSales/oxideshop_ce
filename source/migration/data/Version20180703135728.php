@@ -24,7 +24,7 @@ class Version20180703135728 extends AbstractMigration
     {
         $facts = new Facts();
         $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
-        $configKey = is_null($configFile->getVar('sConfigKey')) ? Config::DEFAULT_CONFIG_KEY : $configFile->getVar('sConfigKey');
+        $configKey = $configFile->getVar('sConfigKey') ?? (defined('Config::DEFAULT_CONFIG_KEY') ? Config::DEFAULT_CONFIG_KEY : 'fq45QS09_fqyx09239QQ');
         $varName = 'contactFormRequiredFields';
         $varType = 'arr';
         $rawValue = serialize(['email']);

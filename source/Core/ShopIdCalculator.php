@@ -42,22 +42,6 @@ class ShopIdCalculator
     }
 
     /**
-     * Returns configuration key. This method is independent from oxConfig functionality.
-     *
-     * @return string
-     */
-    protected function _getConfKey()
-    {
-        if (Registry::instanceExists(\OxidEsales\Eshop\Core\ConfigFile::class)) {
-            $config = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
-        } else {
-            $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . '/config.inc.php');
-            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $config);
-        }
-        return $config->getVar('sConfigKey') ?: Config::DEFAULT_CONFIG_KEY;
-    }
-
-    /**
      * Returns shop url to id map from config.
      *
      * @return array
@@ -79,16 +63,14 @@ class ShopIdCalculator
 
         $aMap = [];
 
-        $sConfKey = $this->_getConfKey();
-
-        $sSelect = "SELECT oxshopid, oxvarname, DECODE( oxvarvalue , :configkey ) as oxvarvalue " .
-            "FROM oxconfig WHERE oxvarname in ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
+        $sSelect = "
+            SELECT oxshopid, oxvarname, oxvarvalue
+            FROM oxconfig
+            WHERE oxvarname IN ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $oRs = $masterDb->select($sSelect, [
-            ':configkey' => $sConfKey
-        ]);
+        $oRs = $masterDb->select($sSelect);
 
         if ($oRs && $oRs->count() > 0) {
             while (!$oRs->EOF) {

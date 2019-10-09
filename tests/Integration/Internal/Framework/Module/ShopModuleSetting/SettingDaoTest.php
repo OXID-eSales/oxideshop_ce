@@ -310,7 +310,7 @@ class SettingDaoTest extends TestCase
                 'oxshopid'      => ':shopId',
                 'oxvarname'     => ':name',
                 'oxvartype'     => ':type',
-                'oxvarvalue'    => 'encode(:value, :key)',
+                'oxvarvalue'    => ':value',
             ])
             ->setParameters([
                 'id'        => $shopAdapter->generateUniqueId(),
@@ -321,8 +321,7 @@ class SettingDaoTest extends TestCase
                 'value'     => $shopSettingEncoder->encode(
                     $shopModuleSetting->getType(),
                     $shopModuleSetting->getValue()
-                ),
-                'key'       => $context->getConfigurationEncryptionKey(),
+                )
             ]);
 
         $queryBuilder->execute();

@@ -26,7 +26,7 @@ class BootstrapContainerFactory
         $symfonyContainer = new ContainerBuilder();
         $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
         $loader = new YamlFileLoader($symfonyContainer, new FileLocator(__DIR__));
-        $loader->load('..' . DIRECTORY_SEPARATOR . 'services.yaml');
+        $loader->load('bootstrap-services.yaml');
         $symfonyContainer->compile();
         return $symfonyContainer;
     }

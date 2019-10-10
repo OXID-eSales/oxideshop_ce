@@ -1,9 +1,3 @@
 imports:
-    - { resource: ../DIContainer/Dao/services.yaml }
-    - { resource: ../DIContainer/Service/services.yaml }
-    - { resource: ../FileSystem/bootstrap-services.yaml }
-    - { resource: ../Module/Install/bootstrap-services.yaml }
-    - { resource: ../Module/MetaData/bootstrap-services.yaml }
-    - { resource: ../Module/Configuration/bootstrap-services.yaml }
-    - { resource: ../Event/services.yaml }
-    - { resource: ../../Transition/Utility/bootstrap-services.yaml }
+    - { resource: Dao/services.yaml }
+    - { resource: Service/services.yaml }

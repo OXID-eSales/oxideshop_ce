@@ -1,5 +1,6 @@
 imports:
     - { resource: Container/services.yaml }
+    - { resource: Container/bootstrap-services.yaml }
     - { resource: Domain/services.yaml }
     - { resource: Framework/services.yaml }
     - { resource: Transition/Adapter/services.yaml }

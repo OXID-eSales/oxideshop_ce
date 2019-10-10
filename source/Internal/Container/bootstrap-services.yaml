@@ -1,0 +1,8 @@
+imports:
+    - { resource: ../Framework/DIContainer/services.yaml }
+    - { resource: ../Framework/Event/services.yaml }
+    - { resource: ../Framework/FileSystem/bootstrap-services.yaml }
+    - { resource: ../Framework/Module/Install/bootstrap-services.yaml }
+    - { resource: ../Framework/Module/MetaData/bootstrap-services.yaml }
+    - { resource: ../Framework/Module/Configuration/bootstrap-services.yaml }
+    - { resource: ../Transition/Utility/bootstrap-services.yaml }

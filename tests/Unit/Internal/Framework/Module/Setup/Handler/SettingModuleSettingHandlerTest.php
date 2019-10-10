@@ -60,8 +60,6 @@ class SettingModuleSettingHandlerTest extends TestCase
             ->setName('blCustomGridFramework')
             ->setValue('false')
             ->setType('bool')
-            ->setShopId(1)
-            ->setModuleId('testModule')
             ->setConstraints(['1', '2', '3',])
             ->setGroupName('frontend')
             ->setPositionInGroup(5);

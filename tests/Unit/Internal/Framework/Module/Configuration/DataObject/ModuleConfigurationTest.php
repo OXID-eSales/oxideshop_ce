@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configu
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use PHPUnit\Framework\TestCase;
 
@@ -82,5 +83,13 @@ class ModuleConfigurationTest extends TestCase
         $this->assertFalse(
             $moduleConfiguration->hasClassExtension('expectedExtensionNamespace')
         );
+    }
+
+    public function testGetModuleSettingWhenSettingNotFound(): void
+    {
+        $this->expectException(ModuleSettingNotFountException::class);
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->getModuleSetting('nonExistingSetting');
     }
 }

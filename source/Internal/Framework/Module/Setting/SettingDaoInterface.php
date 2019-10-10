@@ -9,14 +9,18 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
 interface SettingDaoInterface
 {
     /**
-     * @param Setting $shopModuleSetting
+     * @param Setting $moduleSetting
+     * @param string $moduleId
+     * @param int $shopId
      */
-    public function save(Setting $shopModuleSetting);
+    public function save(Setting $moduleSetting, string $moduleId, int $shopId): void;
 
     /**
-     * @param Setting $shopModuleSetting
+     * @param Setting $moduleSetting
+     * @param string $moduleId
+     * @param int $shopId
      */
-    public function delete(Setting $shopModuleSetting);
+    public function delete(Setting $moduleSetting, string $moduleId, int $shopId): void;
 
     /**
      * @param string $name

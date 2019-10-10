@@ -11,16 +11,6 @@ class Setting
     /**
      * @var string
      */
-    private $moduleId;
-
-    /**
-     * @var int
-     */
-    private $shopId;
-
-    /**
-     * @var string
-     */
     private $name;
 
     /**
@@ -47,42 +37,6 @@ class Setting
      * @var int
      */
     private $positionInGroup = 0;
-
-    /**
-     * @return string
-     */
-    public function getModuleId(): string
-    {
-        return $this->moduleId;
-    }
-
-    /**
-     * @param string $moduleId
-     * @return Setting
-     */
-    public function setModuleId(string $moduleId): Setting
-    {
-        $this->moduleId = $moduleId;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getShopId(): int
-    {
-        return $this->shopId;
-    }
-
-    /**
-     * @param int $shopId
-     * @return Setting
-     */
-    public function setShopId(int $shopId): Setting
-    {
-        $this->shopId = $shopId;
-        return $this;
-    }
 
     /**
      * @return string

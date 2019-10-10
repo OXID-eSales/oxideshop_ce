@@ -2325,7 +2325,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if (empty($extension)) {
             $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int) $shopId));
         } elseif (false !== strpos($extension, self::OXMODULE_MODULE_PREFIX)) {
-            $this->dispatchEvent(new SettingChangedEvent($varName, (int) $shopId, $extension));
+            $moduleId = str_replace(self::OXMODULE_MODULE_PREFIX, '', $extension);
+            $this->dispatchEvent(new SettingChangedEvent($varName, (int) $shopId, $moduleId));
         } elseif (false !== strpos($extension, self::OXMODULE_THEME_PREFIX)) {
             $this->dispatchEvent(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
         }

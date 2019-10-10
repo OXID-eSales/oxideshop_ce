@@ -26,7 +26,7 @@ class ModuleStateServiceTest extends TestCase
         $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
         /** @var ContextStub $contextStub */
-        $contextStub = $this->container->get(ContextInterface::class);
+        $contextStub = $this->get(ContextInterface::class);
         $contextStub->setAllShopIds([1,2]);
 
         if ($this->moduleStateService->isActive('testModuleId', 1)) {

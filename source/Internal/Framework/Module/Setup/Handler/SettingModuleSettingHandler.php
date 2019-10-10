@@ -32,11 +32,7 @@ class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         foreach ($configuration->getModuleSettings() as $setting) {
-            $setting
-                ->setShopId($shopId)
-                ->setModuleId($configuration->getId());
-
-            $this->settingDao->save($setting);
+            $this->settingDao->save($setting, $configuration->getId(), $shopId);
         }
     }
 
@@ -47,11 +43,7 @@ class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         foreach ($configuration->getModuleSettings() as $setting) {
-            $setting
-                ->setShopId($shopId)
-                ->setModuleId($configuration->getId());
-
-            $this->settingDao->delete($setting);
+            $this->settingDao->delete($setting, $configuration->getId(), $shopId);
         }
     }
 }

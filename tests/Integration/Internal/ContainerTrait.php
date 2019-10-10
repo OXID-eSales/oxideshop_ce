@@ -6,8 +6,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
+use Symfony\Component\DependencyInjection\Container;
+
 /**
  * @internal
+ * @mixin Container
  */
 trait ContainerTrait
 {

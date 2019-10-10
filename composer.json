@@ -33,7 +33,7 @@
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/oxideshop-unified-namespace-generator": "^2.0.0",
-        "oxid-esales/testing-library": "dev-master",
+        "oxid-esales/testing-library": "dev-feature-remove-encryption-on-oxconfig",
         "oxid-esales/coding-standards-wrapper": "^v2.0.0",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
@@ -86,5 +86,11 @@
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/flow-control/testing_library"
+        }
+    ]
 }

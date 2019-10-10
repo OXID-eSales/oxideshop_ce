@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoExcepti
 
 /**
  * @stable
- * @see StableAnnotation
+ * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface UserReviewBridgeInterface
 {

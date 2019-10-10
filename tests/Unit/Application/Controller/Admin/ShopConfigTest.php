@@ -94,7 +94,7 @@ class ShopConfigTest extends \OxidTestCase
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration::class, $aTasks, array(), '', false);
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        $oView->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
         $oView->expects($this->once())->method('resetContentCache');
         $oView->expects($this->atLeastOnce())->method('_getModuleForConfigVars')
             ->will($this->returnValue('theme:mytheme'));

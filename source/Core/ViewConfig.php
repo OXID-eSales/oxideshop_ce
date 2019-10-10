@@ -7,6 +7,8 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
  * View config data access class. Keeps most
@@ -1257,7 +1259,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $blModuleIsActive = $this->_moduleExists($sModuleId, $aModuleVersions);
 
             if ($blModuleIsActive) {
-                $blModuleIsActive = $this->_isModuleEnabled($sModuleId) && $this->_isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo);
+                $blModuleIsActive = $this->isModuleEnabled($sModuleId) && $this->_isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo);
             }
         }
 
@@ -1404,15 +1406,20 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks whether module is enabled.
      *
-     * @param string $sModuleId Module id
+     * @param string $moduleId Module id
      *
      * @return bool
      */
-    private function _isModuleEnabled($sModuleId)
+    private function isModuleEnabled($moduleId): bool
     {
-        $aDisabledModules = $this->getConfig()->getConfigParam('aDisabledModules');
+        $moduleActivationBridge = $this
+            ->getContainer()
+            ->get(ModuleActivationBridgeInterface::class);
 
-        return !in_array($sModuleId, (array) $aDisabledModules);
+        return $moduleActivationBridge->isActive(
+            $moduleId,
+            Registry::getConfig()->getShopId()
+        );
     }
 
     /**

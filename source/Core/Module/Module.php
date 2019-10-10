@@ -419,6 +419,17 @@ class Module extends \OxidEsales\Eshop\Core\Base
             $sModuleId = $this->getId();
         }
 
+        /**
+         * This method is called in active module templates during the frontend runtime.
+         * Reading the whole shop configuration from the yml file on every request may
+         * lead to performance issues. That's why we check first if a path exists in the
+         * database and only if no check the shop configuration.
+         */
+        $activeModulePathsFromDatabase = Registry::getConfig()->getConfigParam('aModulePaths');
+        if (isset($activeModulePathsFromDatabase[$sModuleId])) {
+            return $activeModulePathsFromDatabase[$sModuleId];
+        }
+
         $aModulePaths = $this->getModulePaths();
 
         $sModulePath = (isset($aModulePaths[$sModuleId])) ? $aModulePaths[$sModuleId] : '';

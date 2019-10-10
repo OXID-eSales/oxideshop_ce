@@ -60,6 +60,14 @@ If you want to install OXID eShop including example data like products, categori
 
 1. `$ composer require oxid-esales/oxideshop-demodata-ce:dev-b-6.0`
 
+### Running console command
+
+Console command located in bin directory so use `bin/oe-console` to run the commands.
+
+Example: 
+
+`$ bin/oe-console oe:module:activate module-id`
+
 ### Cloning without history
 
 To reduce the size of the repository when cloning you can use a so called "shallow clone".
@@ -67,7 +75,7 @@ With it, the history will be truncated and can save more than 90% of the disk sp
 
 Here is an example of how to use a shallow clone:
 
-`git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git`
+`$ git clone --depth 1 https://github.com/OXID-eSales/oxideshop_ce.git`
 
 ## Best practice
 

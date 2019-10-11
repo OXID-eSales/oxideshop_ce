@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Bridge;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
@@ -12,9 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterf
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @internal
- */
 class ModuleSettingBridge implements ModuleSettingBridgeInterface
 {
     /**

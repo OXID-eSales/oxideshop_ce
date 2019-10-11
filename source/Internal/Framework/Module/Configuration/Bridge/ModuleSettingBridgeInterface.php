@@ -4,11 +4,8 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Bridge;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge;
 
-/**
- * @internal
- */
 interface ModuleSettingBridgeInterface
 {
     /**

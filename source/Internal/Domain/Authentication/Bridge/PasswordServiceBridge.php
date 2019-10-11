@@ -9,10 +9,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationServiceInterface;
 
-/**
- * @stable
- * @see OxidEsales/EshopCommunity/Internal/README.md
- */
 class PasswordServiceBridge implements PasswordServiceBridgeInterface
 {
     /**

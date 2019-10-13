@@ -10,6 +10,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBrid
 use Psr\Container\ContainerInterface;
 
 /**
+ * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
+ *
  * Smarty renderer class
  * Renders smarty template with given parameters and returns rendered body.
  *

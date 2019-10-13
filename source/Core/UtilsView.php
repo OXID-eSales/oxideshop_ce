@@ -28,6 +28,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     /**
      * Template processor object (smarty)
      *
+     * @deprecated since v6.4 (2019-10-10); Will be removed
+     *
      * @var Smarty
      */
     protected static $_oSmarty = null;
@@ -60,6 +62,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * returns existing or creates smarty object
      * Returns smarty object. If object not yet initiated - creates it. Sets such
      * default parameters, like cache lifetime, cache/templates directory, etc.
+     *
+     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
      *
      * @param bool $blReload set true to force smarty reload
      *
@@ -242,6 +246,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * to process, array will be returned, if you pass string - string
      * will be passed as result
      *
+     * @deprecated since v6.4 (2019-10-10); Use getRenderedContent()
+     *
      * @param mixed                                            $sDesc       description or array of descriptions
      *                                                                      (array( [] => array(_ident_, _value_to_process_)))
      * @param string                                           $sOxid       current object id
@@ -352,6 +358,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     /**
      * sets properties of smarty object
      *
+     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
+     *
      * @param Smarty $smarty template processor object (smarty)
      */
     protected function _fillCommonSmartyProperties($smarty)
@@ -422,6 +430,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns all Smarty plugins including defined in modules
      *
+     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
+     *
      * @return array
      */
     public function getSmartyPluginDirectories()
@@ -433,6 +443,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
+     *
      * @return array
      */
     protected function getShopSmartyPluginDirectories()
@@ -446,6 +458,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Sets compile check property to smarty object.
+     *
+     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
      *
      * @param object $smarty template processor object (smarty)
      */
@@ -461,6 +475,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
     /**
      * is called when a template cannot be obtained from its resource.
+     *
+     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
      *
      * @param string $resourceType      template type
      * @param string $resourceName      template file name

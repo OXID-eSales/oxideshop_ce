@@ -260,6 +260,8 @@ class Email extends PHPMailer
     /**
      * Smarty instance
      *
+     * @deprecated since v6.4 (2019-10-10); Will be removed
+     *
      * @var \Smarty
      */
     protected $_oSmarty = null;
@@ -337,6 +339,8 @@ class Email extends PHPMailer
     }
 
     /**
+     * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
+     *
      * Smarty instance getter, assigns this oxEmail instance to "oEmailView" variable
      *
      * @return \Smarty

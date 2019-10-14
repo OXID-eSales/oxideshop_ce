@@ -508,7 +508,6 @@ class ViewConfigTest extends \OxidTestCase
             $fakeShopDirectory . "modules/test1/out/blocks/test2.tpl",
             $viewConfig->getModulePath('test1', '/out/blocks/test2.tpl')
         );
-
         Registry::set(Config::class, null);
     }
 
@@ -524,8 +523,7 @@ class ViewConfigTest extends \OxidTestCase
         $config->setConfigParam('iDebug', -1);
 
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
-        $message = "Requested file not found for module test1 (" .
-                   $fakeShopDirectory . "modules/test1/out/blocks/non_existing_template.tpl)";
+        $message = "Requested file not found for module test1";
         $this->expectException('\OxidEsales\EshopCommunity\Core\Exception\FileException');
         $this->expectExceptionMessage($message);
 

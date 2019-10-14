@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
@@ -98,8 +98,12 @@ EOT;
 
     public function testClearingCacheOnWriting()
     {
-        $dao = $this->get(ProjectYamlDaoInterface::class);
-        $context = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
+        $bootstrapContainer = (new BootstrapContainerBuilder())->create();
+        $bootstrapContainer->getDefinition(ProjectYamlDaoInterface::class)->setPublic(true);
+        $bootstrapContainer->compile();
+
+        $dao = $bootstrapContainer->get(ProjectYamlDaoInterface::class);
+        $context = $bootstrapContainer->get(BasicContextInterface::class);
 
         $projectYaml = new DIConfigWrapper([]);
 

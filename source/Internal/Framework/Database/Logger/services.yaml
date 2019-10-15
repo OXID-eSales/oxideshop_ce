@@ -1,0 +1,40 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactory
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger
+
+  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger
+    arguments:
+      $psrLogger: '@database.psr_logger'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter
+
+  database.monolog_logger_factory:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
+    arguments:
+      $configuration: '@database.logger.admin_monolog_configuration'
+
+  database.logger.admin_monolog_configuration:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
+    arguments:
+      $loggerName: 'OXID Admin Logger'
+      $logFilePath: '@utility.context.admin_log_file_path'
+      $logLevel: !php/const Psr\Log\LogLevel::DEBUG
+
+  database.psr_logger:
+    class: database.monolog_logger_factory
+    factory: database.monolog_logger_factory:create
+
+  utility.context.admin_log_file_path:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
+    factory: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:getAdminLogFilePath
+

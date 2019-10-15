@@ -4,11 +4,13 @@ services:
     public: false
   OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\LoggerConfigurationValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator
+    public: true
   OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfigurationInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
     arguments:
       $loggerName: 'OXID Logger'
-      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      $logFilePath: '@utility.context.log_file_path'
+      $logLevel: '@utility.context.log_level'
   OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
   oxid_esales.monolog.logger:
@@ -19,3 +21,10 @@ services:
     arguments:
       $logger: '@oxid_esales.monolog.logger'
     public: true
+
+  utility.context.log_file_path:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
+    factory: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:getLogFilePath
+  utility.context.log_level:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
+    factory: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:getLogLevel

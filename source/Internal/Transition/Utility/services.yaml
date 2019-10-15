@@ -2,8 +2,5 @@ services:
   _defaults:
     public: false
     autowire: true
-  OxidEsales\Eshop\Core\Config:
-    class: OxidEsales\Eshop\Core\Config
-    factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
   OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\Context

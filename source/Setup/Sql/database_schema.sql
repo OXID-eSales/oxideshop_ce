@@ -123,7 +123,7 @@ CREATE TABLE `oxaddress` (
 
 #
 # Table structure for table `oxadminlog`
-#
+# @deprecated since v6.5.0 (2019-09-17). Table is not used. Admin logging will be reimplemented using log file.
 
 DROP TABLE IF EXISTS `oxadminlog`;
 

@@ -107,6 +107,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Metadata 1.2 support
 - Fix issue with fetch_mode_changing. [Bug 6892](https://bugs.oxid-esales.com/view.php?id=6892)
 - Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
+- Fix admin query logging [#0006999](https://bugs.oxid-esales.com/view.php?id=6999). Information will be written to 
+  to `source/log/oxadmin.log`.
+
  
 ## [6.4.0] - 2019-08-02
 

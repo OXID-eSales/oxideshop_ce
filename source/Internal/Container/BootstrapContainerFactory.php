@@ -7,11 +7,6 @@
 namespace OxidEsales\EshopCommunity\Internal\Container;
 
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BootstrapContainerFactory
 {
@@ -23,11 +18,9 @@ class BootstrapContainerFactory
      */
     public static function getBootstrapContainer(): ContainerInterface
     {
-        $symfonyContainer = new ContainerBuilder();
-        $symfonyContainer->addCompilerPass(new RegisterListenersPass(EventDispatcherInterface::class));
-        $loader = new YamlFileLoader($symfonyContainer, new FileLocator(__DIR__));
-        $loader->load('bootstrap-services.yaml');
+        $symfonyContainer = (new BootstrapContainerBuilder())->create();
         $symfonyContainer->compile();
+
         return $symfonyContainer;
     }
 }

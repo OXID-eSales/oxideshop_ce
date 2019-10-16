@@ -22,6 +22,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet`
 - `OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface`
 - `OxidEsales\EshopCommunity\Core\Database\Adapter\ResultSetInterface`
+- `OxidEsales\EshopCommunity\Application\Model\SmartyRenderer`
+- `OxidEsales\EshopCommunity\Core\Email:$_oSmarty`
+- `OxidEsales\EshopCommunity\Core\Email:_getSmarty()`
+- `OxidEsales\EshopCommunity\Core\UtilsView:getSmarty()`
+- `OxidEsales\EshopCommunity\Core\UtilsView:parseThroughSmarty()`
+- `OxidEsales\EshopCommunity\Core\UtilsView:_fillCommonSmartyProperties()`
+- `OxidEsales\EshopCommunity\Core\UtilsView:getSmartyPluginDirectories()`
+- `OxidEsales\EshopCommunity\Core\UtilsView:getShopSmartyPluginDirectories()`
+- `OxidEsales\EshopCommunity\Core\UtilsView:_smartyCompileCheck()`
+- `OxidEsales\EshopCommunity\Core\UtilsView:_smartyDefaultTemplateHandler()`
+- `oxfunctions:ox_get_template()`
+- `oxfunctions:ox_get_timestamp()`
+- `oxfunctions:ox_get_secure()`
+- `oxfunctions:ox_get_trusted()`
 
 ### Removed
 - Support of GD1 library dropped [PR-672](https://github.com/OXID-eSales/oxideshop_ce/pull/672)

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
+- Improve coupon concurrency using [#0006819](https://bugs.oxid-esales.com/view.php?id=6819)
 
 ## [6.2.3] - 2019-07-30
 

@@ -123,7 +123,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
 - Fix admin query logging [#0006999](https://bugs.oxid-esales.com/view.php?id=6999). Information will be written to 
   to `source/log/oxadmin.log`.
-
+- Removed hardcoded "http://" in oxexturl field edit [#0006993](https://bugs.oxid-esales.com/view.php?id=6993) [PR-726](https://github.com/OXID-eSales/oxideshop_ce/pull/726)
  
 ## [6.4.0] - 2019-08-02
 

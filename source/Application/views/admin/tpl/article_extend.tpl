@@ -130,7 +130,7 @@ function processUnitInput( oSelect, sInputId )
                   [{oxmultilang ident="ARTICLE_EXTEND_EXTURL"}]
                 </td>
                 <td class="edittext">
-                  <input type="text" class="editinput" size="40" maxlength="[{$edit->oxarticles__oxexturl->fldmax_length}]" name="editval[oxarticles__oxexturl]" value="http://[{$edit->oxarticles__oxexturl->value}]" [{$readonly}]>
+                  <input type="text" class="editinput" size="40" maxlength="[{$edit->oxarticles__oxexturl->fldmax_length}]" name="editval[oxarticles__oxexturl]" value="[{$edit->oxarticles__oxexturl->value}]" [{$readonly}]>
                   [{oxinputhelp ident="HELP_ARTICLE_EXTEND_EXTURL"}]
                 </td>
               </tr>

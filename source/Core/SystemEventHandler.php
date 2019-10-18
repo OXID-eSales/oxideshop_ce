@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Contains system event handler methods
@@ -168,7 +169,7 @@ class SystemEventHandler
     {
         try {
             $appServerService = $this->getAppServerService();
-            if ($this->getConfig()->isAdmin()) {
+            if (Registry::getConfig()->isAdmin()) {
                 $appServerService->updateAppServerInformationInAdmin();
             } else {
                 $appServerService->updateAppServerInformationInFrontend();
@@ -189,7 +190,7 @@ class SystemEventHandler
      */
     protected function isSendingShopDataEnabled()
     {
-        return (bool) $this->getConfig()->getConfigParam('blSendTechnicalInformationToOxid');
+        return (bool) Registry::getConfig()->getConfigParam('blSendTechnicalInformationToOxid');
     }
 
     /**
@@ -222,7 +223,7 @@ class SystemEventHandler
      */
     private function getNextCheckTime()
     {
-        return (int) $this->getConfig()->getSystemConfigParameter('sOnlineLicenseNextCheckTime');
+        return (int) Registry::getConfig()->getSystemConfigParameter('sOnlineLicenseNextCheckTime');
     }
 
     /**
@@ -237,7 +238,7 @@ class SystemEventHandler
         $utilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
         $nextCheckTime = $utilsDate->formTime('tomorrow', $hourToCheck);
 
-        $this->getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseNextCheckTime', $nextCheckTime);
+        Registry::getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseNextCheckTime', $nextCheckTime);
     }
 
     /**
@@ -248,14 +249,14 @@ class SystemEventHandler
      */
     private function getCheckTime()
     {
-        $checkTime = $this->getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
+        $checkTime = Registry::getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
         if (!$checkTime) {
             $hourToCheck = rand(8, 23);
             $minuteToCheck = rand(0, 59);
             $secondToCheck = rand(0, 59);
 
             $checkTime = $hourToCheck . ':' . $minuteToCheck . ':' . $secondToCheck;
-            $this->getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseCheckTime', $checkTime);
+            Registry::getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseCheckTime', $checkTime);
         }
 
         return $checkTime;
@@ -285,6 +286,8 @@ class SystemEventHandler
      * Return Config from registry.
      *
      * @return \OxidEsales\Eshop\Core\Config
+     *
+     * @deprecated since v6.5.0 (2019-09-20); Use `\OxidEsales\Eshop\Core\Registry::getConfig()`
      */
     protected function getConfig()
     {
@@ -298,15 +301,14 @@ class SystemEventHandler
      */
     protected function getAppServerService()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $appServerDao = oxNew(\OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class, $database, $config);
-        $utilsServer = oxNew(\OxidEsales\Eshop\Core\UtilsServer::class);
-
         $appServerService = oxNew(
             \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
-            $appServerDao,
-            $utilsServer,
+            oxNew(
+                \OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class,
+                \OxidEsales\Eshop\Core\DatabaseProvider::getDb(),
+                Registry::getConfig()
+            ),
+            oxNew(\OxidEsales\Eshop\Core\UtilsServer::class),
             \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
         );
 

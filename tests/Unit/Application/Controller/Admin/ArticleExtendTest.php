@@ -236,7 +236,7 @@ class ArticleExtendTest extends \OxidTestCase
         $oView = oxNew('Article_Extend');
         $aParams = $oView->addDefaultValues($aParams);
 
-        $this->assertEquals("www.delfi.lt", $aParams['oxarticles__oxexturl']);
+        $this->assertEquals("http://www.delfi.lt", $aParams['oxarticles__oxexturl']);
     }
 
     /**

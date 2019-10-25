@@ -99,7 +99,7 @@ window.onload = function ()
 <tr>
     <td valign="top" class="edittext">
         <table cellspacing="0" cellpadding="0" border="0">
-        [{block name="admin_shop_main_rightform"}]
+        [{block name="admin_shop_main_leftform"}]
             <tr>
              <td class="edittext"  [{if !($edit->oxshops__oxproductive->value)}]style="border: 3px Red; border-style: solid none solid solid;"[{/if}]>
                 [{oxmultilang ident="SHOP_MAIN_PRODUCTIVE"}]
@@ -279,10 +279,10 @@ window.onload = function ()
         [{/block}]
         </table>
     </td>
-    <!-- Anfang rechte Seite -->
+    <!-- start of right-hand side -->
     <td valign="top" class="edittext" align="left">
         <table cellspacing="0" cellpadding="0" border="0">
-        [{block name="admin_shop_main_leftform"}]
+        [{block name="admin_shop_main_rightform"}]
             [{include file="include/shop_information.tpl"}]
             <tr>
                 <td class="edittext" >

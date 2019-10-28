@@ -60,7 +60,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (!empty($sVoucherNr)) {
             $sViewName = $this->getViewName();
             $sSeriesViewName = getViewName('oxvoucherseries');
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
             $sQ = "select {$sViewName}.* from {$sViewName}, {$sSeriesViewName} where
                         {$sSeriesViewName}.oxid = {$sViewName}.oxvoucherserieid and
@@ -80,7 +80,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $sQ .= " and {$sViewName}.oxreserved < '{$iTime}' ";
             }
 
-            $sQ .= " limit 1";
+            $sQ .= " limit 1 FOR UPDATE";
 
             if (!($oRet = $this->assignRecord($sQ))) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
@@ -121,7 +121,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sVoucherID = $this->oxvouchers__oxid->value;
 
         if ($sVoucherID) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
             $sQ = "update oxvouchers set oxreserved = " . time() . " where oxid = " . $oDb->quote($sVoucherID);
             $oDb->Execute($sQ);
         }

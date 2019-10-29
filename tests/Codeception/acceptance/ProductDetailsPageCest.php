@@ -11,6 +11,182 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 
 class ProductDetailsPageCest
 {
+
+    /**
+     * @group main
+     *
+     * @param AcceptanceTester $I
+     */
+    public function selectMultidimensionalVariantsAndJavaScript(AcceptanceTester $I)
+    {
+        $productNavigation = new ProductNavigation($I);
+        $I->wantToTest('if after md variants selection in details page all other js are still working correctly');
+
+        $data = [
+            'OXID' => '1001411',
+            'OXLONGDESC' => 'Test description',
+            'OXLONGDESC_1' => 'Test description',
+            'OXLONGDESC_2' => '',
+            'OXLONGDESC_3' => '',
+        ];
+        $I->haveInDatabase('oxartextends', $data);
+
+        $data = [
+            'OXID' => 'testattributes1',
+            'OXOBJECTID' => '1001411',
+            'OXATTRID' => 'testattribute1',
+            'OXVALUE' => 'attr value 1 [DE]',
+            'OXVALUE_1' => 'attr value 1 [EN]',
+        ];
+        $I->haveInDatabase('oxobject2attribute', $data);
+
+        $productData = [
+            'id' => '10014',
+            'title' => '14 EN product šÄßüл',
+            'description' => '13 EN description šÄßüл',
+            'price' => 'from 15,00 € *'
+        ];
+
+        //open details page
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+
+        //assert product
+        $detailsPage->seeProductData($productData)
+            ->checkIfProductIsNotBuyable();
+
+        //select a variant of the product
+        $detailsPage->selectVariant(1, 'S')
+            ->checkIfProductIsNotBuyable();
+        $detailsPage->selectVariant(2, 'black')
+            ->checkIfProductIsNotBuyable();
+        $detailsPage->selectVariant(3, 'lether');
+
+        //assert product
+        $productData = [
+            'id' => '10014-1-1',
+            'title' => '14 EN product šÄßüл S | black | lether',
+            'description' => '',
+            'price' => '25,00 € *'
+        ];
+        $detailsPage->seeProductData($productData)
+            ->checkIfProductIsBuyable();
+
+        $detailsPage = $detailsPage->openPriceAlert()
+            ->openAttributes();
+
+        $I->see('attr value 1 [EN]');
+
+        $detailsPage = $detailsPage->openDescription();
+
+        $I->see('Test description');
+
+        $detailsPage = $detailsPage->addProductToBasket(2);
+
+        //assert product in basket
+        $basketItem = [
+            'title' => '14 EN product šÄßüл, S | black | lether',
+            'price' => '50,00 €',
+            'amount' => 2
+        ];
+        $detailsPage->seeMiniBasketContains([$basketItem], '50,00 €', 2);
+    }
+
+    /**
+     * @group main
+     * @group product
+     * @group productVariants
+     *
+     * @param AcceptanceTester $I
+     */
+    public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I)
+    {
+        $productNavigation = new ProductNavigation($I);
+        $I->wantToTest('multidimensional variants functionality in details page');
+
+        $productData = [
+            'id' => '10014',
+            'title' => '14 EN product šÄßüл',
+            'description' => '13 EN description šÄßüл',
+            'price' => 'from 15,00 € *'
+        ];
+
+        //open details page
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+
+        //assert product
+        $detailsPage->seeProductData($productData)
+            ->checkIfProductIsNotBuyable();
+
+        //select a variant of the product
+        $detailsPage->selectVariant(1, 'S')
+            ->checkIfProductIsNotBuyable();
+        $detailsPage->selectVariant(2, 'black')
+            ->checkIfProductIsNotBuyable();
+        $detailsPage->selectVariant(3, 'lether');
+
+        //assert product
+        $productData2 = [
+            'id' => '10014-1-1',
+            'title' => '14 EN product šÄßüл S | black | lether',
+            'description' => '',
+            'price' => '25,00 € *'
+        ];
+        $detailsPage->seeProductData($productData2)
+            ->checkIfProductIsBuyable();
+
+        //open details page
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+
+        //assert product
+        $detailsPage->seeProductData($productData);
+
+        //select a variant of the product
+        $detailsPage = $detailsPage->selectVariant(2, 'white')
+            ->checkIfProductIsNotBuyable();
+
+        $detailsPage = $detailsPage->selectVariant(1, 'S');
+
+        //assert product
+        $productData3 = [
+            'id' => '10014-1-3',
+            'title' => '14 EN product šÄßüл S | white',
+            'description' => '',
+            'price' => '15,00 € *'
+        ];
+        $detailsPage->seeProductData($productData3)
+            ->checkIfProductIsBuyable();
+
+        //open details page
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+
+        //assert product
+        $detailsPage->seeProductData($productData);
+
+        $detailsPage->selectVariant(2, 'black')
+            ->selectVariant(3, 'lether')
+            ->selectVariant(1, 'L');
+
+        //assert product
+        $productData4 = [
+            'id' => '10014-3-1',
+            'title' => '14 EN product šÄßüл L | black | lether',
+            'description' => '',
+            'price' => '15,00 € *'
+        ];
+        $detailsPage->seeProductData($productData4)
+            ->checkIfProductIsBuyable();
+
+        $detailsPage = $detailsPage->addProductToBasket(2);
+
+        //assert product in basket
+        $basketItem = [
+            'title' => '14 EN product šÄßüл, L | black | lether',
+            'price' => '30,00 €',
+            'amount' => 2
+        ];
+        $detailsPage->seeMiniBasketContains([$basketItem], '30,00 €', 2);
+    }
+
     /**
      * @group product
      * @group search
@@ -346,102 +522,6 @@ class ProductDetailsPageCest
             ->seeProductData($crossSellingProductData);
     }
 
-    /**
-     * @group main
-     * @group product
-     * @group productVariants
-     *
-     * @param AcceptanceTester $I
-     */
-    public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I)
-    {
-        $productNavigation = new ProductNavigation($I);
-        $I->wantToTest('multidimensional variants functionality in details page');
-
-        $productData = [
-            'id' => '10014',
-            'title' => '14 EN product šÄßüл',
-            'description' => '13 EN description šÄßüл',
-            'price' => 'from 15,00 € *'
-        ];
-
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-
-        //assert product
-        $detailsPage->seeProductData($productData)
-            ->checkIfProductIsNotBuyable();
-
-        //select a variant of the product
-        $detailsPage->selectVariant(1, 'S')
-            ->checkIfProductIsNotBuyable();
-        $detailsPage->selectVariant(2, 'black')
-            ->checkIfProductIsNotBuyable();
-        $detailsPage->selectVariant(3, 'lether');
-
-        //assert product
-        $productData2 = [
-            'id' => '10014-1-1',
-            'title' => '14 EN product šÄßüл S | black | lether',
-            'description' => '',
-            'price' => '25,00 € *'
-        ];
-        $detailsPage->seeProductData($productData2)
-            ->checkIfProductIsBuyable();
-
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-
-        //assert product
-        $detailsPage->seeProductData($productData);
-
-        //select a variant of the product
-        $detailsPage = $detailsPage->selectVariant(2, 'white')
-            ->checkIfProductIsNotBuyable();
-
-        $detailsPage = $detailsPage->selectVariant(1, 'S');
-
-        //assert product
-        $productData3 = [
-            'id' => '10014-1-3',
-            'title' => '14 EN product šÄßüл S | white',
-            'description' => '',
-            'price' => '15,00 € *'
-        ];
-        $detailsPage->seeProductData($productData3)
-            ->checkIfProductIsBuyable();
-
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-
-        //assert product
-        $detailsPage->seeProductData($productData);
-
-        $detailsPage->selectVariant(2, 'black')
-            ->selectVariant(3, 'lether')
-            ->selectVariant(1, 'L');
-
-        //assert product
-        $productData4 = [
-            'id' => '10014-3-1',
-            'title' => '14 EN product šÄßüл L | black | lether',
-            'description' => '',
-            'price' => '15,00 € *'
-        ];
-        $detailsPage->seeProductData($productData4)
-            ->checkIfProductIsBuyable();
-
-        $detailsPage = $detailsPage->addProductToBasket(2);
-
-        //assert product in basket
-        $basketItem = [
-            'title' => '14 EN product šÄßüл, L | black | lether',
-            'price' => '30,00 €',
-            'amount' => 2
-        ];
-        $detailsPage->seeMiniBasketContains([$basketItem], '30,00 €', 2);
-    }
-
     //TODO: move to productList when it will be created
     /**
      * @group productList
@@ -467,85 +547,6 @@ class ProductDetailsPageCest
 
         $detailsPage = $searchListPage->selectVariant(1, 'M');
         $detailsPage->seeProductData($productData);
-    }
-
-    /**
-     * @group main
-     *
-     * @param AcceptanceTester $I
-     */
-    public function selectMultidimensionalVariantsAndJavaScript(AcceptanceTester $I)
-    {
-        $productNavigation = new ProductNavigation($I);
-        $I->wantToTest('if after md variants selection in details page all other js are still working correctly');
-
-        $data = [
-            'OXID' => '1001411',
-            'OXLONGDESC' => 'Test description',
-            'OXLONGDESC_1' => 'Test description',
-            'OXLONGDESC_2' => '',
-            'OXLONGDESC_3' => '',
-        ];
-        $I->haveInDatabase('oxartextends', $data);
-
-        $data = [
-            'OXID' => 'testattributes1',
-            'OXOBJECTID' => '1001411',
-            'OXATTRID' => 'testattribute1',
-            'OXVALUE' => 'attr value 1 [DE]',
-            'OXVALUE_1' => 'attr value 1 [EN]',
-        ];
-        $I->haveInDatabase('oxobject2attribute', $data);
-
-        $productData = [
-            'id' => '10014',
-            'title' => '14 EN product šÄßüл',
-            'description' => '13 EN description šÄßüл',
-            'price' => 'from 15,00 € *'
-        ];
-
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-
-        //assert product
-        $detailsPage->seeProductData($productData)
-            ->checkIfProductIsNotBuyable();
-
-        //select a variant of the product
-        $detailsPage->selectVariant(1, 'S')
-            ->checkIfProductIsNotBuyable();
-        $detailsPage->selectVariant(2, 'black')
-            ->checkIfProductIsNotBuyable();
-        $detailsPage->selectVariant(3, 'lether');
-
-        //assert product
-        $productData = [
-            'id' => '10014-1-1',
-            'title' => '14 EN product šÄßüл S | black | lether',
-            'description' => '',
-            'price' => '25,00 € *'
-        ];
-        $detailsPage->seeProductData($productData)
-            ->checkIfProductIsBuyable();
-
-        $detailsPage = $detailsPage->openPriceAlert()
-            ->openAttributes();
-
-        $I->see('attr value 1 [EN]');
-
-        $detailsPage = $detailsPage->openDescription();
-
-        $I->see('Test description');
-
-        $detailsPage = $detailsPage->addProductToBasket(2);
-
-        //assert product in basket
-        $basketItem = [
-            'title' => '14 EN product šÄßüл, S | black | lether',
-            'price' => '50,00 €',
-            'amount' => 2
-        ];
-        $detailsPage->seeMiniBasketContains([$basketItem], '50,00 €', 2);
     }
 
     /**

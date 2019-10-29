@@ -140,8 +140,10 @@ class UserAccountCest
         $I->see(Translator::translate('PLEASE_SELECT_STATE'), $userAddressPage->billStateId);
 
         //change user password
-        $userAddressPage = $userAddressPage->changeEmail("example01@oxid-esales.dev", $userData['userPassword'])
-            ->logoutUser();
+        $userAddressPage = $userAddressPage->changeEmail("example01@oxid-esales.dev", $userData['userPassword']);
+
+        $I->dontSee(Translator::translate('COMPLETE_MARKED_FIELDS'));
+        $userAddressPage = $userAddressPage->logoutUser();
 
         //try to login with old and new email address
         $userAddressPage->loginUser($userData['userLoginName'], $userData['userPassword']);

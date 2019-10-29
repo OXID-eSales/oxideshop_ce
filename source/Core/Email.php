@@ -619,8 +619,8 @@ class Email extends PHPMailer
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        $this->setBody($renderer->renderTemplate($config->getTemplatePath($this->_sOrderOwnerTemplate, false), $this->getViewData()));
-        $this->setAltBody($renderer->renderTemplate($config->getTemplatePath($this->_sOrderOwnerPlainTemplate, false), $this->getViewData()));
+        $this->setBody($renderer->renderTemplate($this->_sOrderOwnerTemplate, $this->getViewData()));
+        $this->setAltBody($renderer->renderTemplate($this->_sOrderOwnerPlainTemplate, $this->getViewData()));
 
         //Sets subject to email
         // #586A

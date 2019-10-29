@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
@@ -53,6 +54,7 @@ class GiftRegistryCest
         $I->see(Translator::translate('MY_GIFT_REGISTRY'), $userAccountPage->dashboardGiftRegistryPanelHeader);
         $I->see(Translator::translate('PRODUCT').' 1', $userAccountPage->dashboardGiftRegistryPanelContent);
 
+        /** @var UserAccount $userAccountPage */
         $userAccountPage = $userAccountPage->logoutUserInAccountPage()
             ->login($userData['userLoginName'], $userData['userPassword']);
         $I->see(Translator::translate('MY_GIFT_REGISTRY'), $userAccountPage->dashboardGiftRegistryPanelHeader);

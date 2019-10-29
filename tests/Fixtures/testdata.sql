@@ -19,8 +19,6 @@ UPDATE `oxnewssubscribed` SET OXUSERID = 'oxdefaultadmin' WHERE OXID='0b742e66fd
 # Data for table `oxactions2article`
 #
 INSERT INTO `oxactions2article` (`OXID`, `OXSHOPID`, `OXACTIONID`, `OXARTID`, `OXSORT`) VALUES
-('38c44b6536b1446e2.17112560', 1, 'oxstart', '943ed656e21971fb2f1827facbba9bec', 0),
-('d8842e3c913930f47.00463447', 1, 'oxstart', '2077', 0),
 ('79042e787800a8465.75238508', 1, 'oxbargain', '85b42c94a32b3fdd2.66642220', 0),
 ('00f42e7bc564eb0c5.98400825', 1, 'oxtop5', '2080', 0),
 ('0a842e4f4e51ca939.48788613', 1, 'oxbargain', '1431', 1),
@@ -3753,5 +3751,3 @@ INSERT INTO `oxactions` (`OXID`, `OXSHOPID`, `OXSORT`, `OXTYPE`, `OXTITLE`, `OXT
 ('d51dbdafb1e51b869f5d8ac233e97814', 1, 2, 2, 'Current Promotion', 'Current Promotion', '', '',   '<a href="[{ oxgetseourl type=\'oxcategory\' oxid=\'8a142c3e60a535f16.78077188\' }]">          <img alt="" src="[{$oViewConf->getPictureDir()}]promo/current_de.jpg" /></a>', '<a href="[{ oxgetseourl type=\'oxcategory\' oxid=\'8a142c3e60a535f16.78077188\' }]">           <img alt="" src="[{$oViewConf->getPictureDir()}]promo/current_en.jpg" /></a>',  '', '', 0, '2010-01-01 00:00:00', '2010-10-10 00:00:00'),
 ('d51f5e7446e9193188fb315c9d60520a', 1, 1, 2, 'Expired promotion', 'Expired promotion', '', '',   '<a href="[{ oxgetseourl type=\'oxarticle\' oxid=\'1651\' }]">                                 <img alt="" src="[{$oViewConf->getPictureDir()}]promo/expired_de.jpg" /></a>', '<a href="[{ oxgetseourl type=\'oxarticle\' oxid=\'1651\' }]">                                  <img alt="" src="[{$oViewConf->getPictureDir()}]promo/expired_en.jpg" /></a>',  '', '', 0, '2010-01-01 00:00:00', '2010-02-01 00:00:00'),
 ('d51545e80843be666a9326783a73e91d', 1, 3, 2, 'Upcoming Promotion', 'Upcoming Promotion', '', '', '<a href="[{ oxgetseourl type=\'oxmanufacturer\' oxid=\'9434afb379a46d6c141de9c9e5b94fcf\' }]"><img alt="" src="[{$oViewConf->getPictureDir()}]promo/upcoming_de.jpg" /></a>', '<a href="[{ oxgetseourl type=\'oxmanufacturer\' oxid=\'9434afb379a46d6c141de9c9e5b94fcf\' }]"><img alt="" src="[{$oViewConf->getPictureDir()}]promo/upcoming_en.jpg" /></a>', '', '', 0, '2010-10-10 00:00:00', '2011-10-10 00:00:00');
-
-UPDATE `oxactions` SET OXACTIVE = '1' WHERE OXID='oxstart';

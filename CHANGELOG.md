@@ -166,10 +166,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Use error_404_handler in article list controller in place of outdated 404 handling [PR-643](https://github.com/OXID-eSales/oxideshop_ce/pull/643)
 - Fix indents in config.inc.php.dist [PR-527](https://github.com/OXID-eSales/oxideshop_ce/pull/527)
 
-## [6.2.4] - Unreleased
+## [6.2.4] - 2019-10-29
 
 ### Fixed
 - Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
+
+### Security
+- [Bug 7023](https://bugs.oxid-esales.com/view.php?id=7023)
 
 ## [6.2.3] - 2019-07-30
 
@@ -497,6 +500,7 @@ See
 [6.3.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.1...v6.3.2
 [6.3.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.0...v6.3.1
 [6.3.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.3.0
+[6.2.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.3...v6.2.4
 [6.2.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.2...v6.2.3
 [6.2.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.2.2
 [6.2.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.0...v6.2.1

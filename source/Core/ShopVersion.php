@@ -16,6 +16,6 @@ class ShopVersion
      */
     public static function getVersion()
     {
-        return '6.2.0-beta.1';
+        return '6.2.0-rc.1';
     }
 }

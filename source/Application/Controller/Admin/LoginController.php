@@ -98,6 +98,11 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $sProfile = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('profile');
 
         try { // trying to login
+            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $adminProfiles = $session->getVariable("aAdminProfiles");
+            $session->initNewSession();
+            $session->setVariable("aAdminProfiles", $adminProfiles);
+
             /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->login($sUser, $sPass);

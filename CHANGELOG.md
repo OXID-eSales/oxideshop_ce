@@ -4,10 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.2.4] - Unreleased
+## [6.2.4] - 2019-10-29
 
 ### Fixed
 - Improve gift registry search [#0006698](https://bugs.oxid-esales.com/view.php?id=6698)
+
+### Security
+- [Bug 7023](https://bugs.oxid-esales.com/view.php?id=7023)
 
 ## [6.2.3] - 2019-07-30
 
@@ -326,7 +329,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 
-[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.3...b-6.0.x
+[6.2.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.3...v6.2.4
 [6.2.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.2...v6.2.3
 [6.2.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.1...v6.2.2
 [6.2.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.2.0...v6.2.1

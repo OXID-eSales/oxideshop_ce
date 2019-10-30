@@ -203,7 +203,19 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     public function getArticleList()
     {
-        return [];
+        if ($this->_aArticleList === null) {
+            $this->_aArticleList = [];
+            if ($this->_getLoadActionsParam()) {
+                // start list
+                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
+                $oArtList->loadActionArticles('OXSTART');
+                if ($oArtList->count()) {
+                    $this->_aArticleList = $oArtList;
+                }
+            }
+        }
+
+        return $this->_aArticleList;
     }
 
     /**

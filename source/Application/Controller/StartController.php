@@ -198,7 +198,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Template variable getter. Returns start page articles (OXSTART)
      *
-     * @deprecated since v6.2.4 (2019-10-28)
      * @return array
      */
     public function getArticleList()

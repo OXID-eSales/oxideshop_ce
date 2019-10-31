@@ -53,8 +53,10 @@ class StartTest extends \OxidTestCase
     public function testGetArticleList()
     {
         $oStart = $this->getProxyClass('start');
+
         $aList = $oStart->getArticleList();
-        $this->assertTrue(empty($aList));
+        $this->assertTrue($aList instanceof articlelist);
+        $this->assertEquals(2, $aList->count());
     }
 
     public function testGetTopArticleList()

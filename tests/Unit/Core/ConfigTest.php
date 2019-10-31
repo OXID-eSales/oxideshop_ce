@@ -2412,23 +2412,6 @@ class ConfigTest extends \OxidTestCase
     }
 
     /**
-     * @dataProvider getSystemConfigurationParameters
-     */
-    public function testSaveSystemConfigurationParameterInSubShop($sType, $sName, $sValue)
-    {
-        $this->getConfig()->setShopId(2);
-
-        $oConfig = oxNew('oxConfig');
-        $oConfig->saveSystemConfigParameter($sType, $sName, $sValue);
-
-        if ($sType == 'num') {
-            $this->assertEquals((float) $sValue, $oConfig->getSystemConfigParameter($sName));
-        } else {
-            $this->assertEquals($sValue, $oConfig->getSystemConfigParameter($sName));
-        }
-    }
-
-    /**
      * Mock oxUtilsServer to see that oxConfig::isCurrentUrl return same result.
      */
     public function testIsCurrentUrlIsWrapperForOxUtilsServer()

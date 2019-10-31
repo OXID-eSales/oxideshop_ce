@@ -83,6 +83,8 @@ INSERT INTO `oxactions` (`OXID`, `OXSHOPID`, `OXTYPE`, `OXTITLE`, `OXTITLE_1`, `
 # Data for table `oxactions2article`
 #
 INSERT INTO `oxactions2article` (`OXID`, `OXSHOPID`, `OXACTIONID`, `OXARTID`, `OXSORT`) VALUES
+  ('d8842e3c913930f47.00463447', 1, 'oxstart', '2077', 0),
+  ('a57e08935cd79c71f23b18a531890427', 1, 'oxstart', '058de8224773a1d5fd54d523f0c823e0', 1),
   ('79042e787800a8465.75238508', 1, 'oxbargain', '85b42c94a32b3fdd2.66642220', 0),
   ('b568de76c34bafb4b881b4774ea00f0e', 1, 'oxnewest', 'b56597806428de2f58b1c6c7d3e0e093', 6),
   ('95842e9fde5c6f051.82672143', 1, 'oxnewest', '1952', 3),
@@ -97,6 +99,7 @@ INSERT INTO `oxactions2article` (`OXID`, `OXSHOPID`, `OXACTIONID`, `OXARTID`, `O
   ('d8842e3ca342c5fb8.21231681', 1, 'oxtop5', '1940', 1),
   ('79042e78791e8ef10.24050762', 1, 'oxbargain', 'd8842e3cbf9290351.59301740', 0),
   ('d0c10b636f2303d6c422a2896464171a', 1, 'oxcatoffer', 'ed6573c0259d6a6fb641d106dcb2faec', 2),
+  ('a57e05c9d11ea550a21c624482c6d095', 1, 'oxstart', 'ed6573c0259d6a6fb641d106dcb2faec', 2),
   ('d0cd4788290e30acd0fcc32e510e41c1', 1, 'oxcatoffer', 'ed6a4182ae58874e4fdaa4775566af6c', 3),
   ('b56b73a47578b357a761f696251ceb7d', 1, 'oxnewest', 'b563ab240dc19b89fc0349866b2be9c0', 7),
   ('c39e651303c494508b82463f638d2cd0', 1, 'oxtopstart', 'dc5ffdf380e15674b56dd562a7cb6aec', 1),

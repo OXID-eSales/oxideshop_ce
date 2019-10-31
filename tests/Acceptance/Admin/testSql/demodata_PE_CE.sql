@@ -319,6 +319,7 @@ REPLACE INTO `oxactions2article` (`OXID`,                       `OXSHOPID`,   `O
                                 ('fa647a821cbb759a3.34804917', 1, 'oxbargain',    '1001',     0),
                                 ('fa647a82200b834f6.31174235', 1, 'oxtop5',       '1000',     0),
                                 ('fa647a821bcd6e225.88450924', 1, 'oxcatoffer',   '1003',     5),
+                                ('fa647a821e4b8fa81.64242121', 1, 'oxstart',      '1002',     0),
                                 ('fa647a821f27dbb38.79902594', 1, 'oxtopstart',   '1001',     0);
 
 #Article2Attribute

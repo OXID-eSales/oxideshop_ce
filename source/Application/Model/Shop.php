@@ -92,6 +92,8 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         parent::__construct();
 
         if (!$this->isShopValid()) {
+            Registry::getLogger()->error('Shop is not valid');
+
             return;
         }
 

@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Shop manager.
  * Performs configuration and object loading or deletion.
@@ -95,7 +97,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $this->init('oxshops');
 
-        if ($iMax = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iMaxShopId')) {
+        if ($iMax = Registry::getConfig()->getConfigParam('iMaxShopId')) {
             $this->setMaxShopId($iMax);
         }
     }
@@ -273,13 +275,13 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     protected function _cleanInvalidViews()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $aMultilangTables = Registry::getLang()->getMultiLangTables();
         $aMultishopTables = $this->getMultiShopTables();
 
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
         $oViewsValidator = oxNew(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class);
@@ -302,10 +304,10 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _prepareViewsQueries()
     {
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $aMultilangTables = Registry::getLang()->getMultiLangTables();
         $aTables = $this->getTables();
         foreach ($aTables as $sTable) {
             $this->createViewQuery($sTable);
@@ -356,7 +358,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             try {
                 $oDb->execute($sQuery);
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
+                Registry::getLogger()->error($exception->getMessage(), [$exception]);
                 $bSuccess = false;
             }
         }
@@ -371,7 +373,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function formDatabaseTablesArray()
     {
-        $multilanguageTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $multilanguageTables = Registry::getLang()->getMultiLangTables();
 
         return array_unique($multilanguageTables);
     }

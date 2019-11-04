@@ -4,18 +4,18 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Resolver;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\LegacyTemplateNameResolver;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver;
 
 class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider resolveSmartyDataProvider
      */
-    public function testResolveSmartyTemplate($templateName, $response)
+    public function testResolveSmartyTemplate($templateName, $response): void
     {
         $resolver = new LegacyTemplateNameResolver(
             new TemplateNameResolver(
@@ -26,7 +26,7 @@ class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($response, $resolver->resolve($templateName));
     }
 
-    public function resolveSmartyDataProvider()
+    public function resolveSmartyDataProvider(): array
     {
         return [
             [
@@ -55,7 +55,7 @@ class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider resolveTwigDataProvider
      */
-    public function testResolveTwigTemplate($response, $templateName)
+    public function testResolveTwigTemplate($response, $templateName): void
     {
         $resolver = new LegacyTemplateNameResolver(
             new TemplateNameResolver(
@@ -66,7 +66,7 @@ class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($response, $resolver->resolve($templateName));
     }
 
-    public function resolveTwigDataProvider()
+    public function resolveTwigDataProvider(): array
     {
         return [
             [
@@ -93,7 +93,7 @@ class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
      *
      * @return TemplateEngineInterface
      */
-    private function getTemplateEngineMock($extension)
+    private function getTemplateEngineMock($extension): TemplateEngineInterface
     {
         $engine = $this
             ->getMockBuilder('OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface')

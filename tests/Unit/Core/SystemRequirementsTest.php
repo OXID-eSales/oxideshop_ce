@@ -5,8 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\SystemRequirements;
+use Psr\Container\ContainerInterface;
 
 class SystemRequirementsTest extends \OxidTestCase
 {
@@ -345,7 +345,7 @@ class SystemRequirementsTest extends \OxidTestCase
      */
     public function testCheckTemplateBlock($templateContent, $blockName, $result)
     {
-        $templateLoader = $this->getMockBuilder(\OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoader::class)
+        $templateLoader = $this->getMockBuilder(\OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader::class)
             ->disableOriginalConstructor()
             ->setMethods(['exists', 'getContext'])
             ->getMock();

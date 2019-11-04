@@ -241,10 +241,12 @@ class ModuleTest extends ModuleBaseTest
      */
     public function testModuleActivationIsSwitchedOffInDemoMode()
     {
-        $this->loginAdmin("Extensions", "Modules");
+        $this->clearCache();
         $this->switchToDemoMode();
+        $this->loginAdmin("Extensions", "Modules");
 
         $this->openListItem("Test module #6 (in vendor dir)");
+        $this->waitForText("Test module #6 (in vendor dir)");
         $this->assertActivationButtonIsNotPresent();
         $this->assertDeactivationButtonIsNotPresent();
         $this->assertTextPresent('Please note: modules can\'t be activated or deactivated in demo shop mode.', "N");
@@ -259,9 +261,13 @@ class ModuleTest extends ModuleBaseTest
     public function testModuleDeactivationIsSwitchedOffInDemoMode()
     {
         $this->testModuleActivationWorksInNormalMode();
+
+        $this->clearCache();
         $this->switchToDemoMode();
+        $this->loginAdmin("Extensions", "Modules");
 
         $this->openListItem("Test module #6 (in vendor dir)");
+        $this->waitForText("Test module #6 (in vendor dir)");
         $this->assertActivationButtonIsNotPresent();
         $this->assertDeactivationButtonIsNotPresent();
         $this->assertTextPresent('Please note: modules can\'t be activated or deactivated in demo shop mode.', "N");

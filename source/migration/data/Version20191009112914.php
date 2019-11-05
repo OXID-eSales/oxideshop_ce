@@ -22,10 +22,7 @@ class Version20191009112914 extends AbstractMigration
             'ALTER TABLE oxconfig ADD COLUMN OXVARVALUE_TEXT TEXT NULL'
         );
         $this->addSql(
-            'UPDATE oxconfig SET OXVARVALUE_TEXT = CONVERT(DECODE(oxvarvalue, ?), CHAR)',
-            [
-                $this->getConfigEncryptionKey()
-            ]
+            'UPDATE oxconfig SET OXVARVALUE_TEXT = CONVERT(oxvarvalue, CHAR)'
         );
         $this->addSql(
             'ALTER TABLE oxconfig DROP COLUMN OXVARVALUE'
@@ -41,16 +38,5 @@ class Version20191009112914 extends AbstractMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-    }
-
-    /**
-     * @return string
-     */
-    private function getConfigEncryptionKey(): string
-    {
-        $facts = new Facts();
-        $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
-
-        return $configFile->getVar('sConfigKey') ?? (defined('Config::DEFAULT_CONFIG_KEY') ? Config::DEFAULT_CONFIG_KEY : 'fq45QS09_fqyx09239QQ');
     }
 }

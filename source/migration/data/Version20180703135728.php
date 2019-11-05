@@ -23,9 +23,6 @@ class Version20180703135728 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $facts = new Facts();
-        $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
-        $configKey = $configFile->getVar('sConfigKey') ?? (defined('Config::DEFAULT_CONFIG_KEY') ? Config::DEFAULT_CONFIG_KEY : 'fq45QS09_fqyx09239QQ');
         $varName = 'contactFormRequiredFields';
         $varType = 'arr';
         $rawValue = serialize(['email']);
@@ -43,7 +40,7 @@ class Version20180703135728 extends AbstractMigration
                       `OXID`,
                       ?, 
                       ?, 
-                      ENCODE(?, ?)
+                      ?,
                   FROM `oxshops`                  
                   WHERE NOT EXISTS (
                       SELECT `OXVARNAME` 
@@ -53,7 +50,7 @@ class Version20180703135728 extends AbstractMigration
                   )";
         $this->addSql(
             $query,
-            [$varName, $varType, $rawValue, $configKey, $varName]
+            [$varName, $varType, $rawValue, $varName]
         );
     }
 

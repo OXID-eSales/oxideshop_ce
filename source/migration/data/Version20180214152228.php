@@ -9,9 +9,6 @@ namespace OxidEsales\EshopCommunity\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use OxidEsales\Eshop\Core\Config;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Facts\Facts;
 
 /**
  * Adds config option for recommendations.
@@ -23,13 +20,10 @@ class Version20180214152228 extends AbstractMigration
      */
     public function up(Schema $schema)
     {
-        $facts = new Facts();
-        $configFile = new ConfigFile($facts->getSourcePath().'/config.inc.php');
-        $configKey = $configFile->getVar('sConfigKey') ?? (defined('Config::DEFAULT_CONFIG_KEY') ? Config::DEFAULT_CONFIG_KEY : 'fq45QS09_fqyx09239QQ');
         $settingName = 'blAllowSuggestArticle';
 
         $this->addSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`)
-                            SELECT SUBSTRING(md5(uuid_short()), 1, 32),  `OXID`, '', '" . $settingName . "', 'bool', ENCODE('1', '" . $configKey . "') FROM oxshops
+                            SELECT SUBSTRING(md5(uuid_short()), 1, 32),  `OXID`, '', '" . $settingName . "', 'bool', '1', FROM oxshops
                             WHERE NOT EXISTS (
                             SELECT `OXVARNAME` FROM `oxconfig` WHERE `OXVARNAME` = '" . $settingName . "'
         )");

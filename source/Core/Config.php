@@ -146,6 +146,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected $blNativeImages = true;
 
     /**
+     * Only for multishops
+     * Unload news from all shops in multishop.
+     * If $blOtherShopNews is set to true the multishop does not load news from all shops,
+     * This is applicable for depending on mall
+     * if mall mode is available.
+     *
+     * @var bool
+     */
+    protected $blDoNotLoadAllShopNews = true;
+
+    /**
      * Names of tables which are multi-shop
      *
      * @var array

@@ -4,7 +4,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
+
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
 class TemplateNameResolver implements TemplateNameResolverInterface
 {

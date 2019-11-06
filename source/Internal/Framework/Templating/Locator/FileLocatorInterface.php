@@ -4,9 +4,13 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
-interface TemplateFileLocatorInterface
+/**
+ * Interface FileLocatorInterface
+ * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
+ */
+interface FileLocatorInterface
 {
     /**
      * Returns a full path for a given file name.

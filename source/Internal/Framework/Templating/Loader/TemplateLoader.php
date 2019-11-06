@@ -4,10 +4,17 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\TemplateFileNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\FileLocatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface;
 
+/**
+ * Class TemplateLoader
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
+ */
 class TemplateLoader implements TemplateLoaderInterface
 {
     /**
@@ -16,18 +23,18 @@ class TemplateLoader implements TemplateLoaderInterface
     private $templateNameResolver;
 
     /**
-     * @var TemplateFileLocatorInterface
+     * @var FileLocatorInterface
      */
     private $fileLocator;
 
     /**
      * TemplateLoader constructor.
      *
-     * @param TemplateFileLocatorInterface  $fileLocator
+     * @param FileLocatorInterface  $fileLocator
      * @param TemplateNameResolverInterface $templateNameResolver
      */
     public function __construct(
-        TemplateFileLocatorInterface $fileLocator,
+        FileLocatorInterface $fileLocator,
         TemplateNameResolverInterface $templateNameResolver
     ) {
         $this->fileLocator = $fileLocator;

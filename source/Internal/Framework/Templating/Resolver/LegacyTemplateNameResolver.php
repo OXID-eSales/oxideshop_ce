@@ -4,8 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
+/**
+ * Class LegacyTemplateNameResolver
+ * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver
+ */
 class LegacyTemplateNameResolver implements TemplateNameResolverInterface
 {
     /**

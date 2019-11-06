@@ -6,7 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoaderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
 /**
  * Default Template Handler

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.3.7] - Unreleased
+
+### Deprecated
+- `\OxidEsales\EshopCommunity\Application\Controller\StartController::getArticleList`
+
 ## [6.3.6] - 2019-10-29
 
 ### Fixed

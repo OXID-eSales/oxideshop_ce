@@ -1328,8 +1328,9 @@ class Database implements DatabaseInterface
      */
     protected function getFirstCommandInStatement($query)
     {
+        $singleLineQuery = str_replace(["\r", "\n"], ' ', $query);
         $sqlComments = '@(([\'"]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms';
-        $uncommentedQuery = preg_replace($sqlComments, '$1', $query);
+        $uncommentedQuery = preg_replace($sqlComments, '$1', $singleLineQuery);
 
         $command = strtoupper(
             trim(

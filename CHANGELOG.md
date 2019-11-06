@@ -156,6 +156,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The value for the password salt will not be stored in the database column `oxuser.OXPASSSALT` anymore, but in the password hash itself  
 
 ### Deprecated
+- `\OxidEsales\EshopCommunity\Application\Controller\StartController::getArticleList`
 - `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface` was added as the new default 
   for hashing passwords. Hashing passwords with MD5 and SHA512 is still supported in order support login with 
   older password hashes. Therefor the methods and classes below might not be compatible with the current passhword hash 

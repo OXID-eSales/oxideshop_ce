@@ -53,7 +53,7 @@ before_script:
   - sed -i "s|\$this->edition = ''|\$this->edition = 'CE'|" source/config.inc.php
 
   # composer initiation
-  - SHOP_PATH='source' SHOP_TESTS_PATH='tests' MODULES_PATH='' composer install
+  - COMPOSER_MEMORY_LIMIT=-1 SHOP_PATH='source' SHOP_TESTS_PATH='tests' MODULES_PATH='' composer install
 
 script:
   - vendor/bin/oe-eshop-phpcs_with_thresholds

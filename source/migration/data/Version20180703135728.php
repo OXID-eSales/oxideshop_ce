@@ -40,7 +40,7 @@ class Version20180703135728 extends AbstractMigration
                       `OXID`,
                       ?, 
                       ?, 
-                      ?,
+                      ?
                   FROM `oxshops`                  
                   WHERE NOT EXISTS (
                       SELECT `OXVARNAME` 

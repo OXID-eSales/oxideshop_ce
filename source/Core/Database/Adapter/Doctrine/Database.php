@@ -1379,15 +1379,24 @@ class Database implements DatabaseInterface
      */
     protected function getConnectionFromDriverManager()
     {
+        return DriverManager::getConnection($this->getConnectionParameters(), $this->getConnectionConfiguration());
+    }
+
+    private function getConnectionConfiguration(): Configuration
+    {
         $configuration = new Configuration();
-        $connectionParameters = $this->getConnectionParameters();
+        $this->configureSqlLogger($configuration);
+        return $configuration;
+    }
 
+    private function configureSqlLogger(Configuration $configuration): void
+    {
         $container = ContainerFactory::getInstance()->getContainer();
-        $configuration->setSQLLogger(
-            $container->get(DatabaseLoggerFactoryInterface::class)->getDatabaseLogger()
-        );
-
-        return DriverManager::getConnection($connectionParameters, $configuration);
+        /** logger instantiation requires auto-wiring(compiled container) */
+        if ($container->isCompiled()) {
+            $databaseLogger = $container->get(DatabaseLoggerFactoryInterface::class)->getDatabaseLogger();
+            $configuration->setSQLLogger($databaseLogger);
+        }
     }
 
     /**

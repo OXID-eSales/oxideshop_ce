@@ -160,17 +160,14 @@ class UserpaymentTest extends \OxidTestCase
         $this->assertEquals('_testValue', $oUpay->oxuserpayments__oxvalue->value);
     }
 
-    /**
-     * Testing if insert encodes oxvalue field
-     */
-    public function testInsertEncodesOxValue()
+    public function testInsertForOxValue()
     {
         $oUpay = oxNew('oxuserpayment');
         $oUpay->setId('_testOxId2');
         $oUpay->oxuserpayments__oxvalue = new oxField('123456789', oxField::T_RAW);
         $oUpay->save();
 
-        $this->assertEquals("\xbc\x69\x65\xb9\x3a\x13\x29\xa1\xeb", oxDb::getDb()->getOne("SELECT oxvalue FROM oxuserpayments WHERE oxid='_testOxId2'"));
+        $this->assertEquals("123456789", oxDb::getDb()->getOne("SELECT oxvalue FROM oxuserpayments WHERE oxid='_testOxId2'"));
     }
 
     /**
@@ -218,14 +215,11 @@ class UserpaymentTest extends \OxidTestCase
         $this->assertEquals('_testOxId2', oxDb::getDb()->getOne("SELECT oxid FROM oxuserpayments WHERE oxid='_testOxId2'"));
     }
 
-    /**
-     * Testing if update encodes oxvalue field
-     */
-    public function testUpdateEncodesOxValue()
+    public function testUpdateForOxValue()
     {
         $this->_oUpay->oxuserpayments__oxvalue = new oxField('123456789', oxField::T_RAW);
         $this->_oUpay->save();
-        $this->assertEquals("BC6965B93A1329A1EB", oxDb::getDb()->getOne("SELECT hex(oxvalue) FROM oxuserpayments WHERE oxid='_testOxId'"));
+        $this->assertEquals("123456789", oxDb::getDb()->getOne("SELECT hex(oxvalue) FROM oxuserpayments WHERE oxid='_testOxId'"));
     }
 
     /**

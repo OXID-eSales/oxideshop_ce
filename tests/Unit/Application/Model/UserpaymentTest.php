@@ -219,7 +219,7 @@ class UserpaymentTest extends \OxidTestCase
     {
         $this->_oUpay->oxuserpayments__oxvalue = new oxField('123456789', oxField::T_RAW);
         $this->_oUpay->save();
-        $this->assertEquals("123456789", oxDb::getDb()->getOne("SELECT hex(oxvalue) FROM oxuserpayments WHERE oxid='_testOxId'"));
+        $this->assertEquals("313233343536373839", oxDb::getDb()->getOne("SELECT hex(oxvalue) FROM oxuserpayments WHERE oxid='_testOxId'"));
     }
 
     /**

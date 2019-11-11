@@ -27,7 +27,7 @@ $aModule = array(
     'settings' => [
         [
             'group' => 'main',
-            'name' => 'setting',
+            'name' => 'test-setting',
             'type' => 'arr',
             'value' => ['Preis', 'Hersteller'],
         ]

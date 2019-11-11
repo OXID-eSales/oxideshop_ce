@@ -32,20 +32,20 @@ final class ModuleSettingBridgeTest extends TestCase
         $bridge = $this->get(ModuleSettingBridgeInterface::class);
         $newValue = ['some new setting'];
 
-        $bridge->save('setting', $newValue, 'test-module');
+        $bridge->save('test-setting', $newValue, 'test-module');
 
         $configurationDao = $this->get(ModuleConfigurationDaoInterface::class);
         $configuration = $configurationDao->get('test-module', 1);
-        $this->assertSame($newValue, $configuration->getModuleSetting('setting')->getValue());
+        $this->assertSame($newValue, $configuration->getModuleSetting('test-setting')->getValue());
 
         $settingsDao = $this->get(SettingDaoInterface::class);
-        $this->assertSame($newValue, $settingsDao->get('setting', 'test-module', 1)->getValue());
+        $this->assertSame($newValue, $settingsDao->get('test-setting', 'test-module', 1)->getValue());
     }
 
     public function testGet(): void
     {
         $defaultModuleSettingValue = ['Preis', 'Hersteller'];
         $bridge = $this->get(ModuleSettingBridgeInterface::class);
-        $this->assertSame($defaultModuleSettingValue, $bridge->get('setting', 'test-module'));
+        $this->assertSame($defaultModuleSettingValue, $bridge->get('test-setting', 'test-module'));
     }
 }

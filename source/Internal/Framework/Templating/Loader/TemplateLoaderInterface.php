@@ -4,8 +4,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader;
 
+/**
+ * Interface TemplateLoaderInterface
+ * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
+ */
 interface TemplateLoaderInterface
 {
     /**

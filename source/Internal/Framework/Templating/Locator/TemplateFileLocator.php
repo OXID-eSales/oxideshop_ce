@@ -4,11 +4,15 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
 use OxidEsales\Eshop\Core\Config;
 
-class AdminTemplateFileLocator implements TemplateFileLocatorInterface
+/**
+ * Class TemplateFileLocator
+ * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
+ */
+class TemplateFileLocator implements FileLocatorInterface
 {
     /**
      * @var Config
@@ -34,6 +38,6 @@ class AdminTemplateFileLocator implements TemplateFileLocatorInterface
      */
     public function locate($name): string
     {
-        return $this->context->getTemplatePath($name, true);
+        return $this->context->getTemplatePath($name, false);
     }
 }

@@ -4,17 +4,17 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Templating;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Templating\Locator;
 
 use OxidEsales\Eshop\Core\Config;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator;
 
-class TemplateFileLocatorTest extends \PHPUnit\Framework\TestCase
+class AdminTemplateFileLocatorTest extends \PHPUnit\Framework\TestCase
 {
     public function testLocate()
     {
         $templateName = 'test_template.tpl';
-        $locator = new TemplateFileLocator($this->getConfigMock($templateName));
+        $locator = new AdminTemplateFileLocator($this->getConfigMock($templateName));
         $this->assertSame('pathToTpl/' . $templateName, $locator->locate($templateName));
     }
 
@@ -23,12 +23,12 @@ class TemplateFileLocatorTest extends \PHPUnit\Framework\TestCase
      */
     private function getConfigMock($templateName)
     {
-        $config = $configMock = $this
+        $config = $this
             ->getMockBuilder(Config::class)
             ->getMock();
         $config->expects($this->any())
             ->method('getTemplatePath')
-            ->with($templateName, false)
+            ->with($templateName, true)
             ->will($this->returnValue('pathToTpl/' . $templateName));
 
         return $config;

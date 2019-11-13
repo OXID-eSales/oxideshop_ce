@@ -10,29 +10,46 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
     public: true
     tags: ['templating']
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolverInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\LegacyTemplateNameResolver
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver'
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolver
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver'
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\AdminTemplateFileLocator:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\AdminTemplateFileLocator
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
   oxid_esales.templating.template.loader:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoader
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
     public: true
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateFileLocator'
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolverInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface'
   oxid_esales.templating.admin.template.loader:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateLoader
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
     public: true
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\AdminTemplateFileLocator'
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateNameResolverInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface'
+  oxid_esales.templating.admin.navigation.file.locator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminNavigationFileLocator
+    arguments:
+      - !tagged oxid.menu.file.locator
+    public: true
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator
+    tags:
+      - { name: 'oxid.menu.file.locator', priority: 10 }
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator
+    tags:
+      - { name: 'oxid.menu.file.locator', priority: 20 }
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'

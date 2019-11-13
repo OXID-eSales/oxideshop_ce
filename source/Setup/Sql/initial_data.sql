@@ -56,7 +56,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('33341949f476b65e8.17282442',	1,	'',	'iAttributesPercent',	'str',	'70'),
 ('359b59593eeee54186fceea68c3e6bd5',	1,	'theme:flow',	'sFavicon128File',	'str',	'favicon_128x128.png'),
 ('36d42513de8cab671.54909813',	1,	'',	'bl_perfShowActionCatArticleCnt',	'bool',	'1'),
-('39893a0ef6a6e11645d4beee4fd0cd51',	1,	'',	'aLanguageParams',	'aarr',	'a:2:{s:2:\"de\";a:3:{s:6:\"baseId\";i:0;s:6:\"active\";s:1:\"1\";s:4:\"sort\";s:1:\"1\";}s:2:\"en\";a:3:{s:6:\"baseId\";i:1;s:6:\"active\";s:1:\"1\";s:4:\"sort\";s:1:\"2\";}}'),
+('39893a0ef6a6e11645d4beee4fd0cd51',	1,	'',	'aLanguageParams',	'aarr',	'a:2:{s:2:"de";a:3:{s:6:"baseId";i:0;s:6:"active";s:1:"1";s:4:"sort";s:1:"1";}s:2:"en";a:3:{s:6:"baseId";i:1;s:6:"active";s:1:"1";s:4:"sort";s:1:"2";}}'),
 ('3c4f033dfb8fd4fe692715dda19ecd28',	1,	'',	'aCurrencies',	'arr',	'a:4:{i:0;s:23:\"EUR@ 1.00@ ,@ .@ €@ 2\";i:1;s:24:\"GBP@ 0.8565@ .@  @ £@ 2\";i:2;s:40:\"CHF@ 1.4326@ ,@ .@ <small>CHF</small>@ 2\";i:3;s:23:\"USD@ 1.2994@ .@  @ $@ 2\";}'),
 ('3cac0ace23a117f67cf9eb77ad23d504',	1,	'theme:flow',	'bl_showVouchers',	'bool',	'1'),
 ('3e55fc99f0608a98cfaef0d7089764a0',	1,	'theme:flow',	'sThumbnailsize',	'str',	'390*245'),

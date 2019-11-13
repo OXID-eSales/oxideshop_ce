@@ -97,6 +97,7 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                 ->end()
                             ->end()
                             ->arrayNode(ModuleSettingsDataMapper::MAPPING_KEY)
+                                ->normalizeKeys(false)
                                 ->arrayPrototype()
                                     ->children()
                                         ->scalarNode('group')

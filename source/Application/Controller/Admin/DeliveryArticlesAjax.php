@@ -53,26 +53,27 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected function _getQuery()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $request = \OxidEsales\Eshop\Core\Registry::getRequest();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
         $sO2CView = $this->_getViewName('oxobject2category');
 
-        $sDelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
-        $sSynchDelId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
+        $sDelId = $request->getRequestParameter('oxid');
+        $sSynchDelId = $request->getRequestParameter('synchoxid');
 
         // category selected or not ?
         if (!$sDelId) {
             // performance
             $sQAdd = " from $sArtTable where 1 ";
-            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : "and $sArtTable.oxparentid = '' ";
+            $sQAdd .= $config->getConfigParam('blVariantsSelection') ? '' : "and $sArtTable.oxparentid = '' ";
         } else {
             // selected category ?
             if ($sSynchDelId && $sDelId != $sSynchDelId) {
                 $sQAdd = " from $sO2CView left join $sArtTable on ";
-                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ( $sArtTable.oxid=$sO2CView.oxobjectid or $sArtTable.oxparentid=$sO2CView.oxobjectid)" : " $sArtTable.oxid=$sO2CView.oxobjectid ";
+                $sQAdd .= $config->getConfigParam('blVariantsSelection') ? " ( $sArtTable.oxid=$sO2CView.oxobjectid or $sArtTable.oxparentid=$sO2CView.oxobjectid)" : " $sArtTable.oxid=$sO2CView.oxobjectid ";
                 $sQAdd .= "where $sO2CView.oxcatnid = " . $oDb->quote($sDelId);
             } else {
                 $sQAdd = ' from oxobject2delivery left join ' . $sArtTable . ' on ' . $sArtTable . '.oxid=oxobject2delivery.oxobjectid ';

@@ -5,11 +5,8 @@
  */
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\SystemRequirements;
 use Psr\Container\ContainerInterface;
-use OxidEsales\EshopCommunity\Core\Registry;
-use PHPUnit\Framework\MockObject\MockObject;
 
 class SystemRequirementsTest extends \OxidTestCase
 {

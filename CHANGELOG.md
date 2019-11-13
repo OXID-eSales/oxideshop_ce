@@ -79,7 +79,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
-## [6.5.1] - 2019-11-07
+## [6.5.1] - Unreleased
 
 ### Fixed
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)

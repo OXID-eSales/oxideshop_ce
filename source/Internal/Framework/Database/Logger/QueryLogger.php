@@ -32,12 +32,12 @@ class QueryLogger implements SQLLogger
     /**
      * QueryLogger constructor.
      *
-     * @param QueryFilter      $queryFilter
+     * @param QueryFilterInterface      $queryFilter
      * @param ContextInterface $context
      * @param LoggerInterface  $psrLogger
      */
     public function __construct(
-        QueryFilter $queryFilter,
+        QueryFilterInterface $queryFilter,
         ContextInterface $context,
         LoggerInterface $psrLogger
     ) {

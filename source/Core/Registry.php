@@ -337,7 +337,8 @@ class Registry
         $class = \Psr\Container\ContainerInterface::class;
 
         if (!isset(self::$instances[$class])) {
-            self::$instances[$class] = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+            $containerFactory = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance();
+            self::$instances[$class] = $containerFactory->getContainer();
         }
 
         return self::$instances[$class];

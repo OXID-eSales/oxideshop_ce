@@ -328,6 +328,22 @@ class Registry
     }
 
     /**
+     * Return Doctrine QueryBuilder
+     * 
+     * @return \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
+     */
+    public static function getQueryBuilder()
+    {
+        $queryBuilderFactory = \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface::class;
+        
+        if (!isset(self::$instances[$queryBuilderFactory])) {
+            self::$instances[$queryBuilderFactory] = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer()->get($queryBuilderFactory);
+        }
+        
+        return self::$instances[$queryBuilderFactory];
+    }
+
+    /**
      * Return all class instances, which are currently set in the registry
      *
      * @return array

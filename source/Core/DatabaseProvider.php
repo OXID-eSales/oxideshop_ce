@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 /**
  * Database connection class
  *
- * @deprecated since v6.5.0 (2019-09-24); Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
+ * @deprecated since v6.5.0 (2019-09-24); Use \OxidEsales\Eshop\Core\Registry::getQueryBuilder()
  */
 class DatabaseProvider
 {

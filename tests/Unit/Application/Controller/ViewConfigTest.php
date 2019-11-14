@@ -72,7 +72,7 @@ class ViewConfigTest extends \OxidTestCase
      *
      * @return array
      */
-    public function testGetHomeLinkDataProvider()
+    public function getHomeLinkDataProvider()
     {
         $sShopUrl = $this->getConfig()->getShopUrl();
 
@@ -98,7 +98,7 @@ class ViewConfigTest extends \OxidTestCase
      * @param int    $iDefaultBrowserLanguage default browser language
      * @param string $sExpectedUrl            expected URL
      *
-     * @dataProvider testGetHomeLinkDataProvider
+     * @dataProvider getHomeLinkDataProvider
      */
     public function testGetHomeLink($iDefaultShopLanguage, $iDefaultBrowserLanguage, $sExpectedUrl)
     {
@@ -152,13 +152,17 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetShowCompareList()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getIsOrderStep'));
-        $oView->expects($this->once())->method('getIsOrderStep')->will($this->returnValue(true));
+        $oView = $this->createPartialMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getIsOrderStep'));
+        $oView->expects($this->any())->method('getIsOrderStep')->will($this->returnValue(true));
 
-        $oCfg = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'getActiveView'));
-        $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('bl_showCompareList'))->will($this->returnValue(true));
-        $oCfg->expects($this->at(1))->method('getConfigParam')->with($this->equalTo('blDisableNavBars'))->will($this->returnValue(true));
-        $oCfg->expects($this->at(2))->method('getActiveView')->will($this->returnValue($oView));
+        $oCfg = $this->createPartialMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'getActiveView'));
+        $oCfg->expects($this->any())
+            ->method('getConfigParam')
+            ->will($this->returnValueMap([
+                ['bl_showCompareList', true],
+                ['blDisableNavBars', true]
+            ]));
+        $oCfg->expects($this->any())->method('getActiveView')->will($this->returnValue($oView));
 
         $oVC = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
@@ -214,7 +218,6 @@ class ViewConfigTest extends \OxidTestCase
         $oCfg->expects($this->once())
             ->method('isSsl')
             ->will($this->returnValue(false));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         Registry::set(Config::class, $oCfg);
 
@@ -266,7 +269,6 @@ class ViewConfigTest extends \OxidTestCase
         $oCfg->expects($this->once())
             ->method('isSsl')
             ->will($this->returnValue(true));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oCfg);
 
         Registry::set(Config::class, $oCfg);
 
@@ -822,12 +824,12 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testIsFunctionalityEnabled()
     {
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
+        $oConfig = $this->createPartialMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
         $oConfig->expects($this->once())->method("getConfigParam")->with($this->equalTo('bl_showWishlist'))->will($this->returnValue("will"));
 
-        Registry::set(Config::class, $oConfig);
         $oViewConfig = oxNew(ViewConfig::class);
 
+        Registry::set(Config::class, $oConfig);
         $this->assertTrue($oViewConfig->isFunctionalityEnabled('bl_showWishlist'));
     }
 

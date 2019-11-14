@@ -329,18 +329,20 @@ class Registry
 
     /**
      * Return Doctrine QueryBuilder
-     * 
+     *
      * @return \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
      */
     public static function getQueryBuilder()
     {
-        $queryBuilderFactory = \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface::class;
+        $class = \OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface::class;
         
-        if (!isset(self::$instances[$queryBuilderFactory])) {
-            self::$instances[$queryBuilderFactory] = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer()->get($queryBuilderFactory);
+        if (!isset(self::$instances[$class])) {
+            self::$instances[$class] = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()
+                ->getContainer()
+                ->get($class);
         }
         
-        return self::$instances[$queryBuilderFactory];
+        return self::$instances[$class];
     }
 
     /**

@@ -326,6 +326,22 @@ class Registry
     }
 
     /**
+     * Return \Symfony\Component\DependencyInjection\Container
+     *
+     * @return \Psr\Container\ContainerInterface
+     */
+    public static function getContainer()
+    {
+        $class = \Psr\Container\ContainerInterface::class;
+
+        if (!isset(self::$instances[$class])) {
+            self::$instances[$class] = \OxidEsales\EshopCommunity\Internal\Application\ContainerFactory::getInstance()->getContainer();
+        }
+
+        return self::$instances[$class];
+    }
+
+    /**
      * Return all class instances, which are currently set in the registry
      *
      * @return array

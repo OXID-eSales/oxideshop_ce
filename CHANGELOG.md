@@ -23,6 +23,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
 - `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`
 
+### Removed
+- Removed database encoding:
+    - Changed database fields:
+        - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
+        - `oxvalue` field in `oxuserpayments` table changed from `blob` to `text`
+    - Removed methods and properties:
+        - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
+        - `OxidEsales\Eshop\Core\Config::$sConfigKey`
+        - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
+    - Removed classes:
+        - `Conf`
+    - Removed settings:
+        - `sConfigKey` from `config.inc.php`
+    - Deprecated:
+        - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+
 ## [6.5.0] - 2019-11-07
 
 ### Added

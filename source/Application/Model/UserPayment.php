@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxDb;
 
@@ -22,6 +23,15 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     // DO NOT !! CHANGE THIS FILE AND STORE CREDIT CARD INFORMATION
     // THIS IS MORE THAN LIKELY ILLEGAL !!
     // CHECK YOUR CREDIT CARD CONTRACT
+
+    /**
+     * Payment information encryption key
+     *
+     * @deprecated since v6.6.0 (2019-11-15); Database encoding was completely removed and property is not used anymore.
+     *
+     * @var string.
+     */
+    protected $_sPaymentKey = 'fq45QS09_fqyx09239QQ';
 
     /**
      * Name of current class
@@ -88,7 +98,20 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::__construct();
         $this->init('oxuserpayments');
-        $this->setStoreCreditCardInfo(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blStoreCreditCardInfo'));
+        $this->_sPaymentKey = Registry::getUtils()->strRot13($this->_sPaymentKey);
+        $this->setStoreCreditCardInfo(Registry::getConfig()->getConfigParam('blStoreCreditCardInfo'));
+    }
+
+    /**
+     * Returns payment key used for DB value description
+     *
+     * @deprecated since v6.6.0 (2019-11-15); Database encoding was completely removed and method is not used anymore.
+     *
+     * @return string
+     */
+    public function getPaymentKey()
+    {
+        return $this->_sPaymentKey;
     }
 
     /**

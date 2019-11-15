@@ -5,9 +5,6 @@
  * See LICENSE file for license details.
  */
 
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-ini_set('display_errors', '0');
-
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
 define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'oxideshop.log');
@@ -112,16 +109,6 @@ if ($configMissing || !is_readable(VENDOR_PATH . 'autoload.php')) {
     trigger_error($message, E_USER_ERROR);
 }
 unset($configMissing);
-
-/**
- * Turn on display errors for debug mode
- */
-$bootstrapConfigFileReader = new \BootstrapConfigFileReader();
-if ($bootstrapConfigFileReader->isDebugMode()) {
-    ini_set('display_errors', '1');
-    error_reporting(E_ALL & ~E_DEPRECATED);
-}
-unset($bootstrapConfigFileReader);
 
 /**
  * Register basic the autoloaders. In this phase we still do not want to use other shop classes to make autoloading

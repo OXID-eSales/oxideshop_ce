@@ -13,8 +13,6 @@ require_once '../bootstrap.php';
 $moduleAutoload = \OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class ;
 spl_autoload_unregister([$moduleAutoload, 'autoload']);
 
-error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
-
 require_once 'functions.php';
 
 $oDispatcher = new Dispatcher();

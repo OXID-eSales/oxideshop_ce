@@ -319,31 +319,35 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $sArticleId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArticleId);
 
-        $sSelect = "SELECT $sArticleTable.*
-                        FROM $sArticleTable INNER JOIN oxobject2article ON oxobject2article.oxobjectid=$sArticleTable.oxid ";
-        $sSelect .= "WHERE oxobject2article.oxarticlenid = $sArticleId ";
-        $sSelect .= " AND " . $oBaseObject->getSqlActiveSnippet();
-
         // #525 bidirectional cross selling
         if ($myConfig->getConfigParam('blBidirectCross')) {
             $sSelect = "
                 (
-                    SELECT $sArticleTable.* FROM $sArticleTable
+                    SELECT {$sArticleTable}.*, O2A1.oxsort as sorting FROM {$sArticleTable}
                         INNER JOIN oxobject2article AS O2A1 on
-                            ( O2A1.oxobjectid = $sArticleTable.oxid AND O2A1.oxarticlenid = $sArticleId )
+                            ( O2A1.oxobjectid = {$sArticleTable}.oxid AND O2A1.oxarticlenid = {$sArticleId} )
                     WHERE 1
-                    AND " . $oBaseObject->getSqlActiveSnippet() . "
-                    AND ($sArticleTable.oxid != $sArticleId)
+                    AND {$oBaseObject->getSqlActiveSnippet()}
+                    AND ({$sArticleTable}.oxid != {$sArticleId})
                 )
                 UNION
                 (
-                    SELECT $sArticleTable.* FROM $sArticleTable
+                    SELECT {$sArticleTable}.*, O2A2.oxsort as sorting FROM {$sArticleTable}
                         INNER JOIN oxobject2article AS O2A2 ON
-                            ( O2A2.oxarticlenid = $sArticleTable.oxid AND O2A2.oxobjectid = $sArticleId )
+                            ( O2A2.oxarticlenid = {$sArticleTable}.oxid AND O2A2.oxobjectid = {$sArticleId} )
                     WHERE 1
-                    AND " . $oBaseObject->getSqlActiveSnippet() . "
-                    AND ($sArticleTable.oxid != $sArticleId)
-                )";
+                    AND {$oBaseObject->getSqlActiveSnippet()}
+                    AND ({$sArticleTable}.oxid != {$sArticleId})
+                )
+                ORDER BY sorting";
+        } else {
+            $sSelect = "SELECT {$sArticleTable}.*
+                FROM {$sArticleTable}
+                INNER JOIN oxobject2article
+                    ON oxobject2article.oxobjectid={$sArticleTable}.oxid
+                WHERE oxobject2article.oxarticlenid = {$sArticleId}
+                    AND {$oBaseObject->getSqlActiveSnippet()}
+                ORDER BY oxobject2article.oxsort";
         }
 
         $this->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));

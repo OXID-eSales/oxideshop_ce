@@ -59,13 +59,31 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
             ->setPath($data['path'])
             ->setVersion($data['version'])
             ->setConfigured($data['configured'])
-            ->setTitle($data['title'])
-            ->setDescription($data['description'])
-            ->setLang($data['lang'])
-            ->setThumbnail($data['thumbnail'])
-            ->setAuthor($data['author'])
-            ->setUrl($data['url'])
-            ->setEmail($data['email']);
+            ->setTitle($data['title']);
+
+        if (isset($data['description'])) {
+            $moduleConfiguration->setDescription($data['description']);
+        }
+
+        if (isset($data['lang'])) {
+            $moduleConfiguration->setLang($data['lang']);
+        }
+
+        if (isset($data['thumbnail'])) {
+            $moduleConfiguration->setThumbnail($data['thumbnail']);
+        }
+
+        if (isset($data['author'])) {
+            $moduleConfiguration->setAuthor($data['author']);
+        }
+
+        if (isset($data['url'])) {
+            $moduleConfiguration->setUrl($data['url']);
+        }
+
+        if (isset($data['email'])) {
+            $moduleConfiguration->setEmail($data['email']);
+        }
 
         foreach ($this->dataMappers as $dataMapper) {
             $moduleConfiguration = $dataMapper->fromData($moduleConfiguration, $data);

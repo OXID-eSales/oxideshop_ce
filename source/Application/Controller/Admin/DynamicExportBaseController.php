@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -909,7 +910,8 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
             //#1166R - pangora - campaign
             $oArticle->appendLink("campaign={$sCampaign}");
 
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("blAppendCatToCampaign") &&
+            if (
+                \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("blAppendCatToCampaign") &&
                 ($sCat = $this->getCategoryString($oArticle))
             ) {
                 $oArticle->appendLink("/$sCat");

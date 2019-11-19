@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -46,9 +47,9 @@ class EditionRootPathProvider
         $editionsPath = VENDOR_PATH . static::EDITIONS_DIRECTORY;
         $path = getShopBasePath();
         if ($this->getEditionSelector()->isEnterprise()) {
-            $path = $editionsPath  .'/'. static::ENTERPRISE_DIRECTORY;
+            $path = $editionsPath  . '/' . static::ENTERPRISE_DIRECTORY;
         } elseif ($this->getEditionSelector()->isProfessional()) {
-            $path = $editionsPath .'/'.  static::PROFESSIONAL_DIRECTORY;
+            $path = $editionsPath . '/' .  static::PROFESSIONAL_DIRECTORY;
         }
 
         return realpath($path) . DIRECTORY_SEPARATOR;

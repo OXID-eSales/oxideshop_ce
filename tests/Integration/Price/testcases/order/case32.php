@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  neto
@@ -15,6 +16,7 @@
  * Actions with order:
  *  1. update :changed products amounts
  */
+
 $aData = array(
      'articles' => array(
              0 => array(
@@ -107,7 +109,7 @@ $aData = array(
                     'oxfromamount' => 0,
                     'oxtoamount' => 1000000,
                     'oxchecked' => 1,
-                    'oxaddsumrules'=>21,
+                    'oxaddsumrules' => 21,
                 ),
         ),
     ),
@@ -173,9 +175,9 @@ $aData = array(
             'config' => array(
                 'blEnterNetPrice' => false,
                 'blShowNetPrice' => true,
-                'blShowVATForDelivery'=> true,
-                'blShowVATForPayCharge'=> true,
-                'blShowVATForWrapping'=> true,
+                'blShowVATForDelivery' => true,
+                'blShowVATForPayCharge' => true,
+                'blShowVATForWrapping' => true,
                 'sAdditionalServVATCalcMethod' => 'biggest_net'
 
             ),
@@ -189,7 +191,7 @@ $aData = array(
              0 => array(
                       'oxid'       => '111',
                       'amount'     => 3,
-            ),
+             ),
             ),
     ),
 

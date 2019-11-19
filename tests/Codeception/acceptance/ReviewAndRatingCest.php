@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -92,7 +93,7 @@ class ReviewAndRatingCest
     private function prepareReviewDataForProduct(AcceptanceTester $I, $productId, $userId, $review)
     {
         $reviewData = [
-            'OXID' => 'test'.$productId,
+            'OXID' => 'test' . $productId,
             'OXOBJECTID' => $productId,
             'OXTYPE' => 'oxarticle',
             'OXTEXT' => $review['text'],
@@ -109,5 +110,4 @@ class ReviewAndRatingCest
     {
         return \Codeception\Util\Fixtures::get('existingUser');
     }
-
 }

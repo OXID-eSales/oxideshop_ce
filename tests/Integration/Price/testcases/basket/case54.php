@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto / brutto
  * Price view mode: netto / brutto
@@ -11,6 +12,7 @@
  * Gift cart: -;
  * Costs VAT caclulation rule: proportiona
  */
+
 $aData = array(
     // Product
     'articles' => array(

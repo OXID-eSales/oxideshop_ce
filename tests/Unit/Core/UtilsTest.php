@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use Exception;
@@ -806,7 +808,7 @@ class UtilsTest extends \OxidTestCase
     {
         $vfsStream = $this->getVfsStreamWrapper();
         $file = \org\bovigo\vfs\vfsStream::newFile('actions_main.inc.php')->withContent('')->at($vfsStream->getRoot());
-        $tempFile = $vfsStream->getRootPath() .'actions_main.inc.php';
+        $tempFile = $vfsStream->getRootPath() . 'actions_main.inc.php';
 
         $file->lastModified(time());
         $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
@@ -1196,10 +1198,10 @@ class UtilsTest extends \OxidTestCase
         oxTestModules::addFunction(
             'oxUBase',
             'render',
-            '{throw new Exception(\'Some rendering exception\');}');
+            '{throw new Exception(\'Some rendering exception\');}'
+        );
 
         oxRegistry::getUtils()->handlePageNotFoundError('url aa');
-
     }
 
     public function testToPhpFileCache()

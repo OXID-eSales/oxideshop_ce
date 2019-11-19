@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxObjectException;
-
 use Exception;
 use \oxBase;
 use oxBaseHelper;
@@ -2356,7 +2357,7 @@ class BaseTest extends \OxidTestCase
         $this->assertTrue(is_array($aFieldNames) && count($aFieldNames) > 0);
         $this->assertTrue(
             in_array("oxtitle", $aFieldNames),
-            "oxtitle expected to be in array:  ". serialize($aFieldNames)
+            "oxtitle expected to be in array:  " . serialize($aFieldNames)
         );
     }
 

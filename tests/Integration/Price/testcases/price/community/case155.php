@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -9,6 +10,7 @@
  * Short description: Brutto-Brutto user group Price B,
  * Test case is moved from selenium test "testFrontendPriceB"
  */
+
 $aData = array(
         'articles' => array(
                 0 => array(

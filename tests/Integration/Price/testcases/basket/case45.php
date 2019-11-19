@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: brutto
@@ -20,6 +21,7 @@
  * Calculate VAT according to the max value  .
  * Neto-Brutto mode. Additiona products Neto-Neto.
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -34,7 +36,7 @@ $aData = array(
                         'oxamount'     => 1,
                         'oxamountto'   => 3,
                         'oxartid'      => 1001,
-                    //	'oxaddperc'    => 10,
+                    //  'oxaddperc'    => 10,
                         'oxaddabs'     => 2.00,
                 ),
         ),
@@ -86,7 +88,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-        'oxaddsumrules'=>1,
+        'oxaddsumrules' => 1,
             ),
         ),
     ),
@@ -137,9 +139,9 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => true,
             'blShowNetPrice' => false,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,

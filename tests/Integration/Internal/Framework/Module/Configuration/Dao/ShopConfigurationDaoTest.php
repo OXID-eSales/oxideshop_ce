@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Configuration\Dao;
 
@@ -175,7 +178,7 @@ final class ShopConfigurationDaoTest extends TestCase
         $storage = $fileStorageFactory->create(
             $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/shops/1.yaml'
         );
-        $storage->save(["test"=>"test"]);
+        $storage->save(["test" => "test"]);
 
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->get(1);
@@ -193,7 +196,7 @@ final class ShopConfigurationDaoTest extends TestCase
         $storage = $fileStorageFactory->create(
             $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/environment/1.yaml'
         );
-        $storage->save(["test"=>"test"]);
+        $storage->save(["test" => "test"]);
 
         $shopConfigurationDao->get(1);
     }

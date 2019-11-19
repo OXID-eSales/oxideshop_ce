@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -423,11 +424,13 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         // Remove collected item's children from the list too (in the ranges).
         foreach ($this->_aArray as $sId => $oCat) {
-            if (isset($aRemoveList[$oCat->oxcategories__oxrootid->value]) &&
+            if (
+                isset($aRemoveList[$oCat->oxcategories__oxrootid->value]) &&
                 is_array($aRemoveList[$oCat->oxcategories__oxrootid->value])
             ) {
                 foreach ($aRemoveList[$oCat->oxcategories__oxrootid->value] as $iLeft => $iRight) {
-                    if (($iLeft <= $oCat->oxcategories__oxleft->value)
+                    if (
+                        ($iLeft <= $oCat->oxcategories__oxleft->value)
                         && ($iRight >= $oCat->oxcategories__oxleft->value)
                     ) {
                         // this is a child in an inactive range (parent already gone)

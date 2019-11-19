@@ -1,7 +1,9 @@
 <?php
+
 /**
  * #PHPHEADER_OXID_LICENSE_INFORMATION#
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Checkout;
 
 use oxField;

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use OxidEsales\Eshop\Core\Module\ModuleList;
@@ -55,7 +57,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $sVersion = $oConfig->getVersion();
         $sShopUrl = $oConfig->getShopUrl();
 
-        $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+        $sXml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         $sXml .= '<omvnRequest>';
         $sXml .=   '<pVersion>1.1</pVersion>';
         $sXml .=   '<modules>';
@@ -75,7 +77,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
         $sXml .=   "<version>$sVersion</version>";
         $sXml .=   "<shopUrl>$sShopUrl</shopUrl>";
         $sXml .=   '<productId>eShop</productId>';
-        $sXml .= '</omvnRequest>'."\n";
+        $sXml .= '</omvnRequest>' . "\n";
 
         $curlMock = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
             ->setMethods(['execute','getStatusCode','setParameters'])

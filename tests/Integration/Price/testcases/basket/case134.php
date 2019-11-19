@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto;
  * Price view mode: brutto;
@@ -21,6 +22,7 @@
  * Brutto-Brutto mode.
  @bug #3587: single product discount for shop
  */
+
 $aData = array(
     'articles' => array(
              0 => array(

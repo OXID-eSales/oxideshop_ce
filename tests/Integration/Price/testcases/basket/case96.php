@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -20,6 +21,7 @@
  * Short description:
  * Vat and rounding issue. 6 articles. two different VAT(for one the product is set spec. VAT=55%, for all other products VAT=19%),  three discount for product, one discount for basket.Mode Neto-Neto
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -132,7 +134,7 @@ $aData = array(
                 'oxaddsumtype' => '%',
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
-                 'oxparam'=> 0.1,
+                 'oxparam' => 0.1,
                 'oxparamend' => 99999,
             ),
         ),
@@ -202,9 +204,9 @@ $aData = array(
             'blShowNetPrice' => true,
             'blShowVATForPayCharge' => true,
             'blShowVATForDelivery' => true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
 
         ),
         // Other options

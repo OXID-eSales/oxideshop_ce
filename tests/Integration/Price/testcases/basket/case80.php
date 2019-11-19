@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto / netto
  * Price view mode: netto / netto
@@ -18,6 +19,7 @@
  * Short description:
  * Neto-Neto mode. Additiona products Neto-Neto. Calculate VAT according to the proportional value
  */
+
 $aData = array(
     // Product
     'articles' => array(
@@ -63,7 +65,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-                'oxaddsumrules'=>1,
+                'oxaddsumrules' => 1,
             ),
         ),
     ),
@@ -109,9 +111,9 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,

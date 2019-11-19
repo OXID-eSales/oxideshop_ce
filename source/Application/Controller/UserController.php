@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
@@ -89,8 +91,10 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
 
             $basket = $this->getSession()->getBasket();
             $isPsBasketReservationsEnabled = $config->getConfigParam('blPsBasketReservationEnabled');
-            if ($this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
-                (!$basket || ($basket && !$basket->getProductsCount()))) {
+            if (
+                $this->_blIsOrderStep && $isPsBasketReservationsEnabled &&
+                (!$basket || ($basket && !$basket->getProductsCount()))
+            ) {
                 Registry::getUtils()->redirect($config->getShopHomeUrl() . 'cl=basket', true, 302);
             }
         }

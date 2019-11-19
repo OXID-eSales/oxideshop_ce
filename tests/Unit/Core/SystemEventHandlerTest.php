@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use DateTime;
@@ -154,8 +156,8 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $hourToCheck = explode(':', $checkTime);
         $hour = $hourToCheck[0];
-        $this->assertTrue($hour < 24, 'Get hour: '. $hour);
-        $this->assertTrue($hour > 7, 'Get hour: '. $hour);
+        $this->assertTrue($hour < 24, 'Get hour: ' . $hour);
+        $this->assertTrue($hour > 7, 'Get hour: ' . $hour);
     }
 
     public function testOnShopEndDoNotChangeWhenToSendInformation()

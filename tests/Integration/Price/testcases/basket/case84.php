@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -12,6 +13,7 @@
  * Gift cart: -
  * Short description: Vat and rounding issue test case: basket discount without articles ( Discount (from 1 unit to 99999) )
  */
+
 $aData = array(
      'articles' => array(
          0 => array(

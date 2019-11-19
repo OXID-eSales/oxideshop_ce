@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
@@ -39,9 +42,9 @@ class ContactFormFactory implements FormFactoryInterface
      * @param FormValidatorInterface     $requiredFieldsValidator
      */
     public function __construct(
-        FormConfigurationInterface  $contactFormConfiguration,
-        FormValidatorInterface      $contactFormEmailValidator,
-        FormValidatorInterface      $requiredFieldsValidator
+        FormConfigurationInterface $contactFormConfiguration,
+        FormValidatorInterface $contactFormEmailValidator,
+        FormValidatorInterface $requiredFieldsValidator
     ) {
         $this->contactFormConfiguration = $contactFormConfiguration;
         $this->contactFormEmailValidator = $contactFormEmailValidator;

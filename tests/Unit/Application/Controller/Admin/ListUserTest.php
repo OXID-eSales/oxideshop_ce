@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DOMDocument;
@@ -34,7 +36,7 @@ class ListUserTest extends \OxidTestCase
     public function testRender()
     {
         $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("getDomXml"));
-        $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument));
+        $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument()));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("getNavigation"));
         $oView->expects($this->at($iCnt++))->method('getNavigation')->will($this->returnValue($oNavTree));

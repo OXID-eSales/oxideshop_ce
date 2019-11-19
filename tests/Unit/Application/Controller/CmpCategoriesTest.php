@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \Exception;
@@ -220,7 +222,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
     public function testGetActCatLoadDefault()
     {
-        $oActShop = new stdClass;
+        $oActShop = new stdClass();
         $oActShop->oxshops__oxdefcat = new oxField('default category');
 
         $oCfg = $this->getMock('stdClass', array('getActiveShop'));
@@ -239,7 +241,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
     public function testGetActCatLoadDefaultoxroot()
     {
-        $oActShop = new stdClass;
+        $oActShop = new stdClass();
         $oActShop->oxshops__oxdefcat = new oxField('oxrootid');
 
         $oCfg = $this->getMock('stdClass', array('getActiveShop'));

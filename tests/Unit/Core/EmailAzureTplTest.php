@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxField;
@@ -998,7 +1000,7 @@ class EmailAzureTplTest extends \OxidTestCase
         // uncomment line to generate template for checking mail body
         // file_put_contents (__DIR__ ."/../TestData/email_templates/azure/$sFuncName.html", $sBody);
 
-        $sPath = __DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '.html';
+        $sPath = __DIR__ . '/../testData/email_templates/azure/' . $sFuncName . '.html';
         if (!($sExpectedBody = file_get_contents($sPath))) {
             $this->fail("Template '$sPath' was not found!");
         }
@@ -1030,8 +1032,8 @@ class EmailAzureTplTest extends \OxidTestCase
         $sBody = str_replace($sShopUrl, $sExpectedShopUrl, $sBody);
 
         if ($blWriteToTestFile) {
-            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_expecting.html', $sExpectedBody);
-            file_put_contents(__DIR__ .'/../testData/email_templates/azure/' . $sFuncName . '_test_result.html', $sBody);
+            file_put_contents(__DIR__ . '/../testData/email_templates/azure/' . $sFuncName . '_test_expecting.html', $sExpectedBody);
+            file_put_contents(__DIR__ . '/../testData/email_templates/azure/' . $sFuncName . '_test_result.html', $sBody);
         }
 
         $this->assertEquals(strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), "Incorect mail body");

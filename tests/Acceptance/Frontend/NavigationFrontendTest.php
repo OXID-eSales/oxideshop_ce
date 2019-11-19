@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -352,7 +353,7 @@ class NavigationFrontendTest extends FrontendTestCase
         //going to news page by clicking continue link
 
         $aShop = $this->callShopSC("oxShop", null, oxSHOPID, array("oxname"));
-        $this->assertEquals("%YOU_ARE_HERE%: / %LATEST_NEWS_AND_UPDATES_AT%" . ' '. $aShop['oxname'], trim($this->getText("breadCrumb")));
+        $this->assertEquals("%YOU_ARE_HERE%: / %LATEST_NEWS_AND_UPDATES_AT%" . ' ' . $aShop['oxname'], trim($this->getText("breadCrumb")));
         $this->assertTextPresent("%LATEST_NEWS_AND_UPDATES_AT%");
         $this->assertTextPresent("02.01.2008 - Test news 2 [EN] šÄßüл");
         $this->assertTextPresent("Test news text 2 [EN] šÄßüл");
@@ -879,7 +880,7 @@ class NavigationFrontendTest extends FrontendTestCase
     {
         $this->openShop();
         $sShopId = oxSHOPID;
-        $this->open(shopURL."index.php?cl=vendorlist&cnid=root&shp={$sShopId}");
+        $this->open(shopURL . "index.php?cl=vendorlist&cnid=root&shp={$sShopId}");
         $this->clickAndWait("moreSubCat_1");
 
         $this->assertEquals("%YOU_ARE_HERE%: / %BY_VENDOR% / Distributor [EN] šÄßüл", $this->getText("breadCrumb"));
@@ -1368,7 +1369,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->callShopSC("oxConfig", null, null, array("bl_perfLoadPrice" => array("type" => "bool", "value" => "false")));
         //option -> performance->"Load similar Products"
         $this->callShopSC("oxConfig", null, null, array("bl_perfLoadSimilar" => array("type" => "bool", "value" => "false")));
-        //option -> performance->" 	Load Crossselling "
+        //option -> performance->"  Load Crossselling "
         $this->callShopSC("oxConfig", null, null, array("bl_perfLoadCrossselling" => array("type" => "bool", "value" => "false")));
         //option -> performance->"Load Accessories "
         $this->callShopSC("oxConfig", null, null, array("bl_perfLoadAccessoires" => array("type" => "bool", "value" => "false")));
@@ -1532,7 +1533,7 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("cookieNote");
 
         // Enable cookienotes
-        $this->callShopSC('oxConfig', null, null, array('blShowCookiesNotification' => array('type' => 'bool', 'value'=>true)));
+        $this->callShopSC('oxConfig', null, null, array('blShowCookiesNotification' => array('type' => 'bool', 'value' => true)));
 
         // Check cookie message in frontend
         $this->clearCache();

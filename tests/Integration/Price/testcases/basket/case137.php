@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto;
  * Price view mode: brutto;
@@ -20,6 +21,7 @@
  * Short description:
  * Brutto-Brutto mode.
  @bug #3587: general discount for basket */
+
 $aData = array(
      'articles' => array(
          0 => array(

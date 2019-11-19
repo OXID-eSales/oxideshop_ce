@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \Exception;
@@ -33,7 +35,7 @@ class VendorListTest extends \OxidTestCase
      */
     public function testRenderExistingVendor()
     {
-        $sActVendor = $this->getTestConfig()->getShopEdition() == 'EE'? "9437def212dc37c66f90cc249143510a" : '9437def212dc37c66f90cc249143510a';
+        $sActVendor = $this->getTestConfig()->getShopEdition() == 'EE' ? "9437def212dc37c66f90cc249143510a" : '9437def212dc37c66f90cc249143510a';
 
         $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', $sActVendor, $this->getConfig()->getShopHomeURL());
@@ -57,7 +59,7 @@ class VendorListTest extends \OxidTestCase
         $this->setRequestParameter("cnid", 'cnid');
         oxTestModules::addFunction("oxUtils", "redirect", "{ throw new Exception('OK'); }");
 
-        $sActVendor = $this->getTestConfig()->getShopEdition() == 'EE'? "9437def212dc37c66f90cc249143510a" : '9437def212dc37c66f90cc249143510a';
+        $sActVendor = $this->getTestConfig()->getShopEdition() == 'EE' ? "9437def212dc37c66f90cc249143510a" : '9437def212dc37c66f90cc249143510a';
 
         $oVendorTree = oxNew('oxVendorList');
         $oVendorTree->buildVendorTree('vendorlist', $sActVendor, $this->getConfig()->getShopHomeURL());
@@ -184,7 +186,7 @@ class VendorListTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
-        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
 
         $this->setRequestParameter('cnid', $sVendorId);
         $this->getConfig()->setConfigParam('iNrofCatArticles', 20);
@@ -220,7 +222,7 @@ class VendorListTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
-        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
@@ -231,7 +233,7 @@ class VendorListTest extends \OxidTestCase
 
     public function testGetCatTitle()
     {
-        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
 
@@ -244,7 +246,7 @@ class VendorListTest extends \OxidTestCase
 
     public function testGetActiveCategory()
     {
-        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
 
         $this->setRequestParameter("cnid", $sVendorId);
 
@@ -280,7 +282,7 @@ class VendorListTest extends \OxidTestCase
 
     public function testGetTitleSuffix()
     {
-        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE'? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
+        $sVendorId = $this->getTestConfig()->getShopEdition() == 'EE' ? 'd2e44d9b31fcce448.08890330' : '68342e2955d7401e6.18967838';
         $oVendor = oxNew('oxVendor');
         $oVendor->load($sVendorId);
         $oVendor->oxvendor__oxshowsuffix = new oxField(1);

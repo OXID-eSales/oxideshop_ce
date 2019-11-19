@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
@@ -81,7 +84,7 @@ class ModuleActivateCommand extends Command
         if ($this->isInstalled($moduleId)) {
             $this->activateModule($output, $moduleId);
         } else {
-            $output->writeLn('<error>'.sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId).'</error>');
+            $output->writeLn('<error>' . sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
         }
     }
 
@@ -93,10 +96,10 @@ class ModuleActivateCommand extends Command
     {
         try {
             $this->moduleActivationService->activate($moduleId, $this->context->getCurrentShopId());
-            $output->writeLn('<info>'.sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId).'</info>');
+            $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId) . '</info>');
         } catch (ModuleSetupException $exception) {
             $output->writeLn(
-                '<info>'.sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId).'</info>'
+                '<info>' . sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId) . '</info>'
             );
         }
     }

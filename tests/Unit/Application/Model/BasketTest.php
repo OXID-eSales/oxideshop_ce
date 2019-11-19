@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxArticleInputException;
@@ -249,7 +251,8 @@ class BasketTest extends \OxidTestCase
         oxRegistry::get("oxDiscountList")->forceReload();
 
         $sName = $this->getName();
-        if ($sName == 'testBasketCalculationWithSpecUseCaseDescribedAbove' ||
+        if (
+            $sName == 'testBasketCalculationWithSpecUseCaseDescribedAbove' ||
             $sName == 'testBasketCalculationWithSpecUseCaseDescribedAboveJustDiscountIsAppliedByPrice' ||
             $sName == 'testUpdateBasketTwoProductsWithSameSelectionList'
         ) {
@@ -333,7 +336,8 @@ class BasketTest extends \OxidTestCase
         oxDb::getDb()->execute('delete from oxuserbasketitems');
 
         $sName = $this->getName();
-        if ($sName == 'testBasketCalculationWithSpecUseCaseDescribedAbove' ||
+        if (
+            $sName == 'testBasketCalculationWithSpecUseCaseDescribedAbove' ||
             $sName == 'testBasketCalculationWithSpecUseCaseDescribedAboveJustDiscountIsAppliedByPrice' ||
             $sName == 'testUpdateBasketTwoProductsWithSameSelectionList'
         ) {
@@ -820,7 +824,6 @@ class BasketTest extends \OxidTestCase
         $blSelFound = false;
 
         foreach ($oBasket->getBasketArticles() as $oArticle) {
-
             // selection list check
             if ($iSelArticleId == $oArticle->getId()) {
                 $aSelectList = $oArticle->getDispSelList();
@@ -1013,7 +1016,7 @@ class BasketTest extends \OxidTestCase
      */
     public function testGetItemKey()
     {
-        $sKey = md5('_xxx' . '|' . serialize(array('_xxx')) . '|' . serialize(array('_xxx')) . '|' . ( int ) true . '|' . serialize('_xxx'));
+        $sKey = md5('_xxx' . '|' . serialize(array('_xxx')) . '|' . serialize(array('_xxx')) . '|' . (int) true . '|' . serialize('_xxx'));
 
         $oBasket = oxNew('oxbasket');
         $this->assertEquals($sKey, $oBasket->getItemKey('_xxx', array('_xxx'), array('_xxx'), true, '_xxx'));
@@ -1026,7 +1029,7 @@ class BasketTest extends \OxidTestCase
      */
     public function testGetItemKeyIfSelListEmpty()
     {
-        $sKey = md5('_xxx' . '|' . serialize(array('0')) . '|' . serialize(array('_xxx')) . '|' . ( int ) true . '|' . serialize('_xxx'));
+        $sKey = md5('_xxx' . '|' . serialize(array('0')) . '|' . serialize(array('_xxx')) . '|' . (int) true . '|' . serialize('_xxx'));
 
         $oBasket = oxNew('oxbasket');
         $this->assertEquals($sKey, $oBasket->getItemKey('_xxx', null, array('_xxx'), true, '_xxx'));
@@ -2417,7 +2420,6 @@ class BasketTest extends \OxidTestCase
         $blSelNotSet = true;
 
         foreach ($oBasket->getBasketArticles() as $oArticle) {
-
             // selection list check
             $blSelNotSet = $blSelNotSet & !isset($oArticle->selectlist);
 

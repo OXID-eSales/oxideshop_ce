@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  neto
@@ -15,6 +16,7 @@
  *  2. Delivery -
  *  3. TS +
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

@@ -61,7 +61,7 @@ $aData = array(
             'oxamount' => 0,
             'oxamountto' => 99999,
             'oxprice' => 200,
-            'oxpriceto'=> 999999,
+            'oxpriceto' => 999999,
             'oxactive' => 1,
             'oxsort' => 20,
         ),

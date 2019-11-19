@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxArticle;
-
 use OxidEsales\EshopCommunity\Core\Exception\SystemComponentException;
 use \stdClass;
 use \oxField;
@@ -102,7 +103,7 @@ class FunctionsTest extends \OxidTestCase
 
     public function testOx_get_template()
     {
-        $fake = new stdClass;
+        $fake = new stdClass();
         $fake->oxidcache = new oxField('test', oxField::T_RAW);
         $sRes = 'aa';
         $this->assertEquals(true, ox_get_template('blah', $sRes, $fake));
@@ -114,7 +115,7 @@ class FunctionsTest extends \OxidTestCase
 
     public function testOx_get_timestamp()
     {
-        $fake = new stdClass;
+        $fake = new stdClass();
         $this->assertEquals(true, ox_get_timestamp('blah', $res, $fake));
         $this->assertEquals(true, is_numeric($res));
         $tm = time() - $res;

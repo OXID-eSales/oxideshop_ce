@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -106,7 +107,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowUnevenAmounts')) {
-            $amount = round(( string ) $amount);
+            $amount = round((string) $amount);
         }
 
         //negative amounts are not allowed

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -23,14 +24,14 @@ class Version20180214152228 extends AbstractMigration
     public function up(Schema $schema)
     {
         $facts = new Facts();
-        $configFile = new ConfigFile($facts->getSourcePath().'/config.inc.php');
+        $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
         $configKey = !is_null($configFile->getVar('sConfigKey')) ? $configFile->getVar('sConfigKey') : Config::DEFAULT_CONFIG_KEY;
         $settingName = 'blAllowSuggestArticle';
 
         $this->addSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`)
-                            SELECT SUBSTRING(md5(uuid_short()), 1, 32),  `OXID`, '', '".$settingName."', 'bool', ENCODE('1', '".$configKey."') FROM oxshops
+                            SELECT SUBSTRING(md5(uuid_short()), 1, 32),  `OXID`, '', '" . $settingName . "', 'bool', ENCODE('1', '" . $configKey . "') FROM oxshops
                             WHERE NOT EXISTS (
-                            SELECT `OXVARNAME` FROM `oxconfig` WHERE `OXVARNAME` = '".$settingName."'
+                            SELECT `OXVARNAME` FROM `oxconfig` WHERE `OXVARNAME` = '" . $settingName . "'
         )");
     }
 

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use OxidEsales\EshopCommunity\Core\Smarty\Plugin\Emos;
@@ -81,7 +83,7 @@ class EmosTest extends \OxidTestCase
      */
     public function testEmosItemFormat()
     {
-        $oItem = new stdClass;
+        $oItem = new stdClass();
         $oItem->productId = 'prodid';
         $oItem->productName = 'prodname';
         $oItem->productGroup = 'prodgrp';
@@ -110,7 +112,7 @@ class EmosTest extends \OxidTestCase
         $sStrPre = '  &amp;&quot;&gt;<a href="">ggg</a>\'"%;   / /';
         $sStrPos = '&>ggg//';
 
-        $oEmos = new EmosHelper;
+        $oEmos = new EmosHelper();
         $this->assertEquals($sStrPos, $oEmos->call_emos_DataFormat($sStrPre));
     }
 

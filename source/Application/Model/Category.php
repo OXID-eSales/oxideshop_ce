@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -443,7 +444,8 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         $myConfig = $this->getConfig();
 
-        if (!isset($this->_iNrOfArticles)
+        if (
+            !isset($this->_iNrOfArticles)
             && !$this->isAdmin()
             && (
                 $myConfig->getConfigParam('bl_perfShowActionCatArticleCnt')
@@ -542,7 +544,8 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getLink($iLang = null)
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() ||
+        if (
+            !\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() ||
             (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value)
         ) {
             return $this->getStdLink($iLang);

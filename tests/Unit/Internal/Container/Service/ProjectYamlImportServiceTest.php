@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Container\Service;
 
@@ -110,7 +113,7 @@ class ProjectYamlImportServiceTest extends TestCase
         $nonexistingImport = 'some' . DIRECTORY_SEPARATOR . 'not' . DIRECTORY_SEPARATOR . 'existing' .
                              DIRECTORY_SEPARATOR . 'directory' . DIRECTORY_SEPARATOR . 'services.yaml';
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper(
-            ['imports' =>[
+            ['imports' => [
                 ['resource' => $nonexistingImport],
                 ['resource' => $existingImport]]]
         ));

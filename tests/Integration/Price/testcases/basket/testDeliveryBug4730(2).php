@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: Brutto;
  * Price view mode: Brutto;
@@ -10,6 +11,7 @@
  *  1. Delivery;
  * 0004730: Order rules with Quantity -> Items would be count double
  */
+
 $aData = array(
 
     'categories' => array(

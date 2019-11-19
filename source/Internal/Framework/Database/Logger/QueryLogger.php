@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
 
@@ -82,8 +85,9 @@ class QueryLogger implements SQLLogger
     {
         $queryTraceItem = [];
 
-        foreach ((new \Exception)->getTrace() as $item) {
-            if ((false === stripos($item['class'], get_class($this))) &&
+        foreach ((new \Exception())->getTrace() as $item) {
+            if (
+                (false === stripos($item['class'], get_class($this))) &&
                 (false === stripos($item['class'], 'Doctrine'))
             ) {
                 $queryTraceItem = $item;

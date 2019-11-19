@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -233,7 +234,8 @@ class SepaIBANValidator
         $blValid = true;
 
         foreach ($aCodeLengths as $sCountryAbbr => $iLength) {
-            if (!$this->_isCodeLengthKeyValid($sCountryAbbr) ||
+            if (
+                !$this->_isCodeLengthKeyValid($sCountryAbbr) ||
                 !$this->_isCodeLengthValueValid($iLength)
             ) {
                 $blValid = false;

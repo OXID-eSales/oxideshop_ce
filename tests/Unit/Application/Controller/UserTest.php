@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
@@ -52,7 +54,7 @@ class UserTest extends \OxidTestCase
     {
         $myDB = oxDb::getDB();
         $sTable = getViewName('oxuser');
-        $iLastCustNr = ( int ) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
+        $iLastCustNr = (int) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
         $this->_oUser = oxNew('oxuser');
         $this->_oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->_oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);

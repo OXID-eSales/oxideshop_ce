@@ -172,9 +172,9 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
         ),
         // Other options
         'activeCurrencyRate' => 1,

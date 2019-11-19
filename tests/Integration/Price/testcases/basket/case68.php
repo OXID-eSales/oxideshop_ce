@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  brutto
@@ -18,6 +19,7 @@
  *
  * Case: 0004680: Discount recalculation fails on basket refresh
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -432,7 +433,7 @@ class UserRegistrationCest
     private function getUserLoginData($userId, $userPassword = 'user1user1')
     {
         $userLoginData = [
-            "userLoginNameField" => "example".$userId."@oxid-esales.dev",
+            "userLoginNameField" => "example" . $userId . "@oxid-esales.dev",
             "userPasswordField" => $userPassword,
         ];
         return $userLoginData;
@@ -467,7 +468,7 @@ class UserRegistrationCest
             "faxNr" => "111-111-111-$userId",
             "countryId" => $userCountry,
         ];
-        if ( $userCountry == 'Germany' ) {
+        if ($userCountry == 'Germany') {
             $addressData["stateId"] = "Berlin";
         }
         return $addressData;
@@ -481,7 +482,7 @@ class UserRegistrationCest
                 'oxusername' => $userLoginData['userLoginNameField'],
                 'oxmobfon' => $userData['userMobFonField'],
                 'oxprivfon' => $userData['userPrivateFonField'],
-                'oxbirthdate' => $userData['userBirthDateYearField'].'-'.$userData['userBirthDateMonthField'].'-'.$userData['userBirthDateDayField'],
+                'oxbirthdate' => $userData['userBirthDateYearField'] . '-' . $userData['userBirthDateMonthField'] . '-' . $userData['userBirthDateDayField'],
                 'oxfname' => $addressData['userFirstName'],
                 'oxlname' => $addressData['userLastName'],
                 'oxcompany' => $addressData['companyName'],

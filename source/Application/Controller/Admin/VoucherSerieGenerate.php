@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -83,7 +84,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
                 $this->_iGenerated = $iCnt;
             }
 
-            $blRandomNr = ( bool ) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("randomVoucherNr");
+            $blRandomNr = (bool) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("randomVoucherNr");
             $sVoucherNr = $blRandomNr ? \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID() : \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("voucherNr");
 
             $oNewVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);

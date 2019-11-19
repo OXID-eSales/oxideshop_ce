@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,6 +18,6 @@ class TestModuleOnePrice extends TestModuleOnePrice_parent
     public function getPrice()
     {
         $return = parent::getPrice();
-        return 2*$return;
+        return 2 * $return;
     }
 }

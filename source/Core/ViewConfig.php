@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -835,7 +836,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $myConfig = Registry::getConfig();
         $blShowCompareList = true;
 
-        if (!$myConfig->getConfigParam('bl_showCompareList') ||
+        if (
+            !$myConfig->getConfigParam('bl_showCompareList') ||
             ($myConfig->getConfigParam('blDisableNavBars') && $myConfig->getActiveView()->getIsOrderStep())
         ) {
             $blShowCompareList = false;
@@ -1211,7 +1213,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
                 $shopUrl = $c->getConfigParam('sAdminSSLURL');
                 if ($shopUrl) {
                     // but we don't need the admin directory
-                    $adminDir = '/'.$c->getConfigParam('sAdminDir');
+                    $adminDir = '/' . $c->getConfigParam('sAdminDir');
                     $shopUrl = substr($shopUrl, 0, -strlen($adminDir));
                 } else {
                     // if no sAdminSSLURL directive were defined we use sSSLShopURL config directive instead

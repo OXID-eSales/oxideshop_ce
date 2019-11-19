@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -506,7 +507,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oSeries = $this->getSerie();
         $sSelect = "select 1 from oxobject2discount 
             where oxdiscountid = :oxdiscountid and oxtype = :oxtype";
-        $blOk = ( bool ) $oDb->getOne($sSelect, [
+        $blOk = (bool) $oDb->getOne($sSelect, [
             ':oxdiscountid' => $oSeries->getId(),
             ':oxtype' => 'oxarticles'
         ]);
@@ -525,7 +526,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oSeries = $this->getSerie();
         $sSelect = "select 1 from oxobject2discount 
             where oxdiscountid = :oxdiscountid and oxtype = :oxtype";
-        $blOk = ( bool ) $oDb->getOne($sSelect, [
+        $blOk = (bool) $oDb->getOne($sSelect, [
             ':oxdiscountid' => $oSeries->getId(),
             ':oxtype' => 'oxcategories'
         ]);

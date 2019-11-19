@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Theme;
@@ -191,7 +193,7 @@ class UtilsViewTest extends \OxidTestCase
     public function testGetTemplateOutput()
     {
         $this->getConfig()->setConfigParam('iDebug', 0);
-        $sTpl = __DIR__ ."/../testData//misc/testTempOut.tpl";
+        $sTpl = __DIR__ . "/../testData//misc/testTempOut.tpl";
 
         $oView = oxNew('oxview');
         $oView->addTplParam('articletitle', 'xxx');

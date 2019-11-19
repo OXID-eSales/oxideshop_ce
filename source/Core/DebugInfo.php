@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -40,24 +41,24 @@ class DebugInfo
     {
         $log = '';
         if (function_exists('memory_get_usage')) {
-            $kb = ( int ) (memory_get_usage() / 1024);
+            $kb = (int) (memory_get_usage() / 1024);
             $mb = round($kb / 1024, 3);
             $log .= 'Memory usage: ' . $mb . ' MB';
 
             if (function_exists('memory_get_peak_usage')) {
-                $peakKb = ( int ) (memory_get_peak_usage() / 1024);
+                $peakKb = (int) (memory_get_peak_usage() / 1024);
                 $peakMb = round($peakKb / 1024, 3);
                 $log .= ' (peak: ' . $peakMb . ' MB)';
             }
             $log .= '<br />';
 
             if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
-                $kb = ( int ) (memory_get_usage(true) / 1024);
+                $kb = (int) (memory_get_usage(true) / 1024);
                 $mb = round($kb / 1024, 3);
                 $log .= 'System memory usage: ' . $mb . ' MB';
 
                 if (function_exists('memory_get_peak_usage')) {
-                    $peakKb = ( int ) (memory_get_peak_usage(true) / 1024);
+                    $peakKb = (int) (memory_get_peak_usage(true) / 1024);
                     $peakMb = round($peakKb / 1024, 3);
                     $log .= ' (peak: ' . $peakMb . ' MB)';
                 }

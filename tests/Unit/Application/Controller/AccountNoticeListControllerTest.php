@@ -1,13 +1,14 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController;
 use \oxField;
-
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**

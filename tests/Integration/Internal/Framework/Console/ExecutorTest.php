@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console;
 
@@ -30,14 +33,14 @@ class ExecutorTest extends TestCase
     {
         $output = $this->executeCommand('oe:tests:test-command');
 
-        $this->assertSame('Command have been executed!'.PHP_EOL, $this->getOutputFromStream($output));
+        $this->assertSame('Command have been executed!' . PHP_EOL, $this->getOutputFromStream($output));
     }
 
     public function testCommandWithChangedNameExecution()
     {
         $output = $this->executeCommand('oe:tests:test-command-changed-name');
 
-        $this->assertSame('Command have been executed!'.PHP_EOL, $this->getOutputFromStream($output));
+        $this->assertSame('Command have been executed!' . PHP_EOL, $this->getOutputFromStream($output));
     }
 
     /**

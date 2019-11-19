@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
@@ -188,7 +190,7 @@ class UserPaymentTest extends \OxidTestCase
         $payments = $oPaymentList->getArray();
         $paymentsIds = '';
         foreach ($payments as $payment) {
-            $paymentsIds .= $payment->getId() ."\n";
+            $paymentsIds .= $payment->getId() . "\n";
         }
 
         $this->assertEquals(6, $oPaymentList->count(), $paymentsIds);

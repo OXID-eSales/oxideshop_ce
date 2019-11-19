@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\Eshop\Core\Module\Module;
@@ -35,7 +37,8 @@ class ModuleInstallerTest extends BaseModuleTestCase
         $this->assertEquals(
             self::MODULE_CONTROLLERS,
             $this->fetchOxConfigModuleControllers(),
-            'While module activation were not added the expected controllers to the module controller map!');
+            'While module activation were not added the expected controllers to the module controller map!'
+        );
     }
 
     /**

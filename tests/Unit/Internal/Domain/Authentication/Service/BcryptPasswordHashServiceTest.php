@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Authentication\Service;
 
@@ -134,7 +137,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     /**
      * @return PasswordPolicyInterface
      */
-    private function getPasswordPolicyMock() : PasswordPolicyInterface
+    private function getPasswordPolicyMock(): PasswordPolicyInterface
     {
         return $this
             ->getMockBuilder(PasswordPolicyInterface::class)

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -322,7 +323,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
                 //cache limiter workaround for AOL browsers
                 //as suggested at http://ilia.ws/archives/59-AOL-Browser-Woes.html
-                if (isset($_SERVER['HTTP_USER_AGENT']) &&
+                if (
+                    isset($_SERVER['HTTP_USER_AGENT']) &&
                     strpos($_SERVER['HTTP_USER_AGENT'], 'AOL') !== false
                 ) {
                     session_cache_limiter('');
@@ -608,7 +610,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function isClassOrNullInSerializedObjectAfterField($serializedObject, $fieldName, $className)
     {
-        $fieldAndClassPattern = '/'. preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
+        $fieldAndClassPattern = '/' . preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
         $matchFound = preg_match($fieldAndClassPattern, $serializedObject, $matches) === 1;
 
         return $matchFound &&
@@ -818,7 +820,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _forceSessionStart()
     {
-        return (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) && ((( bool ) $this->getConfig()->getConfigParam('blForceSessionStart')) || $this->getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
+        return (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) && (((bool) $this->getConfig()->getConfigParam('blForceSessionStart')) || $this->getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
     }
 
     /**
@@ -841,7 +843,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 // session is not needed to start when it is not necessary:
                 // - no sid in request and also user executes no session connected action
                 // - no cookie set and user executes no session connected action
-                if (!\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName()) &&
+                if (
+                    !\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName()) &&
                     !($myConfig->getRequestParameter($this->getName()) || $myConfig->getRequestParameter($this->getForcedName())) &&
                     !$this->_isSessionRequiredAction()
                 ) {

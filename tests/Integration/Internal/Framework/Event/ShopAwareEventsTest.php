@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event;
 
@@ -37,7 +40,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
             ])->getMock();
 
         $context->method('getCommunityEditionSourcePath')->willReturn(
-            (new Facts)->getCommunityEditionSourcePath()
+            (new Facts())->getCommunityEditionSourcePath()
         );
         $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/generated_project.yaml');
         $context->method('getConfigurationDirectoryPath')->willReturn(__DIR__);

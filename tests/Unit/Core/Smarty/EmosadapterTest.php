@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \oxField;
@@ -32,7 +34,7 @@ class EmosadapterTest extends \OxidTestCase
      */
     public function testConvProd2EmosItem()
     {
-        $oCurr = new \stdClass;
+        $oCurr = new \stdClass();
         $oCurr->rate = 2;
 
         $oPrice = $this->getMock(\OxidEsales\Eshop\Core\Price::class, array('getBruttoPrice'));
@@ -64,7 +66,7 @@ class EmosadapterTest extends \OxidTestCase
 
     public function testPrepareProductTitle()
     {
-        $oProduct = new \stdClass;
+        $oProduct = new \stdClass();
         $oProduct->oxarticles__oxtitle = new oxField('oxütitle');
         $oProduct->oxarticles__oxvarselect = new oxField('oxüvarselect');
 

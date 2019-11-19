@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
@@ -194,7 +196,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     {
         $oCompare = $this->getProxyClass("compare");
         $oArticle = oxNew("oxArticle");
-        $oCompare->setNonPublicVar("_oArtList", array('1672' => $oArticle, '6b661dda79318ca64ca06e97e4fbcb0a' =>$oArticle));
+        $oCompare->setNonPublicVar("_oArtList", array('1672' => $oArticle, '6b661dda79318ca64ca06e97e4fbcb0a' => $oArticle));
         $aAttributes = $oCompare->getAttributeList();
 
         $sSelect = "select oxattrid, oxvalue from oxobject2attribute where oxobjectid = '1672'";
@@ -249,7 +251,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testSetArticlesPerPage()
     {
         $cl = oxTestModules::addFunction('compare', '_getArticlesPerPage', '{return $this->_iArticlesPerPage;}');
-        $oCompare = new $cl;
+        $oCompare = new $cl();
 
         $oCompare->UNITsetArticlesPerPage(5);
         $this->assertEquals(5, $oCompare->_getArticlesPerPage());

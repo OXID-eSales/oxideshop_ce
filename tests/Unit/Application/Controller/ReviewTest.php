@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\EshopCommunity\Application\Model\User;
@@ -495,7 +497,7 @@ class ReviewTest extends \OxidTestCase
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getCrossSelling();
         $this->assertTrue($oList instanceof ListModel);
-        $iCount = $this->getTestConfig()->getShopEdition() == 'EE'? 3 : 2;
+        $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 3 : 2;
         $this->assertEquals($iCount, $oList->count());
     }
 
@@ -506,7 +508,7 @@ class ReviewTest extends \OxidTestCase
         $oArticle->load("2000");
         $oReview->setNonPublicVar("_oProduct", $oArticle);
         $oList = $oReview->getSimilarProducts();
-        $iCount = $this->getTestConfig()->getShopEdition() == 'EE'? 4 : 5;
+        $iCount = $this->getTestConfig()->getShopEdition() == 'EE' ? 4 : 5;
         $this->assertEquals($iCount, count($oList));
     }
 

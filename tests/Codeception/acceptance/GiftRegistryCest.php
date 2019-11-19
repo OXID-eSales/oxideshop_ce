@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -52,13 +53,13 @@ class GiftRegistryCest
 
         $userAccountPage = $detailsPage->openAccountPage();
         $I->see(Translator::translate('MY_GIFT_REGISTRY'), $userAccountPage->dashboardGiftRegistryPanelHeader);
-        $I->see(Translator::translate('PRODUCT').' 1', $userAccountPage->dashboardGiftRegistryPanelContent);
+        $I->see(Translator::translate('PRODUCT') . ' 1', $userAccountPage->dashboardGiftRegistryPanelContent);
 
         /** @var UserAccount $userAccountPage */
         $userAccountPage = $userAccountPage->logoutUserInAccountPage()
             ->login($userData['userLoginName'], $userData['userPassword']);
         $I->see(Translator::translate('MY_GIFT_REGISTRY'), $userAccountPage->dashboardGiftRegistryPanelHeader);
-        $I->see(Translator::translate('PRODUCT').' 1', $userAccountPage->dashboardGiftRegistryPanelContent);
+        $I->see(Translator::translate('PRODUCT') . ' 1', $userAccountPage->dashboardGiftRegistryPanelContent);
 
         $giftRegistryPage = $userAccountPage->openGiftRegistryPage()
             ->seeProductData($productData);
@@ -120,11 +121,11 @@ class GiftRegistryCest
         $giftRegistryPage = $giftRegistryPage->loginUser($adminUserData['userLoginName'], $adminUserData['userPassword'])
             ->searchForGiftRegistry($userData['userLoginName']);
         $I->see(Translator::translate('GIFT_REGISTRY_SEARCH_RESULTS'));
-        $I->see(Translator::translate('GIFT_REGISTRY_OF') .' '. $userData['userName'] .' '. $userData['userLastName']);
+        $I->see(Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName']);
         $giftRegListPage = $giftRegistryPage->openFoundGiftRegistryList();
-        $title = Translator::translate('GIFT_REGISTRY_OF') .' '. $userData['userName'] .' '. $userData['userLastName'];
+        $title = Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName'];
         $I->see($title, $giftRegListPage->headerTitle);
-        $I->see(sprintf(Translator::translate('WISHLIST_PRODUCTS'), $userData['userName'] .' '. $userData['userLastName']));
+        $I->see(sprintf(Translator::translate('WISHLIST_PRODUCTS'), $userData['userName'] . ' ' . $userData['userLastName']));
         $giftRegListPage->seeProductData($productData, 1);
 
         //making gift registry not searchable
@@ -193,7 +194,6 @@ class GiftRegistryCest
 
         //(Use gift registry) is enabled again
         $I->updateConfigInDatabase('bl_showWishlist', true);
-
     }
 
     public function _failed(AcceptanceTester $I)

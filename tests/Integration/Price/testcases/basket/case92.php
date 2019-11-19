@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -128,7 +129,7 @@ $aData = array(
                 'oxaddsumtype' => '%',
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
-                 'oxparam'=> 0.1,
+                 'oxparam' => 0.1,
                 'oxparamend' => 99999,
             ),
         ),
@@ -196,9 +197,9 @@ $aData = array(
             'blShowNetPrice' => true,
             'blShowVATForPayCharge' => true,
             'blShowVATForDelivery' => true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
 
         ),
         // Other options

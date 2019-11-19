@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Url;
 
 use oxRegistry;
@@ -75,7 +77,7 @@ class WidgetUrlTest extends \oxUnitTestCase
         $config->setConfigParam('sShopURL', $this->shopUrl);
         $config->init();
 
-        $this->assertEquals($this->shopUrl. 'widget.php?lang='. $iLang, $config->getWidgetUrl());
+        $this->assertEquals($this->shopUrl . 'widget.php?lang=' . $iLang, $config->getWidgetUrl());
     }
 
     public function providerGetWidgetUrlAddCorrectLanguageWithParameter()
@@ -101,6 +103,6 @@ class WidgetUrlTest extends \oxUnitTestCase
         $config->setConfigParam('sShopURL', $this->shopUrl);
         $config->init();
 
-        $this->assertEquals($this->shopUrl. 'widget.php?lang='. $iLang, $config->getWidgetUrl($iLang));
+        $this->assertEquals($this->shopUrl . 'widget.php?lang=' . $iLang, $config->getWidgetUrl($iLang));
     }
 }

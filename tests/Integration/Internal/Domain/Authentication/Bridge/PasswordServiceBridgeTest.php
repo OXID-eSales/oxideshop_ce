@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Bridge;
 
@@ -70,7 +73,7 @@ class PasswordServiceBridgeTest extends TestCase
     /**
      * @return ContainerInterface
      */
-    private function getContainer() : ContainerInterface
+    private function getContainer(): ContainerInterface
     {
         $factory = ContainerFactory::getInstance();
 

@@ -1,11 +1,13 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
-require_once __DIR__. '/BasketConstruct.php';
+require_once __DIR__ . '/BasketConstruct.php';
 
 /**
  * Base test case for price calculation tests.
@@ -42,7 +44,7 @@ abstract class BaseTestCase extends \OxidTestCase
     private function collectFilesFromPath($path, $collector = "*.php")
     {
         $files = glob($path . $collector, GLOB_NOSORT);
-        $directories = glob($path.'*', GLOB_ONLYDIR);
+        $directories = glob($path . '*', GLOB_ONLYDIR);
         foreach ($directories as $directory) {
             $files = array_merge($files, $this->collectFilesFromPath($directory));
         }

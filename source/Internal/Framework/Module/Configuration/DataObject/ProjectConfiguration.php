@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -37,7 +40,7 @@ class ProjectConfiguration
     /**
      * @return array
      */
-    public function getShopConfigurationIds() :array
+    public function getShopConfigurationIds(): array
     {
         return array_keys($this->projectConfiguration);
     }

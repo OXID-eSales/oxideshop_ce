@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxTestModules;
@@ -105,7 +107,7 @@ class ShopConfigTest extends \OxidTestCase
     public function testGetModuleForConfigVars()
     {
         $sCl = oxTestModules::publicize('Shop_Config', '_getModuleForConfigVars');
-        $oTest = new $sCl;
+        $oTest = new $sCl();
         $this->assertEquals('', $oTest->p_getModuleForConfigVars());
     }
 
@@ -189,7 +191,7 @@ class ShopConfigTest extends \OxidTestCase
     public function testParseConstraint()
     {
         $sCl = oxTestModules::publicize('Shop_Config', '_parseConstraint');
-        $oTest = new $sCl;
+        $oTest = new $sCl();
         $this->assertEquals('', $oTest->p_parseConstraint('sometype', 'asdd'));
         $this->assertEquals('', $oTest->p_parseConstraint('bool', 'asdd'));
         $this->assertEquals('', $oTest->p_parseConstraint('string', 'asdd'));
@@ -204,7 +206,7 @@ class ShopConfigTest extends \OxidTestCase
     public function testSerializeConstraint()
     {
         $sCl = oxTestModules::publicize('Shop_Config', '_serializeConstraint');
-        $oTest = new $sCl;
+        $oTest = new $sCl();
         $this->assertEquals('', $oTest->p_serializeConstraint('sometype', 'asdd'));
         $this->assertEquals('', $oTest->p_serializeConstraint('bool', 'asdd'));
         $this->assertEquals('', $oTest->p_serializeConstraint('string', 'asdd'));
@@ -219,7 +221,7 @@ class ShopConfigTest extends \OxidTestCase
     public function testSerializeConfVar()
     {
         $sCl = oxTestModules::publicize('Shop_Config', '_serializeConfVar');
-        $oTest = new $sCl;
+        $oTest = new $sCl();
         $this->assertEquals('1.1', $oTest->p_serializeConfVar('str', 'iMinOrderPrice', '1,1'));
         $this->assertEquals('2,2', $oTest->p_serializeConfVar('str', 'shouldNotChange', '2,2'));
     }
@@ -232,7 +234,7 @@ class ShopConfigTest extends \OxidTestCase
     public function testUnserializeConfVar()
     {
         $sCl = oxTestModules::publicize('Shop_Config', '_unserializeConfVar');
-        $oTest = new $sCl;
+        $oTest = new $sCl();
         $this->assertEquals('1.1', $oTest->p_unserializeConfVar('str', 'iMinOrderPrice', '1,1'));
         $this->assertEquals('2,2', $oTest->p_unserializeConfVar('str', 'shouldNotChange', '2,2'));
     }

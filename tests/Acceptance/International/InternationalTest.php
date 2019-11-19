@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -441,7 +442,7 @@ class InternationalTest extends AcceptanceTestCase
      */
     private function _continueToNextStep($iSteps = 1)
     {
-        for ($i=1; $i <= $iSteps; $i++) {
+        for ($i = 1; $i <= $iSteps; $i++) {
             $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
         }
     }

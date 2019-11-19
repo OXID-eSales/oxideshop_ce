@@ -1,9 +1,9 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
-
 
 namespace OxidEsales\EshopCommunity\Core;
 
@@ -87,7 +87,7 @@ class PriceList
         $aVatValues = [];
         $aPrices = [];
         foreach ($this->_aList as $oPrice) {
-            $sKey = ( string ) $oPrice->getVat();
+            $sKey = (string) $oPrice->getVat();
             if (!isset($aPrices[$sKey])) {
                 $aPrices[$sKey]['sum'] = 0;
                 $aPrices[$sKey]['vat'] = $oPrice->getVat();
@@ -117,7 +117,7 @@ class PriceList
     {
         $aPrices = [];
         foreach ($this->_aList as $oPrice) {
-            $sVat = ( string ) $oPrice->getVat();
+            $sVat = (string) $oPrice->getVat();
             if (!isset($aPrices[$sVat])) {
                 $aPrices[$sVat] = 0;
             }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -121,7 +122,7 @@ class UserRegistrationAdminTest extends AdminTestCase
      */
     protected function _assertUserAddressDisplayed($aAddressData)
     {
-        $sAddressId = $aAddressData['oxfname'] . ' ' . $aAddressData['oxlname'] . ', '.
+        $sAddressId = $aAddressData['oxfname'] . ' ' . $aAddressData['oxlname'] . ', ' .
                       $aAddressData['oxstreet'] . ', ' . $aAddressData['oxcity'];
 
         $this->selectAndWait("oxaddressid", "label=" . $sAddressId);

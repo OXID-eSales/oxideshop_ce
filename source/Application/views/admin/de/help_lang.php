@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -29,8 +30,8 @@ $aLang =  [
 'HELP_SHOP_SYSTEM_DISABLENAVBARS'             => 'Wenn Sie diese Einstellung aktivieren, werden die meisten Navigationselemente im Bestellprozess ausgeblendet. Dadurch werden die Benutzer beim Bestellen nicht unnötig abgelenkt.',
 
 'HELP_SHOP_SYSTEM_DEFAULTIMAGEQUALITY'        => 'Empfehlenswerte Einstellungen sind ca. 40-80:<br>' .
-                                                 '<ul><li>Unterhalb von ca. 40 werden deutliche Kompressionsartefakte sichtbar, und die Bilder wirken unscharf.</li>'.
-                                                 '<li>Oberhalb von ca. 80 kann man kaum eine Verbesserung der Bildqualität feststellen, während die Dateigröße enorm zunimmt.</li></ul><br>'.
+                                                 '<ul><li>Unterhalb von ca. 40 werden deutliche Kompressionsartefakte sichtbar, und die Bilder wirken unscharf.</li>' .
+                                                 '<li>Oberhalb von ca. 80 kann man kaum eine Verbesserung der Bildqualität feststellen, während die Dateigröße enorm zunimmt.</li></ul><br>' .
                                                  'Die Standardeinstellung ist 75.',
 
 'HELP_SHOP_SYSTEM_LDAP'                       => 'Bitte Datei Core/oxldap.php anpassen.',
@@ -119,15 +120,15 @@ $aLang =  [
                                                  '<ul><li>Wenn die Einstellung aktiv ist, werden negative Lagerbestände berechnet, wenn weitere Exemplare bestellt werden.</li>' .
                                                  '<li>Wenn die Einstellung nicht aktiv ist, fällt der Lagerbestand eines Artikels nie unter 0. Auch dann nicht, wenn der Artikel bereits ausverkauft ist und noch weitere Exemplare bestellt werden.</li></ul>',
 
-'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Hier können Sie Währungen hinzufügen oder entfernen. Jede Zeile enthält Währungsparameter, die durch das Symbol @ getrennt werden.<br /><br />'.
-                                                 '<ul>'.
-                                                 '<li>Währungsabkürzung laut ISO 4217 (z.B. EUR)</li>'.
-                                                 '<li>Wechselkurs zur Basiswährung mit dem Wert 1.00</li>'.
-                                                 '<li>Dezimaltrennzeichen</li>'.
-                                                 '<li>Tausendertrennzeichen</li>'.
-                                                 '<li>Währungszeichen</li>'.
-                                                 '<li>Anzahl der Nachkommastellen</li>'.
-                                                 '<li>optionaler Parameter "Front". Falls angegeben, wird die Währungsabkürzung vor dem Preis angezeigt.</li>'.
+'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Hier können Sie Währungen hinzufügen oder entfernen. Jede Zeile enthält Währungsparameter, die durch das Symbol @ getrennt werden.<br /><br />' .
+                                                 '<ul>' .
+                                                 '<li>Währungsabkürzung laut ISO 4217 (z.B. EUR)</li>' .
+                                                 '<li>Wechselkurs zur Basiswährung mit dem Wert 1.00</li>' .
+                                                 '<li>Dezimaltrennzeichen</li>' .
+                                                 '<li>Tausendertrennzeichen</li>' .
+                                                 '<li>Währungszeichen</li>' .
+                                                 '<li>Anzahl der Nachkommastellen</li>' .
+                                                 '<li>optionaler Parameter "Front". Falls angegeben, wird die Währungsabkürzung vor dem Preis angezeigt.</li>' .
                                                  '</ul>',
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'Auf der Startseite Ihres eShops werden die unter <span class="filename_filepath_or_italic">Frisch eingetroffen!</span> die neusten Artikel in Ihrem eShop angezeigt. Sie können die Artikel, die hier angezeigt werden, manuell einstellen oder automatisch berechnen lassen. Mit dieser Einstellung wählen Sie, wie die neusten Artikel berechnet werden sollen: Nach dem Datum, an dem die Artikel erstellt wurden, oder nach dem Datum der letzten Änderung im Administrationsbereich/der letzten Bestellung im Shop.',
@@ -137,17 +138,17 @@ $aLang =  [
 // END deprecated
 
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
-                                                        .'Die gesammelten Daten sind ausschließlich technologische Informationen. '
-                                                        .'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
-                                                        .'<ul>'
-                                                        .'  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
-                                                        .'  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
-                                                        .'  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
-                                                        .'</ul>',
+                                                        . 'Die gesammelten Daten sind ausschließlich technologische Informationen. '
+                                                        . 'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
+                                                        . '<ul>'
+                                                        . '  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
+                                                        . '  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
+                                                        . '  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
+                                                        . '</ul>',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'Wenn Benutzer einen Artikel bewerten, können Sie den Artikel nicht erneut bewerten. Hier können Sie einstellen, dass die Benutzer nach einer bestimmten Anzahl von Tagen den Artikel erneut bewerten können.',
 
-'HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK'    => 'Die Online USt-ID Prüfung wird immer ausgeführt, wenn ein Kunde aus dem Ausland (aber innerhalb der EU) eine Umsatzsteuer-ID beim bestellen angibt. Wenn die UST-ID gültig ist, wird für die Bestellung keine Umsatzsteuer berechnet.<br>'.
+'HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK'    => 'Die Online USt-ID Prüfung wird immer ausgeführt, wenn ein Kunde aus dem Ausland (aber innerhalb der EU) eine Umsatzsteuer-ID beim bestellen angibt. Wenn die UST-ID gültig ist, wird für die Bestellung keine Umsatzsteuer berechnet.<br>' .
                                                  'Wenn die Prüfung ausgeschaltet ist, wird immer die für das entsprechende Land eingestelle Umsatzsteuer berechnet.',
 
 'HELP_SHOP_CONFIG_ALTVATIDCHECKINTERFACEWSDL' => 'Hier können Sie eine alternative URL für die Online UST-ID Prüfung eingeben.',
@@ -158,10 +159,10 @@ $aLang =  [
 'HELP_SHOP_CONFIG_BASKETEXCLUDE'              => 'Ermöglicht es, Produkte aus ausschließlich einer Wurzelkategorie in den Warenkorb zu legen. ' .
                                                  'Beim Wechsel der Wurzelkategorie wird der Konsument gezwungen den Warenkorb zu erwerben oder ihn zu verwerfen.',
 
-'HELP_SHOP_CONFIG_BASKETRESERVATION'          => 'Ist diese Option aktiviert, laufen Warenkörbe nach einer von Ihnen definierbaren Zeit ab.  <br><br>'.
+'HELP_SHOP_CONFIG_BASKETRESERVATION'          => 'Ist diese Option aktiviert, laufen Warenkörbe nach einer von Ihnen definierbaren Zeit ab.  <br><br>' .
                                                  'Darüber hinaus schaltet diese Option die Produktreservierung ein, mit der die Lagerbestände der Produkte zunächst reserviert ' .
                                                  'und erst bei Auflösung des Warenkorbs endgültig reduziert wird. Produkte aus abgelaufenen Warenkörben ' .
-                                                 'werden dem Lagerbestand wieder zugeschlagen.<br><br>'.
+                                                 'werden dem Lagerbestand wieder zugeschlagen.<br><br>' .
                                                  'Für Produkte aus gekauften Warenkörben wird der Lagerbestand endgültig reduziert.',
 
 
@@ -169,7 +170,7 @@ $aLang =  [
                                                  'und die darin enthaltenen Produkte dem Lagerbestand wieder zugeführt.',
 
 'HELP_SHOP_CONFIG_INVITATION'                 => 'Mit Einladungen können Ihre Kunden weitere Freunde einladen sich zu registrieren und Bonuspunkte zu sammeln. ' .
-                                                 'Die Anzahl der gesammelten Bonuspunkte wird im jeweiligen Benutzerprofil gespeichert. Sie als Shopbetreiber können diese '.
+                                                 'Die Anzahl der gesammelten Bonuspunkte wird im jeweiligen Benutzerprofil gespeichert. Sie als Shopbetreiber können diese ' .
                                                  'Bonuspunkte dann je nach Ihrem Geschäftskonzept einsetzen.',
 
 'HELP_SHOP_CONFIG_POINTSFORINVITATION'        => 'Anzahl Bonuspunkte, die der Einladende erhält, wenn ein Eingeladener sich aufgrund der Einladung registriert.',
@@ -182,7 +183,7 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => 'Im 4. Schritt des Bestellprozesses wird die CMS-Seite "oxtscodmessage" ergänzend angezeigt.',
 
-'HELP_SHOP_MALL_MALLMODE'                     => 'Hier stellen Sie ein, was auf der Startseite dieses eShops angezeigt werden soll: '.
+'HELP_SHOP_MALL_MALLMODE'                     => 'Hier stellen Sie ein, was auf der Startseite dieses eShops angezeigt werden soll: ' .
                                                  '<ul><li><span class="navipath_or_inputname">Shop-Auswahlseite</span>: Eine Seite wird angezeigt, auf der Kunden zwischen den verschiedenen Shops wählen können.</li>' .
                                                  '<li><span class="navipath_or_inputname">Hauptshop anzeigen</span>: Die normale Startseite des Hauptshops wird angezeigt.</li></ul>',
 
@@ -193,16 +194,16 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_DOWNLOADS_PATH'             => 'Pfad, in dem Dateien für Download-Artikel gespeichert werden.',
 
-'HELP_SHOP_CONFIG_MAX_DOWNLOADS_COUNT'        => 'Geben Sie hier an, wie oft Benutzer nach einer Bestellung den Link zum Download verwenden können. Das ist die Standardeinstellung für alle Artikel.'.
+'HELP_SHOP_CONFIG_MAX_DOWNLOADS_COUNT'        => 'Geben Sie hier an, wie oft Benutzer nach einer Bestellung den Link zum Download verwenden können. Das ist die Standardeinstellung für alle Artikel.' .
                                                  'Sie können diesen Wert für jede Datei des Artikels unter Artikel verwalten -> Artikel -> Downloads ändern.',
 
-'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME_UNREGISTERED' => 'Geben Sie hier an, wie oft Benutzer, die ohne Registrierung bestellt haben, den Link zum Download verwenden können. Das ist die Standardeinstellung für alle Artikel.'.
+'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME_UNREGISTERED' => 'Geben Sie hier an, wie oft Benutzer, die ohne Registrierung bestellt haben, den Link zum Download verwenden können. Das ist die Standardeinstellung für alle Artikel.' .
                                                  'Sie können diesen Wert für jede Datei des Artikels unter Artikel verwalten -> Artikel -> Downloads ändern.',
 
-'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME'       => 'Geben Sie die Zeit in Stunden an, die der Downloadlink nach der Bestellung gültig ist. Das ist die Standardeinstellung für alle Artikel.'.
+'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME'       => 'Geben Sie die Zeit in Stunden an, die der Downloadlink nach der Bestellung gültig ist. Das ist die Standardeinstellung für alle Artikel.' .
                                                  'Sie können diesen Wert für jede Datei des Artikels unter Artikel verwalten -> Artikel -> Downloads ändern.',
 
-'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Geben Sie die Zeit in Stunden an, die der Downloadlink nach dem ersten Download gültig ist. Das ist die Standardeinstellung für alle Artikel.'.
+'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Geben Sie die Zeit in Stunden an, die der Downloadlink nach dem ersten Download gültig ist. Das ist die Standardeinstellung für alle Artikel.' .
                                                  'Sie können diesen Wert für jede Datei des Artikels unter Artikel verwalten -> Artikel -> Downloads ändern.',
 
 'HELP_SHOP_CONFIG_PARCELSERVICE'              => 'Bitte tragen Sie die Tracking-URL Ihres Versanddienstleisters ein. <i>##ID##</i> ist ein Platzhalter, welcher durch die jeweilige Sendungsnummer ersetzt wird.',
@@ -302,7 +303,7 @@ $aLang =  [
 
 'HELP_ARTICLE_EXTEND_TEMPLATE'                => 'Sie können die Detailansicht des Artikels mit einem anderen Template anzeigen lassen. Tragen Sie dazu Pfad und Namen des Templates ein, das verwendet werden soll.',
 
-'HELP_ARTICLE_EXTEND_ISCONFIGURABLE'          => 'Wenn der Artikel individualisierbar ist, wird den Kunden ein zusätzliches Eingabefeld auf der Detailseite des Artikels und im Warenkorb angezeigt. In dieses Eingabefeld können Kunden Text eingeben, um den Artikel zu individualisieren.<br><br>'.
+'HELP_ARTICLE_EXTEND_ISCONFIGURABLE'          => 'Wenn der Artikel individualisierbar ist, wird den Kunden ein zusätzliches Eingabefeld auf der Detailseite des Artikels und im Warenkorb angezeigt. In dieses Eingabefeld können Kunden Text eingeben, um den Artikel zu individualisieren.<br><br>' .
                                                  'Ein typisches Beispiel sind T-Shirts, die bedruckt werden können. In das Eingabefeld können Kunden den Text eingeben, mit dem ein T-Shirt bedruckt werden soll.',
 
 'HELP_ARTICLE_EXTEND_UPDATEPRICE'             => 'Preise können zu einem festgelegten Zeitpunkt geändert werden. Die eingetragenen Preise aktualisieren die Standardpreise. Hat ein Preis den Wert "0", wird er nicht aktualisiert.',
@@ -319,7 +320,7 @@ $aLang =  [
 
 'HELP_ARTICLE_FILES_NEW'                      => 'Geben Sie den Namen einer per FTP übertragenen Datei an oder laden Sie hier eine neue Datei hoch. Große Dateien sollten immer per FTP übertragen werden. Die Beschränkung der Dateigröße gilt nur für das Hochladen im Administrationsbereich. Sie hängt von den PHP-Einstellungen des Servers ab, die nur dort geändert werden können.',
 
-'HELP_ARTICLE_PICTURES_ICON'                  => 'Icons sind die kleinsten Bilder eines Artikels, sie werden z. B. im Warenkorb verwendet. <br>'.
+'HELP_ARTICLE_PICTURES_ICON'                  => 'Icons sind die kleinsten Bilder eines Artikels, sie werden z. B. im Warenkorb verwendet. <br>' .
                                                  'Wenn Sie ein Icon manuell hochladen, wird das automatisch erzeugte Icon überschrieben.<br>' .
                                                  'Nach dem Upload wird der Dateiname des Bildes in Icon angezeigt. Solange noch kein Icon hochgeladen/automatisch generiert wurde, wird --- angezeigt.',
 
@@ -455,7 +456,7 @@ $aLang =  [
                                                  '<ul>' .
                                                  '<li><span class="userinput_or_code">abs</span>: Der Rabatt ist absolut, z. B. 5 Euro.</li>' .
                                                  '<li><span class="userinput_or_code">%</span>: Der Rabatt ist prozentual, z. B. 10 Prozent vom Einkaufswert.</li>' .
-                                                 '<li><span class="userinput_or_code">itm</span>: Rabatt in Form eines kostenfreien Artikels (Dreingabe). Legen Sie die Menge für diesen Artikel fest. Wählen Sie "Multiplizieren", wenn die Menge des rabattierten Artikels im Warenkorb mit der Menge des kostenlosen Artikels multipliziert werden soll.</li>'.
+                                                 '<li><span class="userinput_or_code">itm</span>: Rabatt in Form eines kostenfreien Artikels (Dreingabe). Legen Sie die Menge für diesen Artikel fest. Wählen Sie "Multiplizieren", wenn die Menge des rabattierten Artikels im Warenkorb mit der Menge des kostenlosen Artikels multipliziert werden soll.</li>' .
                                                  '</ul>',
 
 
@@ -509,8 +510,8 @@ $aLang =  [
                                                  '<ul><li>Wenn ein Passwort vorhanden ist, hat sich der Benutzer registriert.</li>' .
                                                  '<li>Wenn kein Passwort vorhanden ist, hat der Benutzer bestellt ohne sich zu registrieren.</li></ul>',
 
-'HELP_USER_PAYMENT_METHODS'                   => 'Auf dieser Registerkarte können Sie:'.
-                                                 '<ul><li>Zahlungsarten des Benutzers anzeigen und verwalten.'.
+'HELP_USER_PAYMENT_METHODS'                   => 'Auf dieser Registerkarte können Sie:' .
+                                                 '<ul><li>Zahlungsarten des Benutzers anzeigen und verwalten.' .
                                                  '<li>Neue Zahlungsarten anlegen und Default-Werte eintragen, beispielsweise Bankeinzug/Lastschrift.</li></ul>',
 
 'HELP_USER_EXTEND_NEWSLETTER'                 => 'Diese Einstellung zeigt an, ob der Benutzer den Newsletter abonniert hat oder nicht.',

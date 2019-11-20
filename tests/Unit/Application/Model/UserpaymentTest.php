@@ -215,13 +215,6 @@ class UserpaymentTest extends \OxidTestCase
         $this->assertEquals('_testOxId2', oxDb::getDb()->getOne("SELECT oxid FROM oxuserpayments WHERE oxid='_testOxId2'"));
     }
 
-    public function testUpdateForOxValue()
-    {
-        $this->_oUpay->oxuserpayments__oxvalue = new oxField('123456789', oxField::T_RAW);
-        $this->_oUpay->save();
-        $this->assertEquals("313233343536373839", oxDb::getDb()->getOne("SELECT hex(oxvalue) FROM oxuserpayments WHERE oxid='_testOxId'"));
-    }
-
     /**
      * Testing setter/getter for _blStoreCreditCardInfo
      */

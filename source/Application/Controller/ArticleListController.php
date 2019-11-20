@@ -346,6 +346,17 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
+     * Reset filter.
+     */
+    public function resetFilter()
+    {
+        $activeCategory = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
+        $sessionFilter = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('session_attrfilter');
+        unset($sessionFilter[$activeCategory]);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('session_attrfilter', $sessionFilter);
+    }
+
+    /**
      * Loads and returns article list of active category.
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $category category object

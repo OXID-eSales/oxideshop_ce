@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: neto
  * Price view mode:  brutto
@@ -19,6 +20,7 @@
  *   change config
  * Short description: From articlePrice.csv: article final price calculations. 9201 - 1st
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

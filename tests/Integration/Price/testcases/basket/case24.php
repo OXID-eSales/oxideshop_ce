@@ -117,9 +117,9 @@ $aData = array(
             'blShowNetPrice' => true,
             'blShowVATForPayCharge' => true,
             'blShowVATForDelivery' => true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
 
         ),
         // Other options

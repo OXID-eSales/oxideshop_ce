@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
@@ -173,8 +175,8 @@ class ContentTest extends \OxidTestCase
         $oContent->save();
         $this->assertEquals($sUrl, $oContent->getStdLink());
 
-        $categoryId = ($this->getTestConfig()->getShopEdition() === 'EE')? '30e44ab83159266c7.83602558' : '8a142c3e44ea4e714.31136811';
-        $categoryCnid = ($this->getTestConfig()->getShopEdition() === 'EE')? '30e44ab82c03c3848.49471214' : '8a142c3e4143562a5.46426637';
+        $categoryId = ($this->getTestConfig()->getShopEdition() === 'EE') ? '30e44ab83159266c7.83602558' : '8a142c3e44ea4e714.31136811';
+        $categoryCnid = ($this->getTestConfig()->getShopEdition() === 'EE') ? '30e44ab82c03c3848.49471214' : '8a142c3e4143562a5.46426637';
 
         $oContent->oxcontents__oxcatid = new oxField($categoryId);
         $oContent->save();

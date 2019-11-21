@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Multilanguage;
 
 use oxRegistry;
@@ -49,8 +51,8 @@ abstract class MultilanguageTestCase extends \OxidTestCase
     protected function prepare($count = 9)
     {
         $languageId = 0;
-        for ($i=0;$i<$count;$i++) {
-            $languageName = chr(97+$i) . chr(97+$i);
+        for ($i = 0; $i < $count; $i++) {
+            $languageName = chr(97 + $i) . chr(97 + $i);
             $languageId = $this->insertLanguage($languageName);
         }
         //we need a fresh instance of language object in registry,
@@ -74,7 +76,7 @@ abstract class MultilanguageTestCase extends \OxidTestCase
     {
         $languages = $this->getLanguageMain()->_getLanguages();
         $baseId = $this->getLanguageMain()->_getAvailableLangBaseId();
-        $sort = $baseId*100;
+        $sort = $baseId * 100;
 
         $languages['params'][$languageId] = array('baseId' => $baseId,
                                                   'active' => 1,

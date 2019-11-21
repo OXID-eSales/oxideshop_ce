@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -43,7 +44,8 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
         $cacheId = $oUser->getId() . '_' . $oUser->oxuser__oxcountryid->value;
 
         if (!$blCacheReset) {
-            if (array_key_exists($cacheId, self::$_aUserVatCache) &&
+            if (
+                array_key_exists($cacheId, self::$_aUserVatCache) &&
                 self::$_aUserVatCache[$cacheId] !== null
             ) {
                 return self::$_aUserVatCache[$cacheId];

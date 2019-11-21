@@ -1,7 +1,9 @@
 <?php
+
 /**
  * Metadata version
  */
+
 $sMetadataVersion = '2.0';
 
 /**

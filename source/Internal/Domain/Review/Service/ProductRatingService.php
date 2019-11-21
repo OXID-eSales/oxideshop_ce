@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Service;
 
@@ -34,9 +37,9 @@ class ProductRatingService implements ProductRatingServiceInterface
      * @param RatingCalculatorServiceInterface $ratingCalculator
      */
     public function __construct(
-        RatingDaoInterface                  $ratingDao,
-        ProductRatingDaoInterface           $productRatingDao,
-        RatingCalculatorServiceInterface    $ratingCalculator
+        RatingDaoInterface $ratingDao,
+        ProductRatingDaoInterface $productRatingDao,
+        RatingCalculatorServiceInterface $ratingCalculator
     ) {
         $this->ratingDao = $ratingDao;
         $this->productRatingDao = $productRatingDao;

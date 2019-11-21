@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
@@ -64,7 +67,7 @@ class BasicContext implements BasicContextInterface
     /**
      * @return string
      */
-    public function getModulesPath() : string
+    public function getModulesPath(): string
     {
         return Path::join($this->getSourcePath(), 'modules');
     }

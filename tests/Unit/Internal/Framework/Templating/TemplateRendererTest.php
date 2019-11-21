@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating;
 
@@ -42,7 +45,7 @@ class TemplateRendererTest extends \PHPUnit\Framework\TestCase
     {
         $engine = $this->getEngineMock();
 
-        $renderer= new TemplateRenderer($engine);
+        $renderer = new TemplateRenderer($engine);
 
         $this->assertSame($engine, $renderer->getTemplateEngine());
     }

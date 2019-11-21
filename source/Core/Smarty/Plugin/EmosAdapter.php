@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2004 - 2007 ECONDA GmbH Karlsruhe
  * All rights reserved.
@@ -374,7 +375,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getTplName()
     {
-        if (!($sCurrTpl = basename(( string )\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl')))) {
+        if (!($sCurrTpl = basename((string)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl')))) {
             // in case template was not defined in request
             $sCurrTpl = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getTemplateName();
         }

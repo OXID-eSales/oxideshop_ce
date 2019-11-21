@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -252,7 +253,8 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $sPaymentid = $oBasket->getPaymentId();
             $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
 
-            if ($sPaymentid && $oPayment->load($sPaymentid) &&
+            if (
+                $sPaymentid && $oPayment->load($sPaymentid) &&
                 $oPayment->isValidPayment(
                     \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('dynvalue'),
                     \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),

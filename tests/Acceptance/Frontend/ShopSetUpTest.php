@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -222,7 +223,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->assertHomePageDisplaysCorrectData();
 
         //checking admin
-        $this->openNewWindow($this->getTestConfig()->getShopUrl()."admin", false);
+        $this->openNewWindow($this->getTestConfig()->getShopUrl() . "admin", false);
         $this->type("user", "admin@myoxideshop.com");
         $this->type("pwd", "admin0303");
         $this->select("chlanguage", "English");

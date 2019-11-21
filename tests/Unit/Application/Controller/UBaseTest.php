@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
@@ -127,7 +129,8 @@ class UBaseTest extends \OxidTestCase
     }
 
     public function testGetCanonicalUrl()
-    { // just check if function exists and returns null
+    {
+ // just check if function exists and returns null
         $o = oxNew('oxUBase');
         $this->assertSame(null, $o->getCanonicalUrl());
     }
@@ -873,7 +876,7 @@ class UBaseTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('_setNrOfArtPerPage'));
         $oView->expects($this->once())->method('_setNrOfArtPerPage');
 
-        $oView->addGlobalParams(new stdclass);
+        $oView->addGlobalParams(new stdclass());
     }
 
     public function testShowSearch()

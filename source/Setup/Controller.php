@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -412,7 +413,8 @@ class Controller extends Core
         $session->setSessionParam('aAdminData', $adminData);
 
         // check if important parameters are set
-        if (!$pathCollection['sShopURL'] || !$pathCollection['sShopDir'] || !$pathCollection['sCompileDir']
+        if (
+            !$pathCollection['sShopURL'] || !$pathCollection['sShopDir'] || !$pathCollection['sCompileDir']
             || !$adminData['sLoginName'] || !$adminData['sPassword'] || !$adminData['sPasswordConfirm']
         ) {
             $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
@@ -447,7 +449,7 @@ class Controller extends Core
 
         // write it now
         try {
-            $parameters = array_merge(( array )$session->getSessionParam('aDB'), $pathCollection);
+            $parameters = array_merge((array)$session->getSessionParam('aDB'), $pathCollection);
 
             // updating config file
             $utils->updateConfigFile($parameters);
@@ -712,7 +714,8 @@ class Controller extends Core
             $systemRequirementsInfo,
             function ($groupId, $moduleId, $moduleState) {
                 // HtAccess check exception case
-                if (($groupId === SystemRequirements::MODULE_GROUP_ID_SERVER_CONFIG)
+                if (
+                    ($groupId === SystemRequirements::MODULE_GROUP_ID_SERVER_CONFIG)
                     && ($moduleId === SystemRequirements::MODULE_ID_MOD_REWRITE)
                     && (!$this->canUpdateHtaccess())
                 ) {
@@ -721,7 +724,8 @@ class Controller extends Core
 
                 // MySql version detect exception case
                 // More information can be obtained from commits with tag 'ESDEV-3999'
-                if (($groupId === SystemRequirements::MODULE_GROUP_ID_SERVER_CONFIG)
+                if (
+                    ($groupId === SystemRequirements::MODULE_GROUP_ID_SERVER_CONFIG)
                     && ($moduleId === SystemRequirements::MODULE_ID_MYSQL_VERSION)
                 ) {
                     return SystemRequirements::MODULE_STATUS_UNABLE_TO_DETECT;

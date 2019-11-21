@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -78,7 +79,8 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         $blDeleted = false;
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        if (!$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
+        if (
+            !$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
                                          strpos($sPicName, 'nopic_ico.jpg') === false)
         ) {
             $sFile = "$sAbsDynImageDir/$sPicName";
@@ -161,7 +163,8 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     public function overwritePic($oObject, $sPicTable, $sPicField, $sPicType, $sPicDir, $aParams, $sAbsDynImageDir)
     {
         $sPic = $sPicTable . '__' . $sPicField;
-        if (isset($oObject->{$sPic}) &&
+        if (
+            isset($oObject->{$sPic}) &&
             ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
         ) {
             $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType($sPicType);

@@ -20,9 +20,9 @@ function smarty_modifier_oxaddparams($sUrl, $sDynParams)
 {
     $oStr = getStr();
     // removing empty parameters
-    $sDynParams = $sDynParams?$oStr->preg_replace([ '/^\?/', '/^\&(amp;)?$/' ], '', $sDynParams):false;
+    $sDynParams = $sDynParams ? $oStr->preg_replace([ '/^\?/', '/^\&(amp;)?$/' ], '', $sDynParams) : false;
     if ($sDynParams) {
-        $sUrl .= ((strpos($sUrl, '?') !== false) ? "&amp;":"?") . $sDynParams;
+        $sUrl .= ((strpos($sUrl, '?') !== false) ? "&amp;" : "?") . $sDynParams;
     }
     return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processSeoUrl($sUrl);
 }

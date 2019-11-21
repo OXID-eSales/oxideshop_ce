@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxDb;
@@ -650,13 +652,13 @@ class DbMetaDataHandlerTest extends \OxidTestCase
             array(
                 'OXID' => 'oxarticles_set1.OXID',
                 'OXVARNAME_8' => 'oxarticles_set1.OXVARNAME_8',
-                'OXVARSELECT_8' =>'oxarticles_set1.OXVARSELECT_8'
+                'OXVARSELECT_8' => 'oxarticles_set1.OXVARSELECT_8'
             )
         ));
         $aExpectedResult = array(
             'OXID' => 'oxarticles.OXID',
             'OXVARNAME' => 'oxarticles_set1.OXVARNAME_8',
-            'OXVARSELECT' =>'oxarticles_set1.OXVARSELECT_8'
+            'OXVARSELECT' => 'oxarticles_set1.OXVARSELECT_8'
         );
 
         $this->assertEquals($aExpectedResult, $oHandler->getSinglelangFields('oxarticles', 8));

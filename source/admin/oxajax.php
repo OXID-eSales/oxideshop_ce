@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -36,11 +37,13 @@ if ($blAjaxCall) {
     $myConfig->setConfigParam('blAdmin', true);
 
     // authorization
-    if (!(
+    if (
+        !(
         Registry::getSession()->checkSessionChallenge()
         && count(Registry::getUtilsServer()->getOxCookie())
         && Registry::getUtils()->checkAccessRights()
-    )) {
+        )
+    ) {
         header("location:index.php");
         Registry::getUtils()->showMessageAndExit("");
     }

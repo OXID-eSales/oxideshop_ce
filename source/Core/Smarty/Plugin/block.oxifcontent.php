@@ -25,17 +25,19 @@ function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)
 {
     $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-    $sIdent  = isset($params['ident'])?$params['ident']:null;
-    $sOxid   = isset($params['oxid'])?$params['oxid']:null;
-    $sAssign = isset($params['assign'])?$params['assign']:null;
-    $sObject = isset($params['object'])?$params['object']:'oCont';
+    $sIdent  = isset($params['ident']) ? $params['ident'] : null;
+    $sOxid   = isset($params['oxid']) ? $params['oxid'] : null;
+    $sAssign = isset($params['assign']) ? $params['assign'] : null;
+    $sObject = isset($params['object']) ? $params['object'] : 'oCont';
 
     if ($repeat) {
         if ($sIdent || $sOxid) {
             static $aContentCache = [];
 
-            if (($sIdent && isset($aContentCache[$sIdent])) ||
-                 ($sOxid && isset($aContentCache[$sOxid]))) {
+            if (
+                ($sIdent && isset($aContentCache[$sIdent])) ||
+                 ($sOxid && isset($aContentCache[$sOxid]))
+            ) {
                 $oContent = $sOxid ? $aContentCache[$sOxid] : $aContentCache[$sIdent];
             } else {
                 $oContent = oxNew("oxContent");
@@ -65,7 +67,7 @@ function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)
         $oStr = getStr();
         $blHasSmarty = $oStr->strstr($content, '[{');
         if ($blHasSmarty) {
-            $content = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($content, $sIdent.md5($content), $myConfig->getActiveView());
+            $content = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($content, $sIdent . md5($content), $myConfig->getActiveView());
         }
 
         if ($sAssign) {

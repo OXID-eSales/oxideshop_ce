@@ -54,9 +54,7 @@ class ServicesYamlValidatorTest extends TestCase
 
         try {
                 $this->validator->validate($this->moduleConfiguration, 1);
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $exceptionThrown = true;
         }
 
@@ -67,13 +65,13 @@ class ServicesYamlValidatorTest extends TestCase
         );
     }
 
-    public function data() {
+    public function data()
+    {
 
         return [
             ['.', false],
             ['Working', false],
             ['NotWorking', true]
         ];
-
     }
 }

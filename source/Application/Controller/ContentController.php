@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -239,7 +240,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $blPlain = (bool) Registry::getConfig()->getRequestParameter('plain');
         if ($blPlain === false) {
             $oUser = $this->getUser();
-            if ($this->isEnabledPrivateSales() &&
+            if (
+                $this->isEnabledPrivateSales() &&
                 (!$oUser || ($oUser && !$oUser->isTermsAccepted()))
             ) {
                 $blPlain = true;

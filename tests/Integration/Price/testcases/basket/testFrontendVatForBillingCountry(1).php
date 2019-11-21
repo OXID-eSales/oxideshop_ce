@@ -26,9 +26,9 @@ $aData = array(
                     'oxprice'                  => 101,
                     'oxvat'                    => 10,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 0,
-                    'oxpriceb' 			       => 0,
-                    'oxpricec' 			       => 0,
+                    'oxpricea'                 => 0,
+                    'oxpriceb'                 => 0,
+                    'oxpricec'                 => 0,
             ),
        
             1 => array(
@@ -36,9 +36,9 @@ $aData = array(
                     'oxprice'                  => 75.00,
                     'oxvat'                    => 19,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 70,
-                    'oxpriceb' 			       => 85,
-                    'oxpricec' 			       => 0,
+                    'oxpricea'                 => 70,
+                    'oxpriceb'                 => 85,
+                    'oxpricec'                 => 0,
                     /*'scaleprices' => array(
                         'oxamount'     => 6,
                         'oxamountto'   => 999999,
@@ -52,9 +52,9 @@ $aData = array(
                     'oxprice'                  => 50.00,
                     'oxvat'                    => 5,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 35,
-                    'oxpriceb' 			       => 45,
-                    'oxpricec' 			       => 55,
+                    'oxpricea'                 => 35,
+                    'oxpriceb'                 => 45,
+                    'oxpricec'                 => 55,
                     'oxunitname'               => 'kg',
                     'oxunitquantity'           => 2,
                     'oxweight'                 => 2
@@ -80,7 +80,7 @@ $aData = array(
                     'oxamountto'   => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array ( 10011, 1000 ),
-                //	'oxcountryid' => 'a7c40f631fc920687.20179984',
+                //  'oxcountryid' => 'a7c40f631fc920687.20179984',
             ),
     ),
     */
@@ -98,7 +98,7 @@ $aData = array(
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
                 'oxparamend' => 99999,
-            //	'oxcountryid' => 'a7c40f6321c6f6109.43859248',
+            //  'oxcountryid' => 'a7c40f6321c6f6109.43859248',
             ),
         ),
                 // Payment
@@ -110,7 +110,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-                'oxaddsumrules'=>0,
+                'oxaddsumrules' => 0,
                 'oxcountryid' => 'a7c40f631fc920687.20179984',
                 
             ),

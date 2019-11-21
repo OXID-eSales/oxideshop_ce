@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use oxConfig;
@@ -40,7 +42,7 @@ class ModuleListTest extends \OxidTestCase
 
     public function testRenderWithCorrectModuleNames()
     {
-        $modulesDirectory = __DIR__.'/../../../testData/modules/';
+        $modulesDirectory = __DIR__ . '/../../../testData/modules/';
 
         /** @var oxConfig|MockObject $config */
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesDir'));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @category      module
@@ -7,6 +8,7 @@
  * @link          www.johndoe.com
  * @copyright (C) John Doe 20162016
  */
+
 use unifiednamespace_module1\Model\TestContent;
 
 /**

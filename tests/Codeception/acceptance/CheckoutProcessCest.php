@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -158,7 +159,6 @@ class CheckoutProcessCest
         $this->assertEquals("0,90 €", $this->getText("basketWrappingGross"), "Wrapping price changed or didn't displayed");
         $this->assertEquals("0,20 €", $this->getText("basketGiftCardGross"), "Card price changed or didn't displayed");
         $this->assertEquals("163,45 €", $this->getText("basketGrandTotal"), "Grand total price changed or didn't displayed");*/
-
     }
 
     /**

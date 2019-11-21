@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -161,7 +162,8 @@ class ShopViewValidator
         $blEndsWithShopId = preg_match("/[_]([0-9]+)$/", $sViewName, $aMatchEndsWithShopId);
         $blContainsShopId = preg_match("/[_]([0-9]+)[_]/", $sViewName, $aMatchContainsShopId);
 
-        if ((!$blEndsWithShopId && !$blContainsShopId) ||
+        if (
+            (!$blEndsWithShopId && !$blContainsShopId) ||
             ($blEndsWithShopId && $aMatchEndsWithShopId[1] == $this->getShopId()) ||
             ($blContainsShopId && $aMatchContainsShopId[1] == $this->getShopId())
         ) {

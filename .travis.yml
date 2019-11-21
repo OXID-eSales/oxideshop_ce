@@ -27,7 +27,7 @@ matrix:
 #
 # Keep TRAVIS_ERROR_LEVEL in sync with the value in vendor/oxid-esales/testing-library/base.php
 #
-env: TRAVIS_ERROR_LEVEL=32767 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/" OXID_ESHOP_CS_THRESHOLD=75
+env: TRAVIS_ERROR_LEVEL=32767 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/" OXID_ESHOP_CS_THRESHOLD=1218
 
 services: mysql
 

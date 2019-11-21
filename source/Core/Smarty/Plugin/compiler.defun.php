@@ -9,7 +9,7 @@ function smarty_compiler_fun($tag_args, &$compiler)
         $compiler->_syntax_error("fun: missing name parameter");
     }
     $_func_name = $compiler->_dequote($_attrs['name']);
-    $_func = 'smarty_fun_'.$_func_name;
+    $_func = 'smarty_fun_' . $_func_name;
     $_params = 'array(';
     $_sep = '';
     unset($_attrs['name']);
@@ -34,7 +34,7 @@ function smarty_compiler_defun($tag_args, &$compiler)
     }
 
     $func_name = $compiler->_dequote($attrs['name']);
-    $func = 'smarty_fun_'.$func_name;
+    $func = 'smarty_fun_' . $func_name;
     return $func_key . "if (!function_exists('$func')) { function $func(&\$this, \$params) { \$_fun_tpl_vars = \$this->_tpl_vars; \$this->assign(\$params); ";
 }
     
@@ -43,7 +43,7 @@ function smarty_compiler_defun($tag_args, &$compiler)
 function smarty_compiler_defun_close($tag_args, &$compiler)
 {
     list($name, $attrs, $open_tag_args, $func_key) = array_pop($compiler->_tag_stack);
-    if ($name!='defun') {
+    if ($name != 'defun') {
         $compiler->_syntax_error("unexpected {/defun}");
     }
     return " \$this->_tpl_vars = \$_fun_tpl_vars; }} " . $func_key . smarty_compiler_fun($open_tag_args, $compiler);
@@ -71,7 +71,7 @@ function smarty_replace_fun($match)
     }
 
     /* replace */
-    for ($i=0, $count=count($tokens); $i<$count; $i++) {
+    for ($i = 0, $count = count($tokens); $i < $count; $i++) {
         if (is_array($tokens[$i])) {
             if ($tokens[$i][0] == T_VARIABLE && $tokens[$i][1] == '$this') {
                 $tokens[$i] = '$smarty';
@@ -88,12 +88,12 @@ function smarty_replace_fun($match)
 function smarty_postfilter_defun($source, &$compiler)
 {
     $search = '("' . md5('php-5') . '\[\[[0-9a-f]{32}";)';
-    if ((double)phpversion()>=5.0) {
+    if ((double)phpversion() >= 5.0) {
         /* filter sourcecode. look for func_keys and replace all $this
            in-between with $smarty */
         while (1) {
             $new_source = preg_replace_callback('/' . $search . '(.*)\\1/Us', 'smarty_replace_fun', $source);
-            if (strcmp($new_source, $source)==0) {
+            if (strcmp($new_source, $source) == 0) {
                 break;
             }
             $source = $new_source;

@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
 use oxOrderArticle;
 use oxRegistry;
 
-require_once __DIR__. '/BaseTestCase.php';
+require_once __DIR__ . '/BaseTestCase.php';
 
 /**
  * Basket price calculation test

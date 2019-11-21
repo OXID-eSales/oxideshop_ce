@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -168,7 +169,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     protected static function getDatabaseHandler()
     {
         $configFile = Registry::get('oxConfigFile');
-        $dsn = 'mysql:host='. $configFile->getVar('dbHost') .';port='. $configFile->getVar('dbPort') .';dbname=' .$configFile->getVar('dbName') ;
+        $dsn = 'mysql:host=' . $configFile->getVar('dbHost') . ';port=' . $configFile->getVar('dbPort') . ';dbname=' . $configFile->getVar('dbName') ;
         $username = $configFile->getVar('dbUser');
         $password = $configFile->getVar('dbPwd');
 

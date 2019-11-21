@@ -23,12 +23,12 @@ function smarty_modifier_smartwordwrap($string, $length=80, $break="\n", $cutrow
 {
     $wraptag = "<wrap>";
     $wrapchars = ["-"];
-    $afterwrapchars = ["-".$wraptag];
+    $afterwrapchars = ["-" . $wraptag];
     
     
     $string = trim($string);
     
-    if (strlen($string)<=$length) {
+    if (strlen($string) <= $length) {
         return $string;
     }
     
@@ -40,14 +40,14 @@ function smarty_modifier_smartwordwrap($string, $length=80, $break="\n", $cutrow
     
     $ok = true;
     foreach ($arr as $row) {
-        if (strlen($row) > ($length+$tollerance)) {
+        if (strlen($row) > ($length + $tollerance)) {
             $tmpstr = str_replace($wrapchars, $afterwrapchars, $row);
             $tmparr = explode($wraptag, $tmpstr);
             
             foreach ($tmparr as $altrow) {
                 array_push($alt, $altrow);
                  
-                if (strlen($altrow) > ($length+$tollerance)) {
+                if (strlen($altrow) > ($length + $tollerance)) {
                     $ok = false;
                 }
             }
@@ -64,14 +64,14 @@ function smarty_modifier_smartwordwrap($string, $length=80, $break="\n", $cutrow
         $arr  = explode($wraptag, $str);
     }
     
-    if ($cutrows && count($arr)>$cutrows) {
+    if ($cutrows && count($arr) > $cutrows) {
         $arr = array_splice($arr, 0, $cutrows);
         
-        if (strlen($arr[$cutrows].$etc) > $length + $tollerance) {
-            $arr[$cutrows-1]= substr($arr[$cutrows-1], 0, $length - strlen($etc));
+        if (strlen($arr[$cutrows] . $etc) > $length + $tollerance) {
+            $arr[$cutrows - 1] = substr($arr[$cutrows - 1], 0, $length - strlen($etc));
         }
         
-        $arr[$cutrows-1] = $arr[$cutrows-1].$etc;
+        $arr[$cutrows - 1] = $arr[$cutrows - 1] . $etc;
     }
     
     return implode($break, $arr);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -385,7 +386,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             return;
         }
 
-        if ($this->canAcceptFormData() &&
+        if (
+            $this->canAcceptFormData() &&
             ($user = $this->getUser()) && ($article = $this->getProduct())
         ) {
             $articleRating = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('artrating');
@@ -406,7 +408,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 }
             }
 
-            if (($reviewText = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($reviewText = trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                 $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                 $review->oxreviews__oxobjectid = new Field($article->getId());
                 $review->oxreviews__oxtype = new Field('oxarticle');
@@ -436,7 +438,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             return;
         }
 
-        $recommendationText = trim(( string ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_txt'));
+        $recommendationText = trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_txt'));
         $recommendationListId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm');
         $articleId = $this->getProduct()->getId();
 
@@ -1307,7 +1309,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $sessionToken = Registry::getSession()->getVariable('sess_stoken');
 
         $searchPath['title'] = sprintf($translatedString, $this->getSearchParamForHtml());
-        $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;".
+        $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;" .
                             "searchparam=" . $this->getSearchParamForHtml();
 
         $paths[] = $searchPath;

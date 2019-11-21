@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Timestamp;
 
 use oxDb;
@@ -88,8 +90,8 @@ class TimestampTest extends \OxidTestCase
      */
     public function testOnInsertDb($objectName, $tableName)
     {
-        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '".$this->formTestIdByTable($tableName)."'";
-        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '".$this->formTestIdByTable($tableName)."'";
+        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '" . $this->formTestIdByTable($tableName) . "'";
+        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '" . $this->formTestIdByTable($tableName) . "'";
 
         $oDb = oxDb::getDb();
 
@@ -106,9 +108,9 @@ class TimestampTest extends \OxidTestCase
      */
     public function testOnUpdateDb($objectName, $tableName, $modifyField)
     {
-        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '".$this->formTestIdByTable($tableName)."', `oxtimestamp` = '0000-00-00 00:00:00' ";
-        $sUpdateSql = "UPDATE `$tableName` SET `$modifyField` = '_testmodified' WHERE `oxid` = '".$this->formTestIdByTable($tableName)."'";
-        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '".$this->formTestIdByTable($tableName)."'";
+        $sInsertSql = "INSERT INTO `$tableName` SET `oxid` = '" . $this->formTestIdByTable($tableName) . "', `oxtimestamp` = '0000-00-00 00:00:00' ";
+        $sUpdateSql = "UPDATE `$tableName` SET `$modifyField` = '_testmodified' WHERE `oxid` = '" . $this->formTestIdByTable($tableName) . "'";
+        $sSelectSql = "SELECT `oxtimestamp` FROM `$tableName` WHERE `oxid` = '" . $this->formTestIdByTable($tableName) . "'";
 
         $oDb = oxDb::getDb();
 

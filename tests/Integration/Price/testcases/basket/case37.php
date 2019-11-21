@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -22,6 +23,7 @@
  * Neto-Neto mode. Additiona products Neto-Neto. Also is testing item discount for basket.
  * User is assignet to user group "priceA", for user groups is created two discount (itm, 10%) ;
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -139,7 +141,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-                'oxaddsumrules'=>1,
+                'oxaddsumrules' => 1,
             ),
         ),
         // VOUCHERS
@@ -210,9 +212,9 @@ $aData = array(
         'config' => array(
            'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,

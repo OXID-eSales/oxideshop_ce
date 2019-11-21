@@ -40,27 +40,27 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
         $sPrepend = '';
         $sAppend  = '';
         if ($blUseSmarty3) {
-            $sPrepend = '[{__smartyblock__ name="'.$sBlockName.'"}]'.$sPrepend;
+            $sPrepend = '[{__smartyblock__ name="' . $sBlockName . '"}]' . $sPrepend;
             $sAppend .= '[{/__smartyblock__}]';
         }
         if ($blDebugTemplateBlocks) {
             $sTplDir = trim(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('_sTemplateDir'), '/\\');
             $sFile = str_replace(['\\', '//'], '/', $oSmartyCompiler->_current_file);
-            if (preg_match('@/'.preg_quote($sTplDir, '@').'/(.*)$@', $sFile, $m)) {
+            if (preg_match('@/' . preg_quote($sTplDir, '@') . '/(.*)$@', $sFile, $m)) {
                 $sFile = $m[1];
             }
 
-            $sDbgName = $sFile.'-&gt;'.$sBlockName;
-            $sPrepend = '[{capture name="_dbg_blocks"}]'.$sPrepend;
-            $sDbgId = 'block_'.sprintf("%u", crc32($sDbgName)).'_[{$_dbg_block_idr1}][{$_dbg_block_idr2}]';
+            $sDbgName = $sFile . '-&gt;' . $sBlockName;
+            $sPrepend = '[{capture name="_dbg_blocks"}]' . $sPrepend;
+            $sDbgId = 'block_' . sprintf("%u", crc32($sDbgName)) . '_[{$_dbg_block_idr1}][{$_dbg_block_idr2}]';
             $sAppend .= '[{/capture}][{math equation="rand()" assign="_dbg_block_idr1"}][{math equation="rand()" assign="_dbg_block_idr2"}]'
-                       .'<hr style="visibility:hidden;height:0;margin:0;padding:0;border:0;line-height:0;font-size:0;" class="debugBlocksStart" id="'.$sDbgId.'" title="'.$sDbgName.'">'
-                       .'[{$smarty.capture._dbg_blocks}]'
-                       .'<hr style="visibility:hidden;height:0;margin:0;padding:0;border:0;line-height:0;font-size:0;" class="debugBlocksEnd" title="'.$sDbgId.'">';
+                       . '<hr style="visibility:hidden;height:0;margin:0;padding:0;border:0;line-height:0;font-size:0;" class="debugBlocksStart" id="' . $sDbgId . '" title="' . $sDbgName . '">'
+                       . '[{$smarty.capture._dbg_blocks}]'
+                       . '<hr style="visibility:hidden;height:0;margin:0;padding:0;border:0;line-height:0;font-size:0;" class="debugBlocksEnd" title="' . $sDbgId . '">';
         }
         if (!isset($aBlocks[$sBlockName]) || !is_array($aBlocks[$sBlockName])) {
             // block is unused, just use its content
-            $sSource = str_replace($sBlock, $sPrepend.$sBlockContent.$sAppend, $sSource);
+            $sSource = str_replace($sBlock, $sPrepend . $sBlockContent . $sAppend, $sSource);
         } else {
             // go through the replacement array and fill in parent values
             // specified by [{$smarty.block.parent}] tag
@@ -68,7 +68,7 @@ function smarty_prefilter_oxblock($sSource, &$oSmartyCompiler)
             foreach ($aBlocks[$sBlockName] as $sOverBlock) {
                 $sCurrBlock = preg_replace('/\[\{\s*\$smarty\.block\.parent\s*\}\]/i', $sCurrBlock, $sOverBlock);
             }
-            $sSource = str_replace($sBlock, $sPrepend.$sCurrBlock.$sAppend, $sSource);
+            $sSource = str_replace($sBlock, $sPrepend . $sCurrBlock . $sAppend, $sSource);
         }
     }
     if (!$iLimit) {

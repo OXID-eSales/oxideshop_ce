@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxActionList;
@@ -733,7 +735,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 $this->_sListDisplayType = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
             }
 
-            $this->_sListDisplayType = in_array(( string ) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
+            $this->_sListDisplayType = in_array((string) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
                 $this->_sListDisplayType : 'infogrid';
 
             // writing to session
@@ -1028,7 +1030,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
-        if ($seoObjectId && Registry::getUtils()->seoIsActive() &&
+        if (
+            $seoObjectId && Registry::getUtils()->seoIsActive() &&
             ($keywords = Registry::getSeoEncoder()->getMetaData($seoObjectId, $dataType, $shopId, $baseLanguageId))
         ) {
             return $keywords;
@@ -1046,7 +1049,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($metaIdent) {
             $content = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
-            if ($content->loadByIdent($metaIdent) &&
+            if (
+                $content->loadByIdent($metaIdent) &&
                 $content->oxcontents__oxactive->value
             ) {
                 return getStr()->strip_tags($content->oxcontents__oxcontent->value);
@@ -2164,7 +2168,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getActPage()
     {
         if ($this->_iActPage === null) {
-            $this->_iActPage = ( int ) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
+            $this->_iActPage = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
             $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
         }
 
@@ -2956,7 +2960,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $activeCountry = $user->getActiveCountry();
         if ($activeCountry !== '') {
             $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
-            if ($country->load($activeCountry) &&
+            if (
+                $country->load($activeCountry) &&
                 $country->oxcountry__oxvatstatus->value !== null &&
                 $country->oxcountry__oxvatstatus->value == 0
             ) {
@@ -3027,7 +3032,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     private function isAllowedSortingOrder($sortOrder)
     {
-        $allowedSortOrders = array_merge((new SortingValidator)->getSortingOrders(), ['']);
+        $allowedSortOrders = array_merge((new SortingValidator())->getSortingOrders(), ['']);
         return in_array(strtolower($sortOrder), $allowedSortOrders);
     }
 }

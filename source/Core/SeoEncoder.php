@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -98,7 +99,8 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $iDefLang = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDefSeoLang');
         $aLangIds = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageIds();
 
-        if ($iLang != $iDefLang &&
+        if (
+            $iLang != $iDefLang &&
             isset($aLangIds[$iLang]) &&
             // #0006407 bugfix, we should not search for the string saved in the db but for the escaped string
             getStr()->strpos($sSeoUrl, $this->replaceSpecialChars($aLangIds[$iLang]) . '/') !== 0

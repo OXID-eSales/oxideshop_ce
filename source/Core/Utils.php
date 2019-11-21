@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -480,7 +481,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         // looking for cache meta
         $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
 
-        return ( bool ) $this->_lockFile($sCachePath, $sKey);
+        return (bool) $this->_lockFile($sCachePath, $sKey);
     }
 
     /**
@@ -670,7 +671,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     protected function _releaseFile($sIdent, $iLockMode = LOCK_EX)
     {
         $blSuccess = true;
-        if (isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) &&
+        if (
+            isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) &&
             $this->_aLockedFileHandles[$iLockMode][$sIdent] !== false
         ) {
             // release the lock and close file
@@ -822,7 +824,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function canPreview()
     {
         $blCan = null;
-        if (($sPrevId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('preview')) &&
+        if (
+            ($sPrevId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('preview')) &&
             ($sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid'))
         ) {
             $sTable = getViewName('oxuser');
@@ -1000,7 +1003,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function isValidAlpha($sField)
     {
-        return (boolean) getStr()->preg_match('/^[a-zA-Z0-9_]*$/', $sField);
+        return (bool) getStr()->preg_match('/^[a-zA-Z0-9_]*$/', $sField);
     }
 
     /**
@@ -1447,7 +1450,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function extractDomain($sHost)
     {
         $oStr = getStr();
-        if (!$oStr->preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $sHost) &&
+        if (
+            !$oStr->preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $sHost) &&
             ($iLastDot = strrpos($sHost, '.')) !== false
         ) {
             $iLen = $oStr->strlen($sHost);

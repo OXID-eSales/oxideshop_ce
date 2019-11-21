@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -162,8 +163,8 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         if (!$myConfig->getConfigParam('blAllowUnevenAmounts')) {
-            $aParams['oxprice2article__oxamount'] = round(( string ) $aParams['oxprice2article__oxamount']);
-            $aParams['oxprice2article__oxamountto'] = round(( string ) $aParams['oxprice2article__oxamountto']);
+            $aParams['oxprice2article__oxamount'] = round((string) $aParams['oxprice2article__oxamount']);
+            $aParams['oxprice2article__oxamountto'] = round((string) $aParams['oxprice2article__oxamountto']);
         }
 
         $dPrice = $aParams['price'];
@@ -176,7 +177,8 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oArticlePrice->$sType = new \OxidEsales\Eshop\Core\Field($dPrice);
 
         //validating
-        if ($oArticlePrice->$sType->value &&
+        if (
+            $oArticlePrice->$sType->value &&
             $oArticlePrice->oxprice2article__oxamount->value &&
             $oArticlePrice->oxprice2article__oxamountto->value &&
             is_numeric($oArticlePrice->$sType->value) &&
@@ -191,8 +193,10 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->loadInLang($this->_iEditLang, $sOxArtId);
         $sPriceField = 'oxarticles__oxprice';
-        if (($aParams['price'] >= $oArticle->$sPriceField->value) &&
-            ($aParams['pricetype'] == 'oxprice2article__oxaddabs')) {
+        if (
+            ($aParams['price'] >= $oArticle->$sPriceField->value) &&
+            ($aParams['pricetype'] == 'oxprice2article__oxaddabs')
+        ) {
             if (is_null($sOXID)) {
                 $sOXID = $oArticlePrice->getId();
             }

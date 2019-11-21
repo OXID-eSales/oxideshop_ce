@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxFileException;
@@ -72,7 +74,7 @@ class UtilsFileTest extends \OxidTestCase
 
         $this->activateTheme('azure');
         $shopUrl = $this->getTestConfig()->getShopUrl();
-        $this->assertTrue($oUtilsFile->urlValidate($shopUrl ."?param=value"));
+        $this->assertTrue($oUtilsFile->urlValidate($shopUrl . "?param=value"));
     }
 
     public function testCheckFile()

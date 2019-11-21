@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -186,7 +187,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function hasArticles()
     {
-        return ( bool ) count($this->getArticles());
+        return (bool) count($this->getArticles());
     }
 
     /**
@@ -196,7 +197,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function hasCategories()
     {
-        return ( bool ) count($this->getCategories());
+        return (bool) count($this->getCategories());
     }
 
     /**

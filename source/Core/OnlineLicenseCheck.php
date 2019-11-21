@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -236,7 +237,8 @@ class OnlineLicenseCheck
     protected function validateResponse($response)
     {
         if (isset($response->code) && isset($response->message)) {
-            if ($response->code == $this->validResponseCode &&
+            if (
+                $response->code == $this->validResponseCode &&
                 $response->message == $this->validResponseMessage
             ) {
                 // serial keys are valid

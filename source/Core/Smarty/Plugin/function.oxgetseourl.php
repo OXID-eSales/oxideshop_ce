@@ -52,7 +52,7 @@ function smarty_function_oxgetseourl($params, &$smarty)
         }
     }
 
-    $sDynParams = isset($params['params'])?$params['params']:false;
+    $sDynParams = isset($params['params']) ? $params['params'] : false;
     if ($sDynParams) {
         include_once $smarty->_get_plugin_filepath('modifier', 'oxaddparams');
         $sUrl = smarty_modifier_oxaddparams($sUrl, $sDynParams);

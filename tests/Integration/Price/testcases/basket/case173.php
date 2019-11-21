@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto / brutto
  * Price view mode: netto / brutto
@@ -12,6 +13,7 @@
  * shop has discount assigned to product 1126 with amount restrictions ( 3 < discount < 999 ),  test case is moved from unit test
  *
  */
+
 $aData = array(
     // Articles
     'articles' => array(

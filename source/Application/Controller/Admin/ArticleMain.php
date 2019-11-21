@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -169,7 +170,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         }
 
         //article number handling, warns for artnum duplicates
-        if (isset($aParams['oxarticles__oxartnum']) && strlen($aParams['oxarticles__oxartnum']) > 0 &&
+        if (
+            isset($aParams['oxarticles__oxartnum']) && strlen($aParams['oxarticles__oxartnum']) > 0 &&
             $oConfig->getConfigParam('blWarnOnSameArtNums') &&
             $oArticle->oxarticles__oxartnum->value != $aParams['oxarticles__oxartnum']
         ) {
@@ -353,7 +355,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                 //article number handling, warns for artnum duplicates
                 $sFncParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
                 $sArtNumField = 'oxarticles__oxartnum';
-                if ($myConfig->getConfigParam('blWarnOnSameArtNums') &&
+                if (
+                    $myConfig->getConfigParam('blWarnOnSameArtNums') &&
                     $oArticle->$sArtNumField->value && $sFncParameter == 'copyArticle'
                 ) {
                     $sSelect = "select oxid from " . $oArticle->getCoreTableName() .

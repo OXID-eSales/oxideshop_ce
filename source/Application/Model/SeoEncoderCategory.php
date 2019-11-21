@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -208,10 +209,10 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 
         // update subarticles
         $sQ = "update oxseo as seo1, (select o2c.oxobjectid as id from oxcategories as cat left join oxobject2category "
-              ."as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid = :oxrootid and cat.oxleft >= :oxleft "
-              ."and cat.oxright <= :oxright) as seo2 "
-              ."set seo1.oxexpired = '1' where seo1.oxtype = 'oxarticle' and seo1.oxobjectid = seo2.id "
-              ."and seo1.oxfixed = 0";
+              . "as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid = :oxrootid and cat.oxleft >= :oxleft "
+              . "and cat.oxright <= :oxright) as seo2 "
+              . "set seo1.oxexpired = '1' where seo1.oxtype = 'oxarticle' and seo1.oxobjectid = seo2.id "
+              . "and seo1.oxfixed = 0";
         $oDb->execute($sQ, [
             ':oxrootid' => $aCatInfo[0][0],
             ':oxleft' => (int) $aCatInfo[0][1],

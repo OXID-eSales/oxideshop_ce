@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \DOMDocument;
@@ -26,7 +28,7 @@ class NavigationTreeTest extends \OxidTestCase
         $aTestMethods = array("_getInitialDom", "_checkGroups", "_checkRights", "_checkDemoShopDenials", "_cleanEmptyParents", "removeInvisibleMenuNodes");
 
         $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, $aTestMethods);
-        $oNavTree->expects($this->once())->method('_getInitialDom')->will($this->returnValue(new stdClass));
+        $oNavTree->expects($this->once())->method('_getInitialDom')->will($this->returnValue(new stdClass()));
         $oNavTree->expects($this->once())->method('_checkGroups');
         $oNavTree->expects($this->once())->method('_checkRights');
         $oNavTree->expects($this->once())->method('_checkDemoShopDenials');
@@ -633,7 +635,7 @@ class NavigationTreeTest extends \OxidTestCase
      */
     protected function _getDomXml()
     {
-        $adminViewsDirectory = $this->getTestConfig()->getShopPath() .'/Application/views/admin';
+        $adminViewsDirectory = $this->getTestConfig()->getShopPath() . '/Application/views/admin';
 
         $edition = strtolower($this->getTestConfig()->getShopEdition());
         $menuFile = "/menu_$edition.xml";

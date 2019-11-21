@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EMOS PHP Bib 2
  *
@@ -246,8 +247,8 @@ class Emos
     {
         $this->_prepareScript();
 
-        return $this->_sPrescript.
-               $this->_sIncScript.
+        return $this->_sPrescript .
+               $this->_sIncScript .
                $this->_sPostscript;
     }
 
@@ -466,7 +467,7 @@ class Emos
         }
 
         if ($sCip) {
-            $ort .= getStr()->substr($sCip, 0, 1)."/".getStr()->substr($sCip, 0, 2)."/";
+            $ort .= getStr()->substr($sCip, 0, 1) . "/" . getStr()->substr($sCip, 0, 2) . "/";
         }
 
         if ($sCity) {
@@ -474,7 +475,7 @@ class Emos
         }
 
         if ($sCip) {
-            $ort.=$sCip;
+            $ort .= $sCip;
         }
 
         $this->_billing = [$sBillingId, $sCustomerNumber, $ort, $iTotal];

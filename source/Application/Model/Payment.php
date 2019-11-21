@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -227,7 +228,8 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         // discounts
-        if ((!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_DISCOUNTS)) &&
+        if (
+            (!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_DISCOUNTS)) &&
             ($oCosts = $oBasket->getTotalDiscount())
         ) {
             $dBasketPrice -= $oCosts->getPrice();
@@ -239,7 +241,8 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         // delivery
-        if ((!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_SHIPCOSTS)) &&
+        if (
+            (!$iRules || ($iRules & self::PAYMENT_ADDSUMRULE_SHIPCOSTS)) &&
             ($oCosts = $oBasket->getCosts('oxdelivery'))
         ) {
             if ($oBasket->isCalculationModeNetto()) {
@@ -250,7 +253,8 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         // wrapping
-        if (($iRules & self::PAYMENT_ADDSUMRULE_GIFTS) &&
+        if (
+            ($iRules & self::PAYMENT_ADDSUMRULE_GIFTS) &&
             ($oCosts = $oBasket->getCosts('oxwrapping'))
         ) {
             if ($oBasket->isCalculationModeNetto()) {
@@ -261,7 +265,8 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         // gift card
-        if (($iRules & self::PAYMENT_ADDSUMRULE_GIFTS) &&
+        if (
+            ($iRules & self::PAYMENT_ADDSUMRULE_GIFTS) &&
             ($oCosts = $oBasket->getCosts('oxgiftcard'))
         ) {
             if ($oBasket->isCalculationModeNetto()) {
@@ -418,13 +423,14 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
                 return false;
             }
-            if (count(
-                \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)
+            if (
+                count(
+                    \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)
                     ->getDeliverySetList(
                         $oUser,
                         $oUser->getActiveCountry()
                     )
-            )
+                )
             ) {
                 $this->_iPaymentError = -3;
 

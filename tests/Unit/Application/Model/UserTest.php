@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxEmailHelper;
@@ -1282,9 +1284,9 @@ class UserTest extends \OxidTestCase
     public function testDeleteSpecialUser()
     {
         $oDb = $this->getDb();
-        $iLastCustNr = ( int ) $oDb->getOne('select max( oxcustnr ) from oxuser') + 1;
+        $iLastCustNr = (int) $oDb->getOne('select max( oxcustnr ) from oxuser') + 1;
         $sShopId = $this->getConfig()->getShopId();
-        $sQ = 'insert into oxuser (oxid, oxshopid, oxactive, oxrights, oxusername, oxpassword, oxcustnr, oxcountryid) '.
+        $sQ = 'insert into oxuser (oxid, oxshopid, oxactive, oxrights, oxusername, oxpassword, oxcustnr, oxcountryid) ' .
               'values ( "oxtestuser", "' . $sShopId . '", "1", "user", "testuser", "", "' . $iLastCustNr . '", "testCountry" )';
         $oDb->execute($sQ);
 

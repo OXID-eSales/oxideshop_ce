@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto;
  * Price view mode: brutto;
@@ -20,6 +21,7 @@
  * Short description:
  * Testing basket item price calculator also sets items discounts
  */
+
 $aData = array(
         'articles' => array(
                 0 => array(
@@ -42,7 +44,7 @@ $aData = array(
                         'oxamountto'  => 99999,
                         'oxprice'     => 1,
                         'oxpriceto'   => 99999,
-                        'oxaddsumtype'=> 'abs',
+                        'oxaddsumtype' => 'abs',
                         'oxaddsum'    => 5,
                         'oxsort'      => 10,
                 ),
@@ -54,7 +56,7 @@ $aData = array(
                         'oxamountto'  => 99999,
                         'oxprice'     => 1,
                         'oxpriceto'   => 99999,
-                        'oxaddsumtype'=> 'abs',
+                        'oxaddsumtype' => 'abs',
                         'oxaddsum'    => 7,
                         'oxsort'      => 20,
                 ),

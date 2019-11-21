@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -519,7 +520,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function save()
     {
         $blAddRemark = false;
-        if ($this->oxuser__oxpassword->value
+        if (
+            $this->oxuser__oxpassword->value
             && (!$this->oxuser__oxregister instanceof \OxidEsales\Eshop\Core\Field || $this->oxuser__oxregister->value < 1)
         ) {
             $blAddRemark = true;

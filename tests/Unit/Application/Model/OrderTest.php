@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use Exception;
@@ -1869,9 +1871,9 @@ class OrderTest extends \OxidTestCase
         //$oPriceList = oxNew( 'oxPriceList' );
         $oPrice->setPrice(119, 19);
         //$oPriceList->addToPriceList( $oPrice );
-        $oDiscount = new stdClass;
+        $oDiscount = new stdClass();
         $oDiscount->dDiscount = 2;
-        $oDiscount2 = new stdClass;
+        $oDiscount2 = new stdClass();
         $oDiscount2->dDiscount = 3;
         $dDiscountesNettoPrice = 95;
         $aProductVats = array('10' => '50', '5' => '25');

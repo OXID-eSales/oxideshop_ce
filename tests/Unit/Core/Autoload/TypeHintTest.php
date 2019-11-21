@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Autoload;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
@@ -76,7 +78,7 @@ class TypeHintTest extends UnitTestCase
      */
     public function testTypeHintAliasingBackwardsCompatibilityWithNew()
     {
-        $basket = new \oxBasket;
+        $basket = new \oxBasket();
 
         $this->createOrder()->finalizeOrder($basket, $this->loadDefaultAdminUser());
     }

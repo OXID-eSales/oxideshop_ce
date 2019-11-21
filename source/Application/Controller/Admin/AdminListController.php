@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -490,7 +491,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
                 foreach ($filter as $table => $filterData) {
                     foreach ($filterData as $name => $value) {
-                        if ($value || '0' === ( string )$value) {
+                        if ($value || '0' === (string)$value) {
                             $field = "{$table}__{$name}";
 
                             // if no table name attached to field name, add it

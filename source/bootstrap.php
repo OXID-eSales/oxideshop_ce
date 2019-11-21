@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -138,7 +139,7 @@ require_once VENDOR_PATH . 'autoload.php';
  * but inside VENDOR_PATH.
  */
 if (!is_dir(OX_BASE_PATH . 'Core')) {
-    define('CORE_AUTOLOADER_PATH', (new \OxidEsales\Facts\Facts)->getCommunityEditionSourcePath() .
+    define('CORE_AUTOLOADER_PATH', (new \OxidEsales\Facts\Facts())->getCommunityEditionSourcePath() .
             DIRECTORY_SEPARATOR .
             'Core' . DIRECTORY_SEPARATOR .
             'Autoload' . DIRECTORY_SEPARATOR);

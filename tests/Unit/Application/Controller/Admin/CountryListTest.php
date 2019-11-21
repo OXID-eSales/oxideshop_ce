@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \Exception;
@@ -63,7 +65,7 @@ class CountryListTest extends \OxidTestCase
         $firstInactiveTitle = null;
 
         foreach ($countryList as $country) {
-            $isCountryActive= $this->isCountryActive($country);
+            $isCountryActive = $this->isCountryActive($country);
 
             $firstActiveTitle = $this->getTitleIfUnset($firstActiveTitle, $country, $isCountryActive);
             $firstInactiveTitle = $this->getTitleIfUnset($firstInactiveTitle, $country, !$isCountryActive);

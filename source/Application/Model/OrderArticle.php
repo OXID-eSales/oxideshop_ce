@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -168,7 +169,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         // #1592A. must take real value
         $sQ = 'select oxstock from oxarticles 
             where oxid = :oxid';
-        $iStockCount = ( float ) $masterDb->getOne($sQ, [
+        $iStockCount = (float) $masterDb->getOne($sQ, [
             ':oxid' => $this->oxorderarticles__oxartid->value
         ]);
 
@@ -638,7 +639,8 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         // ordered articles
         if (($blSave = parent::save()) && $this->isNewOrderItem()) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-            if ($myConfig->getConfigParam('blUseStock') &&
+            if (
+                $myConfig->getConfigParam('blUseStock') &&
                 $myConfig->getConfigParam('blPsBasketReservationEnabled')
             ) {
                 $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -685,7 +687,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function isBundle()
     {
-        return ( bool ) $this->oxorderarticles__oxisbundle->value;
+        return (bool) $this->oxorderarticles__oxisbundle->value;
     }
 
     /**

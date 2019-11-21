@@ -1,13 +1,14 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Core\Model\ListModel;
-
 use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
@@ -108,7 +109,7 @@ class SuggestTest extends \OxidTestCase
         $oV->expects($this->any())->method('_getRequestParams')->will($this->returnValue('cl=suggest'));
         $oV->expects($this->any())->method('_getSeoRequestParams')->will($this->returnValue('cl=suggest'));
 
-        $sCnid = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
+        $sCnid = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e60a535f16.78077188';
         $this->setRequestParameter('anid', '2000');
         $this->setRequestParameter('cnid', $sCnid);
         $this->assertEquals($oCfg->getShopURL() . 'empfehlen/?cnid=' . $sCnid . '&amp;anid=2000', $oV->getLink());

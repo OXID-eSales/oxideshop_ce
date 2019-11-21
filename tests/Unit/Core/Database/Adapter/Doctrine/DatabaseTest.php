@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Database;
 
 use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\Database;
@@ -132,7 +134,7 @@ class DatabaseTest extends UnitTestCase
                 'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
             ],
             [
-                $identifierQuoteCharacter . $identifierQuoteCharacter .$identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter,
+                $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter . $identifierQuoteCharacter . $identifierQuoteCharacter,
                 $identifierQuoteCharacter . 'string to be quoted' . $identifierQuoteCharacter,
                 'An already quoted string will be quoted with "' . $identifierQuoteCharacter . '"'
             ],

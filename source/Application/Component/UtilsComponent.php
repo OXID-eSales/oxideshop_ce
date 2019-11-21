@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -145,7 +146,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);
             if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowUnevenAmounts')) {
-                $dAmount = round(( string ) $dAmount);
+                $dAmount = round((string) $dAmount);
             }
 
             $oBasket = $oUser->getBasket($sListType);

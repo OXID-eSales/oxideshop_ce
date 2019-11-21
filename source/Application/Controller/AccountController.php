@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
@@ -123,7 +125,8 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         // is logged in ?
         $user = $this->getUser();
         $passwordField = 'oxuser__oxpassword';
-        if (!$user || ($user && !$user->$passwordField->value) ||
+        if (
+            !$user || ($user && !$user->$passwordField->value) ||
             ($this->isEnabledPrivateSales() && $user && (!$user->isTermsAccepted() || $this->confirmTerms()))
         ) {
             $this->_sThisTemplate = $this->_getLoginTemplate();
@@ -199,7 +202,8 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function redirectAfterLogin()
     {
         // in case source class is provided - redirecting back to it with all default parameters
-        if (($sourceClass = Registry::getConfig()->getRequestParameter("sourcecl")) &&
+        if (
+            ($sourceClass = Registry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
             $redirectUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);

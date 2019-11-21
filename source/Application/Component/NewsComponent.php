@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -39,7 +40,8 @@ class NewsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oActView = $myConfig->getActiveView();
 
         // news loading is disabled
-        if (!$myConfig->getConfigParam('bl_perfLoadNews') ||
+        if (
+            !$myConfig->getConfigParam('bl_perfLoadNews') ||
             ($myConfig->getConfigParam('blDisableNavBars') &&
              $oActView->getIsOrderStep())
         ) {
@@ -47,7 +49,8 @@ class NewsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         // if news must be displayed only on start page ?
-        if ($myConfig->getConfigParam('bl_perfLoadNewsOnlyStart') &&
+        if (
+            $myConfig->getConfigParam('bl_perfLoadNewsOnlyStart') &&
             $oActView->getClassName() != "start"
         ) {
             return;

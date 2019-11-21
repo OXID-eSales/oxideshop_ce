@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use oxCategoryList;
@@ -714,7 +716,6 @@ class CategoryListTest extends \OxidTestCase
 
         $oCat = $this->_oList[$this->_sActRoot];
         foreach ($this->_aActPath as $sNr => $sId) {
-
             //Hidded actCat
             if ($sId === $this->_sActCat) {
                 $this->assertFalse($oCat->getIsVisible());

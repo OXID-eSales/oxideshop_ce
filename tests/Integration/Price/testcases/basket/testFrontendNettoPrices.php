@@ -82,7 +82,7 @@ $aData = array(
             'config' => array(
                 'blShowNetPrice' => false,
                 'blEnterNetPrice' => true,
-                'blWrappingVatOnTop' =>true,
+                'blWrappingVatOnTop' => true,
                 'blDeliveryVatOnTop' => true,
             ),
                 'activeCurrencyRate' => 1,

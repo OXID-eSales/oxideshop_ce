@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto;
  * Price view mode: brutto;
@@ -59,7 +60,7 @@ $aData = array(
                         'oxamountto'    => 99999,
                         'oxprice'     => 1,
                         'oxpriceto'   => 99999,
-                        'oxaddsumtype'=> 'abs',
+                        'oxaddsumtype' => 'abs',
                         'oxaddsum'    => 5,
                         'oxarticles'  => array( 2000, '_tArticle' ),
                         'oxsort' => 10,

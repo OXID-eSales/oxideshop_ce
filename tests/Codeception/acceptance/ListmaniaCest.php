@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -47,7 +48,7 @@ class ListmaniaCest
 
         $userAccountPage =  $userListmaniaPage->openAccountPage();
         $I->see(Translator::translate('MY_LISTMANIA'), $userAccountPage->dashboardListmaniaPanelHeader);
-        $I->see(Translator::translate('LISTS').' 1', $userAccountPage->dashboardListmaniaPanelContent);
+        $I->see(Translator::translate('LISTS') . ' 1', $userAccountPage->dashboardListmaniaPanelContent);
     }
 
     public function _failed(AcceptanceTester $I)
@@ -69,7 +70,7 @@ class ListmaniaCest
 
     private function clearListmaniaData(AcceptanceTester $I)
     {
-        $I->deleteFromDatabase('oxrecommlists', ['OXTITLE'=>'recomm title1']);
-        $I->deleteFromDatabase('oxobject2list', ['OXLISTID !='=>'']);
+        $I->deleteFromDatabase('oxrecommlists', ['OXTITLE' => 'recomm title1']);
+        $I->deleteFromDatabase('oxobject2list', ['OXLISTID !=' => '']);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -1197,7 +1198,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     public function dataProviderTestQuoteWithValidValues()
     {
         return [
-            [self::FIXTURE_OXID_1, "'" . self::FIXTURE_OXID_1 . "'", [[self::FIXTURE_OXID_1]], 'The string "'. self::FIXTURE_OXID_1 .'" 1  will be converted into the string "\''. self::FIXTURE_OXID_1 .'\'" and the query result will be ['. self::FIXTURE_OXID_1 .']'],
+            [self::FIXTURE_OXID_1, "'" . self::FIXTURE_OXID_1 . "'", [[self::FIXTURE_OXID_1]], 'The string "' . self::FIXTURE_OXID_1 . '" 1  will be converted into the string "\'' . self::FIXTURE_OXID_1 . '\'" and the query result will be [' . self::FIXTURE_OXID_1 . ']'],
             [1, "'1'", [], 'The integer 1  will be converted into the string "1" and the query result will be empty'],
         ];
     }

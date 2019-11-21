@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -20,6 +21,7 @@
  * Example test case from Basket calculation - brutto mode doc.
  * 2 items in basket, 2 differenct vats, 3 different discounts
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

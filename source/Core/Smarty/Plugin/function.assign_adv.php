@@ -92,9 +92,9 @@ function smarty_function_assign_adv($params, &$smarty)
         return;
     }
     if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/s', $value, $match)) {
-        eval('$value=array('.str_replace("\n", "", $match[1]).');');
+        eval('$value=array(' . str_replace("\n", "", $match[1]) . ');');
     } elseif (preg_match('/^\s*range\s*\(\s*(.*)\s*\)\s*$/s', $value, $match)) {
-        eval('$value=range('.str_replace("\n", "", $match[1]).');');
+        eval('$value=range(' . str_replace("\n", "", $match[1]) . ');');
     }
 
     $smarty->assign($var, $value);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -221,7 +222,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
             if ($this->isAdmin()) {
                 $aLanguages = $this->getAdminTplLanguageArray();
-                if (!isset($aLanguages[$this->_iObjectTplLanguageId]) ||
+                if (
+                    !isset($aLanguages[$this->_iObjectTplLanguageId]) ||
                     $aLanguages[$this->_iObjectTplLanguageId]->active == 0
                 ) {
                     $this->_iObjectTplLanguageId = key($aLanguages);
@@ -545,7 +547,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function formatVat($dValue, $oActCur = null)
     {
         $iDecPos = 0;
-        $sValue = ( string ) $dValue;
+        $sValue = (string) $dValue;
         /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
         $oStr = getStr();
         if (($iDotPos = $oStr->strpos($sValue, '.')) !== false) {
@@ -1182,7 +1184,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         if (!$this->isAdmin()) {
             $sParam = $this->getUrlLang($iLang);
-            if (!$oStr->preg_match('/(\?|&(amp;)?)lang=[0-9]+/', $sUrl) &&
+            if (
+                !$oStr->preg_match('/(\?|&(amp;)?)lang=[0-9]+/', $sUrl) &&
                 ($iLang != $iDefaultLang || $iDefaultLang != $iBrowserLanguage)
             ) {
                 if ($sUrl) {

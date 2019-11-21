@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxprice;
@@ -712,7 +714,7 @@ class DiscountTest extends \OxidTestCase
         $oSummary->iArticleCount = 5;
         $oSummary->dArticleDiscountablePrice = 101;
 
-        $oCurr = new stdclass;
+        $oCurr = new stdclass();
         $oCurr->rate = 5;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getBasketSummary", "getBasketCurrency"));
@@ -725,7 +727,7 @@ class DiscountTest extends \OxidTestCase
 
         $this->assertFalse($oDiscount->isForBasket($oBasket));
 
-        $oCurr = new stdclass;
+        $oCurr = new stdclass();
         $oCurr->rate = 1;
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array("getBasketSummary", "getBasketCurrency"));

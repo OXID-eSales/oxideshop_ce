@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -167,7 +168,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $oBasket = $session->getBasket();
             $blPsBasketReservationEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
             if ($blPsBasketReservationEnabled && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
-                Registry::getUtils()->redirect($myConfig->getShopHomeUrl() .'cl=basket', true, 302);
+                Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', true, 302);
             }
 
             $oUser = $this->getUser();
@@ -184,9 +185,9 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $sPayErrorTextParameter = Registry::getConfig()->getRequestParameter('payerrortext');
             $shopSecureHomeURL = $myConfig->getShopSecureHomeURL();
 
-            $sPayError = $sPayErrorParameter ?'payerror='.$sPayErrorParameter:'';
-            $sPayErrorText = $sPayErrorTextParameter ?'payerrortext='.$sPayErrorTextParameter:'';
-            $sRedirectURL = $shopSecureHomeURL .'sslredirect=forced&cl=payment&'.$sPayError."&".$sPayErrorText;
+            $sPayError = $sPayErrorParameter ? 'payerror=' . $sPayErrorParameter : '';
+            $sPayErrorText = $sPayErrorTextParameter ? 'payerrortext=' . $sPayErrorTextParameter : '';
+            $sRedirectURL = $shopSecureHomeURL . 'sslredirect=forced&cl=payment&' . $sPayError . "&" . $sPayErrorText;
             Registry::getUtils()->redirect($sRedirectURL, true, 302);
         }
 
@@ -521,7 +522,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             //checking if some of values is allready set in session - leave it
             foreach ($aAddPaymentData as $oData) {
-                if (!isset($this->_aDynValue[$oData->name]) ||
+                if (
+                    !isset($this->_aDynValue[$oData->name]) ||
                     (isset($this->_aDynValue[$oData->name]) && !$this->_aDynValue[$oData->name])
                 ) {
                     $this->_aDynValue[$oData->name] = $oData->value;
@@ -669,7 +671,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             Registry::getSession()->setVariable("dynvalue", $aDynData);
         }
 
-        if (!$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
+        if (
+            !$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
             !$this->_checkArrValuesEmpty($_POST["dynvalue"], $aFields) ||
             !$this->_checkArrValuesEmpty($_GET["dynvalue"], $aFields)
         ) {

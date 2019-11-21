@@ -27,9 +27,9 @@ $aData = array(
                     'oxprice'                  => 101,
                     'oxvat'                    => 10,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 0,
-                    'oxpriceb' 			       => 0,
-                    'oxpricec' 			       => 0,
+                    'oxpricea'                 => 0,
+                    'oxpriceb'                 => 0,
+                    'oxpricec'                 => 0,
             ),
 
             1 => array(
@@ -37,9 +37,9 @@ $aData = array(
                     'oxprice'                  => 75.00,
                     'oxvat'                    => 19,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 70,
-                    'oxpriceb' 			       => 85,
-                    'oxpricec' 			       => 0,
+                    'oxpricea'                 => 70,
+                    'oxpriceb'                 => 85,
+                    'oxpricec'                 => 0,
 
             ),
             2 => array(
@@ -47,9 +47,9 @@ $aData = array(
                     'oxprice'                  => 50.00,
                     'oxvat'                    => 5,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 35,
-                    'oxpriceb' 			       => 45,
-                    'oxpricec' 			       => 55,
+                    'oxpricea'                 => 35,
+                    'oxpriceb'                 => 45,
+                    'oxpricec'                 => 55,
                     'oxunitname'               => 'kg',
                     'oxunitquantity'           => 2,
                     'oxweight'                 => 2
@@ -102,7 +102,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-                'oxaddsumrules'=>0,
+                'oxaddsumrules' => 0,
 
             ),
         ),

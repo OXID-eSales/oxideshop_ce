@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -103,7 +104,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
 
         //verify that the chain is filled and that the last class in chain is as expected
         $this->assertEquals(4, count($chain), $message);
-        $this->assertSame(basename($expectedResult), basename($chain[count($chain)-1]), $message);
+        $this->assertSame(basename($expectedResult), basename($chain[count($chain) - 1]), $message);
     }
 
     public function testGetDisabledModuleIds()
@@ -214,7 +215,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         $container = ContainerFactory::getInstance()->getContainer();
         $installService = $container->get(ModuleInstallerInterface::class);
         $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
-        $package->setTargetDirectory('oeTest/'. $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
         $installService->install($package);
     }
 
@@ -243,7 +244,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
     /**
      * @return \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator
      */
-    private function getModuleChainsGenerator() : ModuleChainsGenerator
+    private function getModuleChainsGenerator(): ModuleChainsGenerator
     {
         if (is_null($this->moduleChainsGenerator)) {
             $this->moduleChainsGenerator = new ModuleChainsGenerator(

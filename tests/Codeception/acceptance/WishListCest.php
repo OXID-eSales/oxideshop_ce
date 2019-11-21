@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -48,11 +49,11 @@ class WishListCest
 
         $userAccountPage = $detailsPage->openAccountPage();
         $I->see(Translator::translate('MY_WISH_LIST'));
-        $I->see(Translator::translate('PRODUCT').' 1');
+        $I->see(Translator::translate('PRODUCT') . ' 1');
 
         $userAccountPage->logoutUserInAccountPage()->login($userData['userLoginName'], $userData['userPassword']);
         $I->see(Translator::translate('MY_WISH_LIST'));
-        $I->see(Translator::translate('PRODUCT').' 1');
+        $I->see(Translator::translate('PRODUCT') . ' 1');
 
         $userAccountPage->openWishListPage()
             ->seeProductData($productData)
@@ -130,5 +131,4 @@ class WishListCest
     {
         return \Codeception\Util\Fixtures::get('existingUser');
     }
-
 }

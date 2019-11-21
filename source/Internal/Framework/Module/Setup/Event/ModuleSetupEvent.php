@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event;
 
@@ -29,7 +32,7 @@ abstract class ModuleSetupEvent extends Event
     /**
      * @return string
      */
-    public function getModuleId():string
+    public function getModuleId(): string
     {
         return $this->moduleId;
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -68,7 +69,6 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
         $config = $this->getMockBuilder(Config::class)->getMock();
         $config->method('getLogsDir')->willReturn(__DIR__);
         Registry::set(Config::class, $config);
-
     }
 
     public function tearDown()
@@ -113,5 +113,4 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
         }
         $this->assertTrue($exceptionThrown);
     }
-
 }

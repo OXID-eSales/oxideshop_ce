@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  brutto
@@ -18,6 +19,7 @@
  * Actions with basket or order:
  *   change config
  */
+
 $aData = array(
     'skipped' => 1,
     'articles' => array(

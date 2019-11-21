@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -11,6 +12,7 @@
  *  3. shop; %; 5.5; general
  * Short description: brutto-brutto general discount to user groups, prices ABC and separate discounts;
  */
+
 $aData = array(
         'articles' => array(
                 0 => array(

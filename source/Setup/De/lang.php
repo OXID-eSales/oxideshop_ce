@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,7 +10,7 @@ $aLang = [
 'charset'                                       => 'UTF-8',
 'HEADER_META_MAIN_TITLE'                        => 'OXID eShop Installationsassistent',
 'HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'        => 'Sollte das Setup nicht nach einigen Sekunden automatisch weiterspringen, dann klicken Sie bitte',
-'FOOTER_OXID_ESALES'                            => '&copy; OXID eSales AG 2003-'.@date("Y"),
+'FOOTER_OXID_ESALES'                            => '&copy; OXID eSales AG 2003-' . @date("Y"),
 
 'TAB_0_TITLE'                                   => 'Voraussetzungen',
 'TAB_1_TITLE'                                   => 'Willkommen',
@@ -40,7 +41,7 @@ $aLang = [
 'ERROR_BAD_DEMODATA'                            => 'FEHLER: (Demodaten)Probleme mit folgenden SQL Befehlen: ',
 'ERROR_NO_DEMODATA_INSTALLED'                   => 'ERROR: Demodaten-Paket ist nicht installiert. Bitte installieren Sie zuerst die Demodaten.',
 'NOTICE_NO_DEMODATA_INSTALLED'                  => 'Demodaten-Paket ist nicht installiert. Bitte installieren Sie zuerst die Demodaten. Details dazu finden Sie im Abschnitt Installation der Datei README.md.',
-'ERROR_CONFIG_FILE_IS_NOT_WRITABLE'             => 'FEHLER: %s/config.inc.php'.' nicht beschreibbar!',
+'ERROR_CONFIG_FILE_IS_NOT_WRITABLE'             => 'FEHLER: %s/config.inc.php' . ' nicht beschreibbar!',
 'ERROR_BAD_SERIAL_NUMBER'                       => 'FEHLER: Falsche Serienummer!',
 'ERROR_COULD_NOT_OPEN_CONFIG_FILE'              => 'Konnte config.inc.php nicht öffnen. Bitte in unserer FAQ oder im Forum nachlesen oder den OXID Support kontaktieren.',
 'ERROR_COULD_NOT_FIND_FILE'                     => 'Setup konnte die Datei \"%s\" nicht finden!',
@@ -93,11 +94,11 @@ $aLang = [
 
 'STEP_0_ERROR_TEXT'                             => 'Ihr System erfüllt nicht alle nötigen Systemvoraussetzungen',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ce.html',
-'STEP_0_TEXT'                                   => '<ul class="req">'.
-                                                   '<li class="pass"> - Die Voraussetzung ist erfüllt.</li>'.
-                                                   '<li class="pmin"> - Die Voraussetzung ist nicht oder nur teilweise erfüllt. Der OXID eShop funktioniert trotzdem und kann installiert werden.</li>'.
-                                                   '<li class="fail"> - Die Voraussetzung ist nicht erfüllt. Der OXID eShop funktioniert nicht ohne diese Voraussetzung und kann nicht installiert werden.</li>'.
-                                                   '<li class="null"> - Die Voraussetzung konnte nicht überprüft werden.'.
+'STEP_0_TEXT'                                   => '<ul class="req">' .
+                                                   '<li class="pass"> - Die Voraussetzung ist erfüllt.</li>' .
+                                                   '<li class="pmin"> - Die Voraussetzung ist nicht oder nur teilweise erfüllt. Der OXID eShop funktioniert trotzdem und kann installiert werden.</li>' .
+                                                   '<li class="fail"> - Die Voraussetzung ist nicht erfüllt. Der OXID eShop funktioniert nicht ohne diese Voraussetzung und kann nicht installiert werden.</li>' .
+                                                   '<li class="null"> - Die Voraussetzung konnte nicht überprüft werden.' .
                                                    '</ul>',
 'STEP_0_DESC'                                   => 'In diesem Schritt wird überprüft, ob Ihr System die Voraussetzungen erfüllt:',
 'STEP_0_TITLE'                                  => 'Systemvoraussetzungen überprüfen',
@@ -194,11 +195,11 @@ $aLang = [
 
 'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Verbindung mit den OXID eSales Servern erlauben, um die Qualität unserer Open-Source-Produkte zu verbessern.',
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
-                                                        .'Die gesammelten Daten sind ausschließlich technologische Informationen. '
-                                                        .'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
-                                                        .'<ul>'
-                                                        .'  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
-                                                        .'  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
-                                                        .'  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
-                                                        .'</ul>',
+                                                        . 'Die gesammelten Daten sind ausschließlich technologische Informationen. '
+                                                        . 'Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:'
+                                                        . '<ul>'
+                                                        . '  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>'
+                                                        . '  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>'
+                                                        . '  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li>'
+                                                        . '</ul>',
 ];

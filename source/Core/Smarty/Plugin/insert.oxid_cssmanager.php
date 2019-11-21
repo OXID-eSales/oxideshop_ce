@@ -61,7 +61,7 @@ function smarty_insert_oxid_cssmanager($params, &$smarty)
     $sOutput = "";
     // checking if alternative CSS file exists and returning URL to CSS file
     if ($sTplName && file_exists($sAltFullPath) && is_file($sAltFullPath)) {
-        $sOutput = '<link rel="stylesheet" href="'.$sTplURL . $sAltCss.'">';
+        $sOutput = '<link rel="stylesheet" href="' . $sTplURL . $sAltCss . '">';
     }
 
     $smarty->caching = false;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -126,7 +127,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
             // non seo url has no language identifier..
             $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-            if (!$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl) &&
+            if (
+                !$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl) &&
                 $iLang != $oConfig->getConfigParam('sDefaultLang')
             ) {
                 $sUrl .= "{$sSep}lang=" . $iLang;
@@ -446,7 +448,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
 
         $sProtocol = "http://";
 
-        if (isset($aServerParams['HTTPS']) && (($aServerParams['HTTPS'] == 'on' || $aServerParams['HTTPS'] == 1))
+        if (
+            isset($aServerParams['HTTPS']) && (($aServerParams['HTTPS'] == 'on' || $aServerParams['HTTPS'] == 1))
             || (isset($aServerParams['HTTP_X_FORWARDED_PROTO']) && $aServerParams['HTTP_X_FORWARDED_PROTO'] == 'https')
         ) {
             $sProtocol = 'https://';

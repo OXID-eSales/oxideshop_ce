@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use \oxExceptionToDisplay;
 use \oxbasket;
 use \oxBasketHelper;
 use \oxBasketReservation;
-
 use \oxUtilsServer;
 use \oxUtilsObject;
 use \oxSession;

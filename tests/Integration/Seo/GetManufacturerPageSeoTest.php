@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -19,11 +20,11 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Seo;
 
 use \OxidEsales\TestingLibrary\UnitTestCase;
 use \OxidEsales\Facts\Facts;
-
 use \OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
 use \OxidEsales\Eshop\Application\Model\Manufacturer;
 
@@ -154,7 +155,7 @@ class GetManufacturerSeoTest extends UnitTestCase
      */
     private function isEnterpriseEdition()
     {
-        $facts = new Facts;
+        $facts = new Facts();
 
         return ('EE' === $facts->getEdition());
     }

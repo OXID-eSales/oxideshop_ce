@@ -26,9 +26,9 @@ $aData = array(
                     'oxprice'                  => 1.80,
                     'oxvat'                    => 19,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 0,
-                    'oxpriceb' 			       => 0,
-                    'oxpricec' 			       => 0,
+                    'oxpricea'                 => 0,
+                    'oxpriceb'                 => 0,
+                    'oxpricec'                 => 0,
                     'oxweight'                 => 2
             ),
             1 => array(

@@ -38,7 +38,7 @@ function smarty_modifier_oxtruncate($sString, $iLength = 80, $sSufix = '...', $b
             $sString = getStr()->preg_replace('/\s+?(\S+)?$/', '', getStr()->substr($sString, 0, $iLength + 1));
         }
 
-        $sString = getStr()->substr($sString, 0, $iLength).$sSufix;
+        $sString = getStr()->substr($sString, 0, $iLength) . $sSufix;
 
         return str_replace([ "'",'"' ], ['&#039;', '&quot;'], $sString);
     }

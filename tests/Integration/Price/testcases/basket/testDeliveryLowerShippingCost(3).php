@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: Brutto;
  * Price view mode: Brutto;
@@ -15,6 +16,7 @@
  *
  * only stuff added
  */
+
 $aData = array(
 
     'categories' => array(

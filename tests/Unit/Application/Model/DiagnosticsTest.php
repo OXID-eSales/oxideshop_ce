@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxDb;
@@ -69,7 +71,7 @@ class DiagnosticsTest extends \OxidTestCase
         for ($i = 2; $i < 9; $i++) {
             $oDb->execute(
                 "INSERT INTO `oxarticles` (`OXID`, `OXSHOPID`, `OXPARENTID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXARTNUM` ) VALUES " .
-                "('_testArtId" . $i . "', ".ShopIdCalculator::BASE_SHOP_ID.", '', " . ($i % 2) . ", '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0802-85-823-7-1')"
+                "('_testArtId" . $i . "', " . ShopIdCalculator::BASE_SHOP_ID . ", '', " . ($i % 2) . ", '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0802-85-823-7-1')"
             );
         }
 

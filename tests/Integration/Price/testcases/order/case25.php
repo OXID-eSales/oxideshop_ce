@@ -206,9 +206,9 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,
@@ -224,8 +224,8 @@ $aData = array(
                             'amount'     => 10,
                     ),
             ),
-                //	Discount should be 20 eur
-        //	'_changeDiscount' => array (
+                //  Discount should be 20 eur
+        //  '_changeDiscount' => array (
         //        editval[oxorder__oxdiscount],
        // ),
             '_addArticles' => array(

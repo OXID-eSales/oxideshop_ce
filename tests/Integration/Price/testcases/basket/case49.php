@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode:  brutto
  * Price view mode:  brutto
@@ -173,9 +174,9 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => false,
             'blShowNetPrice' => false,
-            'blShowVATForDelivery'=> false,
-            'blShowVATForPayCharge'=> false,
-            'blShowVATForWrapping'=> false,
+            'blShowVATForDelivery' => false,
+            'blShowVATForPayCharge' => false,
+            'blShowVATForWrapping' => false,
         ),
         // Other options
         'activeCurrencyRate' => 1,

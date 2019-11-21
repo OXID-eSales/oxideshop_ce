@@ -1,15 +1,16 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\EshopCommunity\Application\Model\PaymentList;
 use OxidEsales\EshopCommunity\Application\Model\DeliverySetList;
 use OxidEsales\EshopCommunity\Application\Model\Delivery;
 use OxidEsales\EshopCommunity\Application\Model\DeliveryList;
-
 use \oxUtilsView;
 use \oxField;
 use \Exception;

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 use OxidEsales\EshopCommunity\Setup\Utilities;
@@ -40,7 +42,7 @@ class UtilitiesTest extends \OxidTestCase
 
         parent::setUp();
 
-        $this->configTestPath = __DIR__ .'/../testData/Setup';
+        $this->configTestPath = __DIR__ . '/../testData/Setup';
         $this->removeTestFile();
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -152,7 +153,7 @@ class ModuleTest extends ModuleBaseTest
         $test7ModuleClassElementLocator = "//li[@id='$childClassesContainerId']//li[@id='oxid/test7/view/myinfo7']/span";
         $this->assertEquals('oxid/test7/view/myinfo7', $this->getText($test7ModuleClassElementLocator));
 
-        $this->open(shopURL."?cl=content&fnc=showContent");
+        $this->open(shopURL . "?cl=content&fnc=showContent");
         $this->assertTextPresent(' + namespace1');
 
         $this->clearCache();
@@ -295,10 +296,10 @@ class ModuleTest extends ModuleBaseTest
         $this->openTab("Test tab EN");
         $this->clearCache();
         $this->openShop();
-        $this->open(shopURL."en/About-Us/");
+        $this->open(shopURL . "en/About-Us/");
         $this->assertTextPresent("About Us + info6");
 
-        $moduleDirectoryPath= $this->getTestConfig()->getShopPath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR ;
+        $moduleDirectoryPath = $this->getTestConfig()->getShopPath() . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR ;
 
         rename(
             $moduleDirectoryPath . 'oxid/test6/view/myinfo6.php',
@@ -306,7 +307,7 @@ class ModuleTest extends ModuleBaseTest
         );
 
         $this->openShop();
-        $this->open(shopURL."en/About-Us/");
+        $this->open(shopURL . "en/About-Us/");
         $this->assertTextNotPresent("About Us + info6");
         $this->assertTextPresent("About Us");
 
@@ -336,7 +337,7 @@ class ModuleTest extends ModuleBaseTest
         $this->assertTextNotPresent("Module #6 title DE");
         $this->clearCache();
         $this->openShop();
-        $this->open(shopURL."en/About-Us/");
+        $this->open(shopURL . "en/About-Us/");
         $this->assertTextNotPresent("About Us + info6");
 
         rename(

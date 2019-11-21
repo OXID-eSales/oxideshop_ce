@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -402,8 +403,8 @@ class ShopControlTest extends \OxidTestCase
                 array(
                 'other'   => array('test1', 'test3'),
                 'default' => array('test2', 'test4'),
+                )
             )
-        )
         );
         $oOut->expects($this->at(2))->method('sendHeaders')->will($this->returnValue(null));
         $oOut->expects($this->at(3))->method('output')->with($this->equalTo($controllerClassName), $this->anything());

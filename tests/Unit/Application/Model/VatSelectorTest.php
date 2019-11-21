@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
@@ -33,7 +35,7 @@ class VatSelectorTest extends \OxidTestCase
     {
         parent::setUp();
         // demo article
-        $sId = $this->getTestConfig()->getShopEdition() == 'EE'? '2275': '2077';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE' ? '2275' : '2077';
         $sNewId = oxRegistry::getUtilsObject()->generateUId();
 
         $this->oArticle = oxNew('oxArticle');
@@ -49,7 +51,7 @@ class VatSelectorTest extends \OxidTestCase
         $this->oArticle->save();
 
         // demo category
-        $sId = $this->getTestConfig()->getShopEdition() == 'EE'? '30e44ab82c03c3848.49471214': '8a142c3e4143562a5.46426637';
+        $sId = $this->getTestConfig()->getShopEdition() == 'EE' ? '30e44ab82c03c3848.49471214' : '8a142c3e4143562a5.46426637';
 
         $sNewId = oxRegistry::getUtilsObject()->generateUId();
 

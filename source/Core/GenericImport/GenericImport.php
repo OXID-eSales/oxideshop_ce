@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -445,7 +446,7 @@ class GenericImport
      */
     protected function createImportObject($type)
     {
-        $className = __NAMESPACE__ . "\\ImportObject\\".$type;
+        $className = __NAMESPACE__ . "\\ImportObject\\" . $type;
 
         return oxNew($className);
     }

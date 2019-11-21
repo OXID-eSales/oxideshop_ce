@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -18,6 +19,7 @@
  * Vat and rounding issue. 4 products.
  * for all products VAT=33%, spec. one discount for basket.Mode Neto-Neto
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -150,9 +152,9 @@ $aData = array(
             'blShowNetPrice' => true,
             'blShowVATForPayCharge' => true,
             'blShowVATForDelivery' => true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
 
         ),
         // Other options

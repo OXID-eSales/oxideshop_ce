@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use modDB;
@@ -947,7 +949,8 @@ class I18ntest extends \OxidTestCase
 
             // creating table
             $sQ = end($rs->fields);
-            if ((stripos($sTable, "oxartextends") === false && stripos($sTable, "oxshops") === false) &&
+            if (
+                (stripos($sTable, "oxartextends") === false && stripos($sTable, "oxshops") === false) &&
                 !preg_match("/oxshopid/i", $sQ)
             ) {
                 unset($this->_aLangTables[$iPos]);

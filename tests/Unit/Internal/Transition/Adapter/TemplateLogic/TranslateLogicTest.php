@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -149,5 +150,4 @@ class TranslateLogicTest extends UnitTestCase
 
         $this->assertEquals($translation, $this->multiLangFilterLogic->multiLang($ident));
     }
-
 }

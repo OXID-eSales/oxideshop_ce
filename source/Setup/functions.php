@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -29,11 +30,11 @@ if (!function_exists('getSystemReqCheck')) {
     {
         $facts = new Facts();
         if ($facts->isEnterprise()) {
-            $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopEnterprise\Core\SystemRequirements();
         } elseif ($facts->isProfessional()) {
-            $systemRequirements = new \OxidEsales\EshopProfessional\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopProfessional\Core\SystemRequirements();
         } else {
-            $systemRequirements = new \OxidEsales\EshopCommunity\Core\SystemRequirements;
+            $systemRequirements = new \OxidEsales\EshopCommunity\Core\SystemRequirements();
         }
 
         return $systemRequirements;
@@ -48,7 +49,7 @@ if (!function_exists('getCountryList')) {
      */
     function getCountryList()
     {
-        $cePath = (new Facts)->getCommunityEditionSourcePath();
+        $cePath = (new Facts())->getCommunityEditionSourcePath();
         $aCountries = [];
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
 
@@ -66,7 +67,7 @@ if (!function_exists('getLocation')) {
      */
     function getLocation()
     {
-        $cePath = (new Facts)->getCommunityEditionSourcePath();
+        $cePath = (new Facts())->getCommunityEditionSourcePath();
         $aLocationCountries = [];
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
 
@@ -84,7 +85,7 @@ if (!function_exists('getLanguages')) {
      */
     function getLanguages()
     {
-        $cePath = (new Facts)->getCommunityEditionSourcePath();
+        $cePath = (new Facts())->getCommunityEditionSourcePath();
         $aLanguages = [];
         $relativePath = 'Application/Controller/Admin/ShopCountries.php';
 

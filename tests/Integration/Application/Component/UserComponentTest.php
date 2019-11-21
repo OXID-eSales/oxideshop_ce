@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
 
 use \oxcmp_user;
@@ -414,7 +416,7 @@ class UserComponentTest extends \OxidTestCase
     {
         $myDB = oxDb::getDB();
         $sTable = getViewName('oxuser');
-        $iLastCustNr = ( int ) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
+        $iLastCustNr = (int) $myDB->getOne('select max( oxcustnr ) from ' . $sTable) + 1;
         $oUser = oxNew('oxuser');
         $salt = md5('salt');
         $paswordHash = $oUser->encodePassword('secret', $salt);

@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use OxidEsales\EshopCommunity\Core\Price;
-
 use \oxField;
 use \StdClass;
 use \oxRegistry;
@@ -324,7 +325,7 @@ class SimpleVariantTest extends \OxidTestCase
     public function testApplyCurrency()
     {
         $oSubj = $this->getProxyClass("oxSimpleVariant");
-        $oCur = new StdClass;
+        $oCur = new StdClass();
         $oCur->rate = 2;
         $this->getConfig()->setActShopCurrency(2);
         $oPrice = oxNew('oxPrice');
@@ -337,7 +338,7 @@ class SimpleVariantTest extends \OxidTestCase
     public function testApplyCurrencyIfObjSet()
     {
         $oSubj = $this->getProxyClass("oxSimpleVariant");
-        $oCur = new StdClass;
+        $oCur = new StdClass();
         $oCur->rate = 0.68;
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100);

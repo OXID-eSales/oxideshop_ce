@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
@@ -11,7 +13,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  * Tests for oxwCategoryTree class
  */
 class CategoryTreeTest extends UnitTestCase
-    {
+{
     /**
      * Testing OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::getDeepLevel()
      *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -77,7 +78,7 @@ $facts = new \OxidEsales\Facts\Facts();
         if ($facts->isCommunity()) {
             $iTabCount = 6;
         }
-            $iDocWidth = ($iTabWidth + $iSepWidth)*$iTabCount;
+            $iDocWidth = ($iTabWidth + $iSepWidth) * $iTabCount;
         ?>
         #page { width: <?php echo $iDocWidth; ?>px; }
         dl.tab { width: <?php echo $iTabWidth; ?>px; }
@@ -109,13 +110,13 @@ $facts = new \OxidEsales\Facts\Facts();
             $sTabClass = $sTabLinkOpen = $sTabLinkClose = '';
             if ($blAct) {
                 $sTabClass     = 'act';
-                $sTabLinkOpen  = '<a href="index.php?istep='.$iTab.'&sid='.$this->getSid(false).'">';
+                $sTabLinkOpen  = '<a href="index.php?istep=' . $iTab . '&sid=' . $this->getSid(false) . '">';
                 $sTabLinkClose = '</a>';
             }
             ?>
             <dl class="tab <?php echo $sTabClass; ?>">
-                <dt><?php echo $sTabLinkOpen ?><?php echo $iCntr ,'. ',$this->getText('TAB_'.$iStepId.'_TITLE', false); ?><?php echo $sTabLinkClose?></dt>
-                <dd><?php echo $sTabLinkOpen ?><?php $this->getText('TAB_'.$iStepId.'_DESC'); ?><?php echo $sTabLinkClose?></dd>
+                <dt><?php echo $sTabLinkOpen ?><?php echo $iCntr ,'. ',$this->getText('TAB_' . $iStepId . '_TITLE', false); ?><?php echo $sTabLinkClose?></dt>
+                <dd><?php echo $sTabLinkOpen ?><?php $this->getText('TAB_' . $iStepId . '_DESC'); ?><?php echo $sTabLinkClose?></dd>
             </dl>
             <?php
         endforeach;

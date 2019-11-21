@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -1058,7 +1059,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // active ?
         $sNow = date('Y-m-d H:i:s');
-        if (!$this->oxarticles__oxactive->value &&
+        if (
+            !$this->oxarticles__oxactive->value &&
             (
                 $this->oxarticles__oxactivefrom->value > $sNow ||
              $this->oxarticles__oxactiveto->value < $sNow
@@ -1854,7 +1856,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getManufacturer($blShopCheck = true)
     {
         $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
-        if (!($sManufacturerId = $this->getManufacturerId()) &&
+        if (
+            !($sManufacturerId = $this->getManufacturerId()) &&
             !$blShopCheck && $this->oxarticles__oxmanufacturerid->value
         ) {
             $this->updateManufacturerBeforeLoading($oManufacturer);
@@ -2346,7 +2349,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         for ($i = 1; $i <= $iPicCount; $i++) {
             $sPicVal = $this->getPictureUrl($i);
             $sIcoVal = $this->getIconUrl($i);
-            if (!$oStr->strstr($sIcoVal, 'nopic_ico.jpg') && !$oStr->strstr($sIcoVal, 'nopic.jpg') &&
+            if (
+                !$oStr->strstr($sIcoVal, 'nopic_ico.jpg') && !$oStr->strstr($sIcoVal, 'nopic.jpg') &&
                 !$oStr->strstr($sPicVal, 'nopic_ico.jpg') && !$oStr->strstr($sPicVal, 'nopic.jpg') &&
                 $sPicVal !== null
             ) {
@@ -2516,7 +2520,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             //negative stock values we would allow to reserve more items than are initially available
             //by keeping the stock level not lower than zero. When discarding reservations
             //stock level might differ from original value.
-            if (!$myConfig->getConfigParam('blPsBasketReservationEnabled')
+            if (
+                !$myConfig->getConfigParam('blPsBasketReservationEnabled')
                  || ($myConfig->getConfigParam('blPsBasketReservationEnabled')
                      && $myConfig->getConfigParam('blAllowNegativeStock'))
             ) {
@@ -3005,7 +3010,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function resetRemindStatus()
     {
-        if ($this->oxarticles__oxremindactive->value == 2 &&
+        if (
+            $this->oxarticles__oxremindactive->value == 2 &&
             $this->oxarticles__oxremindamount->value <= $this->oxarticles__oxstock->value
         ) {
             $this->oxarticles__oxremindactive->value = 1;
@@ -3543,7 +3549,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-            if (!$this->_blLoadVariants ||
+            if (
+                !$this->_blLoadVariants ||
                 (!$this->isAdmin() && !$config->getConfigParam('blLoadVariants')) ||
                 (!$this->isAdmin() && !$this->oxarticles__oxvarcount->value)
             ) {
@@ -3875,7 +3882,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $dPrice = $this->_getGroupPrice();
         $oAmtPrices = $this->_getAmountPriceList();
         foreach ($oAmtPrices as $oAmPrice) {
-            if ($oAmPrice->oxprice2article__oxamount->value <= $amount
+            if (
+                $oAmPrice->oxprice2article__oxamount->value <= $amount
                 && $amount <= $oAmPrice->oxprice2article__oxamountto->value
                 && $dPrice > $oAmPrice->oxprice2article__oxaddabs->value
             ) {
@@ -4321,19 +4329,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $sFieldName = strtolower($sFieldName);
 
-        if ($sFieldName == 'oxarticles__oxicon' && (strpos($mValue, "nopic_ico.jpg") !== false || strpos(
-            $mValue,
-            "nopic.jpg"
-        ) !== false)
+        if (
+            $sFieldName == 'oxarticles__oxicon' && (strpos($mValue, "nopic_ico.jpg") !== false || strpos(
+                $mValue,
+                "nopic.jpg"
+            ) !== false)
         ) {
             return true;
         }
 
-        if (strpos($mValue, "nopic.jpg") !== false && ($sFieldName == 'oxarticles__oxthumb' || substr(
-            $sFieldName,
-            0,
-            17
-        ) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
+        if (
+            strpos($mValue, "nopic.jpg") !== false && ($sFieldName == 'oxarticles__oxthumb' || substr(
+                $sFieldName,
+                0,
+                17
+            ) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
         ) {
             return true;
         }
@@ -4417,7 +4427,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _assignNotBuyableParent()
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantParentBuyable') &&
+        if (
+            !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantParentBuyable') &&
             ($this->_blHasVariants || $this->oxarticles__oxvarstock->value || $this->oxarticles__oxvarcount->value)
         ) {
             $this->_blNotBuyableParent = true;
@@ -4442,7 +4453,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->_iStockStatus = 0;
 
         // if we have flag /*1 or*/ 4 - we show always green light
-        if ($myConfig->getConfigParam('blUseStock') && /*$this->oxarticles__oxstockflag->value != 1 && */
+        if (
+            $myConfig->getConfigParam('blUseStock') && /*$this->oxarticles__oxstockflag->value != 1 && */
             $this->oxarticles__oxstockflag->value != 4
         ) {
             //ORANGE light
@@ -4665,7 +4677,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($sOXID) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             //collect variants to remove recursively
-            $query= 'select oxid from ' . $this->getViewName() . ' where oxparentid = :oxparentid';
+            $query = 'select oxid from ' . $this->getViewName() . ' where oxparentid = :oxparentid';
             $rs = $database->select($query, [
                 ':oxparentid' => $sOXID
             ]);
@@ -4783,7 +4795,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        if ($myConfig->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2 &&
+        if (
+            $myConfig->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2 &&
             ($this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value) <= 0
         ) {
             $this->_onChangeResetCounts(
@@ -4878,7 +4891,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($sPicName == "nopic.jpg" || $sPicName == "") {
             return false;
         }
-        if ($this->isVariant() &&
+        if (
+            $this->isVariant() &&
             $this->getParentArticle() &&
             $this->getParentArticle()->{"oxarticles__oxpic" . $iIndex}->value == $this->{"oxarticles__oxpic" . $iIndex}->value
         ) {

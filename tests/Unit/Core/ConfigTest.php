@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Config;
@@ -11,13 +13,11 @@ use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Facts;
-
 use \oxConfig;
 use \stdClass;
 use \oxDb;
 use \oxRegistry;
 use \oxTestModules;
-
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\EshopCommunity\Core\Registry;
 
@@ -228,7 +228,7 @@ class ConfigTest extends \OxidTestCase
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl', 'getSslShopUrl', 'getShopUrl'));
         $config->expects($this->any())->method('isSsl')->will($this->returnValue($withSsl));
         foreach (['getSslShopUrl', 'getShopUrl'] as $method) {
-            $config->expects($this->any())->method($method)->will($this->returnValue('http'. ($withSsl?'s':'') . '://oxid-esales.com'));
+            $config->expects($this->any())->method($method)->will($this->returnValue('http' . ($withSsl ? 's' : '') . '://oxid-esales.com'));
         }
         $res = $config->isHttpsOnly();
         return $res;
@@ -548,7 +548,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
 
         $sQ = 'select oxproductive from oxshops where oxid = "' . $oConfig->getShopID() . '"';
-        $blProductive = ( bool ) oxDb::getDb()->getOne($sQ);
+        $blProductive = (bool) oxDb::getDb()->getOne($sQ);
 
         $this->assertEquals($blProductive, $oConfig->isProductiveMode());
     }

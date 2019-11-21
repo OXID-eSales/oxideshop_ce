@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: neto
  * Price view mode:  bruto
@@ -26,6 +27,7 @@
  *  ...
  * Short description: bug entry / support case other info;
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

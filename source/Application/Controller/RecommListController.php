@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -201,7 +202,8 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
             return;
         }
 
-        if ($this->canAcceptFormData() &&
+        if (
+            $this->canAcceptFormData() &&
             ($oRecommList = $this->getActiveRecommList()) && ($oUser = $this->getUser())
         ) {
             //save rating
@@ -222,7 +224,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
                 }
             }
 
-            if (($sReviewText = trim(( string ) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($sReviewText = trim((string) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                 $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                 $oReview->oxreviews__oxobjectid = new Field($oRecommList->getId());
                 $oReview->oxreviews__oxtype = new Field('oxrecommlist');

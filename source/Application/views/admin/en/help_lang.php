@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -30,8 +31,8 @@ $aLang =  [
 'HELP_SHOP_SYSTEM_DISABLENAVBARS'             => 'If this setting is checked, most navigation elements aren\'t shown during checkout. Thereby users aren\'t distracted unnecessarily during checkout.',
 
 'HELP_SHOP_SYSTEM_DEFAULTIMAGEQUALITY'        => 'Recommended settings are from 40-80:<br>' .
-                                                 '<ul><li>Under 40, the compression gets clearly visible and the pictures are blurred.</li>'.
-                                                 '<li>Above 80 hardly any quality improvement can be detected, but the filesize increases enormously.</li></ul><br>'.
+                                                 '<ul><li>Under 40, the compression gets clearly visible and the pictures are blurred.</li>' .
+                                                 '<li>Above 80 hardly any quality improvement can be detected, but the filesize increases enormously.</li></ul><br>' .
                                                  'The default value is 75.',
 
 'HELP_SHOP_SYSTEM_LDAP'                       => 'Please edit file Core/oxldap.php.',
@@ -119,15 +120,15 @@ $aLang =  [
                                                  '<ul><li>If the setting is checked, negative stock values are calculated if further units are bought.</li>' .
                                                  '<li>If the setting is unchecked, the stock value never falls below 0, even if further units are bought.</li></ul>',
 
-'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Add or remove currencies. Each line contains currency parameters separated by the symbol @.<br /><br />'.
-                                                 '<ul>'.
-                                                 '<li>currency code according to ISO 4217 (e.g. EUR)</li>'.
-                                                 '<li>currency rate to basic currency with the value 1.00</li>'.
-                                                 '<li>decimal separator</li>'.
-                                                 '<li>thousands separator</li>'.
-                                                 '<li>currency sign</li>'.
-                                                 '<li>number of decimal places</li>'.
-                                                 '<li>optional parameter "Front". If entered, the currency sign shows up in front of the price.</li>'.
+'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Add or remove currencies. Each line contains currency parameters separated by the symbol @.<br /><br />' .
+                                                 '<ul>' .
+                                                 '<li>currency code according to ISO 4217 (e.g. EUR)</li>' .
+                                                 '<li>currency rate to basic currency with the value 1.00</li>' .
+                                                 '<li>decimal separator</li>' .
+                                                 '<li>thousands separator</li>' .
+                                                 '<li>currency sign</li>' .
+                                                 '<li>number of decimal places</li>' .
+                                                 '<li>optional parameter "Front". If entered, the currency sign shows up in front of the price.</li>' .
                                                  '</ul>',
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
@@ -137,17 +138,17 @@ $aLang =  [
 // END deprecated
 
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
-                                                        .'The collected data exclusively apply to technological information. '
-                                                        .'To improve the quality of our products, information like this will be collected:'
-                                                        .'<ul>'
-                                                        .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
-                                                        .'  <li>average number of installed extensions per OXID eShop</li>'
-                                                        .'  <li>top spread extensions for OXID eShop</li>'
-                                                        .'</ul>',
+                                                        . 'The collected data exclusively apply to technological information. '
+                                                        . 'To improve the quality of our products, information like this will be collected:'
+                                                        . '<ul>'
+                                                        . '  <li>number of the OXID eShop Community Edition installations world wide</li>'
+                                                        . '  <li>average number of installed extensions per OXID eShop</li>'
+                                                        . '  <li>top spread extensions for OXID eShop</li>'
+                                                        . '</ul>',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'If users rate a product, they cannot rate the product again. Here you can set after how many days users are allowed to rate a product again. Leave empty to disable - products can be rated only once per user.',
 
-'HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK'    => 'The online VAT ID check is executed if a customer from a foreign country inside the EU enters a VAT ID when ordering. If the VAT ID is valid, no VAT is calculated for this order.<br>'.
+'HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK'    => 'The online VAT ID check is executed if a customer from a foreign country inside the EU enters a VAT ID when ordering. If the VAT ID is valid, no VAT is calculated for this order.<br>' .
                                                  'If the check is disabled, the normal VAT for the according country is always calculated.',
 
 'HELP_SHOP_CONFIG_ALTVATIDCHECKINTERFACEWSDL' => 'Here you can enter an alternative URL for the online VAT ID check.',
@@ -164,7 +165,7 @@ $aLang =  [
 'HELP_SHOP_CONFIG_BASKETRESERVATION'          => 'When disabling this option eShop reduces product stock exactly at time' .
                                                  'when order is confirmed by customer and checkout is finished.<br><br> ' .
                                                  'With this option enabled this functionality changes: Product stock reduces ' .
-                                                 'and is being <b>reserved</b> when product is put into cart. Reservation is '.
+                                                 'and is being <b>reserved</b> when product is put into cart. Reservation is ' .
                                                  'canceled when cart content is bought or cart expires.',
 
 'HELP_SHOP_CONFIG_BASKETRESERVATIONTIMEOUT'   => 'After this timeout the reserved products are returned to stock and customer\'s cart is cleared.',
@@ -190,18 +191,18 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_DOWNLOADS_PATH'             => 'Path where files of downloadable products are stored.',
 
-'HELP_SHOP_CONFIG_MAX_DOWNLOADS_COUNT'        => 'Here you can define how many times user can download from the same link after order. This is the default setting for all products.'.
+'HELP_SHOP_CONFIG_MAX_DOWNLOADS_COUNT'        => 'Here you can define how many times user can download from the same link after order. This is the default setting for all products.' .
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 
-'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME_UNREGISTERED' => 'Here you can define how many times user can download from the same link, if user ordered without registration. This is the default setting for all products.'.
+'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME_UNREGISTERED' => 'Here you can define how many times user can download from the same link, if user ordered without registration. This is the default setting for all products.' .
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 
-'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME'       => 'Specify the time in hours, the download link is valid after order. This is the default setting for all products.'.
+'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME'       => 'Specify the time in hours, the download link is valid after order. This is the default setting for all products.' .
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 
 'HELP_SHOP_CONFIG_PARCELSERVICE'              => 'Please fill in the tracking URL of your shipping provider. <i>##ID##</i> is a placeholder and will be replaced with the respective tracking number.',
 
-'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Specify the time in hours, the download link is valid after the first download. This is the default setting for all products.'.
+'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Specify the time in hours, the download link is valid after the first download. This is the default setting for all products.' .
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 
 'HELP_SHOP_CONFIG_LOADREVIEWS'                  => 'Users can review and rate your products with stars. If this setting is checked, the existing reviews/star ratings are loaded and shown with the product. ' .
@@ -307,7 +308,7 @@ $aLang =  [
 
 'HELP_ARTICLE_EXTEND_TEMPLATE'                => 'The detail view of a product can be displayed with a different template. For doing so, enter path and name of the template to be used.',
 
-'HELP_ARTICLE_EXTEND_ISCONFIGURABLE'          => 'If the product is customizable, an additional input field is displayed on the products detail page and in the shopping cart. Here customers can enter text for customizing the product.<br><br>'.
+'HELP_ARTICLE_EXTEND_ISCONFIGURABLE'          => 'If the product is customizable, an additional input field is displayed on the products detail page and in the shopping cart. Here customers can enter text for customizing the product.<br><br>' .
                                                  'A typical example are t-shirts which can be imprinted with custom text. In the input field customers can enter the text to be printed on the t-shirt.',
 
 'HELP_ARTICLE_EXTEND_UPDATEPRICE'             => 'Prices can be changed on a defined time. Given fields update standard prices. If you leave price values "0", prices will not be updated.',
@@ -324,7 +325,7 @@ $aLang =  [
 
 'HELP_ARTICLE_FILES_DOWNLOAD_EXPIRATION_TIME' => 'Specify the time in hours, the download link is valid after the first download. For this file you can overwrite the default setting, which was defined in Master Settings -> Core Setting -> Settings -> Downloads for all products.',
 
-'HELP_ARTICLE_PICTURES_ICON'                  => 'Icons are the smallest pictures of a product. For example, they are used in the shopping cart.<br>'.
+'HELP_ARTICLE_PICTURES_ICON'                  => 'Icons are the smallest pictures of a product. For example, they are used in the shopping cart.<br>' .
                                                  'Uploading custom icon will override icon, generated from the first product picture.<br>' .
                                                  'After uploading, the filename is shown in Icon. If no icon is uploaded yet, --- is displayed.',
 
@@ -453,7 +454,7 @@ $aLang =  [
                                                  '<ul>' .
                                                  '<li><span class="userinput_or_code">abs</span>: The discount is an absolute discount, e.g. EUR 5.</li>' .
                                                  '<li><span class="userinput_or_code">%</span>: The discount is a percentage discount, e.g. 10 percent of the purchase price.</li>' .
-                                                 '<li><span class="userinput_or_code">itm</span>: Discount in the form of a free product. Set the amount of this product. Choose "Multiply" if the amount of discounted product in shopping cart should be multiplied with the amount of the free product.</li>'.
+                                                 '<li><span class="userinput_or_code">itm</span>: Discount in the form of a free product. Set the amount of this product. Choose "Multiply" if the amount of discounted product in shopping cart should be multiplied with the amount of the free product.</li>' .
                                                  '</ul>',
 
 
@@ -501,8 +502,8 @@ $aLang =  [
                                                  '<ul><li>If a password is set, the user registered.</li>' .
                                                  '<li>If no password is set, the user ordered without registering.</li></ul>',
 
-'HELP_USER_PAYMENT_METHODS'                   => 'On this tab you can:'.
-                                                 '<ul><li>Browse and manage existing user payment methods.'.
+'HELP_USER_PAYMENT_METHODS'                   => 'On this tab you can:' .
+                                                 '<ul><li>Browse and manage existing user payment methods.' .
                                                  '<li>Create new payment methods and set default values, for example direct debit.</li></ul>',
 
 'HELP_USER_EXTEND_NEWSLETTER'                 => 'This setting shows if the user subscribed to the newsletter.',

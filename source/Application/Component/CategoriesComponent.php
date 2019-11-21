@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -58,7 +59,8 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
 
         // Performance
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        if ($myConfig->getConfigParam('blDisableNavBars') &&
+        if (
+            $myConfig->getConfigParam('blDisableNavBars') &&
             $myConfig->getTopActiveView()->getIsOrderStep()
         ) {
             return;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -240,7 +241,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $this->$fieldName = $fieldValue;
         if ($this->_blUseLazyLoading && strpos($fieldName, $this->_sCoreTable . '__') === 0) {
             $preparedFieldName = str_replace($this->_sCoreTable . '__', '', $fieldName);
-            if ($preparedFieldName !== 'oxnid'
+            if (
+                $preparedFieldName !== 'oxnid'
                 && (!isset($this->_aFieldNames[$preparedFieldName]) || !$this->_aFieldNames[$preparedFieldName])
             ) {
                 $allFieldsList = $this->_getAllFields(true);
@@ -914,7 +916,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = :oxid";
 
-        return ( bool ) $database->getOne($query, [
+        return (bool) $database->getOne($query, [
             ':oxid' => $oxid
         ]);
     }
@@ -1246,7 +1248,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
 
         //in non lazy loading case we just add a field and do not care about it more
-        if (!$this->_blUseLazyLoading
+        if (
+            !$this->_blUseLazyLoading
             && !$this->isPropertyLoaded($longFieldName)
         ) {
             $fieldsList = $this->_getAllFields(true);
@@ -1256,7 +1259,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
         // if we have a double field we replace "," with "." in case somebody enters it in european format
         $isPropertyLoaded = $this->isPropertyLoaded($longFieldName);
-        if ($isPropertyLoaded
+        if (
+            $isPropertyLoaded
             && isset($this->$longFieldName->fldtype)
             && $this->$longFieldName->fldtype == 'double'
         ) {
@@ -1264,7 +1268,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         // isset is REQUIRED here not to use getter
-        if ($isPropertyLoaded
+        if (
+            $isPropertyLoaded
             && is_object($this->$longFieldName)
         ) {
             $this->$longFieldName->setValue($fieldValue, $dataType);
@@ -1459,7 +1464,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $shopIdField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');
 
-        if ($this->isPropertyLoaded($shopIdField)
+        if (
+            $this->isPropertyLoaded($shopIdField)
             && (!$this->isPropertyField($shopIdField) || !$this->$shopIdField->value)
         ) {
             $this->$shopIdField = new Field(

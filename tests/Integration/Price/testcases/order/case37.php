@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -20,6 +21,7 @@
  * Netto - Netto start case, after order saving,
  * Delete all products from order,
  */
+
  # bug
 $aData = array(
   'skipped' => 1,
@@ -94,7 +96,7 @@ $aData = array(
                 'oxaddsumtype' => '%',
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
-                 'oxparam'=> 0.1,
+                 'oxparam' => 0.1,
                 'oxparamend' => 99999,
             ),
         ),
@@ -200,9 +202,9 @@ $aData = array(
             'blShowVATForPayCharge' => true,
             'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blShowVATForDelivery' => true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
 
         ),
         // Other options

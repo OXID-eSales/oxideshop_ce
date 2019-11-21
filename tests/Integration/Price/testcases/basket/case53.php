@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto / brutto
  * Price view mode: netto / brutto

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -33,14 +34,14 @@ return [
 
 function getTestDataDumpFilePath()
 {
-    return getShopTestPath().'/Codeception/_data/dump.sql';
+    return getShopTestPath() . '/Codeception/_data/dump.sql';
 }
 
 function getShopSuitePath($facts)
 {
     $testSuitePath = getenv('TEST_SUITE');
     if (!$testSuitePath) {
-        $testSuitePath = $facts->getShopRootPath().'/tests';
+        $testSuitePath = $facts->getShopRootPath() . '/tests';
     }
     return $testSuitePath;
 }
@@ -50,7 +51,7 @@ function getShopTestPath()
     $facts = new Facts();
 
     if ($facts->isEnterprise()) {
-        $shopTestPath = $facts->getEnterpriseEditionRootPath().'/Tests';
+        $shopTestPath = $facts->getEnterpriseEditionRootPath() . '/Tests';
     } else {
         $shopTestPath = getShopSuitePath($facts);
     }

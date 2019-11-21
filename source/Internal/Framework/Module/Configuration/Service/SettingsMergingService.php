@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service;
 
@@ -24,7 +27,8 @@ class SettingsMergingService implements SettingsMergingServiceInterface
     ): ModuleConfiguration {
         if ($shopConfiguration->hasModuleConfiguration($moduleConfigurationToMerge->getId())) {
             $existingModuleConfiguration = $shopConfiguration->getModuleConfiguration($moduleConfigurationToMerge->getId());
-            if (!empty($existingModuleConfiguration->getModuleSettings()) &&
+            if (
+                !empty($existingModuleConfiguration->getModuleSettings()) &&
                 !empty($moduleConfigurationToMerge->getModuleSettings())
             ) {
                 $mergedModuleSettings = $this->mergeModuleSettings(
@@ -67,9 +71,11 @@ class SettingsMergingService implements SettingsMergingServiceInterface
             $existingSetting->getName() === $settingToMerge->getName() &&
             $existingSetting->getType() === $settingToMerge->getType();
 
-        if ($shouldMerge === true
+        if (
+            $shouldMerge === true
             && !empty($settingToMerge->getConstraints())
-            && ($settingToMerge->getType() === 'select')) {
+            && ($settingToMerge->getType() === 'select')
+        ) {
             $resultPosition = array_search($existingSetting->getValue(), $settingToMerge->getConstraints(), true);
             $shouldMerge = $resultPosition !== false;
         }

@@ -83,7 +83,7 @@ $aData = array(
         'articles' => array(
              1000 => array( '50,00', '50,00' ),
              1003 => array( '0,00', '0,00' ),
-             1002=> array( '0,00', '0,00' ),
+             1002 => array( '0,00', '0,00' ),
         ),
         // Expectations of other totals
         'totals' => array(

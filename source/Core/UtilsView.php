@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxException;
@@ -224,7 +226,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getRenderedContent(string $description, array $context, string $oxid = null) : string
+    public function getRenderedContent(string $description, array $context, string $oxid = null): string
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             return $description;
@@ -721,7 +723,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         $templateBlocks = [];
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
-            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
+            if (
+                !in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
                 || $activeBlockTemplate['OXTHEME']
             ) {
                 $templateBlocks[] = $activeBlockTemplate;
@@ -745,7 +748,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $templateBlocks = [];
         $customThemeId = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCustomTheme');
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
-            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
+            if (
+                !in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
                 || $activeBlockTemplate['OXTHEME'] === $customThemeId
             ) {
                 $templateBlocks[] = $activeBlockTemplate;

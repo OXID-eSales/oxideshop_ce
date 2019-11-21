@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -219,7 +220,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             ':oxtype' => 'oxarticles'
         ];
 
-        if (!($blOk = ( bool )$oDb->getOne($sQ, $params))) {
+        if (!($blOk = (bool)$oDb->getOne($sQ, $params))) {
             // checking article category
             $blOk = $this->_checkForArticleCategories($oArticle);
         }
@@ -273,11 +274,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $blIs = true;
 
-        if ($this->oxdiscount__oxprice->value &&
+        if (
+            $this->oxdiscount__oxprice->value &&
             ($dAmount < $this->oxdiscount__oxprice->value || $dAmount > $this->oxdiscount__oxpriceto->value)
         ) {
             $blIs = false;
-        } elseif ($this->oxdiscount__oxamount->value &&
+        } elseif (
+            $this->oxdiscount__oxamount->value &&
                   ($dAmount < $this->oxdiscount__oxamount->value || $dAmount > $this->oxdiscount__oxamountto->value)
         ) {
             $blIs = false;

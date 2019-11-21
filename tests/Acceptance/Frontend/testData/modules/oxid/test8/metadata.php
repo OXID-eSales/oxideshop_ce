@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,6 +20,6 @@ $aModule = array(
     'extend'       => array(
     ),
     'blocks'    => array(
-        array("template"=>"widget/sidebar/partners.tpl", "block"=>"partner_logos", "file"=>"oepaypalpartnerbox.tpl"),
+        array("template" => "widget/sidebar/partners.tpl", "block" => "partner_logos", "file" => "oepaypalpartnerbox.tpl"),
     ),
 );

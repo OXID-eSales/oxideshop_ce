@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -616,7 +617,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function _setConfVarFromDb($varName, $varType, $varVal)
     {
-        if (($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
+        if (
+            ($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
             (!$varVal || $this->isAdmin() === true)
         ) {
             return;
@@ -838,7 +840,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         //additional special handling for profihost customers
-        if (isset($serverVars['HTTP_X_FORWARDED_SERVER']) &&
+        if (
+            isset($serverVars['HTTP_X_FORWARDED_SERVER']) &&
             (strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'ssl') !== false ||
              strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de') !== false)
         ) {
@@ -1945,7 +1948,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $productive = $this->getConfigParam('blProductive');
         if (!isset($productive)) {
             $query = 'select oxproductive from oxshops where oxid = :oxid';
-            $productive = ( bool ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [
+            $productive = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [
                 ':oxid' => $this->getShopId()
             ]);
             $this->setConfigParam('blProductive', $productive);
@@ -1971,7 +1974,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveShop()
     {
-        if ($this->_oActShop && $this->_iShopId == $this->_oActShop->getId() &&
+        if (
+            $this->_oActShop && $this->_iShopId == $this->_oActShop->getId() &&
             $this->_oActShop->getLanguage() == Registry::getLang()->getBaseLanguage()
         ) {
             return $this->_oActShop;

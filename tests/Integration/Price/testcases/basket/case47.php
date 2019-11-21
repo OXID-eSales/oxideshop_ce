@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode:  brutto
  * Price view mode: brutto
@@ -12,6 +13,7 @@
  * Costs VAT caclulation rule: proportiona
  * 5 products with different vat. Absolute discount. Bruto-Bruto mode.
  */
+
 $aData = array(
     // Product
     'articles' => array(

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -615,7 +616,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
                 //We start with language id 1 and rely on that all fields for language 0 exists.
                 //For language id 0 we have e.g. OXTITLE and logic here would expect it to
                 //be OXTITLE_0, add that as new field, leading to incorrect data in views later on.
-                for ($i=1; $i<=$maxLang; $i++) {
+                for ($i = 1; $i <= $maxLang; $i++) {
                     $this->ensureMultiLanguageFields($table, $i);
                 }
             }

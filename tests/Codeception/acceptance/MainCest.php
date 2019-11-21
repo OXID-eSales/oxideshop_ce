@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -48,8 +49,8 @@ class MainCest
         $I->waitForElement('h1', 10);
         $I->see(Translator::translate('LOGIN'), 'h1');
 
-        $I->fillField($orderHistoryPage->loginUserNameField,'example_test@oxid-esales.dev');
-        $I->fillField($orderHistoryPage->loginUserPasswordField,'useruser');
+        $I->fillField($orderHistoryPage->loginUserNameField, 'example_test@oxid-esales.dev');
+        $I->fillField($orderHistoryPage->loginUserPasswordField, 'useruser');
         $I->click($orderHistoryPage->loginButton);
 
         $I->see(Translator::translate('ORDER_HISTORY'), 'h1');

@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
@@ -46,7 +49,7 @@ class ContactFormMessageBuilder implements ContactFormMessageBuilderInterface
             $message .= $form->lastName->getValue() . ' ';
         }
 
-        $message .= '(' .$form->email->getValue() . ')<br /><br />';
+        $message .= '(' . $form->email->getValue() . ')<br /><br />';
 
         if ($form->message->getValue()) {
             $message .= nl2br($form->message->getValue());

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  brutto
@@ -15,6 +16,7 @@
  * Actions with order:
  *  1. update :removed some products some changed products amounts
  */
+
 $aData = array(
      'articles' => array(
              0 => array(

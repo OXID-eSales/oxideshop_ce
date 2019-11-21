@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -56,7 +57,6 @@ namespace {
         }
     }
 }
-
 namespace OxidEsales\EshopCommunity\Core {
 
     /**
@@ -478,12 +478,14 @@ namespace OxidEsales\EshopCommunity\Core {
             $fileExtensionTarget = strtolower(pathinfo($imageTarget, PATHINFO_EXTENSION));
 
             // Do some validation and return false on failure
-            if (!$this->validateGdVersion()
+            if (
+                !$this->validateGdVersion()
                 || !$this->validateFileExist($imageSource)
                 || !$this->_isTargetPathValid($imageTarget)
                 || !$this->validateImageFileExtension($fileExtensionSource)
                 || !$this->validateImageFileExtension($fileExtensionTarget)
-                || $fileExtensionSource !== $fileExtensionTarget) {
+                || $fileExtensionSource !== $fileExtensionTarget
+            ) {
                 return false;
             }
 

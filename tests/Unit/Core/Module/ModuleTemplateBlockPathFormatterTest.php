@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Module;
 
 use oxException;
@@ -94,7 +96,6 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
         $this->assertSame($expectedFullPathToFile, $actualFilePath);
         $this->deactivateTestModule($moduleId);
         $this->removeTestModule($moduleId);
-
     }
 
     public function testGetPathWhenFileContainsOnlyFileName()
@@ -189,7 +190,7 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
         $container = ContainerFactory::getInstance()->getContainer();
         $installService = $container->get(ModuleInstallerInterface::class);
         $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
-        $package->setTargetDirectory('oeTest/'. $moduleId);
+        $package->setTargetDirectory('oeTest/' . $moduleId);
         $installService->install($package);
     }
 
@@ -208,6 +209,4 @@ class ModuleTemplateBlockPathFormatterTest extends UnitTestCase
             ->get(ModuleActivationBridgeInterface::class)
             ->deactivate($moduleId, Registry::getConfig()->getShopId());
     }
-
-
 }

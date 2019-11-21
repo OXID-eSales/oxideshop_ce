@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -20,6 +21,7 @@
  * Netto - Netto start case, after order saving, changed payment method with price from 55 abs to 10 abs
  *
  */
+
  # skipped because need to prepare additional integration test functionality for payment method,
  # of recalculation in Administer Order->Order->Main tab
 $aData = array(
@@ -93,7 +95,7 @@ $aData = array(
                 'oxaddsumtype' => '%',
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
-                'oxparam'=> 0.1,
+                'oxparam' => 0.1,
                 'oxparamend' => 99999,
             ),
         ),
@@ -202,9 +204,9 @@ $aData = array(
             'blShowNetPrice' => true,
             'blShowVATForPayCharge' => true,
             'blShowVATForDelivery' => true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
 
         ),
         // Other options

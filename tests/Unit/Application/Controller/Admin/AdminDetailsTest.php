@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxLinks;
@@ -34,7 +36,7 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testGetPlainEditor()
     {
-        $oObject = new stdClass;
+        $oObject = new stdClass();
         $sEditorHtml = "<textarea id='editor_sField' name='sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
 
         $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('_getEditValue'));
@@ -56,10 +58,10 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testGetEditValue()
     {
-        $oObject = new stdClass;
+        $oObject = new stdClass();
         $oObject->oField1 = new oxField('field1value');
 
-        $oObject->oField2 = new stdClass;
+        $oObject->oField2 = new stdClass();
         $oObject->oField2->value = 'field2value';
 
         $oAdminDetails = oxNew('oxadmindetails');
@@ -73,7 +75,7 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testGetEditValue_parseIsOff()
     {
-        $oObject = new stdClass;
+        $oObject = new stdClass();
         $oObject->oField = new oxField('test [{$oViewConf->getCurrentHomeDir()}]');
 
         $myConfig = $this->getConfig();

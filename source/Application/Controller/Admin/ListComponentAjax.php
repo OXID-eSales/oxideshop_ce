@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -141,7 +142,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         if ($function) {
             $this->$function();
-            $this->dispatchEvent(new AfterRequestProcessedEvent);
+            $this->dispatchEvent(new AfterRequestProcessedEvent());
         } else {
             $sQAdd = $this->_getQuery();
 
@@ -162,7 +163,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         $aVisibleNames = $this->_getVisibleColNames();
         $iCol = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
-        $iCol = $iCol ? (( int ) str_replace('_', '', $iCol)) : 0;
+        $iCol = $iCol ? ((int) str_replace('_', '', $iCol)) : 0;
         $iCol = (!isset($aVisibleNames[$iCol])) ? 0 : $iCol;
 
         return $iCol;
@@ -224,7 +225,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         // user defined some cols to load ?
         if (is_array($aUserCols)) {
             foreach ($aUserCols as $iKey => $sCol) {
-                $iCol = ( int ) str_replace('_', '', $sCol);
+                $iCol = (int) str_replace('_', '', $sCol);
                 if (isset($aColNames[$iCol]) && !$aColNames[$iCol][4]) {
                     $aVisibleCols[$iCol] = $aColNames[$iCol];
                 }

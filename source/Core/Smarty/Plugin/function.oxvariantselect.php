@@ -64,7 +64,7 @@ function oxvariantselect_addSubvariants($oMdVariants, $iLevel, &$aSelectBoxes, &
         $blVisible = false;
         $sSelectedVariant = null;
         foreach ($oMdVariants as $sKey => $oVariant) {
-            $sSelectBoxName = "mdVariantSelect_".$oVariant->getParentId();
+            $sSelectBoxName = "mdVariantSelect_" . $oVariant->getParentId();
             $aSelectBoxes[$iLevel][] = $sSelectBoxName;
             $aOptions[$oVariant->getId()] = $oVariant->getName();
             if ($oVariant->hasArticleId($sArtId)) {
@@ -81,7 +81,7 @@ function oxvariantselect_addSubvariants($oMdVariants, $iLevel, &$aSelectBoxes, &
 
         //add select boxes recursively
         foreach ($oMdVariants as $oVariant) {
-            $sRes .= oxvariantselect_addSubvariants($oVariant->getMdSubvariants(), $iLevel+1, $aSelectBoxes, $aRealVariants, $sSeparator, $sCallMethod, $sArtId);
+            $sRes .= oxvariantselect_addSubvariants($oVariant->getMdSubvariants(), $iLevel + 1, $aSelectBoxes, $aRealVariants, $sSeparator, $sCallMethod, $sArtId);
 
             //no more subvariants? Mseans we are the last level select box, good enought to register a real variant now
             if (!count($oVariant->getMdSubvariants())) {
@@ -107,10 +107,10 @@ function oxvariantselect_addSubvariants($oMdVariants, $iLevel, &$aSelectBoxes, &
  */
 function oxvariantselect_formatSelectBox($sId, $aOptions, $iLevel, $blVisible, $sSelected)
 {
-    $sStyle = $blVisible?"inline":"none";
+    $sStyle = $blVisible ? "inline" : "none";
     $sRes = "<select class='md_select_variant' id='$sId' style='display:$sStyle'>\n";
     foreach ($aOptions as $sVal => $sName) {
-        $sSelText = ($sVal === $sSelected)?" selected":"";
+        $sSelText = ($sVal === $sSelected) ? " selected" : "";
         $sRes .= " <option value='$sVal'$sSelText>$sName</option>\n";
     }
     $sRes .= "</select>\n";

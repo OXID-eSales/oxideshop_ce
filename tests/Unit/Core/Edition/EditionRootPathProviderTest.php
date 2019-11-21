@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Edition;
 
 use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
@@ -16,8 +18,8 @@ class EditionRootPathProviderTest extends UnitTestCase
     {
         $vendorDirectory = VENDOR_PATH;
         return array(
-            array(EditionSelector::ENTERPRISE, realpath("$vendorDirectory/oxid-esales/oxideshop-ee").'/'),
-            array(EditionSelector::PROFESSIONAL, realpath("$vendorDirectory/oxid-esales/oxideshop-pe/").'/'),
+            array(EditionSelector::ENTERPRISE, realpath("$vendorDirectory/oxid-esales/oxideshop-ee") . '/'),
+            array(EditionSelector::PROFESSIONAL, realpath("$vendorDirectory/oxid-esales/oxideshop-pe/") . '/'),
             array(EditionSelector::COMMUNITY, realpath(getShopBasePath()) . '/'),
         );
     }

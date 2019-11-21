@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use OxidEsales\Eshop\Application\Model\Order;
@@ -2965,7 +2967,7 @@ class ArticleTest extends \OxidTestCase
         $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat' )";
         if ($this->getConfig()->getEdition() === 'EE') :
             $sCat = "30e44ab82c03c3848.49471214";
-        $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat')";
+            $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat')";
         endif;
         $this->addToDatabase($sSql, 'oxobject2category');
         $this->assertTrue($this->_createArticle('_testArt')->isAssignedToCategory($sCat));
@@ -3376,7 +3378,7 @@ class ArticleTest extends \OxidTestCase
      */
     public function testApplyCurrencyIfObjSet()
     {
-        $oCur = new StdClass;
+        $oCur = new StdClass();
         $oCur->rate = 0.68;
         $oPrice = oxNew('oxPrice');
         $oPrice->setPrice(100);

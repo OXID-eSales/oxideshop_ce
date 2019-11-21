@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -16,6 +17,7 @@
  * Short description:
  * Payment methods calculation in Neto-Neto Mode.
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -41,7 +43,7 @@ $aData = array(
                 'oxaddsumtype' => '%',
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
-                 'oxparam'=> 0.1,
+                 'oxparam' => 0.1,
                 'oxparamend' => 99999,
             ),
         ),
@@ -55,7 +57,7 @@ $aData = array(
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
                 // 1. Value of all goods in cart
-                'oxaddsumrules'=>1,
+                'oxaddsumrules' => 1,
             ),
         ),
      
@@ -101,10 +103,10 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery' =>true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blShowVATForDelivery' => true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
             
         ),
         // Other options

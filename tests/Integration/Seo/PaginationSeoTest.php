@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -19,6 +20,7 @@
  * @copyright (C) OXID eSales AG 2003-2016
  * @version   OXID eShop CE
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Seo;
 
 use OxidEsales\Eshop\Application\Model\Article;
@@ -62,7 +64,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->cleanRegistry();
         $this->cleanSeoTable();
 
-        $facts = new \OxidEsales\Facts\Facts;
+        $facts = new \OxidEsales\Facts\Facts();
         $this->seoUrl = ('EE' == $facts->getEdition()) ? 'Party/Bar-Equipment/' : 'Geschenke/';
         $this->categoryOxid = ('EE' == $facts->getEdition()) ? '30e44ab8593023055.23928895' : '8a142c3e4143562a5.46426637';
         oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class)->renewPriceUpdateTime();
@@ -293,7 +295,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     
     public function providerTestDecodeNewSeoUrl()
     {
-        $facts = new \OxidEsales\Facts\Facts;
+        $facts = new \OxidEsales\Facts\Facts();
         $this->seoUrl = ('EE' == $facts->getEdition()) ? 'Party/Bar-Equipment/' : 'Geschenke/';
         $this->categoryOxid = ('EE' == $facts->getEdition()) ? '30e44ab8593023055.23928895' : '8a142c3e4143562a5.46426637';
 
@@ -339,7 +341,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function providerTestProcessingSeoCallNewSeoUrl()
     {
-        $facts = new \OxidEsales\Facts\Facts;
+        $facts = new \OxidEsales\Facts\Facts();
         $this->seoUrl = ('EE' == $facts->getEdition()) ? 'Party/Bar-Equipment/' : 'Geschenke/';
         $this->categoryOxid = ('EE' == $facts->getEdition()) ? '30e44ab8593023055.23928895' : '8a142c3e4143562a5.46426637';
 
@@ -432,7 +434,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testGetVendorPageUrl()
     {
-        $facts = new \OxidEsales\Facts\Facts;
+        $facts = new \OxidEsales\Facts\Facts();
         if ('EE' != $facts->getEdition()) {
             $this->markTestSkipped('missing testdata');
         }
@@ -463,7 +465,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testGetManufacturerPageUrl()
     {
-        $facts = new \OxidEsales\Facts\Facts;
+        $facts = new \OxidEsales\Facts\Facts();
         if ('EE' != $facts->getEdition()) {
             $this->markTestSkipped('missing testdata');
         }
@@ -511,7 +513,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function providerCheckSeoUrl()
     {
-        $facts = new \OxidEsales\Facts\Facts;
+        $facts = new \OxidEsales\Facts\Facts();
         $oxidLiving = ('EE' != $facts->getEdition()) ? '8a142c3e44ea4e714.31136811' : '30e44ab83b6e585c9.63147165';
 
         $data = [

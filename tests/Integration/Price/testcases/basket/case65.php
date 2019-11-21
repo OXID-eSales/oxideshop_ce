@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  brutto
@@ -18,6 +19,7 @@
  *
  * Case: cheking if corectrly currency rate applyed to discount
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

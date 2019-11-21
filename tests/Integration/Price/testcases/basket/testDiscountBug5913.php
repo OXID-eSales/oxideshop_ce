@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -10,6 +11,7 @@
  *  Price Calculation of multiplied Itm Discount wrong if out of stock
  *  (https://bugs.oxid-esales.com/view.php?id=5913)
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

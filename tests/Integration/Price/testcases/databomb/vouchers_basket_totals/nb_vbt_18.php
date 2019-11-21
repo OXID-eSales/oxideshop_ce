@@ -1,4 +1,5 @@
-<?php$aData = array(
+<?php
+$aData = array(
   'user' =>
   array(
     'oxactive' => 1,

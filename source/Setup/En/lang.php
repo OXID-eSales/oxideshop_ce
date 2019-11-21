@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,7 +10,7 @@ $aLang = [
 'charset'                                       => 'UTF-8',
 'HEADER_META_MAIN_TITLE'                        => 'OXID eShop installation wizard',
 'HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'        => 'If setup does not continue in a few seconds, please click ',
-'FOOTER_OXID_ESALES'                            => '&copy; OXID eSales AG 2003 - '.@date("Y"),
+'FOOTER_OXID_ESALES'                            => '&copy; OXID eSales AG 2003 - ' . @date("Y"),
 
 'TAB_0_TITLE'                                   => 'System Requirements',
 'TAB_1_TITLE'                                   => 'Welcome',
@@ -40,7 +41,7 @@ $aLang = [
 'ERROR_BAD_DEMODATA'                            => 'ERROR: Issue while inserting this SQL statements: ',
 'ERROR_NO_DEMODATA_INSTALLED'                   => 'ERROR: Demo data package not installed. Please install the demo data first.',
 'NOTICE_NO_DEMODATA_INSTALLED'                  => 'Demo data package not installed. Please install the demo data first. See the Installation section in the README.md file for details.',
-'ERROR_CONFIG_FILE_IS_NOT_WRITABLE'             => 'ERROR: %s/config.inc.php'.' not writeable!',
+'ERROR_CONFIG_FILE_IS_NOT_WRITABLE'             => 'ERROR: %s/config.inc.php' . ' not writeable!',
 'ERROR_BAD_SERIAL_NUMBER'                       => 'ERROR: Wrong license key!',
 'ERROR_COULD_NOT_OPEN_CONFIG_FILE'              => 'Could not open %s for reading! Please consult our FAQ, forum or contact OXID Support staff!',
 'ERROR_COULD_NOT_FIND_FILE'                     => 'Setup could not find %s !',
@@ -92,11 +93,11 @@ $aLang = [
 
 'STEP_0_ERROR_TEXT'                             => 'Your system does not fit system requirements',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/en/products/community-edition/system-requirements',
-'STEP_0_TEXT'                                   => '<ul class="req">'.
-                                                   '<li class="pass"> - Your system fits the requirement.</li>'.
-                                                   '<li class="pmin"> - The requirement is not or only partly fit. The OXID eShop will work anyway and can be installed.</li>'.
-                                                   '<li class="fail"> - Your system doesn\'t fit the requirement. The OXID eShop will not work without it and cannot be installed.</li>'.
-                                                   '<li class="null"> - The requirement could  not be checked.'.
+'STEP_0_TEXT'                                   => '<ul class="req">' .
+                                                   '<li class="pass"> - Your system fits the requirement.</li>' .
+                                                   '<li class="pmin"> - The requirement is not or only partly fit. The OXID eShop will work anyway and can be installed.</li>' .
+                                                   '<li class="fail"> - Your system doesn\'t fit the requirement. The OXID eShop will not work without it and cannot be installed.</li>' .
+                                                   '<li class="null"> - The requirement could  not be checked.' .
                                                    '</ul>',
 'STEP_0_DESC'                                   => 'In this step we check if your system fits the requirements:',
 'STEP_0_TITLE'                                  => 'System requirements check',
@@ -193,11 +194,11 @@ $aLang = [
 
 'SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'      => 'Allow a connection to OXID eSales servers for improving the quality of our open source products.',
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
-                                                        .'The collected data exclusively apply to technological information. '
-                                                        .'To improve the quality of our products, information like this will be collected:'
-                                                        .'<ul>'
-                                                        .'  <li>number of the OXID eShop Community Edition installations world wide</li>'
-                                                        .'  <li>average number of installed extensions per OXID eShop</li>'
-                                                        .'  <li>top spread extensions for the OXID eShop</li>'
-                                                        .'</ul>',
+                                                        . 'The collected data exclusively apply to technological information. '
+                                                        . 'To improve the quality of our products, information like this will be collected:'
+                                                        . '<ul>'
+                                                        . '  <li>number of the OXID eShop Community Edition installations world wide</li>'
+                                                        . '  <li>average number of installed extensions per OXID eShop</li>'
+                                                        . '  <li>top spread extensions for the OXID eShop</li>'
+                                                        . '</ul>',
 ];

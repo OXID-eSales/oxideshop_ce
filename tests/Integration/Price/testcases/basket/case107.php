@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: brutto
@@ -17,6 +18,7 @@
  * Short description:
  * Payment methods calculation in Neto-Bruto Mode.One Discount 10%. Payment 10% (is on  Value of all goods in cart,)
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -55,7 +57,7 @@ $aData = array(
                 'oxaddsumtype' => '%',
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
-                 'oxparam'=> 0.1,
+                 'oxparam' => 0.1,
                 'oxparamend' => 99999,
             ),
         ),
@@ -69,7 +71,7 @@ $aData = array(
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
                 // 1. Value of all goods in cart
-                'oxaddsumrules'=>1,
+                'oxaddsumrules' => 1,
             ),
         ),
 
@@ -91,7 +93,7 @@ $aData = array(
             'vats' => array(
                 20 => '0,18',
             ),
-       'discounts' => array(
+        'discounts' => array(
             // Expectation for special discount with specified ID
             'discountforbasket10%' => '0,12'
             ),
@@ -121,9 +123,9 @@ $aData = array(
             'blShowNetPrice' => false,
             'blShowVATForPayCharge' => true,
             'blShowVATForDelivery' => true,
-            'blPaymentVatOnTop'=>true,
-            'blDeliveryVatOnTop'=>true,
-            'blPaymentVatOnTop'=>true,
+            'blPaymentVatOnTop' => true,
+            'blDeliveryVatOnTop' => true,
+            'blPaymentVatOnTop' => true,
 
         ),
         // Other options

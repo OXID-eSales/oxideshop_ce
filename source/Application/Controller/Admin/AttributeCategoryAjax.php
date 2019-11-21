@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -130,7 +131,7 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
 
                 $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = :oxobjectid";
 
-                $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql, [
+                $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field((int) $database->getOne($sSql, [
                     ':oxobjectid' => $sAdd
                 ]));
                 $oNewGroup->save();

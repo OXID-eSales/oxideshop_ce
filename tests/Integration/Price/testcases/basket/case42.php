@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -24,6 +25,7 @@
  * 2. amount (3-4)
  * For product (1002) is set parameter "free shipping" ;
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -100,7 +102,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-        'oxaddsumrules'=>1,
+        'oxaddsumrules' => 1,
             ),
         ),
     ),
@@ -151,9 +153,9 @@ $aData = array(
         'config' => array(
            'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,

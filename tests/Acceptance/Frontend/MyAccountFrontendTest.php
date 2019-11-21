@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,7 +20,7 @@ class MyAccountFrontendTest extends FrontendTestCase
     public function testFrontendListmaniaInfo()
     {
         if (isSUBSHOP) {
-            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
+            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = " . oxSHOPID . "  WHERE 1");
         }
 
         $aWrappingParams = array("OXTYPE" => 'oxrecommlist');
@@ -64,7 +65,7 @@ class MyAccountFrontendTest extends FrontendTestCase
         $this->type("rvw_txt", "recommendation for this list");
         $this->clickAndWait("reviewSave");
         $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_ACCOUNT_RECOMMLIST%", $this->getText("breadCrumb"));
-        $this->assertEquals("UserNamešÄßüл writes: ".date("d.m.Y"), $this->clearString($this->getText("reviewName_1")));
+        $this->assertEquals("UserNamešÄßüл writes: " . date("d.m.Y"), $this->clearString($this->getText("reviewName_1")));
         $this->assertEquals("recommendation for this list", $this->getText("reviewText_1"));
         $this->assertEquals("(1)", $this->getText("itemRatingText"));
         $this->assertEquals("2 kg | 25,00 €/kg", $this->getText("productPricePerUnit_productList_1"));
@@ -93,8 +94,8 @@ class MyAccountFrontendTest extends FrontendTestCase
     public function testFrontendListmaniaAddSearch()
     {
         if (isSUBSHOP) {
-            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
-            $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
+            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = " . oxSHOPID . "  WHERE 1");
+            $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = " . oxSHOPID . "  WHERE 1");
         }
         $this->clearCache();
         $this->openShop();
@@ -177,8 +178,8 @@ class MyAccountFrontendTest extends FrontendTestCase
     public function testFrontendListmaniaDelete()
     {
         if (isSUBSHOP) {
-            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
-            $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
+            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = " . oxSHOPID . "  WHERE 1");
+            $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = " . oxSHOPID . "  WHERE 1");
         }
         $this->clearCache();
         $this->openShop();

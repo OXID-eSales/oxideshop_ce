@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -87,7 +88,7 @@ class CreditCardValidator
             // Luhn algorithm
             for ($pos = 0; $pos < $length; $pos++) {
                 // taking digit to check..
-                $currDigit = ( int ) $number{$pos};
+                $currDigit = (int) $number{$pos};
 
                 // multiplying if needed..
                 $addValue = (($pos % 2 == $mod) ? 2 : 1) * $currDigit;

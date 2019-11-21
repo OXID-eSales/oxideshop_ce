@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  brutto
@@ -18,6 +19,7 @@
  *
  * Case: 0004462: Incorrect calculation when entered basket item and basket discounts
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

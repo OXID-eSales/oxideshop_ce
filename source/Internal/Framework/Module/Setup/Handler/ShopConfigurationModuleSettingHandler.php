@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
@@ -36,9 +39,9 @@ class ShopConfigurationModuleSettingHandler implements ModuleConfigurationHandle
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
     public function __construct(
-        string                                  $settingName,
-        string                                  $shopConfigurationSettingName,
-        ShopConfigurationSettingDaoInterface    $shopConfigurationSettingDao
+        string $settingName,
+        string $shopConfigurationSettingName,
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
         $this->settingName = $settingName;
         $this->shopConfigurationSettingName = $shopConfigurationSettingName;

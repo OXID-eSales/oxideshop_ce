@@ -1,4 +1,5 @@
 <?php
+
 namespace OxidEsales\EshopCommunity\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;

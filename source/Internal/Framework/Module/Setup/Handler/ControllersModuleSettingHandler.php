@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
@@ -25,7 +28,7 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
     public function __construct(
-        ShopConfigurationSettingDaoInterface    $shopConfigurationSettingDao
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
@@ -98,7 +101,7 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
      *
      * @return array The given controllers array with the controller keys in lower case.
      */
-    private function controllerKeysToLowercase(array $controllers) : array
+    private function controllerKeysToLowercase(array $controllers): array
     {
         $result = [];
 

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use OxidEsales\EshopCommunity\Application\Model\Delivery;
@@ -1084,11 +1086,11 @@ class DeliverylistTest extends \OxidTestCase
         $sQ = "INSERT INTO `oxdelivery`
                (OXID, OXSHOPID, OXACTIVE, OXACTIVEFROM, OXACTIVETO, OXTITLE, OXTITLE_1, OXTITLE_2, OXTITLE_3, OXADDSUMTYPE, OXADDSUM, OXDELTYPE, OXPARAM, OXPARAMEND, OXFIXED, OXSORT, OXFINALIZE, OXTIMESTAMP)
                VALUES
-               ('b763e957be61108f8.80080127', ".ShopIdCalculator::BASE_SHOP_ID.", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland unter � 40,00 = � 2,60', '', '', '', 'abs', 2.6, 'p', 10, 39.99, 0, 9999, 1, NOW()),
-               ('3033e968fb5b30930.92732498', ".ShopIdCalculator::BASE_SHOP_ID.", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland �ber � 40,00 = portofrei', '', '', '', 'abs', 0, 'p', 40, 1000000, 0, 9999, 1, NOW()),
-               ('a713e96c15c7bf3c7.45279281', ".ShopIdCalculator::BASE_SHOP_ID.", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Mindermengenzuschlag bis � 10,00 = � 3,50', '', '', '', 'abs', 3.5, 'p', 0, 9.99, 0, 9999, 1, NOW()),
-               ('a713e96c1aeaefa75.74010807', ".ShopIdCalculator::BASE_SHOP_ID.", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert europ. Ausland pauschal EURO 6,00', '', '', '', 'abs', 6, 'p', 0, 5000, 0, 9999, 1, NOW()),
-               ('bdd46f9f2455153b9.22318118', ".ShopIdCalculator::BASE_SHOP_ID.", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert au�ereurop. Ausland EURO 9,50', '', '', '', 'abs', 9.5, 'a', 0, 5000, 0, 9999, 1, NOW())";
+               ('b763e957be61108f8.80080127', " . ShopIdCalculator::BASE_SHOP_ID . ", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland unter � 40,00 = � 2,60', '', '', '', 'abs', 2.6, 'p', 10, 39.99, 0, 9999, 1, NOW()),
+               ('3033e968fb5b30930.92732498', " . ShopIdCalculator::BASE_SHOP_ID . ", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland �ber � 40,00 = portofrei', '', '', '', 'abs', 0, 'p', 40, 1000000, 0, 9999, 1, NOW()),
+               ('a713e96c15c7bf3c7.45279281', " . ShopIdCalculator::BASE_SHOP_ID . ", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Mindermengenzuschlag bis � 10,00 = � 3,50', '', '', '', 'abs', 3.5, 'p', 0, 9.99, 0, 9999, 1, NOW()),
+               ('a713e96c1aeaefa75.74010807', " . ShopIdCalculator::BASE_SHOP_ID . ", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert europ. Ausland pauschal EURO 6,00', '', '', '', 'abs', 6, 'p', 0, 5000, 0, 9999, 1, NOW()),
+               ('bdd46f9f2455153b9.22318118', " . ShopIdCalculator::BASE_SHOP_ID . ", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert au�ereurop. Ausland EURO 9,50', '', '', '', 'abs', 9.5, 'a', 0, 5000, 0, 9999, 1, NOW())";
         oxDb::getDb()->execute($sQ);
         $sQ = "INSERT INTO `oxdel2delset`
                (OXID, OXDELID, OXDELSETID, OXTIMESTAMP)
@@ -1105,7 +1107,7 @@ class DeliverylistTest extends \OxidTestCase
         $sQ = "INSERT INTO `oxdeliveryset`
                (OXID, OXSHOPID, OXACTIVE, OXACTIVEFROM, OXACTIVETO, OXTITLE, OXTITLE_1, OXTITLE_2, OXTITLE_3, OXPOS, OXTIMESTAMP)
                VALUES
-               ('b3b46b74d3894f9f5.62965460', ".ShopIdCalculator::BASE_SHOP_ID.", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test DHL/DPD Inland', 'DHL/DPD Inland', '', '', 0, NOW())";
+               ('b3b46b74d3894f9f5.62965460', " . ShopIdCalculator::BASE_SHOP_ID . ", 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test DHL/DPD Inland', 'DHL/DPD Inland', '', '', 0, NOW())";
         oxDb::getDb()->execute($sQ);
         $sQ = "INSERT INTO `oxobject2delivery`
                (OXID, OXDELIVERYID, OXOBJECTID, OXTYPE, OXTIMESTAMP)

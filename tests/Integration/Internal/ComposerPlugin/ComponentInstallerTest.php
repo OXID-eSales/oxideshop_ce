@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ComposerPlugin;
 
@@ -54,7 +57,7 @@ class ComponentInstallerTest extends TestCase
         $packageStub = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
         $installer = new ComponentInstaller(
             new NullIO(),
-            (new Facts)->getShopRootPath(),
+            (new Facts())->getShopRootPath(),
             $packageStub
         );
         return $installer;

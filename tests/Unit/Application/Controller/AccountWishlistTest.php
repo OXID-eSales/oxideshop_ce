@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \oxField;
@@ -183,7 +185,7 @@ class AccountWishlistTest extends \OxidTestCase
 
         $oView = oxNew('Account_Wishlist');
         $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
-        $this->assertEquals(( object ) $aParams, $oView->getEnteredData());
+        $this->assertEquals((object) $aParams, $oView->getEnteredData());
     }
 
     /**
@@ -194,7 +196,7 @@ class AccountWishlistTest extends \OxidTestCase
     public function testSendWishList()
     {
         $aParams = array("rec_name" => "someVal1", "rec_email" => "someVal2");
-        $oObj = ( object ) $aParams;
+        $oObj = (object) $aParams;
 
         $this->setRequestParameter("editval", $aParams);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');

@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
@@ -99,7 +102,8 @@ class ApplyModulesConfigurationCommand extends Command
 
     private function deactivateNotConfiguredActivateModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
-        if ($moduleConfiguration->isConfigured() === false
+        if (
+            $moduleConfiguration->isConfigured() === false
             && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)
         ) {
             $this->moduleActivationService->deactivate($moduleConfiguration->getId(), $shopId);
@@ -108,7 +112,8 @@ class ApplyModulesConfigurationCommand extends Command
 
     private function reactivateConfiguredActiveModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
-        if ($moduleConfiguration->isConfigured() === true
+        if (
+            $moduleConfiguration->isConfigured() === true
             && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId) === true
         ) {
             $this->moduleActivationService->deactivate($moduleConfiguration->getId(), $shopId);
@@ -118,7 +123,8 @@ class ApplyModulesConfigurationCommand extends Command
 
     private function activateConfiguredNotActiveModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
-        if ($moduleConfiguration->isConfigured() === true
+        if (
+            $moduleConfiguration->isConfigured() === true
             && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId) === false
         ) {
             $this->moduleActivationService->activate($moduleConfiguration->getId(), $shopId);

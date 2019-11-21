@@ -169,9 +169,9 @@ $aData = array(
                    'blShowVATForPayCharge' => true,
                    'blShowVATForDelivery' => true,
                    'sAdditionalServVATCalcMethod' => 'biggest_net',
-                   'blPaymentVatOnTop'=>true,
-                   'blDeliveryVatOnTop'=>true,
-                   'blPaymentVatOnTop'=>true,
+                   'blPaymentVatOnTop' => true,
+                   'blDeliveryVatOnTop' => true,
+                   'blPaymentVatOnTop' => true,
                 ),
     ),
     'actions' => array(

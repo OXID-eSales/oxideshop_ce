@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
 use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;

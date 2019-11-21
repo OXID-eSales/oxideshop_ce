@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: Brutto;
  * Price view mode: Brutto;
@@ -10,6 +11,7 @@
  * 0003101: delivery cost is not recalculated after discount in basket
  * 6 with discount total price less than 150, but more without discount
  */
+
 $aData = array(
 
     'skipped' => 1, // remove when #3101 will be fixed

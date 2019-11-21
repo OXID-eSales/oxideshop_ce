@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDb;
@@ -232,10 +234,10 @@ class GenericImportTest extends OxidTestCase
      */
     private function createCsvFile($addHeaders = true)
     {
-        $content = '"_testId1";"1";"1";"userName1";"FirstName1";"LastName1"'."\n";
-        $content .= '"_testId2";"1";"1";"userName2";"FirstName2";"LastName2"'."\n";
+        $content = '"_testId1";"1";"1";"userName1";"FirstName1";"LastName1"' . "\n";
+        $content .= '"_testId2";"1";"1";"userName2";"FirstName2";"LastName2"' . "\n";
         if ($addHeaders) {
-            $content = '"OXID";"OXACTIVE";"OXSHOPID";"OXUSERNAME";"OXFNAME";"OXLNAME"'."\n" . $content;
+            $content = '"OXID";"OXACTIVE";"OXSHOPID";"OXUSERNAME";"OXFNAME";"OXLNAME"' . "\n" . $content;
         }
 
         return $this->createFile('csvWithHeader.csv', $content);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -134,7 +135,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
     public function showSuggest()
     {
         if ($this->_blShowSuggest === null) {
-            $this->_blShowSuggest = ( bool ) Registry::getConfig()->getRequestParameter('blshowsuggest');
+            $this->_blShowSuggest = (bool) Registry::getConfig()->getRequestParameter('blshowsuggest');
         }
 
         return $this->_blShowSuggest;
@@ -210,10 +211,11 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
         $aParams = Registry::getConfig()->getRequestParameter('editval', true);
         if (is_array($aParams)) {
             $oUtilsView = Registry::getUtilsView();
-            $oParams = ( object ) $aParams;
-            $this->setEnteredData(( object ) Registry::getConfig()->getRequestParameter('editval'));
+            $oParams = (object) $aParams;
+            $this->setEnteredData((object) Registry::getConfig()->getRequestParameter('editval'));
 
-            if (!isset($aParams['rec_name']) || !isset($aParams['rec_email']) ||
+            if (
+                !isset($aParams['rec_name']) || !isset($aParams['rec_email']) ||
                 !$aParams['rec_name'] || !$aParams['rec_email']
             ) {
                 return $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY', false, true);

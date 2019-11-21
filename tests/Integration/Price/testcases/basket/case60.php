@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -21,6 +22,7 @@
  * Calculate scale price.
  * Brutto-Brutto mode.
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

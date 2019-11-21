@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Smarty;
 
@@ -78,8 +81,8 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
             'caching' => false,
-            'compile_dir' => $config->getConfigParam('sCompileDir')."/smarty/",
-            'cache_dir' => $config->getConfigParam('sCompileDir')."/smarty/",
+            'compile_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
+            'cache_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
             'compile_id' => Registry::getUtilsView()->getTemplateCompileId(),
             'template_dir' => $templateDirs,
             'debugging' => false,
@@ -131,8 +134,8 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
             'caching' => false,
-            'compile_dir' => $config->getConfigParam('sCompileDir')."/smarty/",
-            'cache_dir' => $config->getConfigParam('sCompileDir')."/smarty/",
+            'compile_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
+            'cache_dir' => $config->getConfigParam('sCompileDir') . "/smarty/",
             'compile_id' => Registry::getUtilsView()->getTemplateCompileId(),
             'template_dir' => $templateDirs,
             'debugging' => false,

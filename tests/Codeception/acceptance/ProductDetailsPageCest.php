@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -210,13 +211,13 @@ class ProductDetailsPageCest
         $detailsPage = $searchListPage->openProductDetailsPage(2);
         $breadCrumb = sprintf(Translator::translate('SEARCH_RESULT'), '100');
         $detailsPage->seeOnBreadCrumb($breadCrumb);
-        $navigationText = Translator::translate('PRODUCT').' 2 '.Translator::translate('OF').' 4';
+        $navigationText = Translator::translate('PRODUCT') . ' 2 ' . Translator::translate('OF') . ' 4';
         $I->see($navigationText);
         $detailsPage = $detailsPage->openNextProduct();
-        $navigationText = Translator::translate('PRODUCT').' 3 '.Translator::translate('OF').' 4';
+        $navigationText = Translator::translate('PRODUCT') . ' 3 ' . Translator::translate('OF') . ' 4';
         $I->see($navigationText);
         $detailsPage = $detailsPage->openPreviousProduct();
-        $navigationText = Translator::translate('PRODUCT').' 2 '.Translator::translate('OF').' 4';
+        $navigationText = Translator::translate('PRODUCT') . ' 2 ' . Translator::translate('OF') . ' 4';
         $I->see($navigationText);
         $detailsPage->openProductSearchList()
             ->seeProductData($productData, 2);
@@ -328,7 +329,7 @@ class ProductDetailsPageCest
         $I->see(Translator::translate('PRICE_ALERT'));
 
         $detailsPage->sendPriceAlert('example_test@oxid-esales.dev', '99.99');
-        $I->see(Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE3').' 99,99 € '.Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE4'));
+        $I->see(Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE3') . ' 99,99 € ' . Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE4'));
         $I->see($productData['title']);
 
         //disabling price alert for product(1000)
@@ -888,7 +889,7 @@ class ProductDetailsPageCest
     private function preparePriceGroupDataForUser(AcceptanceTester $I, $userId, $priceGroupId)
     {
         $data = [
-            'OXID' => 'obj2group'.$priceGroupId,
+            'OXID' => 'obj2group' . $priceGroupId,
             'OXOBJECTID' => $userId,
             'OXGROUPSID' => $priceGroupId,
         ];
@@ -903,13 +904,12 @@ class ProductDetailsPageCest
     private function prepareAmountPriceDataForProduct(AcceptanceTester $I, $productId, $amountPrice)
     {
         $data = [
-            'OXID' => 'price2article'.$amountPrice['discount'],
+            'OXID' => 'price2article' . $amountPrice['discount'],
             'OXARTID' => $productId,
             'OXADDPERC' => $amountPrice['discount'],
             'OXAMOUNT' => $amountPrice['amountFrom'],
             'OXAMOUNTTO' => $amountPrice['amountTo'],
         ];
         $I->haveInDatabase('oxprice2article', $data);
-
     }
 }

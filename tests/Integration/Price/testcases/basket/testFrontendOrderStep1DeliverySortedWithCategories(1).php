@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: Brutto;
  * Price view mode: Brutto;
@@ -14,6 +15,7 @@
  * When in basket are added 2 items and cost rules are active for these items, also cost rules are sorted asc.
  * Then prices are calculated with shipping cost.
  */
+
 $aData = array(
 
     //'skipped' => 1,

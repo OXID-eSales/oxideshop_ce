@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -532,7 +533,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             if (method_exists($this, $sFunction)) {
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
-                $this->dispatchEvent(new AfterRequestProcessedEvent);
+                $this->dispatchEvent(new AfterRequestProcessedEvent());
 
                 if (isset($sNewAction)) {
                     $this->_executeNewAction($sNewAction);
@@ -542,7 +543,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
                 if (!$this->_blIsComponent) {
                     /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oEx */
                     $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
-                    $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND'. ' ' . $sFunction);
+                    $oEx->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND' . ' ' . $sFunction);
                     $oEx->setComponent($sFunction);
                     throw $oEx;
                 }
@@ -603,7 +604,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
 
             $this->onExecuteNewAction();
 
-            $this->dispatchEvent(new AfterRequestProcessedEvent);
+            $this->dispatchEvent(new AfterRequestProcessedEvent());
 
             //#M341 do not add redirect parameter
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) $myConfig->getRequestParameter('redirected'), 302);

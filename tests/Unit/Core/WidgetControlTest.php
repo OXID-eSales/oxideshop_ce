@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use modDB;
@@ -58,7 +60,8 @@ class WidgetControlTest extends \OxidTestCase
 
         $this->assertEquals(array("testView1"), $oConfig->getActiveViewsList());
         $globals = $template->getTemplateEngine()->getGlobals();
-        $this->assertEquals("testView1", $globals["oView"]);}
+        $this->assertEquals("testView1", $globals["oView"]);
+    }
 
     /**
      * Testing oxShopControl::_initializeViewObject()

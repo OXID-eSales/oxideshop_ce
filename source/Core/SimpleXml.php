@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -101,12 +102,12 @@ class SimpleXml
             if (is_int(key($mElement))) {
                 $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
             } else {
-                $oChildNode = $oXml->addChild($sPreferredKey? $sPreferredKey : $sKey);
+                $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey);
                 $this->_addNodeAttributes($oChildNode, $aAttributes);
                 $this->_addSimpleXmlElement($oChildNode, $mElement);
             }
         } else {
-            $oChildNode = $oXml->addChild($sPreferredKey? $sPreferredKey : $sKey, $mElement);
+            $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey, $mElement);
             $this->_addNodeAttributes($oChildNode, $aAttributes);
         }
 

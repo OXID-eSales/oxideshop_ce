@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxField;
@@ -24,9 +26,7 @@ class UtilsPicTest extends \OxidTestCase
         parent::setUp();
         // preparing data for spec test
         switch ($this->getName()) {
-
             case "testDeletePictureExisting":
-
                 $myConfig = $this->getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
@@ -41,7 +41,6 @@ class UtilsPicTest extends \OxidTestCase
                 copy($sDir . $sOrigTestIconFile, $sDir . $sCloneTestIconFile);
 
                 break;
-
         }
     }
 
@@ -54,9 +53,7 @@ class UtilsPicTest extends \OxidTestCase
     {
         // preparing data for spec test
         switch ($this->getName()) {
-
             case "testDeletePictureExisting":
-
                 $myConfig = $this->getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
@@ -114,7 +111,7 @@ class UtilsPicTest extends \OxidTestCase
 
     protected function _resizeImageTest($sTestImageFile, $sTestImageFileResized, $iWidth = 100, $iHeight = 48)
     {
-        $sDir = __DIR__ ."/../testData/misc" . DIRECTORY_SEPARATOR;
+        $sDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;
         if (!file_exists($sDir . $sTestImageFile)) {
             $sMsg = "Failed to find the image file: " . $sDir . $sTestImageFile;
             $this->fail($sMsg);
@@ -329,7 +326,7 @@ class UtilsPicTest extends \OxidTestCase
     protected function _resizeGIFTest($sTestImageFile, $sTestImageFileResized, $gdver = 2)
     {
         $myUtils = oxNew('oxUtilsPic');
-        $sDir = __DIR__ ."/../testData/misc" . DIRECTORY_SEPARATOR;
+        $sDir = __DIR__ . "/../testData/misc" . DIRECTORY_SEPARATOR;
         $iWidth = 100;
         $iHeight = 48;
         if (!file_exists($sDir . $sTestImageFile)) {

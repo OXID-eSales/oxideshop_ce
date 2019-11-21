@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -11,6 +12,7 @@
  *  3. shop; %; 5.5; general
  * Short description: Netto-Netto general discount to user groups, prices ABC and separate discounts;
  */
+
 $aData = array(
         'articles' => array(
                 0 => array(

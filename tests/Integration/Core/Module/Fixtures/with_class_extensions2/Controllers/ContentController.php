@@ -20,7 +20,7 @@ class ContentController extends ContentController_parent
 
         /** @var Content $content */
         $content = oxNew(Content::class);
-        $this->_oContent->oxcontents__oxtitle->setValue($this->_oContent->oxcontents__oxtitle.$content->testContent());
+        $this->_oContent->oxcontents__oxtitle->setValue($this->_oContent->oxcontents__oxtitle . $content->testContent());
 
         return $sTpl;
     }

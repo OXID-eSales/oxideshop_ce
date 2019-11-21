@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -187,7 +188,8 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     protected function _getProductParent($sParentId)
     {
-        if ($this->_oProductParent === null ||
+        if (
+            $this->_oProductParent === null ||
             ($this->_oProductParent !== false && $this->_oProductParent->getId() != $sParentId)
         ) {
             $this->_oProductParent = false;

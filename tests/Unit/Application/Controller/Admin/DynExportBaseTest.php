@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use DynExportBase;
@@ -19,7 +21,7 @@ use stdClass;
  */
 class _DynExportBase extends DynExportBase
 {
-    public function initArticle($heapTable, $count, & $continue)
+    public function initArticle($heapTable, $count, &$continue)
     {
         try {
             return $this->_initArticle($heapTable, $count, $continue);

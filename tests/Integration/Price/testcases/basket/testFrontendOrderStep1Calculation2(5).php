@@ -28,9 +28,9 @@ $aData = array(
                     'oxprice'                  => 101,
                     'oxvat'                    => 10,
                     'amount'                   => 1,
-                    'oxpricea'       		   => 0,
-                    'oxpriceb' 			       => 0,
-                    'oxpricec' 			       => 0,
+                    'oxpricea'                 => 0,
+                    'oxpriceb'                 => 0,
+                    'oxpricec'                 => 0,
             ),
             1 => array(
                     'oxid'                     => 1002,
@@ -47,8 +47,8 @@ $aData = array(
                     'oxaddsumtype' => '%',
                     'oxamount'     => 0,
                     'oxamountto'   => 99999,
-                    'oxprice'      =>100,
-                    'oxpriceto'    =>99999,
+                    'oxprice'      => 100,
+                    'oxpriceto'    => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array( 1002, 1003 ),
                     'oxsort'       => 10,
@@ -85,7 +85,7 @@ $aData = array(
                 'oxallowsameseries' => 1,
                 'oxallowotherseries' => 1,
                 'oxallowuseanother' => 1,
-                'oxminimumvalue' =>75,
+                'oxminimumvalue' => 75,
                 // voucher of this voucherserie count
                 'voucher_count' => 1
             ),

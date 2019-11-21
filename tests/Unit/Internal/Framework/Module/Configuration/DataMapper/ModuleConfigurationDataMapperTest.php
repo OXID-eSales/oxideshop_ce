@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataMapper;
 
@@ -94,7 +97,7 @@ class ModuleConfigurationDataMapperTest extends TestCase
         );
     }
 
-    private function removeKeysWithoutAssignedDataMapper(array $configurationData) : array
+    private function removeKeysWithoutAssignedDataMapper(array $configurationData): array
     {
         unset($configurationData['keyWithoutDataMapperAssigned']);
         return $configurationData;

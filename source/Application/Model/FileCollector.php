@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -120,7 +121,8 @@ class FileCollector
                 } else {
                     $sExt = substr(strrchr($sFile, '.'), 1);
 
-                    if ((!empty($aExtensions) && is_array($aExtensions) && in_array($sExt, $aExtensions)) ||
+                    if (
+                        (!empty($aExtensions) && is_array($aExtensions) && in_array($sExt, $aExtensions)) ||
                         (empty($aExtensions))
                     ) {
                         $this->addFile($sFolder . $sFile);

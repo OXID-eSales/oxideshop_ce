@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 
@@ -30,8 +33,10 @@ class ContainerBuilderTest extends TestCase
         $context->setEdition(EditionSelector::PROFESSIONAL);
         $container = $this->makeContainer($context);
 
-        $this->assertSame('Service overwriting for PE!',
-            $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
+        $this->assertSame(
+            'Service overwriting for PE!',
+            $container->get('oxid_esales.tests.internal.dummy_executor')->execute()
+        );
     }
 
     public function testWhenEeOverwritesMainServices()
@@ -40,8 +45,10 @@ class ContainerBuilderTest extends TestCase
         $context->setEdition(EditionSelector::ENTERPRISE);
         $container = $this->makeContainer($context);
 
-        $this->assertSame('Service overwriting for EE!',
-            $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
+        $this->assertSame(
+            'Service overwriting for EE!',
+            $container->get('oxid_esales.tests.internal.dummy_executor')->execute()
+        );
     }
 
     public function testWhenProjectOverwritesMainServices()
@@ -51,8 +58,10 @@ class ContainerBuilderTest extends TestCase
         $context->setGeneratedServicesFilePath(__DIR__ . '/Fixtures/Project/generated_services.yaml');
         $container = $this->makeContainer($context);
 
-        $this->assertSame('Service overwriting for Project!',
-            $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
+        $this->assertSame(
+            'Service overwriting for Project!',
+            $container->get('oxid_esales.tests.internal.dummy_executor')->execute()
+        );
     }
 
     public function testWhenProjectOverwritesEditions()
@@ -62,8 +71,10 @@ class ContainerBuilderTest extends TestCase
         $context->setConfigurableServicesFilePath(__DIR__ . '/Fixtures/Project/configurable_services.yaml');
         $container = $this->makeContainer($context);
 
-        $this->assertSame('Service overwriting for Project!',
-            $container->get('oxid_esales.tests.internal.dummy_executor')->execute());
+        $this->assertSame(
+            'Service overwriting for Project!',
+            $container->get('oxid_esales.tests.internal.dummy_executor')->execute()
+        );
     }
 
     /**

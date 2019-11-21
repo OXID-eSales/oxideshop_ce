@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxDynImgGenerator;
@@ -258,7 +260,7 @@ class DynImgGeneratorTest extends \OxidTestCase
             '_generateJpg',
             '_generatePng',
             '_generateGif',
-        ]
+            ]
         );
         $oGen->expects($this->any())->method('_getImageInfo')->will($this->returnValue(array(100,100,75)));
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -1278,7 +1279,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $iCnt = oxNew(\OxidEsales\Eshop\Core\Counter::class)->getNext($this->_getCounterIdent());
         $sQ = "update oxorder set oxordernr = :oxordernr where oxid = :oxid";
-        $blUpdate = ( bool ) $oDb->execute($sQ, [
+        $blUpdate = (bool) $oDb->execute($sQ, [
             ':oxordernr' => $iCnt,
             ':oxid' => $this->getId()
         ]);
@@ -1553,7 +1554,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             ':oxshopid' => $this->getConfig()->getShopId()
         ];
 
-        return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
+        return ((int) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
     }
 
     /**
@@ -1569,7 +1570,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             ':oxshopid' => $this->getConfig()->getShopId()
         ];
 
-        return (( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
+        return ((int) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, $params) + 1);
     }
 
     /**
@@ -1652,7 +1653,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         ];
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return ( double ) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect, $params);
+        return (double) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect, $params);
     }
 
     /**
@@ -1676,7 +1677,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         ];
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return ( int ) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect, $params);
+        return (int) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sSelect, $params);
     }
 
 

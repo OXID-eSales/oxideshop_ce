@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -23,6 +24,7 @@
  * 1. if product amountis from 1 to 3 then is set 10% discount
  * For all product (1001, 1002) is set parameter "free shipping" . Then of delivery price should be =0.00 ;
  */
+
 $aData = array(
     // Articles
     'articles' => array(
@@ -93,7 +95,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-        'oxaddsumrules'=>1,
+        'oxaddsumrules' => 1,
             ),
         ),
     ),
@@ -144,9 +146,9 @@ $aData = array(
         'config' => array(
            'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'proportional',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,

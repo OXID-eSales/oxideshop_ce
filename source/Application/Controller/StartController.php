@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -143,7 +144,8 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
     {
-        if (!$sMeta &&
+        if (
+            !$sMeta &&
             $this->getConfig()->getConfigParam('bl_perfLoadAktion') &&
             $oArt = $this->getFirstArticle()
         ) {
@@ -166,7 +168,8 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      */
     protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
-        if (!$sKeywords &&
+        if (
+            !$sKeywords &&
             $this->getConfig()->getConfigParam('bl_perfLoadAktion') &&
             $oArt = $this->getFirstArticle()
         ) {

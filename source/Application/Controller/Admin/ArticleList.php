@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -55,10 +56,12 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactive) && $oArticle->oxarticles__oxactive->value === '1') {
             return true;
         } else {
-            if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactivefrom) &&
+            if (
+                !is_bool($sDateTime) && isset($oArticle->oxarticles__oxactivefrom) &&
                 isset($oArticle->oxarticles__oxactiveto) && $blUseTimeCheck &&
                 $oArticle->oxarticles__oxactivefrom->value <= $sDateTime &&
-                $oArticle->oxarticles__oxactiveto->value >= $sDateTime) {
+                $oArticle->oxarticles__oxactiveto->value >= $sDateTime
+            ) {
                 return true;
             }
         }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode:  brutto
  * Price view mode: brutto
@@ -17,6 +18,7 @@
  * Actions with basket or order: -;
  * Short description: From articlePrice.csv: article final price calculations. 9200 - 3rd
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

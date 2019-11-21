@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode: brutto
@@ -9,6 +10,7 @@
  * Short description: Brutto-Brutto user group Price C, option "Use normal article price instead of zero A, B, C price" is ON
  * Test case is moved from selenium test "testFrontendPriceB"
  */
+
 $aData = array(
         'articles' => array(
                 0 => array(
@@ -60,8 +62,8 @@ $aData = array(
                     'oxaddsumtype' => '%',
                     'oxamount'     => 0,
                     'oxamountto'   => 99999,
-                    'oxprice'      =>100,
-                    'oxpriceto'    =>99999,
+                    'oxprice'      => 100,
+                    'oxpriceto'    => 99999,
                     'oxactive'     => 1,
                     'oxarticles'   => array( 1002, 1003 ),
                     'oxsort'       => 10,

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
@@ -257,7 +259,7 @@ class ModuleRemoveTest extends BaseModuleTestCase
                 ),
                 'extend'          => array(
                     \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder',
-                    \OxidEsales\Eshop\Application\Model\Article::class =>'with_metadata_v2/myarticle'
+                    \OxidEsales\Eshop\Application\Model\Article::class => 'with_metadata_v2/myarticle'
                 ),
                 'files'           => array(
                     'with_2_files' => array(

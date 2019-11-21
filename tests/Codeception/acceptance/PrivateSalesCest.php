@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -79,7 +80,7 @@ class PrivateSalesCest
         $passwordReminderPage = $privateSalesLoginPage->openUserPasswordReminderPage();
         $I->see(Translator::translate('FORGOT_PASSWORD'));
         $passwordReminderPage = $passwordReminderPage->resetPassword($userData['userLoginName']);
-        $I->see(Translator::translate('PASSWORD_WAS_SEND_TO').' '.$userData['userLoginName']);
+        $I->see(Translator::translate('PASSWORD_WAS_SEND_TO') . ' ' . $userData['userLoginName']);
 
         $privateSalesLoginPage = $passwordReminderPage->goBackToShop();
 

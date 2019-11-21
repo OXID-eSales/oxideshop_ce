@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -290,9 +291,11 @@ class ModuleChainsGenerator
          */
         /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
         $composerClassLoader = include VENDOR_PATH . 'autoload.php';
-        if (!$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
+        if (
+            !$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
             !strpos($moduleClass, '_parent') &&
-            !$composerClassLoader->findFile($moduleClass)) {
+            !$composerClassLoader->findFile($moduleClass)
+        ) {
             $this->handleSpecialCases($parentClass);
             $this->onModuleExtensionCreationError($moduleClass);
 
@@ -335,8 +338,10 @@ class ModuleChainsGenerator
         /**
          * Test if the class file could be read
          */
-        if (!$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
-            !is_readable($moduleClassFile)) {
+        if (
+            !$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
+            !is_readable($moduleClassFile)
+        ) {
             $this->handleSpecialCases($parentClass);
             $this->onModuleExtensionCreationError($moduleClass);
 
@@ -496,7 +501,7 @@ class ModuleChainsGenerator
     /**
      * @return ModuleConfigurationDaoBridgeInterface
      */
-    private function getModuleConfigurationDaoBridge() : ModuleConfigurationDaoBridgeInterface
+    private function getModuleConfigurationDaoBridge(): ModuleConfigurationDaoBridgeInterface
     {
         return $this->getContainer()
                     ->get(ModuleConfigurationDaoBridgeInterface::class);
@@ -505,7 +510,7 @@ class ModuleChainsGenerator
     /**
      * @return ShopConfigurationDaoBridgeInterface
      */
-    private function getShopConfigurationDaoBridge() : ShopConfigurationDaoBridgeInterface
+    private function getShopConfigurationDaoBridge(): ShopConfigurationDaoBridgeInterface
     {
         return $this->getContainer()
                     ->get(ShopConfigurationDaoBridgeInterface::class);
@@ -514,7 +519,7 @@ class ModuleChainsGenerator
     /**
      * @return ModuleStateServiceInterface
      */
-    private function getModuleStateService() : ModuleStateServiceInterface
+    private function getModuleStateService(): ModuleStateServiceInterface
     {
         return $this->getContainer()->get(ModuleStateServiceInterface::class);
     }
@@ -522,7 +527,7 @@ class ModuleChainsGenerator
     /**
      * @return ContainerInterface
      */
-    private function getContainer() : ContainerInterface
+    private function getContainer(): ContainerInterface
     {
         return ContainerFactory::getInstance()->getContainer();
     }

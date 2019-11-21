@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 /**
@@ -60,7 +62,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $revision = $config->getRevision();
         $iAdminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
-        $xml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+        $xml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         $xml .= '<olcRequest>';
         $xml .=   '<pVersion>1.1</pVersion>';
         $xml .=   '<keys><key>license_key</key></keys>';
@@ -98,7 +100,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $xml .=   "<version>$version</version>";
         $xml .=   "<shopUrl>$shopUrl</shopUrl>";
         $xml .=   '<productId>eShop</productId>';
-        $xml .= '</olcRequest>'."\n";
+        $xml .= '</olcRequest>' . "\n";
 
         $curl = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
             ->setMethods(['setParameters', 'execute','getStatusCode'])
@@ -148,7 +150,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $revision = $config->getRevision();
         $adminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
-        $sXml = '<?xml version="1.0" encoding="utf-8"?>'."\n";
+        $sXml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         $sXml .= '<olcRequest>';
         $sXml .=   '<pVersion>1.1</pVersion>';
         $sXml .=   '<keys>';
@@ -189,7 +191,7 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
         $sXml .=   "<version>$version</version>";
         $sXml .=   "<shopUrl>$shopUrl</shopUrl>";
         $sXml .=   '<productId>eShop</productId>';
-        $sXml .= '</olcRequest>'."\n";
+        $sXml .= '</olcRequest>' . "\n";
 
         $curl = $this->getMockBuilder(\OxidEsales\Eshop\Core\Curl::class)
             ->setMethods(['setParameters', 'execute','getStatusCode'])

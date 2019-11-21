@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: bruto
  * Price view mode:  neto
@@ -15,6 +16,7 @@
  * Actions with order:
  *  1. update :changed products amounts
  */
+
 $aData = array(
      'articles' => array(
              0 => array(
@@ -127,7 +129,7 @@ $aData = array(
              0 => array(
                       'oxid'       => '111',
                       'amount'     => 1,
-            ),
+             ),
             ),
     ),
 

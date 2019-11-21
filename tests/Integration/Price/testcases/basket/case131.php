@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: brutto
  * Price view mode:  brutto
@@ -20,6 +21,7 @@
  * https://bugs.oxid-esales.com/view.php?id=4425
  * @bug #4425
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

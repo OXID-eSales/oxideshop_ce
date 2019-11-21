@@ -22,11 +22,11 @@
 function smarty_function_oxcontent($params, &$smarty)
 {
     $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-    $sText = $myConfig->getActiveShop()->oxshops__oxproductive->value ? null : "<b>content not found ! check ident(".$params['ident'].") !</b>";
+    $sText = $myConfig->getActiveShop()->oxshops__oxproductive->value ? null : "<b>content not found ! check ident(" . $params['ident'] . ") !</b>";
     $smarty->oxidcache = new \OxidEsales\Eshop\Core\Field($sText, \OxidEsales\Eshop\Core\Field::T_RAW);
 
-    $sIdent = isset($params['ident'])?$params['ident']:null;
-    $sOxid  = isset($params['oxid'])?$params['oxid']:null;
+    $sIdent = isset($params['ident']) ? $params['ident'] : null;
+    $sOxid  = isset($params['oxid']) ? $params['oxid'] : null;
 
     if ($sIdent || $sOxid) {
         $oContent = oxNew("oxcontent");
@@ -43,11 +43,11 @@ function smarty_function_oxcontent($params, &$smarty)
                 $sField = $params['field'];
             }
             // set value
-            $sProp = 'oxcontents__'.$sField;
+            $sProp = 'oxcontents__' . $sField;
             $smarty->oxidcache = clone $oContent->$sProp;
             $smarty->compile_check  = true;
             $sCacheId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage() . $myConfig->getShopId();
-            $sText = $smarty->fetch("ox:".(string)$sIdent.(string)$sOxid.$sField.$sCacheId);
+            $sText = $smarty->fetch("ox:" . (string)$sIdent . (string)$sOxid . $sField . $sCacheId);
             $smarty->compile_check  = $myConfig->getConfigParam('blCheckTemplates');
         }
     }

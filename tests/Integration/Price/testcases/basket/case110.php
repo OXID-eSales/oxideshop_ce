@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode:  netto
@@ -17,6 +18,7 @@
  * Actions with basket or order:-
  * Short description: bodymed neto mode case;
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

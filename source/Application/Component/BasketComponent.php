@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -129,7 +130,8 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function toBasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
-        if (Registry::getSession()->getId() &&
+        if (
+            Registry::getSession()->getId() &&
             Registry::getSession()->isActualSidInCookie() &&
             !Registry::getSession()->checkSessionChallenge()
         ) {

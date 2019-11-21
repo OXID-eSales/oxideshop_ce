@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode:  netto
@@ -16,6 +17,7 @@
  * Short description:
  * Neto-Neto mode. Additiona products Neto-Neto.
  */
+
 $aData = array(
     'articles' => array(
         0 => array(
@@ -78,9 +80,9 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,

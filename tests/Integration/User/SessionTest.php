@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\User;
 
 use oxBasket;
@@ -15,7 +17,6 @@ use \OxidEsales\Eshop\Application\Model\User;
 use \OxidEsales\Eshop\Application\Model\BasketItem;
 use \OxidEsales\Eshop\Core\Price;
 use \OxidEsales\Eshop\Core\PriceList;
-
 use \OxidEsales\Eshop\Core\Registry;
 
 class SessionTest extends UnitTestCase

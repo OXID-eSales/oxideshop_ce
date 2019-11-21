@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Price;
 
 use oxDb;
@@ -12,7 +14,7 @@ use oxOrderArticle;
 use oxRegistry;
 use PHPUnit\Framework\MockObject\MockObject;
 
-require_once __DIR__. '/BasketConstruct.php';
+require_once __DIR__ . '/BasketConstruct.php';
 
 /**
  * Final order calculation test

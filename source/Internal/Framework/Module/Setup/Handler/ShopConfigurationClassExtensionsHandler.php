@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
@@ -34,7 +37,7 @@ class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHand
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
         if ($configuration->hasClassExtensions()) {
-            $classExtensions=[];
+            $classExtensions = [];
 
             foreach ($configuration->getClassExtensions() as $extension) {
                 $classExtensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();

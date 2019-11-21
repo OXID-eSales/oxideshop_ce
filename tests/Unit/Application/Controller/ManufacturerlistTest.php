@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \Exception;
@@ -291,7 +293,7 @@ class ManufacturerlistTest extends \OxidTestCase
     public function testGetArticleListAndCount()
     {
         //testing over mock
-        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE'? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE' ? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
 
         $this->setRequestParameter('cnid', $sManufacturerId);
         $this->getConfig()->setConfigParam('iNrofCatArticles', 20);
@@ -326,7 +328,7 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testGetCatTitle()
     {
-        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE'? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE' ? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
@@ -342,7 +344,7 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testGetActiveCategory()
     {
-        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE'? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE' ? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
 
@@ -383,7 +385,7 @@ class ManufacturerlistTest extends \OxidTestCase
      */
     public function testGetTitleSuffix()
     {
-        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE'? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
+        $sManufacturerId = $this->getTestConfig()->getShopEdition() == 'EE' ? '88a996f859f94176da943f38ee067984' : 'fe07958b49de225bd1dbc7594fb9a6b0';
         $oManufacturer = oxNew('oxManufacturer');
         $oManufacturer->load($sManufacturerId);
         $oManufacturer->oxManufacturer__oxshowsuffix = new oxField(1);

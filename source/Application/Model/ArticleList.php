@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -701,7 +702,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // not active or not available products must not have button "tobasket"
         $sNow = date('Y-m-d H:i:s');
         foreach ($this as $oArticle) {
-            if (!$oArticle->oxarticles__oxactive->value &&
+            if (
+                !$oArticle->oxarticles__oxactive->value &&
                 (
                     $oArticle->oxarticles__oxactivefrom->value > $sNow ||
                  $oArticle->oxarticles__oxactiveto->value < $sNow

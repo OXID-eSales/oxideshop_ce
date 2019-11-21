@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
@@ -59,11 +62,11 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      * @param BasicContextInterface                            $context
      */
     public function __construct(
-        ProjectConfigurationDaoInterface                    $projectConfigurationDao,
-        MetaDataProviderInterface                           $metadataProvider,
-        MetaDataToModuleConfigurationDataMapperInterface    $metadataMapper,
-        ModuleConfigurationMergingServiceInterface          $moduleConfigurationMergingService,
-        BasicContextInterface                               $context
+        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        MetaDataProviderInterface $metadataProvider,
+        MetaDataToModuleConfigurationDataMapperInterface $metadataMapper,
+        ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
+        BasicContextInterface $context
     ) {
         $this->projectConfigurationDao = $projectConfigurationDao;
         $this->metadataProvider = $metadataProvider;

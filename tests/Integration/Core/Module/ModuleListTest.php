@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
@@ -215,7 +218,8 @@ class ModuleListTest extends TestCase
             [
                 'OxidEsales\Eshop\Application\Controller\ContentController' => ['OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\with_class_extenstions2\Controllers\ContentController'],
                 'OxidEsales\Eshop\Application\Model\Article'         => ['with_class_extensions/ModuleArticle'],
-            ], oxNew(ModuleList::class)->getModulesWithExtendedClass()
+            ],
+            oxNew(ModuleList::class)->getModulesWithExtendedClass()
         );
     }
 
@@ -226,7 +230,8 @@ class ModuleListTest extends TestCase
         $this->assertEquals(
             [
                 'with_class_extensions' => 'with_class_extensions'
-            ], oxNew(ModuleList::class)->extractModulePaths()
+            ],
+            oxNew(ModuleList::class)->extractModulePaths()
         );
     }
 

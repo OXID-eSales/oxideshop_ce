@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -42,12 +43,12 @@ class ProductCompareCest
 
         $userAccountPage = $detailsPage->openAccountPage();
         $I->see(Translator::translate('MY_PRODUCT_COMPARISON'));
-        $I->see(Translator::translate('PRODUCT').' 1');
+        $I->see(Translator::translate('PRODUCT') . ' 1');
 
         $userAccountPage = $userAccountPage->logoutUserInAccountPage()
             ->login($userData['userLoginName'], $userData['userPassword']);
         $I->see(Translator::translate('MY_PRODUCT_COMPARISON'));
-        $I->see(Translator::translate('PRODUCT').' 1');
+        $I->see(Translator::translate('PRODUCT') . ' 1');
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
@@ -128,13 +129,13 @@ class ProductCompareCest
         $I->see($productData2['title'], $detailsPage->productTitle);
         $comparePage = $detailsPage->openProductComparePage();
 
-        $comparePage->seeProductAttributeName('Test attribute 1 [EN] šÄßüл:',1);
+        $comparePage->seeProductAttributeName('Test attribute 1 [EN] šÄßüл:', 1);
         $comparePage->seeProductAttributeValue('attr value 1 [EN] šÄßüл', 1, 1);
         $comparePage->seeProductAttributeValue('attr value 11 [EN] šÄßüл', 1, 2);
-        $comparePage->seeProductAttributeName('Test attribute 3 [EN] šÄßüл:',2);
+        $comparePage->seeProductAttributeName('Test attribute 3 [EN] šÄßüл:', 2);
         $comparePage->seeProductAttributeValue('attr value 3 [EN] šÄßüл', 2, 1);
         $comparePage->seeProductAttributeValue('attr value 3 [EN] šÄßüл', 2, 2);
-        $comparePage->seeProductAttributeName('Test attribute 2 [EN] šÄßüл:',3);
+        $comparePage->seeProductAttributeName('Test attribute 2 [EN] šÄßüл:', 3);
         $comparePage->seeProductAttributeValue('attr value 2 [EN] šÄßüл', 3, 1);
         $comparePage->seeProductAttributeValue('attr value 12 [EN] šÄßüл', 3, 2);
 
@@ -150,7 +151,6 @@ class ProductCompareCest
         $comparePage->removeProductFromList($productData2['id']);
         $comparePage->removeProductFromList($productData3['id']);
         $I->see(Translator::translate('MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'));
-
     }
 
     /**
@@ -205,5 +205,4 @@ class ProductCompareCest
     {
         return \Codeception\Util\Fixtures::get('existingUser');
     }
-
 }

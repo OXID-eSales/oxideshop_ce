@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode: netto
  * Price view mode: netto
@@ -21,6 +22,7 @@
  * For products (1001, 1002) is set parameter "free shipping" ;
  * Netto - Netto start case, after order saving is removed product (1002),
  */
+
 $aData = array(
     'skipped' => 1,
     // Articles
@@ -93,7 +95,7 @@ $aData = array(
                 'oxfromamount' => 0,
                 'oxtoamount' => 1000000,
                 'oxchecked' => 1,
-        'oxaddsumrules'=>1,
+        'oxaddsumrules' => 1,
             ),
         ),
     ),
@@ -176,9 +178,9 @@ $aData = array(
         'config' => array(
             'blEnterNetPrice' => true,
             'blShowNetPrice' => true,
-            'blShowVATForDelivery'=> true,
-            'blShowVATForPayCharge'=> true,
-            'blShowVATForWrapping'=> true,
+            'blShowVATForDelivery' => true,
+            'blShowVATForPayCharge' => true,
+            'blShowVATForWrapping' => true,
             'sAdditionalServVATCalcMethod' => 'biggest_net',
             'blDeliveryVatOnTop' => true,
             'blPaymentVatOnTop' => true,

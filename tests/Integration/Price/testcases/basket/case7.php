@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Price enter mode:  brutto
  * Price view mode:   brutto
@@ -17,6 +18,7 @@
  * Actions with basket or order:
  * Short description: bug entry / support case other info;
  */
+
 $aData = array(
     'articles' => array(
         0 => array(

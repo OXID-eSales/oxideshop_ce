@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -392,7 +393,7 @@ class Price
     {
         $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
-        return (( double ) $dPrice) * $oCur->rate;
+        return ((double) $dPrice) * $oCur->rate;
     }
 
 

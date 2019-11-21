@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -25,8 +26,8 @@ $aModule = array(
         'oxorder' => 'with_everything/myorder1',
     ),
     'blocks' => array(
-        array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
-        array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+        array('template' => 'page/checkout/basket.tpl',  'block' => 'basket_btn_next_top',    'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
+        array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment',         'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
     ),
     'templates' => array(
         'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',

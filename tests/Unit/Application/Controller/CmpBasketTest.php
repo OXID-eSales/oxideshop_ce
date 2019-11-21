@@ -1,12 +1,13 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use \stdClass;
-
 use \oxRegistry;
 use \oxTestModules;
 
@@ -224,7 +225,8 @@ class CmpBasketTest extends \OxidTestCase
 
     public function testGetRedirectUrl()
     {
-        foreach (array(
+        foreach (
+            array(
                      'cnid', // category id
                      'mnid', // manufacturer id
                      'anid', // active article id
@@ -235,7 +237,8 @@ class CmpBasketTest extends \OxidTestCase
                      'searchmanufacturer', // search manufacturer
                      'searchrecomm', // search recomendation
                      'recommid' // recomm. list id
-                 ) as $key) {
+                 ) as $key
+        ) {
             $this->setRequestParameter($key, 'value:' . $key . ":v");
         }
 

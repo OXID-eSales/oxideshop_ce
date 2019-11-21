@@ -22,7 +22,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
 {
     $myConfig  = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-    $aTypes = ['0' => 'none','1' => 'message', '2' =>'popup', '3' =>'basket'];
+    $aTypes = ['0' => 'none','1' => 'message', '2' => 'popup', '3' => 'basket'];
     $iType  = $myConfig->getConfigParam('iNewBasketItemMessage');
 
     // If corect type of message is expected
@@ -31,7 +31,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
     }
 
     //name of template file where is stored message text
-    $sTemplate = $params['tpl']?$params['tpl']:'inc_newbasketitem.snippet.tpl';
+    $sTemplate = $params['tpl'] ? $params['tpl'] : 'inc_newbasketitem.snippet.tpl';
 
     //allways render for ajaxstyle popup
     $blRender = $params['ajax'] && ($iType == 2);

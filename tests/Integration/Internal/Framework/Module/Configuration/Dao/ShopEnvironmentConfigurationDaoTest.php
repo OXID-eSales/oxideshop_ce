@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Configuration\Dao;
 
@@ -71,7 +74,7 @@ final class ShopEnvironmentConfigurationDaoTest extends TestCase
 
         $storage->save([
             'modules' => [
-                'testModuleId'=> [
+                'testModuleId' => [
                     ModuleSettingsDataMapper::MAPPING_KEY => [
                         'settingToOverwrite' => [
                             'value' => 'overwrittenValue',

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -317,7 +318,8 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     protected function assertError($errorLevel, $errorMessage)
     {
         foreach ($this->errors as $error) {
-            if ($error["errorMessage"] === $errorMessage
+            if (
+                $error["errorMessage"] === $errorMessage
                 && $error["errorLevel"] === $errorLevel
             ) {
                 return true;

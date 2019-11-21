@@ -15,6 +15,6 @@ class TestModuleTwoPrice extends testmoduletwoprice_parent
     public function getPrice()
     {
         $return = parent::getPrice();
-        return 3*$return;
+        return 3 * $return;
     }
 }

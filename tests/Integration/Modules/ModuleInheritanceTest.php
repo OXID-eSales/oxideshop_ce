@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
@@ -99,7 +101,8 @@ class ModuleInheritanceTest extends UnitTestCase
     /**
      * Ensure a clean environment before each test
      */
-    protected function setUp() {
+    protected function setUp()
+    {
         parent::setUp();
 
         $this->container = $this->getContainer();

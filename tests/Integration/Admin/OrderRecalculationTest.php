@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Admin;
 
 use oxBasket;
@@ -192,7 +194,7 @@ class OrderRecalculationTest extends \OxidTestCase
 
         $expectedOrderTotalBruttoSum = $buyAmount * self::TEST_ARTICLE_PRICE; //119.0
         $expectedOrderTotalSum       = $buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8; //two 20% vouchers applied 76.16
-        $expectedVoucherDiscount     = $buyAmount * self::TEST_ARTICLE_PRICE * (1.0 -0.8*0.8); //42.84
+        $expectedVoucherDiscount     = $buyAmount * self::TEST_ARTICLE_PRICE * (1.0 - 0.8 * 0.8); //42.84
         $expectedOrderTotalNettoSum  = $expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat); //64.0
         $expectedDiscount = 0.0;
 
@@ -267,7 +269,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //two 20% vouchers applied on 95.20 -> 60.928
         $expectedOrderTotalSum       = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8 * 0.8, 2);
         //total discount -> 95.20 - 60.928 = 34.272
-        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8*0.8), 2);
+        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8 * 0.8), 2);
         //netto sum 100 * 0.8 * 0.8 * 0.8 = 51.20
         $expectedOrderTotalNettoSum  = round($expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat), 2);
         $expectedDiscount = 0.0;
@@ -350,7 +352,7 @@ class OrderRecalculationTest extends \OxidTestCase
         //two 20% vouchers applied on 95.20 -> 60.928
         $expectedOrderTotalSum       = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * 0.8 * 0.8, 2);
         //total discount -> 95.20 - 60.928 = 34.272
-        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8*0.8), 2);
+        $expectedVoucherDiscount     = round($buyAmount * self::TEST_ARTICLE_PRICE * 0.8 * (1.0 - 0.8 * 0.8), 2);
         //netto sum 100 * 0.8 * 0.8 * 0.8 = 51.20
         $expectedOrderTotalNettoSum  = round($expectedOrderTotalSum * 100.0 / (100.0 + $defaultVat), 2);
         $expectedDiscount = 0.0;
@@ -552,7 +554,7 @@ class OrderRecalculationTest extends \OxidTestCase
         $voucherSeries->oxvoucherseries__oxcalculateonce = new oxField('1', oxField::T_RAW);
         $voucherSeries->save();
 
-        for ($i=1; $i<=4; $i++) {
+        for ($i = 1; $i <= 4; $i++) {
             $voucherId = substr_replace(oxRegistry::getUtilsObject()->generateUId(), '_', 0, 1);
             $voucher = oxNew('oxVoucher');
             $voucher->setId($voucherId);

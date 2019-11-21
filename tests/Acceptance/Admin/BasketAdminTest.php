@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -52,11 +53,11 @@ class BasketAdminTest extends AdminTestCase
 
         $matrix = [];
         $counter = null;
-        for ($i=1;$i<5; $i++) {
-            for ($j=1;$j<=6; $j++) {
+        for ($i = 1; $i < 5; $i++) {
+            for ($j = 1; $j <= 6; $j++) {
                 $identifier = "//table[2]/tbody/tr[$i]/td[$j]";
                 if ($this->isElementPresent($identifier)) {
-                    $matrix[$i-1][$j-1] = $this->getText($identifier);
+                    $matrix[$i - 1][$j - 1] = $this->getText($identifier);
                     if (6 == $j) {
                         $counter = $i;
                     }

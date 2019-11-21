@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\Eshop\Core\Module\Module;
@@ -376,7 +378,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
      */
     protected function assertClassChain($fullClassChainToAssert, $classChainWithActiveModulesToAssert)
     {
-        $utilsObject = new TestUtilsObject;
+        $utilsObject = new TestUtilsObject();
         $moduleChainsGenerator = $utilsObject->getTheModuleChainsGenerator();
         $class = 'OxidEsales\Eshop\Core\Price';
         $classAlias = 'oxprice';
@@ -433,7 +435,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     ) {
         $this->installAndActivateModule($moduleNameToBeActivated);
 
-        $utilsObject = new TestUtilsObject;
+        $utilsObject = new TestUtilsObject();
         $chain = $utilsObject->getTheModuleChainsGenerator();
 
         $this->assertEquals($fullChainToAssert, $chain->getFullChain('OxidEsales\Eshop\Core\Price', 'oxprice'));

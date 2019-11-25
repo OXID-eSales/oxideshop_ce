@@ -2529,8 +2529,8 @@ class CreatingItemsAdminTest extends AdminTestCase
             $this->assertElementNotPresent("nav.page.2");
         }
         $this->clickAndWaitFrame("link=A");
-        $newListItemNumber = 10;
-        $listItemWeeksSpecialItemNumber = 9;
+        $newListItemNumber = 9;
+        $listItemWeeksSpecialItemNumber = 8;
         $this->assertEquals("create_delete promotion", $this->getText("//tr[@id='row.$newListItemNumber']/td[2]"));
         $this->clickDeleteListItem($newListItemNumber);
         $this->assertElementNotPresent("nav.page.2");
@@ -2600,8 +2600,8 @@ class CreatingItemsAdminTest extends AdminTestCase
             $this->assertElementNotPresent("nav.page.2");
         }
         $this->changeListSorting("link=A");
-        $newListItemNumber = 10;
-        $listItemWeeksSpecialItemNumber = 9;
+        $newListItemNumber = 9;
+        $listItemWeeksSpecialItemNumber = 8;
         $this->assertEquals("create_delete action", $this->getText("//tr[@id='row.$newListItemNumber']/td[2]"));
         $this->clickDeleteListItem($newListItemNumber);
         $this->assertElementNotPresent("nav.page.2");

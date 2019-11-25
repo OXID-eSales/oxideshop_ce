@@ -1454,15 +1454,15 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->clickAndWait("submitit");
         $this->clickAndWait("link=Name");
         $this->clickAndWait("nav.next");
-        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.4']/td[2]/div"));
+        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.3']/td[2]/div"));
         $this->clickAndWait("nav.last");
-        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.4']/td[2]/div"));
-        $this->assertEquals("Top seller", $this->getText("//tr[@id='row.2']/td[2]"));
+        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.3']/td[2]/div"));
+        $this->assertEquals("Top seller", $this->getText("//tr[@id='row.1']/td[2]"));
         $this->clickAndWait("nav.first");
         //checking in DE lang
         $this->assertEquals("English", $this->getSelectedLabel("changelang"));
         $this->changeAdminListLanguage('Deutsch');
-        $this->assertElementPresent("//tr[@id='row.4']/td[2]");
+        $this->assertElementPresent("//tr[@id='row.3']/td[2]");
         $this->type("where[oxactions][oxtitle]", "top");
         $this->clickAndWait("submitit");
         $this->assertElementPresent("link=Kategorien-Topangebot");
@@ -1494,9 +1494,9 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("Current Promotion", $this->getText("//tr[@id='row.5']/td[2]"));
         $this->assertEquals("2010-01-01 00:00:00", $this->getText("//tr[@id='row.5']/td[3]"));
         $this->clickAndWaitFrame("nav.next");
-        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.4']/td[2]/div"));
-        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.4']/td[3]"));
-        $currentPromotionPosition = 2; // PE/CE versions have additional Newsletter item which shfts list
+        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.3']/td[2]/div"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.3']/td[3]"));
+        $currentPromotionPosition = 1; // PE/CE versions have additional Newsletter item which shfts list
         $this->clickAndWait("link=Start Time");
         $this->assertEquals("2010-01-01 00:00:00", $this->getText("//tr[@id='row." . $currentPromotionPosition . "']/td[3]/div"));
         $this->assertEquals("2010-01-01 00:00:00", $this->getText("//tr[@id='row." . ($currentPromotionPosition + 1) . "']/td[3]/div"));

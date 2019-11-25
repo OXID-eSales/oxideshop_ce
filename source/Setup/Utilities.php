@@ -508,7 +508,7 @@ class Utilities extends Core
      */
     public function getRootDirectory()
     {
-        $facts = oxNew(\OxidEsales\Facts\Facts::class);
+        $facts = new Facts;
 
         $rootDirectory = $facts->getShopRootPath();
 

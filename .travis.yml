@@ -2,6 +2,12 @@ language: php
 
 dist: xenial
 
+addons:
+  sonarcloud:
+    organization: "oxid-esales"
+    token:
+      secure: "GCYNN+PhrJpYCgpePF0ZSBHlv0O8+5Nl+ZxsqL1IoUmDq1SJoj9E7BxI4SnsLLZPX+Bythy0LZDFKBpL5UwxmR8GstWC2FrBTSLfcUn73gcYBzgjXRzMDty7Oqaks6QIFw6azQeXUlUU8N93pfRVEVs0Lcd8YOGl9f+j3cpPzcGgGRsFX1FwnKGqD5gTF9CPnoHUbP4lRMRZGvstZ9hjhRMZTyLcW9nzAk6cS+2a5sDe+PlWO5ZWRRPQbfRF3T7Qj3XU8L1h5Mhq9wB8HrZBuhUD7/7pS5y8f5hdrusRoRGs9DxTWE4df9WeeLmUoK8KNuKkXctExm8kl58bqrvW0uVVdSLNMjGaeMXURMhIfYGrSP3na/nHhseToQ0jv33lUMQ51VVgk5B8yrAB5zHa39FEihV3oIj9ccwvNghOsoV3QkcqmMvzcINVx1BJYaxKNho7txW7+dIoTRTo8s4eBdTD+4fUOZlmYwIk4dJTyveB9y+krfpPe+xLsp6GSs1UijwRwL2CZ3JtwdV+OBMbIWSqJvPmRYr6Mkh0wpojfWeL2rV/WGv+IW/Hy+hVXOdkrIqLTtrwcgNrVrdRLPin7JUOWKn4/IVGw7L4vsn1wL5tENqumehh9tccngQRnYHxjD14dGtEzMq7zj0JhLW/uzWqWpYF1C1gBiXF7RKDahA="
+
 notifications:
   email: false
 
@@ -74,3 +80,4 @@ before_script:
 script:
   - php vendor/bin/oe-eshop-phpcs_with_thresholds
   - php vendor/bin/runtests
+  - sonar-scanner

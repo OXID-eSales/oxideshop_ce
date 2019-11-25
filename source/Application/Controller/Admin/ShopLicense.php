@@ -7,15 +7,18 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxSystemComponentException;
+use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
+use OxidEsales\Eshop\Core\Curl;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\OnlineCaller;
 
 /**
  * Admin shop license setting manager.
  * Collects shop license settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> License.
  */
-class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
+class ShopLicense extends ShopConfiguration
 {
     /**
      * Current class template.
@@ -37,8 +40,8 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
     {
         $myConfig = $this->getConfig();
         if ($myConfig->isDemoShop()) {
-            /** @var \OxidEsales\Eshop\Core\Exception\SystemComponentException $oSystemComponentException */
-            $oSystemComponentException = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class, "license");
+            /** @var SystemComponentException $oSystemComponentException */
+            $oSystemComponentException = oxNew(SystemComponentException::class, "license");
             throw $oSystemComponentException;
         }
 
@@ -72,11 +75,10 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
     {
         $myConfig = $this->getConfig();
 
-        $blIsMallAdmin = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('malladmin');
+        $blIsMallAdmin = Registry::getSession()->getVariable('malladmin');
         if (!$blIsMallAdmin) {
             return false;
         }
-
         if ($myConfig->isDemoShop()) {
             return false;
         }
@@ -86,31 +88,70 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
 
     /**
      * Fetch current shop version information from url
-     *
      * @param string $sUrl current version info fetching url by edition
-     *
      * @return string
      */
     protected function _fetchCurVersionInfo($sUrl)
     {
-        $aParams = ["myversion" => $this->getConfig()->getVersion()];
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $iLang = $oLang->getTplLanguage();
-        $sLang = $oLang->getLanguageAbbr($iLang);
-
-        $oCurl = oxNew(\OxidEsales\Eshop\Core\Curl::class);
-        $oCurl->setMethod("POST");
-        $oCurl->setUrl($sUrl . "/" . $sLang);
-        $oCurl->setParameters($aParams);
-        $sOutput = $oCurl->execute();
-
-        $sOutput = strip_tags($sOutput, "<br>, <b>");
-        $aResult = explode("<br>", $sOutput);
-        if (strstr($aResult[5], "update")) {
-            $sUpdateLink = \OxidEsales\Eshop\Core\Registry::getLang()->translateString("VERSION_UPDATE_LINK");
-            $aResult[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $aResult[5] . "</a>";
+        try {
+            $response = $this->requestVersionInfo($sUrl);
+        } catch (\Throwable $e) {
+            /** Exception is not logged! */
+            $this->handleConnectionError();
+            return '';
         }
+        return $this->insertUpdateLinkIntoResponse($response);
+    }
 
-        return implode("<br>", $aResult);
+    private function requestVersionInfo(string $url): string
+    {
+        $curl = oxNew(Curl::class);
+        $curl->setMethod("POST");
+        $curl->setUrl(sprintf('%s/%s', $url, $this->getLanguageAbbreviation()));
+        $curl->setParameters(["myversion" => $this->getConfig()->getVersion()]);
+        $curl->setOption(
+            Curl::CONNECT_TIMEOUT_OPTION,
+            OnlineCaller::CURL_CONNECT_TIMEOUT
+        );
+        $curl->setOption(
+            Curl::EXECUTION_TIMEOUT_OPTION,
+            OnlineCaller::CURL_EXECUTION_TIMEOUT
+        );
+        return $curl->execute();
+    }
+
+    private function getLanguageAbbreviation(): string
+    {
+        $language = Registry::getLang();
+        return $language->getLanguageAbbr($language->getTplLanguage());
+    }
+
+    private function handleConnectionError()
+    {
+        $this->displayErrorMessage();
+    }
+
+    private function displayErrorMessage()
+    {
+        Registry::getUtilsView()->addErrorToDisplay(
+            sprintf(
+                '%s! %s.',
+                Registry::getLang()->translateString('ADMIN_SETTINGS_LICENSE_VERSION_FETCH_INFO_ERROR'),
+                Registry::getLang()->translateString('CURL_EXECUTE_ERROR')
+            )
+        );
+    }
+
+    private function insertUpdateLinkIntoResponse(string $response): string
+    {
+        $response = strip_tags($response, "<br>, <b>");
+        $result = explode("<br>", $response);
+        if (!isset($result[5]) || !strstr($result[5], "update")) {
+            return $response;
+        }
+        /** URL is set through i18n (lang file) */
+        $sUpdateLink = Registry::getLang()->translateString("VERSION_UPDATE_LINK");
+        $result[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $result[5] . "</a>";
+        return implode("<br>", $result);
     }
 }

@@ -75,6 +75,6 @@ before_script:
   - SHOP_PATH='source' SHOP_TESTS_PATH='tests' MODULES_PATH='' composer install
 
 script:
+  - sonar-scanner
   - php vendor/bin/oe-eshop-phpcs_with_thresholds
   - php vendor/bin/runtests
-  - sonar-scanner

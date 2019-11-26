@@ -77,4 +77,4 @@ before_script:
 script:
   - php vendor/bin/oe-eshop-phpcs_with_thresholds
   - php vendor/bin/runtests
-  - sonar-scanner -X
+  - sonar-scanner

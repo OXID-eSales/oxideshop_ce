@@ -1996,7 +1996,7 @@ $aLang = [
     'SUBJECT'                        => 'Subject',
     'MESSAGE'                        => 'Message',
     'ADMIN_SETTINGS_LICENSE_VERSION_FETCH_INFO_ERROR' => 'Error when fetching version information',
-    'CURL_EXECUTE_ERROR' => 'Connection error, please try again later',
+    'CURL_EXECUTE_ERROR' => 'Connection error (%s). Please try again later',
 ];
 
 /*

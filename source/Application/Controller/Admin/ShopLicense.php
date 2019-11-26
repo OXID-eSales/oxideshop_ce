@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
+use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Curl;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
@@ -21,7 +22,6 @@ class ShopLicense extends ShopConfiguration
 {
     /**
      * Current class template.
-     *
      * @var string
      */
     protected $_sThisTemplate = "shop_license.tpl";
@@ -32,8 +32,8 @@ class ShopLicense extends ShopConfiguration
     /**
      * Executes parent method parent::render(), creates oxshop object, passes it's
      * data to Smarty engine and returns name of template file "shop_license.tpl".
-     *
      * @return string
+     * @throws SystemComponentException
      */
     public function render()
     {
@@ -49,7 +49,7 @@ class ShopLicense extends ShopConfiguration
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ($soxId != "-1") {
             // load object
-            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
+            $oShop = oxNew(Shop::class);
             $oShop->load($soxId);
             $this->_aViewData["edit"] = $oShop;
         }
@@ -96,7 +96,7 @@ class ShopLicense extends ShopConfiguration
             $response = $this->requestVersionInfo($sUrl);
         } catch (\Throwable $e) {
             /** Exception is not logged! */
-            $this->handleConnectionError();
+            $this->handleConnectionError($e);
             return '';
         }
         return $this->insertUpdateLinkIntoResponse($response);
@@ -125,18 +125,18 @@ class ShopLicense extends ShopConfiguration
         return $language->getLanguageAbbr($language->getTplLanguage());
     }
 
-    private function handleConnectionError()
+    private function handleConnectionError(\Throwable $e)
     {
-        $this->displayErrorMessage();
+        $this->displayErrorMessage($e->getMessage());
     }
 
-    private function displayErrorMessage()
+    private function displayErrorMessage(string $message)
     {
         Registry::getUtilsView()->addErrorToDisplay(
             sprintf(
                 '%s! %s.',
                 Registry::getLang()->translateString('ADMIN_SETTINGS_LICENSE_VERSION_FETCH_INFO_ERROR'),
-                Registry::getLang()->translateString('CURL_EXECUTE_ERROR')
+                sprintf(Registry::getLang()->translateString('CURL_EXECUTE_ERROR'), $message)
             )
         );
     }

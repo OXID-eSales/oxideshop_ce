@@ -508,7 +508,7 @@ class Utilities extends Core
      */
     public function getRootDirectory()
     {
-        $facts = new Facts;
+        $facts = new Facts();
 
         $rootDirectory = $facts->getShopRootPath();
 

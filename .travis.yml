@@ -5,8 +5,7 @@ dist: xenial
 addons:
   sonarcloud:
     organization: "oxid-esales"
-    token:
-      secure: "cPH3fVAA2MPq3ECnVQN1DRGfQcWW0gfql7Q/em2eWBN/4Z4bLbCs+GiOmHGGN+40PQCv0ZPXona08pxhd/8lnwYgah5ifTyMb6psGhtRDx/p/Hcd0ec7uaiTYx9/wbhsKxHrp3JW9+pF1VLptjol4PLYlGErhs1bQ/dmIPA+jV1mLKZ5+A/gM6kjEtuP9jS7Ew+3uJhbNZtuW4lw4LmWbvExqIuDLn2JP7Tb0a3RI3jBVBTZZ+CLU1d1CKPGjO98+qBT9pcm/aMeEO3miZtUZZHAqsdiUU05ycBCr2BBGfWAf9LeIHEz3Z84u6bY5Nx/5BcvXm3h0e6RtVIsyeUon5JmgjvGPyTIJIEw28vk7KDcbYHr5CYV+fjuywGrQqLG0H9D+MDwDENlQpUVHEeyjWYLmPNWSKwdAv1GIZBt29YfJqC72dL/o/SruS8mk2VfeSb3AWg2Phbn15mndB6Ooy+RAkdmAR3vXhFLPlLJuOPC+6JEjQkjq2ZSBXLcohLR2nm+KVUrTybUbSNJwv0EJvxGfwJzAvQxwnQIcB5RkSjFASPw749lI0CUOgjCnMuLuo7sKRSDWp4bWmhtDrGRn4fmtRfm4lcGTCIiFA+JiRxiJsXVMaagr4r1w6X+6L1mD4+Qi2NBmtoLH9bii8wGwrecE+7X9lVSf0lqmekGUBg="
+    token: $SONAR_TOKEN
 
 notifications:
   email: false

@@ -76,5 +76,5 @@ before_script:
 
 script:
   - php vendor/bin/oe-eshop-phpcs_with_thresholds
-  - php vendor/bin/runtests
+  - TEST_DIRS='unit,Unit,integration,Integration' php vendor/bin/runtests --coverage-clover source/log/coverage.xml
   - sonar-scanner

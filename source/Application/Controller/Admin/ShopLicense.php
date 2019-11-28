@@ -97,7 +97,6 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
             return '';
         }
         return $this->insertUpdateLinkIntoResponse($response);
-
     }
 
     private function requestVersionInfo(string $url): string

@@ -1965,6 +1965,8 @@ $aLang = [
     'TITLE'                          => 'Anrede',
     'SUBJECT'                        => 'Betreff',
     'MESSAGE'                        => 'Nachricht',
+    'ADMIN_SETTINGS_LICENSE_VERSION_FETCH_INFO_ERROR' => 'Fehler beim Abrufen von Versionsinformationen!',
+    'CURL_EXECUTE_ERROR' => 'Verbindungsfehler (%s). Bitte versuchen Sie es später noch einmal.',
 ];
 
 /*

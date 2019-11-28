@@ -7,24 +7,20 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Curl;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\OnlineCaller;
+use OxidEsales\Eshop\Core\OnlineCaller;
 
 /**
  * Admin shop license setting manager.
  * Collects shop license settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> License.
  */
-class ShopLicense extends ShopConfiguration
+class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-    /**
-     * Current class template.
-     * @var string
-     */
+    /** @var string Current class template */
     protected $_sThisTemplate = "shop_license.tpl";
 
     /** @var string Current shop version links for edition. */

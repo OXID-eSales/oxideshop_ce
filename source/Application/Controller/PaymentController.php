@@ -266,6 +266,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Session variables:
      * <b>paymentid</b>, <b>dynvalue</b>, <b>payerror</b>
      *
+     * @deprecated since v6.5.0 (2019-11-28); oxidcreditcard will not longer be supported
+     *
      * @return  mixed
      */
     public function validatePayment()

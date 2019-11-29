@@ -995,6 +995,7 @@ $aLang = [
     'SHOP_MALL_SHOPURL'                                  => 'Shop URL',
     'SHOP_MALL_SHOPSSLSHOPURL'                           => 'Shop SSL URL',
     'SHOP_MALL_NATIVEIMAGES'                             => 'Load /out directory from active shop',
+    'SHOP_MALL_DONOTLOADALLSHOPNEWS'                     => 'Do not show news from all shops',
     'SHOP_MALL_NOSTARTSITE'                              => 'Show main shop front page',
     'SHOP_MALL_STARTSITE'                                => 'Show shop selector',
     'SHOP_MALL_MALLMODE'                                 => 'Start page type',

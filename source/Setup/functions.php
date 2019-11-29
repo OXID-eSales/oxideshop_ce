@@ -145,6 +145,10 @@ if (!function_exists('getVendorDirectory')) {
 if (!class_exists("Conf", false)) {
     /**
      * Config key loader class
+     *
+     * @deprecated since v6.5.0 (2019-11-28); Class will be removed
+     * because MySQL 8 removed ENCODE and DECODE methods
+     *
      */
     class Conf
     {

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 ### Deprecated
+- `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
+- `OxidEsales\Eshop\Core\Config::$sConfigKey`
+- `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
+- `Conf`
 - `OxidEsales\Eshop\Core\Registry\UserPayment::_insert()`
 - `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
 - `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`

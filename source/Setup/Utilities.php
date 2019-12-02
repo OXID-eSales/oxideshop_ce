@@ -30,7 +30,7 @@ class Utilities extends Core
     const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
 
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
-    const LICENSE_TEXT_FILENAME = "lizenz.txt";
+    const LICENSE_TEXT_FILENAME = "LICENSE";
 
     /**
      * Unable to find file
@@ -502,6 +502,26 @@ class Utilities extends Core
     }
 
     /**
+     * Get root directory
+     *
+     * @return string
+     */
+    public function getRootDirectory()
+    {
+        $facts = new Facts();
+
+        $rootDirectory = $facts->getShopRootPath();
+
+        if ($facts->isProfessional()) {
+            $rootDirectory = $facts->getProfessionalEditionRootPath();
+        } elseif ($facts->isEnterprise()) {
+            $rootDirectory = $facts->getEnterpriseEditionRootPath();
+        }
+
+        return $rootDirectory;
+    }
+
+    /**
      * Get specific edition sql directory
      *
      * @param null|string $edition
@@ -585,12 +605,7 @@ class Utilities extends Core
      */
     public function getLicenseContent($languageId)
     {
-        $licensePathElements = [
-            $this->getSetupDirectory(),
-            ucfirst($languageId),
-            self::LICENSE_TEXT_FILENAME
-        ];
-        $licensePath = implode(DIRECTORY_SEPARATOR, $licensePathElements);
+        $licensePath = $this->getRootDirectory() . DIRECTORY_SEPARATOR . self::LICENSE_TEXT_FILENAME;
 
         $licenseContent = $this->getFileContents($licensePath);
 

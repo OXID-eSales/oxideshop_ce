@@ -420,6 +420,8 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param string $paymentId    The payment id of current payment.
      * @param array  $dynamicValue Values of payment.
      *
+     * @deprecated since v6.5.0 (2019-11-28); oxidcreditcard will be no longer supported
+     *
      * @return bool
      */
     public function validatePaymentInputData($paymentId, &$dynamicValue)

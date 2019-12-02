@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
 
+### Deprecated
+- `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
+- `OxidEsales\Eshop\Core\Config::$sConfigKey`
+- `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
+- `Conf`
+- `OxidEsales\Eshop\Core\Registry\UserPayment::_insert()`
+- `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
+- `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`
+
 ## [6.5.0] - 2019-11-07
 
 ### Added
@@ -165,6 +174,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The value for the password salt will not be stored in the database column `oxuser.OXPASSSALT` anymore, but in the password hash itself  
 
 ### Deprecated
+- `\OxidEsales\EshopCommunity\Application\Controller\StartController::getArticleList`
 - `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface` was added as the new default 
   for hashing passwords. Hashing passwords with MD5 and SHA512 is still supported in order support login with 
   older password hashes. Therefor the methods and classes below might not be compatible with the current passhword hash 

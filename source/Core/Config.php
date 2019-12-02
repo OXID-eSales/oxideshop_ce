@@ -29,6 +29,10 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  */
 class Config extends \OxidEsales\Eshop\Core\Base
 {
+    /**
+     * @deprecated since v6.5.0 (2019-11-28); Constant will be removed
+     * because MySQL 8 removed ENCODE and DECODE methods
+     */
     const DEFAULT_CONFIG_KEY = 'fq45QS09_fqyx09239QQ';
 
     // this column of params are defined in config.inc.php file,
@@ -307,6 +311,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected $_blInit = false;
 
     /** @var string Default configuration encryption key for database values. */
+    /**
+     * @deprecated since v6.5.0 (2019-11-28); Property will be removed
+     * because MySQL 8 removed ENCODE and DECODE methods
+     */
     protected $sConfigKey = self::DEFAULT_CONFIG_KEY;
 
     /**
@@ -1963,6 +1971,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldName field name, default "oxvarvalue" [optional]
      *
      * @return string
+     *
+     * @deprecated since v6.5.0 (2019-11-28); Method will be removed
+     * because MySQL 8 removed ENCODE and DECODE methods
+     *
      */
     public function getDecodeValueQuery($fieldName = "oxvarvalue")
     {

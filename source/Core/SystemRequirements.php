@@ -539,7 +539,7 @@ class SystemRequirements
         $result = 1;
         $iErrNo = 0;
         $sErrStr = '';
-        if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
+        if ($oRes = @fsockopen('olc.oxid-esales.com', 80, $iErrNo, $sErrStr, 10)) {
             $result = 2;
             fclose($oRes);
         }

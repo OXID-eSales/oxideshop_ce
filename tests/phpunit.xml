@@ -7,7 +7,6 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          forceCoversAnnotation="false"
-         mapTestClassNameToCoveredClassName="false"
          printerClass="\OxidEsales\TestingLibrary\Printer"
          processIsolation="false"
          stopOnError="false"

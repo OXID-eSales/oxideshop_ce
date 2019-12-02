@@ -50,15 +50,6 @@ class StartTest extends \OxidTestCase
         $this->assertEquals($this->getConfig()->getConfigParam("sShopURL"), $oView->getCanonicalUrl());
     }
 
-    public function testGetArticleList()
-    {
-        $oStart = $this->getProxyClass('start');
-
-        $aList = $oStart->getArticleList();
-        $this->assertTrue($aList instanceof articlelist);
-        $this->assertEquals(2, $aList->count());
-    }
-
     public function testGetTopArticleList()
     {
         $oStart = $this->getProxyClass('start');

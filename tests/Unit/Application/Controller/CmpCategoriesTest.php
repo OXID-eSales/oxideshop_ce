@@ -311,7 +311,7 @@ class CmpCategoriesTest extends \OxidTestCase
 
     public function testLoadManufacturerTreeIsNotNeeded()
     {
-        oxTestModules::addFunction('oxUtilsObject', 'oxNew($cl)', '{if ("oxmanufacturerlist" == $cl) return \Unit\Application\Controller\CmpCategoriesTest::$oCL; return parent::oxNew($cl);}');
+        oxTestModules::addFunction('oxUtilsObject', 'oxNew($cl, ...$arguments)', '{if ("oxmanufacturerlist" == $cl) return \Unit\Application\Controller\CmpCategoriesTest::$oCL; return parent::oxNew($cl, ...$arguments);}');
 
         $oCfg = $this->getMock(Config::class, array('getConfigParam'));
         $oCfg->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('bl_perfLoadManufacturerTree'))->will($this->returnValue(false));

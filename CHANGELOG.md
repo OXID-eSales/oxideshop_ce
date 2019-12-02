@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Application\Controller\StartController::getArticleList`
 
+### Fixed
+- Fix the host for checking the SystemRequirements->fsockopen to working one [#0006606](https://bugs.oxid-esales.com/view.php?id=6606) [PR-556](https://github.com/OXID-eSales/oxideshop_ce/pull/556)
+
 ## [6.3.6] - 2019-10-29
 
 ### Fixed

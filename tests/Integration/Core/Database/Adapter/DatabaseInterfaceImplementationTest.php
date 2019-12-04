@@ -1353,9 +1353,13 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     protected function fetchTransactionIsolationLevel()
     {
-        $sql = "SELECT @@tx_isolation;";
-
         $masterDb = oxDb::getMaster();
+        $mySqlVersion = $masterDb->getOne('select version()');
+        $sql = "SELECT @@tx_isolation;";
+        if (version_compare($mySqlVersion, '8.0.0', '>=')) {
+            $sql = "SELECT @@transaction_isolation;";
+        }
+
         $resultSet = $masterDb->select($sql, array());
 
         return str_replace('-', ' ', $resultSet->fields[0]);

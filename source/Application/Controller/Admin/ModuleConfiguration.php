@@ -332,7 +332,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    private function _getDbConfigTypeName($type)
+    protected function _getDbConfigTypeName($type)
     {
         return $type === 'password' ? 'str' : $type;
     }

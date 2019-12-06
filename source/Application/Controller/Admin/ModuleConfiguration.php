@@ -334,7 +334,6 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function getDbConfigTypeName($type)
     {
-       parent::getDbConfigTypeName($type);
-       return $type === 'colorpicker' ? 'str' : $type;
+        return $type === 'password' ? 'str' : $type;
     }
 }

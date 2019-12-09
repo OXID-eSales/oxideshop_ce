@@ -7,10 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.6.0] - Unreleased
 
 ### Added
+- Support for MySQL 8.0
 - Add logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
 
 ### Changed
 - Migrate from PHP 7.4snapshot to 7.4 in travis [PR-745](https://github.com/OXID-eSales/oxideshop_ce/pull/745)
+- Renamed constants in `OxidEsales\EshopCommunity\Setup\Database`:
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_CODE_DBMS_NOT_COMPATIBLE`
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_CODE_DBMS_NOT_RECOMMENDED`
+- Renamed Setup translation keys and changed translation messages:
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_DBMS_VERSION_DOES_NOT_FIT_REQUIREMENTS`
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_MYSQL_56_NOT_RECOMMENDED`
 - Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
 
 ### Fixed
@@ -31,6 +38,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
 - `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
 - `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
 - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
 - Language variables:
     - `CREDITCARD`
@@ -40,6 +48,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
 
 ### Removed
+- Support for MySQL 5.5
 - Removed database encoding:
     - Changed database fields:
         - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
@@ -52,6 +61,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `Conf`
     - Removed settings:
         - `sConfigKey` from `config.inc.php`
+- Setup method: `OxidEsales\EshopCommunity\Setup\Database::connectDb()`
 
 ## [6.5.1] - Unreleased
 

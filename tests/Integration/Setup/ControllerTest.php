@@ -7,11 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Setup;
 
-use OxidEsales\EshopCommunity\Setup\Controller;
+use OxidEsales\EshopCommunity\Setup\{Controller, Database, Exception\SetupControllerExitException, Language, Session};
+use OxidEsales\TestingLibrary\UnitTestCase;
 
 require_once OX_BASE_PATH . 'Setup' . DIRECTORY_SEPARATOR . 'functions.php';
 
-class TestSetupController extends \OxidEsales\EshopCommunity\Setup\Controller
+class TestSetupController extends Controller
 {
     public function setInstance($key, $object)
     {
@@ -28,7 +29,7 @@ class TestSetupController extends \OxidEsales\EshopCommunity\Setup\Controller
 /**
  * SetupCoreTest tests
  */
-class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ControllerTest extends UnitTestCase
 {
     /**
      * The standard set up method.
@@ -60,7 +61,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
             $this->assertContains('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
@@ -72,20 +73,32 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Test case that mySQL version does not fit requirements.
      */
-    public function testDbConnectMySQLVersionDoesNotFitRequirements()
+    public function testDbConnectMySQLVersionDoesNotFitRequirements(): void
     {
+        $controller = new TestSetupController();
+        $errorMessage = 'some message';
         $this->setPostDatabase($this->getDatabaseCredentials());
+        $databaseMock = $this->createMock(Database::class);
+        $databaseMock->method('openDatabase')
+            ->will(
+                $this->throwException(
+                    new \Exception($errorMessage, Database::ERROR_CODE_DBMS_NOT_COMPATIBLE)
+                )
+            );
 
-        $controller = $this->getTestController('5.4.53-0ubuntu0.14.04.1');
+        $databaseMock->expects($this->never())
+            ->method('createDb');
 
-        // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
+        $controller->setInstance('Session', $this->createMock(Session::class));
+        $controller->setInstance('Language', $this->createMock(Language::class));
+        $controller->setInstance('Database', $databaseMock);
+
         try {
             $controller->dbConnect();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-
-            $this->assertContains('The installed MySQL version does not fit system requirements!', $view->getMessages()[0]);
-            $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
+            $this->assertContains($errorMessage, $view->getMessages()[0]);
+            $this->assertEquals('400', $view->getNextSetupStep());
             $this->assertNull($view->getViewParam('aDB'));
         }
     }
@@ -104,7 +117,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
             $this->assertContains('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
@@ -129,7 +142,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
         try {
             $controller->dbConnect();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
             $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
@@ -144,22 +157,44 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * Test case that mySQL version does not fit requirements.
      * Case database does not yet exist.
      */
-    public function testDbConnectMySQLVersionDoesNotFitRecommendations()
+    public function testDbConnectMySQLVersionDoesNotFitRecommendations(): void
     {
+        $controller = new TestSetupController();
+        $methodToStopExecutionOn = 'testCreateView';
+        $errorMessage = 'some message';
         $this->setPostDatabase($this->getDatabaseCredentials());
+        $databaseMock = $this->getMockBuilder(Database::class)
+            ->setMethods(['getDatabaseVersion', 'createDb', 'testCreateView', 'openDatabase'])
+            ->getMock();
+        $databaseMock->method('openDatabase')
+            ->willThrowException(
+                new \Exception($errorMessage, Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)
+            );
+        $databaseMock->method($methodToStopExecutionOn)
+            ->willThrowException(
+                new \Exception('Stop here (prevent further execution)')
+            );
+        $languageMock = $this->getMockBuilder(Language::class)
+            ->setMethods(['getInstance', 'getLanguage'])
+            ->getMock();
+        $languageMock->method('getLanguage')
+            ->willReturn('en');
 
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1');
+        $databaseMock->expects($this->never())
+            ->method('createDb');
 
-        // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
+        $controller->setInstance('Session', $this->createMock(Session::class));
+        $controller->setInstance('Language', $languageMock);
+        $controller->setInstance('Database', $databaseMock);
+
         try {
             $controller->dbConnect();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
+            $this->assertContains($errorMessage, $view->getMessages()[0]);
             $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
             $this->assertContains('owrec=1', $view->getMessages()[1]);
-            $this->assertNull($view->getViewParam('aDB')); //we never got that far
+            $this->assertNull($view->getViewParam('aDB'));
         }
     }
 
@@ -167,25 +202,55 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * Test case that mySQL version does not fit requirements.
      * Case database does already exist.
      */
-    public function testDbConnectMySQLVersionDoesNotFitRecommendationsDatabaseExists()
+    public function testDbConnectMySQLVersionDoesNotFitRecommendationsDatabaseExists(): void
     {
-        $databaseName = $this->getConfig()->getConfigParam('dbName');
-        $this->setPostDatabase($this->getDatabaseCredentials($databaseName));
+        $controller = new TestSetupController();
+        $methodToStopExecutionOn = 'testCreateView';
+        $errorMessage = 'some message';
+        $this->setPostDatabase($this->getDatabaseCredentials());
+        $databaseMock = $this->getMockBuilder(Database::class)
+            ->setMethods(['getDatabaseVersion', 'createDb', 'testCreateView', 'openDatabase', 'execSql'])
+            ->getMock();
+        $databaseMock->method('openDatabase')
+            ->willThrowException(
+                new \Exception($errorMessage, Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)
+            );
+        /** Mock database exists check */
+        $databaseMock->method('execSql')
+            ->with('select * from oxconfig')
+            ->willReturn(true);
+        $databaseMock->method($methodToStopExecutionOn)
+            ->willThrowException(
+                new \Exception('Stop here (prevent further execution)')
+            );
+        $languageMock = $this->getMockBuilder(Language::class)
+            ->setMethods(['getInstance', 'getLanguage'])
+            ->getMock();
+        $languageMock->method('getLanguage')
+            ->willReturn('en');
 
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1');
+        $databaseMock->expects($this->never())
+            ->method('createDb');
 
-        // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
+        $controller->setInstance('Session', $this->createMock(Session::class));
+        $controller->setInstance('Language', $languageMock);
+        $controller->setInstance('Database', $databaseMock);
         try {
             $controller->dbConnect();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[1]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[2]);
+            $this->assertContains($errorMessage, $view->getMessages()[0]);
+            $this->assertContains(
+                'ERROR: Seems there is already OXID eShop installed in database',
+                $view->getMessages()[1]
+            );
+            $this->assertContains(
+                'If you want to overwrite all existing data and install anyway click',
+                $view->getMessages()[2]
+            );
             $this->assertContains('owrec=1', $view->getMessages()[2]);
             $this->assertContains('ow=1', $view->getMessages()[2]);
-            $this->assertNull($view->getViewParam('aDB'));  //we never got that far
+            $this->assertNull($view->getViewParam('aDB'));
         }
     }
 
@@ -210,21 +275,48 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * Test case that mySQL version does not fit requirements and user already clicked 'install anyway' checkbox.
      * Case database does already exist.
      */
-    public function testDbConnectMySQLVersionDoesNotFitRecommendationsDatabaseExistsIgnoreConfirmed()
+    public function testDbConnectMySQLVersionDoesNotFitRecommendationsDatabaseExistsIgnoreConfirmed(): void
     {
-        $databaseName = $this->getConfig()->getConfigParam('dbName');
-        $this->setPostDatabase($this->getDatabaseCredentials($databaseName));
+        /** User choose to ignore warnings - $databaseMock will not throw DBMS check exception here */
+        $_GET['owrec'] = 1;
+        $controller = new TestSetupController();
+        $methodToStopExecutionOn = 'testCreateView';
+        $this->setPostDatabase($this->getDatabaseCredentials());
+        $databaseMock = $this->getMockBuilder(Database::class)
+            ->setMethods(['getDatabaseVersion', 'createDb', 'testCreateView', 'openDatabase', 'execSql'])
+            ->getMock();
+        /** Mock database exists check */
+        $databaseMock->method('execSql')
+            ->with('select * from oxconfig')
+            ->willReturn(true);
+        $databaseMock->method($methodToStopExecutionOn)
+            ->willThrowException(
+                new \Exception('Stop here (prevent further execution)')
+            );
+        $languageMock = $this->getMockBuilder(Language::class)
+            ->setMethods(['getInstance', 'getLanguage'])
+            ->getMock();
+        $languageMock->method('getLanguage')
+            ->willReturn('en');
 
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', true, false);
+        $databaseMock->expects($this->never())
+            ->method('createDb');
 
-        // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
+        $controller->setInstance('Session', $this->createMock(Session::class));
+        $controller->setInstance('Language', $languageMock);
+        $controller->setInstance('Database', $databaseMock);
         try {
             $controller->dbConnect();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway', $view->getMessages()[1]);
+            $this->assertContains(
+                'ERROR: Seems there is already OXID eShop installed in database',
+                $view->getMessages()[0]
+            );
+            $this->assertContains(
+                'If you want to overwrite all existing data and install anyway',
+                $view->getMessages()[1]
+            );
             $this->assertNotContains('owrec=1', $view->getMessages()[1]);
             $this->assertContains('ow=1', $view->getMessages()[1]);
             $this->assertNotNull($view->getViewParam('aDB'));
@@ -235,21 +327,52 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * Test Controller::dbCreate() (which only creates/overwrites the needed tables)
      * in case MySQl version does not match the recommendations.
      */
-    public function testDbCreateMySQLVersionDoesNotFitRecommendationsDbDoesAlreadyExist()
+    public function testDbCreateMySQLVersionDoesNotFitRecommendationsDbDoesAlreadyExist(): void
     {
-        $databaseName = $this->getConfig()->getConfigParam('dbName');
-        $databaseCredentials = $this->getDatabaseCredentials($databaseName);
+        $errorMessage = 'some message';
+        $controller = new TestSetupController();
+        $methodToStopExecutionOn = 'testCreateView';
+        $this->setPostDatabase($this->getDatabaseCredentials());
+        $databaseMock = $this->getMockBuilder(Database::class)
+            ->setMethods(['getDatabaseVersion', 'createDb', 'testCreateView', 'openDatabase', 'execSql'])
+            ->getMock();
+        $databaseMock->method('openDatabase')
+            ->willThrowException(
+                new \Exception($errorMessage, Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)
+            );
+        /** Mock database exists check */
+        $databaseMock->method('execSql')
+            ->with('select * from oxconfig')
+            ->willReturn(true);
+        $databaseMock->method($methodToStopExecutionOn)
+            ->willThrowException(
+                new \Exception('Stop here (prevent further execution)')
+            );
+        $languageMock = $this->getMockBuilder(Language::class)
+            ->setMethods(['getInstance', 'getLanguage'])
+            ->getMock();
+        $languageMock->method('getLanguage')
+            ->willReturn('en');
 
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', false, false, ['aDB' => $databaseCredentials]);
+        $databaseMock->expects($this->never())
+            ->method('createDb');
 
-        // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
+        $controller->setInstance('Session', $this->createMock(Session::class));
+        $controller->setInstance('Language', $languageMock);
+        $controller->setInstance('Database', $databaseMock);
         try {
             $controller->dbCreate();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[1]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[2]);
+            $this->assertContains($errorMessage, $view->getMessages()[0]);
+            $this->assertContains(
+                'ERROR: Seems there is already OXID eShop installed in database',
+                $view->getMessages()[1]
+            );
+            $this->assertContains(
+                'If you want to overwrite all existing data and install anyway click',
+                $view->getMessages()[2]
+            );
             $this->assertContains('owrec=1', $view->getMessages()[2]);
             $this->assertContains('ow=1', $view->getMessages()[2]);
         }
@@ -261,19 +384,41 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
      * the case that the database does not yet exist.
      * NOTE: this will only happen if the MySQL version does not fit recommendations.
      */
-    public function testDbCreateMySQLVersionDoesNotFitRecommendationsDbDoesNotExist()
+    public function testDbCreateMySQLVersionDoesNotFitRecommendationsDbDoesNotExist(): void
     {
-        $databaseCredentials = $this->getDatabaseCredentials();
+        $errorMessage = 'some message';
+        $controller = new TestSetupController();
+        $methodToStopExecutionOn = 'testCreateView';
+        $this->setPostDatabase($this->getDatabaseCredentials());
+        $databaseMock = $this->getMockBuilder(Database::class)
+            ->setMethods(['getDatabaseVersion', 'createDb', 'testCreateView', 'openDatabase'])
+            ->getMock();
+        $databaseMock->method('openDatabase')
+            ->willThrowException(
+                new \Exception($errorMessage, Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)
+            );
+        $databaseMock->method($methodToStopExecutionOn)
+            ->willThrowException(
+                new \Exception('Stop here (prevent further execution)')
+            );
+        $languageMock = $this->getMockBuilder(Language::class)
+            ->setMethods(['getInstance', 'getLanguage'])
+            ->getMock();
+        $languageMock->method('getLanguage')
+            ->willReturn('en');
 
-        $controller = $this->getTestController('5.6.53-0ubuntu0.14.04.1', false, false, ['aDB' => $databaseCredentials]);
+        $databaseMock->expects($this->never())
+            ->method('createDb');
 
-        // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
+        $controller->setInstance('Session', $this->createMock(Session::class));
+        $controller->setInstance('Language', $languageMock);
+        $controller->setInstance('Database', $databaseMock);
         try {
             $controller->dbCreate();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
+            $this->assertContains($errorMessage, $view->getMessages()[0]);
             $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
             $this->assertContains('owrec=1', $view->getMessages()[1]);
         }
@@ -293,7 +438,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
         try {
             $controller->dbCreate();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
             $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
@@ -313,7 +458,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         // NOTE: OxidTestCase::expectException is not what we need here, try/catch is better suited
         try {
             $controller->dbCreate();
-        } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
+        } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
             $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
@@ -336,17 +481,17 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             $_GET['owrec'] = 1;
         }
 
-        $sessionMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Session::class, ['getSid'], [], '', false);
+        $sessionMock = $this->getMock(Session::class, ['getSid'], [], '', false);
         if (is_array($sessionData) && !empty($sessionData)) {
             foreach ($sessionData as $key => $value) {
                 $sessionMock->setSessionParam($key, $value);
             }
         }
 
-        $languageMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Language::class, ['getInstance', 'getLanguage'], [], '', false);
+        $languageMock = $this->getMock(Language::class, ['getInstance', 'getLanguage'], [], '', false);
         $languageMock->expects($this->any())->method('getLanguage')->will($this->returnValue('en'));
 
-        $databaseMock = $this->getMock(\OxidEsales\EshopCommunity\Setup\Database::class, ['getDatabaseVersion', 'createDb', 'testCreateView']);
+        $databaseMock = $this->getMock(Database::class, ['getDatabaseVersion', 'createDb', 'testCreateView']);
         $databaseMock->expects($this->any())->method('getDatabaseVersion')->will($this->returnValue($databaseVersion));
         $exception = new \Exception('bail out before we do harm while testing');
         $databaseMock->expects($this->any())->method('testCreateView')->will($this->throwException($exception));
@@ -358,7 +503,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             $databaseMock->expects($this->never())->method('createDb');
         }
 
-        $controller = oxNew(\OxidEsales\EshopCommunity\Tests\Integration\Setup\TestSetupController::class);
+        $controller = oxNew(TestSetupController::class);
         $controller->setInstance('Session', $sessionMock);
         $controller->setInstance('Language', $languageMock);
         $controller->setInstance('Database', $databaseMock);

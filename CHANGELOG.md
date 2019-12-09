@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
 - `Conf`
 - `OxidEsales\Eshop\Core\Session::$_blStarted`
+- `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
+- `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
 - Credit Card:
     - Class:
         - `OxidEsales\Eshop\Core\CreditCardValidator`
@@ -53,6 +56,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fix docblock and var name in NavigationController::_doStartUpChecks [PR-751](https://github.com/OXID-eSales/oxideshop_ce/pull/751)
 
 ### Added
+- Support MariaDB (tested for MariaDB 10.4)
 - Support PHP 7.3 and 7.4
 - Utilizes Travis CI caching feature for faster builds
 - Uninstall method for removing module

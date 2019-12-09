@@ -25,6 +25,8 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Payment information encryption key
      *
+     * @deprecated since v6.5.1 (2020-02-07); Database encoding was completely removed and property is not used anymore.
+     *
      * @var string.
      */
     protected $_sPaymentKey = 'fq45QS09_fqyx09239QQ';
@@ -101,7 +103,9 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns payment key used for DB value decription
+     * Returns payment key used for DB value description
+     *
+     * @deprecated since v6.5.1 (2020-02-07); Database encoding was completely removed and method is not used anymore.
      *
      * @return string
      */

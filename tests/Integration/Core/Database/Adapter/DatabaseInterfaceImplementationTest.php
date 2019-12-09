@@ -6,11 +6,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\TransactionIsolationLevel;
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use ReflectionClass;
 
 /**
@@ -26,6 +29,7 @@ use ReflectionClass;
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {
+    use ContainerTrait;
 
     /**
      * The data provider for the method testGetAllForAllFetchModes.
@@ -506,23 +510,19 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertSame(array(0), array_keys($row));
     }
 
-    /**
-     * Test, that the set of the transaction isolation level works.
-     */
-    public function testSetTransactionIsolationLevel()
+    public function testSetTransactionIsolationLevel(): void
     {
-        $transactionIsolationLevelPre = $this->fetchTransactionIsolationLevel();
+        $connection = $this->get(Connection::class);
 
-        $expectedLevel = 'READ COMMITTED';
-        $this->database->setTransactionIsolationLevel($expectedLevel);
-        $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
+        $transactionIsolationLevelPre = $connection->getTransactionIsolation();
+
+        $expectedLevel = TransactionIsolationLevel::READ_COMMITTED;
+        $this->database->setTransactionIsolationLevel('READ COMMITTED');
+        $transactionIsolationLevel = $connection->getTransactionIsolation();
 
         $this->assertSame($expectedLevel, $transactionIsolationLevel);
 
-        $this->database->setTransactionIsolationLevel($transactionIsolationLevelPre);
-        $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
-
-        $this->assertSame($transactionIsolationLevelPre, $transactionIsolationLevel);
+        $connection->setTransactionIsolation($transactionIsolationLevelPre);
     }
 
     /**
@@ -1153,10 +1153,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
     }
 
-    /**
-     * Test, that the method 'MetaColumns' works as expected.
-     */
-    public function testMetaColumns()
+    public function testMetaColumnsMethod()
     {
         $metaColumnsTestTable = self::TABLE_NAME . '_testmetacolumns';
         $this->createTableForTestMetaColumns($metaColumnsTestTable);
@@ -1251,7 +1248,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'auto_increment' => false,
                 'binary'         => false,
                 'unsigned'       => false,
-                'has_default'    => false,
                 'comment'        => 'a column with type CHAR',
                 'characterSet'   => 'utf8',
                 'collation'      => 'utf8_general_ci'
@@ -1264,7 +1260,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'auto_increment' => false,
                 'binary'         => false,
                 'unsigned'       => false,
-                'has_default'    => false,
                 'comment'        => 'a column of type TIME',
             ),
             array(
@@ -1344,25 +1339,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             )
         );
     }
-
-    /**
-     * Fetch the transaction isolation level.
-     *
-     * @return string The transaction isolation level.
-     */
-    protected function fetchTransactionIsolationLevel()
-    {
-        $sql = "SELECT @@tx_isolation;";
-
-        $masterDb = oxDb::getMaster();
-        $resultSet = $masterDb->select($sql, array());
-
-        return str_replace('-', ' ', $resultSet->fields[0]);
-    }
-
-    /**
-     * Helper methods used in this class only
-     */
 
     /**
      * Assure, that the table oxdoctrinetest has only the given oxId.

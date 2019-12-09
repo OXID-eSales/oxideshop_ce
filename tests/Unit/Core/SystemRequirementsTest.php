@@ -121,14 +121,6 @@ class SystemRequirementsTest extends \OxidTestCase
                 'version'        => '5.7.12-1~exp1+deb.sury.org~trusty+1',
                 'expectedResult' => 2
             ],
-            [
-                'version'        => '5.8.0',
-                'expectedResult' => 1
-            ],
-            [
-                'version'        => '5.8.22',
-                'expectedResult' => 1
-            ],
         ];
     }
 

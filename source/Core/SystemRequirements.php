@@ -687,6 +687,10 @@ class SystemRequirements
      *
      * @param string $installedVersion MySQL version
      *
+     * @deprecated since v6.5.1 (2020-02-07) use
+     * \OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface
+     * instead
+     *
      * @return int
      */
     public function checkMysqlVersion($installedVersion = null)
@@ -694,7 +698,6 @@ class SystemRequirements
         $requirementFits = null;
 
         $minimalRequiredVersion = '5.5.0';
-        $maximalRequiredVersion = '5.7.9999';
 
         if ($installedVersion === null) {
             $resultContainingDatabaseVersion = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
@@ -717,10 +720,7 @@ class SystemRequirements
             $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
         }
 
-        if (is_null($requirementFits) &&
-            version_compare($installedVersion, $minimalRequiredVersion, '>=') &&
-            version_compare($installedVersion, $maximalRequiredVersion, '<=')
-        ) {
+        if (is_null($requirementFits) && version_compare($installedVersion, $minimalRequiredVersion, '>=')) {
             $requirementFits = static::MODULE_STATUS_OK;
         }
 

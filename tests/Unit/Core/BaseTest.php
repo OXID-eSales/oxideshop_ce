@@ -723,60 +723,43 @@ class BaseTest extends \OxidTestCase
         $this->assertEquals("test class", $oBase->getClassName());
     }
 
-    /**
-     * Test get update fields.
-     *
-     * @return null
-     */
     public function testGetUpdateFields()
     {
-        $oBase = new _oxBase();
-        $oBase->init("oxactions");
-        $oBase->oxactions__oxid = new oxField("test1", oxField::T_RAW);
-        $oBase->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
+        $base = new _oxBase();
+        $base->init("oxactions");
+        $base->oxactions__oxid = new oxField("test1", oxField::T_RAW);
+        $base->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
 
-        $shopId = $this->getUpdateShopId();
-        $sGetUpdateFields = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0'";
-        $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields());
+        $expectedOxid = "oxid = 'test1'";
+        $this->assertStringStartsWith($expectedOxid, $base->UNITgetUpdateFields());
     }
 
-    /**
-     * Test get update fields with use skip save fields of.
-     *
-     * @return null
-     */
     public function testGetUpdateFieldsWithUseSkipSaveFieldsOff()
     {
-        $oBase = new _oxBase();
-        $oBase->init("oxactions");
-        $oBase->oxactions__oxid = new oxField("test1", oxField::T_RAW);
-        $oBase->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
-
-        $oBase->setClassVar('_aSkipSaveFields', array('oxtitle'));
+        $base = new _oxBase();
+        $base->init('oxactions');
+        $base->oxactions__oxid = new oxField('test1', oxField::T_RAW);
+        $base->oxactions__oxtitle = new oxField('title1', oxField::T_RAW);
+        $base->setClassVar('_aSkipSaveFields', ['oxtitle']);
 
         $shopId = $this->getUpdateShopId();
-        $sGetUpdateFields = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
-        $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields(false));
+
+        $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle = 'title1'";
+        $this->assertStringStartsWith($expectedOxid, $base->UNITgetUpdateFields(false));
     }
 
-    /**
-     * Test get update fields with use skip save fields on.
-     *
-     * @return null
-     */
     public function testGetUpdateFieldsWithUseSkipSaveFieldsOn()
     {
-        $oBase = new _oxBase();
-        $oBase->init("oxactions");
-        $oBase->oxactions__oxid = new oxField("test1", oxField::T_RAW);
-        $oBase->oxactions__oxtitle = new oxField("title1", oxField::T_RAW);
-
-        $oBase->setClassVar('_aSkipSaveFields', array('oxtitle'));
+        $base = new _oxBase();
+        $base->init('oxactions');
+        $base->oxactions__oxid = new oxField('test1', oxField::T_RAW);
+        $base->oxactions__oxtitle = new oxField('title1', oxField::T_RAW);
 
         $shopId = $this->getUpdateShopId();
-        $sGetUpdateFields = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
 
-        $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields());
+        $base->setClassVar('_aSkipSaveFields', ['oxtitle']);
+        $expectedOxid = "oxid = 'test1',oxshopid = '{$shopId}',oxtype = '',oxtitle_1 = ''";
+        $this->assertStringStartsWith($expectedOxid, $base->UNITgetUpdateFields());
     }
 
     /**
@@ -1803,283 +1786,6 @@ class BaseTest extends \OxidTestCase
         $oBase = oxNew('oxBase');
         $sResult = $oBase->UNITgetObjectViewName("oxnews", "1");
         $this->assertEquals("oxv_oxnews", $sResult);
-    }
-
-    /**
-     * Test get all fields.
-     *
-     * @return null
-     */
-    public function testGetAllFields()
-    {
-        oxTestModules::addFunction('oxUtils', 'fromFileCache', '{return false;}');
-        oxTestModules::addFunction('oxUtils', 'fromStaticCache', '{return false;}');
-        $oBase = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\_oxBase::class, array('isAdmin'));
-        $oBase->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        $oBase->init('oxactions');
-
-        $oField1 = new stdClass();
-        $oField1->name = 'OXID';
-        $oField1->max_length = '32';
-        $oField1->type = 'char';
-        $oField1->scale = null;
-        $oField1->not_null = true;
-        $oField1->primary_key = true;
-        $oField1->auto_increment = false;
-        $oField1->binary = false;
-        $oField1->unsigned = false;
-        $oField1->has_default = false;
-        $oField1->comment = 'Action id';
-        $oField1->characterSet = 'latin1';
-        $oField1->collation = 'latin1_general_ci';
-
-        $oField2 = new stdClass();
-        $oField2->name = 'OXSHOPID';
-        $oField2->max_length = '11';
-        $oField2->type = 'int';
-        $oField2->scale = null;
-        $oField2->not_null = true;
-        $oField2->primary_key = false;
-        $oField2->auto_increment = false;
-        $oField2->binary = false;
-        $oField2->unsigned = false;
-        $oField2->has_default = true;
-        $oField2->default_value = '1';
-        $oField2->comment = 'Shop id (oxshops)';
-        $oField2->characterSet = null;
-        $oField2->collation = '';
-
-        $oField3 = new stdClass();
-        $oField3->name = 'OXTYPE';
-        $oField3->max_length = '1';
-        $oField3->type = 'tinyint';
-        $oField3->scale = null;
-        $oField3->not_null = true;
-        $oField3->primary_key = false;
-        $oField3->auto_increment = false;
-        $oField3->binary = false;
-        $oField3->unsigned = false;
-        $oField3->has_default = false;
-        $oField3->comment = 'Action type: 0 or 1 - action, 2 - promotion, 3 - banner';
-        $oField3->characterSet = null;
-        $oField3->collation = '';
-
-        $oField4 = new stdClass();
-        $oField4->name = 'OXTITLE';
-        $oField4->max_length = '128';
-        $oField4->type = 'varchar';
-        $oField4->scale = null;
-        $oField4->not_null = true;
-        $oField4->primary_key = false;
-        $oField4->auto_increment = false;
-        $oField4->binary = false;
-        $oField4->unsigned = false;
-        $oField4->has_default = false;
-        $oField4->comment = 'Title (multilanguage)';
-        $oField4->characterSet = 'utf8';
-        $oField4->collation = 'utf8_general_ci';
-
-        $oField41 = clone $oField4;
-        $oField41->name = 'OXTITLE_1';
-        $oField41->comment = '';
-
-        $oField42 = clone $oField4;
-        $oField42->name = 'OXTITLE_2';
-        $oField42->comment = '';
-
-        $oField43 = clone $oField4;
-        $oField43->name = 'OXTITLE_3';
-        $oField43->comment = '';
-
-        $oField5 = new stdClass();
-        $oField5->name = 'OXLONGDESC';
-        $oField5->max_length = '10';
-        $oField5->type = 'text';
-        $oField5->scale = null;
-        $oField5->not_null = true;
-        $oField5->primary_key = false;
-        $oField5->auto_increment = false;
-        $oField5->binary = false;
-        $oField5->unsigned = false;
-        $oField5->has_default = false;
-        $oField5->comment = 'Long description, used for promotion (multilanguage)';
-        $oField5->characterSet = 'utf8';
-        $oField5->collation = 'utf8_general_ci';
-
-        $oField51 = clone $oField5;
-        $oField51->name = 'OXLONGDESC_1';
-        $oField51->comment = '';
-
-        $oField52 = clone $oField5;
-        $oField52->name = 'OXLONGDESC_2';
-        $oField52->comment = '';
-
-        $oField53 = clone $oField5;
-        $oField53->name = 'OXLONGDESC_3';
-        $oField53->comment = '';
-
-        $oField6 = new stdClass();
-        $oField6->name = 'OXACTIVE';
-        $oField6->max_length = '1';
-        $oField6->type = 'tinyint';
-        $oField6->scale = null;
-        $oField6->not_null = true;
-        $oField6->primary_key = null;
-        $oField6->auto_increment = false;
-        $oField6->binary = false;
-        $oField6->unsigned = false;
-        $oField6->has_default = true;
-        $oField6->default_value = '1';
-        $oField6->comment = 'Active';
-        $oField6->characterSet = null;
-        $oField6->collation = null;
-
-        $oField7 = new stdClass();
-        $oField7->name = 'OXACTIVEFROM';
-        $oField7->max_length = 20;
-        $oField7->type = 'datetime';
-        $oField7->scale = null;
-        $oField7->not_null = true;
-        $oField7->primary_key = false;
-        $oField7->auto_increment = false;
-        $oField7->binary = false;
-        $oField7->unsigned = false;
-        $oField7->has_default = true;
-        $oField7->default_value = '0000-00-00 00:00:00';
-        $oField7->comment = 'Active from specified date';
-        $oField7->characterSet = null;
-        $oField7->collation = null;
-
-        $oField8 = new stdClass();
-        $oField8->name = 'OXACTIVETO';
-        $oField8->max_length = 20;
-        $oField8->type = 'datetime';
-        $oField8->scale = null;
-        $oField8->not_null = true;
-        $oField8->primary_key = false;
-        $oField8->auto_increment = false;
-        $oField8->binary = false;
-        $oField8->unsigned = false;
-        $oField8->has_default = true;
-        $oField8->default_value = '0000-00-00 00:00:00';
-        $oField8->comment = 'Active to specified date';
-        $oField8->characterSet = null;
-        $oField8->collation = null;
-
-        $oField9 = new stdClass();
-        $oField9->name = 'OXPIC';
-        $oField9->max_length = '128';
-        $oField9->type = 'varchar';
-        $oField9->scale = null;
-        $oField9->not_null = true;
-        $oField9->primary_key = false;
-        $oField9->auto_increment = false;
-        $oField9->binary = false;
-        $oField9->unsigned = false;
-        $oField9->has_default = false;
-        $oField9->comment = 'Picture filename, used for banner (multilanguage)';
-        $oField9->characterSet = 'utf8';
-        $oField9->collation = 'utf8_general_ci';
-
-        $oField91 = clone $oField9;
-        $oField91->name = 'OXPIC_1';
-        $oField91->comment = '';
-
-        $oField92 = clone $oField9;
-        $oField92->name = 'OXPIC_2';
-        $oField92->comment = '';
-
-        $oField93 = clone $oField9;
-        $oField93->name = 'OXPIC_3';
-        $oField93->comment = '';
-
-        $oField10 = new stdClass();
-        $oField10->name = 'OXLINK';
-        $oField10->max_length = '128';
-        $oField10->type = 'varchar';
-        $oField10->scale = null;
-        $oField10->not_null = true;
-        $oField10->primary_key = false;
-        $oField10->auto_increment = false;
-        $oField10->binary = false;
-        $oField10->unsigned = false;
-        $oField10->has_default = false;
-        $oField10->comment = 'Link, used on banner (multilanguage)';
-        $oField10->characterSet = 'utf8';
-        $oField10->collation = 'utf8_general_ci';
-
-        $oField101 = clone $oField10;
-        $oField101->name = 'OXLINK_1';
-        $oField101->comment = '';
-
-        $oField102 = clone $oField10;
-        $oField102->name = 'OXLINK_2';
-        $oField102->comment = '';
-
-        $oField103 = clone $oField10;
-        $oField103->name = 'OXLINK_3';
-        $oField103->comment = '';
-
-        $oField11 = new stdClass();
-        $oField11->name = 'OXSORT';
-        $oField11->max_length = '5';
-        $oField11->type = 'int';
-        $oField11->scale = null;
-        $oField11->not_null = true;
-        $oField11->primary_key = false;
-        $oField11->auto_increment = false;
-        $oField11->binary = false;
-        $oField11->unsigned = false;
-        $oField11->has_default = true;
-        $oField11->default_value = '0';
-        $oField11->comment = 'Sorting';
-        $oField11->characterSet = null;
-        $oField11->collation = null;
-
-        $oField12 = new stdClass();
-        $oField12->name = 'OXTIMESTAMP';
-        $oField12->max_length = '10';
-        $oField12->type = 'timestamp';
-        $oField12->scale = null;
-        $oField12->not_null = true;
-        $oField12->primary_key = false;
-        $oField12->auto_increment = false;
-        $oField12->binary = false;
-        $oField12->unsigned = false;
-        $oField12->has_default = true;
-        $oField12->default_value = 'CURRENT_TIMESTAMP';
-        $oField12->comment = 'Timestamp';
-        $oField12->characterSet = null;
-        $oField12->collation = null;
-
-        $expectedFields = array(
-            $oField1,
-            $oField2,
-            $oField3,
-            $oField4,
-            $oField41,
-            $oField42,
-            $oField43,
-            $oField5,
-            $oField51,
-            $oField52,
-            $oField53,
-            $oField6,
-            $oField7,
-            $oField8,
-            $oField9,
-            $oField91,
-            $oField92,
-            $oField93,
-            $oField10,
-            $oField101,
-            $oField102,
-            $oField103,
-            $oField11,
-            $oField12
-        );
-
-        $this->assertEquals($expectedFields, $oBase->UNITgetAllFields());
     }
 
     /**

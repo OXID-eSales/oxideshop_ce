@@ -98,7 +98,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::__construct();
         $this->init('oxuserpayments');
-        $this->_sPaymentKey = Registry::getUtils()->strRot13($this->_sPaymentKey);
+        $this->_sPaymentKey = str_rot13($this->_sPaymentKey);
         $this->setStoreCreditCardInfo(Registry::getConfig()->getConfigParam('blStoreCreditCardInfo'));
     }
 

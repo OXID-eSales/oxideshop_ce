@@ -19,7 +19,7 @@ class ModuleTemplateBlockRepository
      * Return how many blocks of provided module overrides any template for active shop.
      *
      * @param array  $modulesId list of modules to check if their template blocks overrides some shop block.
-     * @param string $shopId    shop id to check if some module block overrides some template blocks in this Shop.
+     * @param int    $shopId    shop id to check if some module block overrides some template blocks in this Shop.
      *
      * @return string count of blocks for Shop=$shopId from modules=$modulesId.
      */
@@ -44,7 +44,7 @@ class ModuleTemplateBlockRepository
      *
      * @param string $shopTemplateName shop template file name.
      * @param array  $activeModulesId  list of modules to get information about.
-     * @param string $shopId           in which Shop modules must be active.
+     * @param int    $shopId           in which Shop modules must be active.
      * @param array  $themesId         list of themes to get information about.
      *
      * @return array

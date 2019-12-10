@@ -1295,7 +1295,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $userName login name
      * @param string $password login password
-     * @param string $shopId   shopid
+     * @param int    $shopId   shopid
      * @param bool   $isAdmin  admin/non admin mode
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface`
@@ -2370,7 +2370,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $userName User
      * @param string $password Password
-     * @param string $shopID   Shop id
+     * @param int    $shopID   Shop id
      *
      * @throws UserException
      *
@@ -2788,7 +2788,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates given query. Method is for overriding.
      *
      * @param string $user
-     * @param string $shopId
+     * @param int    $shopId
      *
      * @return string
      */

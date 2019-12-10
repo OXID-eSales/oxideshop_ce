@@ -165,7 +165,7 @@ if (!function_exists('getViewName')) {
      *
      * @param string $table      table name
      * @param int    $languageId language id [optional]
-     * @param string $shopId     shop id, otherwise config->myshopid is used [optional]
+     * @param int    $shopId     shop id, otherwise config->myshopid is used [optional]
      *
      * @deprecated since v6.0.0 (2016-05-16); Use oxTableViewNameGenerator::getViewName().
      *

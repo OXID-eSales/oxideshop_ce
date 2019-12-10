@@ -81,11 +81,11 @@ REPLACE INTO `oxstates` (`OXID`, `OXCOUNTRYID`, `OXTITLE`, `OXISOALPHA2`, `OXTIT
 
 
 # createBasketUserAccountWithoutRegistration
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xde         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
+UPDATE `oxconfig` SET `OXVARVALUE` = '0'         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
 UPDATE `oxconfig` SET `OXVARVALUE` = ''           WHERE `OXVARNAME` = 'blDisableNavBars';
 REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
-                       ('8563fba1965a219c9.51133344', 1, '', 'blUseStock',          'bool',       0x93ea1218);
+                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       'true'),
+                       ('8563fba1965a219c9.51133344', 1, '', 'blUseStock',          'bool',       'true');
 
 # createBasketUserAccountWithoutRegistrationTwice
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXTITLE_1` = 'Belgium';

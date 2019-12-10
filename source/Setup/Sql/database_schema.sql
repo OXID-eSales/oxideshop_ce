@@ -393,7 +393,7 @@ CREATE TABLE `oxconfig` (
   `OXMODULE`        varchar(100) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Module or theme specific config (theme:themename, module:modulename)',
   `OXVARNAME`       varchar(100) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Variable name',
   `OXVARTYPE`       varchar(16) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Variable type',
-  `OXVARVALUE`      blob NOT NULL COMMENT 'Variable value',
+  `OXVARVALUE`      text NOT NULL COMMENT 'Variable value',
   `OXTIMESTAMP`     timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY  (`OXID`),
   KEY `OXVARNAME` (`OXVARNAME`),
@@ -1627,7 +1627,7 @@ CREATE TABLE `oxuserpayments` (
   `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Payment id',
   `OXUSERID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'User id (oxusers)',
   `OXPAYMENTSID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Payment id (oxpayments)',
-  `OXVALUE` blob NOT NULL COMMENT 'DYN payment values array as string',
+  `OXVALUE` text NOT NULL COMMENT 'DYN payment values array as string',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY  (`OXID`),
   KEY `OXUSERID` (`OXUSERID`)

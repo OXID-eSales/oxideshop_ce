@@ -71,19 +71,18 @@ class ContactFormFrontendTest extends \OxidEsales\EshopCommunity\Tests\Acceptanc
     {
         $facts = new Facts();
         $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
-        $configKey = is_null($configFile->getVar('sConfigKey')) ? Config::DEFAULT_CONFIG_KEY : $configFile->getVar('sConfigKey');
         $rawValue = serialize($requiredFields);
 
         $query = "
         UPDATE `oxconfig`
         SET
-          `OXVARVALUE` = ENCODE(?,?)
+          `OXVARVALUE` = ?
         WHERE `OXSHOPID`= 1
         AND   `OXVARNAME` = 'contactFormRequiredFields'
         ";
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $database->execute($query, [$rawValue, $configKey]);
+        $database->execute($query, [$rawValue]);
     }
 
     private function assertFieldIsNotRequired(string $notRequiredInputFieldLocator, string $notRequiredFieldLabelLocator)

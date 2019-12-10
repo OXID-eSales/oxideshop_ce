@@ -545,7 +545,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Load config values from DB
      *
-     * @param string $shopID   shop ID to load parameters
+     * @param int    $shopID   shop ID to load parameters
      * @param array  $onlyVars array of params to load (optional)
      * @param string $module   module vars to load, empty for base options
      *
@@ -786,7 +786,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Active Shop id setter
      *
-     * @param string $shopId shop id
+     * @param int    $shopId shop id
      */
     public function setShopId($shopId)
     {
@@ -1832,7 +1832,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $varType Variable Type
      * @param string $varName Variable name
      * @param mixed  $varVal  Variable value (can be string, integer or array)
-     * @param string $shopId  Shop ID, default is current shop
+     * @param int    $shopId  Shop ID, default is current shop
      * @param string $module  Module name (empty for base options)
      */
     public function saveShopConfVar($varType, $varName, $varVal, $shopId = null, $module = '')
@@ -1895,7 +1895,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Retrieves shop configuration parameters from DB.
      *
      * @param string $varName Variable name
-     * @param string $shopId  Shop ID
+     * @param int    $shopId  Shop ID
      * @param string $module  module identifier
      *
      * @return object - raw configuration value in DB
@@ -2288,7 +2288,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns whether given shop id is valid.
      *
-     * @param string $shopId
+     * @param int    $shopId
      *
      * @return bool
      */

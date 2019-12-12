@@ -25,15 +25,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     // CHECK YOUR CREDIT CARD CONTRACT
 
     /**
-     * Payment information encryption key
-     *
-     * @deprecated since v6.6.0 (2019-11-15); Database encoding was completely removed and property is not used anymore.
-     *
-     * @var string.
-     */
-    protected $_sPaymentKey = 'fq45QS09_fqyx09239QQ';
-
-    /**
      * Name of current class
      *
      * @var string
@@ -98,20 +89,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::__construct();
         $this->init('oxuserpayments');
-        $this->_sPaymentKey = str_rot13($this->_sPaymentKey);
         $this->setStoreCreditCardInfo(Registry::getConfig()->getConfigParam('blStoreCreditCardInfo'));
-    }
-
-    /**
-     * Returns payment key used for DB value description
-     *
-     * @deprecated since v6.6.0 (2019-11-15); Database encoding was completely removed and method is not used anymore.
-     *
-     * @return string
-     */
-    public function getPaymentKey()
-    {
-        return $this->_sPaymentKey;
     }
 
     /**

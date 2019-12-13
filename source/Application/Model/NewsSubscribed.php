@@ -59,9 +59,9 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $blRet = parent::load($oxId);
 
-        if ($this->oxnewssubscribed__oxdboptin->value == 1) {
+        if ($this->getFieldData('oxnewssubscribed__oxdboptin') == 1) {
             $this->_blWasSubscribed = true;
-        } elseif ($this->oxnewssubscribed__oxdboptin->value == 2) {
+        } elseif ($this->getFieldData('oxnewssubscribed__oxdboptin') == 2) {
             $this->_blWasPreSubscribed = true;
         }
 

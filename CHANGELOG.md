@@ -86,6 +86,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
 
+### Changed
+- Migrate from PHP 7.4snapshot to 7.4 in travis [PR-745](https://github.com/OXID-eSales/oxideshop_ce/pull/745)
+
 ### Fixed
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)

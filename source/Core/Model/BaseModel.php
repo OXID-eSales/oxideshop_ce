@@ -529,8 +529,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             if ($this->getCoreTableName() == 'oxobject2category') {
                 $objectId = $this->oxobject2category__oxobjectid;
                 $categoryId = $this->oxobject2category__oxcatnid;
-                $shopID = $this->oxobject2category__oxshopid;
-                $this->_sOXID = md5($objectId . $categoryId . $shopID);
+                $shopId = $this->oxobject2category__oxshopid;
+                $this->_sOXID = md5($objectId . $categoryId . $shopId);
             } else {
                 $this->_sOXID = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
             }
@@ -996,13 +996,13 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Returns actual object view or table name
      *
      * @param string $table  Original table name
-     * @param int    $shopID Shop ID
+     * @param int    $shopId Shop ID
      *
      * @return string
      */
-    protected function _getObjectViewName($table, $shopID = null)
+    protected function _getObjectViewName($table, $shopId = null)
     {
-        return getViewName($table, -1, $shopID);
+        return getViewName($table, -1, $shopId);
     }
 
     /**

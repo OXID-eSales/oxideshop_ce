@@ -373,17 +373,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Initialize configuration variables
      *
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseException
-     * @param int $shopID
+     * @param int $shopId
      */
-    public function initVars($shopID)
+    public function initVars($shopId)
     {
         $this->_loadVarsFromFile();
 
         $this->_setDefaults();
 
-        $configLoaded = $this->_loadVarsFromDb($shopID);
+        $configLoaded = $this->_loadVarsFromDb($shopId);
         // loading shop config
-        if (empty($shopID) || !$configLoaded) {
+        if (empty($shopId) || !$configLoaded) {
             // if no config values where loaded (some problems with DB), throwing an exception
             $exception = new \OxidEsales\Eshop\Core\Exception\DatabaseException(
                 "Unable to load shop config values from database",
@@ -394,15 +394,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         // loading theme config options
-        $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
 
         // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
         if ($this->getConfigParam('sCustomTheme')) {
-            $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+            $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
         }
 
         // loading modules config
-        $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_MODULE_PREFIX);
+        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX);
 
         $this->loadAdditionalConfiguration();
 
@@ -545,18 +545,18 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Load config values from DB
      *
-     * @param string $shopID   shop ID to load parameters
+     * @param int    $shopId   shop ID to load parameters
      * @param array  $onlyVars array of params to load (optional)
      * @param string $module   module vars to load, empty for base options
      *
      * @return bool
      */
-    protected function _loadVarsFromDb($shopID, $onlyVars = null, $module = '')
+    protected function _loadVarsFromDb($shopId, $onlyVars = null, $module = '')
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $params = [
-          ':oxshopid' => $shopID
+          ':oxshopid' => $shopId
         ];
         $select = "select
                         oxvarname, oxvartype, oxvarvalue
@@ -786,7 +786,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Active Shop id setter
      *
-     * @param string $shopId shop id
+     * @param int    $shopId shop id
      */
     public function setShopId($shopId)
     {
@@ -1832,7 +1832,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $varType Variable Type
      * @param string $varName Variable name
      * @param mixed  $varVal  Variable value (can be string, integer or array)
-     * @param string $shopId  Shop ID, default is current shop
+     * @param int    $shopId  Shop ID, default is current shop
      * @param string $module  Module name (empty for base options)
      */
     public function saveShopConfVar($varType, $varName, $varVal, $shopId = null, $module = '')
@@ -1895,7 +1895,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Retrieves shop configuration parameters from DB.
      *
      * @param string $varName Variable name
-     * @param string $shopId  Shop ID
+     * @param int    $shopId  Shop ID
      * @param string $module  module identifier
      *
      * @return object - raw configuration value in DB
@@ -2288,7 +2288,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns whether given shop id is valid.
      *
-     * @param string $shopId
+     * @param int    $shopId
      *
      * @return bool
      */

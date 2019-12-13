@@ -684,7 +684,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_blReloadDiscount) {
             $dDiscount = 0;
             $aDiscounts = $oBasket->getDiscounts();
-            if (count($aDiscounts) > 0) {
+            if (is_array($aDiscounts) && count($aDiscounts) > 0) {
                 foreach ($aDiscounts as $oDiscount) {
                     $dDiscount += $oDiscount->dDiscount;
                 }

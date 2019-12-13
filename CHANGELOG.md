@@ -92,13 +92,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Typos in CountryList::_getSecondSortFieldName doc [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
 
 ### Deprecated
-- `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
-- `OxidEsales\Eshop\Core\Config::$sConfigKey`
-- `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
-- `Conf`
-- `OxidEsales\Eshop\Core\Registry\UserPayment::_insert()`
-- `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
-- `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
 
@@ -115,6 +108,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `Conf`
     - Removed settings:
         - `sConfigKey` from `config.inc.php`
+
+## [6.5.1] - Unreleased
+
+### Deprecated
+- `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
+- `OxidEsales\Eshop\Core\Config::$sConfigKey`
+- `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
+- `Conf`
+- `OxidEsales\Eshop\Core\Registry\UserPayment::_insert()`
+- `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
+- `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`
+
+### Fixed
+- Warnings in order discounts recalculation [PR-742](https://github.com/OXID-eSales/oxideshop_ce/pull/742)
 
 ## [6.5.0] - 2019-11-07
 
@@ -822,6 +829,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...b-6.x
+[6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...b-6.2.x
 [6.5.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.4.0...v6.5.0
 [6.4.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.4.0
 [6.3.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.3.6

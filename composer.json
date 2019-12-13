@@ -16,7 +16,7 @@
         "monolog/monolog": "^v1.23.0",
         "psr/container": "1.0.*",
         "symfony/event-dispatcher": "^3.4",
-        "symfony/dependency-injection": "^3.4",
+        "symfony/dependency-injection": "^3.4.26",
         "symfony/config": "~3.3|~4.0",
         "symfony/yaml": "~3.4|~4.0",
         "symfony/expression-language": "^3.4",

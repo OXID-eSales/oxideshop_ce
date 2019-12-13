@@ -360,13 +360,13 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * setter for shopID
+     * setter for shopId
      *
-     * @param int $sShopID ShopID
+     * @param int $sShopId ShopID
      */
-    public function setShopID($sShopID)
+    public function setShopID($sShopId)
     {
-        $this->_sShopID = $sShopID;
+        $this->_sShopID = $sShopId;
     }
 
     /**

@@ -42,7 +42,7 @@ class TableViewNameGenerator
      *
      * @param string $table      Table name
      * @param int    $languageId Language id [optional]
-     * @param string $shopId     Shop id, otherwise config->getShopId() is used [optional]
+     * @param int    $shopId     Shop id, otherwise config->getShopId() is used [optional]
      *
      * @return string
      */

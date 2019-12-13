@@ -1296,7 +1296,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $userName login name
      * @param string $password login password
-     * @param string $shopId   shopid
+     * @param int    $shopId   shopid
      * @param bool   $isAdmin  admin/non admin mode
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface`
@@ -2371,7 +2371,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $userName User
      * @param string $password Password
-     * @param string $shopID   Shop id
+     * @param int    $shopId   Shop id
      *
      * @throws UserException
      *
@@ -2383,12 +2383,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return void
      */
-    protected function _dbLogin(string $userName, $password, $shopID)
+    protected function _dbLogin(string $userName, $password, $shopId)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopID, $this->isAdmin()));
+        $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopId, $this->isAdmin()));
         if (!$userId) {
-            $userId = $database->getOne($this->_getLoginQueryHashedWithMD5($userName, $password, $shopID, $this->isAdmin()));
+            $userId = $database->getOne($this->_getLoginQueryHashedWithMD5($userName, $password, $shopId, $this->isAdmin()));
         }
 
         /** Return here to give other log-in mechanisms the possibility to be triggered */
@@ -2396,7 +2396,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             return;
         }
 
-        $this->loadAuthenticatedUser($userName, $shopID);
+        $this->loadAuthenticatedUser($userName, $shopId);
         $this->isOutdatedPasswordHashAlgorithmUsed = true;
     }
 
@@ -2789,7 +2789,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates given query. Method is for overriding.
      *
      * @param string $user
-     * @param string $shopId
+     * @param int    $shopId
      *
      * @return string
      */

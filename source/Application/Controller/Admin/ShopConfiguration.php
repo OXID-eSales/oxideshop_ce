@@ -189,7 +189,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *      'constraints' => constraints list as array[name] = constraint
      *      'grouping'    => grouping info as array[name] = grouping
      *
-     * @param string $shopId Shop id
+     * @param int    $shopId Shop id
      * @param string $moduleId module to load (empty string is for base values)
      *
      * @return array

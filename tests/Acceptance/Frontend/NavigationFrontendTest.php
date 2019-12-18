@@ -1359,9 +1359,6 @@ class NavigationFrontendTest extends FrontendTestCase
 
         $this->clickAndWait("//button[text()='%CONTINUE_TO_NEXT_STEP%']");
 
-        $this->selectAndWait("sShipSet", "label=Example Set1: UPS 48 hours");
-        $this->assertElementNotPresent("shipSetCost");
-
         //option -> performance->"Activate user Reviews and Ratings"
         $this->callShopSC("oxConfig", null, null, array("bl_perfLoadReviews" => array("type" => "bool", "value" => "false")));
         //option -> performance->"Calculate Product Price"

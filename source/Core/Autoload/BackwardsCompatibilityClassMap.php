@@ -456,7 +456,9 @@ return [
     'oxiurl'                              => 'OxidEsales\\Eshop\\Core\\Contract\\IUrl',
     'oxview'                              => 'OxidEsales\\Eshop\\Core\\Controller\\BaseController',
     'oxcounter'                           => 'OxidEsales\\Eshop\\Core\\Counter',
+    // @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
     'oxccvalidator'                       => 'OxidEsales\\Eshop\\Core\\CreditCardValidator',
+    // END deprecated
     'oxcurl'                              => 'OxidEsales\\Eshop\\Core\\Curl',
     'oxdb'                                => 'OxidEsales\\Eshop\\Core\\DatabaseProvider',
     'DatabaseInterface'                   => 'OxidEsales\\Eshop\\Core\\Database\\Adapter\\DatabaseInterface',

@@ -110,7 +110,7 @@ class CheckoutProcessCest
         $userCheckoutPage = $basketPage->goToNextStep();
         $paymentPage = $userCheckoutPage->enterOrderRemark('remark text')->goToNextStep();
 
-        $I->see(Translator::translate("SELECT_SHIPPING_METHOD"));
+        $I->see(Translator::translate("PAYMENT_METHOD"));
 
         $orderPage = $paymentPage->selectPayment('oxidcashondel')
             ->goToNextStep()
@@ -216,7 +216,7 @@ class CheckoutProcessCest
             ->goToNextStep();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate("SELECT_SHIPPING_METHOD"));
+        $I->see(Translator::translate("PAYMENT_METHOD"));
 
         $orderPage = $paymentPage->selectPayment('oxidcashondel')
             ->goToNextStep();

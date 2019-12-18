@@ -368,7 +368,6 @@ REPLACE INTO `oxobject2payment` (`OXID`,                       `OXPAYMENTID`,   
                                ('fa647a82238638526.04996237', 'testpayment',    'a7c40f631fc920687.20179984', 'oxcountry'),
                                ('aad47a84ae8d74c27.43568020', 'testpayment',    'testdelset',                 'oxdelset'),
                                ('aad47a84aec2fcea4.29746738', 'oxidcashondel',  'testdelset',                 'oxdelset'),
-                               ('aad47a84afba84197.13924353', 'oxidcreditcard', 'testdelset',                 'oxdelset'),
                                ('b36fc8be21394477f5b3200e88', 'oxidinvoice',    'testshset7',                 'oxdelset'),
                                ('b928f0782117f251fdb5c43e05', 'oxidcashondel',  'testshset7',                 'oxdelset');
 

@@ -82,7 +82,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $oPaymentList = $oPayment->getPaymentList();
 
-        $this->assertEquals(4, count($oPaymentList));
+        $this->assertEquals(3, count($oPaymentList));
     }
 
     /**
@@ -117,7 +117,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $iCnt = $oPayment->getPaymentCnt();
 
-        $this->assertEquals(4, $iCnt);
+        $this->assertEquals(3, $iCnt);
     }
 
     public function testGetAllSets()
@@ -146,7 +146,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $aAllSets = $oPayment->getAllSets();
         $aResultSets = array_keys($aAllSets);
-        $aSetsIds = array('1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751', 'oxidstandard');
+        $aSetsIds = array('oxidstandard');
         sort($aResultSets);
 
         $this->assertEquals($aSetsIds, $aResultSets);
@@ -178,7 +178,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $iCnt = $oPayment->getAllSetsCnt();
 
-        $this->assertEquals(3, $iCnt);
+        $this->assertEquals(1, $iCnt);
     }
 
     public function testGetEmptyPayment()

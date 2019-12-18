@@ -59,11 +59,15 @@ $aLang = [
 'BIRTHDATE'                                                   => 'Date of birth',
 'BLOCK_PRICE'                                                 => 'Block price',
 'CANCEL'                                                      => 'Cancel',
+
+// @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
 'CARD_MASTERCARD'                                             => 'Mastercard',
 'CARD_SECURITY_CODE'                                          => 'CVV2 or CVC2 security code',
 'CARD_SECURITY_CODE_DESCRIPTION'                              => 'This check digit is printed in reverse italic on the back side of your credit card right above the signature panel.',
-'CARD_TO'                                                     => 'Card to',
 'CARD_VISA'                                                   => 'Visa',
+// END deprecated
+
+'CARD_TO'                                                     => 'Card to',
 'CART'                                                        => 'Cart',
 'CATEGORIES'                                                  => 'Categories',
 'CATEGORY'                                                    => 'Category',
@@ -94,7 +98,9 @@ $aLang = [
 'COUPON'                                                      => 'Coupon',
 'COUPON_NOT_ACCEPTED'                                         => 'Your coupon "%s" couldn\'t be accepted.',
 'CREATE_PASSWORD'                                             => 'Create password',
+// @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
 'CREDITCARD'                                                  => 'Credit card',
+// END deprecated
 'CURRENT_PRODUCT'                                             => 'Current product',
 'CUSTOMERS_ALSO_BOUGHT'                                       => 'Customers who bought this product also bought',
 'DATE'                                                        => 'Date',

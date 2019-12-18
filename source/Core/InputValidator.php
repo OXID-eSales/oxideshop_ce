@@ -29,6 +29,8 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     /**
      * Required fields for credit card payment.
      *
+     * @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
+     *
      * @var array
      */
     protected $_aRequiredCCFields = ['kktype',
@@ -51,6 +53,8 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Possible credit card types
+     *
+     *  @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
      *
      * @var array
      */
@@ -419,8 +423,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param string $paymentId    The payment id of current payment.
      * @param array  $dynamicValue Values of payment.
      *
-     * @deprecated since v6.5.0 (2019-11-28); oxidcreditcard will be no longer supported
-     *
      * @return bool
      */
     public function validatePaymentInputData($paymentId, &$dynamicValue)
@@ -428,6 +430,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         $validationResult = true;
 
         switch ($paymentId) {
+            //  @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
             case 'oxidcreditcard':
                 $validationResult = false;
 
@@ -443,6 +446,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
                     );
                 }
                 break;
+            // END deprecated
 
             case "oxiddebitnote":
                 $validationResult = false;

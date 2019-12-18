@@ -618,7 +618,6 @@ class BasketFrontendTest extends FrontendTestCase
         $this->assertEquals("Test S&H set [EN] šÄßüл", $this->getSelectedLabel("sShipSet"));
         $this->assertFalse($this->isVisible("testpayment_1"));
         $this->assertElementPresent("payment_oxidcashondel");
-        $this->assertElementPresent("payment_oxidcreditcard");
         $this->assertElementNotPresent("payment_oxidpayadvance");
         $this->assertElementNotPresent("payment_oxiddebitnote");
 

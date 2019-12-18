@@ -191,7 +191,7 @@ class UserPaymentTest extends \OxidTestCase
             $paymentsIds .= $payment->getId() ."\n";
         }
 
-        $this->assertEquals(6, $oPaymentList->count(), $paymentsIds);
+        $this->assertEquals(5, $oPaymentList->count(), $paymentsIds);
     }
 
     /**

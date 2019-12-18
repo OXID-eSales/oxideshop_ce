@@ -136,9 +136,6 @@ class RdfaFrontendTest extends FrontendTestCase
             $sLocation = $this->getLocation();
             $this->assertElementNotPresent("//div[@about='{$sLocation}#COD(CashonDelivery)_oxidcashondel' and @typeof='gr:PaymentMethod']");
             $this->assertElementNotPresent("//div[@property='rdfs:label' and @content='COD (Cash on Delivery)']");
-            $this->assertElementNotPresent("//div[@about='{$sLocation}#CreditCard_oxidcreditcard' and @typeof='gr:PaymentMethod']");
-            $this->assertElementNotPresent("//div[@property='rdfs:label' and @content='Credit Card']");
-            $this->assertElementNotPresent("//div[@property='rdfs:comment' and @content='Your Credit Card will be charged when you submit the order.']");
             $this->assertElementNotPresent("//div[@about='{$sLocation}#DirectDebit_oxiddebitnote' and @typeof='gr:PaymentMethod']");
             $this->assertElementNotPresent("//div[@property='rdfs:label' and @content='Direct Debit']");
             $this->assertElementNotPresent("//div[@property='rdfs:comment' and @content='Your bank account will be charged when the order is shipped.']");
@@ -151,17 +148,9 @@ class RdfaFrontendTest extends FrontendTestCase
             $this->assertElementNotPresent("//div[@property='rdfs:comment' and @content='An example. Maybe for use with other countries']");
             $this->assertElementNotPresent("//div[@property='rdfs:label' and @content='Test payment method [EN] šÄßüл']");
 
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#COD']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#VISA']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#MasterCard']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#JCB']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#Discover']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#DinersClub']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#AmericanExpress']");
             $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#DirectDebit']");
             $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#ByBankTransferInAdvance']");
             $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#ByInvoice']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#DirectDebit']");
         }
     }
 
@@ -291,14 +280,6 @@ class RdfaFrontendTest extends FrontendTestCase
 
         // Method: COD (Cash on Delivery)
         $this->_setPaymentMethodRdfaOption('oxidcashondel', 'COD');
-
-        // Method: Credit Card
-        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'AmericanExpress');
-        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'DinersClub');
-        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'Discover');
-        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'JCB');
-        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'MasterCard');
-        $this->_setPaymentMethodRdfaOption('oxidcreditcard', 'VISA');
 
         // Method: Direct Debit
         $this->_setPaymentMethodRdfaOption('oxiddebitnote', 'DirectDebit');

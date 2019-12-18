@@ -191,8 +191,7 @@ INSERT INTO `oxobject2group` (`OXID`,                       `OXSHOPID`,   `OXOBJ
 INSERT INTO `oxobject2payment` (`OXID`,                       `OXPAYMENTID`,    `OXOBJECTID`,                 `OXTYPE`) VALUES
                                ('fa647a82238638526.04996237', 'testpayment',    'a7c40f631fc920687.20179984', 'oxcountry'),
                                ('aad47a84ae8d74c27.43568020', 'testpayment',    'testdelset',                 'oxdelset'),
-                               ('aad47a84aec2fcea4.29746738', 'oxidcashondel',  'testdelset',                 'oxdelset'),
-                               ('aad47a84afba84197.13924353', 'oxidcreditcard', 'testdelset',                 'oxdelset');
+                               ('aad47a84aec2fcea4.29746738', 'oxidcashondel',  'testdelset',                 'oxdelset');
 
 INSERT INTO `oxobject2selectlist` (`OXID`,                       `OXOBJECTID`, `OXSELNID`,   `OXSORT`) VALUES
                                   ('aad47a85773148362.54224248', '1001',       'testsellist', 0);

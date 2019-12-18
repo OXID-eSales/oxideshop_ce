@@ -180,7 +180,9 @@ $aLang =  [
                                                  'User gets credit points only if invited user registers into shop. Aquired ' .
                                                  'credit points are stored in user record and can be used by shop owner for any purpose.',
 
+// @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
 'HELP_SHOP_CONFIG_ATTENTION'                  => 'Caution: Even if encryption is used, Credit Card contracts usually prohibit this strictly!',
+// END deprecated
 
 'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => 'In the 4th step of the checkout process the CMS page "oxtsinternationalfees" is additionally displayed.',
 

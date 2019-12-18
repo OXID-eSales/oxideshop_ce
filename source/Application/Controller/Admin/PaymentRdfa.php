@@ -32,21 +32,25 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @var array
      */
-    protected $_aRDFaPayments = ["ByBankTransferInAdvance" => 0,
-                                      "ByInvoice"               => 0,
-                                      "Cash"                    => 0,
-                                      "CheckInAdvance"          => 0,
-                                      "COD"                     => 0,
-                                      "DirectDebit"             => 0,
-                                      "GoogleCheckout"          => 0,
-                                      "PayPal"                  => 0,
-                                      "PaySwarm"                => 0,
-                                      "AmericanExpress"         => 1,
-                                      "DinersClub"              => 1,
-                                      "Discover"                => 1,
-                                      "JCB"                     => 1,
-                                      "MasterCard"              => 1,
-                                      "VISA"                    => 1];
+    protected $_aRDFaPayments = [
+        "ByBankTransferInAdvance" => 0,
+        "ByInvoice"               => 0,
+        "Cash"                    => 0,
+        "CheckInAdvance"          => 0,
+        "COD"                     => 0,
+        "DirectDebit"             => 0,
+        "GoogleCheckout"          => 0,
+        "PayPal"                  => 0,
+        "PaySwarm"                => 0,
+      //  @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
+        "AmericanExpress"         => 1,
+        "DinersClub"              => 1,
+        "Discover"                => 1,
+        "JCB"                     => 1,
+        "MasterCard"              => 1,
+        "VISA"                    => 1
+      // END deprecated
+    ];
 
     /**
      * Saves changed mapping configurations

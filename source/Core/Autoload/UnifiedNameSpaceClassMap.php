@@ -2485,7 +2485,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\CreditCardValidator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Curl'                                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Curl::class,

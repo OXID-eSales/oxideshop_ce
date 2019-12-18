@@ -13,8 +13,10 @@ use OxidEsales\TestingLibrary\Services\Library\DatabaseDefaultsFileGenerator;
 $facts = new Facts();
 
 $selenium_server_port = getenv('SELENIUM_SERVER_PORT');
-$selenium_server_port = ($selenium_server_port) ? $selenium_server_port : '4444';
-$php = (getenv('PHPBIN')) ? getenv('PHPBIN') : 'php';
+$selenium_server_port = ($selenium_server_port) ? : '4444';
+$php = (getenv('PHPBIN')) ? : 'php';
+$cc_screen_shot_path = getenv('CC_SCREEN_SHOTS_PATH');
+$cc_screen_shot_path = ($cc_screen_shot_path) ? : '';
 
 return [
     'SHOP_URL' => $facts->getShopUrl(),
@@ -29,6 +31,7 @@ return [
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
     'SELENIUM_SERVER_PORT' => $selenium_server_port,
     'PHP_BIN' => $php,
+    'SCREEN_SHOT_URL' => $cc_screen_shot_path
 ];
 
 function getTestDataDumpFilePath()

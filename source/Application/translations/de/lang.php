@@ -95,7 +95,9 @@ $aLang = [
 'COUPON'                                                      => 'Gutschein',
 'COUPON_NOT_ACCEPTED'                                         => 'Der Gutschein "%s" kann nicht akzeptiert werden.',
 'CREATE_PASSWORD'                                             => 'Passwort erstellen',
+// @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
 'CREDITCARD'                                                  => 'Karte',
+// END deprecated
 'CURRENT_PRODUCT'                                             => 'Aktueller Artikel',
 'CUSTOMERS_ALSO_BOUGHT'                                       => 'Kunden, die diesen Artikel gekauft haben, kauften auch',
 'DATE'                                                        => 'Datum',

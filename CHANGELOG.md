@@ -21,6 +21,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+- `OxidEsales\Eshop\Core\CreditCardValidator`
+- `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
+- `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
+- `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
+- `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
+- `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
+- `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
+- `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
+- `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
 
 ### Removed
 - Removed database encoding:
@@ -43,9 +52,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Core\Config::$sConfigKey`
 - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
 - `Conf`
-- `OxidEsales\Eshop\Core\Registry\UserPayment::_insert()`
-- `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
-- `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`
 
 ### Fixed
 - Warnings in order discounts recalculation [PR-742](https://github.com/OXID-eSales/oxideshop_ce/pull/742)

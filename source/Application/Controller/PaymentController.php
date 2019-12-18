@@ -91,6 +91,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * array of years
      *
+     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
+     *
      * @var array
      */
     protected $_aCreditYears = null;
@@ -266,8 +268,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * Session variables:
      * <b>paymentid</b>, <b>dynvalue</b>, <b>payerror</b>
-     *
-     * @deprecated since v6.5.0 (2019-11-28); oxidcreditcard will not longer be supported
      *
      * @return  mixed
      */
@@ -595,6 +595,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Template variable getter. Returns array of years for credit cards
      *
+     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
+     *
      * @return array
      */
     public function getCreditYears()
@@ -639,6 +641,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * Note: You should override this method as setting blStoreCreditCardInfo to true would
      *       force storing CC data on shop side (what most often is illegal).
+     *
+     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
      *
      * @return null
      */

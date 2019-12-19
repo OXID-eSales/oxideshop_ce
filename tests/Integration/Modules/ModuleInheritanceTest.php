@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modu
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance24\MyClass as ModuleInheritance24MyClass;
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance27\MyClass as ModuleInheritance27MyClass;
 use OxidEsales\TestingLibrary\UnitTestCase;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -550,7 +551,7 @@ class ModuleInheritanceTest extends UnitTestCase
         }
     }
 
-    private function getContainer(): ContainerBuilder
+    private function getContainer(): ContainerInterface
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();

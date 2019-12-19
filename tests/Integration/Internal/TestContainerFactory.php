@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
 use org\bovigo\vfs\vfsStream;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
@@ -36,9 +36,9 @@ class TestContainerFactory
 
     public function create(): SymfonyContainerBuilder
     {
-        $containerBuilder = new ContainerBuilder($this->context);
+        $containerFactory = new ContainerFactory::getInstance();
 
-        $container = $containerBuilder->getContainer();
+        $container = $containerFactory->getContainer($this->context);
         $container = $this->setAllServicesAsPublic($container);
         $container = $this->setBasicContextStub($container);
         $container = $this->setContextStub($container);

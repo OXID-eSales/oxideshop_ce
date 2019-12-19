@@ -32,18 +32,12 @@ class ContainerFactory
     private $container = null;
 
     /**
-     * BasicContextInterface
-     */
-    private $context = null;
-
-    /**
      * ContainerFactory constructor.
      *
      * Make the constructor private
      */
     private function __construct()
     {
-        $this->context = new BasicContext();
     }
 
     /**
@@ -57,24 +51,26 @@ class ContainerFactory
         return self::$instance;
     }
 
-    public function getContainer(): ContainerInterface
+    public function getContainer(?BasicContextInterface $context = null): ContainerInterface
     {
         if ($this->container === null) {
-            $this->container = $this->initializeContainer();
+            $this->container = $this->initializeContainer(
+                $context ?? new BasicContext()
+            );
         }
 
         return $this->container;
     }
 
-    private function initializeContainer(): ContainerInterface
+    private function initializeContainer(BasicContextInterface $context): ContainerInterface
     {
         startProfile('ContainerFactory::initializeContainer()');
 
         $containerBuilder = (new ContainerBuilder())
-            ->setDumpDir($this->context->getContainerCacheFilePath())
+            ->setDumpDir($context->getContainerCacheFilePath())
             ->setGenerator(new YamlGenerator());
 
-        $paths = $this->getEditionServicePaths();
+        $paths = $this->getEditionServicePaths($context);
         foreach ($paths as $path) {
             $containerBuilder->addPath($path)
                              ->addFile('services.yaml');
@@ -83,12 +79,12 @@ class ContainerFactory
         $containerBuilder->addPass(new RegisterListenersPass(EventDispatcherInterface::class))
                          ->addPass(new AddConsoleCommandPass());
 
-        if (is_file($this->context->getGeneratedServicesFilePath())) {
-            $containerBuilder->addFile($this->context->getGeneratedServicesFilePath());
+        if (is_file($context->getGeneratedServicesFilePath())) {
+            $containerBuilder->addFile($context->getGeneratedServicesFilePath());
         }
 
-        if (is_file($this->context->getConfigurableServicesFilePath())) {
-            $containerBuilder->addFile($this->context->getConfigurableServicesFilePath());
+        if (is_file($context->getConfigurableServicesFilePath())) {
+            $containerBuilder->addFile($context->getConfigurableServicesFilePath());
         }
 
         $container = $containerBuilder->getContainer();
@@ -100,12 +96,12 @@ class ContainerFactory
     /**
      * @return array<int, string>
      */
-    private function getEditionServicePaths(): array
+    private function getEditionServicePaths(BasicContextInterface $context): array
     {
         $paths = [
-            $this->context->getCommunityEditionSourcePath(),
-            $this->context->getProfessionalEditionRootPath(),
-            $this->context->getEnterpriseEditionRootPath()
+            $context->getCommunityEditionSourcePath(),
+            $context->getProfessionalEditionRootPath(),
+            $context->getEnterpriseEditionRootPath()
         ];
         $paths = array_filter($paths, 'is_dir');
         $paths = array_map(

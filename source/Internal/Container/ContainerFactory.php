@@ -125,7 +125,9 @@ class ContainerFactory
         $containerFiles = \glob((new BasicContext())->getContainerCacheFilePath() . '/Container*php*');
         array_walk(
             $containerFiles,
-            'unlink'
+            function ($file) {
+                unlink($file);
+            }
         );
         self::$instance = null;
     }

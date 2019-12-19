@@ -30,6 +30,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
 - `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
 - `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
+- Language variables:
+    - `CREDITCARD`
+    - `PAYMENT_CREDITCARD`
+    - `SHOP_CONFIG_STORECREDITCARDINFO`
+    - `PAYMENT_RDFA_CREDITCARD`
+    - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
 
 ### Removed
 - Removed database encoding:

@@ -122,7 +122,7 @@ class ContainerFactory
      */
     public static function resetContainer()
     {
-        $containerFiles = \glob(self::CONTAINER_CACHE_DIR . 'Container*php*');
+        $containerFiles = \glob((new BasicContext())->getContainerCacheFilePath() . '/Container*php*');
         array_walk(
             $containerFiles,
             'unlink'

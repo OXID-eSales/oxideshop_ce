@@ -1,3 +1,2 @@
 imports:
     - { resource: Dao/services.yaml }
-    - { resource: Service/services.yaml }

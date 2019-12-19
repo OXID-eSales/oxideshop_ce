@@ -119,20 +119,10 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_aTsProducts = null;
 
     /**
-     * Filtered dyndata marker
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @var bool
-     */
-    protected $_blDynDataFiltered = false;
-
-    /**
      * Executes parent method parent::init().
      */
     public function init()
     {
-        $this->_filterDynData();
         parent::init();
     }
 
@@ -265,7 +255,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Validates oxidcreditcard and oxiddebitnote user payment data.
+     * Validates oxiddebitnote user payment data.
      * Returns null if problems on validating occured. If everything
      * is OK - returns "order" and redirects to payment confirmation
      * page.
@@ -307,12 +297,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         //#1308C - check if we have paymentID, and it really exists
         if (!$sPaymentId) {
             $session->setVariable('payerror', 1);
-
-            return;
-        }
-
-        if ($this->getDynDataFiltered() && $sPaymentId == 'oxidcreditcard') {
-            $session->setVariable('payerror', 7);
 
             return;
         }
@@ -636,77 +620,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         return true;
-    }
-
-
-    /**
-     * Due to legal reasons probably you are not allowed to store or even handle credit card data.
-     * In this case we just delete and forget all submited credit card data from this point.
-     * Override this method if you actually want to process credit card data.
-     *
-     * Note: You should override this method as setting blStoreCreditCardInfo to true would
-     *       force storing CC data on shop side (what most often is illegal).
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @return null
-     */
-    protected function _filterDynData()
-    {
-        //in case we actually ARE allowed to store the data
-        if (Registry::getConfig()->getConfigParam("blStoreCreditCardInfo")) {
-            //then do nothing and reset _blDynDataFiltered
-            $this->_blDynDataFiltered = false;
-
-            return;
-        }
-
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        $aDynData = $session->getVariable("dynvalue");
-
-        $aFields = ["kktype", "kknumber", "kkname", "kkmonth", "kkyear", "kkpruef"];
-
-        if ($aDynData) {
-            if (!$this->_checkArrValuesEmpty($aDynData, $aFields)) {
-                $this->_blDynDataFiltered = true;
-            }
-            $aDynData["kktype"] = null;
-            $aDynData["kknumber"] = null;
-            $aDynData["kkname"] = null;
-            $aDynData["kkmonth"] = null;
-            $aDynData["kkyear"] = null;
-            $aDynData["kkpruef"] = null;
-            Registry::getSession()->setVariable("dynvalue", $aDynData);
-        }
-
-        if (
-            !$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_POST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_GET["dynvalue"], $aFields)
-        ) {
-            $this->_blDynDataFiltered = true;
-        }
-
-        unset($_REQUEST["dynvalue"]["kktype"]);
-        unset($_REQUEST["dynvalue"]["kknumber"]);
-        unset($_REQUEST["dynvalue"]["kkname"]);
-        unset($_REQUEST["dynvalue"]["kkmonth"]);
-        unset($_REQUEST["dynvalue"]["kkyear"]);
-        unset($_REQUEST["dynvalue"]["kkpruef"]);
-
-        unset($_POST["dynvalue"]["kktype"]);
-        unset($_POST["dynvalue"]["kknumber"]);
-        unset($_POST["dynvalue"]["kkname"]);
-        unset($_POST["dynvalue"]["kkmonth"]);
-        unset($_POST["dynvalue"]["kkyear"]);
-        unset($_POST["dynvalue"]["kkpruef"]);
-
-        unset($_GET["dynvalue"]["kktype"]);
-        unset($_GET["dynvalue"]["kknumber"]);
-        unset($_GET["dynvalue"]["kkname"]);
-        unset($_GET["dynvalue"]["kkmonth"]);
-        unset($_GET["dynvalue"]["kkyear"]);
-        unset($_GET["dynvalue"]["kkpruef"]);
     }
 
     /**

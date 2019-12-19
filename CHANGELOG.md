@@ -81,6 +81,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
 - `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
 - `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
+- `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
 
 ### Fixed
 

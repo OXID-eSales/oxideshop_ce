@@ -38,12 +38,10 @@ class PaymentTest extends \OxidTestCase
      */
     protected function getDynValues()
     {
-        $aDynvalue['kktype'] = 'vis';
-        $aDynvalue['kknumber'] = '4111111111111111';
-        $aDynvalue['kkmonth'] = '01';
-        $aDynvalue['kkyear'] = date('Y') + 1;
-        $aDynvalue['kkname'] = 'Hans Mustermann';
-        $aDynvalue['kkpruef'] = '333';
+        $aDynvalue['lsbankname'] = 'Bank name';
+        $aDynvalue['lsblz'] = '12345678';
+        $aDynvalue['lsktonr'] = '123456';
+        $aDynvalue['lsktoinhaber'] = 'Hans Mustermann';
 
         return $aDynvalue;
     }
@@ -51,7 +49,7 @@ class PaymentTest extends \OxidTestCase
     public function testGetDynValuesIfAlwaysArrayIsReturned()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->load("oxidcreditcard");
+        $oPayment->load("oxiddebitnote");
 
         $this->assertTrue(is_array($oPayment->getDynValues()));
 
@@ -70,20 +68,12 @@ class PaymentTest extends \OxidTestCase
     public function testGetGroups()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->load('oxidcreditcard');
+        $oPayment->load('oxiddebitnote');
 
         $aArray = array('oxidsmallcust',
-                        'oxidmiddlecust',
-                        'oxidgoodcust',
-                        'oxidforeigncustomer',
                         'oxidnewcustomer',
-                        'oxidpowershopper',
-                        'oxiddealer',
                         'oxidnewsletter',
-                        'oxidadmin',
-                        'oxidpriceb',
-                        'oxidpricea',
-                        'oxidpricec');
+                        'oxidadmin');
 
         $this->assertEquals(
             $aArray,
@@ -113,7 +103,7 @@ class PaymentTest extends \OxidTestCase
     public function testGetDynValues()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->load("oxidcreditcard");
+        $oPayment->load("oxiddebitnote");
 
         $this->assertEquals(oxRegistry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value), $oPayment->getDynValues());
     }
@@ -161,7 +151,7 @@ class PaymentTest extends \OxidTestCase
     public function testGetCountries()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->load('oxidcreditcard');
+        $oPayment->load('oxiddebitnote');
         $this->assertEquals(3, count($oPayment->getCountries()), "Failed getting countries list");
     }
 
@@ -273,12 +263,12 @@ class PaymentTest extends \OxidTestCase
     }
 
     /**
-     * Test payment credit/debit card validation
+     * Test payment debit card validation
      */
-    public function testIsValidPaymentCreditCardChecking()
+    public function testIsValidPaymentDebitCardChecking()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->Load('oxidcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $aDynvalue = $this->getDynValues();
         $aDynvalue['kknumber'] = ''; //wrong number
@@ -292,7 +282,7 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPaymentWithNotValidShippingSetId()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->Load('oxidcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->Load('oxdefaultadmin');
@@ -307,7 +297,7 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPaymentWithoutShippingSetId()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->Load('oxidcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->Load('oxdefaultadmin');
@@ -323,7 +313,7 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPayment_FromBoni()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->Load('oxidcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->Load('oxdefaultadmin');
@@ -339,7 +329,7 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPayment_FromAmount()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->Load('oxidcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->Load('oxdefaultadmin');
@@ -355,7 +345,7 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPayment_ToAmount()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->Load('oxidcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->Load('oxdefaultadmin');
@@ -371,14 +361,14 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPaymentInGroup()
     {
         $oPayment = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\testPayment::class);
-        $oPayment->Load('oxcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->Load('oxdefaultadmin');
         $oUser->addToGroup('_testGroupId');
 
         $blRes = $oPayment->isValidPayment($this->getDynValues(), $this->getConfig()->getBaseShopId(), $oUser, 0.0, 'oxidstandard');
-        $this->assertFalse($blRes);
+        $this->assertTrue($blRes);
     }
 
     /**
@@ -387,7 +377,7 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPayment()
     {
         $oPayment = oxNew('oxPayment');
-        $oPayment->Load('oxidcreditcard');
+        $oPayment->Load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->Load('oxdefaultadmin');
@@ -403,7 +393,7 @@ class PaymentTest extends \OxidTestCase
     public function testIsValidPayment_settingErrorNumber()
     {
         $oPayment = $this->getProxyClass("oxPayment");
-        $oPayment->load('oxidcreditcard');
+        $oPayment->load('oxiddebitnote');
 
         $oUser = oxNew('oxuser');
         $oUser->load('oxdefaultadmin');

@@ -79,6 +79,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed deprecated getSession and setSession usages around the code
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+- `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
+- `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
 
 ### Fixed
 

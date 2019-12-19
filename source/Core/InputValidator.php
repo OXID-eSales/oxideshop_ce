@@ -28,21 +28,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     const INVALID_BANK_CODE = -4;
 
     /**
-     * Required fields for credit card payment.
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @var array
-     */
-    protected $_aRequiredCCFields = ['kktype',
-                                          'kknumber',
-                                          'kkmonth',
-                                          'kkyear',
-                                          'kkname',
-                                          'kkpruef'
-    ];
-
-    /**
      * Input validation errors.
      *
      * @var array
@@ -51,24 +36,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
 
     protected $_oCompanyVatInValidator = null;
-
-    /**
-     * Possible credit card types
-     *
-     *  @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @var array
-     */
-    protected $_aPossibleCCType = ['mcd', // Master Card
-                                        'vis', // Visa
-                                        'amx', // American Express
-                                        'dsc', // Discover
-                                        'dnc', // Diners Club
-                                        'jcb', // JCB
-                                        'swi', // Switch
-                                        'dlt', // Delta
-                                        'enr' // EnRoute
-    ];
 
     /**
      * Required fields for debit cards.
@@ -419,7 +386,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Validates payment input data for credit card and debit note.
+     * Validates payment input data debit note.
      *
      * @param string $paymentId    The payment id of current payment.
      * @param array  $dynamicValue Values of payment.
@@ -428,36 +395,15 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function validatePaymentInputData($paymentId, &$dynamicValue)
     {
-        $validationResult = true;
-
-        switch ($paymentId) {
-            case 'oxidcreditcard':
-                $validationResult = false;
-
-                $idAllCreditCardInformationSet = $this->_isAllBankInformationSet($this->_aRequiredCCFields, $dynamicValue);
-                $doesCreditCardTypeExist = in_array($dynamicValue['kktype'], $this->_aPossibleCCType);
-
-                if ($idAllCreditCardInformationSet && $doesCreditCardTypeExist) {
-                    $cardValidator = oxNew(\OxidEsales\Eshop\Core\CreditCardValidator::class);
-                    $validationResult = $cardValidator->isValidCard(
-                        $dynamicValue['kknumber'],
-                        $dynamicValue['kktype'],
-                        $dynamicValue['kkmonth'] . substr($dynamicValue['kkyear'], 2, 2)
-                    );
-                }
-                break;
-
-            case "oxiddebitnote":
-                $validationResult = false;
-
-                if ($this->_isAllBankInformationSet($this->_aRequiredDCFields, $dynamicValue)) {
-                    $validationResult = $this->_validateDebitNote($dynamicValue);
-                }
-
-                break;
+        if ($paymentId == "oxiddebitnote") {
+            if ($this->_isAllBankInformationSet($this->_aRequiredDCFields, $dynamicValue)) {
+                return $this->_validateDebitNote($dynamicValue);
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
-
-        return $validationResult;
     }
 
     /**

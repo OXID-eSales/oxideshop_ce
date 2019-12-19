@@ -110,58 +110,6 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      * Test case for oxinputvalidator::validatePaymentInputData()
-     * 2. CC: missing input fields
-     *
-     * @return null
-     */
-    public function testValidatePaymentInputDataCCMissingFields()
-    {
-        $aDynvalue = array();
-        $oValidator = oxNew('oxinputvalidator');
-        $this->assertFalse($oValidator->validatePaymentInputData('oxidcreditcard', $aDynvalue));
-    }
-
-    /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
-     * 3. CC: wrong card type
-     *
-     * @return null
-     */
-    public function testValidatePaymentInputDataCCWrongCardType()
-    {
-        $aDynvalue = array('kktype'   => 'xxx',
-                           'kknumber' => 'xxx',
-                           'kkmonth'  => 'xxx',
-                           'kkyear'   => 'xxx',
-                           'kkname'   => 'xxx',
-                           'kkpruef'  => 'xxx'
-        );
-        $oValidator = oxNew('oxinputvalidator');
-        $this->assertFalse($oValidator->validatePaymentInputData('oxidcreditcard', $aDynvalue));
-    }
-
-    /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
-     * 4. CC: all input is fine
-     *
-     * @return null
-     */
-    public function testValidatePaymentInputDataCCAllInputIsFine()
-    {
-        $aDynvalue = array('kktype'   => 'vis',
-                           'kknumber' => '4111111111111111',
-                           'kkmonth'  => '01',
-                           'kkyear'   => date('Y') + 1,
-                           'kkname'   => 'Hans Mustermann',
-                           'kkpruef'  => '333'
-        );
-
-        $oValidator = oxNew('oxinputvalidator');
-        $this->assertTrue($oValidator->validatePaymentInputData('oxidcreditcard', $aDynvalue));
-    }
-
-    /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
      * 5. DC: missing input fields
      *
      * @return null

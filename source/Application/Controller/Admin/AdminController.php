@@ -160,7 +160,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         // authorization check
         if (!$this->_authorize()) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect('index.php?cl=login', true, 302);
-            exit;
+            exit('Authorization error occurred!');
         }
 
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();

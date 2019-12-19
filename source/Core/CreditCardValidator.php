@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Credit card validation class
  *
+ * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
  */
 class CreditCardValidator
 {

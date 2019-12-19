@@ -34,6 +34,8 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Store credit card information in db or not
      *
+     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
+     *
      * @var bool
      */
     protected $_blStoreCreditCardInfo = null;
@@ -112,9 +114,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts payment information to DB. Returns insert status.
      *
      * @return bool
-     *
-     * @deprecated since v6.5.0 (2019-11-28); oxidcreditcard will be no longer supported so Method will be removed
-     *
      */
     protected function _insert()
     {
@@ -133,6 +132,8 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Set store or not credit card information in db
      *
      * @param bool $blStoreCreditCardInfo store or not credit card info
+     *
+     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
      */
     public function setStoreCreditCardInfo($blStoreCreditCardInfo)
     {
@@ -141,6 +142,8 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Get store or not credit card information in db parameter
+     *
+     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
      *
      * @return bool
      */
@@ -181,9 +184,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns an array of dyn payment values
      *
      * @return array
-     *
-     * @deprecated since v6.5.0 (2019-11-28); oxidcreditcard will be no longer supported so Method will be removed
-     *
      */
     public function getDynValues()
     {

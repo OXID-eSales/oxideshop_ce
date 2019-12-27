@@ -302,11 +302,9 @@ class ModuleChainsGenerator
             return false;
         }
 
-        if (!class_exists($moduleClass, false)) {
-            $moduleClassParentAlias = $moduleClass . "_parent";
-            if (!class_exists($moduleClassParentAlias, false)) {
-                class_alias($parentClass, $moduleClassParentAlias);
-            }
+        $moduleClassParentAlias = $moduleClass . "_parent";
+        if (!class_exists($moduleClassParentAlias, false)) {
+            class_alias($parentClass, $moduleClassParentAlias);
         }
 
         return true;

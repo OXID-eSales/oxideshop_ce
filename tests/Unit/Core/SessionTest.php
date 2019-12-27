@@ -942,16 +942,16 @@ class SessionTest extends \OxidTestCase
         $oSession->start();
         //session name is different..
         $this->assertEquals($oSession->getName(), 'admin_sid');
-        $oSession->UNITsetSessionId('testSid');
+        $oSession->UNITsetSessionId('adminSessionId');
 
         //..but still eveything is set
-        $this->assertEquals($oSession->getId(), 'testSid');
+        $this->assertEquals($oSession->getId(), 'adminSessionId');
         $this->assertTrue($oSession->isNewSession());
         $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->oSession->getName()), 'testSid');
 
         //reset session
         $oSession->InitNewSession();
-        $this->assertNotEquals($oSession->getId(), 'testSid');
+        $this->assertNotEquals($oSession->getId(), 'adminSessionId');
     }
 
     /**
@@ -961,9 +961,8 @@ class SessionTest extends \OxidTestCase
     {
         oxRegistry::getUtils()->setSearchEngine(true);
 
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("_getNewSessionId", "_allowSessionStart"));
-        $oSession->expects($this->any())->method('_getNewSessionId');
-        $oSession->expects($this->any())->method('_allowSessionStart')->will($this->returnValue(true));
+        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("_getNewSessionId", "_allowSessionStart", '_sessionStart'));
+        $oSession->method('_allowSessionStart')->will($this->returnValue(true));
 
         $this->assertFalse($oSession->isNewSession());
 
@@ -1511,12 +1510,14 @@ class SessionTest extends \OxidTestCase
 
     public function testIsSessionStarted()
     {
-        $oSession = $this->getProxyClass("oxSession");
-        $this->assertFalse($oSession->isSessionStarted());
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("_getNewSessionId", "_allowSessionStart"));
+        $session->method('_allowSessionStart')->will($this->returnValue(true));
 
-        // thats only way to test, cant wrap native "session_start()" function
-        $oSession->setNonPublicVar("_blStarted", true);
-        $this->assertTrue($oSession->isSessionStarted());
+        $this->assertFalse($session->isSessionStarted());
+
+        $session->start();
+
+        $this->assertTrue($session->isSessionStarted());
     }
 
     public function testIsActualSidInCookiePossitive()

@@ -149,7 +149,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      * Every Time Admin starts we perform these checks
      * returns some messages if there is something to display
      *
-     * @return string
+     * @return array
      */
     protected function _doStartUpChecks()
     {

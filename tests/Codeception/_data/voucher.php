@@ -16,7 +16,7 @@ return [
                 'OXDISCOUNT' => 50.00,
                 'OXDISCOUNTTYPE' => 'percent',
                 'OXBEGINDATE' => '2008-01-01 00:00:00',
-                'OXENDDATE' => '2020-01-01 00:00:00',
+                'OXENDDATE' => date('Y-m-d H:i:s', time() + (7 * 24 * 60 * 60)),
                 'OXALLOWSAMESERIES' => 0,
                 'OXALLOWOTHERSERIES' => 0,
                 'OXALLOWUSEANOTHER' => 0,

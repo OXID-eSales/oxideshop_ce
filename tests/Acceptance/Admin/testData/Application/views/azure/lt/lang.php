@@ -98,7 +98,6 @@ $aLang = array(
 'COUPON'                                                      => "Coupon",
 'COUPON_NOT_ACCEPTED'                                         => "Your Coupon \"%s\" couldn't be accepted.",
 'CREATE_PASSWORD'                                             => "Create Password",
-'CREDITCARD'                                                  => "Credit Card",
 'CURRENT_PRODUCT'                                             => "Current product",
 'CUSTOMERS_ALSO_BOUGHT'                                       => "Customer who bought this product also bought",
 'DATE'                                                        => "Date",

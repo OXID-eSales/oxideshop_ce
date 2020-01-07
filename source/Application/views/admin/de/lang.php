@@ -1115,9 +1115,6 @@ $aLang = [
     'SHOP_CONFIG_STOCKWARNINGLIMIT'                           => 'Lagerbestand, ab dem den Benutzern angezeigt wird, dass nur noch wenige Artikel auf Lager sind',
     'SHOP_CONFIG_STOCKOFFDEFAULTMESSAGE'                      => 'Die "Nicht-auf-Lager"-Standardmeldung nutzen',
     'SHOP_CONFIG_STOCKONDEFAULTMESSAGE'                       => 'Die "Auf-Lager"-Standardmeldung nutzen',
-    // @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-    'SHOP_CONFIG_STORECREDITCARDINFO'                         => 'Kreditkarten-Informationen speichern',
-    // END deprecated
     'SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE'              => 'Zeige Meldung über mögliche internationale Liefergebühren',
     'SHOP_CONFIG_SHOWTSCODMESSAGE'                            => 'Zeige Meldung über mögliche Nachnahmegebühren',
     'SHOP_CONFIG_TIMEFORMAT'                                  => 'Zeitformat im Administrationsbereich',
@@ -1844,9 +1841,6 @@ $aLang = [
     'PAYMENT_RDFA_BYINVOICE'               => 'Rechnung',
     'PAYMENT_RDFA_CHECKINADVANCE'          => 'Barscheck',
     'PAYMENT_RDFA_BYBANKTRANSFERINADVANCE' => 'Vorauskasse',
-    // @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-    'PAYMENT_RDFA_CREDITCARD'              => 'Kreditkartenzahlung',
-    // END deprecated
     'PAYMENT_RDFA_AMERICANEXPRESS'         => 'American Express',
     'PAYMENT_RDFA_DINERSCLUB'              => 'Diners Club',
     'PAYMENT_RDFA_DISCOVER'                => 'Discover',

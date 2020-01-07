@@ -786,7 +786,6 @@ $aLang = array(
 'PAYMENT_PAYMENT'                                 => "Payment Method",
 'PAYMENT_PLUSCODCHARGE1'                          => "plus",
 'PAYMENT_PLUSCODCHARGE2'                          => "COD Charge",
-'PAYMENT_CREDITCARD'                              => "Credit Card:",
 'PAYMENT_MASTERCARD'                              => "Mastercard",
 'PAYMENT_VISA'                                    => "Visa",
 'PAYMENT_NUMBER'                                  => "Number:",

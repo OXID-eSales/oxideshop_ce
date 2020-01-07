@@ -2440,12 +2440,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\CreditCardValidator'                                  => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\CreditCardValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Curl'                                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Curl::class,
         'isAbstract'       => false,

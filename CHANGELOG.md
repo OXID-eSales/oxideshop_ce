@@ -85,6 +85,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
 - `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
+- `OxidEsales\Eshop\Core\CreditCardValidator`
 
 ### Fixed
 

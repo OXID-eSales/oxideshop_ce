@@ -401,13 +401,6 @@ class PaymentTest extends \OxidTestCase
         $this->assertEquals('testId', $oPayment->getCheckedPaymentId());
     }
 
-    public function testGetCreditYears()
-    {
-        $oPayment = $this->getProxyClass("payment");
-
-        $this->assertEquals(range(date('Y'), date('Y') + 10), $oPayment->getCreditYears());
-    }
-
     /*
      * Check if payment validation uses basket price getted from oxBasket::getPriceForPayment()
      * (M:1145)

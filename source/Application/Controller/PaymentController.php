@@ -89,15 +89,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_sCheckedPaymentId = null;
 
     /**
-     * array of years
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @var array
-     */
-    protected $_aCreditYears = null;
-
-    /**
      * Current class template name.
      *
      * @var string
@@ -579,24 +570,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         return $this->_iPaymentCnt;
-    }
-
-    /**
-     * Template variable getter. Returns array of years for credit cards
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @return array
-     */
-    public function getCreditYears()
-    {
-        if ($this->_aCreditYears === null) {
-            $this->_aCreditYears = false;
-
-            $this->_aCreditYears = range(date('Y'), date('Y') + 10);
-        }
-
-        return $this->_aCreditYears;
     }
 
     /**

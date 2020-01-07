@@ -1059,8 +1059,7 @@ class Database implements DatabaseInterface
     {
         $connection = $this->getConnection();
         $databaseName = $connection->getDatabase();
-        $query = "
-            SELECT
+        $query = "SELECT
               COLUMN_NAME AS `Field`,
               COLUMN_TYPE AS `Type`,
               IS_NULLABLE AS `Null`,
@@ -1074,7 +1073,8 @@ class Database implements DatabaseInterface
             WHERE
               TABLE_SCHEMA = '$databaseName'
               AND
-              TABLE_NAME = '$table'";
+              TABLE_NAME = '$table'
+            ORDER BY ORDINAL_POSITION ASC";
 
         try {
             $columns = $connection->executeQuery($query)->fetchAll();

@@ -624,7 +624,6 @@ class PaymentTest extends \OxidTestCase
         $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
         $this->setRequestParameter("paymentid", 'oxidcreditcard');
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
 
         $sTNumber = "4111111111111111";
         $sTName = "Hans Mustermann";
@@ -670,7 +669,6 @@ class PaymentTest extends \OxidTestCase
         $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
         $this->setRequestParameter("paymentid", 'oxidcreditcard');
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
 
         $sTNumber = "4111111111111111";
         $sTName = "Hans Mustermann";

@@ -127,19 +127,6 @@ class UserpaymentTest extends \OxidTestCase
     }
 
     /**
-     * Testing if constructor sets _blStoreCreditCardInfo from oxConfig param
-     */
-    public function testConstructor()
-    {
-        $this->getConfig()->setConfigParam('blStoreCreditCardInfo', true);
-
-        $oUpay = oxNew('oxuserpayment');
-        $oUpay->__construct();
-
-        $this->assertTrue($oUpay->getStoreCreditCardInfo());
-    }
-
-    /**
      * Checking if payment encryption key is good
      */
     public function testGetPaymentDesc()
@@ -168,63 +155,6 @@ class UserpaymentTest extends \OxidTestCase
         $oUpay->save();
 
         $this->assertEquals("123456789", oxDb::getDb()->getOne("SELECT oxvalue FROM oxuserpayments WHERE oxid='_testOxId2'"));
-    }
-
-    /**
-     * Testing if insert is not exectuted when _blStoreCreditCardInfo is false
-     * and payment type is credit card
-     */
-    public function testInsertWhenStoreCreditCardInfoIsOffAndPaymentTypeIsCreditCard()
-    {
-        $oUpay = oxNew('oxuserpayment');
-        $oUpay->setStoreCreditCardInfo(false);
-        $oUpay->setId('_testOxId2');
-        $oUpay->oxuserpayments__oxpaymentsid = new oxField('oxidcreditcard', oxField::T_RAW);
-        $oUpay->save();
-
-        $this->assertFalse(oxDb::getDb()->getOne("SELECT oxid FROM oxuserpayments WHERE oxid='_testOxId2'"));
-    }
-
-    /**
-     * Testing if insert is exectuted when _blStoreCreditCardInfo is true
-     * and payment type is credit card
-     */
-    public function testInsertWhenStoreCreditCardInfoIsOnAndPaymentTypeIsCreditCard()
-    {
-        $oUpay = oxNew('oxuserpayment');
-        $oUpay->setStoreCreditCardInfo(true);
-        $oUpay->setId('_testOxId2');
-        $oUpay->oxuserpayments__oxpaymentsid = new oxField('oxidcreditcard', oxField::T_RAW);
-        $oUpay->save();
-
-        $this->assertEquals('_testOxId2', oxDb::getDb()->getOne("SELECT oxid FROM oxuserpayments WHERE oxid='_testOxId2'"));
-    }
-
-    /**
-     * Testing if insert is exectuted when _blStoreCreditCardInfo is false
-     * and payment type is not credit card
-     */
-    public function testInsertWhenStoreCreditCardInfoIsOnAndPaymentTypeIsNotCreditCard()
-    {
-        $oUpay = oxNew('oxuserpayment');
-        $oUpay->setStoreCreditCardInfo(true);
-        $oUpay->setId('_testOxId2');
-        $oUpay->oxuserpayments__oxpaymentsid = new oxField('oxidinvoice', oxField::T_RAW);
-        $oUpay->save();
-
-        $this->assertEquals('_testOxId2', oxDb::getDb()->getOne("SELECT oxid FROM oxuserpayments WHERE oxid='_testOxId2'"));
-    }
-
-    /**
-     * Testing setter/getter for _blStoreCreditCardInfo
-     */
-    public function testSetGetStoreCreditCardInfo()
-    {
-        $this->_oUpay->setStoreCreditCardInfo(true);
-        $this->assertTrue($this->_oUpay->getStoreCreditCardInfo());
-
-        $this->_oUpay->setStoreCreditCardInfo(false);
-        $this->assertFalse($this->_oUpay->getStoreCreditCardInfo());
     }
 
     /**
@@ -314,18 +244,5 @@ class UserpaymentTest extends \OxidTestCase
         $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxvalue = new oxField($sDyn, oxField::T_RAW);
         $this->assertEquals($aDynVal, $oUserPayment->getDynValues());
-    }
-
-    /**
-     * Testing dyn values getter
-     */
-    public function testGetDynValuesNotAllowed()
-    {
-        $sDyn = 'kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@';
-        $oUserPayment = oxNew('oxUserPayment');
-        $oUserPayment->setStoreCreditCardInfo(false);
-        $oUserPayment->oxuserpayments__oxvalue = new oxField($sDyn, oxField::T_RAW);
-        $oUserPayment->oxuserpayments__oxpaymentsid = new oxField('oxidcreditcard', oxField::T_RAW);
-        $this->assertNull($oUserPayment->getDynValues());
     }
 }

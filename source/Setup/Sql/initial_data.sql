@@ -130,7 +130,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('8563fba1965a1cc34.52696792',	1,	'',	'blCalculateDelCostIfNotLoggedIn',	'bool',	''),
 ('8563fba1965a1f266.82484369',	1,	'',	'blAllowUnevenAmounts',	'bool',	''),
 ('8563fba1965a219c9.51133344',	1,	'',	'blUseStock',	'bool',	'1'),
-('8563fba1965a23786.00479842',	1,	'',	'blStoreCreditCardInfo',	'bool',	''),
 ('8563fba1965a25500.87856483',	1,	'',	'dDefaultVAT',	'num',	'19'),
 ('8563fba1965a27185.06428911',	1,	'',	'sDefaultLang',	'str',	'0'),
 ('8563fba1965a2b330.65668120',	1,	'',	'sMerchantID',	'str',	''),

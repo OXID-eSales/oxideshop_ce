@@ -433,18 +433,6 @@ function editThis(sID)
 
             <dl>
                 <dt>
-                    <input type=hidden name=confbools[blStoreCreditCardInfo] value=false>
-                    <input type=checkbox name=confbools[blStoreCreditCardInfo] value=true  [{if ($confbools.blStoreCreditCardInfo)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_STORECREDITCARDINFO"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_STORECREDITCARDINFO"}] [{oxinputhelp ident="HELP_SHOP_CONFIG_ATTENTION"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=hidden name=confbools[blShowTSInternationalFeesMessage] value=false>
                     <input type=checkbox name=confbools[blShowTSInternationalFeesMessage] value=true  [{if ($confbools.blShowTSInternationalFeesMessage)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE"}]

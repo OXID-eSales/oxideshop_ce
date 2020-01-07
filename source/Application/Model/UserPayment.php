@@ -20,9 +20,6 @@ use oxDb;
 class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     // you can change this if you want more security
-    // DO NOT !! CHANGE THIS FILE AND STORE CREDIT CARD INFORMATION
-    // THIS IS MORE THAN LIKELY ILLEGAL !!
-    // CHECK YOUR CREDIT CARD CONTRACT
 
     /**
      * Name of current class
@@ -30,15 +27,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var string
      */
     protected $_sClassName = 'oxuserpayment';
-
-    /**
-     * Store credit card information in db or not
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @var bool
-     */
-    protected $_blStoreCreditCardInfo = null;
 
     /**
      * Payment info object
@@ -91,7 +79,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::__construct();
         $this->init('oxuserpayments');
-        $this->setStoreCreditCardInfo(Registry::getConfig()->getConfigParam('blStoreCreditCardInfo'));
     }
 
     /**
@@ -117,39 +104,9 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _insert()
     {
-        // we do not store credit card information
-        // check and in case skip it
-        if (!$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard') {
-            return true;
-        }
-
         $blRet = parent::_insert();
 
         return $blRet;
-    }
-
-    /**
-     * Set store or not credit card information in db
-     *
-     * @param bool $blStoreCreditCardInfo store or not credit card info
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     */
-    public function setStoreCreditCardInfo($blStoreCreditCardInfo)
-    {
-        $this->_blStoreCreditCardInfo = $blStoreCreditCardInfo;
-    }
-
-    /**
-     * Get store or not credit card information in db parameter
-     *
-     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
-     *
-     * @return bool
-     */
-    public function getStoreCreditCardInfo()
-    {
-        return $this->_blStoreCreditCardInfo;
     }
 
     /**
@@ -187,10 +144,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getDynValues()
     {
-        if (!$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard') {
-            return null;
-        }
-
         if (!$this->_aDynValues) {
             $sRawDynValue = null;
             if (is_object($this->oxuserpayments__oxvalue)) {

@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
 use OxidEsales\EshopCommunity\Core\Registry;
@@ -19,7 +20,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  * Class DatabaseTest
  *
  * @group database-adapter
- * @covers OxidEsales\EshopCommunity\Core\DatabaseProvider
+ * @covers \OxidEsales\EshopCommunity\Core\DatabaseProvider
  */
 class DatabaseTest extends UnitTestCase
 {
@@ -85,7 +86,7 @@ class DatabaseTest extends UnitTestCase
         $configFileBackup = Registry::get('oxConfigFile');
 
         $configFile = $this->getBlankConfigFile();
-        Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
+        Registry::set(ConfigFile::class, $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
         $exceptionThrown = false;
@@ -93,9 +94,12 @@ class DatabaseTest extends UnitTestCase
             oxDb::getDb();
         } catch (DatabaseConnectionException $exception) {
             $exceptionThrown = true;
+        } catch (DatabaseErrorException $e) {
+            /** can be thrown by MySQL8 when trying to use default authentication method (caching_sha2_password)  */
+            $this->markTestSkipped();
         } finally {
             /** Restore original configFile object */
-            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFileBackup);
+            Registry::set(ConfigFile::class, $configFileBackup);
         }
 
         if (!$exceptionThrown) {
@@ -110,7 +114,7 @@ class DatabaseTest extends UnitTestCase
 
         $configFile = $this->getBlankConfigFile();
         $configFile->setVar('dbHost', '<');
-        Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);
+        Registry::set(ConfigFile::class, $configFile);
         $this->setProtectedClassProperty(oxDb::getInstance(), 'db', null);
 
         try {
@@ -118,7 +122,7 @@ class DatabaseTest extends UnitTestCase
             $this->fail('A DatabaseNotConfiguredException should have been thrown, as the ConfigFile object does does not pass validation.');
         } catch (DatabaseNotConfiguredException $exception) {
             /** Restore original configFile object */
-            Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFileBackup);
+            Registry::set(ConfigFile::class, $configFileBackup);
         }
     }
 

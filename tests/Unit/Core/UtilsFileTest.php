@@ -59,20 +59,6 @@ class UtilsFileTest extends \OxidTestCase
         $this->assertNull($oUtilsFile->UNITgetImageSize('nonexisting', '666', 'nonexisting'));
     }
 
-    /**
-     * @group slow-tests
-     */
-    public function testUrlValidateBadUrl()
-    {
-        $oUtilsFile = oxNew('oxUtilsFile');
-        $this->assertFalse($oUtilsFile->urlValidate("test/notvalid"));
-        $this->assertFalse($oUtilsFile->urlValidate("http://www.oxid_non_existing_page.com"));
-
-        $this->activateTheme('azure');
-        $shopUrl = $this->getTestConfig()->getShopUrl();
-        $this->assertTrue($oUtilsFile->urlValidate($shopUrl ."?param=value"));
-    }
-
     public function testCheckFile()
     {
         $sName1 = time();

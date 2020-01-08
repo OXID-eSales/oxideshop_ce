@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,7 +14,7 @@ class UtilsFileTest extends UnitTestCase
     /**
      * @group slow-tests
      */
-    public function testUrlValidate(): void
+    public function testUrlValidate()
     {
         $utilsFile = oxNew(UtilsFile::class);
         $this->assertFalse($utilsFile->urlValidate("test/notvalid"));

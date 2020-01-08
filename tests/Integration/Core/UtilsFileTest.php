@@ -14,7 +14,7 @@ class UtilsFileTest extends UnitTestCase
     /**
      * @group slow-tests
      */
-    public function testUrlValidate(): void
+    public function testUrlValidate()
     {
         $utilsFile = oxNew(UtilsFile::class);
         $this->assertFalse($utilsFile->urlValidate("test/notvalid"));

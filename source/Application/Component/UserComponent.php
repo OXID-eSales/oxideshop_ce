@@ -236,12 +236,6 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _afterLogin($oUser)
     {
         $oSession = $this->getSession();
-
-        // generating new session id after login
-        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS) {
-            $oSession->regenerateSessionId();
-        }
-
         $myConfig = $this->getConfig();
 
         // this user is blocked, deny him

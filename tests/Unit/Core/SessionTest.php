@@ -230,15 +230,8 @@ class SessionTest extends \OxidTestCase
         $oSession->setVar('language', 12);
         $oSession->setVar('tpllanguage', 12);
 
-        $sOldSid = $oSession->getId();
-
         $oSession->regenerateSessionId();
 
-        //most sense is to perform this check
-        //if session id was changed
-        $this->assertNotEquals($sOldSid, $oSession->getId());
-
-        //checking if new id is correct (md5($newid))
         $this->assertEquals("newSessionId", $oSession->getId());
 
         $this->assertEquals($oSession->getVar('someVar1'), true);
@@ -881,7 +874,6 @@ class SessionTest extends \OxidTestCase
         $oSession->UNITsetSessionId('testSid');
 
         $this->assertEquals($oSession->getId(), 'testSid');
-        $this->assertTrue($oSession->isNewSession());
 
         //reset session
         $oSession->initNewSession();
@@ -917,7 +909,6 @@ class SessionTest extends \OxidTestCase
         $oSession->UNITsetSessionId('testSid');
 
         $this->assertEquals($oSession->getId(), 'testSid');
-        $this->assertTrue($oSession->isNewSession());
         $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($oSession->getName()), 'testSid');
 
         //reset session
@@ -946,7 +937,6 @@ class SessionTest extends \OxidTestCase
 
         //..but still eveything is set
         $this->assertEquals($oSession->getId(), 'adminSessionId');
-        $this->assertTrue($oSession->isNewSession());
         $this->assertEquals(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->oSession->getName()), 'testSid');
 
         //reset session
@@ -1510,7 +1500,7 @@ class SessionTest extends \OxidTestCase
 
     public function testIsSessionStarted()
     {
-        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("_getNewSessionId", "_allowSessionStart"));
+        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("_allowSessionStart"));
         $session->method('_allowSessionStart')->will($this->returnValue(true));
 
         $this->assertFalse($session->isSessionStarted());

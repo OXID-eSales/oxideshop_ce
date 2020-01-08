@@ -324,7 +324,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         }
 
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $this->_blStarted = @session_start([
+        $this->_blStarted = session_start([
             'use_cookies' => $config->getConfigParam('blSessionUseCookies')
         ]);
         if (!$this->getSessionChallengeToken()) {
@@ -339,8 +339,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function initNewSession()
     {
-        // starting session only if it was not started yet
-        if (self::$_blIsNewSession) {
+        if (!$this->isSessionStarted()) {
             $this->_sessionStart();
         }
 
@@ -370,8 +369,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function regenerateSessionId()
     {
-        // starting session only if it was not started yet
-        if (self::$_blIsNewSession) {
+        if (!$this->isSessionStarted()) {
             $this->_sessionStart();
 
             // (re)setting actual user agent when initiating new session
@@ -392,7 +390,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getNewSessionId($blUnset = true)
     {
-        @session_regenerate_id(true);
+        session_regenerate_id(true);
 
         if ($blUnset) {
             session_unset();

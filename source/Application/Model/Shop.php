@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use oxDb;
 
 /**
@@ -94,7 +94,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         parent::__construct();
 
         if (!$this->isShopValid()) {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->error('Shop is not valid');
+            Registry::getLogger()->error('Shop is not valid');
 
             return;
         }
@@ -279,13 +279,13 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     protected function _cleanInvalidViews()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $aMultilangTables = Registry::getLang()->getMultiLangTables();
         $aMultishopTables = $this->getMultiShopTables();
 
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
         $oViewsValidator = oxNew(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class);
@@ -308,10 +308,10 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function _prepareViewsQueries()
     {
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $aMultilangTables = Registry::getLang()->getMultiLangTables();
         $aTables = $this->getTables();
         foreach ($aTables as $sTable) {
             $this->createViewQuery($sTable);
@@ -341,6 +341,11 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         } else {
             $sFields = $this->_getViewSelect($table, $languageId);
             $sJoin = $this->_getViewJoinLang($table, $languageId);
+        }
+
+        if ("" === $sFields) {
+            Registry::getLogger()->error("View for $table can not be generated, Please check if table exists");
+            return;
         }
 
         $sQuery = "{$queryStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$table}{$sJoin}";
@@ -377,7 +382,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function formDatabaseTablesArray()
     {
-        $multilanguageTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $multilanguageTables = Registry::getLang()->getMultiLangTables();
 
         return array_unique($multilanguageTables);
     }

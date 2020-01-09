@@ -204,12 +204,10 @@ class Database implements DatabaseInterface
      */
     protected function addDriverOptions(array &$existingParameters, $driverOptions)
     {
-        $existingParameters['driverOptions'] = array_merge(
-            array(
+        $default = array(
                 PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
-            ),
-            $driverOptions
         );
+        $existingParameters['driverOptions'] = $driverOptions + $default;
     }
 
     /**

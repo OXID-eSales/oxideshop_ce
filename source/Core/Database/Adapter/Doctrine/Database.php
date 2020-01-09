@@ -186,7 +186,8 @@ class Database implements DatabaseInterface
             'port'     => $connectionParameters['databasePort'],
         ];
 
-        $this->addDriverOptions($pdoMysqlConnectionParameters);
+        $driverOptions = $connectionParameters['databaseDriverOptions'];
+        $this->addDriverOptions($pdoMysqlConnectionParameters, $driverOptions);
         $this->addConnectionCharset(
             $pdoMysqlConnectionParameters,
             $connectionParameters['connectionCharset']
@@ -199,13 +200,16 @@ class Database implements DatabaseInterface
      * Adds the param driverOptions to an existing array of connection parameters
      *
      * @param array $existingParameters
-     *
+     * @param array $driverOptions options defined in config (override default options)
      */
-    protected function addDriverOptions(array &$existingParameters)
+    protected function addDriverOptions(array &$existingParameters, $driverOptions)
     {
-        $existingParameters['driverOptions'] = [
-            PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand()
-        ];
+        $existingParameters['driverOptions'] = array_merge(
+            array(
+                PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
+            ),
+            $driverOptions
+        );
     }
 
     /**

@@ -2387,34 +2387,24 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals(null, $myDb->getOne($sSql));
     }
 
-
-    public function testSetPaymentFromCC()
-    {
-        $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
-
-        $oUserpayment = $oOrder->UNITsetPayment('oxidcreditcard');
-
-        $this->assertEquals("_testUserId", $oUserpayment->oxuserpayments__oxuserid->value);
-        $this->assertEquals("oxidcreditcard", $oUserpayment->oxuserpayments__oxpaymentsid->value);
-        $this->assertEquals("kktype__@@kknumber__@@kkmonth__@@kkyear__@@kkname__@@kkpruef__@@", $oUserpayment->oxuserpayments__oxvalue->value);
-        $this->assertEquals("Kreditkarte", $oUserpayment->oxpayments__oxdesc->value);
-        $this->assertEquals(6, count($oUserpayment->aDynValues));
-    }
-
     public function testSetPaymentWithDynValues()
     {
-        $aDynVal = array("kktype" => "visa", "kknumber" => "12345", "kkmonth" => "11", "kkyear" => "2008", "kkname" => "testName", "kkpruef" => "56789");
+        $aDynVal = array('lsbankname'   => 'Bank name',
+                         'lsblz'        => '12345678',
+                         'lsktonr'      => '123456789',
+                         'lsktoinhaber' => 'Hans Mustermann'
+        );
+
         $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
 
-        $oUserpayment = $oOrder->UNITsetPayment('oxidcreditcard');
+        $oUserpayment = $oOrder->UNITsetPayment('oxiddebitnote');
 
-        $sValue = "kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@";
+        $sValue = "lsbankname__Bank name@@lsblz__12345678@@lsktonr__123456789@@lsktoinhaber__Hans Mustermann@@";
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
-        $this->assertEquals(6, count($oUserpayment->aDynValues));
+        $this->assertEquals(4, count($oUserpayment->aDynValues));
     }
 
     // #756M

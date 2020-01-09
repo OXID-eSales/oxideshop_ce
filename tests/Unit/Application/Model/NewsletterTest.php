@@ -122,7 +122,7 @@ class NewsletterTest extends \OxidTestCase
       `OXBILLFON` = '0800 1234567',
       `OXBILLFAX` = '0800 1234567',
       `OXBILLSAL` = 'Herr',
-      `OXPAYMENTTYPE` = 'oxidcreditcard',
+      `OXPAYMENTTYPE` = 'oxiddebitnote',
       `OXTOTALNETSUM` = 3.9,
       `OXTOTALBRUTSUM` = 0,
       `OXTOTALORDERSUM` = 20.9,

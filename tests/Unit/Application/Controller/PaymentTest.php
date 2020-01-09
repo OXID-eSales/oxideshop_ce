@@ -84,7 +84,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $oPaymentList = $oPayment->getPaymentList();
 
-        $this->assertEquals(4, count($oPaymentList));
+        $this->assertEquals(3, count($oPaymentList));
     }
 
     /**
@@ -119,7 +119,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $iCnt = $oPayment->getPaymentCnt();
 
-        $this->assertEquals(4, $iCnt);
+        $this->assertEquals(3, $iCnt);
     }
 
     public function testGetAllSets()
@@ -148,8 +148,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $aAllSets = $oPayment->getAllSets();
         $aResultSets = array_keys($aAllSets);
-        $aSetsIds = array('1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751', 'oxidstandard');
-        sort($aResultSets);
+        $aSetsIds = array('oxidstandard');
 
         $this->assertEquals($aSetsIds, $aResultSets);
     }
@@ -180,7 +179,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $iCnt = $oPayment->getAllSetsCnt();
 
-        $this->assertEquals(3, $iCnt);
+        $this->assertEquals(1, $iCnt);
     }
 
     public function testGetEmptyPayment()
@@ -592,108 +591,6 @@ class PaymentTest extends \OxidTestCase
         $oPayment = oxNew('Payment');
 
         $this->assertEquals(1, count($oPayment->getBreadCrumb()));
-    }
-
-    /**
-     * Testing Payment::ValidatePayment() when we use creditcard payment
-     * and do not store CC data, using session saved CC entered data
-     *
-     * @return null
-     */
-    public function testValidatePayment_NoStoreCardInfoSession()
-    {
-        $oUser = oxNew('oxUser');
-        $oUser->load('oxdefaultadmin');
-
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
-        $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));
-        $oBasket->setShipping('currentShipping');
-
-        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
-
-        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser'));
-        $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-
-        $this->setRequestParameter("paymentid", 'oxidcreditcard');
-
-        $sTNumber = "4111111111111111";
-        $sTName = "Hans Mustermann";
-        $sTMonth = "01";
-        $sTYear = "2013";
-        $sTProof = "333";
-        $sTTtype = "vis";
-
-        $aDynData = array("kktype"   => $sTTtype,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
-        );
-
-        $this->setSessionParam("dynvalue", $aDynData);
-        $oPayment->init();
-        $sRetVal = $oPayment->validatePayment();
-        $this->assertEquals(null, $sRetVal);
-    }
-
-    /**
-     * Testing Payment::ValidatePayment() when we use creditcard payment
-     * and do not store CC data, using CC entered data from $_REQUEST, $_POST or $_GET
-     *
-     * @return null
-     */
-    public function testValidatePayment_NoStoreCardInfoRequest()
-    {
-        $oUser = oxNew('oxUser');
-        $oUser->load('oxdefaultadmin');
-
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
-        $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));
-        $oBasket->setShipping('currentShipping');
-
-        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
-
-        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser'));
-        $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-
-        $this->setRequestParameter("paymentid", 'oxidcreditcard');
-
-        $sTNumber = "4111111111111111";
-        $sTName = "Hans Mustermann";
-        $sTMonth = "01";
-        $sTYear = "2013";
-        $sTProof = "333";
-        $sTTtype = "vis";
-
-        $_REQUEST["dynvalue"]["kktype"] = $sTTtype;
-        $_REQUEST["dynvalue"]["kknumber"] = $sTNumber;
-        $_REQUEST["dynvalue"]["kkname"] = $sTName;
-        $_REQUEST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_REQUEST["dynvalue"]["kkyear"] = $sTYear;
-        $_REQUEST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_POST["dynvalue"]["kktype"] = $sTTtype;
-        $_POST["dynvalue"]["kknumber"] = $sTNumber;
-        $_POST["dynvalue"]["kkname"] = $sTName;
-        $_POST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_POST["dynvalue"]["kkyear"] = $sTYear;
-        $_POST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_GET["dynvalue"]["kktype"] = $sTTtype;
-        $_GET["dynvalue"]["kknumber"] = $sTNumber;
-        $_GET["dynvalue"]["kkname"] = $sTName;
-        $_GET["dynvalue"]["kkmonth"] = $sTMonth;
-        $_GET["dynvalue"]["kkyear"] = $sTYear;
-        $_GET["dynvalue"]["kkpruef"] = $sTProof;
-
-        $oPayment->init();
-        $sRetVal = $oPayment->validatePayment();
-        $this->assertEquals(null, $sRetVal);
     }
 
     /**

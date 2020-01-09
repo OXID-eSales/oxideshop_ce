@@ -343,6 +343,13 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $sJoin = $this->_getViewJoinLang($table, $languageId);
         }
 
+        if ("" === $sFields) {
+            //this happens if there is a table in the configuration 
+            //that do not exists. ignoring this issue here allows the user
+            //the user to generate the views and get a running shop.
+            return;
+        }
+
         $sQuery = "{$queryStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$table}{$sJoin}";
         $this->addQuery($sQuery);
     }

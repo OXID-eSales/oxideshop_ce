@@ -499,34 +499,14 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if given URL is accessible (HTTP-Code: 200)
      *
-     * @param string $sLink given link
+     * @param string $url
      *
      * @return boolean
      */
-    public function urlValidate($sLink)
+    public function urlValidate($url)
     {
-        $aUrlParts = @parse_url($sLink);
-        $sHost = (isset($aUrlParts["host"]) && $aUrlParts["host"]) ? $aUrlParts["host"] : null;
-
-        if ($sHost) {
-            $sDocumentPath = (isset($aUrlParts["path"]) && $aUrlParts["path"]) ? $aUrlParts["path"] : '/';
-            $sDocumentPath .= (isset($aUrlParts["query"]) && $aUrlParts["query"]) ? '?' . $aUrlParts["query"] : '';
-
-            $sPort = (isset($aUrlParts["port"]) && $aUrlParts["port"]) ? $aUrlParts["port"] : '80';
-
-            // Now (HTTP-)GET $documentpath at $sHost";
-            if (($oConn = @fsockopen($sHost, $sPort, $iErrNo, $sErrStr, 30))) {
-                fwrite($oConn, "HEAD {$sDocumentPath} HTTP/1.0\r\nHost: {$sHost}\r\n\r\n");
-                $sResponse = fgets($oConn, 22);
-                fclose($oConn);
-
-                if (preg_match("/200 OK/", $sResponse)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $this->isUrlSchemaValid($url)
+            && $this->isUrlAccessible($url);
     }
 
     /**
@@ -649,5 +629,36 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
 
         return $message;
+    }
+
+    /**
+     * @param string $url
+     * @return bool
+     */
+    private function isUrlSchemaValid(string $url): bool
+    {
+        return filter_var($url, FILTER_VALIDATE_URL) === false ? false : true;
+    }
+
+    /**
+     * @param string $url
+     * @return bool
+     */
+    private function isUrlAccessible(string $url): bool
+    {
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+
+        $result = curl_exec($curl);
+
+        if ($result !== false) {
+            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if ($statusCode === 200) {
+                return true;
+            }
+        }
+        return false;
     }
 }

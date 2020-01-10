@@ -296,6 +296,10 @@ class DatabaseProvider
         if (!is_array($databaseDriverOptions)){
             $databaseDriverOptions = array();
         }
+        /**
+         * @var string $databaseUnixSocket The unix_socket path.
+         */
+        $databaseUnixSocket = $this->getConfigParam('dbUnixSocket');
 
         $connectionParameters = [
             'default' => [
@@ -306,7 +310,8 @@ class DatabaseProvider
                 'databaseUser'          => $databaseUser,
                 'databasePassword'      => $databasePassword,
                 'databaseDriverOptions' => $databaseDriverOptions,
-            ]
+                'databaseUnixSocket'    => $databaseUnixSocket,
+            ],
         ];
 
         /**

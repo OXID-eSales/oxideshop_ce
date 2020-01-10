@@ -215,6 +215,14 @@ function oxTriggerOfflinePageDisplay()
 {
     // Do not display the offline page, if this running in CLI mode
     if ('cli' !== strtolower(php_sapi_name())) {
+
+        // Add your own offline-page. Don't forget to set 50X/Retry-After headers in cust_offline.php!
+        $customOfflinePageFile = OX_BASE_PATH . 'cust_offline.php';
+        if (file_exists($customOfflinePageFile) && is_readable($customOfflinePageFile)) {
+            require_once $customOfflinePageFile;
+            return;
+        };
+
         header("HTTP/1.1 500 Internal Server Error");
         header("Connection: close");
 

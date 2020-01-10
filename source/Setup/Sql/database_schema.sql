@@ -1,5 +1,4 @@
 ALTER DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci;
-SET character_set_database = 'utf8';
 SET CHARACTER SET 'utf8';
 SET character_set_server = 'utf8';
 SET @@session.sql_mode = '';

@@ -178,16 +178,16 @@ class Database implements DatabaseInterface
     protected function getPdoMysqlConnectionParameters(array $connectionParameters)
     {
         $pdoMysqlConnectionParameters = [
-            'driver'   => 'pdo_mysql',
-            'host'     => $connectionParameters['databaseHost'],
-            'dbname'   => $connectionParameters['databaseName'],
-            'user'     => $connectionParameters['databaseUser'],
-            'password' => $connectionParameters['databasePassword'],
-            'port'     => $connectionParameters['databasePort'],
+            'driver'        => 'pdo_mysql',
+            'host'          => $connectionParameters['databaseHost'],
+            'dbname'        => $connectionParameters['databaseName'],
+            'user'          => $connectionParameters['databaseUser'],
+            'password'      => $connectionParameters['databasePassword'],
+            'port'          => $connectionParameters['databasePort'],
+            'driverOptions' => $connectionParameters['databaseDriverOptions'],
         ];
 
-        $driverOptions = $connectionParameters['databaseDriverOptions'];
-        $this->addDriverOptions($pdoMysqlConnectionParameters, $driverOptions);
+        $this->addDriverOptions($pdoMysqlConnectionParameters);
         $this->addConnectionCharset(
             $pdoMysqlConnectionParameters,
             $connectionParameters['connectionCharset']
@@ -197,17 +197,18 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Adds the param driverOptions to an existing array of connection parameters
+     * Adds default values to driverOptions param
      *
      * @param array $existingParameters
-     * @param array $driverOptions options defined in config (override default options)
      */
-    protected function addDriverOptions(array &$existingParameters, $driverOptions)
+    protected function addDriverOptions(array &$existingParameters)
     {
         $default = array(
-                PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
+            PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
         );
-        $existingParameters['driverOptions'] = $driverOptions + $default;
+
+        // options defined in config override the default
+        $existingParameters['driverOptions'] += $default;
     }
 
     /**

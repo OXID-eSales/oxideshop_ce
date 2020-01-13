@@ -11,7 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - source/Application/views/admin/tpl/shop_license.tpl
-
+- Block names in source/Application/views/admin/tpl/shop_main.tpl were switched [PR-730](https://github.com/OXID-eSales/oxideshop_ce/pull/730):
+    - ``admin_shop_main_leftform``
+    - ``admin_shop_main_rightform``
+    
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
 - `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`

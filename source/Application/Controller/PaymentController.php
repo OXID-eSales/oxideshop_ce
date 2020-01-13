@@ -121,6 +121,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Filtered dyndata marker
      *
+     * @deprecated since v6.6.0 (2019-12-18); credit card payment method will be no longer supported
+     *
      * @var bool
      */
     protected $_blDynDataFiltered = false;

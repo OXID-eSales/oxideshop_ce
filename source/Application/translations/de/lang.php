@@ -62,7 +62,6 @@ $aLang = [
 'CANCEL'                                                      => 'Beenden',
 'CARD_MASTERCARD'                                             => 'Mastercard',
 'CARD_SECURITY_CODE'                                          => 'Prüfziffer',
-'CARD_SECURITY_CODE_DESCRIPTION'                              => 'Diese befindet sich auf der Rückseite Ihrer Kreditkarte. Die Prüfziffer sind die letzten drei Ziffern im Unterschriftsfeld.',
 'CARD_TO'                                                     => 'Karte an',
 'CARD_VISA'                                                   => 'Visa',
 'CART'                                                        => 'Warenkorb',

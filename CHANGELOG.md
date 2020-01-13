@@ -82,6 +82,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
 - `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
 - `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
+- `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
 - `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
@@ -94,6 +95,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `SHOP_CONFIG_STORECREDITCARDINFO`
     - `PAYMENT_RDFA_CREDITCARD`
     - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
+    - `CARD_SECURITY_CODE_DESCRIPTION`
+    - `HELP_SHOP_CONFIG_ATTENTION`
 
 ### Fixed
 

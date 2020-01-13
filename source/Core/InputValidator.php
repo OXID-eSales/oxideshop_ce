@@ -395,7 +395,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function validatePaymentInputData($paymentId, &$dynamicValue)
     {
-        if ($paymentId == "oxiddebitnote") {
+        if ($paymentId === "oxiddebitnote") {
             if ($this->_isAllBankInformationSet($this->_aRequiredDCFields, $dynamicValue)) {
                 return $this->_validateDebitNote($dynamicValue);
             } else {

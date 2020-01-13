@@ -62,7 +62,6 @@ $aLang = [
 'CANCEL'                                                      => 'Cancel',
 'CARD_MASTERCARD'                                             => 'Mastercard',
 'CARD_SECURITY_CODE'                                          => 'CVV2 or CVC2 security code',
-'CARD_SECURITY_CODE_DESCRIPTION'                              => 'This check digit is printed in reverse italic on the back side of your credit card right above the signature panel.',
 'CARD_TO'                                                     => 'Card to',
 'CARD_VISA'                                                   => 'Visa',
 'CART'                                                        => 'Cart',

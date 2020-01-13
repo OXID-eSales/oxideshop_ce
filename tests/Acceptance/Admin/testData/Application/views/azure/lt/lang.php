@@ -65,7 +65,6 @@ $aLang = array(
 'CANCEL'                                                      => "Cancel",
 'CARD_MASTERCARD'                                             => "Mastercard",
 'CARD_SECURITY_CODE'                                          => "CVV2 or CVC2 security code",
-'CARD_SECURITY_CODE_DESCRIPTION'                              => "The CVV2/CVC2 three-digit value is printed just above the signature panel in reverse italics on the back of your card. Usually it is preceded by your card number.",
 'CARD_TO'                                                     => "Card to",
 'CARD_VISA'                                                   => "Visa",
 'CART'                                                        => "Cart",

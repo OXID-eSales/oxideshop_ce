@@ -177,8 +177,6 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_POINTSFORREGISTRATION'      => 'Anzahl Bonuspunkte, die der Eingeladene erhält, der sich aufgrund der Einladung registriert.',
 
-'HELP_SHOP_CONFIG_ATTENTION'                  => 'ACHTUNG! Üblicherweise ist in den Verträgen mit MasterCard und VISA die Speicherung der Daten ausdrücklich verboten.',
-
 'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => 'Im 4. Schritt des Bestellprozesses wird die CMS-Seite "oxtsinternationalfees" ergänzend angezeigt.',
 
 'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => 'Im 4. Schritt des Bestellprozesses wird die CMS-Seite "oxtscodmessage" ergänzend angezeigt.',

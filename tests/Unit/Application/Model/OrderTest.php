@@ -2387,26 +2387,6 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals(null, $myDb->getOne($sSql));
     }
 
-    public function testSetPaymentWithDynValues()
-    {
-        $aDynVal = array('lsbankname'   => 'Bank name',
-                         'lsblz'        => '12345678',
-                         'lsktonr'      => '123456789',
-                         'lsktoinhaber' => 'Hans Mustermann'
-        );
-
-        $this->getSession()->setVariable('dynvalue', $aDynVal);
-
-        $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->oxorder__oxuserid = new oxField();
-
-        $oUserpayment = $oOrder->UNITsetPayment('oxiddebitnote');
-
-        $sValue = "lsbankname__Bank name@@lsblz__12345678@@lsktonr__123456789@@lsktoinhaber__Hans Mustermann@@";
-        $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
-        $this->assertEquals(4, count($oUserpayment->aDynValues));
-    }
-
     // #756M
     public function testPreserveOrderPaymentDynValues()
     {

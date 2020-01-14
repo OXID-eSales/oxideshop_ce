@@ -693,7 +693,9 @@ class SystemRequirements
      * @param null $installedVersion
      * @return int|null
      * @throws DatabaseConnectionException
-     * @deprecated since v6.6.0 (2019-12-12) use implementation of DatabaseCheckerInterface instead
+     * @deprecated since v6.6.0 (2019-12-12) use
+     * \OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface
+     * instead
      */
     public function checkMysqlVersion($installedVersion = null)
     {

@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 use Exception;
 use oxDb;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Setup\Database;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
@@ -19,16 +18,12 @@ use OxidEsales\EshopCommunity\Setup\Session;
 use OxidEsales\EshopCommunity\Setup\Utilities;
 use PDO;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
-use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Container\ContainerInterface;
 use StdClass;
 
 final class DatabaseTest extends \OxidTestCase
 {
     /** @var array Queries will be logged here. */
     private $loggedQueries;
-    /** @var DatabaseCheckerBridgeInterface|ObjectProphecy */
-    private $databaseCheckerMock;
 
     protected function tearDown()
     {
@@ -181,10 +176,10 @@ final class DatabaseTest extends \OxidTestCase
 
     public function testOpenDatabaseWithIncompatibleVersionWillThrowExpectedExceptionType(): void
     {
-        $containerFactoryMock = $this->mockContainerFactory();
+        $databaseCheckerBridgeMock = $this->prophesize(DatabaseCheckerBridgeInterface::class);
         $parameters = $this->getConnectionParameters();
-        $database = new Database($containerFactoryMock->reveal());
-        $this->databaseCheckerMock->isDatabaseCompatible()
+        $database = new Database($databaseCheckerBridgeMock->reveal());
+        $databaseCheckerBridgeMock->isDatabaseCompatible()
             ->willReturn(false);
 
         $this->expectExceptionCode(Database::ERROR_CODE_DBMS_NOT_COMPATIBLE);
@@ -194,12 +189,12 @@ final class DatabaseTest extends \OxidTestCase
 
     public function testOpenDatabaseWithNotRecommendedVersionWillThrowExpectedExceptionType(): void
     {
-        $containerFactoryMock = $this->mockContainerFactory();
+        $databaseCheckerBridgeMock = $this->prophesize(DatabaseCheckerBridgeInterface::class);
         $parameters = $this->getConnectionParameters();
-        $database = new Database($containerFactoryMock->reveal());
-        $this->databaseCheckerMock->isDatabaseCompatible()
+        $database = new Database($databaseCheckerBridgeMock->reveal());
+        $databaseCheckerBridgeMock->isDatabaseCompatible()
             ->willReturn(true);
-        $this->databaseCheckerMock->getCompatibilityNotices()
+        $databaseCheckerBridgeMock->getCompatibilityNotices()
             ->willReturn(['some message']);
 
         $this->expectExceptionCode(Database::ERROR_CODE_DBMS_NOT_RECOMMENDED);
@@ -207,50 +202,16 @@ final class DatabaseTest extends \OxidTestCase
         $database->openDatabase($parameters);
     }
 
-    public function testOpenDatabaseWithNotRecommendedVersionWillThrowExpectedExceptionMessage(): void
-    {
-        $notice1 = 'something-1';
-        $notice2 = 'something-2';
-        $noticeTranslated1 = 'etwas-1';
-        $noticeTranslated2 = 'etwas-2';
-        $containerFactoryMock = $this->mockContainerFactory();
-        $parameters = $this->getConnectionParameters();
-        $languageMock = $this->prophesize(Language::class);
-        $languageMock->getText($notice1)
-            ->willReturn($noticeTranslated1);
-        $languageMock->getText($notice2)
-            ->willReturn($noticeTranslated2);
-        /** Partial Database mock tested  */
-        $databaseMock = $this->getMockBuilder(Database::class)
-            ->setConstructorArgs([$containerFactoryMock->reveal()])
-            ->setMethods(['getInstance'])
-            ->getMock();
-        $databaseMock->method('getInstance')
-            ->willReturnMap([
-                ['Utilities', $this->prophesize(Utilities::class)->reveal()],
-                ['Session', $this->prophesize(Session::class)->reveal()],
-                ['Language', $languageMock->reveal()],
-            ]);
-        $this->databaseCheckerMock->isDatabaseCompatible()
-            ->willReturn(true);
-        $this->databaseCheckerMock->getCompatibilityNotices()
-            ->willReturn([$notice1, $notice2]);
-
-        $this->expectExceptionMessage("$noticeTranslated1\n$noticeTranslated2");
-
-        $databaseMock->openDatabase($parameters);
-    }
-
     public function testOpenDatabaseWithNotRecommendedVersionAndUserChooseToIgnoreWillNotThrow(): void
     {
-        $containerFactoryMock = $this->mockContainerFactory();
         $parameters = $this->getConnectionParameters();
         $sessionMock = $this->prophesize(Session::class);
         $sessionMock->getSessionParam('blIgnoreDbRecommendations')
             ->willReturn(true);
+        $databaseCheckerBridgeMock = $this->prophesize(DatabaseCheckerBridgeInterface::class);
         /** Partial Database mock tested  */
         $databaseMock = $this->getMockBuilder(Database::class)
-            ->setConstructorArgs([$containerFactoryMock->reveal()])
+            ->setConstructorArgs([$databaseCheckerBridgeMock->reveal()])
             ->setMethods(['getInstance'])
             ->getMock();
         $databaseMock->method('getInstance')
@@ -259,9 +220,9 @@ final class DatabaseTest extends \OxidTestCase
                 ['Session', $sessionMock->reveal()],
                 ['Language', $this->prophesize(Language::class)->reveal()],
             ]);
-        $this->databaseCheckerMock->isDatabaseCompatible()
+        $databaseCheckerBridgeMock->isDatabaseCompatible()
             ->willReturn(true);
-        $this->databaseCheckerMock->getCompatibilityNotices()
+        $databaseCheckerBridgeMock->getCompatibilityNotices()
             ->willReturn(['something']);
 
         /** Test passes if no exceptions thrown */
@@ -448,18 +409,6 @@ final class DatabaseTest extends \OxidTestCase
     protected function getLoggedQueries(): array
     {
         return $this->loggedQueries->queries;
-    }
-
-    /** @return ContainerFactory|ObjectProphecy */
-    private function mockContainerFactory()
-    {
-        $containerFactoryMock = $this->prophesize(ContainerFactory::class);
-        $containerMock = $this->prophesize(ContainerInterface::class);
-        $this->databaseCheckerMock = $this->prophesize(DatabaseCheckerBridgeInterface::class);
-        $containerMock->get(DatabaseCheckerBridgeInterface::class)
-            ->willReturn($this->databaseCheckerMock);
-        $containerFactoryMock->getContainer()->willReturn($containerMock);
-        return $containerFactoryMock;
     }
 
     private function getConnectionParameters(): array

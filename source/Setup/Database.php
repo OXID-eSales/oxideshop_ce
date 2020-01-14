@@ -30,13 +30,13 @@ class Database extends Core
     private const ERROR_OPENING_SQL_FILE = 1;
     /** @var PDO */
     protected $_oConn = null;
-    /** @var ContainerFactory */
-    private $containerFactory;
+    /** @var DatabaseCheckerBridgeInterface|null */
+    private $databaseCheckerBridge;
 
-    /** @param ContainerFactory|null $containerFactory */
-    public function __construct(ContainerFactory $containerFactory = null)
+    /** @param DatabaseCheckerBridgeInterface|null $databaseCheckerBridge */
+    public function __construct(DatabaseCheckerBridgeInterface $databaseCheckerBridge = null)
     {
-        $this->containerFactory = $containerFactory ?? ContainerFactory::getInstance();
+        $this->databaseCheckerBridge = $databaseCheckerBridge;
     }
 
     /**
@@ -459,14 +459,13 @@ class Database extends Core
     /** @throws Exception */
     private function checkDatabaseCompatibility(): void
     {
-        $databaseChecker = $this->getDatabaseCheckerBridge();
-        if (!$databaseChecker->isDatabaseCompatible()) {
+        if (!$this->getDatabaseCheckerBridge()->isDatabaseCompatible()) {
             throw new Exception(
                 $this->translate('ERROR_DBMS_VERSION_DOES_NOT_FIT_REQUIREMENTS'),
                 Database::ERROR_CODE_DBMS_NOT_COMPATIBLE
             );
         }
-        $notices = $databaseChecker->getCompatibilityNotices();
+        $notices = $this->getDatabaseCheckerBridge()->getCompatibilityNotices();
         if ($notices && !$this->userDecidedIgnoreDBWarning()) {
             throw new Exception(
                 $this->getCompatibilityNoticesMessage($notices),
@@ -478,7 +477,9 @@ class Database extends Core
     /** @return DatabaseCheckerBridgeInterface */
     private function getDatabaseCheckerBridge(): DatabaseCheckerBridgeInterface
     {
-        return $this->containerFactory->getContainer()->get(DatabaseCheckerBridgeInterface::class);
+        $this->databaseCheckerBridge = $this->databaseCheckerBridge ??
+            ContainerFactory::getInstance()->getContainer()->get(DatabaseCheckerBridgeInterface::class);
+        return $this->databaseCheckerBridge;
     }
 
     /**

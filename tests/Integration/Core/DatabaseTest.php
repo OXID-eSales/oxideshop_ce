@@ -10,8 +10,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
-use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseNotConfiguredException;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
@@ -92,11 +90,8 @@ class DatabaseTest extends UnitTestCase
         $exceptionThrown = false;
         try {
             oxDb::getDb();
-        } catch (DatabaseConnectionException $exception) {
+        } catch (\Exception $exception) {
             $exceptionThrown = true;
-        } catch (DatabaseErrorException $e) {
-            /** can be thrown by MySQL8 when trying to use default authentication method (caching_sha2_password)  */
-            $this->markTestSkipped();
         } finally {
             /** Restore original configFile object */
             Registry::set(ConfigFile::class, $configFileBackup);

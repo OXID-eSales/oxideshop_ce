@@ -215,38 +215,38 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function start()
     {
-        if ($this->_allowSessionStart()) {
-            
-            $this->setName($this->isAdmin() ? 'admin_sid' : 'sid');
+        if ($this->isSessionStarted() || !$this->_allowSessionStart()) {
+            return;
+        }
+        $this->setName($this->isAdmin() ? 'admin_sid' : 'sid');
 
-            $sid = $this->getSidFromRequest();
-            if (!$sid) {
-                self::$_blIsNewSession = true;
-                $this->initNewSession();
-            } else {
-                self::$_blIsNewSession = false;
-                $this->_setSessionId($sid);
-                $this->_sessionStart();
+        $sid = $this->getSidFromRequest();
+        if (!$sid) {
+            self::$_blIsNewSession = true;
+            $this->initNewSession();
+        } else {
+            self::$_blIsNewSession = false;
+            $this->_setSessionId($sid);
+            $this->_sessionStart();
+        }
+
+        //special handling for new ZP cluster session, as in that case session_start() regenerates id
+        if ($this->getId() !== session_id()) {
+            $this->setId(session_id());
+        }
+
+        //checking for swapped client
+        $blSwapped = $this->_isSwappedClient();
+        if (!self::$_blIsNewSession && $blSwapped) {
+            $this->initNewSession();
+
+            $myConfig = $this->getConfig();
+            if ($this->_sErrorMsg && $myConfig->getConfigParam('iDebug')) {
+                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
             }
-
-            //special handling for new ZP cluster session, as in that case session_start() regenerates id
-            if ($this->getId() !== session_id()) {
-                $this->setId(session_id());
-            }
-
-            //checking for swapped client
-            $blSwapped = $this->_isSwappedClient();
-            if (!self::$_blIsNewSession && $blSwapped) {
-                $this->initNewSession();
-
-                $myConfig = $this->getConfig();
-                if ($this->_sErrorMsg && $myConfig->getConfigParam('iDebug')) {
-                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
-                }
-            } elseif (!$blSwapped) {
-                // transferring cookies between hosts
-                \OxidEsales\Eshop\Core\Registry::getUtilsServer()->loadSessionCookies();
-            }
+        } elseif (!$blSwapped) {
+            // transferring cookies between hosts
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->loadSessionCookies();
         }
     }
 
@@ -369,7 +369,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function regenerateSessionId()
     {
-        if (!$this->isSessionStarted()) {
+        if ($this->isNewSession()) {
             $this->_sessionStart();
 
             // (re)setting actual user agent when initiating new session
@@ -816,10 +816,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _allowSessionStart()
     {
-        if ($this->isSessionStarted()) {
-            return false;
-        }
-
         $blAllowSessionStart = true;
         $myConfig = $this->getConfig();
 

@@ -77,15 +77,16 @@ class ShopSetUpTest extends FrontendTestCase
 
     /**
      * Tests installation of new shop version (setup).
-     * Test chooses demo data if possible test data otherwise.
-     * In CI:
-     * - nightlies run with demo data
-     * - dailies run without demo data
+     * Test chooses demo data if is not test will skip
      *
      * @group main
      */
     public function testInstallShop()
     {
+        if (!$this->checkDemodataPackageExists()) {
+            $this->markTestSkipped('test needs demo_data package to work');
+        }
+
         $this->clearDatabase();
 
         $this->goToSetup();

@@ -10,8 +10,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 use Exception;
 use oxDb;
 use OxidEsales\EshopCommunity\Setup\Database;
+use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use PDO;
-use PHPUnit\Framework\MockObject\MockObject;
 use StdClass;
 
 require_once getShopBasePath() . '/Setup/functions.php';
@@ -68,6 +68,15 @@ class DatabaseTest extends \OxidTestCase
     {
         parent::setUp();
         $this->loggedQueries = new StdClass();
+    }
+
+    protected function tearDown()
+    {
+        // restore database
+        $dbRestore = self::_getDbRestore();
+        $dbRestore->restoreDB();
+
+        parent::tearDown();
     }
 
     /**
@@ -358,6 +367,48 @@ class DatabaseTest extends \OxidTestCase
         $database->expects($this->any())->method("getInstance")->will($this->returnValueMap($map));
         $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
 
+        $database->saveShopSettings(array());
+    }
+
+
+    public function testSaveShopSettingsIfLanguageParamsIsNotArray(): void
+    {
+        // change aLanguageParams value
+        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
+        $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
+        $database->execSql("update oxconfig SET OXVARVALUE='test' where oxvarname='aLanguageParams'");
+
+        // saveShopSettings
+        $utils = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Utilities', array("generateUid"));
+        $utils->expects($this->any())->method("generateUid")->will($this->returnValue("testid"));
+
+        $session = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', array("setSessionParam", "getSessionParam"), array(), '', null);
+
+        $map = array(
+            array('check_for_updates', null),
+            array('country_lang', null),
+        );
+        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+            $map[] = array('send_technical_information_to_oxid', true);
+        } else {
+            $map[] = array('send_technical_information_to_oxid', false);
+        }
+        $session->expects($this->any())->method("getSessionParam")->will($this->returnValueMap($map));
+
+
+        $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
+        $setup->expects($this->any())->method("getShopId");
+
+        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
+        $map = array(
+            array('Utilities', $utils),
+            array('Session', $session),
+            array('Setup', $setup)
+        );
+        $database->expects($this->any())->method("getInstance")->will($this->returnValueMap($map));
+        $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
+
+        $this->expectException(LanguageParamsException::class);
         $database->saveShopSettings(array());
     }
 

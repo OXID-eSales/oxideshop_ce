@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
+use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -347,6 +348,11 @@ class Database extends Core
         //set only one active language
         $oStatement = $oPdo->query("select oxvarname, oxvartype, oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
         if ($oStatement && false !== ($aRow = $oStatement->fetch())) {
+            if (!is_array(unserialize($aRow['oxvarvalue']))) {
+                throw new LanguageParamsException("aLanguageParams can not be type of 
+                " . gettype($aRow['oxvarvalue']) . ", aLanguageParams must be type of array");
+            }
+
             if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
                 $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
             }

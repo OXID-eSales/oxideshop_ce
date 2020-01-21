@@ -1233,7 +1233,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         return array(
             array(
                 'name'           => 'OXINT',
-                'max_length'     => '11',
                 'type'           => 'int',
                 'not_null'       => true,
                 'primary_key'    => true,

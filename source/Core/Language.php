@@ -1038,8 +1038,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns language map array
      *
-     * @param int  $language   language index
-     * @param bool $isAdmin admin mode [default NULL]
+     * @param int  $language language index
+     * @param bool $isAdmin  admin mode [default NULL]
      *
      * @return array
      * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageMap" in next major
@@ -1053,16 +1053,21 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $config = Registry::getConfig();
 
             $mapFile = '';
-            $parentThemeDirectory = $this->getRealThemeName($config->getConfigParam("sTheme"), $isAdmin);
-            $customThemeDirectory = $this->getRealThemeName($config->getConfigParam("sCustomTheme"), $isAdmin);
+            $theme = $this->getRealThemeName($config->getConfigParam("sTheme"), $isAdmin);
+            $customTheme = $this->getRealThemeName($config->getConfigParam("sCustomTheme"), $isAdmin);
 
-            $parentMapFile = $this->getLanguageMappingFilePath($language, $parentThemeDirectory);
-            $customThemeMapFile = $this->getLanguageMappingFilePath($language, $customThemeDirectory);
+            $mapFiles = [
+                $this->getLanguageMappingFilePath($customTheme, $language),
+                $this->getLanguageMappingFilePath($customTheme),
+                $this->getLanguageMappingFilePath($theme, $language),
+                $this->getLanguageMappingFilePath($theme),
+            ];
 
-            if (file_exists($customThemeMapFile) && is_readable($customThemeMapFile)) {
-                $mapFile = $customThemeMapFile;
-            } elseif (file_exists($parentMapFile) && is_readable($parentMapFile)) {
-                $mapFile = $parentMapFile;
+            foreach ($mapFiles as $tmpMapFile) {
+                if (file_exists($tmpMapFile) && is_readable($tmpMapFile)) {
+                    $mapFile = $tmpMapFile;
+                    break;
+                }
             }
 
             if ($mapFile) {
@@ -1075,18 +1080,20 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @param int    $language  The language index
      * @param string $themeName The name of the theme
+     * @param int    $language  The language index
      *
      * @return string
      */
-    private function getLanguageMappingFilePath($language, $themeName)
+    private function getLanguageMappingFilePath($themeName, $language = null)
     {
-        $config = Registry::getConfig();
+        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $mapFolder = $language === null ? 'translations' : Registry::getLang()->getLanguageAbbr($language);
+
         return $config->getAppDir() . DIRECTORY_SEPARATOR .
             'views' . DIRECTORY_SEPARATOR .
             $themeName . DIRECTORY_SEPARATOR .
-            Registry::getLang()->getLanguageAbbr($language) . DIRECTORY_SEPARATOR .
+            $mapFolder . DIRECTORY_SEPARATOR .
             'map.php';
     }
 

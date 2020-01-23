@@ -4,7 +4,7 @@ OXID eShop is available under two different licenses, GPLv3 and a commercial lic
 
 That's why, before contributing for the first time, you must <a href="https://cla-assistant.io/OXID-eSales/oxideshop_ce">sign the Contributor License Agreement</a>.
 You can find more information about it on the FAQ page OXID Contribution and Contributor Agreement FAQ:
-https://oxidforge.org/en/oxid-contribution-and-contributor-agreement-faq
+https://oxidforge.org/en/oxid-contribution-contributor-agreement-faq
 
 ## Process
 
@@ -93,7 +93,7 @@ Now you'll be asked for signing an OXID Contributor Agreement (this has to be do
 ![Image alt](git_contributor-activity.png)
 
 When sending your pull request, please provide a clear, meaningful and detailed information what your code is about and what it will do, best including a screen shot if possible.
-If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: https://lists.oxidforge.org/mailman/listinfo/dev-general.
+If you want to discuss your contribution and your code before committing it, please go to the forums or Slack channel: https://oxidforge.org/en/community-en.
 
 You will find technical help with Git and GitHub on this place:<br>
 https://help.github.com/

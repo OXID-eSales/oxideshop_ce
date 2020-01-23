@@ -40,6 +40,5 @@ You can easily enable code completion in your IDE by installing [this script](ht
 ### Contact us
 
  * [Open a new issue on our bug tracker](https://bugs.oxid-esales.com)
- * [Join our community forum](https://forum.oxid-esales.com/)
- * [Join our mailing list](https://oxidforge.org/en/mailinglists)
+ * [Join our community forum or Slack channel](https://oxidforge.org/en/community-en)
  * [Use the contact form](https://www.oxid-esales.com/en/contact/contact-us.html)

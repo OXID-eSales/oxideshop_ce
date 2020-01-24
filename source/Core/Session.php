@@ -214,23 +214,14 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function start()
     {
-        if ($this->isSessionStarted()) {
-            return;
-        }
-
-        $myConfig = $this->getConfig();
-
-        if ($this->isAdmin()) {
-            $this->setName("admin_sid");
-        } else {
-            $this->setName("sid");
-        }
+        $this->setName($this->isAdmin() ? 'admin_sid' : 'sid');
 
         $sid = $this->getSidFromRequest();
+        if ($sid) {
+            $this->setId($sid);
+        }
 
-        //starting session if only we can
-        if ($this->_allowSessionStart()) {
-            //creating new sid
+        if ($this->isSessionStarted() === false && $this->_allowSessionStart()) {
             if (!$sid) {
                 self::$_blIsNewSession = true;
                 $this->initNewSession();
@@ -241,8 +232,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
             }
 
             //special handling for new ZP cluster session, as in that case session_start() regenerates id
-            if ($this->_sId != session_id()) {
-                $this->_setSessionId(session_id());
+            if ($this->getId() !== session_id()) {
+                $this->setId(session_id());
             }
 
             //checking for swapped client
@@ -250,7 +241,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             if (!self::$_blIsNewSession && $blSwapped) {
                 $this->initNewSession();
 
-                // passing notification about session problems
+                $myConfig = $this->getConfig();
                 if ($this->_sErrorMsg && $myConfig->getConfigParam('iDebug')) {
                     \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
                 }
@@ -315,7 +306,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _sessionStart()
     {
-        if (!headers_sent() && (PHP_SESSION_NONE == session_status())) {
+        if (!headers_sent() && (PHP_SESSION_NONE === session_status())) {
             if ($this->needToSetHeaders()) {
                 //enforcing no caching when session is started
                 session_cache_limiter('nocache');
@@ -334,7 +325,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         }
 
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $this->_blStarted = @session_start([
+        $this->_blStarted = session_start([
             'use_cookies' => $config->getConfigParam('blSessionUseCookies')
         ]);
         if (!$this->getSessionChallengeToken()) {
@@ -349,8 +340,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function initNewSession()
     {
-        // starting session only if it was not started yet
-        if (self::$_blIsNewSession) {
+        if (!$this->isSessionStarted()) {
             $this->_sessionStart();
         }
 
@@ -362,7 +352,9 @@ class Session extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $this->_setSessionId($this->_getNewSessionId());
+        $sessionId = $this->_getNewSessionId(false);
+        $this->setId($sessionId);
+        $this->setSessionCookie($sessionId);
 
         //restoring persistent params to session
         foreach ($aPersistent as $sKey => $sParam) {
@@ -380,15 +372,17 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function regenerateSessionId()
     {
-        // starting session only if it was not started yet
-        if (self::$_blIsNewSession) {
+        if (!$this->isSessionStarted()) {
             $this->_sessionStart();
 
             // (re)setting actual user agent when initiating new session
             $this->setVariable("sessionagent", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar('HTTP_USER_AGENT'));
         }
 
-        $this->_setSessionId($this->_getNewSessionId(false));
+        $sessionId = $this->_getNewSessionId(false);
+        $this->setId($sessionId);
+        $this->setSessionCookie($sessionId);
+
         $this->_initNewSessionChallenge();
     }
 
@@ -402,7 +396,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getNewSessionId($blUnset = true)
     {
-        @session_regenerate_id(true);
+        session_regenerate_id(true);
 
         if ($blUnset) {
             session_unset();
@@ -975,21 +969,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         session_id($sSessId);
 
         $this->setId($sSessId);
-
-        $blUseCookies = $this->_getSessionUseCookies();
-
-        if (!$this->_allowSessionStart()) {
-            if ($blUseCookies) {
-                \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie($this->getName(), null);
-            }
-
-            return;
-        }
-
-        if ($blUseCookies) {
-            //setting session cookie
-            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie($this->getName(), $sSessId);
-        }
+        $this->setSessionCookie($sSessId);
     }
 
     /**
@@ -1117,7 +1097,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function isSessionStarted()
     {
-        return $this->_blStarted;
+        return session_status() === PHP_SESSION_ACTIVE;
     }
 
     /**
@@ -1145,5 +1125,16 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function sidToUrlEvent()
     {
+    }
+
+    private function setSessionCookie($sessionId): void
+    {
+        if($this->_getSessionUseCookies()) {
+            if (!$this->_allowSessionStart()) {
+                Registry::getUtilsServer()->setOxCookie($this->getName(), null);
+            } else {
+                Registry::getUtilsServer()->setOxCookie($this->getName(), $sessionId);
+            }
+        }
     }
 }

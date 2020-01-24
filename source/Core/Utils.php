@@ -493,37 +493,33 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function fromFileCache($sKey)
     {
         if (!array_key_exists($sKey, $this->_aFileCacheContents)) {
-            $sRes = null;
-
             $aMeta = $this->getCacheMeta($sKey);
-            $blInclude = isset($aMeta["include"]) ? $aMeta["include"] : false;
             $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
-
-            // trying to lock
-            $this->_lockFile($sCachePath, $sKey, LOCK_SH);
 
             clearstatcache();
             if (is_readable($sCachePath)) {
+                $this->_lockFile($sCachePath, $sKey, LOCK_SH);
+
+                $blInclude = isset($aMeta["include"]) ? $aMeta["include"] : false;
                 $sRes = $blInclude ? $this->_includeFile($sCachePath) : $this->_readFile($sCachePath);
-            }
 
-            if (isset($sRes['ttl']) && $sRes['ttl'] != 0) {
-                $iTimestamp = $sRes['timestamp'];
-                $iTtl = $sRes['ttl'];
+                if (isset($sRes['ttl']) && $sRes['ttl'] != 0) {
+                    $iTimestamp = $sRes['timestamp'];
+                    $iTtl = $sRes['ttl'];
 
-                $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-                if ($iTime > $iTimestamp + $iTtl) {
-                    return null;
+                    $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+                    if ($iTime > $iTimestamp + $iTtl) {
+                        return null;
+                    }
                 }
-            }
-            // release lock
-            $this->_releaseFile($sKey, LOCK_SH);
 
-            // caching
-            $this->_aFileCacheContents[$sKey] = $sRes;
+                $this->_aFileCacheContents[$sKey] = $sRes;
+
+                $this->_releaseFile($sKey, LOCK_SH);
+            }
         }
 
-        return $this->_aFileCacheContents[$sKey]['content'];
+        return isset($this->_aFileCacheContents[$sKey]) ? $this->_aFileCacheContents[$sKey]['content'] : null;
     }
 
     /**

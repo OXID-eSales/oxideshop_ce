@@ -19,17 +19,17 @@ class FormFieldsTrimmer implements EshopFormFieldsTrimmerInterface
      *
      * @param EshopFormFields $fields to trim.
      *
-     * @return array
+     * @return ArrayIterator
      */
     public function trim(EshopFormFields $fields)
     {
-        $updatableFields = $fields->getUpdatableFields();
+        $updatableFields = $fields->getUpdatableFields()->getArrayCopy();
 
         array_walk_recursive($updatableFields, function (&$value) {
             $value = $this->isTrimmableField($value) ? $this->trimField($value) : $value;
         });
 
-        return $updatableFields;
+        return new \ArrayIterator($updatableFields);
     }
 
     /**

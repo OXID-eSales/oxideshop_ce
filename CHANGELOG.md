@@ -162,6 +162,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Warnings in order discounts recalculation [PR-742](https://github.com/OXID-eSales/oxideshop_ce/pull/742)
 - Require at least 3.4.26 DI component [PR-746](https://github.com/OXID-eSales/oxideshop_ce/pull/746)
+- Fix return type annoation for `OxidEsales\EshopCommunity\Application\Model::load()` to `bool`
 
 ## [6.5.0] - 2019-11-07
 

@@ -237,9 +237,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function _afterLogin($oUser)
     {
-        $oSession = \OxidEsales\Eshop\Core\Registry::getSession();
-        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS && $oSession->isSessionStarted()) {
-            $oSession->regenerateSessionId();
+        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS && $session->isSessionStarted()) {
+            $session->regenerateSessionId();
         }
 
         // this user is blocked, deny him

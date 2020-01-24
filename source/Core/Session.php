@@ -91,6 +91,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
     /**
      * Started session marker
      *
+     * @deprecated since v6.5.1 (2020-01-24); Use Session::isSessionStarted() instead.
+     *
      * @var bool
      */
     protected $_blStarted = false;

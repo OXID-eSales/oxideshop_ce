@@ -3299,8 +3299,8 @@ class OrderTest extends \OxidTestCase
 
     public function testGetPaymentTypeDynValue()
     {
-        $sDyn = 'lsbankname__visa@@lsblz__12345@@lsktonr__56789@@lsktoinhaber__testName@@';
-        $aDynVal = array("lsbankname" => "visa", "lsblz" => "12345", "lsktonr" => "56789", "lsktoinhaber" => "testName");
+        $sDyn = 'lsbankname__cash@@lsblz__12345@@lsktonr__56789@@lsktoinhaber__testName@@';
+        $aDynVal = array("lsbankname" => "cash", "lsblz" => "12345", "lsktonr" => "56789", "lsktoinhaber" => "testName");
         $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");

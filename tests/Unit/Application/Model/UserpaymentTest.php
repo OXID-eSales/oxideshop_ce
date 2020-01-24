@@ -118,7 +118,7 @@ class UserpaymentTest extends \OxidTestCase
      */
     public function testGetaDynValues()
     {
-        $sDyn = 'kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@';
+        $sDyn = 'kktype__cash@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@';
         $aDynVal = oxRegistry::getUtils()->assignValuesFromText($sDyn);
         $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxvalue = new oxField($sDyn, oxField::T_RAW);
@@ -239,7 +239,7 @@ class UserpaymentTest extends \OxidTestCase
      */
     public function testGetDynValues()
     {
-        $sDyn = 'kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@';
+        $sDyn = 'kktype__cash@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@';
         $aDynVal = oxRegistry::getUtils()->assignValuesFromText($sDyn);
         $oUserPayment = oxNew('oxUserPayment');
         $oUserPayment->oxuserpayments__oxvalue = new oxField($sDyn, oxField::T_RAW);

@@ -236,17 +236,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _afterLogin($oUser)
     {
         $oSession = $this->getSession();
-
-        // generating new session id after login
-        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS) {
+        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS && $oSession->isSessionStarted()) {
             $oSession->regenerateSessionId();
         }
 
-        $myConfig = $this->getConfig();
-
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = $myConfig->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
+            $sUrl = $this->getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
             Registry::getUtils()->redirect($sUrl, true, 302);
         }
 

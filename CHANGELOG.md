@@ -168,12 +168,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Core\Config::$sConfigKey`
 - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
 - `Conf`
+- `OxidEsales\Eshop\Core\Registry\UserPayment::_insert()`
+- `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
+- `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`
+- `OxidEsales\Eshop\Core\Session::$_blStarted`
 
 ### Fixed
 - Warnings in order discounts recalculation [PR-742](https://github.com/OXID-eSales/oxideshop_ce/pull/742)
 - Require at least 3.4.26 DI component [PR-746](https://github.com/OXID-eSales/oxideshop_ce/pull/746)
 - Fix return type annoation for `OxidEsales\EshopCommunity\Application\Model::load()` to `bool`
 - Handle translated error message from validator in password change correctly [PR-731](https://github.com/OXID-eSales/oxideshop_ce/pull/731)
+
+### Added
+- Support PHP 7.3 and 7.4
 
 ## [6.5.0] - 2019-11-07
 

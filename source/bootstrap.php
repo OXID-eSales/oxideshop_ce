@@ -28,7 +28,7 @@ register_shutdown_function(
         $sessionResetErrorTypes = [E_ERROR];
 
         $error = error_get_last();
-        if (in_array($error['type'], $handledErrorTypes)) {
+        if ($error !== null && in_array($error['type'], $handledErrorTypes)) {
             $errorType = array_flip(array_slice(get_defined_constants(true)['Core'], 0, 16, true))[$error['type']];
 
             $errorMessage = $error['message'];

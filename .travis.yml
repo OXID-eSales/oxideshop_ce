@@ -13,9 +13,6 @@ php:
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: "7.3"
-    - php: "7.4"
 
 # Numeric values of error reporting levels:
 # 32767: E_ALL

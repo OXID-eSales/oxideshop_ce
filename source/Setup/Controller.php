@@ -215,14 +215,14 @@ class Controller extends Core
                 $view->setMessage($language->getText('ERROR_DB_CONNECT') . " - " . $exception->getMessage());
 
                 throw new SetupControllerExitException();
-            } elseif ($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
+            } elseif ($exception->getCode() === Database::ERROR_CODE_DBMS_NOT_COMPATIBLE) {
                 $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
                 $view->setMessage($exception->getMessage());
 
                 throw new SetupControllerExitException();
-            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS)) {
+            } elseif (($exception->getCode() === Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)) {
                 $setup->setNextStep(null);
-                $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
+                $view->setMessage($exception->getMessage());
                 $databaseExists = false;
                 // check if DB is already UP and running
                 if (!$this->databaseCanBeOverwritten($database)) {
@@ -283,9 +283,9 @@ class Controller extends Core
             if (($exception->getCode() === Database::ERROR_COULD_NOT_CREATE_DB) && $this->userDecidedIgnoreDBWarning()) {
                 //User agreed to ignore SystemRequirements warning, database does not exist yet, create database.
                 $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
-            } elseif (($exception->getCode() === Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS)) {
+            } elseif (($exception->getCode() === Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)) {
                 $setup->setNextStep(null);
-                $this->formMessageIfMySqyVersionIsNotRecommended($view, $language);
+                $view->setMessage($exception->getMessage());
                 $databaseExists = false;
                 // check if DB is already UP and running
                 if (!$this->databaseCanBeOverwritten($database)) {
@@ -559,17 +559,6 @@ class Controller extends Core
     }
 
     /**
-     * Show warning-question if MySQL version does meet minimal requirements, but is neither recommended nor supported.
-     *
-     * @param \OxidEsales\EshopCommunity\Setup\View     $view     to set parameters for template
-     * @param \OxidEsales\EshopCommunity\Setup\Language $language to translate text
-     */
-    private function formMessageIfMySqyVersionIsNotRecommended($view, $language)
-    {
-        $view->setMessage(sprintf($language->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS')));
-    }
-
-    /**
      * Show a message and a link to continue installation process, not regarding errors and warnings
      *
      * @param \OxidEsales\EshopCommunity\Setup\View     $view      to set parameters for template
@@ -595,7 +584,7 @@ class Controller extends Core
     {
         $ignoreParam = $databaseExists ? '&ow=1&owrec=1' : '&owrec=1';
         $info = $databaseExists ? 'STEP_4_2_OVERWRITE_DB' : 'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION';
-        $view->setMessage("<br><br>" . $language->getText($info) . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . $ignoreParam . "id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
+        $view->setMessage("<br><br>" . $language->getText($info) . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . $ignoreParam . "\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
     }
 
     /**

@@ -7,8 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
+use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
@@ -678,10 +680,12 @@ class SystemRequirements
 
     /**
      * Checks if current mysql version matches requirements
-     *
-     * @param string $installedVersion MySQL version
-     *
-     * @return int
+     * @param null $installedVersion
+     * @return int|null
+     * @throws DatabaseConnectionException
+     * @deprecated since v6.6.0 (2019-12-12) use
+     * \OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface
+     * instead
      */
     public function checkMysqlVersion($installedVersion = null)
     {
@@ -691,7 +695,7 @@ class SystemRequirements
         $maximalRequiredVersion = '5.7.9999';
 
         if ($installedVersion === null) {
-            $resultContainingDatabaseVersion = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
+            $resultContainingDatabaseVersion = DatabaseConnectionProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
             $installedVersion = $resultContainingDatabaseVersion[1];
         }
 
@@ -816,7 +820,7 @@ class SystemRequirements
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
                     and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
                    'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
-        $aRez = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll($sSelect);
+        $aRez = DatabaseConnectionProvider::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
             if (!$sCollation) {
                 $sCollation = $aRetTable[2];
@@ -1132,7 +1136,7 @@ class SystemRequirements
     {
         $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
         $config = Registry::getConfig();
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseConnectionProvider::getDb(DatabaseConnectionProvider::FETCH_MODE_ASSOC);
 
         $query = "select * from oxtplblocks where oxactive = 1 and oxshopid = :oxshopid and oxtheme in ('', :oxtheme)";
 

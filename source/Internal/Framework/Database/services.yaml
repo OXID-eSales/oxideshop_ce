@@ -1,5 +1,6 @@
 imports:
   - { resource: Logger/services.yaml }
+  - { resource: CompatibilityChecker/services.yaml }
 
 services:
   _defaults:

@@ -184,7 +184,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
     public function testGetDataFieldsFalse()
     {
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals(array(array('FALSE' => 0)), $oView->UNITgetDataFields('select false'));
+        $this->assertEquals(array(array('FALSE' => 0)), $oView->UNITgetDataFields('select FALSE'));
     }
 
     /**
@@ -196,7 +196,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("oxid", true);
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals(array(array('FALSE' => 0, '_3' => 0)), $oView->UNITgetDataFields('select false'));
+        $this->assertEquals(array(array('FALSE' => 0, '_3' => 0)), $oView->UNITgetDataFields('select FALSE'));
     }
 
     /**

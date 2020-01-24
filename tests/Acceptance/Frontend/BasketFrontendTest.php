@@ -501,7 +501,7 @@ class BasketFrontendTest extends FrontendTestCase
 
         $this->_continueToNextStep();
 
-        $this->assertEquals("%SELECT_SHIPPING_METHOD%:", $this->getText("//h3"));
+        $this->assertEquals("%SELECTED_SHIPPING_CARRIER%:", $this->getText("//h3"));
         $this->assertElementPresent("sShipSet");
         $this->clickAndWait("link=%STEPS_SEND%");
         $this->select("invadr[oxuser__oxcountryid]", "label=Spain");

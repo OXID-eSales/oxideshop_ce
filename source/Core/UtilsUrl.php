@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * URL utility class
  */
@@ -67,8 +69,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function prepareUrlForNoSession($sUrl)
     {
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
@@ -115,8 +116,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function prepareCanonicalUrl($sUrl)
     {
         $oConfig = $this->getConfig();
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
@@ -183,8 +183,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function cleanUrl($sUrl, $aParams = null)
     {
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if (is_array($aParams)) {
             foreach ($aParams as $sParam) {
                 $sUrl = $oStr->preg_replace(
@@ -395,8 +394,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $sUrl = $aUrlParts[0];
         $sUrlParams = $aUrlParts[1];
 
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStrUtils */
-        $oStrUtils = getStr();
+        $oStrUtils = Str::getStr();
         $sUrlParams = $oStrUtils->preg_replace(
             ['@(\&(amp;){1,})@ix', '@\&{1,}@', '@\?&@x'],
             ['&', '&', '?'],
@@ -568,8 +566,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function getUrlParametersSeparator($url)
     {
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         $urlSeparator = '&amp;';
         if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $url)) {
@@ -628,6 +625,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function rightTrimAmp($url)
     {
-        return getStr()->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
+        return Str::getStr()->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
     }
 }

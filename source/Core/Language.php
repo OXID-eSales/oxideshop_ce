@@ -7,8 +7,9 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use stdClass;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
+use stdClass;
 
 /**
  * Language related utility class
@@ -546,8 +547,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         $iDecPos = 0;
         $sValue = ( string ) $dValue;
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if (($iDotPos = $oStr->strpos($sValue, '.')) !== false) {
             $iDecPos = $oStr->strlen($oStr->substr($sValue, $iDotPos + 1));
         }
@@ -1177,8 +1177,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $iLang = isset($iLang) ? $iLang : $this->getBaseLanguage();
         $iDefaultLang = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultLang');
         $iBrowserLanguage = (int) $this->detectLanguageByBrowser();
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         if (!$this->isAdmin()) {
             $sParam = $this->getUrlLang($iLang);

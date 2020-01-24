@@ -10,6 +10,7 @@ use oxRegistry;
 use oxDb;
 use oxField;
 use Exception;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Class controls article assignment to action
@@ -111,7 +112,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         if ($this->getConfig()->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
-            $oStr = getStr();
+            $oStr = Str::getStr();
             if ($oStr->strpos($sQ, "select count( * ) ") === 0) {
                 $sQ = "select count( * ) from ( {$sQ} ) as _cnttable";
             }

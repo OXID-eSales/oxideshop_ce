@@ -4,6 +4,8 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * Smarty lower modifier
  * -------------------------------------------------------------
@@ -17,5 +19,5 @@
  */
 function smarty_modifier_oxlower($sString)
 {
-    return getStr()->strtolower($sString);
+    return Str::getStr()->strtolower($sString);
 }

@@ -6,9 +6,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use \OxidEsales\Eshop\Application\Model\Basket;
-use \OxidEsales\Eshop\Application\Model\BasketItem;
-use \OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\Eshop\Application\Model\BasketItem;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Session manager.
@@ -774,7 +775,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             if ($sSid) {
                 $this->sidToUrlEvent();
 
-                $oStr = getStr();
+                $oStr = Str::getStr();
                 $aUrlParts = explode('#', $sUrl);
                 if (!$oStr->preg_match('/(\?|&(amp;)?)sid=/i', $aUrlParts[0]) && (false === $oStr->strpos($aUrlParts[0], $sSid))) {
                     if (!$oStr->preg_match('/(\?|&(amp;)?)$/', $sUrl)) {

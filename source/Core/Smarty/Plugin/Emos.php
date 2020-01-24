@@ -41,6 +41,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later
  * inclusion in a HTML/PHP Page.
@@ -466,7 +468,7 @@ class Emos
         }
 
         if ($sCip) {
-            $ort .= getStr()->substr($sCip, 0, 1)."/".getStr()->substr($sCip, 0, 2)."/";
+            $ort .= Str::getStr()->substr($sCip, 0, 1)."/".Str::getStr()->substr($sCip, 0, 2)."/";
         }
 
         if ($sCity) {
@@ -531,7 +533,7 @@ class Emos
 
         //$sStr = urldecode($sStr);
         $sStr = htmlspecialchars_decode($sStr, ENT_QUOTES);
-        $sStr = getStr()->html_entity_decode($sStr);
+        $sStr = Str::getStr()->html_entity_decode($sStr);
         $sStr = strip_tags($sStr);
         $sStr = trim($sStr);
 
@@ -556,7 +558,7 @@ class Emos
         $sStr = str_replace(" /", "/", $sStr);
         $sStr = str_replace("/ ", "/", $sStr);
 
-        $sStr = getStr()->substr($sStr, 0, 254);
+        $sStr = Str::getStr()->substr($sStr, 0, 254);
         //$sStr = rawurlencode( $sStr );
         return $sStr;
     }

@@ -4,6 +4,8 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * Smarty plugin
  * -------------------------------------------------------------
@@ -62,7 +64,7 @@ function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)
         }
         $repeat = $blLoaded;
     } else {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $blHasSmarty = $oStr->strstr($content, '[{');
         if ($blHasSmarty) {
             $content = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($content, $sIdent.md5($content), $myConfig->getActiveView());

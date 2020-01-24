@@ -131,7 +131,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                             $sValue = $aValue["value"];
                             break;
                     }
-                    $sValue = getStr()->htmlentities($sValue);
+                    $sValue = Str::getStr()->htmlentities($sValue);
                 } else {
                     $sDbType = $this->_getDbConfigTypeName($sType);
                     $sValue = $aDbVariables['vars'][$sDbType][$sName];

@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Server data manipulation class
@@ -373,7 +374,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function processUserAgentInfo($sAgent)
     {
         if ($sAgent) {
-            $sAgent = getStr()->preg_replace("/MSIE(\s)?(\S)*(\s)/", "", (string) $sAgent);
+            $sAgent = Str::getStr()->preg_replace("/MSIE(\s)?(\S)*(\s)/", "", (string) $sAgent);
         }
 
         return $sAgent;

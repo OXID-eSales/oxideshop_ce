@@ -4,6 +4,7 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Smarty wordwrap modifier
@@ -21,5 +22,5 @@
  */
 function smarty_modifier_oxwordwrap($sString, $iLength = 80, $sWraper = "\n", $blCut = false)
 {
-    return getStr()->wordwrap($sString, $iLength, $sWraper, $blCut);
+    return Str::getStr()->wordwrap($sString, $iLength, $sWraper, $blCut);
 }

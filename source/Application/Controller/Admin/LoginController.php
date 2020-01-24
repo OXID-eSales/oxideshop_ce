@@ -8,6 +8,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Administrator login form.
@@ -120,7 +121,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
         } catch (UserException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
@@ -128,7 +129,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_NO_COOKIE_SUPPORT');
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));

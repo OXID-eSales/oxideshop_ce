@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Article seo config class
@@ -39,7 +40,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $sType = false;
         $aData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $iEndPos = $oStr->strpos($aData["oxparams"], "#");
             $sType = $oStr->substr($aData["oxparams"], 0, $iEndPos);
         } elseif ($aList = $this->getSelectionList()) {
@@ -64,7 +65,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $iLang = false;
         $aData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
             $iEndPos = $oStr->strpos($aData["oxparams"], "#", $iStartPos + 1);
             $iLang = $oStr->substr($aData["oxparams"], $iEndPos + 1);
@@ -86,7 +87,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $sId = false;
         $aData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
             $iEndPos = $oStr->strpos($aData["oxparams"], "#", $iStartPos + 1);
             $iLen = $oStr->strlen($aData["oxparams"]);

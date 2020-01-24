@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Str;
+
 class AddUrlParametersLogic
 {
 
@@ -19,9 +21,8 @@ class AddUrlParametersLogic
      */
     public function addUrlParameters(string $sUrl, string $sDynParams): string
     {
-        $oStr = getStr();
         // removing empty parameters
-        $sDynParams = $sDynParams ? $oStr->preg_replace(['/^\?/', '/^\&(amp;)?$/'], '', $sDynParams) : false;
+        $sDynParams = $sDynParams ? Str::getStr()->preg_replace(['/^\?/', '/^\&(amp;)?$/'], '', $sDynParams) : false;
         if ($sDynParams) {
             $sUrl .= ((strpos($sUrl, '?') !== false) ? "&amp;" : "?") . $sDynParams;
         }

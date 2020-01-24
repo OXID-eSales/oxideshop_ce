@@ -10,6 +10,7 @@ use oxRegistry;
 use oxDb;
 use oxField;
 use stdClass;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Admin content manager.
@@ -199,7 +200,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _prepareIdent($sIdent)
     {
         if ($sIdent) {
-            return getStr()->preg_replace("/[^a-zA-Z0-9_]*/", "", $sIdent);
+            return Str::getStr()->preg_replace("/[^a-zA-Z0-9_]*/", "", $sIdent);
         }
     }
 

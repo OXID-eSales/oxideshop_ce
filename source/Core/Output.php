@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * class for output processing
  */
@@ -180,7 +182,7 @@ class Output extends \OxidEsales\Eshop\Core\Base
     {
         switch ($this->_sOutputFormat) {
             case self::OUTPUT_FORMAT_JSON:
-                echo getStr()->jsonEncode($this->_aBuffer);
+                echo Str::getStr()->jsonEncode($this->_aBuffer);
                 break;
             case self::OUTPUT_FORMAT_HTML:
             default:

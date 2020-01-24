@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Str;
+
 class WordwrapLogic
 {
     /**
@@ -18,6 +20,6 @@ class WordwrapLogic
      */
     public function wordwrap(string $string, int $length = 80, string $wrapper = "\n", bool $cut = false): string
     {
-        return getStr()->wordwrap($string, $length, $wrapper, $cut);
+        return Str::getStr()->wordwrap($string, $length, $wrapper, $cut);
     }
 }

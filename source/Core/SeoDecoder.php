@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * Seo encoder base
  */
@@ -21,7 +23,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     public function parseStdUrl($sUrl)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $aRet = [];
         $sUrl = $oStr->html_entity_decode($sUrl);
 
@@ -55,7 +57,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     public function decodeUrl($seoUrl)
     {
-        $stringObject = getStr();
+        $stringObject = Str::getStr();
         $baseUrl = $this->getConfig()->getShopURL();
         if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
@@ -97,7 +99,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     protected function _decodeOldUrl($seoUrl)
     {
-        $stringObject = getStr();
+        $stringObject = Str::getStr();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $baseUrl = $this->getConfig()->getShopURL();
         if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
@@ -314,7 +316,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getParams($sRequest, $sPath)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         $sParams = $oStr->preg_replace('/\?.*/', '', $sRequest);
         $sPath = preg_quote($sPath, '/');

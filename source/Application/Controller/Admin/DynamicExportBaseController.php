@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use stdClass;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Error constants
@@ -326,7 +327,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         // remove html entities, remove html tags
         $sInput = $this->_unHTMLEntities(strip_tags($sInput));
 
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if ($oStr->strlen($sInput) > $iMaxSize - 3) {
             $sInput = $oStr->substr($sInput, 0, $iMaxSize - 5) . "...";
         }
@@ -526,7 +527,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      */
     public function assureContent($sInput, $sReplace = null)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if (!$oStr->strlen($sInput)) {
             if (!isset($sReplace) || !$oStr->strlen($sReplace)) {
                 $sReplace = "-";

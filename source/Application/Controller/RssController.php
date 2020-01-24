@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\RssFeed;
+use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -107,7 +108,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      */
     protected function _processOutput($sInput)
     {
-        return getStr()->recodeEntities($sInput);
+        return Str::getStr()->recodeEntities($sInput);
     }
 
     /**

@@ -107,7 +107,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      *
      * @param string $sOxid object id
      *
-     * @return bool 
+     * @return bool
      */
     public function load($sOxid)
     {

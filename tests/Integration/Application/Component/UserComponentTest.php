@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Application\Component\UserComponent;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use \oxUser;
 use \oxException;
@@ -568,8 +569,16 @@ class UserComponentTest extends \OxidTestCase
             ->method('getBasket')
             ->willReturn($basket);
 
-        $session->expects($this->atLeastOnce())->method('isSessionStarted')->willReturn(true);
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+        $session
+            ->expects($this->atLeastOnce())
+            ->method('isSessionStarted')
+            ->willReturn(true);
+
+        $session
+            ->expects($this->atLeastOnce())
+            ->method('regenerateSessionId');
+
+        Registry::set(Session::class, $session);
 
 
         $user = $this->getMock(UserComponent::class, ['inGroup']);
@@ -581,8 +590,8 @@ class UserComponentTest extends \OxidTestCase
         $userComponent = $this->getMock(UserComponent::class, ['getLoginStatus']);
         $userComponent
             ->expects($this->atLeastOnce())
-            ->method('getSession')
-            ->will($this->returnValue($session));
+            ->method('getLoginStatus')
+            ->willReturn(1);
 
         $this->assertEquals('payment', $userComponent->UNITafterLogin($user));
     }

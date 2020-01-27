@@ -183,6 +183,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Support PHP 7.3 and 7.4
+- Utilizes Travis CI caching feature for faster builds
 
 ## [6.5.0] - 2019-11-07
 

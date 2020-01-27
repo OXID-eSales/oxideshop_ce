@@ -24,7 +24,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
 - Typos in CountryList::_getSecondSortFieldName doc [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
-- Improved shopId doc and variable style [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748)
+- Improved various docs and variable styles 
+    [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748) 
+    [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
 
 ### Deprecated
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`

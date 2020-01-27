@@ -109,7 +109,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
 
 ### Changed
-- Migrate from PHP 7.4snapshot to 7.4 in travis [PR-745](https://github.com/OXID-eSales/oxideshop_ce/pull/745)
+- Drop support for PHP 7.1 and 7.2
 - Renamed constants in `OxidEsales\EshopCommunity\Setup\Database`:
 `ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_CODE_DBMS_NOT_COMPATIBLE`
 `ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_CODE_DBMS_NOT_RECOMMENDED`

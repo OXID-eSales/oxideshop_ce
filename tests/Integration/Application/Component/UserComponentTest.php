@@ -12,7 +12,9 @@ use \Exception;
 use \oxField;
 use OxidEsales\Eshop\Application\Component\UserComponent;
 use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Session;
 use \oxUser;
 use \oxException;
 use \oxDb;
@@ -554,31 +556,31 @@ class UserComponentTest extends \OxidTestCase
         $this->assertEquals('user', $oUserView->login());
     }
 
-    /**
-     * Test _afterlogin().
-     *
-     * @return null
-     */
-    public function testAfterLogin()
+    public function testAfterLogin(): void
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
-            $this->markTestSkipped("Skip CE/PE related tests for EE edition");
-        }
-
         $this->setRequestParameter('blPerfNoBasketSaving', true);
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('onUpdate'));
-        $oBasket->expects($this->once())->method('onUpdate');
+        $basket = $this->getMock(Basket::class, ['onUpdate']);
+        $basket->expects($this->once())->method('onUpdate');
 
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket', "regenerateSessionId"));
-        $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
+        $session = $this->getMock(Session::class, ['getBasket', 'regenerateSessionId']);
+        $session
+            ->expects($this->atLeastOnce())
+            ->method('getBasket')
+            ->willReturn($basket);
 
-        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('inGroup'));
-        $oUser->expects($this->once())->method('inGroup')->will($this->returnValue(false));
+        $user = $this->getMock(UserComponent::class, ['inGroup']);
+        $user
+            ->expects($this->once())
+            ->method('inGroup')
+            ->will($this->returnValue(false));
 
-        $aMockFnc = array('getSession', "getLoginStatus");
-        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, $aMockFnc);
-        $oUserView->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
-        $this->assertEquals('payment', $oUserView->UNITafterLogin($oUser));
+        $userComponent = $this->getMock(UserComponent::class, ['getSession', 'getLoginStatus']);
+        $userComponent
+            ->expects($this->atLeastOnce())
+            ->method('getSession')
+            ->will($this->returnValue($session));
+
+        $this->assertEquals('payment', $userComponent->UNITafterLogin($user));
     }
 
     /**

@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Date manipulation utility class
+ * Counting utility class
  */
 class UtilsCount extends \OxidEsales\Eshop\Core\Base
 {

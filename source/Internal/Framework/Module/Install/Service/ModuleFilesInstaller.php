@@ -45,7 +45,7 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
     /**
      * @param OxidEshopPackage $package
      */
-    public function install(OxidEshopPackage $package)
+    public function install(OxidEshopPackage $package): void
     {
         $finder = $this->getFinder($package->getPackageSourcePath(), $package->getBlackListFilters());
 
@@ -55,6 +55,11 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
             $finder,
             ['override' => true]
         );
+    }
+
+    public function uninstall(OxidEshopPackage $package): void
+    {
+        // TODO: Implement uninstall() method.
     }
 
     /**

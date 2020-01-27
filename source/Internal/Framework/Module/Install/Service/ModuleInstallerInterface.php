@@ -17,6 +17,11 @@ interface ModuleInstallerInterface
 
     /**
      * @param OxidEshopPackage $package
+     */
+    public function uninstall(OxidEshopPackage $package): void;
+
+    /**
+     * @param OxidEshopPackage $package
      * @return bool
      */
     public function isInstalled(OxidEshopPackage $package): bool;

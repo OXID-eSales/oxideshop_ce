@@ -11,9 +11,13 @@ interface ModuleConfigurationInstallerInterface
     /**
      * @param string $moduleSourcePath
      * @param string $moduleTargetPath
-     * @return
      */
-    public function install(string $moduleSourcePath, string $moduleTargetPath);
+    public function install(string $moduleSourcePath, string $moduleTargetPath): void;
+
+    /**
+     * @param string $moduleId
+     */
+    public function uninstall(string $moduleId): void;
 
     /**
      * @param string $packagePath

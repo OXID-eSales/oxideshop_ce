@@ -36,10 +36,20 @@ class ModuleInstaller implements ModuleInstallerInterface
     /**
      * @param OxidEshopPackage $package
      */
-    public function install(OxidEshopPackage $package)
+    public function install(OxidEshopPackage $package): void
     {
         $this->moduleFilesInstaller->install($package);
         $this->moduleConfigurationInstaller->install($package->getPackageSourcePath(), $package->getTargetDirectory());
+    }
+
+    /**
+     * @param OxidEshopPackage $package
+     */
+    public function uninstall(OxidEshopPackage $package): void
+    {
+        $this->deactivateModule($package);
+        $this->moduleConfigurationInstaller->uninstall('moduleId');
+        $this->moduleFilesInstaller->uninstall($package);
     }
 
     /**
@@ -50,5 +60,10 @@ class ModuleInstaller implements ModuleInstallerInterface
     {
         return $this->moduleFilesInstaller->isInstalled($package)
             && $this->moduleConfigurationInstaller->isInstalled($package->getPackageSourcePath());
+    }
+
+    private function deactivateModule(OxidEshopPackage $package): void
+    {
+
     }
 }

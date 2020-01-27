@@ -1131,7 +1131,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
     private function setSessionCookie($sessionId): void
     {
-        if($this->_getSessionUseCookies()) {
+        if ($this->_getSessionUseCookies()) {
             if (!$this->_allowSessionStart()) {
                 Registry::getUtilsServer()->setOxCookie($this->getName(), null);
             } else {

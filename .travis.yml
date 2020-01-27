@@ -17,6 +17,10 @@ matrix:
     - php: nightly
   fast_finish: true
 
+cache:
+    directories:
+        - $HOME/.composer/cache/files
+
 # Numeric values of error reporting levels:
 # 32767: E_ALL
 # 30711: E_ALL & ~E_NOTICE & ~E_STRICT

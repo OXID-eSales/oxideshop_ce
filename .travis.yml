@@ -38,7 +38,7 @@ before_install:
 
 before_script:
   # remove xdebug
-  - phpenv config-rm xdebug.ini
+  - phpenv config-rm xdebug.ini || echo "xdebug not available"
   # apache setup (https://docs.travis-ci.com/user/languages/php/#apache--php)
   - sudo apt-get install apache2 libapache2-mod-fastcgi
   # enable php-fpm

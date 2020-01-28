@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use PHPUnit\Framework\TestCase;
 
-class ShopConfigurationTest extends TestCase
+final class ShopConfigurationTest extends TestCase
 {
     /** @var ShopConfiguration */
     private $shopConfiguration;
@@ -25,7 +25,7 @@ class ShopConfigurationTest extends TestCase
         $this->shopConfiguration = new ShopConfiguration();
     }
 
-    public function testGetModuleConfiguration()
+    public function testGetModuleConfiguration(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModuleId');
@@ -34,7 +34,7 @@ class ShopConfigurationTest extends TestCase
         $this->assertSame($moduleConfiguration, $this->shopConfiguration->getModuleConfiguration('testModuleId'));
     }
 
-    public function testGetModuleConfigurations()
+    public function testGetModuleConfigurations(): void
     {
         $moduleConfiguration1 = new ModuleConfiguration();
         $moduleConfiguration1->setId('firstModule');
@@ -55,7 +55,7 @@ class ShopConfigurationTest extends TestCase
         );
     }
 
-    public function testHasModuleConfiguration()
+    public function testHasModuleConfiguration(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');
@@ -71,19 +71,69 @@ class ShopConfigurationTest extends TestCase
         );
     }
 
-    public function testGetModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
+    public function testGetModuleConfigurationThrowsExceptionIfModuleIdNotPresent(): void
     {
         $this->expectException(ModuleConfigurationNotFoundException::class);
         $this->shopConfiguration->getModuleConfiguration('moduleIdNotPresent');
     }
 
-    public function testDeleteModuleConfigurationThrowsExceptionIfModuleIdNotPresent()
+    public function testDeleteModuleConfiguration(): void
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('testModuleId');
+
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($moduleConfiguration);
+
+        $shopConfiguration->deleteModuleConfiguration('testModuleId');
+
+        $this->assertFalse($shopConfiguration->hasModuleConfiguration('testModuleId'));
+    }
+
+    public function testDeleteModuleConfigurationRemovesModuleExtensionFromChain(): void
+    {
+        $moduleExtensionToStay = new ModuleConfiguration\ClassExtension(
+            'shopClass',
+            'moduleExtensionToStay'
+        );
+        $moduleConfigurationToStay = new ModuleConfiguration();
+        $moduleConfigurationToStay->setId('moduleToStay');
+        $moduleConfigurationToStay->addClassExtension($moduleExtensionToStay);
+
+        $moduleExtensionToDelete = new ModuleConfiguration\ClassExtension(
+            'shopClass',
+            'moduleExtensionToDelete'
+        );
+        $moduleConfigurationToDelete = new ModuleConfiguration();
+        $moduleConfigurationToDelete->setId('moduleToDelete');
+        $moduleConfigurationToDelete->addClassExtension($moduleExtensionToDelete);
+
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration
+            ->addModuleConfiguration($moduleConfigurationToDelete)
+            ->addModuleConfiguration($moduleConfigurationToStay);
+
+        $shopConfiguration->getClassExtensionsChain()->addExtension($moduleExtensionToStay);
+        $shopConfiguration->getClassExtensionsChain()->addExtension($moduleExtensionToDelete);
+
+        $shopConfiguration->deleteModuleConfiguration('moduleToDelete');
+
+        $expectedClassExtensionChain = new ClassExtensionsChain();
+        $expectedClassExtensionChain->addExtension($moduleExtensionToStay);
+
+        $this->assertEquals(
+            $expectedClassExtensionChain,
+            $shopConfiguration->getClassExtensionsChain()
+        );
+    }
+
+    public function testDeleteModuleConfigurationThrowsExceptionIfModuleIdNotPresent(): void
     {
         $this->expectException(ModuleConfigurationNotFoundException::class);
         $this->shopConfiguration->deleteModuleConfiguration('moduleIdNotPresent');
     }
 
-    public function testChains()
+    public function testChains(): void
     {
         $chain = new ClassExtensionsChain();
 
@@ -95,7 +145,7 @@ class ShopConfigurationTest extends TestCase
         );
     }
 
-    public function testDefaultChains()
+    public function testDefaultChains(): void
     {
         $chain = new ClassExtensionsChain();
 

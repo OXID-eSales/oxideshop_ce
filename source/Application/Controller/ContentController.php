@@ -7,6 +7,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use oxRegistry;
 
 /**
@@ -337,7 +338,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $sTplName = basename($sTplName);
 
             //checking if it is template name, not content id
-            if (!getStr()->preg_match("/\.tpl$/", $sTplName)) {
+            if (!Str::getStr()->preg_match("/\.tpl$/", $sTplName)) {
                 $sTplName = null;
             } else {
                 $sTplName = 'message/' . $sTplName;

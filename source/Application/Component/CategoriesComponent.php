@@ -6,6 +6,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
+use OxidEsales\Eshop\Core\Str;
 use oxRegistry;
 
 /**
@@ -117,7 +118,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
 
             $sActManufacturer = $myConfig->getConfigParam('bl_perfLoadManufacturerTree') ? $sActManufacturer : null;
 
-            $sActVendor = (getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
+            $sActVendor = (Str::getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
 
             $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor);
         }

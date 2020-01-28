@@ -329,7 +329,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         }
 
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $this->_blStarted = session_start([
+        $this->_blStarted = @session_start([
             'use_cookies' => $config->getConfigParam('blSessionUseCookies')
         ]);
         if (!$this->getSessionChallengeToken()) {
@@ -400,7 +400,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getNewSessionId($blUnset = true)
     {
-        session_regenerate_id(true);
+        @session_regenerate_id(true);
 
         if ($blUnset) {
             session_unset();

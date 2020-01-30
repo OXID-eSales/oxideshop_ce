@@ -164,6 +164,18 @@ class ModuleFilesInstallerTest extends TestCase
         $this->assertDirectoryNotExists($this->getModulesPath() . '/' . $this->packageName . '/BlackListDirectory');
     }
 
+    public function testUninstallWillRemoveModuleFiles(): void
+    {
+        $installer = $this->getFilesInstaller();
+        $package = $this->createPackage();
+        $installer->install($package);
+        $this->assertDirectoryExists($this->getTestedModuleInstallPath());
+
+        $installer->uninstall($package);
+
+        $this->assertDirectoryNotExists($this->getTestedModuleInstallPath());
+    }
+
     private function getModulesPath(): string
     {
         return $this->get(ContextInterface::class)->getModulesPath();
@@ -177,5 +189,10 @@ class ModuleFilesInstallerTest extends TestCase
     private function createPackage(): OxidEshopPackage
     {
         return new OxidEshopPackage($this->packageName, $this->modulePackagePath);
+    }
+
+    private function getTestedModuleInstallPath(): string
+    {
+        return $this->getModulesPath() . DIRECTORY_SEPARATOR . $this->packageName;
     }
 }

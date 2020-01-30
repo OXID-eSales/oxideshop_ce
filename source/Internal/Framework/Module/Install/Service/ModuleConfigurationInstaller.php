@@ -92,9 +92,23 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $this->projectConfigurationDao->save($projectConfiguration);
     }
 
-    public function uninstall(string $moduleSourcePath): void
+    /**
+     * @param string $modulePath
+     * @throws InvalidMetaDataException
+     */
+    public function uninstall(string $modulePath): void
     {
-        // TODO: Implement uninstall() method.
+        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($modulePath));
+        $moduleConfiguration = $this->metadataMapper->fromData($metadata);
+        $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
+
+        foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
+            if ($shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {
+                $shopConfiguration->deleteModuleConfiguration($moduleConfiguration->getId());
+            }
+        }
+
+        $this->projectConfigurationDao->save($projectConfiguration);
     }
 
     /**

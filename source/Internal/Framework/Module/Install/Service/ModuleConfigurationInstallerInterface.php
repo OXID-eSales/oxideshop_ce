@@ -15,9 +15,9 @@ interface ModuleConfigurationInstallerInterface
     public function install(string $moduleSourcePath, string $moduleTargetPath): void;
 
     /**
-     * @param string $moduleId
+     * @param string $modulePath
      */
-    public function uninstall(string $moduleId): void;
+    public function uninstall(string $modulePath): void;
 
     /**
      * @param string $packagePath

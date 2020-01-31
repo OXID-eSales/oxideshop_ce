@@ -6,39 +6,22 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Webmozart\PathUtil\Path;
 
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
     /**
-     * @var string
-     */
-    private $metadataFileName = 'metadata.php';
-
-    /**
      * @var ProjectConfigurationDaoInterface
      */
     private $projectConfigurationDao;
-
-    /**
-     * @var MetaDataProviderInterface
-     */
-    private $metadataProvider;
-
-    /**
-     * @var MetaDataToModuleConfigurationDataMapperInterface
-     */
-    private $metadataMapper;
 
     /**
      * @var ContextInterface
@@ -51,38 +34,35 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     private $moduleConfigurationMergingService;
 
     /**
-     * ModuleConfigurationInstaller constructor.
-     * @param ProjectConfigurationDaoInterface                 $projectConfigurationDao
-     * @param MetaDataProviderInterface                        $metadataProvider
-     * @param MetaDataToModuleConfigurationDataMapperInterface $metadataMapper
-     * @param ModuleConfigurationMergingServiceInterface       $moduleConfigurationMergingService
-     * @param BasicContextInterface                            $context
+     * @var ModuleConfigurationDaoInterface
+     */
+    private $metadataModuleConfigurationDao;
+
+    /**
+     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
+     * @param ContextInterface $context
+     * @param ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService
+     * @param ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
      */
     public function __construct(
-        ProjectConfigurationDaoInterface                    $projectConfigurationDao,
-        MetaDataProviderInterface                           $metadataProvider,
-        MetaDataToModuleConfigurationDataMapperInterface    $metadataMapper,
-        ModuleConfigurationMergingServiceInterface          $moduleConfigurationMergingService,
-        BasicContextInterface                               $context
+        ProjectConfigurationDaoInterface $projectConfigurationDao,
+        ContextInterface $context,
+        ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService,
+        ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
     ) {
         $this->projectConfigurationDao = $projectConfigurationDao;
-        $this->metadataProvider = $metadataProvider;
-        $this->metadataMapper = $metadataMapper;
         $this->context = $context;
         $this->moduleConfigurationMergingService = $moduleConfigurationMergingService;
+        $this->metadataModuleConfigurationDao = $metadataModuleConfigurationDao;
     }
-
 
     /**
      * @param string $moduleSourcePath
      * @param string $moduleTargetPath
-     *
-     * @throws InvalidMetaDataException
      */
     public function install(string $moduleSourcePath, string $moduleTargetPath): void
     {
-        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleSourcePath));
-        $moduleConfiguration = $this->metadataMapper->fromData($metadata);
+        $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleSourcePath);
 
         $moduleConfiguration->setPath($this->getModuleRelativePath($moduleTargetPath));
 
@@ -94,12 +74,10 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
 
     /**
      * @param string $modulePath
-     * @throws InvalidMetaDataException
      */
     public function uninstall(string $modulePath): void
     {
-        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($modulePath));
-        $moduleConfiguration = $this->metadataMapper->fromData($metadata);
+        $moduleConfiguration = $this->metadataModuleConfigurationDao->get($modulePath);
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
 
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
@@ -119,8 +97,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      */
     public function isInstalled(string $moduleFullPath): bool
     {
-        $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($moduleFullPath));
-        $moduleConfiguration = $this->metadataMapper->fromData($metadata);
+        $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleFullPath);
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
 
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
@@ -149,15 +126,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         }
 
         return $projectConfiguration;
-    }
-
-    /**
-     * @param string $moduleFullPath
-     * @return string
-     */
-    private function getMetadataFilePath(string $moduleFullPath): string
-    {
-        return $moduleFullPath . DIRECTORY_SEPARATOR . $this->metadataFileName;
     }
 
     /**

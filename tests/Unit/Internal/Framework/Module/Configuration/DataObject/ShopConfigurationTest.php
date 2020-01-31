@@ -57,17 +57,19 @@ final class ShopConfigurationTest extends TestCase
 
     public function testHasModuleConfiguration(): void
     {
+        $testModuleId = 'testModuleId';
+
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testModule');
+        $moduleConfiguration->setId($testModuleId);
 
         $this->assertFalse(
-            $this->shopConfiguration->hasModuleConfiguration('testModule')
+            $this->shopConfiguration->hasModuleConfiguration($testModuleId)
         );
 
         $this->shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
         $this->assertTrue(
-            $this->shopConfiguration->hasModuleConfiguration('testModule')
+            $this->shopConfiguration->hasModuleConfiguration($testModuleId)
         );
     }
 
@@ -79,15 +81,17 @@ final class ShopConfigurationTest extends TestCase
 
     public function testDeleteModuleConfiguration(): void
     {
+        $testModuleId = 'testModuleId';
+
         $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId('testModuleId');
+        $moduleConfiguration->setId($testModuleId);
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
-        $shopConfiguration->deleteModuleConfiguration('testModuleId');
+        $shopConfiguration->deleteModuleConfiguration($testModuleId);
 
-        $this->assertFalse($shopConfiguration->hasModuleConfiguration('testModuleId'));
+        $this->assertFalse($shopConfiguration->hasModuleConfiguration($testModuleId));
     }
 
     public function testDeleteModuleConfigurationRemovesModuleExtensionFromChain(): void

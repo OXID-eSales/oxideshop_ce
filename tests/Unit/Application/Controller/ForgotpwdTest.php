@@ -25,7 +25,7 @@ class ForgotpwdTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
         oxDb::getDb()->execute("delete from oxremark where oxparentid = '_testArt'");

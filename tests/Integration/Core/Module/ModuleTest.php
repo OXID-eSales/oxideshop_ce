@@ -23,7 +23,7 @@ class ModuleTest extends TestCase
 {
     private $container;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->container = ContainerFactory::getInstance()->getContainer();
 
@@ -33,7 +33,7 @@ class ModuleTest extends TestCase
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

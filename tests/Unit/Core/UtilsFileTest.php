@@ -16,7 +16,7 @@ use \oxTestModules;
 
 class UtilsFileTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->aFiles = $_FILES;

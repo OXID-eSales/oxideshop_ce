@@ -25,7 +25,7 @@ class OrderOverviewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxorder');
         $this->cleanUpTable("oxorderarticles");

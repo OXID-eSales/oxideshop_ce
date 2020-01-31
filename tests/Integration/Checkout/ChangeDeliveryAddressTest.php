@@ -17,7 +17,7 @@ class ChangeDeliveryAddressTest extends \OxidTestCase
     /**
      * Fixture tearDown.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxuserbaskets');

@@ -17,7 +17,7 @@ class CmpCategoriesTest extends \OxidTestCase
 {
     public static $oCL = null;
 
-    public function tearDown()
+    public function tearDown(): void
     {
         self::$oCL = null;
         parent::tearDown();

@@ -21,7 +21,7 @@ class RemarkTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_iNow = time();
@@ -39,7 +39,7 @@ class RemarkTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_oRemark->delete();
 

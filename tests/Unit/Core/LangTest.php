@@ -22,7 +22,7 @@ class LangTest extends \OxidTestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ class LangTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // cleanup
         oxRegistry::getUtils()->oxResetFileCache();

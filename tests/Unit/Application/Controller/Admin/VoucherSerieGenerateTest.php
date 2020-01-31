@@ -18,7 +18,7 @@ class VoucherSerieGenerateTest extends \OxidTestCase
      *
      * @return null
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         // cleanup
         $this->cleanUpTable("oxvouchers");

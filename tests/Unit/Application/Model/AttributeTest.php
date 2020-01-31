@@ -22,7 +22,7 @@ class AttributeTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oAttr = oxNew('oxAttribute');
@@ -50,7 +50,7 @@ class AttributeTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_oAttr->delete();
         parent::tearDown();

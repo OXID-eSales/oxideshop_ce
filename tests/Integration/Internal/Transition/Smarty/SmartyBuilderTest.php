@@ -22,13 +22,13 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
 {
     private $debugMode;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->debugMode = Registry::getConfig()->getConfigParam('iDebug');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Registry::getConfig()->setConfigParam('iDebug', $this->debugMode);
         parent::tearDown();

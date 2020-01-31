@@ -26,7 +26,7 @@ class ArticleExtendTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxmediaurls");
         parent::tearDown();

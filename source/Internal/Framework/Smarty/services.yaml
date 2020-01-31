@@ -5,10 +5,10 @@ services:
 
   OxidEsales\Eshop\Core\Config:
     class: OxidEsales\Eshop\Core\Config
-    factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
+    factory: ['OxidEsales\Eshop\Core\Registry', 'getConfig']
   OxidEsales\Eshop\Core\UtilsView:
     class: OxidEsales\Eshop\Core\UtilsView
-    factory: ['OxidEsales\Eshop\Core\Registry', getUtilsView]
+    factory: ['OxidEsales\Eshop\Core\Registry', 'getUtilsView']
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface:
@@ -25,14 +25,14 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyPluginsDataProvider
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfiguration
-    factory: 'OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface:getConfiguration'
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface', 'getConfiguration']
   OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridge
   smarty.smarty_engine_factory:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy\LegacySmartyEngineFactory
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy\LegacySmartyEngine
-    factory: 'smarty.smarty_engine_factory:getTemplateEngine'
+    factory: ['@smarty.smarty_engine_factory', 'getTemplateEngine']
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyTemplateRendererBridge
     public: true

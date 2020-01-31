@@ -54,7 +54,7 @@ class ModuleActivationServiceTest extends TestCase
 
     use ContainerTrait;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->container = $this->setupAndConfigureContainer();
 
@@ -64,7 +64,7 @@ class ModuleActivationServiceTest extends TestCase
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->databaseRestorer->restoreDB(__CLASS__);
 
@@ -178,7 +178,10 @@ class ModuleActivationServiceTest extends TestCase
         /** @var EventDispatcher $eventDispatcher */
         $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         /** @var TestEvent $event */
-        $event = $eventDispatcher->dispatch(TestEvent::NAME, new TestEvent());
+        $event = $eventDispatcher->dispatch(
+            new TestEvent(),
+            TestEvent::NAME
+        );
         $this->assertTrue($event->isHandled());
 
         $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
@@ -187,7 +190,10 @@ class ModuleActivationServiceTest extends TestCase
         // Again we need a new container to assert that our changes worked
         $this->container = $this->setupAndConfigureContainer();
         $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
-        $event = $eventDispatcher->dispatch(TestEvent::NAME, new TestEvent());
+        $event = $eventDispatcher->dispatch(
+            new TestEvent(),
+            TestEvent::NAME
+        );
         $this->assertFalse($event->isHandled());
     }
 

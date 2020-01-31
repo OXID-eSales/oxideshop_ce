@@ -26,7 +26,7 @@ class DatabaseTest extends UnitTestCase
     /**
      * Set up the test
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 

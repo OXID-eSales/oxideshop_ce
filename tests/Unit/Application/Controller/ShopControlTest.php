@@ -608,7 +608,7 @@ class ShopControlTest extends \OxidTestCase
         $control->start();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

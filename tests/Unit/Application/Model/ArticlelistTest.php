@@ -27,7 +27,7 @@ class ArticlelistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $myDB = $this->getDb();
         $myDB->execute('update oxactions set oxactive="1"');

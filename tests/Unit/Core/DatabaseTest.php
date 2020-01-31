@@ -27,7 +27,7 @@ class DatabaseTest extends UnitTestCase
     /**
      * Clean-up oxarticles table + parent::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $configFile = new \OxidEsales\Eshop\Core\ConfigFile(OX_BASE_PATH . 'config.inc.php');
         Registry::set(\OxidEsales\Eshop\Core\ConfigFile::class, $configFile);

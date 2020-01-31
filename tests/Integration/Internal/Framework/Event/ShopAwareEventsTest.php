@@ -28,7 +28,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
      */
     private $dispatcher;
 
-    public function setUp()
+    public function setup(): void
     {
         $context = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
@@ -65,7 +65,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         /**
          * @var $event TestEvent
          */
-        $event = $this->dispatcher->dispatch('oxidesales.testevent', new TestEvent());
+        $event = $this->dispatcher->dispatch(new TestEvent(), 'oxidesales.testevent');
         $this->assertEquals(2, $event->getNumberOfActiveHandlers());
     }
 
@@ -84,7 +84,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
         /**
          * @var $event TestEvent
          */
-        $event = $this->dispatcher->dispatch('oxidesales.testevent', new TestEvent());
+        $event = $this->dispatcher->dispatch(new TestEvent(), 'oxidesales.testevent');
         $this->assertEquals(1, $event->getNumberOfActiveHandlers());
     }
 

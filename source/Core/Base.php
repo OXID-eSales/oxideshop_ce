@@ -121,15 +121,15 @@ class Base
     /**
      * Dispatch given event.
      *
-     * @param \Symfony\Component\EventDispatcher\Event $event Event to dispatch
+     * @param \Symfony\Contracts\EventDispatcher\Event $event Event to dispatch
      *
-     * @return \Symfony\Component\EventDispatcher\Event
+     * @return \Symfony\Contracts\EventDispatcher\Event
      */
-    public function dispatchEvent(\Symfony\Component\EventDispatcher\Event $event)
+    public function dispatchEvent(\Symfony\Contracts\EventDispatcher\Event $event)
     {
         $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get(EventDispatcherInterface::class);
-        return $dispatcher->dispatch($event::NAME, $event);
+        return $dispatcher->dispatch($event, $event::NAME);
     }
 
     /**

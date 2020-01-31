@@ -22,7 +22,7 @@ class UserPaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuserpayments');
         parent::tearDown();

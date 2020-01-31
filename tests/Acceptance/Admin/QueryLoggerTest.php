@@ -25,7 +25,7 @@ class QueryLoggerTest extends AdminTestCase
      */
     private $adminLogHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

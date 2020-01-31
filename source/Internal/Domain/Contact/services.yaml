@@ -20,7 +20,7 @@ services:
 
   form.contact_form.contact_form_configuration:
       class: OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FormConfiguration
-      factory: 'form.contact_form.contact_form_configuration_factory:getFormConfiguration'
+      factory: ['@form.contact_form.contact_form_configuration_factory', 'getFormConfiguration']
 
   form.contact_form.contact_form_email_validator:
       class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator

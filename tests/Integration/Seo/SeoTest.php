@@ -19,7 +19,7 @@ use oxSeoEncoder;
  */
 class SeoTest extends \OxidTestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxcategories where oxid like '_test%'");
         oxDb::getDb()->execute("delete from oxarticles where oxid like '_test%'");

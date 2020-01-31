@@ -83,6 +83,8 @@ class ModuleActivateCommand extends Command
         } else {
             $output->writeLn('<error>' . sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
         }
+
+        return 0;
     }
 
     /**

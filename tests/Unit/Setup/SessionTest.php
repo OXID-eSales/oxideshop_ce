@@ -14,11 +14,11 @@ use OxidEsales\EshopCommunity\Setup\Session;
  */
 class SessionTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         session_cache_limiter("no-cache");
 
-        return parent::setUp();
+        parent::setUp();
     }
 
     /**

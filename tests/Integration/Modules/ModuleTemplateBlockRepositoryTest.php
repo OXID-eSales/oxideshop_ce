@@ -24,7 +24,7 @@ class ModuleTemplateBlockRepositoryTest extends UnitTestCase
     /**
      * setup test data
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
@@ -62,7 +62,7 @@ class ModuleTemplateBlockRepositoryTest extends UnitTestCase
     /**
      * remove test data
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         oxDb::getDb()->Execute("delete from oxtplblocks where oxid like '__test_%'");
 

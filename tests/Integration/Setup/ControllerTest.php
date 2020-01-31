@@ -34,7 +34,7 @@ class ControllerTest extends UnitTestCase
     /**
      * The standard set up method.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,7 +44,7 @@ class ControllerTest extends UnitTestCase
     /**
      * The standard tear down method.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->unsetPost();
 

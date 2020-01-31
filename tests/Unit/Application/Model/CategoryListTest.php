@@ -162,7 +162,7 @@ class CategoryListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -184,7 +184,7 @@ class CategoryListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxcategories');
         oxRemClassModule('modContentListEE_oxcategorylist');

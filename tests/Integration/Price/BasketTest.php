@@ -39,7 +39,7 @@ class BasketTest extends BaseTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->reset();
@@ -48,7 +48,7 @@ class BasketTest extends BaseTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->addTableForCleanup('oxobject2category');
         parent::tearDown();

@@ -186,7 +186,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

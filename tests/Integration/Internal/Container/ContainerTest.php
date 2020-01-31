@@ -32,14 +32,14 @@ final class ContainerTest extends TestCase
 
     private $testServicesYml = __DIR__ . '/Fixtures/Project/services.yaml';
 
-    public function setUp()
+    public function setup(): void
     {
         ContainerFactory::resetContainer();
 
         $this->container = ContainerFactory::getInstance()->getContainer();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         ContainerFactory::resetContainer();
 

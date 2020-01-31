@@ -15,7 +15,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
   oxid_esales.monolog.logger:
     class: Monolog\Logger
-    factory: 'OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:create'
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface', 'create']
   Psr\Log\LoggerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper
     arguments:
@@ -24,7 +24,7 @@ services:
 
   utility.context.log_file_path:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
-    factory: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:getLogFilePath
+    factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogFilePath']
   utility.context.log_level:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
-    factory: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:getLogLevel
+    factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogLevel']

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
 use OxidEsales\Eshop\Application\Component\BasketComponent;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class BasketChangedEvent extends Event
 {

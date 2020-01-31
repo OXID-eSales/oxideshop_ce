@@ -51,7 +51,7 @@ class UserComponentTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // cleaning up
         $sQ = 'delete from oxuser where oxusername like "test%" ';

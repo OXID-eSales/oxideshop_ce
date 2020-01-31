@@ -23,7 +23,7 @@ class ReviewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_iReviewTime = time();
@@ -42,7 +42,7 @@ class ReviewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $myDB = oxDb::getDB();
         $sQ = 'delete from oxuser where oxid="test"';

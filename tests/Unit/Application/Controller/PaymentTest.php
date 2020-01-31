@@ -30,7 +30,7 @@ class PaymentHelper2 extends oxPayment
 
 class PaymentTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         PaymentHelper2::$dBasketPrice = null;
@@ -41,7 +41,7 @@ class PaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $sDelete = "Delete from oxuserpayments where oxuserid = '_testOxId'";
         oxDb::getDb()->Execute($sDelete);

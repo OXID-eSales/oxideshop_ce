@@ -26,7 +26,7 @@ class ArticleMainTest extends \OxidTestCase
     /**
      * Setup fixture
      */
-    public function setUp()
+    public function setup(): void
     {
         $this->addToDatabase("replace into oxcategories set oxid='_testCategory1', oxshopid='1', oxtitle='_testCategory1'", 'oxcategories');
         $this->addToDatabase("replace into oxarticles set oxid='_testArticle1', oxshopid='" . $this->getShopId() . "', oxtitle='_testArticle1'", 'oxarticles');
@@ -37,7 +37,7 @@ class ArticleMainTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oArt = oxNew('oxArticle');
         $oArt->delete('_testArtId');

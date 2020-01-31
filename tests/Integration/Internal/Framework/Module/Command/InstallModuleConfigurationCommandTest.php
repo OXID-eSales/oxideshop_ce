@@ -28,7 +28,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     private $workingDirectoryBackup;
     private $workingDirectory;
 
-    public function setUp()
+    public function setup(): void
     {
         $context = $this->get(ContextInterface::class);
         $this->shopId = $context->getCurrentShopId();
@@ -38,7 +38,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->setWorkingDirectoryForConsole($this->workingDirectoryBackup);
         parent::tearDown();

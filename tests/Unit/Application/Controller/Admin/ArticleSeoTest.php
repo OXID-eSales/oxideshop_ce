@@ -25,7 +25,7 @@ class ArticleSeoTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $sQ = "delete from oxvendor where oxid like '_test%'";
         oxDb::getDb()->execute($sQ);

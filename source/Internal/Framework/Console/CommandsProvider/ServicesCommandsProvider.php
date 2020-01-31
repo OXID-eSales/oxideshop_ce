@@ -38,6 +38,16 @@ class ServicesCommandsProvider implements CommandsProviderInterface
      */
     public function getCommands(): array
     {
+        // add lacy loaded commands
+        if ($this->container->has('console.command_loader')) {
+            $commandLoader = $this->container->get('console.command_loader');
+            foreach ($commandLoader->getNames() as $aliases) {
+                $service =  $commandLoader->get($aliases);
+                $this->setShopAwareCommands($service);
+                $this->setNonShopAwareCommands($service);
+            }
+        }
+        // add id loaded commands
         if ($this->container->hasParameter('console.command.ids')) {
             foreach ($this->container->getParameter('console.command.ids') as $id) {
                 $service = $this->container->get($id);
@@ -45,6 +55,7 @@ class ServicesCommandsProvider implements CommandsProviderInterface
                 $this->setNonShopAwareCommands($service);
             }
         }
+        
         return $this->commands;
     }
 

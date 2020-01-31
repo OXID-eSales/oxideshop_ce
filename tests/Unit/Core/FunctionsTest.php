@@ -27,7 +27,7 @@ class FunctionsTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         // backuping
@@ -38,7 +38,7 @@ class FunctionsTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // restoring
         $_SERVER["REQUEST_METHOD"] = $this->requestMethod;

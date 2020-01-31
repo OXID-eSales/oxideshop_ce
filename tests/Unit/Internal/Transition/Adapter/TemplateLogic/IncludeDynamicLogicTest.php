@@ -19,7 +19,7 @@ class IncludeDynamicLogicTest extends TestCase
     /** @var IncludeDynamicLogic */
     private $includeDynamicLogic;
 
-    public function setUp(): void
+    public function setup(): void
     {
         $this->includeDynamicLogic = new IncludeDynamicLogic();
     }

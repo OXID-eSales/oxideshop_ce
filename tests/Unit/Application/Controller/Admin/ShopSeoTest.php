@@ -23,7 +23,7 @@ class ShopSeoTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'");
         parent::tearDown();

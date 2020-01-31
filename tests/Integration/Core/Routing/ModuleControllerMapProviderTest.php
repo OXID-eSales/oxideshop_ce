@@ -23,7 +23,7 @@ class ModuleControllerMapProviderTest extends UnitTestCase
     /**
      * Set up fixture
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

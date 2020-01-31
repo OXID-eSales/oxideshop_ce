@@ -30,7 +30,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
      */
     private $databaseRestorer;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->databaseRestorer = new DatabaseRestorer();
         $this->databaseRestorer->dumpDB(__CLASS__);
@@ -40,7 +40,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->databaseRestorer->restoreDB(__CLASS__);
 

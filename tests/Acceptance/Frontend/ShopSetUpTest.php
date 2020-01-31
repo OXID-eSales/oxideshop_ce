@@ -54,7 +54,7 @@ class ShopSetUpTest extends FrontendTestCase
     /** @var int How much more time wait for these tests. */
     protected $_iWaitTimeMultiplier = 7;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->preventModuleVersionNotify = false;
         parent::setUp();
@@ -62,7 +62,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->restoreModifiedFiles();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->restoreModifiedFiles();
 
@@ -1223,7 +1223,7 @@ class ShopSetUpTest extends FrontendTestCase
         $contents = <<<'EOL'
 <?php
 namespace OxidEsales\EshopCommunity\Migrations;
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 class Version20170101 extends AbstractMigration {
 public function up(Schema $schema) {$this->addSql('INVALID_SQL_SYNTAX');}

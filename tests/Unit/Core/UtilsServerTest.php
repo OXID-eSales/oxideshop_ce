@@ -19,7 +19,7 @@ class UtilsServerTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->getConfig()->setConfigParam("aTrustedIPs", array());
         parent::tearDown();

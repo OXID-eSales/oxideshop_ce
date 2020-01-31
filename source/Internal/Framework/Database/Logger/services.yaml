@@ -32,9 +32,10 @@ services:
 
   database.psr_logger:
     class: database.monolog_logger_factory
-    factory: database.monolog_logger_factory:create
+    factory: ['@database.monolog_logger_factory', 'create']
 
   utility.context.admin_log_file_path:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
-    factory: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:getAdminLogFilePath
+    public: true
+    factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getAdminLogFilePath']
 

@@ -421,10 +421,29 @@ class LangIntegrityTest extends \OxidTestCase
     public function testMissingTemplateConstants()
     {
         $aTemplateLangIdents = $this->_getTemplateConstants($this->getThemeName());
-        $aConstants = array_merge(array_merge($this->_getLanguage('', 'de'), $this->_getMap($this->getThemeName(), 'de')), $this->_getLanguage($this->getThemeName(), 'de'));
+        $aConstants = array_merge(
+                        array_merge(
+                            $this->_getLanguage('', 'de'),
+                            $this->_getMap($this->getThemeName(), 'de')
+                        ),
+                        $this->_getLanguage($this->getThemeName(), 'de')
+                    );
         $aConstantLangIdents = array_keys($aConstants);
-
-        $this->assertEquals(array('MONTH_NAME_'), array_values(array_diff($aTemplateLangIdents, $aConstantLangIdents)), 'missing constants in templates');
+        
+        $this->assertEquals(
+            [   
+                'CREDITCARD',
+                'CARD_SECURITY_CODE_DESCRIPTION',
+                'MONTH_NAME_'
+            ], 
+            array_values(
+                array_diff(
+                    $aTemplateLangIdents,
+                    $aConstantLangIdents
+                )
+            ), 
+            'missing constants in templates'
+        );
     }
 
     /**

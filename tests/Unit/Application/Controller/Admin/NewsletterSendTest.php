@@ -23,7 +23,7 @@ class NewsletterSendTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // cleanup
         $this->cleanUpTable("oxnewssubscribed");

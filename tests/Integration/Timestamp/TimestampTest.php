@@ -21,7 +21,7 @@ class TimestampTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $aTables = $this->objectNames();
         foreach ($aTables as $aTable) {

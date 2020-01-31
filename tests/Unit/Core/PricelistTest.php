@@ -16,7 +16,7 @@ class PricelistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->aPrices[0] = oxNew('oxprice');

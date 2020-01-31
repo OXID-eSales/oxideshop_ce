@@ -18,7 +18,7 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxDatabaseHelper.php';
 
 class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 

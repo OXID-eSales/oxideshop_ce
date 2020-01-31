@@ -67,7 +67,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Tear down the fixture.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\modOxUtilsObject_oxUtilsObject::class);
 

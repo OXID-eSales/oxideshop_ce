@@ -24,7 +24,7 @@ class ModuleTemplateBlocksTest extends UnitTestCase
     /**
      * remove test data
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         oxDb::getDb()->Execute("delete from oxtplblocks where oxid like '__test_%'");
 

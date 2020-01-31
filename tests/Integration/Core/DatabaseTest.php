@@ -28,7 +28,7 @@ class DatabaseTest extends UnitTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -38,7 +38,7 @@ class DatabaseTest extends UnitTestCase
     /**
      * Executed after test is down.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->closeConnection();
 

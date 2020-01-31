@@ -20,7 +20,7 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ class ManufacturerMainAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxarticles where oxid='_testArticle1'");
         oxDb::getDb()->execute("delete from oxarticles where oxid='_testArticle2'");

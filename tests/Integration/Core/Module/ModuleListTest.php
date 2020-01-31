@@ -33,7 +33,7 @@ class ModuleListTest extends TestCase
      */
     private $container;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->container = ContainerFactory::getInstance()->getContainer();
 
@@ -44,7 +44,7 @@ class ModuleListTest extends TestCase
         parent::setUp();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

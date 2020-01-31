@@ -4,7 +4,7 @@ services:
     public: false
 
   oxid_esales.common.storage.flock_store_lock_factory:
-    class: Symfony\Component\Lock\Factory
+    class: Symfony\Component\Lock\LockFactory
     arguments:
       - '@oxid_esales.common.storage.flock_store'
 
@@ -16,6 +16,7 @@ services:
 
   oxid_esales.symfony.file_system:
     class: Symfony\Component\Filesystem\Filesystem
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactory

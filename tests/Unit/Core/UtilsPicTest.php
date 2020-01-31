@@ -21,7 +21,7 @@ class UtilsPicTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         // preparing data for spec test
@@ -49,7 +49,7 @@ class UtilsPicTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // preparing data for spec test
         switch ($this->getName()) {

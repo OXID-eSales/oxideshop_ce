@@ -23,7 +23,7 @@ class RecommlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $myDB = oxDb::getDB();
@@ -43,7 +43,7 @@ class RecommlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $myDB = oxDb::getDB();
         $sDelete = 'delete from oxrecommlists where oxid like "testlist%" ';

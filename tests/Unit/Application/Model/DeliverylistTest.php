@@ -97,7 +97,7 @@ class DeliverylistTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -208,7 +208,7 @@ class DeliverylistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxDeliveryListTestClass::class);
         oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxDb_noActiveSnippetInDeliveryList::class);

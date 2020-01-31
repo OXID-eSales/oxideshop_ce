@@ -51,7 +51,7 @@ class VendorTest extends \OxidTestCase
     /**
      * Test setup
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         // test require icon for vendors
         if (in_array($this->getName(), ['testGetIconUrlNewPath', 'testGetIconUrl'])) {
@@ -70,7 +70,7 @@ class VendorTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // removing folder
         if (in_array($this->getName(), ['testGetIconUrlNewPath', 'testGetIconUrl'])) {

@@ -20,7 +20,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class ModuleListTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         ContainerFactory::getInstance()

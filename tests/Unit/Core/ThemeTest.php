@@ -12,7 +12,7 @@ use \another;
 
 class ThemeTest extends \OxidTestCase
 {
-    public function setup()
+    public function setup(): void
     {
         parent::setUp();
     }

@@ -38,7 +38,7 @@ class PaymentGatewayTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $sDelete = "Delete from oxuserpayments where oxuserid = 'test'";
         oxDb::getDb()->Execute($sDelete);

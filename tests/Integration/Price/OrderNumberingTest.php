@@ -32,7 +32,7 @@ class OrderNumberingTest extends BaseTestCase
      *
      * @see OxidTestCase::setUp()
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         oxDb::getDb()->execute('DELETE FROM `oxuser` WHERE oxusername = \'admin\'');
@@ -43,7 +43,7 @@ class OrderNumberingTest extends BaseTestCase
      *
      * @see OxidTestCase::tearDown()
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute('TRUNCATE TABLE `oxorder`');
         oxDb::getDb()->execute('TRUNCATE TABLE `oxcounters`');

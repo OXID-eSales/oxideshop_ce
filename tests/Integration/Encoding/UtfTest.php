@@ -52,7 +52,7 @@ class UtfTest extends \OxidTestCase
     /**
      * Sets up test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -63,7 +63,7 @@ class UtfTest extends \OxidTestCase
     /**
      * Cleans up database.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->getConfig()->setConfigParam('sTheme', $this->_sOrigTheme);
 

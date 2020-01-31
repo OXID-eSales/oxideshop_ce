@@ -57,7 +57,7 @@ class BasketTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -271,7 +271,7 @@ class BasketTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // deleting articles+variants
         if ($this->oArticle) {

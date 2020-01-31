@@ -59,7 +59,7 @@ class ContainerFactory
     {
         $cacheFilePath = $this::getCacheFilePath();
 
-        if (file_exists($cacheFilePath)) {
+        if (false && file_exists($cacheFilePath)) {
             $this->loadContainerFromCache($cacheFilePath);
         } else {
             $this->getCompiledSymfonyContainer();

@@ -30,9 +30,8 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
      */
     public function create(): NodeInterface
     {
-        $treeBuilder = new TreeBuilder();
-
-        $rootNode = $treeBuilder->root('shopConfiguration');
+        $treeBuilder = new TreeBuilder('shopConfiguration');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

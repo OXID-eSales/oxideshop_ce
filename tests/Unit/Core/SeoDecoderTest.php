@@ -21,7 +21,7 @@ class SeoDecoderTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oDb = oxDb::getDb();
         $oDb->execute('delete from oxseo where oxtype != "static"');

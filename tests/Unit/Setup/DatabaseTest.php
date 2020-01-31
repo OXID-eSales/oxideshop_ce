@@ -21,7 +21,7 @@ final class DatabaseTest extends \OxidTestCase
     /** @var array Queries will be logged here. */
     private $loggedQueries;
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // restore database
         $dbRestore = self::_getDbRestore();
@@ -297,7 +297,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Resets logged queries.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loggedQueries = new StdClass();

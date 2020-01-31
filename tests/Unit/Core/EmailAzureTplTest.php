@@ -25,7 +25,7 @@ class EmailAzureTplTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -94,7 +94,7 @@ class EmailAzureTplTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // reload smarty
         \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);

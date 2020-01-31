@@ -26,7 +26,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     /** @var ModulePathResolverInterface */
     private $modulePathResolver = null;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();

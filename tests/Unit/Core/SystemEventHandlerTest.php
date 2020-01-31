@@ -17,7 +17,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * @return null|void
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseNextCheckTime', null);

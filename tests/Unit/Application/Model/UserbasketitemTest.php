@@ -34,7 +34,7 @@ class UserbasketitemTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $oArticle = oxNew('oxArticle');
@@ -77,7 +77,7 @@ class UserbasketitemTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRemClassModule('modOxArticle_oxUserBasketItem');
 

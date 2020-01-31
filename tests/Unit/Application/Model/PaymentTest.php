@@ -28,7 +28,7 @@ class PaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cleanUpTable('oxobject2group', 'oxgroupsid');
         parent::tearDown();

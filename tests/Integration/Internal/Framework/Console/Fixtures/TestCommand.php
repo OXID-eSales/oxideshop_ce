@@ -23,5 +23,6 @@ class TestCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('Command have been executed!');
+        return 0;
     }
 }

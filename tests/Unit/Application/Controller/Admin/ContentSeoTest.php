@@ -21,7 +21,7 @@ class ContentSeoTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $sQ = "delete from oxcontents where oxid like '_test%'";
         oxDb::getDb()->execute($sQ);

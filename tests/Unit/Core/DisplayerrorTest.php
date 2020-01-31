@@ -17,7 +17,7 @@ class DisplayerrorTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oDisplayError = oxNew('oxDisplayError');

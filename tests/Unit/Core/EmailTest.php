@@ -30,7 +30,7 @@ class EmailTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -94,7 +94,7 @@ class EmailTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(0);

@@ -40,7 +40,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
      */
     private $projectConfigurationDao;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 

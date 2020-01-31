@@ -25,7 +25,7 @@ class DiscountlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRemClassModule('modOxUtilsDate');
         $this->cleanUpTable('oxobject2discount');

@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\LockFactory;
 
 /**
  * @internal
@@ -165,11 +165,11 @@ class YamlFileStorageTest extends TestCase
     }
 
     /**
-     * @return Factory
+     * @return LockFactory
      */
-    private function getLockFactoryFromContainer(): Factory
+    private function getLockFactoryFromContainer(): LockFactory
     {
-        /** @var Factory $lockFactory */
+        /** @var LockFactory $lockFactory */
         $lockFactory = $this->get('oxid_esales.common.storage.flock_store_lock_factory');
 
         return $lockFactory;

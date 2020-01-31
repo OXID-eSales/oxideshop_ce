@@ -22,7 +22,7 @@ final class ModuleFilesInstallerTest extends TestCase
     private $modulePackagePath = __DIR__ . '/../../TestData/TestModule';
     private $packageName = 'TestModule';
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         $fileSystem->remove($this->getTestedModuleInstallPath());

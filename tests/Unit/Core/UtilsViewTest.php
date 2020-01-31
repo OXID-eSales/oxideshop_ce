@@ -16,7 +16,7 @@ use \oxTestModules;
 
 class UtilsViewTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 

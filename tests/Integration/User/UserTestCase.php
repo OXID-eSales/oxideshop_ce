@@ -50,7 +50,7 @@ abstract class UserTestCase extends UnitTestCase
     /** @var bool */
     protected $_blSkipCustomTearDown = false;
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if (!$this->_blSkipCustomTearDown) {
             $oDbRestore = $this->_getDbRestore();

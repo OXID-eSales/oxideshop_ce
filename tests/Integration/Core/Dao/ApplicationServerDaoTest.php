@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Dao;
  */
 class ApplicationServerDaoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");

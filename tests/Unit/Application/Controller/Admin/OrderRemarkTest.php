@@ -23,7 +23,7 @@ class OrderRemarkTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDB()->execute('delete from oxremark where oxtext = "test text"');
         $this->cleanUpTable('oxorder');

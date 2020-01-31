@@ -32,7 +32,7 @@ class StrRegularTest extends \OxidTestCase
     /** @var oxStrRegular */
     protected $_oSubj = null;
 
-    public function setup()
+    public function setup(): void
     {
         parent::setUp();
 

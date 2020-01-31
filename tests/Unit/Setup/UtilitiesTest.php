@@ -31,7 +31,7 @@ class UtilitiesTest extends \OxidTestCase
     /**
      * Test setup
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         // backup..
         $this->_sPathTranslated = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
@@ -49,7 +49,7 @@ class UtilitiesTest extends \OxidTestCase
     /**
      * Test teardown
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($_POST["testPostVarName"])) {
             unset($_POST["testPostVarName"]);

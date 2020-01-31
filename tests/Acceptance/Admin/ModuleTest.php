@@ -14,7 +14,7 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
  */
 class ModuleTest extends ModuleBaseTest
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 

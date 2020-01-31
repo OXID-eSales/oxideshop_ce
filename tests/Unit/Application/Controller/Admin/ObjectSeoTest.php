@@ -20,7 +20,7 @@ class ObjectSeoTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $sQ = "delete from oxseo where oxobjectid='objectid'";
         oxDb::getDb()->execute($sQ);

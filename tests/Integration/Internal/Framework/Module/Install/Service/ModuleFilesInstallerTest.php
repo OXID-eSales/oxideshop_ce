@@ -164,16 +164,15 @@ final class ModuleFilesInstallerTest extends TestCase
         $this->assertDirectoryNotExists($this->getTestedModuleInstallPath() . '/BlackListDirectory');
     }
 
-    public function testUninstallWillRemoveModuleFiles(): void
+    public function testUninstall(): void
     {
         $installer = $this->getFilesInstaller();
         $package = $this->createPackage();
         $installer->install($package);
-        $this->assertDirectoryExists($this->getTestedModuleInstallPath());
 
         $installer->uninstall($package);
 
-        $this->assertDirectoryNotExists($this->getTestedModuleInstallPath());
+        $this->assertFalse($installer->isInstalled($package));
     }
 
     private function getModulesPath(): string

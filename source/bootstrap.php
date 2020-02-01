@@ -112,16 +112,6 @@ if ($configMissing || !is_readable(VENDOR_PATH . 'autoload.php')) {
 unset($configMissing);
 
 /**
- * Turn on display errors for debug mode
- */
-$bootstrapConfigFileReader = new \BootstrapConfigFileReader();
-if ($bootstrapConfigFileReader->isDebugMode()) {
-    ini_set('display_errors', '1');
-    error_reporting(E_ALL & ~E_DEPRECATED);
-}
-unset($bootstrapConfigFileReader);
-
-/**
  * Register basic the autoloaders. In this phase we still do not want to use other shop classes to make autoloading
  * as decoupled as possible.
  */
@@ -132,6 +122,16 @@ unset($bootstrapConfigFileReader);
  * It will always come first, even if you move it after the other autoloaders as it registers itself with prepend = true
  */
 require_once VENDOR_PATH . 'autoload.php';
+
+/**
+ * Turn on display errors for debug mode
+ */
+$bootstrapConfigFileReader = new \BootstrapConfigFileReader();
+if ($bootstrapConfigFileReader->isDebugMode()) {
+    ini_set('display_errors', '1');
+    error_reporting(E_ALL & ~E_DEPRECATED);
+}
+unset($bootstrapConfigFileReader);
 
 /**
  * Where CORE_AUTOLOADER_PATH points depends on how OXID eShop has been installed. If it is installed as part of a

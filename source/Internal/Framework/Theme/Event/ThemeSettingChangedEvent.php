@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Event;
 
@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ThemeSettingChangedEvent extends Event
 {
-    const NAME = self::class;
+    public const NAME = self::class;
 
     /**
      * Configuration variable that was changed.

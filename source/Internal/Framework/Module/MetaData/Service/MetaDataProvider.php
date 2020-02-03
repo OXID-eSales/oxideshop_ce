@@ -17,26 +17,26 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MetaDataProvider implements MetaDataProviderInterface
 {
-    const METADATA_ID = 'id';
-    const METADATA_METADATA_VERSION = 'metaDataVersion';
-    const METADATA_MODULE_DATA = 'moduleData';
-    const METADATA_TITLE = 'title';
-    const METADATA_DESCRIPTION = 'description';
-    const METADATA_LANG = 'lang';
-    const METADATA_THUMBNAIL = 'thumbnail';
-    const METADATA_AUTHOR = 'author';
-    const METADATA_URL = 'url';
-    const METADATA_EMAIL = 'email';
-    const METADATA_VERSION = 'version';
-    const METADATA_EXTEND = 'extend';
-    const METADATA_BLOCKS = 'blocks';
-    const METADATA_CONTROLLERS = 'controllers';
-    const METADATA_EVENTS = 'events';
-    const METADATA_TEMPLATES = 'templates';
-    const METADATA_SETTINGS = 'settings';
-    const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
-    const METADATA_FILEPATH = 'metaDataFilePath';
-    const METADATA_FILES = 'files';
+    public const METADATA_ID = 'id';
+    public const METADATA_METADATA_VERSION = 'metaDataVersion';
+    public const METADATA_MODULE_DATA = 'moduleData';
+    public const METADATA_TITLE = 'title';
+    public const METADATA_DESCRIPTION = 'description';
+    public const METADATA_LANG = 'lang';
+    public const METADATA_THUMBNAIL = 'thumbnail';
+    public const METADATA_AUTHOR = 'author';
+    public const METADATA_URL = 'url';
+    public const METADATA_EMAIL = 'email';
+    public const METADATA_VERSION = 'version';
+    public const METADATA_EXTEND = 'extend';
+    public const METADATA_BLOCKS = 'blocks';
+    public const METADATA_CONTROLLERS = 'controllers';
+    public const METADATA_EVENTS = 'events';
+    public const METADATA_TEMPLATES = 'templates';
+    public const METADATA_SETTINGS = 'settings';
+    public const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
+    public const METADATA_FILEPATH = 'metaDataFilePath';
+    public const METADATA_FILES = 'files';
 
     /**
      * @var string
@@ -159,7 +159,7 @@ class MetaDataProvider implements MetaDataProviderInterface
                 . $this->filePath . ' and it must be a scalar.'
             );
         }
-        if ($moduleData === null || !is_array($moduleData)) {
+        if ($moduleData === null || !\is_array($moduleData)) {
             throw new InvalidMetaDataException(
                 'The variable $aModule must be present in '
                 . $this->filePath . ' and it must be an array'
@@ -195,7 +195,7 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private function isBackwardsCompatibleClass(string $className): bool
     {
-        return array_key_exists(strtolower($className), $this->getBackwardsCompatibilityClassMap());
+        return \array_key_exists(strtolower($className), $this->getBackwardsCompatibilityClassMap());
     }
 
     /**

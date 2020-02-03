@@ -23,14 +23,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ModuleDeactivateCommand extends Command
 {
-    const MESSAGE_MODULE_DEACTIVATED = 'Module - "%s" has been deactivated.';
-
-    const MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE =
+    public const MESSAGE_MODULE_DEACTIVATED = 'Module - "%s" has been deactivated.';
+    public const MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE =
         'It was not possible to deactivate module - "%s", maybe it was not active?';
-
-    const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
-
-    const ARGUMENT_MODULE_ID = 'module-id';
+    public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
+    private const ARGUMENT_MODULE_ID = 'module-id';
 
     /**
      * @var ShopConfigurationDaoInterface

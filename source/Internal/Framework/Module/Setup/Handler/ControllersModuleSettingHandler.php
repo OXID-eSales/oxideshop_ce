@@ -45,7 +45,9 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
             $shopSettingValue = array_merge(
                 $shopControllers->getValue(),
                 [
-                    strtolower($configuration->getId()) => $this->controllerKeysToLowercase($configuration->getControllers()),
+                    strtolower($configuration->getId()) => $this->controllerKeysToLowercase(
+                        $configuration->getControllers()
+                    ),
                 ]
             );
 

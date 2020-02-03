@@ -18,8 +18,13 @@ class TruncateLogic
      *
      * @return string
      */
-    public function truncate(string $sString = null, int $iLength = 80, string $sSufix = '...', bool $blBreakWords = false, bool $middle = false): string
-    {
+    public function truncate(
+        string $sString = null,
+        int $iLength = 80,
+        string $sSufix = '...',
+        bool $blBreakWords = false,
+        bool $middle = false
+    ): string {
         if ($iLength == 0) {
             return '';
         } elseif ($iLength > 0 && getStr()->strlen($sString) > $iLength) {

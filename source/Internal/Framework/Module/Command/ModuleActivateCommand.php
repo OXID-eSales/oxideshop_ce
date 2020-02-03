@@ -23,12 +23,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ModuleActivateCommand extends Command
 {
-    const MESSAGE_MODULE_ALREADY_ACTIVE = 'Module - "%s" already active.';
-
-    const MESSAGE_MODULE_ACTIVATED = 'Module - "%s" was activated.';
-
-    const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
-
+    public const MESSAGE_MODULE_ALREADY_ACTIVE = 'Module - "%s" already active.';
+    public const MESSAGE_MODULE_ACTIVATED = 'Module - "%s" was activated.';
+    public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
 
     /**
      * @var ShopConfigurationDaoInterface

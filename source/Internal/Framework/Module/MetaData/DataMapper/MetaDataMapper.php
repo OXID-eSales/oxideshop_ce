@@ -9,19 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
+    ModuleConfiguration\TemplateBlocksMappingKeys
+};
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\{
+    ModuleConfiguration,
+    ModuleConfiguration\ClassExtension,
+    ModuleConfiguration\ClassWithoutNamespace,
+    ModuleConfiguration\Controller,
+    ModuleConfiguration\Event,
+    ModuleConfiguration\SmartyPluginDirectory,
+    ModuleConfiguration\Template,
+    ModuleConfiguration\TemplateBlock
+};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 
 class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
@@ -182,7 +186,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             MetaDataProvider::METADATA_MODULE_DATA,
         ];
         foreach ($mandatoryKeys as $mandatoryKey) {
-            if (false === array_key_exists($mandatoryKey, $data)) {
+            if (false === \array_key_exists($mandatoryKey, $data)) {
                 throw new \InvalidArgumentException(
                     'The key "' . $mandatoryKey . '" must be present in the array passed in the parameter'
                 );

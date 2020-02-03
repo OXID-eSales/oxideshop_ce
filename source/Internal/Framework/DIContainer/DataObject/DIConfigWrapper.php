@@ -16,9 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoService
 
 class DIConfigWrapper
 {
-    const SERVICE_SECTION = 'services';
-    const RESOURCE_KEY = 'resource';
-    const IMPORTS_SECTION = 'imports';
+    private const SERVICE_SECTION = 'services';
+    private const RESOURCE_KEY = 'resource';
+    private const IMPORTS_SECTION = 'imports';
 
     private $sectionDefaults = [self::SERVICE_SECTION => ['_defaults' => ['public' => false, 'autowire' => true]]];
 
@@ -46,13 +46,13 @@ class DIConfigWrapper
     {
         $normalizedImportPath = $this->normalizePath($importFilePath);
 
-        $this->addSectionIfMissing($this::IMPORTS_SECTION);
+        $this->addSectionIfMissing(static::IMPORTS_SECTION);
         foreach ($this->getImports() as $import) {
-            if ($import[$this::RESOURCE_KEY] === $normalizedImportPath) {
+            if ($import[static::RESOURCE_KEY] === $normalizedImportPath) {
                 return;
             }
         }
-        $this->configArray[$this::IMPORTS_SECTION][] = [$this::RESOURCE_KEY => $normalizedImportPath];
+        $this->configArray[static::IMPORTS_SECTION][] = [static::RESOURCE_KEY => $normalizedImportPath];
     }
 
     /**
@@ -62,7 +62,7 @@ class DIConfigWrapper
     {
         $importFileNames = [];
         foreach ($this->getImports() as $import) {
-            $importFileNames[] = $import[$this::RESOURCE_KEY];
+            $importFileNames[] = $import[static::RESOURCE_KEY];
         }
         return $importFileNames;
     }
@@ -80,11 +80,11 @@ class DIConfigWrapper
 
         $imports = [];
         foreach ($this->getImports() as $import) {
-            if ($import[$this::RESOURCE_KEY] !== $normalizedImportPath) {
+            if ($import[static::RESOURCE_KEY] !== $normalizedImportPath) {
                 $imports[] = $import;
             }
         }
-        $this->configArray[$this::IMPORTS_SECTION] = $imports;
+        $this->configArray[static::IMPORTS_SECTION] = $imports;
     }
 
     /**
@@ -124,8 +124,8 @@ class DIConfigWrapper
      */
     public function addOrUpdateService(DIServiceWrapper $service)
     {
-        $this->addSectionIfMissing($this::SERVICE_SECTION);
-        $this->configArray[$this::SERVICE_SECTION][$service->getKey()] = $service->getServiceAsArray();
+        $this->addSectionIfMissing(static::SERVICE_SECTION);
+        $this->configArray[static::SERVICE_SECTION][$service->getKey()] = $service->getServiceAsArray();
     }
 
     /**
@@ -178,11 +178,11 @@ class DIConfigWrapper
      */
     private function getImports(): array
     {
-        if (!array_key_exists($this::IMPORTS_SECTION, $this->configArray)) {
+        if (!\array_key_exists(static::IMPORTS_SECTION, $this->configArray)) {
             return [];
         }
 
-        return $this->configArray[$this::IMPORTS_SECTION];
+        return $this->configArray[static::IMPORTS_SECTION];
     }
 
     /**
@@ -190,11 +190,11 @@ class DIConfigWrapper
      */
     public function getServices(): array
     {
-        if (!array_key_exists($this::SERVICE_SECTION, $this->configArray)) {
+        if (!array_key_exists(static::SERVICE_SECTION, $this->configArray)) {
             return [];
         }
         $services = [];
-        foreach ($this->configArray[$this::SERVICE_SECTION] as $serviceKey => $serviceArray) {
+        foreach ($this->configArray[static::SERVICE_SECTION] as $serviceKey => $serviceArray) {
             $services[] = new DIServiceWrapper($serviceKey, $serviceArray);
         }
         return $services;
@@ -231,10 +231,10 @@ class DIConfigWrapper
      */
     private function removeEmptySections()
     {
-        $sections = [$this::IMPORTS_SECTION, $this::SERVICE_SECTION];
+        $sections = [static::IMPORTS_SECTION, static::SERVICE_SECTION];
         foreach ($sections as $section) {
             if (
-                array_key_exists($section, $this->configArray) &&
+                \array_key_exists($section, $this->configArray) &&
                 (!$this->configArray[$section] || !count($this->configArray[$section]))
             ) {
                 unset($this->configArray[$section]);
@@ -267,8 +267,8 @@ class DIConfigWrapper
      */
     private function addSectionIfMissing($section)
     {
-        if (!array_key_exists($section, $this->configArray)) {
-            if (array_key_exists($section, $this->sectionDefaults)) {
+        if (!\array_key_exists($section, $this->configArray)) {
+            if (\array_key_exists($section, $this->sectionDefaults)) {
                 $this->configArray[$section] = $this->sectionDefaults[$section];
             } else {
                 $this->configArray[$section] = [];

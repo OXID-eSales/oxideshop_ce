@@ -26,7 +26,9 @@ class SettingsMergingService implements SettingsMergingServiceInterface
         ModuleConfiguration $moduleConfigurationToMerge
     ): ModuleConfiguration {
         if ($shopConfiguration->hasModuleConfiguration($moduleConfigurationToMerge->getId())) {
-            $existingModuleConfiguration = $shopConfiguration->getModuleConfiguration($moduleConfigurationToMerge->getId());
+            $existingModuleConfiguration = $shopConfiguration->getModuleConfiguration(
+                $moduleConfigurationToMerge->getId()
+            );
             if (
                 !empty($existingModuleConfiguration->getModuleSettings()) &&
                 !empty($moduleConfigurationToMerge->getModuleSettings())

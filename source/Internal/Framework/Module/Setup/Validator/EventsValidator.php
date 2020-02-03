@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
-use function is_array;
-
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+
+use function is_array;
 
 class EventsValidator implements ModuleConfigurationValidatorInterface
 {
@@ -49,7 +49,7 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
                 $events[$event->getAction()] = $event->getMethod();
             }
             foreach ($this->validEvents as $validEventName) {
-                if (is_array($events) && array_key_exists($validEventName, $events)) {
+                if (is_array($events) && \array_key_exists($validEventName, $events)) {
                     $this->checkIfMethodIsCallable($events[$validEventName]);
                 }
             }
@@ -64,7 +64,7 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
     private function checkIfMethodIsCallable(string $method)
     {
         $this->isNamespacedClass($method);
-        if (!is_callable($method) && $this->isNamespacedClass($method)) {
+        if (!\is_callable($method) && $this->isNamespacedClass($method)) {
             throw new ModuleSettingNotValidException('The method ' . $method . ' is not callable.');
         }
     }

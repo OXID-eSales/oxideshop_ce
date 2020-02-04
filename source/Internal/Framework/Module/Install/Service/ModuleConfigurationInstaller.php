@@ -9,15 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\{
+    Dao\ProjectConfigurationDaoInterface,
+    DataObject\ModuleConfiguration,
+    DataObject\ProjectConfiguration,
+    DataObject\ShopConfiguration,
+    Service\ModuleConfigurationMergingServiceInterface
+};
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\{
+    DataMapper\MetaDataToModuleConfigurationDataMapperInterface,
+    Exception\InvalidMetaDataException,
+    Service\MetaDataProviderInterface
+};
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Webmozart\PathUtil\Path;
 

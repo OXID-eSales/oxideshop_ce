@@ -10,8 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\{
+    ModuleConfiguration,
+    ModuleConfiguration\SmartyPluginDirectory
+};
 
 class SmartyPluginDirectoriesDataMapper implements ModuleConfigurationDataMapperInterface
 {

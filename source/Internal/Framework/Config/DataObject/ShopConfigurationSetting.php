@@ -11,17 +11,16 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject;
 
 class ShopConfigurationSetting
 {
-    const MODULE_CLASS_EXTENSIONS           = 'aModuleExtensions';
-    const MODULE_CLASS_EXTENSIONS_CHAIN     = 'aModules';
-    const MODULE_CONTROLLERS                = 'aModuleControllers';
-    const MODULE_VERSIONS                   = 'aModuleVersions';
-    const MODULE_PATHS                      = 'aModulePaths';
-    const MODULE_TEMPLATES                  = 'aModuleTemplates';
-    const MODULE_SMARTY_PLUGIN_DIRECTORIES  = 'moduleSmartyPluginDirectories';
-    const MODULE_EVENTS                     = 'aModuleEvents';
-    const MODULE_CLASSES_WITHOUT_NAMESPACES = 'aModuleFiles';
-
-    const ACTIVE_MODULES = 'activeModules';
+    public const MODULE_CLASS_EXTENSIONS = 'aModuleExtensions';
+    public const MODULE_CLASS_EXTENSIONS_CHAIN = 'aModules';
+    public const MODULE_CONTROLLERS = 'aModuleControllers';
+    public const MODULE_VERSIONS = 'aModuleVersions';
+    public const MODULE_PATHS = 'aModulePaths';
+    public const MODULE_TEMPLATES = 'aModuleTemplates';
+    public const MODULE_SMARTY_PLUGIN_DIRECTORIES = 'moduleSmartyPluginDirectories';
+    public const MODULE_EVENTS = 'aModuleEvents';
+    public const MODULE_CLASSES_WITHOUT_NAMESPACES = 'aModuleFiles';
+    public const ACTIVE_MODULES = 'activeModules';
 
     /**
      * @var int

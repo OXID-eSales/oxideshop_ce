@@ -20,11 +20,9 @@ use Webmozart\PathUtil\Path;
  */
 class BasicContext implements BasicContextInterface
 {
-    const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
-
-    const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
-
-    const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
+    public const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
+    public const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
+    public const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
     /**
      * @var Facts

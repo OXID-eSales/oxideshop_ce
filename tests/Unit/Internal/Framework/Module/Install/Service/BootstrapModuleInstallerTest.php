@@ -7,12 +7,12 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\BootstrapModuleInstaller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstaller;
 use PHPUnit\Framework\TestCase;
 
-class ModuleInstallerTest extends TestCase
+class BootstrapModuleInstallerTest extends TestCase
 {
 
     public function testInstallTriggersAllInstallers()
@@ -32,7 +32,8 @@ class ModuleInstallerTest extends TestCase
             ->method('install')
             ->with($path);
 
-        $moduleInstaller = new ModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);
+
+        $moduleInstaller = new BootstrapModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);
         $moduleInstaller->install($package);
     }
 
@@ -51,7 +52,7 @@ class ModuleInstallerTest extends TestCase
         $moduleProjectConfigurationInstaller = $this->getMockBuilder(ModuleConfigurationInstallerInterface::class)->getMock();
         $moduleProjectConfigurationInstaller->method('isInstalled')->willReturn($projectConfigurationInstalled);
 
-        $moduleInstaller = new ModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);
+        $moduleInstaller = new BootstrapModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);
 
         $this->assertSame(
             $moduleInstalled,

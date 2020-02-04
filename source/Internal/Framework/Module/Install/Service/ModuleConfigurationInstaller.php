@@ -36,6 +36,11 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     /**
      * @var ModuleConfigurationDaoInterface
      */
+    private $moduleConfigurationDao;
+
+    /**
+     * @var ModuleConfigurationDaoInterface
+     */
     private $metadataModuleConfigurationDao;
 
     /**

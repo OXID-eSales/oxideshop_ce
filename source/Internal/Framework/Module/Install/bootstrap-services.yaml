@@ -3,8 +3,9 @@ services:
     autowire: true
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstaller
+
+  oxid_esales.module.install.service.bootstrap_module_installer:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\BootstrapModuleInstaller
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface:

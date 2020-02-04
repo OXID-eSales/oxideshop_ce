@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Core\Exception\StandardException;
-use \Exception;
+use Exception;
 
 /**
  * Class oxOnlineCaller makes call to given URL which is taken from child classes and sends request parameter.

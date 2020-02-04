@@ -4480,7 +4480,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $iOnStock = $this->oxarticles__oxstock->value;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $session = \OxidEsales\Eshop\Core\Registry::getSession();
-                if ($reservations = $session->getBasketReservations()){
+                if ($reservations = $session->getBasketReservations()) {
                     $iOnStock += $reservations->getReservedAmount($this->getId());
                 }
             }

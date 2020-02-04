@@ -5,8 +5,8 @@
  * See LICENSE file for license details.
  */
 
-use \OxidEsales\Facts\Facts;
-use \OxidEsales\EshopProfessional\Core\Serial;
+use OxidEsales\Facts\Facts;
+use OxidEsales\EshopProfessional\Core\Serial;
 
 if (!function_exists('getInstallPath')) {
     /**

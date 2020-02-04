@@ -945,6 +945,38 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * Will tell if this record is active or not based on the oxactive and (if
+     * exists) oxactivefrom and oxactiveto fields
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        if (!isset($this->_aFieldNames['oxactive'])) {
+            return true;
+        }
+        if ((bool)$this->getFieldData('oxactive')) {
+            return true;
+        }
+        if (!isset($this->_aFieldNames['oxactivefrom']) &&
+            !isset($this->_aFieldNames['oxactiveto'])) {
+            return false;
+        }
+        $from = new \DateTimeImmutable(
+            (string)$this->getFieldData('oxactivefrom')
+        );
+        $to = new \DateTimeImmutable(
+            (string)$this->getFieldData('oxactiveto')
+        );
+        $now = new \DateTimeImmutable("now");
+        if ($from <= $now &&
+            $to >= $now) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * This function is triggered before the record is updated.
      * If you make any update to the database record manually you should also call beforeUpdate() from your script.
      *

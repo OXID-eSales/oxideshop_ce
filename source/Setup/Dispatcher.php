@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
+use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
 /**
  * Chooses and executes controller action which must be executec to render expected view

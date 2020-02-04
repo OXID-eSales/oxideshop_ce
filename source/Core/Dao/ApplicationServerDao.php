@@ -164,7 +164,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
 
         $parameter = [
             ':value' => $this->convertAppServerToConfigOption($appServer),
-            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $appServer->getId(),
             ':oxshopid' => $this->config->getBaseShopId()
         ];
 

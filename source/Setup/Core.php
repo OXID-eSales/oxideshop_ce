@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use \OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Facts\Facts;
 use oxSystemComponentException;
 
 /**

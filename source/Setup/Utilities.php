@@ -9,11 +9,11 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
-use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use \OxidEsales\Facts\Facts;
-use \OxidEsales\Eshop\Core\Edition\EditionSelector;
-use \OxidEsales\DoctrineMigrationWrapper\Migrations;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
 use Symfony\Component\Console\Output\ConsoleOutput;

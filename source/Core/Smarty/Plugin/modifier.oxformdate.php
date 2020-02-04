@@ -15,7 +15,8 @@
  *
  * @param object $oConvObject   oxField object
  * @param string $sFieldType    additional type if field (this may help to force formatting)
- * @param bool   $blPassedValue bool if true, will simulate object as sometimes we need to apply formatting to some regulat values
+ * @param bool   $blPassedValue bool if true, will simulate object as sometimes we need to apply formatting to some
+ *                              regulat values
  *
  * @return string
  */

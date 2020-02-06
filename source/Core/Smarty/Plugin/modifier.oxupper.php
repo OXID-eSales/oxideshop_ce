@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * Smarty upper modifier
  * -------------------------------------------------------------
@@ -19,5 +21,5 @@
 
 function smarty_modifier_oxupper($sString)
 {
-    return getStr()->strtoupper($sString);
+    return Str::getStr()->strtoupper($sString);
 }

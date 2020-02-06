@@ -11,6 +11,7 @@ use oxRegistry;
 use oxDb;
 use oxStr;
 use Exception;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Admin systeminfo manager.
@@ -58,7 +59,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             }
 
             $sUpdateSQL = trim(stripslashes($sUpdateSQL));
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $iLen = $oStr->strlen($sUpdateSQL);
             if ($this->_prepareSQL($sUpdateSQL, $iLen)) {
                 $aQueries = $this->aSQLs;
@@ -77,7 +78,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                         $sUpdateSQL = trim($sUpdateSQL);
 
                         if ($oStr->strlen($sUpdateSQL) > 0) {
-                            $aPassedQueries[$iQueriesCounter] = nl2br(\OxidEsales\Eshop\Core\Str::getStr()->htmlentities($sUpdateSQL));
+                            $aPassedQueries[$iQueriesCounter] = nl2br($oStr->htmlentities($sUpdateSQL));
                             if ($oStr->strlen($aPassedQueries[$iQueriesCounter]) > 200) {
                                 $aPassedQueries[$iQueriesCounter] = $oStr->substr($aPassedQueries[$iQueriesCounter], 0, 200) . "...";
                             }
@@ -94,8 +95,8 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                                 $aQAffectedRows[$iQueriesCounter] = $oDB->execute($sUpdateSQL);
                             } catch (Exception $exception) {
                                 // Report errors
-                                $aQErrorMessages[$iQueriesCounter] = \OxidEsales\Eshop\Core\Str::getStr()->htmlentities($exception->getMessage());
-                                $aQErrorNumbers[$iQueriesCounter] = \OxidEsales\Eshop\Core\Str::getStr()->htmlentities($exception->getCode());
+                                $aQErrorMessages[$iQueriesCounter] = $oStr->htmlentities($exception->getMessage());
+                                $aQErrorNumbers[$iQueriesCounter] = $oStr->htmlentities($exception->getCode());
                                 // Trigger breaking the loop
                                 $blStop = true;
                             }
@@ -171,7 +172,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     {
         $sStrStart = "";
         $blString = false;
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         //removing "mysqldump" application comments
         while ($oStr->preg_match("/^\-\-.*\n/", $sSQL)) {

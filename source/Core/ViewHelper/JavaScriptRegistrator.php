@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * Class for preparing JavaScript.
  */
@@ -79,7 +81,7 @@ class JavaScriptRegistrator
         }
 
         if (empty($url) && $config->getConfigParam('iDebug') != 0) {
-            $error = "{oxscript} resource not found: " . getStr()->htmlspecialchars($file);
+            $error = "{oxscript} resource not found: " . Str::getStr()->htmlspecialchars($file);
             trigger_error($error, E_USER_WARNING);
         }
 

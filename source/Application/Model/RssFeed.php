@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use stdClass;
 
 /**
@@ -216,7 +217,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
         $oLang = Registry::getLang();
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         foreach ($oList as $oArticle) {
             $oItem = new stdClass();
@@ -320,7 +321,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     protected function _getShopUrl()
     {
         $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if ($oStr->strpos($sUrl, '?') !== false) {
             if (!$oStr->preg_match('/[?&](amp;)?$/i', $sUrl)) {
                 $sUrl .= '&amp;';
@@ -579,7 +580,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     public function getSearchArticlesTitle($sSearch, $sCatId, $sVendorId, $sManufacturerId)
     {
-        return $this->_prepareFeedName(getStr()->htmlspecialchars($this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', $sSearch, $sCatId, $sVendorId, $sManufacturerId)));
+        return $this->_prepareFeedName(Str::getStr()->htmlspecialchars($this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', $sSearch, $sCatId, $sVendorId, $sManufacturerId)));
     }
 
     /**
@@ -725,7 +726,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             null,
             //self::RSS_SEARCHARTS.md5($sSearch.$sCatId.$sVendorId),
             $this->getSearchArticlesTitle($sSearch, $sCatId, $sVendorId, $sManufacturerId),
-            $this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', getStr()->htmlspecialchars($sSearch), $sCatId, $sVendorId, $sManufacturerId),
+            $this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', Str::getStr()->htmlspecialchars($sSearch), $sCatId, $sVendorId, $sManufacturerId),
             $this->_getArticleItems($oArtList),
             $this->getSearchArticlesUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId),
             $this->_getShopUrl() . "cl=search&amp;" . $this->_getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId)

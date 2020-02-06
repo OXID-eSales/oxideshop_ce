@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
 use Exception;
 
 /**
@@ -103,7 +104,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
             $iLang != $iDefLang &&
             isset($aLangIds[$iLang]) &&
             // #0006407 bugfix, we should not search for the string saved in the db but for the escaped string
-            getStr()->strpos($sSeoUrl, $this->replaceSpecialChars($aLangIds[$iLang]) . '/') !== 0
+            Str::getStr()->strpos($sSeoUrl, $this->replaceSpecialChars($aLangIds[$iLang]) . '/') !== 0
         ) {
             $sSeoUrl = $aLangIds[$iLang] . '/' . $sSeoUrl;
         }
@@ -296,7 +297,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     protected function _getUniqueSeoUrl($sSeoUrl, $sObjectId = null, $iObjectLang = null)
     {
         $sSeoUrl = $this->_prepareUri($sSeoUrl, $iObjectLang);
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $sExt = '';
         if ($oStr->preg_match('/(\.html?|\/)$/i', $sSeoUrl, $aMatched)) {
             $sExt = $aMatched[0];
@@ -569,7 +570,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         if (!isset(self::$_aReservedEntryKeys) || !is_array(self::$_aReservedEntryKeys)) {
             $sDir = getShopBasePath();
             self::$_aReservedEntryKeys = array_map('preg_quote', self::$_aReservedWords, ['#']);
-            $oStr = getStr();
+            $oStr = Str::getStr();
             foreach (glob("$sDir/*") as $sFile) {
                 if ($oStr->preg_match('/^(.+)\.php[0-9]*$/i', basename($sFile), $aMatches)) {
                     self::$_aReservedEntryKeys[] = preg_quote($aMatches[0], '#');
@@ -598,7 +599,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sUri = $this->encodeString($sUri, true, $iLang);
 
         // basic string preparation
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $sUri = $oStr->strip_tags($sUri);
 
         // if found ".html" or "/" at the end - removing it temporary
@@ -671,7 +672,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         $sRegExp = '/[^A-Za-z0-9\/' . preg_quote(self::$_sPrefix, '/') . preg_quote($sSep, '/') . ']+/';
         $sTitle = preg_replace(["#/+#", $sRegExp, "# +#", "#(" . preg_quote($sSep, '/') . ")+#"], $sSep, $sTitle);
 
-        $oStr = getStr();
+        $oStr = Str::getStr();
         // smart truncate
         if (!$blSkipTruncate && $oStr->strlen($sTitle) > $this->_iIdLength) {
             $iFirstSpace = $oStr->strpos($sTitle, $sSep, $this->_iIdLength);
@@ -826,7 +827,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     protected function _trimUrl($sUrl, $iLang = null)
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $sUrl = str_replace([$myConfig->getShopUrl($iLang, false), $myConfig->getSslShopUrl($iLang)], '', $sUrl);
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\.]+&?(amp;)?/i', '\1', $sUrl);
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)shp=[0-9]+&?(amp;)?/i', '\1', $sUrl);
@@ -876,7 +877,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     public function encodeString($sString, $blReplaceChars = true, $iLang = false)
     {
         // decoding entities
-        $sString = getStr()->html_entity_decode($sString);
+        $sString = Str::getStr()->html_entity_decode($sString);
 
         if ($blReplaceChars) {
             if ($iLang === false || !is_numeric($iLang)) {
@@ -1181,7 +1182,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         if ($this->_saveToDb($sType, $sObjectId, $sStdUrl, $sSeoUrl, $iLang, $iShopId, $blFixed, $sParams)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-            $oStr = getStr();
+            $oStr = Str::getStr();
             if ($sKeywords !== false) {
                 $sKeywords = $oStr->htmlspecialchars($this->encodeString($oStr->strip_tags($sKeywords), false, $iLang));
             }
@@ -1347,7 +1348,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
         if (!is_string($stringWithSpecialChars)) {
             return "";
         }
-        $oStr = \OxidEsales\Eshop\Core\Str::getStr();
+        $oStr = Str::getStr();
         $sQuotedPrefix = preg_quote(self::$_sSeparator . self::$_sPrefix, '/');
         $sRegExp = '/[^A-Za-z0-9' . $sQuotedPrefix . '\/]+/';
         $sanitized = $oStr->preg_replace(

@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * File manipulation utility class
  */
@@ -169,7 +171,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function copyDir($sSourceDir, $sTargetDir)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $handle = opendir($sSourceDir);
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
@@ -270,8 +272,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $sFileType = trim($aFilename[count($aFilename) - 1]);
 
             if (isset($sFileType)) {
-                $oStr = getStr();
-
                 // unallowed files ?
                 if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
                     \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
@@ -284,7 +284,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
                 $sFName = '';
                 if (isset($aFilename[0])) {
-                    $sFName = $oStr->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', implode('.', $aFilename));
+                    $sFName = Str::getStr()->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', implode('.', $aFilename));
                 }
 
                 $sValue = $this->_getUniqueFileName($sImagePath, "{$sFName}", $sFileType, "", $blUnique);
@@ -531,7 +531,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
 
         //wrong chars in file name?
-        if (!getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $aFileInfo['name'])) {
+        if (!Str::getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $aFileInfo['name'])) {
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILENAMEINVALIDCHARS');
         }
 
@@ -578,7 +578,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $sFilePath = $this->normalizeDir($sFilePath);
         $iFileCounter = 0;
         $sTempFileName = $sFileName;
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         //file exists ?
         while ($blUnique && file_exists($sFilePath . "/" . $sFileName . $sSufix . "." . $sFileExt)) {

@@ -11,6 +11,7 @@ use Exception;
 use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use oxList;
 
 // defining supported link types
@@ -1727,7 +1728,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             // if the oxcategory instance of this article is not cached
             if (!isset($this->_aCategoryCache[$sOXID])) {
                 startPRofile('getCategory');
-                $oStr = getStr();
+                $oStr = Str::getStr();
                 $sWhere = $oCategory->getSqlActiveSnippet();
                 $sSelect = $this->_generateSearchStr($sOXID);
                 $sSelect .= ($oStr->strstr(
@@ -2341,7 +2342,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $iActPicId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actpicid');
         }
 
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $iCntr = 0;
         $iPicCount = $myConfig->getConfigParam('iPicCount');
         $blCheckActivePicId = true;

@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Class manages article attributes
@@ -109,7 +110,7 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
-            $oStr = getStr();
+            $oStr = Str::getStr();
             if ($oStr->strpos($sQ, "select count( * ) ") === 0) {
                 $sQ = "select count( * ) from ( {$sQ} ) as _cnttable";
             }

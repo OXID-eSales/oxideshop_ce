@@ -15,6 +15,7 @@ use stdClass;
 use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Navigation tree control class
@@ -107,7 +108,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             $merge = true;
         } elseif (is_readable($menuFile) && ($xml = @file_get_contents($menuFile))) {
             // looking for non supported character encoding
-            if (getStr()->preg_match("/encoding\=(.*)\?\>/", $xml, $matches) !== 0) {
+            if (Str::getStr()->preg_match("/encoding\=(.*)\?\>/", $xml, $matches) !== 0) {
                 if (isset($matches[1])) {
                     $currEncoding = trim($matches[1], "\"");
                     if (!in_array(strtolower($currEncoding), $this->_aSupportedExpathXmlEncodings)) {
@@ -137,7 +138,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
     {
         $url = $this->_getAdminUrl();
         $xPath = new DomXPath($dom);
-        $str = getStr();
+        $str = Str::getStr();
         foreach (['url', 'link'] as $attrType) {
             foreach ($xPath->query("//OXMENU//*[@$attrType]") as $node) {
                 $localUrl = $node->getAttribute($attrType);

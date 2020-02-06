@@ -100,7 +100,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Improved various docs, variable and other coding style problems 
-    [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761) 
+    [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
+- Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
 
 ### Security
 

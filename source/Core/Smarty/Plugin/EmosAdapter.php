@@ -40,6 +40,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * This class is a reference implementation of a PHP Function to include
  * ECONDA Trackiong into a Shop-System.
@@ -419,8 +421,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oCurrentView = $oConfig->getActiveView();
         $sFunction = $oCurrentView->getFncName();
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $sTplName = $this->_getTplName();
         /** @var \OxidEsales\Eshop\Application\Model\User $oUser */
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);

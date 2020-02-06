@@ -14,6 +14,7 @@ use stdClass;
 use oxList;
 use oxBase;
 use oxI18n;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Admin selectlist list manager.
@@ -253,7 +254,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _calcListItemsCount($sql)
     {
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
 
         // count SQL
         $sql = $stringModifier->preg_replace('/select .* from/i', 'select count(*) from ', $sql);
@@ -359,7 +360,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _processFilter($fieldValue)
     {
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
 
         //removing % symbols
         $fieldValue = $stringModifier->preg_replace("/^%|%$/", "", trim($fieldValue));
@@ -397,7 +398,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      */
     protected function _isSearchValue($fieldValue)
     {
-        return (getStr()->preg_match('/^%/', $fieldValue) && getStr()->preg_match('/%$/', $fieldValue));
+        return (Str::getStr()->preg_match('/^%/', $fieldValue) && Str::getStr()->preg_match('/%$/', $fieldValue));
     }
 
     /**
@@ -575,7 +576,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
         // looking for date field
         $dateMatches = [];
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
         foreach ($datePatterns as $pattern => $type) {
             if ($stringModifier->preg_match($pattern, $date, $dateMatches)) {
                 $date = $dateMatches[$dateFormats[$type][0]] . "-" . $dateMatches[$dateFormats[$type][1]];
@@ -599,7 +600,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
         $convertedObject = new \OxidEsales\Eshop\Core\Field();
         $convertedObject->setValue($date);
         \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($convertedObject, true);
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
 
         // looking for time field
         $time = substr($fullDate, 11);

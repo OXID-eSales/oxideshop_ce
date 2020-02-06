@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Class for validating input.
@@ -180,14 +181,14 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     public function checkPassword($user, $newPassword, $confirmationPassword, $shouldCheckPasswordLength = false)
     {
         //  no password at all
-        if ($shouldCheckPasswordLength && getStr()->strlen($newPassword) == 0) {
+        if ($shouldCheckPasswordLength && Str::getStr()->strlen($newPassword) == 0) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS'));
 
             return $this->addValidationError("oxuser__oxpassword", $exception);
         }
 
-        if ($shouldCheckPasswordLength && getStr()->strlen($newPassword) < $this->getPasswordLength()) {
+        if ($shouldCheckPasswordLength && Str::getStr()->strlen($newPassword) < $this->getPasswordLength()) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
 
@@ -458,7 +459,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     protected function _validateOldDebitInfo($debitInfo)
     {
-        $stringHelper = getStr();
+        $stringHelper = Str::getStr();
         $debitInfo = $this->_fixAccountNumber($debitInfo);
 
         $validationResult = true;
@@ -486,7 +487,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     protected function _fixAccountNumber($debitInfo)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         if ($oStr->strlen($debitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(

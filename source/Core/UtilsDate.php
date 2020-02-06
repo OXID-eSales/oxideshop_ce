@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use DateTime;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Date manipulation utility class
@@ -29,7 +30,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
             return null;
         }
 
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if ($blForceEnglishRet && $oStr->strstr($sDBDateIn, '-')) {
             return $sDBDateIn;
         }
@@ -113,7 +114,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
         }
 
         $blDefDateFound = false;
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         // looking for default values that are formatted by MySQL
         foreach (array_keys($aDefDatePatterns) as $sDefDatePattern) {
@@ -217,7 +218,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
         $sSQLTimeStampPattern = "/^([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})$/";
         $sISOTimeStampPattern = "/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$/";
         $aMatches = [];
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         // preparing value to save
         if ($blToTimeStamp) {
@@ -286,7 +287,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
         $aDefTimePatterns = $this->_defaultTimePattern();
         $aDFormats = $this->_defineDateFormattingRules();
         $aTFormats = $this->_defineTimeFormattingRules();
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         foreach (array_keys($aDefTimePatterns) as $sDefTimePattern) {
             if ($oStr->preg_match($sDefTimePattern, $sDate)) {

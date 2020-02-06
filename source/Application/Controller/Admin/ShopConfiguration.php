@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration\FieldConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
@@ -311,7 +312,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     public function _unserializeConfVar($type, $name, $value)
     {
-        $str = getStr();
+        $str = Str::getStr();
         $data = null;
 
         switch ($type) {
@@ -454,7 +455,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function _multilineToAarray($multiline)
     {
-        $string = getStr();
+        $string = Str::getStr();
         $array = [];
         $lines = explode("\n", $multiline);
         foreach ($lines as $line) {

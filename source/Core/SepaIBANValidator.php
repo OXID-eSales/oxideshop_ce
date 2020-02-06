@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * SEPA (Single Euro Payments Area) validation class
  *
@@ -94,7 +96,7 @@ class SepaIBANValidator
      */
     protected function _isLengthValid($sIBAN)
     {
-        $iActualLength = getStr()->strlen($sIBAN);
+        $iActualLength = Str::getStr()->strlen($sIBAN);
 
         $iCorrectLength = $this->_getLengthForCountry($sIBAN);
 
@@ -113,7 +115,7 @@ class SepaIBANValidator
     {
         $aIBANRegistry = $this->getCodeLengths();
 
-        $sCountryCode = getStr()->substr($sIBAN, 0, 2);
+        $sCountryCode = Str::getStr()->substr($sIBAN, 0, 2);
 
         $iCorrectLength = (isset($aIBANRegistry[$sCountryCode])) ? $aIBANRegistry[$sCountryCode] : null;
 
@@ -145,7 +147,7 @@ class SepaIBANValidator
      */
     protected function _moveInitialCharactersToEnd($sIBAN)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         $sInitialChars = $oStr->substr($sIBAN, 0, 4);
         $sIBAN = $oStr->substr($sIBAN, 4);

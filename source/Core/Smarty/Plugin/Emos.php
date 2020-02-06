@@ -42,6 +42,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later
  * inclusion in a HTML/PHP Page.
@@ -248,8 +250,8 @@ class Emos
         $this->_prepareScript();
 
         return $this->_sPrescript .
-               $this->_sIncScript .
-               $this->_sPostscript;
+            $this->_sIncScript .
+            $this->_sPostscript;
     }
 
     /**
@@ -388,8 +390,8 @@ class Emos
         foreach ($aBasket as $oItem) {
             $oItem = $this->_emos_ItemFormat($oItem);
             $aBasketItems[] = ["buy", $oItem->productId, $oItem->productName,
-                                  $oItem->price, $oItem->productGroup, $oItem->quantity,
-                                  $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
+                $oItem->price, $oItem->productGroup, $oItem->quantity,
+                $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
         }
 
         $this->_ecEvent = $aBasketItems;
@@ -467,7 +469,7 @@ class Emos
         }
 
         if ($sCip) {
-            $ort .= getStr()->substr($sCip, 0, 1) . "/" . getStr()->substr($sCip, 0, 2) . "/";
+            $ort .= Str::getStr()->substr($sCip, 0, 1) . "/" . Str::getStr()->substr($sCip, 0, 2) . "/";
         }
 
         if ($sCity) {
@@ -492,9 +494,9 @@ class Emos
         $oItem = $this->_emos_ItemFormat($oItem);
 
         $this->_ecEvent = [[$sEvent, $oItem->productId, $oItem->productName,
-                 $oItem->price, $oItem->productGroup,
-                 $oItem->quantity, $oItem->variant1,
-                 $oItem->variant2, $oItem->variant3]];
+            $oItem->price, $oItem->productGroup,
+            $oItem->quantity, $oItem->variant1,
+            $oItem->variant2, $oItem->variant3]];
     }
 
     /**
@@ -532,7 +534,7 @@ class Emos
 
         //$sStr = urldecode($sStr);
         $sStr = htmlspecialchars_decode($sStr, ENT_QUOTES);
-        $sStr = getStr()->html_entity_decode($sStr);
+        $sStr = Str::getStr()->html_entity_decode($sStr);
         $sStr = strip_tags($sStr);
         $sStr = trim($sStr);
 
@@ -557,7 +559,7 @@ class Emos
         $sStr = str_replace(" /", "/", $sStr);
         $sStr = str_replace("/ ", "/", $sStr);
 
-        $sStr = getStr()->substr($sStr, 0, 254);
+        $sStr = Str::getStr()->substr($sStr, 0, 254);
         //$sStr = rawurlencode( $sStr );
         return $sStr;
     }
@@ -570,8 +572,8 @@ class Emos
         $this->_sPrescript =  '<script type="text/javascript">window.emosTrackVersion = 2;</script>' . $this->_br;
 
         $this->_sIncScript .= "<script type=\"text/javascript\" " .
-        "src=\"" . $this->_sPathToFile . $this->_sScriptFileName . "\">" .
-        "</script>" . $this->_br;
+            "src=\"" . $this->_sPathToFile . $this->_sScriptFileName . "\">" .
+            "</script>" . $this->_br;
 
         $this->_sPostscript  = '<script type="text/javascript"><!--' . $this->_br;
         $this->_sPostscript .= $this->_tab . 'var emospro = {};' . $this->_br;

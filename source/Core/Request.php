@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * Request represents an HTTP request.
  */
@@ -74,7 +76,7 @@ class Request
 
             // trying to resolve controller file name
             if ($rawRequestUrl && ($iPos = stripos($rawRequestUrl, '?')) !== false) {
-                $string = getStr();
+                $string = Str::getStr();
                 // formatting request url
                 $requestUrl = 'index.php' . $string->substr($rawRequestUrl, $iPos);
 

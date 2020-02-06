@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * List of articles for a selected product group.
@@ -464,7 +465,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
             //fetching category path
             if (is_array($categoryTreePath = $this->getCatTreePath())) {
-                $stringModifier = getStr();
+                $stringModifier = Str::getStr();
                 $this->_sCatPathString = '';
                 foreach ($categoryTreePath as $category) {
                     if ($this->_sCatPathString) {
@@ -507,10 +508,11 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         }
 
         // making safe for output
-        $description = getStr()->html_entity_decode($description);
-        $description = getStr()->strip_tags($description);
-        $description = getStr()->cleanStr($description);
-        $description = getStr()->htmlspecialchars($description);
+        $str = Str::getStr();
+        $description = $str->html_entity_decode($description);
+        $description = $str->strip_tags($description);
+        $description = $str->cleanStr($description);
+        $description = $str->htmlspecialchars($description);
 
         return trim($description);
     }
@@ -627,7 +629,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $text = '';
 
         if (count($articleList = $this->getArticleList())) {
-            $stringModifier = getStr();
+            $stringModifier = Str::getStr();
             foreach ($articleList as $article) {
                 /** @var \OxidEsales\Eshop\Application\Model\Article $article */
                 $description = $stringModifier->strip_tags(

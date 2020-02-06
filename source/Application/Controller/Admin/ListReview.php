@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxAdminList;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * user list "view" class.
@@ -74,7 +75,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
 
         //removing parent id checking from sql
         $sStr = "/\s+and\s+" . $sArtTable . "\.oxparentid\s*=\s*''/";
-        $sQ = getStr()->preg_replace($sStr, " ", $sQ);
+        $sQ = Str::getStr()->preg_replace($sStr, " ", $sQ);
 
         return " $sQ and {$sArtTable}.oxid is not null ";
     }
@@ -97,7 +98,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
         // if searching in article title field, updating sql for this case
         if ($this->_aWhere[$sArtTitleField]) {
             $sSqlForTitle = " (CONCAT( {$sArtTable}.oxtitle, if(isnull(oxparentarticles.oxtitle), '', oxparentarticles.oxtitle), {$sArtTable}.oxvarselect)) ";
-            $sSql = getStr()->preg_replace("/{$sArtTable}\.oxtitle\s+like/", "$sSqlForTitle like", $sSql);
+            $sSql = Str::getStr()->preg_replace("/{$sArtTable}\.oxtitle\s+like/", "$sSqlForTitle like", $sSql);
         }
 
         return $sSql;

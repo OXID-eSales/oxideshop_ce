@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
@@ -85,11 +86,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
                     $sValue,
                     \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->getBaseAddUrlParams()
                 );
-                $sValue = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sValue);
+                $sValue = Str::getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sValue);
             }
 
             if (!$sValue) {
-                $sValue = getStr()->preg_replace('#index.php\??$#', '', $this->getSelfLink());
+                $sValue = Str::getStr()->preg_replace('#index.php\??$#', '', $this->getSelfLink());
             }
 
             $this->setViewConfigParam('homeLink', $sValue);
@@ -984,7 +985,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getNavFormParams()
     {
         if (($sParams = $this->getViewConfigParam('navformparams')) === null) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $sParams = '';
             $aNavParams = Registry::getConfig()->getTopActiveView()->getNavigationParams();
             foreach ($aNavParams as $sName => $sValue) {

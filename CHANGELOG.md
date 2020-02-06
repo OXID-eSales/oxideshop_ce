@@ -184,6 +184,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Require at least 3.4.26 DI component [PR-746](https://github.com/OXID-eSales/oxideshop_ce/pull/746)
 - Fix return type annoation for `OxidEsales\EshopCommunity\Application\Model::load()` to `bool`
 - Handle translated error message from validator in password change correctly [PR-731](https://github.com/OXID-eSales/oxideshop_ce/pull/731)
+- Fix docblock and var name in NavigationController::_doStartUpChecks [PR-751](https://github.com/OXID-eSales/oxideshop_ce/pull/751)
 
 ### Added
 - Support PHP 7.3 and 7.4

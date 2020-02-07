@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+- Support for MySQL 8.0
+- Add logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
+- Add checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
 
 ### Changed
 
@@ -16,12 +19,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - ``admin_shop_main_rightform``
 - Added arguments to oxNew method signature to improve static analysis possibilities [PR-744](https://github.com/OXID-eSales/oxideshop_ce/pull/744)
 - Skip currency url generation if "Display Currencies" option is disabled [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
+- Drop support for PHP 7.1 and 7.2
+- Renamed constants in `OxidEsales\EshopCommunity\Setup\Database`:
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_CODE_DBMS_NOT_COMPATIBLE`
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_CODE_DBMS_NOT_RECOMMENDED`
+- Renamed Setup translation keys and changed translation messages:
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_DBMS_VERSION_DOES_NOT_FIT_REQUIREMENTS`
+`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_MYSQL_56_NOT_RECOMMENDED`
+- Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
     
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
 - `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`
 
 ### Removed
+- Support for MySQL 5.5
+- Removed database encoding:
+    - Changed database fields:
+        - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
+        - `oxvalue` field in `oxuserpayments` table changed from `blob` to `text`
+    - Removed methods and properties:
+        - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
+        - `OxidEsales\Eshop\Core\Config::$sConfigKey`
+        - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
+    - Removed classes:
+        - `Conf`
+    - Removed settings:
+        - `sConfigKey` from `config.inc.php`
+- Setup method: `OxidEsales\EshopCommunity\Setup\Database::connectDb()`
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController::getServiceUrl()
 - class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda
 - class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface
@@ -117,27 +142,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Improved various docs, variable and other coding style problems 
     [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
-
-### Security
-
-## [6.6.0] - Unreleased
-
-### Added
-- Support for MySQL 8.0
-- Add logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
-- Add checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754) 
-
-### Changed
-- Drop support for PHP 7.1 and 7.2
-- Renamed constants in `OxidEsales\EshopCommunity\Setup\Database`:
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_CODE_DBMS_NOT_COMPATIBLE`
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_CODE_DBMS_NOT_RECOMMENDED`
-- Renamed Setup translation keys and changed translation messages:
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_DBMS_VERSION_DOES_NOT_FIT_REQUIREMENTS`
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_MYSQL_56_NOT_RECOMMENDED`
-- Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
-
-### Fixed
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
 - Typos in CountryList::_getSecondSortFieldName doc [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
@@ -145,42 +149,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748) 
     [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
 
-### Deprecated
-- `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
-- `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
-- `OxidEsales\Eshop\Core\CreditCardValidator`
-- `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
-- `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
-- `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
-- `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
-- `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
-- `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
-- `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
-- `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
-- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
-- `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
-- Language variables:
-    - `CREDITCARD`
-    - `PAYMENT_CREDITCARD`
-    - `SHOP_CONFIG_STORECREDITCARDINFO`
-    - `PAYMENT_RDFA_CREDITCARD`
-    - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
-
-### Removed
-- Support for MySQL 5.5
-- Removed database encoding:
-    - Changed database fields:
-        - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
-        - `oxvalue` field in `oxuserpayments` table changed from `blob` to `text`
-    - Removed methods and properties:
-        - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
-        - `OxidEsales\Eshop\Core\Config::$sConfigKey`
-        - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
-    - Removed classes:
-        - `Conf`
-    - Removed settings:
-        - `sConfigKey` from `config.inc.php`
-- Setup method: `OxidEsales\EshopCommunity\Setup\Database::connectDb()`
+### Security
 
 ## [6.5.1] - Unreleased
 

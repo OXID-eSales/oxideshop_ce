@@ -152,7 +152,6 @@ class RdfaFrontendTest extends FrontendTestCase
             $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#DirectDebit']");
             $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#ByBankTransferInAdvance']");
             $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#ByInvoice']");
-            $this->assertElementPresent("//div[@rel='gr:acceptedPaymentMethods' and @resource='http://purl.org/goodrelations/v1#DirectDebit']");
         }
     }
 

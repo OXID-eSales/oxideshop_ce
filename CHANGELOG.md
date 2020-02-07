@@ -193,6 +193,37 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Core\InputValidator::validatePaymentInputData()`
 - `OxidEsales\EshopCommunity\Application\Controller\PaymentController::validatePayment()`
 - `OxidEsales\Eshop\Core\Session::$_blStarted`
+- Credit Card:
+    - Class:
+        - `OxidEsales\Eshop\Core\CreditCardValidator`
+    - Function: 
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
+    - Property:     
+        - `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
+        - `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
+    - Language Variable:
+        - `CREDITCARD`
+        - `PAYMENT_CREDITCARD`
+        - `SHOP_CONFIG_STORECREDITCARDINFO`
+        - `PAYMENT_RDFA_CREDITCARD`
+        - `PAYMENT_RDFA_MASTERCARD`
+        - `PAYMENT_RDFA_VISA`
+        - `PAYMENT_RDFA_AMERICANEXPRESS`
+        - `PAYMENT_RDFA_DINERSCLUB`
+        - `PAYMENT_RDFA_DISCOVER`
+        - `PAYMENT_RDFA_JCB`
+        - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
+        - `CARD_SECURITY_CODE_DESCRIPTION`
+        - `HELP_SHOP_CONFIG_ATTENTION`
+        - `CARD_MASTERCARD`
+        - `CARD_SECURITY_CODE`
+        - `CARD_VISA`
 
 ### Fixed
 - Warnings in order discounts recalculation [PR-742](https://github.com/OXID-eSales/oxideshop_ce/pull/742)

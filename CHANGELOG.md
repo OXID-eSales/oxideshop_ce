@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - ``admin_shop_main_leftform``
     - ``admin_shop_main_rightform``
 - Added arguments to oxNew method signature to improve static analysis possibilities [PR-744](https://github.com/OXID-eSales/oxideshop_ce/pull/744)
+- Skip currency url generation if "Display Currencies" option is disabled [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
     
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

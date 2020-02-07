@@ -105,10 +105,10 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oParentView = $this->getParent();
         $oParentView->setActCurrency($this->_oActCur);
 
-        $oUrlUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
-        $sUrl = $oUrlUtils->cleanUrl(\OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getLink(), ["cur"]);
-
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadCurrency')) {
+            $oUrlUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
+            $sUrl = $oUrlUtils->cleanUrl(\OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getLink(), ["cur"]);
+
             reset($this->aCurrencies);
             foreach ($this->aCurrencies as $oItem) {
                 $oItem->link = $oUrlUtils->processUrl($sUrl, true, ["cur" => $oItem->id]);

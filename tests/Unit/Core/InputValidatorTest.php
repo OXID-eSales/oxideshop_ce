@@ -1147,43 +1147,4 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertSame(1, count($aCheckers));
         $this->assertFalse($aCheckers[0] instanceof \OxidEsales\EshopCommunity\Core\OnlineVatIdCheck);
     }
-
-    public function providerEmailsToValidate()
-    {
-        return [
-            ['mathias.krieck@oxid-esales.com', true],
-            ['mytest@com.org', true],
-            ['my+test@com.org', true],
-            ['mytest@oxid-esales.museum', true],
-            ['?mathias.krieck@oxid-esales.com', true],
-            ['my/test@com.org', true],
-            ['mytest@-com.org', false],
-            ['@com.org', false],
-            ['mytestcom.org', false],
-            ['foo.bar@-.-,-,-.oxid-esales.com', false],
-            ['mytest@com', false],
-            ['info@�vyturys.lt', false],
-        ];
-    }
-
-    /**
-     * @dataProvider providerEmailsToValidate
-     */
-    public function testValidateEmailWithValidEmail(string $email, bool $validMail): void
-    {
-        $mailValidator = oxNew(InputValidator::class);
-        $result = $mailValidator->isValidEmail($email);
-        if ($validMail) {
-            $this->assertTrue(
-                $result,
-                'Mail ' . $email . ' validation failed. This mail is valid so should validate.'
-            );
-        } else {
-            $this->assertFalse(
-                $result,
-                'Mail ' . $email . ' was valid. Should not be valid.'
-            );
-        }
-    }
-
 }

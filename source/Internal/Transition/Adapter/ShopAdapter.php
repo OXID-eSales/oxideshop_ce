@@ -19,18 +19,6 @@ use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 class ShopAdapter implements ShopAdapterInterface
 {
     /**
-     * @param string $email
-     *
-     * @return bool
-     */
-    public function isValidEmail($email): bool
-    {
-        $emailValidator = oxNew(InputValidator::class);
-
-        return $emailValidator->isValidEmail($email);
-    }
-
-    /**
      * @param string $string
      *
      * @return string

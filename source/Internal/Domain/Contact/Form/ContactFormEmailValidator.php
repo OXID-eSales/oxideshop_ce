@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormFieldInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormValidatorInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
 class ContactFormEmailValidator implements FormValidatorInterface
 {
@@ -22,17 +22,18 @@ class ContactFormEmailValidator implements FormValidatorInterface
     private $errors;
 
     /**
-     * @var ShopAdapterInterface
+     * @var EmailValidatorServiceInterface
      */
-    private $shopAdapter;
+    private $emailValidatorService;
 
     /**
      * ContactFormEmailValidator constructor.
-     * @param ShopAdapterInterface $shopAdapter
+     *
+     * @param EmailValidatorServiceInterface $emailValidatorService
      */
-    public function __construct(ShopAdapterInterface $shopAdapter)
+    public function __construct(EmailValidatorServiceInterface $emailValidatorService)
     {
-        $this->shopAdapter = $shopAdapter;
+        $this->emailValidatorService = $emailValidatorService;
     }
 
     /**
@@ -46,8 +47,8 @@ class ContactFormEmailValidator implements FormValidatorInterface
 
         if ($this->isValidationNeeded($email)) {
             $isValid = $this
-                ->shopAdapter
-                ->isValidEmail($email->getValue());
+                ->emailValidatorService
+                ->isEmailValid($email->getValue());
 
             if ($isValid !== true) {
                 $this->errors[] = 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL';

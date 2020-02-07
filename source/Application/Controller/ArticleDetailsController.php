@@ -7,18 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxArticle;
 use oxArticleList;
-use oxCategory;
 use oxDeliveryList;
 use oxDeliverySetList;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
-use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 use oxPaymentList;
-use oxRegistry;
-use oxField;
 use oxVariantSelectList;
 
 /**
@@ -893,8 +889,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $utils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         $parameters = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pa');
-
-        if (!isset($parameters['email']) || !oxNew(InputValidator::class)->isValidEmail($parameters['email'])) {
+        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        if (!isset($parameters['email']) || !$emailValidator->isEmailValid($parameters['email'])) {
             $this->_iPriceAlarmStatus = 0;
             return;
         }

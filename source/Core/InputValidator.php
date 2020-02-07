@@ -12,6 +12,8 @@ use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 
 /**
  * Class for validating input.
@@ -158,25 +160,14 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
             return $this->addValidationError("oxuser__oxusername", $exception);
         }
 
-        // invalid email address ?
-        if (!$this->isValidEmail($email)) {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $emailValidator = $container->get(EmailValidatorServiceBridgeInterface::class);
+        if (!$emailValidator->isEmailValid($email)) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'));
 
             return $this->addValidationError("oxuser__oxusername", $exception);
         }
-    }
-
-    /**
-     * @param strgin $email
-     * @return bool
-     */
-    public function isValidEmail($email)
-    {
-        if (!is_string($email) || !strlen($email)) {
-            return false;
-        }
-        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /**

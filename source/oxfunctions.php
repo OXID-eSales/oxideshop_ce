@@ -96,11 +96,10 @@ function cmpart($a, $b)
  *
  * @return object
  */
-function oxNew($className)
+function oxNew($className, ...$args)
 {
     startProfile('oxNew');
-    $arguments = func_get_args();
-    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], $arguments);
+    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], array_merge([$className], $args));
     stopProfile('oxNew');
 
     return $object;

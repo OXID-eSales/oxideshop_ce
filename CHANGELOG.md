@@ -114,6 +114,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
         - `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
         - `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::getDynDataFiltered()`
     - Property:     
         - `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
         - `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`

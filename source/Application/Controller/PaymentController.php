@@ -429,18 +429,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Dyndata filter marker getter. Returns if dyndata is filtered
-     *
-     * @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
-     *
-     * @return boolean
-     */
-    public function getDynDataFiltered()
-    {
-        return $this->_blDynDataFiltered;
-    }
-
-    /**
      * Template variable getter. Returns error text of payments
      *
      * @return string

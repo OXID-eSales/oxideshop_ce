@@ -269,6 +269,10 @@ class SystemRequirements
     {
         clearstatcache();
         $sPath = $sPath ? $sPath : getShopBasePath();
+        $aPathCheckResults = [
+        	"missing" => [],
+        	"notwritable" => []
+        ];
 
         // special config file check
         $sFullPath = $sPath . "config.inc.php";
@@ -302,8 +306,9 @@ class SystemRequirements
         while ($sPathToCheck) {
             // missing file/folder?
             if (!file_exists($sPathToCheck)) {
+            	$aPathCheckResults["missing"][] = str_replace($sPath, '', $sPathToCheck);
                 $iModStat = 0;
-                break;
+                //break;
             }
 
             if (is_dir($sPathToCheck)) {
@@ -318,14 +323,24 @@ class SystemRequirements
 
             // testing if file permissions >= $iMinPerm
             if (!is_readable($sPathToCheck) || !is_writable($sPathToCheck)) {
+                $aPathCheckResults["notwritable"][] = str_replace($sPath, '', $sPathToCheck);
                 $iModStat = 0;
-                break;
+                //break;
             }
 
             $sPathToCheck = next($aPathsToCheck);
         }
 
+        $this->_setServerPermissionCheckResults($aPathCheckResults);
         return $iModStat;
+    }
+
+    /**
+     * saves details of filesystem permission checks in session
+     */
+    protected function _setServerPermissionCheckResults($value) {
+        if(!isset($_COOKIE["PHPSESSID"])) session_start();
+        $_SESSION["aPathCheckResults"] = $value;
     }
 
 

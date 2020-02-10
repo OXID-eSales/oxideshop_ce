@@ -63,6 +63,8 @@ $aLang = [
 
 'MOD_MOD_REWRITE'                               => 'Apache mod_rewrite Modul',
 'MOD_SERVER_PERMISSIONS'                        => 'Dateizugriffsrechte',
+'MOD_SERVER_PERMISSIONS_MISSING'                => 'Fehlende Pfade:',
+'MOD_SERVER_PERMISSIONS_NOTWRITABLE'            => 'Fehlende Schreibrechte:',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen und fsockopen auf Port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
 'MOD_PHP_VERSION'                               => 'PHP Version 7.1 oder 7.2',

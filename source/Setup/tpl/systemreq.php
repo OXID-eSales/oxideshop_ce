@@ -41,17 +41,19 @@ require "_header.php"; ?>
     <?php
     $aGroupModuleInfo = $this->getViewParam("aGroupModuleInfo");
     foreach ($aGroupModuleInfo as $sGroupName => $aGroupInfo) {
-        ?><li class="group"><?php echo $sGroupName; ?><ul><?php
-foreach ($aGroupInfo as $aModuleInfo) {
-    ?><li id="<?php echo $aModuleInfo['module']; ?>" class="<?php echo $aModuleInfo['class']; ?>"><?php
-if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
-    ?><a href="<?php $this->getReqInfoUrl($aModuleInfo['module']); ?>" target="_blank"><?php
-}
-    echo $aModuleInfo['modulename'];
-if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
-    ?></a><?php
-} ?></li><?php
-} ?></ul></li><?php
+        print '<li class="group">'.$sGroupName.'<ul>';
+        foreach ($aGroupInfo as $aModuleInfo) {
+            print '<li id="'.$aModuleInfo['module'].'" class="'.$aModuleInfo['class'].'">' .
+                ( $aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null" ? "<a href='".$this->getReqInfoUrl($aModuleInfo['module'],false)."' target='_blank'>" : '' ) .
+                $aModuleInfo['modulename'] .
+                ( $aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null" ? '</a>' : '' ) .
+                '</li>';
+            if ($aModuleInfo['module'] === "server_permissions" && isset($_SESSION["aPathCheckResults"])) {
+                if(count($_SESSION["aPathCheckResults"]["missing"]) > 0 ) echo "<li><b>".$this->getText("MOD_SERVER_PERMISSIONS_MISSING",false)."</b></li><li>&nbsp;".join("</li><li>&nbsp;",$_SESSION["aPathCheckResults"]["missing"])."</li>";
+                if(count($_SESSION["aPathCheckResults"]["notwritable"]) > 0 ) echo "<li><b>".$this->getText("MOD_SERVER_PERMISSIONS_NOTWRITABLE",false)."</b></li><li>&nbsp;".join("</li><li>&nbsp;",$_SESSION["aPathCheckResults"]["notwritable"])."</li>";
+            }
+        }
+        print '</ul></li>';
     }
     ?><li class="clear"></li></ul>
     <?php $this->getText('STEP_0_TEXT'); ?>

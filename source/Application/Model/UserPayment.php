@@ -133,11 +133,13 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _insert()
     {
+        // @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
         // we do not store credit card information
         // check and in case skip it
         if (!$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard') {
             return true;
         }
+        // END deprecated
 
         //encode sensitive data
         $sEncodedValue = '';

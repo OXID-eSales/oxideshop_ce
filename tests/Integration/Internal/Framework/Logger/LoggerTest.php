@@ -47,7 +47,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
             file_exists($context->getLogFilePath())
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Carthago delenda est',
             file_get_contents($context->getLogFilePath())
         );

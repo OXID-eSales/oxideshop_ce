@@ -153,8 +153,7 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetShowCompareList()
     {
-        $oView = $this->createPartialMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getIsOrderStep'));
-        $oView->expects($this->any())->method('getIsOrderStep')->will($this->returnValue(true));
+        $oView = $this->createMock(\OxidEsales\Eshop\Core\Controller\BaseController::class);
 
         $oCfg = $this->createPartialMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'getActiveView'));
         $oCfg->expects($this->any())

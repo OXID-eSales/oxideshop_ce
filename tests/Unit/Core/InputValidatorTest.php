@@ -393,47 +393,40 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Test case for oxInputValidator::checkPassword()
      * 1. defining required fields in aMustFillFields. While testing original
-     * function must throw an exception that not all required fields are filled
+     * function must contain an exception InputException::class
      *
      * @return null
      */
     public function testCheckRequiredFieldsSomeMissingAccordingToaMustFillFields()
     {
-        $aMustFillFields = array('oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxstreet',
-                                 'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
-                                 'oxuser__oxcountryid',
-                                 'oxaddress__oxfname', 'oxaddress__oxlname', 'oxaddress__oxstreet',
-                                 'oxaddress__oxstreetnr', 'oxaddress__oxzip', 'oxaddress__oxcity',
-                                 'oxaddress__oxcountryid'
-        );
+        $mustFillFields = [
+            'oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxstreet',
+            'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
+            'oxuser__oxcountryid',
+            'oxaddress__oxfname', 'oxaddress__oxlname', 'oxaddress__oxstreet',
+            'oxaddress__oxstreetnr', 'oxaddress__oxzip', 'oxaddress__oxcity',
+            'oxaddress__oxcountryid'
+        ];
 
-        $this->getConfig()->setConfigParam('aMustFillFields', $aMustFillFields);
+        $this->getConfig()->setConfigParam('aMustFillFields', $mustFillFields);
 
-        $aInvAdress = array();
-        $aDelAdress = array();
-
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $oValidator->expects($this->at(0))->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxfname'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
-                )
-            );
-        $oValidator->expects($this->at(1))->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxlname'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
-                )
-            );
+        $oValidator = oxNew(\OxidEsales\Eshop\Core\InputValidator::class);
+        $oValidator->checkRequiredFields($oUser, [], [1]);
+        
+        $fieldError = $oValidator->getFirstValidationError();
+        $this->assertInstanceOf(
+            \OxidEsales\Eshop\Core\Exception\InputException::class,
+            $fieldError
+        );
 
-        $oValidator->checkRequiredFields($oUser, $aInvAdress, $aDelAdress);
+        $fieldErrors = $oValidator->getFieldValidationErrors();
+        $this->assertSame(
+            $mustFillFields,
+            \array_keys($fieldErrors)
+        );
     }
 
     public function testGetPasswordLengthDefaultValue()
@@ -523,121 +516,92 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oValidator->checkPassword(new oxuser(), '', '');
     }
 
+    public function passwordInputChecksProvider()
+    {
+        return [
+            [
+                '',
+                '',
+                true,
+                \OxidEsales\Eshop\Core\Exception\InputException::class,
+                'ERROR_MESSAGE_INPUT_EMPTYPASS'
+            ],
+            [
+                'xxx',
+                '',
+                true,
+                \OxidEsales\Eshop\Core\Exception\InputException::class,
+                'ERROR_MESSAGE_PASSWORD_TOO_SHORT'
+            ],
+            [
+                'xxxxxx',
+                'yyyyyy',
+                false,
+                \OxidEsales\Eshop\Core\Exception\UserException::class,
+                'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'
+            ],
+        ];
+    }
+    
     /**
      * Test case for oxInputValidator::checkPassword()
-     * 2. for user without password - and check if it is empty on
-     *
+     * 
+     * @dataProvider passwordInputChecksProvider
+     * 
      * @return null
      */
-    public function testCheckPasswordUserWithoutPassword()
+    public function testCheckPasswordUserPasswordInputErrors($password, $passwordCheck, $blCheckLength, $exception, $errorMsg)
     {
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $oValidator->expects($this->once())->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxpassword'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS'))
-                )
-            );
+        $oValidator = oxNew(\OxidEsales\Eshop\Core\InputValidator::class);
+        $oValidator->checkPassword($oUser, $password, $passwordCheck, $blCheckLength);
+        $fieldError = $oValidator->getFirstValidationError();
 
-        $oValidator->checkPassword($oUser, '', '', true);
+        $expected = oxNew($exception);
+        $expected->setMessage(oxRegistry::getLang()->translateString($errorMsg));
+        $this->assertEquals(
+            $expected,
+            $fieldError
+        );
     }
 
-    /**
-     * Test case for oxInputValidator::checkPassword()
-     * 3. for user without password - no checks
-     *
-     * @return null
-     */
-    public function testCheckPasswordPassTooShort()
+    public function emailInputChecksProvider()
     {
-        $oUser = oxNew('oxuser');
-        $oUser->setId("testlalaa_");
-
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $expectedErrorMessage = oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT');
-
-        $oValidator->expects($this->once())->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxpassword'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', $expectedErrorMessage)
-                )
-            );
-
-        $oValidator->checkPassword($oUser, 'xxx', '', true);
-    }
-
-    /**
-     * Test case for oxInputValidator::checkPassword()
-     * 4. for user without password - no checks
-     *
-     * @return null
-     */
-    public function testCheckPasswordPassDoNotMatch()
-    {
-        $oUser = oxNew('oxuser');
-        $oUser->setId("testlalaa_");
-
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $oValidator->expects($this->once())->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxpassword'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxUserException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'))
-                )
-            );
-
-        $oValidator->checkPassword($oUser, 'xxxxxx', 'yyyyyy', $blCheckLenght = false);
+        return [
+            [
+                '',
+                'ERROR_MESSAGE_INPUT_NOTALLFIELDS'
+            ],
+            [
+                'a@a.a',
+                'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'
+            ]
+        ];
     }
 
     /**
      * Test case for oxInputValidator::checkEmail()
-     * 1. user forgot to pass user login - must fail
+     * 
+     * @dataProvider emailInputChecksProvider
      *
      * @return null
      */
-    public function testCheckEmailNoEmail()
+    public function testCheckEmailNoEmail($email, $errorMsg)
     {
         $oUser = oxNew('oxuser');
         $oUser->setId("testlalaa_");
+        $oValidator = oxNew(\OxidEsales\Eshop\Core\InputValidator::class);
+        $oValidator->checkEmail($oUser, $email, 1);
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $oValidator->expects($this->once())->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxusername'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
-                )
-            );
+        $fieldError = $oValidator->getFirstValidationError();
 
-        $oValidator->checkEmail($oUser, '', 1);
-    }
-
-    /**
-     * Test case for oxInputValidator::checkEmail()
-     * 2. checking is email validation is executed
-     *
-     * @return null
-     */
-    public function testCheckEmailEmailValidation()
-    {
-        $user = oxNew('oxuser');
-        $user->setId("testlalaa_");
-
-        $validator = oxNew(InputValidator::class);
-        $validator->checkEmail($user, 'empty');
-
-        $this->assertInstanceOf(
-            InputException::class,
-            $validator->getFirstValidationError()
+        $expected = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
+        $expected->setMessage(oxRegistry::getLang()->translateString($errorMsg));
+        $this->assertEquals(
+            $expected,
+            $fieldError
         );
     }
 
@@ -660,17 +624,17 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oLang = oxRegistry::getLang();
         $sMsg = sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $aInvAdress['oxuser__oxusername']);
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $oValidator->expects($this->once())->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxusername'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxUserException'),
-                    $this->attributeEqualTo('message', $sMsg)
-                )
-            );
+        $oValidator = oxNew(\OxidEsales\Eshop\Core\InputValidator::class);
 
         $oValidator->checkLogin($oUser, $oUser->oxuser__oxusername->value, $aInvAdress);
+        
+        $fieldError = $oValidator->getFirstValidationError();
+        $expected = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
+        $expected->setMessage($sMsg);
+        $this->assertEquals(
+            $expected,
+            $fieldError
+        );
     }
 
     /**
@@ -689,17 +653,17 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $aInvAdress['oxuser__oxusername'] = 'a@a.a';
         $aInvAdress['oxuser__oxpassword'] = '';
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $oValidator->expects($this->once())->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxpassword'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
-                )
-            );
-
+        $oValidator = oxNew(\OxidEsales\Eshop\Core\InputValidator::class);
         $oValidator->checkLogin($oUser, "test", $aInvAdress);
+
+        $fieldError = $oValidator->getFirstValidationError();
+        
+        $expected = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
+        $expected->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+        $this->assertEquals(
+            $expected,
+            $fieldError
+        );
     }
 
     /**
@@ -720,20 +684,18 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $invoiceAdress['oxuser__oxusername'] = 'a@a.a';
         $invoiceAdress['oxuser__oxpassword'] = 'b@b.b';
 
-        $validator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('addValidationError'));
-        $validator->expects($this->once())->method('addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxpassword'),
-                $this->logicalAnd(
-                    $this->isInstanceOf(\OxidEsales\Eshop\Core\Exception\UserException::class),
-                    $this->attributeEqualTo(
-                        'message',
-                        \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH')
-                    )
-                )
-            );
-
+        $validator = oxNew(\OxidEsales\Eshop\Core\InputValidator::class);
         $validator->checkLogin($user, '', $invoiceAdress);
+
+        $fieldErrors = $validator->getFieldValidationErrors();
+        $firstError = array_pop($fieldErrors);
+        
+        $expected = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
+        $expected->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'));
+        $this->assertEquals(
+            $expected,
+            $firstError[0]
+        );
     }
 
     /**

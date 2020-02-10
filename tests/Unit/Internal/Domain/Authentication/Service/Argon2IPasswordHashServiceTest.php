@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\PasswordH
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\Argon2IPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\UnavailablePasswordHashException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,11 +33,9 @@ class Argon2IPasswordHashServiceTest extends TestCase
         $this->markTestSkipped("Argon2I not available currently on PHP 7.2.");
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\UnavailablePasswordHashException
-     */
     public function testConstructorThrowsExceptionIfArgon2INotAvailable()
     {
+        $this->expectException(UnavailablePasswordHashException::class);
         $this->skipTestIfArgon2IAvailable();
         $passwordPolicyMock = $this->getPasswordPolicyMock();
 

@@ -63,8 +63,8 @@ class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $testObject->setRenderer();
         $testObject->setNotCaught();
         $sStringOut = $testObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains($message, $sStringOut);
-        $this->assertContains('oxException', $sStringOut);
+        $this->assertStringContainsString($message, $sStringOut);
+        $this->assertStringContainsString('oxException', $sStringOut);
     }
 
     public function testGetValues()

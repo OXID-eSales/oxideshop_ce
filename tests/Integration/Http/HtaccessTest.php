@@ -137,7 +137,7 @@ class HtAccessTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     protected function assertHttpCode($response, $message, $httpError)
     {
-        $this->assertContains($httpError, $response, $message);
+        $this->assertStringContainsString($httpError, $response, $message);
     }
 
     /**
@@ -148,6 +148,6 @@ class HtAccessTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     protected function assertNoHttpCode301($response, $message)
     {
-        $this->assertNotContains('301 Moved Permanently', $response, $message);
+        $this->assertStringNotContainsString('301 Moved Permanently', $response, $message);
     }
 }

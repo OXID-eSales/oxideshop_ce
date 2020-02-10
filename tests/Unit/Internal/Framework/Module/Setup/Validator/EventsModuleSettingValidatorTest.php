@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\EventsVa
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\ModuleEvents;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 
 class EventsModuleSettingValidatorTest extends TestCase
 {
@@ -29,11 +30,9 @@ class EventsModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException
-     */
     public function testValidateThrowsExceptionIfEventsDefinedAreNotCallable()
     {
+        $this->expectException(ModuleSettingNotValidException::class);
         $validator = $this->createValidator();
 
         $moduleConfiguration = new ModuleConfiguration();

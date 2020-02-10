@@ -89,9 +89,9 @@ class ArticleexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testSetString()
     {
         $sStringOut = $this->_oTestObject->getString();
-        $this->assertContains($this->_sMsg, $sStringOut); // Message
-        $this->assertContains('ArticleException', $sStringOut); // Exception class name
-        $this->assertContains($this->_sArticle, $sStringOut); // Article nr
+        $this->assertStringContainsString($this->_sMsg, $sStringOut); // Message
+        $this->assertStringContainsString('ArticleException', $sStringOut); // Exception class name
+        $this->assertStringContainsString($this->_sArticle, $sStringOut); // Article nr
     }
 
     /**

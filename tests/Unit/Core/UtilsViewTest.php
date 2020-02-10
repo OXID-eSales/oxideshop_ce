@@ -34,7 +34,12 @@ class UtilsViewTest extends \OxidTestCase
         $expectedTemplateDirs = $this->getTemplateDirsAzure();
         $utilsView = $this->getUtilsViewMockNotAdmin();
 
-        $this->assertArraySubset($expectedTemplateDirs, $utilsView->getTemplateDirs());
+        $result = $utilsView->getTemplateDirs();
+
+        $this->assertTrue(
+            empty(array_diff_key($expectedTemplateDirs, $result)) &&
+            empty(array_diff_key($result, $expectedTemplateDirs))
+        );
     }
 
     public function testGetTemplateDirsOnlyAzure()
@@ -64,7 +69,12 @@ class UtilsViewTest extends \OxidTestCase
 
         $utilsView = $this->getUtilsViewMockNotAdmin();
 
-        $this->assertArraySubset($dirs, $utilsView->getTemplateDirs());
+        $result = $utilsView->getTemplateDirs();
+
+        $this->assertTrue(
+            empty(array_diff_key($dirs, $result)) &&
+            empty(array_diff_key($result, $dirs))
+        );
     }
 
     public function testGetEditionTemplateDirsOnlyAzure()
@@ -98,8 +108,13 @@ class UtilsViewTest extends \OxidTestCase
         ];
 
         $utilsView = $this->getUtilsViewMockBeAdmin();
-
-        $this->assertArraySubset($dirs, $utilsView->getTemplateDirs());
+        
+        $result = $utilsView->getTemplateDirs();
+        
+        $this->assertTrue(
+            empty(array_diff_key($dirs, $result)) &&
+            empty(array_diff_key($result, $dirs))
+        );
     }
 
     public function testGetEditionTemplateDirsForAdminOnlyAzure()
@@ -144,7 +159,12 @@ class UtilsViewTest extends \OxidTestCase
         $utilsView->setTemplateDir("testDir2");
         $utilsView->setTemplateDir("testDir1");
 
-        $this->assertArraySubset($aDirs, $utilsView->getTemplateDirs());
+        $result = $utilsView->getTemplateDirs();
+        
+        $this->assertTrue(
+            empty(array_diff_key($aDirs, $result)) &&
+            empty(array_diff_key($result, $aDirs))
+        );
     }
 
     public function testSetTemplateDirOnlyAzure()
@@ -370,7 +390,10 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($varValue, $smarty->$varName, $varName);
         }
 
-        $this->assertArraySubset($templateDirs, $smarty->template_dir);
+        $this->assertTrue(
+            empty(array_diff_key($templateDirs, $smarty->template_dir)) &&
+            empty(array_diff_key($smarty->template_dir, $templateDirs))
+        );
     }
 
     /**
@@ -461,7 +484,10 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
         }
 
-        $this->assertArraySubset($aTemplatesDir, $oSmarty->template_dir);
+        $this->assertTrue(
+            empty(array_diff_key($aTemplatesDir, $oSmarty->template_dir)) &&
+            empty(array_diff_key($oSmarty->template_dir, $aTemplatesDir))
+        );
     }
 
     // non demo mode

@@ -150,7 +150,7 @@ class LangTest extends \OxidTestCase
         $languagePaths = $language->UNITgetLangFilesPathArray($languageId);
 
         foreach ($languagePaths as $languagePath) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 '/' . $currentLanguageAbbreviation . '/',
                 $languagePath,
                 "The path" . $languagePath . "contains a different language than " .  $currentLanguageAbbreviation . "."

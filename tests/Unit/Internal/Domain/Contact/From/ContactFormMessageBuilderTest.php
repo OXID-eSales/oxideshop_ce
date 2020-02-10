@@ -34,7 +34,7 @@ class ContactFormMessageBuilderTest extends \PHPUnit\Framework\TestCase
             );
         $contactFormMessageBuilder = new ContactFormMessageBuilder($shopAdapter);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             $value,
             $contactFormMessageBuilder->getContent($form)
         );

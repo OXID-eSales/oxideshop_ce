@@ -775,9 +775,9 @@ class ShopSetUpTest extends FrontendTestCase
     {
         $this->goToSetup();
 
-        $this->assertContains("Server configuration", $this->getText("//li[@class='group'][1]"));
-        $this->assertContains("PHP configuration", $this->getText("//li[@class='group'][2]"));
-        $this->assertContains("PHP extensions", $this->getText("//li[@class='group'][3]"));
+        $this->assertStringContainsString("Server configuration", $this->getText("//li[@class='group'][1]"));
+        $this->assertStringContainsString("PHP configuration", $this->getText("//li[@class='group'][2]"));
+        $this->assertStringContainsString("PHP extensions", $this->getText("//li[@class='group'][3]"));
     }
 
     /**

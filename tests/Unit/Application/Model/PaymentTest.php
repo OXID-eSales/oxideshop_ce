@@ -73,13 +73,10 @@ class PaymentTest extends \OxidTestCase
                         'oxidnewsletter',
                         'oxidadmin');
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             $array,
             $payment->getGroups()->arrayKeys(),
-            "Groups are not as expected.",
-            0.0,
-            10,
-            true
+            "Groups are not as expected."
         );
     }
 

@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\Templ
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
+use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -51,11 +52,10 @@ class ScriptLogicTest extends TestCase
 
     /**
      * @covers ScriptLogic::include
-     *
-     * @expectedException \PHPUnit\Framework\Error\Warning
      */
     public function testIncludeFileNotExists(): void
     {
+        $this->expectException(Warning::class);
         $this->scriptLogic->include('somescript.js');
     }
 

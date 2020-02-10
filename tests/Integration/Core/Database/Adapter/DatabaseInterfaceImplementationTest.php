@@ -208,7 +208,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $rows = $this->database->getAll($sql);
 
-        $this->assertInternalType('array', $rows, 'Expected an array as result!');
+        $this->assertIsArray($rows, 'Expected an array as result!');
         // sometimes the array gets filled in different order, we sort them to be sure, the content is same
         $this->assertEquals($expectedRows, $rows);
     }
@@ -267,7 +267,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $actualRows = $database->getAll($sql);
 
-        $this->assertInternalType('array', $actualRows, 'Expected an array as result!');
+        $this->assertIsArray($actualRows, 'Expected an array as result!');
         // sometimes the array gets filled in different order, we sort them to be sure, the content is same
         $this->assertSame(sort($expectedRows), sort($actualRows), $assertionMessage);
     }
@@ -499,7 +499,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         // check normal (associative array) case
         $row = $this->fetchFirstTestTableOxId();
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertSame(array(0), array_keys($row));
 
         // check numeric array case
@@ -507,7 +507,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $row = $this->fetchFirstTestTableOxId();
 
         // check result
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertSame(array(0), array_keys($row));
     }
 
@@ -533,7 +533,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         $result = $this->database->getCol("SELECT OXID FROM " . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(0, count($result));
     }
 
@@ -546,7 +546,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(3, count($result));
         $this->assertSame(array(self::FIXTURE_OXUSERID_1, self::FIXTURE_OXUSERID_2, self::FIXTURE_OXUSERID_3), $result);
     }
@@ -562,7 +562,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(3, count($result));
         $this->assertSame(array(self::FIXTURE_OXUSERID_1, self::FIXTURE_OXUSERID_2, self::FIXTURE_OXUSERID_3), $result);
     }
@@ -576,7 +576,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME . " WHERE OXUSERID LIKE ? ", array('%2'));
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(1, count($result));
         $this->assertSame(array(self::FIXTURE_OXUSERID_2), $result);
     }
@@ -1019,7 +1019,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
          */
         $result = $this->database->getRow('INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')");
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEmpty($result);
 
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\DatabaseErrorException::class;
@@ -1035,7 +1035,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 
@@ -1048,7 +1048,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEquals(array(self::FIXTURE_OXID_2, self::FIXTURE_OXUSERID_2), $result);
     }
 
@@ -1130,7 +1130,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
         $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 

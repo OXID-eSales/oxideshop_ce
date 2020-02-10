@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDat
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use PHPUnit\Framework\TestCase;
 
 class MetaDataProviderTest extends TestCase
@@ -31,27 +32,21 @@ class MetaDataProviderTest extends TestCase
     /** @var MetaDataValidatorInterface */
     private $validatorStub;
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetDataThrowsExceptionOnNonExistingFile()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $metaDataProvider = $this->createMetaDataProvider();
         $metaDataProvider->getData('non existing file');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetDataThrowsExceptionOnDirectory()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $metaDataProvider = $this->createMetaDataProvider();
         $metaDataProvider->getData(__DIR__);
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException
-     *
      * @dataProvider missingMetaDataVariablesDataProvider
      *
      * @param string $metaDataContent
@@ -60,6 +55,7 @@ class MetaDataProviderTest extends TestCase
      */
     public function testGetDataThrowsExceptionOnMissingMetaDataVariables(string $metaDataContent)
     {
+        $this->expectException(InvalidMetaDataException::class);
         $metaDataFilePath = $this->getPathToTemporaryFile();
         if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);

@@ -73,12 +73,12 @@ class ModuleSmartyPluginDirectoriesTest extends TestCase
 
     private function assertModuleSmartyPluginDirectoriesFirst($directories)
     {
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Smarty/PluginDirectory1WithMetadataVersion21',
             $directories[0]
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Smarty/PluginDirectory2WithMetadataVersion21',
             $directories[1]
         );
@@ -86,7 +86,7 @@ class ModuleSmartyPluginDirectoriesTest extends TestCase
 
     private function assertShopSmartyPluginDirectorySecond($directories)
     {
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Core/Smarty/Plugin',
             $directories[2]
         );

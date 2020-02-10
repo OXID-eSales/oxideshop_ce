@@ -21,12 +21,11 @@ class MetaDataMapperTest extends TestCase
     /**
      * @dataProvider missingMetaDataKeysDataProvider
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @param array $invalidData
      */
     public function testFromDataWillThrowExceptionOnInvalidParameterFormat(array $invalidData)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
         $metaDataDataMapper->fromData($invalidData);
     }

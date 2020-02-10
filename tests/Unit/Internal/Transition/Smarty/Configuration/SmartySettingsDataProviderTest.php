@@ -46,7 +46,7 @@ class SmartySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
 
         $smartyContextMock
             ->method('getTemplateEngineDebugMode')
-            ->willReturn('2');
+            ->willReturn(true);
 
         $smartyContextMock
             ->method('getTemplateCompileDirectory')

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
@@ -63,12 +64,10 @@ class ModuleStateServiceTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
-     */
     public function testSetActiveIfActiveStateIsAlreadySet()
     {
         $this->moduleStateService->setActive('testModuleId', 1);
+        $this->expectException(ModuleStateIsAlreadySetException::class);
         $this->moduleStateService->setActive('testModuleId', 1);
     }
 
@@ -83,11 +82,9 @@ class ModuleStateServiceTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
-     */
     public function testSetDeactivatedIfActiveStateIsNotSet()
     {
+        $this->expectException(ModuleStateIsAlreadySetException::class);
         $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
         $this->moduleStateService->setDeactivated('testModuleId', 1);

@@ -55,12 +55,11 @@ class ThankyouTest extends \OxidTestCase
         $this->assertEquals($oBasket, $oThankyou->getBasket());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage expected redirect
-     */
     public function testThankYouRedirectOnNoOrder()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("expected redirect");
+
         $oThankyou = $this->getProxyClass('thankyou');
 
         /** @var \PHPUnit\Framework\MockObject\MockObject $utilsMock */

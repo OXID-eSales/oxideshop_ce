@@ -64,7 +64,7 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNull($view->getViewParam('aDB'));
         }
@@ -87,7 +87,7 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNotNull($view->getViewParam('aDB'));
 
@@ -109,9 +109,9 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[1]);
-            $this->assertContains('ow=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to overwrite all existing data and install anyway click', $view->getMessages()[1]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[1]);
             $this->assertNull($view->getViewParam('blCreated'));
             $this->assertNotNull($view->getViewParam('aDB'));
         }

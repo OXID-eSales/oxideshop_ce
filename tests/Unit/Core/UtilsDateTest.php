@@ -74,7 +74,7 @@ class UtilsDateTest extends \OxidTestCase
     public function testGetTimeWillReturnPositiveInteger()
     {
         $actual = Registry::getUtilsDate()->getTime();
-        $this->assertInternalType('integer', $actual);
+        $this->assertIsInt($actual);
         $this->assertGreaterThan(0, $actual);
     }
 

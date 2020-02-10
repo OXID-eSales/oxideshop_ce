@@ -416,7 +416,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $this->checkMailFields($aFields, $oEmail);
 
         //checking if mail body is in english
-        $this->assertContains('The following products have been ordered in testShopName right now:', $oEmail->getBody());
+        $this->assertStringContainsString('The following products have been ordered in testShopName right now:', $oEmail->getBody());
     }
 
     /**

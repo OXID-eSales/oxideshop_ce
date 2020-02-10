@@ -80,13 +80,13 @@ class PricelistTest extends \OxidTestCase
                           10 => 100 - 100 / 1.1,
                           20 => 40 - 40 / 1.2);
 
-        $this->assertEquals($aVatInfo, $oList->getVatInfo(false), '', 0.0000001);
+        $this->assertEqualsWithDelta($aVatInfo, $oList->getVatInfo(false), 0.0000001);
 
         $aVatInfo = array(5  => 10 * 0.05,
                           10 => 100 * 0.1,
                           20 => 40 * 0.2);
 
-        $this->assertEquals($aVatInfo, $oList->getVatInfo(), '', 0.0000001);
+        $this->assertEqualsWithDelta($aVatInfo, $oList->getVatInfo(), 0.0000001);
     }
 
     /**
@@ -106,8 +106,8 @@ class PricelistTest extends \OxidTestCase
         $oPrice->setPrice(20, 20);
         $oList->addToPriceList($oPrice);
 
-        $this->assertEquals(35, $oList->getSum(false), '', 0.0000001);
-        $this->assertEquals(30, $oList->getSum(), '', 0.0000001);
+        $this->assertEqualsWithDelta(35, $oList->getSum(false), 0.0000001);
+        $this->assertEqualsWithDelta(30, $oList->getSum(), 0.0000001);
     }
 
 

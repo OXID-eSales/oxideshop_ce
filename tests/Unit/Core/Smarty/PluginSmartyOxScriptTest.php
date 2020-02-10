@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
 use \Smarty;
 use \oxRegistry;
+use PHPUnit\Framework\Error\Warning;
 
 $filePath = oxRegistry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxscript.php';
 if (file_exists($filePath)) {
@@ -22,11 +23,11 @@ class PluginSmartyOxScriptTest extends \OxidTestCase
 
     /**
      * Check for error if not existing file for include given.
-     *
-     * @expectedException PHPUnit\Framework\Error\Warning
      */
     public function testSmartyFunctionOxScript_includeNotExist()
     {
+        $this->expectException(Warning::class);
+
         $this->getConfig()->setConfigParam("iDebug", -1);
 
         $oSmarty = new Smarty();

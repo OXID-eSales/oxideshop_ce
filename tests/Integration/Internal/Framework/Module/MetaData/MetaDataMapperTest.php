@@ -396,12 +396,11 @@ class MetaDataMapperTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException  UnsupportedMetaDataValueTypeException
-     */
     public function testModuleWithSurplusData(): void
     {
+        $this->expectException(UnsupportedMetaDataValueTypeException::class);
         $this->expectException(UnsupportedMetaDataKeyException::class);
+        
         $metaDataFilePath = $this->getMetaDataFilePath('TestModuleWithSurplusData');
         $expectedModuleData = [
             'id' => 'TestModuleWithSurplusData',
@@ -411,7 +410,7 @@ class MetaDataMapperTest extends TestCase
 
         $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
-
+        
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 

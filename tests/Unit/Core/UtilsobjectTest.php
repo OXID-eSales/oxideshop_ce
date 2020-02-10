@@ -248,7 +248,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
         $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
-        $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
+        $this->assertEquals($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
         $expectedExceptionClass = SystemComponentException::class;
         $this->assertLoggedException($expectedExceptionClass);
     }

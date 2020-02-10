@@ -28,9 +28,9 @@ class ObjectexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $object = new \stdClass();
         $testObject->setObject($object);
         $sStringOut = $testObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains($message, $sStringOut);
-        $this->assertContains('ObjectException', $sStringOut);
-        $this->assertContains(get_class($object), $sStringOut);
+        $this->assertStringContainsString($message, $sStringOut);
+        $this->assertStringContainsString('ObjectException', $sStringOut);
+        $this->assertStringContainsString(get_class($object), $sStringOut);
     }
 
     /**

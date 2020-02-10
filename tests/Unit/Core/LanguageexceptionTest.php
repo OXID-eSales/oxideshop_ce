@@ -33,9 +33,9 @@ class LanguageexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testGetString()
     {
         $sStringOut = $this->testObject->getString();
-        $this->assertContains($this->message, $sStringOut); // Message
-        $this->assertContains('LanguageException', $sStringOut); // Exception class name
-        $this->assertContains($this->languageConstant, $sStringOut); // Language constant
+        $this->assertStringContainsString($this->message, $sStringOut); // Message
+        $this->assertStringContainsString('LanguageException', $sStringOut); // Exception class name
+        $this->assertStringContainsString($this->languageConstant, $sStringOut); // Language constant
     }
 
     public function testGetValues()

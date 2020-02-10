@@ -1018,8 +1018,8 @@ class EmailTest extends \OxidTestCase
     {
         $headerLine = $this->_oEmail->headerLine('testName', 'testValue');
 
-        $this->assertContains('testName', $headerLine);
-        $this->assertContains('testValue', $headerLine);
+        $this->assertStringContainsString('testName', $headerLine);
+        $this->assertStringContainsString('testValue', $headerLine);
     }
 
     public function testHeaderLineXMailer()

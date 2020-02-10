@@ -225,7 +225,7 @@ class UtilitiesTest extends \OxidTestCase
 
         $destinationFile = $destinationDirectory . '/config.inc.php';
         file_put_contents($destinationFile, file_get_contents($originalFile));
-        $this->assertNotContains($password, $destinationFile);
+        $this->assertStringNotContainsString($password, $destinationFile);
 
         $configParameters = [
             'sShopDir' => $destinationDirectory,

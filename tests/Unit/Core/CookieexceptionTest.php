@@ -17,8 +17,8 @@ class CookieexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\CookieException::class, $message);
         $this->assertEquals(\OxidEsales\Eshop\Core\Exception\CookieException::class, get_class($testObject));
         $stringOut = $testObject->getString();
-        $this->assertContains($message, $stringOut); // Message
-        $this->assertContains('CookieException', $stringOut); // Exception class name
+        $this->assertStringContainsString($message, $stringOut); // Message
+        $this->assertStringContainsString('CookieException', $stringOut); // Exception class name
     }
 
     /**

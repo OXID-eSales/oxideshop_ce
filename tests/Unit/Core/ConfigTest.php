@@ -2140,7 +2140,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $oConfig->setConfigParam('blFormerTplSupport', true);
-        $this->assertContains('nopic.jpg', $oConfig->getPictureUrl("test.gif", false));
+        $this->assertStringContainsString('nopic.jpg', $oConfig->getPictureUrl("test.gif", false));
     }
 
     public function testGetPictureUrlNeverEmptyString()
@@ -2149,7 +2149,7 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
         $oConfig->setConfigParam('blFormerTplSupport', true);
         $this->assertNotEquals('', $oConfig->getPictureUrl("test.gif", false));
-        $this->assertContains('master/nopic.jpg', $oConfig->getPictureUrl("test.gif", false));
+        $this->assertStringContainsString('master/nopic.jpg', $oConfig->getPictureUrl("test.gif", false));
     }
 
     public function testgetPictureUrlForBugEntry0001557()

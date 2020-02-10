@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ControllersValidator;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
 
 /**
  * @internal
@@ -61,8 +62,6 @@ class ControllersModuleSettingValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException
-     *
      * @dataProvider duplicatedSettingValueDataProvider
      *
      * @param Controller[] $duplicatedSettingValue
@@ -70,6 +69,7 @@ class ControllersModuleSettingValidatorTest extends TestCase
      */
     public function testValidationWithDuplicatedControllerNamespace(array $duplicatedSettingValue)
     {
+        $this->expectException(ControllersDuplicationModuleConfigurationException::class);
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
             ->method('getShopControllerClassMap')

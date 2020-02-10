@@ -16,7 +16,7 @@ class NoarticleexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oTestObject = oxNew(\OxidEsales\Eshop\Core\Exception\NoArticleException::class);
         $this->assertEquals(\OxidEsales\Eshop\Core\Exception\NoArticleException::class, get_class($oTestObject));
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains('NoArticleException', $sStringOut);
+        $this->assertStringContainsString('NoArticleException', $sStringOut);
     }
 
     /**

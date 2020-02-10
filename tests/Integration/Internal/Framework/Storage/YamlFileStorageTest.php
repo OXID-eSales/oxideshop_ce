@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
  * @internal
@@ -96,11 +97,9 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
-     */
     public function testStorageWithCorruptedFile()
     {
+        $this->expectException(ParseException::class);
         $filePath = $this->getFilePath();
         $yamlContent = "\t";
 

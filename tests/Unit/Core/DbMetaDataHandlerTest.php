@@ -237,7 +237,11 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
         //comparing in case insensitive form
-        $this->assertEquals($sTestSql, $oDbMeta->UNITgetCreateTableSetSql("oxcountry", 8), '', 0, 10, false, true);
+        $this->assertEqualsIgnoringCase(
+            $sTestSql,
+            $oDbMeta->UNITgetCreateTableSetSql("oxcountry", 8),
+            ''
+        );
     }
 
     /**
@@ -250,7 +254,11 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
         //comparing in case insensitive form
-        $this->assertEquals($sTestSql, $oDbMeta->getAddFieldSql("oxcountry", "OXTITLE", "OXTITLE_4", "OXTITLE_3"), '', 0, 10, false, true);
+        $this->assertEqualsIgnoringCase(
+            $sTestSql,
+            $oDbMeta->getAddFieldSql("oxcountry", "OXTITLE", "OXTITLE_4", "OXTITLE_3"),
+            ''
+        );
     }
 
     /**
@@ -355,9 +363,9 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldAlterTable()
     {
-        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXTITLE_4` varchar(128) NOT NULL default ''  AFTER `OXTITLE_3`";
-        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXSHORTDESC_4` varchar(255) NOT NULL default ''  AFTER `OXSHORTDESC_3`";
-        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXLONGDESC_4` varchar(255) NOT NULL default ''  AFTER `OXLONGDESC_3`";
+        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXTITLE_4` varchar(128) NOT NULL DEFAULT ''  AFTER `OXTITLE_3`";
+        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXSHORTDESC_4` varchar(255) NOT NULL DEFAULT ''  AFTER `OXSHORTDESC_3`";
+        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXLONGDESC_4` varchar(255) NOT NULL DEFAULT ''  AFTER `OXLONGDESC_3`";
 
         /** @var oxDbMetaDataHandler|PHPUnit\Framework\MockObject\MockObject $oDbMeta */
         $oDbMeta = $this->getMock(\OxidEsales\Eshop\Core\DbMetaDataHandler::class, array('executeSql'));

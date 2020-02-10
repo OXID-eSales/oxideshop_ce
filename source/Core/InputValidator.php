@@ -152,7 +152,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     public function checkEmail($user, $email)
     {
         // missing email address (user login name) ?
-        if (!$email) {
+        if (empty($email)) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 

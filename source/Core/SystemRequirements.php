@@ -554,7 +554,7 @@ class SystemRequirements
 
         $minimalRequiredVersion = '7.1.0';
         $minimalRecommendedVersion = '7.1.0';
-        $maximalRecommendedVersion = '7.2.9999';
+        $maximalRecommendedVersion = '7.4.9999';
 
         $installedPhpVersion = $this->getPhpVersion();
 
@@ -680,19 +680,20 @@ class SystemRequirements
 
     /**
      * Checks if current mysql version matches requirements
-     * @param null $installedVersion
-     * @return int|null
-     * @throws DatabaseConnectionException
-     * @deprecated since v6.6.0 (2019-12-12) use
+     *
+     * @param string $installedVersion MySQL version
+     *
+     * @deprecated since v6.5.1 (2020-02-07) use
      * \OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface
      * instead
+     *
+     * @return int
      */
     public function checkMysqlVersion($installedVersion = null)
     {
         $requirementFits = null;
 
         $minimalRequiredVersion = '5.5.0';
-        $maximalRequiredVersion = '5.7.9999';
 
         if ($installedVersion === null) {
             $resultContainingDatabaseVersion = DatabaseConnectionProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
@@ -716,11 +717,7 @@ class SystemRequirements
             $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
         }
 
-        if (
-            is_null($requirementFits) &&
-            version_compare($installedVersion, $minimalRequiredVersion, '>=') &&
-            version_compare($installedVersion, $maximalRequiredVersion, '<=')
-        ) {
+        if (is_null($requirementFits) && version_compare($installedVersion, $minimalRequiredVersion, '>=')) {
             $requirementFits = static::MODULE_STATUS_OK;
         }
 

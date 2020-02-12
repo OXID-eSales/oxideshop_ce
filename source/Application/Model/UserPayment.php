@@ -19,8 +19,6 @@ use oxDb;
  */
 class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-    // you can change this if you want more security
-
     /**
      * Name of current class
      *

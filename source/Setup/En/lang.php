@@ -64,7 +64,9 @@ $aLang = [
 'MOD_SERVER_PERMISSIONS'                        => 'Files/folders access rights',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen and fsockopen to port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend compatibility mode must be off',
+// @deprecated since v.6.5.1 (2020-02-12);
 'MOD_PHP_VERSION'                               => 'PHP version from 7.1 to 7.4',
+// END deprecated
 'MOD_REQUEST_URI'                               => 'REQUEST_URI set',
 'MOD_LIB_XML2'                                  => 'LIB XML2',
 'MOD_PHP_XML'                                   => 'DOM',

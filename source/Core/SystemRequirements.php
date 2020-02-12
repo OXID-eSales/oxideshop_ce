@@ -552,6 +552,8 @@ class SystemRequirements
     /**
      * Checks supported PHP versions.
      *
+     * @deprecated since v6.5.1 (2020-02-12)
+     *
      * @return integer
      */
     public function checkPhpVersion()

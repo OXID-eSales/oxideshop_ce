@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
 - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
+- Language Variable:
+    - `SYSREQ_PHP_VERSION`
+    - `MOD_PHP_VERSION`
 - Credit Card:
     - Class:
         - `OxidEsales\Eshop\Core\CreditCardValidator`

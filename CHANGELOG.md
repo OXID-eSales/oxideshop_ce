@@ -60,6 +60,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Support PHP 7.3 and 7.4
 - Utilizes Travis CI caching feature for faster builds
 - Uninstall method for removing module
+- Events:
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxRequestProcessedEvent`
 
 ## [6.5.0] - 2019-11-07
 

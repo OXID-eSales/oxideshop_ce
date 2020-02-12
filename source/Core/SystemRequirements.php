@@ -686,14 +686,10 @@ class SystemRequirements
 
     /**
      * Checks if current mysql version matches requirements
-     *
      * @param string $installedVersion MySQL version
-     *
-     * @deprecated since v6.5.1 (2020-02-07) use
-     * \OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface
-     * instead
-     *
      * @return int
+     *
+     * @deprecated since v6.5.1 (2020-02-12); method will be removed completely.
      */
     public function checkMysqlVersion($installedVersion = null)
     {

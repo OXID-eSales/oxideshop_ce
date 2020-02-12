@@ -42,7 +42,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         parent::setUp();
     }
 
-    public function testInstall()
+    public function testInstall(): void
     {
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
         $configurationInstaller->install($this->modulePath, 'targetPath');
@@ -50,7 +50,17 @@ class ModuleConfigurationInstallerTest extends TestCase
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
 
-    public function testIsInstalled()
+    public function testUninstall(): void
+    {
+        $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $configurationInstaller->install($this->modulePath, 'targetPath');
+
+        $configurationInstaller->uninstall($this->modulePath);
+
+        $this->assertModuleConfigurationDeletedForAllShops();
+    }
+
+    public function testIsInstalled(): void
     {
         $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
 
@@ -65,7 +75,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         );
     }
 
-    public function testModuleTargetPathIsSetToModuleConfigurations()
+    public function testModuleTargetPathIsSetToModuleConfigurations(): void
     {
         $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
         $moduleConfigurationInstaller->install($this->modulePath, 'myModules/TestModule');
@@ -81,7 +91,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         );
     }
 
-    public function testModuleTargetPathIsSetToModuleConfigurationsIfAbsolutePathGiven()
+    public function testModuleTargetPathIsSetToModuleConfigurationsIfAbsolutePathGiven(): void
     {
         $modulesPath = $this->get(ContextInterface::class)->getModulesPath();
 
@@ -99,7 +109,7 @@ class ModuleConfigurationInstallerTest extends TestCase
         );
     }
 
-    private function assertProjectConfigurationHasModuleConfigurationForAllShops()
+    private function assertProjectConfigurationHasModuleConfigurationForAllShops(): void
     {
         $environmentConfiguration = $this
             ->projectConfigurationDao
@@ -113,7 +123,18 @@ class ModuleConfigurationInstallerTest extends TestCase
         }
     }
 
-    private function prepareTestProjectConfiguration()
+    private function assertModuleConfigurationDeletedForAllShops(): void
+    {
+        $environmentConfiguration = $this
+            ->projectConfigurationDao
+            ->getConfiguration();
+
+        foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
+            $this->assertFalse($shopConfiguration->hasModuleConfiguration('test-module'));
+        }
+    }
+
+    private function prepareTestProjectConfiguration(): void
     {
         $shopConfigurationWithChain = new ShopConfiguration();
 

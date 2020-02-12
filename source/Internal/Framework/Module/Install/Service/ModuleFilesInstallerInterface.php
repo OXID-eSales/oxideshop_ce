@@ -20,7 +20,12 @@ interface ModuleFilesInstallerInterface
      * @param OxidEshopPackage $package
      *
      */
-    public function install(OxidEshopPackage $package);
+    public function install(OxidEshopPackage $package): void;
+
+    /**
+     * @param OxidEshopPackage $package
+     */
+    public function uninstall(OxidEshopPackage $package): void;
 
     /**
      * @param OxidEshopPackage $package

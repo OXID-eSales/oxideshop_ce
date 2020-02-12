@@ -127,3 +127,6 @@ services:
 
   oxid_esales.module.meta_data.converter.shop_module_settings_boolean_converter:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\ModuleSettingsBooleanConverter
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDao

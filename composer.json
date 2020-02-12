@@ -38,7 +38,9 @@
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
         "oxid-esales/azure-theme": "^v1.4.1",
-        "oxid-esales/oxideshop-facts": "^2.3.1"
+        "oxid-esales/oxideshop-facts": "^2.3.1",
+        "oxid-esales/oxideshop-pe": "dev-b-6.2.x",
+        "oxid-esales/oxideshop-ee": "dev-b-6.2.x"
     },
     "autoload": {
         "psr-4": {
@@ -86,5 +88,44 @@
                 "partial_module_paths": "PARTIAL_MODULE_PATHS"
             }
         }
+    },
+    "repositories": {
+        "oxid-esales/oxideshop-ee": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/oxideshop_ee"
+        },
+        "oxid-esales/oxideshop-pe": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/oxideshop_pe"
+        },
+        "oxid-esales/personalization-module": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/personalization-module.git"
+        },
+        "ddoe/visualcms-module": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/visual_cms_module.git"
+        },
+        "oxid-esales/erp-module": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/erp.git"
+        },
+        "oxid-esales/twig-theme": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/twig-theme"
+        },
+        "oxid-esales/oxideshop-demodata-ce": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_demodata_ce"
+        },
+        "oxid-esales/oxideshop-demodata-pe": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_demodata_pe"
+        },
+        "oxid-esales/oxideshop-demodata-ee": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_demodata_ee"
+        }
+
     }
 }

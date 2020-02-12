@@ -65,7 +65,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Utilizes Travis CI caching feature for faster builds
 - Uninstall method for removing module
 - Events:
+    - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent`
     - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxRequestProcessedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent`
 
 ## [6.5.0] - 2019-11-07
 
@@ -162,17 +164,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AllCookiesRemovedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ApplicationExitEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BasketChangedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeHeadersSendEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelDeleteEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelUpdateEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeSessionStartEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelInsertEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AllCookiesRemovedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeSessionStartEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent`
 - Interface:
     - `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface` as the new default 

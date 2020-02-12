@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use stdClass;
 
@@ -92,7 +93,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * Returns saving status
      *
-     * @throws \oxInputException
+     * @throws InputException
      * @throws StandardException
      *
      * @return bool
@@ -109,6 +110,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // Validate oxsort before saving
         if (!is_numeric($this->oxdiscount__oxsort->value)) {
+            /** @var InputException $exception */
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 

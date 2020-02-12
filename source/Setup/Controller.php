@@ -8,18 +8,20 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\SystemRequirements;
 use OxidEsales\EshopCommunity\Setup\Controller\ModuleStateMapGenerator;
 use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
+use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
+use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
+use OxidEsales\Facts\Edition\EditionSelector;
 
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps
  */
 class Controller extends Core
 {
-    /** @var \OxidEsales\EshopCommunity\Setup\View */
+    /** @var View */
     private $view = null;
 
     /**
@@ -161,9 +163,6 @@ class Controller extends Core
         if ($this->userDecidedOverwriteDB()) {
             $session->setSessionParam('blOverwrite', true);
         }
-        if ($this->userDecidedIgnoreDBWarning()) {
-            $session->setSessionParam('blIgnoreDbRecommendations', true);
-        }
 
         $this->setViewOptions(
             'dirsinfo.php',
@@ -177,13 +176,8 @@ class Controller extends Core
     }
 
     /**
-     * Testing database connection
-     *
-     * Functionality is tested via:
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenNotAllFieldsAreFilled`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserDoesNotHaveAccess`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt`
+     * @throws TemplateNotFoundException
+     * @throws SetupControllerExitException
      */
     public function dbConnect()
     {
@@ -215,23 +209,6 @@ class Controller extends Core
                 $view->setMessage($language->getText('ERROR_DB_CONNECT') . " - " . $exception->getMessage());
 
                 throw new SetupControllerExitException();
-            } elseif ($exception->getCode() === Database::ERROR_CODE_DBMS_NOT_COMPATIBLE) {
-                $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
-                $view->setMessage($exception->getMessage());
-
-                throw new SetupControllerExitException();
-            } elseif (($exception->getCode() === Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)) {
-                $setup->setNextStep(null);
-                $view->setMessage($exception->getMessage());
-                $databaseExists = false;
-                // check if DB is already UP and running
-                if (!$this->databaseCanBeOverwritten($database)) {
-                    $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
-                    $databaseExists = true;
-                }
-                $this->formMessageIgnoreDbVersionNotRecommended($view, $language, $session->getSid(), $setup->getStep('STEP_DIRS_INFO'), $databaseExists);
-
-                throw new SetupControllerExitException();
             } else {
                 $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
             }
@@ -253,17 +230,8 @@ class Controller extends Core
     }
 
     /**
-     * Creating database
-     *
-     * Functionality is tested via:
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenDatabaseUserIsValidButCantCreateDatabase`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testUserIsNotifiedIfAValidDatabaseAlreadyExistsBeforeTryingToOverwriteIt`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileIsMissing`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupRedirectsToDatabaseEntryPageWhenSetupSqlFileHasSyntaxError`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenMigrationFileContainsSyntaxErrors`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenMigrationExecutableIsMissing`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenViewRegenerationReturnsErrorCode`
-     *   `Acceptance/Frontend/ShopSetUpTest.php::testSetupShowsErrorMessageWhenViewsRegenerationExecutableIsMissing`
+     * @throws LanguageParamsException
+     * @throws SetupControllerExitException
      */
     public function dbCreate()
     {
@@ -280,21 +248,8 @@ class Controller extends Core
             $database = $this->getDatabaseInstance();
             $database->openDatabase($databaseConfigValues);
         } catch (Exception $exception) {
-            if (($exception->getCode() === Database::ERROR_COULD_NOT_CREATE_DB) && $this->userDecidedIgnoreDBWarning()) {
-                //User agreed to ignore SystemRequirements warning, database does not exist yet, create database.
+            if (($exception->getCode() === Database::ERROR_COULD_NOT_CREATE_DB)) {
                 $this->ensureDatabasePresent($database, $databaseConfigValues['dbName']);
-            } elseif (($exception->getCode() === Database::ERROR_CODE_DBMS_NOT_RECOMMENDED)) {
-                $setup->setNextStep(null);
-                $view->setMessage($exception->getMessage());
-                $databaseExists = false;
-                // check if DB is already UP and running
-                if (!$this->databaseCanBeOverwritten($database)) {
-                    $this->formMessageIfDBCanBeOverwritten($databaseConfigValues['dbName'], $view, $language);
-                    $databaseExists = true;
-                }
-                $this->formMessageIgnoreDbVersionNotRecommended($view, $language, $session->getSid(), $setup->getStep('STEP_DB_CREATE'), $databaseExists);
-
-                throw new SetupControllerExitException();
             } else {
                 $setup->setNextStep($setup->getStep('STEP_DB_CREATE'));
                 $view->setMessage($exception->getMessage());
@@ -513,7 +468,7 @@ class Controller extends Core
     /**
      * Returns View object
      *
-     * @return \OxidEsales\EshopCommunity\Setup\View
+     * @return View
      */
     public function getView()
     {
@@ -521,7 +476,7 @@ class Controller extends Core
     }
 
     /**
-     * @param \OxidEsales\EshopCommunity\Setup\Setup $setup
+     * @param Setup $setup
      */
     protected function onDirsWriteSetStep($setup)
     {
@@ -531,7 +486,7 @@ class Controller extends Core
     /**
      * Check if database can be safely overwritten.
      *
-     * @param \OxidEsales\EshopCommunity\Setup\Database $database database instance used to connect to DB
+     * @param Database $database database instance used to connect to DB
      *
      * @return bool
      */
@@ -550,8 +505,8 @@ class Controller extends Core
      * Show warning-question if database with same name already exists.
      *
      * @param string                                    $databaseName name of database to check if exist
-     * @param \OxidEsales\EshopCommunity\Setup\View     $view         to set parameters for template
-     * @param \OxidEsales\EshopCommunity\Setup\Language $language     to translate text
+     * @param View     $view         to set parameters for template
+     * @param Language $language     to translate text
      */
     private function formMessageIfDBCanBeOverwritten($databaseName, $view, $language)
     {
@@ -561,8 +516,8 @@ class Controller extends Core
     /**
      * Show a message and a link to continue installation process, not regarding errors and warnings
      *
-     * @param \OxidEsales\EshopCommunity\Setup\View     $view      to set parameters for template
-     * @param \OxidEsales\EshopCommunity\Setup\Language $language  to translate text
+     * @param View     $view      to set parameters for template
+     * @param Language $language  to translate text
      * @param string                                    $sessionId
      * @param string                                    $setupStep where to redirect if chose to rewrite database
      */
@@ -572,25 +527,11 @@ class Controller extends Core
     }
 
     /**
-     * Show a message and a link to continue installation process, not regarding errors and warnings
-     *
-     * @param \OxidEsales\EshopCommunity\Setup\View     $view           to set parameters for template
-     * @param \OxidEsales\EshopCommunity\Setup\Language $language       to translate text
-     * @param string                                    $sessionId
-     * @param string                                    $setupStep      where to redirect if chose to rewrite database
-     * @param bool                                      $databaseExists Database already exists
-     */
-    private function formMessageIgnoreDbVersionNotRecommended($view, $language, $sessionId, $setupStep, $databaseExists)
-    {
-        $ignoreParam = $databaseExists ? '&ow=1&owrec=1' : '&owrec=1';
-        $info = $databaseExists ? 'STEP_4_2_OVERWRITE_DB' : 'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION';
-        $view->setMessage("<br><br>" . $language->getText($info) . " <a href=\"index.php?sid=" . $sessionId . "&istep=" . $setupStep . $ignoreParam . "\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $language->getText('HERE') . "</a>");
-    }
 
     /**
      * Installs demo data or initial, dependent on parameter
      *
-     * @param \OxidEsales\EshopCommunity\Setup\Database $database
+     * @param Database $database
      * @param int                                       $demoDataRequired
      *
      * @throws SetupControllerExitException
@@ -780,7 +721,7 @@ class Controller extends Core
      *
      * @throws \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException
      *
-     * @param \OxidEsales\EshopCommunity\Setup\Database $database
+     * @param Database $database
      * @param string                                    $dbName
      *
      * @throws SetupControllerExitException

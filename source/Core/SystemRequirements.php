@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
@@ -224,9 +223,6 @@ class SystemRequirements
                 'server_permissions'
             ];
 
-            if ($this->isAdmin()) {
-                $aRequiredServerConfigs[] = 'mysql_version';
-            }
             $this->_aRequiredModules = array_fill_keys($aRequiredServerConfigs, 'server_config') +
                                        array_fill_keys($aRequiredPHPConfigs, 'php_config') +
                                        array_fill_keys($aRequiredPHPExtensions, 'php_extennsions')
@@ -641,56 +637,6 @@ class SystemRequirements
     {
         $iModStat = extension_loaded('pdo_mysql') ? 2 : 0;
         return $iModStat;
-    }
-
-    /**
-     * Checks if current mysql version matches requirements
-     *
-     * @param string $installedVersion MySQL version
-     *
-     * @deprecated since v6.5.1 (2020-02-07) use
-     * \OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface
-     * instead
-     *
-     * @return int
-     */
-    public function checkMysqlVersion($installedVersion = null)
-    {
-        $requirementFits = null;
-
-        $minimalRequiredVersion = '5.5.0';
-
-        if ($installedVersion === null) {
-            $resultContainingDatabaseVersion = DatabaseConnectionProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
-            $installedVersion = $resultContainingDatabaseVersion[1];
-        }
-
-        if (version_compare($installedVersion, $minimalRequiredVersion, '<')) {
-            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
-        }
-
-        /**
-         * There is a bug in MySQL 5.6,* which under certain conditions affects OXID eShop Enterprise Edition.
-         * Version MySQL 5.6.* in neither recommended nor supported by OXID eSales.
-         * See https://bugs.mysql.com/bug.php?id=79203
-         */
-        if (
-            is_null($requirementFits) &&
-            version_compare($installedVersion, '5.6.0', '>=') &&
-            version_compare($installedVersion, '5.7.0', '<')
-        ) {
-            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-        }
-
-        if (is_null($requirementFits) && version_compare($installedVersion, $minimalRequiredVersion, '>=')) {
-            $requirementFits = static::MODULE_STATUS_OK;
-        }
-
-        if (is_null($requirementFits)) {
-            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-        }
-
-        return $requirementFits;
     }
 
     /**

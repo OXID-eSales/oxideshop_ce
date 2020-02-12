@@ -8,8 +8,6 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\Facts\Facts;
 use PDO;
@@ -23,21 +21,9 @@ class Database extends Core
     /** @var int */
     public const ERROR_COULD_NOT_CREATE_DB = 2;
     /** @var int */
-    public const ERROR_CODE_DBMS_NOT_COMPATIBLE = 3;
-    /** @var int */
-    public const ERROR_CODE_DBMS_NOT_RECOMMENDED = 4;
-    /** @var int */
     private const ERROR_OPENING_SQL_FILE = 1;
     /** @var PDO */
     protected $_oConn = null;
-    /** @var DatabaseCheckerBridgeInterface|null */
-    private $databaseCheckerBridge;
-
-    /** @param DatabaseCheckerBridgeInterface|null $databaseCheckerBridge */
-    public function __construct(DatabaseCheckerBridgeInterface $databaseCheckerBridge = null)
-    {
-        $this->databaseCheckerBridge = $databaseCheckerBridge;
-    }
 
     /**
      * Executes sql query. Returns query execution resource object
@@ -170,7 +156,6 @@ class Database extends Core
     {
         $connectionParameters = $this->prepareConnectionParameters($parameters);
         $this->preparePdoConnection($connectionParameters);
-        $this->checkDatabaseCompatibility();
         $this->executeUseStatement($connectionParameters['dbName']);
         return $this->_oConn;
     }
@@ -454,44 +439,6 @@ class Database extends Core
                 $e
             );
         }
-    }
-
-    /** @throws Exception */
-    private function checkDatabaseCompatibility(): void
-    {
-        if (!$this->getDatabaseCheckerBridge()->isDatabaseCompatible()) {
-            throw new Exception(
-                $this->translate('ERROR_DBMS_VERSION_DOES_NOT_FIT_REQUIREMENTS'),
-                Database::ERROR_CODE_DBMS_NOT_COMPATIBLE
-            );
-        }
-        $notices = $this->getDatabaseCheckerBridge()->getCompatibilityNotices();
-        if ($notices && !$this->userDecidedIgnoreDBWarning()) {
-            throw new Exception(
-                $this->getCompatibilityNoticesMessage($notices),
-                Database::ERROR_CODE_DBMS_NOT_RECOMMENDED
-            );
-        }
-    }
-
-    /** @return DatabaseCheckerBridgeInterface */
-    private function getDatabaseCheckerBridge(): DatabaseCheckerBridgeInterface
-    {
-        $this->databaseCheckerBridge = $this->databaseCheckerBridge ??
-            ContainerFactory::getInstance()->getContainer()->get(DatabaseCheckerBridgeInterface::class);
-        return $this->databaseCheckerBridge;
-    }
-
-    /**
-     * @param array $notices
-     * @return string
-     */
-    private function getCompatibilityNoticesMessage(array $notices): string
-    {
-        array_walk($notices, function (&$notice) {
-            $notice = $this->translate($notice);
-        });
-        return implode("\n", $notices);
     }
 
     /**

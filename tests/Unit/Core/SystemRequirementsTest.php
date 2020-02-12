@@ -71,62 +71,6 @@ class SystemRequirementsTest extends \OxidTestCase
         $this->assertEquals(0, $systemRequirementsMock->checkServerPermissions('nonExistentSourcePath'));
     }
 
-
-    /**
-     * Testing SystemRequirements::checkMysqlVersion()
-     *
-     * @dataProvider dataProviderTestCheckMysqlVersion
-     *
-     * @param string $version        MySQL version string
-     * @param int    $expectedResult The expected result. 0 means failed (red), 2 means passed (green)
-     *
-     * @return null
-     */
-    public function testCheckMysqlVersion($version, $expectedResult)
-    {
-        $systemRequirements = new SystemRequirements();
-
-        $this->assertEquals($expectedResult, $systemRequirements->checkMysqlVersion($version));
-    }
-
-    /**
-     * Data provider for testCheckMysqlVersion
-     *
-     * @return array
-     */
-    public function dataProviderTestCheckMysqlVersion()
-    {
-        return [
-            // version 5.5.* is allowed
-            [
-                'version'        => '5.5.0',
-                'expectedResult' => 2
-            ],
-            [
-                'version'        => '5.5.52-0ubuntu0.14.04.1',
-                'expectedResult' => 2
-            ],
-            // version 5.6.* is not allowed
-            [
-                'version'        => '5.6.0',
-                'expectedResult' => 1
-            ],
-            [
-                'version'        => '5.6.30-0ubuntu0.14.04.1',
-                'expectedResult' => 1
-            ],
-            // version 5.7.* is allowed
-            [
-                'version'        => '5.7.0',
-                'expectedResult' => 2
-            ],
-            [
-                'version'        => '5.7.12-1~exp1+deb.sury.org~trusty+1',
-                'expectedResult' => 2
-            ],
-        ];
-    }
-
     public function testCheckCollation()
     {
         $systemRequirements = new SystemRequirements();

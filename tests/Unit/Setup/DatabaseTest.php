@@ -10,12 +10,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 use Exception;
 use oxDb;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\CompatibilityChecker\Bridge\DatabaseCheckerBridgeInterface;
 use OxidEsales\EshopCommunity\Setup\Database;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
-use OxidEsales\EshopCommunity\Setup\Language;
-use OxidEsales\EshopCommunity\Setup\Session;
-use OxidEsales\EshopCommunity\Setup\Utilities;
 use PDO;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
 use StdClass;
@@ -172,61 +168,6 @@ final class DatabaseTest extends \OxidTestCase
 
         $database = new Database();
         $this->assertInstanceOf(\PDO::class, $database->openDatabase($parameters));
-    }
-
-    public function testOpenDatabaseWithIncompatibleVersionWillThrowExpectedExceptionType(): void
-    {
-        $databaseCheckerBridgeMock = $this->prophesize(DatabaseCheckerBridgeInterface::class);
-        $parameters = $this->getConnectionParameters();
-        $database = new Database($databaseCheckerBridgeMock->reveal());
-        $databaseCheckerBridgeMock->isDatabaseCompatible()
-            ->willReturn(false);
-
-        $this->expectExceptionCode(Database::ERROR_CODE_DBMS_NOT_COMPATIBLE);
-
-        $database->openDatabase($parameters);
-    }
-
-    public function testOpenDatabaseWithNotRecommendedVersionWillThrowExpectedExceptionType(): void
-    {
-        $databaseCheckerBridgeMock = $this->prophesize(DatabaseCheckerBridgeInterface::class);
-        $parameters = $this->getConnectionParameters();
-        $database = new Database($databaseCheckerBridgeMock->reveal());
-        $databaseCheckerBridgeMock->isDatabaseCompatible()
-            ->willReturn(true);
-        $databaseCheckerBridgeMock->getCompatibilityNotices()
-            ->willReturn(['some message']);
-
-        $this->expectExceptionCode(Database::ERROR_CODE_DBMS_NOT_RECOMMENDED);
-
-        $database->openDatabase($parameters);
-    }
-
-    public function testOpenDatabaseWithNotRecommendedVersionAndUserChooseToIgnoreWillNotThrow(): void
-    {
-        $parameters = $this->getConnectionParameters();
-        $sessionMock = $this->prophesize(Session::class);
-        $sessionMock->getSessionParam('blIgnoreDbRecommendations')
-            ->willReturn(true);
-        $databaseCheckerBridgeMock = $this->prophesize(DatabaseCheckerBridgeInterface::class);
-        /** Partial Database mock tested  */
-        $databaseMock = $this->getMockBuilder(Database::class)
-            ->setConstructorArgs([$databaseCheckerBridgeMock->reveal()])
-            ->setMethods(['getInstance'])
-            ->getMock();
-        $databaseMock->method('getInstance')
-            ->willReturnMap([
-                ['Utilities', $this->prophesize(Utilities::class)->reveal()],
-                ['Session', $sessionMock->reveal()],
-                ['Language', $this->prophesize(Language::class)->reveal()],
-            ]);
-        $databaseCheckerBridgeMock->isDatabaseCompatible()
-            ->willReturn(true);
-        $databaseCheckerBridgeMock->getCompatibilityNotices()
-            ->willReturn(['something']);
-
-        /** Test passes if no exceptions thrown */
-        $databaseMock->openDatabase($parameters);
     }
 
     /**

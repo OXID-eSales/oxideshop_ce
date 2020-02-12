@@ -151,25 +151,6 @@ class Core
     }
 
     /**
-     * Return true if user already decided to ignore database recommended version related warnings.
-     *
-     * @return bool
-     */
-    protected function userDecidedIgnoreDBWarning()
-    {
-        $userDecidedIgnoreDBWarning = false;
-
-        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("owrec", "get");
-        $session = $this->getSessionInstance();
-
-        if (isset($overwriteCheck) || $session->getSessionParam('blIgnoreDbRecommendations')) {
-            $userDecidedIgnoreDBWarning = true;
-        }
-
-        return $userDecidedIgnoreDBWarning;
-    }
-
-    /**
      * Check if class exists.
      * Ignore autoloader exceptions which might appear if database does not exist.
      *

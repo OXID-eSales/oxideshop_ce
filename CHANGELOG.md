@@ -7,25 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
-- Support for MySQL 8.0
-- Add logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
-- Add checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
+- Support for MySQL v8.0
+- Logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
+- Checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
 
 ### Changed
-
-- source/Application/views/admin/tpl/shop_license.tpl
+- Source/Application/views/admin/tpl/shop_license.tpl
 - Block names in source/Application/views/admin/tpl/shop_main.tpl were switched [PR-730](https://github.com/OXID-eSales/oxideshop_ce/pull/730):
     - ``admin_shop_main_leftform``
     - ``admin_shop_main_rightform``
 - Added arguments to oxNew method signature to improve static analysis possibilities [PR-744](https://github.com/OXID-eSales/oxideshop_ce/pull/744)
 - Skip currency url generation if "Display Currencies" option is disabled [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
-- Drop support for PHP 7.1 and 7.2
-- Renamed constants in `OxidEsales\EshopCommunity\Setup\Database`:
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_CODE_DBMS_NOT_COMPATIBLE`
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_CODE_DBMS_NOT_RECOMMENDED`
-- Renamed Setup translation keys and changed translation messages:
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS` to `ERROR_DBMS_VERSION_DOES_NOT_FIT_REQUIREMENTS`
-`ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS` to `ERROR_MYSQL_56_NOT_RECOMMENDED`
 - Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
     
 ### Deprecated
@@ -33,8 +25,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`
 
 ### Removed
-- Support for MySQL 5.5
-- Removed database encoding:
+- Support for PHP v7.1, v7.2
+- Support for MySQL v5.5, v5.6
+- Database encoding:
     - Changed database fields:
         - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
         - `oxvalue` field in `oxuserpayments` table changed from `blob` to `text`
@@ -46,13 +39,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `Conf`
     - Removed settings:
         - `sConfigKey` from `config.inc.php`
-- Setup method: `OxidEsales\EshopCommunity\Setup\Database::connectDb()`
+- Functionality for MySQL version check in Setup
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController::getServiceUrl()
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenController
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenList
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenController
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenList
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_addDynLinks()
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_checkDynFile()
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_getDynMenuLang()
@@ -60,11 +54,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - \OxidEsales\EshopCommunity\Application\Component\Widget::getCompareItemsCnt()
 - \OxidEsales\EshopCommunity\Core\Config::getRevision()
 - \OxidEsales\EshopCommunity\Core\Controller\BaseController::getRevision()
-- template source/Application/views/admin/tpl/dyn_econda.tpl
-- template source/Application/views/admin/tpl/dynscreen.tpl
-- template source/Application/views/admin/tpl/dynscreen_list.tpl
-- template source/Application/views/admin/tpl/dynscreen_local.tpl
-- template source/Application/views/admin/tpl/version_checker_result.tpl
+- Template source/Application/views/admin/tpl/dyn_econda.tpl
+- Template source/Application/views/admin/tpl/dynscreen.tpl
+- Template source/Application/views/admin/tpl/dynscreen_list.tpl
+- Template source/Application/views/admin/tpl/dynscreen_local.tpl
+- Template source/Application/views/admin/tpl/version_checker_result.tpl
 - `sOXIDPHP` parameter in `config.inc.php`
 - `blDoNotDisableModuleOnError` parameter in `config.inc.php`
 - \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog
@@ -82,10 +76,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `writeToLog` in `bootstrap.php`
 - \OxidEsales\EshopCommunity\Core\Base::$_oConfig
 - \OxidEsales\EshopCommunity\Core\Base::$_oSession
-- class `\OxidEsales\Eshop\Application\Model\FileChecker`
-- class `\OxidEsales\Eshop\Application\Model\FileCheckerResult`
-- class `\OxidEsales\EshopCommunity\Application\Model\FileChecker`
-- class `\OxidEsales\EshopCommunity\Application\Model\FileCheckerResult`
+- Class `\OxidEsales\Eshop\Application\Model\FileChecker`
+- Class `\OxidEsales\Eshop\Application\Model\FileCheckerResult`
+- Class `\OxidEsales\EshopCommunity\Application\Model\FileChecker`
+- Class `\OxidEsales\EshopCommunity\Application\Model\FileCheckerResult`
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_checkOxidFiles`
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFileCheckReport`
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFilesToCheck`
@@ -208,7 +202,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Warnings in order discounts recalculation [PR-742](https://github.com/OXID-eSales/oxideshop_ce/pull/742)
 - Require at least 3.4.26 DI component [PR-746](https://github.com/OXID-eSales/oxideshop_ce/pull/746)
-- Fix return type annoation for `OxidEsales\EshopCommunity\Application\Model::load()` to `bool`
+- Fix return type annotation for `OxidEsales\EshopCommunity\Application\Model::load()` to `bool`
 - Handle translated error message from validator in password change correctly [PR-731](https://github.com/OXID-eSales/oxideshop_ce/pull/731)
 - Fix docblock and var name in NavigationController::_doStartUpChecks [PR-751](https://github.com/OXID-eSales/oxideshop_ce/pull/751)
 

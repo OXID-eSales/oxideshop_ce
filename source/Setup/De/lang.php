@@ -50,8 +50,6 @@ $aLang = [
 'ERROR_PASSWORD_TOO_SHORT'                      => 'Passwort zu kurz',
 'ERROR_PASSWORDS_DO_NOT_MATCH'                  => 'Passwörter stimmen nicht überein',
 'ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
-'ERROR_DBMS_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'Die Version des Datenbankmanagementsystems (DBMS) erfüllt nicht die Systemvoraussetzungen!',
-'ERROR_MYSQL_56_NOT_RECOMMENDED' => 'WARNUNG: Ein Bug in MySQL 5.6 kann zu Problemen in der OXID eShop Enterprise Edition führen. MySQL 5.6 wird daher nicht empfohlen. Siehe auch: <a href="https://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ee.html">Systemvoraussetzungen OXID eShop Enterprise Edition</a>.',
 
 'ERROR_VIEWS_CANT_CREATE'                       => 'FEHLER: Kann Views nicht erstellen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
 'ERROR_VIEWS_CANT_SELECT'                       => 'FEHLER: Kann nicht auf Views zugreifen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
@@ -151,7 +149,6 @@ $aLang = [
 
 'STEP_4_2_TITLE'                                => 'Datenbank - Tabellen erstellen ...',
 'STEP_4_2_OVERWRITE_DB'                         => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie ',
-'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION'        => 'Falls Sie dennoch installieren wollen, klicken Sie ',
 'STEP_4_2_UPDATING_DATABASE'                    => 'Datenbank erfolgreich aktualisiert. Bitte warten ...',
 
 'STEP_5_TITLE'                                  => 'OXID eShop Lizenz',

@@ -448,30 +448,6 @@ class SystemRequirementsTest extends \OxidTestCase
         );
     }
 
-    public function providerCheckPhpVersion()
-    {
-        return array(
-            array('7.0.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('7.4.0', SystemRequirements::MODULE_STATUS_OK),
-            array('7.9.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
-        );
-    }
-
-    /**
-     * @param $sVersion
-     * @param $iResult
-     *
-     * @dataProvider providerCheckPhpVersion
-     */
-    public function testCheckPhpVersion($sVersion, $iResult)
-    {
-        /** @var SystemRequirements|Mock $systemRequirementsMock */
-        $systemRequirementsMock = $this->getMock(SystemRequirements::class, array('getPhpVersion'));
-        $systemRequirementsMock->expects($this->once())->method('getPhpVersion')->will($this->returnValue($sVersion));
-
-        $this->assertSame($iResult, $systemRequirementsMock->checkPhpVersion());
-    }
-
     /**
      * Provides different server configuration to check memory limit.
      *

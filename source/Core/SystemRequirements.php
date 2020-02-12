@@ -220,7 +220,6 @@ class SystemRequirements
             ];
 
             $aRequiredServerConfigs = [
-                'php_version',
                 'mod_rewrite',
                 'server_permissions'
             ];
@@ -541,42 +540,6 @@ class SystemRequirements
             fclose($oRes);
         }
         return $result;
-    }
-
-    /**
-     * Checks supported PHP versions.
-     *
-     * @deprecated since v6.5.1 (2020-02-12)
-     *
-     * @return integer
-     */
-    public function checkPhpVersion()
-    {
-        $requirementFits = null;
-
-        $minimalRequiredVersion = '7.1.0';
-        $minimalRecommendedVersion = '7.1.0';
-        $maximalRecommendedVersion = '7.4.9999';
-
-        $installedPhpVersion = $this->getPhpVersion();
-
-        if (version_compare($installedPhpVersion, $minimalRequiredVersion, '<')) {
-            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
-        }
-
-        if (
-            is_null($requirementFits) &&
-            version_compare($installedPhpVersion, $minimalRecommendedVersion, '>=') &&
-            version_compare($installedPhpVersion, $maximalRecommendedVersion, '<=')
-        ) {
-            $requirementFits = static::MODULE_STATUS_OK;
-        }
-
-        if (is_null($requirementFits)) {
-            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-        }
-
-        return $requirementFits;
     }
 
     /**

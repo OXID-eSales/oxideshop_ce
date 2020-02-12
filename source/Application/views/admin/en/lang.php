@@ -1238,9 +1238,6 @@ $aLang = [
     'SYSREQ_MOD_REWRITE'                      => 'Apache mod_rewrite module',
     'SYSREQ_ALLOW_URL_FOPEN'                  => 'allow_url_fopen or fsockopen to port 80',
     'SYSREQ_PHP4_COMPAT'                      => 'Zend compatibility mode must be off',
-    // @deprecated since v.6.5.1 (2020-02-12);
-    'SYSREQ_PHP_VERSION'                      => 'PHP version from 7.1 to 7.4',
-    // END deprecated
     'SYSREQ_REQUEST_URI'                      => 'REQUEST_URI set',
     'SYSREQ_LIB_XML2'                         => 'LIB XML2',
     'SYSREQ_PHP_XML'                          => 'DOM',

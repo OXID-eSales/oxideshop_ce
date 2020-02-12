@@ -6,7 +6,7 @@
     "homepage": "https://www.oxid-esales.com/en/home.html",
     "license": "GPL-3.0-only",
     "require": {
-        "php": "^7.1",
+        "php": "^7.3",
         "ext-pdo": "*",
         "ext-json": "*",
         "phpmailer/phpmailer": "^v6.0.6",

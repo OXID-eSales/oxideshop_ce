@@ -448,22 +448,9 @@ class SystemRequirementsTest extends \OxidTestCase
     public function providerCheckPhpVersion()
     {
         return array(
-            array('5.2', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.2.3', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.3.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.3', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.3.25', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.4', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.4.2', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.5.50', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.6.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('5.6.27', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
-            array('7.1.0', SystemRequirements::MODULE_STATUS_OK),
-            array('7.1.8-0ubuntu0.16.04.3', SystemRequirements::MODULE_STATUS_OK),
-            array('7.1.12-2ubuntu2', SystemRequirements::MODULE_STATUS_OK),
-            array('7.2.0', SystemRequirements::MODULE_STATUS_OK),
-            array('7.2.22', SystemRequirements::MODULE_STATUS_OK),
-            array('7.3.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
+            array('7.0.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('7.4.0', SystemRequirements::MODULE_STATUS_OK),
+            array('7.9.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
         );
     }
 

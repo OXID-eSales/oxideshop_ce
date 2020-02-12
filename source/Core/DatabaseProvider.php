@@ -130,7 +130,7 @@ class DatabaseProvider
     /**
      * Sets class properties needed for a successful database connection
      *
-     * @param ConfigFile $configFile The file config.inc.php wrapped in an object
+     * @param \OxidEsales\Eshop\Core\ConfigFile $configFile
      */
     public function setConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
     {
@@ -236,7 +236,7 @@ class DatabaseProvider
      * The parameters are validated and on failure the method behaves like this:
      * - if the shop is has not been configured yet, throws a DatabaseNotConfiguredException
      *
-     * @param ConfigFile $configFile
+     * @param \OxidEsales\Eshop\Core\ConfigFile $configFile
      *
      * @throws DatabaseNotConfiguredException
      */
@@ -343,7 +343,7 @@ class DatabaseProvider
     /**
      * Return false if the database connection has not been configured in the eShop configuration file.
      *
-     * @param ConfigFile $config
+     * @param \OxidEsales\Eshop\Core\ConfigFile $config
      *
      * @return bool
      */

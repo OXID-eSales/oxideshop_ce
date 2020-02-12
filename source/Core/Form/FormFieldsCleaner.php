@@ -16,7 +16,7 @@ class FormFieldsCleaner
     private $updatableFields;
 
     /**
-     * @param FormFields $updatableFields White-list.
+     * @param \OxidEsales\Eshop\Core\Form\FormFields $updatableFields
      */
     public function __construct(\OxidEsales\Eshop\Core\Form\FormFields $updatableFields)
     {

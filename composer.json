@@ -41,7 +41,8 @@
         "oxid-esales/oxideshop-facts": "dev-master",
         "oxid-esales/testing-library": "dev-master",
         "squizlabs/php_codesniffer": "^3.5.4",
-        "composer/composer": "^1"
+        "composer/composer": "^1",
+        "vimeo/psalm": "^3.8"
     },
     "autoload": {
         "psr-4": {

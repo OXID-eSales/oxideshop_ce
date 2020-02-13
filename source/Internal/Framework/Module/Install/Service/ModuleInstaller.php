@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 
 class ModuleInstaller implements ModuleInstallerInterface
 {
@@ -35,23 +36,30 @@ class ModuleInstaller implements ModuleInstallerInterface
     private $shopConfigurationDao;
 
     /**
+     * @var ModuleStateServiceInterface
+     */
+    private $moduleStateService;
+
+    /**
      * ModuleInstaller constructor.
-     *
-     * @param BootstrapModuleInstaller         $bootstrapModuleInstaller
+     * @param BootstrapModuleInstaller $bootstrapModuleInstaller
      * @param ModuleActivationServiceInterface $moduleActivationService
-     * @param ModuleConfigurationDaoInterface  $moduleConfigurationDao
-     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
+     * @param ModuleConfigurationDaoInterface $moduleConfigurationDao
+     * @param ShopConfigurationDaoInterface $shopConfigurationDao
+     * @param ModuleStateServiceInterface $moduleStateService
      */
     public function __construct(
         BootstrapModuleInstaller $bootstrapModuleInstaller,
         ModuleActivationServiceInterface $moduleActivationService,
         ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        ShopConfigurationDaoInterface $shopConfigurationDao
+        ShopConfigurationDaoInterface $shopConfigurationDao,
+        ModuleStateServiceInterface $moduleStateService
     ) {
         $this->bootstrapModuleInstaller = $bootstrapModuleInstaller;
         $this->moduleActivationService = $moduleActivationService;
         $this->moduleConfigurationDao = $moduleConfigurationDao;
         $this->shopConfigurationDao = $shopConfigurationDao;
+        $this->moduleStateService = $moduleStateService;
     }
 
     /**
@@ -93,7 +101,10 @@ class ModuleInstaller implements ModuleInstallerInterface
     private function deactivateModule(string $moduleId): void
     {
         foreach ($this->shopConfigurationDao->getAll() as $shopId => $shopConfiguration) {
-            if ($shopConfiguration->hasModuleConfiguration($moduleId)) {
+            if (
+                $shopConfiguration->hasModuleConfiguration($moduleId)
+                && $this->moduleStateService->isActive($moduleId, $shopId)
+            ) {
                 $this->moduleActivationService->deactivate($moduleId, $shopId);
             }
         }

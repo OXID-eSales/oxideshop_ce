@@ -106,6 +106,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed deprecated getSession and setSession usages around the code
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+- PHP version checker
+    - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
+    - Language Variable:
+        - `SYSREQ_PHP_VERSION`
+        - `MOD_PHP_VERSION`
 - Credit Card:
     - Class:
         - `OxidEsales\Eshop\Core\CreditCardValidator`

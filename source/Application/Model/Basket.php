@@ -427,7 +427,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * @throws \OxidEsales\Eshop\Core\Exception\NoArticleException
      * @throws \OxidEsales\Eshop\Core\Exception\OutOfStockException
      *
-     * @return object oxArticleInputException, oxNoArticleException
+     * @return null|\OxidEsales\Eshop\Application\Model\BasketItem
      */
     public function addToBasket($sProductID, $dAmount, $aSel = null, $aPersParam = null, $blOverride = false, $blBundle = false, $sOldBasketItemId = null)
     {

@@ -52,7 +52,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      * @param object $oVariants all article variants
      * @param string $sParentId parent article id
      *
-     * @return oxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function buildMdVariants($oVariants, $sParentId)
     {

@@ -41,7 +41,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
     /**
      * Marking object as component
      *
-     * @var bool
+     * @var \OxidEsales\Eshop\Application\Model\ManufacturerList
      */
     protected $_oManufacturerTree = null;
 

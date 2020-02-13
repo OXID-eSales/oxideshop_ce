@@ -11,12 +11,9 @@ use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\NoArticleException;
 use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 use Psr\Log\LoggerInterface;
 use stdClass;
-use oxOutOfStockException;
-use oxArticleInputException;
-use oxNoArticleException;
+use function oxNew;
 
 /**
  * Main shopping basket manager. Arranges shopping basket
@@ -579,7 +576,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param array                                      $itemData
      * @param string                                     $errorDestination
      *
-     * @return null|oxBasketItem
+     * @return null|\OxidEsales\Eshop\Application\Model\BasketItem
      */
     protected function addItemToBasket($basket, $itemData, $errorDestination)
     {

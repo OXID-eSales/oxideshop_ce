@@ -1642,7 +1642,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
      *
-     * @return oxArticleList
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList
      */
     public function getFullVariants($blRemoveNotOrderables = true, $blForceCoreTable = null)
     {
@@ -3220,7 +3220,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Get parent article
      *
-     * @return oxArticle
+     * @return Article
      */
     public function getParentArticle()
     {
@@ -3405,7 +3405,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns multidimensional variant structure
      *
-     * @return oxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function getMdVariants()
     {
@@ -3556,7 +3556,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool      $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool|null $forceCoreTableUsage   if true forces core table use, default is false [optional]
      *
-     * @return array|oxsimplevariantlist|oxarticlelist
+     * @return array|\OxidEsales\Eshop\Application\Model\SimpleVariantList|\OxidEsales\Eshop\Application\Model\ArticleList
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadVariantList" in next major
      */
     protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

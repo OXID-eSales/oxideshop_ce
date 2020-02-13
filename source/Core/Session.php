@@ -1076,7 +1076,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     /**
      * return basket reservations handler object
      *
-     * @return oxBasketReservation
+     * @return \OxidEsales\Eshop\Application\Model\BasketReservation
      */
     public function getBasketReservations()
     {

@@ -23,15 +23,26 @@ class ModuleInstallerTest extends TestCase
 
     private $moduleId = 'myTestModule';
 
-    public function testUninstall(): void
+    public function testUninstallNotActiveModule(): void
     {
-        $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->moduleId);
-
-        $this->installModule($package);
-        $this->activateTestModule($package);
+        $package = $this->getOxidEshopPackage();
+        $this->installModule();
 
         $moduleInstaller = $this->get(ModuleInstallerInterface::class);
+        $moduleInstaller->uninstall($package);
 
+        $this->assertFalse(
+            $moduleInstaller->isInstalled($package)
+        );
+    }
+
+    public function testUninstallActiveModule(): void
+    {
+        $package = $this->getOxidEshopPackage();
+        $this->installModule();
+        $this->activateTestModule();
+
+        $moduleInstaller = $this->get(ModuleInstallerInterface::class);
         $moduleInstaller->uninstall($package);
 
         $this->assertFalse(
@@ -43,26 +54,26 @@ class ModuleInstallerTest extends TestCase
         );
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
-    private function installModule(OxidEshopPackage $package): void
+    private function installModule(): void
     {
         $installService = $this->get(ModuleInstallerInterface::class);
-        $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->moduleId);
+        $package = $this->getOxidEshopPackage();
         $package->setTargetDirectory('oeTest/' . $this->moduleId);
         $installService->install($package);
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
-    private function activateTestModule(OxidEshopPackage $package): void
+    private function activateTestModule(): void
     {
-        $this->get(ModuleInstallerInterface::class)
-            ->install($package);
         $this
             ->get(ModuleActivationBridgeInterface::class)
             ->activate($this->moduleId, Registry::getConfig()->getShopId());
+    }
+
+    /**
+     * @return OxidEshopPackage
+     */
+    private function getOxidEshopPackage(): OxidEshopPackage
+    {
+        return new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->moduleId);
     }
 }

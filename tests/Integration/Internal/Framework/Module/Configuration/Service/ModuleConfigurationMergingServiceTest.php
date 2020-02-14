@@ -1,25 +1,30 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Configuration\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ModuleConfigurationMergingServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
+    ModuleConfigurationMergingServiceInterface
+};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
-class ModuleConfigurationMergingServiceTest extends TestCase
+final class ModuleConfigurationMergingServiceTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testMergeNewModuleConfiguration()
+    public function testMergeNewModuleConfiguration(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('newModule');
@@ -27,13 +32,27 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         $moduleConfigurationMergingService = $this->getMergingService();
         $shopConfiguration = $moduleConfigurationMergingService->merge(new ShopConfiguration(), $moduleConfiguration);
 
-        $this->assertSame(
+        $this->assertEquals(
             $moduleConfiguration,
             $shopConfiguration->getModuleConfiguration('newModule')
         );
     }
 
-    public function testExtensionClassAppendToChainAfterMergingNewModuleConfiguration()
+    public function testNewMergedModuleConfigurationIsCloned(): void
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId('newModule');
+
+        $moduleConfigurationMergingService = $this->getMergingService();
+        $shopConfiguration = $moduleConfigurationMergingService->merge(new ShopConfiguration(), $moduleConfiguration);
+
+        $this->assertNotSame(
+            $moduleConfiguration,
+            $shopConfiguration->getModuleConfiguration('newModule')
+        );
+    }
+
+    public function testExtensionClassAppendToChainAfterMergingNewModuleConfiguration(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('newModule');
@@ -54,7 +73,10 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         $shopConfigurationWithChain->setClassExtensionsChain($chain);
 
         $moduleConfigurationMergingService = $this->getMergingService();
-        $shopConfiguration = $moduleConfigurationMergingService->merge($shopConfigurationWithChain, $moduleConfiguration);
+        $shopConfiguration = $moduleConfigurationMergingService->merge(
+            $shopConfigurationWithChain,
+            $moduleConfiguration
+        );
 
         $this->assertSame(
             [
@@ -73,7 +95,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         );
     }
 
-    public function testMergeModuleConfigurationOfAlreadyInstalledModule()
+    public function testMergeModuleConfigurationOfAlreadyInstalledModule(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');
@@ -90,7 +112,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         );
     }
 
-    public function testMergeSetsModuleConfigurationIfNoExistingModuleConfigurationInstalled()
+    public function testMergeSetsModuleConfigurationIfNoExistingModuleConfigurationInstalled(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');
@@ -109,7 +131,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         );
     }
 
-    public function testExtensionClassChainUpdatedAfterMergingAlreadyInstalledModule()
+    public function testExtensionClassChainUpdatedAfterMergingAlreadyInstalledModule(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');
@@ -146,7 +168,7 @@ class ModuleConfigurationMergingServiceTest extends TestCase
         );
     }
 
-    public function testSettingUpdatedAfterMergingAlreadyInstalledModule()
+    public function testSettingUpdatedAfterMergingAlreadyInstalledModule(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('installedModule');

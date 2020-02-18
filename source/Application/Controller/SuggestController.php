@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -105,9 +105,8 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
         }
 
-        if (
-            !oxNew(MailValidator::class)->isValidEmail($aParams["rec_email"])
-            || !oxNew(MailValidator::class)->isValidEmail($aParams["send_email"])
+        if (!oxNew(InputValidator::class)->isValidEmail($aParams["rec_email"])
+            || !oxNew(InputValidator::class)->isValidEmail($aParams["send_email"])
         ) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');
 

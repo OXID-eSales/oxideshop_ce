@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxField;
 use OxidEsales\Eshop\Core\Field;
-use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
@@ -66,7 +66,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
         $aParams = Registry::getConfig()->getRequestParameter('pa');
-        if (!isset($aParams['email']) || !oxNew(MailValidator::class)->isValidEmail($aParams['email'])) {
+        if (!isset($aParams['email']) || !oxNew(InputValidator::class)->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
 
             return;

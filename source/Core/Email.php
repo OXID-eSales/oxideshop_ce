@@ -1609,7 +1609,7 @@ class Email extends PHPMailer
      */
     public function setReplyTo($email = null, $name = null)
     {
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($email)) {
+        if (!oxNew(\OxidEsales\Eshop\Core\InputValidator::class)->isValidEmail($email)) {
             $email = $this->_getShop()->oxshops__oxorderemail->value;
         }
 

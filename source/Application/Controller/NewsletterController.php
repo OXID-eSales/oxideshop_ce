@@ -102,7 +102,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
 
             return;
-        } elseif (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
+        } elseif (!oxNew(\OxidEsales\Eshop\Core\InputValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
             // #1052C - eMail validation added
             Registry::getUtilsView()->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
 

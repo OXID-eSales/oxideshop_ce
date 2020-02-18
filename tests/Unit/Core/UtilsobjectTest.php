@@ -153,7 +153,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
          * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
          * existing file we expect an error to be thrown
          */
-        $this->expectException(\PHPUnit\Framework\Error\Warning::class);
+        $this->expectWarning();
 
         $structure = array(
             'modules' => array(

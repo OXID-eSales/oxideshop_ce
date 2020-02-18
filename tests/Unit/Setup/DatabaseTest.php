@@ -36,7 +36,7 @@ final class DatabaseTest extends \OxidTestCase
     public function testExecSqlBadConnection()
     {
         /** @var Database|Mock $databaseMock */
-        $databaseMock = $this->createPartialMock(Database::class, ['getConnection']);
+        $databaseMock = $this->getMock(Database::class, ['getConnection']);
         $databaseMock->method('getConnection')->willThrowException(new Exception('Test'));
 
         $this->expectException('Exception');

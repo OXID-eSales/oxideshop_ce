@@ -66,7 +66,7 @@ class ModuleSimilarClassTest extends \OxidTestCase
          * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
          * existing file we expect an error to be thrown
          */
-        $this->expectException(\PHPUnit\Framework\Error\Warning::class);
+        $this->expectWarning();
 
         $extensions = array('oxbasketitem' => 'testmodulesimilar', 'oxbasket' => 'testmodulesimilarname');
         \OxidEsales\Eshop\Core\Registry::getUtilsObject()->setModuleVar('aModules', $extensions);

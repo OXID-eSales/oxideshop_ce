@@ -12,8 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Smarty\Config
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartySettingsDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
+use PHPUnit\Framework\TestCase;
 
-class SmartySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
+class SmartySettingsDataProviderTest extends TestCase
 {
     public function testGetSmartySettings()
     {
@@ -62,7 +63,7 @@ class SmartySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
 
         $smartyContextMock
             ->method('getTemplatePhpHandlingMode')
-            ->willReturn(true);
+            ->willReturn(1);
 
         $smartyContextMock
             ->method('getTemplateCompileId')

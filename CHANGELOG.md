@@ -139,16 +139,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `CARD_VISA`
 
 ### Fixed
-- Improved various docs, variable and other coding style problems 
-    [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
 - Typos in CountryList::_getSecondSortFieldName doc [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
-- Improved various docs and variable styles 
-    [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748) 
-    [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
-
+- Improved various docs, variable and other coding style problems:
+    - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
+    - [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748) 
+    - [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
+    - [PR-765](https://github.com/OXID-eSales/oxideshop_ce/pull/765)
+    
 ### Security
 
 ## [6.5.1] - Unreleased

@@ -76,6 +76,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `writeToLog` in `bootstrap.php`
 - \OxidEsales\EshopCommunity\Core\Base::$_oConfig
 - \OxidEsales\EshopCommunity\Core\Base::$_oSession
+- \OxidEsales\EshopCommunity\Core\Base::$_oRights
 - Class `\OxidEsales\Eshop\Application\Model\FileChecker`
 - Class `\OxidEsales\Eshop\Application\Model\FileCheckerResult`
 - Class `\OxidEsales\EshopCommunity\Application\Model\FileChecker`

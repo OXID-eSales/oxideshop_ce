@@ -19,13 +19,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Base
 {
     /**
-     * oxrights instance
-     *
-     * @var oxrights
-     */
-    protected static $_oRights = null;
-
-    /**
      * oxuser object
      *
      * @var \OxidEsales\Eshop\Application\Model\User

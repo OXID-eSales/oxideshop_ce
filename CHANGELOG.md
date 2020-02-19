@@ -157,6 +157,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
 - `OxidEsales\Eshop\Core\Config::$sConfigKey`
+- `OxidEsales\EshopCommunity\Core\Base::$_oRights`
 - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
 - `Conf`
 - `OxidEsales\Eshop\Core\Session::$_blStarted`

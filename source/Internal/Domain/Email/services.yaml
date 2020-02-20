@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceInterface:
+        class: OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorService
+
+    OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface:
+        class: OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridge
+        public: true

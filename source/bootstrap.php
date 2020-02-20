@@ -207,24 +207,26 @@ ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
-/**
- * Bulletproof offline page loader
- */
-function oxTriggerOfflinePageDisplay()
-{
-    // Do not display the offline page, if this running in CLI mode
-    if ('cli' !== strtolower(php_sapi_name())) {
-        header("HTTP/1.1 500 Internal Server Error");
-        header("Connection: close");
+if (!function_exists('oxTriggerOfflinePageDisplay')) {
+    /**
+     * Bulletproof offline page loader
+     */
+    function oxTriggerOfflinePageDisplay()
+    {
+        // Do not display the offline page, if this running in CLI mode
+        if ('cli' !== strtolower(php_sapi_name())) {
+            header("HTTP/1.1 500 Internal Server Error");
+            header("Connection: close");
 
-        /**
-         * Render an error message.
-         * If offline.php exists its content is displayed.
-         * Like this the error message is overridable within that file.
-         */
-        if (is_readable(OX_OFFLINE_FILE)) {
-            echo file_get_contents(OX_OFFLINE_FILE);
-        };
+            /**
+             * Render an error message.
+             * If offline.php exists its content is displayed.
+             * Like this the error message is overridable within that file.
+             */
+            if (is_readable(OX_OFFLINE_FILE)) {
+                echo file_get_contents(OX_OFFLINE_FILE);
+            };
+        }
     }
 }
 

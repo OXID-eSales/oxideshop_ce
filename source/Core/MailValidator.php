@@ -8,6 +8,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Class MailValidator
+ *
+ * @deprecated on 6.5.1 at 2020-02-20. Use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidationService instead.
  */
 class MailValidator
 {

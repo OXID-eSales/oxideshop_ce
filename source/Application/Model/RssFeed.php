@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 use stdClass;
 
 /**
@@ -108,7 +109,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_aChannel['language'] = $aLangIds[$oLang->getBaseLanguage()];
         $this->_aChannel['copyright'] = $oShop->oxshops__oxname->value;
         $this->_aChannel['selflink'] = '';
-        if (oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($oShop->oxshops__oxinfoemail->value)) {
+
+        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        if ($emailValidator->isEmailValid($oShop->oxshops__oxinfoemail->value)) {
             $this->_aChannel['managingEditor'] = $oShop->oxshops__oxinfoemail->value;
             if ($oShop->oxshops__oxfname) {
                 $this->_aChannel['managingEditor'] .= " ({$oShop->oxshops__oxfname} {$oShop->oxshops__oxlname})";

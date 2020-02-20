@@ -11,6 +11,7 @@ use Exception;
 use OxidEsales\Eshop\Application\Model\OrderFileList;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -1609,7 +1610,8 @@ class Email extends PHPMailer
      */
     public function setReplyTo($email = null, $name = null)
     {
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($email)) {
+        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        if (!$emailValidator->isEmailValid($email)) {
             $email = $this->_getShop()->oxshops__oxorderemail->value;
         }
 

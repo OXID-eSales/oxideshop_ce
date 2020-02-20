@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 
 /**
  * Article suggestion page.
@@ -148,16 +148,18 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\AccountC
             }
         }
 
+        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+
         //validating entered emails
         foreach ($aParams["rec_email"] as $sRecipientEmail) {
-            if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($sRecipientEmail)) {
+            if (!$emailValidator->isEmailValid($sRecipientEmail)) {
                 $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
                 return;
             }
         }
 
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams["send_email"])) {
+        if (!$emailValidator->isEmailValid($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
 
             return;

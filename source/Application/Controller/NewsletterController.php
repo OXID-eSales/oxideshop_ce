@@ -7,10 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 
 /**
  * Newsletter opt-in/out.
@@ -94,6 +93,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function send()
     {
         $aParams = Registry::getConfig()->getRequestParameter("editval");
+        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
 
         // loads submited values
         $this->_aRegParams = $aParams;
@@ -102,7 +102,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
 
             return;
-        } elseif (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($aParams['oxuser__oxusername'])) {
+        } elseif (!$emailValidator->isEmailValid($aParams['oxuser__oxusername'])) {
             // #1052C - eMail validation added
             Registry::getUtilsView()->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
 

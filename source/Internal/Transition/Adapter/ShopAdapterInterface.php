@@ -12,13 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter;
 interface ShopAdapterInterface
 {
     /**
-     * @param string $email
-     *
-     * @return bool
-     */
-    public function isValidEmail($email): bool;
-
-    /**
      * @param string $string
      *
      * @return string

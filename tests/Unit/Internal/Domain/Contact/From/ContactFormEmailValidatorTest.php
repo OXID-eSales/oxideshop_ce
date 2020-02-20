@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorService;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\Form;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
 
 class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
 {
@@ -91,7 +91,7 @@ class ContactFormEmailValidatorTest extends \PHPUnit\Framework\TestCase
     private function getContactFormEmailValidator()
     {
         return new ContactFormEmailValidator(
-            new ShopAdapter()
+            new EmailValidatorService()
         );
     }
 }

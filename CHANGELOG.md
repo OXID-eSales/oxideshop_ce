@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Support PHP 7.3 and 7.4
 - Utilizes Travis CI caching feature for faster builds
 - Uninstall method for removing module
+- Add possibility to overwrite the offline page [PR-755](https://github.com/OXID-eSales/oxideshop_ce/pull/755)
 - Email validation extracted to service `OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidationService`
 - Events:
     - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent`

@@ -165,6 +165,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
 - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
 - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
+- `OxidEsales\EshopCommunity\Core\MailValidator`
 - Language Variable:
     - `SYSREQ_PHP_VERSION`
     - `MOD_PHP_VERSION`
@@ -213,6 +214,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Support PHP 7.3 and 7.4
 - Utilizes Travis CI caching feature for faster builds
 - Uninstall method for removing module
+- Email validation extracted to service `OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidationService`
 - Events:
     - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent`
     - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxRequestProcessedEvent`

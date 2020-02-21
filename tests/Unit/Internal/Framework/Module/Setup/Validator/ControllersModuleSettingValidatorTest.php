@@ -12,10 +12,15 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\V
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ControllersValidator;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\{
+    Exception\ControllersDuplicationModuleConfigurationException,
+    Validator\ControllersValidator,
+};
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\{
+    ModuleConfiguration,
+    ModuleConfiguration\Controller,
+};
 use PHPUnit\Framework\TestCase;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 
 /**
  * @internal
@@ -61,15 +66,21 @@ class ControllersModuleSettingValidatorTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException
-     *
      * @dataProvider duplicatedSettingValueDataProvider
      *
      * @param Controller[] $duplicatedSettingValue
+     * @param bool $expectException
      *
      */
-    public function testValidationWithDuplicatedControllerNamespace(array $duplicatedSettingValue)
-    {
+    public function testValidationWithDuplicatedControllerNamespace(
+        array $duplicatedSettingValue,
+        bool $expectException
+    ) {
+        if ($expectException) {
+            $this->expectException(
+                ControllersDuplicationModuleConfigurationException::class
+            );
+        }
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
             ->method('getShopControllerClassMap')
@@ -104,19 +115,28 @@ class ControllersModuleSettingValidatorTest extends TestCase
         }
 
         $validator->validate($moduleConfiguration, 1);
+
+        if (!$expectException) {
+            $this->assertTrue(true);
+        }
     }
 
     public function duplicatedSettingValueDataProvider(): array
     {
         return [
-            [
+            'same controller names with different classname' => [
                 [
                     new Controller('moduleControllerName', 'duplicatedNamespace'),
-                ],
-                [
                     new Controller('duplicatedName', 'moduleControllerNamepace'),
                 ],
-            ]
+                'expectException?' => true
+            ],
+            'same controller names with same classname' => [
+                [
+                    new Controller('duplicatedname', 'duplicatedNamespace'),
+                ],
+                'expectException?' => false
+            ],
         ];
     }
 }

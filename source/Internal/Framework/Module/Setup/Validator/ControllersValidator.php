@@ -142,7 +142,13 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
         $controllerClassNameSpaces = [];
 
         foreach ($controllers as $controller) {
-            $controllerClassNameSpaces[] = $controller->getControllerClassNameSpace();
+            $controllerClassname = $controller->getControllerClassNameSpace();
+            if (
+                !isset($controllerClassMap[$controller->getId()])
+                || $controllerClassMap[$controller->getId()] !== $controllerClassname
+            ) {
+                $controllerClassNameSpaces[] = $controller->getControllerClassNameSpace();
+            }
         }
 
         return array_intersect($controllerClassNameSpaces, $controllerClassMap);

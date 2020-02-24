@@ -1277,7 +1277,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param bool $blIncludeVariants - include variant ratings
      *
-     * @return double
+     * @return int
      */
     public function getArticleRatingCount($blIncludeVariants = false)
     {

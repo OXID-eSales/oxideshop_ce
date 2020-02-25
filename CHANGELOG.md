@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.5.1] - Unreleased
+## [6.5.1] - 2020-02-25
 
 ### Deprecated
 - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
@@ -778,7 +778,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Overview of Changes](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-overview-of-changes.html)
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
-[6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...b-6.2.x
+[6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...v6.5.1
 [6.5.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.4.0...v6.5.0
 [6.4.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.4.0
 [6.3.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.3.6

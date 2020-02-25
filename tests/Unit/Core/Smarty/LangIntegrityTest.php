@@ -433,6 +433,9 @@ class LangIntegrityTest extends \OxidTestCase
         $this->assertEquals(
             [   
                 'CREDITCARD',
+                'CARD_MASTERCARD',
+                'CARD_VISA',
+                'CARD_SECURITY_CODE',
                 'CARD_SECURITY_CODE_DESCRIPTION',
                 'MONTH_NAME_'
             ], 

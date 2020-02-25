@@ -534,7 +534,7 @@ class InputValidatorTest extends UnitTestCase
                 'ERROR_MESSAGE_INPUT_NOTALLFIELDS'
             ],
             [
-                'a@a.a',
+                'a@aa',
                 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'
             ]
         ];
@@ -543,12 +543,12 @@ class InputValidatorTest extends UnitTestCase
     /**
      * @dataProvider emailInputChecksProvider
      */
-    public function testCheckEmailNoEmail($email, $errorMsg)
+    public function testCheckEmailValidation($email, $errorMsg)
     {
         $user = oxNew('oxuser');
         $user->setId("testlalaa_");
         $validator = oxNew(InputValidator::class);
-        $validator->checkEmail($user, $email, 1);
+        $validator->checkEmail($user, $email);
 
         $fieldError = $validator->getFirstValidationError();
 

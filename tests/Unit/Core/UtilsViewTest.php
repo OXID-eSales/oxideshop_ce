@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
+use OxidEsales\EshopCommunity\Core\UtilsView;
 use \stdClass;
 use \oxRegistry;
 use \oxTestModules;
@@ -32,14 +33,12 @@ class UtilsViewTest extends \OxidTestCase
         }
 
         $expectedTemplateDirs = $this->getTemplateDirsAzure();
-        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(false);
 
         $result = $utilsView->getTemplateDirs();
 
-        $this->assertTrue(
-            empty(array_diff_key($expectedTemplateDirs, $result)) &&
-            empty(array_diff_key($result, $expectedTemplateDirs))
-        );
+        $this->assertArraySubset($result, $expectedTemplateDirs);
     }
 
     public function testGetTemplateDirsOnlyAzure()
@@ -49,7 +48,8 @@ class UtilsViewTest extends \OxidTestCase
         }
 
         $expectedTemplateDirs = $this->getTemplateDirsAzure();
-        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(false);
 
         $this->assertEquals($expectedTemplateDirs, $utilsView->getTemplateDirs());
     }
@@ -67,14 +67,12 @@ class UtilsViewTest extends \OxidTestCase
             $shopPath . 'out/azure/tpl/',
         ];
 
-        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(false);
 
         $result = $utilsView->getTemplateDirs();
 
-        $this->assertTrue(
-            empty(array_diff_key($dirs, $result)) &&
-            empty(array_diff_key($result, $dirs))
-        );
+        $this->assertArraySubset($result, $dirs);
     }
 
     public function testGetEditionTemplateDirsOnlyAzure()
@@ -90,7 +88,8 @@ class UtilsViewTest extends \OxidTestCase
             $shopPath . 'out/azure/tpl/',
         ];
 
-        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(false);
 
         $this->assertEquals($dirs, $utilsView->getTemplateDirs());
     }
@@ -107,14 +106,12 @@ class UtilsViewTest extends \OxidTestCase
             $shopPath . 'Application/views/admin/tpl/',
         ];
 
-        $utilsView = $this->getUtilsViewMockBeAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(true);
         
         $result = $utilsView->getTemplateDirs();
         
-        $this->assertTrue(
-            empty(array_diff_key($dirs, $result)) &&
-            empty(array_diff_key($result, $dirs))
-        );
+        $this->assertArraySubset($result, $dirs);
     }
 
     public function testGetEditionTemplateDirsForAdminOnlyAzure()
@@ -129,7 +126,8 @@ class UtilsViewTest extends \OxidTestCase
             $shopPath . 'Application/views/admin/tpl/',
         ];
 
-        $utilsView = $this->getUtilsViewMockBeAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(true);
 
         $this->assertEquals($dirs, $utilsView->getTemplateDirs());
     }
@@ -154,17 +152,15 @@ class UtilsViewTest extends \OxidTestCase
             $aDirs[] = $sDir;
         }
 
-        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(false);
         $utilsView->setTemplateDir("testDir1");
         $utilsView->setTemplateDir("testDir2");
         $utilsView->setTemplateDir("testDir1");
 
         $result = $utilsView->getTemplateDirs();
         
-        $this->assertTrue(
-            empty(array_diff_key($aDirs, $result)) &&
-            empty(array_diff_key($result, $aDirs))
-        );
+        $this->assertArraySubset($result, $aDirs);
     }
 
     public function testSetTemplateDirOnlyAzure()
@@ -187,7 +183,8 @@ class UtilsViewTest extends \OxidTestCase
             $aDirs[] = $sDir;
         }
 
-        $utilsView = $this->getUtilsViewMockNotAdmin();
+        $utilsView = oxNew(UtilsView::class);
+        $utilsView->setAdminMode(false);
         $utilsView->setTemplateDir("testDir1");
         $utilsView->setTemplateDir("testDir2");
         $utilsView->setTemplateDir("testDir1");
@@ -390,10 +387,7 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($varValue, $smarty->$varName, $varName);
         }
 
-        $this->assertTrue(
-            empty(array_diff_key($templateDirs, $smarty->template_dir)) &&
-            empty(array_diff_key($smarty->template_dir, $templateDirs))
-        );
+        $this->assertArraySubset($templateDirs, $smarty->template_dir);
     }
 
     /**
@@ -484,10 +478,7 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
         }
 
-        $this->assertTrue(
-            empty(array_diff_key($aTemplatesDir, $oSmarty->template_dir)) &&
-            empty(array_diff_key($oSmarty->template_dir, $aTemplatesDir))
-        );
+        $this->assertArraySubset($aTemplatesDir, $oSmarty->template_dir);
     }
 
     // non demo mode
@@ -638,6 +629,17 @@ class UtilsViewTest extends \OxidTestCase
         $this->assertSame($sExp, $oUV->getSmartyDir());
     }
 
+    private function assertArraySubset(array $subset, array $array): void
+    {
+        if ($array !== \array_replace_recursive($array, $subset)) {
+            $this->fail(sprintf(
+                "Failed asserting that %s has the subset %s",
+                \var_export($array, true),
+                \var_export($subset, true)
+            ));
+        }
+    }
+
     /**
      * @return array
      */
@@ -655,26 +657,6 @@ class UtilsViewTest extends \OxidTestCase
             $dirs[] = $dir;
         }
         return $dirs;
-    }
-
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getUtilsViewMockNotAdmin()
-    {
-        $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ["isAdmin"]);
-        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
-        return $utilsView;
-    }
-
-    /**
-     * @return \PHPUnit\Framework\MockObject\MockObject
-     */
-    private function getUtilsViewMockBeAdmin()
-    {
-        $utilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, ["isAdmin"]);
-        $utilsView->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
-        return $utilsView;
     }
 
     /**

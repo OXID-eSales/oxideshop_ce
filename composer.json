@@ -38,7 +38,7 @@
         "oxid-esales/oxideshop-ide-helper": "^3.0",
         "oxid-esales/azure-theme": "^v1.4.1",
         "oxid-esales/oxideshop-facts": "dev-master-update_symfony-OXDEV-3039",
-        "oxid-esales/testing-library": "dev-master-update_phpunit_9-OXDEV-3105"
+        "oxid-esales/testing-library": "dev-master-update_symfony-OXDEV-3039"
     },
     "autoload": {
         "psr-4": {

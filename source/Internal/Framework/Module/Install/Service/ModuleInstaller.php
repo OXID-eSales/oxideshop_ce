@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 class ModuleInstaller implements ModuleInstallerInterface
 {
     /**
-     * @var BootstrapModuleInstaller
+     * @var ModuleInstallerInterface
      */
     private $bootstrapModuleInstaller;
 
@@ -45,14 +45,14 @@ class ModuleInstaller implements ModuleInstallerInterface
 
     /**
      * ModuleInstaller constructor.
-     * @param BootstrapModuleInstaller $bootstrapModuleInstaller
+     * @param ModuleInstallerInterface $bootstrapModuleInstaller
      * @param ModuleActivationServiceInterface $moduleActivationService
      * @param ModuleConfigurationDaoInterface $moduleConfigurationDao
      * @param ShopConfigurationDaoInterface $shopConfigurationDao
      * @param ModuleStateServiceInterface $moduleStateService
      */
     public function __construct(
-        BootstrapModuleInstaller $bootstrapModuleInstaller,
+        ModuleInstallerInterface $bootstrapModuleInstaller,
         ModuleActivationServiceInterface $moduleActivationService,
         ModuleConfigurationDaoInterface $moduleConfigurationDao,
         ShopConfigurationDaoInterface $shopConfigurationDao,

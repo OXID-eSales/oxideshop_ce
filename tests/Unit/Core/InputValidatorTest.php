@@ -174,19 +174,16 @@ class InputValidatorTest extends UnitTestCase
     public function lsblz()
     {
         return [
-            ['12345678', true],
-            ['12345', true],
-            ['1234', false],
-            ['123456', true],
-            ['12345678', true],
-            ['123456789', false]
+            ['12345678'],
+            ['12345'],
+            ['123456'],
         ];
     }
 
     /**
      * @dataProvider lsblz
      */
-    public function testValidatePaymentInputData($lsblz, $assertTrue)
+    public function testValidatePaymentWithValidInputData($lsblz)
     {
         $value = [
             'lsbankname'   => 'Bank name',
@@ -196,12 +193,32 @@ class InputValidatorTest extends UnitTestCase
         ];
 
         $validator = oxNew(InputValidator::class);
-        if ($assertTrue) {
-            $this->assertTrue($validator->validatePaymentInputData('oxiddebitnote', $value));
-        } else {
-            $iErr = -4;
-            $this->assertEquals($iErr, $validator->validatePaymentInputData('oxiddebitnote', $value));
-        }
+        $this->assertTrue($validator->validatePaymentInputData('oxiddebitnote', $value));
+    }
+
+    public function badblz()
+    {
+        return [
+            ['1234'],
+            ['123456789']
+        ];
+    }
+
+    /**
+     * @dataProvider lsblz
+     */
+    public function testValidatePaymentWithInvalidInputData($lsblz)
+    {
+        $value = [
+            'lsbankname'   => 'Bank name',
+            'lsblz'        => $lsblz,
+            'lsktonr'      => '123456789',
+            'lsktoinhaber' => 'Hans Mustermann'
+        ];
+
+        $validator = oxNew(InputValidator::class);
+        $iErr = -4;
+        $this->assertEquals($iErr, $validator->validatePaymentInputData('oxiddebitnote', $value));
     }
 
     public function testAddValidationError()

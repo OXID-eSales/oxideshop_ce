@@ -163,12 +163,7 @@ return [
     'discount_mall'                       => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DiscountMall',
     'discount_users'                      => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DiscountUsers',
     'discount_users_ajax'                 => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DiscountUsersAjax',
-    'dyn_econda'                          => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DynEconda',
     'dynexportbase'                       => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DynamicExportBaseController',
-    'dyn_interface'                       => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DynamicInterface',
-    'dynscreen'                           => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DynamicScreenController',
-    'dynscreen_list'                      => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DynamicScreenList',
-    'dynscreen_local'                     => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\DynamicScreenLocal',
     'genexport'                           => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\GenericExport',
     'genexport_do'                        => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\GenericExportDo',
     'genexport_main'                      => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\GenericExportMain',
@@ -361,8 +356,6 @@ return [
     'oxdiscountlist'                      => 'OxidEsales\\Eshop\\Application\\Model\\DiscountList',
     'oxfield2shop'                        => 'OxidEsales\\Eshop\\Application\\Model\\Field2Shop',
     'oxfile'                              => 'OxidEsales\\Eshop\\Application\\Model\\File',
-    'oxfilechecker'                       => 'OxidEsales\\Eshop\\Application\\Model\\FileChecker',
-    'oxfilecheckerresult'                 => 'OxidEsales\\Eshop\\Application\\Model\\FileCheckerResult',
     'oxfilecollector'                     => 'OxidEsales\\Eshop\\Application\\Model\\FileCollector',
     'oxgroups'                            => 'OxidEsales\\Eshop\\Application\\Model\\Groups',
     'oxlinks'                             => 'OxidEsales\\Eshop\\Application\\Model\\Links',
@@ -564,13 +557,4 @@ return [
     'oxutilsxml'                          => 'OxidEsales\\Eshop\\Core\\UtilsXml',
     'oxviewconfig'                        => 'OxidEsales\\Eshop\\Core\\ViewConfig',
     'oxwidgetcontrol'                     => 'OxidEsales\\Eshop\\Core\\WidgetControl',
-
-    /*
-     * @deprecated since 2019-11-23 (6.2.1). ReverseProxy functionality extracted to module, please use respective module classes.
-     */
-    'oxreverseproxyconnector'             => 'OxidEsales\\Eshop\\Core\\Cache\\Generic\\Connector\\ReverseProxyCacheConnector',
-    'oxreverseproxybackend'               => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyBackend',
-    'oxreverseproxyheader'                => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyHeader',
-    'oxreverseproxyurlgenerator'          => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyUrlGenerator',
-    'oxreverseproxyurlpartstoflush'       => 'OxidEsales\\Eshop\\Core\\Cache\\ReverseProxy\\ReverseProxyUrlPartsToFlush',
 ];

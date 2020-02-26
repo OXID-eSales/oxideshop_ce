@@ -39,3 +39,6 @@
 
 # DI for modules and packages
 /var/generated/generated_services.yaml
+
+/tests/Codeception/_output
+/tests/Codeception/_support/_generated

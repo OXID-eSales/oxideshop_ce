@@ -36,7 +36,7 @@
         "oxid-esales/coding-standards-wrapper": "^v3.0.0",
         "incenteev/composer-parameter-handler": "2.1.x-dev",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
-        "oxid-esales/azure-theme": "^v1.4.1",
+        "oxid-esales/azure-theme": "dev-master",
         "oxid-esales/oxideshop-facts": "dev-master-update_symfony-OXDEV-3039",
         "oxid-esales/testing-library": "dev-master-update_symfony-OXDEV-3039"
     },

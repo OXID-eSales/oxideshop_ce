@@ -2963,13 +2963,24 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
      *
-     * @return string | bool
+     * @deprecated since v6.2 (2020-02-26); use getRestockDate();
+     * @return false|string
      */
     public function getDeliveryDate()
     {
-        $deliveryDate = $this->getFieldData("oxdelivery");
-        if ($deliveryDate >= date('Y-m-d')) {
-            return \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($deliveryDate);
+        return $this->getRestockDate();
+    }
+
+    /**
+     * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
+     *
+     * @return false|string
+     */
+    public function getRestockDate()
+    {
+        $restockDate = $this->getFieldData('oxdelivery');
+        if ($restockDate >= date('Y-m-d')) {
+            return Registry::getUtilsDate()->formatDBDate($restockDate);
         }
 
         return false;

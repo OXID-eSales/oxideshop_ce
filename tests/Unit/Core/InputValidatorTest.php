@@ -87,88 +87,9 @@ class InputValidatorTest extends UnitTestCase
 
     public function testValidatePaymentInputDataDCMissingFields()
     {
-        $dynvalue = array();
-        $validator = oxNew('oxinputvalidator');
-        $this->assertFalse($validator->validatePaymentInputData('oxiddebitnote', $dynvalue));
-    }
-
-    /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
-     * 6. DC: all input is fine
-     *
-     * @return null
-     */
-    public function testValidatePaymentInputData_BankCodeCorrect8LengthAccountNumberCorrect_valid()
-    {
-        $aDynvalue = array('lsbankname'   => 'Bank name',
-                           'lsblz'        => '12345678',
-                           'lsktonr'      => '123456789',
-                           'lsktoinhaber' => 'Hans Mustermann'
-        );
-
-        $oValidator = oxNew('oxinputvalidator');
-        $this->assertTrue($oValidator->validatePaymentInputData('oxiddebitnote', $aDynvalue));
-    }
-
-    /**
-     * Test for bug #1150
-     *
-     * @return null
-     */
-    public function testValidatePaymentInputData_BankCodeCorrect5LengthAccountNumberCorrect_valid()
-    {
-        $aDynvalue = array('lsbankname'   => 'Bank name',
-                           'lsblz'        => '12345',
-                           'lsktonr'      => '123456789',
-                           'lsktoinhaber' => 'Hans Mustermann'
-        );
-
-
-        $oValidator = oxNew('oxinputvalidator');
-        $this->assertTrue($oValidator->validatePaymentInputData('oxiddebitnote', $aDynvalue));
-    }
-
-
-    /**
-     * Test for bug #1150
-     *
-     * @return null
-     */
-    public function testValidatePaymentInputData_BankCodeTooShortAccountNumberCorrect_bankCodeError()
-    {
-        $iErr = -4;
-        $aDynvalue = array('lsbankname'   => 'Bank name',
-                           'lsblz'        => '1234',
-                           'lsktonr'      => '123456789',
-                           'lsktoinhaber' => 'Hans Mustermann'
-        );
-
-
-        $oValidator = oxNew(InputValidator::class);
-        $this->assertEquals($iErr, $oValidator->validatePaymentInputData('oxiddebitnote', $aDynvalue));
-    }
-
-    /**
-     * Test for bug #1150
-     *
-     * @return null
-     */
-    public function testValidatePaymentInputData_6CharBankCode_true()
-    {
-        $aDynvalue = array('lsbankname'   => 'Bank name',
-                           'lsblz'        => '123456',
-                           'lsktonr'      => '123456789',
-                           'lsktoinhaber' => 'Hans Mustermann'
-        );
-
-
-        $oValidator = oxNew('oxinputvalidator');
-        $this->assertTrue($oValidator->validatePaymentInputData('oxiddebitnote', $aDynvalue));
-=======
         $dynvalue = [];
         $validator = oxNew('oxinputvalidator');
         $this->assertFalse($validator->validatePaymentInputData('oxiddebitnote', $dynvalue));
->>>>>>> OXDEV-3039 - Update tests to fix warnings
     }
 
     public function lsblz()
@@ -223,7 +144,7 @@ class InputValidatorTest extends UnitTestCase
 
     public function testAddValidationError()
     {
-        $validator = oxNew('oxinputvalidator');
+        $validator = oxNew(InputValidator::class);
         $this->assertEquals([], $validator->getFieldValidationErrors());
         $this->assertNull($validator->getFirstValidationError());
 

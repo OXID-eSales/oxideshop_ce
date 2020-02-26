@@ -422,29 +422,23 @@ class LangIntegrityTest extends \OxidTestCase
     {
         $aTemplateLangIdents = $this->_getTemplateConstants($this->getThemeName());
         $aConstants = array_merge(
-                        array_merge(
-                            $this->_getLanguage('', 'de'),
-                            $this->_getMap($this->getThemeName(), 'de')
-                        ),
-                        $this->_getLanguage($this->getThemeName(), 'de')
-                    );
+            array_merge(
+                $this->_getLanguage('', 'de'),
+                $this->_getMap($this->getThemeName(), 'de')
+            ),
+            $this->_getLanguage($this->getThemeName(), 'de')
+        );
         $aConstantLangIdents = array_keys($aConstants);
-        
         $this->assertEquals(
-            [   
-                'CREDITCARD',
-                'CARD_MASTERCARD',
-                'CARD_VISA',
-                'CARD_SECURITY_CODE',
-                'CARD_SECURITY_CODE_DESCRIPTION',
+            [
                 'MONTH_NAME_'
-            ], 
+            ],
             array_values(
                 array_diff(
                     $aTemplateLangIdents,
                     $aConstantLangIdents
                 )
-            ), 
+            ),
             'missing constants in templates'
         );
     }
@@ -928,7 +922,7 @@ class LangIntegrityTest extends \OxidTestCase
     /**
      * Get error message for `testLanguageFilesForInvalidEncoding`.
      *
-     * @param string $invalidFilePath Full path to the file which has wrong encoding
+     * @param string $invalidFilePath  Full path to the file which has wrong encoding
      * @param string $declaredEncoding Declared content encoding within the file
      *
      * @return string Actual error message
@@ -955,8 +949,8 @@ EOD;
      * Look for language files that have undeclared encoding.
      *
      * @param string $languageCode Language code in form of ISO 639-1
-     * @param string $type Language file type
-     * @param string $filePattern File glob pattern to match
+     * @param string $type         Language file type
+     * @param string $filePattern  File glob pattern to match
      *
      * @dataProvider providerLanguageFilesForInvalidEncoding
      */

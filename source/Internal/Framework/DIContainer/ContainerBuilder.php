@@ -52,7 +52,7 @@ class ContainerBuilder
         $symfonyContainer->addCompilerPass(new AddConsoleCommandPass());
         $this->loadEditionServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
-        
+
         return $symfonyContainer;
     }
 

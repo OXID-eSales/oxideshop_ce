@@ -45,3 +45,6 @@ source/Application/views/flow
 source/out/flow
 source/Application/views/azure
 source/out/azure
+
+/tests/Codeception/_output
+/tests/Codeception/_support/_generated

@@ -42,3 +42,6 @@
 
 /tests/Codeception/_output
 /tests/Codeception/_support/_generated
+
+/tests/Codeception/_output
+/tests/Codeception/_support/_generated

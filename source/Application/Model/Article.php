@@ -881,13 +881,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns price per unit
      *
-     * @return string
+     * @return \OxidEsales\Eshop\Core\Price|null
      */
     public function getUnitPrice()
     {
         // Performance
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
-            return;
+            return null;
         }
 
         $oPrice = null;
@@ -943,7 +943,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getVarMinPrice()
     {
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
-            return;
+            return null;
         }
 
         $oPrice = null;

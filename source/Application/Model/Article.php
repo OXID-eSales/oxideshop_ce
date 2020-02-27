@@ -890,13 +890,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns price per unit
      *
-     * @return string
+     * @return \OxidEsales\Eshop\Core\Price|null
      */
     public function getUnitPrice()
     {
         // Performance
         if (!$this->getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
-            return;
+            return null;
         }
 
         $oPrice = null;

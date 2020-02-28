@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
+use function is_string;
 
 /**
  * Database field description object.
@@ -60,14 +61,11 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     {
         // duplicate content here is needed for performance.
         // as this function is called *many* (a lot) times, it is crucial to be fast here!
-        switch ($type) {
-            case self::T_TEXT:
-            default:
-                $this->rawValue = $value;
-                break;
-            case self::T_RAW:
-                $this->value = $value;
-                break;
+        $this->rawValue = $value;
+        if ($type == self::T_RAW) {
+            $this->value = $value;
+        } else {
+            $this->value = Str::getStr()->htmlspecialchars($value);
         }
     }
 
@@ -80,16 +78,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function __isset($name)
     {
-        switch ($name) {
-            case 'rawValue':
-                return ($this->rawValue !== null);
-                break;
-            case 'value':
-                return ($this->value !== null);
-                break;
-            //return true;
-        }
-        return false;
+        return ($this->{$name} !== null);
     }
 
     /**
@@ -101,27 +90,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function __get($name)
     {
-        switch ($name) {
-            case 'rawValue':
-                return $this->value;
-                break;
-            case 'value':
-                if (is_string($this->rawValue)) {
-                    $this->value = Str::getStr()->htmlspecialchars($this->rawValue);
-                } else {
-                    // TODO: call htmlentities for each value (recursively?)
-                    $this->value = $this->rawValue;
-                }
-                if ($this->rawValue == $this->value) {
-                    unset($this->rawValue);
-                }
-
-                return $this->value;
-                break;
-            default:
-                return null;
-                break;
-        }
+        return $this->{$name};
     }
 
     /**
@@ -158,13 +127,11 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     protected function _initValue($value = null, $type = self::T_TEXT)
     {
-        switch ($type) {
-            case self::T_TEXT:
-                $this->rawValue = $value;
-                break;
-            case self::T_RAW:
-                $this->value = $value;
-                break;
+        if ($type == self::T_TEXT) {
+            $this->rawValue = $value;
+            $this->value = Str::getStr()->htmlspecialchars($value);
+        } else {
+            $this->value = $value;
         }
     }
 

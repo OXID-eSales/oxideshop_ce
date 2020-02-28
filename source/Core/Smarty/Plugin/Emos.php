@@ -503,7 +503,7 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_ItemFormat($oItem)
+    protected function _emos_ItemFormat($oItem) // phpcs:ignore
     {
         $oItem->productId = $this->_emos_DataFormat($oItem->productId);
         $oItem->productName = $this->_emos_DataFormat($oItem->productName);
@@ -522,7 +522,7 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_DataFormat($sStr)
+    protected function _emos_DataFormat($sStr) //phpcs:ignore
     {
         //null check
         if (is_null($sStr)) {

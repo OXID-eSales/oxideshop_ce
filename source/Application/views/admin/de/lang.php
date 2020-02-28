@@ -1236,7 +1236,7 @@ $aLang = [
     'SYSREQ_ALLOW_URL_FOPEN'                  => 'allow_url_fopen oder fsockopen auf Port 80',
     'SYSREQ_PHP4_COMPAT'                      => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
     // @deprecated since v.6.5.1 (2020-02-12);
-    'SYSREQ_PHP_VERSION'                      => 'PHP Version 7.3 and 7.4',
+    'SYSREQ_PHP_VERSION'                      => 'PHP Version 7.1 and 7.4',
     // END deprecated
     'SYSREQ_REQUEST_URI'                      => 'REQUEST_URI vorhanden',
     'SYSREQ_LIB_XML2'                         => 'LIB XML2',
@@ -1246,7 +1246,7 @@ $aLang = [
     'SYSREQ_TOKENIZER'                        => 'Tokenizer',
     'SYSREQ_BC_MATH'                          => 'BCMath',
     'SYSREQ_MYSQL_CONNECT'                    => 'PDO_MySQL',
-    'SYSREQ_MYSQL_VERSION'                    => 'MySQL Version 5.5 oder 5.7',
+    'SYSREQ_MYSQL_VERSION'                    => 'MySQL Version 5.5, 5.7 oder MariaDB',
     'SYSREQ_GD_INFO'                          => 'GDlib v2 incl. JPEG Unterstützung',
     'SYSREQ_INI_SET'                          => 'ini_set erlaubt',
     'SYSREQ_REGISTER_GLOBALS'                 => 'register_globals muss ausgeschaltet sein',

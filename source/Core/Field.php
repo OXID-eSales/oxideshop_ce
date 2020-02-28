@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
+
 use function is_string;
 
 /**
@@ -64,8 +65,6 @@ class Field // extends \OxidEsales\Eshop\Core\Base
         $this->rawValue = $value;
         if ($type == self::T_RAW) {
             $this->value = $value;
-        } else {
-            $this->value = Str::getStr()->htmlspecialchars($value);
         }
     }
 
@@ -90,7 +89,26 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function __get($name)
     {
-        return $this->{$name};
+        switch ($name) {
+            case 'rawValue':
+                return $this->value;
+                break;
+            case 'value':
+                if (is_string($this->rawValue)) {
+                    $this->value = Str::getStr()->htmlspecialchars($this->rawValue);
+                } else {
+                    // TODO: call htmlentities for each value (recursively?)
+                    $this->value = $this->rawValue;
+                }
+                if ($this->rawValue == $this->value) {
+                    unset($this->rawValue);
+                }
+                return $this->value;
+                break;
+            default:
+                return null;
+                break;
+        }
     }
 
     /**
@@ -129,7 +147,6 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     {
         if ($type == self::T_TEXT) {
             $this->rawValue = $value;
-            $this->value = Str::getStr()->htmlspecialchars($value);
         } else {
             $this->value = $value;
         }

@@ -1226,8 +1226,8 @@ namespace OxidEsales\EshopCommunity\Migrations;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 class Version20170101 extends AbstractMigration {
-public function up(Schema $schema) {$this->addSql('INVALID_SQL_SYNTAX');}
-public function down(Schema $schema) {}
+public function up(Schema $schema): void {$this->addSql('INVALID_SQL_SYNTAX');}
+public function down(Schema $schema): void {}
 }
 EOL;
         file_put_contents($this->getInvalidMigrationFilePath(), $contents);

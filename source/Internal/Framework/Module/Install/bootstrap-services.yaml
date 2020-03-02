@@ -19,6 +19,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstaller
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+    public: true
 
   oxid_esales.module.install.service.installed_shop_project_configuration_generator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ProjectConfigurationGenerator

@@ -257,7 +257,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Executes oxcmp_user::login() method. After loggin user will not be
      * redirected to user or payment screens.
      */
-    public function login_noredirect() //phpcs:ignore
+    public function login_noredirect() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         $blAgb = Registry::getConfig()->getRequestParameter('ord_agb');
 
@@ -362,7 +362,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return null
      */
-    public function changeuser_testvalues() //phpcs:ignore
+    public function changeuser_testvalues() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         // skip updating user info if this is just form reload
         // on selecting delivery address
@@ -644,7 +644,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return  bool true on success, false otherwise
      */
-    protected function _changeUser_noRedirect() //phpcs:ignore
+    protected function _changeUser_noRedirect() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         return $this->changeUserWithoutRedirect();
     }

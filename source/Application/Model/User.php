@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Exception\CookieException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
@@ -1110,7 +1111,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aInvAddress array of user profile data
      * @param array  $aDelAddress array of user profile data
      *
-     * @throws UserException, oxInputException
+     * @throws StandardException
      */
     public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
@@ -1208,7 +1209,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aInvAddress user billing address
      * @param array  $aDelAddress delivery address
      *
-     * @throws UserException, oxInputException, oxConnectionException
+     * @throws StandardException
      */
     public function changeUserData($sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {

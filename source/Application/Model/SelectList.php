@@ -34,7 +34,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     /**
      * Selections array
      *
-     * @var array()
+     * @var array
      */
     protected $_aList = null;
 

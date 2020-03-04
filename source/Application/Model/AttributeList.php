@@ -154,7 +154,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string  $sCategoryId category Id
      * @param integer $iLang       language No
      *
-     * @return object;
+     * @return object
      */
     public function getCategoryAttributes($sCategoryId, $iLang)
     {

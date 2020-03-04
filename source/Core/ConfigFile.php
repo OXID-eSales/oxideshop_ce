@@ -60,7 +60,7 @@ class ConfigFile
     /**
      * Returns all loaded vars as an array
      *
-     * @return array[string]mixed
+     * @return array
      */
     public function getVars()
     {

@@ -647,7 +647,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param array $aIds Article ID array
      *
-     * @return null;
+     * @return null
      */
     public function loadIds($aIds)
     {
@@ -675,7 +675,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param array $aOrders user orders array
      *
-     * @return null;
+     * @return null
      */
     public function loadOrderArticles($aOrders)
     {

@@ -78,7 +78,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
 
     /**
      * Implementing (fakeing) performance friendly method from oxArticle
-     *oxbase
+     * oxbase
      *
      * @return null
      */

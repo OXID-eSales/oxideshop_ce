@@ -29,7 +29,7 @@ class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sSearchStr Search string
      *
-     * @return null;
+     * @return null
      */
     public function loadWishlistUsers($sSearchStr)
     {

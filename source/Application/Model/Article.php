@@ -4368,7 +4368,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sFieldName field name
      *
-     * @return null;
+     * @return null
      */
     protected function _assignParentFieldValue($sFieldName)
     {
@@ -4407,7 +4407,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sFieldName Field name
      *
-     * @return bool.
+     * @return bool
      */
     protected function _isImageField($sFieldName)
     {

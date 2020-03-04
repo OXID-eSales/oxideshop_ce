@@ -35,7 +35,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Modules info array
      *
      *
-     * @var array(id => array)
+     * @var array<string, array>
      */
     protected $_aModules = [];
 

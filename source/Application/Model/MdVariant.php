@@ -67,7 +67,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Subvariant array
      *
-     * @var array[string]oxMdVariant
+     * @var \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
     protected $_aSubvariants = [];
 
@@ -124,7 +124,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns full array of subvariants
      *
-     * @return array[string]OxMdSubvariants
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
     public function getMdSubvariants()
     {

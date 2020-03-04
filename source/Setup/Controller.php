@@ -527,8 +527,6 @@ class Controller extends Core
     }
 
     /**
-
-    /**
      * Installs demo data or initial, dependent on parameter
      *
      * @param Database $database

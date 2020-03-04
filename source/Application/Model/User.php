@@ -325,7 +325,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getUserCountryId($sCountry = null)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select oxid from " . getviewName("oxcountry") . " 
+        $sQ = "select oxid from " . getviewName("oxcountry") . "
             where oxactive = '1' and oxisoalpha2 = :oxisoalpha2";
         $sCountryId = $oDb->getOne($sQ, [
             ':oxisoalpha2' => $sCountry
@@ -500,7 +500,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $sOXID = $this->getId();
             }
 
-            $sSelect = 'select * from oxuserpayments 
+            $sSelect = 'select * from oxuserpayments
                 where oxuserid = :oxuserid ';
 
             $this->_oPayments = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
@@ -736,8 +736,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         //loading order for registered user
         if ($this->oxuser__oxregister->value > 1) {
-            $sQ = 'select * from oxorder 
-                where oxuserid = :oxuserid 
+            $sQ = 'select * from oxorder
+                where oxuserid = :oxuserid
                 and oxorderdate >= :oxorderdate ';
             $sQ = $this->updateGetOrdersQuery($sQ);
 
@@ -761,8 +761,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iCnt = 0;
         if ($this->getId() && $this->oxuser__oxregister->value > 1) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = 'select count(*) from oxorder 
-                where oxuserid = :oxuserid 
+            $sQ = 'select count(*) from oxorder
+                where oxuserid = :oxuserid
                     AND oxorderdate >= :oxorderdate
                     and oxshopid = :oxshopid ';
             $iCnt = (int) $oDb->getOne($sQ, [
@@ -858,8 +858,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sShopID = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         // check if user exists AND there is no password - in this case we update otherwise we try to insert
-        $sSelect = "select oxid from oxuser 
-            where oxusername = :oxusername 
+        $sSelect = "select oxid from oxuser
+            where oxusername = :oxusername
             and oxpassword = :oxpassword ";
         $params = [
             ':oxusername' => (string) $this->oxuser__oxusername->value,
@@ -877,7 +877,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->delete($oldUserId);
         } elseif ($this->_blMallUsers) {
             // must be sure if there is no duplicate user
-            $sQ = "select oxid from oxuser 
+            $sQ = "select oxid from oxuser
                 where oxusername = :oxusername
                 and oxusername != '' ";
             $params = [
@@ -955,8 +955,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($sGroupID != null && $this->inGroup($sGroupID)) {
             $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oGroups->init('oxobject2group');
-            $sSelect = 'select * from oxobject2group 
-                where oxobject2group.oxobjectid = :oxobjectid 
+            $sSelect = 'select * from oxobject2group
+                where oxobject2group.oxobjectid = :oxobjectid
                 and oxobject2group.oxgroupsid = :oxgroupsid ';
             $oGroups->selectString($sSelect, [
                 ':oxobjectid' => $this->getId(),
@@ -1318,11 +1318,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `oxid`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $passwordCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $passwordCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 
@@ -1355,11 +1355,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
 
         $query = "SELECT `oxid`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $passwordCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $passwordCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 
@@ -1502,10 +1502,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `OXID`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 
@@ -1654,7 +1654,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // maybe this is LDAP user but supplied email Address instead of LDAP login
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $ldapSql = "select oxldapkey from oxuser 
+        $ldapSql = "select oxldapkey from oxuser
             where oxuser.oxactive = :oxactive and oxuser.oxusername = :oxusername $sShopSelect";
         $sLDAPKey = $oDb->getOne($ldapSql, [
             ':oxactive' => 1,
@@ -1672,7 +1672,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             // login successful
 
             // check if user is already in database
-            $sSelect = "select oxid from oxuser 
+            $sSelect = "select oxid from oxuser
                 where oxuser.oxusername = :oxusername $sShopSelect";
             $sOXID = $oDb->getOne($sSelect, [
                 ':oxusername' => (string) $aData['OXUSERNAME']
@@ -1886,8 +1886,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oRecommList->init('oxrecommlist');
         $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
         $iShopId = Registry::getConfig()->getShopId();
-        $sSelect = 'select * from oxrecommlists 
-            where oxuserid = :oxuserid 
+        $sSelect = 'select * from oxrecommlists
+            where oxuserid = :oxuserid
                 and oxshopid = :oxshopid';
         $oRecommList->selectString($sSelect, [
             ':oxuserid' => $sOXID,
@@ -1916,7 +1916,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $this->_iCntRecommLists = 0;
             $iShopId = Registry::getConfig()->getShopId();
-            $sSelect = 'select count(oxid) from oxrecommlists 
+            $sSelect = 'select count(oxid) from oxrecommlists
                 where oxuserid = :oxuserid and oxshopid = :oxshopid';
             $this->_iCntRecommLists = $oDb->getOne($sSelect, [
                 ':oxuserid' => $sOx,
@@ -1983,8 +1983,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function loadUserByUpdateId($sUid)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select oxid from " . $this->getViewName() . " 
-            where oxupdateexp >= :time 
+        $sQ = "select oxid from " . $this->getViewName() . "
+            where oxupdateexp >= :time
                 and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = :hash";
         if ($sUserId = $oDb->getOne($sQ, [':time' => time(), ':hash' => $sUid])) {
             return $this->load($sUserId);
@@ -2032,8 +2032,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function isExpiredUpdateId($sKey)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select 1 from " . $this->getViewName() . " 
-            where oxupdateexp >= :time 
+        $sQ = "select 1 from " . $this->getViewName() . "
+            where oxupdateexp >= :time
             and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = :hash";
 
         return !((bool) $oDb->getOne($sQ, [':time' => time(), ':hash' => $sKey]));
@@ -2139,7 +2139,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getReviewUserHash($sUserId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $hashSql = 'select md5(concat("oxid", oxpassword, oxusername )) from oxuser 
+        $hashSql = 'select md5(concat("oxid", oxpassword, oxusername )) from oxuser
             where oxid = :oxid';
         $sReviewUserHash = $oDb->getOne($hashSql, [
             ':oxid' => $sUserId
@@ -2238,10 +2238,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         // check if this invitation is still not accepted
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $pendingSql = "select count(oxuserid) from oxinvitations 
+        $pendingSql = "select count(oxuserid) from oxinvitations
             where oxuserid = :oxuserid
                 and md5(oxemail) = :oxemailhash
-                and oxpending = :oxpending 
+                and oxpending = :oxpending
                 and oxaccepted = :oxaccepted";
         $iPending = $masterDb->getOne($pendingSql, [
             ':oxuserid' => $sUserId,
@@ -2417,10 +2417,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `oxpassword`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 

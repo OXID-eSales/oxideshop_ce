@@ -152,6 +152,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-765](https://github.com/OXID-eSales/oxideshop_ce/pull/765)
     - [PR-780](https://github.com/OXID-eSales/oxideshop_ce/pull/780)
     - [PR-778](https://github.com/OXID-eSales/oxideshop_ce/pull/778)
+    - [PR-779](https://github.com/OXID-eSales/oxideshop_ce/pull/779)
     
 ### Security
 

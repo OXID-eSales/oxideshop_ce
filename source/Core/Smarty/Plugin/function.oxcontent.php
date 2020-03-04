@@ -30,7 +30,7 @@ function smarty_function_oxcontent($params, &$smarty)
     $sOxid  = isset($params['oxid']) ? $params['oxid'] : null;
 
     if ($sIdent || $sOxid) {
-        $oContent = oxNew("oxcontent");
+        $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
         if ($sOxid) {
             $blLoaded = $oContent->load($sOxid);
         } else {

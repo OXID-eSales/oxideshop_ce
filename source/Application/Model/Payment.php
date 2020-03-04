@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Model\ListModel;
 use oxRegistry;
 use oxDb;
 
@@ -131,7 +132,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if ($this->_oGroups == null && ($sOxid = $this->getId())) {
             // user groups
-            $this->_oGroups = oxNew('oxlist', 'oxgroups');
+            $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
             $sViewName = getViewName("oxgroups", $this->getLanguage());
 
             // performance

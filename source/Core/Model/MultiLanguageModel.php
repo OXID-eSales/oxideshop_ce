@@ -555,7 +555,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $type   Field type
      * @param string $length Field Length
      *
-     * @return null;
+     * @return null
      */
     protected function _addField($name, $status, $type = null, $length = null)
     {

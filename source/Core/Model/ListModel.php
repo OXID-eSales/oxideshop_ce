@@ -139,7 +139,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     /**
      * current for SPL
      *
-     * @return null;
+     * @return null
      */
     public function current()
     {
@@ -461,7 +461,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     /**
      * Generic function for loading the list
      *
-     * @return null;
+     * @return null
      */
     public function getList()
     {

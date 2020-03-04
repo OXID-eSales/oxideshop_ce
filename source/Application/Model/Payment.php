@@ -13,7 +13,6 @@ use oxDb;
 /**
  * Payment manager.
  * Performs payment methods, such as assigning to someone, returning value etc.
- *
  */
 class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

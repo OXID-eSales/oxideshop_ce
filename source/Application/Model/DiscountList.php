@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Discount list manager.
  * Organizes list of discount objects.
- *
  */
 class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

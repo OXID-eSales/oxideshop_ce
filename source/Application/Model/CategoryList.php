@@ -14,7 +14,6 @@ use Exception;
  * Category list manager.
  * Collects available categories, performs some SQL queries to create category
  * list structure.
- *
  */
 class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Content list manager.
  * Collects list of content
- *
  */
 class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

@@ -12,7 +12,6 @@ use oxField;
 
 /**
  * Article file link manager.
- *
  */
 class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

@@ -14,7 +14,6 @@ use oxField;
  * Newsletter Subscriptions manager
  * Performs user managing function
  * information, deletion and other.
- *
  */
 class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

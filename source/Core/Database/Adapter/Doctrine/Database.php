@@ -199,7 +199,6 @@ class Database implements DatabaseInterface
      * Adds the param driverOptions to an existing array of connection parameters
      *
      * @param array $existingParameters
-     *
      */
     protected function addDriverOptions(array &$existingParameters)
     {
@@ -231,7 +230,6 @@ class Database implements DatabaseInterface
      *
      * @param array  $existingParameters
      * @param string $connectionCharset
-     *
      */
     protected function addConnectionCharset(array &$existingParameters, $connectionCharset)
     {

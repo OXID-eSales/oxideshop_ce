@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Order delivery set manager.
- *
  */
 class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

@@ -13,7 +13,6 @@ use stdClass;
 
 /**
  * Attribute list manager.
- *
  */
 class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

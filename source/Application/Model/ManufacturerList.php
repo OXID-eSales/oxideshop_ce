@@ -13,7 +13,6 @@ use oxField;
 /**
  * Manufacturer list manager.
  * Collects list of manufacturers according to collection rules (activ, etc.).
- *
  */
 class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

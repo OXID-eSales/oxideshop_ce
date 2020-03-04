@@ -12,7 +12,6 @@ use oxPrice;
 
 /**
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.
- *
  */
 class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
@@ -67,7 +66,6 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
 
     /**
      * Initializes instance
-     *
      */
     public function __construct()
     {

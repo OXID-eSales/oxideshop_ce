@@ -83,7 +83,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     /**
      * Calls parent constructor and initializes checker object
-     *
      */
     public function __construct()
     {

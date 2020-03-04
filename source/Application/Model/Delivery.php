@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Order delivery manager.
  * Currently calculates price/costs.
- *
  */
 class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Shop view validator.
  * checks which views are valid / invalid
- *
  */
 class ShopViewValidator
 {

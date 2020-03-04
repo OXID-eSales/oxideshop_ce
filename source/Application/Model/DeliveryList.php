@@ -12,7 +12,6 @@ use oxRegistry;
 
 /**
  * Delivery list manager.
- *
  */
 class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

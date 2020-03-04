@@ -18,7 +18,6 @@ use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 /**
  * Article list manager.
  * Collects list of article according to collection rules (categories, etc.).
- *
  */
 class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
 
 /**
  * Interface for selection list based objects
- *
  */
 interface ISelectList
 {

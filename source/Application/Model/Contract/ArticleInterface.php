@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Model\Contract;
 
 /**
  * Article interface
- *
  */
 interface ArticleInterface
 {

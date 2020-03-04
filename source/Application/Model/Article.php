@@ -22,12 +22,10 @@ define('OXARTICLE_LINKTYPE_PRICECATEGORY', 3);
 // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
 define('OXARTICLE_LINKTYPE_RECOMM', 5);
 // END deprecated
-
 /**
  * Article manager.
  * Creates fully detailed article object, with such information as VAT,
  * discounts, etc.
- *
  */
 class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface, \OxidEsales\Eshop\Core\Contract\IUrl
 {

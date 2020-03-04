@@ -14,7 +14,6 @@ use oxRegistry;
 
 /**
  * Article file download page.
- *
  */
 class DownloadController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {

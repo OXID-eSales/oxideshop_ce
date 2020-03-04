@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 /**
  * e.g.:
  * - no match for requested controller id
- *
  */
 class RoutingException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {

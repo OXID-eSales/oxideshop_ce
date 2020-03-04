@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Article amount price list
- *
  */
 class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

@@ -37,7 +37,6 @@ class RequiredAddressFields
 
     /**
      * Sets default required fields either from config or from _aDefaultRequiredFields.
-     *
      */
     public function __construct()
     {

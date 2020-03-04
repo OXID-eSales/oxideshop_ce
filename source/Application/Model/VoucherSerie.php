@@ -13,7 +13,6 @@ use oxDb;
 /**
  * Voucher serie manager.
  * Manages list of available Vouchers (fetches, deletes, etc.).
- *
  */
 class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

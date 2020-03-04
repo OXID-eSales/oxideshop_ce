@@ -14,7 +14,6 @@ use oxDb;
 /**
  * Content manager.
  * Base object for content pages
- *
  */
 class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {

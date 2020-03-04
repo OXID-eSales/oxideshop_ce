@@ -21,7 +21,6 @@ use oxsha512hasher;
  * User manager.
  * Performs user managing function, as assigning to groups, updating
  * information, deletion and other.
- *
  */
 class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -2064,7 +2063,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *                                        password hashes. Therefor this method might not be
      *                                        compatible with the current passhword hash any more.
      *
-
      *
      * @return string
      */

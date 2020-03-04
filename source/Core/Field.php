@@ -77,7 +77,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function __isset($name)
     {
-        return ($this->{$name} !== null);
+        return $this->{$name} !== null;
     }
 
     /**

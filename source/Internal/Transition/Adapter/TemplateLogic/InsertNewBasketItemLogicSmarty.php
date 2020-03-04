@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Application\Model\Article;
 use Smarty;
 
 class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
@@ -28,7 +29,7 @@ class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
     protected function loadArticleObject($newItem, $templateEngine)
     {
         // loading article object here because on some system passing article by session causes problems
-        $newItem->oArticle = oxNew('oxarticle');
+        $newItem->oArticle = oxNew(Article::class);
         $newItem->oArticle->Load($newItem->sId);
 
         // passing variable to template with unique name

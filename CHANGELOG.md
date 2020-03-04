@@ -144,6 +144,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
+- Replaced BC classes with namespaced ones [PR-772](https://github.com/OXID-eSales/oxideshop_ce/pull/772)
 - Improved various docs, variable and other coding style problems:
     - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
     - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)

@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Model\ListModel;
 use oxRegistry;
 use oxDb;
 use oxField;
@@ -69,7 +70,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if ($this->_oGroups == null && $sOxid = $this->getId()) {
             // usergroups
-            $this->_oGroups = oxNew('oxlist', 'oxgroups');
+            $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
             $sViewName = getViewName("oxgroups", $this->getLanguage());
             $sSelect = "select {$sViewName}.* from {$sViewName}, oxobject2group ";
             $sSelect .= "where oxobject2group.oxobjectid = :oxobjectid ";

@@ -279,7 +279,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param array  $aPersParam persistent params
      * @param bool   $blBundle   bundle
      *
-     * @throws oxNoArticleException, oxOutOfStockException, oxArticleInputException
+     * @throws oxNoArticleException
+     * @throws oxOutOfStockException
+     * @throws oxArticleInputException
      */
     public function init($sProductID, $dAmount, $aSel = null, $aPersParam = null, $blBundle = null)
     {

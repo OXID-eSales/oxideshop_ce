@@ -294,8 +294,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = "select $sArticleFields from oxactions2article
                               left join $sArticleTable on $sArticleTable.oxid = oxactions2article.oxartid
                               left join $sViewName on $sViewName.oxid = oxactions2article.oxactionid
-                              where oxactions2article.oxshopid = :oxshopid  
-                                  and oxactions2article.oxactionid = :oxactionid 
+                              where oxactions2article.oxshopid = :oxshopid
+                                  and oxactions2article.oxactionid = :oxactionid
                                   and $sActiveSql
                                   and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet() . "
                               order by oxactions2article.oxsort $sLimit";
@@ -377,7 +377,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
 
-        $sSelect = "select $sArticleTable.* from oxaccessoire2article 
+        $sSelect = "select $sArticleTable.* from oxaccessoire2article
             left join $sArticleTable on oxaccessoire2article.oxobjectid=$sArticleTable.oxid ";
         $sSelect .= "where oxaccessoire2article.oxarticlenid = :oxarticlenid ";
         $sSelect .= " and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet();
@@ -741,7 +741,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             // updating stock reminder state
             if ($this->count()) {
-                $sQ = "update {$sTable} set oxremindactive = '2' where :tableName in ( " . implode(",", $aArtIds) . " ) and 
+                $sQ = "update {$sTable} set oxremindactive = '2' where :tableName in ( " . implode(",", $aArtIds) . " ) and
                               oxremindactive = '1' and oxstock <= oxremindamount";
                 $oDb->execute($sQ, [':tableName' => $sTable . '.oxid']);
             }

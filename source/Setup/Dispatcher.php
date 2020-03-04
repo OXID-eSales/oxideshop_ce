@@ -40,7 +40,7 @@ class Dispatcher extends Core
     /**
      * Returns name of controller action script to perform
      *
-     * @return string | null
+     * @return string|null
      */
     protected function _chooseCurrentAction()
     {

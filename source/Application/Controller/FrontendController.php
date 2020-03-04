@@ -2571,7 +2571,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Returns array of fields which must be filled during registration
      *
-     * @return array | bool
+     * @return array|bool
      */
     public function getMustFillFields()
     {
@@ -2593,7 +2593,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @param string $field required field to check
      *
-     * @return array | bool
+     * @return array|bool
      */
     public function isFieldRequired($field)
     {

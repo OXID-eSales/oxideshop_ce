@@ -24,7 +24,7 @@ class Registry
     /**
      * Hold BC class to Unified Namespace class map
      *
-     * @var null| array
+     * @var null|array
      */
     protected static $backwardsCompatibilityClassMap = null;
 

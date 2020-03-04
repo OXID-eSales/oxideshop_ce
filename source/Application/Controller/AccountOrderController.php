@@ -102,7 +102,7 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     /**
      * Template variable getter. Returns ordered articles
      *
-     * @return \OxidEsales\Eshop\Application\Model\ArticleList | false
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList|false
      */
     public function getOrderArticleList()
     {

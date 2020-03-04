@@ -227,7 +227,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Getter for basketItemkey.
      *
-     * @return string | null
+     * @return string|null
      */
     public function getBasketItemKey()
     {

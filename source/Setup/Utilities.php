@@ -377,7 +377,7 @@ class Utilities extends Core
      *
      * @param string $sFile path to file
      *
-     * @return string | mixed
+     * @return string|mixed
      */
     public function getFileContents($sFile)
     {

@@ -215,7 +215,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active category object, used for seo url getter
      *
-     * @return \OxidEsales\Eshop\Application\Model\Category | null
+     * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
     public function getActCategory()
     {
@@ -227,7 +227,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active vendor object if available
      *
-     * @return \OxidEsales\Eshop\Application\Model\Vendor | null
+     * @return \OxidEsales\Eshop\Application\Model\Vendor|null
      */
     public function getActVendor()
     {
@@ -239,7 +239,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active manufacturer object if available
      *
-     * @return \OxidEsales\Eshop\Application\Model\Manufacturer | null
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer|null
      */
     public function getActManufacturer()
     {

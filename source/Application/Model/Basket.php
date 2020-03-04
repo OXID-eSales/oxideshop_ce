@@ -2278,7 +2278,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getDelCostVat()
     {
@@ -2370,7 +2370,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return double | bool
+     * @return double|bool
      */
     public function getPaymentCosts()
     {
@@ -2395,7 +2395,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getFPaymentCosts()
     {
@@ -2426,7 +2426,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getFVoucherDiscountValue()
     {
@@ -2470,7 +2470,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getWrappCostVat()
     {
@@ -2512,7 +2512,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getFWrappingCosts()
     {
@@ -2540,7 +2540,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getGiftCardCostVat()
     {
@@ -2582,7 +2582,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getFGiftCardCosts()
     {
@@ -2622,7 +2622,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getFDeliveryCosts()
     {
@@ -2640,7 +2640,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getDeliveryCosts()
     {

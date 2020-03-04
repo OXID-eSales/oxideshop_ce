@@ -186,7 +186,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     /**
      * In case list type is "search" returns search parameters which will be added to product details link
      *
-     * @return string | null
+     * @return string|null
      */
     protected function _getAddUrlParams()
     {

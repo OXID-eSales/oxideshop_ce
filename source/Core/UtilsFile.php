@@ -316,7 +316,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param int    $iImgNum  number of image (e.g. numper of ZOOM1 is 1)
      * @param string $sImgConf config parameter name, which keeps size info
      *
-     * @return array | null
+     * @return array|null
      */
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf)
     {

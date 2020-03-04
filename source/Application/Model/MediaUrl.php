@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Media URL handler
- *
  */
 class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

@@ -15,7 +15,6 @@ use oxDb;
  * User payment manager.
  * Performs assigning, loading, inserting and updating functions for
  * user payment.
- *
  */
 class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

@@ -12,7 +12,6 @@ use Exception;
 /**
  * Directory reader.
  * Performs reading of file list of one shop directory
- *
  */
 class FileCollector
 {

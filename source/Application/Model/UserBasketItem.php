@@ -12,7 +12,6 @@ use oxField;
 /**
  * Shopping basket item manager.
  * Manager class for shopping basket item (class may be overriden).
- *
  */
 class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

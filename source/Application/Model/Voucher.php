@@ -16,7 +16,6 @@ use oxField;
  * Voucher manager.
  * Performs deletion, generating, assigning to group and other voucher
  * managing functions.
- *
  */
 class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -243,7 +242,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return bool
-     *
      */
     protected function _isAvailableWithSameSeries($aVouchers)
     {

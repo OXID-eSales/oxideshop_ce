@@ -12,7 +12,6 @@ use oxField;
 
 /**
  * Vendor manager
- *
  */
 class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {

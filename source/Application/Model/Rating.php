@@ -12,7 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeI
 /**
  * Article rate manager.
  * Performs loading, updating, inserting of article rates.
- *
  */
 class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

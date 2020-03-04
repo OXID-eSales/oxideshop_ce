@@ -11,7 +11,6 @@ use stdClass;
 
 /**
  * Basket manager
- *
  */
 class Basket extends \OxidEsales\Eshop\Core\Base
 {

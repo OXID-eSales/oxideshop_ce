@@ -52,7 +52,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
      */
     public function __construct()
     {

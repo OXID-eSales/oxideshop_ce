@@ -212,7 +212,6 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $lang  language id
      *
      * @return string
-     *
      */
     protected function _getCreateTableSetSql($table, $lang)
     {

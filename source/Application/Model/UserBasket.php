@@ -17,7 +17,6 @@ use oxDb;
  * It is more relevant to wishlist and noticelist than to shoping basket.
  * Collects shopping basket information, updates it (DB level), removes or adds
  * articles to it.
- *
  */
 class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

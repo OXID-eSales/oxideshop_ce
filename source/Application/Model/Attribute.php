@@ -15,7 +15,6 @@ use OxidEsales\Eshop\Core\Str;
 /**
  * Article attributes manager.
  * Collects and keeps attributes of chosen article.
- *
  */
 class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

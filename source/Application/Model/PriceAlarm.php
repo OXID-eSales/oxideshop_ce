@@ -13,7 +13,6 @@ use oxField;
 /**
  * PriceAlarm manager.
  * Performs PriceAlarm data/objects loading, deleting.
- *
  */
 class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

@@ -14,7 +14,6 @@ use oxRegistry;
  * Admin shop system RDFa manager.
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> RDFa.
- *
  */
 class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {

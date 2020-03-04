@@ -22,7 +22,6 @@ use oxsha512hasher;
  * User manager.
  * Performs user managing function, as assigning to groups, updating
  * information, deletion and other.
- *
  */
 class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -2064,8 +2063,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *                                        MD5 and SHA512 is still supported in order support login with older
      *                                        password hashes. Therefor this method might not be
      *                                        compatible with the current passhword hash any more.
-     *
-
      *
      * @return string
      */

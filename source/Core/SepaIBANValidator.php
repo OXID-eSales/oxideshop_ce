@@ -11,7 +11,6 @@ use OxidEsales\Eshop\Core\Str;
 
 /**
  * SEPA (Single Euro Payments Area) validation class
- *
  */
 class SepaIBANValidator
 {

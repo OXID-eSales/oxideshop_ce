@@ -16,7 +16,6 @@ use stdClass;
 /**
  * Rss feed manager
  * loads needed rss data
- *
  */
 class RssFeed extends \OxidEsales\Eshop\Core\Base
 {

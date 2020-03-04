@@ -27,7 +27,6 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  * Article manager.
  * Creates fully detailed article object, with such information as VAT,
  * discounts, etc.
- *
  */
 class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface, \OxidEsales\Eshop\Core\Contract\IUrl
 {

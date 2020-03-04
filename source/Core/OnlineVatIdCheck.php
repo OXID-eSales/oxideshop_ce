@@ -34,13 +34,11 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 
     /**
      * How many times to retry check if server is busy
-     *
      */
     const BUSY_RETRY_CNT = 1;
 
     /**
      * How much to wait between retries (in micro seconds)
-     *
      */
     const BUSY_RETRY_WAITUSEC = 500000;
 

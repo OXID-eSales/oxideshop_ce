@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Group manager.
  * Base class for user groups. Does nothing special yet.
- *
  */
 class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

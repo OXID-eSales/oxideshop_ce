@@ -13,7 +13,6 @@ use OxidEsales\Eshop\Core\Str;
 
 /**
  * Select list manager
- *
  */
 class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\ISelectList
 {

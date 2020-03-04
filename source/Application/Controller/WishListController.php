@@ -116,7 +116,6 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      *
      * Template variables:
      * <b>wish_result</b>, <b>search</b>
-     *
      */
     public function searchForWishList()
     {

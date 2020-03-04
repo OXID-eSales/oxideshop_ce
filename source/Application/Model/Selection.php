@@ -11,7 +11,6 @@ use OxidEsales\Eshop\Core\Str;
 
 /**
  * Variant selection container class
- *
  */
 class Selection
 {

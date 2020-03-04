@@ -15,7 +15,6 @@ use oxDb;
  * Newsletter manager.
  * Performs creation of newsletter text, assign newsletter to user groups,
  * deletes and etc.
- *
  */
 class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

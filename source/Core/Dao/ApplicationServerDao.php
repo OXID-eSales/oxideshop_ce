@@ -76,7 +76,6 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      * Deletes the entity with the given id.
      *
      * @param string $id An id of the entity to delete.
-     *
      */
     public function delete($id)
     {

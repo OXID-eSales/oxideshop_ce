@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Company VAT identification number (VATIN) checker
- *
  */
 abstract class CompanyVatInChecker
 {

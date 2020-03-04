@@ -12,7 +12,6 @@ use oxObjectException;
 
 /**
  * Class, responsible for retrieving correct vat for users and articles
- *
  */
 class VatSelector extends \OxidEsales\Eshop\Core\Base
 {

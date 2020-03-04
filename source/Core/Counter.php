@@ -11,7 +11,6 @@ use Exception;
 
 /**
  * Counter class
- *
  */
 class Counter
 {

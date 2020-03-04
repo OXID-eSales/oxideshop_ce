@@ -15,7 +15,6 @@ use oxField;
  * Category manager.
  * Collects category information (articles, etc.), performs insertion/deletion
  * of categories nodes. By recursion methods are set structure of category.
- *
  */
 class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {

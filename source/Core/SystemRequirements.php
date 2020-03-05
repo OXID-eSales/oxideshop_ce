@@ -264,7 +264,7 @@ class SystemRequirements
     {
         clearstatcache();
         $sPath = $sPath ? $sPath : getShopBasePath();
-        $aPathCheckResults = [
+        $pathCheckResults = [
         	"missing" => [],
         	"notwritable" => []
         ];
@@ -301,9 +301,8 @@ class SystemRequirements
         while ($sPathToCheck) {
             // missing file/folder?
             if (!file_exists($sPathToCheck)) {
-            	$aPathCheckResults["missing"][] = str_replace($sPath, '', $sPathToCheck);
+            	$pathCheckResults['missing'][] = str_replace($sPath, '', $sPathToCheck);
                 $iModStat = 0;
-                //break;
             }
 
             if (is_dir($sPathToCheck)) {
@@ -318,24 +317,23 @@ class SystemRequirements
 
             // testing if file permissions >= $iMinPerm
             if (!is_readable($sPathToCheck) || !is_writable($sPathToCheck)) {
-                $aPathCheckResults["notwritable"][] = str_replace($sPath, '', $sPathToCheck);
+                $pathCheckResults['notwritable'][] = str_replace($sPath, '', $sPathToCheck);
                 $iModStat = 0;
-                //break;
             }
 
             $sPathToCheck = next($aPathsToCheck);
         }
 
-        $this->_setServerPermissionCheckResults($aPathCheckResults);
+        $this->setServerPermissionCheckResults($pathCheckResults);
         return $iModStat;
     }
 
     /**
      * saves details of filesystem permission checks in session
      */
-    protected function _setServerPermissionCheckResults($value) {
+    private function setServerPermissionCheckResults($value) {
         if(!isset($_COOKIE["PHPSESSID"])) session_start();
-        $_SESSION["aPathCheckResults"] = $value;
+        $_SESSION["pathCheckResults"] = $value;
     }
 
 

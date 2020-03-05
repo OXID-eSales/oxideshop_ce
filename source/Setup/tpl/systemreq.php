@@ -13,7 +13,9 @@ require "_header.php"; ?>
         <td nowrap><?php $this->getText('SELECT_SETUP_LANG'); ?>: </td>
         <td>
             <form action="index.php" id="langSelectionForm" method="post">
-            <select name="setup_lang" onChange="document.getElementById('langSelectionForm').submit();" style="font-size: 11px;">
+            <select name="setup_lang"
+                    onChange="document.getElementById('langSelectionForm').submit();"
+                    style="font-size: 11px;">
             <?php
             $aLanguages = $this->getViewParam("aLanguages");
             foreach ($aLanguages as $sLangId => $sLangTitle) {
@@ -26,7 +28,9 @@ require "_header.php"; ?>
             ?>
             </select>
             <noscript>
-            <input type="submit" name="setup_lang_submit" value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>" style="font-size: 11px;">
+            <input type="submit" name="setup_lang_submit"
+                   value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>"
+                   style="font-size: 11px;">
             </noscript>
             <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
             <input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_SYSTEMREQ'); ?>">
@@ -41,16 +45,33 @@ require "_header.php"; ?>
     <?php
     $aGroupModuleInfo = $this->getViewParam("aGroupModuleInfo");
     foreach ($aGroupModuleInfo as $sGroupName => $aGroupInfo) {
-        print '<li class="group">'.$sGroupName.'<ul>';
+        print '<li class="group">' . $sGroupName . '<ul>';
         foreach ($aGroupInfo as $aModuleInfo) {
-            print '<li id="'.$aModuleInfo['module'].'" class="'.$aModuleInfo['class'].'">' .
-                ( $aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null" ? "<a href='".$this->getReqInfoUrl($aModuleInfo['module'],false)."' target='_blank'>" : '' ) .
-                $aModuleInfo['modulename'] .
-                ( $aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null" ? '</a>' : '' ) .
-                '</li>';
-            if ($aModuleInfo['module'] === "server_permissions" && isset($_SESSION["aPathCheckResults"])) {
-                if(count($_SESSION["aPathCheckResults"]["missing"]) > 0 ) echo "<li><b>".$this->getText("MOD_SERVER_PERMISSIONS_MISSING",false)."</b></li><li>&nbsp;".join("</li><li>&nbsp;",$_SESSION["aPathCheckResults"]["missing"])."</li>";
-                if(count($_SESSION["aPathCheckResults"]["notwritable"]) > 0 ) echo "<li><b>".$this->getText("MOD_SERVER_PERMISSIONS_NOTWRITABLE",false)."</b></li><li>&nbsp;".join("</li><li>&nbsp;",$_SESSION["aPathCheckResults"]["notwritable"])."</li>";
+            print '<li id="' . $aModuleInfo['module'] . '" class="' . $aModuleInfo['class'] . '">';
+            if (in_array($aModuleInfo['class'], ['fail', 'pmin', 'null'])) {
+                print "<a href='" . $this->getReqInfoUrl($aModuleInfo['module'], false) . "' target='_blank'>"
+                    . $aModuleInfo['modulename']
+                    . '</a>';
+            } else {
+                print $aModuleInfo['modulename'];
+            }
+            print '</li>';
+
+            if ($aModuleInfo['module'] === 'server_permissions' && isset($_SESSION['pathCheckResults'])) {
+                if (count($_SESSION['pathCheckResults']['missing']) > 0) {
+                    echo '<li><b>'
+                        . $this->getText('MOD_SERVER_PERMISSIONS_MISSING', false)
+                        . '</b></li><li>&nbsp;'
+                        . implode('</li><li>&nbsp;', $_SESSION['pathCheckResults']['missing'])
+                        . '</li>';
+                }
+                if (count($_SESSION['pathCheckResults']['notwritable']) > 0) {
+                    echo '<li><b>'
+                        . $this->getText('MOD_SERVER_PERMISSIONS_NOTWRITABLE', false)
+                        . '</b></li><li>&nbsp;'
+                        . implode('</li><li>&nbsp;', $_SESSION['pathCheckResults']['notwritable'])
+                        . '</li>';
+                }
             }
         }
         print '</ul></li>';

@@ -628,7 +628,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         switch ($varType) {
             case 'arr':
             case 'aarr':
-                $this->setConfigParam($varName, unserialize($varVal));
+                $this->setConfigParam($varName, unserialize($varVal, ['allowed_classes' => true]));
                 break;
             case 'bool':
                 $this->setConfigParam($varName, ($varVal == 'true' || $varVal == '1'));

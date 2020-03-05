@@ -217,6 +217,7 @@ final class ProductDetailsPageCest
 
         $I->updateConfigInDatabase('bl_showPriceAlarm', true, 'bool');
 
+        $I->updateConfigInDatabase('blAllowSuggestArticle', true, 'bool');
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -759,6 +760,12 @@ final class ProductDetailsPageCest
      */
     private function preparePriceGroupDataForUser(AcceptanceTester $I, $userId, $priceGroupId)
     {
+        $data = [
+            'OXID' => $priceGroupId,
+            'OXACTIVE' => 1,
+            'OXTITLE' => $priceGroupId,
+        ];
+        $I->haveInDatabase('oxgroups', $data);
         $data = [
             'OXID' => 'obj2group' . $priceGroupId,
             'OXOBJECTID' => $userId,

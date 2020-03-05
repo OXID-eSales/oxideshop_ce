@@ -264,11 +264,6 @@ class SystemRequirements
     {
         clearstatcache();
         $sPath = $sPath ? $sPath : getShopBasePath();
-        $pathCheckResults = [
-        	"missing" => [],
-        	"notwritable" => []
-        ];
-
         // special config file check
         $sFullPath = $sPath . "config.inc.php";
         if (
@@ -279,7 +274,33 @@ class SystemRequirements
             return 0;
         }
 
-        $sTmp = "$sPath/tmp/";
+        $iModStat = 2;
+        $permissionIssues = $this->getPermissionIssuesList($sPath, $iMinPerm);
+        if (count($permissionIssues['missing']) + count($permissionIssues['not_writable'])) {
+            $iModStat = 0;
+        }
+
+        return $iModStat;
+    }
+
+    /**
+     * Get list of permission issues
+     *
+     * @param string $shopPath
+     * @param int $iMinPerm
+     *
+     * @return array
+     */
+    public function getPermissionIssuesList($shopPath = null, $iMinPerm = 777)
+    {
+        clearstatcache();
+        $shopPath = $shopPath ? $shopPath : getShopBasePath();
+        $pathCheckResults = [
+            'missing' => [],
+            'not_writable' => []
+        ];
+
+        $sTmp = "$shopPath/tmp/";
         $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
         $sCfgTmp = $config->getVar('sCompileDir');
         if ($sCfgTmp && strpos($sCfgTmp, '<sCompileDir') === false) {
@@ -287,55 +308,43 @@ class SystemRequirements
         }
 
         $aPathsToCheck = [
-            $sPath . 'out/pictures/promo/',
-            $sPath . 'out/pictures/master/',
-            $sPath . 'out/pictures/generated/',
-            $sPath . 'out/pictures/media/', // @deprecated, use out/media instead
-            $sPath . 'out/media/',
-            $sPath . 'log/',
-            $sPath . '../var/',
+            $shopPath . 'out/pictures/promo/',
+            $shopPath . 'out/pictures/master/',
+            $shopPath . 'out/pictures/generated/',
+            $shopPath . 'out/pictures/media/', // @deprecated, use out/media instead
+            $shopPath . 'out/media/',
+            $shopPath . 'log/',
+            $shopPath . '../var/',
             $sTmp
         ];
-        $iModStat = 2;
+
         $sPathToCheck = reset($aPathsToCheck);
         while ($sPathToCheck) {
             // missing file/folder?
             if (!file_exists($sPathToCheck)) {
-            	$pathCheckResults['missing'][] = str_replace($sPath, '', $sPathToCheck);
-                $iModStat = 0;
+                $pathCheckResults['missing'][] = str_replace($shopPath, '', $sPathToCheck);
             }
 
             if (is_dir($sPathToCheck)) {
                 // adding subfolders
-                $aSubF = glob($sPathToCheck . "*", GLOB_ONLYDIR);
+                $aSubF = glob($sPathToCheck . '*', GLOB_ONLYDIR);
                 if (is_array($aSubF)) {
                     foreach ($aSubF as $sNewFolder) {
-                        $aPathsToCheck[] = $sNewFolder . "/";
+                        $aPathsToCheck[] = $sNewFolder . '/';
                     }
                 }
             }
 
             // testing if file permissions >= $iMinPerm
             if (!is_readable($sPathToCheck) || !is_writable($sPathToCheck)) {
-                $pathCheckResults['notwritable'][] = str_replace($sPath, '', $sPathToCheck);
-                $iModStat = 0;
+                $pathCheckResults['not_writable'][] = str_replace($shopPath, '', $sPathToCheck);
             }
 
             $sPathToCheck = next($aPathsToCheck);
         }
 
-        $this->setServerPermissionCheckResults($pathCheckResults);
-        return $iModStat;
+        return $pathCheckResults;
     }
-
-    /**
-     * saves details of filesystem permission checks in session
-     */
-    private function setServerPermissionCheckResults($value) {
-        if(!isset($_COOKIE["PHPSESSID"])) session_start();
-        $_SESSION["pathCheckResults"] = $value;
-    }
-
 
     /**
      * returns host, port, base dir, ssl information as assotiative array, false on error

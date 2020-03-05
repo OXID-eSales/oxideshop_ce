@@ -44,6 +44,8 @@ require "_header.php"; ?>
     <ul class="req">
     <?php
     $aGroupModuleInfo = $this->getViewParam("aGroupModuleInfo");
+    $permissionIssues = $this->getViewParam('permissionIssues');
+
     foreach ($aGroupModuleInfo as $sGroupName => $aGroupInfo) {
         print '<li class="group">' . $sGroupName . '<ul>';
         foreach ($aGroupInfo as $aModuleInfo) {
@@ -57,19 +59,19 @@ require "_header.php"; ?>
             }
             print '</li>';
 
-            if ($aModuleInfo['module'] === 'server_permissions' && isset($_SESSION['pathCheckResults'])) {
-                if (count($_SESSION['pathCheckResults']['missing']) > 0) {
+            if ($aModuleInfo['module'] === 'server_permissions') {
+                if (count($permissionIssues['missing']) > 0) {
                     echo '<li><b>'
                         . $this->getText('MOD_SERVER_PERMISSIONS_MISSING', false)
                         . '</b></li><li>&nbsp;'
-                        . implode('</li><li>&nbsp;', $_SESSION['pathCheckResults']['missing'])
+                        . implode('</li><li>&nbsp;', $permissionIssues['missing'])
                         . '</li>';
                 }
-                if (count($_SESSION['pathCheckResults']['notwritable']) > 0) {
+                if (count($permissionIssues['not_writable']) > 0) {
                     echo '<li><b>'
                         . $this->getText('MOD_SERVER_PERMISSIONS_NOTWRITABLE', false)
                         . '</b></li><li>&nbsp;'
-                        . implode('</li><li>&nbsp;', $_SESSION['pathCheckResults']['notwritable'])
+                        . implode('</li><li>&nbsp;', $permissionIssues['not_writable'])
                         . '</li>';
                 }
             }

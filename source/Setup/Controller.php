@@ -56,6 +56,7 @@ class Controller extends Core
             [
                 "blContinue" => $isSafeForSetupToContinue,
                 "aGroupModuleInfo" => $moduleStateMap,
+                "permissionIssues" => getSystemReqCheck()->getPermissionIssuesList(),
                 "aLanguages" => getLanguages(),
                 "sLanguage" => $this->getSessionInstance()->getSessionParam('setup_lang'),
             ]

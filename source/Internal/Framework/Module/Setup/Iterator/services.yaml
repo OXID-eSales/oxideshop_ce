@@ -6,9 +6,15 @@ services:
   # Paramertes for activation functionen
   oxid_esales.module.setup.event.paramerters.on.activation:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Iterator\EventModuleParameters
+    calls:
+      - [addParameter, ['@oxid_esales.module.setup.event.paramerter.DatabaseSchemaExpander']]
 
   # Paramertes for deactivation functionen
   oxid_esales.module.setup.event.paramerters.on.deactivation:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Iterator\EventModuleParameters
 
   # Paramertes
+  oxid_esales.module.setup.event.paramerter.DatabaseSchemaExpander:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\DataObject\ParameterDatabaseSchemaExpander
+    tags:
+      - { name: kernel.event_subscriber }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\EventModuleParamerterServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
@@ -25,6 +26,10 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      * @var ShopAdapterInterface
      */
     private $shopAdapter;
+    /**
+     * @var EventModuleParamerterServiceInterface
+     */
+    private $eventModuleParamerterService;
 
     /**
      * @param ModuleConfigurationDaoInterface $ModuleConfigurationDao
@@ -32,10 +37,12 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      */
     public function __construct(
         ModuleConfigurationDaoInterface $ModuleConfigurationDao,
-        ShopAdapterInterface $shopAdapter
+        ShopAdapterInterface $shopAdapter,
+        EventModuleParamerterServiceInterface $eventModuleParamerter
     ) {
         $this->moduleConfigurationDao = $ModuleConfigurationDao;
         $this->shopAdapter = $shopAdapter;
+        $this->eventModuleParamerterService = $eventModuleParamerter;
     }
 
     /**
@@ -44,11 +51,20 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
     public function executeMetadataOnActivationEvent(FinalizingModuleActivationEvent $event)
     {
         $this->invalidateModuleCache($event);
-        $this->executeMetadataEvent(
-            'onActivate',
-            $event->getModuleId(),
-            $event->getShopId()
+
+        $this->eventModuleParamerterService->forActivate(
+            function ($parameters) use ($event) {
+
+                $this->executeMetadataEvent(
+                    'onActivate',
+                    $event->getModuleId(),
+                    $event->getShopId(),
+                    $parameters
+                );
+
+            }
         );
+
     }
 
     /**
@@ -56,10 +72,17 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      */
     public function executeMetadataOnDeactivationEvent(BeforeModuleDeactivationEvent $event)
     {
-        $this->executeMetadataEvent(
-            'onDeactivate',
-            $event->getModuleId(),
-            $event->getShopId()
+        $this->eventModuleParamerterService->forDeactivate(
+            function ($parameters) use ($event) {
+
+                $this->executeMetadataEvent(
+                    'onDeactivate',
+                    $event->getModuleId(),
+                    $event->getShopId(),
+                    $parameters
+                );
+
+            }
         );
     }
 
@@ -67,8 +90,9 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      * @param string $eventName
      * @param string $moduleId
      * @param int    $shopId
+     * @param array  $parameters
      */
-    private function executeMetadataEvent(string $eventName, string $moduleId, int $shopId)
+    private function executeMetadataEvent(string $eventName, string $moduleId, int $shopId, array $parameters)
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
@@ -80,7 +104,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
             }
 
             if (\is_array($events) && array_key_exists($eventName, $events)) {
-                \call_user_func($events[$eventName]);
+                \call_user_func($events[$eventName], ...$parameters);
             }
         }
     }

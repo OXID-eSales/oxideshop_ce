@@ -1,3 +1,6 @@
+imports:
+  - { resource: Iterator/services.yaml }
+
 services:
   _defaults:
     autowire: true
@@ -112,3 +115,9 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolver
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\EventModuleParamerterServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\EventModuleParamerterService
+    arguments:
+      - '@oxid_esales.module.setup.event.paramerters.on.activation'
+      - '@oxid_esales.module.setup.event.paramerters.on.deactivation'

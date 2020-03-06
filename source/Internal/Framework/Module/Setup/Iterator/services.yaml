@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  # Paramertes for activation functionen
+  oxid_esales.module.setup.event.paramerters.on.activation:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Iterator\EventModuleParameters
+
+  # Paramertes for deactivation functionen
+  oxid_esales.module.setup.event.paramerters.on.deactivation:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Iterator\EventModuleParameters
+
+  # Paramertes

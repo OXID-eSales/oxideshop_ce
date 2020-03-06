@@ -234,7 +234,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $oSession = $this->getSession();
 
         // generating new session id after login
-        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS) {
+        if ($oSession->isSessionStarted() || session_status() === \PHP_SESSION_ACTIVE) {
             $oSession->regenerateSessionId();
         }
 

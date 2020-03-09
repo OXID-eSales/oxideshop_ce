@@ -235,7 +235,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _afterLogin($oUser)
     {
         $oSession = $this->getSession();
-        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS && $oSession->isSessionStarted()) {
+        if ($oSession->isSessionStarted()) {
             $oSession->regenerateSessionId();
         }
 

@@ -1097,7 +1097,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns active shop currency object.
      *
-     * @return object
+     * @return stdClass
      */
     public function getActShopCurrencyObject()
     {
@@ -1644,7 +1644,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param integer $currency Active currency number (default null)
      *
-     * @return array
+     * @return stdClass[]
      */
     public function getCurrencyArray($currency = null)
     {
@@ -1695,7 +1695,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $name Name of active currency
      *
-     * @return object
+     * @return stdClass|null
      */
     public function getCurrencyObject($name)
     {

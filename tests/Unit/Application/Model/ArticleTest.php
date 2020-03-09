@@ -5553,7 +5553,7 @@ class ArticleTest extends \OxidTestCase
 
         $sDelDate = date('d.m.Y');
 
-        $this->assertEquals($sDelDate, $oArticle->getDeliveryDate());
+        $this->assertEquals($sDelDate, $oArticle->getRestockDate());
     }
 
     /**
@@ -5564,7 +5564,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxdelivery = new oxField('0000-00-00', oxField::T_RAW);
         $oArticle->save();
-        $this->assertFalse($oArticle->getDeliveryDate());
+        $this->assertFalse($oArticle->getRestockDate());
     }
 
     /**
@@ -5575,7 +5575,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxdelivery = new oxField('2017-12-13', oxField::T_RAW);
         $oArticle->save();
-        $this->assertFalse($oArticle->getDeliveryDate());
+        $this->assertFalse($oArticle->getRestockDate());
     }
 
     /**

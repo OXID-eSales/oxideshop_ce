@@ -121,7 +121,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Return the current articles from the basket
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getBasketArticles()
     {
@@ -141,7 +141,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * return the basket articles
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getFirstBasketProduct()
     {
@@ -160,7 +160,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * return the similar articles
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getBasketSimilarList()
     {

@@ -77,7 +77,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     /**
      * Returns registration error code (if it was set)
      *
-     * @return int | null
+     * @return int|null
      */
     public function getRegistrationError()
     {
@@ -87,7 +87,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     /**
      * Return registration status (if it was set)
      *
-     * @return int | null
+     * @return int|null
      */
     public function getRegistrationStatus()
     {

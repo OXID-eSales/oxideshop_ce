@@ -29,7 +29,7 @@ class Curl
     /**
      * URL to call
      *
-     * @var string | null
+     * @var string|null
      */
     protected $_sUrl = null;
 
@@ -50,7 +50,7 @@ class Curl
     /**
      * Parameter to be added to call url
      *
-     * @var array | null
+     * @var array|null
      */
     protected $_aParameters = null;
 
@@ -85,7 +85,7 @@ class Curl
     /**
      * Request HTTP status call code.
      *
-     * @var int | null
+     * @var int|null
      */
     protected $_sStatusCode = null;
 

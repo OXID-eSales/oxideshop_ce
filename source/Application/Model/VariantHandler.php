@@ -334,7 +334,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aFilter user given filter
      *
-     * @return array | bool
+     * @return array|bool
      */
     protected function _cleanFilter($aFilter)
     {

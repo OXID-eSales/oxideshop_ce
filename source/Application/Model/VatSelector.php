@@ -36,7 +36,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param bool                                     $blCacheReset reset cache
      *
      * @throws oxObjectException if wrong country
-     * @return double | false
+     * @return double|false
      */
     public function getUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, $blCacheReset = false)
     {
@@ -96,7 +96,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle given article
      *
-     * @return float | false
+     * @return float|false
      */
     protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
@@ -181,7 +181,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
-     * @return double | false
+     * @return double|false
      */
     public function getArticleUserVat(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {

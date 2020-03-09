@@ -70,21 +70,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * cached article variant min price
      *
-     * @var double | null
+     * @var double|null
      */
     protected $_dVarMinPrice = null;
 
     /**
      * cached article variant max price
      *
-     * @var double | null
+     * @var double|null
      */
     protected $_dVarMaxPrice = null;
 
     /**
      * caches article vat
      *
-     * @var double | null
+     * @var double|null
      */
     protected $_dArticleVat = null;
 
@@ -2960,7 +2960,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
      *
      * @deprecated since v6.2 (2020-02-26); use getRestockDate();
-     * @return false|string
+     * @return string|bool
      */
     public function getDeliveryDate()
     {
@@ -2970,7 +2970,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
      *
-     * @return false|string
+     * @return string|bool
      */
     public function getRestockDate()
     {
@@ -2987,7 +2987,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @deprecated since v5.1 (2013-10-03); use getTPrice() and oxPrice modifier;
      *
-     * @return double | bool
+     * @return double|bool
      */
     public function getFTPrice()
     {
@@ -3549,7 +3549,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool      $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool|null $forceCoreTableUsage   if true forces core table use, default is false [optional]
      *
-     * @return array | oxsimplevariantlist | oxarticlelist
+     * @return array|oxsimplevariantlist|oxarticlelist
      */
     protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null)
     {

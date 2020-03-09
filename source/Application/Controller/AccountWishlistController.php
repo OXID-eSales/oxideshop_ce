@@ -144,7 +144,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
     /**
      * Show the Wishlist
      *
-     * @return \OxidEsales\Eshop\Application\Model\UserBasket | bool
+     * @return \OxidEsales\Eshop\Application\Model\UserBasket|bool
      */
     public function getWishList()
     {
@@ -164,7 +164,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
     /**
      * Returns array of producst assigned to user wish list
      *
-     * @return array | bool
+     * @return array|bool
      */
     public function getWishProductList()
     {
@@ -313,7 +313,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
      * Returns a list of users which were found according to search condition.
      * If no users were found - false is returned
      *
-     * @return \OxidEsales\Eshop\Core\Model\ListModel | bool
+     * @return \OxidEsales\Eshop\Core\Model\ListModel|bool
      */
     public function getWishListUsers()
     {

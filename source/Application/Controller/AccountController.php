@@ -150,7 +150,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Confirms term agreement. Returns value of confirmed term
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function confirmTerms()
     {
@@ -241,7 +241,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Return the active article id
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getArticleId()
     {

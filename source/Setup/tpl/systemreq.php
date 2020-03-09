@@ -13,7 +13,9 @@ require "_header.php"; ?>
         <td nowrap><?php $this->getText('SELECT_SETUP_LANG'); ?>: </td>
         <td>
             <form action="index.php" id="langSelectionForm" method="post">
-            <select name="setup_lang" onChange="document.getElementById('langSelectionForm').submit();" style="font-size: 11px;">
+            <select name="setup_lang"
+                    onChange="document.getElementById('langSelectionForm').submit();"
+                    style="font-size: 11px;">
             <?php
             $aLanguages = $this->getViewParam("aLanguages");
             foreach ($aLanguages as $sLangId => $sLangTitle) {
@@ -26,7 +28,9 @@ require "_header.php"; ?>
             ?>
             </select>
             <noscript>
-            <input type="submit" name="setup_lang_submit" value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>" style="font-size: 11px;">
+            <input type="submit" name="setup_lang_submit"
+                   value="<?php $this->getText('SELECT_SETUP_LANG_SUBMIT'); ?>"
+                   style="font-size: 11px;">
             </noscript>
             <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
             <input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_SYSTEMREQ'); ?>">
@@ -40,18 +44,39 @@ require "_header.php"; ?>
     <ul class="req">
     <?php
     $aGroupModuleInfo = $this->getViewParam("aGroupModuleInfo");
+    $permissionIssues = $this->getViewParam('permissionIssues');
+
     foreach ($aGroupModuleInfo as $sGroupName => $aGroupInfo) {
-        ?><li class="group"><?php echo $sGroupName; ?><ul><?php
-foreach ($aGroupInfo as $aModuleInfo) {
-    ?><li id="<?php echo $aModuleInfo['module']; ?>" class="<?php echo $aModuleInfo['class']; ?>"><?php
-if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
-    ?><a href="<?php $this->getReqInfoUrl($aModuleInfo['module']); ?>" target="_blank"><?php
-}
-    echo $aModuleInfo['modulename'];
-if ($aModuleInfo['class'] == "fail" || $aModuleInfo['class'] == "pmin" || $aModuleInfo['class'] == "null") {
-    ?></a><?php
-} ?></li><?php
-} ?></ul></li><?php
+        print '<li class="group">' . $sGroupName . '<ul>';
+        foreach ($aGroupInfo as $aModuleInfo) {
+            print '<li id="' . $aModuleInfo['module'] . '" class="' . $aModuleInfo['class'] . '">';
+            if (in_array($aModuleInfo['class'], ['fail', 'pmin', 'null'])) {
+                print "<a href='" . $this->getReqInfoUrl($aModuleInfo['module'], false) . "' target='_blank'>"
+                    . $aModuleInfo['modulename']
+                    . '</a>';
+            } else {
+                print $aModuleInfo['modulename'];
+            }
+            print '</li>';
+
+            if ($aModuleInfo['module'] === 'server_permissions') {
+                if (count($permissionIssues['missing']) > 0) {
+                    echo '<li><b>'
+                        . $this->getText('MOD_SERVER_PERMISSIONS_MISSING', false)
+                        . '</b></li><li>&nbsp;'
+                        . implode('</li><li>&nbsp;', $permissionIssues['missing'])
+                        . '</li>';
+                }
+                if (count($permissionIssues['not_writable']) > 0) {
+                    echo '<li><b>'
+                        . $this->getText('MOD_SERVER_PERMISSIONS_NOTWRITABLE', false)
+                        . '</b></li><li>&nbsp;'
+                        . implode('</li><li>&nbsp;', $permissionIssues['not_writable'])
+                        . '</li>';
+                }
+            }
+        }
+        print '</ul></li>';
     }
     ?><li class="clear"></li></ul>
     <?php $this->getText('STEP_0_TEXT'); ?>

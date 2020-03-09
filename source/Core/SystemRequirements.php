@@ -255,74 +255,96 @@ class SystemRequirements
     /**
      * Checks if permissions on servers are correctly setup
      *
-     * @param string $sPath    check path [optional]
-     * @param int    $iMinPerm min permission level, default 777 [optional]
+     * @param string $path    check path [optional]
+     * @param int    $minPerm min permission level, default 777 [optional]
      *
      * @return int
      */
-    public function checkServerPermissions($sPath = null, $iMinPerm = 777)
+    public function checkServerPermissions($path = null, $minPerm = 777)
     {
         clearstatcache();
-        $sPath = $sPath ? $sPath : getShopBasePath();
-
+        $path = $path ? $path : getShopBasePath();
         // special config file check
-        $sFullPath = $sPath . "config.inc.php";
+        $configFilePath = $path . "config.inc.php";
         if (
-            !is_readable($sFullPath) ||
-            ($this->isAdmin() && is_writable($sFullPath)) ||
-            (!$this->isAdmin() && !is_writable($sFullPath))
+            !is_readable($configFilePath) ||
+            ($this->isAdmin() && is_writable($configFilePath)) ||
+            (!$this->isAdmin() && !is_writable($configFilePath))
         ) {
             return 0;
         }
 
-        $sTmp = "$sPath/tmp/";
-        $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
-        $sCfgTmp = $config->getVar('sCompileDir');
-        if ($sCfgTmp && strpos($sCfgTmp, '<sCompileDir') === false) {
-            $sTmp = $sCfgTmp;
+        $modStat = 2;
+        $permissionIssues = $this->getPermissionIssuesList($path, $minPerm);
+        if (count($permissionIssues['missing']) + count($permissionIssues['not_writable'])) {
+            $modStat = 0;
         }
 
-        $aPathsToCheck = [
-            $sPath . 'out/pictures/promo/',
-            $sPath . 'out/pictures/master/',
-            $sPath . 'out/pictures/generated/',
-            $sPath . 'out/pictures/media/', // @deprecated, use out/media instead
-            $sPath . 'out/media/',
-            $sPath . 'log/',
-            $sPath . '../var/',
-            $sTmp
+        return $modStat;
+    }
+
+    /**
+     * Get list of permission issues
+     *
+     * @param string $shopPath
+     * @param int $minPerm
+     *
+     * @return array
+     */
+    public function getPermissionIssuesList($shopPath = null, $minPerm = 777)
+    {
+        clearstatcache();
+        $shopPath = $shopPath ? $shopPath : getShopBasePath();
+        $pathCheckResults = [
+            'missing' => [],
+            'not_writable' => []
         ];
-        $iModStat = 2;
-        $sPathToCheck = reset($aPathsToCheck);
-        while ($sPathToCheck) {
+
+        $tmpPath = "$shopPath/tmp/";
+        $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
+        $configTmpPath = $config->getVar('sCompileDir');
+        if ($configTmpPath && strpos($configTmpPath, '<sCompileDir') === false) {
+            $tmpPath = $configTmpPath;
+        }
+
+        $pathsToCheck = [
+            $shopPath . 'out/pictures/promo/',
+            $shopPath . 'out/pictures/master/',
+            $shopPath . 'out/pictures/generated/',
+            $shopPath . 'out/pictures/media/', // @deprecated, use out/media instead
+            $shopPath . 'out/media/',
+            $shopPath . 'log/',
+            $shopPath . '../var/',
+            $tmpPath
+        ];
+
+        $onePathToCheck = reset($pathsToCheck);
+        while ($onePathToCheck) {
             // missing file/folder?
-            if (!file_exists($sPathToCheck)) {
-                $iModStat = 0;
-                break;
+            if (!file_exists($onePathToCheck)) {
+                $pathCheckResults['missing'][] = str_replace($shopPath, '', $onePathToCheck);
             }
 
-            if (is_dir($sPathToCheck)) {
+            if (is_dir($onePathToCheck)) {
                 // adding subfolders
-                $aSubF = glob($sPathToCheck . "*", GLOB_ONLYDIR);
-                if (is_array($aSubF)) {
-                    foreach ($aSubF as $sNewFolder) {
-                        $aPathsToCheck[] = $sNewFolder . "/";
+                $subDirectories = glob($onePathToCheck . '*', GLOB_ONLYDIR);
+                if (is_array($subDirectories)) {
+                    foreach ($subDirectories as $oneSubDirectory) {
+                        $pathsToCheck[] = $oneSubDirectory . '/';
                     }
                 }
             }
 
             // testing if file permissions >= $iMinPerm
-            if (!is_readable($sPathToCheck) || !is_writable($sPathToCheck)) {
-                $iModStat = 0;
-                break;
+            if (!is_readable($onePathToCheck) || !is_writable($onePathToCheck)) {
+                $pathCheckResults['not_writable'][] = str_replace($shopPath, '', $onePathToCheck);
             }
 
-            $sPathToCheck = next($aPathsToCheck);
+            $onePathToCheck = next($pathsToCheck);
         }
 
-        return $iModStat;
+        return $pathCheckResults;
     }
-
 
     /**
      * returns host, port, base dir, ssl information as assotiative array, false on error

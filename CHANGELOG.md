@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Support for MySQL v8.0
+- More information about problems is shown after permission check in Setup [PR-764](https://github.com/OXID-eSales/oxideshop_ce/pull/764)
 - Logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
 - Checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
 

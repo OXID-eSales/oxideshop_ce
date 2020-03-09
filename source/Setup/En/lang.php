@@ -61,6 +61,8 @@ $aLang = [
 
 'MOD_MOD_REWRITE'                               => 'Apache mod_rewrite module',
 'MOD_SERVER_PERMISSIONS'                        => 'Files/folders access rights',
+'MOD_SERVER_PERMISSIONS_MISSING'                => 'Folders missing:',
+'MOD_SERVER_PERMISSIONS_NOTWRITABLE'            => 'Folders not writable:',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen and fsockopen to port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend compatibility mode must be off',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI set',

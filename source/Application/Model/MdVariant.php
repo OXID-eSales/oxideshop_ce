@@ -11,7 +11,6 @@ use oxRegistry;
 
 /**
  * Defines an element of multidimentional variant name tree structure. Contains article id, variant name, URL, price, price text, and a subset of MD variants.
- *
  */
 class MdVariant extends \OxidEsales\Eshop\Core\Base
 {
@@ -67,7 +66,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Subvariant array
      *
-     * @var array[string]oxMdVariant
+     * @var \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
     protected $_aSubvariants = [];
 
@@ -124,7 +123,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns full array of subvariants
      *
-     * @return array[string]OxMdSubvariants
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
     public function getMdSubvariants()
     {

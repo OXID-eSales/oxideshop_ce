@@ -425,7 +425,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sKey Cache key.
      *
-     * @return null;
+     * @return null
      */
     public function fromPhpFileCache($sKey)
     {

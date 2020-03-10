@@ -96,7 +96,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * If possible returns searched/found oxarticle object
      *
-     * @return \OxidEsales\Eshop\Application\Model\Article | false
+     * @return \OxidEsales\Eshop\Application\Model\Article|false
      */
     public function getSearchProduct()
     {

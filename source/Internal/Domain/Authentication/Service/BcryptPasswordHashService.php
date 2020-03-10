@@ -49,7 +49,6 @@ class BcryptPasswordHashService implements PasswordHashServiceInterface
      *
      * @return string
      * @throws PasswordHashException
-     *
      */
     public function hash(string $password): string
     {

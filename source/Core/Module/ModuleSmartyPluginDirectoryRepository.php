@@ -19,7 +19,6 @@ use OxidEsales\Eshop\Core\Module\Module                         as EshopModule;
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
- *
  */
 class ModuleSmartyPluginDirectoryRepository
 {

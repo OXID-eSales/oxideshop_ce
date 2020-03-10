@@ -241,9 +241,7 @@ class DIConfigWrapper
             }
         }
     }
-    /**
-     *
-     */
+
     private function removeInactiveServices()
     {
         /** @var DIServiceWrapper $service */

@@ -303,7 +303,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $sAltPath alternative picture path [optional]
      * @param bool   $bSsl     Whether to force SSL
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getPicUrl($sPath, $sFile, $sSize, $sIndex = null, $sAltPath = false, $bSsl = null)
     {
@@ -328,7 +328,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $sIndex picture index [optional]
      * @param bool   $bSsl   Whether to force SSL
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getProductPicUrl($sPath, $sFile, $sSize, $sIndex = null, $bSsl = null)
     {

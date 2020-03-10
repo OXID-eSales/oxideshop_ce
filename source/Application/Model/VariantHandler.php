@@ -12,7 +12,6 @@ use oxDb;
 
 /**
  * VariantHandler encapsulates methods dealing with multidimensional variant and variant names.
- *
  */
 class VariantHandler extends \OxidEsales\Eshop\Core\Base
 {
@@ -335,7 +334,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aFilter user given filter
      *
-     * @return array | bool
+     * @return array|bool
      */
     protected function _cleanFilter($aFilter)
     {

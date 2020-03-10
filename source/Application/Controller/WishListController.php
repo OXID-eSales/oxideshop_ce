@@ -62,7 +62,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * return the user which is owner of the wish list
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getWishUser()
     {
@@ -89,7 +89,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * return the articles which are in the wish list
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getWishList()
     {
@@ -116,7 +116,6 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      *
      * Template variables:
      * <b>wish_result</b>, <b>search</b>
-     *
      */
     public function searchForWishList()
     {
@@ -135,7 +134,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      * Returns a list of users which were found according to search condition.
      * If no users were found - false is returned
      *
-     * @return \OxidEsales\Eshop\Core\Model\ListModel | bool
+     * @return \OxidEsales\Eshop\Core\Model\ListModel|bool
      */
     public function getWishListUsers()
     {

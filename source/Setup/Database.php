@@ -32,7 +32,6 @@ class Database extends Core
      *
      * @return PDOStatement|int
      * @throws Exception exception is thrown if error occured during sql execution
-     *
      */
     public function execSql($sQ)
     {

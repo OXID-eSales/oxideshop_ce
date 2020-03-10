@@ -12,7 +12,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingB
 /**
  * Article review manager.
  * Performs loading, updating, inserting of article review.
- *
  */
 class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

@@ -15,7 +15,6 @@ use OxidEsales\Eshop\Core\Str;
 /**
  * Article attributes manager.
  * Collects and keeps attributes of chosen article.
- *
  */
 class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
@@ -176,7 +175,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @param string $sArtId article ids
      *
-     * @return null;
+     * @return null
      */
     public function getAttributeAssigns($sArtId)
     {

@@ -12,7 +12,6 @@ use oxField;
 
 /**
  * Manufacturer manager
- *
  */
 class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {

@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 /**
  * Payment gateway manager.
  * Checks and sets payment method data, executes payment.
- *
  */
 class PaymentGateway extends \OxidEsales\Eshop\Core\Base
 {

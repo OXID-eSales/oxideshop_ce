@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 /**
  * Diagnostic tool result outputer
  * Performs OutputKey check of shop files and generates report file.
- *
  */
 class DiagnosticsOutput
 {

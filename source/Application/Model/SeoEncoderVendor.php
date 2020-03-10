@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Seo encoder base
- *
  */
 class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
 {

@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Class for validating address
- *
  */
 class RequiredFieldsValidator
 {

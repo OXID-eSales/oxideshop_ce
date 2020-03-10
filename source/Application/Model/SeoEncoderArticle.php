@@ -15,7 +15,6 @@ use oxCategory;
 
 /**
  * Seo encoder for articles
- *
  */
 class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
 {
@@ -110,7 +109,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @return \OxidEsales\Eshop\Application\Model\RecommendationList | null
+     * @return \OxidEsales\Eshop\Application\Model\RecommendationList|null
      */
     protected function _getRecomm($oArticle, $iLang)
     {
@@ -223,7 +222,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      * @param int                                         $iLang    language id
      *
-     * @return \OxidEsales\Eshop\Application\Model\Category | null
+     * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
     protected function _getCategory($oArticle, $iLang)
     {
@@ -415,7 +414,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      * @param int                                         $iLang    language id
      *
-     * @return \OxidEsales\Eshop\Application\Model\Vendor | null
+     * @return \OxidEsales\Eshop\Application\Model\Vendor|null
      */
     protected function _getVendor($oArticle, $iLang)
     {
@@ -492,7 +491,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      * @param int                                         $iLang    language id
      *
-     * @return \OxidEsales\Eshop\Application\Model\Manufacturer | null
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer|null
      */
     protected function _getManufacturer($oArticle, $iLang)
     {

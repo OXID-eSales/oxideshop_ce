@@ -11,7 +11,6 @@ use OxidEsales\Eshop\Core\Str;
 
 /**
  * Variant selection lists manager class
- *
  */
 class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
 {

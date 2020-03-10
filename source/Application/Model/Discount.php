@@ -14,7 +14,6 @@ use stdClass;
 
 /**
  * Discounts manager.
- *
  */
 class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

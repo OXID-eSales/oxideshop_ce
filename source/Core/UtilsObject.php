@@ -126,7 +126,7 @@ class UtilsObject
      *
      * @param string $className class name in the cache
      *
-     * @return null;
+     * @return null
      */
     public function resetInstanceCache($className = null)
     {

@@ -14,7 +14,6 @@ use oxException;
 
 /**
  * Article files manager.
- *
  */
 class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -75,7 +74,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Initialises the instance
-     *
      */
     public function __construct()
     {

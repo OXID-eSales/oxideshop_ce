@@ -12,7 +12,6 @@ use oxField;
 
 /**
  * Remark manager.
- *
  */
 class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

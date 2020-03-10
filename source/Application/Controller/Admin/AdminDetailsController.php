@@ -351,7 +351,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *                                             else
      * @param string            $field             The input field we want to edit
      * @param string            $stylesheet        The name of the CSS file
-     *
      */
     protected function configureTextEditorHandler(
         TextEditorHandler $textEditorHandler,

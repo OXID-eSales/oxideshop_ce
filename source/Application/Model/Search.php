@@ -12,7 +12,6 @@ use oxDb;
 
 /**
  * Implements search
- *
  */
 class Search extends \OxidEsales\Eshop\Core\Base
 {

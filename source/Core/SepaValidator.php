@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * SEPA (Single Euro Payments Area) validation class
- *
  */
 class SepaValidator
 {

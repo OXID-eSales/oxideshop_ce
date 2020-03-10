@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 /**
  * Diagnostic tool model
  * Stores configuration and public diagnostic methods for shop diagnostics
- *
  */
 class Diagnostics
 {

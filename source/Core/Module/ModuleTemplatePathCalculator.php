@@ -78,7 +78,6 @@ class ModuleTemplatePathCalculator
      * @param string $templateName
      *
      * @return string
-     *
      */
     public function calculateModuleTemplatePath($templateName)
     {

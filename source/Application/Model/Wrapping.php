@@ -13,7 +13,6 @@ use oxDb;
 /**
  * Wrapping manager.
  * Performs Wrapping data/objects loading, deleting.
- *
  */
 class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

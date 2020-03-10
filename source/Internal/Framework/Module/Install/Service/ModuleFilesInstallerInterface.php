@@ -18,7 +18,6 @@ interface ModuleFilesInstallerInterface
      * Even copies if the target directory is already present.
      *
      * @param OxidEshopPackage $package
-     *
      */
     public function install(OxidEshopPackage $package): void;
 

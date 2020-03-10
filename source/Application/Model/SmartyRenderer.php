@@ -15,7 +15,6 @@ use Psr\Container\ContainerInterface;
  *
  * Smarty renderer class
  * Renders smarty template with given parameters and returns rendered body.
- *
  */
 class SmartyRenderer
 {

@@ -20,7 +20,6 @@ use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 /**
  * Order manager.
  * Performs creation assigning, updating, deleting and other order functions.
- *
  */
 class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 {

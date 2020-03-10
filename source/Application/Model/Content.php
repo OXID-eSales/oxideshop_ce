@@ -14,7 +14,6 @@ use oxDb;
 /**
  * Content manager.
  * Base object for content pages
- *
  */
 class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
@@ -199,7 +198,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array $data
      * @param bool  $checkIfActive
      *
-     * @return array | null
+     * @return array|null
      */
     protected function filterInactive($data, $checkIfActive = false)
     {

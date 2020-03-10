@@ -42,7 +42,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
 
     if ($oNewItem) {
         // loading article object here because on some system passing article by session couses problems
-        $oNewItem->oArticle = oxNew('oxarticle');
+        $oNewItem->oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oNewItem->oArticle->Load($oNewItem->sId);
 
         // passing variable to template with unique name

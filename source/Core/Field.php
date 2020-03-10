@@ -97,7 +97,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $name Variable name
      *
-     * @return string | null
+     * @return string|null
      */
     public function __get($name)
     {

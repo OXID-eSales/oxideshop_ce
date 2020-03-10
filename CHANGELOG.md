@@ -144,12 +144,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
-- Typos in CountryList::_getSecondSortFieldName doc [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
+- Replaced BC classes with namespaced ones [PR-772](https://github.com/OXID-eSales/oxideshop_ce/pull/772)
 - Improved various docs, variable and other coding style problems:
+    - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
     - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
     - [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748) 
     - [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
     - [PR-765](https://github.com/OXID-eSales/oxideshop_ce/pull/765)
+    - [PR-780](https://github.com/OXID-eSales/oxideshop_ce/pull/780)
+    - [PR-778](https://github.com/OXID-eSales/oxideshop_ce/pull/778)
+    - [PR-779](https://github.com/OXID-eSales/oxideshop_ce/pull/779)
+    - [PR-777](https://github.com/OXID-eSales/oxideshop_ce/pull/777)
+    - [PR-774](https://github.com/OXID-eSales/oxideshop_ce/pull/774)
+    - [PR-773](https://github.com/OXID-eSales/oxideshop_ce/pull/773)
+    - [PR-775](https://github.com/OXID-eSales/oxideshop_ce/pull/775)
+    - [PR-776](https://github.com/OXID-eSales/oxideshop_ce/pull/776)
     
 ### Security
 

@@ -1246,7 +1246,11 @@ $aLang = [
     'SYSREQ_TOKENIZER'                        => 'Tokenizer',
     'SYSREQ_BC_MATH'                          => 'BCMath',
     'SYSREQ_MYSQL_CONNECT'                    => 'PDO_MySQL',
-    'SYSREQ_MYSQL_VERSION'                    => 'MySQL version 5.5, 5.7, 8 or MariaDB',
+
+    // @deprecated since v6.5.1 (2020-03-12); We do not check mysql version
+    'SYSREQ_MYSQL_VERSION'                    => 'MySQL Version 5.5 or 5.7',
+    // END deprecated
+
     'SYSREQ_GD_INFO'                          => 'GDlib v2 incl. JPEG support',
     'SYSREQ_INI_SET'                          => 'ini_set allowed',
     'SYSREQ_REGISTER_GLOBALS'                 => 'register_globals must be off',

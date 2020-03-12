@@ -139,6 +139,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `CARD_MASTERCARD`
         - `CARD_SECURITY_CODE`
         - `CARD_VISA`
+- Language Variable:
+    - `SYSREQ_MYSQL_VERSION`
 
 ### Fixed
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Model\Article::getDeliveryDate()` [PR-768](https://github.com/OXID-eSales/oxideshop_ce/pull/768)
+- Language Variable:
+    - `SYSREQ_MYSQL_VERSION`
 
 ## [6.5.1] - 2020-02-25
 

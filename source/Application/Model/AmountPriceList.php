@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -76,7 +77,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array
      */
-    protected function _loadFromDb()
+    protected function _loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleId = $this->getArticle()->getId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);

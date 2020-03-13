@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,13 +8,12 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
-use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use \OxidEsales\Facts\Facts;
-use \OxidEsales\Eshop\Core\Edition\EditionSelector;
-use \OxidEsales\DoctrineMigrationWrapper\Migrations;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -122,7 +122,7 @@ class Utilities extends Core
      *
      * @return string
      */
-    protected function _extractPath($aPath)
+    protected function _extractPath($aPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sExtPath = '';
         $blBuildPath = false;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -164,7 +165,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return bool
      */
-    protected function _isAnythingChanged($oProduct, $aData)
+    protected function _isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_array($aData)) {
             return true;
@@ -185,9 +186,10 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _getProductParent($sParentId)
+    protected function _getProductParent($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_oProductParent === null ||
+        if (
+            $this->_oProductParent === null ||
             ($this->_oProductParent !== false && $this->_oProductParent->getId() != $sParentId)
         ) {
             $this->_oProductParent = false;

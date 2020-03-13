@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -100,7 +101,7 @@ class RequiredAddressFields
      *
      * @return mixed
      */
-    private function _filterFields($aFields, $sPrefix)
+    private function _filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {

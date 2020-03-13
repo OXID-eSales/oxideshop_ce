@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -32,7 +33,7 @@ class DynamicScreenController extends \OxidEsales\Eshop\Application\Controller\A
      *
      * @param string $sNode None name
      */
-    protected function _setupNavigation($sNode)
+    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myAdminNavig = $this->getNavigation();
         $sNode = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("menu");

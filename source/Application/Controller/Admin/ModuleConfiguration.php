@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -76,7 +77,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    protected function _getModuleForConfigVars()
+    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
     }
@@ -94,7 +95,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return array
      */
-    public function _loadMetadataConfVars($aModuleSettings)
+    public function _loadMetadataConfVars($aModuleSettings) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
 
@@ -331,7 +332,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    private function _getDbConfigTypeName($type)
+    private function _getDbConfigTypeName($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $type === 'password' ? 'str' : $type;
     }

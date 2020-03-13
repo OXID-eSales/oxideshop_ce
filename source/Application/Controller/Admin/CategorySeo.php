@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -40,7 +41,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
      *
      * @return oxSeoEncoderCategory
      */
-    protected function _getEncoder()
+    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
     }
@@ -60,7 +61,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
      *
      * @return string
      */
-    protected function _getType()
+    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxcategory';
     }

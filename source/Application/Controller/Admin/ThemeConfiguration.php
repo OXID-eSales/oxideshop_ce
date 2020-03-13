@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -65,7 +66,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getModuleForConfigVars()
+    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_sTheme === null) {
             $this->_sTheme = $this->getEditObjectId();

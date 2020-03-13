@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -54,7 +55,7 @@ class PasswordSaltGenerator
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
-    protected function _getOpenSSLFunctionalityChecker()
+    protected function _getOpenSSLFunctionalityChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_openSSLFunctionalityChecker;
     }
@@ -64,7 +65,7 @@ class PasswordSaltGenerator
      *
      * @return string
      */
-    protected function _customSaltGenerator()
+    protected function _customSaltGenerator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sHash = '';
         $sSalt = '';

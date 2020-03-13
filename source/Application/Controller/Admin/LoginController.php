@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -177,7 +178,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return boolean
      */
-    protected function _authorize()
+    protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return true;
     }
@@ -197,7 +198,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return array
      */
-    protected function _getAvailableLanguages()
+    protected function _getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->_getBrowserLanguage();
@@ -215,7 +216,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _getBrowserLanguage()
+    protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }

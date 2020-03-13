@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -95,7 +96,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      */
-    protected function _loadBaseChannel()
+    protected function _loadBaseChannel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oShop = $this->getConfig()->getActiveShop();
         $this->_aChannel['title'] = $oShop->oxshops__oxname->value;
@@ -131,7 +132,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getCacheId($name)
+    protected function _getCacheId($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
 
@@ -146,7 +147,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return array
      */
-    protected function _loadFromCache($name)
+    protected function _loadFromCache($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($aRes = Registry::getUtils()->fromFileCache($this->_getCacheId($name))) {
             if ($aRes['timestamp'] > time() - self::CACHE_TTL) {
@@ -168,7 +169,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getLastBuildDate($name, $aData)
+    protected function _getLastBuildDate($name, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($aData2 = Registry::getUtils()->fromFileCache($this->_getCacheId($name))) {
             $sLastBuildDate = $aData2['content']['lastBuildDate'];
@@ -194,7 +195,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return void
      */
-    protected function _saveToCache($name, $aContent)
+    protected function _saveToCache($name, $aContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aData = ['timestamp' => time(), 'content' => $aContent];
 
@@ -210,7 +211,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return array
      */
-    protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList)
+    protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
@@ -280,7 +281,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _prepareUrl($sUri, $sTitle)
+    protected function _prepareUrl($sUri, $sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLang = Registry::getLang()->getBaseLanguage();
         $sUrl = $this->_getShopUrl();
@@ -303,7 +304,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _prepareFeedName($sTitle)
+    protected function _prepareFeedName($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oShop = $this->getConfig()->getActiveShop();
 
@@ -316,7 +317,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getShopUrl()
+    protected function _getShopUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sUrl = $this->getConfig()->getShopUrl();
         $oStr = getStr();
@@ -343,7 +344,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      */
-    protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null)
+    protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_loadBaseChannel();
 
@@ -498,7 +499,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCatPath($oCat)
+    protected function _getCatPath($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCatPathString = '';
         $sSep = '';
@@ -593,7 +594,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId)
+    protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sParams = "searchparam=" . urlencode($sSearch);
         if ($sCatId) {
@@ -621,7 +622,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getObjectField($sId, $sObject, $sField)
+    protected function _getObjectField($sId, $sObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sId) {
             return '';
@@ -647,7 +648,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId)
+    protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oLang = Registry::getLang();
         $sCatTitle = '';
@@ -777,7 +778,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getRecommListItems($oList)
+    protected function _getRecommListItems($oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
@@ -964,7 +965,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool Went everything well?
      */
-    protected function _deleteFile($sFilePath)
+    protected function _deleteFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return @unlink($sFilePath);
     }

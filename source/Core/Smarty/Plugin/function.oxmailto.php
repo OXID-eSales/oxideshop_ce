@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -34,7 +35,7 @@ function smarty_function_oxmailto($aParams, &$oSmarty)
                     break;
                 case 'extra':
                 case 'text':
-                    $sName  = "s".ucfirst($sVarName);
+                    $sName  = "s" . ucfirst($sVarName);
                     $$sName = $sValue;
                     // no break
                 default:
@@ -46,9 +47,9 @@ function smarty_function_oxmailto($aParams, &$oSmarty)
             $sAddress .= $aMailParms[$iCtr];
         }
 
-        $sString = 'document.write(\'<a href="mailto:'.$sAddress.'" '.$sExtra.'>'.$sText.'</a>\');';
-        $sEncodedString = "%".wordwrap(current(unpack("H*", $sString)), 2, "%", true);
-        return '<script type="text/javascript">eval(decodeURIComponent(\''.$sEncodedString.'\'))</script>';
+        $sString = 'document.write(\'<a href="mailto:' . $sAddress . '" ' . $sExtra . '>' . $sText . '</a>\');';
+        $sEncodedString = "%" . wordwrap(current(unpack("H*", $sString)), 2, "%", true);
+        return '<script type="text/javascript">eval(decodeURIComponent(\'' . $sEncodedString . '\'))</script>';
     } else {
         include_once $oSmarty->_get_plugin_filepath('function', 'mailto');
         return smarty_function_mailto($aParams, $oSmarty);

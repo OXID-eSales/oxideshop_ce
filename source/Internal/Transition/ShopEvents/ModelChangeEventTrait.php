@@ -1,17 +1,19 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
+/**
+ * Model object
+ *
+ * @var \OxidEsales\Eshop\Core\Model\BaseModel
+ */
 trait ModelChangeEventTrait
 {
-    /**
-     * Model object
-     *
-     * @var \OxidEsales\Eshop\Core\Model\BaseModel
-     */
     private $model;
 
     /**

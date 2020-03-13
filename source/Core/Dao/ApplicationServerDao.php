@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -164,7 +165,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
         $parameter = [
             ':value' => $this->convertAppServerToConfigOption($appServer),
             ':key' => $this->config->getConfigParam('sConfigKey'),
-            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $appServer->getId(),
             ':oxshopid' => $this->config->getBaseShopId()
         ];
 
@@ -184,7 +185,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
         $parameter = [
             ':oxid' => \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
             ':oxshopid' => $this->config->getBaseShopId(),
-            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO.$appServer->getId(),
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $appServer->getId(),
             ':oxvartype' => 'arr',
             ':value' => $this->convertAppServerToConfigOption($appServer),
             ':key' => $this->config->getConfigParam('sConfigKey')
@@ -208,7 +209,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
               AND oxshopid = :oxshopid FOR UPDATE";
 
         $parameter = [
-            ":oxvarname" => self::CONFIG_NAME_FOR_SERVER_INFO.$id,
+            ":oxvarname" => self::CONFIG_NAME_FOR_SERVER_INFO . $id,
             ":oxshopid" => $this->config->getBaseShopId()
         ];
 

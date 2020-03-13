@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -65,7 +66,7 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string
      */
-    protected function _prepareWhereQuery($aWhere, $sqlFull)
+    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
         $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 require "_header.php"; ?>
 <b><?php $this->getText('STEP_3_1_DB_CONNECT_IS_OK'); ?></b><br>
 <?php

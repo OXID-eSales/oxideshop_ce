@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -46,7 +47,7 @@ class ShopIdCalculator
      *
      * @return string
      */
-    protected function _getConfKey()
+    protected function _getConfKey() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (Registry::instanceExists(\OxidEsales\Eshop\Core\ConfigFile::class)) {
             $config = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
@@ -62,7 +63,7 @@ class ShopIdCalculator
      *
      * @return array
      */
-    protected function _getShopUrlMap()
+    protected function _getShopUrlMap() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //get from static cache
         if (isset(self::$urlMap)) {

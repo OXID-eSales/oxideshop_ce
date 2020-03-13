@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
@@ -84,7 +86,7 @@ class ConfigFile
      *
      * @param string $fileName Configuration file name
      */
-    private function _loadVars($fileName)
+    private function _loadVars($fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         include $fileName;
     }

@@ -7,9 +7,7 @@
     <arg name="colors"/>
     <arg value="p"/>
     <arg value="n"/>
-    <arg name="parallel" value="75" />
+    <arg name="parallel" value="75"/>
     <arg name="extensions" value="php"/>
-    <rule ref="PSR12">
-        <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
-    </rule>
+    <rule ref="PSR12"/>
 </ruleset>

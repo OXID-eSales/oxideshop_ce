@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -125,7 +126,7 @@ class RequiredFieldsValidator
      *
      * @param array $aFields Invalid field name.
      */
-    private function _setInvalidFields($aFields)
+    private function _setInvalidFields($aFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aInvalidFields = $aFields;
     }

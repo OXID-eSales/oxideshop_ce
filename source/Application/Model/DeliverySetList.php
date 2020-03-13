@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -79,7 +80,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array
      */
-    protected function _getList($oUser = null, $sCountryId = null)
+    protected function _getList($oUser = null, $sCountryId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser === null) {
@@ -120,7 +121,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser, $sCountryId)
+    protected function _getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTable = getViewName('oxdeliveryset');
         $sQ = "select $sTable.* from $sTable ";

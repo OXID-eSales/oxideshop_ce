@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -136,7 +137,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * @param int                                         $iIndex         master picture index
      * @param bool                                        $blDeleteMaster if TRUE - deletes and unsets master image file
      */
-    protected function _resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false)
+    protected function _resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->canResetMasterPicture($oArticle, $iIndex)) {
             if (!$oArticle->isDerived()) {
@@ -165,7 +166,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _deleteMainIcon($oArticle)
+    protected function _deleteMainIcon($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->canDeleteMainIcon($oArticle)) {
             if (!$oArticle->isDerived()) {
@@ -183,7 +184,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _deleteThumbnail($oArticle)
+    protected function _deleteThumbnail($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->canDeleteThumbnail($oArticle)) {
             if (!$oArticle->isDerived()) {
@@ -202,7 +203,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _cleanupCustomFields($oArticle)
+    protected function _cleanupCustomFields($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sIcon = $oArticle->oxarticles__oxicon->value;
         $sThumb = $oArticle->oxarticles__oxthumb->value;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -89,7 +90,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @return string
      */
-    public function _prepareWhereQuery($whereQuery, $fullQuery)
+    public function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $nameWhere = null;
         if (isset($whereQuery['oxuser.oxlname']) && ($name = $whereQuery['oxuser.oxlname'])) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -482,7 +483,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      * @param BaseModel $oListObject List object (the one derived from BaseModel)
      * @param array     $aDbFields   An array holding db field values (normally the result of \OxidEsales\Eshop\Core\DatabaseProvider::Execute())
      */
-    protected function _assignElement($oListObject, $aDbFields)
+    protected function _assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oListObject->assign($aDbFields);
     }
@@ -494,7 +495,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @return string
      */
-    protected function _getFieldLongName($sFieldName)
+    protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_sCoreTable) {
             return $this->_sCoreTable . '__' . $sFieldName;

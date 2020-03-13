@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -68,7 +69,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @param string $sId Class name
      */
-    protected function _setupNavigation($sId)
+    protected function _setupNavigation($sId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         parent::_setupNavigation('pricealarm_list');
     }

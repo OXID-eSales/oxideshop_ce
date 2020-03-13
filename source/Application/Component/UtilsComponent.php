@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -133,7 +134,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param double $dAmount    product amount
      * @param array  $aSel       product selection list
      */
-    protected function _toList($sListType, $sProductId, $dAmount, $aSel)
+    protected function _toList($sListType, $sProductId, $dAmount, $aSel) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only if user is logged in
         if ($oUser = $this->getUser()) {
@@ -145,7 +146,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);
             if (!$this->getConfig()->getConfigParam('blAllowUnevenAmounts')) {
-                $dAmount = round(( string ) $dAmount);
+                $dAmount = round((string) $dAmount);
             }
 
             $oBasket = $oUser->getBasket($sListType);

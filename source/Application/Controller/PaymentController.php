@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -169,7 +170,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $oBasket = $this->getSession()->getBasket();
             $blPsBasketReservationEnabled = $myConfig->getConfigParam('blPsBasketReservationEnabled');
             if ($blPsBasketReservationEnabled && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
-                Registry::getUtils()->redirect($myConfig->getShopHomeUrl() .'cl=basket', true, 302);
+                Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', true, 302);
             }
 
             $oUser = $this->getUser();
@@ -186,9 +187,9 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $sPayErrorTextParameter = Registry::getConfig()->getRequestParameter('payerrortext');
             $shopSecureHomeURL = $myConfig->getShopSecureHomeURL();
 
-            $sPayError = $sPayErrorParameter ?'payerror='.$sPayErrorParameter:'';
-            $sPayErrorText = $sPayErrorTextParameter ?'payerrortext='.$sPayErrorTextParameter:'';
-            $sRedirectURL = $shopSecureHomeURL .'sslredirect=forced&cl=payment&'.$sPayError."&".$sPayErrorText;
+            $sPayError = $sPayErrorParameter ? 'payerror=' . $sPayErrorParameter : '';
+            $sPayErrorText = $sPayErrorTextParameter ? 'payerrortext=' . $sPayErrorTextParameter : '';
+            $sRedirectURL = $shopSecureHomeURL . 'sslredirect=forced&cl=payment&' . $sPayError . "&" . $sPayErrorText;
             Registry::getUtils()->redirect($sRedirectURL, true, 302);
         }
 
@@ -208,7 +209,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * tries to set 'oxempty' payment to aViewData['oxemptypayment'].
      * On error sets aViewData['payerror'] to -2
      */
-    protected function _setDefaultEmptyPayment()
+    protected function _setDefaultEmptyPayment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // no shipping method there !!
         if ($this->getConfig()->getConfigParam('blOtherCountryOrder')) {
@@ -227,7 +228,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Unsets payment errors from session
      */
-    protected function _unsetPaymentErrors()
+    protected function _unsetPaymentErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iPayError = Registry::getConfig()->getRequestParameter('payerror');
         $sPayErrorText = Registry::getConfig()->getRequestParameter('payerrortext');
@@ -418,7 +419,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param array                                      $aPaymentList payments array
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
      */
-    protected function _setValues(&$aPaymentList, $oBasket = null)
+    protected function _setValues(&$aPaymentList, $oBasket = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aPaymentList)) {
             foreach ($aPaymentList as $oPayment) {
@@ -515,7 +516,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Assign debit note payment values to view data. Loads user debit note payment
      * if available and assigns payment data to $this->_aDynValue
      */
-    protected function _assignDebitNoteParams()
+    protected function _assignDebitNoteParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #701A
         $oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
@@ -526,7 +527,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             //checking if some of values is allready set in session - leave it
             foreach ($aAddPaymentData as $oData) {
-                if (!isset($this->_aDynValue[$oData->name]) ||
+                if (
+                    !isset($this->_aDynValue[$oData->name]) ||
                     (isset($this->_aDynValue[$oData->name]) && !$this->_aDynValue[$oData->name])
                 ) {
                     $this->_aDynValue[$oData->name] = $oData->value;
@@ -622,7 +624,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return bool
      */
-    protected function _checkArrValuesEmpty($aData, $aKeys)
+    protected function _checkArrValuesEmpty($aData, $aKeys) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_array($aKeys) || count($aKeys) < 1) {
             return false;
@@ -650,7 +652,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return null
      */
-    protected function _filterDynData()
+    protected function _filterDynData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //in case we actually ARE allowed to store the data
         if (Registry::getConfig()->getConfigParam("blStoreCreditCardInfo")) {
@@ -677,7 +679,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             Registry::getSession()->setVariable("dynvalue", $aDynData);
         }
 
-        if (!$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
+        if (
+            !$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
             !$this->_checkArrValuesEmpty($_POST["dynvalue"], $aFields) ||
             !$this->_checkArrValuesEmpty($_GET["dynvalue"], $aFields)
         ) {

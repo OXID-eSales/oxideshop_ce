@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -119,7 +120,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return int
      */
-    protected function _getProductLinkType()
+    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return OXARTICLE_LINKTYPE_VENDOR;
     }
@@ -131,7 +132,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return array
      */
-    protected function _loadArticles($oVendor)
+    protected function _loadArticles($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sVendorId = $oVendor->getId();
 
@@ -157,7 +158,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _getSeoObjectId()
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oVendor = $this->getActVendor())) {
             return $oVendor->getId();
@@ -174,7 +175,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
+    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
             if ($iPage) {
@@ -295,7 +296,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _getVendorId()
+    protected function _getVendorId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
     }
@@ -357,7 +358,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return parent::_collectMetaKeyword($sKeywords);
     }
@@ -372,7 +373,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
+    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return parent::_collectMetaDescription($sMeta, $iLength, $blDescTag);
     }
@@ -385,7 +386,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return object
      */
-    protected function _getSubject($iLang)
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getActVendor();
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -70,7 +71,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
     /**
      * Runs actions that should be performed at the controller finish.
      */
-    protected function _runLast()
+    protected function _runLast() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
 
@@ -100,7 +101,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
-    protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
+    protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = $this->getConfig();
         $activeViewsIds = $config->getActiveViewsIds();

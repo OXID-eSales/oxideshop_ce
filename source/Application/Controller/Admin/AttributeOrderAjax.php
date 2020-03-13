@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -31,7 +32,7 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelTable = $this->_getViewName('oxattribute');
         $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
@@ -45,7 +46,7 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getSorting()
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'order by oxcategory2attribute.oxsort ';
     }

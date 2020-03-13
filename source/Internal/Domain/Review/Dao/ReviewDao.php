@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
@@ -28,8 +31,8 @@ class ReviewDao implements ReviewDaoInterface
      * @param ReviewDataMapperInterface    $reviewDataMapper
      */
     public function __construct(
-        QueryBuilderFactoryInterface    $queryBuilderFactory,
-        ReviewDataMapperInterface           $reviewDataMapper
+        QueryBuilderFactoryInterface $queryBuilderFactory,
+        ReviewDataMapperInterface $reviewDataMapper
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->reviewDataMapper = $reviewDataMapper;

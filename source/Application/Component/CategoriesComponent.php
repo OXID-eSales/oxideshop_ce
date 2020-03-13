@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -58,7 +59,8 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
 
         // Performance
         $myConfig = $this->getConfig();
-        if ($myConfig->getConfigParam('blDisableNavBars') &&
+        if (
+            $myConfig->getConfigParam('blDisableNavBars') &&
             $myConfig->getTopActiveView()->getIsOrderStep()
         ) {
             return;
@@ -104,7 +106,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return string
      */
-    protected function _getActCat()
+    protected function _getActCat() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sActManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
 
@@ -140,7 +142,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @param string $sActCat active category id
      */
-    protected function _loadCategoryTree($sActCat)
+    protected function _loadCategoryTree($sActCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Application\Model\CategoryList $oCategoryTree */
         $oCategoryTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
@@ -161,7 +163,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @param string $sActManufacturer active Manufacturer id
      */
-    protected function _loadManufacturerTree($sActManufacturer)
+    protected function _loadManufacturerTree($sActManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = $this->getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
@@ -216,7 +218,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return string $sActCat
      */
-    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor)
+    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSearchPar = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
         $sSearchCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid');
@@ -260,7 +262,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      *
      * @return array
      */
-    protected function _getDefaultParams($oProduct)
+    protected function _getDefaultParams($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sListType = null;
         $aArticleCats = $oProduct->getCategoryIds(true);

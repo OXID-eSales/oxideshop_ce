@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -48,7 +49,7 @@ function smarty_modifier_oxmultilangassign($sIdent, $args = null)
             }
         }
     } elseif ($blShowError) {
-        $sTranslation = 'ERROR: Translation for '.$sIdent.' not found!';
+        $sTranslation = 'ERROR: Translation for ' . $sIdent . ' not found!';
     }
 
     return $sTranslation;

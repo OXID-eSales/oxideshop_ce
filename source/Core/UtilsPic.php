@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -73,12 +74,13 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _deletePicture($sPicName, $sAbsDynImageDir)
+    protected function _deletePicture($sPicName, $sAbsDynImageDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blDeleted = false;
         $myConfig = $this->getConfig();
 
-        if (!$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
+        if (
+            !$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
                                          strpos($sPicName, 'nopic_ico.jpg') === false)
         ) {
             $sFile = "$sAbsDynImageDir/$sPicName";
@@ -113,7 +115,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isPicDeletable($sPicName, $sTable, $sField)
+    protected function _isPicDeletable($sPicName, $sTable, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sPicName || strpos($sPicName, 'nopic.jpg') !== false || strpos($sPicName, 'nopic_ico.jpg') !== false) {
             return false;
@@ -161,7 +163,8 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     public function overwritePic($oObject, $sPicTable, $sPicField, $sPicType, $sPicDir, $aParams, $sAbsDynImageDir)
     {
         $sPic = $sPicTable . '__' . $sPicField;
-        if (isset($oObject->{$sPic}) &&
+        if (
+            isset($oObject->{$sPic}) &&
             ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
         ) {
             $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType($sPicType);
@@ -185,7 +188,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch)
+    protected function _resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch);
     }
@@ -205,7 +208,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality)
+    protected function _resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile("PICTURE_RESIZE");
 
@@ -249,7 +252,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch)
+    protected function _copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blSuccess = copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer);
         if (!$blDisableTouch && $blSuccess) {

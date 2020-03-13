@@ -1,12 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
+declare(strict_types=1);
 
-use function is_string;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
@@ -14,6 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+
+use function is_string;
 
 class SettingDao implements SettingDaoInterface
 {
@@ -50,11 +53,11 @@ class SettingDao implements SettingDaoInterface
      * @param TransactionServiceInterface  $transactionService
      */
     public function __construct(
-        QueryBuilderFactoryInterface    $queryBuilderFactory,
-        ContextInterface                $context,
-        ShopSettingEncoderInterface     $shopSettingEncoder,
-        ShopAdapterInterface            $shopAdapter,
-        TransactionServiceInterface     $transactionService
+        QueryBuilderFactoryInterface $queryBuilderFactory,
+        ContextInterface $context,
+        ShopSettingEncoderInterface $shopSettingEncoder,
+        ShopAdapterInterface $shopAdapter,
+        TransactionServiceInterface $transactionService
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;
@@ -126,7 +129,8 @@ class SettingDao implements SettingDaoInterface
             ->setValue($this->shopSettingEncoder->decode($settingsData['type'], $settingsData['value']))
             ->setType($settingsData['type']);
 
-        if (isset($settingsData['oxvarconstraint'])
+        if (
+            isset($settingsData['oxvarconstraint'])
             && is_string($settingsData['oxvarconstraint'])
             && $settingsData['oxvarconstraint'] !== ''
         ) {

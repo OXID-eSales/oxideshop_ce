@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -182,7 +183,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param bool $blPerfLoadAktion perform option load actions
      */
-    protected function _setParams($blPerfLoadAktion = false)
+    protected function _setParams($blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = $this->getConfig();
 
@@ -214,7 +215,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sUserid User ID or OBJECT
      */
-    protected function _setUser($sUserid)
+    protected function _setUser($sUserid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_string($sUserid)) {
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -233,7 +234,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param \OxidEsales\Eshop\Core\Controller\BaseController $oView            view object to store view data
      * @param bool                                             $blPerfLoadAktion perform option load actions
      */
-    protected function _assignProducts($oView, $blPerfLoadAktion = false)
+    protected function _assignProducts($oView, $blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($blPerfLoadAktion) {
             $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -274,7 +275,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ('oxtemplate' === $sFieldName || 'oxplaintemplate' === $sFieldName) {
             $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;

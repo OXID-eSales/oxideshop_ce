@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -91,7 +92,7 @@ class SepaIBANValidator
      *
      * @return bool
      */
-    protected function _isLengthValid($sIBAN)
+    protected function _isLengthValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iActualLength = getStr()->strlen($sIBAN);
 
@@ -108,7 +109,7 @@ class SepaIBANValidator
      *
      * @return null
      */
-    protected function _getLengthForCountry($sIBAN)
+    protected function _getLengthForCountry($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aIBANRegistry = $this->getCodeLengths();
 
@@ -126,7 +127,7 @@ class SepaIBANValidator
      *
      * @return bool
      */
-    protected function _isAlgorithmValid($sIBAN)
+    protected function _isAlgorithmValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sIBAN = $this->_moveInitialCharactersToEnd($sIBAN);
 
@@ -142,7 +143,7 @@ class SepaIBANValidator
      *
      * @return string
      */
-    protected function _moveInitialCharactersToEnd($sIBAN)
+    protected function _moveInitialCharactersToEnd($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oStr = getStr();
 
@@ -159,7 +160,7 @@ class SepaIBANValidator
      *
      * @return string
      */
-    protected function _replaceLettersToNumbers($sIBAN)
+    protected function _replaceLettersToNumbers($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aReplaceArray = [
             'A' => 10,
@@ -204,7 +205,7 @@ class SepaIBANValidator
      *
      * @return bool
      */
-    protected function _isIBANChecksumValid($sIBAN)
+    protected function _isIBANChecksumValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (int) bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE) === 1;
     }
@@ -216,7 +217,7 @@ class SepaIBANValidator
      *
      * @return bool
      */
-    protected function _isNotEmptyArray($aCodeLengths)
+    protected function _isNotEmptyArray($aCodeLengths) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return is_array($aCodeLengths) && !empty($aCodeLengths);
     }
@@ -228,12 +229,13 @@ class SepaIBANValidator
      *
      * @return bool
      */
-    protected function _isEachCodeLengthValid($aCodeLengths)
+    protected function _isEachCodeLengthValid($aCodeLengths) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blValid = true;
 
         foreach ($aCodeLengths as $sCountryAbbr => $iLength) {
-            if (!$this->_isCodeLengthKeyValid($sCountryAbbr) ||
+            if (
+                !$this->_isCodeLengthKeyValid($sCountryAbbr) ||
                 !$this->_isCodeLengthValueValid($iLength)
             ) {
                 $blValid = false;
@@ -251,7 +253,7 @@ class SepaIBANValidator
      *
      * @return bool
      */
-    protected function _isCodeLengthKeyValid($sCountryAbbr)
+    protected function _isCodeLengthKeyValid($sCountryAbbr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (int) preg_match("/^[A-Z]{2}$/", $sCountryAbbr) !== 0;
     }
@@ -263,7 +265,7 @@ class SepaIBANValidator
      *
      * @return bool
      */
-    protected function _isCodeLengthValueValid($iLength)
+    protected function _isCodeLengthValueValid($iLength) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return is_numeric($iLength) && (int) preg_match("/\./", $iLength) !== 1;
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -48,7 +49,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @return RssFeed
      */
-    protected function _getRssFeed()
+    protected function _getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_oRss) {
             $this->_oRss = oxNew(RssFeed::class);
@@ -105,7 +106,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @return string
      */
-    protected function _processOutput($sInput)
+    protected function _processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return getStr()->recodeEntities($sInput);
     }

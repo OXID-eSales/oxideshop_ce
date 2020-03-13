@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -138,7 +139,7 @@ class ShopViewValidator
      *
      * @return array
      */
-    protected function _getAllViews()
+    protected function _getAllViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($this->_aAllViews)) {
             $this->_aAllViews = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SHOW TABLES LIKE  'oxv\_%'");
@@ -154,14 +155,15 @@ class ShopViewValidator
      *
      * @return bool
      */
-    protected function _isCurrentShopView($sViewName)
+    protected function _isCurrentShopView($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = false;
 
         $blEndsWithShopId = preg_match("/[_]([0-9]+)$/", $sViewName, $aMatchEndsWithShopId);
         $blContainsShopId = preg_match("/[_]([0-9]+)[_]/", $sViewName, $aMatchContainsShopId);
 
-        if ((!$blEndsWithShopId && !$blContainsShopId) ||
+        if (
+            (!$blEndsWithShopId && !$blContainsShopId) ||
             ($blEndsWithShopId && $aMatchEndsWithShopId[1] == $this->getShopId()) ||
             ($blContainsShopId && $aMatchContainsShopId[1] == $this->getShopId())
         ) {
@@ -177,7 +179,7 @@ class ShopViewValidator
      *
      * @return array
      */
-    protected function _getShopViews()
+    protected function _getShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($this->_aShopViews)) {
             $this->_aShopViews = [];
@@ -198,7 +200,7 @@ class ShopViewValidator
      *
      * @return array
      */
-    protected function _getValidShopViews()
+    protected function _getValidShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($this->_aValidShopViews)) {
             $aTables = $this->getShopTables();
@@ -247,7 +249,7 @@ class ShopViewValidator
      *
      * @return bool
      */
-    protected function _isViewValid($sViewName)
+    protected function _isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return in_array($sViewName, $this->_getValidShopViews());
     }

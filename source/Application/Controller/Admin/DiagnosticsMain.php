@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -64,7 +65,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _hasError()
+    protected function _hasError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blError;
     }
@@ -74,7 +75,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _getErrorMessage()
+    protected function _getErrorMessage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_sErrorMessage;
     }
@@ -116,7 +117,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return array list of shop files to be checked
      */
-    protected function _getFilesToCheck()
+    protected function _getFilesToCheck() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);
         $aFilePathList = $oDiagnostics->getFileCheckerPathList();
@@ -145,7 +146,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return null|oxFileCheckerResult
      */
-    protected function _checkOxidFiles($aFileList)
+    protected function _checkOxidFiles($aFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oFileChecker = oxNew(\OxidEsales\Eshop\Application\Model\FileChecker::class);
         $oFileChecker->setBaseDirectory($this->_sShopDir);
@@ -182,7 +183,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string body of report
      */
-    protected function _getFileCheckReport($oFileCheckerResult)
+    protected function _getFileCheckReport($oFileCheckerResult) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aViewData = [
             "sVersion"       => $this->getConfig()->getVersion(),
@@ -233,7 +234,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return array
      */
-    protected function _runBasicDiagnostics()
+    protected function _runBasicDiagnostics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,7 +12,7 @@ use Exception;
 use PDO;
 use PDOException;
 use PDOStatement;
-use \OxidEsales\Facts\Facts;
+use OxidEsales\Facts\Facts;
 
 /**
  * Setup database manager class

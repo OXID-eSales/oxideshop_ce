@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -32,7 +33,7 @@ class VoucherException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
      */
     public function setVoucherNr($sVoucherNr)
     {
-        $this->_sVoucherNr = ( string ) $sVoucherNr;
+        $this->_sVoucherNr = (string) $sVoucherNr;
     }
 
     /**

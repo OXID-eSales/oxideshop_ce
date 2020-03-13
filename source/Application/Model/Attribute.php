@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -136,7 +137,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return mixed attribute id or false
      */
-    protected function _getAttrId($sSelTitle)
+    protected function _getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $sAttViewName = getViewName('oxattribute');
@@ -153,7 +154,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string attribute id
      */
-    protected function _createAttribute($aSelTitle)
+    protected function _createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();

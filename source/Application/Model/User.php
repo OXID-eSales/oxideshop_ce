@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -181,7 +182,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return oxState
      */
-    protected function _getStateObject()
+    protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_null($this->_oStateObject)) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
@@ -423,7 +424,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return $sWishId
      */
-    protected function _getWishListId()
+    protected function _getWishListId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_sWishId = null;
         // check if we have to set it here
@@ -518,7 +519,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function save()
     {
         $blAddRemark = false;
-        if ($this->oxuser__oxpassword->value
+        if (
+            $this->oxuser__oxpassword->value
             && (!$this->oxuser__oxregister instanceof \OxidEsales\Eshop\Core\Field || $this->oxuser__oxregister->value < 1)
         ) {
             $blAddRemark = true;
@@ -1233,7 +1235,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getMergedAddressFields()
+    protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDelAddress = '';
         $sDelAddress .= $this->oxuser__oxcompany;
@@ -1260,7 +1262,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param array $aDelAddress address data array
      */
-    protected function _assignAddress($aDelAddress)
+    protected function _assignAddress($aDelAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aDelAddress) && count($aDelAddress)) {
             $sAddressId = $this->getConfig()->getRequestParameter('oxaddressid');
@@ -1304,7 +1306,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getLoginQueryHashedWithMD5($userName, $password, $shopId, $isAdmin)
+    protected function _getLoginQueryHashedWithMD5($userName, $password, $shopId, $isAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -1341,7 +1343,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getLoginQuery($userName, $password, $shopId, $isAdmin)
+    protected function _getLoginQuery($userName, $password, $shopId, $isAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = DatabaseProvider::getDb();
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
@@ -1371,7 +1373,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getShopSelect($myConfig, $sShopID, $blAdmin)
+    protected function _getShopSelect($myConfig, $sShopID, $blAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
 
@@ -1598,7 +1600,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getCookieUserId()
+    protected function _getCookieUserId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sUserID = null;
         $oConfig = $this->getConfig();
@@ -1643,7 +1645,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws $oEx if user is wrong
      */
-    protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
+    protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLDAPParams = $this->getConfig()->getConfigParam('aLDAPParams');
         $oLDAP = oxNew(\OxidEsales\Eshop\Core\LDAP::class, $aLDAPParams['HOST'], $aLDAPParams['PORT']);
@@ -1710,7 +1712,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getUserRights()
+    protected function _getUserRights() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // previously user had no rights defined
         if (!$this->oxuser__oxrights instanceof \OxidEsales\Eshop\Core\Field || !$this->oxuser__oxrights->value) {
@@ -1762,7 +1764,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
 
         // set oxcreate date
@@ -1780,7 +1782,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //V #M418: for not registered users, don't change boni during update
         if (!$this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
@@ -1929,7 +1931,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sCountryId users country id
      */
-    protected function _setAutoGroups($sCountryId)
+    protected function _setAutoGroups($sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // assigning automatically to specific groups
         $blForeigner = true;
@@ -2380,7 +2382,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return void
      */
-    protected function _dbLogin(string $userName, $password, $shopID)
+    protected function _dbLogin(string $userName, $password, $shopID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopID, $this->isAdmin()));
@@ -2428,7 +2430,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function _isDemoShop()
+    protected function _isDemoShop() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blDemoMode = false;
 
@@ -2449,7 +2451,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getDemoShopLoginQuery($sUser, $sPassword)
+    protected function _getDemoShopLoginQuery($sUser, $sPassword) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sPassword == "admin" && $sUser == "admin") {
             $sSelect = "SELECT `oxid` FROM `oxuser` WHERE `oxrights` = 'malladmin' ";

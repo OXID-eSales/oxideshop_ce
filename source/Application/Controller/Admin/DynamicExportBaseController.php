@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -545,7 +546,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _unHtmlEntities($sInput)
+    protected function _unHtmlEntities($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aTransTbl = array_flip(get_html_translation_table(HTML_ENTITIES));
 
@@ -557,7 +558,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _getHeapTableName()
+    protected function _getHeapTableName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // table name must not start with any digit
         return "tmp_" . str_replace("0", "", md5($this->getSession()->getId()));
@@ -570,7 +571,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _generateTableCharSet($sMysqlVersion)
+    protected function _generateTableCharSet($sMysqlVersion) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTableCharset = "";
 
@@ -597,7 +598,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return bool
      */
-    protected function _createHeapTable($sHeapTable, $sTableCharset)
+    protected function _createHeapTable($sHeapTable, $sTableCharset) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blDone = false;
         $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -617,7 +618,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _getCatAdd($aChosenCat)
+    protected function _getCatAdd($aChosenCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCatAdd = null;
         if (is_array($aChosenCat) && count($aChosenCat)) {
@@ -645,7 +646,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return bool
      */
-    protected function _insertArticles($sHeapTable, $sCatAdd)
+    protected function _insertArticles($sHeapTable, $sCatAdd) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -696,7 +697,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @param string $sHeapTable table name
      */
-    protected function _removeParentArticles($sHeapTable)
+    protected function _removeParentArticles($sHeapTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("blExportMainVars"))) {
             $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -727,7 +728,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     /**
      * stores some info in session
      */
-    protected function _setSessionParams()
+    protected function _setSessionParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // reset it from session
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportDelCost");
@@ -775,7 +776,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return null
      */
-    protected function _loadRootCats()
+    protected function _loadRootCats() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aCatLvlCache === null) {
             $this->_aCatLvlCache = [];
@@ -826,7 +827,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _findDeepestCatPath($oArticle)
+    protected function _findDeepestCatPath($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sRet = "";
 
@@ -867,7 +868,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return object
      */
-    protected function _initArticle($sHeapTable, $iCnt, &$blContinue)
+    protected function _initArticle($sHeapTable, $iCnt, &$blContinue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oRs = $this->getDb()->selectLimit("select oxid from $sHeapTable", 1, $iCnt);
         if ($oRs != false && $oRs->count() > 0) {
@@ -901,7 +902,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _setCampaignDetailLink($oArticle)
+    protected function _setCampaignDetailLink($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #827
         if ($sCampaign = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportCampaign")) {
@@ -909,7 +910,8 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
             //#1166R - pangora - campaign
             $oArticle->appendLink("campaign={$sCampaign}");
 
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("blAppendCatToCampaign") &&
+            if (
+                \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("blAppendCatToCampaign") &&
                 ($sCat = $this->getCategoryString($oArticle))
             ) {
                 $oArticle->appendLink("/$sCat");

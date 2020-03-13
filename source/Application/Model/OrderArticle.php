@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -163,7 +164,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return double
      */
-    protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false)
+    protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
@@ -171,7 +172,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         // #1592A. must take real value
         $sQ = 'select oxstock from oxarticles 
             where oxid = :oxid';
-        $iStockCount = ( float ) $masterDb->getOne($sQ, [
+        $iStockCount = (float) $masterDb->getOne($sQ, [
             ':oxid' => $this->oxorderarticles__oxartid->value
         ]);
 
@@ -225,7 +226,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFieldName = strtolower($sFieldName);
         switch ($sFieldName) {
@@ -291,7 +292,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Sets article parameters to current object, so this object can be used for basket calculation
      */
-    protected function _setArticleParams()
+    protected function _setArticleParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // creating needed fields
         $this->oxarticles__oxstock = $this->oxorderarticles__oxamount;
@@ -349,7 +350,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return \OxidEsales\Eshop\Application\Model\Article | false
      */
-    protected function _getOrderArticle($sArticleId = null)
+    protected function _getOrderArticle($sArticleId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oOrderArticle === null) {
             $this->_oOrderArticle = false;
@@ -641,7 +642,8 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         // ordered articles
         if (($blSave = parent::save()) && $this->isNewOrderItem()) {
             $myConfig = $this->getConfig();
-            if ($myConfig->getConfigParam('blUseStock') &&
+            if (
+                $myConfig->getConfigParam('blUseStock') &&
                 $myConfig->getConfigParam('blPsBasketReservationEnabled')
             ) {
                 $this->getSession()
@@ -688,7 +690,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function isBundle()
     {
-        return ( bool ) $this->oxorderarticles__oxisbundle->value;
+        return (bool) $this->oxorderarticles__oxisbundle->value;
     }
 
     /**
@@ -763,7 +765,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return bool
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iInsertTime = time();
         $now = date('Y-m-d H:i:s', $iInsertTime);
@@ -803,7 +805,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Set order files
      */
-    public function _setOrderFiles()
+    public function _setOrderFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oArticle = $this->getArticle();
 

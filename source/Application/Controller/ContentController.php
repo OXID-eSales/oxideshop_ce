@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -165,7 +166,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return bool
      */
-    protected function _canShowContent($sContentIdent)
+    protected function _canShowContent($sContentIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return !(
             $this->isEnabledPrivateSales() &&
@@ -183,7 +184,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false)
+    protected function _prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sMeta) {
             $sMeta = $this->getContent()->oxcontents__oxtitle->value;
@@ -201,7 +202,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sKeywords) {
             $sKeywords = $this->getContent()->oxcontents__oxtitle->value;
@@ -239,7 +240,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $blPlain = (bool) Registry::getConfig()->getRequestParameter('plain');
         if ($blPlain === false) {
             $oUser = $this->getUser();
-            if ($this->isEnabledPrivateSales() &&
+            if (
+                $this->isEnabledPrivateSales() &&
                 (!$oUser || ($oUser && !$oUser->isTermsAccepted()))
             ) {
                 $blPlain = true;
@@ -254,7 +256,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _getSeoObjectId()
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return Registry::getConfig()->getRequestParameter('oxcid');
     }
@@ -317,7 +319,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return object
      */
-    protected function _getSubject($iLang)
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getContent();
     }
@@ -327,7 +329,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _getTplName()
+    protected function _getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // assign template name
         $sTplName = Registry::getConfig()->getRequestParameter('tpl');

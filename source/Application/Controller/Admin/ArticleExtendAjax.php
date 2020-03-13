@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -42,7 +43,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $categoriesTable = $this->_getViewName('oxcategories');
         $objectToCategoryView = $this->_getViewName('oxobject2category');
@@ -74,7 +75,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return array
      */
-    protected function _getDataFields($sQ)
+    protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dataFields = parent::_getDataFields($sQ);
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid') && is_array($dataFields) && count($dataFields)) {
@@ -196,7 +197,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @param string $oxId product id
      */
-    protected function _updateOxTime($oxId)
+    protected function _updateOxTime($oxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $objectToCategoryView = $this->_getViewName('oxobject2category');

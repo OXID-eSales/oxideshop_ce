@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -38,7 +39,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
      *
      * @return oxSeoEncoderVendor
      */
-    protected function _getEncoder()
+    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
     }
@@ -71,7 +72,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
      *
      * @return string
      */
-    protected function _getType()
+    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxvendor';
     }

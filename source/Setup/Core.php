@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -6,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use \OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Facts\Facts;
 use oxSystemComponentException;
 
 /**
@@ -78,8 +79,8 @@ class Core
         $facts = new Facts();
         $class =  'OxidEsales\\EshopCommunity\\Setup\\' . $sInstanceName;
 
-        $classEnterprise = '\\OxidEsales\\EshopEnterprise\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
-        $classProfessional = '\\OxidEsales\\EshopProfessional\\'.EditionPathProvider::SETUP_DIRECTORY.'\\'.$sInstanceName;
+        $classEnterprise = '\\OxidEsales\\EshopEnterprise\\' . EditionPathProvider::SETUP_DIRECTORY . '\\' . $sInstanceName;
+        $classProfessional = '\\OxidEsales\\EshopProfessional\\' . EditionPathProvider::SETUP_DIRECTORY . '\\' . $sInstanceName;
         if (($facts->isProfessional() || $facts->isEnterprise()) && $this->classExists($classProfessional)) {
             $class = $classProfessional;
         }

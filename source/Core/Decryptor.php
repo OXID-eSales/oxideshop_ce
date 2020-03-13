@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -39,7 +40,7 @@ class Decryptor
      *
      * @return string
      */
-    protected function _formKey($key, $string)
+    protected function _formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $key = '_' . $key;
         $keyLength = (strlen($string) / strlen($key)) + 5;

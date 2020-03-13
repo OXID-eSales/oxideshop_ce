@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -203,7 +204,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function _processOptions($aParams)
+    protected function _processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_array($aParams)) {
             $aParams = [];

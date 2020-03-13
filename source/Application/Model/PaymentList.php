@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -53,7 +54,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser)
+    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;

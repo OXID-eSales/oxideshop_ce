@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -118,7 +119,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             if ($aParams['oxuserpayments__oxid'] != "-1") {
                 $oAdress = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
                 if ($oAdress->load($aParams['oxuserpayments__oxid'])) {
-                    $this->_blDelete = ( bool ) $oAdress->delete();
+                    $this->_blDelete = (bool) $oAdress->delete();
                 }
             }
         }

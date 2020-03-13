@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -174,7 +175,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return string
      */
-    protected function _processLongDesc($sValue)
+    protected function _processLongDesc($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // workaround for firefox showing &lang= as &9001;= entity, mantis#0001272
         return str_replace('&lang=', '&amp;lang=', $sValue);
@@ -230,7 +231,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return null
      */
-    protected function _deleteCatPicture($item, $field)
+    protected function _deleteCatPicture($item, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($item->isDerived()) {
             return;
@@ -277,7 +278,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function _parseRequestParametersForSave($aReqParams)
+    protected function _parseRequestParametersForSave($aReqParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checkbox handling
         if (!isset($aReqParams['oxcategories__oxactive'])) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -38,7 +39,7 @@ class CreditCardValidator
      *
      * @return bool
      */
-    protected function _isValidType($type, $number)
+    protected function _isValidType($type, $number) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // testing if card type is known and matches pattern
         if (isset($this->_aCardsInfo[$type])) {
@@ -55,7 +56,7 @@ class CreditCardValidator
      *
      * @return bool
      */
-    protected function _isExpired($date)
+    protected function _isExpired($date) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($date) {
             $years = substr($date, 2, 2);
@@ -78,7 +79,7 @@ class CreditCardValidator
      *
      * @return bool
      */
-    protected function _isValidNumer($number)
+    protected function _isValidNumer($number) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $valid = false;
         if (($length = strlen($number))) {
@@ -88,7 +89,7 @@ class CreditCardValidator
             // Luhn algorithm
             for ($pos = 0; $pos < $length; $pos++) {
                 // taking digit to check..
-                $currDigit = ( int ) $number{$pos};
+                $currDigit = (int) $number{$pos};
 
                 // multiplying if needed..
                 $addValue = (($pos % 2 == $mod) ? 2 : 1) * $currDigit;

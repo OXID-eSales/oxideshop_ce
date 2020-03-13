@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -40,7 +41,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSLViewName = $this->_getViewName('oxselectlist');
         $sArtViewName = $this->_getViewName('oxarticles');
@@ -126,7 +127,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
 
                 $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid = :oxobjectid";
 
-                $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field(( int ) $database->getOne($sSql, [
+                $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field((int) $database->getOne($sSql, [
                     ':oxobjectid' => $soxId
                 ]));
                 $oNew->save();

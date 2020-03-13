@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -88,7 +89,7 @@ class UniversallyUniqueIdGenerator
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
      */
-    protected function _getOpenSSLChecker()
+    protected function _getOpenSSLChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_openSSLChecker;
     }
@@ -98,7 +99,7 @@ class UniversallyUniqueIdGenerator
      *
      * @return string
      */
-    protected function _generateBasedOnOpenSSL()
+    protected function _generateBasedOnOpenSSL() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sRandomData = openssl_random_pseudo_bytes(16);
         $sRandomData[6] = chr(ord($sRandomData[6]) & 0x0f | 0x40); // set version to 0100
@@ -112,7 +113,7 @@ class UniversallyUniqueIdGenerator
      *
      * @return string
      */
-    protected function _generateBasedOnMtRand()
+    protected function _generateBasedOnMtRand() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',

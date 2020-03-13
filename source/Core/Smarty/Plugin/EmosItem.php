@@ -1,4 +1,5 @@
 <?php
+
 /**
  * EMOS PHP Bib 2
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -146,7 +147,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param object $oManufacturer manufacturer object
      */
-    protected function _addCategoryFields($oManufacturer)
+    protected function _addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oManufacturer->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field($oManufacturer->oxmanufacturers__oxid->value);
         $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
@@ -180,7 +181,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Processes manufacturer category URLs
      */
-    protected function _seoSetManufacturerData()
+    protected function _seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

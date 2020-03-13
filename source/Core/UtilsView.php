@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Core;
 
 use oxException;
@@ -224,7 +226,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getRenderedContent(string $description, array $context, string $oxid = null) : string
+    public function getRenderedContent(string $description, array $context, string $oxid = null): string
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
             return $description;
@@ -362,7 +364,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @param Smarty $smarty template processor object (smarty)
      */
-    protected function _fillCommonSmartyProperties($smarty)
+    protected function _fillCommonSmartyProperties($smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = $this->getConfig();
         $smarty->left_delimiter = '[{';
@@ -465,7 +467,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @param object $smarty template processor object (smarty)
      */
-    protected function _smartyCompileCheck($smarty)
+    protected function _smartyCompileCheck($smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = $this->getConfig();
         $smarty->compile_check = $config->getConfigParam('blCheckTemplates');
@@ -488,7 +490,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty)
+    public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($resourceType == 'file' && !is_readable($resourceName)) {
@@ -515,7 +517,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getTemplateBlock($moduleId, $fileName)
+    protected function _getTemplateBlock($moduleId, $fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
         $pathFormatter->setModulesPath($this->getConfig()->getModulesDir());
@@ -574,7 +576,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getActiveModuleInfo()
+    protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aActiveModuleInfo === null) {
             $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
@@ -723,7 +725,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     {
         $templateBlocks = [];
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
-            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
+            if (
+                !in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['theme'])
                 || $activeBlockTemplate['OXTHEME']
             ) {
                 $templateBlocks[] = $activeBlockTemplate;
@@ -747,7 +750,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $templateBlocks = [];
         $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
-            if (!in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
+            if (
+                !in_array($this->prepareBlockKey($activeBlockTemplate), $templateBlocksToExchange['custom_theme'])
                 || $activeBlockTemplate['OXTHEME'] === $customThemeId
             ) {
                 $templateBlocks[] = $activeBlockTemplate;

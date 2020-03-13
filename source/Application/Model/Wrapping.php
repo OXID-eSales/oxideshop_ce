@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -153,7 +154,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isPriceViewModeNetto()
+    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getUser();

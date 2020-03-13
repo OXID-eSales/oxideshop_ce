@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -225,7 +226,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return Article
      */
-    protected function _getParentProduct($sParentId)
+    protected function _getParentProduct($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
@@ -244,7 +245,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return string|null
      */
-    protected function _getAddUrlParams()
+    protected function _getAddUrlParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getListType() == "search") {
             return $this->getDynUrlParams();
@@ -256,7 +257,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @param object $oProduct Product to process.
      */
-    protected function _processProduct($oProduct)
+    protected function _processProduct($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oProduct->setLinkType($this->getLinkType());
         if ($sAddParams = $this->_getAddUrlParams()) {
@@ -697,7 +698,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return object
      */
-    protected function _getSubject($iLang)
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getProduct();
     }
@@ -898,7 +899,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Set item sorting for widget based of retrieved parameters.
      */
-    protected function _setSortingParameters()
+    protected function _setSortingParameters() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
@@ -968,7 +969,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * @param Utils  $myUtils  General utils.
      * @param Config $myConfig Main shop configuration.
      */
-    protected function _additionalChecksForArticle($myUtils, $myConfig)
+    protected function _additionalChecksForArticle($myUtils, $myConfig) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blContinue = true;
         if (!$this->_oProduct->isVisible()) {

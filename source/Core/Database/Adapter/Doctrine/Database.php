@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -1283,7 +1284,8 @@ class Database implements DatabaseInterface
         $dateTypes = ['YEAR'];
 
         $assignedType = strtoupper($assignedType);
-        if ((
+        if (
+            (
             in_array($assignedType, $integerTypes) ||
                 in_array($assignedType, $fixedPointTypes) ||
                 in_array($assignedType, $floatingPointTypes) ||

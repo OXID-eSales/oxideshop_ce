@@ -1,12 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
+declare(strict_types=1);
 
-use function is_array;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;

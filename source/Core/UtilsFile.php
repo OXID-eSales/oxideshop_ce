@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -139,7 +140,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @param integer $iNewFilesCounter New files count.
      */
-    protected function _setNewFilesCounter($iNewFilesCounter)
+    protected function _setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_iNewFilesCounter = (int) $iNewFilesCounter;
     }
@@ -260,7 +261,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true)
+    protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sValue) {
             // add type to name
@@ -300,7 +301,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getImagePath($sType)
+    protected function _getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
@@ -317,7 +318,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return array | null
      */
-    protected function _getImageSize($sImgType, $iImgNum, $sImgConf)
+    protected function _getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = $this->getConfig();
 
@@ -346,7 +347,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _copyFile($sSource, $sTarget)
+    protected function _copyFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_dir(dirname($sTarget))) {
             mkdir(dirname($sTarget), 0744, true);
@@ -372,7 +373,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _moveImage($sSource, $sTarget)
+    protected function _moveImage($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_dir(dirname($sTarget))) {
             mkdir(dirname($sTarget), 0744, true);
@@ -592,7 +593,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = "", $blUnique = true)
+    protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = "", $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFilePath = $this->normalizeDir($sFilePath);
         $iFileCounter = 0;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -249,7 +250,7 @@ class FileChecker
      *
      * @return string error
      */
-    protected function _isWebServiceOnline()
+    protected function _isWebServiceOnline() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oXML = null;
         $aParams = [
@@ -288,7 +289,7 @@ class FileChecker
      *
      * @return boolean
      */
-    protected function _isShopVersionIsKnown()
+    protected function _isShopVersionIsKnown() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aParams = [
             'job' => 'existsversion',
@@ -401,7 +402,7 @@ class FileChecker
      *
      * @return \SimpleXMLElement
      */
-    protected function _getFileVersion($sMD5, $sFile)
+    protected function _getFileVersion($sMD5, $sFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aParams = [
             'job' => 'md5check',

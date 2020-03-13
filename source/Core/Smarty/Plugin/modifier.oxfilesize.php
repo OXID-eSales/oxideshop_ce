@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -18,22 +19,22 @@
 function smarty_modifier_oxfilesize($iSize)
 {
     if ($iSize < 1024) {
-        return $iSize. " B";
+        return $iSize . " B";
     }
 
-    $iSize = $iSize/1024;
+    $iSize = $iSize / 1024;
 
     if ($iSize < 1024) {
         return sprintf("%.1f KB", $iSize);
     }
 
-    $iSize = $iSize/1024;
+    $iSize = $iSize / 1024;
 
     if ($iSize < 1024) {
         return sprintf("%.1f MB", $iSize);
     }
 
-    $iSize = $iSize/1024;
+    $iSize = $iSize / 1024;
 
     return sprintf("%.1f GB", $iSize);
 }

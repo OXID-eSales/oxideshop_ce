@@ -20,7 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added arguments to oxNew method signature to improve static analysis possibilities [PR-744](https://github.com/OXID-eSales/oxideshop_ce/pull/744)
 - Skip currency url generation if "Display Currencies" option is disabled [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
 - Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
-    
+- Update symfony components to version 5
+
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
 - `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`

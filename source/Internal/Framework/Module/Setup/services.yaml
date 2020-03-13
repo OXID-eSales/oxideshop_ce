@@ -57,7 +57,6 @@ services:
   oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationSmartyPluginDirectoryHandler
     arguments:
-      - !php/const OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper::MAPPING_KEY
       - !php/const OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_SMARTY_PLUGIN_DIRECTORIES
       - '@OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface'
 

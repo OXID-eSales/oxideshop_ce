@@ -40,7 +40,7 @@ class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHand
             $classExtensions = [];
 
             foreach ($configuration->getClassExtensions() as $extension) {
-                $classExtensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
+                $classExtensions[] = $extension->getModuleExtensionClassName();
             }
 
             $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);

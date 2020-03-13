@@ -20,11 +20,6 @@ class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurati
     /**
      * @var string
      */
-    private $settingName;
-
-    /**
-     * @var string
-     */
     private $shopConfigurationSettingName;
 
     /**
@@ -34,16 +29,13 @@ class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurati
 
     /**
      * ShopConfigurationModuleSettingHandler constructor.
-     * @param string                               $settingName
      * @param string                               $shopConfigurationSettingName
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
     public function __construct(
-        string $settingName,
         string $shopConfigurationSettingName,
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
-        $this->settingName = $settingName;
         $this->shopConfigurationSettingName = $shopConfigurationSettingName;
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }

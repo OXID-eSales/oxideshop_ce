@@ -589,7 +589,6 @@ class UserComponentTest extends \OxidTestCase
 
         $userComponent = $this->getMock(UserComponent::class, ['getLoginStatus']);
         $userComponent
-            ->expects($this->atLeastOnce())
             ->method('getLoginStatus')
             ->willReturn(1);
 

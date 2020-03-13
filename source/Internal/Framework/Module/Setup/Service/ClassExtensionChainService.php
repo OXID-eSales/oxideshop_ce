@@ -84,7 +84,8 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
             $shopConfigurationSetting
                 ->setShopId($shopId)
                 ->setName(ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS_CHAIN)
-                ->setType(ShopSettingType::ASSOCIATIVE_ARRAY);
+                ->setType(ShopSettingType::ASSOCIATIVE_ARRAY)
+                ->setValue([]);
         }
 
         return $shopConfigurationSetting;

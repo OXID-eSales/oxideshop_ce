@@ -62,7 +62,7 @@ class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInt
      * @param TemplateBlock $templateBlock
      * @return TemplateBlockExtension
      */
-    public function mapDataToObject(TemplateBlock $templateBlock): TemplateBlockExtension
+    private function mapDataToObject(TemplateBlock $templateBlock): TemplateBlockExtension
     {
         $templateBlockExtension = new TemplateBlockExtension();
         $templateBlockExtension

@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
@@ -14,14 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
+    /** @var ShopConfigurationSettingDaoInterface */
     private $shopConfigurationSettingDao;
 
-    /**
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     */
+    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
     {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
@@ -34,7 +33,7 @@ class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHand
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
         if ($configuration->hasClassExtensions()) {
-            $classExtensions=[];
+            $classExtensions = [];
 
             foreach ($configuration->getClassExtensions() as $extension) {
                 $classExtensions[] = $extension->getModuleExtensionClassName();

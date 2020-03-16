@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Handler;
 
@@ -15,9 +18,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class SettingModuleSettingHandlerTest extends TestCase
+final class SettingModuleSettingHandlerTest extends TestCase
 {
-    public function testHandlingOnModuleActivation()
+    public function testHandlingOnModuleActivation(): void
     {
         $shopModuleSetting = $this->getTestSetting();
 
@@ -35,7 +38,7 @@ class SettingModuleSettingHandlerTest extends TestCase
         $handler->handleOnModuleActivation($moduleConfiguration, 1);
     }
 
-    public function testHandlingOnModuleDeactivation()
+    public function testHandlingOnModuleDeactivation(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');

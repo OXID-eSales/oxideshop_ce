@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\H
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\{
     ModuleConfiguration,
@@ -26,7 +27,6 @@ final class ShopConfigurationClassExtensionsHandlerTest extends TestCase
     public function testHandleOnModuleActivationWithInvalidConfigWillSkipExecution(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
         $emptyModuleConfig = new ModuleConfiguration();
 
@@ -34,25 +34,33 @@ final class ShopConfigurationClassExtensionsHandlerTest extends TestCase
             $daoMock->reveal()
         ))->handleOnModuleActivation($emptyModuleConfig, $shopId);
 
-        $daoMock->get($configId, $shopId)->shouldNotHaveBeenCalled();
+        $daoMock->get(ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS, $shopId)->shouldNotHaveBeenCalled();
         $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldNotHaveBeenCalled();
     }
 
     public function testHandleOnModuleActivationWithSettingNotFoundWillCallSave(): void
     {
         $shopId = 1;
+        $moduleId = 'some-module-id';
+        $shopClass = 'some-shop-class';
+        $moduleClass = 'some-module-class';
+        $expectedConfig = [
+            $moduleId => [$moduleClass],
+        ];
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
         $daoMock->get(ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS, $shopId)
             ->willThrow(EntryDoesNotExistDaoException::class);
+        $shopConfig = $this->createEmptyShopConfig($shopId);
+        $shopConfig->setValue($expectedConfig);
         $moduleConfig = (new ModuleConfiguration())
-            ->setId('some-module-id')
-            ->addClassExtension(new ClassExtension('some-shop-class', 'some-module-class'));
+            ->setId($moduleId)
+            ->addClassExtension(new ClassExtension($shopClass, $moduleClass));
 
         (new ShopConfigurationClassExtensionsHandler(
             $daoMock->reveal()
         ))->handleOnModuleActivation($moduleConfig, $shopId);
 
-        $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldHaveBeenCalledOnce();
+        $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
     }
 
     public function testHandleOnModuleActivationWillSaveMergedConfig(): void
@@ -111,7 +119,7 @@ final class ShopConfigurationClassExtensionsHandlerTest extends TestCase
             $daoMock->reveal()
         ))->handleOnModuleDeactivation($moduleConfig, $shopId);
 
-        $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldHaveBeenCalledOnce();
+        $daoMock->save($this->createEmptyShopConfig($shopId))->shouldHaveBeenCalledOnce();
     }
 
     public function testHandleOnModuleDeactivationWillSaveCleanedConfig(): void
@@ -140,5 +148,14 @@ final class ShopConfigurationClassExtensionsHandlerTest extends TestCase
 
         $this->assertSame($expectedConfig, $shopConfig->getValue());
         $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
+    }
+
+    private function createEmptyShopConfig(int $shopId): ShopConfigurationSetting
+    {
+        return (new ShopConfigurationSetting())
+            ->setShopId($shopId)
+            ->setName(ShopConfigurationSetting::MODULE_CLASS_EXTENSIONS)
+            ->setType(ShopSettingType::ARRAY)
+            ->setValue([]);
     }
 }

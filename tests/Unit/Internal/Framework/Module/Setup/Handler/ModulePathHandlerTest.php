@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Handler;
 
@@ -13,9 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModulePathHandler;
 use PHPUnit\Framework\TestCase;
 
-class ModulePathHandlerTest extends TestCase
+final class ModulePathHandlerTest extends TestCase
 {
-    public function testHandleOnModuleActivation()
+    public function testHandleOnModuleActivation(): void
     {
         $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
 
@@ -33,7 +36,7 @@ class ModulePathHandlerTest extends TestCase
         );
     }
 
-    public function testHandleOnModuleDeactivation()
+    public function testHandleOnModuleDeactivation(): void
     {
         $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
 
@@ -69,7 +72,7 @@ class ModulePathHandlerTest extends TestCase
         {
             private $settings = [];
 
-            public function save(ShopConfigurationSetting $setting)
+            public function save(ShopConfigurationSetting $setting): void
             {
                 $this->settings[$setting->getShopId()][$setting->getName()] = $setting;
             }
@@ -90,7 +93,7 @@ class ModulePathHandlerTest extends TestCase
                 return $setting;
             }
 
-            public function delete(ShopConfigurationSetting $setting)
+            public function delete(ShopConfigurationSetting $setting): void
             {
                 unset($this->settings[$setting->getShopId()][$setting->getName()]);
             }

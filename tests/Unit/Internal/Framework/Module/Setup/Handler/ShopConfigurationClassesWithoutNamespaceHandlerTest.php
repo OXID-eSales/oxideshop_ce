@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\H
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\{
     ModuleConfiguration,
@@ -26,41 +27,43 @@ final class ShopConfigurationClassesWithoutNamespaceHandlerTest extends TestCase
     public function testHandleOnModuleActivationWithInvalidConfigWillSkipExecution(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
         $emptyModuleConfig = new ModuleConfiguration();
 
-        (new ShopConfigurationClassesWithoutNamespaceHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleActivation($emptyModuleConfig, $shopId);
+        (new ShopConfigurationClassesWithoutNamespaceHandler($daoMock->reveal()))
+            ->handleOnModuleActivation($emptyModuleConfig, $shopId);
 
-        $daoMock->get($configId, $shopId)->shouldNotHaveBeenCalled();
+        $daoMock->get(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES, $shopId)->shouldNotHaveBeenCalled();
         $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldNotHaveBeenCalled();
     }
 
     public function testHandleOnModuleActivationWithSettingNotFoundWillCallSave(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
+        $moduleId = 'some-module-id';
+        $shopClass = 'some-shop-class';
+        $moduleClass = 'some-module-class';
+        $expectedConfig = [
+            $moduleId => [$shopClass => $moduleClass],
+            ];
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willThrow(EntryDoesNotExistDaoException::class);
+        $daoMock->get(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES, $shopId)
+            ->willThrow(EntryDoesNotExistDaoException::class);
+        $shopConfig = $this->createEmptyShopConfig($shopId);
+        $shopConfig->setValue($expectedConfig);
         $moduleConfig = (new ModuleConfiguration())
-            ->setId('some-module-id')
-            ->addClassWithoutNamespace(new ClassWithoutNamespace('some-shop-class', 'some-module-class'));
+            ->setId($moduleId)
+            ->addClassWithoutNamespace(new ClassWithoutNamespace($shopClass, $moduleClass));
 
-        (new ShopConfigurationClassesWithoutNamespaceHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleActivation($moduleConfig, $shopId);
+        (new ShopConfigurationClassesWithoutNamespaceHandler($daoMock->reveal()))
+            ->handleOnModuleActivation($moduleConfig, $shopId);
 
-        $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldHaveBeenCalledOnce();
+        $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
     }
 
     public function testHandleOnModuleActivationWillSaveMergedConfig(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $moduleId = 'some-module-id';
         $shopClass1 = 'some-shop-class-1';
         $moduleClass1 = 'some-module-class-1';
@@ -71,7 +74,7 @@ final class ShopConfigurationClassesWithoutNamespaceHandlerTest extends TestCase
         ];
         $shopConfig = (new ShopConfigurationSetting())->setValue($initialConfig);
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willReturn($shopConfig);
+        $daoMock->get(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES, $shopId)->willReturn($shopConfig);
 
         $moduleConfig = (new ModuleConfiguration())
             ->setId($moduleId)
@@ -79,10 +82,8 @@ final class ShopConfigurationClassesWithoutNamespaceHandlerTest extends TestCase
             ->addClassWithoutNamespace(new ClassWithoutNamespace('', 'some-module-class-2'))
             ->addClassWithoutNamespace(new ClassWithoutNamespace('some-shop-class-3', ''));
 
-        (new ShopConfigurationClassesWithoutNamespaceHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleActivation($moduleConfig, $shopId);
+        (new ShopConfigurationClassesWithoutNamespaceHandler($daoMock->reveal()))
+            ->handleOnModuleActivation($moduleConfig, $shopId);
 
         $this->assertSame($expectedConfig, $shopConfig->getValue());
         $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
@@ -91,41 +92,35 @@ final class ShopConfigurationClassesWithoutNamespaceHandlerTest extends TestCase
     public function testHandleOnModuleDeactivationWithInvalidConfigWillSkipExecution(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
         $moduleConfig = new ModuleConfiguration();
 
-        (new ShopConfigurationClassesWithoutNamespaceHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleDeactivation($moduleConfig, $shopId);
+        (new ShopConfigurationClassesWithoutNamespaceHandler($daoMock->reveal()))
+            ->handleOnModuleDeactivation($moduleConfig, $shopId);
 
-        $daoMock->get($configId, $shopId)->shouldNotHaveBeenCalled();
+        $daoMock->get(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES, $shopId)->shouldNotHaveBeenCalled();
         $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldNotHaveBeenCalled();
     }
 
     public function testHandleOnModuleDeactivationWithSettingNotFoundWillCallSave(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willThrow(EntryDoesNotExistDaoException::class);
+        $daoMock->get(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES, $shopId)
+            ->willThrow(EntryDoesNotExistDaoException::class);
         $moduleConfig = (new ModuleConfiguration())
             ->setId('some-module-id')
             ->addClassWithoutNamespace(new ClassWithoutNamespace('some-shop-class', 'some-module-class'));
 
-        (new ShopConfigurationClassesWithoutNamespaceHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleDeactivation($moduleConfig, $shopId);
+        (new ShopConfigurationClassesWithoutNamespaceHandler($daoMock->reveal()))
+            ->handleOnModuleDeactivation($moduleConfig, $shopId);
 
-        $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldHaveBeenCalledOnce();
+        $daoMock->save($this->createEmptyShopConfig($shopId))->shouldHaveBeenCalledOnce();
     }
 
     public function testHandleOnModuleDeactivationWillSaveCleanedConfig(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $moduleId = 'some-module-id';
         $initialConfig = [
             'some-key' => 'some-value',
@@ -138,17 +133,24 @@ final class ShopConfigurationClassesWithoutNamespaceHandlerTest extends TestCase
         ];
         $shopConfig = (new ShopConfigurationSetting())->setValue($initialConfig);
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willReturn($shopConfig);
+        $daoMock->get(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES, $shopId)->willReturn($shopConfig);
         $moduleConfig = (new ModuleConfiguration())
             ->setId($moduleId)
             ->addClassWithoutNamespace(new ClassWithoutNamespace('some-shop-class', 'some-module-class'));
 
-        (new ShopConfigurationClassesWithoutNamespaceHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleDeactivation($moduleConfig, $shopId);
+        (new ShopConfigurationClassesWithoutNamespaceHandler($daoMock->reveal()))
+            ->handleOnModuleDeactivation($moduleConfig, $shopId);
 
         $this->assertSame($expectedConfig, $shopConfig->getValue());
         $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
+    }
+
+    private function createEmptyShopConfig(int $shopId): ShopConfigurationSetting
+    {
+        return (new ShopConfigurationSetting())
+            ->setShopId($shopId)
+            ->setName(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES)
+            ->setType(ShopSettingType::ARRAY)
+            ->setValue([]);
     }
 }

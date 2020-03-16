@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationEventsHandler;
 use PHPUnit\Framework\TestCase;
 
-class ShopConfigurationEventsHandlerTest extends TestCase
+final class ShopConfigurationEventsHandlerTest extends TestCase
 {
     public function testHandleOnModuleActivation(): void
     {

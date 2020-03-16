@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `SYSREQ_MYSQL_VERSION`
 ### Fixed
 - Issue with session ID regeneration on user registration
+### Removed
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationModuleSettingHandler`
 
 ## [6.5.1] - 2020-02-25
 

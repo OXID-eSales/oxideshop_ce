@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
@@ -14,25 +17,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ShopConfigurationClassesWithoutNamespaceHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var string
-     */
-    private $shopConfigurationSettingName;
-
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
+    /** @var ShopConfigurationSettingDaoInterface */
     private $shopConfigurationSettingDao;
 
-    /**
-     * @param string                               $shopConfigurationSettingName
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     */
+    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(
-        string                                  $shopConfigurationSettingName,
-        ShopConfigurationSettingDaoInterface    $shopConfigurationSettingDao
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
-        $this->shopConfigurationSettingName = $shopConfigurationSettingName;
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
@@ -48,7 +39,7 @@ class ShopConfigurationClassesWithoutNamespaceHandler implements ModuleConfigura
             $classes = [];
 
             foreach ($configuration->getClassesWithoutNamespace() as $class) {
-                if ($class->getShopClass() !== "" && $class->getModuleClass() !== "") {
+                if ($class->getShopClass() !== '' && $class->getModuleClass() !== '') {
                     $classes[$class->getShopClass()] = $class->getModuleClass();
                 }
             }
@@ -92,14 +83,14 @@ class ShopConfigurationClassesWithoutNamespaceHandler implements ModuleConfigura
     {
         try {
             $shopConfigurationSetting = $this->shopConfigurationSettingDao->get(
-                $this->shopConfigurationSettingName,
+                ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES,
                 $shopId
             );
         } catch (EntryDoesNotExistDaoException $exception) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)
-                ->setName($this->shopConfigurationSettingName)
+                ->setName(ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES)
                 ->setType(ShopSettingType::ARRAY)
                 ->setValue([]);
         }

@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\H
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\{
     ModuleConfiguration,
@@ -26,41 +27,46 @@ final class TemplatesModuleSettingHandlerTest extends TestCase
     public function testHandleOnModuleActivationWithInvalidConfigWillSkipExecution(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
         $emptyModuleConfig = new ModuleConfiguration();
 
-        (new TemplatesModuleSettingHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleActivation($emptyModuleConfig, $shopId);
+        (new TemplatesModuleSettingHandler($daoMock->reveal()))
+            ->handleOnModuleActivation($emptyModuleConfig, $shopId);
 
-        $daoMock->get($configId, $shopId)->shouldNotHaveBeenCalled();
+        $daoMock->get(ShopConfigurationSetting::MODULE_TEMPLATES, $shopId)->shouldNotHaveBeenCalled();
         $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldNotHaveBeenCalled();
     }
 
     public function testHandleOnModuleActivationWithSettingNotFoundWillCallSave(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
+        $moduleId = 'some-module-id';
+        $tplKey = 'some-tpl-key';
+        $tplPath = 'some-tpl-dir';
+        $expectedConfig = [
+            $moduleId => [
+                $tplKey => $tplPath,
+            ],
+        ];
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willThrow(EntryDoesNotExistDaoException::class);
+        $daoMock->get(ShopConfigurationSetting::MODULE_TEMPLATES, $shopId)
+            ->willThrow(EntryDoesNotExistDaoException::class);
+        $shopConfig = $this->createEmptyShopConfig($shopId);
+        $shopConfig->setValue($expectedConfig);
         $moduleConfig = (new ModuleConfiguration())
-            ->setId('some-module-id')
-            ->addTemplate(new Template('some-tpl-key', 'some-tpl-dir'));
+            ->setId($moduleId)
+            ->addTemplate(new Template($tplKey, $tplPath));
 
         (new TemplatesModuleSettingHandler(
-            $configId,
             $daoMock->reveal()
         ))->handleOnModuleActivation($moduleConfig, $shopId);
 
-        $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldHaveBeenCalledOnce();
+        $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
     }
 
     public function testHandleOnModuleActivationWillSaveMergedConfig(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $moduleId = 'some-module-id';
         $tplKey1 = 'some-tpl-key-1';
         $tplKey2 = 'some-tpl-key-2';
@@ -76,16 +82,14 @@ final class TemplatesModuleSettingHandlerTest extends TestCase
         ];
         $shopConfig = (new ShopConfigurationSetting())->setValue($initialConfig);
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willReturn($shopConfig);
+        $daoMock->get(ShopConfigurationSetting::MODULE_TEMPLATES, $shopId)->willReturn($shopConfig);
         $moduleConfig = (new ModuleConfiguration())
             ->setId($moduleId)
             ->addTemplate(new Template($tplKey1, $tplPath1))
             ->addTemplate(new Template($tplKey2, $tplPath2));
 
-        (new TemplatesModuleSettingHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleActivation($moduleConfig, $shopId);
+        (new TemplatesModuleSettingHandler($daoMock->reveal()))
+            ->handleOnModuleActivation($moduleConfig, $shopId);
 
         $this->assertSame($expectedConfig, $shopConfig->getValue());
         $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
@@ -94,41 +98,35 @@ final class TemplatesModuleSettingHandlerTest extends TestCase
     public function testHandleOnModuleDeactivationWithInvalidConfigWillSkipExecution(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
         $moduleConfig = new ModuleConfiguration();
 
-        (new TemplatesModuleSettingHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleDeactivation($moduleConfig, $shopId);
+        (new TemplatesModuleSettingHandler($daoMock->reveal()))
+            ->handleOnModuleDeactivation($moduleConfig, $shopId);
 
-        $daoMock->get($configId, $shopId)->shouldNotHaveBeenCalled();
+        $daoMock->get(ShopConfigurationSetting::MODULE_TEMPLATES, $shopId)->shouldNotHaveBeenCalled();
         $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldNotHaveBeenCalled();
     }
 
     public function testHandleOnModuleDeactivationWithSettingNotFoundWillCallSave(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willThrow(EntryDoesNotExistDaoException::class);
+        $daoMock->get(ShopConfigurationSetting::MODULE_TEMPLATES, $shopId)
+            ->willThrow(EntryDoesNotExistDaoException::class);
         $moduleConfig = (new ModuleConfiguration())
             ->setId('some-module-id')
             ->addTemplate(new Template('some-tpl-key', 'some-tpl-path'));
 
-        (new TemplatesModuleSettingHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleDeactivation($moduleConfig, $shopId);
+        (new TemplatesModuleSettingHandler($daoMock->reveal()))
+            ->handleOnModuleDeactivation($moduleConfig, $shopId);
 
-        $daoMock->save(Argument::type(ShopConfigurationSetting::class))->shouldHaveBeenCalledOnce();
+        $daoMock->save($this->createEmptyShopConfig($shopId))->shouldHaveBeenCalledOnce();
     }
 
     public function testHandleOnModuleDeactivationWillSaveCleanedConfig(): void
     {
         $shopId = 1;
-        $configId = 'some-config-id';
         $moduleId = 'some-module-id';
         $initialConfig = [
             'some-key' => 'some-value',
@@ -141,17 +139,24 @@ final class TemplatesModuleSettingHandlerTest extends TestCase
         ];
         $shopConfig = (new ShopConfigurationSetting())->setValue($initialConfig);
         $daoMock = $this->prophesize(ShopConfigurationSettingDaoInterface::class);
-        $daoMock->get($configId, $shopId)->willReturn($shopConfig);
+        $daoMock->get(ShopConfigurationSetting::MODULE_TEMPLATES, $shopId)->willReturn($shopConfig);
         $moduleConfig = (new ModuleConfiguration())
             ->setId($moduleId)
             ->addTemplate(new Template('some-tpl-key', 'some-tpl-dir'));
 
-        (new TemplatesModuleSettingHandler(
-            $configId,
-            $daoMock->reveal()
-        ))->handleOnModuleDeactivation($moduleConfig, $shopId);
+        (new TemplatesModuleSettingHandler($daoMock->reveal()))
+            ->handleOnModuleDeactivation($moduleConfig, $shopId);
 
         $this->assertSame($expectedConfig, $shopConfig->getValue());
         $daoMock->save($shopConfig)->shouldHaveBeenCalledOnce();
+    }
+
+    private function createEmptyShopConfig(int $shopId): ShopConfigurationSetting
+    {
+        return (new ShopConfigurationSetting())
+            ->setShopId($shopId)
+            ->setName(ShopConfigurationSetting::MODULE_TEMPLATES)
+            ->setType(ShopSettingType::ARRAY)
+            ->setValue([]);
     }
 }

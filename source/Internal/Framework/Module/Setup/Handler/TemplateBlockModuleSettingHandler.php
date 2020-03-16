@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
@@ -13,15 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var TemplateBlockExtensionDaoInterface
-     */
+    /** @var TemplateBlockExtensionDaoInterface */
     private $templateBlockExtensionDao;
 
-    /**
-     * TemplateBlockModuleSettingHandler constructor.
-     * @param TemplateBlockExtensionDaoInterface $templateBlockExtensionDao
-     */
+    /** @param TemplateBlockExtensionDaoInterface $templateBlockExtensionDao */
     public function __construct(TemplateBlockExtensionDaoInterface $templateBlockExtensionDao)
     {
         $this->templateBlockExtensionDao = $templateBlockExtensionDao;

@@ -1,25 +1,29 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Handler;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ControllersModuleSettingHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ControllersModuleSettingHandler;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ControllersModuleSettingHandlerTest extends TestCase
+final class ControllersModuleSettingHandlerTest extends TestCase
 {
-    public function testHandleConvertsModuleIdsAndControllerKeysLowercase()
+    public function testHandleConvertsModuleIdsAndControllerKeysLowercase(): void
     {
         $shopConfigurationSettingDaoMock = $this->getShopConfigurationSettingDaoMock();
 
@@ -31,15 +35,9 @@ class ControllersModuleSettingHandlerTest extends TestCase
         $moduleConfiguration
             ->setId('newmodule')
             ->addController(
-                new Controller(
-                    'firstControllerNewModule',
-                    \NewModule\FirstClass::class
-                )
+                new Controller('firstControllerNewModule', '\NewModule\FirstClass')
             )->addController(
-                new Controller(
-                    'secondControllerNewModule',
-                    \NewModule\SecondClass::class
-                )
+                new Controller('secondControllerNewModule', '\NewModule\SecondClass')
             );
 
         $settingHandler->handleOnModuleActivation($moduleConfiguration, 1);
@@ -47,18 +45,18 @@ class ControllersModuleSettingHandlerTest extends TestCase
         $this->assertSame(
             [
                 'existingmodule' => [
-                    'firstcontrollerexistingmodule'  => \OldModule\FirstControllerClass::class
+                    'firstcontrollerexistingmodule'  => '\OldModule\FirstControllerClass',
                 ],
                 'newmodule' => [
-                    'firstcontrollernewmodule'  => \NewModule\FirstClass::class,
-                    'secondcontrollernewmodule' => \NewModule\SecondClass::class,
+                    'firstcontrollernewmodule'  => '\NewModule\FirstClass',
+                    'secondcontrollernewmodule' => '\NewModule\SecondClass',
                 ]
             ],
             $shopConfigurationSettingDaoMock->get(ShopConfigurationSetting::MODULE_CONTROLLERS, 1)->getValue()
         );
     }
 
-    public function testHandleSavesEmptyShopConfigurationSettingIfNoControllersFound()
+    public function testHandleSavesEmptyShopConfigurationSettingIfNoControllersFound(): void
     {
         $shopConfigurationSettingDaoMock = $this->getShopConfigurationSettingDaoMock();
 
@@ -92,7 +90,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
         );
     }
 
-    public function testHandlingOnModuleDeactivation()
+    public function testHandlingOnModuleDeactivation(): void
     {
         $shopConfigurationSettingDaoMock = $this->getShopConfigurationSettingDaoMock();
 
@@ -122,7 +120,7 @@ class ControllersModuleSettingHandlerTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|ShopConfigurationSettingDaoInterface
+     * @return MockObject|ShopConfigurationSettingDaoInterface
      */
     private function getShopConfigurationSettingDaoMock(): ShopConfigurationSettingDaoInterface
     {
@@ -149,17 +147,17 @@ class ControllersModuleSettingHandlerTest extends TestCase
     /**
      * @param $shopConfigurationSettingDaoMock
      */
-    private function getShopConfigurationSettingWithExistingModuleControllers($shopConfigurationSettingDaoMock)
+    private function getShopConfigurationSettingWithExistingModuleControllers($shopConfigurationSettingDaoMock): void
     {
         $moduleControllers = new ShopConfigurationSetting();
         $moduleControllers
             ->setName(ShopConfigurationSetting::MODULE_CONTROLLERS)
             ->setShopId(1)
             ->setType(ShopSettingType::ARRAY)
-            ->setValue(['existingmodule' => ['firstcontrollerexistingmodule' => \OldModule\FirstControllerClass::class]]);
+            ->setValue([
+                'existingmodule' => ['firstcontrollerexistingmodule' => '\OldModule\FirstControllerClass']
+            ]);
 
-        $shopConfigurationSettingDaoMock->method('get')->willReturn(
-            $moduleControllers
-        );
+        $shopConfigurationSettingDaoMock->method('get')->willReturn($moduleControllers);
     }
 }

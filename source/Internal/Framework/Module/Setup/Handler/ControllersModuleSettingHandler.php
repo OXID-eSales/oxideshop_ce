@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
@@ -14,18 +17,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoExcepti
 
 class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
+    /** @var ShopConfigurationSettingDaoInterface */
     private $shopConfigurationSettingDao;
 
-    /**
-     * ShopConfigurationModuleSettingHandler constructor
-     *
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     */
+    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(
-        ShopConfigurationSettingDaoInterface    $shopConfigurationSettingDao
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
@@ -37,12 +34,14 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
     {
         if ($configuration->hasControllers()) {
-            $shopControllers = $this->getShopControllers($shopId);
+            $shopControllers = $this->getShopConfigurationSetting($shopId);
 
             $shopSettingValue = array_merge(
                 $shopControllers->getValue(),
                 [
-                    strtolower($configuration->getId()) => $this->controllerKeysToLowercase($configuration->getControllers()),
+                    strtolower($configuration->getId()) => $this->controllerKeysToLowercase(
+                        $configuration->getControllers()
+                    ),
                 ]
             );
 
@@ -58,7 +57,7 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
      */
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
     {
-        $shopControllers = $this->getShopControllers($shopId);
+        $shopControllers = $this->getShopConfigurationSetting($shopId);
 
         $shopSettingValue = $shopControllers->getValue();
         unset($shopSettingValue[strtolower($configuration->getId())]);
@@ -69,10 +68,25 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
     }
 
     /**
+     * @param array $controllers
+     * @return array
+     */
+    private function controllerKeysToLowercase(array $controllers): array
+    {
+        $result = [];
+
+        foreach ($controllers as $controller) {
+            $result[strtolower($controller->getId())] = $controller->getControllerClassNameSpace();
+        }
+
+        return $result;
+    }
+
+    /**
      * @param int $shopId
      * @return ShopConfigurationSetting
      */
-    private function getShopControllers(int $shopId): ShopConfigurationSetting
+    private function getShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {
             $shopConfigurationSetting = $this->shopConfigurationSettingDao->get(
@@ -89,23 +103,5 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
         }
 
         return $shopConfigurationSetting;
-    }
-
-    /**
-     * Change the controller keys to lower case.
-     *
-     * @param array $controllers
-     *
-     * @return array The given controllers array with the controller keys in lower case.
-     */
-    private function controllerKeysToLowercase(array $controllers) : array
-    {
-        $result = [];
-
-        foreach ($controllers as $controller) {
-            $result[strtolower($controller->getId())] = $controller->getControllerClassNameSpace();
-        }
-
-        return $result;
     }
 }

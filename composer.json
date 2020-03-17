@@ -24,7 +24,9 @@
         "symfony/console": "^5.0.4",
         "webmozart/path-util": "^2.3",
         "symfony/finder": "^5.0.4",
-        "symfony/filesystem": "^5.0.4"
+        "symfony/filesystem": "^5.0.4",
+        "codeception/module-webdriver": "^1.0",
+        "codeception/module-db": "^1.0"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "dev-master",
@@ -38,9 +40,7 @@
         "oxid-esales/oxideshop-ide-helper": "dev-master",
         "oxid-esales/azure-theme": "dev-master",
         "oxid-esales/oxideshop-facts": "dev-master",
-        "oxid-esales/testing-library": "dev-master",
-        "codeception/module-webdriver": "^1.0",
-        "codeception/module-db": "^1.0"
+        "oxid-esales/testing-library": "dev-master"
     },
     "autoload": {
         "psr-4": {

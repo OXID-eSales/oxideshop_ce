@@ -1412,35 +1412,40 @@ class UserComponentTest extends \OxidTestCase
     }
 
     /**
-     * Test oxcmp_user::_changeUser_noRedirect() - try to save password with spec chars.
+     * Test oxcmp_user::_changeUser_noRedirect()
      * #0003680
-     *
-     * @return null
      */
-    public function testChangeUser_noRedirect_setPasswordWithSpecChars()
+    public function testChangeUserNoRedirectWithExceptionWillReturnFalse(): void
     {
-        $this->expectException('oxException');
-        $this->expectExceptionMessage('Change user test');
-
-        $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
+        $sPass = 'abc';
         $this->setRequestParameter('invadr', null);
 
-        $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('checkSessionChallenge'));
-        $oSession->expects($this->atLeastOnce())->method('checkSessionChallenge')->will($this->returnValue(true));
+        $oSession = $this->createPartialMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
+        $oSession->expects($this->atLeastOnce())->method('checkSessionChallenge')->willReturn(true);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
 
-        $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('changeUserData'));
+        $oUser = $this->createPartialMock(\OxidEsales\Eshop\Application\Model\User::class, ['changeUserData']);
         $oUser->oxuser__oxusername = new oxField('test_username', oxField::T_RAW);
         $oUser->oxuser__oxpassword = new oxField($sPass, oxField::T_RAW);
         $oUser->expects($this->once())
             ->method('changeUserData')
-            ->with($this->equalTo('test_username'), $this->equalTo($sPass), $this->equalTo($sPass), $this->equalTo(null), $this->equalTo(null))
-            ->will($this->throwException(new oxException('Change user test')));
+            ->with(
+                $this->equalTo('test_username'),
+                $this->equalTo($sPass),
+                $this->equalTo($sPass),
+                $this->equalTo(null),
+                $this->equalTo(null)
+            )
+            ->willThrowException(new oxException('Change user test'));
 
-        $oView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('_getDelAddressData', 'getUser', 'getSession'));
-        $oView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
-        $oView->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oSession));
-        $oView->UNITchangeUser_noRedirect();
+        $oView = $this->createPartialMock(
+            $this->getProxyClassName('oxcmp_user'),
+            ['_getDelAddressData', 'getUser', 'getSession']
+        );
+        $oView->expects($this->atLeastOnce())->method('getUser')->willReturn($oUser);
+        $oView->expects($this->atLeastOnce())->method('getSession')->willReturn($oSession);
+
+        $this->assertFalse($oView->UNITchangeUser_noRedirect());
     }
 
     /**

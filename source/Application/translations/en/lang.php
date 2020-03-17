@@ -173,6 +173,7 @@ $aLang = [
 'ERROR_MESSAGE_USER_NOVALIDLOGIN'                             => 'Wrong e-mail address or password!',
 'ERROR_MESSAGE_USER_NOVALUES'                                 => 'E-mail address and password have to be entered!',
 'ERROR_MESSAGE_USER_USERCREATIONFAILED'                       => 'Error creating the user!',
+'ERROR_MESSAGE_USER_UPDATE_FAILED'                            => 'Error while updating the user data!',
 'ERROR_MESSAGE_USER_USEREXISTS'                               => 'Not possible to register %s. Maybe you have already registered?',
 'ERROR_MESSAGE_VERSION_EXPIRED1'                              => 'Your version is expired. Please contact',
 'ERROR_MESSAGE_VOUCHER_INCORRECTPRICE'                        => 'The total price is too low for this coupon!',

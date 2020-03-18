@@ -17,14 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ShopConfigurationEventsHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
+    /** @var ShopConfigurationSettingDaoInterface */
     private $shopConfigurationSettingDao;
 
-    /**
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     */
+    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
     {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
@@ -38,13 +34,9 @@ class ShopConfigurationEventsHandler implements ModuleConfigurationHandlerInterf
     {
         if ($configuration->hasEvents()) {
             $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
-
             $events = [];
-
-            if ($configuration->hasEvents()) {
-                foreach ($configuration->getEvents() as $event) {
-                    $events[$event->getAction()] = $event->getMethod();
-                }
+            foreach ($configuration->getEvents() as $event) {
+                $events[$event->getAction()] = $event->getMethod();
             }
 
             $shopSettingValue = $shopConfigurationSetting->getValue();

@@ -17,25 +17,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class TemplatesModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var string
-     */
-    private $shopConfigurationSettingName;
-
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
+    /** @var ShopConfigurationSettingDaoInterface */
     private $shopConfigurationSettingDao;
 
-    /**
-     * @param string $shopConfigurationSettingName
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     */
+    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(
-        string $shopConfigurationSettingName,
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
-        $this->shopConfigurationSettingName = $shopConfigurationSettingName;
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
@@ -93,14 +81,14 @@ class TemplatesModuleSettingHandler implements ModuleConfigurationHandlerInterfa
     {
         try {
             $shopConfigurationSetting = $this->shopConfigurationSettingDao->get(
-                $this->shopConfigurationSettingName,
+                ShopConfigurationSetting::MODULE_TEMPLATES,
                 $shopId
             );
         } catch (EntryDoesNotExistDaoException $exception) {
             $shopConfigurationSetting = new ShopConfigurationSetting();
             $shopConfigurationSetting
                 ->setShopId($shopId)
-                ->setName($this->shopConfigurationSettingName)
+                ->setName(ShopConfigurationSetting::MODULE_TEMPLATES)
                 ->setType(ShopSettingType::ARRAY)
                 ->setValue([]);
         }

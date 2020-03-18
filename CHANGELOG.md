@@ -165,7 +165,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
-## [6.5.2] - Unreleased
+## [6.5.2] - 2020-03-16
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Model\Article::getDeliveryDate()` [PR-768](https://github.com/OXID-eSales/oxideshop_ce/pull/768)
@@ -173,6 +173,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `SYSREQ_MYSQL_VERSION`
 ### Fixed
 - Issue with session ID regeneration on user registration
+### Removed
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationModuleSettingHandler`
 
 ## [6.5.1] - 2020-02-25
 
@@ -950,7 +952,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/b-6.2.x...master
-[6.5.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.1...b-6.2.x
+[6.5.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.1...v6.5.2
 [6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...v6.5.1
 [6.5.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.4.0...v6.5.0
 [6.4.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.4.0

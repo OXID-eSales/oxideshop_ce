@@ -16,9 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModuleVersionHandler;
 use PHPUnit\Framework\TestCase;
 
-class ModuleVersionHandlerTest extends TestCase
+final class ModuleVersionHandlerTest extends TestCase
 {
-    public function testHandleOnModuleActivation()
+    public function testHandleOnModuleActivation(): void
     {
         $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
 
@@ -37,7 +37,7 @@ class ModuleVersionHandlerTest extends TestCase
         );
     }
 
-    public function testHandleOnModuleDeactivation()
+    public function testHandleOnModuleDeactivation(): void
     {
         $shopConfigurationSettingDao = $this->getTestShopConfigurationSettingDao();
 

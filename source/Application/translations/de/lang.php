@@ -163,6 +163,7 @@ $aLang = [
 'ERROR_MESSAGE_USER_NOVALIDLOGIN'                             => 'Falsche E-Mail-Adresse oder falsches Passwort!',
 'ERROR_MESSAGE_USER_NOVALUES'                                 => 'E-Mail und Passwort müssen ausgefüllt sein!',
 'ERROR_MESSAGE_USER_USERCREATIONFAILED'                       => 'Fehler beim Anlegen des Benutzers!',
+'ERROR_MESSAGE_USER_UPDATE_FAILED'                            => 'Fehler beim Aktualisieren der Benutzerdaten!',
 'ERROR_MESSAGE_USER_USEREXISTS'                               => '%s konnte nicht registriert werden. Haben Sie bereits ein Kundenkonto bei uns?',
 'ERROR_MESSAGE_VERSION_EXPIRED1'                              => 'Ihre Version ist leider abgelaufen. Bitte kontaktieren Sie',
 'ERROR_MESSAGE_VOUCHER_INCORRECTPRICE'                        => 'Einkaufswert ist zu niedrig für diesen Gutschein!',

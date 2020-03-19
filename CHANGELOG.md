@@ -173,6 +173,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `SYSREQ_MYSQL_VERSION`
 ### Fixed
 - Issue with session ID regeneration on user registration
+- Problem with guest account update during checkout: [#0007109](https://bugs.oxid-esales.com/view.php?id=7109)
 ### Removed
 - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationModuleSettingHandler`
 

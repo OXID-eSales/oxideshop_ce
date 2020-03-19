@@ -697,14 +697,14 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
 
-        try { // testing user input
-            // delete user if it is a guest user
-            if (isset($aInvAdress['oxuser__oxusername'])) {
-                if (!$this->deleteGuestUser($aInvAdress['oxuser__oxusername'])) {
-                    return;
-                }
+        try {
+            $newName = $aInvAdress['oxuser__oxusername'] ?? '';
+            if (
+                $this->isGuestUser($oUser)
+                && $this->isUserNameUpdated($oUser->oxuser__oxusername->value ?? '', $newName)
+            ) {
+                $this->deleteExistingGuestUser($newName);
             }
-
             $oUser->changeUserData($sUserName, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
             // assigning to newsletter
             if (($blOptin = Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
@@ -731,6 +731,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
 
             return;
+        } catch (\Throwable $e) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_USER_UPDATE_FAILED', false, true);
+            return false;
         }
 
         $this->resetPermissions();
@@ -900,26 +903,34 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * check if this user is guest user then delete user
-     *
-     * @param string $username
-     *
+     * @param $user
      * @return bool
+     */
+    private function isGuestUser(User $user): bool
+    {
+        return empty($user->oxuser__oxpassword->value);
+    }
+
+    /**
+     * @param $currentName
+     * @param $newName
+     * @return bool
+     */
+    private function isUserNameUpdated(string $currentName, string $newName): bool
+    {
+        return $currentName && $newName && $currentName !== $newName;
+    }
+
+    /**
+     * @param string $newName
      * @throws Exception
      */
-    private function deleteGuestUser(string $username): bool
+    private function deleteExistingGuestUser(string $newName): void
     {
-        $user = oxNew(User::class);
-        $user->load($user->getIdByUserName($username));
-
-        if ($user) {
-            if (isset($user->oxuser__oxpassword->value) && empty($user->oxuser__oxpassword->value)) {
-                if (!$user->delete()) {
-                    return false;
-                }
-            }
+        $existingUser = oxNew(User::class);
+        $existingUser->load($existingUser->getIdByUserName($newName));
+        if ($existingUser && $this->isGuestUser($existingUser)) {
+            $existingUser->delete();
         }
-
-        return true;
     }
 }

@@ -24,6 +24,12 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $databaseHelper->adjustTemplateBlocksOxModuleColumn();
     }
 
+    public function testGetLicenseContent()
+    {
+        $utilities = new Utilities();
+        $this->assertNotNull($utilities->getLicenseContent('en'));
+    }
+
     public function testExecuteExternalRegenerateViewsCommand()
     {
         $this->assertViewExists('oxdiscount');

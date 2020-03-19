@@ -606,11 +606,8 @@ class Utilities extends Core
      */
     public function getLicenseContent($languageId)
     {
-        $licensePath = $this->getRootDirectory() . DIRECTORY_SEPARATOR . self::LICENSE_TEXT_FILENAME;
-
-        $licenseContent = $this->getFileContents($licensePath);
-
-        return $licenseContent;
+        return $this->getFileContents($this->getRootDirectory() . DIRECTORY_SEPARATOR .
+                                      self::LICENSE_TEXT_FILENAME);
     }
 
     /**

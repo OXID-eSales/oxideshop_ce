@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -46,7 +47,7 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
@@ -77,7 +78,7 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _getSorting()
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sOrder = '';
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid')) {

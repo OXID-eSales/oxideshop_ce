@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,9 +8,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use stdClass;
-use \OxidEsales\Eshop\Application\Model\Actions;
-use \OxidEsales\Eshop\Core\Registry;
-use \OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Application\Model\Actions;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Request;
 
 /**
  * Admin article main actions manager.

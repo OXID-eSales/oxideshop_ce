@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -123,7 +124,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      *
      * @return bool
      */
-    protected function _setRootObjectData()
+    protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setId('root');
         $this->oxvendor__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -151,7 +152,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return array
      */
-    protected function _doStartUpChecks()
+    protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $messages = [];
 
@@ -202,7 +203,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _checkVersion()
+    protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $edition = $this->getConfig()->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';

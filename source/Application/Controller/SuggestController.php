@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -104,7 +105,8 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
         }
 
-        if (!oxNew(MailValidator::class)->isValidEmail($aParams["rec_email"])
+        if (
+            !oxNew(MailValidator::class)->isValidEmail($aParams["rec_email"])
             || !oxNew(MailValidator::class)->isValidEmail($aParams["send_email"])
         ) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -112,7 +113,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
+    protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
             //no search string
@@ -239,7 +240,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getWhere($sSearchString)
+    protected function _getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = $this->getConfig();

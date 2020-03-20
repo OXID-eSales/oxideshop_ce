@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -236,7 +237,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
      */
-    protected function _processListArticles()
+    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
@@ -287,7 +288,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @return object
      */
-    protected function _isSearchClass()
+    protected function _isSearchClass() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
@@ -487,7 +488,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @return bool
      */
-    protected function _canRedirect()
+    protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return false;
     }

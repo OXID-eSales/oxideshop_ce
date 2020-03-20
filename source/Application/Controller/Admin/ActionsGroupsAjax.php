@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -39,7 +40,7 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');

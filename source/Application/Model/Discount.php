@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -219,7 +220,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             ':oxtype' => 'oxarticles'
         ];
 
-        if (!($blOk = ( bool )$oDb->getOne($sQ, $params))) {
+        if (!($blOk = (bool)$oDb->getOne($sQ, $params))) {
             // checking article category
             $blOk = $this->_checkForArticleCategories($oArticle);
         }
@@ -273,11 +274,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $blIs = true;
 
-        if ($this->oxdiscount__oxprice->value &&
+        if (
+            $this->oxdiscount__oxprice->value &&
             ($dAmount < $this->oxdiscount__oxprice->value || $dAmount > $this->oxdiscount__oxpriceto->value)
         ) {
             $blIs = false;
-        } elseif ($this->oxdiscount__oxamount->value &&
+        } elseif (
+            $this->oxdiscount__oxamount->value &&
                   ($dAmount < $this->oxdiscount__oxamount->value || $dAmount > $this->oxdiscount__oxamountto->value)
         ) {
             $blIs = false;
@@ -521,7 +524,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _checkForArticleCategories($oArticle)
+    protected function _checkForArticleCategories($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if article is in some assigned category
         $aCatIds = $oArticle->getCategoryIds();
@@ -553,7 +556,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function _getProductCheckQuery($oProduct)
+    protected function _getProductCheckQuery($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // check if this article is assigned
@@ -573,7 +576,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isArticleAssigned($oArticle)
+    protected function _isArticleAssigned($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -597,7 +600,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isCategoriesAssigned($aCategoryIds)
+    protected function _isCategoriesAssigned($aCategoryIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($aCategoryIds)) {
             return false;

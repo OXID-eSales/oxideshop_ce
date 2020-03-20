@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -211,7 +212,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return array
      */
-    protected function _loadFromDb($sOXID)
+    protected function _loadFromDb($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = $this->buildSelectString(["`{$this->getViewName()}`.`oxid`" => $sOXID]);
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow($sSelect);
@@ -443,7 +444,8 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         $myConfig = $this->getConfig();
 
-        if (!isset($this->_iNrOfArticles)
+        if (
+            !isset($this->_iNrOfArticles)
             && !$this->isAdmin()
             && (
                 $myConfig->getConfigParam('bl_perfShowActionCatArticleCnt')
@@ -542,7 +544,8 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getLink($iLang = null)
     {
-        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() ||
+        if (
+            !\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() ||
             (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value)
         ) {
             return $this->getStdLink($iLang);
@@ -833,7 +836,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return bool
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->oxcategories__oxparentid->value != "oxrootid") {
             // load parent
@@ -895,7 +898,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return bool
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
@@ -1020,7 +1023,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      *
      * @return null
      */
-    protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
         $fieldNameIndex2 = $fieldName[2];

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -221,7 +222,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
             if ($this->isAdmin()) {
                 $aLanguages = $this->getAdminTplLanguageArray();
-                if (!isset($aLanguages[$this->_iObjectTplLanguageId]) ||
+                if (
+                    !isset($aLanguages[$this->_iObjectTplLanguageId]) ||
                     $aLanguages[$this->_iObjectTplLanguageId]->active == 0
                 ) {
                     $this->_iObjectTplLanguageId = key($aLanguages);
@@ -469,7 +471,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _collectSimilar($aData, $sKey, $aCollection = [])
+    protected function _collectSimilar($aData, $sKey, $aCollection = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aData as $sValKey => $sValue) {
             if (strpos($sValKey, $sKey) === 0) {
@@ -545,7 +547,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function formatVat($dValue, $oActCur = null)
     {
         $iDecPos = 0;
-        $sValue = ( string ) $dValue;
+        $sValue = (string) $dValue;
         /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
         $oStr = getStr();
         if (($iDotPos = $oStr->strpos($sValue, '.')) !== false) {
@@ -646,7 +648,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _recodeLangArray($aLangArray, $sCharset, $blRecodeKeys = false)
+    protected function _recodeLangArray($aLangArray, $sCharset, $blRecodeKeys = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $newEncoding = $this->getTranslationsExpectedEncoding();
 
@@ -671,7 +673,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
      */
-    protected function _recodeLangArrayValues(&$aLangArray, $sCharset, $newEncoding)
+    protected function _recodeLangArrayValues(&$aLangArray, $sCharset, $newEncoding) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aLangArray as $sItemKey => &$sValue) {
             $sValue = iconv($sCharset, $newEncoding, $sValue);
@@ -689,7 +691,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _recodeLangArrayWithKeys($aLangArray, $sCharset, $newEncoding)
+    protected function _recodeLangArrayWithKeys($aLangArray, $sCharset, $newEncoding) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLangs = [];
         foreach ($aLangArray as $sItemKey => $sValue) {
@@ -718,7 +720,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getLangFilesPathArray($iLang)
+    protected function _getLangFilesPathArray($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
         $aLangFiles = [];
@@ -784,7 +786,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getAdminLangFilesPathArray($activeLanguage)
+    protected function _getAdminLangFilesPathArray($activeLanguage) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = $this->getConfig();
         $langFiles = [];
@@ -832,7 +834,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _appendLangFile($aLangFiles, $sFullPath, $sFilePattern = "lang")
+    protected function _appendLangFile($aLangFiles, $sFullPath, $sFilePattern = "lang") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aFiles = glob($sFullPath . "/*_{$sFilePattern}.php");
         if (is_array($aFiles) && count($aFiles)) {
@@ -855,7 +857,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _appendCustomLangFiles($languageFiles, $language, $forAdmin = false)
+    protected function _appendCustomLangFiles($languageFiles, $language, $forAdmin = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($forAdmin) {
             $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
@@ -899,7 +901,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false)
+    protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aModulePaths)) {
             foreach ($aModulePaths as $sPath) {
@@ -926,7 +928,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getLangFileCacheName($blAdmin, $iLang, $aLangFiles = null)
+    protected function _getLangFileCacheName($blAdmin, $iLang, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = $this->getConfig();
         $sLangFilesIdent = '_default';
@@ -946,7 +948,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null)
+    protected function _getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
@@ -1000,7 +1002,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getLanguageMap($language, $isAdmin = null)
+    protected function _getLanguageMap($language, $isAdmin = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $isAdmin = isset($isAdmin) ? $isAdmin : $this->isAdmin();
         $key = $language . ((int) $isAdmin);
@@ -1066,7 +1068,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return int
      */
-    protected function _getCacheLanguageId($blAdmin, $iLang = null)
+    protected function _getCacheLanguageId($blAdmin, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLang = ($iLang === null && $blAdmin) ? $this->getTplLanguage() : $iLang;
         if (!isset($iLang)) {
@@ -1088,7 +1090,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getLangTranslationArray($iLang = null, $blAdmin = null, $aLangFiles = null)
+    protected function _getLangTranslationArray($iLang = null, $blAdmin = null, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile("_getLangTranslationArray");
 
@@ -1118,7 +1120,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _sortLanguagesCallback($a1, $a2)
+    protected function _sortLanguagesCallback($a1, $a2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return ($a1->sort > $a2->sort);
     }
@@ -1182,7 +1184,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         if (!$this->isAdmin()) {
             $sParam = $this->getUrlLang($iLang);
-            if (!$oStr->preg_match('/(\?|&(amp;)?)lang=[0-9]+/', $sUrl) &&
+            if (
+                !$oStr->preg_match('/(\?|&(amp;)?)lang=[0-9]+/', $sUrl) &&
                 ($iLang != $iDefaultLang || $iDefaultLang != $iBrowserLanguage)
             ) {
                 if ($sUrl) {
@@ -1273,7 +1276,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getActiveModuleInfo()
+    protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aActiveModuleInfo === null) {
             $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
@@ -1288,7 +1291,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getDisabledModuleInfo()
+    protected function _getDisabledModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aDisabledModuleInfo === null) {
             $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
@@ -1303,7 +1306,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getBrowserLanguage()
+    protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && $_SERVER['HTTP_ACCEPT_LANGUAGE']) {
             return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
@@ -1365,7 +1368,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getLanguageIdsFromDatabase($shopId = null)
+    protected function _getLanguageIdsFromDatabase($shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getLanguageIds();
     }
@@ -1378,7 +1381,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getConfigLanguageValues($sLanguageParameterName, $iShopId = null)
+    protected function _getConfigLanguageValues($sLanguageParameterName, $iShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aConfigDecodedValues = [];
         $aConfigValues = $this->_selectLanguageParamValues($sLanguageParameterName, $iShopId);
@@ -1407,7 +1410,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _selectLanguageParamValues($sParamName, $sShopId = null)
+    protected function _selectLanguageParamValues($sParamName, $sShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -1435,7 +1438,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getLanguageIdsFromLanguageParamsArray($aLanguageParams)
+    protected function _getLanguageIdsFromLanguageParamsArray($aLanguageParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLanguages = [];
         foreach ($aLanguageParams as $sAbbr => $aValue) {
@@ -1453,7 +1456,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getLanguageIdsFromLanguagesArray($aLanguages)
+    protected function _getLanguageIdsFromLanguagesArray($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return array_keys($aLanguages);
     }

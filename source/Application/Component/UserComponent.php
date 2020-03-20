@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -125,7 +126,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *  (1) login page;
      *  (2) terms agreement page;
      */
-    protected function _checkPsState()
+    protected function _checkPsState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
         if ($this->getParent()->isEnabledPrivateSales()) {
@@ -149,7 +150,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return null
      */
-    protected function _loadSessionUser()
+    protected function _loadSessionUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = $this->getConfig();
         $oUser = $this->getUser();
@@ -232,7 +233,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string
      */
-    protected function _afterLogin($oUser)
+    protected function _afterLogin($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oSession = $this->getSession();
         if ($oSession->isSessionStarted()) {
@@ -257,7 +258,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Executes oxcmp_user::login() method. After loggin user will not be
      * redirected to user or payment screens.
      */
-    public function login_noredirect()
+    public function login_noredirect() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         $blAgb = Registry::getConfig()->getRequestParameter('ord_agb');
 
@@ -287,7 +288,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * session parameters as user chosen payment id, delivery
      * address id, active delivery set.
      */
-    protected function _afterLogout()
+    protected function _afterLogout() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         Registry::getSession()->deleteVariable('paymentid');
         Registry::getSession()->deleteVariable('sShipSet');
@@ -362,7 +363,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return null
      */
-    public function changeuser_testvalues()
+    public function changeuser_testvalues() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         // skip updating user info if this is just form reload
         // on selecting delivery address
@@ -606,7 +607,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Saves invitor ID
      */
-    protected function _saveInvitor()
+    protected function _saveInvitor() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getConfig()->getConfigParam('blInvitationsEnabled')) {
             $this->getInvitor();
@@ -617,7 +618,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Saving show/hide delivery address state
      */
-    protected function _saveDeliveryAddressState()
+    protected function _saveDeliveryAddressState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oSession = Registry::getSession();
 
@@ -644,7 +645,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return  bool true on success, false otherwise
      */
-    protected function _changeUser_noRedirect()
+    protected function _changeUser_noRedirect() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->changeUserWithoutRedirect();
     }
@@ -751,7 +752,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return array
      */
-    protected function _getDelAddressData()
+    protected function _getDelAddressData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // if user company name, user name and additional info has special chars
         $blShowShipAddressParameter = Registry::getConfig()->getRequestParameter('blshowshipaddress');
@@ -779,7 +780,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string $sLogoutLink
      */
-    protected function _getLogoutLink()
+    protected function _getLogoutLink() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
 

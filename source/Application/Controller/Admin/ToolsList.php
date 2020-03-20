@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -122,7 +123,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return mixed
      */
-    protected function _processFiles()
+    protected function _processFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($_FILES['myfile']['name'])) {
             // process all files
@@ -166,7 +167,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return mixed
      */
-    protected function _prepareSQL($sSQL, $iSQLlen)
+    protected function _prepareSQL($sSQL, $iSQLlen) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sStrStart = "";
         $blString = false;

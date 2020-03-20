@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -60,7 +61,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @param int $iShopId active shop id
      */
-    protected function _loadActiveUrl($iShopId)
+    protected function _loadActiveUrl($iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sActObject = null;
         if ($this->_sActSeoObject) {
@@ -118,7 +119,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @return array
      */
-    protected function _processUrls($aUrls)
+    protected function _processUrls($aUrls) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($aUrls['oxseo__oxstdurl']) && $aUrls['oxseo__oxstdurl']) {
             $aUrls['oxseo__oxstdurl'] = $this->_cleanupUrl($aUrls['oxseo__oxstdurl']);
@@ -140,7 +141,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @return string
      */
-    protected function _cleanupUrl($sUrl)
+    protected function _cleanupUrl($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // replacing &amp; to & or removing double &&
         while ((stripos($sUrl, '&amp;') !== false) || (stripos($sUrl, '&&') !== false)) {

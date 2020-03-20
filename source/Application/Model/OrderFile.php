@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -132,7 +133,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getFieldLongName($sFieldName)
+    protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aFieldNames = [
             'oxorderfiles__oxarticletitle',

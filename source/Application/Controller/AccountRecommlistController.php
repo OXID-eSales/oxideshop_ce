@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -182,7 +183,8 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         if ($this->_oActRecommList === null) {
             $this->_oActRecommList = false;
 
-            if (($oUser = $this->getUser()) &&
+            if (
+                ($oUser = $this->getUser()) &&
                 ($sRecommId = Registry::getConfig()->getRequestParameter('recommid'))
             ) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
@@ -230,9 +232,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle = trim(( string ) Registry::getConfig()->getRequestParameter('recomm_title', true));
-            $sAuthor = trim(( string ) Registry::getConfig()->getRequestParameter('recomm_author', true));
-            $sText = trim(( string ) Registry::getConfig()->getRequestParameter('recomm_desc', true));
+            $sTitle = trim((string) Registry::getConfig()->getRequestParameter('recomm_title', true));
+            $sAuthor = trim((string) Registry::getConfig()->getRequestParameter('recomm_author', true));
+            $sText = trim((string) Registry::getConfig()->getRequestParameter('recomm_desc', true));
 
             $oRecommList->oxrecommlists__oxtitle = new Field($sTitle);
             $oRecommList->oxrecommlists__oxauthor = new Field($sAuthor);
@@ -275,7 +277,8 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         }
 
         // deleting on demand
-        if (($sAction = Registry::getConfig()->getRequestParameter('deleteList')) &&
+        if (
+            ($sAction = Registry::getConfig()->getRequestParameter('deleteList')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->delete();
@@ -300,7 +303,8 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             return;
         }
 
-        if (($sArtId = Registry::getConfig()->getRequestParameter('aid')) &&
+        if (
+            ($sArtId = Registry::getConfig()->getRequestParameter('aid')) &&
             ($oRecommList = $this->getActiveRecommList())
         ) {
             $oRecommList->removeArticle($sArtId);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -115,7 +116,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array
      */
-    protected function _loadFromDb($iType)
+    protected function _loadFromDb($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSql = $this->_getSQLByType($iType);
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
@@ -128,7 +129,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param integer $type - type of content
      */
-    protected function _load($type)
+    protected function _load($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $data = $this->_loadFromDb($type);
         $this->assignArray($data);
@@ -146,7 +147,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Extract oxContentList object to associative array with oxloadid as keys.
      */
-    protected function _extractListToArray()
+    protected function _extractListToArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aExtractedContents = [];
         foreach ($this as $oContent) {
@@ -163,7 +164,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getSQLByType($iType)
+    protected function _getSQLByType($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSQLAdd = '';
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

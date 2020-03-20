@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -40,7 +41,7 @@ class DeliveryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCountryTable = $this->_getViewName('oxcountry');
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

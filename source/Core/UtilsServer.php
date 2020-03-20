@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -79,7 +80,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _mustSaveToSession()
+    protected function _mustSaveToSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blSaveToSession === null) {
             $this->_blSaveToSession = false;
@@ -109,7 +110,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSessionCookieKey($blGet)
+    protected function _getSessionCookieKey($blGet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blSsl = $this->getConfig()->isSsl();
         $sKey = $blSsl ? 'nossl' : 'ssl';
@@ -130,12 +131,12 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sPath   cookie path
      * @param string $sDomain cookie domain
      */
-    protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain)
+    protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_mustSaveToSession()) {
             $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
 
-            $aSessionCookies = ( array ) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
+            $aSessionCookies = (array) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
             $aSessionCookies[$this->_getSessionCookieKey(false)][$sName] = $aCookieData;
 
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable($this->_sSessionCookiesName, $aSessionCookies);
@@ -173,7 +174,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCookiePath($sPath)
+    protected function _getCookiePath($sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($aCookiePaths = $this->getConfig()->getConfigParam('aCookiePaths')) {
             // in case user wants to have shop specific setup
@@ -195,7 +196,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCookieDomain($sDomain)
+    protected function _getCookieDomain($sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDomain = $sDomain ? $sDomain : "";
 
@@ -355,7 +356,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isTrustedClientIp()
     {
         $blTrusted = false;
-        $aTrustedIPs = ( array ) $this->getConfig()->getConfigParam("aTrustedIPs");
+        $aTrustedIPs = (array) $this->getConfig()->getConfigParam("aTrustedIPs");
         if (count($aTrustedIPs)) {
             $blTrusted = in_array($this->getRemoteAddress(), $aTrustedIPs);
         }
@@ -406,17 +407,17 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-      * Check if the given URL is same as used for request.
-      * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/
-      * the protocol is optional (www.domain.com/shop/)
-      * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
-      *
-      * @param string $sURL        URL to check if is same as request.
-      * @param string $sServerHost request host.
-      *
-      * @return bool true if $sURL is equal to current page URL
-      */
-    public function _isCurrentUrl($sURL, $sServerHost)
+     * Check if the given URL is same as used for request.
+     * The URL in this context is the base address for the shop e.g. https://www.domain.com/shop/
+     * the protocol is optional (www.domain.com/shop/)
+     * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
+     *
+     * @param string $sURL        URL to check if is same as request.
+     * @param string $sServerHost request host.
+     *
+     * @return bool true if $sURL is equal to current page URL
+     */
+    public function _isCurrentUrl($sURL, $sServerHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #4010: force_sid added in https to every link
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);

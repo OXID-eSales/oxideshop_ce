@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -106,7 +107,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    protected function _getArticleSelect()
+    protected function _getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtView = getViewName('oxarticles');
         $sSelect = "select count(distinct $sArtView.oxid) from oxobject2list ";
@@ -302,7 +303,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
      * @param array                                  $aIds        article ids
      */
-    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
+    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
@@ -389,7 +390,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchStr)
+    protected function _getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iShopId = $this->getConfig()->getShopId();
         $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");

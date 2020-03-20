@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**Utility
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
@@ -82,9 +85,9 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
      * @return array
      */
     private function getActiveModuleExtensionClasses(
-        array               $moduleExtensionClasses,
-        int                 $shopId,
-        ShopConfiguration   $shopConfiguration
+        array $moduleExtensionClasses,
+        int $shopId,
+        ShopConfiguration $shopConfiguration
     ): array {
         $activeClasses = [];
 
@@ -105,12 +108,13 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
      * @return bool
      */
     private function isActiveExtension(
-        string              $classExtension,
-        int                 $shopId,
-        ShopConfiguration   $shopConfiguration
+        string $classExtension,
+        int $shopId,
+        ShopConfiguration $shopConfiguration
     ): bool {
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
-            if ($moduleConfiguration->hasClassExtension($classExtension)
+            if (
+                $moduleConfiguration->hasClassExtension($classExtension)
                 && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)
             ) {
                 return true;

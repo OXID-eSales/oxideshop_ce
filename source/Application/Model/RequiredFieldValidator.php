@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -40,7 +41,7 @@ class RequiredFieldValidator
      *
      * @return bool
      */
-    private function _validateFieldValueArray($aFieldValues)
+    private function _validateFieldValueArray($aFieldValues) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blValid = true;
         foreach ($aFieldValues as $sValue) {

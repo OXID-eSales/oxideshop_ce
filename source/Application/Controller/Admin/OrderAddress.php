@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -53,7 +54,7 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return null
      */
-    protected function _processAddress($aData, $sTypeToProcess, $aIgnore)
+    protected function _processAddress($aData, $sTypeToProcess, $aIgnore) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // empty address fields?
         $blEmpty = true;

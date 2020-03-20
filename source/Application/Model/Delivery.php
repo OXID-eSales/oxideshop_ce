@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -186,7 +187,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function hasArticles()
     {
-        return ( bool ) count($this->getArticles());
+        return (bool) count($this->getArticles());
     }
 
     /**
@@ -196,7 +197,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function hasCategories()
     {
-        return ( bool ) count($this->getCategories());
+        return (bool) count($this->getCategories());
     }
 
     /**
@@ -426,7 +427,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isForArticle($content, $artAmount)
+    protected function _isForArticle($content, $artAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->isDeliveryRuleFitByArticle($artAmount);
     }
@@ -456,7 +457,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return boolean
      */
-    protected function _checkDeliveryAmount($iAmount)
+    protected function _checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = false;
 
@@ -585,7 +586,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return float|int
      */
-    protected function _getMultiplier()
+    protected function _getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dAmount = 0;
 
@@ -605,7 +606,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return float
      */
-    protected function _getCostSum()
+    protected function _getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getAddSumType() == 'abs') {
             $oCur = $this->getConfig()->getActShopCurrencyObject();

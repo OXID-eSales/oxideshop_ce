@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,7 +20,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getUrlExtension()
+    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '/';
     }
@@ -114,7 +115,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri($sObjectId, $iLang)
+    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSeoUrl = null;
         $oCont = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);

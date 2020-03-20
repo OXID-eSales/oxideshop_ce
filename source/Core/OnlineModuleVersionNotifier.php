@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -60,7 +61,7 @@ class OnlineModuleVersionNotifier
      *
      * @return null
      */
-    protected function _prepareModulesInformation()
+    protected function _prepareModulesInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $preparedModules = [];
 
@@ -93,7 +94,7 @@ class OnlineModuleVersionNotifier
      *
      * @return oxOnlineModulesNotifierRequest
      */
-    protected function _formRequest()
+    protected function _formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oRequestParams = new \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest();
 
@@ -108,7 +109,7 @@ class OnlineModuleVersionNotifier
      *
      * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
      */
-    protected function _getOnlineModuleNotifierCaller()
+    protected function _getOnlineModuleNotifierCaller() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_oCaller;
     }
@@ -120,7 +121,7 @@ class OnlineModuleVersionNotifier
      *
      * @return array
      */
-    protected function _getModules()
+    protected function _getModules() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();

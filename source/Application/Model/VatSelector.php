@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -43,7 +44,8 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
         $cacheId = $oUser->getId() . '_' . $oUser->oxuser__oxcountryid->value;
 
         if (!$blCacheReset) {
-            if (array_key_exists($cacheId, self::$_aUserVatCache) &&
+            if (
+                array_key_exists($cacheId, self::$_aUserVatCache) &&
                 self::$_aUserVatCache[$cacheId] !== null
             ) {
                 return self::$_aUserVatCache[$cacheId];
@@ -77,7 +79,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function _getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry)
+    protected function _getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oCountry->isInEU()) {
             if ($oUser->oxuser__oxustid->value) {
@@ -97,7 +99,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @return float | false
      */
-    protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle)
+    protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCatT = getViewName('oxcategories');
@@ -200,7 +202,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser)
+    protected function _getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blUseShippingCountry = $this->getConfig()->getConfigParam("blShippingCountryVat");
 

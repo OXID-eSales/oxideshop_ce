@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -52,7 +53,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = $this->getConfig();
         $sArticleTable = $this->_getViewName('oxarticles');

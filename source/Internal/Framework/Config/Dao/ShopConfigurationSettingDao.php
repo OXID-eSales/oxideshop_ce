@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Dao;
 
@@ -50,11 +53,11 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
      * @param EventDispatcherInterface     $eventDispatcher
      */
     public function __construct(
-        QueryBuilderFactoryInterface    $queryBuilderFactory,
-        ContextInterface                $context,
-        ShopSettingEncoderInterface     $shopSettingEncoder,
-        ShopAdapterInterface            $shopAdapter,
-        EventDispatcherInterface        $eventDispatcher
+        QueryBuilderFactoryInterface $queryBuilderFactory,
+        ContextInterface $context,
+        ShopSettingEncoderInterface $shopSettingEncoder,
+        ShopAdapterInterface $shopAdapter,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;

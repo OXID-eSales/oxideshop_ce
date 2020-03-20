@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -67,6 +68,7 @@ register_shutdown_function(
     }
 );
 
+// phpcs:disable
 /**
  * Helper for loading and getting the config file contents
  */
@@ -90,6 +92,7 @@ class BootstrapConfigFileReader
         return (bool) $this->iDebug;
     }
 }
+// phpcs:enable
 
 /**
  * Ensure shop config and autoload files are available.
@@ -138,7 +141,7 @@ require_once VENDOR_PATH . 'autoload.php';
  * but inside VENDOR_PATH.
  */
 if (!is_dir(OX_BASE_PATH . 'Core')) {
-    define('CORE_AUTOLOADER_PATH', (new \OxidEsales\Facts\Facts)->getCommunityEditionSourcePath() .
+    define('CORE_AUTOLOADER_PATH', (new \OxidEsales\Facts\Facts())->getCommunityEditionSourcePath() .
             DIRECTORY_SEPARATOR .
             'Core' . DIRECTORY_SEPARATOR .
             'Autoload' . DIRECTORY_SEPARATOR);

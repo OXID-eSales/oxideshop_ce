@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -29,20 +30,20 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
     if (!empty($smarty->_tpl_vars["_render4cache"])) {
         $sContent = "<oxid_dynamic>";
         foreach ($params as $key => $val) {
-            $sContent .= " $key='".base64_encode($val)."'";
+            $sContent .= " $key='" . base64_encode($val) . "'";
         }
         $sContent .= "</oxid_dynamic>";
         return $sContent;
     } else {
-        $sPrefix="_";
+        $sPrefix = "_";
         if (array_key_exists('type', $params)) {
-            $sPrefix.= $params['type']."_";
+            $sPrefix .= $params['type'] . "_";
         }
 
         foreach ($params as $key => $val) {
             if ($key != 'type' && $key != 'file') {
                 $sContent .= " $key='$val'";
-                $smarty->assign($sPrefix.$key, $val);
+                $smarty->assign($sPrefix . $key, $val);
             }
         }
 

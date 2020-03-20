@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -57,7 +58,7 @@ class CompanyVatIn
      *
      * @return string
      */
-    protected function _cleanUp($sValue)
+    protected function _cleanUp($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (string) \OxidEsales\Eshop\Core\Str::getStr()->preg_replace("/\s|-/", '', $sValue);
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -222,7 +223,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                     }
                 }
 
-                if (($sReviewText = trim(( string ) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+                if (($sReviewText = trim((string) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                     $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                     $oReview->oxreviews__oxobjectid = new Field($oActObject->getId());
                     $oReview->oxreviews__oxtype = new Field($sType);
@@ -278,7 +279,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @return object
      */
-    protected function _getActiveObject()
+    protected function _getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oActObject === null) {
             $this->_oActObject = false;
@@ -300,7 +301,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @return string
      */
-    protected function _getActiveType()
+    protected function _getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getProduct()) {
             return 'oxarticle';

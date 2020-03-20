@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -52,7 +53,7 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = $this->getConfig();
 
@@ -90,7 +91,7 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _addFilter($query)
+    protected function _addFilter($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = $this->getConfig();
         $articleViewName = $this->_getViewName('oxarticles');

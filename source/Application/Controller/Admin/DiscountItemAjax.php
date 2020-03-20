@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -46,7 +47,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
 
@@ -137,7 +138,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQueryCols()
+    protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
         $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();

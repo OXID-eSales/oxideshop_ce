@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticleList;
@@ -85,7 +87,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return array
      */
-    protected function _prepareForTemplate($oOrderFileList)
+    protected function _prepareForTemplate($oOrderFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oOrderArticles = [];
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -105,7 +106,7 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isActive()
+    protected function _isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blActive;
     }

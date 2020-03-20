@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber;
 
@@ -70,7 +73,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
         if ($moduleConfiguration->hasEvents()) {
-            $events =[];
+            $events = [];
 
             foreach ($moduleConfiguration->getEvents() as $event) {
                 $events[$event->getAction()] = $event->getMethod();
@@ -85,7 +88,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
     /**
      * @return array
      */
-    public static function getSubscribedEvents() : array
+    public static function getSubscribedEvents(): array
     {
         return [
             FinalizingModuleActivationEvent::NAME   => 'executeMetadataOnActivationEvent',

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -381,7 +382,7 @@ class Email extends PHPMailer
      *
      * @return \Smarty
      */
-    protected function _getSmarty()
+    protected function _getSmarty() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oSmarty === null) {
             $this->_oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
@@ -477,7 +478,7 @@ class Email extends PHPMailer
      *
      * @return string
      */
-    protected function _setSmtpProtocol($url)
+    protected function _setSmtpProtocol($url) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $protocol = '';
         $smtpHost = $url;
@@ -535,7 +536,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function _isValidSmtpHost($smtpHost)
+    protected function _isValidSmtpHost($smtpHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $isSmtp = false;
         if ($smtpHost) {
@@ -886,7 +887,7 @@ class Email extends PHPMailer
      *
      * @return string $url
      */
-    protected function _getNewsSubsLink($id, $confirmCode = null)
+    protected function _getNewsSubsLink($id, $confirmCode = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = $this->getConfig();
         $actShopLang = $myConfig->getActiveShop()->getLanguage();
@@ -1452,7 +1453,7 @@ class Email extends PHPMailer
      * @param string $absImageDir    Absolute path to images
      * @param string $absDynImageDir Absolute path to Dyn images
      */
-    protected function _includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null)
+    protected function _includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $body = $this->getBody();
         if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $body, $matches, PREG_SET_ORDER)) {
@@ -1896,7 +1897,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function _getUseInlineImages()
+    protected function _getUseInlineImages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blInlineImgEmail;
     }
@@ -1906,7 +1907,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function _sendMailErrorMsg()
+    protected function _sendMailErrorMsg() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // build addresses
         $recipients = $this->getRecipient();
@@ -1935,7 +1936,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\Order
      */
-    protected function _addUserInfoOrderEMail($order)
+    protected function _addUserInfoOrderEMail($order) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $order;
     }
@@ -1949,7 +1950,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
-    protected function _addUserRegisterEmail($user)
+    protected function _addUserRegisterEmail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $user;
     }
@@ -1963,7 +1964,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
      */
-    protected function _addForgotPwdEmail($shop)
+    protected function _addForgotPwdEmail($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $shop;
     }
@@ -1977,7 +1978,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
-    protected function _addNewsletterDbOptInMail($user)
+    protected function _addNewsletterDbOptInMail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $user;
     }
@@ -1985,7 +1986,7 @@ class Email extends PHPMailer
     /**
      * Clears mailer settings (AllRecipients, ReplyTos, Attachments, Errors)
      */
-    protected function _clearMailer()
+    protected function _clearMailer() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->clearAllRecipients();
         $this->clearReplyTos();
@@ -1999,7 +2000,7 @@ class Email extends PHPMailer
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
      */
-    protected function _setMailParams($shop = null)
+    protected function _setMailParams($shop = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_clearMailer();
 
@@ -2020,7 +2021,7 @@ class Email extends PHPMailer
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
      */
-    protected function _getShop($langId = null, $shopId = null)
+    protected function _getShop($langId = null, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($langId === null && $shopId === null) {
             if (isset($this->_oShop)) {
@@ -2050,7 +2051,7 @@ class Email extends PHPMailer
      * @param string                                   $userName     smtp user
      * @param \OxidEsales\Eshop\Application\Model\Shop $userPassword smtp password
      */
-    protected function _setSmtpAuthInfo($userName = null, $userPassword = null)
+    protected function _setSmtpAuthInfo($userName = null, $userPassword = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->set("SMTPAuth", true);
         $this->set("Username", $userName);
@@ -2062,7 +2063,7 @@ class Email extends PHPMailer
      *
      * @param bool $debug show debug info or not
      */
-    protected function _setSmtpDebug($debug = null)
+    protected function _setSmtpDebug($debug = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->set("SMTPDebug", $debug);
     }
@@ -2071,7 +2072,7 @@ class Email extends PHPMailer
      * Process email body and alt body thought oxOutput.
      * Calls \OxidEsales\Eshop\Core\Output::processEmail() on class instance.
      */
-    protected function _makeOutputProcessing()
+    protected function _makeOutputProcessing() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $output = oxNew(\OxidEsales\Eshop\Core\Output::class);
         $this->setBody($output->process($this->getBody(), "oxemail"));
@@ -2084,7 +2085,7 @@ class Email extends PHPMailer
      *
      * @return bool
      */
-    protected function _sendMail()
+    protected function _sendMail() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $result = false;
         try {
@@ -2105,7 +2106,7 @@ class Email extends PHPMailer
     /**
      * Process view data array through oxOutput processor
      */
-    protected function _processViewArray()
+    protected function _processViewArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);
 
@@ -2262,7 +2263,7 @@ class Email extends PHPMailer
      *
      * @return string
      */
-    private function _clearSidFromBody($altBody)
+    private function _clearSidFromBody($altBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return Str::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . $this->getConfig()->getShopId(), $altBody);
     }

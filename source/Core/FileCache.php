@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -111,6 +112,6 @@ class FileCache
     {
         $name = strtolower(basename($key));
 
-        return self::CACHE_FILE_PREFIX .".all.$name.txt";
+        return self::CACHE_FILE_PREFIX . ".all.$name.txt";
     }
 }

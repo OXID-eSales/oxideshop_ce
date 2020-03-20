@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -112,7 +113,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws oxException Throws exception if file wasn't uploaded successfully.
      */
-    protected function _checkArticleFile($aFileInfo)
+    protected function _checkArticleFile($aFileInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
@@ -130,7 +131,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getBaseDownloadDirPath()
+    protected function _getBaseDownloadDirPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sConfigValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDownloadsDir');
 
@@ -191,7 +192,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getFileLocation()
+    protected function _getFileLocation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_sRelativeFilePath = '';
         $sFileHash = $this->oxfiles__oxstorehash->value;
@@ -221,7 +222,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getHashedFileDir($sFileHash)
+    protected function _getHashedFileDir($sFileHash) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDir = substr($sFileHash, 0, 2);
         $sAbsDir = $this->_getBaseDownloadDirPath() . DIRECTORY_SEPARATOR . $sDir;
@@ -241,7 +242,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getFileHash($sFileName)
+    protected function _getFileHash($sFileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return md5_file($sFileName);
     }
@@ -255,7 +256,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function _uploadFile($sSource, $sTarget)
+    protected function _uploadFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blDone = move_uploaded_file($sSource, $sTarget);
 
@@ -310,7 +311,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return null|false
      */
-    protected function _deleteFile()
+    protected function _deleteFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->isUploaded()) {
             return false;
@@ -334,7 +335,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getFilenameForUrl()
+    protected function _getFilenameForUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return rawurlencode($this->oxfiles__oxfilename->value);
     }

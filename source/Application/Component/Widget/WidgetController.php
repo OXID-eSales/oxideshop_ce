@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -59,7 +60,7 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * In widgets we do not need to parse seo and do any work related to that
      * Shop main control is responsible for that, and that has to be done once
      */
-    protected function _processRequest()
+    protected function _processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 }

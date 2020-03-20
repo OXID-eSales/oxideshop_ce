@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -35,7 +36,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return oxState
      */
-    protected function _getStateObject()
+    protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_null($this->_oStateObject)) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
@@ -148,7 +149,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getMergedAddressFields()
+    protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDelAddress = '';
         $sDelAddress .= $this->oxaddress__oxcompany;

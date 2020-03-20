@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 require "_header.php"; ?>
 <strong><?php $this->getText('STEP_1_DESC'); ?></strong><br>
 <br>

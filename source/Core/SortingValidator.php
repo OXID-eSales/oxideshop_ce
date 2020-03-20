@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,7 +20,8 @@ class SortingValidator
     public function isValid($sortBy, $sortOrder)
     {
         $isValid = false;
-        if ($sortBy
+        if (
+            $sortBy
             && $sortOrder
             && in_array(strtolower($sortOrder), $this->getSortingOrders())
             && in_array($sortBy, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'))

@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge;
 
@@ -29,8 +32,8 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
      * @param ModuleStateServiceInterface      $moduleStateService
      */
     public function __construct(
-        ModuleActivationServiceInterface    $moduleActivationService,
-        ModuleStateServiceInterface         $moduleStateService
+        ModuleActivationServiceInterface $moduleActivationService,
+        ModuleStateServiceInterface $moduleStateService
     ) {
         $this->moduleActivationService = $moduleActivationService;
         $this->moduleStateService = $moduleStateService;

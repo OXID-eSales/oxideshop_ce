@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -191,7 +192,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _getBaseMasterImageFileName($sMasterImageFile)
+    protected function _getBaseMasterImageFileName($sMasterImageFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return basename($sMasterImageFile);
     }
@@ -235,7 +236,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null)
+    protected function _getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // custom server as image storage?
         if ($sAltUrl = $this->getAltImageUrl($sFilePath, $sFile, $blSSL)) {

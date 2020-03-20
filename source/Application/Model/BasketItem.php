@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -715,7 +716,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @throws oxNoArticleException exception
      */
-    protected function _setArticle($sProductId)
+    protected function _setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = $this->getConfig();
         $oArticle = $this->getArticle(true, $sProductId);
@@ -753,7 +754,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article
      */
-    protected function _setFromOrderArticle($oOrderArticle)
+    protected function _setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // overriding whole article
         $this->_oArticle = $oOrderArticle;
@@ -774,7 +775,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aSelList item select lists
      */
-    protected function _setSelectList($aSelList)
+    protected function _setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checking for default select list
         $aSelectLists = $this->getArticle()->getSelectLists();

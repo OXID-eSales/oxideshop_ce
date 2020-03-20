@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -134,7 +135,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
      *
      * @return array
      */
-    private function _getParams()
+    private function _getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return Registry::getConfig()->getRequestParameter('pa');
     }

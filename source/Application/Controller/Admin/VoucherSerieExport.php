@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -81,7 +82,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getExportFileName()
+    protected function _getExportFileName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSessionFileName = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
@@ -97,7 +98,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getExportFilePath()
+    protected function _getExportFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getConfig()->getConfigParam('sShopDir') . "/export/" . $this->_getExportFileName();
     }

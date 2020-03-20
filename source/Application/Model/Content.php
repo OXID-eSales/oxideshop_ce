@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -126,7 +127,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _loadFromDb($sLoadId)
+    protected function _loadFromDb($sLoadId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTable = $this->getViewName();
         $sShopId = $this->getShopId();
@@ -351,7 +352,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sLoweredFieldName = strtolower($sFieldName);
         if ('oxcontent' === $sLoweredFieldName || 'oxcontents__oxcontent' === $sLoweredFieldName) {
@@ -368,7 +369,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return mixed
      */
-    protected function _getFieldData($sFieldName)
+    protected function _getFieldData($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->{$sFieldName}->value;
     }

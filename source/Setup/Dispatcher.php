@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -6,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use \OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
+use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 
 /**
  * Chooses and executes controller action which must be executec to render expected view
@@ -41,7 +42,7 @@ class Dispatcher extends Core
      *
      * @return string | null
      */
-    protected function _chooseCurrentAction()
+    protected function _chooseCurrentAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");

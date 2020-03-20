@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -37,7 +38,7 @@ class VoucherSerieGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for table/view
         $sGroupTable = $this->_getViewName('oxgroups');

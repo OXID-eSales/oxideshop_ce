@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -196,7 +197,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return string
      */
-    protected function _prepareIdent($sIdent)
+    protected function _prepareIdent($sIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sIdent) {
             return getStr()->preg_replace("/[^a-zA-Z0-9_]*/", "", $sIdent);
@@ -211,7 +212,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return null
      */
-    protected function _checkIdent($sIdent, $sOxId)
+    protected function _checkIdent($sIdent, $sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
@@ -222,11 +223,13 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if (!strlen($sIdent)) {
             $blAllow = true;
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        } elseif ($masterDb->getOne("select oxid from oxcontents where oxloadid = :oxloadid and oxid != :oxid and oxshopid = :oxshopid", [
+        } elseif (
+            $masterDb->getOne("select oxid from oxcontents where oxloadid = :oxloadid and oxid != :oxid and oxshopid = :oxshopid", [
             ':oxloadid' => $sIdent,
             ':oxid' => $sOxId,
             ':oxshopid' => $this->getConfig()->getShopId()
-        ])) {
+            ])
+        ) {
             $blAllow = true;
         }
 

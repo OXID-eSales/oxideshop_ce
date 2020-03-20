@@ -320,7 +320,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return bool - true if failed.
      */
-    protected function _rearrangeFields($oField, $iPos)
+    protected function _rearrangeFields($oField, $iPos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!isset($this->aFieldArray) || !is_array($this->aFieldArray)) {
             return true;

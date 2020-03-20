@@ -47,7 +47,7 @@ class ShopIdCalculator
      *
      * @return array
      */
-    protected function _getShopUrlMap()
+    protected function _getShopUrlMap() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //get from static cache
         if (isset(self::$urlMap)) {

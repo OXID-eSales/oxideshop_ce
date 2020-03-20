@@ -55,7 +55,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      *
      * @return object|oxContentList
      */
-    protected function _getContentList()
+    protected function _getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_oContentList) {
             $this->_oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);

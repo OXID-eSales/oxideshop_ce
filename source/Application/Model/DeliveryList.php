@@ -98,7 +98,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array
      */
-    protected function _getList($oUser = null, $sCountryId = null, $sDelSet = null)
+    protected function _getList($oUser = null, $sCountryId = null, $sDelSet = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser === null) {
@@ -138,7 +138,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser, $sCountryId, $sDelSet)
+    protected function _getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 

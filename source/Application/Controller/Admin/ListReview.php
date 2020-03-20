@@ -34,7 +34,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return int
      */
-    protected function _getViewListSize()
+    protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_getUserDefListSize();
     }
@@ -62,7 +62,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function _buildSelectString($oObject = null)
+    protected function _buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = getViewName('oxarticles', $this->_iEditLang);
 
@@ -88,7 +88,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function _prepareWhereQuery($aWhere, $sSql)
+    protected function _prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSql = parent::_prepareWhereQuery($aWhere, $sSql);
 

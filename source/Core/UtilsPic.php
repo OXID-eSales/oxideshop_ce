@@ -74,7 +74,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _deletePicture($sPicName, $sAbsDynImageDir)
+    protected function _deletePicture($sPicName, $sAbsDynImageDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blDeleted = false;
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -115,7 +115,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isPicDeletable($sPicName, $sTable, $sField)
+    protected function _isPicDeletable($sPicName, $sTable, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sPicName || strpos($sPicName, 'nopic.jpg') !== false || strpos($sPicName, 'nopic_ico.jpg') !== false) {
             return false;
@@ -188,7 +188,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch)
+    protected function _resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch);
     }
@@ -208,7 +208,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality)
+    protected function _resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile("PICTURE_RESIZE");
 
@@ -252,7 +252,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch)
+    protected function _copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blSuccess = copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer);
         if (!$blDisableTouch && $blSuccess) {

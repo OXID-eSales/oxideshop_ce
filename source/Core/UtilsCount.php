@@ -385,7 +385,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getCatCache()
+    protected function _getCatCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -411,7 +411,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aCache A cacheable data
      */
-    protected function _setCatCache($aCache)
+    protected function _setCatCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalCatCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', $aCache);
@@ -422,7 +422,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aCache A cacheable data
      */
-    protected function _setVendorCache($aCache)
+    protected function _setVendorCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalVendorCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', $aCache);
@@ -433,7 +433,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aCache A cacheable data
      */
-    protected function _setManufacturerCache($aCache)
+    protected function _setManufacturerCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalManufacturerCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', $aCache);
@@ -444,7 +444,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getVendorCache()
+    protected function _getVendorCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -469,7 +469,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getManufacturerCache()
+    protected function _getManufacturerCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -496,7 +496,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getUserViewId($blReset = false)
+    protected function _getUserViewId($blReset = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_sUserViewId != null && !$blReset) {
             return $this->_sUserViewId;

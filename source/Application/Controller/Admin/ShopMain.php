@@ -146,7 +146,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      *
      * @return array
      */
-    protected function _getNonCopyConfigVars()
+    protected function _getNonCopyConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $nonCopyVars = [
             'aSerials',
@@ -181,7 +181,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop new shop object
      */
-    protected function _copyConfigVars($shop)
+    protected function _copyConfigVars($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $utilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();

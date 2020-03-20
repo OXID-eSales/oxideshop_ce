@@ -64,7 +64,7 @@ class BasketContentMarkGenerator
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
      */
-    private function _getBasket()
+    private function _getBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_oBasket;
     }
@@ -76,7 +76,7 @@ class BasketContentMarkGenerator
      *
      * @return array
      */
-    private function _formMarks($sCurrentMark)
+    private function _formMarks($sCurrentMark) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oBasket = $this->_getBasket();
         $aMarks = [];

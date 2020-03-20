@@ -242,7 +242,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string
      */
-    protected function _buildSelectString($oListObject = null)
+    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_buildSelectString($oListObject);
         if ($sQ) {

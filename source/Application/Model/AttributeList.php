@@ -57,7 +57,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aAttributes
      */
-    protected function _createAttributeListFromSql($sSelect)
+    protected function _createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sSelect);
@@ -218,7 +218,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aAttributes
      */
-    protected function _mergeAttributes($aAttributes, $aParentAttributes)
+    protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (count($aParentAttributes)) {
             $aAttrIds = [];

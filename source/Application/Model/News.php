@@ -132,7 +132,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Updates object information in DB.
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxnews__oxdate->value, true));
 
@@ -144,7 +144,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->oxnews__oxdate || \OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate($this->oxnews__oxdate->value)) {
             // if date field is empty, assigning current date
@@ -165,7 +165,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         switch (strtolower($sFieldName)) {
             case 'oxlongdesc':

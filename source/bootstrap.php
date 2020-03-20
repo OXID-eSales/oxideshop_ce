@@ -68,6 +68,7 @@ register_shutdown_function(
     }
 );
 
+// phpcs:disable
 /**
  * Helper for loading and getting the config file contents
  */
@@ -91,6 +92,7 @@ class BootstrapConfigFileReader
         return (bool) $this->iDebug;
     }
 }
+// phpcs:enable
 
 /**
  * Ensure shop config and autoload files are available.

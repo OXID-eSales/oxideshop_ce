@@ -47,7 +47,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return array
      */
-    protected function _getErrors()
+    protected function _getErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
 

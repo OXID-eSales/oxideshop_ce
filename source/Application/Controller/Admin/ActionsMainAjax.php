@@ -56,7 +56,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -105,7 +105,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      *
      * @return string
      */
-    protected function _addFilter($sQ)
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_addFilter($sQ);
 
@@ -127,7 +127,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      *
      * @return string
      */
-    protected function _getSorting()
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSynchOxidParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -275,7 +275,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      *
      * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
      */
-    protected function _getOxRssFeed()
+    protected function _getOxRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
     }

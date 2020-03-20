@@ -14,6 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingSe
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 
+use function array_key_exists;
+
 class DIConfigWrapper
 {
     private const SERVICE_SECTION = 'services';
@@ -178,7 +180,7 @@ class DIConfigWrapper
      */
     private function getImports(): array
     {
-        if (!\array_key_exists(static::IMPORTS_SECTION, $this->configArray)) {
+        if (!array_key_exists(static::IMPORTS_SECTION, $this->configArray)) {
             return [];
         }
 
@@ -234,7 +236,7 @@ class DIConfigWrapper
         $sections = [static::IMPORTS_SECTION, static::SERVICE_SECTION];
         foreach ($sections as $section) {
             if (
-                \array_key_exists($section, $this->configArray) &&
+                array_key_exists($section, $this->configArray) &&
                 (!$this->configArray[$section] || !count($this->configArray[$section]))
             ) {
                 unset($this->configArray[$section]);
@@ -265,8 +267,8 @@ class DIConfigWrapper
      */
     private function addSectionIfMissing($section)
     {
-        if (!\array_key_exists($section, $this->configArray)) {
-            if (\array_key_exists($section, $this->sectionDefaults)) {
+        if (!array_key_exists($section, $this->configArray)) {
+            if (array_key_exists($section, $this->sectionDefaults)) {
                 $this->configArray[$section] = $this->sectionDefaults[$section];
             } else {
                 $this->configArray[$section] = [];

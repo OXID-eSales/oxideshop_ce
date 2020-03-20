@@ -42,7 +42,7 @@ class Dispatcher extends Core
      *
      * @return string|null
      */
-    protected function _chooseCurrentAction()
+    protected function _chooseCurrentAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var Setup $oSetup */
         $oSetup = $this->getInstance("Setup");

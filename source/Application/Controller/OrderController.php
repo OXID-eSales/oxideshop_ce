@@ -500,7 +500,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return  string  $sNextStep  partial parameter url for next step
      */
-    protected function _getNextStep($iSuccess)
+    protected function _getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sNextStep = 'thankyou';
 
@@ -544,7 +544,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return bool
      */
-    protected function _validateTermsAndConditions()
+    protected function _validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blValid = true;
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

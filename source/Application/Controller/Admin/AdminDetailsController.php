@@ -69,7 +69,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getEditValue($oObject, $sField)
+    protected function _getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
@@ -93,7 +93,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _processEditValue($sValue)
+    protected function _processEditValue($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
@@ -118,7 +118,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getPlainEditor($width, $height, $object, $field)
+    protected function _getPlainEditor($width, $height, $object, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $objectValue = $this->_getEditValue($object, $field);
 
@@ -140,7 +140,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string Editor output
      */
-    protected function _generateTextEditor($width, $height, $object, $field, $stylesheet = null)
+    protected function _generateTextEditor($width, $height, $object, $field, $stylesheet = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->generateTextEditor($width, $height, $object, $field, $stylesheet);
     }
@@ -203,7 +203,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null)
+    protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // caching category tree, to load it once, not many times
         if (!isset($this->oCatTree) || $blForceNonCache) {
@@ -248,7 +248,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getCategoryTree(
+    protected function _getCategoryTree( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $sTplVarName,
         $sSelectedCatId,
         $sEditCatId = '',
@@ -305,7 +305,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @param string $sNode active view id
      */
-    protected function _setupNavigation($sNode)
+    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // navigation according to class
         if ($sNode) {
@@ -324,7 +324,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @param array $aIds to reset type => id
      */
-    protected function _resetCounts($aIds)
+    protected function _resetCounts($aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aIds as $sType => $aResetInfo) {
             foreach ($aResetInfo as $sResetId => $iPos) {

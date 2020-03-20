@@ -69,7 +69,7 @@ class SimpleXml
      *
      * @return SimpleXMLElement
      */
-    protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null)
+    protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aElements = is_object($oInput) ? get_object_vars($oInput) : (array) $oInput;
 
@@ -90,7 +90,7 @@ class SimpleXml
      *
      * @return SimpleXMLElement
      */
-    protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null)
+    protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
         if (is_array($mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
@@ -122,7 +122,7 @@ class SimpleXml
      *
      * @return SimpleXMLElement
      */
-    protected function _addNodeAttributes($oNode, $aAttributes)
+    protected function _addNodeAttributes($oNode, $aAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = (array) $aAttributes;
         foreach ($aAttributes as $sKey => $sValue) {

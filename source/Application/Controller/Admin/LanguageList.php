@@ -93,7 +93,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @return array
      */
-    protected function _getLanguagesList()
+    protected function _getLanguagesList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLangParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageParams');
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray();
@@ -139,7 +139,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @return bool
      */
-    protected function _sortLanguagesCallback($oLang1, $oLang2)
+    protected function _sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSortParam = $this->_sDefSortField;
         $sVal1 = is_string($oLang1->$sSortParam) ? strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
@@ -158,7 +158,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @param string $iLangId language ID
      */
-    protected function _resetMultiLangDbFields($iLangId)
+    protected function _resetMultiLangDbFields($iLangId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLangId = (int) $iLangId;
 

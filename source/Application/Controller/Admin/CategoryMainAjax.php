@@ -52,7 +52,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -94,7 +94,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _addFilter($sQ)
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = $this->_getViewName('oxarticles');
         $sQ = parent::_addFilter($sQ);
@@ -177,7 +177,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @param string $sProdIds product ids: "id1", "id2", "id3"
      */
-    protected function _updateOxTime($sProdIds)
+    protected function _updateOxTime($sProdIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sProdIds) {
             $sO2CView = $this->_getViewName('oxobject2category');

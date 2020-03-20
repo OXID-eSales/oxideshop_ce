@@ -518,7 +518,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _sortModules($oModule1, $oModule2)
+    protected function _sortModules($oModule1, $oModule2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return strcasecmp($oModule1->getTitle(), $oModule2->getTitle());
     }
@@ -530,7 +530,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isVendorDir($sModuleDir)
+    protected function _isVendorDir($sModuleDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_dir($sModuleDir)) {
             return false;
@@ -554,7 +554,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    private function _getInvalidExtensions($moduleId)
+    private function _getInvalidExtensions($moduleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $extendedShopClasses = $this->getModuleExtensions($moduleId);
         $invalidModuleClasses = [];

@@ -39,7 +39,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      *
      * @return oxSeoEncoderManufacturer
      */
-    protected function _getEncoder()
+    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class);
     }
@@ -59,7 +59,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      *
      * @return string
      */
-    protected function _getType()
+    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxmanufacturer';
     }

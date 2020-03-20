@@ -35,12 +35,12 @@
         "oxid-esales/oxideshop-demodata-installer": "dev-master",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/oxideshop-unified-namespace-generator": "dev-master",
-        "oxid-esales/coding-standards-wrapper": "^v3.0.0",
         "incenteev/composer-parameter-handler": "2.1.x-dev",
         "oxid-esales/oxideshop-ide-helper": "dev-master",
         "oxid-esales/azure-theme": "dev-master",
         "oxid-esales/oxideshop-facts": "dev-master",
-        "oxid-esales/testing-library": "dev-master"
+        "oxid-esales/testing-library": "dev-master",
+        "squizlabs/php_codesniffer": "^3.5.4"
     },
     "autoload": {
         "psr-4": {

@@ -523,7 +523,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _checkForArticleCategories($oArticle)
+    protected function _checkForArticleCategories($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if article is in some assigned category
         $aCatIds = $oArticle->getCategoryIds();
@@ -555,7 +555,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function _getProductCheckQuery($oProduct)
+    protected function _getProductCheckQuery($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // check if this article is assigned
@@ -575,7 +575,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isArticleAssigned($oArticle)
+    protected function _isArticleAssigned($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -599,7 +599,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isCategoriesAssigned($aCategoryIds)
+    protected function _isCategoriesAssigned($aCategoryIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($aCategoryIds)) {
             return false;

@@ -213,7 +213,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCreateTableSetSql($table, $lang)
+    protected function _getCreateTableSetSql($table, $lang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $tableSet = getLangTableName($table, $lang);
 

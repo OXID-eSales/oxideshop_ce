@@ -531,7 +531,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _readFile($sFilePath)
+    protected function _readFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sRes = file_get_contents($sFilePath);
 
@@ -545,7 +545,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function _includeFile($sFilePath)
+    protected function _includeFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $_aCacheContents = null;
         include $sFilePath;
@@ -561,7 +561,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function _processCache($sKey, $mContents)
+    protected function _processCache($sKey, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for cache meta
         $aCacheMeta = $this->getCacheMeta($sKey);
@@ -613,7 +613,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed lock file resource or false on error
      */
-    protected function _lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX)
+    protected function _lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $rHandle = isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
         if ($rHandle === null) {
@@ -665,7 +665,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _releaseFile($sIdent, $iLockMode = LOCK_EX)
+    protected function _releaseFile($sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blSuccess = true;
         if (
@@ -1000,7 +1000,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function isValidAlpha($sField)
     {
-        return (bool)Str::getStr()->preg_match('/^[a-zA-Z0-9_]*$/', $sField);
+        return (bool) Str::getStr()->preg_match('/^[a-zA-Z0-9_]*$/', $sField);
     }
 
     /**
@@ -1010,7 +1010,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sUrl        the URL to redirect to
      * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
      */
-    protected function _simpleRedirect($sUrl, $sHeaderCode)
+    protected function _simpleRedirect($sUrl, $sHeaderCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oHeader = oxNew(\OxidEsales\Eshop\Core\Header::class);
         $oHeader->setHeader($sHeaderCode);
@@ -1139,7 +1139,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _addUrlParameters($sUrl, $aParams)
+    protected function _addUrlParameters($sUrl, $aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDelimiter = ((Str::getStr()->strpos($sUrl, '?') !== false)) ? '&' : '?';
         foreach ($aParams as $sName => $sVal) {
@@ -1161,7 +1161,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @todo rename function more closely to actual purpose
      * @todo finish refactoring
      */
-    protected function _fillExplodeArray($aName, $dVat = null)
+    protected function _fillExplodeArray($aName, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oObject = new stdClass();
@@ -1224,7 +1224,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return float
      */
-    protected function _preparePrice($dPrice, $dVat)
+    protected function _preparePrice($dPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blCalculationModeNetto = $this->_isPriceViewModeNetto();
 
@@ -1245,7 +1245,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isPriceViewModeNetto()
+    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->_getArticleUser();
@@ -1261,7 +1261,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @return oxUser
      */
-    protected function _getArticleUser()
+    protected function _getArticleUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oUser) {
             return $this->_oUser;

@@ -111,7 +111,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getUserGroupFilter($oUser = null)
+    protected function _getUserGroupFilter($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oUser = ($oUser == null) ? $this->getUser() : $oUser;
         $sTable = getViewName('oxactions');

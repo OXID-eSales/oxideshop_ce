@@ -53,7 +53,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sArticleTable = $this->_getViewName('oxarticles');

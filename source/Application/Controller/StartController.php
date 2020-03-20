@@ -142,7 +142,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
+    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !$sMeta &&
@@ -166,7 +166,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !$sKeywords &&
@@ -185,7 +185,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _getLoadActionsParam()
+    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blLoadActions === null) {
             $this->_blLoadActions = false;

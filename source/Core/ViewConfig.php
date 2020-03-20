@@ -191,7 +191,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getHelpContentIdents()
+    protected function _getHelpContentIdents() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sClass = $this->getActiveClassName();
 
@@ -1406,7 +1406,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    private function _moduleExists($sModuleId, $aModuleVersions)
+    private function _moduleExists($sModuleId, $aModuleVersions) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (in_array($sModuleId, array_keys($aModuleVersions)));
     }
@@ -1438,7 +1438,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    private function _isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo)
+    private function _isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blModuleIsActive = true;
 

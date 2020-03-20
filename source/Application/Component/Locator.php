@@ -88,7 +88,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $oLocatorTarget view object
      * @param Article            $oCurrArticle   current article
      */
-    protected function _setListLocatorData($oLocatorTarget, $oCurrArticle)
+    protected function _setListLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // if no active category is loaded - lets check for category passed by post/get
         if (($oCategory = $oLocatorTarget->getActiveCategory())) {
@@ -131,7 +131,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
      */
-    protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle)
+    protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oVendor = $oLocatorTarget->getActVendor())) {
             $sVendorId = $oVendor->getId();
@@ -175,7 +175,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
      */
-    protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle)
+    protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oManufacturer = $oLocatorTarget->getActManufacturer())) {
             $sManufacturerId = $oManufacturer->getId();
@@ -229,7 +229,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
      */
-    protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle)
+    protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oSearchCat = $oLocatorTarget->getActSearch())) {
             // #1834/1184M - specialchar search
@@ -298,7 +298,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      */
-    protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle)
+    protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oRecommList = $oLocatorTarget->getActiveRecommList())) {
             // loading data for article navigation
@@ -359,7 +359,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @return object
      */
-    protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null)
+    protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oIdList->setCustomSorting($sOrderBy);
@@ -390,7 +390,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _makeLink($sLink, $sParams)
+    protected function _makeLink($sLink, $sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParams) {
             $sLink .= ((strpos($sLink, '?') !== false) ? '&amp;' : '?') . $sParams;
@@ -409,7 +409,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @return int
      */
-    protected function _findActPageNumber($iPageNr, $oIdList = null, $oArticle = null)
+    protected function _findActPageNumber($iPageNr, $oIdList = null, $oArticle = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //page number
         $iPageNr = (int) $iPageNr;
@@ -434,7 +434,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @return string $sPageNum
      */
-    protected function _getPageNumber($iPageNr)
+    protected function _getPageNumber($iPageNr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //page number
         $iPageNr = (int) $iPageNr;
@@ -451,7 +451,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @return integer
      */
-    protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget)
+    protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // variant handling
         $sOxid = $oArticle->oxarticles__oxparentid->value

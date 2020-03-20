@@ -40,7 +40,7 @@ class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param oxSimleVariant $oListObject Simple variant
      * @param array          $aDbFields   Array of available
      */
-    protected function _assignElement($oListObject, $aDbFields)
+    protected function _assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oListObject->setParent($this->_oParent);
         parent::_assignElement($oListObject, $aDbFields);

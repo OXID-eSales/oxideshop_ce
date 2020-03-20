@@ -62,7 +62,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return mixed
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // marking basket as not new any more
         $this->_blNewBasket = false;
@@ -185,7 +185,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return oxUserBasketItem
      */
-    protected function _createItem($sProductId, $aSelList = null, $aPersParams = null)
+    protected function _createItem($sProductId, $aSelList = null, $aPersParams = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oNewItem = oxNew(\OxidEsales\Eshop\Application\Model\UserBasketItem::class);
         $oNewItem->oxuserbasketitems__oxartid = new \OxidEsales\Eshop\Core\Field($sProductId, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -246,7 +246,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null)
+    protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 

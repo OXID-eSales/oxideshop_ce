@@ -42,7 +42,7 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         // active AJAX component

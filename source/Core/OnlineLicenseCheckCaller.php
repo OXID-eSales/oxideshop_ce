@@ -52,7 +52,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return string
      */
-    protected function _formEmail($oRequest)
+    protected function _formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oRequest->keys = null;
 
@@ -68,7 +68,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
      */
-    protected function _formResponse($sRawResponse)
+    protected function _formResponse($sRawResponse) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Core\UtilsXml $oUtilsXml */
         $oUtilsXml = \OxidEsales\Eshop\Core\Registry::getUtilsXml();
@@ -106,7 +106,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return string XML document tag name.
      */
-    protected function _getXMLDocumentName()
+    protected function _getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return self::XML_DOCUMENT_NAME;
     }
@@ -116,7 +116,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @return string Web service url.
      */
-    protected function _getServiceUrl()
+    protected function _getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return self::WEB_SERVICE_URL;
     }

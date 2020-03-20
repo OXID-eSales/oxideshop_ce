@@ -54,7 +54,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array
      */
-    protected function _getList($oUser = null)
+    protected function _getList($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sUserId = $oUser ? $oUser->getId() : '';
 
@@ -105,7 +105,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser)
+    protected function _getFilterSelect($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oBaseObject = $this->getBaseObject();
 

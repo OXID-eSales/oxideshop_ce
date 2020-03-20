@@ -106,7 +106,8 @@ class SuggestController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
-        if (!$emailValidator->isEmailValid($aParams["rec_email"])
+        if (
+            !$emailValidator->isEmailValid($aParams["rec_email"])
             || !$emailValidator->isEmailValid($aParams["send_email"])
         ) {
             $oUtilsView->addErrorToDisplay('SUGGEST_INVALIDMAIL');

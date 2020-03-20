@@ -80,7 +80,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getActionIds($sId)
+    protected function _getActionIds($sId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aColumns = $this->_getColNames();
         foreach ($aColumns as $iPos => $aCol) {
@@ -105,7 +105,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '';
     }
@@ -117,7 +117,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getDataQuery($sQ)
+    protected function _getDataQuery($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'select ' . $this->_getQueryCols() . $sQ;
     }
@@ -129,7 +129,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCountQuery($sQ)
+    protected function _getCountQuery($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'select count( * ) ' . $sQ;
     }
@@ -143,7 +143,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         if ($function) {
             $this->$function();
-            $this->dispatchEvent(new AfterAdminAjaxRequestProcessedEvent);
+            $this->dispatchEvent(new AfterAdminAjaxRequestProcessedEvent());
         } else {
             $sQAdd = $this->_getQuery();
 
@@ -160,7 +160,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return int
      */
-    protected function _getSortCol()
+    protected function _getSortCol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aVisibleNames = $this->_getVisibleColNames();
         $iCol = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
@@ -179,7 +179,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getColNames($sId = null)
+    protected function _getColNames($sId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sId === null) {
             $sId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cmpid');
@@ -198,7 +198,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getIdentColNames()
+    protected function _getIdentColNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aColNames = $this->_getColNames();
         $aCols = [];
@@ -217,7 +217,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getVisibleColNames()
+    protected function _getVisibleColNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aColNames = $this->_getColNames();
         $aUserCols = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aCols');
@@ -252,7 +252,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getQueryCols()
+    protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = $this->_buildColsQuery($this->_getVisibleColNames(), false) . ", ";
         $sQ .= $this->_buildColsQuery($this->_getIdentColNames());
@@ -268,7 +268,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _buildColsQuery($aIdentCols, $blIdentCols = true)
+    protected function _buildColsQuery($aIdentCols, $blIdentCols = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = '';
         foreach ($aIdentCols as $iCnt => $aCol) {
@@ -295,7 +295,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _isExtendedColumn($sColumn)
+    protected function _isExtendedColumn($sColumn) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blVariantsSelectionParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection');
 
@@ -312,7 +312,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getExtendedColQuery($sViewTable, $sColumn, $iCnt)
+    protected function _getExtendedColQuery($sViewTable, $sColumn, $iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // multilanguage
         $sVarSelect = "$sViewTable.oxvarselect";
@@ -327,7 +327,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSorting()
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return ' order by _' . $this->_getSortCol() . ' ' . $this->_getSortDir() . ' ';
     }
@@ -339,7 +339,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getLimit($iStart)
+    protected function _getLimit($iStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLimit = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("results");
         $iLimit = $iLimit ? $iLimit : $this->_iSqlLimit;
@@ -352,7 +352,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getFilter()
+    protected function _getFilter() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = '';
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -396,7 +396,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _addFilter($sQ)
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sQ && ($sFilter = $this->_getFilter())) {
             $sQ .= ((stristr($sQ, 'where') === false) ? 'where' : ' and ') . $sFilter;
@@ -412,7 +412,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getAll($sQ)
+    protected function _getAll($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aReturn = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sQ);
@@ -431,7 +431,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSortDir()
+    protected function _getSortDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('dir');
         if (!in_array($sDir, $this->_aPosDir)) {
@@ -446,7 +446,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return int
      */
-    protected function _getStartIndex()
+    protected function _getStartIndex() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('startIndex');
     }
@@ -458,7 +458,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return int
      */
-    protected function _getTotalCount($sQ)
+    protected function _getTotalCount($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // TODO: implement caching here
 
@@ -477,7 +477,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getDataFields($sQ)
+    protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         return \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sQ, false);
@@ -488,7 +488,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aData data to output
      */
-    protected function _outputResponse($aData)
+    protected function _outputResponse($aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_output(json_encode($aData));
     }
@@ -498,7 +498,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sOut string to echo
      */
-    protected function _output($sOut)
+    protected function _output($sOut) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         echo $sOut;
     }
@@ -510,7 +510,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getViewName($sTable)
+    protected function _getViewName($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return getViewName($sTable, \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage'));
     }
@@ -523,7 +523,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getData($sCountQ, $sQ)
+    protected function _getData($sCountQ, $sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = $this->_addFilter($sQ);
         $sCountQ = $this->_addFilter($sCountQ);
@@ -630,14 +630,14 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     /**
      * Resets content cache.
      */
-    protected function _resetContentCache()
+    protected function _resetContentCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
     /**
      * Resets output caches
      */
-    protected function _resetCaches()
+    protected function _resetCaches() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 }

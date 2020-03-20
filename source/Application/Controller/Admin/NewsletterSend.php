@@ -183,7 +183,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
      *
      * @param string $sNode referred id
      */
-    protected function _setupNavigation($sNode)
+    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sNode = 'newsletter_list';
 

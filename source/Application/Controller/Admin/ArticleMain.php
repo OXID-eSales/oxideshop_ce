@@ -112,7 +112,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return string
      */
-    protected function _getEditValue($oObject, $sField)
+    protected function _getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sEditObjectValue = '';
         if ($oObject) {
@@ -215,7 +215,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return string
      */
-    protected function _processLongDesc($sValue)
+    protected function _processLongDesc($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // TODO: the code below is redundant, optimize it, assignments should go smooth without conversions
         // hack, if editor screws up text, htmledit tends to do so
@@ -234,7 +234,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sArticleId Article id
      */
-    protected function _resetCategoriesCounter($sArticleId)
+    protected function _resetCategoriesCounter($sArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = DatabaseProvider::getDb();
         $sQ = "select oxcatnid from oxobject2category where oxobjectid = :oxobjectid";
@@ -377,7 +377,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId       Id from old article
      * @param string $newArticleId Id from new article
      */
-    protected function _copyCategories($sOldId, $newArticleId)
+    protected function _copyCategories($sOldId, $newArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -405,7 +405,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
      */
-    protected function _copyAttributes($sOldId, $sNewId)
+    protected function _copyAttributes($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -434,7 +434,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
      */
-    protected function _copyFiles($sOldId, $sNewId)
+    protected function _copyFiles($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
@@ -464,7 +464,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
      */
-    protected function _copySelectlists($sOldId, $sNewId)
+    protected function _copySelectlists($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -495,7 +495,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
      */
-    protected function _copyCrossseling($sOldId, $sNewId)
+    protected function _copyCrossseling($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -526,7 +526,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
      */
-    protected function _copyAccessoires($sOldId, $sNewId)
+    protected function _copyAccessoires($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -557,7 +557,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
      */
-    protected function _copyStaffelpreis($sOldId, $sNewId)
+    protected function _copyStaffelpreis($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
@@ -583,7 +583,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
      */
-    protected function _copyArtExtends($sOldId, $sNewId)
+    protected function _copyArtExtends($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oExt = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oExt->init("oxartextends");
@@ -619,7 +619,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param object $oArticle       article object
      * @param object $oParentArticle article parent object
      */
-    protected function _formJumpList($oArticle, $oParentArticle)
+    protected function _formJumpList($oArticle, $oParentArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aJumpList = [];
         //fetching parent article variants
@@ -663,7 +663,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return string
      */
-    protected function _getTitle($oObj)
+    protected function _getTitle($oObj) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTitle = $oObj->oxarticles__oxtitle->value;
         if (!strlen($sTitle)) {

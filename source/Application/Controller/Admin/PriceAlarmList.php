@@ -42,7 +42,7 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return string
      */
-    protected function _buildSelectString($oListObject = null)
+    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sViewName = getViewName("oxarticles", (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sDefaultLang"));
         $sSql = "select oxpricealarm.*, {$sViewName}.oxtitle AS articletitle, ";

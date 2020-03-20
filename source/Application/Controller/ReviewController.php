@@ -279,7 +279,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @return object
      */
-    protected function _getActiveObject()
+    protected function _getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oActObject === null) {
             $this->_oActObject = false;
@@ -301,7 +301,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @return string
      */
-    protected function _getActiveType()
+    protected function _getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getProduct()) {
             return 'oxarticle';

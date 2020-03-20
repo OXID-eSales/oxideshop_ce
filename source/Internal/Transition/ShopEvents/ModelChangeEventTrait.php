@@ -7,13 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
+/**
+ * Model object
+ *
+ * @var \OxidEsales\Eshop\Core\Model\BaseModel
+ */
 trait ModelChangeEventTrait
 {
-    /**
-     * Model object
-     *
-     * @var \OxidEsales\Eshop\Core\Model\BaseModel
-     */
     private $model;
 
     /**

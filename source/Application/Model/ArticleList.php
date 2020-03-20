@@ -156,7 +156,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return int
      */
-    protected function _sortByOrderMapCallback($key1, $key2)
+    protected function _sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($this->_aOrderMap[$key1])) {
             if (isset($this->_aOrderMap[$key2])) {
@@ -481,7 +481,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getArticleSelect($sRecommId, $sArticlesFilter = null)
+    protected function _getArticleSelect($sRecommId, $sArticlesFilter = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sRecommId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sRecommId);
 
@@ -834,7 +834,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sSql SQL select
      */
-    protected function _createIdListFromSql($sSql)
+    protected function _createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($sSql);
         if ($rs != false && $rs->count() > 0) {
@@ -854,7 +854,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterIdsSql($sCatId, $aFilter)
+    protected function _getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sO2CView = getViewName('oxobject2category');
         $sO2AView = getViewName('oxobject2attribute');
@@ -894,7 +894,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSql($sCatId, $aFilter)
+    protected function _getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleTable = getViewName('oxarticles');
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($this->_getFilterIdsSql($sCatId, $aFilter));
@@ -928,7 +928,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter)
+    protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleTable = getViewName('oxarticles');
         $sO2CView = getViewName('oxobject2category');
@@ -966,7 +966,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function _getCategoryCountSelect($sCatId, $aSessionFilter)
+    protected function _getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleTable = getViewName('oxarticles');
         $sO2CView = getViewName('oxobject2category');
@@ -997,7 +997,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchString)
+    protected function _getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if it has string at all
         if (!$sSearchString || !str_replace(' ', '', $sSearchString)) {
@@ -1064,7 +1064,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getPriceSelect($dPriceFrom, $dPriceTo)
+    protected function _getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
@@ -1092,7 +1092,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getVendorSelect($sVendorId)
+    protected function _getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleTable = getViewName('oxarticles');
         $oBaseObject = $this->getBaseObject();
@@ -1115,7 +1115,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getManufacturerSelect($sManufacturerId)
+    protected function _getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleTable = getViewName('oxarticles');
         $oBaseObject = $this->getBaseObject();
@@ -1136,7 +1136,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return bool
      */
-    protected function _canUpdatePrices()
+    protected function _canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $blCan = false;

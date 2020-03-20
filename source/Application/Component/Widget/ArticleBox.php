@@ -249,7 +249,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @return bool
      */
-    protected function _addDynParamsToLink($sAddDynParams, $oArticle)
+    protected function _addDynParamsToLink($sAddDynParams, $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blAddedParams = false;
         if ($sAddDynParams) {
@@ -272,7 +272,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _getArticleById($sArticleId)
+    protected function _getArticleById($sArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Application\Model\Article $oArticle */
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

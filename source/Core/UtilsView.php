@@ -364,7 +364,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @param Smarty $smarty template processor object (smarty)
      */
-    protected function _fillCommonSmartyProperties($smarty)
+    protected function _fillCommonSmartyProperties($smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $smarty->left_delimiter = '[{';
@@ -465,7 +465,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @param object $smarty template processor object (smarty)
      */
-    protected function _smartyCompileCheck($smarty)
+    protected function _smartyCompileCheck($smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $smarty->compile_check = $config->getConfigParam('blCheckTemplates');
@@ -488,7 +488,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty)
+    public function _smartyDefaultTemplateHandler($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($resourceType == 'file' && !is_readable($resourceName)) {
@@ -515,7 +515,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getTemplateBlock($moduleId, $fileName)
+    protected function _getTemplateBlock($moduleId, $fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
         $pathFormatter->setModulesPath(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir());
@@ -574,7 +574,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getActiveModuleInfo()
+    protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aActiveModuleInfo === null) {
             $modulelist = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);

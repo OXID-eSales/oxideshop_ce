@@ -75,7 +75,7 @@ class OnlineRequest
      *
      * @return string
      */
-    private function _getClusterId()
+    private function _getClusterId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sBaseShop = $oConfig->getBaseShopId();

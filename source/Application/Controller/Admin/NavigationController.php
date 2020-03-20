@@ -152,7 +152,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return array
      */
-    protected function _doStartUpChecks()
+    protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $messages = [];
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -204,7 +204,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _checkVersion()
+    protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $edition = \OxidEsales\Eshop\Core\Registry::getConfig()->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';

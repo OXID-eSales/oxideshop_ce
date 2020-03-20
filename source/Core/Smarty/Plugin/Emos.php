@@ -250,8 +250,8 @@ class Emos
         $this->_prepareScript();
 
         return $this->_sPrescript .
-            $this->_sIncScript .
-            $this->_sPostscript;
+               $this->_sIncScript .
+               $this->_sPostscript;
     }
 
     /**
@@ -452,7 +452,7 @@ class Emos
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
      */
-    protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "")
+    protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /******************* prepare data *************************************/
         /* md5 the customer id to fullfill requirements of german datenschutzgeesetz */
@@ -489,7 +489,7 @@ class Emos
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem      an instance of class EMOS_Item
      * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
      */
-    protected function _setEmosECPageArray($oItem, $sEvent)
+    protected function _setEmosECPageArray($oItem, $sEvent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oItem = $this->_emos_ItemFormat($oItem);
 
@@ -506,7 +506,7 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_ItemFormat($oItem)
+    protected function _emos_ItemFormat($oItem) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         $oItem->productId = $this->_emos_DataFormat($oItem->productId);
         $oItem->productName = $this->_emos_DataFormat($oItem->productName);
@@ -525,7 +525,7 @@ class Emos
      *
      * @return null
      */
-    protected function _emos_DataFormat($sStr)
+    protected function _emos_DataFormat($sStr) //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         //null check
         if (is_null($sStr)) {
@@ -567,7 +567,7 @@ class Emos
     /**
      * formats up the connector script in a Econda ver 2 JS format
      */
-    public function _prepareScript()
+    public function _prepareScript() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_sPrescript =  '<script type="text/javascript">window.emosTrackVersion = 2;</script>' . $this->_br;
 
@@ -606,7 +606,7 @@ class Emos
      *
      * @return string
      */
-    protected function _addJsFormat($sVarName, $mContents)
+    protected function _addJsFormat($sVarName, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //get the first non array $mContents element
         $mVal = $mContents;
@@ -630,7 +630,7 @@ class Emos
      *
      * @return string
      */
-    protected function _jsEncode($mContents)
+    protected function _jsEncode($mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return json_encode($mContents);
     }

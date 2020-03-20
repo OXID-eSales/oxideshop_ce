@@ -194,7 +194,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function _getViewSelect($sTable, $iLang)
+    protected function _getViewSelect($sTable, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
@@ -214,7 +214,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function _getViewSelectMultilang($sTable)
+    protected function _getViewSelectMultilang($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aFields = [];
 
@@ -239,7 +239,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string $sSQL
      */
-    protected function _getViewJoinAll($sTable)
+    protected function _getViewJoinAll($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sJoin = ' ';
         $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
@@ -261,7 +261,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string $sSQL
      */
-    protected function _getViewJoinLang($sTable, $iLang)
+    protected function _getViewJoinLang($sTable, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sJoin = ' ';
         $sLangTable = getLangTableName($sTable, $iLang);
@@ -275,7 +275,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Gets all invalid views and drops them from database
      */
-    protected function _cleanInvalidViews()
+    protected function _cleanInvalidViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oLang = Registry::getLang();
@@ -305,7 +305,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Creates all view queries and adds them in query array
      */
-    protected function _prepareViewsQueries()
+    protected function _prepareViewsQueries() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
@@ -357,7 +357,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _runQueries()
+    protected function _runQueries() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $aQueries = $this->getQueries();

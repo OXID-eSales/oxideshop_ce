@@ -352,7 +352,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopHostInfoFromConfig()
+    protected function _getShopHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopURL = Registry::getConfig()->getConfigParam('sShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
@@ -381,7 +381,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopSSLHostInfoFromConfig()
+    protected function _getShopSSLHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
@@ -410,7 +410,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopHostInfoFromServerVars()
+    protected function _getShopHostInfoFromServerVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // got here from setup dir
         $sScript = $_SERVER['SCRIPT_NAME'];
@@ -434,7 +434,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopHostInfo()
+    protected function _getShopHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->isAdmin()) {
             return $this->_getShopHostInfoFromConfig();
@@ -449,7 +449,7 @@ class SystemRequirements
      *
      * @return array
      */
-    protected function _getShopSSLHostInfo()
+    protected function _getShopSSLHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->isAdmin()) {
             return $this->_getShopSSLHostInfoFromConfig();
@@ -496,7 +496,7 @@ class SystemRequirements
      *
      * @return integer
      */
-    protected function _checkModRewrite($aHostInfo)
+    protected function _checkModRewrite($aHostInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sHostname = ($aHostInfo['ssl'] ? 'ssl://' : '') . $aHostInfo['host'];
         if ($rFp = @fsockopen($sHostname, $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {
@@ -725,7 +725,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function _getAdditionalCheck()
+    protected function _getAdditionalCheck() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = '';
         foreach ($this->_aException as $sTable => $sColumn) {
@@ -962,7 +962,7 @@ class SystemRequirements
      *
      * @return int
      */
-    protected function _getBytes($sBytes)
+    protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sBytes = trim($sBytes);
         $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
@@ -995,7 +995,7 @@ class SystemRequirements
      *
      * @return bool
      */
-    protected function _checkTemplateBlock($sTemplate, $sBlockName)
+    protected function _checkTemplateBlock($sTemplate, $sBlockName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var TemplateLoaderInterface $templateLoader */
         $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
@@ -1093,7 +1093,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function _getMinimumMemoryLimit()
+    protected function _getMinimumMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '32M';
     }
@@ -1103,7 +1103,7 @@ class SystemRequirements
      *
      * @return string
      */
-    protected function _getRecommendMemoryLimit()
+    protected function _getRecommendMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '60M';
     }

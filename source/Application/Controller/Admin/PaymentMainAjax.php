@@ -39,7 +39,7 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      *
      * @return string
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for table/view
         $sGroupTable = $this->_getViewName('oxgroups');

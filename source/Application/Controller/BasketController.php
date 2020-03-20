@@ -409,7 +409,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      * @param array                                      $aWrapping
      */
-    protected function _setWrappingInfo($oBasket, $aWrapping)
+    protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aWrapping) && count($aWrapping)) {
             foreach ($oBasket->getContents() as $sKey => $oBasketItem) {

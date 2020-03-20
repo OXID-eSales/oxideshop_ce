@@ -128,7 +128,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function _assignValues($aValues, $oVariants, $oArticle, $aConfLanguages)
+    protected function _assignValues($aValues, $oVariants, $oArticle, $aConfLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
@@ -214,7 +214,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return double
      */
-    protected function _getValuePrice($oValue, $dParentPrice)
+    protected function _getValuePrice($oValue, $dParentPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $dPriceMod = 0;
@@ -242,7 +242,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _createNewVariant($aParams = null, $sParentId = null)
+    protected function _createNewVariant($aParams = null, $sParentId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checkbox handling
         $aParams['oxarticles__oxactive'] = 0;
@@ -268,7 +268,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $sUpdate query for update variant name
      * @param string $sArtId  parent article id
      */
-    protected function _updateArticleVarName($sUpdate, $sArtId)
+    protected function _updateArticleVarName($sUpdate, $sArtId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sUpdate = "update oxarticles set " . $sUpdate . " where oxid = :oxid";
@@ -303,7 +303,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId)
+    protected function _fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aSelections = [];
 
@@ -336,7 +336,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array|bool
      */
-    protected function _cleanFilter($aFilter)
+    protected function _cleanFilter($aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aCleanFilter = false;
         if (is_array($aFilter) && count($aFilter)) {
@@ -358,7 +358,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _applyVariantSelectionsFilter($aSelections, $aFilter)
+    protected function _applyVariantSelectionsFilter($aSelections, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iMaxActiveCount = 0;
         $sMostSuitableVariantId = null;
@@ -409,7 +409,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _buildVariantSelectionsList($aVarSelects, $aSelections)
+    protected function _buildVariantSelectionsList($aVarSelects, $aSelections) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // creating selection lists
         foreach ($aVarSelects as $iKey => $sLabel) {
@@ -434,7 +434,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getSelections($sTitle)
+    protected function _getSelections($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseMultidimensionVariants')) {
             $aSelections = explode($this->_sMdSeparator, $sTitle);

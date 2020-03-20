@@ -41,7 +41,7 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
     /**
      * Clears all cookies
      */
-    protected function _removeCookies()
+    protected function _removeCookies() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oUtilsServer = Registry::getUtilsServer();
         if (isset($_SERVER['HTTP_COOKIE'])) {

@@ -142,7 +142,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _getLoginTemplate()
+    protected function _getLoginTemplate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->isEnabledPrivateSales() ? $this->_sThisAltLoginTemplate : $this->_sThisLoginTemplate;
     }

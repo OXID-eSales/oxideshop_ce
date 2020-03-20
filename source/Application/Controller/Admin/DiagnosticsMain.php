@@ -65,7 +65,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _hasError()
+    protected function _hasError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blError;
     }
@@ -75,7 +75,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return string
      */
-    protected function _getErrorMessage()
+    protected function _getErrorMessage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_sErrorMessage;
     }
@@ -129,7 +129,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return array
      */
-    protected function _runBasicDiagnostics()
+    protected function _runBasicDiagnostics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);

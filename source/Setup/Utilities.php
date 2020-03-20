@@ -510,12 +510,13 @@ class Utilities extends Core
     {
         $facts = new Facts();
 
-        $rootDirectory = $facts->getCommunityEditionRootPath();
-
+        $rootDirectory = '';
         if ($facts->isProfessional()) {
             $rootDirectory = $facts->getProfessionalEditionRootPath();
         } elseif ($facts->isEnterprise()) {
             $rootDirectory = $facts->getEnterpriseEditionRootPath();
+        } else {
+            $rootDirectory = $facts->getCommunityEditionRootPath();
         }
 
         return $rootDirectory;

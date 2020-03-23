@@ -144,6 +144,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `SYSREQ_MYSQL_VERSION`
 
 ### Fixed
+- Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)

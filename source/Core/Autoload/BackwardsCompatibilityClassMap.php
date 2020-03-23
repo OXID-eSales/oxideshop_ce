@@ -23,7 +23,11 @@ return [
     'oxwactions'                          => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\Actions',
     'oxwarticlebox'                       => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\ArticleBox',
     'oxwarticledetails'                   => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\ArticleDetails',
+
+    // @deprecated since v6.5.3 (2020-03-23); Betanote is not used anymore.
     'oxwbetanote'                         => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\BetaNote',
+    // END deprecated
+
     'oxwcategorytree'                     => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\CategoryTree',
     'oxwcookienote'                       => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\CookieNote',
     'oxwcurrencylist'                     => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\CurrencyList',

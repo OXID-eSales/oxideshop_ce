@@ -86,7 +86,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Component\Widget\CategoryTree'                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::class,

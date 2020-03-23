@@ -9,6 +9,8 @@ namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
  * Beta note widget
+ *
+ * @deprecated since v6.5.3 (2020-03-23); Betanote is not used anymore.
  */
 class BetaNote extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {

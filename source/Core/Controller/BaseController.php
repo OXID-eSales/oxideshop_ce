@@ -742,6 +742,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     /**
      * Template variable getter. Returns if beta note can be displayed (for header.tpl)
      *
+     * @deprecated since v6.5.3 (2020-03-23); Betanote is not used anymore.
+     *
      * @return bool
      */
     public function showBetaNote()

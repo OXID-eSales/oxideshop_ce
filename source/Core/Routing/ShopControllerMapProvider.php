@@ -274,7 +274,11 @@ class ShopControllerMapProvider implements \OxidEsales\Eshop\Core\Contract\Contr
         'suggest'                              => \OxidEsales\Eshop\Application\Controller\SuggestController::class,
         'tpl'                                  => \OxidEsales\Eshop\Application\Controller\TemplateController::class,
         'oxwactions'                           => \OxidEsales\Eshop\Application\Component\Widget\Actions::class,
+
+        // @deprecated since v6.5.3 (2020-03-23); Betanote is not used anymore.
         'oxwbetanote'                          => \OxidEsales\Eshop\Application\Component\Widget\BetaNote::class,
+        // END deprecated
+
         'oxwcategorytree'                      => \OxidEsales\Eshop\Application\Component\Widget\CategoryTree::class,
         'oxwinformation'                       => \OxidEsales\Eshop\Application\Component\Widget\Information::class,
         'oxwrating'                            => \OxidEsales\Eshop\Application\Component\Widget\Rating::class,

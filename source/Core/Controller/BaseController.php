@@ -732,16 +732,6 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Template variable getter. Returns if beta note can be displayed (for header.tpl)
-     *
-     * @return bool
-     */
-    public function showBetaNote()
-    {
-        return ($this->isBetaVersion() || $this->isRCVersion());
-    }
-
-    /**
      * Returns if current shop is demo shop
      *
      * @return string

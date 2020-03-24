@@ -143,6 +143,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `CARD_VISA`
 - Language Variable:
     - `SYSREQ_MYSQL_VERSION`
+- Betanote:
+    - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
+    - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

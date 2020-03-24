@@ -272,7 +272,6 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
         'suggest' => Controller\SuggestController::class,
         'tpl' => Controller\TemplateController::class,
         'oxwactions' => Widget\Actions::class,
-        'oxwbetanote' => Widget\BetaNote::class,
         'oxwcategorytree' => Widget\CategoryTree::class,
         'oxwinformation' => Widget\Information::class,
         'oxwrating' => Widget\Rating::class,

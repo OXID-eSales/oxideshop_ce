@@ -1121,13 +1121,26 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
     }
 
-    private function setSessionCookie($sessionId): void
+    /**
+     * Set the session cookie
+     *
+     * @param string $sessionId   Session cookie value
+     * @param int    $expire      Expire time
+     * @param string $path        The path on the server in which the cookie will be available on
+     * @param string $domain      The domain that the cookie is available.
+     * @param bool   $toSession   If true, records cookie information to session
+     * @param bool   $secure      If true, transfer cookie only via SSL
+     * @param bool   $httpOnly    If true, only accessible via HTTP
+     *
+     * @return void
+     */
+    private function setSessionCookie($sessionId, $expire = 0, $path = '/', $domain = null, $toSession = true, $secure = false, $httpOnly = true): void
     {
         if ($this->_getSessionUseCookies()) {
             if (!$this->_allowSessionStart()) {
                 Registry::getUtilsServer()->setOxCookie($this->getName(), null);
             } else {
-                Registry::getUtilsServer()->setOxCookie($this->getName(), $sessionId);
+                Registry::getUtilsServer()->setOxCookie($this->getName(), $sessionId, $expire, $path, $domain, $toSession, $secure, $httpOnly);
             }
         }
     }

@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [6.5.3] - 2020-03-25
+
+### Fixed
+- Issue with module controllers validator
+
+### Changed
+- Option `blSessionUseCookies` is no longer used in the Session class
+
 ## [6.5.2] - 2020-03-16
 
 ### Deprecated

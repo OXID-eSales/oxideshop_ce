@@ -130,6 +130,13 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
 
         return $this->_aSelectionList;
     }
+    /**
+     * @deprecated use self::getCategoryList instead
+     */
+    protected function _getCategoryList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCategoryList($oArticle);
+    }
 
     /**
      * Returns array of product categories
@@ -138,7 +145,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function _getCategoryList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryList($oArticle)
     {
         $sMainCatId = false;
         if ($oMainCat = $oArticle->getCategory()) {
@@ -176,6 +183,13 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
 
         return $aCatList;
     }
+    /**
+     * @deprecated use self::getVendorList instead
+     */
+    protected function _getVendorList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getVendorList($oArticle);
+    }
 
     /**
      * Returns array containing product vendor object
@@ -184,7 +198,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function _getVendorList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorList($oArticle)
     {
         if ($oArticle->oxarticles__oxvendorid->value) {
             $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
@@ -192,6 +206,13 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
                 return [$oVendor];
             }
         }
+    }
+    /**
+     * @deprecated use self::getManufacturerList instead
+     */
+    protected function _getManufacturerList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getManufacturerList($oArticle);
     }
 
     /**
@@ -201,7 +222,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function _getManufacturerList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturerList($oArticle)
     {
         if ($oArticle->oxarticles__oxmanufacturerid->value) {
             $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
@@ -272,15 +293,29 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     {
         return $this->getActCatLang();
     }
+    /**
+     * @deprecated use self::getAltSeoEntryId instead
+     */
+    protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getAltSeoEntryId();
+    }
 
     /**
      * Returns alternative seo entry id
      *
      * @return null
      */
-    protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltSeoEntryId()
     {
         return $this->getEditObjectId();
+    }
+    /**
+     * @deprecated use self::getType instead
+     */
+    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getType();
     }
 
     /**
@@ -288,7 +323,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType()
     {
         return 'oxarticle';
     }
@@ -304,13 +339,20 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     {
         return $this->getActCatId();
     }
+    /**
+     * @deprecated use self::getEncoder instead
+     */
+    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getEncoder();
+    }
 
     /**
      * Returns current object type seo encoder object
      *
      * @return oxSeoEncoderCategory
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
     }
@@ -351,6 +393,13 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     {
         return true;
     }
+    /**
+     * @deprecated use self::getSaveObjectId instead
+     */
+    protected function _getSaveObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSaveObjectId();
+    }
 
     /**
      * Returns id of object which must be saved
@@ -359,7 +408,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return string
      */
-    protected function _getSaveObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSaveObjectId()
     {
         return $this->getEditObjectId();
     }

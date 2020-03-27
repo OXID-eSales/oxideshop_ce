@@ -111,6 +111,13 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $this;
     }
+    /**
+     * @deprecated use self::getFilterSelect instead
+     */
+    protected function _getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFilterSelect($oUser, $sCountryId);
+    }
 
 
     /**
@@ -121,7 +128,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser, $sCountryId)
     {
         $sTable = getViewName('oxdeliveryset');
         $sQ = "select $sTable.* from $sTable ";

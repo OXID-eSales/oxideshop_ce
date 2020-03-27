@@ -101,13 +101,20 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
 
         return $iCnt;
     }
+    /**
+     * @deprecated use self::getArticleSelect instead
+     */
+    protected function _getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getArticleSelect();
+    }
 
     /**
      * Returns the appropriate SQL select
      *
      * @return string
      */
-    protected function _getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleSelect()
     {
         $sArtView = getViewName('oxarticles');
         $sSelect = "select count(distinct $sArtView.oxid) from oxobject2list ";
@@ -293,6 +300,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             }
         }
     }
+    /**
+     * @deprecated use self::loadFirstArticles instead
+     */
+    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadFirstArticles($oRecommList, $aIds);
+    }
 
     /**
      * loads first articles to recomm list also ordering them and clearing not usable list objects
@@ -303,7 +317,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
      * @param array                                  $aIds        article ids
      */
-    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
     {
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
@@ -382,6 +396,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
 
         return $iCnt;
     }
+    /**
+     * @deprecated use self::getSearchSelect instead
+     */
+    protected function _getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSearchSelect($sSearchStr);
+    }
 
     /**
      * Returns the appropriate SQL select according to search parameters
@@ -390,7 +411,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchStr)
     {
         $iShopId = $this->getConfig()->getShopId();
         $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");

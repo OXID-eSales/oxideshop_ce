@@ -41,13 +41,20 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
         // resetting errors from session
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('Errors', []);
     }
+    /**
+     * @deprecated use self::getErrors instead
+     */
+    protected function _getErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getErrors();
+    }
 
     /**
      * return page errors array
      *
      * @return array
      */
-    protected function _getErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getErrors()
     {
         $aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
 

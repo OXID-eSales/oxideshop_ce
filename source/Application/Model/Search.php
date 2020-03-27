@@ -101,6 +101,13 @@ class Search extends \OxidEsales\Eshop\Core\Base
 
         return $iCnt;
     }
+    /**
+     * @deprecated use self::getSearchSelect instead
+     */
+    protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, $sSortBy);
+    }
 
     /**
      * Returns the appropriate SQL select for a search according to search parameters
@@ -113,7 +120,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
     {
         if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
             //no search string
@@ -232,6 +239,13 @@ class Search extends \OxidEsales\Eshop\Core\Base
 
         return $sSelect;
     }
+    /**
+     * @deprecated use self::getWhere instead
+     */
+    protected function _getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getWhere($sSearchString);
+    }
 
     /**
      * Forms and returns SQL query string for search in DB.
@@ -240,7 +254,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getWhere($sSearchString)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = $this->getConfig();

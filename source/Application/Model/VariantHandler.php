@@ -118,6 +118,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
             $this->_updateArticleVarName($sVarNameUpdate, $oArticle->oxarticles__oxid->value);
         }
     }
+    /**
+     * @deprecated use self::assignValues instead
+     */
+    protected function _assignValues($aValues, $oVariants, $oArticle, $aConfLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->assignValues($aValues, $oVariants, $oArticle, $aConfLanguages);
+    }
 
     /**
      * Assigns values of selection list to variants
@@ -129,7 +136,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return mixed
      */
-    protected function _assignValues($aValues, $oVariants, $oArticle, $aConfLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignValues($aValues, $oVariants, $oArticle, $aConfLanguages)
     {
         $myConfig = $this->getConfig();
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
@@ -206,6 +213,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return $aMDVariants;
     }
+    /**
+     * @deprecated use self::getValuePrice instead
+     */
+    protected function _getValuePrice($oValue, $dParentPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getValuePrice($oValue, $dParentPrice);
+    }
 
     /**
      * Returns article price
@@ -215,7 +229,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return double
      */
-    protected function _getValuePrice($oValue, $dParentPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getValuePrice($oValue, $dParentPrice)
     {
         $myConfig = $this->getConfig();
         $dPriceMod = 0;
@@ -234,6 +248,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return $dPriceMod;
     }
+    /**
+     * @deprecated use self::createNewVariant instead
+     */
+    protected function _createNewVariant($aParams = null, $sParentId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->createNewVariant($aParams, $sParentId);
+    }
 
     /**
      * Creates new article variant.
@@ -243,7 +264,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _createNewVariant($aParams = null, $sParentId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createNewVariant($aParams = null, $sParentId = null)
     {
         // checkbox handling
         $aParams['oxarticles__oxactive'] = 0;
@@ -262,6 +283,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return $oArticle->getId();
     }
+    /**
+     * @deprecated use self::updateArticleVarName instead
+     */
+    protected function _updateArticleVarName($sUpdate, $sArtId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->updateArticleVarName($sUpdate, $sArtId);
+    }
 
     /**
      * Inserts article variant name for all languages
@@ -269,7 +297,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $sUpdate query for update variant name
      * @param string $sArtId  parent article id
      */
-    protected function _updateArticleVarName($sUpdate, $sArtId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateArticleVarName($sUpdate, $sArtId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sUpdate = "update oxarticles set " . $sUpdate . " where oxid = :oxid";
@@ -293,6 +321,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return false;
     }
+    /**
+     * @deprecated use self::fillVariantSelections instead
+     */
+    protected function _fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->fillVariantSelections($oVariantList, $iVarSelCnt, $aFilter, $sActVariantId);
+    }
 
     /**
      * Creates array/matrix with variant selections
@@ -304,7 +339,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId)
     {
         $aSelections = [];
 
@@ -329,6 +364,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return $aSelections;
     }
+    /**
+     * @deprecated use self::cleanFilter instead
+     */
+    protected function _cleanFilter($aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->cleanFilter($aFilter);
+    }
 
     /**
      * Cleans up user given filter. If filter was empty - returns false
@@ -337,7 +379,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array | bool
      */
-    protected function _cleanFilter($aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanFilter($aFilter)
     {
         $aCleanFilter = false;
         if (is_array($aFilter) && count($aFilter)) {
@@ -350,6 +392,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return $aCleanFilter;
     }
+    /**
+     * @deprecated use self::applyVariantSelectionsFilter instead
+     */
+    protected function _applyVariantSelectionsFilter($aSelections, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->applyVariantSelectionsFilter($aSelections, $aFilter);
+    }
 
     /**
      * Applies filter on variant selection array
@@ -359,7 +408,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _applyVariantSelectionsFilter($aSelections, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyVariantSelectionsFilter($aSelections, $aFilter)
     {
         $iMaxActiveCount = 0;
         $sMostSuitableVariantId = null;
@@ -401,6 +450,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return [$aSelections, $sMostSuitableVariantId, $blPerfectFit];
     }
+    /**
+     * @deprecated use self::buildVariantSelectionsList instead
+     */
+    protected function _buildVariantSelectionsList($aVarSelects, $aSelections) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->buildVariantSelectionsList($aVarSelects, $aSelections);
+    }
 
     /**
      * Builds variant selections list - array containing oxVariantSelectList
@@ -410,7 +466,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _buildVariantSelectionsList($aVarSelects, $aSelections) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildVariantSelectionsList($aVarSelects, $aSelections)
     {
         // creating selection lists
         foreach ($aVarSelects as $iKey => $sLabel) {
@@ -426,6 +482,13 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
         return $aVariantSelections;
     }
+    /**
+     * @deprecated use self::getSelections instead
+     */
+    protected function _getSelections($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSelections($sTitle);
+    }
 
     /**
      * In case multidimentional variants ON explodes title by _sMdSeparator
@@ -435,7 +498,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getSelections($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSelections($sTitle)
     {
         if ($this->getConfig()->getConfigParam('blUseMultidimensionVariants')) {
             $aSelections = explode($this->_sMdSeparator, $sTitle);

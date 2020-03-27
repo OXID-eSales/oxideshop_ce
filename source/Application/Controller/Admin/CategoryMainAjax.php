@@ -46,13 +46,20 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                                      ['oxid', 'oxarticles', 0, 0, 1]
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = $this->getConfig();
 
@@ -86,6 +93,13 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
         return $sQAdd;
     }
+    /**
+     * @deprecated use self::addFilter instead
+     */
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addFilter($sQ);
+    }
 
     /**
      * Adds filter SQL to current query
@@ -94,10 +108,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter($sQ);
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         if (!$this->getConfig()->getConfigParam('blVariantsSelection')) {
@@ -171,13 +185,20 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
     }
+    /**
+     * @deprecated use self::updateOxTime instead
+     */
+    protected function _updateOxTime($sProdIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->updateOxTime($sProdIds);
+    }
 
     /**
      * Updates oxtime value for products
      *
      * @param string $sProdIds product ids: "id1", "id2", "id3"
      */
-    protected function _updateOxTime($sProdIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateOxTime($sProdIds)
     {
         if ($sProdIds) {
             $sO2CView = $this->_getViewName('oxobject2category');

@@ -233,6 +233,13 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
         return $oVndTree;
     }
+    /**
+     * @deprecated use self::buildSelectString instead
+     */
+    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->buildSelectString($oListObject);
+    }
 
     /**
      * Builds and returns SQL query string.
@@ -241,9 +248,9 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string
      */
-    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($oListObject = null)
     {
-        $sQ = parent::_buildSelectString($oListObject);
+        $sQ = parent::buildSelectString($oListObject);
         if ($sQ) {
             $sTable = getViewName("oxarticles");
             $sQ .= " and $sTable.oxparentid = '' ";

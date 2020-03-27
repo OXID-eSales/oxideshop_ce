@@ -39,13 +39,20 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
              ['oxid', 'oxcategories', 0, 0, 1]
          ],
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oConfig = $this->getConfig();

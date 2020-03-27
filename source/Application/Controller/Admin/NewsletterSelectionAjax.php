@@ -31,13 +31,20 @@ class NewsletterSelectionAjax extends \OxidEsales\Eshop\Application\Controller\A
                                      ['oxid', 'oxobject2group', 0, 0, 1],
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');

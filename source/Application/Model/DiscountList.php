@@ -98,6 +98,13 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $this->_blReload = true;
     }
+    /**
+     * @deprecated use self::getFilterSelect instead
+     */
+    protected function _getFilterSelect($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFilterSelect($oUser);
+    }
 
     /**
      * Creates discount list filter SQL to load current state discount list
@@ -106,7 +113,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser)
     {
         $oBaseObject = $this->getBaseObject();
 

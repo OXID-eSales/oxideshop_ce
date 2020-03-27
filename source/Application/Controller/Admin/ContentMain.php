@@ -189,6 +189,13 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         // set oxid if inserted
         $this->setEditObjectId($oContent->getId());
     }
+    /**
+     * @deprecated use self::prepareIdent instead
+     */
+    protected function _prepareIdent($sIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareIdent($sIdent);
+    }
 
     /**
      * Prepares ident (removes bad chars, leaves only thoose that fits in a-zA-Z0-9_ range)
@@ -197,11 +204,18 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return string
      */
-    protected function _prepareIdent($sIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareIdent($sIdent)
     {
         if ($sIdent) {
             return getStr()->preg_replace("/[^a-zA-Z0-9_]*/", "", $sIdent);
         }
+    }
+    /**
+     * @deprecated use self::checkIdent instead
+     */
+    protected function _checkIdent($sIdent, $sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkIdent($sIdent, $sOxId);
     }
 
     /**
@@ -212,7 +226,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @return null
      */
-    protected function _checkIdent($sIdent, $sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkIdent($sIdent, $sOxId)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();

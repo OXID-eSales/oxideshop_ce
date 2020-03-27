@@ -156,6 +156,13 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $oArticle->save();
     }
+    /**
+     * @deprecated use self::isAnythingChanged instead
+     */
+    protected function _isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isAnythingChanged($oProduct, $aData);
+    }
 
     /**
      * Checks if anything is changed in given data compared with existing product values.
@@ -165,7 +172,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return bool
      */
-    protected function _isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isAnythingChanged($oProduct, $aData)
     {
         if (!is_array($aData)) {
             return true;
@@ -178,6 +185,13 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         return false;
     }
+    /**
+     * @deprecated use self::getProductParent instead
+     */
+    protected function _getProductParent($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getProductParent($sParentId);
+    }
 
     /**
      * Returns variant parent object
@@ -186,7 +200,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _getProductParent($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductParent($sParentId)
     {
         if (
             $this->_oProductParent === null ||

@@ -38,13 +38,20 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         ['oxid', 'oxarticles', 0, 0, 1]
     ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = $this->getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -78,6 +85,13 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         return $sQAdd;
     }
+    /**
+     * @deprecated use self::addFilter instead
+     */
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addFilter($sQ);
+    }
 
     /**
      * Adds filter SQL to current query
@@ -86,10 +100,10 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter($sQ);
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';

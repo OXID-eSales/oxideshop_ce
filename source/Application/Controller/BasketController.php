@@ -395,6 +395,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         /** @var \OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator $oBasketContentMarkGenerator */
         return oxNew('oxBasketContentMarkGenerator', $this->getSession()->getBasket());
     }
+    /**
+     * @deprecated use self::setWrappingInfo instead
+     */
+    protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setWrappingInfo($oBasket, $aWrapping);
+    }
 
     /**
      * Sets basket wrapping
@@ -402,7 +409,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      * @param array                                      $aWrapping
      */
-    protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setWrappingInfo($oBasket, $aWrapping)
     {
         if (is_array($aWrapping) && count($aWrapping)) {
             foreach ($oBasket->getContents() as $sKey => $oBasketItem) {

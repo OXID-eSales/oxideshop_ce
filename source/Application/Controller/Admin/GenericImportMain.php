@@ -162,16 +162,30 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return parent::render();
     }
+    /**
+     * @deprecated use self::deleteCsvFile instead
+     */
+    protected function _deleteCsvFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->deleteCsvFile();
+    }
 
     /**
      * Deletes uploaded csv file from temp directory
      */
-    protected function _deleteCsvFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteCsvFile()
     {
         $sPath = $this->_getUploadedCsvFilePath();
         if (is_file($sPath)) {
             @unlink($sPath);
         }
+    }
+    /**
+     * @deprecated use self::getCsvFieldsNames instead
+     */
+    protected function _getCsvFieldsNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCsvFieldsNames();
     }
 
     /**
@@ -180,7 +194,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return array
      */
-    protected function _getCsvFieldsNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFieldsNames()
     {
         $blCsvContainsHeader = $this->getConfig()->getRequestParameter('blContainsHeader');
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', $blCsvContainsHeader);
@@ -203,13 +217,20 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return $aCsvFields;
     }
+    /**
+     * @deprecated use self::getCsvFirstRow instead
+     */
+    protected function _getCsvFirstRow() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCsvFirstRow();
+    }
 
     /**
      * Get first row from uploaded CSV file
      *
      * @return array
      */
-    protected function _getCsvFirstRow() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFirstRow()
     {
         $sPath = $this->_getUploadedCsvFilePath();
         $iMaxLineLength = 8192;
@@ -222,15 +243,29 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return $aRow;
     }
+    /**
+     * @deprecated use self::resetUploadedCsvData instead
+     */
+    protected function _resetUploadedCsvData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->resetUploadedCsvData();
+    }
 
     /**
      * Resets CSV parameters stored in session
      */
-    protected function _resetUploadedCsvData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetUploadedCsvData()
     {
         $this->_sCsvFilePath = null;
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sCsvFilePath', null);
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blCsvContainsHeader', null);
+    }
+    /**
+     * @deprecated use self::checkErrors instead
+     */
+    protected function _checkErrors($iNavStep) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkErrors($iNavStep);
     }
 
     /**
@@ -241,7 +276,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return int
      */
-    protected function _checkErrors($iNavStep) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkErrors($iNavStep)
     {
         if ($iNavStep == 2) {
             if (!$this->_getUploadedCsvFilePath()) {
@@ -274,6 +309,13 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return $iNavStep;
     }
+    /**
+     * @deprecated use self::getUploadedCsvFilePath instead
+     */
+    protected function _getUploadedCsvFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getUploadedCsvFilePath();
+    }
 
     /**
      * Checks if CSV file was uploaded. If uploaded - moves it to temp dir
@@ -281,7 +323,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _getUploadedCsvFilePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUploadedCsvFilePath()
     {
         //try to get uploaded csv file path
         if ($this->_sCsvFilePath !== null) {
@@ -300,13 +342,20 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             return $this->_sCsvFilePath;
         }
     }
+    /**
+     * @deprecated use self::checkImportErrors instead
+     */
+    protected function _checkImportErrors($oErpImport) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkImportErrors($oErpImport);
+    }
 
     /**
      * Checks if any error occured during import and displays them
      *
      * @param object $oErpImport Import object
      */
-    protected function _checkImportErrors($oErpImport) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkImportErrors($oErpImport)
     {
         foreach ($oErpImport->getStatistics() as $aValue) {
             if (!$aValue ['r']) {
@@ -316,13 +365,20 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
             }
         }
     }
+    /**
+     * @deprecated use self::getCsvFieldsTerminator instead
+     */
+    protected function _getCsvFieldsTerminator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCsvFieldsTerminator();
+    }
 
     /**
      * Get csv field terminator symbol
      *
      * @return string
      */
-    protected function _getCsvFieldsTerminator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFieldsTerminator()
     {
         if ($this->_sStringTerminator === null) {
             $this->_sStringTerminator = $this->_sDefaultStringTerminator;
@@ -333,13 +389,20 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return $this->_sStringTerminator;
     }
+    /**
+     * @deprecated use self::getCsvFieldsEncolser instead
+     */
+    protected function _getCsvFieldsEncolser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCsvFieldsEncolser();
+    }
 
     /**
      * Get csv field encloser symbol
      *
      * @return string
      */
-    protected function _getCsvFieldsEncolser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCsvFieldsEncolser()
     {
         if ($this->_sStringEncloser === null) {
             $this->_sStringEncloser = $this->_sDefaultStringEncloser;

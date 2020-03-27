@@ -56,13 +56,20 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
                                      ['oxid', 'oxselectlist', 0, 0, 1]
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = $this->getConfig();
 
@@ -107,7 +114,7 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         $aChosenArt = $this->_getActionIds('oxobject2selectlist.oxid');
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sQ = parent::_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
+            $sQ = parent::addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
             $sQ = "delete from oxobject2selectlist where oxobject2selectlist.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
@@ -127,7 +134,7 @@ class SelectListMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
-            $aAddArticle = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $aAddArticle = $this->_getAll(parent::addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {

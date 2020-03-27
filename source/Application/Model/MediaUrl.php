@@ -112,13 +112,20 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return parent::delete($sOXID);
     }
+    /**
+     * @deprecated use self::getYoutubeHtml instead
+     */
+    protected function _getYoutubeHtml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getYoutubeHtml();
+    }
 
     /**
      * Transforms the link to YouTube object, and returns it.
      *
      * @return string
      */
-    protected function _getYoutubeHtml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getYoutubeHtml()
     {
         $sUrl = $this->oxmediaurls__oxurl->value;
         $sDesc = $this->oxmediaurls__oxdesc->value;

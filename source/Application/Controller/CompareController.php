@@ -238,13 +238,20 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $this->_aCompItems = $aItems;
         Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
     }
+    /**
+     * @deprecated use self::setArticlesPerPage instead
+     */
+    protected function _setArticlesPerPage($iNumber) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setArticlesPerPage($iNumber);
+    }
 
     /**
      *  $_iArticlesPerPage setter
      *
      * @param int $iNumber article count in compare page
      */
-    protected function _setArticlesPerPage($iNumber) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticlesPerPage($iNumber)
     {
         $this->_iArticlesPerPage = $iNumber;
     }
@@ -343,6 +350,13 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         return $this->_oPageNavigation;
     }
+    /**
+     * @deprecated use self::removeArticlesFromPage instead
+     */
+    protected function _removeArticlesFromPage($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->removeArticlesFromPage($aItems, $oList);
+    }
 
     /**
      * Cuts page articles
@@ -352,7 +366,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return array $aNewItems
      */
-    protected function _removeArticlesFromPage($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function removeArticlesFromPage($aItems, $oList)
     {
         //#1106S $aItems changed to $oList.
         //2006-08-10 Alfonsas, compare arrows fixed, array position is very important here, preserve it.
@@ -371,6 +385,13 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         return $aNewItems;
     }
+    /**
+     * @deprecated use self::changeArtListOrder instead
+     */
+    protected function _changeArtListOrder($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->changeArtListOrder($aItems, $oList);
+    }
 
     /**
      * Changes order of list elements
@@ -380,7 +401,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return array $oNewList
      */
-    protected function _changeArtListOrder($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function changeArtListOrder($aItems, $oList)
     {
         // #777C changing order of list elements, according to $aItems
         $oNewList = [];

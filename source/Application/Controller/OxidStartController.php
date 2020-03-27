@@ -100,13 +100,20 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
             'unknown' => 'message/err_unknown.tpl',
         ];
     }
+    /**
+     * @deprecated use self::getSystemEventHandler instead
+     */
+    protected function _getSystemEventHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSystemEventHandler();
+    }
 
     /**
      * Gets system event handler.
      *
      * @return SystemEventHandler
      */
-    protected function _getSystemEventHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSystemEventHandler()
     {
         return oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
     }

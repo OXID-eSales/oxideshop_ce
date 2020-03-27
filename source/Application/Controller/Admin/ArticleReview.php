@@ -69,6 +69,13 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         return "article_review.tpl";
     }
+    /**
+     * @deprecated use self::getReviewList instead
+     */
+    protected function _getReviewList($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getReviewList($article);
+    }
 
     /**
      * returns reviews list for article
@@ -77,7 +84,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @return oxList
      */
-    protected function _getReviewList($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getReviewList($article)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = "select oxreviews.* from oxreviews

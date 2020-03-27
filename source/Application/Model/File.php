@@ -105,6 +105,13 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
             throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_COULDNOTWRITETOFILE');
         }
     }
+    /**
+     * @deprecated use self::checkArticleFile instead
+     */
+    protected function _checkArticleFile($aFileInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkArticleFile($aFileInfo);
+    }
 
     /**
      * Checks if given file is valid upload file
@@ -113,7 +120,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws oxException Throws exception if file wasn't uploaded successfully.
      */
-    protected function _checkArticleFile($aFileInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkArticleFile($aFileInfo)
     {
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
@@ -125,13 +132,20 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
             throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
     }
+    /**
+     * @deprecated use self::getBaseDownloadDirPath instead
+     */
+    protected function _getBaseDownloadDirPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getBaseDownloadDirPath();
+    }
 
     /**
      * Return full path of root dir where download files are stored
      *
      * @return string
      */
-    protected function _getBaseDownloadDirPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBaseDownloadDirPath()
     {
         $sConfigValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDownloadsDir');
 
@@ -186,13 +200,20 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return strpos($storageLocation, $downloadFolder) !== false;
     }
+    /**
+     * @deprecated use self::getFileLocation instead
+     */
+    protected function _getFileLocation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFileLocation();
+    }
 
     /**
      * Returns relative file path from oxConfig 'sDownloadsDir' variable.
      *
      * @return string
      */
-    protected function _getFileLocation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFileLocation()
     {
         $this->_sRelativeFilePath = '';
         $sFileHash = $this->oxfiles__oxstorehash->value;
@@ -212,6 +233,13 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $this->_sRelativeFilePath;
     }
+    /**
+     * @deprecated use self::getHashedFileDir instead
+     */
+    protected function _getHashedFileDir($sFileHash) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getHashedFileDir($sFileHash);
+    }
 
     /**
      * Returns relative sub dir of oxconfig 'sDownloadsDir' of
@@ -222,7 +250,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getHashedFileDir($sFileHash) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getHashedFileDir($sFileHash)
     {
         $sDir = substr($sFileHash, 0, 2);
         $sAbsDir = $this->_getBaseDownloadDirPath() . DIRECTORY_SEPARATOR . $sDir;
@@ -233,6 +261,13 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $sDir;
     }
+    /**
+     * @deprecated use self::getFileHash instead
+     */
+    protected function _getFileHash($sFileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFileHash($sFileName);
+    }
 
     /**
      * Calculates file hash.
@@ -242,9 +277,16 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getFileHash($sFileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFileHash($sFileName)
     {
         return md5_file($sFileName);
+    }
+    /**
+     * @deprecated use self::uploadFile instead
+     */
+    protected function _uploadFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->uploadFile($sSource, $sTarget);
     }
 
     /**
@@ -256,7 +298,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function _uploadFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function uploadFile($sSource, $sTarget)
     {
         $blDone = move_uploaded_file($sSource, $sTarget);
 
@@ -304,6 +346,13 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $blDeleted;
     }
+    /**
+     * @deprecated use self::deleteFile instead
+     */
+    protected function _deleteFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->deleteFile();
+    }
 
     /**
      * Checks if file is not used for  other objects.
@@ -311,7 +360,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return null|false
      */
-    protected function _deleteFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteFile()
     {
         if (!$this->isUploaded()) {
             return false;
@@ -328,6 +377,13 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
             unlink($sPath);
         }
     }
+    /**
+     * @deprecated use self::getFilenameForUrl instead
+     */
+    protected function _getFilenameForUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFilenameForUrl();
+    }
 
     /**
      * returns oxfile__oxfilename for URL usage
@@ -335,7 +391,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getFilenameForUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilenameForUrl()
     {
         return rawurlencode($this->oxfiles__oxfilename->value);
     }

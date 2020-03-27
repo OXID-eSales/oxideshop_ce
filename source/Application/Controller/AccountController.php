@@ -134,6 +134,13 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::getLoginTemplate instead
+     */
+    protected function _getLoginTemplate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getLoginTemplate();
+    }
 
     /**
      * Returns login template name:
@@ -142,7 +149,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @return string
      */
-    protected function _getLoginTemplate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLoginTemplate()
     {
         return $this->isEnabledPrivateSales() ? $this->_sThisAltLoginTemplate : $this->_sThisLoginTemplate;
     }

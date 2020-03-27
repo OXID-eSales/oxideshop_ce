@@ -50,6 +50,13 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $this->_createAttributeListFromSql($sSelect);
     }
+    /**
+     * @deprecated use self::createAttributeListFromSql instead
+     */
+    protected function _createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->createAttributeListFromSql($sSelect);
+    }
 
     /**
      * Fills array with keys and products with value
@@ -58,7 +65,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aAttributes
      */
-    protected function _createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createAttributeListFromSql($sSelect)
     {
         $aAttributes = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sSelect);
@@ -210,6 +217,13 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $this;
     }
+    /**
+     * @deprecated use self::mergeAttributes instead
+     */
+    protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->mergeAttributes($aAttributes, $aParentAttributes);
+    }
 
     /**
      * Merge attribute arrays
@@ -219,7 +233,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aAttributes
      */
-    protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mergeAttributes($aAttributes, $aParentAttributes)
     {
         if (count($aParentAttributes)) {
             $aAttrIds = [];

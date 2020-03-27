@@ -43,13 +43,20 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      * @var string
      */
     protected $_sThisTemplate = 'widget/rss.tpl';
+    /**
+     * @deprecated use self::getRssFeed instead
+     */
+    protected function _getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getRssFeed();
+    }
 
     /**
      * get RssFeed
      *
      * @return RssFeed
      */
-    protected function _getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRssFeed()
     {
         if (!$this->_oRss) {
             $this->_oRss = oxNew(RssFeed::class);
@@ -98,6 +105,13 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
             ->get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
     }
+    /**
+     * @deprecated use self::processOutput instead
+     */
+    protected function _processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processOutput($sInput);
+    }
 
     /**
      * Processes xml before outputting to user
@@ -106,7 +120,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @return string
      */
-    protected function _processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processOutput($sInput)
     {
         return getStr()->recodeEntities($sInput);
     }

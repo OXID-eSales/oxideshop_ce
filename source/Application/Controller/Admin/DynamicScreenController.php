@@ -27,13 +27,20 @@ class DynamicScreenController extends \OxidEsales\Eshop\Application\Controller\A
      * @var string
      */
     protected $_sThisTemplate = 'dynscreen.tpl';
+    /**
+     * @deprecated use self::setupNavigation instead
+     */
+    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setupNavigation($sNode);
+    }
 
     /**
      * Sets up navigation for current view
      *
      * @param string $sNode None name
      */
-    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setupNavigation($sNode)
     {
         $myAdminNavig = $this->getNavigation();
         $sNode = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("menu");

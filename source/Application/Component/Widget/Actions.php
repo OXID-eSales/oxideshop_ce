@@ -43,13 +43,20 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
             }
         }
     }
+    /**
+     * @deprecated use self::getLoadActionsParam instead
+     */
+    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getLoadActionsParam();
+    }
 
     /**
      * Returns if actions are ON
      *
      * @return string
      */
-    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLoadActionsParam()
     {
         $this->_blLoadActions = $this->getConfig()->getConfigParam('bl_perfLoadAktion');
 

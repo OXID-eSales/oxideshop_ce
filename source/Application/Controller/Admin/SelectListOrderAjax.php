@@ -28,13 +28,20 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
         ['oxid', 'oxobject2selectlist', 0, 0, 1]
     ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $sSelTable = $this->_getViewName('oxselectlist');
         $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
@@ -42,13 +49,20 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
         return " from $sSelTable left join oxobject2selectlist on oxobject2selectlist.oxselnid = $sSelTable.oxid " .
                  "where oxobjectid = " . DatabaseProvider::getDb()->quote($sArtId) . " ";
     }
+    /**
+     * @deprecated use self::getSorting instead
+     */
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSorting();
+    }
 
     /**
      * Returns SQL query addon for sorting
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         return 'order by oxobject2selectlist.oxsort ';
     }

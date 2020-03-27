@@ -310,6 +310,13 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
     }
+    /**
+     * @deprecated use self::rearrangeFields instead
+     */
+    protected function _rearrangeFields($oField, $iPos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->rearrangeFields($oField, $iPos);
+    }
 
     /**
      * Resorts fields list and moves $oField to $iPos,
@@ -320,7 +327,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return bool - true if failed.
      */
-    protected function _rearrangeFields($oField, $iPos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function rearrangeFields($oField, $iPos)
     {
         if (!isset($this->aFieldArray) || !is_array($this->aFieldArray)) {
             return true;

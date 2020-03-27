@@ -516,6 +516,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return (int) $nextSort;
     }
+    /**
+     * @deprecated use self::checkForArticleCategories instead
+     */
+    protected function _checkForArticleCategories($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkForArticleCategories($oArticle);
+    }
 
     /**
      * Checks if discount may be applied according amounts info
@@ -524,7 +531,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _checkForArticleCategories($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkForArticleCategories($oArticle)
     {
         // check if article is in some assigned category
         $aCatIds = $oArticle->getCategoryIds();
@@ -547,6 +554,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             ':oxtype' => 'oxcategories'
         ]);
     }
+    /**
+     * @deprecated use self::getProductCheckQuery instead
+     */
+    protected function _getProductCheckQuery($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getProductCheckQuery($oProduct);
+    }
 
     /**
      * Returns part of query for discount check. If product is variant - query contains both id check e.g.
@@ -556,7 +570,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string
      */
-    protected function _getProductCheckQuery($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductCheckQuery($oProduct)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // check if this article is assigned
@@ -568,6 +582,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return $sArticleId;
     }
+    /**
+     * @deprecated use self::isArticleAssigned instead
+     */
+    protected function _isArticleAssigned($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isArticleAssigned($oArticle);
+    }
 
     /**
      * Checks whether this article is assigned to discount
@@ -576,7 +597,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isArticleAssigned($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isArticleAssigned($oArticle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -592,6 +613,13 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return $oDb->getOne($sQ, $params) ? true : false;
     }
+    /**
+     * @deprecated use self::isCategoriesAssigned instead
+     */
+    protected function _isCategoriesAssigned($aCategoryIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isCategoriesAssigned($aCategoryIds);
+    }
 
     /**
      * Checks whether categories are assigned to discount
@@ -600,7 +628,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isCategoriesAssigned($aCategoryIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isCategoriesAssigned($aCategoryIds)
     {
         if (empty($aCategoryIds)) {
             return false;

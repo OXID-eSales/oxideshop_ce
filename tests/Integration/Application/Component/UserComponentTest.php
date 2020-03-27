@@ -31,7 +31,7 @@ class modcmp_user extends oxcmp_user
 {
     protected $_oParent;
 
-    public function getLogoutLink()
+    public function PUBLICgetLogoutLink()
     {
         $this->_oParent = new modcmp_user_parent();
 
@@ -359,7 +359,7 @@ class UserComponentTest extends \OxidTestCase
         $this->setRequestParameter('tpl', 'test');
         $this->setRequestParameter('oxloadid', 'test');
         $this->setRequestParameter('recommid', 'recommid');
-        $sLink = $oView->getLogoutLink();
+        $sLink = $oView->PUBLICgetLogoutLink();
         $sExpLink = "shopurl/?cl=testclass&amp;searchparam=a&amp;anid=artid&amp;cnid=catid&amp;mnid=manId" .
                     "&amp;tpl=test&amp;oxloadid=test&amp;recommid=recommid&amp;fnc=logout";
 
@@ -379,7 +379,7 @@ class UserComponentTest extends \OxidTestCase
         $this->setRequestParameter('mnid', 'manId');
         $this->setRequestParameter('anid', 'artid');
         $this->setRequestParameter('tpl', 'test');
-        $sLink = $oView->getLogoutLink();
+        $sLink = $oView->PUBLICgetLogoutLink();
         $sExpLink = "sslshopurl/?cl=testclass&amp;searchparam=a&amp;anid=artid&amp;cnid=catid&amp;mnid=manId" .
                     "&amp;tpl=test&amp;fnc=logout";
 

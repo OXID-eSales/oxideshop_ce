@@ -34,6 +34,13 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * @var string
      */
     protected $_sDefSortField = "oxuserid";
+    /**
+     * @deprecated use self::buildSelectString instead
+     */
+    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->buildSelectString($oListObject);
+    }
 
     /**
      * Modifying SQL query to load additional article and customer data
@@ -42,7 +49,7 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @return string
      */
-    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($oListObject = null)
     {
         $sViewName = getViewName("oxarticles", (int) $this->getConfig()->getConfigParam("sDefaultLang"));
         $sSql = "select oxpricealarm.*, {$sViewName}.oxtitle AS articletitle, ";

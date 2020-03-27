@@ -66,6 +66,13 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         return "order_overview.tpl";
     }
+    /**
+     * @deprecated use self::getPaymentType instead
+     */
+    protected function _getPaymentType($oOrder) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getPaymentType($oOrder);
+    }
 
     /**
      * Returns user payment used for current order. In case current order was executed using
@@ -76,7 +83,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @return oxUserPayment
      */
-    protected function _getPaymentType($oOrder) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPaymentType($oOrder)
     {
         if (!($oUserPayment = $oOrder->getPaymentType()) && $oOrder->oxorder__oxpaymenttype->value) {
             $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);

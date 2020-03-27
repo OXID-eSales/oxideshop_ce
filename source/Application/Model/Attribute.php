@@ -129,6 +129,13 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             }
         }
     }
+    /**
+     * @deprecated use self::getAttrId instead
+     */
+    protected function _getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getAttrId($sSelTitle);
+    }
 
     /**
      * Searches for attribute by oxtitle. If exists returns attribute id
@@ -137,7 +144,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return mixed attribute id or false
      */
-    protected function _getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAttrId($sSelTitle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
         $sAttViewName = getViewName('oxattribute');
@@ -145,6 +152,13 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         return $oDb->getOne("select oxid from $sAttViewName where LOWER(oxtitle) = :oxtitle ", [
             ':oxtitle' => getStr()->strtolower($sSelTitle)
         ]);
+    }
+    /**
+     * @deprecated use self::createAttribute instead
+     */
+    protected function _createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->createAttribute($aSelTitle);
     }
 
     /**
@@ -154,7 +168,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return string attribute id
      */
-    protected function _createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createAttribute($aSelTitle)
     {
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();

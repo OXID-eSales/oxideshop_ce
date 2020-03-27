@@ -125,6 +125,13 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $oFile->getSize();
     }
+    /**
+     * @deprecated use self::getFieldLongName instead
+     */
+    protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFieldLongName($sFieldName);
+    }
 
     /**
      * returns long name
@@ -133,7 +140,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFieldLongName($sFieldName)
     {
         $aFieldNames = [
             'oxorderfiles__oxarticletitle',

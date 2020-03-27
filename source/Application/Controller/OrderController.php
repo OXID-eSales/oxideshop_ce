@@ -487,6 +487,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     {
         return oxNew('oxBasketContentMarkGenerator', $this->getBasket());
     }
+    /**
+     * @deprecated use self::getNextStep instead
+     */
+    protected function _getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getNextStep($iSuccess);
+    }
 
     /**
      * Returns next order step. If ordering was sucessfull - returns string "thankyou" (possible
@@ -497,7 +504,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return  string  $sNextStep  partial parameter url for next step
      */
-    protected function _getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNextStep($iSuccess)
     {
         $sNextStep = 'thankyou';
 
@@ -535,13 +542,20 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
         return $sNextStep;
     }
+    /**
+     * @deprecated use self::validateTermsAndConditions instead
+     */
+    protected function _validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->validateTermsAndConditions();
+    }
 
     /**
      * Validates whether necessary terms and conditions checkboxes were checked.
      *
      * @return bool
      */
-    protected function _validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function validateTermsAndConditions()
     {
         $blValid = true;
         $oConfig = $this->getConfig();

@@ -79,6 +79,13 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
             return parent::deleteEntry();
         }
     }
+    /**
+     * @deprecated use self::prepareWhereQuery instead
+     */
+    public function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareWhereQuery($whereQuery, $fullQuery);
+    }
 
     /**
      * Prepares SQL where query according SQL condition array and attaches it to SQL end.
@@ -90,7 +97,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @return string
      */
-    public function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function prepareWhereQuery($whereQuery, $fullQuery)
     {
         $nameWhere = null;
         if (isset($whereQuery['oxuser.oxlname']) && ($name = $whereQuery['oxuser.oxlname'])) {
@@ -101,7 +108,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
 
             unset($whereQuery['oxuser.oxlname']);
         }
-        $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
+        $query = parent::prepareWhereQuery($whereQuery, $fullQuery);
 
         if ($nameWhere) {
             $values = explode(' ', $name);

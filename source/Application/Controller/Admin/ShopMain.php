@@ -140,13 +140,20 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("actshop", $shopId);
     }
+    /**
+     * @deprecated use self::getNonCopyConfigVars instead
+     */
+    protected function _getNonCopyConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getNonCopyConfigVars();
+    }
 
     /**
      * Returns array of config variables which cannot be copied
      *
      * @return array
      */
-    protected function _getNonCopyConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getNonCopyConfigVars()
     {
         $nonCopyVars = [
             'aSerials',
@@ -175,13 +182,20 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
         return $nonCopyVars;
     }
+    /**
+     * @deprecated use self::copyConfigVars instead
+     */
+    protected function _copyConfigVars($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->copyConfigVars($shop);
+    }
 
     /**
      * Copies base shop config variables to current
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop new shop object
      */
-    protected function _copyConfigVars($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function copyConfigVars($shop)
     {
         $config = $this->getConfig();
         $utilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();

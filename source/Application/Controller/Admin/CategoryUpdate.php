@@ -25,13 +25,20 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * @var oxCategoryList
      */
     protected $_oCatList = null;
+    /**
+     * @deprecated use self::getCategoryList instead
+     */
+    protected function _getCategoryList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCategoryList();
+    }
 
     /**
      * Returns category list object
      *
      * @return oxCategoryList
      */
-    protected function _getCategoryList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryList()
     {
         if ($this->_oCatList == null) {
             $this->_oCatList = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);

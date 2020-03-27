@@ -55,13 +55,20 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $blRet;
     }
+    /**
+     * @deprecated use self::insert instead
+     */
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->insert();
+    }
 
     /**
      * Inserts object data fields in DB. Returns true on success.
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         // set oxcreate
         $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());

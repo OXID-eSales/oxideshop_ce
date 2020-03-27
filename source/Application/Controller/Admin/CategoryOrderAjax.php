@@ -41,13 +41,20 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                                      ['oxid', 'oxarticles', 0, 0, 1]
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
@@ -72,17 +79,24 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         return $sQAdd;
     }
+    /**
+     * @deprecated use self::getSorting instead
+     */
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSorting();
+    }
 
     /**
      * Returns SQL query addon for sorting
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         $sOrder = '';
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid')) {
-            $sOrder = parent::_getSorting();
+            $sOrder = parent::getSorting();
         } elseif (($aSkipArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess'))) {
             $sOrderBy = '';
             $sArtTable = $this->_getViewName('oxarticles');

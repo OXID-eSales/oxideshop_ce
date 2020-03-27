@@ -120,13 +120,20 @@ class RequiredFieldsValidator
 
         return empty($aInvalidFields);
     }
+    /**
+     * @deprecated use self::setInvalidFields instead
+     */
+    private function _setInvalidFields($aFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setInvalidFields($aFields);
+    }
 
     /**
      * Add fields to invalid fields array.
      *
      * @param array $aFields Invalid field name.
      */
-    private function _setInvalidFields($aFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function setInvalidFields($aFields)
     {
         $this->_aInvalidFields = $aFields;
     }

@@ -20,13 +20,20 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
      * @var array
      */
     protected $_aRootManufacturerUri = null;
+    /**
+     * @deprecated use self::getUrlExtension instead
+     */
+    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getUrlExtension();
+    }
 
     /**
      * Returns target "extension" (/)
      *
      * @return string
      */
-    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension()
     {
         return '/';
     }
@@ -136,6 +143,13 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
             ':oxobjectid' => $oManufacturer->getId()
         ]);
     }
+    /**
+     * @deprecated use self::getAltUri instead
+     */
+    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getAltUri($sObjectId, $iLang);
+    }
 
     /**
      * Returns alternative uri used while updating seo
@@ -145,7 +159,7 @@ class SeoEncoderManufacturer extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
         $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);

@@ -129,6 +129,13 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $this;
     }
+    /**
+     * @deprecated use self::getFilterSelect instead
+     */
+    protected function _getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFilterSelect($oUser, $sCountryId, $sDelSet);
+    }
 
     /**
      * Creates delivery list filter SQL to load current state delivery list
@@ -139,7 +146,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($oUser, $sCountryId, $sDelSet)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 

@@ -57,13 +57,20 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         parent::__construct();
         $this->init('oxuserbaskets');
     }
+    /**
+     * @deprecated use self::insert instead
+     */
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->insert();
+    }
 
     /**
      * Inserts object data to DB, returns true on success.
      *
      * @return mixed
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         // marking basket as not new any more
         $this->_blNewBasket = false;
@@ -176,6 +183,13 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $this->_aBasketItems;
     }
+    /**
+     * @deprecated use self::createItem instead
+     */
+    protected function _createItem($sProductId, $aSelList = null, $aPersParams = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->createItem($sProductId, $aSelList, $aPersParams);
+    }
 
     /**
      * Creates and returns  oxuserbasketitem object
@@ -186,7 +200,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return oxUserBasketItem
      */
-    protected function _createItem($sProductId, $aSelList = null, $aPersParams = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createItem($sProductId, $aSelList = null, $aPersParams = null)
     {
         $oNewItem = oxNew(\OxidEsales\Eshop\Application\Model\UserBasketItem::class);
         $oNewItem->oxuserbasketitems__oxartid = new \OxidEsales\Eshop\Core\Field($sProductId, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -237,6 +251,13 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $oItem;
     }
+    /**
+     * @deprecated use self::getItemKey instead
+     */
+    protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getItemKey($sProductId, $aSel, $aPersParam);
+    }
 
     /**
      * Returns unique item key according to its ID and user chosen select
@@ -247,7 +268,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getItemKey($sProductId, $aSel = null, $aPersParam = null)
     {
         $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 

@@ -13,7 +13,7 @@ use \oxDb;
 
 class oxVariantHandlerForOxvarianthandlerTest extends oxVariantHandler
 {
-    public function fillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId)
+    public function PUBLICfillVariantSelections($oVariantList, $iVarSelCnt, &$aFilter, $sActVariantId)
     {
         return parent::_fillVariantSelections($oVariantList, $iVarSelCnt, $aFilter, $sActVariantId);
     }
@@ -247,7 +247,7 @@ class VarianthandlerTest extends \OxidTestCase
 
         // empty variant list
         $oHandler = new oxVariantHandlerForOxvarianthandlerTest();
-        $this->assertEquals(array(), $oHandler->fillVariantSelections(array(), 100, $aFilter, ""));
+        $this->assertEquals(array(), $oHandler->PUBLICfillVariantSelections(array(), 100, $aFilter, ""));
 
         // filled variant list
         $oVariant1 = oxNew('oxbase');
@@ -272,7 +272,7 @@ class VarianthandlerTest extends \OxidTestCase
 
         // checking
         $oHandler = new oxVariantHandlerForOxvarianthandlerTest();
-        $this->assertEquals($aArray, $oHandler->fillVariantSelections(array($oVariant1, $oVariant2, $oVariant3), 2, $aFilter, "test1"));
+        $this->assertEquals($aArray, $oHandler->PUBLICfillVariantSelections(array($oVariant1, $oVariant2, $oVariant3), 2, $aFilter, "test1"));
         $this->assertEquals(array("0cc175b9c0f1b6a831c399e269772661", "92eb5ffee6ae2fec3ad71c777531578f"), $aFilter);
     }
 

@@ -117,15 +117,29 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::getProductLinkType instead
+     */
+    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getProductLinkType();
+    }
 
     /**
      * Returns product link type (OXARTICLE_LINKTYPE_MANUFACTURER)
      *
      * @return int
      */
-    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         return OXARTICLE_LINKTYPE_MANUFACTURER;
+    }
+    /**
+     * @deprecated use self::loadArticles instead
+     */
+    protected function _loadArticles($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadArticles($oManufacturer);
     }
 
     /**
@@ -135,7 +149,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return array
      */
-    protected function _loadArticles($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($oManufacturer)
     {
         $sManufacturerId = $oManufacturer->getId();
 
@@ -155,17 +169,31 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
 
         return [$oArtList, $this->_iAllArtCnt];
     }
+    /**
+     * @deprecated use self::getSeoObjectId instead
+     */
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSeoObjectId();
+    }
 
     /**
      * Returns active product id to load its seo meta info
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if (($oManufacturer = $this->getActManufacturer())) {
             return $oManufacturer->getId();
         }
+    }
+    /**
+     * @deprecated use self::addPageNrParam instead
+     */
+    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addPageNrParam($sUrl, $iPage, $iLang);
     }
 
     /**
@@ -178,7 +206,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null)
     {
         if (Registry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
             if ($iPage) {
@@ -187,7 +215,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
             }
         }
 
-        return parent::_addPageNrParam($sUrl, $iPage, $iLang);
+        return parent::addPageNrParam($sUrl, $iPage, $iLang);
     }
 
     /**
@@ -341,6 +369,13 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
             return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
+    /**
+     * @deprecated use self::prepareMetaKeyword instead
+     */
+    protected function _prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords);
+    }
 
     /**
      * Calls and returns result of parent:: _collectMetaKeyword();
@@ -350,9 +385,16 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true)
     {
-        return parent::_collectMetaKeyword($aCatPath);
+        return parent::collectMetaKeyword($aCatPath);
+    }
+    /**
+     * @deprecated use self::prepareMetaDescription instead
+     */
+    protected function _prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaDescription($aCatPath, $iLength, $blDescTag);
     }
 
     /**
@@ -367,9 +409,16 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return  string  $sString    converted string
      */
-    protected function _prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false)
     {
-        return parent::_collectMetaDescription($aCatPath, $iLength, $blDescTag);
+        return parent::collectMetaDescription($aCatPath, $iLength, $blDescTag);
+    }
+    /**
+     * @deprecated use self::getSubject instead
+     */
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSubject($iLang);
     }
 
     /**
@@ -380,7 +429,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return object
      */
-    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang)
     {
         return $this->getActManufacturer();
     }

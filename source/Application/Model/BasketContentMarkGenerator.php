@@ -58,15 +58,29 @@ class BasketContentMarkGenerator
 
         return $this->_aMarks[$sMarkIdentification];
     }
+    /**
+     * @deprecated use self::getBasket instead
+     */
+    private function _getBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getBasket();
+    }
 
     /**
      * Basket that is used to get article type(downloadable, intangible etc..).
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
      */
-    private function _getBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getBasket()
     {
         return $this->_oBasket;
+    }
+    /**
+     * @deprecated use self::formMarks instead
+     */
+    private function _formMarks($sCurrentMark) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->formMarks($sCurrentMark);
     }
 
     /**
@@ -76,7 +90,7 @@ class BasketContentMarkGenerator
      *
      * @return array
      */
-    private function _formMarks($sCurrentMark) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function formMarks($sCurrentMark)
     {
         $oBasket = $this->_getBasket();
         $aMarks = [];

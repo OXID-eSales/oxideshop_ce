@@ -129,13 +129,20 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
 
         return $this->_oArticle;
     }
+    /**
+     * @deprecated use self::getParams instead
+     */
+    private function _getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getParams();
+    }
 
     /**
      * Returns params (article id, bid price)
      *
      * @return array
      */
-    private function _getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getParams()
     {
         return Registry::getConfig()->getRequestParameter('pa');
     }

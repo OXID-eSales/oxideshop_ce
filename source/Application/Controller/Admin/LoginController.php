@@ -171,6 +171,13 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         return "admin_start";
     }
+    /**
+     * @deprecated use self::authorize instead
+     */
+    protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->authorize();
+    }
 
     /**
      * Users are always authorized to use login page.
@@ -178,7 +185,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @return boolean
      */
-    protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function authorize()
     {
         return true;
     }
@@ -192,13 +199,20 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         return self::VIEW_ID;
     }
+    /**
+     * @deprecated use self::getAvailableLanguages instead
+     */
+    protected function _getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getAvailableLanguages();
+    }
 
     /**
      * Get available admin interface languages
      *
      * @return array
      */
-    protected function _getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAvailableLanguages()
     {
         $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->_getBrowserLanguage();
@@ -210,13 +224,20 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         return $aLanguages;
     }
+    /**
+     * @deprecated use self::getBrowserLanguage instead
+     */
+    protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getBrowserLanguage();
+    }
 
     /**
      * Get detected user browser language abbervation
      *
      * @return string
      */
-    protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getBrowserLanguage()
     {
         return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }

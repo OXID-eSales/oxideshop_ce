@@ -109,6 +109,13 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
 
         return $sorting;
     }
+    /**
+     * @deprecated use self::prepareWhereQuery instead
+     */
+    protected function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareWhereQuery($whereQuery, $fullQuery);
+    }
 
     /**
      * Adding folder check
@@ -118,10 +125,10 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return string
      */
-    protected function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($whereQuery, $fullQuery)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
+        $query = parent::prepareWhereQuery($whereQuery, $fullQuery);
         $config = $this->getConfig();
         $folders = $config->getConfigParam('aOrderfolder');
         $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
@@ -135,6 +142,13 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
 
         return $query;
     }
+    /**
+     * @deprecated use self::buildSelectString instead
+     */
+    protected function _buildSelectString($listObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->buildSelectString($listObject);
+    }
 
     /**
      * Builds and returns SQL query string. Adds additional order check.
@@ -143,9 +157,9 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return string
      */
-    protected function _buildSelectString($listObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($listObject = null)
     {
-        $query = parent::_buildSelectString($listObject);
+        $query = parent::buildSelectString($listObject);
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $searchQuery = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addsearch');

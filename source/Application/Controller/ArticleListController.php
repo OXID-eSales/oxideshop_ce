@@ -231,6 +231,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         return $category;
     }
+    /**
+     * @deprecated use self::checkRequestedPage instead
+     */
+    protected function _checkRequestedPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkRequestedPage();
+    }
 
     /**
      * Checks if requested page is valid and:
@@ -238,7 +245,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * or
      * - displays 404 error if category has no products
      */
-    protected function _checkRequestedPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkRequestedPage()
     {
         $pageCount = $this->getPageCount();
         $currentPageNumber = $this->getActPage();
@@ -252,12 +259,19 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             error_404_handler($this->getActiveCategory()->getLink());
         }
     }
+    /**
+     * @deprecated use self::processListArticles instead
+     */
+    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processListArticles();
+    }
 
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
      */
-    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processListArticles()
     {
         if ($articleList = $this->getArticleList()) {
             $linkType = $this->_getProductLinkType();
@@ -306,6 +320,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         return '';
     }
+    /**
+     * @deprecated use self::getProductLinkType instead
+     */
+    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getProductLinkType();
+    }
 
     /**
      * Returns product link type:
@@ -314,7 +335,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return int
      */
-    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         $categoryType = OXARTICLE_LINKTYPE_CATEGORY;
         if (($category = $this->getActiveCategory()) && $category->isPriceCategory()) {
@@ -358,6 +379,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         unset($sessionFilter[$activeCategory]);
         Registry::getSession()->setVariable('session_attrfilter', $sessionFilter);
     }
+    /**
+     * @deprecated use self::loadArticles instead
+     */
+    protected function _loadArticles($category) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadArticles($category);
+    }
 
     /**
      * Loads and returns article list of active category.
@@ -366,7 +394,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return oxArticleList
      */
-    protected function _loadArticles($category) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($category)
     {
         $config = $this->getConfig();
 
@@ -409,6 +437,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         return $this->_getRequestPageNr();
     }
+    /**
+     * @deprecated use self::getRequestPageNr instead
+     */
+    protected function _getRequestPageNr() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getRequestPageNr();
+    }
 
     /**
      * Calls parent::getActPage();
@@ -418,7 +453,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return int
      */
-    protected function _getRequestPageNr() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRequestPageNr()
     {
         return parent::getActPage();
     }
@@ -440,15 +475,30 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
+     * @deprecated use self::getSeoObjectId instead
+     */
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSeoObjectId();
+    }
+
+    /**
      * Returns active product id to load its seo meta info
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if (($category = $this->getActiveCategory())) {
             return $category->getId();
         }
+    }
+    /**
+     * @deprecated use self::getCatPathString instead
+     */
+    protected function _getCatPathString() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCatPathString();
     }
 
     /**
@@ -456,7 +506,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function _getCatPathString() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCatPathString()
     {
         if ($this->_sCatPathString === null) {
             // marking as already set
@@ -477,6 +527,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         return $this->_sCatPathString;
     }
+    /**
+     * @deprecated use self::prepareMetaDescription instead
+     */
+    protected function _prepareMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaDescription($meta, $length, $descriptionTag);
+    }
 
     /**
      * Returns current view meta description data.
@@ -487,7 +544,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return  string
      */
-    protected function _prepareMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($meta, $length = 1024, $descriptionTag = false)
     {
         $description = '';
         // appending parent title
@@ -533,6 +590,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         return $meta;
     }
+    /**
+     * @deprecated use self::collectMetaDescription instead
+     */
+    protected function _collectMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->collectMetaDescription($meta, $length, $descriptionTag);
+    }
 
     /**
      * Meta tags - description and keywords - generator for search
@@ -546,7 +610,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return  string
      */
-    protected function _collectMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function collectMetaDescription($meta, $length = 1024, $descriptionTag = false)
     {
         //formatting description tag
         $category = $this->getActiveCategory();
@@ -573,7 +637,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             $meta = $additionalText;
         }
 
-        return parent::_prepareMetaDescription($meta, $length, $descriptionTag);
+        return parent::prepareMetaDescription($meta, $length, $descriptionTag);
+    }
+    /**
+     * @deprecated use self::prepareMetaKeyword instead
+     */
+    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaKeyword($keywords, $removeDuplicatedWords);
     }
 
     /**
@@ -584,7 +655,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
     {
         $keywords = '';
         if (($activeCategory = $this->getActiveCategory())) {
@@ -608,9 +679,16 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             }
         }
 
-        $keywords = parent::_prepareMetaDescription($keywords, -1, $removeDuplicatedWords);
+        $keywords = parent::prepareMetaDescription($keywords, -1, $removeDuplicatedWords);
 
         return trim($keywords);
+    }
+    /**
+     * @deprecated use self::collectMetaKeyword instead
+     */
+    protected function _collectMetaKeyword($keywords) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->collectMetaKeyword($keywords);
     }
 
     /**
@@ -621,7 +699,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function _collectMetaKeyword($keywords) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function collectMetaKeyword($keywords)
     {
         $maxTextLength = 60;
         $text = '';
@@ -660,7 +738,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             $text = "{$keywords}, {$text}";
         }
 
-        return parent::_prepareMetaKeyword($text);
+        return parent::prepareMetaKeyword($text);
     }
 
     /**
@@ -681,6 +759,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::addPageNrParam instead
+     */
+    protected function _addPageNrParam($url, $currentPage, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addPageNrParam($url, $currentPage, $languageId);
+    }
 
     /**
      * Adds page number parameter to current Url and returns formatted url
@@ -691,7 +776,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return string
      */
-    protected function _addPageNrParam($url, $currentPage, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($url, $currentPage, $languageId = null)
     {
         if (Registry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory())) {
             if ($currentPage) {
@@ -699,10 +784,17 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
                 $url = $category->getBaseSeoLink($languageId, $currentPage);
             }
         } else {
-            $url = parent::_addPageNrParam($url, $currentPage, $languageId);
+            $url = parent::addPageNrParam($url, $currentPage, $languageId);
         }
 
         return $url;
+    }
+    /**
+     * @deprecated use self::isActCategory instead
+     */
+    protected function _isActCategory() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isActCategory();
     }
 
     /**
@@ -710,7 +802,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return bool
      */
-    protected function _isActCategory() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isActCategory()
     {
         return $this->_blIsCat;
     }
@@ -775,6 +867,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             return Registry::getLang()->translateString('PAGE') . " " . ($activePage + 1);
         }
     }
+    /**
+     * @deprecated use self::getSubject instead
+     */
+    protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSubject($languageId);
+    }
 
     /**
      * Returns object, associated with current view.
@@ -784,7 +883,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @return object
      */
-    protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($languageId)
     {
         return $this->getActiveCategory();
     }

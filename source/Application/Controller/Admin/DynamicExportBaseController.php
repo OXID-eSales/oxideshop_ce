@@ -537,6 +537,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         return $sInput;
     }
+    /**
+     * @deprecated use self::unHtmlEntities instead
+     */
+    protected function _unHtmlEntities($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->unHtmlEntities($sInput);
+    }
 
     /**
      * Replace HTML Entities
@@ -546,11 +553,18 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _unHtmlEntities($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function unHtmlEntities($sInput)
     {
         $aTransTbl = array_flip(get_html_translation_table(HTML_ENTITIES));
 
         return strtr($sInput, $aTransTbl);
+    }
+    /**
+     * @deprecated use self::getHeapTableName instead
+     */
+    protected function _getHeapTableName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getHeapTableName();
     }
 
     /**
@@ -558,10 +572,17 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _getHeapTableName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getHeapTableName()
     {
         // table name must not start with any digit
         return "tmp_" . str_replace("0", "", md5($this->getSession()->getId()));
+    }
+    /**
+     * @deprecated use self::generateTableCharSet instead
+     */
+    protected function _generateTableCharSet($sMysqlVersion) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->generateTableCharSet($sMysqlVersion);
     }
 
     /**
@@ -571,7 +592,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _generateTableCharSet($sMysqlVersion) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function generateTableCharSet($sMysqlVersion)
     {
         $sTableCharset = "";
 
@@ -589,6 +610,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         return $sTableCharset;
     }
+    /**
+     * @deprecated use self::createHeapTable instead
+     */
+    protected function _createHeapTable($sHeapTable, $sTableCharset) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->createHeapTable($sHeapTable, $sTableCharset);
+    }
 
     /**
      * creates heaptable
@@ -598,7 +626,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return bool
      */
-    protected function _createHeapTable($sHeapTable, $sTableCharset) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createHeapTable($sHeapTable, $sTableCharset)
     {
         $blDone = false;
         $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -610,6 +638,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         return $blDone;
     }
+    /**
+     * @deprecated use self::getCatAdd instead
+     */
+    protected function _getCatAdd($aChosenCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCatAdd($aChosenCat);
+    }
 
     /**
      * creates additional cat string
@@ -618,7 +653,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _getCatAdd($aChosenCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCatAdd($aChosenCat)
     {
         $sCatAdd = null;
         if (is_array($aChosenCat) && count($aChosenCat)) {
@@ -637,6 +672,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         return $sCatAdd;
     }
+    /**
+     * @deprecated use self::insertArticles instead
+     */
+    protected function _insertArticles($sHeapTable, $sCatAdd) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->insertArticles($sHeapTable, $sCatAdd);
+    }
 
     /**
      * inserts articles into heaptable
@@ -646,7 +688,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return bool
      */
-    protected function _insertArticles($sHeapTable, $sCatAdd) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insertArticles($sHeapTable, $sCatAdd)
     {
         $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -691,13 +733,20 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         return $oDB->execute($insertQuery) ? true : false;
     }
+    /**
+     * @deprecated use self::removeParentArticles instead
+     */
+    protected function _removeParentArticles($sHeapTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->removeParentArticles($sHeapTable);
+    }
 
     /**
      * removes parent articles so that we only have variants itself
      *
      * @param string $sHeapTable table name
      */
-    protected function _removeParentArticles($sHeapTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function removeParentArticles($sHeapTable)
     {
         if (!(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("blExportMainVars"))) {
             $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -724,11 +773,18 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
             $oDB->execute($sDel);
         }
     }
+    /**
+     * @deprecated use self::setSessionParams instead
+     */
+    protected function _setSessionParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setSessionParams();
+    }
 
     /**
      * stores some info in session
      */
-    protected function _setSessionParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSessionParams()
     {
         // reset it from session
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportDelCost");
@@ -770,13 +826,20 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         //setting the custom header
         \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportCustomHeader", \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportCustomHeader"));
     }
+    /**
+     * @deprecated use self::loadRootCats instead
+     */
+    protected function _loadRootCats() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadRootCats();
+    }
 
     /**
      * Load all root cat's == all trees
      *
      * @return null
      */
-    protected function _loadRootCats() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadRootCats()
     {
         if ($this->_aCatLvlCache === null) {
             $this->_aCatLvlCache = [];
@@ -819,6 +882,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         return $this->_aCatLvlCache;
     }
+    /**
+     * @deprecated use self::findDeepestCatPath instead
+     */
+    protected function _findDeepestCatPath($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->findDeepestCatPath($oArticle);
+    }
 
     /**
      * finds deepest category path
@@ -827,7 +897,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return string
      */
-    protected function _findDeepestCatPath($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function findDeepestCatPath($oArticle)
     {
         $sRet = "";
 
@@ -858,6 +928,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         return $sRet;
     }
+    /**
+     * @deprecated use self::initArticle instead
+     */
+    protected function _initArticle($sHeapTable, $iCnt, &$blContinue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->initArticle($sHeapTable, $iCnt, $blContinue);
+    }
 
     /**
      * initialize article
@@ -868,7 +945,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return object
      */
-    protected function _initArticle($sHeapTable, $iCnt, &$blContinue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function initArticle($sHeapTable, $iCnt, &$blContinue)
     {
         $oRs = $this->getDb()->selectLimit("select oxid from $sHeapTable", 1, $iCnt);
         if ($oRs != false && $oRs->count() > 0) {
@@ -894,6 +971,13 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
             }
         }
     }
+    /**
+     * @deprecated use self::setCampaignDetailLink instead
+     */
+    protected function _setCampaignDetailLink($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setCampaignDetailLink($oArticle);
+    }
 
     /**
      * sets detail link for campaigns
@@ -902,7 +986,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _setCampaignDetailLink($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setCampaignDetailLink($oArticle)
     {
         // #827
         if ($sCampaign = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportCampaign")) {

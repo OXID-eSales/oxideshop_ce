@@ -118,13 +118,20 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
 
         return parent::load($sOxid);
     }
+    /**
+     * @deprecated use self::setRootObjectData instead
+     */
+    protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setRootObjectData();
+    }
 
     /**
      * Sets root vendor data. Returns true
      *
      * @return bool
      */
-    protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setRootObjectData()
     {
         $this->setId('root');
         $this->oxvendor__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);

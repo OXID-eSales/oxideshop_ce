@@ -47,13 +47,20 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             ['oxid', 'oxarticles', 0, 0, 1]
         ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $config = $this->getConfig();
 
@@ -83,6 +90,13 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
 
         return $query;
     }
+    /**
+     * @deprecated use self::addFilter instead
+     */
+    protected function _addFilter($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addFilter($query);
+    }
 
     /**
      * Adds filter SQL to current query
@@ -91,11 +105,11 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    protected function _addFilter($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($query)
     {
         $config = $this->getConfig();
         $articleViewName = $this->_getViewName('oxarticles');
-        $query = parent::_addFilter($query);
+        $query = parent::addFilter($query);
 
         // display variants or not ?
         $query .= $config->getConfigParam('blVariantsSelection') ? ' group by ' . $articleViewName . '.oxid ' : '';

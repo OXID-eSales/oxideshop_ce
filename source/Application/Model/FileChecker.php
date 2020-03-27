@@ -244,13 +244,20 @@ class FileChecker
     {
         return $this->_isWebServiceOnline() && $this->_isShopVersionIsKnown();
     }
+    /**
+     * @deprecated use self::isWebServiceOnline instead
+     */
+    protected function _isWebServiceOnline() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isWebServiceOnline();
+    }
 
     /**
      * in case if a general error is thrown by webservice
      *
      * @return string error
      */
-    protected function _isWebServiceOnline() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isWebServiceOnline()
     {
         $oXML = null;
         $aParams = [
@@ -282,6 +289,13 @@ class FileChecker
 
         return !$this->_blError;
     }
+    /**
+     * @deprecated use self::isShopVersionIsKnown instead
+     */
+    protected function _isShopVersionIsKnown() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isShopVersionIsKnown();
+    }
 
 
     /**
@@ -289,7 +303,7 @@ class FileChecker
      *
      * @return boolean
      */
-    protected function _isShopVersionIsKnown() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isShopVersionIsKnown()
     {
         $aParams = [
             'job' => 'existsversion',
@@ -393,6 +407,13 @@ class FileChecker
 
         return $aResult;
     }
+    /**
+     * @deprecated use self::getFileVersion instead
+     */
+    protected function _getFileVersion($sMD5, $sFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFileVersion($sMD5, $sFile);
+    }
 
     /**
      * Queries checksum-webservice according to md5, version, revision, edition and filename
@@ -402,7 +423,7 @@ class FileChecker
      *
      * @return \SimpleXMLElement
      */
-    protected function _getFileVersion($sMD5, $sFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFileVersion($sMD5, $sFile)
     {
         $aParams = [
             'job' => 'md5check',

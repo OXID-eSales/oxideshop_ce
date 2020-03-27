@@ -47,13 +47,20 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                                      ['oxid', 'oxobject2attribute', 0, 0, 1]
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = $this->getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -93,6 +100,13 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         return $sQAdd;
     }
+    /**
+     * @deprecated use self::addFilter instead
+     */
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addFilter($sQ);
+    }
 
     /**
      * Adds filter SQL to current query
@@ -101,9 +115,9 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
-        $sQ = parent::_addFilter($sQ);
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         if ($this->getConfig()->getConfigParam('blVariantsSelection')) {
@@ -128,7 +142,7 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sO2AttributeView = $this->_getViewName('oxobject2attribute');
 
-            $sQ = parent::_addFilter("delete $sO2AttributeView.* " . $this->_getQuery());
+            $sQ = parent::addFilter("delete $sO2AttributeView.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenCat)) {
             $sChosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));

@@ -60,6 +60,13 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         return $languageAbbr === "de" ? 0 : 1;
     }
+    /**
+     * @deprecated use self::getEditValue instead
+     */
+    protected function _getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getEditValue($oObject, $sField);
+    }
 
     /**
      * Returns string which must be edited by editor.
@@ -69,7 +76,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEditValue($oObject, $sField)
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
@@ -85,6 +92,13 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         return $sEditObjectValue;
     }
+    /**
+     * @deprecated use self::processEditValue instead
+     */
+    protected function _processEditValue($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processEditValue($sValue);
+    }
 
     /**
      * Processes edit value.
@@ -93,7 +107,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _processEditValue($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processEditValue($sValue)
     {
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
@@ -104,6 +118,13 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         }
 
         return $sValue;
+    }
+    /**
+     * @deprecated use self::getPlainEditor instead
+     */
+    protected function _getPlainEditor($width, $height, $object, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getPlainEditor($width, $height, $object, $field);
     }
 
     /**
@@ -118,7 +139,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getPlainEditor($width, $height, $object, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPlainEditor($width, $height, $object, $field)
     {
         $objectValue = $this->_getEditValue($object, $field);
 
@@ -192,6 +213,13 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         // resetting manufacturers cache
         $this->resetContentCache();
     }
+    /**
+     * @deprecated use self::createCategoryTree instead
+     */
+    protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->createCategoryTree($sTplVarName, $sEditCatId, $blForceNonCache, $iTreeShopId);
+    }
 
     /**
      * Function creates category tree for select list used in "Category main", "Article extend" etc.
@@ -203,7 +231,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null)
     {
         // caching category tree, to load it once, not many times
         if (!isset($this->oCatTree) || $blForceNonCache) {
@@ -235,6 +263,13 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
 
         return $oCatTree;
     }
+    /**
+     * @deprecated use self::getCategoryTree instead
+     */
+    protected function _getCategoryTree($sTplVarName, $sSelectedCatId, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCategoryTree($sTplVarName, $sSelectedCatId, $sEditCatId, $blForceNonCache, $iTreeShopId);
+    }
 
     /**
      * Function creates category tree for select list used in "Category main", "Article extend" etc.
@@ -248,7 +283,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getCategoryTree( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryTree(
         $sTplVarName,
         $sSelectedCatId,
         $sEditCatId = '',
@@ -299,13 +334,20 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             $oObject->save();
         }
     }
+    /**
+     * @deprecated use self::setupNavigation instead
+     */
+    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setupNavigation($sNode);
+    }
 
     /**
      * Sets-up navigation parameters.
      *
      * @param string $sNode active view id
      */
-    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setupNavigation($sNode)
     {
         // navigation according to class
         if ($sNode) {
@@ -318,13 +360,20 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             $this->_aViewData['bottom_buttons'] = $myAdminNavig->getBtn($sNode);
         }
     }
+    /**
+     * @deprecated use self::resetCounts instead
+     */
+    protected function _resetCounts($aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->resetCounts($aIds);
+    }
 
     /**
      * Resets count of vendor/manufacturer category items.
      *
      * @param array $aIds to reset type => id
      */
-    protected function _resetCounts($aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetCounts($aIds)
     {
         foreach ($aIds as $sType => $aResetInfo) {
             foreach ($aResetInfo as $sResetId => $iPos) {

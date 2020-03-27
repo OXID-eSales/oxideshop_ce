@@ -26,13 +26,20 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         ['oxid', 'oxcategory2attribute', 0, 0, 1]
     ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $sSelTable = $this->_getViewName('oxattribute');
         $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
@@ -40,13 +47,20 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         return " from $sSelTable left join oxcategory2attribute on oxcategory2attribute.oxattrid = $sSelTable.oxid " .
                  "where oxobjectid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sArtId) . " ";
     }
+    /**
+     * @deprecated use self::getSorting instead
+     */
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSorting();
+    }
 
     /**
      * Returns SQL query addon for sorting
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         return 'order by oxcategory2attribute.oxsort ';
     }

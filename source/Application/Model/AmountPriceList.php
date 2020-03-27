@@ -71,13 +71,20 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->assignArray($aData);
     }
+    /**
+     * @deprecated use self::loadFromDb instead
+     */
+    protected function _loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadFromDb();
+    }
 
     /**
      * Get data from db
      *
      * @return array
      */
-    protected function _loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb()
     {
         $sArticleId = $this->getArticle()->getId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);

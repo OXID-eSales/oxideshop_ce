@@ -49,13 +49,20 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
                                      ['oxid', 'oxactions2article', 0, 0, 1]
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = $this->getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -96,6 +103,13 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
 
         return $sQAdd;
     }
+    /**
+     * @deprecated use self::addFilter instead
+     */
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addFilter($sQ);
+    }
 
     /**
      * Adds filter SQL to current query
@@ -104,9 +118,9 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
-        $sQ = parent::_addFilter($sQ);
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         if ($this->getConfig()->getConfigParam('blVariantsSelection')) {
@@ -120,13 +134,20 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
 
         return $sQ;
     }
+    /**
+     * @deprecated use self::getSorting instead
+     */
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSorting();
+    }
 
     /**
      * Returns SQL query addon for sorting
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSynchOxidParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -134,7 +155,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             return 'order by oxactions2article.oxsort ';
         }
 
-        return parent::_getSorting();
+        return parent::getSorting();
     }
 
     /**
@@ -148,7 +169,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $this->_getOxRssFeed()->removeCacheFile($sOxid);
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sQ = parent::_addFilter("delete oxactions2article.* " . $this->_getQuery());
+            $sQ = parent::addFilter("delete oxactions2article.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         } elseif (is_array($aChosenArt)) {
             $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
@@ -268,13 +289,20 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
 
         $this->_outputResponse($this->_getData($sCountQ, $sQ));
     }
+    /**
+     * @deprecated use self::getOxRssFeed instead
+     */
+    protected function _getOxRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getOxRssFeed();
+    }
 
     /**
      * Getter for the rss feed handler.
      *
      * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
      */
-    protected function _getOxRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOxRssFeed()
     {
         return oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
     }

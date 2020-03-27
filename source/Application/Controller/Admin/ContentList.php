@@ -57,6 +57,13 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::prepareWhereQuery instead
+     */
+    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareWhereQuery($aWhere, $sqlFull);
+    }
 
     /**
      * Adding folder check and empty folder field check.
@@ -66,9 +73,9 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return string
      */
-    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($aWhere, $sqlFull)
     {
-        $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
+        $sQ = parent::prepareWhereQuery($aWhere, $sqlFull);
         $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
         $sViewName = getviewName("oxcontents");
 

@@ -18,13 +18,20 @@ class CreditsController extends \OxidEsales\Eshop\Application\Controller\Content
      * @var string
      */
     protected $_sContentId = "oxcredits";
+    /**
+     * @deprecated use self::getSeoObjectId instead
+     */
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSeoObjectId();
+    }
 
     /**
      * Returns active content id to load its seo meta info
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         return $this->getContentId();
     }

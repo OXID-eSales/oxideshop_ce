@@ -16,15 +16,29 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /** @var array _aCatCache cache for categories. */
     protected $_aCatCache = [];
+    /**
+     * @deprecated use self::getUrlExtension instead
+     */
+    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getUrlExtension();
+    }
 
     /**
      * Returns target "extension" (/)
      *
      * @return string
      */
-    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUrlExtension()
     {
         return '/';
+    }
+    /**
+     * @deprecated use self::categoryUrlLoader instead
+     */
+    protected function _categoryUrlLoader($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->categoryUrlLoader($oCat, $iLang);
     }
 
     /**
@@ -38,7 +52,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return boolean
      */
-    protected function _categoryUrlLoader($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function categoryUrlLoader($oCat, $iLang)
     {
         $sCacheId = $this->_getCategoryCacheId($oCat, $iLang);
         if (isset($this->_aCatCache[$sCacheId])) {
@@ -49,6 +63,13 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         }
 
         return $sSeoUrl;
+    }
+    /**
+     * @deprecated use self::getCategoryCacheId instead
+     */
+    private function _getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCategoryCacheId($oCat, $iLang);
     }
 
     /**
@@ -61,7 +82,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    private function _getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getCategoryCacheId($oCat, $iLang)
     {
         return $oCat->getId() . '_' . ((int) $iLang);
     }
@@ -246,6 +267,13 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
             ':oxobjectid' => $oCategory->getId()
         ]);
     }
+    /**
+     * @deprecated use self::getAltUri instead
+     */
+    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getAltUri($sObjectId, $iLang);
+    }
 
     /**
      * Returns alternative uri used while updating seo
@@ -255,7 +283,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
         $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);

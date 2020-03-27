@@ -69,6 +69,13 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
         return 'module_config.tpl';
     }
+    /**
+     * @deprecated use self::getModuleForConfigVars instead
+     */
+    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getModuleForConfigVars();
+    }
 
     /**
      * return module filter for config variables
@@ -77,9 +84,16 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getModuleForConfigVars()
     {
         return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
+    }
+    /**
+     * @deprecated use self::loadMetadataConfVars instead
+     */
+    public function _loadMetadataConfVars($aModuleSettings) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadMetadataConfVars($aModuleSettings);
     }
 
     /**
@@ -95,7 +109,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return array
      */
-    public function _loadMetadataConfVars($aModuleSettings) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function loadMetadataConfVars($aModuleSettings)
     {
         $oConfig = $this->getConfig();
 
@@ -324,6 +338,13 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             'grouping'    => $grouping,
         ];
     }
+    /**
+     * @deprecated use self::getDbConfigTypeName instead
+     */
+    private function _getDbConfigTypeName($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getDbConfigTypeName($type);
+    }
 
     /**
      * Convert metadata type to DB type.
@@ -332,7 +353,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    private function _getDbConfigTypeName($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function getDbConfigTypeName($type)
     {
         return $type === 'password' ? 'str' : $type;
     }

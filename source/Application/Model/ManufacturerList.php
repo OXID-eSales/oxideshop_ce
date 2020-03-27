@@ -141,13 +141,20 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         return $this->_aPath;
     }
+    /**
+     * @deprecated use self::addCategoryFields instead
+     */
+    protected function _addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addCategoryFields($oManufacturer);
+    }
 
     /**
      * Adds category specific fields to manufacturer object
      *
      * @param object $oManufacturer manufacturer object
      */
-    protected function _addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addCategoryFields($oManufacturer)
     {
         $oManufacturer->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field($oManufacturer->oxmanufacturers__oxid->value);
         $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
@@ -177,11 +184,18 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         return $this->_oClickedManufacturer;
     }
+    /**
+     * @deprecated use self::seoSetManufacturerData instead
+     */
+    protected function _seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->seoSetManufacturerData();
+    }
 
     /**
      * Processes manufacturer category URLs
      */
-    protected function _seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function seoSetManufacturerData()
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

@@ -175,6 +175,13 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $blSend;
     }
+    /**
+     * @deprecated use self::setParams instead
+     */
+    protected function _setParams($blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setParams($blPerfLoadAktion);
+    }
 
     /**
      * Assigns to Smarty oxuser object, add newsletter products,
@@ -183,7 +190,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param bool $blPerfLoadAktion perform option load actions
      */
-    protected function _setParams($blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setParams($blPerfLoadAktion = false)
     {
         $myConfig = $this->getConfig();
 
@@ -228,13 +235,21 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
+     * @deprecated use self::assignProducts instead
+     */
+    protected function _assignProducts($oView, $blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->assignProducts($oView, $blPerfLoadAktion);
+    }
+
+    /**
      * Add newsletter products (#559 only if we have user we can assign this info),
      * adds products which fit to the last order of assigned user.
      *
      * @param \OxidEsales\Eshop\Core\Controller\BaseController $oView            view object to store view data
      * @param bool                                             $blPerfLoadAktion perform option load actions
      */
-    protected function _assignProducts($oView, $blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignProducts($oView, $blPerfLoadAktion = false)
     {
         if ($blPerfLoadAktion) {
             $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -265,6 +280,13 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
         }
     }
+    /**
+     * @deprecated use self::setFieldData instead
+     */
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setFieldData($sFieldName, $sValue, $iDataType);
+    }
 
     /**
      * Sets data field value
@@ -275,7 +297,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         if ('oxtemplate' === $sFieldName || 'oxplaintemplate' === $sFieldName) {
             $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;

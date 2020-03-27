@@ -60,13 +60,20 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         return 'theme_config.tpl';
     }
+    /**
+     * @deprecated use self::getModuleForConfigVars instead
+     */
+    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getModuleForConfigVars();
+    }
 
     /**
      * return theme filter for config variables
      *
      * @return string
      */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getModuleForConfigVars()
     {
         if ($this->_sTheme === null) {
             $this->_sTheme = $this->getEditObjectId();

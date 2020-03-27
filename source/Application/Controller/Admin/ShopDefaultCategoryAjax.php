@@ -27,13 +27,20 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
         ['oxid', 'oxcategories', 0, 0, 1]
     ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oCat->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage'));

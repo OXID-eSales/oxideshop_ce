@@ -35,13 +35,20 @@ class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
                                      ['oxid', 'oxobject2payment', 0, 0, 1]
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // looking for table/view
         $sCountryTable = $this->_getViewName('oxcountry');

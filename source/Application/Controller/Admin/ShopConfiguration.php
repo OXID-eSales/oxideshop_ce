@@ -117,13 +117,20 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::getModuleForConfigVars instead
+     */
+    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getModuleForConfigVars();
+    }
 
     /**
      * return theme filter for config variables
      *
      * @return string
      */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getModuleForConfigVars()
     {
         return '';
     }
@@ -258,6 +265,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return true;
     }
+    /**
+     * @deprecated use self::parseConstraint instead
+     */
+    protected function _parseConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->parseConstraint($type, $constraint);
+    }
 
     /**
      * parse constraint from type and serialized values
@@ -267,7 +281,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return mixed
      */
-    protected function _parseConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function parseConstraint($type, $constraint)
     {
         switch ($type) {
             case "select":
@@ -275,6 +289,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 break;
         }
         return null;
+    }
+    /**
+     * @deprecated use self::serializeConstraint instead
+     */
+    protected function _serializeConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->serializeConstraint($type, $constraint);
     }
 
     /**
@@ -285,7 +306,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _serializeConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function serializeConstraint($type, $constraint)
     {
         switch ($type) {
             case "select":
@@ -293,6 +314,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 break;
         }
         return '';
+    }
+    /**
+     * @deprecated use self::unserializeConfVar instead
+     */
+    public function _unserializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->unserializeConfVar($type, $name, $value);
     }
 
     /**
@@ -304,7 +332,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return mixed
      */
-    public function _unserializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function unserializeConfVar($type, $name, $value)
     {
         $str = getStr();
         $data = null;
@@ -343,6 +371,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return $data;
     }
+    /**
+     * @deprecated use self::serializeConfVar instead
+     */
+    public function _serializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->serializeConfVar($type, $name, $value);
+    }
 
     /**
      * Prepares data for storing to database.
@@ -354,7 +389,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    public function _serializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function serializeConfVar($type, $name, $value)
     {
         $data = $value;
 
@@ -383,6 +418,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         return $data;
     }
+    /**
+     * @deprecated use self::arrayToMultiline instead
+     */
+    protected function _arrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->arrayToMultiline($input);
+    }
 
     /**
      * Converts simple array to multiline text. Returns this text.
@@ -391,9 +433,16 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _arrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function arrayToMultiline($input)
     {
         return implode("\n", (array) $input);
+    }
+    /**
+     * @deprecated use self::multilineToArray instead
+     */
+    protected function _multilineToArray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->multilineToArray($multiline);
     }
 
     /**
@@ -403,7 +452,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return array
      */
-    protected function _multilineToArray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function multilineToArray($multiline)
     {
         $array = explode("\n", $multiline);
         if (is_array($array)) {
@@ -417,6 +466,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
             return $array;
         }
     }
+    /**
+     * @deprecated use self::aarrayToMultiline instead
+     */
+    protected function _aarrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->aarrayToMultiline($input);
+    }
 
     /**
      * Converts associative array to multiline text. Returns this text.
@@ -425,7 +481,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return string
      */
-    protected function _aarrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function aarrayToMultiline($input)
     {
         if (is_array($input)) {
             $multiline = '';
@@ -439,6 +495,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
             return $multiline;
         }
     }
+    /**
+     * @deprecated use self::multilineToAarray instead
+     */
+    protected function _multilineToAarray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->multilineToAarray($multiline);
+    }
 
     /**
      * Converts Multiline text to associative array. Returns this array.
@@ -447,7 +510,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @return array
      */
-    protected function _multilineToAarray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function multilineToAarray($multiline)
     {
         $string = getStr();
         $array = [];

@@ -130,6 +130,13 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::prepareMetaDescription instead
+     */
+    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaDescription($sMeta, $iLength, $blDescTag);
+    }
 
     /**
      * Returns current view meta data
@@ -142,7 +149,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
     {
         if (
             !$sMeta &&
@@ -153,7 +160,14 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $sMeta = $oArt->oxarticles__oxtitle->value . ' - ' . $oDescField->value;
         }
 
-        return parent::_prepareMetaDescription($sMeta, $iLength, $blDescTag);
+        return parent::prepareMetaDescription($sMeta, $iLength, $blDescTag);
+    }
+    /**
+     * @deprecated use self::prepareMetaKeyword instead
+     */
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
     }
 
     /**
@@ -166,7 +180,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
         if (
             !$sKeywords &&
@@ -177,7 +191,14 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $sKeywords = $oDescField->value;
         }
 
-        return parent::_prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
+        return parent::prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
+    }
+    /**
+     * @deprecated use self::getLoadActionsParam instead
+     */
+    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getLoadActionsParam();
     }
 
     /**
@@ -185,7 +206,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @return string
      */
-    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLoadActionsParam()
     {
         if ($this->_blLoadActions === null) {
             $this->_blLoadActions = false;

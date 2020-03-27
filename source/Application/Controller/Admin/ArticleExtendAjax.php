@@ -37,13 +37,20 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                                      ['oxid', 'oxcategories', 0, 0, 1]
                                  ],
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $categoriesTable = $this->_getViewName('oxcategories');
         $objectToCategoryView = $this->_getViewName('oxobject2category');
@@ -67,6 +74,13 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         return $query;
     }
+    /**
+     * @deprecated use self::getDataFields instead
+     */
+    protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getDataFields($sQ);
+    }
 
     /**
      * Returns array with DB records
@@ -75,9 +89,9 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @return array
      */
-    protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDataFields($sQ)
     {
-        $dataFields = parent::_getDataFields($sQ);
+        $dataFields = parent::getDataFields($sQ);
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid') && is_array($dataFields) && count($dataFields)) {
             // looking for smallest time value to mark record as main category ..
             $minimalPosition = null;
@@ -191,13 +205,20 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $this->onCategoriesAdd($categoriesToAdd);
         }
     }
+    /**
+     * @deprecated use self::updateOxTime instead
+     */
+    protected function _updateOxTime($oxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->updateOxTime($oxId);
+    }
 
     /**
      * Updates oxtime value for product
      *
      * @param string $oxId product id
      */
-    protected function _updateOxTime($oxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function updateOxTime($oxId)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $objectToCategoryView = $this->_getViewName('oxobject2category');

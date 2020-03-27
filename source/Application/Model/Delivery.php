@@ -418,6 +418,13 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         return $blForBasket;
     }
     /**
+     * @deprecated use self::isForArticle instead
+     */
+    protected function _isForArticle($content, $artAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isForArticle($content, $artAmount);
+    }
+    /**
      * Checks if delivery fits for one article
      *
      * @deprecated in b-dev since (2015-07-27), use isDeliveryRuleFitByArticle instead
@@ -427,7 +434,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isForArticle($content, $artAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isForArticle($content, $artAmount)
     {
         return $this->isDeliveryRuleFitByArticle($artAmount);
     }
@@ -449,6 +456,13 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $this->_iProdCnt += 1;
     }
+    /**
+     * @deprecated use self::checkDeliveryAmount instead
+     */
+    protected function _checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkDeliveryAmount($iAmount);
+    }
 
     /**
      * checks if amount param is ok for this delivery
@@ -457,7 +471,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return boolean
      */
-    protected function _checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkDeliveryAmount($iAmount)
     {
         $blResult = false;
 
@@ -580,13 +594,20 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         return $this->oxdelivery__oxaddsumtype->value;
     }
+    /**
+     * @deprecated use self::getMultiplier instead
+     */
+    protected function _getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getMultiplier();
+    }
 
     /**
      * Calculate multiplier for price calculation
      *
      * @return float|int
      */
-    protected function _getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMultiplier()
     {
         $dAmount = 0;
 
@@ -600,13 +621,20 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return $dAmount;
     }
+    /**
+     * @deprecated use self::getCostSum instead
+     */
+    protected function _getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCostSum();
+    }
 
     /**
      * Calculate cost sum
      *
      * @return float
      */
-    protected function _getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCostSum()
     {
         if ($this->getAddSumType() == 'abs') {
             $oCur = $this->getConfig()->getActShopCurrencyObject();

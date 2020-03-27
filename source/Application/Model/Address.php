@@ -30,13 +30,20 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var oxState
      */
     protected $_oStateObject = null;
+    /**
+     * @deprecated use self::getStateObject instead
+     */
+    protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getStateObject();
+    }
 
     /**
      * Returns oxState object
      *
      * @return oxState
      */
-    protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getStateObject()
     {
         if (is_null($this->_oStateObject)) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
@@ -143,13 +150,20 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $this->_blSelected = true;
     }
+    /**
+     * @deprecated use self::getMergedAddressFields instead
+     */
+    protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getMergedAddressFields();
+    }
 
     /**
      * Returns merged address fields.
      *
      * @return string
      */
-    protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMergedAddressFields()
     {
         $sDelAddress = '';
         $sDelAddress .= $this->oxaddress__oxcompany;

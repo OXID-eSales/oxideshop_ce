@@ -128,6 +128,13 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         $oArticle->save();
     }
+    /**
+     * @deprecated use self::resetMasterPicture instead
+     */
+    protected function _resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->resetMasterPicture($oArticle, $iIndex, $blDeleteMaster);
+    }
 
     /**
      * Deletes selected master picture and all pictures generated
@@ -137,7 +144,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * @param int                                         $iIndex         master picture index
      * @param bool                                        $blDeleteMaster if TRUE - deletes and unsets master image file
      */
-    protected function _resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetMasterPicture($oArticle, $iIndex, $blDeleteMaster = false)
     {
         if ($this->canResetMasterPicture($oArticle, $iIndex)) {
             if (!$oArticle->isDerived()) {
@@ -160,13 +167,20 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
         }
     }
+    /**
+     * @deprecated use self::deleteMainIcon instead
+     */
+    protected function _deleteMainIcon($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->deleteMainIcon($oArticle);
+    }
 
     /**
      * Deletes main icon file
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _deleteMainIcon($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteMainIcon($oArticle)
     {
         if ($this->canDeleteMainIcon($oArticle)) {
             if (!$oArticle->isDerived()) {
@@ -178,13 +192,20 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $oArticle->oxarticles__oxicon = new \OxidEsales\Eshop\Core\Field();
         }
     }
+    /**
+     * @deprecated use self::deleteThumbnail instead
+     */
+    protected function _deleteThumbnail($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->deleteThumbnail($oArticle);
+    }
 
     /**
      * Deletes thumbnail file
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _deleteThumbnail($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteThumbnail($oArticle)
     {
         if ($this->canDeleteThumbnail($oArticle)) {
             if (!$oArticle->isDerived()) {
@@ -196,6 +217,13 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $oArticle->oxarticles__oxthumb = new \OxidEsales\Eshop\Core\Field();
         }
     }
+    /**
+     * @deprecated use self::cleanupCustomFields instead
+     */
+    protected function _cleanupCustomFields($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->cleanupCustomFields($oArticle);
+    }
 
     /**
      * Cleans up article custom fields oxicon and oxthumb. If there is custom
@@ -203,7 +231,7 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
-    protected function _cleanupCustomFields($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanupCustomFields($oArticle)
     {
         $sIcon = $oArticle->oxarticles__oxicon->value;
         $sThumb = $oArticle->oxarticles__oxthumb->value;

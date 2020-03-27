@@ -155,6 +155,13 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         //update article sold amount
         $oArticle->updateSoldAmount($dAddAmount * (-1));
     }
+    /**
+     * @deprecated use self::getArtStock instead
+     */
+    protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getArtStock($dAddAmount, $blAllowNegativeStock);
+    }
 
     /**
      * Adds or substracts defined amount passed by param from arcticle stock
@@ -164,7 +171,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return double
      */
-    protected function _getArtStock($dAddAmount = 0, $blAllowNegativeStock = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArtStock($dAddAmount = 0, $blAllowNegativeStock = false)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
@@ -216,6 +223,13 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         // serializing persisten info stored while ordering
         $this->oxorderarticles__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($aParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
+    /**
+     * @deprecated use self::setFieldData instead
+     */
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setFieldData($sFieldName, $sValue, $iDataType);
+    }
 
     /**
      * Sets data field value
@@ -226,7 +240,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         $sFieldName = strtolower($sFieldName);
         switch ($sFieldName) {
@@ -288,11 +302,18 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
         return $this->oxarticles__oxparentid->value;
     }
+    /**
+     * @deprecated use self::setArticleParams instead
+     */
+    protected function _setArticleParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setArticleParams();
+    }
 
     /**
      * Sets article parameters to current object, so this object can be used for basket calculation
      */
-    protected function _setArticleParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticleParams()
     {
         // creating needed fields
         $this->oxarticles__oxstock = $this->oxorderarticles__oxamount;
@@ -341,6 +362,13 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     {
         return true;
     }
+    /**
+     * @deprecated use self::getOrderArticle instead
+     */
+    protected function _getOrderArticle($sArticleId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getOrderArticle($sArticleId);
+    }
 
     /**
      * Loads, caches and returns real order article instance. If article is not
@@ -350,7 +378,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return \OxidEsales\Eshop\Application\Model\Article | false
      */
-    protected function _getOrderArticle($sArticleId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getOrderArticle($sArticleId = null)
     {
         if ($this->_oOrderArticle === null) {
             $this->_oOrderArticle = false;
@@ -757,6 +785,13 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
         return null;
     }
+    /**
+     * @deprecated use self::insert instead
+     */
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->insert();
+    }
 
     /**
      * Sets article creation date
@@ -765,7 +800,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         $iInsertTime = time();
         $now = date('Y-m-d H:i:s', $iInsertTime);
@@ -800,12 +835,19 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
         return $this->_oArticle;
     }
+    /**
+     * @deprecated use self::setOrderFiles instead
+     */
+    public function _setOrderFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setOrderFiles();
+    }
 
 
     /**
      * Set order files
      */
-    public function _setOrderFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function setOrderFiles()
     {
         $oArticle = $this->getArticle();
 

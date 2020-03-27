@@ -117,13 +117,20 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             $this->_iDefEdit = 1;
         }
     }
+    /**
+     * @deprecated use self::processFiles instead
+     */
+    protected function _processFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processFiles();
+    }
 
     /**
      * Processes files containing SQL queries
      *
      * @return mixed
      */
-    protected function _processFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processFiles()
     {
         if (isset($_FILES['myfile']['name'])) {
             // process all files
@@ -158,6 +165,13 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
 
         return;
     }
+    /**
+     * @deprecated use self::prepareSQL instead
+     */
+    protected function _prepareSQL($sSQL, $iSQLlen) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareSQL($sSQL, $iSQLlen);
+    }
 
     /**
      * Method parses givent SQL queries string and returns array on success
@@ -167,7 +181,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @return mixed
      */
-    protected function _prepareSQL($sSQL, $iSQLlen) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareSQL($sSQL, $iSQLlen)
     {
         $sStrStart = "";
         $blString = false;

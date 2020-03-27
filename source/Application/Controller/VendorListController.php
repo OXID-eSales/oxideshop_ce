@@ -114,15 +114,29 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::getProductLinkType instead
+     */
+    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getProductLinkType();
+    }
 
     /**
      * Returns product link type (OXARTICLE_LINKTYPE_VENDOR)
      *
      * @return int
      */
-    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         return OXARTICLE_LINKTYPE_VENDOR;
+    }
+    /**
+     * @deprecated use self::loadArticles instead
+     */
+    protected function _loadArticles($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadArticles($oVendor);
     }
 
     /**
@@ -132,7 +146,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return array
      */
-    protected function _loadArticles($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadArticles($oVendor)
     {
         $sVendorId = $oVendor->getId();
 
@@ -152,17 +166,31 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
         return [$oArtList, $this->_iAllArtCnt];
     }
+    /**
+     * @deprecated use self::getSeoObjectId instead
+     */
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSeoObjectId();
+    }
 
     /**
      * Returns active product id to load its seo meta info
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if (($oVendor = $this->getActVendor())) {
             return $oVendor->getId();
         }
+    }
+    /**
+     * @deprecated use self::addPageNrParam instead
+     */
+    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addPageNrParam($sUrl, $iPage, $iLang);
     }
 
     /**
@@ -175,7 +203,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null)
     {
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
             if ($iPage) {
@@ -183,7 +211,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
                 $sUrl = $oVendor->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::_addPageNrParam($sUrl, $iPage, $iLang);
+            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::addPageNrParam($sUrl, $iPage, $iLang);
         }
 
         return $sUrl;
@@ -348,24 +376,38 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
             return $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
     }
+    /**
+     * @deprecated use self::prepareMetaKeyword instead
+     */
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
+    }
 
     /**
      * Returns current view keywords separated by comma
-     * (calls parent::_collectMetaKeyword())
+     * (calls parent::collectMetaKeyword())
      *
      * @param string $sKeywords               data to use as keywords
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
-        return parent::_collectMetaKeyword($sKeywords);
+        return parent::collectMetaKeyword($sKeywords);
+    }
+    /**
+     * @deprecated use self::prepareMetaDescription instead
+     */
+    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaDescription($sMeta, $iLength, $blDescTag);
     }
 
     /**
      * Returns current view meta description data
-     * (calls parent::_collectMetaDescription())
+     * (calls parent::collectMetaDescription())
      *
      * @param string $sMeta     category path
      * @param int    $iLength   max length of result, -1 for no truncation
@@ -373,9 +415,16 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
     {
-        return parent::_collectMetaDescription($sMeta, $iLength, $blDescTag);
+        return parent::collectMetaDescription($sMeta, $iLength, $blDescTag);
+    }
+    /**
+     * @deprecated use self::getSubject instead
+     */
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSubject($iLang);
     }
 
     /**
@@ -386,7 +435,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return object
      */
-    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang)
     {
         return $this->getActVendor();
     }

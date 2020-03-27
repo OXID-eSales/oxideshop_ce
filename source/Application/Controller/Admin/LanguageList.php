@@ -87,13 +87,20 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         return "language_list.tpl";
     }
+    /**
+     * @deprecated use self::getLanguagesList instead
+     */
+    protected function _getLanguagesList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getLanguagesList();
+    }
 
     /**
      * Collects shop languages list.
      *
      * @return array
      */
-    protected function _getLanguagesList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLanguagesList()
     {
         $aLangParams = $this->getConfig()->getConfigParam('aLanguageParams');
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray();
@@ -129,6 +136,13 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         return $aLanguages;
     }
+    /**
+     * @deprecated use self::sortLanguagesCallback instead
+     */
+    protected function _sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->sortLanguagesCallback($oLang1, $oLang2);
+    }
 
     /**
      * Callback function for sorting languages objects. Sorts array according
@@ -139,7 +153,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @return bool
      */
-    protected function _sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortLanguagesCallback($oLang1, $oLang2)
     {
         $sSortParam = $this->_sDefSortField;
         $sVal1 = is_string($oLang1->$sSortParam) ? strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
@@ -151,6 +165,13 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
             return ($sVal1 > $sVal2) ? -1 : 1;
         }
     }
+    /**
+     * @deprecated use self::resetMultiLangDbFields instead
+     */
+    protected function _resetMultiLangDbFields($iLangId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->resetMultiLangDbFields($iLangId);
+    }
 
     /**
      * Resets all multilanguage fields with specific language id
@@ -158,7 +179,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @param string $iLangId language ID
      */
-    protected function _resetMultiLangDbFields($iLangId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function resetMultiLangDbFields($iLangId)
     {
         $iLangId = (int) $iLangId;
 

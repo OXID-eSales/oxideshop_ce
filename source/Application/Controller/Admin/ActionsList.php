@@ -52,6 +52,13 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::prepareWhereQuery instead
+     */
+    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareWhereQuery($aWhere, $sqlFull);
+    }
 
     /**
      * Adds active promotion check
@@ -61,9 +68,9 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @return $sQ
      */
-    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($aWhere, $sqlFull)
     {
-        $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
+        $sQ = parent::prepareWhereQuery($aWhere, $sqlFull);
         $sDisplayType = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('displaytype');
         $sTable = getViewName("oxactions");
 

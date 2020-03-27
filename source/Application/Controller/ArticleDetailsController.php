@@ -165,6 +165,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      * @var bool
      */
     protected $_blShowSorting = true;
+    /**
+     * @deprecated use self::getParentProduct instead
+     */
+    protected function _getParentProduct($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getParentProduct($parentId);
+    }
 
     /**
      * Returns current product parent article object if it is available
@@ -173,7 +180,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _getParentProduct($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getParentProduct($parentId)
     {
         if ($parentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
@@ -231,6 +238,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         return $parameters;
     }
+    /**
+     * @deprecated use self::processProduct instead
+     */
+    protected function _processProduct($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processProduct($article);
+    }
 
 
     /**
@@ -238,7 +252,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $article Product to process
      */
-    protected function _processProduct($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processProduct($article)
     {
         $article->setLinkType($this->getLinkType());
         if ($dynamicParameters = $this->_getAddUrlParams()) {
@@ -311,6 +325,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 return $this->_sThisTemplate;
         }
     }
+    /**
+     * @deprecated use self::prepareMetaDescription instead
+     */
+    protected function _prepareMetaDescription($meta, $length = 200, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaDescription($meta, $length, $descriptionTag);
+    }
 
     /**
      * Returns current view meta data
@@ -323,7 +344,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return string
      */
-    protected function _prepareMetaDescription($meta, $length = 200, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaDescription($meta, $length = 200, $descriptionTag = false)
     {
         if (!$meta) {
             $article = $this->getProduct();
@@ -339,7 +360,14 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $meta = $article->oxarticles__oxtitle->value . ' - ' . $meta;
         }
 
-        return parent::_prepareMetaDescription($meta, $length, $descriptionTag);
+        return parent::prepareMetaDescription($meta, $length, $descriptionTag);
+    }
+    /**
+     * @deprecated use self::prepareMetaKeyword instead
+     */
+    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareMetaKeyword($keywords, $removeDuplicatedWords);
     }
 
     /**
@@ -352,7 +380,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return string
      */
-    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
     {
         if (!$keywords) {
             $article = $this->getProduct();
@@ -369,7 +397,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 $keywords .= ", " . $searchKeys;
             }
 
-            $keywords = parent::_prepareMetaKeyword($keywords, $removeDuplicatedWords);
+            $keywords = parent::prepareMetaKeyword($keywords, $removeDuplicatedWords);
         }
 
         return $keywords;
@@ -448,13 +476,20 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $recommendationList->addArticle($articleId, $recommendationText);
         }
     }
+    /**
+     * @deprecated use self::getSeoObjectId instead
+     */
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSeoObjectId();
+    }
 
     /**
      * Returns active product id to load its seo meta info
      *
      * @return string
      */
-    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSeoObjectId()
     {
         if ($article = $this->getProduct()) {
             return $article->getId();
@@ -500,11 +535,18 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         return $this->_oProduct;
     }
+    /**
+     * @deprecated use self::additionalChecksForArticle instead
+     */
+    protected function _additionalChecksForArticle() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->additionalChecksForArticle();
+    }
 
     /**
      * Runs additional checks for article.
      */
-    protected function _additionalChecksForArticle() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function additionalChecksForArticle()
     {
         $config = $this->getConfig();
         $utils = Registry::getUtils();
@@ -757,6 +799,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     {
         return $this->getProduct()->isPriceAlarm();
     }
+    /**
+     * @deprecated use self::getSubject instead
+     */
+    protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSubject($languageId);
+    }
 
     /**
      * returns object, associated with current view.
@@ -766,7 +815,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($languageId)
     {
         return $this->getProduct();
     }
@@ -1247,13 +1296,20 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         return implode('|', $sorting);
     }
+    /**
+     * @deprecated use self::getVendorBreadCrumb instead
+     */
+    protected function _getVendorBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getVendorBreadCrumb();
+    }
 
     /**
      * Vendor bread crumb
      *
      * @return array
      */
-    protected function _getVendorBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorBreadCrumb()
     {
         $paths = [];
         $vendorPath = [];
@@ -1274,6 +1330,13 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         return $paths;
     }
+    /**
+     * @deprecated use self::getRecommendationListBredCrumb instead
+     */
+    protected function _getRecommendationListBredCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getRecommendationListBredCrumb();
+    }
 
     /**
      * Recommendation list bread crumb
@@ -1282,7 +1345,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @return array
      */
-    protected function _getRecommendationListBredCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRecommendationListBredCrumb()
     {
         $paths = [];
         $recommListPath = [];
@@ -1292,13 +1355,20 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         return $paths;
     }
+    /**
+     * @deprecated use self::getSearchBreadCrumb instead
+     */
+    protected function _getSearchBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSearchBreadCrumb();
+    }
 
     /**
      * Search bread crumb
      *
      * @return array
      */
-    protected function _getSearchBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchBreadCrumb()
     {
         $paths = [];
         $searchPath = [];
@@ -1316,13 +1386,20 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         return $paths;
     }
+    /**
+     * @deprecated use self::getCategoryBreadCrumb instead
+     */
+    protected function _getCategoryBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCategoryBreadCrumb();
+    }
 
     /**
      * Category bread crumb
      *
      * @return array
      */
-    protected function _getCategoryBreadCrumb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryBreadCrumb()
     {
         $paths = [];
 

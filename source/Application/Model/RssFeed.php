@@ -90,13 +90,20 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         $this->_deleteFile($sFilePath);
     }
+    /**
+     * @deprecated use self::loadBaseChannel instead
+     */
+    protected function _loadBaseChannel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadBaseChannel();
+    }
 
     /**
      * _loadBaseChannel loads basic channel data
      *
      * @access protected
      */
-    protected function _loadBaseChannel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadBaseChannel()
     {
         $oShop = $this->getConfig()->getActiveShop();
         $this->_aChannel['title'] = $oShop->oxshops__oxname->value;
@@ -123,6 +130,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_aChannel['image']['title'] = $this->_aChannel['title'];
         $this->_aChannel['image']['link'] = $this->_aChannel['link'];
     }
+    /**
+     * @deprecated use self::getCacheId instead
+     */
+    protected function _getCacheId($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCacheId($name);
+    }
 
     /**
      * _getCacheId retrieve cache id
@@ -132,11 +146,18 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getCacheId($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCacheId($name)
     {
         $oConfig = $this->getConfig();
 
         return $name . '_' . $oConfig->getShopId() . '_' . Registry::getLang()->getBaseLanguage() . '_' . (int) $oConfig->getShopCurrency();
+    }
+    /**
+     * @deprecated use self::loadFromCache instead
+     */
+    protected function _loadFromCache($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadFromCache($name);
     }
 
     /**
@@ -147,7 +168,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return array
      */
-    protected function _loadFromCache($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromCache($name)
     {
         if ($aRes = Registry::getUtils()->fromFileCache($this->_getCacheId($name))) {
             if ($aRes['timestamp'] > time() - self::CACHE_TTL) {
@@ -156,6 +177,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         return false;
+    }
+    /**
+     * @deprecated use self::getLastBuildDate instead
+     */
+    protected function _getLastBuildDate($name, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getLastBuildDate($name, $aData);
     }
 
 
@@ -169,7 +197,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getLastBuildDate($name, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLastBuildDate($name, $aData)
     {
         if ($aData2 = Registry::getUtils()->fromFileCache($this->_getCacheId($name))) {
             $sLastBuildDate = $aData2['content']['lastBuildDate'];
@@ -181,6 +209,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         return date('D, d M Y H:i:s O');
+    }
+    /**
+     * @deprecated use self::saveToCache instead
+     */
+    protected function _saveToCache($name, $aContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->saveToCache($name, $aContent);
     }
 
     /**
@@ -195,11 +230,18 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return void
      */
-    protected function _saveToCache($name, $aContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveToCache($name, $aContent)
     {
         $aData = ['timestamp' => time(), 'content' => $aContent];
 
         return Registry::getUtils()->toFileCache($this->_getCacheId($name), $aData);
+    }
+    /**
+     * @deprecated use self::getArticleItems instead
+     */
+    protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getArticleItems($oList);
     }
 
 
@@ -211,7 +253,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return array
      */
-    protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList)
     {
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
@@ -270,6 +312,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         return $aItems;
     }
+    /**
+     * @deprecated use self::prepareUrl instead
+     */
+    protected function _prepareUrl($sUri, $sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareUrl($sUri, $sTitle);
+    }
 
     /**
      * _prepareUrl make url from uri
@@ -281,7 +330,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _prepareUrl($sUri, $sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareUrl($sUri, $sTitle)
     {
         $iLang = Registry::getLang()->getBaseLanguage();
         $sUrl = $this->_getShopUrl();
@@ -294,6 +343,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         return Registry::getUtilsUrl()->prepareUrlForNoSession($sUrl);
     }
+    /**
+     * @deprecated use self::prepareFeedName instead
+     */
+    protected function _prepareFeedName($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareFeedName($sTitle);
+    }
 
     /**
      * _prepareFeedName adds shop name to feed title
@@ -304,11 +360,18 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _prepareFeedName($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareFeedName($sTitle)
     {
         $oShop = $this->getConfig()->getActiveShop();
 
         return $oShop->oxshops__oxname->value . "/" . $sTitle;
+    }
+    /**
+     * @deprecated use self::getShopUrl instead
+     */
+    protected function _getShopUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getShopUrl();
     }
 
     /**
@@ -317,7 +380,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getShopUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopUrl()
     {
         $sUrl = $this->getConfig()->getShopUrl();
         $oStr = getStr();
@@ -330,6 +393,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         return $sUrl;
+    }
+    /**
+     * @deprecated use self::loadData instead
+     */
+    protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl);
     }
 
     /**
@@ -344,7 +414,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      */
-    protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null)
     {
         $this->_loadBaseChannel();
 
@@ -491,6 +561,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         return $this->_prepareFeedName($sTitle . $oLang->translateString('PRODUCTS', $iLang));
     }
+    /**
+     * @deprecated use self::getCatPath instead
+     */
+    protected function _getCatPath($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCatPath($oCat);
+    }
 
     /**
      * Returns string built from category titles
@@ -499,7 +576,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getCatPath($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCatPath($oCat)
     {
         $sCatPathString = '';
         $sSep = '';
@@ -581,6 +658,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     {
         return $this->_prepareFeedName(getStr()->htmlspecialchars($this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', $sSearch, $sCatId, $sVendorId, $sManufacturerId)));
     }
+    /**
+     * @deprecated use self::getSearchParamsUrl instead
+     */
+    protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId);
+    }
 
     /**
      * _getSearchParamsUrl return search parameters for url
@@ -594,7 +678,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId)
     {
         $sParams = "searchparam=" . urlencode($sSearch);
         if ($sCatId) {
@@ -611,6 +695,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         return $sParams;
     }
+    /**
+     * @deprecated use self::getObjectField instead
+     */
+    protected function _getObjectField($sId, $sObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getObjectField($sId, $sObject, $sField);
+    }
 
     /**
      * loads object and returns specified field
@@ -622,7 +713,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getObjectField($sId, $sObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getObjectField($sId, $sObject, $sField)
     {
         if (!$sId) {
             return '';
@@ -633,6 +724,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         return '';
+    }
+    /**
+     * @deprecated use self::getSearchParamsTranslation instead
+     */
+    protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId);
     }
 
     /**
@@ -648,7 +746,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      * @return string
      */
-    protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId)
     {
         $oLang = Registry::getLang();
         $sCatTitle = '';
@@ -768,6 +866,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             $oLang->translateString("LISTMANIA", $iLang) . "/" . $oArticle->oxarticles__oxtitle->value
         );
     }
+    /**
+     * @deprecated use self::getRecommListItems instead
+     */
+    protected function _getRecommListItems($oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getRecommListItems($oList);
+    }
 
     /**
      * make rss data array from given oxlist
@@ -778,7 +883,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getRecommListItems($oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRecommListItems($oList)
     {
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
@@ -957,6 +1062,13 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     {
         return self::CACHE_TTL;
     }
+    /**
+     * @deprecated use self::deleteFile instead
+     */
+    protected function _deleteFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->deleteFile($sFilePath);
+    }
 
     /**
      * Delete the file, given by its path.
@@ -965,7 +1077,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool Went everything well?
      */
-    protected function _deleteFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function deleteFile($sFilePath)
     {
         return @unlink($sFilePath);
     }

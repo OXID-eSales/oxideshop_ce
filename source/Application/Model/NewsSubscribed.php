@@ -122,18 +122,32 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $this->load($sOxId);
     }
+    /**
+     * @deprecated use self::insert instead
+     */
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->insert();
+    }
 
     /**
      * Inserts nbews object data to DB. Returns true on success.
      *
      * @return mixed oxid on success or false on failure
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         // set subscription date
         $this->oxnewssubscribed__oxsubscribed = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
 
         return parent::_insert();
+    }
+    /**
+     * @deprecated use self::update instead
+     */
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->update();
     }
 
     /**
@@ -141,7 +155,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return mixed oxid on success or false on failure
      */
-    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update()
     {
         if (($this->_blWasSubscribed || $this->_blWasPreSubscribed) && !$this->oxnewssubscribed__oxdboptin->value) {
             // set unsubscription date

@@ -43,6 +43,13 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         return "order_address.tpl";
     }
+    /**
+     * @deprecated use self::processAddress instead
+     */
+    protected function _processAddress($aData, $sTypeToProcess, $aIgnore) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processAddress($aData, $sTypeToProcess, $aIgnore);
+    }
 
     /**
      * Iterates through data array, checks if specified fields are filled
@@ -54,7 +61,7 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return null
      */
-    protected function _processAddress($aData, $sTypeToProcess, $aIgnore) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processAddress($aData, $sTypeToProcess, $aIgnore)
     {
         // empty address fields?
         $blEmpty = true;

@@ -150,13 +150,20 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
 
         return parent::load($sOxid);
     }
+    /**
+     * @deprecated use self::setRootObjectData instead
+     */
+    protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setRootObjectData();
+    }
 
     /**
      * Sets root manufacturer data. Returns true
      *
      * @return bool
      */
-    protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setRootObjectData()
     {
         $this->setId('root');
         $this->oxmanufacturers__oxicon = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);

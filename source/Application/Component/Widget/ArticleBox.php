@@ -240,6 +240,13 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     {
         return (bool) $this->getViewParameter('altproduct');
     }
+    /**
+     * @deprecated use self::addDynParamsToLink instead
+     */
+    protected function _addDynParamsToLink($sAddDynParams, $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addDynParamsToLink($sAddDynParams, $oArticle);
+    }
 
     /**
      * Appends dyn params to url.
@@ -249,7 +256,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @return bool
      */
-    protected function _addDynParamsToLink($sAddDynParams, $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addDynParamsToLink($sAddDynParams, $oArticle)
     {
         $blAddedParams = false;
         if ($sAddDynParams) {
@@ -264,6 +271,13 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
 
         return $blAddedParams;
     }
+    /**
+     * @deprecated use self::getArticleById instead
+     */
+    protected function _getArticleById($sArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getArticleById($sArticleId);
+    }
 
     /**
      * Returns prepared article by id.
@@ -272,7 +286,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
-    protected function _getArticleById($sArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleById($sArticleId)
     {
         /** @var \OxidEsales\Eshop\Application\Model\Article $oArticle */
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

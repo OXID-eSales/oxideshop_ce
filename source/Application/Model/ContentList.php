@@ -108,6 +108,13 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->_aArray = $aArray;
     }
+    /**
+     * @deprecated use self::loadFromDb instead
+     */
+    protected function _loadFromDb($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadFromDb($iType);
+    }
 
     /**
      * Get data from db
@@ -116,12 +123,19 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array
      */
-    protected function _loadFromDb($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb($iType)
     {
         $sSql = $this->_getSQLByType($iType);
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
+    }
+    /**
+     * @deprecated use self::load instead
+     */
+    protected function _load($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->load($type);
     }
 
     /**
@@ -129,7 +143,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param integer $type - type of content
      */
-    protected function _load($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function load($type)
     {
         $data = $this->_loadFromDb($type);
         $this->assignArray($data);
@@ -143,11 +157,18 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
         $this->_load(self::TYPE_SERVICE_LIST);
         $this->_extractListToArray();
     }
+    /**
+     * @deprecated use self::extractListToArray instead
+     */
+    protected function _extractListToArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->extractListToArray();
+    }
 
     /**
      * Extract oxContentList object to associative array with oxloadid as keys.
      */
-    protected function _extractListToArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function extractListToArray()
     {
         $aExtractedContents = [];
         foreach ($this as $oContent) {
@@ -155,6 +176,13 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $this->_aArray = $aExtractedContents;
+    }
+    /**
+     * @deprecated use self::getSQLByType instead
+     */
+    protected function _getSQLByType($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSQLByType($iType);
     }
 
     /**
@@ -164,7 +192,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getSQLByType($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSQLByType($iType)
     {
         $sSQLAdd = '';
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

@@ -57,6 +57,13 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
                                 ['oxid', 'oxaccessoire2article', 0, 0, 1]
                             ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
@@ -64,7 +71,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      * @return string
      * @throws DatabaseConnectionException
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $myConfig = Registry::getConfig();
         $oxidId = Registry::getConfig()->getRequestEscapedParameter('oxid');
@@ -111,6 +118,13 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         // creating AJAX component
         return $outputQuery;
     }
+    /**
+     * @deprecated use self::getSorting instead
+     */
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSorting();
+    }
 
 
     /**
@@ -118,7 +132,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSorting()
     {
         if ($this->containerId == 'container2') {
             return ' order by _2,_0';
@@ -156,7 +170,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         // adding
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
-            $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
+            $aChosenArt = $this->_getAll(parent::addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
         if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {

@@ -133,19 +133,33 @@ class ShopViewValidator
     {
         return $this->_iShopId;
     }
+    /**
+     * @deprecated use self::getAllViews instead
+     */
+    protected function _getAllViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getAllViews();
+    }
 
     /**
      * Returns list of all shop views
      *
      * @return array
      */
-    protected function _getAllViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAllViews()
     {
         if (empty($this->_aAllViews)) {
             $this->_aAllViews = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SHOW TABLES LIKE  'oxv\_%'");
         }
 
         return $this->_aAllViews;
+    }
+    /**
+     * @deprecated use self::isCurrentShopView instead
+     */
+    protected function _isCurrentShopView($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isCurrentShopView($sViewName);
     }
 
     /**
@@ -155,7 +169,7 @@ class ShopViewValidator
      *
      * @return bool
      */
-    protected function _isCurrentShopView($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isCurrentShopView($sViewName)
     {
         $blResult = false;
 
@@ -172,6 +186,13 @@ class ShopViewValidator
 
         return $blResult;
     }
+    /**
+     * @deprecated use self::getShopViews instead
+     */
+    protected function _getShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getShopViews();
+    }
 
 
     /**
@@ -179,7 +200,7 @@ class ShopViewValidator
      *
      * @return array
      */
-    protected function _getShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getShopViews()
     {
         if (empty($this->_aShopViews)) {
             $this->_aShopViews = [];
@@ -194,13 +215,20 @@ class ShopViewValidator
 
         return $this->_aShopViews;
     }
+    /**
+     * @deprecated use self::getValidShopViews instead
+     */
+    protected function _getValidShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getValidShopViews();
+    }
 
     /**
      * Returns list of valid shop views
      *
      * @return array
      */
-    protected function _getValidShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getValidShopViews()
     {
         if (empty($this->_aValidShopViews)) {
             $aTables = $this->getShopTables();
@@ -241,6 +269,13 @@ class ShopViewValidator
             }
         }
     }
+    /**
+     * @deprecated use self::isViewValid instead
+     */
+    protected function _isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isViewValid($sViewName);
+    }
 
     /**
      * Checks if view name is valid according to current config
@@ -249,7 +284,7 @@ class ShopViewValidator
      *
      * @return bool
      */
-    protected function _isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isViewValid($sViewName)
     {
         return in_array($sViewName, $this->_getValidShopViews());
     }

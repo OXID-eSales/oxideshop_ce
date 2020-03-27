@@ -46,13 +46,20 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
                                      ['oxid', 'oxarticles', 0, 0, 1]
                                  ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
@@ -81,6 +88,13 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
 
         return $sQAdd;
     }
+    /**
+     * @deprecated use self::addFilter instead
+     */
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addFilter($sQ);
+    }
 
     /**
      * Adds filter SQL to current query
@@ -89,10 +103,10 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      *
      * @return string
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter($sQ);
+        $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
         $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';

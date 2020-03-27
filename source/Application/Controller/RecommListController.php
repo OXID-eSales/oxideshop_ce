@@ -148,13 +148,20 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::getProductLinkType instead
+     */
+    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getProductLinkType();
+    }
 
     /**
      * Returns product link type (OXARTICLE_LINKTYPE_RECOMM)
      *
      * @return int
      */
-    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getProductLinkType()
     {
         return OXARTICLE_LINKTYPE_RECOMM;
     }
@@ -477,6 +484,13 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
         return \OxidEsales\Eshop\Application\Controller\FrontendController::generatePageNavigationUrl();
     }
+    /**
+     * @deprecated use self::addPageNrParam instead
+     */
+    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addPageNrParam($sUrl, $iPage, $iLang);
+    }
 
     /**
      * Adds page number parameter to current Url and returns formatted url
@@ -487,7 +501,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @return string
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addPageNrParam($sUrl, $iPage, $iLang = null)
     {
         if (Registry::getUtils()->seoIsActive() && ($oRecomm = $this->getActiveRecommList())) {
             if ($iPage) {
@@ -495,7 +509,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
                 $sUrl = $oRecomm->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::_addPageNrParam($sUrl, $iPage, $iLang);
+            $sUrl = \OxidEsales\Eshop\Application\Controller\FrontendController::addPageNrParam($sUrl, $iPage, $iLang);
         }
 
         return $sUrl;

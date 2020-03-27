@@ -142,13 +142,20 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         return $this->_aPath;
     }
+    /**
+     * @deprecated use self::addCategoryFields instead
+     */
+    protected function _addCategoryFields($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addCategoryFields($oVendor);
+    }
 
     /**
      * Adds category specific fields to vendor object
      *
      * @param object $oVendor vendor object
      */
-    protected function _addCategoryFields($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addCategoryFields($oVendor)
     {
         $oVendor->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("v_" . $oVendor->oxvendor__oxid->value);
         $oVendor->oxcategories__oxicon = $oVendor->oxvendor__oxicon;
@@ -178,11 +185,18 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         return $this->_oClickedVendor;
     }
+    /**
+     * @deprecated use self::seoSetVendorData instead
+     */
+    protected function _seoSetVendorData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->seoSetVendorData();
+    }
 
     /**
      * Processes vendor category URLs
      */
-    protected function _seoSetVendorData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function seoSetVendorData()
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

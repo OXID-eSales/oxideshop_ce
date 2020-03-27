@@ -92,6 +92,13 @@ class RequiredAddressFields
 
         return $this->_filterFields($aRequiredFields, 'oxaddress__');
     }
+    /**
+     * @deprecated use self::filterFields instead
+     */
+    private function _filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->filterFields($aFields, $sPrefix);
+    }
 
     /**
      * Removes delivery fields from fields list.
@@ -101,7 +108,7 @@ class RequiredAddressFields
      *
      * @return mixed
      */
-    private function _filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function filterFields($aFields, $sPrefix)
     {
         $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {

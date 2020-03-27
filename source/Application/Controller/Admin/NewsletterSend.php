@@ -177,13 +177,20 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
     {
         return $this->_aMailErrors;
     }
+    /**
+     * @deprecated use self::setupNavigation instead
+     */
+    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setupNavigation($sNode);
+    }
 
     /**
      * Overrides parent method to pass referred id
      *
      * @param string $sNode referred id
      */
-    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setupNavigation($sNode)
     {
         $sNode = 'newsletter_list';
 

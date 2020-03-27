@@ -33,6 +33,13 @@ class RequiredFieldValidator
 
         return $blValid;
     }
+    /**
+     * @deprecated use self::validateFieldValueArray instead
+     */
+    private function _validateFieldValueArray($aFieldValues) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->validateFieldValueArray($aFieldValues);
+    }
 
     /**
      * Checks if all values are filled up
@@ -41,7 +48,7 @@ class RequiredFieldValidator
      *
      * @return bool
      */
-    private function _validateFieldValueArray($aFieldValues) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function validateFieldValueArray($aFieldValues)
     {
         $blValid = true;
         foreach ($aFieldValues as $sValue) {

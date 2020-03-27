@@ -100,13 +100,20 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
     {
         return $this->_sLastError;
     }
+    /**
+     * @deprecated use self::isActive instead
+     */
+    protected function _isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isActive();
+    }
 
     /**
      * Returns true is payment active.
      *
      * @return bool
      */
-    protected function _isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isActive()
     {
         return $this->_blActive;
     }

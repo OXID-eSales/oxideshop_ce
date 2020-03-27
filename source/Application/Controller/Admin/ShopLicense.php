@@ -61,13 +61,20 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::canUpdate instead
+     */
+    protected function _canUpdate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->canUpdate();
+    }
 
     /**
      * Checks if the license key update is allowed.
      *
      * @return bool
      */
-    protected function _canUpdate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canUpdate()
     {
         $myConfig = $this->getConfig();
 
@@ -81,13 +88,20 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
 
         return true;
     }
+    /**
+     * @deprecated use self::fetchCurVersionInfo instead
+     */
+    protected function _fetchCurVersionInfo($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->fetchCurVersionInfo($sUrl);
+    }
 
     /**
      * Fetch current shop version information from url
      * @param string $sUrl current version info fetching url by edition
      * @return string
      */
-    protected function _fetchCurVersionInfo($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function fetchCurVersionInfo($sUrl)
     {
         try {
             $response = $this->requestVersionInfo($sUrl);

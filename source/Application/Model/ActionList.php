@@ -104,6 +104,13 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
                order by oxactiveto, oxactivefrom";
         $this->selectString($sQ);
     }
+    /**
+     * @deprecated use self::getUserGroupFilter instead
+     */
+    protected function _getUserGroupFilter($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getUserGroupFilter($oUser);
+    }
 
     /**
      * Returns part of user group filter query
@@ -112,7 +119,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getUserGroupFilter($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getUserGroupFilter($oUser = null)
     {
         $oUser = ($oUser == null) ? $this->getUser() : $oUser;
         $sTable = getViewName('oxactions');

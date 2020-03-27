@@ -125,6 +125,13 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $this->_toList('wishlist', $sProductId, $dAmount, $aSel);
         }
     }
+    /**
+     * @deprecated use self::toList instead
+     */
+    protected function _toList($sListType, $sProductId, $dAmount, $aSel) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->toList($sListType, $sProductId, $dAmount, $aSel);
+    }
 
     /**
      * Adds chosen product to defined user list. if amount is 0, item is removed from the list
@@ -134,7 +141,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param double $dAmount    product amount
      * @param array  $aSel       product selection list
      */
-    protected function _toList($sListType, $sProductId, $dAmount, $aSel) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function toList($sListType, $sProductId, $dAmount, $aSel)
     {
         // only if user is logged in
         if ($oUser = $this->getUser()) {

@@ -53,6 +53,13 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
 
         return "list_review.tpl";
     }
+    /**
+     * @deprecated use self::buildSelectString instead
+     */
+    protected function _buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->buildSelectString($oObject);
+    }
 
     /**
      * Returns select query string
@@ -61,7 +68,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function _buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function buildSelectString($oObject = null)
     {
         $sArtTable = getViewName('oxarticles', $this->_iEditLang);
 
@@ -78,6 +85,13 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
 
         return " $sQ and {$sArtTable}.oxid is not null ";
     }
+    /**
+     * @deprecated use self::prepareWhereQuery instead
+     */
+    protected function _prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareWhereQuery($aWhere, $sSql);
+    }
 
     /**
      * Adds filtering conditions to query string
@@ -87,9 +101,9 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @return string
      */
-    protected function _prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareWhereQuery($aWhere, $sSql)
     {
-        $sSql = parent::_prepareWhereQuery($aWhere, $sSql);
+        $sSql = parent::prepareWhereQuery($aWhere, $sSql);
 
         $sArtTable = getViewName('oxarticles', $this->_iEditLang);
         $sArtTitleField = "{$sArtTable}.oxtitle";

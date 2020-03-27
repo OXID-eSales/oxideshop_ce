@@ -196,6 +196,13 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     {
         return ($iOption < 0) ? "" : $iOption;
     }
+    /**
+     * @deprecated use self::processOptions instead
+     */
+    protected function _processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processOptions($aParams);
+    }
 
     /**
      * Process config options. If value is not set, save as "-1" to database
@@ -204,7 +211,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @return array
      */
-    protected function _processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processOptions($aParams)
     {
         if (!is_array($aParams)) {
             $aParams = [];

@@ -218,6 +218,13 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         return 1;
     }
+    /**
+     * @deprecated use self::getParentProduct instead
+     */
+    protected function _getParentProduct($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getParentProduct($sParentId);
+    }
 
     /**
      * Returns current product parent article object if it is available.
@@ -226,7 +233,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return Article
      */
-    protected function _getParentProduct($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getParentProduct($sParentId)
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
@@ -253,11 +260,19 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     }
 
     /**
+     * @deprecated use self::processProduct instead
+     */
+    protected function _processProduct($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processProduct($oProduct);
+    }
+
+    /**
      * Processes product by setting link type and in case list type is search adds search parameters to details link.
      *
      * @param object $oProduct Product to process.
      */
-    protected function _processProduct($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processProduct($oProduct)
     {
         $oProduct->setLinkType($this->getLinkType());
         if ($sAddParams = $this->_getAddUrlParams()) {
@@ -689,6 +704,13 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         return $this->getProduct()->isPriceAlarm();
     }
+    /**
+     * @deprecated use self::getSubject instead
+     */
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSubject($iLang);
+    }
 
     /**
      * returns object, associated with current view.
@@ -698,7 +720,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @return object
      */
-    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSubject($iLang)
     {
         return $this->getProduct();
     }
@@ -895,11 +917,18 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         return $this->_oProduct;
     }
+    /**
+     * @deprecated use self::setSortingParameters instead
+     */
+    protected function _setSortingParameters() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setSortingParameters();
+    }
 
     /**
      * Set item sorting for widget based of retrieved parameters.
      */
-    protected function _setSortingParameters() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSortingParameters()
     {
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
@@ -962,6 +991,13 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         return $this->_blMdView;
     }
+    /**
+     * @deprecated use self::additionalChecksForArticle instead
+     */
+    protected function _additionalChecksForArticle($myUtils, $myConfig) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->additionalChecksForArticle($myUtils, $myConfig);
+    }
 
     /**
      * Runs additional checks for article.
@@ -969,7 +1005,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * @param Utils  $myUtils  General utils.
      * @param Config $myConfig Main shop configuration.
      */
-    protected function _additionalChecksForArticle($myUtils, $myConfig) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function additionalChecksForArticle($myUtils, $myConfig)
     {
         $blContinue = true;
         if (!$this->_oProduct->isVisible()) {

@@ -33,13 +33,20 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 
         return parent::save();
     }
+    /**
+     * @deprecated use self::getEncoder instead
+     */
+    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getEncoder();
+    }
 
     /**
      * Returns current object type seo encoder object
      *
      * @return oxSeoEncoderVendor
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class);
     }
@@ -66,13 +73,20 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
             return (bool) $oVendor->oxvendor__oxshowsuffix->value;
         }
     }
+    /**
+     * @deprecated use self::getType instead
+     */
+    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getType();
+    }
 
     /**
      * Returns url type
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType()
     {
         return 'oxvendor';
     }

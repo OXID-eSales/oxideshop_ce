@@ -49,13 +49,20 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
 
         return $oContentList;
     }
+    /**
+     * @deprecated use self::getContentList instead
+     */
+    protected function _getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getContentList();
+    }
 
     /**
      * Returns content list object.
      *
      * @return object|oxContentList
      */
-    protected function _getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getContentList()
     {
         if (!$this->_oContentList) {
             $this->_oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);

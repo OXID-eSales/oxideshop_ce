@@ -19,7 +19,7 @@ use stdClass;
  */
 class _DynExportBase extends DynExportBase
 {
-    public function initArticle($heapTable, $count, & $continue)
+    public function PUBLICinitArticle($heapTable, $count, & $continue)
     {
         try {
             return $this->_initArticle($heapTable, $count, $continue);
@@ -733,7 +733,7 @@ class DynExportBaseTest extends \OxidTestCase
         $oDb->execute("INSERT INTO `{$sHeapTable}` values ( '{$sProdId}' )");
 
         $oView = new _DynExportBase();
-        $oArticle = $oView->initArticle("testdynexportbasetable", 0, $blContinue);
+        $oArticle = $oView->PUBLICinitArticle("testdynexportbasetable", 0, $blContinue);
         $this->assertNotNull($oArticle);
         $this->assertTrue($oArticle instanceof \OxidEsales\EshopCommunity\Application\Model\Article);
         $this->assertEquals($oParent->oxarticles__oxtitle->value . " " . $sTitle, $oArticle->oxarticles__oxtitle->value);

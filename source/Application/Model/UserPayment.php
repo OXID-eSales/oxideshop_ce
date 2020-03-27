@@ -129,6 +129,13 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $this->assignRecord($sSelect);
     }
+    /**
+     * @deprecated use self::insert instead
+     */
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->insert();
+    }
 
 
     /**
@@ -136,7 +143,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         // @deprecated since v6.5.1 (2019-02-07); credit card payment method will be no longer supported
         // we do not store credit card information
@@ -165,13 +172,20 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $blRet;
     }
+    /**
+     * @deprecated use self::update instead
+     */
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->update();
+    }
 
     /**
      * Updates payment record in DB. Returns update status.
      *
      * @return bool
      */
-    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update()
     {
 
         //encode sensitive data

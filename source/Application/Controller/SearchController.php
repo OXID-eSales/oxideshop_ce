@@ -232,12 +232,19 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         return $this->_sThisTemplate;
     }
+    /**
+     * @deprecated use self::processListArticles instead
+     */
+    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processListArticles();
+    }
 
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
      */
-    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processListArticles()
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
@@ -282,13 +289,20 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         return $sAddParams;
     }
+    /**
+     * @deprecated use self::isSearchClass instead
+     */
+    protected function _isSearchClass() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isSearchClass();
+    }
 
     /**
      * Template variable getter. Returns similar recommendation lists
      *
      * @return object
      */
-    protected function _isSearchClass() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isSearchClass()
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
@@ -482,13 +496,20 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         return $this->getConfig()->getConfigParam('blShowListDisplayType');
     }
+    /**
+     * @deprecated use self::canRedirect instead
+     */
+    protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->canRedirect();
+    }
 
     /**
      * Checks if current request parameters does not block SEO redirection process
      *
      * @return bool
      */
-    protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canRedirect()
     {
         return false;
     }

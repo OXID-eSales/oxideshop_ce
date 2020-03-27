@@ -117,6 +117,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         return $this->getUser();
     }
+    /**
+     * @deprecated use self::checkPsState instead
+     */
+    protected function _checkPsState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkPsState();
+    }
 
     /**
      * If private sales enabled, checks:
@@ -126,7 +133,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *  (1) login page;
      *  (2) terms agreement page;
      */
-    protected function _checkPsState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkPsState()
     {
         $oConfig = $this->getConfig();
         if ($this->getParent()->isEnabledPrivateSales()) {
@@ -144,13 +151,20 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
         }
     }
+    /**
+     * @deprecated use self::loadSessionUser instead
+     */
+    protected function _loadSessionUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadSessionUser();
+    }
 
     /**
      * Tries to load user ID from session.
      *
      * @return null
      */
-    protected function _loadSessionUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadSessionUser()
     {
         $myConfig = $this->getConfig();
         $oUser = $this->getUser();
@@ -216,6 +230,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // finalizing ..
         return $this->_afterLogin($oUser);
     }
+    /**
+     * @deprecated use self::afterLogin instead
+     */
+    protected function _afterLogin($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->afterLogin($oUser);
+    }
 
     /**
      * Special functionality which is performed after user logs in (or user is created without pass).
@@ -233,7 +254,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string
      */
-    protected function _afterLogin($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function afterLogin($oUser)
     {
         $oSession = $this->getSession();
         if ($oSession->isSessionStarted()) {
@@ -281,6 +302,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
         }
     }
+    /**
+     * @deprecated use self::afterLogout instead
+     */
+    protected function _afterLogout() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->afterLogout();
+    }
 
     /**
      * Special utility function which is executed right after
@@ -288,7 +316,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * session parameters as user chosen payment id, delivery
      * address id, active delivery set.
      */
-    protected function _afterLogout() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function afterLogout()
     {
         Registry::getSession()->deleteVariable('paymentid');
         Registry::getSession()->deleteVariable('sShipSet');
@@ -603,22 +631,36 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         return $canDelete;
     }
+    /**
+     * @deprecated use self::saveInvitor instead
+     */
+    protected function _saveInvitor() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->saveInvitor();
+    }
 
     /**
      * Saves invitor ID
      */
-    protected function _saveInvitor() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveInvitor()
     {
         if ($this->getConfig()->getConfigParam('blInvitationsEnabled')) {
             $this->getInvitor();
             $this->setRecipient();
         }
     }
+    /**
+     * @deprecated use self::saveDeliveryAddressState instead
+     */
+    protected function _saveDeliveryAddressState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->saveDeliveryAddressState();
+    }
 
     /**
      * Saving show/hide delivery address state
      */
-    protected function _saveDeliveryAddressState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function saveDeliveryAddressState()
     {
         $oSession = Registry::getSession();
 
@@ -628,6 +670,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         $oSession->setVariable('blshowshipaddress', $blShow);
+    }
+    /**
+     * @deprecated use self::changeUser_noRedirect instead
+     */
+    protected function _changeUser_noRedirect() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->changeUser_noRedirect();
     }
 
     /**
@@ -645,7 +694,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return  bool true on success, false otherwise
      */
-    protected function _changeUser_noRedirect() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
+    protected function changeUser_noRedirect() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         return $this->changeUserWithoutRedirect();
     }
@@ -745,6 +794,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         return true;
     }
+    /**
+     * @deprecated use self::getDelAddressData instead
+     */
+    protected function _getDelAddressData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getDelAddressData();
+    }
 
     /**
      * Returns delivery address from request. Before returning array is checked if
@@ -752,7 +808,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return array
      */
-    protected function _getDelAddressData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDelAddressData()
     {
         // if user company name, user name and additional info has special chars
         $blShowShipAddressParameter = Registry::getConfig()->getRequestParameter('blshowshipaddress');
@@ -775,12 +831,17 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         return $aDelAdress;
     }
 
+    protected function _getLogoutLink() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getLogoutLink();
+    }
+
     /**
      * Returns logout link with additional params
      *
      * @return string $sLogoutLink
      */
-    protected function _getLogoutLink() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLogoutLink()
     {
         $oConfig = $this->getConfig();
 

@@ -100,13 +100,20 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
 
         return $this->_oUser;
     }
+    /**
+     * @deprecated use self::getGroupPrice instead
+     */
+    protected function _getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getGroupPrice();
+    }
 
     /**
      * get user Group A, B or C price, returns db price if user is not in groups
      *
      * @return double
      */
-    protected function _getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getGroupPrice()
     {
         $dPrice = $this->oxarticles__oxprice->value;
         if ($oUser = $this->getArticleUser()) {
@@ -168,6 +175,13 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     {
         return $price;
     }
+    /**
+     * @deprecated use self::applyCurrency instead
+     */
+    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->applyCurrency($oPrice, $oCur);
+    }
 
     /**
      * Applies currency factor
@@ -175,7 +189,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param object                       $oCur   Currency object
      */
-    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
             $oCur = $this->getConfig()->getActShopCurrencyObject();
@@ -183,17 +197,31 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
 
         $oPrice->multiply($oCur->rate);
     }
+    /**
+     * @deprecated use self::applyParentDiscounts instead
+     */
+    protected function _applyParentDiscounts($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->applyParentDiscounts($oPrice);
+    }
 
     /**
      * Applies discounts which should be applied in general case (for 0 amount)
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      */
-    protected function _applyParentDiscounts($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyParentDiscounts($oPrice)
     {
         if (($oParent = $this->getParent())) {
             $oParent->applyDiscountsForVariant($oPrice);
         }
+    }
+    /**
+     * @deprecated use self::applyParentVat instead
+     */
+    protected function _applyParentVat($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->applyParentVat($oPrice);
     }
 
     /**
@@ -201,7 +229,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      */
-    protected function _applyParentVat($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function applyParentVat($oPrice)
     {
         if (($oParent = $this->getParent()) && !$this->getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
             $oParent->applyVats($oPrice);

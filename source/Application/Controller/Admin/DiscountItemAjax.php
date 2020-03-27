@@ -41,13 +41,20 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
              ['oxitmartid', 'oxdiscount', 0, 0, 1]
          ]
     ];
+    /**
+     * @deprecated use self::getQuery instead
+     */
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQuery();
+    }
 
     /**
      * Returns SQL query for data to fetc
      *
      * @return string
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQuery()
     {
         $oConfig = $this->getConfig();
 
@@ -131,6 +138,13 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             ]);
         }
     }
+    /**
+     * @deprecated use self::getQueryCols instead
+     */
+    protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getQueryCols();
+    }
 
     /**
      * Formats and returns chunk of SQL query string with definition of
@@ -138,7 +152,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      *
      * @return string
      */
-    protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getQueryCols()
     {
         $oConfig = $this->getConfig();
         $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();

@@ -34,6 +34,13 @@ class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $this->_oParent = $oParent;
     }
+    /**
+     * @deprecated use self::assignElement instead
+     */
+    protected function _assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->assignElement($oListObject, $aDbFields);
+    }
 
     /**
      * Sets parent for variant. This method is invoked for each element in oxList::assign() loop.
@@ -41,7 +48,7 @@ class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param oxSimleVariant $oListObject Simple variant
      * @param array          $aDbFields   Array of available
      */
-    protected function _assignElement($oListObject, $aDbFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function assignElement($oListObject, $aDbFields)
     {
         $oListObject->setParent($this->_oParent);
         parent::_assignElement($oListObject, $aDbFields);

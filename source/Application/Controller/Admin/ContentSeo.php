@@ -15,13 +15,27 @@ use oxRegistry;
 class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
     /**
+     * @deprecated use self::getType instead
+     */
+    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getType();
+    }
+    /**
      * Returns url type
      *
      * @return string
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getType()
     {
         return 'oxcontent';
+    }
+    /**
+     * @deprecated use self::getEncoder instead
+     */
+    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getEncoder();
     }
 
     /**
@@ -29,7 +43,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return oxSeoEncoderContent
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class);
     }

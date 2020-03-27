@@ -128,15 +128,29 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return $blDelete;
     }
+    /**
+     * @deprecated use self::update instead
+     */
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->update();
+    }
 
     /**
      * Updates object information in DB.
      */
-    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function update()
     {
         $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxnews__oxdate->value, true));
 
         parent::_update();
+    }
+    /**
+     * @deprecated use self::insert instead
+     */
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->insert();
     }
 
     /**
@@ -144,7 +158,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function insert()
     {
         if (!$this->oxnews__oxdate || \OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate($this->oxnews__oxdate->value)) {
             // if date field is empty, assigning current date
@@ -154,6 +168,13 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         return parent::_insert();
+    }
+    /**
+     * @deprecated use self::setFieldData instead
+     */
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setFieldData($sFieldName, $sValue, $iDataType);
     }
 
     /**
@@ -165,7 +186,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         switch (strtolower($sFieldName)) {
             case 'oxlongdesc':

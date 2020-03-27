@@ -44,6 +44,13 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
             $this->_sHomeCountry = $sHomeCountry;
         }
     }
+    /**
+     * @deprecated use self::getFilterSelect instead
+     */
+    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFilterSelect($sShipSetId, $dPrice, $oUser);
+    }
 
     /**
      * Creates payment list filter SQL to load current state payment list
@@ -54,7 +61,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSelect($sShipSetId, $dPrice, $oUser)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;

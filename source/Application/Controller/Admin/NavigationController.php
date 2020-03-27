@@ -145,6 +145,13 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
         $myUtils->showMessageAndExit("");
     }
+    /**
+     * @deprecated use self::doStartUpChecks instead
+     */
+    protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->doStartUpChecks();
+    }
 
     /**
      * Every Time Admin starts we perform these checks
@@ -152,7 +159,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return array
      */
-    protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function doStartUpChecks()
     {
         $messages = [];
 
@@ -197,13 +204,20 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
         return $messages;
     }
+    /**
+     * @deprecated use self::checkVersion instead
+     */
+    protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkVersion();
+    }
 
     /**
      * Checks if newer shop version available. If true - returns message
      *
      * @return string
      */
-    protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkVersion()
     {
         $edition = $this->getConfig()->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';

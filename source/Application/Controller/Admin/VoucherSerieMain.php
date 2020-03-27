@@ -126,6 +126,13 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
     public function prepareExport()
     {
     }
+    /**
+     * @deprecated use self::getVoucherSerie instead
+     */
+    protected function _getVoucherSerie() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getVoucherSerie();
+    }
 
 
     /**
@@ -133,7 +140,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
      *
      * @return oxvoucherserie
      */
-    protected function _getVoucherSerie() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVoucherSerie()
     {
         if ($this->_oVoucherSerie == null) {
             $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);

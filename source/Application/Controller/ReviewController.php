@@ -273,13 +273,20 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     {
         return Registry::getConfig()->getRequestParameter('reviewuserhash');
     }
+    /**
+     * @deprecated use self::getActiveObject instead
+     */
+    protected function _getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getActiveObject();
+    }
 
     /**
      * Template variable getter. Returns active object (oxarticle or oxrecommlist)
      *
      * @return object
      */
-    protected function _getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveObject()
     {
         if ($this->_oActObject === null) {
             $this->_oActObject = false;
@@ -295,13 +302,20 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
 
         return $this->_oActObject;
     }
+    /**
+     * @deprecated use self::getActiveType instead
+     */
+    protected function _getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getActiveType();
+    }
 
     /**
      * Template variable getter. Returns active type (oxarticle or oxrecommlist)
      *
      * @return string
      */
-    protected function _getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getActiveType()
     {
         if ($this->getProduct()) {
             return 'oxarticle';

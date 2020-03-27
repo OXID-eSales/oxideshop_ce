@@ -44,6 +44,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @var array
      */
     protected $_aSupportedExpathXmlEncodings = ['utf-8', 'utf-16', 'iso-8859-1', 'us-ascii'];
+    /**
+     * @deprecated use self::cleanEmptyParents instead
+     */
+    protected function _cleanEmptyParents($dom, $parentXPath, $childXPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->cleanEmptyParents($dom, $parentXPath, $childXPath);
+    }
 
     /**
      * clean empty nodes from tree
@@ -52,7 +59,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param string $parentXPath parent xpath
      * @param string $childXPath  child xpath from parent
      */
-    protected function _cleanEmptyParents($dom, $parentXPath, $childXPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function cleanEmptyParents($dom, $parentXPath, $childXPath)
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query($parentXPath);
@@ -65,13 +72,20 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
     }
+    /**
+     * @deprecated use self::addLinks instead
+     */
+    protected function _addLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addLinks($dom);
+    }
 
     /**
      * Adds links to xml nodes to resolve paths
      *
      * @param DomDocument $dom where to add links
      */
-    protected function _addLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addLinks($dom)
     {
         $url = 'index.php?'; // session parameters will be included later (after cache processor)
         $xPath = new DomXPath($dom);
@@ -91,6 +105,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             $node->setAttribute('link', "{$url}{$cl}{$param}");
         }
     }
+    /**
+     * @deprecated use self::loadFromFile instead
+     */
+    protected function _loadFromFile($menuFile, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadFromFile($menuFile, $dom);
+    }
 
     /**
      * Loads data form XML file, and merges it with main oDomXML.
@@ -98,7 +119,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param string      $menuFile which file to load
      * @param DomDocument $dom      where to load
      */
-    protected function _loadFromFile($menuFile, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromFile($menuFile, $dom)
     {
         $merge = false;
         $domFile = new DomDocument();
@@ -127,6 +148,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             $this->_merge($domFile, $dom);
         }
     }
+    /**
+     * @deprecated use self::addDynLinks instead
+     */
+    protected function _addDynLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addDynLinks($dom);
+    }
 
     /**
      * Adds to element DynTabs
@@ -135,7 +163,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @param object $dom dom element to add links
      */
-    protected function _addDynLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addDynLinks($dom)
     {
         $myUtilsFile = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
 
@@ -198,13 +226,20 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
     }
+    /**
+     * @deprecated use self::sessionizeLocalUrls instead
+     */
+    protected function _sessionizeLocalUrls($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->sessionizeLocalUrls($dom);
+    }
 
     /**
      * add session parameters to local urls
      *
      * @param object $dom dom element to add links
      */
-    protected function _sessionizeLocalUrls($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sessionizeLocalUrls($dom)
     {
         $url = $this->_getAdminUrl();
         $xPath = new DomXPath($dom);
@@ -219,13 +254,20 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
     }
+    /**
+     * @deprecated use self::checkRights instead
+     */
+    protected function _checkRights($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkRights($dom);
+    }
 
     /**
      * Removes form tree elements which does not have required user rights
      *
      * @param object $dom DOMDocument
      */
-    protected function _checkRights($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkRights($dom)
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query('//*[@rights or @norights]');
@@ -250,13 +292,20 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
     }
+    /**
+     * @deprecated use self::checkGroups instead
+     */
+    protected function _checkGroups($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkGroups($dom);
+    }
 
     /**
      * Removes from tree elements which don't have required groups
      *
      * @param DOMDocument $dom document to check group
      */
-    protected function _checkGroups($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkGroups($dom)
     {
         $xPath = new DomXPath($dom);
         $nodeList = $xPath->query("//*[@nogroup or @group]");
@@ -281,6 +330,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
     }
+    /**
+     * @deprecated use self::checkDemoShopDenials instead
+     */
+    protected function _checkDemoShopDenials($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkDemoShopDenials($dom);
+    }
 
     /**
      * Removes form tree elements if this is demo shop and elements have disableForDemoShop="1"
@@ -289,7 +345,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return null
      */
-    protected function _checkDemoShopDenials($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkDemoShopDenials($dom)
     {
         if (!$this->getConfig()->isDemoShop()) {
             // nothing to check for non demo shop
@@ -320,6 +376,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
     }
+    /**
+     * @deprecated use self::copyAttributes instead
+     */
+    protected function _copyAttributes($domElemTo, $domElemFrom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->copyAttributes($domElemTo, $domElemFrom);
+    }
 
     /**
      * Copys attributes form one element to another
@@ -327,11 +390,18 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param object $domElemTo   DOMElement
      * @param object $domElemFrom DOMElement
      */
-    protected function _copyAttributes($domElemTo, $domElemFrom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function copyAttributes($domElemTo, $domElemFrom)
     {
         foreach ($domElemFrom->attributes as $attr) {
             $domElemTo->setAttribute($attr->nodeName, $attr->nodeValue);
         }
+    }
+    /**
+     * @deprecated use self::mergeNodes instead
+     */
+    protected function _mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart);
     }
 
     /**
@@ -343,7 +413,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param object $domDocTo    node to append child
      * @param string $queryStart  node query
      */
-    protected function _mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart)
     {
         foreach ($domElemFrom->childNodes as $fromNode) {
             if ($fromNode->nodeType === XML_ELEMENT_NODE) {
@@ -370,6 +440,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             }
         }
     }
+    /**
+     * @deprecated use self::merge instead
+     */
+    protected function _merge($domNew, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->merge($domNew, $dom);
+    }
 
     /**
      * If oDomXML exist meges nodes
@@ -377,7 +454,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param DomDocument $domNew what to merge
      * @param DomDocument $dom    where to merge
      */
-    protected function _merge($domNew, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function merge($domNew, $dom)
     {
         $xPath = new DOMXPath($dom);
         $this->_mergeNodes($dom->documentElement, $domNew->documentElement, $xPath, $dom, '/OX');
@@ -451,13 +528,20 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         return $buttons;
     }
+    /**
+     * @deprecated use self::getMenuFiles instead
+     */
+    protected function _getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getMenuFiles();
+    }
 
     /**
      * Returns array with paths + names ox menu xml files. Paths are checked
      *
      * @return array
      */
-    protected function _getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getMenuFiles()
     {
         $adminNavigationFileLocator = $this->getContainer()->get('oxid_esales.templating.admin.navigation.file.locator');
         $filesToLoad = $adminNavigationFileLocator->locate();
@@ -482,6 +566,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         return $filesToLoad;
     }
+    /**
+     * @deprecated use self::checkDynFile instead
+     */
+    protected function _checkDynFile($dynFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->checkDynFile($dynFilePath);
+    }
 
     /**
      * Checks if dyn file is valid for inclusion
@@ -492,7 +583,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _checkDynFile($dynFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function checkDynFile($dynFilePath)
     {
         $dynFile = null;
         if (file_exists($dynFilePath)) {
@@ -515,6 +606,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         return $dynFile;
     }
+    /**
+     * @deprecated use self::processCachedFile instead
+     */
+    protected function _processCachedFile($cacheContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->processCachedFile($cacheContents);
+    }
 
     /**
      * Method is used for overriding.
@@ -523,9 +621,16 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _processCachedFile($cacheContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function processCachedFile($cacheContents)
     {
         return $cacheContents;
+    }
+    /**
+     * @deprecated use self::getInitialDom instead
+     */
+    protected function _getInitialDom() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getInitialDom();
     }
 
     /**
@@ -533,7 +638,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return DOMDocument
      */
-    protected function _getInitialDom() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getInitialDom()
     {
         if ($this->_oInitialDom === null) {
             $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
@@ -704,13 +809,20 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             return "{$cl}{$params}";
         }
     }
+    /**
+     * @deprecated use self::getAdminUrl instead
+     */
+    protected function _getAdminUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getAdminUrl();
+    }
 
     /**
      * Admin url getter
      *
      * @return string
      */
-    protected function _getAdminUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getAdminUrl()
     {
         $myConfig = $this->getConfig();
 
@@ -722,6 +834,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl("{$url}/index.php", false);
     }
+    /**
+     * @deprecated use self::hasRights instead
+     */
+    protected function _hasRights($rights) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->hasRights($rights);
+    }
 
     /**
      * Checks if user has required rights
@@ -730,9 +849,16 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _hasRights($rights) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasRights($rights)
     {
         return $this->getUser()->oxuser__oxrights->value == $rights;
+    }
+    /**
+     * @deprecated use self::hasGroup instead
+     */
+    protected function _hasGroup($groupId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->hasGroup($groupId);
     }
 
     /**
@@ -742,7 +868,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    protected function _hasGroup($groupId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function hasGroup($groupId)
     {
         return $this->getUser()->inGroup($groupId);
     }
@@ -762,6 +888,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
             return $firstItem->getAttribute('id');
         }
     }
+    /**
+     * @deprecated use self::getDynMenuUrl instead
+     */
+    protected function _getDynMenuUrl($lang, $loadDynContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getDynMenuUrl($lang, $loadDynContents);
+    }
 
 
     /**
@@ -774,7 +907,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getDynMenuUrl($lang, $loadDynContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDynMenuUrl($lang, $loadDynContents)
     {
         if (!$loadDynContents) {
             // getting dyn info from oxid server is off, so getting local menu path
@@ -787,6 +920,13 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
 
         return $this->_sDynIncludeUrl . "menue/dynscreen.xml";
     }
+    /**
+     * @deprecated use self::getDynMenuLang instead
+     */
+    protected function _getDynMenuLang() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getDynMenuLang();
+    }
 
     /**
      * Get dynamic pages language code
@@ -795,7 +935,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    protected function _getDynMenuLang() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getDynMenuLang()
     {
         $myConfig = $this->getConfig();
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();

@@ -700,6 +700,13 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
 
         return $aRet;
     }
+    /**
+     * @deprecated use self::setArticle instead
+     */
+    protected function _setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setArticle($sProductId);
+    }
 
     /**
      * Assigns general product parameters to oxbasketitem object :
@@ -716,7 +723,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @throws oxNoArticleException exception
      */
-    protected function _setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setArticle($sProductId)
     {
         $oConfig = $this->getConfig();
         $oArticle = $this->getArticle(true, $sProductId);
@@ -744,6 +751,13 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_sDimageDirNoSsl = $oArticle->nossl_dimagedir;
         $this->_sDimageDirSsl = $oArticle->ssl_dimagedir;
     }
+    /**
+     * @deprecated use self::setFromOrderArticle instead
+     */
+    protected function _setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setFromOrderArticle($oOrderArticle);
+    }
 
     /**
      * Assigns general product parameters to oxbasketitem object:
@@ -754,7 +768,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article
      */
-    protected function _setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFromOrderArticle($oOrderArticle)
     {
         // overriding whole article
         $this->_oArticle = $oOrderArticle;
@@ -769,13 +783,20 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_sShopId = $this->getConfig()->getShopId();
         $this->_sNativeShopId = $oOrderArticle->oxarticles__oxshopid->value;
     }
+    /**
+     * @deprecated use self::setSelectList instead
+     */
+    protected function _setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setSelectList($aSelList);
+    }
 
     /**
      * Stores item select lists ( oxbasketitem::aSelList )
      *
      * @param array $aSelList item select lists
      */
-    protected function _setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setSelectList($aSelList)
     {
         // checking for default select list
         $aSelectLists = $this->getArticle()->getSelectLists();

@@ -144,6 +144,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $this->_aOrderMap = array_flip($aIds);
         uksort($this->_aArray, [$this, '_sortByOrderMapCallback']);
     }
+    /**
+     * @deprecated use self::sortByOrderMapCallback instead
+     */
+    protected function _sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->sortByOrderMapCallback($key1, $key2);
+    }
 
     /**
      * callback function only used from sortByIds
@@ -155,7 +162,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return int
      */
-    protected function _sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function sortByOrderMapCallback($key1, $key2)
     {
         if (isset($this->_aOrderMap[$key1])) {
             if (isset($this->_aOrderMap[$key2])) {
@@ -469,6 +476,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->_createIdListFromSql($sSelect);
     }
+    /**
+     * @deprecated use self::getArticleSelect instead
+     */
+    protected function _getArticleSelect($sRecommId, $sArticlesFilter = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getArticleSelect($sRecommId, $sArticlesFilter);
+    }
 
     /**
      * Returns the appropriate SQL select
@@ -480,7 +494,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getArticleSelect($sRecommId, $sArticlesFilter = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getArticleSelect($sRecommId, $sArticlesFilter = null)
     {
         $sRecommId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sRecommId);
 
@@ -827,13 +841,20 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $blUpdated;
     }
+    /**
+     * @deprecated use self::createIdListFromSql instead
+     */
+    protected function _createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->createIdListFromSql($sSql);
+    }
 
     /**
      * fills the list simply with keys of the oxid and the position as value for the given sql
      *
      * @param string $sSql SQL select
      */
-    protected function _createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function createIdListFromSql($sSql)
     {
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($sSql);
         if ($rs != false && $rs->count() > 0) {
@@ -844,6 +865,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             }
         }
     }
+    /**
+     * @deprecated use self::getFilterIdsSql instead
+     */
+    protected function _getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFilterIdsSql($sCatId, $aFilter);
+    }
 
     /**
      * Returns sql to fetch ids of articles fitting current filter
@@ -853,7 +881,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterIdsSql($sCatId, $aFilter)
     {
         $sO2CView = getViewName('oxobject2category');
         $sO2AView = getViewName('oxobject2attribute');
@@ -884,6 +912,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sFilterSelect . "{$sFilter} GROUP BY oa.oxobjectid HAVING cnt = $iCnt ";
     }
+    /**
+     * @deprecated use self::getFilterSql instead
+     */
+    protected function _getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getFilterSql($sCatId, $aFilter);
+    }
 
     /**
      * Returns filtered articles sql "oxid in (filtered ids)" part
@@ -893,7 +928,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getFilterSql($sCatId, $aFilter)
     {
         $sArticleTable = getViewName('oxarticles');
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($this->_getFilterIdsSql($sCatId, $aFilter));
@@ -917,6 +952,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sFilterSql;
     }
+    /**
+     * @deprecated use self::getCategorySelect instead
+     */
+    protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCategorySelect($sFields, $sCatId, $aSessionFilter);
+    }
 
     /**
      * Creates SQL Statement to load Articles, etc.
@@ -927,7 +969,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategorySelect($sFields, $sCatId, $aSessionFilter)
     {
         $sArticleTable = getViewName('oxarticles');
         $sO2CView = getViewName('oxobject2category');
@@ -956,6 +998,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sSelect;
     }
+    /**
+     * @deprecated use self::getCategoryCountSelect instead
+     */
+    protected function _getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getCategoryCountSelect($sCatId, $aSessionFilter);
+    }
 
     /**
      * Creates SQL Statement to load Articles Count, etc.
@@ -965,7 +1014,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string SQL
      */
-    protected function _getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getCategoryCountSelect($sCatId, $aSessionFilter)
     {
         $sArticleTable = getViewName('oxarticles');
         $sO2CView = getViewName('oxobject2category');
@@ -988,6 +1037,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sSelect;
     }
+    /**
+     * @deprecated use self::getSearchSelect instead
+     */
+    protected function _getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getSearchSelect($sSearchString);
+    }
 
     /**
      * Forms and returns SQL query string for search in DB.
@@ -996,7 +1052,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getSearchSelect($sSearchString)
     {
         // check if it has string at all
         if (!$sSearchString || !str_replace(' ', '', $sSearchString)) {
@@ -1054,6 +1110,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sSearch;
     }
+    /**
+     * @deprecated use self::getPriceSelect instead
+     */
+    protected function _getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getPriceSelect($dPriceFrom, $dPriceTo);
+    }
 
     /**
      * Builds SQL for selecting articles by price
@@ -1063,7 +1126,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getPriceSelect($dPriceFrom, $dPriceTo)
     {
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
@@ -1083,6 +1146,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sSelect;
     }
+    /**
+     * @deprecated use self::getVendorSelect instead
+     */
+    protected function _getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getVendorSelect($sVendorId);
+    }
 
     /**
      * Builds vendor select SQL statement
@@ -1091,7 +1161,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getVendorSelect($sVendorId)
     {
         $sArticleTable = getViewName('oxarticles');
         $oBaseObject = $this->getBaseObject();
@@ -1106,6 +1176,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sSelect;
     }
+    /**
+     * @deprecated use self::getManufacturerSelect instead
+     */
+    protected function _getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getManufacturerSelect($sManufacturerId);
+    }
 
     /**
      * Builds Manufacturer select SQL statement
@@ -1114,7 +1191,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return string
      */
-    protected function _getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getManufacturerSelect($sManufacturerId)
     {
         $sArticleTable = getViewName('oxarticles');
         $oBaseObject = $this->getBaseObject();
@@ -1129,13 +1206,20 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         return $sSelect;
     }
+    /**
+     * @deprecated use self::canUpdatePrices instead
+     */
+    protected function _canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->canUpdatePrices();
+    }
 
     /**
      * Checks if price update can be executed - current time > next price update time
      *
      * @return bool
      */
-    protected function _canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function canUpdatePrices()
     {
         $oConfig = $this->getConfig();
         $blCan = false;

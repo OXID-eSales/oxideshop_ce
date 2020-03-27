@@ -119,6 +119,13 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         return $this->oxcontents__oxcatid->value;
     }
+    /**
+     * @deprecated use self::loadFromDb instead
+     */
+    protected function _loadFromDb($sLoadId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->loadFromDb($sLoadId);
+    }
 
     /**
      * Get data from db.
@@ -127,7 +134,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return array
      */
-    protected function _loadFromDb($sLoadId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function loadFromDb($sLoadId)
     {
         $sTable = $this->getViewName();
         $sShopId = $this->getShopId();
@@ -342,6 +349,13 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
+    /**
+     * @deprecated use self::setFieldData instead
+     */
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setFieldData($sFieldName, $sValue, $iDataType);
+    }
 
     /**
      * Sets data field value.
@@ -352,7 +366,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return null
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
         $sLoweredFieldName = strtolower($sFieldName);
         if ('oxcontent' === $sLoweredFieldName || 'oxcontents__oxcontent' === $sLoweredFieldName) {

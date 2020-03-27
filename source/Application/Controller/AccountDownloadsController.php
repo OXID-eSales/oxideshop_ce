@@ -79,6 +79,13 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
 
         return $this->_oOrderFilesList;
     }
+    /**
+     * @deprecated use self::prepareForTemplate instead
+     */
+    protected function _prepareForTemplate($oOrderFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->prepareForTemplate($oOrderFileList);
+    }
 
     /**
      * Returns prepared orders files list
@@ -87,7 +94,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @return array
      */
-    protected function _prepareForTemplate($oOrderFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function prepareForTemplate($oOrderFileList)
     {
         $oOrderArticles = [];
 

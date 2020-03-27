@@ -257,6 +257,13 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $database->commitTransaction();
         }
     }
+    /**
+     * @deprecated use self::getRedirectUrl instead
+     */
+    protected function _getRedirectUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getRedirectUrl();
+    }
 
     /**
      * Formats and returns redirect URL where shop must be redirected after
@@ -264,7 +271,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string   $sClass.$sPosition  redirection URL
      */
-    protected function _getRedirectUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getRedirectUrl()
     {
 
         // active controller id
@@ -314,6 +321,13 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
         return array_filter($persistedParameters) ?: null;
     }
+    /**
+     * @deprecated use self::getItems instead
+     */
+    protected function _getItems($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride);
+    }
 
     /**
      * Collects and returns array of items to add to basket. Product info is taken not only from
@@ -327,7 +341,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return mixed
      */
-    protected function _getItems( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getItems(
         $sProductId = null,
         $dAmount = null,
         $aSel = null,
@@ -378,6 +392,13 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         return false;
     }
+    /**
+     * @deprecated use self::addItems instead
+     */
+    protected function _addItems($products) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->addItems($products);
+    }
 
     /**
      * Adds all articles user wants to add to basket. Returns
@@ -387,7 +408,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return  object  $oBasketItem    last added basket item
      */
-    protected function _addItems($products) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function addItems($products)
     {
         $activeView = $this->getConfig()->getActiveView();
         $errorDestination = $activeView->getErrorDestination();
@@ -440,6 +461,13 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         return $basketItem;
     }
+    /**
+     * @deprecated use self::setLastCall instead
+     */
+    protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setLastCall($sCallName, $aProductInfo, $aBasketInfo);
+    }
 
     /**
      * Setting last call data to session (data used by econda)
@@ -448,9 +476,16 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param array  $aProductInfo data which comes from request when you press button "to basket"
      * @param array  $aBasketInfo  array returned by \OxidEsales\Eshop\Application\Model\Basket::getBasketSummary()
      */
-    protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setLastCall($sCallName, $aProductInfo, $aBasketInfo)
     {
         Registry::getSession()->setVariable('aLastcall', [$sCallName => $aProductInfo]);
+    }
+    /**
+     * @deprecated use self::setLastCallFnc instead
+     */
+    protected function _setLastCallFnc($sCallName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->setLastCallFnc($sCallName);
     }
 
     /**
@@ -458,9 +493,16 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param string $sCallName name of action ('tobasket', 'changebasket')
      */
-    protected function _setLastCallFnc($sCallName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function setLastCallFnc($sCallName)
     {
         $this->_sLastCallFnc = $sCallName;
+    }
+    /**
+     * @deprecated use self::getLastCallFnc instead
+     */
+    protected function _getLastCallFnc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->getLastCallFnc();
     }
 
     /**
@@ -468,7 +510,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return string
      */
-    protected function _getLastCallFnc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function getLastCallFnc()
     {
         return $this->_sLastCallFnc;
     }

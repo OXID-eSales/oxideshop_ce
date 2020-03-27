@@ -148,13 +148,20 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             ':oxtype' => $sWrapType
         ]);
     }
+    /**
+     * @deprecated use self::isPriceViewModeNetto instead
+     */
+    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        return $this->isPriceViewModeNetto();
+    }
 
     /**
      * Checks and return true if price view mode is netto
      *
      * @return bool
      */
-    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function isPriceViewModeNetto()
     {
         $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getUser();

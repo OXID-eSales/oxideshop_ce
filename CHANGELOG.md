@@ -170,13 +170,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
+## [6.5.4] - Unreleased
+
+### Deprecated
+- Betanote:
+    - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
+    - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
+
 ## [6.5.3] - 2020-03-25
 
 ### Fixed
 - Issue with module controllers validator
 
 ### Changed
-- Option `blSessionUseCookies` is no longer used in the Session class
+- Option `blSessionUseCookies` is no longer used in the Session class    
 
 ## [6.5.2] - 2020-03-16
 

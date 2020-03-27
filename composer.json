@@ -29,7 +29,7 @@
         "codeception/module-db": "^1.0"
     },
     "require-dev": {
-        "oxid-esales/flow-theme": "dev-master-remove_betanote-OXDEV-3290",
+        "oxid-esales/flow-theme": "dev-master",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-master",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "dev-master",
@@ -37,7 +37,7 @@
         "oxid-esales/oxideshop-unified-namespace-generator": "dev-master",
         "incenteev/composer-parameter-handler": "2.1.x-dev",
         "oxid-esales/oxideshop-ide-helper": "dev-master",
-        "oxid-esales/azure-theme": "dev-master-remove_betanote-OXDEV-3290",
+        "oxid-esales/azure-theme": "dev-master",
         "oxid-esales/oxideshop-facts": "dev-master",
         "oxid-esales/testing-library": "dev-master",
         "squizlabs/php_codesniffer": "^3.5.4",

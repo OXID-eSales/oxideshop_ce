@@ -176,6 +176,7 @@ class LangTest extends \OxidTestCase
         $aPathArray = array(
             $sPath . "translations/de/lang.php",
             $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/translations/de/lang.php",
             $sPath . "views/azure/de/lang.php",
             $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php",
             $sPath . "views/azure/de/cust_lang.php"
@@ -212,6 +213,7 @@ class LangTest extends \OxidTestCase
         $aPathArray = array(
             $sPath . "translations/de/lang.php",
             $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/translations/de/lang.php",
             $sPath . "views/azure/de/lang.php",
             $sShopPath . "modules/oxlangTestModule/Application/translations/de/test_lang.php",
             $sPath . "views/azure/de/cust_lang.php"

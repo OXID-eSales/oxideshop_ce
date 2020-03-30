@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Actor;
-use OxidEsales\Codeception\Page\Home;
+use OxidEsales\Codeception\Admin\AdminLoginPage;
 
 /**
  * Inherited Methods
@@ -23,23 +23,19 @@ use OxidEsales\Codeception\Page\Home;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = NULL)
+ * @method void pause()
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceTester extends Actor
+class AcceptanceAdminTester extends Actor
 {
-    use _generated\AcceptanceTesterActions;
+    use _generated\AcceptanceAdminTesterActions;
 
-    /**
-     * Open shop first page.
-     */
-    public function openShop()
+    public function openAdmin(): AdminLoginPage
     {
         $I = $this;
-        $homePage = new Home($I);
-        $I->amOnPage($homePage->URL);
-        return $homePage;
+        $adminLogin = new AdminLoginPage($I);
+        $I->amOnPage($adminLogin->URL);
+        return $adminLogin;
     }
-
 }

@@ -1,16 +1,21 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
-use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Page\Account\UserAccount;
+use OxidEsales\Codeception\Step\Basket;
+use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 
-class CheckoutProcessCest
+final class CheckoutProcessCest
 {
     /**
      * @group basketfrontend
@@ -33,7 +38,7 @@ class CheckoutProcessCest
         ];
 
         $basket->addProductToBasket($basketItem1['id'], 1);
-        $homePage = $homePage->seeMiniBasketContains([$basketItem1], '50,00 €', 1);
+        $homePage = $homePage->seeMiniBasketContains([$basketItem1], '50,00 €', '1');
 
         $basketItem1 = [
             'id' => '1000',
@@ -50,7 +55,7 @@ class CheckoutProcessCest
         ];
         $basket->addProductToBasket($basketItem1['id'], 1);
         $basket->addProductToBasket($basketItem2['id'], 1);
-        $userCheckoutPage = $homePage->seeMiniBasketContains([$basketItem1, $basketItem2], '200,00 €', 3)
+        $userCheckoutPage = $homePage->seeMiniBasketContains([$basketItem1, $basketItem2], '200,00 €', '3')
             ->openCheckout();
 
         $breadCrumbName = Translator::translate("ADDRESS");
@@ -337,12 +342,59 @@ class CheckoutProcessCest
         $this->removeBundleFromProduct($I, $productData['id']);
     }
 
+    public function checkGuestUserNameSwitching(AcceptanceTester $I): void
+    {
+        $I->wantToTest('guest checkout with username switching');
+
+        $basket = new Basket($I);
+        $userAccount = new UserAccount($I);
+        $userRegistration = new UserRegistrationInCheckout($I);
+        $email1 = 'abc@def.gh';
+        $email2 = 'xyz@def.gh';
+
+        /** Start guest1 checkout with email1, then logout */
+        $basket->addProductToBasketAndOpen('1000', 10, 'user');
+        $userRegistration->createNotRegisteredUserInCheckout(
+            $email1,
+            $this->getUserFormData(),
+            $this->getUserAddressFormData()
+        );
+        $userAccount->logoutUser();
+
+        /** Start guest2 checkout with email2 */
+        $basket->addProductToBasketAndOpen('1000', 100, 'user');
+        $paymentPage = $userRegistration->createNotRegisteredUserInCheckout(
+            $email2,
+            $this->getUserFormData(),
+            $this->getUserAddressFormData()
+        );
+
+        /** Check both accounts are present in DB */
+        $I->seeInDatabase('oxuser', ['oxusername' => $email1]);
+        $I->seeInDatabase('oxuser', ['oxusername' => $email2]);
+
+        /** Check guest2 can use email1 (@see #0006965) */
+        $paymentPage->goToPreviousStep()
+            ->openUserBillingAddressForm()
+            ->modifyUserName($email1)
+            ->goToNextStep();
+
+        /** Check user2 is removed from DB */
+        $I->seeInDatabase('oxuser', ['oxusername' => $email1]);
+        $I->dontSeeInDatabase('oxuser', ['oxusername' => $email2]);
+
+        /** Re-open and re-submit user form without changes, check payment methods are available (@see #0007109) */
+        $paymentPage->goToPreviousStep()
+            ->goToNextStep()
+            ->selectPayment('oxidcashondel');
+    }
+
     /**
      * @return mixed
      */
     private function getExistingUserData()
     {
-        return \Codeception\Util\Fixtures::get('existingUser');
+        return Fixtures::get('existingUser');
     }
 
     /**
@@ -362,5 +414,35 @@ class CheckoutProcessCest
     private function removeBundleFromProduct(AcceptanceTester $I, $productId)
     {
         $I->updateInDatabase('oxarticles', ["OXBUNDLEID" => ''], ["OXID" => $productId]);
+    }
+
+    private function getUserFormData(): array
+    {
+        return [
+            'userBirthDateDayField' => '31',
+            'userBirthDateMonthField' => '12',
+            'userBirthDateYearField' => '2000',
+            'userUstIDField' => '',
+            'userMobFonField' => '',
+            'userPrivateFonField' => '',
+        ];
+    }
+
+    private function getUserAddressFormData(): array
+    {
+        return [
+            'userSalutation' => 'Mrs',
+            'userFirstName' => 'some-name',
+            'userLastName' => 'some-last-name',
+            'street' => 'some-street',
+            'streetNr' => '1',
+            'ZIP' => 'zip-1234',
+            'city' => 'some-city',
+            'countryId' => 'Germany',
+            'companyName' => '',
+            'additionalInfo' => '',
+            'fonNr' => '',
+            'faxNr' => '',
+        ];
     }
 }

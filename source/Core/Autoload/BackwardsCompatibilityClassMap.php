@@ -23,7 +23,6 @@ return [
     'oxwactions' => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\Actions',
     'oxwarticlebox' => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\ArticleBox',
     'oxwarticledetails' => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\ArticleDetails',
-    'oxwbetanote' => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\BetaNote',
     'oxwcategorytree' => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\CategoryTree',
     'oxwcookienote' => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\CookieNote',
     'oxwcurrencylist' => 'OxidEsales\\Eshop\\Application\\Component\\Widget\\CurrencyList',

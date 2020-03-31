@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Skip currency url generation if "Display Currencies" option is disabled [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
 - Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
 - Update symfony components to version 5
+- Change translations loading source for themes to be same as for core and modules
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
@@ -142,6 +143,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `CARD_VISA`
 - Language Variable:
     - `SYSREQ_MYSQL_VERSION`
+- Betanote:
+    - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
+    - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)
@@ -165,6 +169,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-776](https://github.com/OXID-eSales/oxideshop_ce/pull/776)
     
 ### Security
+
+## [6.5.4] - Unreleased
+
+### Deprecated
+- Betanote:
+    - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
+    - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
+
+## [6.5.3] - 2020-03-25
+
+### Fixed
+- Issue with module controllers validator
+
+### Changed
+- Option `blSessionUseCookies` is no longer used in the Session class    
 
 ## [6.5.2] - 2020-03-16
 
@@ -447,6 +466,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory` Module metadata validation moved to Internal\Framework\Module package
 - `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage` Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
 - `\OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface` Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
+
+## [6.3.8] - Unreleased
+
+### Fixed
+- Port missing resetFilter action [#0007051](https://bugs.oxid-esales.com/view.php?id=7051) [PR-739](https://github.com/OXID-eSales/oxideshop_ce/pull/739)
 
 ## [6.3.7] - 2020-03-16
 
@@ -954,10 +978,12 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/b-6.2.x...master
+[6.5.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.2...v6.5.3
 [6.5.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.1...v6.5.2
 [6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...v6.5.1
 [6.5.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.4.0...v6.5.0
 [6.4.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.4.0
+[6.3.8]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.7...b-6.1.x
 [6.3.7]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.6...v6.3.7
 [6.3.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.3.6
 [6.3.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.4...v6.3.5

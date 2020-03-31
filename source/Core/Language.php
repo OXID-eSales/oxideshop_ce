@@ -733,15 +733,13 @@ class Language extends \OxidEsales\Eshop\Core\Base
         //get generic lang files
         $sGenericPath = $sAppDir . 'translations/' . $sLang;
         if ($sGenericPath) {
-            $aLangFiles[] = $sGenericPath . "/lang.php";
-            $aLangFiles = $this->_appendLangFile($aLangFiles, $sGenericPath);
+            $aLangFiles = array_merge($aLangFiles, $this->getAbbreviationDirectoryLanguageFiles($sGenericPath));
         }
 
         //get theme lang files
         if ($sTheme) {
-            $sThemePath = $sAppDir . 'views/' . $sTheme . '/' . $sLang;
-            $aLangFiles[] = $sThemePath . "/lang.php";
-            $aLangFiles = $this->_appendLangFile($aLangFiles, $sThemePath);
+            $sThemePath = $sAppDir . 'views/' . $sTheme . '/';
+            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($sThemePath, $sLang));
         }
 
         $aLangFiles = array_merge($aLangFiles, $this->getCustomThemeLanguageFiles($iLang));
@@ -753,6 +751,39 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aLangFiles = $this->_appendCustomLangFiles($aLangFiles, $sLang);
 
         return count($aLangFiles) ? $aLangFiles : false;
+    }
+
+    /**
+     * @param string $themePath
+     * @param string $languageAbbreviation
+     * @return array<string>
+     */
+    protected function getThemeLanguageFiles(string $themePath, string $languageAbbreviation): array
+    {
+        $files = $this->getAbbreviationDirectoryLanguageFiles(
+            $themePath . 'translations/' . $languageAbbreviation
+        );
+
+        $files = array_merge($files, $this->getAbbreviationDirectoryLanguageFiles(
+            $themePath . $languageAbbreviation
+        ));
+
+        return $files;
+    }
+
+    /**
+     * @param string $directory
+     * @return array<string>
+     */
+    protected function getAbbreviationDirectoryLanguageFiles(string $directory): array
+    {
+        $files = [
+            $directory . '/lang.php'
+        ];
+
+        $files = $this->_appendLangFile($files, $directory);
+
+        return $files;
     }
 
     /**
@@ -771,9 +802,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aLangFiles = [];
 
         if ($sCustomTheme) {
-            $sCustPath = $sAppDir . 'views/' . $sCustomTheme . '/' . $sLang;
-            $aLangFiles[] = $sCustPath . "/lang.php";
-            $aLangFiles = $this->_appendLangFile($aLangFiles, $sCustPath);
+            $customThemePath = $sAppDir . 'views/' . $sCustomTheme;
+            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
         }
 
         return $aLangFiles;
@@ -814,6 +844,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         // themes options lang files
         $themePath = $appDirectory . 'views/*/' . $language;
+        $langFiles = $this->_appendLangFile($langFiles, $themePath, "options");
+
+        $themePath = $appDirectory . 'views/*/translations/' . $language;
         $langFiles = $this->_appendLangFile($langFiles, $themePath, "options");
 
         // module language files

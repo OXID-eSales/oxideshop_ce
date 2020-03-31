@@ -26,6 +26,7 @@ final class ReviewAndRatingCest
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('user account top menu (popup in top of the page)');
+        $I->updateConfigInDatabase('bl_perfLoadReviews', true, 'bool');
 
         $userData = $this->getExistingUserData();
         $userReviewText = 'user review [EN] šÄßüл for product 1000';
@@ -37,6 +38,7 @@ final class ReviewAndRatingCest
             ->addReviewAndRating($userReviewText, $userRating)
             ->seeUserProductReviewAndRating(1, $userData['userName'], $userReviewText, $userRating);
         $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
+        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
     }
 
     /**
@@ -49,6 +51,7 @@ final class ReviewAndRatingCest
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('if parent reviews are shown correctly for variant product');
+        $I->updateConfigInDatabase('bl_perfLoadReviews', true, 'bool');
 
         $reviewData = [
             'text' => 'review for parent product šÄßüл',
@@ -85,7 +88,21 @@ final class ReviewAndRatingCest
             $reviewData2['text'],
             $reviewData2['rating']
         );
-        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => 'testuser']);
+        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
+        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
+    }
+
+    public function _failed(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        $userData = $this->getExistingUserData();
+        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
+        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
+        $I->clearShopCache();
+    }
+
+    public function _after(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        $I->clearShopCache();
     }
 
     public function manageUserReviewsInAccountMenu(AcceptanceTester $I): void

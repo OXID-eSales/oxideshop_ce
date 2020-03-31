@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
@@ -12,7 +15,7 @@ use OxidEsales\Codeception\Step\UserRegistration;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 
-class UserRegistrationCest
+final class UserRegistrationCest
 {
     /**
      * @group main
@@ -25,6 +28,7 @@ class UserRegistrationCest
         $userRegistration = new UserRegistration($I);
         $I->wantToTest('simple user account opening');
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '1';
         $userLoginData = $this->getUserLoginData($userId);
@@ -49,6 +53,10 @@ class UserRegistrationCest
         $userRegistration = new UserRegistration($I);
         $start = new Start($I);
         $I->wantToTest('the user standard registration and the newsletter subscription with the same email');
+
+        $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool');
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
 
         // prepare user data
         $userId = '7';
@@ -83,9 +91,11 @@ class UserRegistrationCest
         $basket = new Basket($I);
         $start = new Start($I);
         $checkout = new UserRegistrationInCheckout($I);
-        $I->wantToTest('the user newsletter subscription and the user account creation without registration with the same email in checkout');
+        $I->wantToTest('the user newsletter subscription and the user account creation'
+                       . ' without registration with the same email in checkout');
         $I->openShop();
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '2';
         $userLoginData = $this->getUserLoginData($userId);
@@ -101,7 +111,7 @@ class UserRegistrationCest
         );
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $paymentPage = $checkout->createNotRegisteredUserInCheckout(
             $userLoginData['userLoginNameField'],
@@ -130,6 +140,7 @@ class UserRegistrationCest
         $basket = new Basket($I);
         $I->wantTo('register user account in the checkout process');
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '3';
         $userPassword = 'user33';
@@ -140,13 +151,13 @@ class UserRegistrationCest
         $deliveryAddressData = $this->getUserAddressData($userId);
 
         //add Product to basket
-        $userCheckout = $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $userCheckout = $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $paymentPage = $userCheckout->selectOptionRegisterNewAccount()
         ->enterUserLoginData($userLoginData)
             ->enterUserData($userData)
             ->enterAddressData($addressData)
-            ->enterOrderRemark("remark text")
+            ->enterOrderRemark('remark text')
             ->openShippingAddressForm()
             ->enterShippingAddressData($deliveryAddressData)
             ->goToNextStep();
@@ -156,7 +167,7 @@ class UserRegistrationCest
 
         $orderPage->validateUserBillingAddress(array_merge($addressData, $userData, $userLoginData));
         $orderPage->validateUserDeliveryAddress($deliveryAddressData);
-        $orderPage->validateRemarkText("remark text");
+        $orderPage->validateRemarkText('remark text');
 
         $this->checkUserBillingData($I, $userLoginData, $userData, $addressData);
         $this->checkUserDeliveryData($I, $deliveryAddressData);
@@ -173,6 +184,7 @@ class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create user account without registration twice in the checkout process');
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '4';
         $userLoginData = $this->getUserLoginData($userId);
@@ -183,7 +195,7 @@ class UserRegistrationCest
         $deliveryAddressData = $this->getUserAddressData($userId, $userCountry);
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $paymentPage = $checkout->createNotRegisteredUserInCheckout(
             $userLoginData['userLoginNameField'],
@@ -206,7 +218,7 @@ class UserRegistrationCest
         $I->clearShopCache();
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $checkout->createNotRegisteredUserInCheckout(
             $userLoginData['userLoginNameField'],
@@ -230,6 +242,7 @@ class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create user account without registration and later with registration in checkout process');
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '5';
         $userLoginData = $this->getUserLoginData($userId);
@@ -240,7 +253,7 @@ class UserRegistrationCest
         $deliveryAddressData = $this->getUserAddressData($userId, $userCountry);
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $paymentStep = $checkout->createNotRegisteredUserInCheckout(
             $userLoginData['userLoginNameField'],
@@ -255,7 +268,7 @@ class UserRegistrationCest
         // prepare user data second step
         $userId = '5_3';
         $userPassword = 'user55';
-        $userCountry = 'Austria';
+        $userCountry = 'Germany';
         $userLoginData = $this->getUserLoginData('5', $userPassword);
         $userData = $this->getUserData($userId);
         $addressData = $this->getUserAddressData($userId, $userCountry);
@@ -265,7 +278,7 @@ class UserRegistrationCest
         $I->clearShopCache();
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $checkout->createRegisteredUserInCheckout(
             $userLoginData,
@@ -289,6 +302,7 @@ class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create registered user account twice by using wrong password second time');
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '6';
         $userPassword = 'user66';
@@ -300,7 +314,7 @@ class UserRegistrationCest
         $deliveryAddressData = $this->getUserAddressData($userId, $userCountry);
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $checkout->createRegisteredUserInCheckout(
             $userLoginData,
@@ -320,7 +334,7 @@ class UserRegistrationCest
         $I->clearShopCache();
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $checkout->createNotValidRegisteredUserInCheckout($userLoginData2, $userData2, $addressData2);
 
@@ -340,6 +354,8 @@ class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create not registered user account in the checkout and subscribe newsletter with the same email');
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool');
         // prepare user data
         $userId = '8';
         $userLoginData = $this->getUserLoginData($userId);
@@ -349,7 +365,7 @@ class UserRegistrationCest
         $deliveryAddressData = $this->getUserAddressData($userId);
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $checkout->createNotRegisteredUserInCheckout(
             $userLoginData['userLoginNameField'],
@@ -382,6 +398,7 @@ class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantToTest('user performs order with option3 twice, both time using good email and pass');
 
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '9';
         $userPassword = 'user66';
@@ -393,7 +410,7 @@ class UserRegistrationCest
         $deliveryAddressData = $this->getUserAddressData($userId, $userCountry);
 
         //add Product to basket
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $checkout->createRegisteredUserInCheckout(
             $userLoginData,
@@ -404,7 +421,7 @@ class UserRegistrationCest
 
         // prepare user data for second step
         $userId = '9_3';
-        $userCountry = 'Austria';
+        $userCountry = 'Germany';
         $userLoginData2 = $this->getUserLoginData('9', $userPassword);
         $userData2 = $this->getUserData($userId);
         $addressData2 = $this->getUserAddressData($userId, $userCountry);
@@ -414,7 +431,7 @@ class UserRegistrationCest
 
         $I->clearShopCache();
 
-        $basket->addProductToBasketAndOpen('1000', 1, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 1);
 
         $checkout->createNotValidRegisteredUserInCheckout(
             $userLoginData2,
@@ -431,44 +448,42 @@ class UserRegistrationCest
 
     private function getUserLoginData($userId, $userPassword = 'user1user1')
     {
-        $userLoginData = [
-            "userLoginNameField" => "example".$userId."@oxid-esales.dev",
-            "userPasswordField" => $userPassword,
+        return [
+            'userLoginNameField' => 'example' . $userId . '@oxid-esales.dev',
+            'userPasswordField' => $userPassword,
         ];
-        return $userLoginData;
     }
 
     private function getUserData($userId)
     {
-        $userData = [
-            "userUstIDField" => "",
-            "userMobFonField" => "111-111111-$userId",  //still needed?
-            "userPrivateFonField" => "11111111$userId",
-            "userBirthDateDayField" => rand(10, 28),
-            "userBirthDateMonthField" => rand(10, 12),
-            "userBirthDateYearField" => rand(1960, 2000),
+        return [
+            'userUstIDField' => '',
+            'userMobFonField' => '111-111111-' . $userId,  //still needed?
+            'userPrivateFonField' => '11111111' . $userId,
+            'userBirthDateDayField' => random_int(10, 28),
+            'userBirthDateMonthField' => random_int(10, 12),
+            'userBirthDateYearField' => random_int(1960, 2000),
         ];
-        return $userData;
     }
 
     private function getUserAddressData($userId, $userCountry = 'Germany')
     {
         $addressData = [
-            "userSalutation" => 'Mrs',
-            "userFirstName" => "user$userId name_šÄßüл",
-            "userLastName" => "user$userId last name_šÄßüл",
-            "companyName" => "user$userId company_šÄßüл",
-            "street" => "user$userId street_šÄßüл",
-            "streetNr" => "$userId-$userId",
-            "ZIP" => "1234$userId",
-            "city" => "user$userId city_šÄßüл",
-            "additionalInfo" => "user$userId additional info_šÄßüл",
-            "fonNr" => "111-111-$userId",
-            "faxNr" => "111-111-111-$userId",
-            "countryId" => $userCountry,
+            'userSalutation' => 'Mrs',
+            'userFirstName' => 'user' . $userId . ' name_šÄßüл',
+            'userLastName' => 'user' . $userId . ' last name_šÄßüл',
+            'companyName' => 'user' . $userId . ' company_šÄßüл',
+            'street' => 'user' . $userId . ' street_šÄßüл',
+            'streetNr' => $userId . '-' . $userId,
+            'ZIP' => '1234' . $userId,
+            'city' => 'user' . $userId . ' city_šÄßüл',
+            'additionalInfo' => 'user' . $userId . ' additional info_šÄßüл',
+            'fonNr' => '111-111-' . $userId,
+            'faxNr' => '111-111-111-' . $userId,
+            'countryId' => $userCountry,
         ];
-        if ( $userCountry == 'Germany' ) {
-            $addressData["stateId"] = "Berlin";
+        if ($userCountry === 'Germany') {
+            $addressData['stateId'] = 'Berlin';
         }
         return $addressData;
     }
@@ -481,7 +496,9 @@ class UserRegistrationCest
                 'oxusername' => $userLoginData['userLoginNameField'],
                 'oxmobfon' => $userData['userMobFonField'],
                 'oxprivfon' => $userData['userPrivateFonField'],
-                'oxbirthdate' => $userData['userBirthDateYearField'].'-'.$userData['userBirthDateMonthField'].'-'.$userData['userBirthDateDayField'],
+                'oxbirthdate' => $userData['userBirthDateYearField']
+                    . '-' . $userData['userBirthDateMonthField']
+                    . '-' . $userData['userBirthDateDayField'],
                 'oxfname' => $addressData['userFirstName'],
                 'oxlname' => $addressData['userLastName'],
                 'oxcompany' => $addressData['companyName'],

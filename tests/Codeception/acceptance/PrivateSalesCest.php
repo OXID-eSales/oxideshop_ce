@@ -1,16 +1,20 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Page\PrivateSales\Login;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Start;
 
-class PrivateSalesCest
+final class PrivateSalesCest
 {
     /**
      * @group privateSales
@@ -50,6 +54,7 @@ class PrivateSalesCest
         $I->dontSee(Translator::translate('INVITE_YOUR_FRIENDS'), $invitationPage->headerTitle);
         $breadCrumb = Translator::translate('INVITE_YOUR_FRIENDS');
         $invitationPage->seeOnBreadCrumb($breadCrumb);
+        $I->deleteFromDatabase('oxacceptedterms', ['oxuserid' => 'testuser']);
     }
 
     /**
@@ -73,13 +78,12 @@ class PrivateSalesCest
         $I->amOnPage($privateSalesLoginPage->URL);
 
         $I->dontSee(Translator::translate('HOME'));
-        $I->dontSee(Translator::translate('START_BARGAIN_HEADER'));
 
         //forgot password functionality
         $passwordReminderPage = $privateSalesLoginPage->openUserPasswordReminderPage();
         $I->see(Translator::translate('FORGOT_PASSWORD'));
         $passwordReminderPage = $passwordReminderPage->resetPassword($userData['userLoginName']);
-        $I->see(Translator::translate('PASSWORD_WAS_SEND_TO').' '.$userData['userLoginName']);
+        $I->see(Translator::translate('PASSWORD_WAS_SEND_TO') . ' ' . $userData['userLoginName']);
 
         $privateSalesLoginPage = $passwordReminderPage->goBackToShop();
 
@@ -114,6 +118,7 @@ class PrivateSalesCest
         $registrationPage->enterUserLoginData($userLoginDataToFill)
             ->registerUser();
         $I->see(Translator::translate('MESSAGE_CONFIRMING_REGISTRATION'));
+        $I->deleteFromDatabase('oxacceptedterms', ['oxuserid' => 'testuser']);
     }
 
     /**
@@ -121,7 +126,7 @@ class PrivateSalesCest
      */
     private function getExistingUserData()
     {
-        return \Codeception\Util\Fixtures::get('existingUser');
+        return Fixtures::get('existingUser');
     }
 
     protected function disablePrivateSales(AcceptanceTester $I)
@@ -136,22 +141,22 @@ class PrivateSalesCest
     private function getUserLoginData()
     {
         return [
-            "userLoginNameField" => "example01@oxid-esales.dev",
-            "userPasswordField" => "111111",
+            'userLoginNameField' => 'example01@oxid-esales.dev',
+            'userPasswordField' => '111111',
         ];
     }
 
     private function getUserAddressData()
     {
         return [
-            "userSalutation" => 'Mrs',
-            "userFirstName" => "userName",
-            "userLastName" => "userLastName",
-            "street" => "street",
-            "streetNr" => "10",
-            "ZIP" => "3000",
-            "city" => "city",
-            "countryId" => 'Germany',
+            'userSalutation' => 'Mrs',
+            'userFirstName' => 'userName',
+            'userLastName' => 'userLastName',
+            'street' => 'street',
+            'streetNr' => '10',
+            'ZIP' => '3000',
+            'city' => 'city',
+            'countryId' => 'Germany',
         ];
     }
 }

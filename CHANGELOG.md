@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
     - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
     
+### Fixed
+- Change visibility of Session::setSessionCookie to protected for overwriting possibility [PR-785](https://github.com/OXID-eSales/oxideshop_ce/pull/785)
+
 ## [6.5.3] - 2020-03-25
 
 ### Fixed

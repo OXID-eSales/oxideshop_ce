@@ -1111,43 +1111,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("productSelections");
     }
 
-
-
-    /**
-     * Listmania is disabled via performance options
-     *
-     * @group frontend
-     */
-    public function testFrontendDisabledListmania()
-    {
-        //Listmania is disabled
-        $this->callShopSC("oxConfig", null, null, array("bl_showListmania" => array("type" => "bool", "value" => "false", "module" => "theme:azure")));
-
-        $this->clearCache();
-        $this->openShop();
-        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->searchFor("100");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']/h3");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']//ul");
-        $this->assertElementNotPresent("searchRecomm");
-        $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']/h3");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']//ul");
-        $this->assertElementNotPresent("searchRecomm");
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
-        $this->click("productLinks");
-        $this->waitForItemAppear("suggest");
-        $this->assertElementPresent("linkToWishList");
-        $this->assertElementPresent("linkToNoticeList");
-        $this->assertElementNotPresent("recommList");
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%ACCOUNT%']");
-        $this->assertElementPresent("//aside[@id='sidebar']//a[text()='%MY_WISH_LIST%']");
-        $this->assertElementPresent("//aside[@id='sidebar']//a[text()='%MY_GIFT_REGISTRY%']");
-        $this->assertElementNotPresent("//aside[@id='sidebar']//a[text()='%MY_LISTMANIA%']");
-    }
-
-
-
     /**
      * Checking contact sending
      *

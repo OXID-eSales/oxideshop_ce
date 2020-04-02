@@ -36,7 +36,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('1ec42a395d0595ee774109189884899a',	1,	'',	'aNrofCatArticlesInGrid',	'arr',	'a:4:{i:0;s:2:\"12\";i:1;s:2:\"16\";i:2;s:2:\"24\";i:3;s:2:\"32\";}'),
 ('1ec42a395d0595ee774109189884899x',	1,	'',	'blShowListDisplayType',	'bool',	'1'),
 ('20be6d4e9998af367e4aa5bcdc0bb058',	1,	'theme:flow',	'bl_showWishlist',	'bool',	'1'),
-(uuit(),	1,	'theme:flow',	'bl_showPriceAlarm',	'bool',	'1'),
+(uuid(),                            	1,	'theme:flow',	'bl_showPriceAlarm',	'bool',	'1'),
 ('21aab05ff5ffb9d97f3f74fe42a73776',	1,	'theme:flow',	'blSliderShowImageCaption',	'bool',	'1'),
 ('287a21b1230a55e2ef42444cb997c8a7',	1,	'theme:flow',	'sFaviconMSTileColor',	'str',	'#D83434'),
 ('2a944b2cc31311e8957700163e4021bf',	1,	'',	'includeProductReviewLinksInEmail',	'bool',	''),

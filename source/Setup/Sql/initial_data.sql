@@ -163,6 +163,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('20be6d4e9998af367e4aa5bcdc0bb058', 1, 'theme:flow', 'bl_showWishlist', 'bool', 0x07),
 ('3cac0ace23a117f67cf9eb77ad23d504', 1, 'theme:flow', 'bl_showVouchers', 'bool', 0x07),
 ('7e7e3971926d6b49073f0e8c8cf54c5e', 1, 'theme:flow', 'bl_showGiftWrapping', 'bool', 0x07),
+(uuid(),                             1,	'theme:flow',	'bl_showPriceAlarm',	'bool',	0x07),
 ('7a99bf465ffda98b493c6090c3f2119f', 1, 'theme:flow', 'blShowBirthdayFields', 'bool', 0x07),
 ('9eeaf8b289b2ae63c9219197b376107a', 1, 'theme:flow', 'blShowFinalStep', 'bool', 0x07),
 ('4f76c809ff3bd883b96b0689a0796609', 1, 'theme:flow', 'sDefaultListDisplayType', 'select', 0x83cd10b7f09064ed),

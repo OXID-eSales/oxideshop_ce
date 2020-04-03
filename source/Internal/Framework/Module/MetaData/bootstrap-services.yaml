@@ -86,8 +86,8 @@ services:
     autowire: true
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
 
@@ -100,13 +100,13 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataSchemataProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataSchemataProvider
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider
     arguments:
       - '%oxid_esales.module.metadata.service.metadata_schemata%'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataNormalizerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataNormalizer
+  OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorAggregate

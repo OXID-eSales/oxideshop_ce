@@ -7,16 +7,16 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataSchemataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class MetaDataSchemataProviderTest
  *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Service
+ * @package OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Dao
  */
 class MetaDataSchemataProviderTest extends TestCase
 {

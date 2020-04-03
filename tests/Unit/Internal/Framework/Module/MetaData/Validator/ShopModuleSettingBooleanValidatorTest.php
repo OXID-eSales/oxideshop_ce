@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\ModuleSettingBooleanValidator
  */
-class SettingBooleanValidatorTest extends TestCase
+class ShopModuleSettingBooleanValidatorTest extends TestCase
 {
     public function validationPassWithDataProvider(): array
     {

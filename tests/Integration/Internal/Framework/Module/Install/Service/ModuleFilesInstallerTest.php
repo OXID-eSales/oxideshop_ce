@@ -140,7 +140,7 @@ final class ModuleFilesInstallerTest extends TestCase
 
         $installer->install($package);
 
-        $this->assertFileNotExists($this->getTestedModuleInstallPath() . '/readme.txt');
+        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/readme.txt');
     }
 
     public function testBlacklistedFilesAreSkippedWhenSingleFileNameBlacklistFilterIsDefined(): void
@@ -152,7 +152,7 @@ final class ModuleFilesInstallerTest extends TestCase
 
         $installer->install($package);
 
-        $this->assertFileNotExists($this->getTestedModuleInstallPath() . '/readme.txt');
+        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/readme.txt');
     }
 
     public function testBlacklistedDirectoryIsSkippedWhenBlacklistFilterIsDefined(): void
@@ -164,7 +164,7 @@ final class ModuleFilesInstallerTest extends TestCase
         $installer->install($package);
 
         $this->assertDirectoryExists($this->modulePackagePath . '/BlackListDirectory');
-        $this->assertDirectoryNotExists($this->getTestedModuleInstallPath() . '/BlackListDirectory');
+        $this->assertDirectoryDoesNotExist($this->getTestedModuleInstallPath() . '/BlackListDirectory');
     }
 
     public function testUninstall(): void

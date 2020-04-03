@@ -185,8 +185,9 @@ final class DatabaseTest extends \OxidTestCase
         /** @var Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance"));
         $database->expects($this->at(0))->method("execSql")->will($this->throwException(new Exception()));
-        $database->expects($this->at(1))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
-        $database->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
+       
+        $database->expects($this->at(0))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
+        $database->expects($this->at(1))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
 
         $this->expectException('Exception');
 

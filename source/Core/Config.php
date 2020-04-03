@@ -566,7 +566,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if ($module) {
             $select .= " oxmodule LIKE :oxmodule";
-            $params[':oxmodule'] = $module . "%";
+            $params[':oxmodule'] = $module;
         } else {
             $select .= "oxmodule = ''";
         }

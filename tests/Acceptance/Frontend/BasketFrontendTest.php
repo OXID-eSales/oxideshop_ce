@@ -294,55 +294,6 @@ class BasketFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Order steps: Step1. checking navigation and other additional info
-     *
-     * @group basketfrontend
-     */
-    public function testFrontendOrderStep1Navigation()
-    {
-        $this->addToBasket("1001", 1, 'basket', array( 'sel' => array(0 => 2)));
-        $this->addToBasket("1002-2");
-        $this->addToBasket("1003");
-        $this->addToBasket("1000");
-        $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
-
-        //Order Step1
-        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_1']/td[3]//a"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл, var2 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_2']/td[3]//a"));
-        $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_3']/td[3]//a"));
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_4']/td[3]//a"));
-        $this->assertEquals("%PRODUCT_NO%: 1000", $this->getText("//tr[@id='cartItem_4']/td[3]/div[2]"));
-        $this->assertEquals("%PRODUCT_NO%: 1001", $this->getText("//tr[@id='cartItem_1']/td[3]/div[2]"));
-        $this->assertEquals("%PRODUCT_NO%: 1002-2", $this->getText("//tr[@id='cartItem_2']/td[3]/div[2]"));
-        $this->assertEquals("%PRODUCT_NO%: 1003", $this->getText("//tr[@id='cartItem_3']/td[3]/div[2]"));
-
-        //testing navigation to details page
-        $this->clickAndWait("//tr[@id='cartItem_4']/td[2]//img");
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
-
-        $this->openBasket();
-        $this->clickAndWait("//tr[@id='cartItem_2']/td[3]//a");
-        $this->assertEquals("Test product 2 [EN] šÄßüл var2 [EN] šÄßüл", $this->getText("//h1"));
-        $this->openBasket();
-
-        //removing some products
-        $this->check("//tr[@id='cartItem_4']/td[1]//input");
-        $this->clickAndWait("basketRemove");
-
-        //navigation between order step1 and step2
-        //TODO: Selenium refactor: breadcrumb test should be separated
-        $this->clickAndWait("//section[@id='content']/div[1]//button[text()='%CONTINUE_TO_NEXT_STEP%']");
-        $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
-
-        $this->assertTextNotPresent('customer number', 'Suggestion to login with customer number should not be visible.');
-
-        $this->clickAndWait("link=%STEPS_BASKET%");
-        $this->assertEquals("%YOU_ARE_HERE%: / %PAGE_TITLE_BASKET%", $this->getText("breadCrumb"));
-        $this->clickAndWait("//section[@id='content']//button[text()='%CONTINUE_TO_NEXT_STEP%']");
-        $this->assertEquals("%YOU_ARE_HERE%: / %ADDRESS%", $this->getText("breadCrumb"));
-    }
-
-    /**
      * Vouchers is disabled via performance options
      *
      * @group basketfrontend
@@ -639,55 +590,6 @@ class BasketFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Order steps (without any special checking for discounts, various VATs and user registration)
-     *
-     * @group basketfrontend
-     */
-    public function testFrontendOrderStep4and5()
-    {
-        $this->addToBasket("1001");
-        $this->addToBasket("1002-2");
-
-        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->_enterCouponCode("222222");
-
-        $this->_continueToNextStep(2);
-        $this->click("payment_oxidcashondel");
-        $this->_continueToNextStep();
-        //Order Step4
-        //rights of withdrawal
-        $this->assertElementPresent("//form[@id='orderConfirmAgbTop']//a[text()='Terms and Conditions']");
-        $this->assertElementPresent("//form[@id='orderConfirmAgbTop']//a[text()='Right of Withdrawal']");
-        //testing links to products
-        $this->clickAndWait("//tr[@id='cartItem_1']/td/a");
-        $this->openBasket();
-        $this->_continueToNextStep(3);
-
-        $this->clickAndWait("//tr[@id='cartItem_2']/td[2]//a");
-        $this->assertEquals("Test product 2 [EN] šÄßüл var2 [EN] šÄßüл", $this->getText("//h1"));
-        $this->openBasket();
-
-        $this->_continueToNextStep(3);
-        //submit without checkbox
-        $this->click("//form[@id='orderConfirmAgbTop']//button");
-        $this->waitForText("%READ_AND_CONFIRM_TERMS%");
-        //successful submit
-        $this->_confirmAndOrder();
-        $this->assertEquals("%YOU_ARE_HERE%: / %ORDER_COMPLETED%", $this->getText("breadCrumb"));
-        //testing info in 5th page
-        $this->assertTextPresent("We registered your order with number 12");
-        $this->assertElementPresent("backToShop");
-        $this->assertEquals("%BACK_TO_START_PAGE%", $this->getText("backToShop"));
-
-        //TODO: Selenium refactor: duplicate with order history test
-        $this->clickAndWait("orderHistory");
-        $this->assertEquals("%YOU_ARE_HERE%: / %MY_ACCOUNT% / %ORDER_HISTORY%", $this->getText("breadCrumb"));
-        $this->assertEquals("%PAGE_TITLE_ACCOUNT_ORDER%", $this->getText("//h1"));
-        $this->assertEquals("Test product 1 [EN] šÄßüл test selection list [EN] šÄßüл : selvar1 [EN] šÄßüл +1,00 € - 1 qty.", $this->clearString($this->getText("//tr[@id='accOrderAmount_12_1']/td")));
-        $this->assertEquals("Test product 2 [EN] šÄßüл var2 [EN] šÄßüл - 1 qty.", $this->clearString($this->getText("//tr[@id='accOrderAmount_12_2']/td")));
-    }
-
-    /**
      * Checking Performance options
      * option: Load "Customers who bought this product also purchased..."
      *
@@ -755,45 +657,6 @@ class BasketFrontendTest extends FrontendTestCase
         $this->_confirmAndOrder();
         $this->assertElementNotPresent("//h1[text()='%CUSTOMERS_ALSO_BOUGHT%:']");
         $this->assertElementNotPresent("alsoBoughtThankyou");
-    }
-
-    /**
-     * Testing giftWrapping selection.
-     *
-     * @group basketfrontend
-     */
-    public function testFrontendOrderGiftWrapping()
-    {
-        $this->addToBasket("1001");
-
-        //both wrapping and greeting cart exist
-        $this->assertEquals("%ADD%", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[4]")));
-        $this->click("//tr[@id='cartItem_1']/td[4]/a");
-        $this->waitForItemAppear("wrapp_1");
-        $this->assertEquals("Test wrapping [EN] šÄßüл", $this->getText("//ul[@id='wrapp_1']/li[4]//label"));
-        $this->assertEquals("Test card [EN] šÄßüл 0,20 €", $this->getText("//ul[@id='wrappCard']/li[4]//label"));
-        $this->assertElementPresent("giftmessage");
-        $this->clickAndWait("//button[text()='%APPLY%']");
-
-        //only giftWrapping exist (none of greeting cards)
-        //TODO: Selenium refactor to remove SQL's executions??
-        $this->executeSql("DELETE FROM `oxwrapping` WHERE `OXTYPE` = 'CARD'");
-
-        $this->_continueToNextStep();
-        $this->clickAndWait("link=%STEPS_BASKET%");
-        $this->click("//tr[@id='cartItem_1']/td[4]/a");
-        $this->waitForItemAppear("wrapp_1");
-        $this->assertEquals("Test wrapping [EN] šÄßüл", $this->getText("//ul[@id='wrapp_1']/li[4]//label"));
-        $this->assertElementNotPresent("wrappCard");
-        $this->assertElementNotPresent("giftmessage");
-        $this->clickAndWait("//button[text()='%APPLY%']");
-
-        //also removing wrapping. gift wrapping selection now is not accessible
-        //TODO: Selenium refactor to remove SQL's executions??
-        $this->executeSql("DELETE FROM `oxwrapping` WHERE `OXTYPE` = 'WRAP'");
-        $this->_continueToNextStep();
-        $this->clickAndWait("link=%STEPS_BASKET%");
-        $this->assertElementNotPresent("//tr[@id='cartItem_1']/td[4]/a");
     }
 
     /**

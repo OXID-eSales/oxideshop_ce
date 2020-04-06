@@ -861,7 +861,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns config param "blAllowSuggestArticle" value.
      *
-     * @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+     * @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely
      *
      * @return bool
      */

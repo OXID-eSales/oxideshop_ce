@@ -132,9 +132,9 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'Auf der Startseite Ihres eShops werden die unter <span class="filename_filepath_or_italic">Frisch eingetroffen!</span> die neusten Artikel in Ihrem eShop angezeigt. Sie können die Artikel, die hier angezeigt werden, manuell einstellen oder automatisch berechnen lassen. Mit dieser Einstellung wählen Sie, wie die neusten Artikel berechnet werden sollen: Nach dem Datum, an dem die Artikel erstellt wurden, oder nach dem Datum der letzten Änderung im Administrationsbereich/der letzten Bestellung im Shop.',
 
-// @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'      => 'Auf der Detailseite von Artikeln wird das Empfehlen aktiviert.',
-// END deprecated
+/** end deprecated */
 
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. '
                                                         .'Die gesammelten Daten sind ausschließlich technologische Informationen. '

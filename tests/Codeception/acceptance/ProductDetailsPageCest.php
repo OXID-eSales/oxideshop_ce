@@ -152,51 +152,13 @@ class ProductDetailsPageCest
 
     /**
      * @group product
-     *
-     * @param AcceptanceTester $I
-     */
-    /*public function detailsPageInformation(AcceptanceTester $I, ProductNavigation $productNavigation)
-    {
-        $I->wantToTest('product information in details page');
-
-        $productData = [
-            'id' => '1001',
-            'title' => 'Test product 1 [EN] šÄßüл',
-            'description' => 'Test product 1 short desc [EN] šÄßüл',
-            'price' => '100,00 € *'
-        ];
-
-        $this->prepareSelectDataForProduct($I, $productData['id']);
-
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id'])
-            ->seeProductData($productData)
-            ->seeProductOldPrice('150,00 €');
-        $I->see(Translator::translate('MESSAGE_NOT_ON_STOCK'));
-        $I->see(Translator::translate('AVAILABLE_ON') . ' 2030-01-01');
-        $detailsPage = $detailsPage->selectSelectionListItem('selvar1 [EN] šÄßüл')
-            ->selectSelectionListItem('selvar2 [EN] šÄßüл')
-            ->selectSelectionListItem('selvar3 [EN] šÄßüл')
-            ->selectSelectionListItem('selvar4 [EN] šÄßüл')
-            ->openDescription();
-        $I->see('Test product 1 long description [EN] šÄßüл');
-        $detailsPage->openAttributes()
-            ->seeAttributeName('Test attribute 1 [EN] šÄßüл',1)
-            ->seeAttributeValue('attr value 11 [EN] šÄßüл', 1)
-            ->seeAttributeName('Test attribute 3 [EN] šÄßüл',2)
-            ->seeAttributeValue('attr value 3 [EN] šÄßüл', 2)
-            ->seeAttributeName('Test attribute 2 [EN] šÄßüл',3)
-            ->seeAttributeValue('attr value 12 [EN] šÄßüл', 3);
-    }*/
-
-    /**
-     * @group product
      * @group productSuggestion
      *
      * @param AcceptanceTester $I
      */
     public function sendProductSuggestionEmail(AcceptanceTester $I)
     {
+        $I->updateConfigInDatabase('blAllowSuggestArticle', '1');
         $productNavigation = new ProductNavigation($I);
         $I->wantTo('send the product suggestion email');
 

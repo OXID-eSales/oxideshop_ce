@@ -132,9 +132,9 @@ $aLang =  [
 
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
 
-// @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'      => 'Activate recommendation of products on product detail pages.',
-// END deprecated
+/** end deprecated */
 
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. '
                                                         .'The collected data exclusively apply to technological information. '

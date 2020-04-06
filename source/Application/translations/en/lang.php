@@ -67,8 +67,9 @@ $aLang = [
 'CARD_SECURITY_CODE_DESCRIPTION'                              => 'This check digit is printed in reverse italic on the back side of your credit card right above the signature panel.',
 'CARD_VISA'                                                   => 'Visa',
 // END deprecated
-
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'CARD_TO'                                                     => 'Card to',
+/** end deprecated */
 'CART'                                                        => 'Cart',
 'CATEGORIES'                                                  => 'Categories',
 'CATEGORY'                                                    => 'Category',
@@ -80,7 +81,9 @@ $aLang = [
 'CHANGE_ACCOUNT_PASSWORD'                                     => 'Change account password',
 'CHANGE_PASSWORD'                                             => 'Change password',
 'CHARGES'                                                     => 'Charges',
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'CHECK'                                                       => 'Check',
+/** end deprecated */
 'CHECKOUT'                                                    => 'Checkout',
 'CHECK_YOUR_ORDER_HISTORY'                                    => 'check your order history',
 'CHOOSE'                                                      => 'Choose',
@@ -272,7 +275,9 @@ $aLang = [
 'MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES'                     => 'No discounts assigned to these product items',
 'MESSAGE_DENIED_BY_SHOP_RULES'                                => 'Denied by shop rules.',
 'MESSAGE_EMAIL_ALREADY_IN_USE'                                => 'This e-mail address already exists!',
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE'                      => 'Enter your address data and your personal message!',
+/** end deprecated */
 'MESSAGE_FROM'                                                => 'Message from',
 'MESSAGE_GET_BONUS_POINTS'                                    => 'Get bonus points for your purchase now!',
 'MESSAGE_INVALID_EMAIL'                                       => 'Invalid e-mail address!',
@@ -304,7 +309,9 @@ $aLang = [
 'MESSAGE_PRICE_ALARM_PRICE_CHANGE'                            => 'We\'ll inform you if the price of this product will be changed according to your price alert.',
 'MESSAGE_RATE_THIS_ARTICLE'                                   => 'Rate this product!',
 'MESSAGE_READ_DETAILS'                                        => 'Read our',
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'MESSAGE_RECOMMEND_CLICK_ON_SEND'                             => 'Click on "Send recommendation" to send the e-mail!',
+/** end deprecated */
 'MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'                         => 'Please select at least one product!',
 'MESSAGE_SELECT_MORE_PRODUCTS'                                => 'Please select products for comparison!',
 'MESSAGE_SEND_GIFT_REGISTRY'                                  => 'Please click here to send your gift registry to your friends!',
@@ -419,7 +426,9 @@ $aLang = [
 'PRODUCT_DETAILS'                                             => 'Product details',
 'PRODUCT_IMAGES'                                              => 'Product images',
 'PRODUCT_NO'                                                  => 'Item #',
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'PRODUCT_POST_CARD_FROM'                                      => 'A product postcard from',
+/** end deprecated */
 'PRODUCT_REVIEW'                                              => 'Product review',
 'PUBLIC_GIFT_REGISTRIES'                                      => 'Public gift registries',
 'PUBLISH'                                                     => 'Publish',
@@ -438,7 +447,9 @@ $aLang = [
 'RECIPIENT_EMAIL'                                             => 'Recipient\'s e-mail',
 'RECIPIENT_NAME'                                              => 'Recipient\'s name',
 'RECOMMEND'                                                   => 'Recommend',
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'RECOMMENDED_PRODUCTS'                                        => 'My product recommendation',
+/** end deprecated */
 'RECOMMEND_PRODUCT'                                           => 'Recommend product',
 'REDEEM_COUPON'                                               => 'Redeem coupon',
 'REDUCED_FROM'                                                => 'Reduced from',

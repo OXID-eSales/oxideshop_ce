@@ -76,14 +76,14 @@ class Email extends PHPMailer
 
     /**
      * Product suggest mail template
-     *
+     * @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely
      * @var string
      */
     protected $_sSuggestTemplate = "email/html/suggest.tpl";
 
     /**
      * Product suggest plain mail template
-     *
+     * @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely
      * @var string
      */
     protected $_sSuggestTemplatePlain = "email/plain/suggest.tpl";
@@ -939,10 +939,9 @@ class Email extends PHPMailer
     /**
      * Sets mailer additional settings and sends "SuggestMail" mail to user.
      * Returns true on success.
-     *
      * @param \OxidEsales\Eshop\Application\Model\User $user    Mailing parameters object
      * @param object                                   $product Product object
-     *
+     * @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely
      * @return bool
      */
     public function sendSuggestMail($user, $product)

@@ -118,7 +118,7 @@ EOT;
         // This should trigger the event that deletes the cachefile
         $dao->saveProjectConfigFile($projectYaml);
 
-        $this->assertFileNotExists($context->getContainerCacheFilePath());
+        $this->assertFileDoesNotExist($context->getContainerCacheFilePath());
 
         ContainerFactory::getInstance()->getContainer();
         // Verify container has been rebuild be checking that a cachefile exists

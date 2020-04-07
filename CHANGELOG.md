@@ -146,7 +146,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Betanote:
     - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
     - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
-
+- Suggest (Recommend Product) feature:
+    - Class: `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
+    - Method:
+        - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest`
+        - `OxidEsales\EshopCommunity\Core\Email::sendSuggestMail`
+    - Property:
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplate`
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplatePlain`
+    - Language Constants:
+        - `CARD_TO`
+        - `CHECK`
+        - `MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE`
+        - `MESSAGE_RECOMMEND_CLICK_ON_SEND`
+        - `PRODUCT_POST_CARD_FROM`
+        - `RECOMMENDED_PRODUCTS`
+        - `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+        - `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+    - Config option (usage): `blAllowSuggestArticle`
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)

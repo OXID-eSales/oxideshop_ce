@@ -1105,35 +1105,6 @@ class EmailTest extends \OxidTestCase
         $this->assertEquals($aTo, $oEmail->getRecipient());
     }
 
-    /**
-     * Testing the correct recipient (#3586)
-     */
-    public function testSendSuggestMailCorrectSender()
-    {
-        $oSmartyMock = $this->getMock("Smarty", array("fetch"));
-        $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(''));
-
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("send", "_getSmarty"));
-        $oEmail->expects($this->once())->method("send")->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method("_getSmarty")->will($this->returnValue($oSmartyMock));
-
-        // oxParams mock
-        $oParams = $this->getMock("oxParams");
-
-        // oxProduct mock
-        $oProduct = $this->getMock("oxProduct", array("getId", "getLanguage", "setLanguage", "load", "getLink"));
-        $oProduct->expects($this->once())->method("getId")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("getLanguage")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("setLanguage")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("load")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("getLink")->will($this->returnValue(true));
-
-        $oEmail->sendSuggestMail($oParams, $oProduct);
-
-        //testing actual From field Value
-        $this->assertEquals("info@myoxideshop.com", $oEmail->getFrom());
-    }
-
     public function testProductReviewLinksAreIncludedByDefaultInSendedNowMail()
     {
         $orderStub = $this->getOrderStub();

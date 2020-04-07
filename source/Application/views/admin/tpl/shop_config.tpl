@@ -311,18 +311,6 @@ function editThis(sID)
             </dl>
             <dl>
                 <dt>
-                    <input type=hidden name=confbools[blAllowSuggestArticle] value=false>
-                    <input type=checkbox name=confbools[blAllowSuggestArticle] value=true [{if ($confbools.blAllowSuggestArticle)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=hidden name=confbools[bl_perfLoadReviews] value=false>
                     <input type=checkbox name=confbools[bl_perfLoadReviews] value=true  [{if ($confbools.bl_perfLoadReviews)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_CONFIG_LOADREVIEWS"}]

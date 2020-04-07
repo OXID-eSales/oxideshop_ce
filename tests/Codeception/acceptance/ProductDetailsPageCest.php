@@ -153,48 +153,6 @@ class ProductDetailsPageCest
 
     /**
      * @group product
-     * @group productSuggestion
-     *
-     * @param AcceptanceTester $I
-     */
-    public function sendProductSuggestionEmail(AcceptanceTester $I)
-    {
-        $I->updateConfigInDatabase('blAllowSuggestArticle', '1');
-        $productNavigation = new ProductNavigation($I);
-        $I->wantTo('send the product suggestion email');
-
-        $productData = [
-            'id' => '1000',
-            'title' => 'Test product 0 [EN] šÄßüл',
-            'description' => 'Test product 0 short desc [EN] šÄßüл',
-            'price' => '50,00 € *'
-        ];
-        $emptyEmailData = [
-            'recipient_name' => '',
-            'recipient_email' => '',
-            'sender_name' => '',
-            'sender_email' => '',
-        ];
-        $suggestionEmailData = [
-            'recipient_name' => 'Test User',
-            'recipient_email' => 'example@oxid-esales.dev',
-            'sender_name' => 'user',
-            'sender_email' => 'example_test@oxid-esales.dev',
-        ];
-
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
-
-        $suggestionPage = $detailsPage->openProductSuggestionPage()
-            ->sendSuggestionEmail($emptyEmailData);
-        $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
-        $suggestionPage->sendSuggestionEmail($suggestionEmailData);
-        $I->see($productData['title']);
-    }
-
-    /**
-     * @group product
      * @group priceAlarm
      *
      * @param AcceptanceTester $I

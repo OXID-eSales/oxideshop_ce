@@ -60,9 +60,6 @@ $aLang = [
 'BIRTHDATE'                                                   => 'Geburtsdatum',
 'BLOCK_PRICE'                                                 => 'Mengenstaffelpreise',
 'CANCEL'                                                      => 'Beenden',
-/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
-'CARD_TO'                                                     => 'Karte an',
-/** end deprecated */
 'CART'                                                        => 'Warenkorb',
 'CATEGORIES'                                                  => 'Kategorien',
 'CATEGORY'                                                    => 'Kategorie',
@@ -74,9 +71,6 @@ $aLang = [
 'CHANGE_ACCOUNT_PASSWORD'                                     => 'Kontopasswort ändern',
 'CHANGE_PASSWORD'                                             => 'Passwort ändern',
 'CHARGES'                                                     => 'Kosten',
-/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
-'CHECK'                                                       => 'Siehe',
-/** end deprecated */
 'CHECKOUT'                                                    => 'Zur Kasse',
 'CHECK_YOUR_ORDER_HISTORY'                                    => 'Ihre Bestellhistorie aufrufen',
 'CHOOSE'                                                      => 'Wählen',
@@ -265,9 +259,6 @@ $aLang = [
 'MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES'                     => 'Diesen Artikeln ist kein Rabatt zugeordnet',
 'MESSAGE_DENIED_BY_SHOP_RULES'                                => 'Verweigert aufgrund von Shopregeln',
 'MESSAGE_EMAIL_ALREADY_IN_USE'                                => 'E-Mail-Adresse ist bereits vorhanden!',
-/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
-'MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE'                      => 'Geben Sie die Adressdaten und Ihre persönliche Nachricht ein!',
-/** end deprecated */
 'MESSAGE_FROM'                                                => 'Nachricht von',
 'MESSAGE_GET_BONUS_POINTS'                                    => 'Holen Sie sich jetzt für Ihren Einkauf Bonuspunkte!',
 'MESSAGE_INVALID_EMAIL'                                       => 'Keine gültige E-Mail-Adresse!',
@@ -299,9 +290,6 @@ $aLang = [
 'MESSAGE_PRICE_ALARM_PRICE_CHANGE'                            => 'Wir informieren Sie gern darüber, falls der Preis dieses Artikels Ihrem Wunschpreis entspricht.',
 'MESSAGE_RATE_THIS_ARTICLE'                                   => 'Bewerten Sie diesen Artikel!',
 'MESSAGE_READ_DETAILS'                                        => 'Lesen Sie Details zum',
-/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
-'MESSAGE_RECOMMEND_CLICK_ON_SEND'                             => 'Klicken Sie auf "Empfehlung abschicken", um die E-Mail zu senden!',
-/** end deprecated */
 'MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'                         => 'Bitte wählen Sie mindestens einen Artikel aus!',
 'MESSAGE_SELECT_MORE_PRODUCTS'                                => 'Bitte wählen Sie Artikel zum Vergleichen aus!',
 'MESSAGE_SEND_GIFT_REGISTRY'                                  => 'Klicken Sie hier, um Ihren Wunschzettel an Ihre Freunde zu versenden!',
@@ -416,9 +404,6 @@ $aLang = [
 'PRODUCT_DETAILS'                                             => 'Artikeldetails',
 'PRODUCT_IMAGES'                                              => 'Artikelbilder',
 'PRODUCT_NO'                                                  => 'Art. Nr.',
-/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
-'PRODUCT_POST_CARD_FROM'                                      => 'Artikelpostkarte von',
-/** end deprecated */
 'PRODUCT_REVIEW'                                              => 'Artikel bewerten',
 'PUBLIC_GIFT_REGISTRIES'                                      => 'Öffentlicher Wunschzettel',
 'PUBLISH'                                                     => 'Veröffentlichen',
@@ -437,9 +422,6 @@ $aLang = [
 'RECIPIENT_EMAIL'                                             => 'E-Mail des Empfängers',
 'RECIPIENT_NAME'                                              => 'Name des Empfängers',
 'RECOMMEND'                                                   => 'Empfehlen',
-/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
-'RECOMMENDED_PRODUCTS'                                        => 'Meine Artikelempfehlung',
-/** end deprecated */
 'RECOMMEND_PRODUCT'                                           => 'Artikel weiterempfehlen',
 'REDEEM_COUPON'                                               => 'Gutschein einlösen',
 'REDUCED_FROM'                                                => 'Statt',

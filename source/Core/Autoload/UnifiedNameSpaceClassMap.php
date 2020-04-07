@@ -1642,12 +1642,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Controller\SuggestController'                  => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\SuggestController::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Application\Controller\TemplateController'                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\TemplateController::class,
         'isAbstract'       => false,

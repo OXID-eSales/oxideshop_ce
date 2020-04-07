@@ -77,20 +77,6 @@ class Email extends PHPMailer
 
     /**
      * Product suggest mail template
-     * @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely
-     * @var string
-     */
-    protected $_sSuggestTemplate = "email/html/suggest.tpl";
-
-    /**
-     * Product suggest plain mail template
-     * @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely
-     * @var string
-     */
-    protected $_sSuggestTemplatePlain = "email/plain/suggest.tpl";
-
-    /**
-     * Product suggest mail template
      *
      * @var string
      */
@@ -897,63 +883,6 @@ class Email extends PHPMailer
         $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
         $this->setRecipient($user->oxuser__oxusername->value, $fullName);
         $this->setReplyTo($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
-
-        return $this->send();
-    }
-
-    /**
-     * Sets mailer additional settings and sends "SuggestMail" mail to user.
-     * Returns true on success.
-     * @param \OxidEsales\Eshop\Application\Model\User $user    Mailing parameters object
-     * @param object                                   $product Product object
-     * @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely
-     * @return bool
-     */
-    public function sendSuggestMail($user, $product)
-    {
-        $myConfig = Registry::getConfig();
-
-        //sets language of shop
-        $currLang = $myConfig->getActiveShop()->getLanguage();
-
-        // shop info
-        $shop = $this->_getShop($currLang);
-
-        //sets language to article
-        if ($product->getLanguage() != $currLang) {
-            $product->setLanguage($currLang);
-            $product->load($product->getId());
-        }
-
-        // mailer stuff
-        // send not pretending from suggesting user, as different email domain rise spam filters
-        $this->setFrom($shop->oxshops__oxinfoemail->value);
-        $this->setSmtp();
-
-        // create messages
-        $renderer = $this->getRenderer();
-        $this->setViewData("product", $product);
-        $this->setUser($user);
-
-        $articleUrl = $product->getLink();
-
-        //setting recommended user id
-        if ($myConfig->getActiveView()->isActive('Invitations') && $activeUser = $shop->getUser()) {
-            $articleUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($articleUrl);
-            $articleUrl .= "su=" . $activeUser->getId();
-        }
-
-        $this->setViewData("sArticleUrl", $articleUrl);
-
-        // Process view data array through oxOutput processor
-        $this->_processViewArray();
-
-        $this->setBody($renderer->renderTemplate($this->_sSuggestTemplate, $this->getViewData()));
-        $this->setAltBody($renderer->renderTemplate($this->_sSuggestTemplatePlain, $this->getViewData()));
-        $this->setSubject($user->send_subject);
-
-        $this->setRecipient($user->rec_email, $user->rec_name);
-        $this->setReplyTo($user->send_email, $user->send_name);
 
         return $this->send();
     }

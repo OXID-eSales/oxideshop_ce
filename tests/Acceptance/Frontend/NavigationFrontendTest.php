@@ -1346,7 +1346,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("accessories");
 
         $this->click("productLinks");
-        $this->waitForItemAppear("suggest");
         $this->assertElementNotPresent("addToCompare");
 
         $this->clickAndWait("//dl[@id='footerServices']//a[text()='%ACCOUNT%']");

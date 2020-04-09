@@ -50,9 +50,9 @@ $aLang =  [
 'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Hier können Sie Währungen hinzufügen oder entfernen. Jede Zeile enthält Währungsparameter, die durch das Symbol @ getrennt werden.<br /><br /><ul><li>Währungsabkürzung laut ISO 4217 (z.B. EUR)</li><li>Wechselkurs zur Basiswährung mit dem Wert 1.00</li><li>Dezimaltrennzeichen</li><li>Tausendertrennzeichen</li><li>Währungszeichen</li><li>Anzahl der Nachkommastellen</li><li>optionaler Parameter "Front". Falls angegeben, wird die Währungsabkürzung vor dem Preis angezeigt.</li></ul>',
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'Auf der Startseite Ihres eShops werden die unter <span class="filename_filepath_or_italic">Frisch eingetroffen!</span> die neusten Artikel in Ihrem eShop angezeigt. Sie können die Artikel, die hier angezeigt werden, manuell einstellen oder automatisch berechnen lassen. Mit dieser Einstellung wählen Sie, wie die neusten Artikel berechnet werden sollen: Nach dem Datum, an dem die Artikel erstellt wurden, oder nach dem Datum der letzten Änderung im Administrationsbereich/der letzten Bestellung im Shop.',
 
-// @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'      => 'Auf der Detailseite von Artikeln wird das Empfehlen aktiviert.',
-// END deprecated
+/** end deprecated */
 
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'Es werden keine geschäftsrelevanten Daten oder Kundeninformationen übermittelt. Die gesammelten Daten sind ausschließlich technologische Informationen. Um unsere Produktqualität zu verbessern, werden Informationen wie diese erhoben:<ul>  <li>Anzahl der installierten OXID eShop Community Editions weltweit</li>  <li>durchschnittliche Anzahl installierter Erweiterungen pro OXID eShop</li>  <li>die meist verbreiteten Erweiterungen für den OXID eShop</li></ul>',
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'Wenn Benutzer einen Artikel bewerten, können Sie den Artikel nicht erneut bewerten. Hier können Sie einstellen, dass die Benutzer nach einer bestimmten Anzahl von Tagen den Artikel erneut bewerten können.',

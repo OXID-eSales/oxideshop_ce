@@ -51,9 +51,9 @@ $aLang =  [
 'HELP_SHOP_CONFIG_SETORDELETECURRENCY'        => 'Add or remove currencies. Each line contains currency parameters separated by the symbol @.<br /><br /><ul><li>currency code according to ISO 4217 (e.g. EUR)</li><li>currency rate to basic currency with the value 1.00</li><li>decimal separator</li><li>thousands separator</li><li>currency sign</li><li>number of decimal places</li><li>optional parameter "Front". If entered, the currency sign shows up in front of the price.</li></ul>',
 'HELP_SHOP_CONFIG_NEWARTBYINSERT'             => 'On the front page of your eShop the newest products are shown in <span class="filename_filepath_or_italic">Just arrived!</span>.  This setting determines how the newest products are calculated: by date of creation or by date of last change in admin/last order.',
 
-// @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
+/** @deprecated since v6.5.4 (2020-04-06); Suggest feature will be removed completely */
 'HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'      => 'Activate recommendation of products on product detail pages.',
-// END deprecated
+/** end deprecated */
 
 'HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID' => 'No business relevant date or client information will be transmitted. The collected data exclusively apply to technological information. To improve the quality of our products, information like this will be collected:<ul>  <li>number of the OXID eShop Community Edition installations world wide</li>  <li>average number of installed extensions per OXID eShop</li>  <li>top spread extensions for OXID eShop</li></ul>',
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'If users rate a product, they cannot rate the product again. Here you can set after how many days users are allowed to rate a product again. Leave empty to disable - products can be rated only once per user.',

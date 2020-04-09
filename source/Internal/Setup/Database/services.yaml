@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreatorInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreator
+
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiatorInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiator

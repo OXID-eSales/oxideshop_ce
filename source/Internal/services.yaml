@@ -4,3 +4,4 @@ imports:
     - { resource: Framework/services.yaml }
     - { resource: Transition/Adapter/services.yaml }
     - { resource: Transition/Utility/services.yaml }
+    - { resource: Setup/services.yaml }

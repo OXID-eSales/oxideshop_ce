@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutor

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
+use OxidEsales\Facts\Facts;
+
 /**
  * Contains necessary methods to provide basic information about the application.
  */
@@ -98,4 +100,9 @@ interface BasicContextInterface
      * @return string
      */
     public function getConfigTableName(): string;
+
+    /**
+     * @return Facts
+     */
+    public function getFacts(): Facts;
 }

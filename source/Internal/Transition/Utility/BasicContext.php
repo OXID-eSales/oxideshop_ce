@@ -177,7 +177,7 @@ class BasicContext implements BasicContextInterface
     /**
      * @return Facts
      */
-    private function getFacts(): Facts
+    public function getFacts(): Facts
     {
         if ($this->facts === null) {
             $this->facts = new Facts();

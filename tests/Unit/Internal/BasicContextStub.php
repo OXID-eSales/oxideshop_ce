@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\Facts\Facts;
 
 /**
  * @internal
@@ -30,6 +31,7 @@ class BasicContextStub implements BasicContextInterface
     private $configFilePath;
     private $projectConfigurationDirectory;
     private $backwardsCompatibilityClassMap;
+    private $facts;
 
     public function __construct()
     {
@@ -48,6 +50,7 @@ class BasicContextStub implements BasicContextInterface
         $this->configFilePath = $basicContext->getConfigFilePath();
         $this->shopRootPath = $basicContext->getShopRootPath();
         $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
+        $this->facts = $basicContext->getFacts();
     }
 
     /**
@@ -61,7 +64,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $communityEditionSourcePath
      */
-    public function setCommunityEditionSourcePath(string $communityEditionSourcePath)
+    public function setCommunityEditionSourcePath(string $communityEditionSourcePath): void
     {
         $this->communityEditionSourcePath = $communityEditionSourcePath;
     }
@@ -85,7 +88,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $edition
      */
-    public function setEdition(string $edition)
+    public function setEdition(string $edition): void
     {
         $this->edition = $edition;
     }
@@ -101,7 +104,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $enterpriseEditionRootPath
      */
-    public function setEnterpriseEditionRootPath(string $enterpriseEditionRootPath)
+    public function setEnterpriseEditionRootPath(string $enterpriseEditionRootPath): void
     {
         $this->enterpriseEditionRootPath = $enterpriseEditionRootPath;
     }
@@ -117,7 +120,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $generatedServicesFilePath
      */
-    public function setGeneratedServicesFilePath(string $generatedServicesFilePath)
+    public function setGeneratedServicesFilePath(string $generatedServicesFilePath): void
     {
         $this->generatedServicesFilePath = $generatedServicesFilePath;
     }
@@ -133,7 +136,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $configurableServicesFilePath
      */
-    public function setConfigurableServicesFilePath(string $configurableServicesFilePath)
+    public function setConfigurableServicesFilePath(string $configurableServicesFilePath): void
     {
         $this->configurableServicesFilePath = $configurableServicesFilePath;
     }
@@ -149,7 +152,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $professionalEditionRootPath
      */
-    public function setProfessionalEditionRootPath(string $professionalEditionRootPath)
+    public function setProfessionalEditionRootPath(string $professionalEditionRootPath): void
     {
         $this->professionalEditionRootPath = $professionalEditionRootPath;
     }
@@ -165,7 +168,7 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $sourcePath
      */
-    public function setSourcePath(string $sourcePath)
+    public function setSourcePath(string $sourcePath): void
     {
         $this->sourcePath = $sourcePath;
     }
@@ -197,10 +200,19 @@ class BasicContextStub implements BasicContextInterface
     /**
      * @param string $path
      */
-    public function setModulesPath(string $path)
+    public function setModulesPath(string $path): void
     {
         $this->modulesPath = $path;
     }
+
+    /**
+     * @return Facts
+     */
+    public function getFacts(): Facts
+    {
+        return $this->facts;
+    }
+
     /**
      * @return array
      */

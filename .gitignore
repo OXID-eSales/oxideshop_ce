@@ -2,20 +2,24 @@
 /source/config.inc.php
 
 # Log
-/source/log/
+!/source/log/
+/source/log/*
 !/source/log/.htaccess
 
 # Cache
-/source/cache/
+!/source/cache/
+/source/cache/*
 !/source/cache/.htaccess
 !/source/cache/dir.txt
 
 # Export
-/source/export/
+!/source/export/
+/source/export/*
 !/source/export/.gitkeep
 
 # Temporary files
-/source/tmp/
+!/source/tmp/
+/source/tmp/*
 !/source/tmp/.htaccess
 
 # Composer

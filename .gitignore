@@ -23,7 +23,7 @@
 !/source/tmp/.htaccess
 
 # Composer
-#/vendor/
+/vendor/
 /composer.lock
 
 # Testing library

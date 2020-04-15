@@ -20,6 +20,9 @@ use PHPUnit\Framework\TestCase;
 class ModuleIdValidatorTest extends TestCase
 {
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidateWhenValid(): void
     {
         $metaData = [

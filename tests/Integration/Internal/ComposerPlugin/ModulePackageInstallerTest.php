@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Utils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 class ModulePackageInstallerTest extends TestCase
@@ -33,7 +33,6 @@ class ModulePackageInstallerTest extends TestCase
     {
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         $fileSystem->remove($this->getModulesPath() . '/' . $this->packageName);
-
         parent::tearDown();
     }
 

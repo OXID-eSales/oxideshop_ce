@@ -13,13 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\TwoStarsWithin
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ModuleFilesInstallerTest extends TestCase
+final class ModuleFilesInstallerTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     private $modulePackagePath = __DIR__ . '/../../TestData/TestModule';
     private $packageName = 'TestModule';
 

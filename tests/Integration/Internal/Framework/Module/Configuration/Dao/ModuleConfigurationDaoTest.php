@@ -13,21 +13,17 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * @internal
  */
-class ModuleConfigurationDaoTest extends TestCase
+class ModuleConfigurationDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->prepareProjectConfiguration();
-
         parent::setUp();
+        $this->prepareProjectConfiguration();
     }
 
     public function testSaving()

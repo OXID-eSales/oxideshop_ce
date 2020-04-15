@@ -4,13 +4,4 @@ imports:
     - { resource: Directory/services.yaml }
     - { resource: Htaccess/services.yaml }
     - { resource: Language/services.yaml }
-
-services:
-    _defaults:
-        autowire: true
-        public: false
-
-    OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand:
-        class: OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand
-        tags:
-            - { name: 'console.command', command: 'oe:setup:shop' }
+    - { resource: Command/services.yaml }

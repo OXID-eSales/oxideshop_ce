@@ -1,0 +1,6 @@
+oxarticles:
+  - {OXID: testProduct}
+oxratings:
+  - {OXID: UUID, OXOBJECTID: testProduct, OXTYPE: oxarticle, OXRATING: 3}
+  - {OXID: UUID, OXOBJECTID: testProduct, OXTYPE: oxarticle, OXRATING: 4}
+  - {OXID: UUID, OXOBJECTID: testProduct, OXTYPE: oxarticle, OXRATING: 5}

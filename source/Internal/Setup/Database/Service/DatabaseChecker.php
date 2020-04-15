@@ -37,8 +37,8 @@ class DatabaseChecker implements DatabaseCheckerInterface
         string $password,
         string $name
     ): void {
+        $connection = $this->getDatabaseConnection($host, $port, $user, $password);
         try {
-            $connection = $this->getDatabaseConnection($host, $port, $user, $password);
             $connection->exec("USE `{$name}`");
             $connection->exec('SELECT 1 FROM ' . $this->basicContext->getConfigTableName() . ' LIMIT 1');
         } catch (\PDOException $exception) {

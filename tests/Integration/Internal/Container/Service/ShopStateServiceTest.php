@@ -13,14 +13,10 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateService;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\Facts\Config\ConfigFile;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class ShopStateServiceTest extends TestCase
+class ShopStateServiceTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     public function testIsLaunchedReturnsTrue()
     {
         $this->assertTrue(

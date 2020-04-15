@@ -16,6 +16,7 @@ class PsrLoggerConfigurationValidatorTest extends PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider dataProviderValidLogLevels
+     * @doesNotPerformAssertions
      */
     public function testValidLogLevelValidation($logLevel)
     {

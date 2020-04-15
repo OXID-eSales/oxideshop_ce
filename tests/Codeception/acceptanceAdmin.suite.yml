@@ -16,14 +16,14 @@ modules:
             user: '%DB_USERNAME%'
             password: '%DB_PASSWORD%'
             port: '%DB_PORT%'
-            dump: '%DUMP_PATH%'
+            dump: '%DUMP_PATH2%'
             mysql_config: '%MYSQL_CONFIG_PATH%'
-            populate: true # whether the the dump should be loaded before the test suite is started
-            cleanup: true # whether the dump should be reloaded before each test
+            populate: true # run populator before all tests
+            cleanup: true # run populator before each test
+            populator: 'mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
             initial_queries:
                 - 'SET @@SESSION.sql_mode=""'
-            populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
-        - \OxidEsales\Codeception\Module\OxideshopModules
+            #populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
         - \OxidEsales\Codeception\Module\Oxideshop:
             screen_shot_url: '%SCREEN_SHOT_URL%'
             depends:
@@ -37,7 +37,6 @@ modules:
               - WebDriver
               - \OxidEsales\Codeception\Module\Oxideshop
         - \OxidEsales\Codeception\Module\Database:
-            config_key: 'fq45QS09_fqyx09239QQ'
             depends: Db
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'

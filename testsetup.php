@@ -4,7 +4,7 @@ require __DIR__ . '/vendor/autoload.php';
 require __DIR__ . '/tests/bootstrap.php';
 
 class TestSetup {
-    use \OxidEsales\EshopCommunity\Tests\TestUtils\Traits\SetupTrait;
+    use \OxidEsales\EshopCommunity\Tests\Integration\Utils\Traits\SetupTrait;
 
     public function setup()
     {

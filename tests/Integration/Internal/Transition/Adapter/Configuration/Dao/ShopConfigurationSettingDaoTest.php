@@ -12,16 +12,14 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Dao;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * @internal
  */
-class ShopConfigurationSettingDaoTest extends TestCase
+class ShopConfigurationSettingDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
 
     /**
      * @dataProvider settingValueDataProvider

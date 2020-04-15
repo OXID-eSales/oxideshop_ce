@@ -19,11 +19,17 @@ final class AdminDownloadableProductCest
      * @var string
      */
     private $orderId;
+    private $productData = [
+            'id' => '1000',
+            'title' => 'Test product 0 [EN] šÄßüл',
+            'description' => 'Test product 0 short desc [EN] šÄßüл',
+            'price' => '50,00 € *'
+    ];
 
     /** @param AcceptanceAdminTester $I */
     public function _before(AcceptanceAdminTester $I)
     {
-        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1208']);
+        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => $this->productData['id']]);
         $userId = $I->grabFromDatabase('oxuser', 'OXID', ['OXUSERNAME' => 'user@oxid-esales.com']);
         $this->orderId = $I->grabFromDatabase('oxorder', 'OXID', ['oxuserid' => $userId]);
         $articleId = $I->grabFromDatabase('oxorderarticles', 'OXID', ['OXORDERID' => $this->orderId]);
@@ -51,7 +57,7 @@ final class AdminDownloadableProductCest
             'oxfiles',
             [
                 'OXID' => '1000l',
-                'OXARTID' => '1208',
+                'OXARTID' => $this->productData['id'],
                 'OXFILENAME' => 'testFile3',
                 'OXPURCHASEDONLY' => 1,
                 'OXSTOREHASH' => 'e48a1b571bd2d2e60fb2d9b1b76b35d5',
@@ -106,7 +112,7 @@ final class AdminDownloadableProductCest
     private function setDownloadableFileForAProduct(AcceptanceAdminTester $I, AdminPanel $adminPanel): void
     {
         $products = $adminPanel->openProducts();
-        $products->find("where[oxarticles][oxartnum]", "1002");
+        $products->find("where[oxarticles][oxartnum]", $this->productData['id']);
         $products->openDownloadsTab();
         $I->checkOption('editval[oxarticles__oxisdownloadable]');
         $I->click(['name' => 'save']);
@@ -122,8 +128,8 @@ final class AdminDownloadableProductCest
         $orders->find("where[oxorder][oxordernr]", "1");
         $orders->openDownloadsTab();
         $firstDownloadableProductLocator = "//tr[@id='file.1']";
-        $I->assertEquals("1208", $I->grabTextFrom("{$firstDownloadableProductLocator}/td[1]"));
-        $I->assertEquals("Kite CORE GTS", $I->grabTextFrom("$firstDownloadableProductLocator/td[2]"));
+        $I->assertEquals($this->productData['id'], $I->grabTextFrom("{$firstDownloadableProductLocator}/td[1]"));
+        $I->assertEquals($this->productData['title'], $I->grabTextFrom("$firstDownloadableProductLocator/td[2]"));
         $I->assertEquals("testFile3", $I->grabTextFrom("$firstDownloadableProductLocator/td[3]"));
         $I->assertEquals("0000-00-00 00:00:00", $I->grabTextFrom("$firstDownloadableProductLocator/td[4]"));
         $I->assertEquals("0000-00-00 00:00:00", $I->grabTextFrom("$firstDownloadableProductLocator/td[5]"));

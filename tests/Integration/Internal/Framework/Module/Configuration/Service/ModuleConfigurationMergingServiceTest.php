@@ -16,14 +16,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
     ModuleConfigurationMergingServiceInterface
 };
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
-final class ModuleConfigurationMergingServiceTest extends TestCase
+final class ModuleConfigurationMergingServiceTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     public function testMergeNewModuleConfiguration(): void
     {
         $moduleConfiguration = new ModuleConfiguration();

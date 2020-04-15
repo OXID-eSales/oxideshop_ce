@@ -31,10 +31,11 @@
         "symfony/finder": "^5.0.4",
         "symfony/filesystem": "^5.0.4",
         "codeception/module-webdriver": "^1.0",
-        "codeception/module-db": "^1.0"
-        "oxid-esales/oxideshop-demodata-ce": "dev-master"
+        "codeception/module-db": "^1.0",
+        "phpspec/prophecy-phpunit": "^2.0"
     },
     "require-dev": {
+        "mikey179/vfsstream": "~1.4.0",
         "oxid-esales/flow-theme": "dev-master",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-master",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
@@ -45,10 +46,13 @@
         "oxid-esales/oxideshop-ide-helper": "dev-master",
         "oxid-esales/azure-theme": "dev-master",
         "oxid-esales/oxideshop-facts": "dev-master",
-        "oxid-esales/testing-library": "dev-master",
         "squizlabs/php_codesniffer": "^3.5.4",
         "composer/composer": "^1",
-        "vimeo/psalm": "^3.8"
+        "vimeo/psalm": "^3.8",
+	"oxid-esales/codeception-modules": "dev-extract_traditional_tests",
+        "oxid-esales/codeception-page-objects": "dev-master",
+       "phpunit/phpunit": "^9",
+	"codeception/module-asserts": "^1.1"
     },
     "autoload": {
         "psr-4": {
@@ -64,6 +68,14 @@
     "prefer-stable": true,
     "bin": ["bin/oe-console"],
     "scripts": {
+        "oe:ide-helper:generate": [
+            "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
+        ],
+        "phpunit": [
+            "./vendor/bin/phpunit --configuration phpunit.xml"
+        ]
+    },
+    "extra": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "@oe:ide-helper:generate"
@@ -74,9 +86,7 @@
         ],
         "oe:ide-helper:generate": [
             "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"
-        ]
-    },
-    "extra": {
+        ],
         "oxideshop": {
             "blacklist-filter": [
                 "Application/Component/**/*",
@@ -85,16 +95,20 @@
                 "Core/**/*",
                 "Internal/**/*"
             ]
+        }
+    },
+    "repositories": {
+        "oxid-esales/oxideshop-ee": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_ee"
         },
-        "incenteev-parameters": {
-            "file": "test_config.yml",
-            "dist-file": "vendor/oxid-esales/testing-library/test_config.yml.dist",
-            "parameter-key": "mandatory_parameters",
-            "env-map": {
-                "shop_path": "SHOP_PATH",
-                "shop_tests_path": "SHOP_TESTS_PATH",
-                "partial_module_paths": "PARTIAL_MODULE_PATHS"
-            }
+        "oxid-esales/oxideshop-pe": {
+            "type": "vcs",
+            "url": "https://github.com/OXID-eSales/oxideshop_pe"
+        },
+        "oxid-esales/testing-utils": {
+            "type": "git",
+            "url": "https://github.com/OXID-eSales/testing-utils"
         }
     }
 }

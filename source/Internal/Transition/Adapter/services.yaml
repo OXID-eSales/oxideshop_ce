@@ -14,6 +14,9 @@ services:
 
   # TemplateLogic
 
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\TranslatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator
+
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ContentFactory:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ContentFactory
 

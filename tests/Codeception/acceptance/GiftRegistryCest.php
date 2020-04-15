@@ -11,6 +11,8 @@ use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ViewConfig;
 
 class GiftRegistryCest
 {
@@ -26,8 +28,7 @@ class GiftRegistryCest
         $I->wantToTest('if product gift registry functionality is enabled');
 
         //(Use gift registry) is enabled again
-        $I->updateConfigInDatabase('bl_showWishlist', true);
-
+        $I->updateConfigInDatabase('bl_showWishlist', true, 'bool');
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',

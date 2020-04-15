@@ -16,16 +16,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * @internal
  */
-final class ModuleConfigurationInstallerTest extends TestCase
+final class ModuleConfigurationInstallerTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /** @var string  */
     private $modulePath;
     /** @var string */
@@ -42,13 +39,13 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 
         $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
 
         $this->prepareTestProjectConfiguration();
 
-        parent::setUp();
     }
 
     public function testInstall(): void

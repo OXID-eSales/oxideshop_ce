@@ -11,16 +11,14 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Service;
 
 use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Exception\PasswordPolicyException;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationServiceInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Class PasswordVerificationServiceTest
  */
-class PasswordVerificationServiceTest extends TestCase
+class PasswordVerificationServiceTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /**
      * End-to-end test to ensure, that the password policy checking is called during password verification
      */

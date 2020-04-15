@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use Symfony\Component\Console\Input\ArrayInput;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -22,8 +22,6 @@ use Webmozart\PathUtil\Path;
  */
 class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 {
-    use ContainerTrait;
-    
     private $shopId;
     private $testModuleId = 'testmodule';
     private $moduleTargetPath = 'testmodule';
@@ -32,12 +30,11 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $context = $this->get(ContextInterface::class);
         $this->shopId = $context->getCurrentShopId();
         $this->workingDirectoryBackup = getcwd();
         $this->setWorkingDirectoryForConsole(__DIR__);
-
-        parent::setUp();
     }
 
     public function tearDown(): void

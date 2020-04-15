@@ -1,0 +1,5 @@
+oxratings:
+  - {OXID: id1, OXUSERID: user1, OXOBJECTID: product1, OXTYPE: oxarticle}
+  - {OXID: id2, OXUSERID: user1, OXOBJECTID: product1, OXTYPE: oxarticle}
+  - {OXID: id3, OXUSERID: user1, OXOBJECTID: productNotMatched, OXTYPE: oxarticle}
+  - {OXID: id4, OXUSERID: user1, OXOBJECTID: product1, OXTYPE: oxrecommlist}

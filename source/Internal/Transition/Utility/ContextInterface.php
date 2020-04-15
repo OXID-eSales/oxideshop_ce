@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 
 interface ContextInterface extends BasicContextInterface
@@ -59,4 +60,9 @@ interface ContextInterface extends BasicContextInterface
      * @throws AdminUserNotFoundException
      */
     public function getAdminUserId(): string;
+
+    /**
+     * @return bool
+     */
+    public function isShopInProductiveMode(): bool;
 }

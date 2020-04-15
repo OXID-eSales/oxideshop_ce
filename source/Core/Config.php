@@ -399,8 +399,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
         }
 
-        // loading modules config
-        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX);
+        // loading all modules config
+        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX . '%');
 
         $this->loadAdditionalConfiguration();
 
@@ -559,19 +559,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $params = [
-          ':oxshopid' => $shopId
+          ':oxshopid' => $shopId,
+          ':oxmodule' => $module
         ];
-        $select = "select
-                        oxvarname, oxvartype, oxvarvalue
+        $select = "select oxvarname, oxvartype, oxvarvalue
                     from oxconfig
-                    where oxshopid = :oxshopid and ";
-
-        if ($module) {
-            $select .= " oxmodule LIKE :oxmodule";
-            $params[':oxmodule'] = $module;
-        } else {
-            $select .= "oxmodule = ''";
-        }
+                    where oxshopid = :oxshopid and oxmodule LIKE :oxmodule";
 
         $select .= $this->_getConfigParamsSelectSnippet($onlyVars);
 

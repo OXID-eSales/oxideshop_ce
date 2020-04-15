@@ -29,23 +29,19 @@ class ModuleEventsTest extends TestCase
     private $shopId = 1;
     private $testModuleId = 'testModuleId';
 
-    /**
-     * @var DatabaseRestorer
-     */
-    private $databaseRestorer;
-
-    public function setup(): void
+    public function setUp(): void
     {
+        parent::setUp();
+        $this->setupIntegrationTest();
         $this->databaseRestorer = new DatabaseRestorer();
         $this->databaseRestorer->dumpDB(__CLASS__);
 
         parent::setUp();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
-        $this->databaseRestorer->restoreDB(__CLASS__);
-
+        $this->tearDownTestContainer();
         parent::tearDown();
     }
 

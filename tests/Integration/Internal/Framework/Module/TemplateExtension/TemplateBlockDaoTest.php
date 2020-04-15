@@ -21,6 +21,18 @@ class TemplateBlockDaoTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testAddTemplateBlock()
     {
         $templateBlock = new TemplateBlockExtension();

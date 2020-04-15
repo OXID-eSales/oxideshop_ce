@@ -42,6 +42,8 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
     public function setup(): void
     {
+        $this->setupIntegrationTest();
+
         $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 
         $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
@@ -50,6 +52,14 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
         parent::setUp();
     }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
+
 
     public function testInstall(): void
     {

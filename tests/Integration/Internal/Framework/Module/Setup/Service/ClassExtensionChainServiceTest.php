@@ -25,6 +25,18 @@ class ClassExtensionChainServiceTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setup(): void
+    {
+        $this->setupIntegrationTest();
+        parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testUpdateChain()
     {
         $activeClassExtensionChain = new ClassExtensionsChain();

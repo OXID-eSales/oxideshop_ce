@@ -27,7 +27,7 @@ class LegacySmartyEngineFactoryTest extends \PHPUnit\Framework\TestCase
      */
     private function getCompiledTestContainer(): ContainerBuilder
     {
-        $container = (new TestContainerFactory())->create();
+        $container = TestContainerFactory::getInstance()->create();
         $container->compile();
 
         return $container;

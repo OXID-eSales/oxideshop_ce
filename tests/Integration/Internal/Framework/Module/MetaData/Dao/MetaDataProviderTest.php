@@ -15,8 +15,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Modul
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 class MetaDataProviderTest extends TestCase
@@ -31,6 +31,22 @@ class MetaDataProviderTest extends TestCase
 
     /** @var MetaDataValidatorInterface */
     private $validatorStub;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+        $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
+        $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
+        $this->contextStub = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $this->validatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)->getMock();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
 
     public function testGetDataThrowsExceptionOnNonExistingFile()
     {
@@ -172,16 +188,6 @@ class MetaDataProviderTest extends TestCase
             ],
             $metaData['moduleData']['extend']
         );
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
-        $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
-        $this->contextStub = $this->getMockBuilder(BasicContextInterface::class)->getMock();
-        $this->validatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)->getMock();
     }
 
     /**

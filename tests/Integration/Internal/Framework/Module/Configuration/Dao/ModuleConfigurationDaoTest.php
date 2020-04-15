@@ -23,11 +23,18 @@ class ModuleConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
+        $this->setupIntegrationTest();
         $this->prepareProjectConfiguration();
 
         parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
     }
 
     public function testSaving()

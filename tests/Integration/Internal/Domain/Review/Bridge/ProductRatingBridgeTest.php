@@ -20,10 +20,28 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingServic
 
 class ProductRatingBridgeTest extends \PHPUnit\Framework\TestCase
 {
-    public function testUpdateProductRating()
+    use DatabaseTestingTrait;
+
+    private $ratingIds = [];
+
+    public function setUp(): void
     {
+        parent::setUp();
+        $this->setupIntegrationTest();
         $this->createTestProduct();
         $this->createTestRatings();
+    }
+
+    public function tearDown(): void
+    {
+        $this->deleteTestRatings();
+        $this->deleteTestProduct();
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
+    public function testUpdateProductRating()
+    {
 
         $productRatingBridge = $this->getProductRatingBridge();
         $productRatingBridge->updateProductRating('testProduct');

@@ -15,8 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\ConsoleTrait;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
@@ -28,12 +30,26 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class ModuleCommandsTestCase extends TestCase
 {
-    use ContainerTrait;
     use ConsoleTrait;
+    use ContainerTrait;
 
     protected $modulesPath = __DIR__ . '/Fixtures/modules/';
 
     protected $moduleId = 'testmodule';
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+        $this->installTestModule();
+    }
+
+    public function tearDown(): void
+    {
+        $this->cleanupTestModule();
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
 
     /**
      * @return Application

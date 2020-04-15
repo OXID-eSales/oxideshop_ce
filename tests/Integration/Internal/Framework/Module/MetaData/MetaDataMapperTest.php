@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
@@ -21,6 +22,20 @@ use Webmozart\PathUtil\Path;
 
 class MetaDataMapperTest extends TestCase
 {
+    use ContainerTrait;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testModuleMetaData20(): void
     {
         $metaDataFilePath = $this->getMetaDataFilePath('TestModuleMetaData20');
@@ -82,12 +97,10 @@ class MetaDataMapperTest extends TestCase
             ],
         ];
 
-        $container = $this->getCompiledTestContainer();
-
-        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
+        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
@@ -239,12 +252,10 @@ class MetaDataMapperTest extends TestCase
             ],
         ];
 
-        $container = $this->getCompiledTestContainer();
-
-        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
+        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
@@ -360,12 +371,10 @@ class MetaDataMapperTest extends TestCase
             ],
         ];
 
-        $container = $this->getCompiledTestContainer();
-
-        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
+        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         /**
@@ -406,12 +415,10 @@ class MetaDataMapperTest extends TestCase
             'id' => 'TestModuleWithSurplusData',
         ];
 
-        $container = $this->getCompiledTestContainer();
-
-        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
+        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
         
-        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
@@ -427,17 +434,6 @@ class MetaDataMapperTest extends TestCase
         $metaDataFilePath = Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
 
         return $metaDataFilePath;
-    }
-
-    /**
-     * @return ContainerBuilder
-     */
-    private function getCompiledTestContainer(): ContainerBuilder
-    {
-        $container = (new TestContainerFactory())->create();
-        $container->compile();
-
-        return $container;
     }
 
     /**

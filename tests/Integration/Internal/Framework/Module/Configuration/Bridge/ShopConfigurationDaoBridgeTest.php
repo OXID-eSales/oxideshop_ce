@@ -28,6 +28,18 @@ class ShopConfigurationDaoBridgeTest extends TestCase
      */
     private $testModuleId = 'testModuleId';
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testSaving(): void
     {
         $shopConfigurationDaoBridge = $this->get(ShopConfigurationDaoBridgeInterface::class);

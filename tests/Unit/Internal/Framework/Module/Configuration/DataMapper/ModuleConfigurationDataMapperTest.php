@@ -29,6 +29,18 @@ class ModuleConfigurationDataMapperTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setup(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testMapping()
     {
         $configurationData = [

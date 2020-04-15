@@ -29,11 +29,17 @@ class ModulePackageInstallerTest extends TestCase
     private $packageName = 'test-module-package-installation';
     private $moduleId = 'testModule';
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
     public function tearDown(): void
     {
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         $fileSystem->remove($this->getModulesPath() . '/' . $this->packageName);
-
+        $this->tearDownTestContainer();
         parent::tearDown();
     }
 

@@ -28,6 +28,13 @@ final class ViewConfigTest extends TestCase
             ->generate();
 
         parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
     }
 
     public function testIsModuleActive(): void

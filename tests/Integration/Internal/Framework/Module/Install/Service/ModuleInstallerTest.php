@@ -23,6 +23,18 @@ class ModuleInstallerTest extends TestCase
 
     private $moduleId = 'myTestModule';
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testUninstallNotActiveModule(): void
     {
         $package = $this->getOxidEshopPackage();

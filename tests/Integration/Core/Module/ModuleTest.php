@@ -31,10 +31,12 @@ class ModuleTest extends TestCase
              ->generate();
 
         parent::setUp();
+        $this->setupIntegrationTest();
     }
 
     public function tearDown(): void
     {
+        $this->tearDownTestContainer();
         parent::tearDown();
 
         $this->removeTestModules();

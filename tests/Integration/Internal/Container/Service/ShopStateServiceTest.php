@@ -21,6 +21,18 @@ class ShopStateServiceTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testIsLaunchedReturnsTrue()
     {
         $this->assertTrue(

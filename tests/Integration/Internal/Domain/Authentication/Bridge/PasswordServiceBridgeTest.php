@@ -22,6 +22,17 @@ class PasswordServiceBridgeTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
     /**
      * End-to-end test for the PasswordService bridge
      */

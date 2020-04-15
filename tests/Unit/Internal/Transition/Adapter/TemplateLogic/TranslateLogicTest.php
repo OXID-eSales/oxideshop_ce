@@ -5,21 +5,33 @@
  * See LICENSE file for license details.
  */
 
+// TODO: This is definitely not a unit test
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
+use PHPUnit\Framework\TestCase;
 
 class TranslateLogicTest extends UnitTestCase
 {
+    use ContainerTrait;
+
     /** @var TranslateFilterLogic */
     private $multiLangFilterLogic;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->setupIntegrationTest();
         $this->multiLangFilterLogic = new TranslateFilterLogic();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
     }
 
     /**
@@ -112,10 +124,12 @@ class TranslateLogicTest extends UnitTestCase
      */
     public function testTranslateFrontend_isMissingTranslation($isProductiveMode, $ident, $translation)
     {
+        $this->forceDatabaseSetup();
         $this->setAdminMode(false);
         $this->setLanguage(1);
 
-        $oShop = $this->getConfig()->getActiveShop();
+        $oShop = Registry::getConfig()->getActiveShop();
+        #print("\n\n######################\n" . var_dump($oShop) . "\n######################\n\n");
         $oShop->oxshops__oxproductive = new Field($isProductiveMode);
         $oShop->save();
 
@@ -149,5 +163,17 @@ class TranslateLogicTest extends UnitTestCase
         $this->setAdminMode(true);
 
         $this->assertEquals($translation, $this->multiLangFilterLogic->multiLang($ident));
+    }
+
+    public function setAdminMode(bool $isAdmin): void
+    {
+        Registry::getConfig()->setAdminMode($isAdmin);
+    }
+
+    public function setLanguage($languageId)
+    {
+        $oxLang = Registry::getLang();
+        $oxLang->setBaseLanguage($languageId);
+        $oxLang->setTplLanguage($languageId);
     }
 }

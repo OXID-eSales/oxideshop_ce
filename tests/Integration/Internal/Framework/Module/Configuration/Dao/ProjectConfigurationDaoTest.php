@@ -20,8 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
@@ -29,6 +28,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -37,47 +37,43 @@ class ProjectConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
+
     public function testProjectConfigurationGetterThrowsExceptionIfStorageIsEmpty(): void
     {
         $this->expectException(ProjectConfigurationIsEmptyException::class);
-        $vfsStreamDirectory = vfsStream::setup();
-        vfsStream::create([], $vfsStreamDirectory);
 
-        $context = $this
-            ->getMockBuilder(BasicContextInterface::class)
-            ->getMock();
-
-        $context
-            ->method('getProjectConfigurationDirectory')
-            ->willReturn(vfsStream::url('root'));
-
-        $projectConfigurationDao = new ProjectConfigurationDao(
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
-            $context,
-            $this->get('oxid_esales.symfony.file_system')
-        );
+        /** @var BasicContextInterface $basicContext */
+        $basicContext = $this->get(BasicContextInterface::class);
+        $configDir = $basicContext->getProjectConfigurationDirectory();
+        unlink(Path::join($configDir, 'shops', '1.yaml'));
+        rmdir(Path::join($configDir, 'shops'));
+        rmdir($configDir);
+        $projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
 
         $projectConfigurationDao->getConfiguration();
     }
 
     public function testConfigurationIsEmptyIfNoEnvironment(): void
     {
-        $vfsStreamDirectory = vfsStream::setup();
-        vfsStream::create([], $vfsStreamDirectory);
-
-        $context = $this
-            ->getMockBuilder(BasicContextInterface::class)
-            ->getMock();
-
-        $context
-            ->method('getProjectConfigurationDirectory')
-            ->willReturn(vfsStream::url('root'));
-
-        $projectConfigurationDao = new ProjectConfigurationDao(
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
-            $context,
-            $this->get('oxid_esales.symfony.file_system')
-        );
+        /** @var BasicContextInterface $basicContext */
+        $basicContext = $this->get(BasicContextInterface::class);
+        $configDir = $basicContext->getProjectConfigurationDirectory();
+        unlink(Path::join($configDir, 'shops', '1.yaml'));
+        rmdir(Path::join($configDir, 'shops'));
+        rmdir($configDir);
+        $projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
 
         $this->assertTrue($projectConfigurationDao->isConfigurationEmpty());
     }
@@ -106,9 +102,7 @@ class ProjectConfigurationDaoTest extends TestCase
 
     public function testProjectConfigurationSaving(): void
     {
-        $projectConfigurationDao = $this
-            ->getContainer()
-            ->get(ProjectConfigurationDaoInterface::class);
+        $projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
 
         $projectConfiguration = $this->getTestProjectConfiguration();
 
@@ -216,11 +210,4 @@ class ProjectConfigurationDaoTest extends TestCase
         return $projectConfiguration;
     }
 
-    private function getContainer()
-    {
-        $container = (new TestContainerFactory())->create();
-        $container->compile();
-
-        return $container;
-    }
 }

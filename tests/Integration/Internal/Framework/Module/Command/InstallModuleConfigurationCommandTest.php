@@ -32,12 +32,12 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 
     public function setup(): void
     {
+        parent::setUp();
+
         $context = $this->get(ContextInterface::class);
         $this->shopId = $context->getCurrentShopId();
         $this->workingDirectoryBackup = getcwd();
         $this->setWorkingDirectoryForConsole(__DIR__);
-
-        parent::setUp();
     }
 
     public function tearDown(): void

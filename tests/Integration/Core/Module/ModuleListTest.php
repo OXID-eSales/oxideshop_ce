@@ -37,15 +37,16 @@ class ModuleListTest extends TestCase
     {
         $this->container = ContainerFactory::getInstance()->getContainer();
 
-        $this->container
-            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
 
+    public function setUp(): void
+    {
         parent::setUp();
+        $this->setupIntegrationTest();
     }
 
     public function tearDown(): void
     {
+        $this->tearDownTestContainer();
         parent::tearDown();
 
         $this->removeTestModules();
@@ -125,7 +126,6 @@ class ModuleListTest extends TestCase
                     'with_metadata_v21' => 'someExtension',
                 ]
             );
-
         $moduleList->cleanup();
 
         $moduleActivationBridge = $this->container->get(ModuleActivationBridgeInterface::class);

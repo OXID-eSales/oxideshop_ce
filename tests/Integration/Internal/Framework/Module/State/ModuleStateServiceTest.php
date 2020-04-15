@@ -27,6 +27,9 @@ class ModuleStateServiceTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
+
+        $this->setupIntegrationTest();
         $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
         /** @var ContextStub $contextStub */
@@ -41,7 +44,13 @@ class ModuleStateServiceTest extends TestCase
             $this->moduleStateService->setDeactivated('testModuleId', 2);
         }
 
-        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
     }
 
     public function testSetActive()

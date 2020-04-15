@@ -25,24 +25,19 @@ class ModuleSmartyPluginDirectoriesTest extends TestCase
 
     public function setup(): void
     {
-        $this->container = ContainerFactory::getInstance()->getContainer();
-
-        $this->container
-            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
+        parent::setUp();
+        $this->setupIntegrationTest();
+        $module = 'with_metadata_v21';
+        $this->installModule($module);
+        $this->activateModule($module);
 
         $this->activateTestModule();
     }
 
     public function tearDown(): void
     {
-        $this->deactivateTestModule();
-
-        $this->removeTestModules();
-
-        $this->container
-            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
+        $this->tearDownTestContainer();
+        parent::tearDown();
     }
 
     /**

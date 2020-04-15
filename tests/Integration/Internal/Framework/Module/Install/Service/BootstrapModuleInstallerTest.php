@@ -22,6 +22,18 @@ class BootstrapModuleInstallerTest extends TestCase
     
     private $moduleId = 'myTestModule';
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     public function testUninstall(): void
     {
         $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->moduleId);

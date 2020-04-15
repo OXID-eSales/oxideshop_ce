@@ -17,6 +17,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterf
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
+use Symfony\Component\Console\Input\ArrayInput;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -95,6 +98,8 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
 
     public function testModuleActivationInAllShops(): void
     {
+        $this->loadFixture(Path::join(__DIR__, 'Fixtures', 'shopfixtures.yaml'));
+
         $this->prepareTestModuleConfigurations(true, 1, []);
         $this->prepareTestModuleConfigurations(true, 2, []);
 

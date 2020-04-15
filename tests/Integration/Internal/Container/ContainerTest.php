@@ -56,7 +56,7 @@ final class ContainerTest extends TestCase
 
     public function testAllServicesAreCorrectlyConfigured(): void
     {
-        $testContainer = (new TestContainerFactory())->create();
+        $testContainer = TestContainerFactory::getInstance()->create();
         $testContainer->compile();
         foreach ($testContainer->getDefinitions() as $key => $definition) {
             $testContainer->get($key);

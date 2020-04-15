@@ -21,6 +21,18 @@ class PasswordVerificationServiceTest extends TestCase
 {
     use ContainerTrait;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+        parent::tearDown();
+    }
+
     /**
      * End-to-end test to ensure, that the password policy checking is called during password verification
      */

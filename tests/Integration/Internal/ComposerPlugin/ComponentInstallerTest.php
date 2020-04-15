@@ -26,11 +26,15 @@ class ComponentInstallerTest extends TestCase
 
     private $servicesFilePath = 'Fixtures/services.yaml';
 
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->setupIntegrationTest();
+    }
     public function tearDown(): void
     {
+        $this->tearDownTestContainer();
         parent::tearDown();
-
-        $this->removeGeneratedLineFromProjectFile();
     }
 
     public function testInstall()
@@ -71,14 +75,5 @@ class ComponentInstallerTest extends TestCase
         );
 
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
-    }
-
-    private function removeGeneratedLineFromProjectFile()
-    {
-        /** @var ProjectYamlDao $projectYamlDao */
-        $projectYamlDao = $this->get(ProjectYamlDaoInterface::class);
-        $DIconfig = $projectYamlDao->loadProjectConfigFile();
-        $DIconfig->removeImport($this->servicesFilePath);
-        $projectYamlDao->saveProjectConfigFile($DIconfig);
     }
 }

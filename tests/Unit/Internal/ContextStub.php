@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 
 class ContextStub extends BasicContextStub implements ContextInterface
 {
@@ -39,6 +40,11 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->adminLogFilePath = $context->getAdminLogFilePath();
         $this->doLogAdminQueries = $context->isEnabledAdminQueryLog();
         $this->isAdmin = $context->isAdmin();
+        try {
+            $this->adminUserId = $context->getAdminUserId();
+        } catch (AdminUserNotFoundException $e) {
+            $this->adminUserId = '';
+        }
         $this->skipLogTags = $context->getSkipLogTags();
     }
 
@@ -176,11 +182,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
      */
     public function getAdminUserId(): string
     {
-        if (!isset($this->adminUserId)) {
-            $context = ContainerFactory::getInstance()->getContainer()->get(ContextInterface::class);
-            $this->adminUserId = $context->getAdminUserId();
-        }
-
         return $this->adminUserId;
     }
 

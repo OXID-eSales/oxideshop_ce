@@ -22,7 +22,6 @@ use Webmozart\PathUtil\Path;
 
 class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    use ConfigHandlingTrait;
     use ContainerTrait;
     private $debugMode;
 

@@ -26,24 +26,6 @@
 /vendor/
 /composer.lock
 
-# Testing library
-/test_config.yml
-/source/Services/
-
-# Editions
-/source/Edition/
-
-# IDE
-/.idea/
-/.phpstorm-oxid.meta.php
-/.ide-helper.php
-
-# OS
-.DS_Store
-
-# DI cache
-/source/Internal/Container/container_cache.php
 
 # DI for modules and packages
 /var/generated_services.yaml
-/tests/Integration/Internal/Container/Dao/generated_project.yaml

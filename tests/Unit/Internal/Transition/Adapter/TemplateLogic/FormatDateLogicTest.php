@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class FormatDateLogicTest
  *
- * @covers FormatDateLogic
+ * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic
  */
 class FormatDateLogicTest extends TestCase
 {

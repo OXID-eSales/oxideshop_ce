@@ -62,14 +62,26 @@ class FileCache
         rename($tmpFile, $fileName);
     }
 
-    /**
-     * Clears all cache by deleting cached files.
-     */
-    public static function clearCache()
+    public static function clearCache(bool $clearTemplateCache = false): int
     {
-        $tempDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sCompileDir");
-        $mask = $tempDirectory . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
-        $files = glob($mask);
+        $tempDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sCompileDir');
+        $tempDirectory .= '/';
+
+        $oxcMask = $tempDirectory . '*.*';
+        $count = self::clearDirectory($oxcMask);
+
+        if ($clearTemplateCache) {
+            $templateMask = $tempDirectory . 'smarty/' . '*.php';
+            $count += self::clearDirectory($templateMask);
+        }
+
+        return $count;
+    }
+
+    private static function clearDirectory(string $fileMask): int
+    {
+        $files = glob($fileMask);
+
         if (is_array($files)) {
             foreach ($files as $file) {
                 if (is_file($file)) {
@@ -77,6 +89,8 @@ class FileCache
                 }
             }
         }
+
+        return count($files);
     }
 
     /**

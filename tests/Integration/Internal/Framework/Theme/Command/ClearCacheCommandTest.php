@@ -23,7 +23,7 @@ final class ClearCacheCommandTest extends ModuleCommandsTestCase
 
         $this->executeCommand(
             [
-                'command' => 'oe:module:apply-configuration',
+                'command' => 'oe:cache:clear',
             ]
         );
 

@@ -1,10 +1,4 @@
-# Codeception Test Suite Configuration
-#
-# Suite for acceptance tests.
-# Perform tests in browser using the WebDriver or PhpBrowser.
-# If you need both WebDriver and PHPBrowser tests - create a separate suite.
-
-actor: AcceptanceTester
+actor: AcceptanceAdminTester
 bootstrap: _bootstrap.php
 modules:
     enabled:
@@ -31,8 +25,14 @@ modules:
             depends:
               - WebDriver
               - Db
+        - \OxidEsales\Codeception\Module\OxideshopAdmin:
+             screen_shot_url: '%SCREEN_SHOT_URL%'
+             depends:
+              - WebDriver
+              - \OxidEsales\Codeception\Module\Oxideshop
         - \OxidEsales\Codeception\Module\Database:
+            config_key: 'fq45QS09_fqyx09239QQ'
             depends: Db
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
-            paths: 'Application/views/flow/translations'
+            paths: 'Application/views/admin'

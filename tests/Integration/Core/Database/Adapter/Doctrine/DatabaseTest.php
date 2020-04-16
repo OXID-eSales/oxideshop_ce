@@ -517,11 +517,12 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
         $this->setProtectedClassProperty($this->database, 'connectionParameters', array());
         $connectionParametersFromConfigInc = array(
             'default' => array(
-                'databaseHost'     => 'myDatabaseHost',
-                'databaseName'     => 'myDatabaseName',
-                'databaseUser'     => 'myDatabaseUser',
-                'databasePassword' => 'myDatabasePassword',
-                'databasePort'     => 'myDatabasePort'
+                'databaseHost'          => 'myDatabaseHost',
+                'databaseName'          => 'myDatabaseName',
+                'databaseUser'          => 'myDatabaseUser',
+                'databasePassword'      => 'myDatabasePassword',
+                'databasePort'          => 'myDatabasePort',
+                'databaseDriverOptions' => array('testkey' => 'testvalue'),
             )
         );
         $this->database->setConnectionParameters($connectionParametersFromConfigInc);
@@ -533,7 +534,8 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
             'password' => 'myDatabasePassword',
             'port'     => 'myDatabasePort',
             'driverOptions' => array(
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''"
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''",
+                'testkey'                    => 'testvalue',
             )
         );
         $this->assertEquals(

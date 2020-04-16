@@ -17,7 +17,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterf
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
-use Symfony\Component\Console\Input\ArrayInput;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -133,16 +132,5 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
 
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->save($shopConfiguration, $shopId);
-    }
-
-    private function executeCommand(array $input): void
-    {
-        $app = $this->getApplication();
-
-        $this->execute(
-            $app,
-            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput($input)
-        );
     }
 }

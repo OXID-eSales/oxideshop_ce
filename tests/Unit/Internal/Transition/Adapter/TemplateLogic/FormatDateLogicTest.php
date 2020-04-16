@@ -27,7 +27,7 @@ class FormatDateLogicTest extends TestCase
     }
 
     /**
-     * @covers FormatDateLogic::formdate
+     * @covers FormatDateLogic
      */
     public function testFormdateWithDatetime(): void
     {
@@ -38,7 +38,7 @@ class FormatDateLogicTest extends TestCase
     }
 
     /**
-     * @covers FormatDateLogic::formdate
+     * @covers FormatDateLogic
      */
     public function testFormdateWithTimestamp(): void
     {
@@ -49,7 +49,7 @@ class FormatDateLogicTest extends TestCase
     }
 
     /**
-     * @covers FormatDateLogic::formdate
+     * @covers FormatDateLogic
      */
     public function testFormdateWithDate(): void
     {
@@ -60,7 +60,7 @@ class FormatDateLogicTest extends TestCase
     }
 
     /**
-     * @covers FormatDateLogic::formdate
+     * @covers FormatDateLogic
      */
     public function testFormdateUsingObject(): void
     {

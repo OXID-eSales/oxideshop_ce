@@ -508,38 +508,6 @@ class ProductInfoFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Checking Multidimensional variants functionality in lists
-     *
-     * @group product
-     */
-    public function testFrontendMultidimensionalVariantsOnLists()
-    {
-        //multidimensional variants on
-        //active product WHERE `OXID`='10014'
-        $aArticleParams = array("oxactive" => 1);
-        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams, null, 1);
-        $this->clearCache();
-        $this->openShop();
-        $this->searchFor("10014");
-        $this->selectDropDown("viewOptions", "%line%");
-        $this->assertEquals("size[EN]:", $this->getText("//div[@id='variantselector_searchList_1']//label"));
-        $this->assertEquals("S M L", $this->clearString($this->getText("//div[@id='variantselector_searchList_1']//ul")));
-        $this->assertEquals("14 EN product šÄßüл", $this->getText("searchList_1"));
-        $this->assertEquals("%PRICE_FROM% 15,00 €", $this->getText("productPrice_searchList_1"));
-        $this->assertEquals("13 EN description šÄßüл", $this->getText("//form[@name='tobasket.searchList_1']/div[2]/div[2]"));
-        $this->assertElementPresent("//form[@name='tobasket.searchList_1']//a[text()='%MORE_INFO%']");
-        $this->selectVariant("variantselector_searchList_1", 1, "M", "M");
-        $this->assertEquals("size[EN]: M", $this->clearString($this->getText("//div[@id='variants']/div/p")));
-        $this->waitForJQueryToFinish();
-        $this->click("//a[text()='%RESET_SELECTION%']");
-        $this->waitForTextDisappear("%SELECTED_COMBINATION%");
-
-        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"10014\"", $this->getText("breadCrumb"));
-
-        $this->_assertArticle('14 EN product šÄßüл', '13 EN description šÄßüл', '10014', 'from 15,00 € *', false);
-    }
-
-    /**
      * Checking Multidimensional variants functionality
      *
      * @related bug #1427

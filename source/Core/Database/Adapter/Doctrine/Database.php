@@ -188,6 +188,7 @@ class Database implements DatabaseInterface
 
         if (isset($connectionParameters['databaseUnixSocket'])) {
             $pdoMysqlConnectionParameters['unix_socket'] = $connectionParameters['databaseUnixSocket'];
+            unset($pdoMysqlConnectionParameters['host'], $pdoMysqlConnectionParameters['port']);
         }
 
         $this->addDriverOptions($pdoMysqlConnectionParameters);

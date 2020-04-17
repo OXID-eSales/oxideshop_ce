@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
 
+use function is_string;
+
 /**
  * Database field description object.
  *
@@ -60,14 +62,9 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     {
         // duplicate content here is needed for performance.
         // as this function is called *many* (a lot) times, it is crucial to be fast here!
-        switch ($type) {
-            case self::T_TEXT:
-            default:
-                $this->rawValue = $value;
-                break;
-            case self::T_RAW:
-                $this->value = $value;
-                break;
+        $this->rawValue = $value;
+        if ($type == self::T_RAW) {
+            $this->value = $value;
         }
     }
 
@@ -80,16 +77,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function __isset($name)
     {
-        switch ($name) {
-            case 'rawValue':
-                return ($this->rawValue !== null);
-                break;
-            case 'value':
-                return ($this->value !== null);
-                break;
-            //return true;
-        }
-        return false;
+        return $this->{$name} !== null;
     }
 
     /**
@@ -115,7 +103,6 @@ class Field // extends \OxidEsales\Eshop\Core\Base
                 if ($this->rawValue == $this->value) {
                     unset($this->rawValue);
                 }
-
                 return $this->value;
                 break;
             default:
@@ -158,13 +145,10 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     protected function _initValue($value = null, $type = self::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        switch ($type) {
-            case self::T_TEXT:
-                $this->rawValue = $value;
-                break;
-            case self::T_RAW:
-                $this->value = $value;
-                break;
+        if ($type == self::T_TEXT) {
+            $this->rawValue = $value;
+        } else {
+            $this->value = $value;
         }
     }
 

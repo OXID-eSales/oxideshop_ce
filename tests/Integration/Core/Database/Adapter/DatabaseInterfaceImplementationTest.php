@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use ReflectionClass;
 
@@ -513,7 +514,8 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     public function testSetTransactionIsolationLevel(): void
     {
-        $connection = $this->get(Connection::class);
+        $connectionProvider = new ConnectionProvider();
+        $connection = $connectionProvider->get();
 
         $transactionIsolationLevelPre = $connection->getTransactionIsolation();
 

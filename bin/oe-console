@@ -5,6 +5,7 @@
  * See LICENSE file for license details.
  */
 
+use Symfony\Component\Console\Application;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -17,6 +18,7 @@ $autoloadFiles = [
     __DIR__ . '/../../../vendor/autoload.php',
     __DIR__ . '/../../../../vendor/autoload.php',
 ];
+
 foreach ($autoloadFiles as $autoloadFile) {
     if (file_exists($autoloadFile)) {
         require_once $autoloadFile;
@@ -39,5 +41,18 @@ if ($shopId !== 0) {
 $bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
 require_once $bootstrapFilePath;
 
-$factory = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance();
-$factory->getContainer()->get(OxidEsales\EshopCommunity\Internal\Framework\Console\ExecutorInterface::class)->execute();
+$container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
+$commandLoader = $container->get('console.command_loader');
+
+$idCommands = [];
+foreach ($container->getParameter('console.command.ids') as $id) {
+    $idCommands[] = $container->get($id);
+}
+
+$application = new Application();
+$application->setCommandLoader($commandLoader);
+$application->addCommands(
+    $idCommands
+);
+$application->run();
+

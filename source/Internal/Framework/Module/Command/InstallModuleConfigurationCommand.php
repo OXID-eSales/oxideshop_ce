@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\PathNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -95,6 +96,8 @@ class InstallModuleConfigurationCommand extends Command
             $output->writeln('<info>' . self::MESSAGE_INSTALLATION_WAS_SUCCESSFUL . '</info>');
         } catch (ModuleTargetPathIsMissingException $exception) {
             $output->writeln('<error>' . self::MESSAGE_TARGET_PATH_IS_REQUIRED . '</error>');
+        } catch (PathNotFoundException $exception) {
+            $output->writeln('<error>' . self::MESSAGE_INSTALLATION_FAILED . ': ' . $exception->getMessage() . '</error>');
         } catch (\Throwable $throwable) {
             $output->writeln('<error>' . self::MESSAGE_INSTALLATION_FAILED . '</error>');
 
@@ -152,7 +155,7 @@ class InstallModuleConfigurationCommand extends Command
     private function validatePath(string $path)
     {
         if (!file_exists($path) || !is_dir($path)) {
-            throw new \InvalidArgumentException($path . ' directory doesn\'t exist');
+            throw PathNotFoundException::byPath($path);
         }
     }
 

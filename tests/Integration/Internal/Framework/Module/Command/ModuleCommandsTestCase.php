@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * @internal
@@ -70,5 +71,15 @@ class ModuleCommandsTestCase extends TestCase
                     Path::join($this->modulesPath, $this->moduleId)
                 )
             );
+    }
+
+    protected function executeCommand(string $command, array $input = []): string
+    {
+        $commandTester = new CommandTester(
+            $this->get('console.command_loader')->get($command)
+        );
+
+        $commandTester->execute($input);
+        return $commandTester->getDisplay();
     }
 }

@@ -17,7 +17,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterf
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
-use Symfony\Component\Console\Input\ArrayInput;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -25,6 +24,7 @@ use Webmozart\PathUtil\Path;
  */
 final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
 {
+    private $commandName = "oe:module:apply-configuration";
     /**
      * @var DatabaseRestorer
      */
@@ -53,9 +53,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
     {
         $this->prepareTestModuleConfigurations(true, 1, []);
 
-        $this->executeCommand([
-            'command' => 'oe:module:apply-configuration',
-        ]);
+        $this->executeCommand($this->commandName);
 
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
         $this->assertTrue(
@@ -68,9 +66,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
         $this->prepareTestModuleConfigurations(false, 1, []);
 
-        $this->executeCommand([
-            'command' => 'oe:module:apply-configuration',
-        ]);
+        $this->executeCommand($this->commandName);
 
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
         $this->assertFalse(
@@ -86,9 +82,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $moduleSetting->setName('testSetting')->setValue(true);
         $this->prepareTestModuleConfigurations(true, 1, [$moduleSetting]);
 
-        $this->executeCommand([
-            'command' => 'oe:module:apply-configuration',
-        ]);
+        $this->executeCommand($this->commandName);
 
         $this->assertTrue(
             $this->get(ModuleStateServiceInterface::class)->isActive($this->moduleId, 1)
@@ -104,9 +98,7 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $this->prepareTestModuleConfigurations(true, 1, []);
         $this->prepareTestModuleConfigurations(true, 2, []);
 
-        $this->executeCommand([
-            'command' => 'oe:module:apply-configuration',
-        ]);
+        $this->executeCommand($this->commandName);
 
         $moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
@@ -134,16 +126,5 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
 
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->save($shopConfiguration, $shopId);
-    }
-
-    private function executeCommand(array $input): void
-    {
-        $app = $this->getApplication();
-
-        $this->execute(
-            $app,
-            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput($input)
-        );
     }
 }

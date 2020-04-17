@@ -9,44 +9,33 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
-use Doctrine\DBAL\Connection;
-
 class TransactionService implements TransactionServiceInterface
 {
     /**
-     * @var Connection
+     * @var ConnectionProviderInterface
      */
-    private $connection;
+    private $connectionProvider;
 
     /**
-     * @param Connection $connection
+     * @param ConnectionProviderInterface $connectionProvider
      */
-    public function __construct(Connection $connection)
+    public function __construct(ConnectionProviderInterface $connectionProvider)
     {
-        $this->connection = $connection;
+        $this->connectionProvider = $connectionProvider;
     }
 
-    /**
-     * Initiates a transaction.
-     */
     public function begin()
     {
-        $this->connection->beginTransaction();
+        $this->connectionProvider->get()->beginTransaction();
     }
 
-    /**
-     * Commits a transaction.
-     */
     public function commit()
     {
-        $this->connection->commit();
+        $this->connectionProvider->get()->commit();
     }
 
-    /**
-     * Rolls back the current transaction.
-     */
     public function rollback()
     {
-        $this->connection->rollBack();
+        $this->connectionProvider->get()->rollBack();
     }
 }

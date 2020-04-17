@@ -9,22 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactory;
 use PDO;
+use ReflectionClass;
 
-class QueryBuilderFactoryTest extends \PHPUnit\Framework\TestCase
+final class QueryBuilderFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testQueryBuilderCreation()
     {
-        $connection = $this
-            ->getMockBuilder(Connection::class)
-            ->setMethods(null)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $connectionProvider = new ConnectionProvider();
 
-        $queryBuilderFactory = new QueryBuilderFactory($connection);
+        $queryBuilderFactory = new QueryBuilderFactory($connectionProvider);
 
         $this->assertInstanceOf(
             QueryBuilder::class,
@@ -32,22 +29,18 @@ class QueryBuilderFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testFetchMode()
+    public function testFetchModeIsSetToAssoc()
     {
-        $connection = $this
-            ->getMockBuilder(Connection::class)
-            ->setMethods(['setFetchMode'])
-            ->disableOriginalConstructor()
-            ->getMock();
+        $connectionProvider = new ConnectionProvider();
 
-        $connection
-            ->expects($this->once())
-            ->method('setFetchMode')
-            ->with(
-                $this->equalTo(PDO::FETCH_ASSOC)
-            );
+        $queryBuilderFactory = new QueryBuilderFactory($connectionProvider);
+        $queryBuilder = $queryBuilderFactory->create();
 
-        $queryBuilderFactory = new QueryBuilderFactory($connection);
-        $queryBuilderFactory->create();
+        $connection = $queryBuilder->getConnection();
+
+        $reflectionClassConnection = new ReflectionClass($connection);
+        $fetchMode = $reflectionClassConnection->getProperty('defaultFetchMode');
+        $fetchMode->setAccessible(true);
+        $this->assertSame($fetchMode->getValue($connection), PDO::FETCH_ASSOC);
     }
 }

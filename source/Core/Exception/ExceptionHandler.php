@@ -81,16 +81,9 @@ class ExceptionHandler
              * Its not possible to get the logger from the DI container.
              * Try again to log original exception (without DI container) in order to show the root cause of a problem.
              */
-            $loggerServiceFactory = new LoggerServiceFactory(new Context(Registry::getConfig()));
+            $loggerServiceFactory = new LoggerServiceFactory(new Context());
             $logger = $loggerServiceFactory->getLogger();
             $logger->error($exception);
-            try {
-                $loggerServiceFactory = new LoggerServiceFactory(new Context(Registry::getConfig()));
-                $logger = $loggerServiceFactory->getLogger();
-                $logger->error($this->getFormattedException($exception));
-            } catch (\Throwable $throwableWithoutPossibilityToWriteToLogFile) {
-                // It is not possible to log because e.g. the log file is not writable.
-            }
         }
 
         if ($this->_iDebug || defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {

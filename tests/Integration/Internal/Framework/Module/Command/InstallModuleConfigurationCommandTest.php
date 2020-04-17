@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use Symfony\Component\Console\Input\ArrayInput;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -22,6 +22,8 @@ use Webmozart\PathUtil\Path;
  */
 class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
 {
+    use ContainerTrait;
+    
     private $shopId;
     private $testModuleId = 'testmodule';
     private $moduleTargetPath = 'testmodule';
@@ -148,7 +150,6 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     private function executeModuleInstallCommand(string $moduleSourcePath, string $moduleTargetPath = null): string
     {
         $input = [
-            'command' => 'oe:module:install-configuration',
             'module-source-path' => $moduleSourcePath,
         ];
 
@@ -156,13 +157,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
             $input['module-target-path'] = $moduleTargetPath;
         }
 
-        $app = $this->getApplication();
-
-        return $this->execute(
-            $app,
-            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
-            new ArrayInput($input)
-        );
+        return $this->executeCommand('oe:module:install-configuration', $input);
     }
 
     private function installTestModuleFiles()

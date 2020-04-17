@@ -9,12 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -49,13 +51,19 @@ class ApplyModulesConfigurationCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Applies configuration for installed modules.');
+        $this->setDescription('Applies configuration for installed modules.')
+        ->addArgument(
+            Executor::SHOP_ID_PARAMETER_OPTION_NAME,
+            InputArgument::OPTIONAL,
+            'Id of shop this module configuration should be applied to'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($input->hasOption('shop-id') && $input->getOption('shop-id')) {
-            $this->applyModulesConfigurationForOneShop($output, (int) $input->getOption('shop-id'));
+        $shopId = $input->getArgument(Executor::SHOP_ID_PARAMETER_OPTION_NAME);
+        if ($shopId) {
+            $this->applyModulesConfigurationForOneShop($output, (int) $shopId);
         } else {
             $this->applyModulesConfigurationForAllShops($output);
         }

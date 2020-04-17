@@ -10,22 +10,21 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
 use PDO;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 
 class QueryBuilderFactory implements QueryBuilderFactoryInterface
 {
     /**
-     * @var Connection
+     * @var ConnectionProviderInterface
      */
-    private $connection;
+    private $connectionProvider;
 
     /**
-     * @param Connection $connection
+     * @param ConnectionProviderInterface $connectionProvider
      */
-    public function __construct(Connection $connection)
+    public function __construct(ConnectionProviderInterface $connectionProvider)
     {
-        $this->connection = $connection;
+        $this->connectionProvider = $connectionProvider;
     }
 
     /**
@@ -35,8 +34,9 @@ class QueryBuilderFactory implements QueryBuilderFactoryInterface
      */
     public function create(): QueryBuilder
     {
-        $this->connection->setFetchMode(PDO::FETCH_ASSOC);
+        $connection = $this->connectionProvider->get();
+        $connection->setFetchMode(PDO::FETCH_ASSOC);
 
-        return $this->connection->createQueryBuilder();
+        return $connection->createQueryBuilder();
     }
 }

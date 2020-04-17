@@ -16,6 +16,7 @@ use Webmozart\PathUtil\Path;
 use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\EshopCommunity\Core\Exception\DatabaseConnectionException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 
 class Context extends BasicContext implements ContextInterface
@@ -30,7 +31,13 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogLevel(): string
     {
-        return $this->getConfigParameter('sLogLevel') ?? LogLevel::ERROR;
+        try {
+            $logLevel = $this->getConfigParameter('sLogLevel');
+        } catch (DatabaseConnectionException $e) {
+            $logLevel = $this->getFactsConfigFile()->getVar('sLogLevel');
+        }
+
+        return $logLevel ?? LogLevel::ERROR;
     }
 
     /**
@@ -38,7 +45,13 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getLogFilePath(): string
     {
-        return Path::join(Registry::getConfig()->getLogsDir(), 'oxideshop.log');
+        try {
+            $logFilePath = Registry::getConfig()->getLogsDir();
+        } catch (DatabaseConnectionException $e) {
+            $logFilePath = Path::join($this->getFactsConfigFile()->getVar('sShopDir'), 'log');
+        }
+
+        return Path::join($logFilePath, 'oxideshop.log');
     }
 
     /**

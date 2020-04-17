@@ -5,12 +5,15 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Module\Translation\Translator;
 
-class ProductDetailsPageCest
+final class ProductDetailsPageCest
 {
     /**
      * @group main
@@ -23,6 +26,9 @@ class ProductDetailsPageCest
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('multidimensional variants functionality in details page');
+
+        $I->updateConfigInDatabase('blUseMultidimensionVariants', true, 'bool');
+        $I->updateConfigInDatabase('bl_showPriceAlarm', true, 'bool');
 
         $data = [
             'OXID' => '1001411',
@@ -57,9 +63,9 @@ class ProductDetailsPageCest
             ->checkIfProductIsNotBuyable();
 
         //select a variant of the product
-        $detailsPage = $detailsPage->selectVariant(2, 'white')
+        $detailsPage = $detailsPage->selectVariant(1, 'S')
             ->checkIfProductIsNotBuyable()
-            ->selectVariant(1, 'S');
+            ->selectVariant(2, 'white');
 
         //assert product
         $productData3 = [
@@ -111,7 +117,7 @@ class ProductDetailsPageCest
             'price' => '50,00 €',
             'amount' => 2
         ];
-        $detailsPage->seeMiniBasketContains([$basketItem], '50,00 €', 2);
+        $detailsPage->seeMiniBasketContains([$basketItem], '50,00 €', '2');
     }
 
     /**
@@ -131,9 +137,12 @@ class ProductDetailsPageCest
             'price' => '100,00 € *'
         ];
 
+        $I->updateConfigInDatabase('aSortCols', 'a:2:{i:0;s:7:"oxtitle";i:1;s:13:"oxvarminprice";}', 'arr');
+
         $searchListPage = $I->openShop()
             ->searchFor('100')
-            ->seeProductData($productData, 2);
+            ->selectSorting('oxtitle', 'asc')
+            ->seeProductData($productData, 3);
         $detailsPage = $searchListPage->openProductDetailsPage(2);
         $breadCrumb = sprintf(Translator::translate('SEARCH_RESULT'), '100');
         $detailsPage->seeOnBreadCrumb($breadCrumb);
@@ -146,9 +155,53 @@ class ProductDetailsPageCest
         $navigationText = Translator::translate('PRODUCT') . ' 2 ' . Translator::translate('OF') . ' 4';
         $I->see($navigationText);
         $detailsPage->openProductSearchList()
-            ->seeProductData($productData, 2);
+            ->seeProductData($productData, 3);
         $breadCrumb = Translator::translate('SEARCH');
         $detailsPage->seeOnBreadCrumb($breadCrumb);
+    }
+
+    /**
+     * @group product
+     *
+     * @param AcceptanceTester $I
+     */
+    public function detailsPageInformation(AcceptanceTester $I)
+    {
+        $I->wantToTest('product information in details page');
+
+        $productNavigation = new ProductNavigation($I);
+        $productData = [
+            'id' => '1001',
+            'title' => 'Test product 1 [EN] šÄßüл',
+            'description' => 'Test product 1 short desc [EN] šÄßüл',
+            'price' => '100,00 € *'
+        ];
+
+        $data = [
+            'OXID' => 'testattributes1',
+            'OXOBJECTID' => '1001',
+            'OXSELNID' => 'testsellist',
+            'OXSORT' => 0,
+        ];
+        $I->haveInDatabase('oxobject2selectlist', $data);
+
+        //open details page
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id'])
+            ->seeProductData($productData)
+            ->seeProductOldPrice('150,00 €');
+        $I->see(Translator::translate('MESSAGE_NOT_ON_STOCK'));
+        $I->see(Translator::translate('AVAILABLE_ON') . ' 2030-01-01');
+        $detailsPage = $detailsPage->selectSelectionListItem('selvar1 [EN] šÄßüл')
+            ->selectSelectionListItem('selvar2 [EN] šÄßüл')
+            ->openDescription();
+        $I->see('Test product 1 long description [EN] šÄßüл');
+        $detailsPage->openAttributes()
+            ->seeAttributeName('Test attribute 1 [EN] šÄßüл', 1)
+            ->seeAttributeValue('attr value 11 [EN] šÄßüл', 1)
+            ->seeAttributeName('Test attribute 3 [EN] šÄßüл', 2)
+            ->seeAttributeValue('attr value 3 [EN] šÄßüл', 2)
+            ->seeAttributeName('Test attribute 2 [EN] šÄßüл', 3)
+            ->seeAttributeValue('attr value 12 [EN] šÄßüл', 3);
     }
 
     /**
@@ -162,6 +215,8 @@ class ProductDetailsPageCest
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality');
 
+        $I->updateConfigInDatabase('bl_showPriceAlarm', true, 'bool');
+
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -174,12 +229,33 @@ class ProductDetailsPageCest
         $I->see($productData['title']);
         $I->see(Translator::translate('PRICE_ALERT'));
 
-        $detailsPage->sendPriceAlert('example_test@oxid-esales.dev', '99.99');
-        $I->see(Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE3') . ' 99,99 € ' . Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE4'));
+        $detailsPage->sendPriceAlert('example_test@oxid-esales.dev', 99.99);
+        $thankYouMessage = Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE3')
+            . ' 99,99 € ' . Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE4');
+        $I->see($thankYouMessage);
         $I->see($productData['title']);
+    }
+
+    /**
+     * @group product
+     * @group priceAlarm
+     *
+     * @param AcceptanceTester $I
+     */
+    public function disableProductPriceAlert(AcceptanceTester $I)
+    {
+        $productNavigation = new ProductNavigation($I);
+        $I->wantToTest('product price alert functionality is disabled');
+
+        $productData = [
+            'id' => '1000',
+            'title' => 'Test product 0 [EN] šÄßüл',
+            'description' => 'Test product 0 short desc [EN] šÄßüл',
+            'price' => '50,00 € *'
+        ];
 
         //disabling price alert for product(1000)
-        $I->updateInDatabase('oxarticles', ["oxblfixedprice" => 1], ["OXID" => '1000']);
+        $I->updateInDatabase('oxarticles', ['oxblfixedprice' => 1], ['OXID' => '1000']);
 
         //open details page
         $productNavigation->openProductDetailsPage($productData['id']);
@@ -229,7 +305,7 @@ class ProductDetailsPageCest
         ];
 
         $detailsPage = $detailsPage->addProductToBasket(3)
-            ->seeMiniBasketContains([$basketItemToCheck1], '165,00 €', 3);
+            ->seeMiniBasketContains([$basketItemToCheck1], '165,00 €', '3');
 
         // select second variant
         $variantData2 = [
@@ -249,7 +325,7 @@ class ProductDetailsPageCest
             'amount' => 3
         ];
         $detailsPage->addProductToBasket(3)
-            ->seeMiniBasketContains([$basketItemToCheck1, $basketItemToCheck2], '366,00 €', 6);
+            ->seeMiniBasketContains([$basketItemToCheck1, $basketItemToCheck2], '366,00 €', '6');
     }
 
     /**
@@ -263,6 +339,7 @@ class ProductDetailsPageCest
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('Product\'s accessories');
 
+        $I->updateConfigInDatabase('bl_perfLoadAccessoires', true, 'bool');
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -298,6 +375,9 @@ class ProductDetailsPageCest
     {
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('similar products on details page');
+
+        $I->updateConfigInDatabase('bl_perfLoadSimilar', true, 'bool');
+        $I->updateConfigInDatabase('iNrofSimilarArticles', '5', 'str');
 
         $productData = [
             'id' => '1000',
@@ -335,6 +415,7 @@ class ProductDetailsPageCest
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('Product\'s crossselling on details page');
 
+        $I->updateConfigInDatabase('bl_perfLoadCrossselling', true, 'bool');
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -371,6 +452,10 @@ class ProductDetailsPageCest
     public function selectMultidimensionalVariantsInLists(AcceptanceTester $I)
     {
         $I->wantToTest('multidimensional variants functionality in lists');
+
+        $I->updateConfigInDatabase('blUseMultidimensionVariants', true, 'bool');
+        $I->updateConfigInDatabase('bl_perfLoadSelectListsInAList', true, 'bool');
+        $I->updateConfigInDatabase('bl_perfLoadSelectLists', true, 'bool');
 
         $productData = [
             'id' => '10014',
@@ -513,7 +598,7 @@ class ProductDetailsPageCest
             ->addProductToBasket(5)
             ->openBasket();
 
-        $breadCrumbName = Translator::translate("CART");
+        $breadCrumbName = Translator::translate('CART');
         $basketPage->seeOnBreadCrumb($breadCrumbName);
 
         //amount price discount added to the C price
@@ -618,7 +703,7 @@ class ProductDetailsPageCest
             ->seeAmountPrices($amountPrices);
     }
 
-    public function _failed(AcceptanceTester $I)
+    public function _failed(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $I->cleanUp();
         $I->clearShopCache();
@@ -626,7 +711,7 @@ class ProductDetailsPageCest
 
     private function getExistingUserData()
     {
-        return \Codeception\Util\Fixtures::get('existingUser');
+        return Fixtures::get('existingUser');
     }
 
     /**

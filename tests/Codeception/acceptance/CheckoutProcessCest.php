@@ -58,7 +58,7 @@ final class CheckoutProcessCest
         $userCheckoutPage = $homePage->seeMiniBasketContains([$basketItem1, $basketItem2], '200,00 €', '3')
             ->openCheckout();
 
-        $breadCrumbName = Translator::translate("ADDRESS");
+        $breadCrumbName = Translator::translate('ADDRESS');
         $userCheckoutPage->seeOnBreadCrumb($breadCrumbName);
 
         $userData = $this->getExistingUserData();
@@ -67,7 +67,7 @@ final class CheckoutProcessCest
 
         $paymentCheckoutPage = $homePage->openMiniBasket()->openCheckout();
 
-        $breadCrumbName = Translator::translate("PAY");
+        $breadCrumbName = Translator::translate('PAY');
         $paymentCheckoutPage->seeOnBreadCrumb($breadCrumbName);
     }
 
@@ -78,7 +78,7 @@ final class CheckoutProcessCest
      */
     public function createOrder(AcceptanceTester $I)
     {
-        $I->wantToTest("simple order steps (without any special cases)");
+        $I->wantToTest('simple order steps (without any special cases)');
         $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
         $basket = new Basket($I);
@@ -98,12 +98,13 @@ final class CheckoutProcessCest
             'amount' => 1,
             'totalPrice' => '67,00 €'
         ];
+        $homePage = $I->openShop();
 
         //add Product to basket
         $basket->addProductToBasket($basketItem1['id'], 1);
         $basket->addProductToBasket($basketItem2['id'], 1);
 
-        $homePage = $I->openShop()->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $homePage = $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
         $basketPage = $basketPage->addCouponToBasket('123123');
         $basketPage = $basketPage->openGiftSelection(1)
@@ -115,7 +116,7 @@ final class CheckoutProcessCest
         $userCheckoutPage = $basketPage->goToNextStep();
         $paymentPage = $userCheckoutPage->enterOrderRemark('remark text')->goToNextStep();
 
-        $I->see(Translator::translate("PAYMENT_METHOD"));
+        $I->see(Translator::translate('PAYMENT_METHOD'));
 
         $orderPage = $paymentPage->selectPayment('oxidcashondel')
             ->goToNextStep()
@@ -149,20 +150,7 @@ final class CheckoutProcessCest
         $I->see('0,20 €', $orderPage->basketGiftCardGross);
         $I->see('92,10 €', $orderPage->basketTotalPrice);
 
-
-
-
-      /*  $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_1']//td[5]/s"), "price with discount not shown in basket");
-        $this->assertEquals("136,40 €", $this->getText("basketTotalNetto"), "Net price changed or didn't displayed");
-        $this->assertEquals("8,29 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"), "VAT 10% changed");
-        $this->assertEquals("10,16 €", $this->getText("//div[@id='basketSummary']//tr[5]/td"), "VAT 19%changed");
-        $this->assertEquals("163,00 €", $this->getText("basketTotalProductsGross"), "Brut price changed or didn't displayed");
-        $this->assertEquals("%COUPON% (%NUMBER_2% 222222)", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]/th")), "Coupon changed or didn't displayed");
-        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"), "Shipping price changed or didn't displayed");
-        $this->assertEquals("7,50 €", $this->getText("basketPaymentGross"), "Payment price changed or didn't displayed");
-        $this->assertEquals("0,90 €", $this->getText("basketWrappingGross"), "Wrapping price changed or didn't displayed");
-        $this->assertEquals("0,20 €", $this->getText("basketGiftCardGross"), "Card price changed or didn't displayed");
-        $this->assertEquals("163,45 €", $this->getText("basketGrandTotal"), "Grand total price changed or didn't displayed");*/
+        $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
     /**
@@ -203,11 +191,11 @@ final class CheckoutProcessCest
             ->seeBasketContains([$basketItem1, $basketItem2], '350,00 €');
 
         // making product out of stock now
-        $I->updateInDatabase('oxarticles', ["oxstock" => '3', "oxstockflag" => '3'], ["oxid" => '1000']);
+        $I->updateInDatabase('oxarticles', ['oxstock' => '3', 'oxstockflag' => '3'], ['oxid' => '1000']);
 
         $basketPage->updateProductAmount(7);
 
-        $I->see(Translator::translate("ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK"));
+        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         $basketItem1 = [
             'id' => '1000',
@@ -220,26 +208,26 @@ final class CheckoutProcessCest
             ->goToNextStep();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate("PAYMENT_METHOD"));
+        $I->see(Translator::translate('PAYMENT_METHOD'));
 
         $orderPage = $paymentPage->selectPayment('oxidcashondel')
             ->goToNextStep();
 
         // someone bought some more items while client filled steps
-        $I->updateInDatabase('oxarticles', ["oxstock" => '1', "oxstockflag" => '3'], ["oxid" => '1000']);
+        $I->updateInDatabase('oxarticles', ['oxstock' => '1', 'oxstockflag' => '3'], ['oxid' => '1000']);
 
         $orderPage->submitOrder();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate("ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK"));
+        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         // someone bought all items while client filled steps
-        $I->updateInDatabase('oxarticles', ["oxstock" => '0', "oxstockflag" => '3'], ["oxid" => '1000']);
+        $I->updateInDatabase('oxarticles', ['oxstock' => '0', 'oxstockflag' => '3'], ['oxid' => '1000']);
 
         $orderPage->submitOrder();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate("ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE"));
+        $I->see(Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE'));
 
         $orderPage->submitOrder();
 
@@ -247,7 +235,7 @@ final class CheckoutProcessCest
         $orderPage->seeOnBreadCrumb($breadCrumb);
 
         //cleanUp data
-        $I->updateInDatabase('oxarticles', ["oxstock" => '15', "oxstockflag" => '1'], ["oxid" => '1000']);
+        $I->updateInDatabase('oxarticles', ['oxstock' => '15', 'oxstockflag' => '1'], ['oxid' => '1000']);
     }
 
     /**
@@ -260,8 +248,8 @@ final class CheckoutProcessCest
         $I->wantToTest('minimal order price in checkout process (min order sum is 49 €)');
 
         // prepare data for test
-        $I->updateInDatabase('oxdelivery', ["OXTITLE_1" => 'OXTITLE'], ["OXTITLE_1" => '']);
-        $I->updateInDatabase('oxdiscount', ["OXACTIVE" => 1], ["OXID" => 'testcatdiscount']);
+        $I->updateInDatabase('oxdelivery', ['OXTITLE_1' => 'OXTITLE'], ['OXTITLE_1' => '']);
+        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 1], ['OXID' => 'testcatdiscount']);
 
         $I->updateConfigInDatabase('iMinOrderPrice', '49', 'str');
         $productData = [
@@ -299,9 +287,10 @@ final class CheckoutProcessCest
         $basketPage = $basketPage->removeCouponFromBasket();
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $userCheckoutPage = $basketPage->goToNextStep();
-        $breadCrumbName = Translator::translate("ADDRESS");
+        $breadCrumbName = Translator::translate('ADDRESS');
         $userCheckoutPage->seeOnBreadCrumb($breadCrumbName);
-        $I->updateInDatabase('oxdiscount', ["OXACTIVE" => 0], ["OXID" => 'testcatdiscount']);
+        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 0], ['OXID' => 'testcatdiscount']);
+        $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
     /**
@@ -346,22 +335,21 @@ final class CheckoutProcessCest
         $I->wantToTest('guest checkout with username switching');
 
         $basket = new Basket($I);
-        $userAccount = new UserAccount($I);
         $userRegistration = new UserRegistrationInCheckout($I);
         $email1 = 'abc@def.gh';
         $email2 = 'xyz@def.gh';
 
         /** Start guest1 checkout with email1, then logout */
-        $basket->addProductToBasketAndOpen('1000', 10, 'user');
-        $userRegistration->createNotRegisteredUserInCheckout(
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 10);
+        $paymentPage = $userRegistration->createNotRegisteredUserInCheckout(
             $email1,
             $this->getUserFormData(),
             $this->getUserAddressFormData()
         );
-        $userAccount->logoutUser();
+        $paymentPage->logoutUser();
 
         /** Start guest2 checkout with email2 */
-        $basket->addProductToBasketAndOpen('1000', 100, 'user');
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 100);
         $paymentPage = $userRegistration->createNotRegisteredUserInCheckout(
             $email2,
             $this->getUserFormData(),
@@ -403,7 +391,7 @@ final class CheckoutProcessCest
      */
     private function prepareTestDataForBundledProduct(AcceptanceTester $I, $productId, $bundledProductId)
     {
-        $I->updateInDatabase('oxarticles', ["OXBUNDLEID" => $bundledProductId], ["OXID" => $productId]);
+        $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => $bundledProductId], ['OXID' => $productId]);
     }
 
     /**
@@ -412,7 +400,7 @@ final class CheckoutProcessCest
      */
     private function removeBundleFromProduct(AcceptanceTester $I, $productId)
     {
-        $I->updateInDatabase('oxarticles', ["OXBUNDLEID" => ''], ["OXID" => $productId]);
+        $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => ''], ['OXID' => $productId]);
     }
 
     private function getUserFormData(): array

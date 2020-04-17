@@ -289,16 +289,29 @@ class DatabaseProvider
          * @var string $databasePassword The password of the database user.
          */
         $databasePassword = $this->getConfigParam('dbPwd');
+        /**
+         * @var string $databaseDriverOptions The options to pass to the database driver.
+         */
+        $databaseDriverOptions = $this->getConfigParam('dbDriverOptions');
+        if (!is_array($databaseDriverOptions)) {
+            $databaseDriverOptions = array();
+        }
+        /**
+         * @var string $databaseUnixSocket The unix_socket path.
+         */
+        $databaseUnixSocket = $this->getConfigParam('dbUnixSocket');
 
         $connectionParameters = [
             'default' => [
-                'databaseDriver'    => $databaseDriver,
-                'databaseHost'      => $databaseHost,
-                'databasePort'      => $databasePort,
-                'databaseName'      => $databaseName,
-                'databaseUser'      => $databaseUser,
-                'databasePassword'  => $databasePassword,
-            ]
+                'databaseDriver'        => $databaseDriver,
+                'databaseHost'          => $databaseHost,
+                'databasePort'          => $databasePort,
+                'databaseName'          => $databaseName,
+                'databaseUser'          => $databaseUser,
+                'databasePassword'      => $databasePassword,
+                'databaseDriverOptions' => $databaseDriverOptions,
+                'databaseUnixSocket'    => $databaseUnixSocket,
+            ],
         ];
 
         /**

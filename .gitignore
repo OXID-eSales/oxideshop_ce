@@ -26,6 +26,16 @@
 /vendor/
 /composer.lock
 
+# Testing library
+/test_config.yml
+
+# IDE
+/.idea/
+/.phpstorm-oxid.meta.php
+/.ide-helper.php
+
+# OS
+.DS_Store
 
 # DI for modules and packages
 /var/generated_services.yaml

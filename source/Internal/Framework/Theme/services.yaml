@@ -11,5 +11,3 @@ services:
     arguments:
       - '%oxid_esales.theme.admin.name%'
     public: true
-imports:
-  - { resource: Command/services.yaml }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Cache\Command;
 
 use OxidEsales\Eshop\Core\FileCache;
 use Symfony\Component\Console\Command\Command;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Command;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Cache\Command;
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
@@ -21,6 +21,11 @@ final class ClearCacheCommandTest extends ModuleCommandsTestCase
         $templateMask = $tempDirectory . 'smarty/' . '*.php';
         $beforeTemplate = glob($templateMask);
 
+        $sourcePath = Registry::get(ConfigFile::class)->getVar('sShopDir');
+        $cacheDirectory = $sourcePath . '/cache/';
+        $cacheMask = $cacheDirectory . '*.cache';
+        $beforeCache = glob($cacheMask);
+
         $this->executeCommand(
             [
                 'command' => 'oe:cache:clear',
@@ -35,6 +40,11 @@ final class ClearCacheCommandTest extends ModuleCommandsTestCase
         $afterTemplate = scandir($tempDirectory);
         foreach ($beforeTemplate as $file) {
             $this->assertNotContains($file, $afterTemplate);
+        }
+
+        $afterCache = scandir($cacheDirectory);
+        foreach ($beforeCache as $file) {
+            $this->assertNotContains($file, $afterCache);
         }
     }
 }

@@ -4,6 +4,6 @@ services:
     public: false
 
   oxid_esales.command.theme_clearcache_command:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ClearCacheCommand
+    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Command\ClearCacheCommand
     tags:
       - { name: 'console.command', command: 'oe:cache:clear' }

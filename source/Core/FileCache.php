@@ -62,7 +62,7 @@ class FileCache
         rename($tmpFile, $fileName);
     }
 
-    public static function clearCache(bool $clearTemplateCache = false): int
+    public static function clearCache(bool $clearAll = false): int
     {
         $tempDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sCompileDir');
         $tempDirectory .= '/';
@@ -70,9 +70,9 @@ class FileCache
         $oxcMask = $tempDirectory . '*.*';
         $count = self::clearDirectory($oxcMask);
 
-        if ($clearTemplateCache) {
-            $templateMask = $tempDirectory . 'smarty/' . '*.php';
-            $count += self::clearDirectory($templateMask);
+        if ($clearAll) {
+            $count += self::clearTemplateCache($tempDirectory);
+            $count += self::clearContentCache();
         }
 
         return $count;
@@ -91,6 +91,22 @@ class FileCache
         }
 
         return count($files);
+    }
+
+    private static function clearTemplateCache(string $tempDirectory): int
+    {
+        $templateMask = $tempDirectory . 'smarty/' . '*.php';
+
+        return self::clearDirectory($templateMask);
+    }
+
+    private static function clearContentCache(): int
+    {
+        $sourcePath = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sShopDir');
+        $cachePath = $sourcePath . '/cache/';
+        $cacheMask = $cachePath . '*.cache';
+
+        return self::clearDirectory($cacheMask);
     }
 
     /**

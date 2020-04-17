@@ -291,7 +291,7 @@ class DatabaseProvider
          * @var string $databaseDriverOptions The options to pass to the database driver.
          */
         $databaseDriverOptions = $this->getConfigParam('dbDriverOptions');
-        if (!is_array($databaseDriverOptions)){
+        if (!is_array($databaseDriverOptions)) {
             $databaseDriverOptions = array();
         }
         /**

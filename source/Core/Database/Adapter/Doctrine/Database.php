@@ -186,7 +186,7 @@ class Database implements DatabaseInterface
             'driverOptions' => $connectionParameters['databaseDriverOptions'],
         ];
 
-        if (isset($connectionParameters['databaseUnixSocket'])){
+        if (isset($connectionParameters['databaseUnixSocket'])) {
             $pdoMysqlConnectionParameters['unix_socket'] = $connectionParameters['databaseUnixSocket'];
         }
 

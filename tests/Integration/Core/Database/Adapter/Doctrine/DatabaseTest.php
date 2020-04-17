@@ -522,7 +522,9 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
                 'databaseUser'          => 'myDatabaseUser',
                 'databasePassword'      => 'myDatabasePassword',
                 'databasePort'          => 'myDatabasePort',
-                'databaseDriverOptions' => array('testkey' => 'testvalue'),
+                'databaseDriverOptions' => [
+                    'testkey' => 'testvalue',
+                ],
             )
         );
         $this->database->setConnectionParameters($connectionParametersFromConfigInc);
@@ -533,10 +535,10 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
             'user'     => 'myDatabaseUser',
             'password' => 'myDatabasePassword',
             'port'     => 'myDatabasePort',
-            'driverOptions' => array(
+            'driverOptions' => [
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET @@SESSION.sql_mode=''",
                 'testkey'                    => 'testvalue',
-            )
+            ],
         );
         $this->assertEquals(
             $expectedConnectionParameters,

@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Change visibility of Session::setSessionCookie to protected for overwriting possibility [PR-785](https://github.com/OXID-eSales/oxideshop_ce/pull/785)
 - Use cache directory from config file for the container cache: [#0007111](https://bugs.oxid-esales.com/view.php?id=7111)
+- Get the correct path to admin menu file: [#0007126](https://bugs.oxid-esales.com/view.php?id=7126)
 
 ## [6.5.3] - 2020-03-25
 

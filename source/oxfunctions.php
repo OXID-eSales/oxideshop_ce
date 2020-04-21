@@ -91,10 +91,11 @@ function cmpart($a, $b)
  * Creates and returns new object. If creation is not available, dies and outputs
  * error message.
  *
- * @param string $className Name of class
- * @param mixed  ...$args   constructor arguments
+ * @template T
+ * @param class-string<T> $className
+ * param mixed  ...$args   constructor arguments
  *
- * @return object
+ * @return T
  */
 function oxNew($className, ...$args)
 {

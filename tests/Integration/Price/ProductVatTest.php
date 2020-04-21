@@ -15,13 +15,13 @@ use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidTestCase;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ProductVatTest extends OxidTestCase
+class ProductVatTest extends UnitTestCase
 {
-    private const FIRST_ARTICLE_ID = '1951';
-    private const SECOND_ARTICLE_ID = '1952';
-    private const THIRD_ARTICLE_ID = '1964';
+    private const FIRST_ARTICLE_ID = '101';
+    private const SECOND_ARTICLE_ID = '102';
+    private const THIRD_ARTICLE_ID = '103';
 
     private $countriesId = [
         'germany' => 'a7c40f631fc920687.20179984',
@@ -30,11 +30,20 @@ class ProductVatTest extends OxidTestCase
 
     protected function setUp(): void
     {
+        $this->createArticle(self::FIRST_ARTICLE_ID, 20);
+        $this->createArticle(self::SECOND_ARTICLE_ID, 30);
+        $this->createArticle(self::THIRD_ARTICLE_ID, 40);
+
         $this->createActiveUser('germany');
         $this->updateArticleVat(self::FIRST_ARTICLE_ID, 5);
         $this->updateArticleVat(self::SECOND_ARTICLE_ID, 10);
 
         parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
     }
 
     public function testProductVat(): void
@@ -45,12 +54,12 @@ class ProductVatTest extends OxidTestCase
         $basket->addToBasket(self::THIRD_ARTICLE_ID, 1);
 
         $basket->calculateBasket(true);
-        $this->assertSame(85.92, $basket->getNettoSum());
+        $this->assertSame(79.93, $basket->getNettoSum());
 
         $this->assertSame([
-            5  => '0,67',
-            10 => '0,55',
-            19 => '12,76',
+            5  => '0,95',
+            10 => '2,73',
+            19 => '6,39',
         ], $basket->getProductVats(true));
 
         $this->loginUser();
@@ -58,7 +67,7 @@ class ProductVatTest extends OxidTestCase
         $this->changeUserAddress('switzerland');
 
         $basket->calculateBasket(true);
-        $this->assertSame(85.92, $basket->getNettoSum());
+        $this->assertSame(79.93, $basket->getNettoSum());
 
         $this->assertSame([
             0  => '0,00',
@@ -130,8 +139,8 @@ class ProductVatTest extends OxidTestCase
             ]
         ];
 
-        $this->setRequestParameter('invadr', $countryInfo[strtolower($country)]);
-        $this->setRequestParameter('stoken', $this->getSession()->getSessionChallengeToken());
+        $_POST['invadr'] = $countryInfo[strtolower($country)];
+        $_POST['stoken'] = Registry::getSession()->getSessionChallengeToken();
 
         $userComponent = oxNew('oxcmp_user');
         $this->assertSame('payment', $userComponent->changeUser());
@@ -143,8 +152,8 @@ class ProductVatTest extends OxidTestCase
      */
     private function loginUser(): string
     {
-        $this->setRequestParameter('lgn_usr', 'testuser@oxideshop.dev');
-        $this->setRequestParameter('lgn_pwd', 'asdfasdf');
+        $_POST['lgn_usr'] = 'testuser@oxideshop.dev';
+        $_POST['lgn_pwd'] = 'asdfasdf';
         $oCmpUser = oxNew('oxcmp_user');
         return $oCmpUser->login();
     }
@@ -155,5 +164,16 @@ class ProductVatTest extends OxidTestCase
         $article->setId($articleId);
         $article->oxarticles__oxvat = new Field($vat);
         $article->save();
+    }
+
+    private function createArticle(string $articleId, int $price): void
+    {
+        $oArticle = oxNew(Article::class);
+        $oArticle->setAdminMode(null);
+        $oArticle->setId($articleId);
+        $oArticle->oxarticles__oxprice = new Field($price);
+        $oArticle->oxarticles__oxshopid = new Field(1);
+        $oArticle->oxarticles__oxtitle = new Field("test");
+        $oArticle->save();
     }
 }

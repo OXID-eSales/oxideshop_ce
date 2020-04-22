@@ -32,7 +32,6 @@
         "symfony/filesystem": "^5.0.4",
         "codeception/module-webdriver": "^1.0",
         "codeception/module-db": "^1.0"
-        "oxid-esales/oxideshop-demodata-ce": "dev-master"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "dev-master",
@@ -45,10 +44,16 @@
         "oxid-esales/oxideshop-ide-helper": "dev-master",
         "oxid-esales/azure-theme": "dev-master",
         "oxid-esales/oxideshop-facts": "dev-master",
-        "oxid-esales/testing-library": "dev-master",
         "squizlabs/php_codesniffer": "^3.5.4",
         "composer/composer": "^1",
-        "vimeo/psalm": "^3.8"
+        "vimeo/psalm": "^3.8",
+	"oxid-esales/codeception-modules": "*",
+        "oxid-esales/codeception-page-objects": "*",
+        "squizlabs/php_codesniffer": "^3.5.4",
+        "phpunit/phpunit": "^9",
+        "oxid-esales/testing-utils": "*",
+	"composer/composer": "^1",
+        "codeception/module-asserts": "^1.1"
     },
     "autoload": {
         "psr-4": {

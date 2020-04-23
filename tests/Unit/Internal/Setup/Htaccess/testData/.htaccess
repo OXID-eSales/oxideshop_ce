@@ -1,0 +1,64 @@
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    RewriteEngine On
+    RewriteBase /
+
+    RewriteRule ^(graphql/)    widget.php?cl=graphql   [QSA,NC,L]
+
+    RewriteCond %{REQUEST_URI}     config\.inc\.php [NC]
+    RewriteRule ^config\.inc\.php  index\.php       [R=301,L]
+
+    RewriteCond %{REQUEST_URI} setup   [NC]
+    RewriteRule ^setup(.*)$    Setup$1 [R=301,L]
+
+    RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+    RewriteRule .* - [F]
+
+    RewriteCond %{REQUEST_URI} oxseo\.php$
+    RewriteCond %{QUERY_STRING} mod_rewrite_module_is=off
+    RewriteRule oxseo\.php$ oxseo.php?mod_rewrite_module_is=on [L]
+
+    RewriteCond %{REQUEST_URI} !(\/admin\/|\/Core\/|\/Application\/|\/export\/|\/modules\/|\/out\/|\/Setup\/|\/tmp\/|\/views\/)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule !(\.html|\/|\.jpe?g|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc|\.svg)$ %{REQUEST_URI}/ [NC,R=301,L]
+
+    RewriteCond %{REQUEST_URI} !(\/admin\/|\/Core\/|\/Application\/|\/export\/|\/modules\/|\/out\/|\/Setup\/|\/tmp\/|\/views\/)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule (\.html|\/)$ oxseo.php
+
+
+    RewriteCond %{REQUEST_URI} (\/out\/pictures\/generated\/)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php [NC]
+
+    RewriteRule ^(vendor/) - [F,L,NC]
+    RewriteRule ^migration - [R=403,L]
+</IfModule>
+
+# disabling log file access from outside
+<FilesMatch "(EXCEPTION_LOG\.txt|\.log|\.tpl|pkg\.rev|\.ini|pkg\.info|\.pem|composer\.json|composer\.lock|test_config\.yml)$">
+   <IfModule mod_authz_core.c>
+       Require all denied
+   </IfModule>
+   <IfModule !mod_authz_core.c>
+       Order allow,deny
+       Deny from all
+   </IfModule>
+</FilesMatch>
+
+# Prevent .ht* files from being sent to outside requests
+<Files ~ "^\.ht">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+
+Options -Indexes
+DirectoryIndex index.php index.html

@@ -216,42 +216,6 @@ class BasketFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Vouchers for specific products and categories
-     *
-     * @group basketfrontend
-     */
-    public function testFrontendVouchersForSpecificCategoriesAndProducts()
-    {
-        $this->addToBasket("1000");
-        $this->addToBasket("1001");
-        $this->addToBasket("1002-1");
-        $this->addToBasket("1003");
-
-        $this->type("voucherNr", "test111");
-        $this->clickAndWait("//button[text()='%SUBMIT_COUPON%']");
-        $this->assertTextPresent("Reason: %ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP%");
-        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->type("voucherNr", "test111");
-        $this->clickAndWait("//button[text()='%SUBMIT_COUPON%']");
-        $this->assertEquals("%COUPON% (%NUMBER_2% test111) %REMOVE%", $this->getText("//div[@id='basketSummary']//tr[2]/th"));
-        $this->type("voucherNr", "test222");
-        $this->clickAndWait("//button[text()='%SUBMIT_COUPON%']");
-        $this->assertEquals("%COUPON% (%NUMBER_2% test111) %REMOVE%", $this->getText("//div[@id='basketSummary']//tr[2]/th"));
-        $this->assertEquals("-5,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"));
-        $this->assertEquals("%COUPON% (%NUMBER_2% test222) %REMOVE%", $this->getText("//div[@id='basketSummary']//tr[3]/th"));
-        $this->assertEquals("-9,00 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
-        $this->type("am_4", "3");
-        $this->clickAndWait("basketUpdate");
-        $this->assertEquals("-5,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"));
-        $this->assertEquals("-15,00 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
-        $this->check("//tr[@id='cartItem_1']/td[1]//input");
-        $this->check("//tr[@id='cartItem_4']/td[1]//input");
-        $this->clickAndWait("basketRemove");
-        $this->assertEquals("-5,00 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"));
-        $this->assertEquals("-3,00 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
-    }
-
-    /**
      * Orders: buying more items than available
      *
      * @group basketfrontend

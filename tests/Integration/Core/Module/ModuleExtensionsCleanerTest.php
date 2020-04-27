@@ -14,9 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
-class ModuleExtensionsCleanerTest extends UnitTestCase
+class ModuleExtensionsCleanerTest extends TestCase
 {
     /**
      * Test case for bug #6342

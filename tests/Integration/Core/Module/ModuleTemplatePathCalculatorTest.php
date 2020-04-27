@@ -10,15 +10,34 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\TestingLibrary\UnitTestCase;
-use oxModuleList;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\BCTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
+use PHPUnit\Framework\TestCase;
+use Webmozart\PathUtil\Path;
 
 /**
  * @group module
  * @package Unit\Core\Module
  */
-class ModuleTemplatePathCalculatorTest extends UnitTestCase
+class ModuleTemplatePathCalculatorTest extends TestCase
 {
+    use BCTrait;
+    use ContainerTrait;
+
+    public function setUp(): void
+    {
+        $this->setupBCAutoloader();
+        $this->setupTestContainer();
+        $this->forceDatabaseSetup();
+        parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        $this->tearDownTestContainer();
+    }
+
     /**
      * Full path to modules directory. Any path like string for testing purposes.
      *
@@ -59,6 +78,7 @@ class ModuleTemplatePathCalculatorTest extends UnitTestCase
     ];
 
     /**
+     * @doesNotPerformAssertions
      * Check if Class can be loaded with default shop methods.
      */
     public function testCanCreateClass()
@@ -138,9 +158,6 @@ class ModuleTemplatePathCalculatorTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathWithNoActiveModules()
     {
-        /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
-        $this->setConfigParam('aModulePaths', []);
-
         $templatePathCalculator = new ModuleTemplatePathCalculator(oxNew(ModuleList::class));
         $templatePathCalculator->setModulesPath($this->pathToModules);
 
@@ -157,12 +174,12 @@ class ModuleTemplatePathCalculatorTest extends UnitTestCase
      */
     public function testCalculateModuleTemplatePathFileNotExists()
     {
+        /** @var ShopConfigurationSettingDaoInterface $dao */
+
+        $this->loadFixture(Path::join(__DIR__, 'Fixtures', 'db_fixtures', 'calculate_module_template_path_file_not_exists.yaml'));
+
         $this->expectException('oxException');
         $this->expectExceptionMessage('Cannot find template file "/test_path/first_default.tpl"');
-
-        /** @var oxModuleList|PHPUnit\Framework\MockObject\MockObject $moduleListMock */
-        $this->setConfigParam('aModulePaths', [$this->exampleModuleId => true]);
-        $this->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
 
         $templatePathCalculator = new ModuleTemplatePathCalculator(oxNew(ModuleList::class));
         $templatePathCalculator->calculateModuleTemplatePath('first.tpl');

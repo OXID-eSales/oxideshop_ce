@@ -10,21 +10,24 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator;
-use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
-class ModuleSmartyPluginDirectoryValidatorTest extends UnitTestCase
+use PHPUnit\Framework\TestCase;
+
+class ModuleSmartyPluginDirectoryValidatorTest extends TestCase
 {
     public function testNonExistingDirectoriesValidation()
     {
         $this->expectException(ModuleValidationException::class);
         $directories = $this->getModuleSmartyPluginDirectories();
         $directories->add(['fakeDir'], 'id');
-        ;
 
         $validator = oxNew(ModuleSmartyPluginDirectoryValidator::class);
         $validator->validate($directories);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testExistingDirectoriesValidation()
     {
         $directories = $this->getModuleSmartyPluginDirectories();

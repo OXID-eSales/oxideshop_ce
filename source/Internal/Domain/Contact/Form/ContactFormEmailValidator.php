@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormFieldInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormValidatorInterface;

@@ -1,2 +1,3 @@
 imports:
     - { resource: Hash/services.yaml }
+    - { resource: Email/services.yaml }

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
  * Article details information page.
@@ -539,10 +539,10 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
-            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+                // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             } elseif ('recommlist' == $listType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
-            // END deprecated
+                // END deprecated
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
@@ -865,10 +865,10 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     {
         if ('search' == $this->getListType()) {
             $paths = $this->_getSearchBreadCrumb();
-        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+            // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         } elseif ('recommlist' == $this->getListType()) {
             $paths = $this->_getRecommendationListBredCrumb();
-        // END deprecated
+            // END deprecated
         } elseif ('vendor' == $this->getListType()) {
             $paths = $this->_getVendorBreadCrumb();
         } else {
@@ -1311,7 +1311,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         $searchPath['title'] = sprintf($translatedString, $this->getSearchParamForHtml());
         $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;" .
-                            "searchparam=" . $this->getSearchParamForHtml();
+            "searchparam=" . $this->getSearchParamForHtml();
 
         $paths[] = $searchPath;
 

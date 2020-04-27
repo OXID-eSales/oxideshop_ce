@@ -25,7 +25,7 @@ services:
   form.contact_form.contact_form_email_validator:
       class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator
       arguments:
-        - '@OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceInterface'
+        - '@OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface'
 
   OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormMessageBuilderInterface:
       class: OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormMessageBuilder

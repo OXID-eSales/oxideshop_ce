@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
  * Class for validating input.
@@ -45,9 +45,10 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aRequiredDCFields = ['lsbankname',
-                                          'lsktonr',
-                                          'lsktoinhaber'
+    protected $_aRequiredDCFields = [
+        'lsbankname',
+        'lsktonr',
+        'lsktoinhaber'
     ];
 
     /**

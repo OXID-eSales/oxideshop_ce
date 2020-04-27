@@ -11,7 +11,7 @@ use Exception;
 use OxidEsales\Eshop\Application\Model\OrderFileList;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -319,7 +319,7 @@ class Email extends PHPMailer
                 $method = str_replace("UNIT", "_", $method);
             }
             if (method_exists($this, $method)) {
-                return call_user_func_array([& $this, $method], $args);
+                return call_user_func_array([&$this, $method], $args);
             }
         }
 

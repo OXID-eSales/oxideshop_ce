@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Contact\Form;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormEmailValidator;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormFactory;
-use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorService;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorService;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\RequiredFieldsValidator;

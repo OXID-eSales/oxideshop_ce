@@ -7,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Email;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Email;
 
 /**
  * Class EmailValidatorServiceBridge
- * @package OxidEsales\EshopCommunity\Internal\Domain\Email
+ * @package OxidEsales\EshopCommunity\Internal\Utility\Email
  */
 class EmailValidatorServiceBridge implements EmailValidatorServiceBridgeInterface
 {

@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Turn off `autocomplete` for SMTP fields in admin template [PR-794](https://github.com/OXID-eSales/oxideshop_ce/pull/794)
 - Load only necessary config options [PR-787](https://github.com/OXID-eSales/oxideshop_ce/pull/787)
 - Move hash service from `\OxidEsales\EshopCommunity\Internal\Authentication\` to `\OxidEsales\EshopCommunity\Internal\Utility\Hash`
+- Email validation service moved to Utility `OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidationService`
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

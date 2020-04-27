@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Email;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Email;
 
 interface EmailValidatorServiceBridgeInterface extends EmailValidatorServiceInterface
 {

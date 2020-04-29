@@ -1,0 +1,16 @@
+parameters:
+  oxid_esales.utility.hash.service.password_hash.bcrypt.cost: 10
+  oxid_esales.utility.hash.service.password_hash.argon2.memory_cost: 1024
+  oxid_esales.utility.hash.service.password_hash.argon2.time_cost: 2
+  oxid_esales.utility.hash.service.password_hash.argon2.threads: 2
+
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\BcryptPasswordHashService
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface'
+      - '%oxid_esales.utility.hash.service.password_hash.bcrypt.cost%'

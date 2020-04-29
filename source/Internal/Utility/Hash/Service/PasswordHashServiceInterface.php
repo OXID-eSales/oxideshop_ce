@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Hash\Service;
 
 interface PasswordHashServiceInterface
 {

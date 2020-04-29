@@ -57,7 +57,7 @@ class PasswordServiceBridgeTest extends TestCase
         $passwordServiceBridge = $this->get(PasswordServiceBridgeInterface::class);
 
         $container = $this->getContainer();
-        $cost = $container->getParameter('oxid_esales.authentication.service.password_hash.bcrypt.cost');
+        $cost = $container->getParameter('oxid_esales.utility.hash.service.password_hash.bcrypt.cost');
 
         $passwordHashWithCostFromConfiguration = password_hash('secret', PASSWORD_BCRYPT, ['cost' => $cost]);
         $passwordHashWithCostChangedCost = password_hash('secret', PASSWORD_BCRYPT, ['cost' => $cost + 1]);

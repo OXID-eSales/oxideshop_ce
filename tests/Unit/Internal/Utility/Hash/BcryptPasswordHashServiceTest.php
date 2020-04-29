@@ -7,14 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Authentication\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Hash\Service;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\PasswordHashException;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicy;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\BcryptPasswordHashService;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordHashServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception\PasswordHashException;
+use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\BcryptPasswordHashService;
+use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\OptionsProvider\BcryptPasswordHashOptionsProvider;
 use PHPUnit\Framework\TestCase;
 
 /**

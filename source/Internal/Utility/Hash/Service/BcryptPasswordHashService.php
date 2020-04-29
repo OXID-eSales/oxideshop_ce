@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Hash\Service;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\PasswordHashException;
+use OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface;
 
 class BcryptPasswordHashService implements PasswordHashServiceInterface

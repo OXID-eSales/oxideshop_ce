@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception;
 
-class UnavailablePasswordHashException extends \Exception
+class PasswordHashException extends \Exception
 {
 }

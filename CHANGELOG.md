@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Change translations loading source for themes to be same as for core and modules
 - Turn off `autocomplete` for SMTP fields in admin template [PR-794](https://github.com/OXID-eSales/oxideshop_ce/pull/794)
 - Load only necessary config options [PR-787](https://github.com/OXID-eSales/oxideshop_ce/pull/787)
+- Move hash service from `\OxidEsales\EshopCommunity\Internal\Authentication\` to `\OxidEsales\EshopCommunity\Internal\Utility\Hash`
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
@@ -153,6 +154,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
 - Suggest (Recommend Product) feature [see](#654---2020-04-21)
 - News feature [see](#656---unreleased)
+- `OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\UnavailablePasswordHashException`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

@@ -216,36 +216,6 @@ class BasketFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Orders: buying more items than available
-     *
-     * @group basketfrontend
-     */
-    public function testFrontendOrderStep1BuyingLimit()
-    {
-        //TODO: Selenium refactor to remove SQL's executions ??
-        $this->executeSql("UPDATE `oxarticles` SET `OXSTOCKFLAG` = 3 WHERE `OXID` LIKE '1002%'");
-        $this->addToBasket("1002-1", 10);
-
-        $this->assertTextNotPresent("%ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK%: 5");
-        $this->assertEquals("5", $this->getValue("am_1"));
-        $this->assertEquals("275,00 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
-        $this->type("am_1", "10");
-        $this->clickAndWait("basketUpdate");
-        $this->assertEquals("5", $this->getValue("am_1"));
-        $this->assertTextPresent("%ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK%: 5");
-        $this->assertEquals("275,00 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
-        $this->clickAndWait("basketUpdate");
-        $this->assertEquals("5", $this->getValue("am_1"));
-        $this->assertTextNotPresent("%ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK%: 5");
-        $this->assertEquals("275,00 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
-        $this->type("am_1", "1");
-        $this->clickAndWait("basketUpdate");
-        $this->assertTextNotPresent("%ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK%: 5");
-        $this->assertEquals("1", $this->getValue("am_1"));
-        $this->assertEquals("55,00 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"));
-    }
-
-    /**
      * Discounts for products (category, product and itm discounts)
      *
      * @group basketfrontend

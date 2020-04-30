@@ -14,4 +14,5 @@ class ShopSettingType
     public const BOOLEAN = 'bool';
     public const ARRAY = 'arr';
     public const ASSOCIATIVE_ARRAY = 'aarr';
+    public const STRING = 'str';
 }

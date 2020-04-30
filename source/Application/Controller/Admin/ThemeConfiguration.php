@@ -65,6 +65,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
      * return theme filter for config variables
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getModuleForConfigVars" in next major
      */
     protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

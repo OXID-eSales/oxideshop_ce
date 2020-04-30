@@ -182,6 +182,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * this user, generates HTML and plaintext format newsletters.
      *
      * @param bool $blPerfLoadAktion perform option load actions
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setParams" in next major
      */
     protected function _setParams($blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -214,6 +215,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Creates oxuser object (user ID passed to method),
      *
      * @param string $sUserid User ID or OBJECT
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setUser" in next major
      */
     protected function _setUser($sUserid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -233,6 +235,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\Eshop\Core\Controller\BaseController $oView            view object to store view data
      * @param bool                                             $blPerfLoadAktion perform option load actions
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignProducts" in next major
      */
     protected function _assignProducts($oView, $blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -274,6 +277,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param int    $iDataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

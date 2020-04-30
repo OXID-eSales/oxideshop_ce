@@ -48,6 +48,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
      * Returns if actions are ON
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLoadActionsParam" in next major
      */
     protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

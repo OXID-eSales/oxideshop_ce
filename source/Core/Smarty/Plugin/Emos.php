@@ -449,6 +449,7 @@ class Emos
      * @param string $sCountry        customer country title
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setEmosBillingArray" in next major
      */
     protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -486,6 +487,7 @@ class Emos
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem      an instance of class EMOS_Item
      * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setEmosECPageArray" in next major
      */
     protected function _setEmosECPageArray($oItem, $sEvent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -503,6 +505,7 @@ class Emos
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to format its parameters
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "emos_ItemFormat" in next major
      */
     protected function _emos_ItemFormat($oItem) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -522,6 +525,7 @@ class Emos
      * @param string $sStr data input to format
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "emos_DataFormat" in next major
      */
     protected function _emos_DataFormat($sStr) //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -564,6 +568,7 @@ class Emos
 
     /**
      * formats up the connector script in a Econda ver 2 JS format
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareScript" in next major
      */
     public function _prepareScript() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -603,6 +608,7 @@ class Emos
      * @param mixed  $mContents Variable value
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addJsFormat" in next major
      */
     protected function _addJsFormat($sVarName, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -627,6 +633,7 @@ class Emos
      * @param mixed $mContents Input contents
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "jsEncode" in next major
      */
     protected function _jsEncode($mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

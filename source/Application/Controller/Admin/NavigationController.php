@@ -151,6 +151,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      * returns some messages if there is something to display
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "doStartUpChecks" in next major
      */
     protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -202,6 +203,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      * Checks if newer shop version available. If true - returns message
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkVersion" in next major
      */
     protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

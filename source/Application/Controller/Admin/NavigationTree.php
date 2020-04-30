@@ -51,6 +51,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param object $dom         dom object
      * @param string $parentXPath parent xpath
      * @param string $childXPath  child xpath from parent
+     * @deprecated underscore prefix violates PSR12, will be renamed to "cleanEmptyParents" in next major
      */
     protected function _cleanEmptyParents($dom, $parentXPath, $childXPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -70,6 +71,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * Adds links to xml nodes to resolve paths
      *
      * @param DomDocument $dom where to add links
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addLinks" in next major
      */
     protected function _addLinks($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -97,6 +99,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @param string      $menuFile which file to load
      * @param DomDocument $dom      where to load
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromFile" in next major
      */
     protected function _loadFromFile($menuFile, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -203,6 +206,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * add session parameters to local urls
      *
      * @param object $dom dom element to add links
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sessionizeLocalUrls" in next major
      */
     protected function _sessionizeLocalUrls($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -224,6 +228,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * Removes form tree elements which does not have required user rights
      *
      * @param object $dom DOMDocument
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkRights" in next major
      */
     protected function _checkRights($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -255,6 +260,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * Removes from tree elements which don't have required groups
      *
      * @param DOMDocument $dom document to check group
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkGroups" in next major
      */
     protected function _checkGroups($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -288,6 +294,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param DOMDocument $dom document to check group
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkDemoShopDenials" in next major
      */
     protected function _checkDemoShopDenials($dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -326,6 +333,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @param object $domElemTo   DOMElement
      * @param object $domElemFrom DOMElement
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyAttributes" in next major
      */
     protected function _copyAttributes($domElemTo, $domElemFrom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -342,6 +350,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param object $xPathTo     node path
      * @param object $domDocTo    node to append child
      * @param string $queryStart  node query
+     * @deprecated underscore prefix violates PSR12, will be renamed to "mergeNodes" in next major
      */
     protected function _mergeNodes($domElemTo, $domElemFrom, $xPathTo, $domDocTo, $queryStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -376,6 +385,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @param DomDocument $domNew what to merge
      * @param DomDocument $dom    where to merge
+     * @deprecated underscore prefix violates PSR12, will be renamed to "merge" in next major
      */
     protected function _merge($domNew, $dom) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -456,6 +466,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * Returns array with paths + names ox menu xml files. Paths are checked
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMenuFiles" in next major
      */
     protected function _getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -522,6 +533,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param string $cacheContents
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processCachedFile" in next major
      */
     protected function _processCachedFile($cacheContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -532,6 +544,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * get initial dom, not modified by init method
      *
      * @return DOMDocument
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getInitialDom" in next major
      */
     protected function _getInitialDom() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -709,6 +722,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * Admin url getter
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAdminUrl" in next major
      */
     protected function _getAdminUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -729,6 +743,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param string $rights session user rights
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "hasRights" in next major
      */
     protected function _hasRights($rights) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -741,6 +756,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param string $groupId active group id
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "hasGroup" in next major
      */
     protected function _hasGroup($groupId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

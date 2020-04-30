@@ -41,6 +41,7 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * @param object $oListObject list main object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
     protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

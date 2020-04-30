@@ -54,6 +54,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object (optional)
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getList" in next major
      */
     protected function _getList($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -105,6 +106,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterSelect" in next major
      */
     protected function _getFilterSelect($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

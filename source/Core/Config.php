@@ -362,6 +362,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Parse SEO url parameters.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processSeoCall" in next major
      */
     protected function _processSeoCall() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -473,6 +474,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Loads vars from default config file
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadVarsFromFile" in next major
      */
     protected function _loadVarsFromFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -492,6 +494,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Set important defaults.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaults" in next major
      */
     protected function _setDefaults() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -535,6 +538,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Loads vars from custom config file
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadCustomConfig" in next major
      */
     protected function _loadCustomConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -552,6 +556,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $module   module vars to load, empty for base options
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadVarsFromDb" in next major
      */
     protected function _loadVarsFromDb($shopID, $onlyVars = null, $module = '') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -598,6 +603,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param array $vars
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getConfigParamsSelectSnippet" in next major
      */
     protected function _getConfigParamsSelectSnippet($vars) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -621,6 +627,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $varVal  serialized by type value
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setConfVarFromDb" in next major
      */
     protected function _setConfVarFromDb($varName, $varType, $varVal) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -828,6 +835,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Checks if WEB session is SSL.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkSsl" in next major
      */
     protected function _checkSsl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2256,6 +2264,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * So just go straight and call the ExceptionHandler.
      *
      * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
+     * @deprecated underscore prefix violates PSR12, will be renamed to "handleDbConnectionException" in next major
      */
     protected function _handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2267,6 +2276,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Redirect to start page and display the error
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
+     * @deprecated underscore prefix violates PSR12, will be renamed to "handleCookieException" in next major
      */
     protected function _handleCookieException($ex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2310,6 +2320,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $shopId
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidShopId" in next major
      */
     protected function _isValidShopId($shopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -105,6 +105,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * get active category id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActCat" in next major
      */
     protected function _getActCat() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -141,6 +142,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * Category tree loader
      *
      * @param string $sActCat active category id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadCategoryTree" in next major
      */
     protected function _loadCategoryTree($sActCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -162,6 +164,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * Manufacturer tree loader
      *
      * @param string $sActManufacturer active Manufacturer id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadManufacturerTree" in next major
      */
     protected function _loadManufacturerTree($sActManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -217,6 +220,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * @param string                                      $sActVendor       active vendor
      *
      * @return string $sActCat
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addAdditionalParams" in next major
      */
     protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -261,6 +265,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * @param \OxidEsales\Eshop\Application\Model\Article $oProduct current product object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDefaultParams" in next major
      */
     protected function _getDefaultParams($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

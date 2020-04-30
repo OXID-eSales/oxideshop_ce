@@ -38,6 +38,7 @@ class CreditCardValidator
      * @param string $number credit card number
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidType" in next major
      */
     protected function _isValidType($type, $number) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -55,6 +56,7 @@ class CreditCardValidator
      * @param string $date credit card type
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isExpired" in next major
      */
     protected function _isExpired($date) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -78,6 +80,7 @@ class CreditCardValidator
      * @param string $number credit card number
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidNumer" in next major
      */
     protected function _isValidNumer($number) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

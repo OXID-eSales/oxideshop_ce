@@ -26,6 +26,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns target "extension" (/)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
     protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -146,6 +147,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int    $languageId Language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
     protected function _getAltUri($vendorId, $languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -135,6 +135,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts payment information to DB. Returns insert status.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -170,6 +171,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates payment record in DB. Returns update status.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

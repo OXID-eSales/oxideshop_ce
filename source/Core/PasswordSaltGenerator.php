@@ -54,6 +54,7 @@ class PasswordSaltGenerator
      * Gets open SSL functionality checker.
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getOpenSSLFunctionalityChecker" in next major
      */
     protected function _getOpenSSLFunctionalityChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -64,6 +65,7 @@ class PasswordSaltGenerator
      * Generates custom salt.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "customSaltGenerator" in next major
      */
     protected function _customSaltGenerator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

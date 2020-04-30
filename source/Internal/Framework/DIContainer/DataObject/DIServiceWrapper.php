@@ -129,9 +129,6 @@ class DIServiceWrapper
         return class_exists($this->getClass());
     }
 
-    /**
-     *
-     */
     private function addShopAwareCallsIfMissing()
     {
         if (!$this->hasCall($this::SET_ACTIVE_SHOPS_METHOD)) {

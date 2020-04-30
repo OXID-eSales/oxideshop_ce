@@ -147,6 +147,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Adds category specific fields to vendor object
      *
      * @param object $oVendor vendor object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addCategoryFields" in next major
      */
     protected function _addCategoryFields($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -181,6 +182,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Processes vendor category URLs
+     * @deprecated underscore prefix violates PSR12, will be renamed to "seoSetVendorData" in next major
      */
     protected function _seoSetVendorData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

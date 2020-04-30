@@ -249,6 +249,7 @@ class FileChecker
      * in case if a general error is thrown by webservice
      *
      * @return string error
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isWebServiceOnline" in next major
      */
     protected function _isWebServiceOnline() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -288,6 +289,7 @@ class FileChecker
      * asks the webservice, if the shop version is known.
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isShopVersionIsKnown" in next major
      */
     protected function _isShopVersionIsKnown() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -401,6 +403,7 @@ class FileChecker
      * @param string $sFile File to check
      *
      * @return \SimpleXMLElement
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFileVersion" in next major
      */
     protected function _getFileVersion($sMD5, $sFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

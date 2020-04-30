@@ -517,6 +517,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param object $oModule2 module object
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sortModules" in next major
      */
     protected function _sortModules($oModule1, $oModule2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -529,6 +530,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param string $sModuleDir dir path
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isVendorDir" in next major
      */
     protected function _isVendorDir($sModuleDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -553,6 +555,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param string $moduleId Module id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getInvalidExtensions" in next major
      */
     private function _getInvalidExtensions($moduleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

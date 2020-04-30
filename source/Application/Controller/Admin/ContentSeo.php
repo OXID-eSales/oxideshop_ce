@@ -18,6 +18,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns url type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
     protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -28,6 +29,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns current object type seo encoder object
      *
      * @return oxSeoEncoderContent
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
     protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

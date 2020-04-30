@@ -499,6 +499,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl   url to extract
      * @param array  $aHosts hosts array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addHost" in next major
      */
     protected function _addHost($sUrl, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -514,6 +515,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aLanguageUrls array of language urls to extract
      * @param array $aHosts        hosts array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addLanguageHost" in next major
      */
     protected function _addLanguageHost($aLanguageUrls, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -528,6 +530,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * Collects and returns current shop hosts array.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getHosts" in next major
      */
     protected function _getHosts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -557,6 +560,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * Appends shop mall urls to $aHosts if needed
      *
      * @param array $aHosts hosts array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addMallHosts" in next major
      */
     protected function _addMallHosts(&$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

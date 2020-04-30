@@ -40,6 +40,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blIgnore if FALSE - blocks from direct access when default language seo url with language ident executed
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getIdent" in next major
      */
     protected function _getIdent($sSeoUrl, $blIgnore = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -95,6 +96,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      *
      * @access         public
      * @return string || false
+     * @deprecated underscore prefix violates PSR12, will be renamed to "decodeOldUrl" in next major
      */
     protected function _decodeOldUrl($seoUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -146,6 +148,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param string $sUrl url to append
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addQueryString" in next major
      */
     protected function _addQueryString($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -169,6 +172,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param int    $iShopId   shop id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoUrl" in next major
      */
     protected function _getSeoUrl($sObjectId, $iLang, $iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -246,6 +250,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param string $sParams request params (url chunk)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "decodeSimpleUrl" in next major
      */
     protected function _decodeSimpleUrl($sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -284,6 +289,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param string $sType     type of object to search in seo table
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getObjectUrl" in next major
      */
     protected function _getObjectUrl($sSeoId, $sTable, $iLanguage, $sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -314,6 +320,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param string $sPath    path
      *
      * @return array $aParams extracted params
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getParams" in next major
      */
     protected function _getParams($sRequest, $sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

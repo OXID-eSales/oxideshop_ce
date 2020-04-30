@@ -213,6 +213,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      *
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCreateTableSetSql" in next major
      */
     protected function _getCreateTableSetSql($table, $lang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

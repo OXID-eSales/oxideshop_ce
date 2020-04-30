@@ -248,6 +248,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle      Article
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addDynParamsToLink" in next major
      */
     protected function _addDynParamsToLink($sAddDynParams, $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -271,6 +272,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      * @param string $sArticleId Article id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleById" in next major
      */
     protected function _getArticleById($sArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

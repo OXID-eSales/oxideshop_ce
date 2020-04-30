@@ -48,6 +48,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      * get RssFeed
      *
      * @return RssFeed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getRssFeed" in next major
      */
     protected function _getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -105,6 +106,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      * @param string $sInput input to process
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processOutput" in next major
      */
     protected function _processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

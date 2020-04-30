@@ -174,6 +174,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param string $sValue value to fix
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processLongDesc" in next major
      */
     protected function _processLongDesc($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -230,6 +231,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param string                                       $field picture field name
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteCatPicture" in next major
      */
     protected function _deleteCatPicture($item, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -277,6 +279,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param array $aReqParams Request parameters.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "parseRequestParametersForSave" in next major
      */
     protected function _parseRequestParametersForSave($aReqParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

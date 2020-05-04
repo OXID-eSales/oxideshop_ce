@@ -22,7 +22,7 @@ class SimpleXmlTest extends \OxidTestCase
         $oTestObject = oxNew('StdClass');
         $oTestObject->title = "TestTitle";
         $oTestObject->keys = oxNew('StdClass');
-        $oTestObject->keys->key = array("testKey1", "someSpecialCharsValue&€#","testKey2");
+        $oTestObject->keys->key = array("testKey1", "someSpecialCharsValue&€#", "testKey2");
 
         $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
         $sTestResult .= "<testXml>";

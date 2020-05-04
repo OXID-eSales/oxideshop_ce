@@ -199,6 +199,15 @@ function editThis( sID )
             <td class="[{$listclass}]"><input type="text" class="editinput" size="7" maxlength="[{$listitem->oxarticles__oxsort->fldmax_length}]" name="editval[[{$listitem->oxarticles__oxid->value}]][oxarticles__oxsort]" value="[{$listitem->oxarticles__oxsort->value}]" [{$readonly}]></td>
             <td class="[{$listclass}]"><input type="text" class="editinput" size="7" maxlength="[{$listitem->oxarticles__oxstock->fldmax_length}]" name="editval[[{$listitem->oxarticles__oxid->value}]][oxarticles__oxstock]" value="[{$listitem->oxarticles__oxstock->value}]" [{$readonly}]></td>
             <td class="[{$listclass}]">
+              [{oxmultilang ident="ARTICLE_STOCK_MINDELTIME"}] <input type="text" class="editinput" size="2" maxlength="[{$listitem->oxarticles__oxstock->fldmax_length}]" name="editval[[{$listitem->oxarticles__oxid->value}]][oxarticles__oxmindeltime]" value="[{$listitem->oxarticles__oxmindeltime->value}]" [{$readonly}]>
+              [{oxmultilang ident="ARTICLE_STOCK_MAXDELTIME"}] <input type="text" class="editinput" size="2" maxlength="[{$listitem->oxarticles__oxstock->fldmax_length}]" name="editval[[{$listitem->oxarticles__oxid->value}]][oxarticles__oxmaxdeltime]" value="[{$listitem->oxarticles__oxmaxdeltime->value}]" [{$readonly}]>
+              <select name="editval[[{$listitem->oxarticles__oxid->value}]][oxarticles__oxdeltimeunit]" class="editinput">
+                <option value="DAY" [{if $listitem->oxarticles__oxdeltimeunit->value == "DAY"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_DAYS"}]</option>
+                <option value="WEEK" [{if $listitem->oxarticles__oxdeltimeunit->value == "WEEK"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_WEEKS"}]</option>
+                <option value="MONTH" [{if $listitem->oxarticles__oxdeltimeunit->value == "MONTH"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_MONTHS"}]</option>
+              </select>
+            </td>
+            <td class="[{$listclass}]">
               <select name="editval[[{$listitem->oxarticles__oxid->value}]][oxarticles__oxstockflag]" class="editinput" [{$readonly}]>
               <option value="1" [{if $listitem->oxarticles__oxstockflag->value == 1}]SELECTED[{/if}]>[{oxmultilang ident="GENERAL_STANDARD"}]</option>
               <option value="4" [{if $listitem->oxarticles__oxstockflag->value == 4}]SELECTED[{/if}]>[{oxmultilang ident="GENERAL_EXTERNALSTOCK"}]</option>

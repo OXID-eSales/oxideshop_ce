@@ -103,10 +103,10 @@ function editThis( sID )
 
                     [{oxmultilang ident="ARTICLE_STOCK_MAXDELTIME"}]&nbsp;<input type="text" class="editinput" size="3" maxlength="[{$edit->oxarticles__oxmaxdeltime->fldmax_width}]" name="editval[oxarticles__oxmaxdeltime]" value="[{$edit->oxarticles__oxmaxdeltime->value}]">
 
-                    &nbsp;<select name="editval[oxarticles__oxdeltimeunit]" class="editinput">
-                    <option value="DAY" [{if $edit->oxarticles__oxdeltimeunit->value == "DAY"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_DAYS"}]</option>
-                    <option value="WEEK" [{if $edit->oxarticles__oxdeltimeunit->value == "WEEK"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_WEEKS"}]</option>
-                    <option value="MONTH" [{if $edit->oxarticles__oxdeltimeunit->value == "MONTH"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_MONTHS"}]</option>
+                    <select name="editval[oxarticles__oxdeltimeunit]" class="editinput">
+                      <option value="DAY" [{if $edit->oxarticles__oxdeltimeunit->value == "DAY"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_DAYS"}]</option>
+                      <option value="WEEK" [{if $edit->oxarticles__oxdeltimeunit->value == "WEEK"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_WEEKS"}]</option>
+                      <option value="MONTH" [{if $edit->oxarticles__oxdeltimeunit->value == "MONTH"}]SELECTED[{/if}]>[{oxmultilang ident="ARTICLE_STOCK_MONTHS"}]</option>
                     </select>
                   [{oxinputhelp ident="HELP_ARTICLE_STOCK_DELTIME"}]
                   </td>

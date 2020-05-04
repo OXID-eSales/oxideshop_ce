@@ -19,7 +19,7 @@ final class DefaultLanguageTest extends TestCase
     {
         $language = new DefaultLanguage('de');
 
-        $this->assertEquals(0, $language->getCode());
+        $this->assertEquals('de', $language->getCode());
     }
 
     public function testThrowsExceptionOnIncorrectLanguage(): void

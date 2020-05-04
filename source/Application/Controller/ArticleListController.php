@@ -237,6 +237,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * - redirecting to first page in case requested page does not exist
      * or
      * - displays 404 error if category has no products
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkRequestedPage" in next major
      */
     protected function _checkRequestedPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -256,6 +257,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processListArticles" in next major
      */
     protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -313,6 +315,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *  - OXARTICLE_LINKTYPE_CATEGORY - when active category is regular category
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductLinkType" in next major
      */
     protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -365,6 +368,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param Category $category category object
      *
      * @return oxArticleList
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadArticles" in next major
      */
     protected function _loadArticles($category) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -417,6 +421,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * soon product list loading is refactored
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getRequestPageNr" in next major
      */
     protected function _getRequestPageNr() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -427,6 +432,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Get list display type
      *
      * @return null|string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getListDisplayType" in next major
      */
     protected function _getListDisplayType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -443,6 +449,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Returns active product id to load its seo meta info
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -455,6 +462,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Returns string built from category titles
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCatPathString" in next major
      */
     protected function _getCatPathString() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -486,6 +494,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param bool   $descriptionTag If true - performs additional duplicate cleaning.
      *
      * @return  string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -545,6 +554,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param bool   $descriptionTag If true - performs additional duplicate cleaning
      *
      * @return  string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "collectMetaDescription" in next major
      */
     protected function _collectMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -583,6 +593,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param bool   $removeDuplicatedWords Remove duplicated words
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -620,6 +631,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param string $keywords category path
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "collectMetaKeyword" in next major
      */
     protected function _collectMetaKeyword($keywords) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -690,6 +702,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param int    $languageId  Requested language
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
     protected function _addPageNrParam($url, $currentPage, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -709,6 +722,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Returns true if we have category
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isActCategory" in next major
      */
     protected function _isActCategory() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -783,6 +797,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param int $languageId Language id
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
     protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -100,6 +100,7 @@ class RequiredAddressFields
      * @param string $sPrefix
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "filterFields" in next major
      */
     private function _filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

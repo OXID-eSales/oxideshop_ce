@@ -137,6 +137,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryList" in next major
      */
     protected function _getCategoryList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -183,6 +184,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorList" in next major
      */
     protected function _getVendorList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -200,6 +202,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturerList" in next major
      */
     protected function _getManufacturerList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -277,6 +280,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns alternative seo entry id
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltSeoEntryId" in next major
      */
     protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -287,6 +291,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns url type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
     protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -309,6 +314,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns current object type seo encoder object
      *
      * @return oxSeoEncoderCategory
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
     protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

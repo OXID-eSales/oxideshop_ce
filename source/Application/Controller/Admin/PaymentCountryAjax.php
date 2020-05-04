@@ -40,6 +40,7 @@ class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

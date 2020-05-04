@@ -182,6 +182,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
      * Overrides parent method to pass referred id
      *
      * @param string $sNode referred id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
     protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

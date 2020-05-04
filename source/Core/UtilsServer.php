@@ -79,6 +79,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * Checks if cookie must be saved to session in order to transfer it to different domain
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "mustSaveToSession" in next major
      */
     protected function _mustSaveToSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -109,6 +110,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param bool $blGet mode - true - get, false - set cookie
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSessionCookieKey" in next major
      */
     protected function _getSessionCookieKey($blGet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -130,6 +132,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param int    $iExpire expiration time
      * @param string $sPath   cookie path
      * @param string $sDomain cookie domain
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveSessionCookie" in next major
      */
     protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -173,6 +176,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sPath user defined cookie path
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCookiePath" in next major
      */
     protected function _getCookiePath($sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -195,6 +199,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sDomain the domain that the cookie is available.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCookieDomain" in next major
      */
     protected function _getCookieDomain($sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -416,6 +421,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param string $sServerHost request host.
      *
      * @return bool true if $sURL is equal to current page URL
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isCurrentUrl" in next major
      */
     public function _isCurrentUrl($sURL, $sServerHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

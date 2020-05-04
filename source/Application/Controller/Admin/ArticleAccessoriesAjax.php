@@ -63,6 +63,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      * @throws DatabaseConnectionException
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -117,6 +118,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      * overide default sorting and replace it with OXSORT field
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSorting" in next major
      */
     protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -165,6 +165,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param string $sContentIdent ident of content to display
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "canShowContent" in next major
      */
     protected function _canShowContent($sContentIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -183,6 +184,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -201,6 +203,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -255,6 +258,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Returns active content id to load its seo meta info
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -318,6 +322,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param int $iLang language id
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
     protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -328,6 +333,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Returns name of template
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getTplName" in next major
      */
     protected function _getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

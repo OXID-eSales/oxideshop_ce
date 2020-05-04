@@ -401,6 +401,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      * @param array                                      $aWrapping
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setWrappingInfo" in next major
      */
     protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

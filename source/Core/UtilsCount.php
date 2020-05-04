@@ -384,6 +384,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * Loads and returns category cache data array
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCatCache" in next major
      */
     protected function _getCatCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -410,6 +411,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * Writes category data into cache
      *
      * @param array $aCache A cacheable data
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setCatCache" in next major
      */
     protected function _setCatCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -421,6 +423,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * Writes vendor data into cache
      *
      * @param array $aCache A cacheable data
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setVendorCache" in next major
      */
     protected function _setVendorCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -432,6 +435,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * Writes Manufacturer data into cache
      *
      * @param array $aCache A cacheable data
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setManufacturerCache" in next major
      */
     protected function _setManufacturerCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -443,6 +447,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * Loads and returns category/vendor cache data array
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorCache" in next major
      */
     protected function _getVendorCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -468,6 +473,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * Loads and returns category/Manufacturer cache data array
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturerCache" in next major
      */
     protected function _getManufacturerCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -495,6 +501,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * @param bool $blReset optional, default = false
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUserViewId" in next major
      */
     protected function _getUserViewId($blReset = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

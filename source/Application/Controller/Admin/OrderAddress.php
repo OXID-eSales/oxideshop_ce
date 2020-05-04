@@ -53,6 +53,7 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param array  $aIgnore        fields which must be ignored while processing
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processAddress" in next major
      */
     protected function _processAddress($aData, $sTypeToProcess, $aIgnore) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

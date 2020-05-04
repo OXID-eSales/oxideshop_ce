@@ -134,6 +134,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
      * Returns params (article id, bid price)
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getParams" in next major
      */
     private function _getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

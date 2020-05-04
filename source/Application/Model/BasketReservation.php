@@ -39,6 +39,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      * return the ID of active resevations user basket
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getReservationsId" in next major
      */
     protected function _getReservationsId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -58,6 +59,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      * @param string $sBasketId basket id for this user basket
      *
      * @return \OxidEsales\EshopCommunity\Application\Model\UserBasket
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadReservations" in next major
      */
     protected function _loadReservations($sBasketId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -99,6 +101,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      * return currently reserved items in an array format array (artId => amount)
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getReservedItems" in next major
      */
     protected function _getReservedItems() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -145,6 +148,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "basketDifference" in next major
      */
     protected function _basketDifference(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -168,6 +172,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      * @param array $aBasketDiff basket difference array
      *
      * @see oxBasketReservation::_basketDifference
+     * @deprecated underscore prefix violates PSR12, will be renamed to "reserveArticles" in next major
      */
     protected function _reserveArticles($aBasketDiff) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

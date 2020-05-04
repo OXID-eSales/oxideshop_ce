@@ -85,6 +85,7 @@ class ConfigFile
      * this method is a subject to be changed.
      *
      * @param string $fileName Configuration file name
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadVars" in next major
      */
     private function _loadVars($fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

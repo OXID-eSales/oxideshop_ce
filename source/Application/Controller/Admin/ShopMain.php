@@ -145,6 +145,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      * Returns array of config variables which cannot be copied
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNonCopyConfigVars" in next major
      */
     protected function _getNonCopyConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -180,6 +181,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      * Copies base shop config variables to current
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop new shop object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyConfigVars" in next major
      */
     protected function _copyConfigVars($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -47,13 +47,14 @@ abstract class OnlineCaller
      * Gets XML document name.
      *
      * @return string XML document tag name.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getXMLDocumentName" in next major
      */
     abstract protected function _getXMLDocumentName(); // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-
     /**
      * Gets service url.
      *
      * @return string Web service url.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getServiceUrl" in next major
      */
     abstract protected function _getServiceUrl(); // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 
@@ -130,6 +131,7 @@ abstract class OnlineCaller
      * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which email should be formed.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formEmail" in next major
      */
     protected function _formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -142,6 +144,7 @@ abstract class OnlineCaller
      * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which server request should be formed.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formXMLRequest" in next major
      */
     protected function _formXMLRequest($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -152,6 +155,7 @@ abstract class OnlineCaller
      * Gets simple XML.
      *
      * @return \OxidEsales\Eshop\Core\SimpleXml
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSimpleXml" in next major
      */
     protected function _getSimpleXml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -162,6 +166,7 @@ abstract class OnlineCaller
      * Gets curl.
      *
      * @return \OxidEsales\Eshop\Core\Curl
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCurl" in next major
      */
     protected function _getCurl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -172,6 +177,7 @@ abstract class OnlineCaller
      * Gets email builder.
      *
      * @return \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEmailBuilder" in next major
      */
     protected function _getEmailBuilder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -185,6 +191,7 @@ abstract class OnlineCaller
      * @param string $sXml Data to send. Currently OXID servers only accept XML formatted data.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "executeCurlCall" in next major
      */
     private function _executeCurlCall($sUrl, $sXml) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -204,6 +211,7 @@ abstract class OnlineCaller
      * Sends an email with server information.
      *
      * @param string $sBody Mail content.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sendEmail" in next major
      */
     private function _sendEmail($sBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -215,6 +223,7 @@ abstract class OnlineCaller
      * Resets config parameter iFailedOnlineCallsCount if it's bigger than 0.
      *
      * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetFailedCallsCount" in next major
      */
     private function _resetFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -227,6 +236,7 @@ abstract class OnlineCaller
      * increases failed calls count.
      *
      * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "increaseFailedCallsCount" in next major
      */
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

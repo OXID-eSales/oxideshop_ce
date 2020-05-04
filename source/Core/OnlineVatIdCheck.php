@@ -110,6 +110,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *  - if output, returned by service, is valid.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isServiceAvailable" in next major
      */
     protected function _isServiceAvailable() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -147,6 +148,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      * @param object $oCheckVat vat object
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkOnline" in next major
      */
     protected function _checkOnline($oCheckVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

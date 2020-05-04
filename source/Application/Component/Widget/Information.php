@@ -54,6 +54,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      * Returns content list object.
      *
      * @return object|oxContentList
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getContentList" in next major
      */
     protected function _getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

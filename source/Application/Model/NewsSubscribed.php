@@ -127,6 +127,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts nbews object data to DB. Returns true on success.
      *
      * @return mixed oxid on success or false on failure
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -140,6 +141,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      * We need to check if we unsubscribe here
      *
      * @return mixed oxid on success or false on failure
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

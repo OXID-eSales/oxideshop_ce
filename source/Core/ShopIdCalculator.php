@@ -46,6 +46,7 @@ class ShopIdCalculator
      * Returns configuration key. This method is independent from oxConfig functionality.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getConfKey" in next major
      */
     protected function _getConfKey() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -62,6 +63,7 @@ class ShopIdCalculator
      * Returns shop url to id map from config.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopUrlMap" in next major
      */
     protected function _getShopUrlMap() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

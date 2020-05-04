@@ -32,6 +32,7 @@ class DynamicScreenController extends \OxidEsales\Eshop\Application\Controller\A
      * Sets up navigation for current view
      *
      * @param string $sNode None name
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
     protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

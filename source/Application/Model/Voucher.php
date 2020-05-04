@@ -219,6 +219,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAvailablePrice" in next major
      */
     protected function _isAvailablePrice($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -244,6 +245,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return bool
      *
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAvailableWithSameSeries" in next major
      */
     protected function _isAvailableWithSameSeries($aVouchers) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -279,6 +281,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAvailableWithOtherSeries" in next major
      */
     protected function _isAvailableWithOtherSeries($aVouchers) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -320,6 +323,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidDate" in next major
      */
     protected function _isValidDate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -357,6 +361,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isNotReserved" in next major
      */
     protected function _isNotReserved() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -397,6 +402,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAvailableInOtherOrder" in next major
      */
     protected function _isAvailableInOtherOrder($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -432,6 +438,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidUserGroup" in next major
      */
     protected function _isValidUserGroup($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -500,6 +507,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns true if voucher is product specific, otherwise false
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isProductVoucher" in next major
      */
     protected function _isProductVoucher() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -519,6 +527,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns true if voucher is category specific, otherwise false
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isCategoryVoucher" in next major
      */
     protected function _isCategoryVoucher() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -538,6 +547,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns the discount object created from voucher serie data
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSerieDiscount" in next major
      */
     protected function _getSerieDiscount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -569,6 +579,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param \OxidEsales\Eshop\Application\Model\Discount $oDiscount discount object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getBasketItems" in next major
      */
     protected function _getBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -587,6 +598,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param \OxidEsales\Eshop\Application\Model\Discount $oDiscount discount object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getOrderBasketItems" in next major
      */
     protected function _getOrderBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -621,6 +633,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param \OxidEsales\Eshop\Application\Model\Discount $oDiscount discount object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSessionBasketItems" in next major
      */
     protected function _getSessionBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -672,6 +685,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getGenericDiscountValue" in next major
      */
     protected function _getGenericDiscountValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -739,6 +753,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductDiscountValue" in next major
      */
     protected function _getProductDiscountValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -820,6 +835,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxVoucherException exception
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryDiscountValue" in next major
      */
     protected function _getCategoryDiscountValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -878,6 +894,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * of 3 hours if not configured
      *
      * @return integer Seconds a voucher can stay in status reserved
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVoucherTimeout" in next major
      */
     protected function _getVoucherTimeout() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

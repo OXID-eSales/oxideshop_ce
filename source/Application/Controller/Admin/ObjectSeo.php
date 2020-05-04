@@ -100,6 +100,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      * @param array $aSeoData Seo data array
      *
      * @return null|string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAdditionalParams" in next major
      */
     protected function _getAdditionalParams($aSeoData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -117,6 +118,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      * Returns id of object which must be saved
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSaveObjectId" in next major
      */
     protected function _getSaveObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -159,6 +161,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
     /**
      * Returns url type
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
     protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -170,6 +173,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      * @param string $sOxid object id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getStdUrl" in next major
      */
     protected function _getStdUrl($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -193,6 +197,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
     /**
      * Returns alternative seo entry id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltSeoEntryId" in next major
      */
     protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -202,6 +207,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      * Returns seo entry type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoEntryType" in next major
      */
     protected function _getSeoEntryType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -222,6 +228,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
 
     /**
      * Returns current object type seo encoder object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
     protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

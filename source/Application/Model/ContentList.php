@@ -115,6 +115,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param integer $iType - type of content
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -128,6 +129,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Load category list data
      *
      * @param integer $type - type of content
+     * @deprecated underscore prefix violates PSR12, will be renamed to "load" in next major
      */
     protected function _load($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -146,6 +148,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Extract oxContentList object to associative array with oxloadid as keys.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "extractListToArray" in next major
      */
     protected function _extractListToArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -163,6 +166,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param integer $iType type.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSQLByType" in next major
      */
     protected function _getSQLByType($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

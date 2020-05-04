@@ -40,6 +40,7 @@ class Encryptor
      * @param string $string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formKey" in next major
      */
     protected function _formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

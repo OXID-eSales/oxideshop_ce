@@ -146,6 +146,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Adds category specific fields to manufacturer object
      *
      * @param object $oManufacturer manufacturer object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addCategoryFields" in next major
      */
     protected function _addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -180,6 +181,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Processes manufacturer category URLs
+     * @deprecated underscore prefix violates PSR12, will be renamed to "seoSetManufacturerData" in next major
      */
     protected function _seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -51,6 +51,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formEmail" in next major
      */
     protected function _formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -67,6 +68,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      * @throws oxException
      *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formResponse" in next major
      */
     protected function _formResponse($sRawResponse) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -105,6 +107,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      * Gets XML document name.
      *
      * @return string XML document tag name.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getXMLDocumentName" in next major
      */
     protected function _getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -115,6 +118,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      * Gets service url.
      *
      * @return string Web service url.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getServiceUrl" in next major
      */
     protected function _getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

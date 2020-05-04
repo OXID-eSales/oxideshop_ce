@@ -78,6 +78,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sId "table_name.col_name"
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActionIds" in next major
      */
     protected function _getActionIds($sId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -103,6 +104,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Empty function, developer should override this method according requirements
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -115,6 +117,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sQ part of initial query
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDataQuery" in next major
      */
     protected function _getDataQuery($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -127,6 +130,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sQ part of initial query
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCountQuery" in next major
      */
     protected function _getCountQuery($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -158,6 +162,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Returns column id to sort
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSortCol" in next major
      */
     protected function _getSortCol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -177,6 +182,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sId container id (optional)
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getColNames" in next major
      */
     protected function _getColNames($sId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -196,6 +202,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * in AJAX and further in this processor class
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getIdentColNames" in next major
      */
     protected function _getIdentColNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -215,6 +222,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Returns array of col names which are requested by AJAX call and will be fetched from DB
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVisibleColNames" in next major
      */
     protected function _getVisibleColNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -250,6 +258,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * fields to load from DB
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQueryCols" in next major
      */
     protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -266,6 +275,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param bool  $blIdentCols if true, means ident columns part is build
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildColsQuery" in next major
      */
     protected function _buildColsQuery($aIdentCols, $blIdentCols = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -293,6 +303,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sColumn column name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isExtendedColumn" in next major
      */
     protected function _isExtendedColumn($sColumn) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -310,6 +321,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param int    $iCnt       column count
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getExtendedColQuery" in next major
      */
     protected function _getExtendedColQuery($sViewTable, $sColumn, $iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -325,6 +337,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Formats and returns part of SQL query for sorting
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSorting" in next major
      */
     protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -337,6 +350,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param int $iStart start position
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLimit" in next major
      */
     protected function _getLimit($iStart) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -350,6 +364,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Returns part of SQL query for filtering DB data
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilter" in next major
      */
     protected function _getFilter() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -394,6 +409,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sQ query to add filter condition
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
     protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -410,6 +426,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sQ SQL query
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAll" in next major
      */
     protected function _getAll($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -429,6 +446,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Checks user input and returns SQL sorting direction key
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSortDir" in next major
      */
     protected function _getSortDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -444,6 +462,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Returns position from where data must be loaded
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getStartIndex" in next major
      */
     protected function _getStartIndex() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -456,6 +475,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sQ SQL query
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getTotalCount" in next major
      */
     protected function _getTotalCount($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -475,6 +495,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sQ SQL query
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDataFields" in next major
      */
     protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -486,6 +507,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Outputs JSON encoded data
      *
      * @param array $aData data to output
+     * @deprecated underscore prefix violates PSR12, will be renamed to "outputResponse" in next major
      */
     protected function _outputResponse($aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -496,6 +518,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * Echoes given string
      *
      * @param string $sOut string to echo
+     * @deprecated underscore prefix violates PSR12, will be renamed to "output" in next major
      */
     protected function _output($sOut) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -508,6 +531,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sTable table name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewName" in next major
      */
     protected function _getViewName($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -521,6 +545,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      * @param string $sQ      data load query
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getData" in next major
      */
     protected function _getData($sCountQ, $sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -628,6 +653,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Resets content cache.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetContentCache" in next major
      */
     protected function _resetContentCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -635,6 +661,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Resets output caches
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetCaches" in next major
      */
     protected function _resetCaches() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

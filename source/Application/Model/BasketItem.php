@@ -715,6 +715,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param string $sProductId product id
      *
      * @throws oxNoArticleException exception
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setArticle" in next major
      */
     protected function _setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -753,6 +754,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *  - sNativeShopId  - article shop ID;
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFromOrderArticle" in next major
      */
     protected function _setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -774,6 +776,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * Stores item select lists ( oxbasketitem::aSelList )
      *
      * @param array $aSelList item select lists
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSelectList" in next major
      */
     protected function _setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

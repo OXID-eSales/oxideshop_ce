@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Codeception\Admin;
+namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
 use Codeception\Util\Fixtures;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
@@ -27,7 +27,6 @@ final class LoginCest
         $I->seeCookie('admin_sid');
         $I->dontSeeCookie('sid');
     }
-
 
     private function getAdminUserData(): array
     {

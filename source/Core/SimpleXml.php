@@ -109,7 +109,8 @@ class SimpleXml
                 $this->_addSimpleXmlElement($oChildNode, $mElement);
             }
         } else {
-            $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey, $mElement);
+            $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey);
+            $oChildNode[0]=$mElement; // $oChildNode[0] is the inner text-node
             $this->_addNodeAttributes($oChildNode, $aAttributes);
         }
 

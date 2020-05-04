@@ -22,12 +22,12 @@ class SimpleXmlTest extends \OxidTestCase
         $oTestObject = oxNew('StdClass');
         $oTestObject->title = "TestTitle";
         $oTestObject->keys = oxNew('StdClass');
-        $oTestObject->keys->key = array("testKey1", "testKey2");
+        $oTestObject->keys->key = array("testKey1", "someSpecialCharsValue&€#","testKey2");
 
         $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
         $sTestResult .= "<testXml>";
         $sTestResult .= "<title>TestTitle</title>";
-        $sTestResult .= "<keys><key>testKey1</key><key>testKey2</key></keys>";
+        $sTestResult .= "<keys><key>testKey1</key><key>someSpecialCharsValue&amp;€#</key><key>testKey2</key></keys>";
         $sTestResult .= "</testXml>\n";
 
         $this->assertEquals($sTestResult, $oXml->objectToXml($oTestObject, "testXml"));
@@ -45,10 +45,14 @@ class SimpleXmlTest extends \OxidTestCase
         $oModule2->id = "id2";
         $oModule2->active = false;
 
+        $oModule3 = new stdClass();
+        $oModule3->id = "idWithSpecialChars&#€";
+        $oModule3->active = false;
+
         $oTestObject = oxNew('StdClass');
         $oTestObject->title = "TestTitle";
         $oTestObject->modules = oxNew('StdClass');
-        $oTestObject->modules->module = array($oModule1, $oModule2);
+        $oTestObject->modules->module = array($oModule1, $oModule2, $oModule3);
 
         $oExpectedXml = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"utf-8\"?><testXml/>");
         $oExpectedXml->addChild("title", "TestTitle");
@@ -62,6 +66,10 @@ class SimpleXmlTest extends \OxidTestCase
         $module->addChild('id', 'id2');
         $module->addChild('active', '');
 
+        $module = $modules->addChild("module");
+        $module->addChild('id', 'idWithSpecialChars&amp;#€');
+        $module->addChild('active', '');
+
         $this->assertEquals($oExpectedXml->asXML(), $oXml->objectToXml($oTestObject, "testXml"));
     }
 
@@ -72,7 +80,7 @@ class SimpleXmlTest extends \OxidTestCase
         $sTestXml = '<?xml version="1.0"?>';
         $sTestXml .= '<testXml>';
         $sTestXml .= '<title>TestTitle</title>';
-        $sTestXml .= '<keys><key>testKey1</key><key>testKey2</key></keys>';
+        $sTestXml .= '<keys><key>testKey1</key><key>testKey2</key><key>testKey3WithSpecialChars&amp;#€</key></keys>';
         $sTestXml .= '</testXml>';
 
         $oRes = $oXml->xmlToObject($sTestXml);
@@ -80,6 +88,7 @@ class SimpleXmlTest extends \OxidTestCase
         $this->assertEquals((string) $oRes->title, "TestTitle");
         $this->assertEquals((string) $oRes->keys->key[0], "testKey1");
         $this->assertEquals((string) $oRes->keys->key[1], "testKey2");
+        $this->assertEquals((string) $oRes->keys->key[2], "testKey3WithSpecialChars&#€");
     }
 
     public function testObjectToXmlWithElementsAndAttributes()
@@ -115,13 +124,14 @@ class SimpleXmlTest extends \OxidTestCase
 
         $oTestObject = new stdClass();
         $oTestObject->attributes = new stdClass();
-        $oTestObject->attributes->attribute = array('attrValue1', 'attrValue2');
+        $oTestObject->attributes->attribute = array('attrValue1', 'attrValue2','attribValueWithSpecialChars&#€');
 
         $sTestResult = '<?xml version="1.0" encoding="utf-8"?>' . "\n";
         $sTestResult .= '<testXml>';
         $sTestResult .= '<attributes>';
         $sTestResult .= '<attribute>attrValue1</attribute>';
         $sTestResult .= '<attribute>attrValue2</attribute>';
+        $sTestResult .= '<attribute>attribValueWithSpecialChars&amp;#€</attribute>';
         $sTestResult .= '</attributes>';
         $sTestResult .= '</testXml>' . "\n";
 
@@ -134,15 +144,15 @@ class SimpleXmlTest extends \OxidTestCase
 
         $oTestObject = oxNew('StdClass');
         $oTestObject->elements = array('element' => array(
-            array('key1' => 'value1', 'key2' => 'value2'),
-            array('key1' => 'value1', 'key2' => 'value2')
+            array('key1' => 'value1', 'key2' =>'value2 with special chars &#€', 'key3' => 'value3'),
+            array('key1' => 'value1', 'key2' =>'value2 with special chars &#€', 'key3' => 'value3')
         ));
 
         $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
         $sTestResult .= "<testXml>";
         $sTestResult .= "<elements>";
-        $sTestResult .= "<element><key1>value1</key1><key2>value2</key2></element>";
-        $sTestResult .= "<element><key1>value1</key1><key2>value2</key2></element>";
+        $sTestResult .= "<element><key1>value1</key1><key2>value2 with special chars &amp;#€</key2><key3>value3</key3></element>";
+        $sTestResult .= "<element><key1>value1</key1><key2>value2 with special chars &amp;#€</key2><key3>value3</key3></element>";
         $sTestResult .= "</elements>";
         $sTestResult .= "</testXml>\n";
 

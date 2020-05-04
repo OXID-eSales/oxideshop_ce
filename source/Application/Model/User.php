@@ -181,6 +181,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Gets state object.
      *
      * @return oxState
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getStateObject" in next major
      */
     protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -423,6 +424,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Checks if product from wishlist is added
      *
      * @return $sWishId
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getWishListId" in next major
      */
     protected function _getWishListId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1235,6 +1237,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns merged delivery address fields.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMergedAddressFields" in next major
      */
     protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1262,6 +1265,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * creates new address entry or updates existing
      *
      * @param array $aDelAddress address data array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignAddress" in next major
      */
     protected function _assignAddress($aDelAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1373,6 +1377,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool   $blAdmin  admin/non admin mode
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopSelect" in next major
      */
     protected function _getShopSelect($myConfig, $sShopID, $blAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1600,6 +1605,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Checks if user is connected via cookies and if so, returns user id.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCookieUserId" in next major
      */
     protected function _getCookieUserId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1712,6 +1718,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * user rights index.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUserRights" in next major
      */
     protected function _getUserRights() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1764,6 +1771,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts user object data to DB. Returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1782,6 +1790,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates changed user object data to DB. Returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1931,6 +1940,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * according to users country information
      *
      * @param string $sCountryId users country id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setAutoGroups" in next major
      */
     protected function _setAutoGroups($sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2428,6 +2438,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Return true - if shop is in demo mode
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isDemoShop" in next major
      */
     protected function _isDemoShop() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2449,6 +2460,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws object $oEx
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDemoShopLoginQuery" in next major
      */
     protected function _getDemoShopLoginQuery($sUser, $sPassword) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

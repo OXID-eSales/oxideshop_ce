@@ -125,6 +125,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * In case any condition is not satisfied redirects user to:
      *  (1) login page;
      *  (2) terms agreement page;
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkPsState" in next major
      */
     protected function _checkPsState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -149,6 +150,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Tries to load user ID from session.
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadSessionUser" in next major
      */
     protected function _loadSessionUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -234,6 +236,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "afterLogin" in next major
      */
     protected function _afterLogin($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -290,6 +293,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * oxcmp_user::logout is called. Currently it unsets such
      * session parameters as user chosen payment id, delivery
      * address id, active delivery set.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "afterLogout" in next major
      */
     protected function _afterLogout() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -613,6 +617,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Saves invitor ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveInvitor" in next major
      */
     protected function _saveInvitor() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -624,6 +629,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Saving show/hide delivery address state
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveDeliveryAddressState" in next major
      */
     protected function _saveDeliveryAddressState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -760,6 +766,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * all needed data is there
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDelAddressData" in next major
      */
     protected function _getDelAddressData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -788,6 +795,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Returns logout link with additional params
      *
      * @return string $sLogoutLink
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLogoutLink" in next major
      */
     protected function _getLogoutLink() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

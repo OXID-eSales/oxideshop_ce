@@ -561,6 +561,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * @param string $sNewAction new action params
      *
      * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
+     * @deprecated underscore prefix violates PSR12, will be renamed to "executeNewAction" in next major
      */
     protected function _executeNewAction($sNewAction) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

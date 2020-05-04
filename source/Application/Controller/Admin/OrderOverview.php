@@ -74,6 +74,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      * @param object $oOrder Order object
      *
      * @return oxUserPayment
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPaymentType" in next major
      */
     protected function _getPaymentType($oOrder) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

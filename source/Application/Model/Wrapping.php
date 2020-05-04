@@ -152,6 +152,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Checks and return true if price view mode is netto
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isPriceViewModeNetto" in next major
      */
     protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

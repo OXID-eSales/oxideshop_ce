@@ -530,6 +530,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sFilePath cache fiel path
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "readFile" in next major
      */
     protected function _readFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -544,6 +545,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sFilePath cache file path
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "includeFile" in next major
      */
     protected function _includeFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -560,6 +562,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param mixed  $mContents cache data
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processCache" in next major
      */
     protected function _processCache($sKey, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -612,6 +615,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param int    $iLockMode lock mode - LOCK_EX/LOCK_SH
      *
      * @return mixed lock file resource or false on error
+     * @deprecated underscore prefix violates PSR12, will be renamed to "lockFile" in next major
      */
     protected function _lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -664,6 +668,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param int    $iLockMode lock mode
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "releaseFile" in next major
      */
     protected function _releaseFile($sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1009,6 +1014,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl        the URL to redirect to
      * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
+     * @deprecated underscore prefix violates PSR12, will be renamed to "simpleRedirect" in next major
      */
     protected function _simpleRedirect($sUrl, $sHeaderCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1138,6 +1144,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param array  $aParams the params which will be added
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addUrlParameters" in next major
      */
     protected function _addUrlParameters($sUrl, $aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1160,6 +1167,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @todo rename function more closely to actual purpose
      * @todo finish refactoring
+     * @deprecated underscore prefix violates PSR12, will be renamed to "fillExplodeArray" in next major
      */
     protected function _fillExplodeArray($aName, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1223,6 +1231,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param double $dVat   VAT
      *
      * @return float
+     * @deprecated underscore prefix violates PSR12, will be renamed to "preparePrice" in next major
      */
     protected function _preparePrice($dPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1244,6 +1253,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * Checks and return true if price view mode is netto.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isPriceViewModeNetto" in next major
      */
     protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1260,6 +1270,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * Return article user.
      *
      * @return oxUser
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleUser" in next major
      */
     protected function _getArticleUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

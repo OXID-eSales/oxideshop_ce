@@ -96,6 +96,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * _loadBaseChannel loads basic channel data
      *
      * @access protected
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadBaseChannel" in next major
      */
     protected function _loadBaseChannel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -134,6 +135,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCacheId" in next major
      */
     protected function _getCacheId($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -149,6 +151,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromCache" in next major
      */
     protected function _loadFromCache($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -171,6 +174,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLastBuildDate" in next major
      */
     protected function _getLastBuildDate($name, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -197,6 +201,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return void
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveToCache" in next major
      */
     protected function _saveToCache($name, $aContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -213,6 +218,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleItems" in next major
      */
     protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -283,6 +289,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareUrl" in next major
      */
     protected function _prepareUrl($sUri, $sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -306,6 +313,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareFeedName" in next major
      */
     protected function _prepareFeedName($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -319,6 +327,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopUrl" in next major
      */
     protected function _getShopUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -346,6 +355,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @param string $sTargetUrl url of page rss represents
      *
      * @access protected
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadData" in next major
      */
     protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -501,6 +511,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Category $oCat category object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCatPath" in next major
      */
     protected function _getCatPath($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -596,6 +607,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchParamsUrl" in next major
      */
     protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -624,6 +636,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getObjectField" in next major
      */
     protected function _getObjectField($sId, $sObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -650,6 +663,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchParamsTranslation" in next major
      */
     protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -967,6 +981,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @param string $sFilePath The path of the file we want to delete.
      *
      * @return bool Went everything well?
+     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteFile" in next major
      */
     protected function _deleteFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

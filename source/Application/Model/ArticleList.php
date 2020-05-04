@@ -155,6 +155,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @see oxArticleList::sortByIds
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sortByOrderMapCallback" in next major
      */
     protected function _sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -833,6 +834,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * fills the list simply with keys of the oxid and the position as value for the given sql
      *
      * @param string $sSql SQL select
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createIdListFromSql" in next major
      */
     protected function _createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -853,6 +855,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array  $aFilter filters for this category
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterIdsSql" in next major
      */
     protected function _getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -893,6 +896,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array  $aFilter filters for this category
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterSql" in next major
      */
     protected function _getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -927,6 +931,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
      *
      * @return string SQL
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategorySelect" in next major
      */
     protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -965,6 +970,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
      *
      * @return string SQL
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryCountSelect" in next major
      */
     protected function _getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -996,6 +1002,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sSearchString searching string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major
      */
     protected function _getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1063,6 +1070,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param double $dPriceTo   Max price
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceSelect" in next major
      */
     protected function _getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1091,6 +1099,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sVendorId Vendor ID
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorSelect" in next major
      */
     protected function _getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1114,6 +1123,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sManufacturerId Manufacturer ID
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturerSelect" in next major
      */
     protected function _getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1135,6 +1145,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Checks if price update can be executed - current time > next price update time
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "canUpdatePrices" in next major
      */
     protected function _canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

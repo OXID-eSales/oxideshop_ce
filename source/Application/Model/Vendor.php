@@ -122,6 +122,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      * Sets root vendor data. Returns true
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setRootObjectData" in next major
      */
     protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -153,6 +153,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * Returns product link type (OXARTICLE_LINKTYPE_RECOMM)
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductLinkType" in next major
      */
     protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -486,6 +487,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * @param int    $iLang requested language
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
     protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

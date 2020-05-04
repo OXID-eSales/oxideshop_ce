@@ -104,6 +104,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      * Gets system event handler.
      *
      * @return SystemEventHandler
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSystemEventHandler" in next major
      */
     protected function _getSystemEventHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

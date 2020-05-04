@@ -203,6 +203,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param array $aParams params
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processOptions" in next major
      */
     protected function _processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

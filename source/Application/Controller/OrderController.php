@@ -499,6 +499,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param integer $iSuccess status code
      *
      * @return  string  $sNextStep  partial parameter url for next step
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNextStep" in next major
      */
     protected function _getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -543,6 +544,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Validates whether necessary terms and conditions checkboxes were checked.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateTermsAndConditions" in next major
      */
     protected function _validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

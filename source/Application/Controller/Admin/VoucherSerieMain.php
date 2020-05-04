@@ -132,6 +132,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
      * Returns voucher serie object
      *
      * @return oxvoucherserie
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVoucherSerie" in next major
      */
     protected function _getVoucherSerie() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -105,6 +105,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * Returns the appropriate SQL select
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleSelect" in next major
      */
     protected function _getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -301,6 +302,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      *
      * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
      * @param array                                  $aIds        article ids
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFirstArticles" in next major
      */
     protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -388,6 +390,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * @param string $sSearchStr Search string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major
      */
     protected function _getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

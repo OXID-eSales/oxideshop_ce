@@ -471,6 +471,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param array  $aCollection array to append found items [optional]
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "collectSimilar" in next major
      */
     protected function _collectSimilar($aData, $sKey, $aCollection = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -719,6 +720,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param int $iLang active language
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLangFilesPathArray" in next major
      */
     protected function _getLangFilesPathArray($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -815,6 +817,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param int $activeLanguage The active language
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAdminLangFilesPathArray" in next major
      */
     protected function _getAdminLangFilesPathArray($activeLanguage) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -866,6 +869,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param string $sFilePattern file pattern to search for, default is "lang"
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "appendLangFile" in next major
      */
     protected function _appendLangFile($aLangFiles, $sFullPath, $sFilePattern = "lang") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -889,6 +893,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param bool   $forAdmin      add files for admin
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "appendCustomLangFiles" in next major
      */
     protected function _appendCustomLangFiles($languageFiles, $language, $forAdmin = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -933,6 +938,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blForAdmin   add files for admin
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "appendModuleLangFiles" in next major
      */
     protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -960,6 +966,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param array $aLangFiles language files to load [optional]
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLangFileCacheName" in next major
      */
     protected function _getLangFileCacheName($blAdmin, $iLang, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -980,6 +987,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param array $aLangFiles language files to load [optional]
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageFileData" in next major
      */
     protected function _getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1034,6 +1042,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param bool $isAdmin admin mode [default NULL]
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageMap" in next major
      */
     protected function _getLanguageMap($language, $isAdmin = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1100,6 +1109,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param int  $iLang   language id [optional]
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCacheLanguageId" in next major
      */
     protected function _getCacheLanguageId($blAdmin, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1122,6 +1132,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param array $aLangFiles language files to load [optional]
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLangTranslationArray" in next major
      */
     protected function _getLangTranslationArray($iLang = null, $blAdmin = null, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1152,6 +1163,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param object $a2 second value to check
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sortLanguagesCallback" in next major
      */
     protected function _sortLanguagesCallback($a1, $a2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1307,6 +1319,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Returns active module Ids with paths
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveModuleInfo" in next major
      */
     protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1322,6 +1335,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Returns active module Ids with paths
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDisabledModuleInfo" in next major
      */
     protected function _getDisabledModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1337,6 +1351,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Gets browser language.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getBrowserLanguage" in next major
      */
     protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1399,6 +1414,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param null $shopId
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageIdsFromDatabase" in next major
      */
     protected function _getLanguageIdsFromDatabase($shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1412,6 +1428,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param int    $iShopId                shop id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getConfigLanguageValues" in next major
      */
     protected function _getConfigLanguageValues($sLanguageParameterName, $iShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1441,6 +1458,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param string|null $sShopId    Shop id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "selectLanguageParamValues" in next major
      */
     protected function _selectLanguageParamValues($sParamName, $sShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1469,6 +1487,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param array $aLanguageParams Language parameters
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageIdsFromLanguageParamsArray" in next major
      */
     protected function _getLanguageIdsFromLanguageParamsArray($aLanguageParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1487,6 +1506,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param array $aLanguages Languages
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageIdsFromLanguagesArray" in next major
      */
     protected function _getLanguageIdsFromLanguagesArray($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

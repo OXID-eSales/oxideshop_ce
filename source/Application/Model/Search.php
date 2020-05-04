@@ -111,6 +111,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      * @param string $sSortBy                    sort by
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major
      */
     protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -238,6 +239,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      * @param string $sSearchString searching string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getWhere" in next major
      */
     protected function _getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

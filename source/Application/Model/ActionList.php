@@ -110,6 +110,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUserGroupFilter" in next major
      */
     protected function _getUserGroupFilter($oUser = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

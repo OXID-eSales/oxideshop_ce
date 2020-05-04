@@ -68,6 +68,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * Overrides parent method to pass referred id.
      *
      * @param string $sId Class name
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
     protected function _setupNavigation($sId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -92,6 +92,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isLengthValid" in next major
      */
     protected function _isLengthValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -109,6 +110,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLengthForCountry" in next major
      */
     protected function _getLengthForCountry($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -127,6 +129,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAlgorithmValid" in next major
      */
     protected function _isAlgorithmValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -143,6 +146,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "moveInitialCharactersToEnd" in next major
      */
     protected function _moveInitialCharactersToEnd($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -160,6 +164,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "replaceLettersToNumbers" in next major
      */
     protected function _replaceLettersToNumbers($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -205,6 +210,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isIBANChecksumValid" in next major
      */
     protected function _isIBANChecksumValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -217,6 +223,7 @@ class SepaIBANValidator
      * @param array $aCodeLengths Code lengths
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isNotEmptyArray" in next major
      */
     protected function _isNotEmptyArray($aCodeLengths) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -229,6 +236,7 @@ class SepaIBANValidator
      * @param array $aCodeLengths Code lengths
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isEachCodeLengthValid" in next major
      */
     protected function _isEachCodeLengthValid($aCodeLengths) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -253,6 +261,7 @@ class SepaIBANValidator
      * @param string $sCountryAbbr Country abbreviation
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isCodeLengthKeyValid" in next major
      */
     protected function _isCodeLengthKeyValid($sCountryAbbr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -265,6 +274,7 @@ class SepaIBANValidator
      * @param integer $iLength Length
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isCodeLengthValueValid" in next major
      */
     protected function _isCodeLengthValueValid($iLength) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

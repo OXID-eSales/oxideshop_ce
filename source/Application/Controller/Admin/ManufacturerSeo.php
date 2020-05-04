@@ -38,6 +38,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      * Returns current object type seo encoder object
      *
      * @return oxSeoEncoderManufacturer
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
     protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -58,6 +59,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      * Returns url type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
     protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

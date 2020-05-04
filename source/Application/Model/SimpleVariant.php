@@ -103,6 +103,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      * get user Group A, B or C price, returns db price if user is not in groups
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getGroupPrice" in next major
      */
     protected function _getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -172,6 +173,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param object                       $oCur   Currency object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "applyCurrency" in next major
      */
     protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -186,6 +188,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      * Applies discounts which should be applied in general case (for 0 amount)
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "applyParentDiscounts" in next major
      */
     protected function _applyParentDiscounts($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -198,6 +201,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      * apply parent article VAT to given price
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "applyParentVat" in next major
      */
     protected function _applyParentVat($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

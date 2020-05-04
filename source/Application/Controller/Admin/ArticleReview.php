@@ -76,6 +76,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      * @param \OxidEsales\Eshop\Application\Model\Article $article Article object
      *
      * @return oxList
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getReviewList" in next major
      */
     protected function _getReviewList($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

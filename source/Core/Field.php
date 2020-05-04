@@ -142,6 +142,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      *
      * @param mixed $value Field value
      * @param int   $type  Value type
+     * @deprecated underscore prefix violates PSR12, will be renamed to "initValue" in next major
      */
     protected function _initValue($value = null, $type = self::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

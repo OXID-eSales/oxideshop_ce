@@ -262,6 +262,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array        $fields
      *
      * @return User|Address
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFields" in next major
      */
     private function _setFields($object, $fields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -356,6 +357,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param string $countryId
      *
      * @return \OxidEsales\Eshop\Application\Model\Country
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCountry" in next major
      */
     protected function _getCountry($countryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -429,6 +431,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInformation Debit information
      *
      * @return bool|int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateDebitNote" in next major
      */
     protected function _validateDebitNote($debitInformation) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -458,6 +461,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInfo Debit info
      *
      * @return bool|int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateOldDebitInfo" in next major
      */
     protected function _validateOldDebitInfo($debitInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -486,6 +490,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInfo Debit info.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "fixAccountNumber" in next major
      */
     protected function _fixAccountNumber($debitInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -509,6 +514,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $bankInformation actual information.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAllBankInformationSet" in next major
      */
     protected function _isAllBankInformationSet($requiredFields, $bankInformation) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -529,6 +535,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInformation Debit information.
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "cleanDebitInformation" in next major
      */
     protected function _cleanDebitInformation($debitInformation) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -544,6 +551,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $invAddress Address.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "hasRequiredParametersForVatInCheck" in next major
      */
     protected function _hasRequiredParametersForVatInCheck($invAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

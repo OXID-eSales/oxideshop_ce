@@ -77,6 +77,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Country $oCountry given country object
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getForeignCountryUserVat" in next major
      */
     protected function _getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -97,6 +98,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle given article
      *
      * @return float|false
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVatForArticleCategory" in next major
      */
     protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -200,6 +202,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVatCountry" in next major
      */
     protected function _getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

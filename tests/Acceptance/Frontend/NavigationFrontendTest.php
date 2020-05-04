@@ -770,28 +770,46 @@ class NavigationFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Search in frontend. OR and AND separators
+     * Search in frontend. Checking option: Fields to be considered in Search
      *
      * @group frontend
      */
-    public function testFrontendSearchOrAnd()
+    public function testFrontendSearchConsideredFields()
     {
-        //AND is used for search keys
-        // Checking option ((If serveral Search Terms are entered, all Search Terms have to be found in Search Results (AND). (If this Setting is unchecked, only one Search Term has to be found (OR)) is ON
-        $this->callShopSC("oxConfig", null, null, array("blSearchUseAND" => array("type" => "bool", "value" => 'true')));
+        //art num is not considered in search
+        $this->callShopSC("oxConfig", null, null, array("aSearchCols" => array("type" => "arr", "value" => array("oxtitle", "oxshortdesc"))));
         $this->clearCache();
         $this->openShop();
-        $this->searchFor("1000 1001");
+        $this->searchFor("100");
         $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertTextPresent("%NO_ITEMS_FOUND%");
-        $this->assertEquals("0 %HITS_FOR% \"1000 1001\"", $this->getHeadingText("//h1"));
+        $this->assertTextPresent("0 %HITS_FOR% \"100\"");
 
-        //OR is used for search keys
-        //Checking option ((If serveral Search Terms are entered, all Search Terms have to be found in Search Results (AND). (If this Setting is unchecked, only one Search Term has to be found (OR)) is OFF
-        $this->callShopSC("oxConfig", null, null, array("blSearchUseAND" => array("type" => "bool", "value" => "false")));
+        //art num is considered in search
+        $this->callShopSC("oxConfig", null, null, array("aSearchCols" => array("type" => "arr", "value" => array("oxtitle", "oxshortdesc", "oxsearchkeys", "oxartnum"))));
         $this->clearTemp();
-        $this->searchFor("1000 1001");
-        $this->assertEquals("2 %HITS_FOR% \"1000 1001\"", $this->getHeadingText("//h1"));
+        $this->searchFor("100");
+        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
+        $this->assertTextPresent("4 %HITS_FOR% \"100\"");
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->clearString($this->getText("searchList_1")));
+        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->clearString($this->getText("searchList_2")));
+        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->clearString($this->getText("searchList_3")));
+        $this->assertEquals("Test product 3 [EN] šÄßüл", $this->clearString($this->getText("searchList_4")));
+        $this->assertElementNotPresent("searchList_5");
+
+        $this->clickAndWait("searchList_3");
+        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"100\"", $this->getText("breadCrumb"));
+        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
+        $this->selectVariant("variants", 1, "var2 [EN] šÄßüл", "var2 [EN] šÄßüл");
+        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"100\"", $this->getText("breadCrumb"));
+        $this->assertEquals("Test product 2 [EN] šÄßüл var2 [EN] šÄßüл", $this->getText("//h1"));
+
+        $this->clickAndWait("//div[@id='overviewLink']/a");
+        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
+        $this->assertTextPresent("4 %HITS_FOR% \"100\"");
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->clearString($this->getText("searchList_1")));
+        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->clearString($this->getText("searchList_2")));
+        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->clearString($this->getText("searchList_3")));
+        $this->assertEquals("Test product 3 [EN] šÄßüл", $this->clearString($this->getText("searchList_4")));
     }
 
     /**
@@ -1437,10 +1455,10 @@ class NavigationFrontendTest extends FrontendTestCase
     }
 
     /**
-    * Testing Cookie solution. Is Message appears in frontend about cookies saving
+     * Testing Cookie solution. Is Message appears in frontend about cookies saving
      *
-    * @group frontend
-    */
+     * @group frontend
+     */
     public function testCookieSettingsInFrontend()
     {
         // Check if cookie option is off
@@ -1482,7 +1500,7 @@ class NavigationFrontendTest extends FrontendTestCase
             'OXFNAME' => 'name_šÄßüл',
             'OXLNAME' => 'surname_šÄßüл',
             'OXEMAIL' => 'example01@oxid-esales.dev',
-            'OXDBOPTIN' => (string)$iStatus
+            'OXDBOPTIN' => (string) $iStatus
         );
 
         return $aSubscribedUserData;

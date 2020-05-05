@@ -36,3 +36,5 @@ modules:
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
             paths: 'Application/views/flow/translations'
+        - \OxidEsales\Codeception\Module\FlowTheme:
+            depends: \OxidEsales\Codeception\Module\Database

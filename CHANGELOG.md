@@ -190,6 +190,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
+## [6.5.5] - 2020-05-05
+
+### Deprecated
+- Methods starting with underscore have been deprecated, these methods will be renamed
+
 ## [6.5.4] - 2020-04-21
 
 ### Deprecated
@@ -213,7 +218,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `RECOMMENDED_PRODUCTS`
         - `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
         - `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
-- Methods starting with underscore have been deprecated, these methods will be renamed
 
 ### Fixed
 - Change visibility of Session::setSessionCookie to protected for overwriting possibility [PR-785](https://github.com/OXID-eSales/oxideshop_ce/pull/785)

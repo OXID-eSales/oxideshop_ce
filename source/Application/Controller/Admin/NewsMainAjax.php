@@ -12,9 +12,7 @@ use oxField;
 
 /**
  * Class manages news user groups rights
- *
- * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
- *
+ * @deprecated 6.5.6 "News" feature will be removed completely
  */
 class NewsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {

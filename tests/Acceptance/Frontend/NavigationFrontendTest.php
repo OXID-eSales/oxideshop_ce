@@ -333,6 +333,15 @@ class NavigationFrontendTest extends FrontendTestCase
      */
     public function testFrontendNewsBox()
     {
+        $this->callShopSC(
+            'oxConfig',
+            null,
+            null,
+            [
+                'bl_perfLoadNews' => ['type' => 'bool', 'value' => '0x07',],
+                'bl_perfLoadNewsOnlyStart' => ['type' => 'bool', 'value' => '0x07',],
+            ]
+        );
         $this->openShop();
         //there are news visible for not logged in users
         $this->assertElementPresent("newsBox");

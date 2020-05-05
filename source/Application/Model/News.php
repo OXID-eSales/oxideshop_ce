@@ -16,9 +16,7 @@ use oxUtilsView;
  * News manager.
  * Performs news text collection. News may be sorted by user categories (only
  * these user may read news), etc.
- *
- * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
- *
+ * @deprecated 6.5.6 "News" feature will be removed completely
  */
 class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

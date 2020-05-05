@@ -308,7 +308,7 @@ window.onload = function ()
                             [{oxmultilang ident="SHOP_MAIN_SMTPUSER"}]
                 </td>
                 <td class="edittext">
-                <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxsmtpuser->fldmax_length}]" name="editval[oxshops__oxsmtpuser]" value="[{$edit->oxshops__oxsmtpuser->value}]" [{$readonly}]>
+                <input autocomplete="off" type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxsmtpuser->fldmax_length}]" name="editval[oxshops__oxsmtpuser]" value="[{$edit->oxshops__oxsmtpuser->value}]" [{$readonly}]>
                 [{oxinputhelp ident="HELP_SHOP_MAIN_SMTPUSER"}]
                 </td>
             </tr>
@@ -317,7 +317,7 @@ window.onload = function ()
                             [{oxmultilang ident="SHOP_MAIN_SMTPPASSWORD"}]
                 </td>
                 <td class="edittext">
-                <input type="password" name="oxsmtppwd" size="35" maxlength="50" class="editinput" [{$readonly}] onfocus="modSmtpField()" onChange="modSmtpField()">
+                <input autocomplete="off" type="password" name="oxsmtppwd" size="35" maxlength="50" class="editinput" [{$readonly}] onfocus="modSmtpField()" onChange="modSmtpField()">
                 [{oxmultilang ident="SHOP_MAIN_SMTPPWUNSET"}]
                 [{oxinputhelp ident="HELP_SHOP_MAIN_SMTPPASSWORD"}]
                 </td>

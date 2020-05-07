@@ -299,9 +299,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         'oxcmp_shop'       => 1,
         'oxcmp_categories' => 0,
         'oxcmp_utils'      => 1,
-        // @deprecated 6.5.6 "News" feature will be removed completely
-        'oxcmp_news' => 0,
-        // END deprecated
         'oxcmp_basket'     => 1
     ];
 

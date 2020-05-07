@@ -931,7 +931,6 @@ class I18ntest extends \OxidTestCase
         $this->_aLangTables["oxgroups"] = "oxgroups";
         $this->_aLangTables["oxlinks"] = "oxlinks";
         $this->_aLangTables["oxmediaurl"] = "oxmediaurls";
-        $this->_aLangTables["oxnews"] = "oxnews";
         $this->_aLangTables["oxpayment"] = "oxpayments";
         $this->_aLangTables["oxreview"] = "oxreviews";
         $this->_aLangTables["oxstate"] = "oxstates";

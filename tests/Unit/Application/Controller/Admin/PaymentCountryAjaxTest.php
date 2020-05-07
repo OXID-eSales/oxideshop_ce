@@ -55,11 +55,6 @@ class PaymentCountryAjaxTest extends \OxidTestCase
         parent::tearDown();
     }
 
-    /**
-     * NewsMainAjax::_getQuery() test case
-     *
-     * @return null
-     */
     public function testGetQuery()
     {
         $oView = oxNew('payment_country_ajax');

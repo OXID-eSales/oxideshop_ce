@@ -863,13 +863,6 @@ INSERT INTO `oxmanufacturers` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXICON`, `OXTITL
   ('3a9fd0ec4b41d001e770b1d2d7af3e73', 1, 1, 'mikejucker_hawaii_1_mico.png', 'Jucker Hawaii', '', 'Jucker Hawaii', '', '', '', '', '', 0),
   ('oiaf6ab7e12e86291e86dd3ff891fe40', 1, 1, 'oreilly_1_mico.png', 'O''Reilly', '', 'O''Reilly', '', '', '', '', '', 1);
 
-#
-# Data for table `oxnews`
-#
-INSERT INTO `oxnews` (`OXID`, `OXSHOPID`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXDATE`, `OXSHORTDESC`, `OXLONGDESC`, `OXACTIVE_1`, `OXSHORTDESC_1`, `OXLONGDESC_1`, `OXACTIVE_2`, `OXSHORTDESC_2`, `OXLONGDESC_2`, `OXACTIVE_3`, `OXSHORTDESC_3`, `OXLONGDESC_3`) VALUES
-  ('9a9468c5c4f739821e9aa340fd3715c8', 1, 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0000-00-00', 'News', '<p>Die neusten Nachrichten...</p><br />', 1, 'News', '<p>The latest news...</p>', 0, '', '', 0, '', '');
-
-#
 # Data for table `oxnewsletter`
 #
 INSERT INTO `oxnewsletter` (`OXID`, `OXSHOPID`, `OXTITLE`, `OXTEMPLATE`, `OXPLAINTEMPLATE`, `OXSUBJECT`) VALUES

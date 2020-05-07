@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 use \oxDb;
 
 /**
- * Tests for News_Main_Ajax class
+ * Tests for NewsletterSelectionAjax class
  */
 class NewsletterSelectionAjaxTest extends \OxidTestCase
 {

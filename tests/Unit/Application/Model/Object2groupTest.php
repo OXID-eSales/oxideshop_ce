@@ -14,36 +14,29 @@ class Object2groupTest extends \OxidTestCase
 {
     private $_oGroup = null;
     private $_sObjID = null;
+    private $objectTable;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        $oNews = oxNew('oxnews');
-        $oNews->oxnews__oxshortdesc = new oxField('Test', oxField::T_RAW);
-        $oNews->Save();
+
+        $someObject = 'oxactions';
+        $this->objectTable = $someObject;
+        $someObject = oxNew($someObject);
+        $someObject->Save();
 
         $this->_oGroup = oxNew('oxobject2group');
-        $this->_oGroup->oxobject2group__oxobjectid = new oxField($oNews->getId(), oxField::T_RAW);
-        $this->_oGroup->oxobject2group__oxgroupsid = new oxField("oxidnewcustomer", oxField::T_RAW);
-        $this->_oGroup->Save();
+        $this->_oGroup->oxobject2group__oxobjectid = new oxField($someObject->getId(), oxField::T_RAW);
+        $this->_oGroup->oxobject2group__oxgroupsid = new oxField('oxidnewcustomer', oxField::T_RAW);
+        $this->_oGroup->save();
 
-        $this->_sObjID = $oNews->getId();
+        $this->_sObjID = $someObject->getId();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
-        $sDelete = "delete from oxnews where oxid='" . $this->_sObjID . "'";
+        $sDelete = "delete from `{$this->objectTable}` where oxid='" . $this->_sObjID . "'";
         $oDB->Execute($sDelete);
 
         $sDelete = "delete from oxobject2group where oxobjectid='" . $this->_sObjID . "'";

@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 /**
- * Tests for News_List class
+ * Tests for Newsletter_List class
  */
 class NewsletterListTest extends \OxidTestCase
 {

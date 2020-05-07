@@ -183,8 +183,6 @@ INSERT INTO `oxobject2group` (`OXID`,                       `OXSHOPID`,   `OXOBJ
                              ('aad47a86343b36f87.26955455', 1, 'testuserb',   'oxidpriceb'),
                              ('aad47a868601ed778.03775700', 1, 'testuserc',   'oxidnewcustomer'),
                              ('aad47a868601f8420.26771882', 1, 'testuserc',   'oxidpricec'),
-                             ('aad47a869f4828b24.16206885', 1, 'testnews1',   'oxidnewcustomer'),
-                             ('aad47a86bb3afd568.93683720', 1, 'testnews2',   'oxidnewcustomer'),
                              ('aad47a87240deb323.16605440', 1, 'testcoupon2', 'oxidnewcustomer'),
                              ('aad47a872468a9285.09755579', 1, 'testcoupon1', 'oxidnewcustomer');
 

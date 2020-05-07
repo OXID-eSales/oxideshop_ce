@@ -31,7 +31,6 @@ class _oxBase extends oxBase
      */
     public function __construct()
     {
-        //$this->_sCacheKey = (rand(0, pow(10,10)));
         parent::__construct();
         $this->_sCacheKey = null;
     }
@@ -204,11 +203,6 @@ class BaseTest extends \OxidTestCase
 {
     private static $count = 0;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         self::$count++;
@@ -220,18 +214,12 @@ class BaseTest extends \OxidTestCase
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxcategories');
         $this->cleanUpTable('oxdiscount');
-        $this->cleanUpTable('oxnews');
         $this->cleanUpTable('oxorder');
 
         $this->getConfig();
         $this->getSession();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->cleanUpTable('oxactions');
@@ -239,15 +227,11 @@ class BaseTest extends \OxidTestCase
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxcategories');
         $this->cleanUpTable('oxdiscount');
-        $this->cleanUpTable('oxnews');
         $this->cleanUpTable('oxorder');
-
-        //clean it
-        oxDB::getDb()->execute('delete from oxactions where oxtitle like "test%"');
-        oxDB::getDb()->execute('delete from oxnews where oxshortdesc like "oxbasetest%"');
 
         oxRemClassModule('modoxCacheAdminForBase');
         oxRemClassModule('modoxCacheForBase');
+
         parent::teardown();
     }
 
@@ -1526,12 +1510,7 @@ class BaseTest extends \OxidTestCase
         $this->assertFalse($sResult);
     }
 
-    /**
-     * Test save if timestamp updated.
-     *
-     * @return null
-     */
-    public function testSaveIfExistsInAdminTimeStamp()
+    public function testSaveWithTimeStampTypeColumn(): void
     {
         $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $sInsert = "Insert into oxuserbaskets (`OXID`,`OXUSERID`,`OXTITLE`) values ('_test','test','test')";
@@ -1548,14 +1527,8 @@ class BaseTest extends \OxidTestCase
         $this->assertNotEquals("2007-07-07 00:00:00", $res->fields['oxupdate']);
     }
 
-    /**
-     * Test save if new in admin mode with date time.
-     *
-     * @return null
-     */
-    public function testSaveIfNewInAdminDateTime()
+    public function testSaveWithDateTimeTypeColumn(): void
     {
-        //$this->getConfig()->blAdmin = true;
         $oBase = new _oxBase();
         $oBase->init('oxdiscount');
         $oBase->setId('_test');
@@ -1569,26 +1542,28 @@ class BaseTest extends \OxidTestCase
         $this->assertEquals("2007-07-07 00:00:00", $sActivefrom);
     }
 
-    /**
-     * Test save if new in admin mode with date.
-     *
-     * @return null
-     */
-    public function testSaveIfNewInAdminDate()
+    public function testSaveWithDateTypeColumn(): void
     {
-        $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        //$this->getConfig()->blAdmin = true;
-        $oBase = new _oxBase();
-        $oBase->init('oxnews');
-        $oBase->setId('_test');
-        $oBase->oxnews__oxshortdesc = new oxField("oxbasetest", oxField::T_RAW);
-        $oBase->oxnews__oxdate = new oxField("2007.07.07", oxField::T_RAW);
-        $sResult = $oBase->save();
-        //$this->getConfig()->blAdmin = false;
-        $this->assertNotNull($sResult);
-        $myDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
-        $res = $myDB->select("select oxdate from oxnews where oxshortdesc='oxbasetest'");
-        $this->assertEquals($res->fields['oxdate'], "2007-07-07");
+        $table = 'oxarticles';
+        $col1 = 'oxtitle';
+        $col2 = 'oxdelivery'; /** any DB column with type Date */
+        $field1 = "{$table}__{$col1}";
+        $field2 = "{$table}__{$col2}";
+        $val1 = 'test';
+        $val2 = '2022-12-22';
+        $base = new _oxBase();
+        $base->init($table);
+        $base->setId('_test');
+        $base->$field1 = new oxField($val1, oxField::T_RAW);
+        $base->$field2 = new oxField($val2, oxField::T_RAW);
+
+        $return = $base->save();
+
+        $res = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->select(
+            "select `$col2` from `$table` where `$col1` = '$val1'"
+        );
+        $this->assertNotNull($return);
+        $this->assertSame($val2, $res->fields[$col2]);
     }
 
     /**
@@ -1679,22 +1654,29 @@ class BaseTest extends \OxidTestCase
         }
     }
 
-    /**
-     * Test insert with shop id.
-     *
-     * @return null
-     */
-    public function testInsertWithShopId()
+    public function testInsertWithValidDataWillSaveShopId(): void
     {
-        $myDB = oxDb::getDb();
-        $oBase = oxNew('oxBase');
-        $oBase->init('oxnews');
-        $oBase->oxnews__oxshortdesc = new oxField("oxbasetest", oxField::T_RAW);
-        $sResult = $oBase->UNITinsert();
-        $this->assertEquals(1, (int) $myDB->getOne('select count(*) from oxnews where oxshortdesc = "oxbasetest"'));
-        $this->assertNotNull($sResult);
-        $this->assertEquals($oBase->getId(), $oBase->oxnews__oxid->value);
-        $this->assertEquals($this->getShopId(), $oBase->oxnews__oxshopid->value);
+        $table = 'oxactions';
+        $col1 = 'oxtitle';
+        $colId = 'oxid';
+        $colShopId = 'oxshopid';
+        $field1 = "{$table}__{$col1}";
+        $fieldId = "{$table}__{$colId}";
+        $fieldShopId = "{$table}__{$colShopId}";
+        $val1 = 'test';
+        $base = oxNew('oxBase');
+        $base->init($table);
+        $base->$field1 = new oxField($val1, oxField::T_RAW);
+
+        $return = $base->UNITinsert();
+
+        $count = (int) oxDb::getDb()->getOne(
+            "select count(*) from `$table` where $col1 = '$val1'"
+        );
+        $this->assertSame(1, $count);
+        $this->assertNotNull($return);
+        $this->assertEquals($base->getId(), $base->$fieldId->value);
+        $this->assertEquals($this->getShopId(), $base->$fieldShopId->value);
     }
 
     /**
@@ -1760,18 +1742,18 @@ class BaseTest extends \OxidTestCase
         $this->assertEquals("oxv_oxarticles", $sResult);
     }
 
-    /**
-     * Test get object view name for multishop table.
-     */
-    public function testGetObjectViewNameNotMullShopTable()
+    public function testGetObjectViewNameWithNonMultiShopTable(): void
     {
         if ($this->getConfig()->getEdition() === 'EE') {
-            $this->markTestSkipped("Test for Community and Professional editions only");
+            $this->markTestSkipped('Test for Community and Professional editions only');
         }
+        $shopId = '1';
+        $table = 'oxactions';
+        $base = oxNew('oxBase');
 
-        $oBase = oxNew('oxBase');
-        $sResult = $oBase->UNITgetObjectViewName("oxnews", "1");
-        $this->assertEquals("oxv_oxnews", $sResult);
+        $sResult = $base->UNITgetObjectViewName($table, $shopId);
+
+        $this->assertSame("oxv_$table", $sResult);
     }
 
     /**

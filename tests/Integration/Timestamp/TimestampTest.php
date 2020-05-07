@@ -54,7 +54,6 @@ class TimestampTest extends \OxidTestCase
             array('oxLinks', 'oxlinks', 'oxurl'),
             array('oxManufacturer', 'oxmanufacturers', 'oxtitle'),
             array('oxMediaUrl', 'oxmediaurls', 'oxurl'),
-            array('oxNews', 'oxnews', 'oxshortdesc'),
             array('oxOrder', 'oxorder', 'oxdelstreet'),
             array('oxOrderArticle', 'oxorderarticles', 'oxtitle'),
             array('oxOrderFile', 'oxorderfiles', 'oxfilename'),

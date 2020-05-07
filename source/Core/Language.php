@@ -153,16 +153,16 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function getBaseLanguage()
     {
         if ($this->_iBaseLanguageId === null) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $myConfig = Registry::getConfig();
             $blAdmin = $this->isAdmin();
 
             // languages and search engines
-            if ($blAdmin && (($iSeLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('changelang')) !== null)) {
+            if ($blAdmin && (($iSeLang = Registry::getConfig()->getRequestParameter('changelang')) !== null)) {
                 $this->_iBaseLanguageId = $iSeLang;
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('lang');
+                $this->_iBaseLanguageId = Registry::getConfig()->getRequestParameter('lang');
             }
 
             //or determining by domain
@@ -178,17 +178,17 @@ class Language extends \OxidEsales\Eshop\Core\Base
             }
 
             if (is_null($this->_iBaseLanguageId)) {
-                $this->_iBaseLanguageId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('language');
+                $this->_iBaseLanguageId = Registry::getConfig()->getRequestParameter('language');
                 if (!isset($this->_iBaseLanguageId)) {
-                    $this->_iBaseLanguageId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('language');
+                    $this->_iBaseLanguageId = Registry::getSession()->getVariable('language');
                 }
             }
 
             // if language still not set and not search engine browsing,
             // getting language from browser
-            if (is_null($this->_iBaseLanguageId) && !$blAdmin && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
+            if (is_null($this->_iBaseLanguageId) && !$blAdmin && !Registry::getUtils()->isSearchEngine()) {
                 // getting from cookie
-                $this->_iBaseLanguageId = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('language');
+                $this->_iBaseLanguageId = Registry::getUtilsServer()->getOxCookie('language');
 
                 // getting from browser
                 if (is_null($this->_iBaseLanguageId)) {
@@ -205,7 +205,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             // validating language
             $this->_iBaseLanguageId = $this->validateLanguage($this->_iBaseLanguageId);
 
-            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('language', $this->_iBaseLanguageId);
+            Registry::getUtilsServer()->setOxCookie('language', $this->_iBaseLanguageId);
         }
 
         return $this->_iBaseLanguageId;
@@ -245,7 +245,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function getTplLanguage()
     {
         if ($this->_iTplLanguageId === null) {
-            $iSessLang = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('tpllanguage');
+            $iSessLang = Registry::getSession()->getVariable('tpllanguage');
             $this->_iTplLanguageId = $this->isAdmin() ? $this->setTplLanguage($iSessLang) : $this->getBaseLanguage();
         }
 
@@ -266,18 +266,18 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 $iLang = null;
                 // choosing language ident
                 // check if we really need to set the new language
-                if ("saveinnlang" == \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getFncName()) {
-                    $iLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("new_lang");
+                if ("saveinnlang" == Registry::getConfig()->getActiveView()->getFncName()) {
+                    $iLang = Registry::getConfig()->getRequestParameter("new_lang");
                 }
-                $iLang = ($iLang === null) ? \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage') : $iLang;
-                $iLang = ($iLang === null) ? \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('editlanguage') : $iLang;
+                $iLang = ($iLang === null) ? Registry::getConfig()->getRequestParameter('editlanguage') : $iLang;
+                $iLang = ($iLang === null) ? Registry::getSession()->getVariable('editlanguage') : $iLang;
                 $iLang = ($iLang === null) ? $this->getBaseLanguage() : $iLang;
 
                 // validating language
                 $this->_iEditLanguageId = $this->validateLanguage($iLang);
 
                 // writing to session
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('editlanguage', $this->_iEditLanguageId);
+                Registry::getSession()->setVariable('editlanguage', $this->_iEditLanguageId);
             }
         }
 
@@ -295,7 +295,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     public function getLanguageArray($iLanguage = null, $blOnlyActive = false, $blSort = false)
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         if (is_null($iLanguage)) {
             $iLanguage = $this->_iBaseLanguageId;
@@ -351,7 +351,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function getAdminTplLanguageArray()
     {
         if ($this->_aAdminTplLanguageArray === null) {
-            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $config = Registry::getConfig();
 
             $langArray = $this->getLanguageArray();
             $this->_aAdminTplLanguageArray = [];
@@ -407,7 +407,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     public function getLanguageNames()
     {
-        $aConfLanguages = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguages');
+        $aConfLanguages = Registry::getConfig()->getConfigParam('aLanguages');
         $aLangIds = $this->getLanguageIds();
         $aLanguages = [];
         foreach ($aLangIds as $iId => $sValue) {
@@ -531,9 +531,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function formatCurrency($dValue, $oActCur = null)
     {
         if (!$oActCur) {
-            $oActCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
+            $oActCur = Registry::getConfig()->getActShopCurrencyObject();
         }
-        $sValue = \OxidEsales\Eshop\Core\Registry::getUtils()->fRound($dValue, $oActCur);
+        $sValue = Registry::getUtils()->fRound($dValue, $oActCur);
 
         return number_format((double) $sValue, $oActCur->decimal, $oActCur->dec, $oActCur->thousand);
     }
@@ -555,7 +555,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $iDecPos = $oStr->strlen($oStr->substr($sValue, $iDotPos + 1));
         }
 
-        $oActCur = $oActCur ? $oActCur : \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
+        $oActCur = $oActCur ? $oActCur : Registry::getConfig()->getActShopCurrencyObject();
         $iDecPos = ($iDecPos < $oActCur->decimal) ? $iDecPos : $oActCur->decimal;
 
         return number_format((double) $dValue, $iDecPos, $oActCur->dec, $oActCur->thousand);
@@ -613,7 +613,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $this->_iBaseLanguageId = (int) $iLang;
         }
 
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('language', $iLang);
+        Registry::getSession()->setVariable('language', $iLang);
     }
 
     /**
@@ -633,7 +633,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('tpllanguage', $this->_iTplLanguageId);
+        Registry::getSession()->setVariable('tpllanguage', $this->_iTplLanguageId);
 
         return $this->_iTplLanguageId;
     }
@@ -724,11 +724,11 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getLangFilesPathArray($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
         $aLangFiles = [];
 
         $sAppDir = $oConfig->getAppDir();
-        $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($iLang);
+        $sLang = Registry::getLang()->getLanguageAbbr($iLang);
         $sTheme = $oConfig->getConfigParam("sTheme");
         $aModulePaths = $this->_getActiveModuleInfo();
 
@@ -797,10 +797,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function getCustomThemeLanguageFiles($language)
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
         $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
         $sAppDir = $oConfig->getAppDir();
-        $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($language);
+        $sLang = Registry::getLang()->getLanguageAbbr($language);
         $aLangFiles = [];
 
         if ($sCustomTheme) {
@@ -821,7 +821,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getAdminLangFilesPathArray($activeLanguage) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
         $langFiles = [];
 
         $appDirectory = $config->getAppDir();
@@ -901,7 +901,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
             $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
         } else {
-            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $config = Registry::getConfig();
             if ($config->getConfigParam("sTheme")) {
                 $languageFiles[] = $this->getCustomFilePath($language, $config->getConfigParam("sTheme"));
             }
@@ -921,7 +921,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function getCustomFilePath($language, $themeName)
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
         return $config->getAppDir() .
             'views' . DIRECTORY_SEPARATOR .
             $themeName . DIRECTORY_SEPARATOR  .
@@ -970,7 +970,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getLangFileCacheName($blAdmin, $iLang, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $sLangFilesIdent = '_default';
         if (is_array($aLangFiles) && $aLangFiles) {
             $sLangFilesIdent = '_' . md5(implode('+', $aLangFiles));
@@ -991,7 +991,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
+        $myUtils = Registry::getUtils();
 
         $sCacheName = $this->_getLangFileCacheName($blAdmin, $iLang, $aLangFiles);
         $aLangCache = $myUtils->getLangCache($sCacheName);
@@ -1050,7 +1050,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $key = $language . ((int) $isAdmin);
         if (!isset($this->_aLangMap[$key])) {
             $this->_aLangMap[$key] = [];
-            $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $config = Registry::getConfig();
 
             $mapFile = '';
             $parentThemeDirectory = $this->getRealThemeName($config->getConfigParam("sTheme"), $isAdmin);
@@ -1082,7 +1082,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function getLanguageMappingFilePath($language, $themeName)
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
         return $config->getAppDir() . DIRECTORY_SEPARATOR .
             'views' . DIRECTORY_SEPARATOR .
             $themeName . DIRECTORY_SEPARATOR .
@@ -1222,7 +1222,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     public function processUrl($sUrl, $iLang = null)
     {
         $iLang = isset($iLang) ? $iLang : $this->getBaseLanguage();
-        $iDefaultLang = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultLang');
+        $iDefaultLang = (int) Registry::getConfig()->getConfigParam('sDefaultLang');
         $iBrowserLanguage = (int)$this->detectLanguageByBrowser();
         $oStr = Str::getStr();
 
@@ -1268,33 +1268,37 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
     }
 
-    /**
-     * Returns all multi language tables
-     *
-     * @return array
-     */
+    /** @return array|string[] */
     public function getMultiLangTables()
     {
-        $aTables = ["oxarticles", "oxartextends", "oxattribute",
-                         "oxcategories", "oxcontents", "oxcountry",
-                         "oxdelivery", "oxdiscount", "oxgroups",
-                         "oxlinks",
-                         // @deprecated 6.5.6 "News" feature will be removed completely
-                         "oxnews",
-                         // END deprecated
-                         "oxobject2attribute",
-                         "oxpayments", "oxselectlist", "oxshops",
-                         "oxactions", "oxwrapping", "oxdeliveryset",
-                         "oxvendor", "oxmanufacturers", "oxmediaurls",
-                         "oxstates"];
-
-        $aMultiLangTables = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMultiLangTables');
-
-        if (is_array($aMultiLangTables)) {
-            $aTables = array_merge($aTables, $aMultiLangTables);
+        $tables = [
+            'oxactions',
+            'oxartextends',
+            'oxarticles',
+            'oxattribute',
+            'oxcategories',
+            'oxcontents',
+            'oxcountry',
+            'oxdelivery',
+            'oxdeliveryset',
+            'oxdiscount',
+            'oxgroups',
+            'oxlinks',
+            'oxmanufacturers',
+            'oxmediaurls',
+            'oxobject2attribute',
+            'oxpayments',
+            'oxselectlist',
+            'oxshops',
+            'oxstates',
+            'oxvendor',
+            'oxwrapping',
+        ];
+        $configTables = Registry::getConfig()->getConfigParam('aMultiLangTables');
+        if (\is_array($configTables)) {
+            $tables = \array_merge($tables, $configTables);
         }
-
-        return $aTables;
+        return $tables;
     }
 
     /**
@@ -1379,7 +1383,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     public function getLanguageIds($iShopId = null)
     {
-        if (empty($iShopId) || $iShopId == \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()) {
+        if (empty($iShopId) || $iShopId == Registry::getConfig()->getShopId()) {
             $aLanguages = $this->getActiveShopLanguageIds();
         } else {
             $aLanguages = $this->_getLanguageIdsFromDatabase($iShopId);
@@ -1395,7 +1399,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveShopLanguageIds()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
 
         //if exists language parameters array, extract lang id's from there
         $aLangParams = $oConfig->getConfigParam('aLanguageParams');
@@ -1463,7 +1467,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _selectLanguageParamValues($sParamName, $sShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
 
         $params = [
             ':oxvarname' => $sParamName

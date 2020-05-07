@@ -99,7 +99,6 @@ class UBaseTest extends \OxidTestCase
             'oxcmp_shop'       => 1,
             'oxcmp_categories' => 0,
             'oxcmp_utils'      => 1,
-            'oxcmp_news'       => 0,
             'oxcmp_basket'     => 1,
             $sCmpName          => 1
         );

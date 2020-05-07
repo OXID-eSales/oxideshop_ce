@@ -11,13 +11,13 @@ use OxidEsales\EshopCommunity\Application\Model\Newsletter;
 use \oxTestModules;
 
 /**
- * Tests for News_Main class
+ * Tests for Newsletter_Preview class
  */
 class NewsletterPreviewTest extends \OxidTestCase
 {
 
     /**
-     * News_Main::Render() test case
+     * Newsletter_Preview::Render() test case
      *
      * @return null
      */

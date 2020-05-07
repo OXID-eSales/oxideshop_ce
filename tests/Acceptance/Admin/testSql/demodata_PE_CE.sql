@@ -150,19 +150,6 @@ REPLACE INTO `oxvouchers` (`OXDATEUSED`, `OXRESERVED`, `OXVOUCHERNR`, `OXVOUCHER
                          ('0000-00-00',  0,           'test111',     'testvoucher1',     'testcoucher012'),
                          ('0000-00-00',  0,           'test222',     'testvoucher2',     'testcoucher013');
 
-#News demodata
-REPLACE INTO `oxnews` (`OXID`,       `OXSHOPID`,  `OXACTIVE`, `OXDATE`,     `OXSHORTDESC`,                 `OXLONGDESC`,                  `OXACTIVE_1`, `OXSHORTDESC_1`,               `OXLONGDESC_1`) VALUES
-                     ('testnews1',  1, 1,         '2008-01-01', 'Test news 1 [DE] šÄßüл',      '<p>Test news text 1 [DE]</p>', 1,           'Test news 1 [EN] šÄßüл',      '<p>Test news text 1 [EN] šÄßüл</p>'),
-                     ('testnews2',  1, 1,         '2008-01-02', 'Test news 2 [DE] šÄßüл',      '<p>Test news text 2 [DE]</p>', 1,           'Test news 2 [EN] šÄßüл',      '<p>Test news text 2 [EN] šÄßüл</p>'),
-                     ('testnews3',  1, 0,         '2007-11-02', '1 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '[last] [EN] Test news šÄßüл', '<p>Test news text</p>'),
-                     ('testnews4',  1, 0,         '2008-01-05', '2 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '8 [EN] Test news šÄßüл',      '<p>Test news text</p>'),
-                     ('testnews5',  1, 0,         '2007-12-02', '3 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '1 [EN] Test news šÄßüл',      '<p>Test news text</p>'),
-                     ('testnews6',  1, 0,         '2008-01-02', '4 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '2 [EN] Test news šÄßüл',      '<p>Test news text</p>'),
-                     ('testnews7',  1, 0,         '2007-12-20', '5 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '3 [EN] Test news šÄßüл',      '<p>Test news text</p>'),
-                     ('testnews8',  1, 0,         '2008-02-03', '6 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '4 [EN] Test news šÄßüл',      '<p>Test news text</p>'),
-                     ('testnews9',  1, 0,         '2008-02-02', '7 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '5 [EN] Test news šÄßüл',      '<p>Test news text</p>'),
-                     ('testnews10', 1, 0,         '2008-01-17', '8 [DE] Test news šÄßüл',      '<p>Test news text</p>',        0,           '6 [EN] Test news šÄßüл',      '<p>Test news text</p>'),
-                     ('testnews11', 1, 0,         '2008-02-12', '[last] [DE] Test news šÄßüл', '<p>Test news text</p>',        0,           '7 [EN] Test news šÄßüл',      '<p>Test news text</p>');
 #News subscribbed demodata
 REPLACE INTO `oxnewssubscribed` (`OXID`,                       `OXSHOPID`,   `OXUSERID`,  `OXSAL`, `OXFNAME`,   `OXLNAME`,      `OXEMAIL`,           `OXDBOPTIN`, `OXSUBSCRIBED`) VALUES
                                ('aad47a859fa2fd5d2.73169490', 1, 'testuser',  'Mr',    'UserName',  'UserSurname',  'example_test@oxid-esales.dev', 0,          '2008-02-05 14:43:38'),
@@ -356,8 +343,6 @@ REPLACE INTO `oxobject2group` (`OXID`,                       `OXSHOPID`,   `OXOB
                              ('aad47a86343b36f87.26955455', 1, 'testuserb',    'oxidpriceb'),
                              ('aad47a868601ed778.03775700', 1, 'testuserc',    'oxidnewcustomer'),
                              ('aad47a868601f8420.26771882', 1, 'testuserc',    'oxidpricec'),
-                             ('aad47a869f4828b24.16206885', 1, 'testnews1',    'oxidnewcustomer'),
-                             ('aad47a86bb3afd568.93683720', 1, 'testnews2',    'oxidnewcustomer'),
                              ('aad47a87240deb323.16605440', 1, 'testcoupon2',  'oxidnewcustomer'),
                              ('aad47a872468a9285.09755579', 1, 'testcoupon1',  'oxidnewcustomer'),
                              ('eace688cdde82a5412e1e3b8e5', 1, 'testvoucher1', 'oxidnewcustomer'),

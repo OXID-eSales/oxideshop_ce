@@ -222,10 +222,6 @@ $aLang = [
 'LABEL'                                                       => 'Label',
 'LAST_NAME'                                                   => 'Last name',
 'LAST_SEEN_PRODUCTS'                                          => 'Last seen products',
-// @deprecated 6.5.6 "News" feature will be removed completely
-'LATEST_NEWS_AND_UPDATES_AT' => 'Latest news and updates at',
-'LATEST_NEWS_NOACTIVENEWS'   => 'Presently no news',
-// END deprecated
 'LINKS'                                                       => 'Links',
 'LISTMANIA'                                                   => 'Listmania',
 'LISTMANIA_2'                                                 => 'Listmania/%s',
@@ -323,9 +319,6 @@ $aLang = [
 'MY_WISH_LIST'                                                => 'My wish list',
 'NEWEST_SHOP_PRODUCTS'                                        => 'Recent products in shop',
 'NEWLIST'                                                     => 'New listmania list',
-// @deprecated 6.5.6 "News" feature will be removed completely
-'NEWS' => 'News',
-// END deprecated
 'NEWSLETTER'                                                  => 'Newsletter',
 'NEWSLETTER_SETTINGS'                                         => 'Newsletter settings',
 'NEWSLETTER_SUBSCRIBE_CANCEL'                                 => 'Subscribe/unsubscribe newsletter',
@@ -703,9 +696,6 @@ $aLang = [
 'PAGE_TITLE_LINKS'                                            => 'Links',
 'PAGE_TITLE_SEARCH'                                           => 'Search',
 'PAGE_TITLE_CLEARCOOKIES'                                     => 'Information about cookies',
-// @deprecated 6.5.6 "News" feature will be removed completely
-'PAGE_TITLE_NEWS' => 'News',
-// END deprecated
 'PAGE_TITLE_SUGGEST'                                          => 'Recommend product',
 'PAGE_TITLE_INVITE'                                           => 'Invite your friends',
 'PAGE_TITLE_REVIEW'                                           => 'Review',

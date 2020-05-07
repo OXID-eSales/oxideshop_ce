@@ -7,44 +7,31 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use oxDb;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
 use oxLang;
-use \stdClass;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 class LangTest extends \OxidTestCase
 {
-
-    /**
-     * @inheritdoc
-     */
     protected function setUp(): void
     {
         parent::setUp();
 
-        // cleanup
         oxRegistry::getUtils()->oxResetFileCache();
-
         $theme = oxNew(Theme::class);
         $theme->load('azure');
         $theme->activate();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
-        // cleanup
         oxRegistry::getUtils()->oxResetFileCache();
-
-        $sFileName = getShopBasePath() . "/out/azure/de/my_lang.php";
+        $sFileName = getShopBasePath() . '/out/azure/de/my_lang.php';
         if (file_exists($sFileName)) {
             unlink($sFileName);
         }
@@ -1539,20 +1526,20 @@ class LangTest extends \OxidTestCase
         $this->assertTrue(count($aMapData) > 0);
     }
 
-    public function testGetMultiLangTables()
+    public function testGetMultiLangTablesCount(): void
     {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
+        if ($this->getTestConfig()->getShopEdition() === 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 
-        $oLang = oxNew('oxLang');
-        $aTable = $oLang->getMultiLangTables();
-        $this->assertTrue(count($aTable) == 22);
+        $lang = oxNew('oxLang');
+        $multiLangTables = $lang->getMultiLangTables();
+        $this->assertCount(21, $multiLangTables);
 
-        $this->getConfig()->setConfigParam('aMultiLangTables', array('table1', 'table2'));
+        $this->getConfig()->setConfigParam('aMultiLangTables', ['table1', 'table2']);
 
-        $aTable = $oLang->getMultiLangTables();
-        $this->assertTrue(count($aTable) == 24);
+        $multiLangTables = $lang->getMultiLangTables();
+        $this->assertCount(23, $multiLangTables);
     }
 
     /**

@@ -1739,42 +1739,6 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
     }
 
     /**
-     * ajax: News -> Assign Groups
-     *
-     * @group ajax
-     */
-    public function testAjaxNewsAssignGroups()
-    {
-        $this->loginAdmin("Customer Info", "News");
-        $this->assertEquals("English", $this->getSelectedLabel("changelang"));
-        $this->changeAdminListLanguage('Deutsch');
-        $this->clickAndWait("link=Title");
-        $this->openListItem("link=4 [DE] Test news šÄßüл");
-        $this->click("//input[@value='Assign User Groups']");
-        $this->usePopUp();
-        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
-        //assignAll btn
-        $this->click("container1_btn");
-        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[21]/td[1]");
-        //drag and drop 1 itm from one list to another
-        $this->dragAndDrop("//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]", "container1");
-        $this->assertElementText("3 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[20]/td[1]");
-        $this->dragAndDrop("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]", "container2");
-        $this->assertElementText("3 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]");
-        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[21]/td[1]");
-        //unassignAll btn
-        $this->click("container2_btn");
-        $this->assertElementText("1 user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->assertElementText("[last] user Group šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[21]/td[1]");
-        $this->close();
-    }
-
-    /**
      * ajax: Promotions -> Assign Products.
      *
      * @group ajax

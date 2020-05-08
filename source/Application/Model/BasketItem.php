@@ -461,11 +461,11 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param string $sProductId           product id
      * @param bool   $blDisableLazyLoading disable lazy loading
      *
-     * @throws oxArticleException exception in case of no current object product id is set
-     * @throws oxNoArticleException exception in case if product not exitst or not visible
-     * @throws oxArticleInputException exception if product is not buyable (stock and so on)
+     * @throws \OxidEsales\Eshop\Core\Exception\ArticleException exception in case of no current object product id is set
+     * @throws \OxidEsales\Eshop\Core\Exception\NoArticleException exception in case if product not exitst or not visible
+     * @throws \OxidEsales\Eshop\Core\Exception\ArticleInputException exception if product is not buyable (stock and so on)
      *
-     * @return \OxidEsales\Eshop\Application\Model\Article|oxOrderArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article|\OxidEsales\Eshop\Application\Model\OrderArticle
      */
     public function getArticle($blCheckProduct = false, $sProductId = null, $blDisableLazyLoading = false)
     {
@@ -876,7 +876,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns basket item wrapping object
      *
-     * @return oxwrapping
+     * @return \OxidEsales\Eshop\Application\Model\Wrapping
      */
     public function getWrapping()
     {

@@ -87,7 +87,7 @@ class ModuleTemplateBlockPathFormatter
         $activeModuleInfo = (array) Registry::getConfig()->getConfigParam('aModulePaths');
 
         if (!array_key_exists($this->moduleId, $activeModuleInfo)) {
-            throw oxNew('oxException', 'Module: ' . $this->moduleId . ' is not active.');
+            throw oxNew(\oxException::class, 'Module: ' . $this->moduleId . ' is not active.');
         }
 
         $modulePath = $activeModuleInfo[$this->moduleId];

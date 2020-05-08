@@ -128,7 +128,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Returns selected user
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User|false
      */
     public function getUser()
     {

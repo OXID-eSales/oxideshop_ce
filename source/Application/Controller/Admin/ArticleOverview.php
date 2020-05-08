@@ -83,7 +83,7 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     }
 
     /**
-     * @return DatabaseInterface
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
      */
     protected function getDatabase()
     {

@@ -6,6 +6,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     autoloader=".psalm-autoload.php"
     errorLevel="8"
+    errorBaseline="psalm-baseline.xml"
 >
     <projectFiles>
         <directory name="source/" />

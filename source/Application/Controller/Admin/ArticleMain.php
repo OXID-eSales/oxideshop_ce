@@ -689,7 +689,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Returns shop manufacturers list
      *
-     * @return oxmanufacturerlist
+     * @return \OxidEsales\Eshop\Application\Model\CategoryList
      */
     public function getCategoryList()
     {
@@ -702,7 +702,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Returns shop manufacturers list
      *
-     * @return oxmanufacturerlist
+     * @return \OxidEsales\Eshop\Application\Model\VendorList
      */
     public function getVendorList()
     {
@@ -715,7 +715,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Returns shop manufacturers list
      *
-     * @return oxmanufacturerlist
+     * @return \OxidEsales\Eshop\Application\Model\ManufacturerList
      */
     public function getManufacturerList()
     {

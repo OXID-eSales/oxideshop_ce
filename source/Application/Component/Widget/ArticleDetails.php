@@ -941,10 +941,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         $this->setActiveCategory($oCategory);
 
-        /**
-         * @var $oLocator oxLocator
-         */
-        $oLocator = oxNew('oxLocator', $this->getListType());
+        $oLocator = oxNew(\OxidEsales\Eshop\Application\Component\Locator::class, $this->getListType());
         $oLocator->setLocatorData($oProduct, $this);
 
         return $this->_sThisTemplate;

@@ -209,7 +209,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Current order currency object
      *
-     * @var stdClass
+     * @var \stdClass
      */
     protected $_oOrderCurrency = null;
 
@@ -307,7 +307,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param bool $blExcludeCanceled excludes canceled items from list
      *
-     * @return \oxlist
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      * @deprecated underscore prefix violates PSR12, will be renamed to "getArticles" in next major
      */
     protected function _getArticles($blExcludeCanceled = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -332,7 +332,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param bool $blExcludeCanceled excludes canceled items from list
      *
-     * @return \oxlist
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getOrderArticles($blExcludeCanceled = false)
     {
@@ -1588,7 +1588,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Loads possible shipping sets for this order
      *
-     * @return oxdeliverysetlist
+     * @return \OxidEsales\Eshop\Application\Model\DeliveryList
      */
     public function getShippingSetList()
     {
@@ -1785,7 +1785,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Returns order deliveryset object
      *
-     * @return oxDeliverySet
+     * @return \OxidEsales\Eshop\Application\Model\DeliverySet
      */
     public function getDelSet()
     {
@@ -1801,7 +1801,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Get payment type
      *
-     * @return \OxidEsales\Eshop\Application\Model\UserPayment
+     * @return \OxidEsales\Eshop\Application\Model\UserPayment|false
      */
     public function getPaymentType()
     {
@@ -1819,7 +1819,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Get gift card
      *
-     * @return oxWrapping
+     * @return \OxidEsales\Eshop\Application\Model\Wrapping|null
      */
     public function getGiftCard()
     {
@@ -1951,7 +1951,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Get billing country name from billing country id
      *
-     * @return oxField
+     * @return \OxidEsales\Eshop\Core\Field
      */
     public function getBillCountry()
     {
@@ -1965,7 +1965,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Get delivery country name from delivery country id
      *
-     * @return oxField
+     * @return \OxidEsales\Eshop\Core\Field
      */
     public function getDelCountry()
     {
@@ -2014,7 +2014,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns actual order currency object. In case currency was not recognized
      * due to changed name returns first shop currency object
      *
-     * @return stdClass
+     * @return \stdClass
      */
     public function getOrderCurrency()
     {

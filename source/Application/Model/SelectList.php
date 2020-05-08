@@ -47,7 +47,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     /**
      * Active selection object
      *
-     * @var oxSelection
+     * @var \OxidEsales\Eshop\Application\Model\Selection
      */
     protected $_oActiveSelection = null;
 
@@ -159,7 +159,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     /**
      * Returns active selection object
      *
-     * @return oxSelection
+     * @return \OxidEsales\Eshop\Application\Model\Selection
      */
     public function getActiveSelection()
     {

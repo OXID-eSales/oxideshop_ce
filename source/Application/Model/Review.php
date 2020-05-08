@@ -104,7 +104,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param boolean $blLoadEmpty true if want to load empty text reviews
      * @param int     $iLoadInLang language to select for loading
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadList($sType, $aIds, $blLoadEmpty = false, $iLoadInLang = null)
     {

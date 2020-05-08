@@ -1269,7 +1269,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     /**
      * Return article user.
      *
-     * @return oxUser
+     * @return \OxidEsales\Eshop\Application\Model\User
      * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleUser" in next major
      */
     protected function _getArticleUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

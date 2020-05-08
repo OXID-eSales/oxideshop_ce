@@ -139,7 +139,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      *
      * @param string $sOxid object id
      *
-     * @return oxmanufacturer
+     * @return bool
      */
     public function load($sOxid)
     {

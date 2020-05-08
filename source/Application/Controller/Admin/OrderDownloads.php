@@ -19,7 +19,7 @@ class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     /**
      * Active order object
      *
-     * @var oxorder
+     * @var \OxidEsales\Eshop\Application\Model\Order
      */
     protected $_oEditObject = null;
 
@@ -43,7 +43,7 @@ class OrderDownloads extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     /**
      * Returns editable order object
      *
-     * @return oxorder
+     * @return \OxidEsales\Eshop\Application\Model\Order
      */
     public function getEditObject()
     {

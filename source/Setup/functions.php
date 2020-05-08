@@ -24,7 +24,7 @@ if (!function_exists('getSystemReqCheck')) {
     /**
      * Returns class responsible for system requirements check
      *
-     * @return oxSysRequirements
+     * @return \OxidEsales\EshopEnterprise\Core\SystemRequirements|\OxidEsales\EshopProfessional\Core\SystemRequirements|\OxidEsales\EshopCommunity\Core\SystemRequirements
      */
     function getSystemReqCheck()
     {

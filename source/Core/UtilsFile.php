@@ -521,7 +521,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sFileName   form file item name
      * @param string $sUploadPath RELATIVE (to config sShopDir parameter) path for uploaded file to be copied
      *
-     * @throws oxException if file is not valid
+     * @throws \OxidEsales\Eshop\Core\Exception\StandardException if file is not valid
      *
      * @return string
      */

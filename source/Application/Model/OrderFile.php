@@ -32,8 +32,6 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Initialises the instance
-     *
-     * @return oxOrderFile
      */
     public function __construct()
     {

@@ -158,7 +158,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * Builds JS code for current view tracking functionality
      *
      * @param array $aParams plugin parameters
-     * @param smarty $oSmarty template engine object
+     * @param \Smarty $oSmarty template engine object
      *
      * @return string
      */
@@ -189,7 +189,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns emos item object
      *
-     * @return EMOS_Item
+     * @return \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem
      * @deprecated underscore prefix violates PSR12, will be renamed to "getNewEmosItem" in next major
      */
     protected function _getNewEmosItem() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -242,7 +242,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * @param string $sCatPath category path
      * @param int $iQty buyable amount
      *
-     * @return EMOS_Item
+     * @return \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem
      * @deprecated underscore prefix violates PSR12, will be renamed to "convProd2EmosItem" in next major
      */
     protected function _convProd2EmosItem($oProduct, $sCatPath = "NULL", $iQty = 1) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -422,7 +422,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
      * @param array $aParams
-     * @param Smarty $oSmarty
+     * @param \Smarty $oSmarty
      * @deprecated underscore prefix violates PSR12, will be renamed to "setControllerInfo" in next major
      */
     private function _setControllerInfo($oEmos, $aParams, $oSmarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -546,7 +546,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      * #4018: The emospro.search string is URL-encoded forwarded to econda instead of URL-escaped.
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\Emos $oEmos
-     * @param Smarty $oSmarty
+     * @param \Smarty $oSmarty
      * @deprecated underscore prefix violates PSR12, will be renamed to "setSearchInformation" in next major
      */
     private function _setSearchInformation($oEmos, $oSmarty) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

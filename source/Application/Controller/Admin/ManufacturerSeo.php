@@ -37,7 +37,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
     /**
      * Returns current object type seo encoder object
      *
-     * @return oxSeoEncoderManufacturer
+     * @return \OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
     protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

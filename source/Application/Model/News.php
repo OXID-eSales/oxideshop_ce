@@ -63,7 +63,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns list of user groups assigned to current news object
      *
-     * @return oxlist
+     * @return ListModel
      */
     public function getGroups()
     {

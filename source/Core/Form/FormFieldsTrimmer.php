@@ -20,7 +20,7 @@ class FormFieldsTrimmer implements EshopFormFieldsTrimmerInterface
      *
      * @param EshopFormFields $fields to trim.
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     public function trim(EshopFormFields $fields)
     {

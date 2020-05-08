@@ -489,7 +489,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @param string $abbreviation language abbreviation
      *
-     * @throws RegExException if pattern does not match
+     * @throws \Exception if pattern does not match
      *
      * @return bool
      */

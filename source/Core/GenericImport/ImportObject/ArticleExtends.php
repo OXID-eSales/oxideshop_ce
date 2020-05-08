@@ -23,7 +23,7 @@ class ArticleExtends extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\I
     /**
      * Creates shop object.
      *
-     * @return oxI18n
+     * @return \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function createShopObject()
     {

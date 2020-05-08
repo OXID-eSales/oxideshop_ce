@@ -7,13 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxArticle;
 use OxidEsales\Eshop\Application\Model\Wrapping;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxList;
-use oxBasketContentMarkGenerator;
-use oxBasket;
+use OxidEsales\EshopCommunity\Application\Model\BasketContentMarkGenerator;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -65,7 +61,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * First basket product object. It is used to load
      * recommendation list info and similar product list
      *
-     * @var oxArticle
+     * @var \OxidEsales\EshopCommunity\Application\Model\Article
      */
     protected $_oFirstBasketProduct = null;
 
@@ -79,14 +75,14 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Wrapping objects list
      *
-     * @var oxList
+     * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oWrappings = null;
 
     /**
      * Card objects list
      *
-     * @var oxList
+     * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oCards = null;
 
@@ -307,7 +303,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Return basket wrappings list if available
      *
-     * @return oxlist
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getWrappingList()
     {
@@ -326,7 +322,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Returns greeting cards list if available
      *
-     * @return oxlist
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getCardList()
     {
@@ -400,7 +396,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
         /** @var \OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator $oBasketContentMarkGenerator */
-        return oxNew('oxBasketContentMarkGenerator', $session->getBasket());
+        return oxNew(BasketContentMarkGenerator::class, $session->getBasket());
     }
 
     /**

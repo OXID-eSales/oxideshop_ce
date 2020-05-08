@@ -33,15 +33,11 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
     /**
      * Wrapping objects list
-     *
-     * @var oxlist
      */
     protected $_oWrappings = null;
 
     /**
      * Card objects list
-     *
-     * @var oxlist
      */
     protected $_oCards = null;
 
@@ -68,7 +64,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * Return basket wrappings list if available
      *
-     * @return oxlist
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getWrappingList()
     {
@@ -87,7 +83,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * Returns greeting cards list if available
      *
-     * @return oxlist
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getCardList()
     {

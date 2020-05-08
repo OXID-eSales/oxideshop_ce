@@ -368,7 +368,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @param Category $category category object
      *
-     * @return oxArticleList
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadArticles" in next major
      */
     protected function _loadArticles($category) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -829,7 +829,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Template variable getter. Returns category's article list
      *
-     * @return oxArticleList|null
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList|null
      */
     public function getArticleList()
     {

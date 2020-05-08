@@ -91,14 +91,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @see _getOuput
      *
-     * @var oxOutput
+     * @var \OxidEsales\Eshop\Core\Output
      */
     protected $_oOutput = null;
 
     /**
      * Cache manager instance
-     *
-     * @var ContentCache
      */
     protected $_oCache = null;
 
@@ -336,12 +334,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $view
      * @param string             $functionName
      *
-     * @throws oxSystemComponentException
+     * @throws \oxSystemComponentException
      */
     protected function executeAction($view, $functionName)
     {
         if (!$this->_canExecuteFunction($view, $functionName)) {
-            throw oxNew('oxSystemComponentException', 'Non public method cannot be accessed');
+            throw oxNew(\oxSystemComponentException::class, 'Non public method cannot be accessed');
         }
 
         $view->executeFunction($functionName);
@@ -471,7 +469,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $templateName = $view->render();
 
         // check if template exists
-        /** @var TemplateLoaderInterface $templateLoader */
+        /** @var \OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface */
         $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
         if ($this->isAdmin()) {
             $templateLoader = $this->getContainer()->get('oxid_esales.templating.admin.template.loader');
@@ -529,7 +527,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Return output handler.
      *
-     * @return oxOutput
+     * @return \OxidEsales\Eshop\Core\Output
      * @deprecated underscore prefix violates PSR12, will be renamed to "getOutputManager" in next major
      */
     protected function _getOutputManager() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

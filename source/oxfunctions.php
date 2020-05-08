@@ -113,7 +113,7 @@ function oxNew($className, ...$args)
  *
  * @deprecated since v6.0.0 (2016-05-16); Use \OxidEsales\Eshop\Core\DatabaseProvider::getDb().
  *
- * @return oxDb
+ * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
  */
 function getDb($blAssoc = true)
 {
@@ -125,7 +125,7 @@ function getDb($blAssoc = true)
  *
  * @deprecated since v6.0.0 (2016-05-16); Use \OxidEsales\Eshop\Core\Str::getStr().
  *
- * @return oxStrRegular|oxStrMb
+ * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
  */
 function getStr()
 {

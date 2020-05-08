@@ -2152,7 +2152,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns gift card object (if available)
      *
-     * @return oxWrapping
+     * @return \OxidEsales\Eshop\Application\Model\Wrapping|null
      */
     public function getCard()
     {

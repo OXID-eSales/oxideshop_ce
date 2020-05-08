@@ -35,7 +35,7 @@ class RecommendationAddController extends \OxidEsales\Eshop\Application\Controll
     /**
      * Renders the view
      *
-     * @return unknown
+     * @return string
      */
     public function render()
     {

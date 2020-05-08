@@ -302,7 +302,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $sFile    picture file name
      * @param string $sSize    picture sizes (x, y)
      * @param string $sIndex   picture index [optional]
-     * @param string $sAltPath alternative picture path [optional]
+     * @param string|false $sAltPath alternative picture path [optional]
      * @param bool   $bSsl     Whether to force SSL
      *
      * @return string|bool

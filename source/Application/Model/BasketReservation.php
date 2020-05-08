@@ -23,7 +23,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * Reservations list
      *
-     * @var \OxidEsales\EshopCommunity\Application\Model\UserBasket
+     * @var \OxidEsales\Eshop\Application\Model\UserBasket
      */
     protected $_oReservations = null;
 
@@ -57,7 +57,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sBasketId basket id for this user basket
      *
-     * @return \OxidEsales\EshopCommunity\Application\Model\UserBasket
+     * @return \OxidEsales\Eshop\Application\Model\UserBasket
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadReservations" in next major
      */
     protected function _loadReservations($sBasketId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -79,7 +79,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * get reservations collection
      *
-     * @return \OxidEsales\EshopCommunity\Application\Model\UserBasket
+     * @return \OxidEsales\Eshop\Application\Model\UserBasket
      */
     public function getReservations()
     {

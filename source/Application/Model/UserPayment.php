@@ -28,7 +28,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Payment info object
      *
-     * @var oxpayment
+     * @var \OxidEsales\Eshop\Application\Model\Payment
      */
     protected $_oPayment = null;
 

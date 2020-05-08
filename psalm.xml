@@ -13,6 +13,7 @@
         <ignoreFiles>
             <directory name="source/Setup/" />
             <file name="source/config.inc.php" />
+            <file name="source/oxseo.php" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

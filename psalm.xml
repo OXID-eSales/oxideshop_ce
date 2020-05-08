@@ -12,6 +12,7 @@
         <directory name="source/" />
         <ignoreFiles>
             <directory name="source/Setup/" />
+            <file name="source/config.inc.php" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

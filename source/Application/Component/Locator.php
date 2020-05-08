@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
 use OxidEsales\Eshop\Application\Model\SeoEncoderVendor;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
+
 use function getLogger;
 
 /**

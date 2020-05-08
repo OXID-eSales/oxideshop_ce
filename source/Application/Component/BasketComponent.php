@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Registry;
 use Psr\Log\LoggerInterface;
 use stdClass;
+
 use function oxNew;
 
 /**

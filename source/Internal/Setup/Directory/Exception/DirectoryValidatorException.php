@@ -13,11 +13,11 @@ use Exception;
 use Throwable;
 
 /**
- * Class DirectoryException
+ * Class DirectoryValidatorException
  *
  * @package OxidEsales\EshopCommunity\Internal\Setup\Directory
  */
-class DirectoryException extends Exception
+class DirectoryValidatorException extends Exception
 {
     public const NON_EXISTENCE_DIRECTORY = 'Non existence directory';
     public const NO_PERMISSION_DIRECTORY = 'No permission directory';

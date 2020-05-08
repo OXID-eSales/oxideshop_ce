@@ -3,5 +3,5 @@ services:
         autowire: true
         public: false
 
-    OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryServiceInterface:
-        class: OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryService
+    OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidator

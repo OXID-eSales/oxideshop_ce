@@ -346,28 +346,6 @@ function editThis( sID )
 
                 <tr>
                  <td valign="top" class="conftext">
-                    <input type=hidden name=confbools[bl_perfLoadNews] value=false>
-                    <input type=checkbox name=confbools[bl_perfLoadNews] value=true  [{if ($confbools.bl_perfLoadNews)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_PERF_LOADNEWS"}]
-                 </td>
-                 <td valign="top" class="conftext" width="100%">
-                  [{oxmultilang ident="SHOP_PERF_LOADNEWS"}]
-                 </td>
-                </tr>
-
-                <tr>
-                 <td valign="top" class="conftext">
-                    <input type=hidden name=confbools[bl_perfLoadNewsOnlyStart] value=false>
-                    <input type=checkbox name=confbools[bl_perfLoadNewsOnlyStart] value=true  [{if ($confbools.bl_perfLoadNewsOnlyStart)}]checked[{/if}] [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_PERF_LOADNEWSONLYSTART"}]
-                 </td>
-                 <td valign="top" class="conftext" width="100%">
-                  [{oxmultilang ident="SHOP_PERF_LOADNEWSONLYSTART"}]
-                 </td>
-                </tr>
-
-                <tr>
-                 <td valign="top" class="conftext">
                     <input type=hidden name=confbools[bl_perfParseLongDescinSmarty] value=false>
                     <input type=checkbox name=confbools[bl_perfParseLongDescinSmarty] value=true  [{if ($confbools.bl_perfParseLongDescinSmarty)}]checked[{/if}] [{$readonly}]>
                     [{oxinputhelp ident="HELP_SHOP_PERF_PARSELONGDESCINSMARTY"}]

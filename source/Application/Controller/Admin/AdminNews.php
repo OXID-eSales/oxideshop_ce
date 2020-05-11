@@ -21,5 +21,5 @@ class AdminNews extends \OxidEsales\Eshop\Application\Controller\Admin\AdminCont
      *
      * @var string
      */
-    protected $_sThisTemplate = 'admin_news.tpl';
+    protected $_sThisTemplate = '';
 }

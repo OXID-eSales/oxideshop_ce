@@ -640,18 +640,6 @@ function editThis(sID)
                 </dd>
                 <div class="spacer"></div>
             </dl>
-
-            <dl>
-                <dt>
-                    <input type=text class="txt" name=confstrs[sCntOfNewsLoaded] value="[{$confstrs.sCntOfNewsLoaded}]" [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_CNTOFNEWS"}]
-                </dt>
-                <dd>
-                    [{oxmultilang ident="SHOP_CONFIG_CNTOFNEWS"}]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
          </div>
     </div>
 

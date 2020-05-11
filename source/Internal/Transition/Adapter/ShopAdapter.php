@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter;
 
-use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
+use OxidEsales\EshopCommunity\Application\Model\Shop;
 
 class ShopAdapter implements ShopAdapterInterface
 {
@@ -104,5 +104,15 @@ class ShopAdapter implements ShopAdapterInterface
     public function getSmartyInstance(): \Smarty
     {
         return Registry::getUtilsView()->getSmarty();
+    }
+
+    /**
+     * @return bool
+     */
+    public function validateShopId(int $shopId): bool
+    {
+        $shopModel = oxNew(Shop::class);
+        $shopModel->load($shopId);
+        return $shopModel->isLoaded();
     }
 }

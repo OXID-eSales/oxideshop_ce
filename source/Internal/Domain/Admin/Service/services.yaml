@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserService

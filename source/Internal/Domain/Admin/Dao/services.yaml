@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao\AdminDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao\AdminDao

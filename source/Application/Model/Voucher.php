@@ -7,10 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use stdClass;
-use oxRegistry;
-use oxField;
 
 /**
  * Voucher manager.
@@ -50,7 +47,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aVouchers          Array of available vouchers (default array())
      * @param bool   $blCheckavalability check if voucher is still reserver od not
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return mixed
      */
@@ -150,7 +147,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice price to calculate discount on it
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return double
      */
@@ -172,7 +169,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aVouchers array of vouchers
      * @param double $dPrice    current sum (price)
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return array
      */
@@ -195,7 +192,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aVouchers array of vouchers
      * @param double $dPrice    current sum (price)
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return array
      */
@@ -215,7 +212,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice base article price
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return array
      * @deprecated underscore prefix violates PSR12, will be renamed to "isAvailablePrice" in next major
@@ -240,7 +237,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param array $aVouchers array of vouchers
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return bool
      *
@@ -277,7 +274,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param array $aVouchers array of vouchers
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return bool
      * @deprecated underscore prefix violates PSR12, will be renamed to "isAvailableWithOtherSeries" in next major
@@ -319,7 +316,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Checks if voucher is in valid time period. Returns true on success.
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return bool
      * @deprecated underscore prefix violates PSR12, will be renamed to "isValidDate" in next major
@@ -357,7 +354,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Checks if voucher is not yet reserved before.
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return bool
      * @deprecated underscore prefix violates PSR12, will be renamed to "isNotReserved" in next major
@@ -380,7 +377,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param object $oUser user object
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return array
      */
@@ -398,7 +395,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param object $oUser user object
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return boolean
      * @deprecated underscore prefix violates PSR12, will be renamed to "isAvailableInOtherOrder" in next major
@@ -434,7 +431,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param object $oUser user object
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return bool
      * @deprecated underscore prefix violates PSR12, will be renamed to "isValidUserGroup" in next major
@@ -484,9 +481,9 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * create oxVoucherSerie object of this voucher
      *
-     * @throws oxObjectException
+     * @throws \OxidEsales\Eshop\Core\Exception\ObjectException
      *
-     * @return oxVoucherSerie
+     * @return \OxidEsales\Eshop\Application\Model\VoucherSerie
      */
     public function getSerie()
     {
@@ -667,7 +664,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice price to calculate discount on it
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @deprecated on b-dev (2015-03-31); Use function _getGenericDiscountValue()
      *
@@ -683,7 +680,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice price to calculate discount on it
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return double
      * @deprecated underscore prefix violates PSR12, will be renamed to "getGenericDiscountValue" in next major
@@ -735,7 +732,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice price to calculate discount on it
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @deprecated on b-dev (2015-03-31); Use function _getProductDiscountValue()
      *
@@ -751,7 +748,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice price to calculate discount on it
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return double
      * @deprecated underscore prefix violates PSR12, will be renamed to "getProductDiscountValue" in next major
@@ -817,7 +814,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice price to calculate discount on it
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @deprecated on b-dev (2015-03-31); Use function _getCategoryDiscountValue()
      *
@@ -833,7 +830,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param double $dPrice price to calculate discount on it
      *
-     * @throws oxVoucherException exception
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
      * @return double
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryDiscountValue" in next major

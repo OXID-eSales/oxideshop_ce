@@ -21,14 +21,14 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Template name
      *
-     * @var unknown_type
+     * @var string
      */
     protected $_sThisTemplate = 'article_files.tpl';
 
     /**
      * Stores editing article
      *
-     * @var oxArticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oArticle = null;
 
@@ -92,7 +92,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @param bool $blReset Load article again
      *
-     * @return oxFile
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getArticle($blReset = false)
     {

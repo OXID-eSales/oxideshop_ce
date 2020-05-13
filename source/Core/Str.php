@@ -19,7 +19,7 @@ class Str
     /**
      * Specific string handler
      *
-     * @var object
+     * @var \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
      */
     protected static $_oHandler;
 
@@ -35,7 +35,7 @@ class Str
     /**
      * Static method initializing new string handler or returning the existing one.
      *
-     * @return StrRegular|StrMb
+     * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
      */
     public static function getStr()
     {
@@ -52,7 +52,7 @@ class Str
      * to be possible to call this method statically ( \OxidEsales\Eshop\Core\Str::getStr() ), yet leaving the
      * possibility to extend it in modules by overriding _getStrHandler() method.
      *
-     * @return oxStrRegular|oxStrMb
+     * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
      * @deprecated underscore prefix violates PSR12, will be renamed to "getStrHandler" in next major
      */
     protected function _getStrHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

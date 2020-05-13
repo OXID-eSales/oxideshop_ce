@@ -70,4 +70,5 @@ before_script:
 
 script:
   - php vendor/bin/phpcs
+  - vendor/bin/psalm --show-info=false --threads=4
   - php vendor/bin/runtests

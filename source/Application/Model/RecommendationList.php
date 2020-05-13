@@ -120,7 +120,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     /**
      * returns first article from this list's article list
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getFirstArticle()
     {

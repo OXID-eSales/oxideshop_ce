@@ -47,11 +47,11 @@ class Search extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns a list of articles according to search parameters. Returns matched
      *
-     * @param string $sSearchParamForQuery       query parameter
-     * @param string $sInitialSearchCat          initial category to seearch in
-     * @param string $sInitialSearchVendor       initial vendor to seearch for
-     * @param string $sInitialSearchManufacturer initial Manufacturer to seearch for
-     * @param string $sSortBy                    sort by
+     * @param string|false $sSearchParamForQuery       query parameter
+     * @param string|false $sInitialSearchCat          initial category to seearch in
+     * @param string|false $sInitialSearchVendor       initial vendor to seearch for
+     * @param string|false $sInitialSearchManufacturer initial Manufacturer to seearch for
+     * @param string|false $sSortBy                    sort by
      *
      * @return ArticleList
      */
@@ -80,10 +80,10 @@ class Search extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns the amount of articles according to search parameters.
      *
-     * @param string $sSearchParamForQuery       query parameter
-     * @param string $sInitialSearchCat          initial category to seearch in
-     * @param string $sInitialSearchVendor       initial vendor to seearch for
-     * @param string $sInitialSearchManufacturer initial Manufacturer to seearch for
+     * @param string|bool $sSearchParamForQuery       query parameter
+     * @param string|bool $sInitialSearchCat          initial category to seearch in
+     * @param string|bool $sInitialSearchVendor       initial vendor to seearch for
+     * @param string|bool $sInitialSearchManufacturer initial Manufacturer to seearch for
      *
      * @return int
      */
@@ -104,11 +104,11 @@ class Search extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns the appropriate SQL select for a search according to search parameters
      *
-     * @param string $sSearchParamForQuery       query parameter
-     * @param string $sInitialSearchCat          initial category to search in
-     * @param string $sInitialSearchVendor       initial vendor to search for
-     * @param string $sInitialSearchManufacturer initial Manufacturer to search for
-     * @param string $sSortBy                    sort by
+     * @param string|false $sSearchParamForQuery       query parameter
+     * @param string|false $sInitialSearchCat          initial category to search in
+     * @param string|false $sInitialSearchVendor       initial vendor to search for
+     * @param string|false $sInitialSearchManufacturer initial Manufacturer to search for
+     * @param string|false $sSortBy                    sort by
      *
      * @return string
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major

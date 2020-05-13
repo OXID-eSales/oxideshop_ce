@@ -32,7 +32,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     /**
      * Multidimensional variant tree structure
      *
-     * @var OxMdVariant
+     * @var \OxidEsales\Eshop\Application\Model\MdVariant
      */
     protected $_oMdVariants = null;
 
@@ -52,7 +52,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      * @param object $oVariants all article variants
      * @param string $sParentId parent article id
      *
-     * @return oxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function buildMdVariants($oVariants, $sParentId)
     {
@@ -463,7 +463,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
      * @param string                                          $sActVariantId active variant id
      * @param int                                             $iLimit        limit variant lists count (if non zero, return limited number of multidimensional variant selections)
      *
-     * @return Ambigous false | array
+     * @return array|false
      */
     public function buildVariantSelections($sVarName, $oVariantList, $aFilter, $sActVariantId, $iLimit = 0)
     {

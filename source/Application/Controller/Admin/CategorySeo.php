@@ -39,7 +39,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
     /**
      * Returns current object type seo encoder object
      *
-     * @return oxSeoEncoderCategory
+     * @return \OxidEsales\Eshop\Application\Model\SeoEncoderCategory
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
     protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

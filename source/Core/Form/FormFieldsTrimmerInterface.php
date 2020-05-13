@@ -17,7 +17,7 @@ interface FormFieldsTrimmerInterface
     /**
      * Returns trimmed fields.
      *
-     * @param  FormFields $formFields
+     * @param EshopFormFields $formFields
      */
     public function trim(EshopFormFields $formFields);
 }

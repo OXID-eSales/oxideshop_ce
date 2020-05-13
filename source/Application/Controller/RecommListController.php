@@ -40,8 +40,6 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
 
     /**
      * Other recommendations list
-     *
-     * @var oxrecommlist
      */
     protected $_oOtherRecommList = null;
 

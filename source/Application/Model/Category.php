@@ -723,7 +723,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Loads and returns attribute list associated with this category
      *
-     * @return oxAttributeList
+     * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     public function getAttributes()
     {

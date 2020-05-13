@@ -332,7 +332,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Returns active banner list
      *
-     * @return objects
+     * @return \OxidEsales\Eshop\Application\Model\ActionList|null
      */
     public function getBanners()
     {
@@ -349,7 +349,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Returns manufacturer list for manufacturer slider
      *
-     * @return objects
+     * @return array|null
      */
     public function getManufacturerForSlider()
     {

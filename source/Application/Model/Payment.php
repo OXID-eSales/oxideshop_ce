@@ -98,7 +98,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Payment price
      *
-     * @var oxPrice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oPrice = null;
 
@@ -125,7 +125,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Payment groups getter. Returns groups list
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getGroups()
     {
@@ -307,7 +307,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns calculated price.
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getPrice()
     {

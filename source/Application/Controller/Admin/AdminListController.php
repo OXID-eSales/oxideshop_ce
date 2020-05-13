@@ -38,7 +38,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     /**
      * List of objects (default null).
      *
-     * @var oxList
+     * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oList = null;
 
@@ -767,7 +767,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     /**
      * Returns items list
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getItemList()
     {
@@ -825,7 +825,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     /**
      * Returns item list base object
      *
-     * @return oxBase|null
+     * @return \OxidEsales\Eshop\Core\Model\BaseModel|null
      */
     public function getItemListBaseObject()
     {

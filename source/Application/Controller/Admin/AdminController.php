@@ -47,7 +47,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Navigation tree object
      *
-     * @var oxnavigationtree
+     * @var \OxidEsales\Eshop\Application\Controller\Admin\NavigationTree
      */
     protected static $_oNaviTree = null;
 
@@ -123,7 +123,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param object $sShopId shop id
      *
-     * @return oxshop
+     * @return \OxidEsales\Eshop\Application\Model\Shop
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEditShop" in next major
      */
     protected function _getEditShop($sShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -498,7 +498,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Returns navigation object
      *
-     * @return oxnavigationtree
+     * @return \OxidEsales\Eshop\Application\Controller\Admin\NavigationTree
      */
     public function getNavigation()
     {

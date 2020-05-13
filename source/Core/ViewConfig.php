@@ -48,9 +48,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     protected $_sHelpPageLink = null;
 
     /**
-     * returns Country.
-     *
-     * @var oxcountrylist
+     * @var \OxidEsales\Eshop\Application\Model\CountryList
      */
     protected $_oCountryList = null;
 
@@ -1134,7 +1132,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     /**
      * Return country list
      *
-     * @return oxcountrylist
+     * @return \OxidEsales\Eshop\Application\Model\CountryList
      */
     public function getCountryList()
     {

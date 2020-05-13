@@ -7,15 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxArticleList;
-use oxDeliveryList;
-use oxDeliverySetList;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
-use oxPaymentList;
-use oxVariantSelectList;
 
 /**
  * Article details information page.
@@ -737,7 +732,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     /**
      * Template variable getter. Returns list of customer also bought these products
      *
-     * @return oxArticleList|null
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList|false
      */
     public function getAlsoBoughtTheseProducts()
     {
@@ -957,7 +952,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     /**
      * Returns variant selection
      *
-     * @return oxVariantSelectList
+     * @return \OxidEsales\Eshop\Application\Model\VariantSelectList
      */
     public function getVariantSelections()
     {
@@ -1119,7 +1114,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     /**
      * Gets accepted payment methods
      *
-     * @return oxPaymentList
+     * @return \OxidEsales\Eshop\Application\Model\PaymentList
      */
     public function getRDFaPaymentMethods()
     {
@@ -1133,7 +1128,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     /**
      * Returns delivery methods with assigned delivery sets.
      *
-     * @return oxDeliverySetList
+     * @return \OxidEsales\Eshop\Application\Model\DeliverySetList
      */
     public function getRDFaDeliverySetMethods()
     {
@@ -1146,7 +1141,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     /**
      * Template variable getter. Returns delivery list for current product
      *
-     * @return oxDeliveryList
+     * @return \OxidEsales\Eshop\Application\Model\DeliveryList
      */
     public function getProductsDeliveryList()
     {

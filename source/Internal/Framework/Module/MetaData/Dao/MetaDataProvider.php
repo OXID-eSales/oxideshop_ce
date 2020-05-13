@@ -136,7 +136,7 @@ class MetaDataProvider implements MetaDataProviderInterface
     /**
      * @param array $normalizedMetaData
      *
-     * @return mixed
+     * @return array
      */
     private function addFilePathToData(array $normalizedMetaData): array
     {

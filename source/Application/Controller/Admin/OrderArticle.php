@@ -7,10 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
-
 /**
  * Admin order article manager.
  * Collects order articles information, updates it on user submit, etc.
@@ -30,7 +26,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *  - if product is not variant - list contains only product which was found by search;
      *  - if product is variant - list consist with variant paret and its variants
      *
-     * @var oxlist
+     * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oSearchProductList = null;
 
@@ -44,7 +40,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Active order object
      *
-     * @var oxorder
+     * @var \OxidEsales\Eshop\Application\Model\Order
      */
     protected $_oEditObject = null;
 
@@ -70,7 +66,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Returns editable order object
      *
-     * @return oxorder
+     * @return \OxidEsales\Eshop\Application\Model\Order
      */
     public function getEditObject()
     {
@@ -150,7 +146,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Returns product list containing searchable product or its parent and its variants
      *
-     * @return oxlist
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getProductList()
     {

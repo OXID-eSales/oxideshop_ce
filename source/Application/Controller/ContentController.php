@@ -46,8 +46,6 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * Current view content category (if available)
-     *
-     * @var oxcontent
      */
     protected $_oContentCat = null;
 
@@ -61,7 +59,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Current view content title
      *
-     * @var sting
+     * @var string
      */
     protected $_sContentTitle = null;
 
@@ -218,7 +216,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * If current content is assigned to category returns its object
      *
-     * @return oxcontent
+     * @return \OxidEsales\Eshop\Application\Model\Content
      */
     public function getContentCategory()
     {

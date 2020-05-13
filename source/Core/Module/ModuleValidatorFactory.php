@@ -20,7 +20,7 @@ class ModuleValidatorFactory
      * Return module validator by provided type.
      * Returned validator implements interface oxIModuleValidator.
      *
-     * @return oxModuleMetadataValidator
+     * @return \OxidEsales\Eshop\Core\Module\ModuleMetadataValidator
      */
     public function getModuleMetadataValidator()
     {

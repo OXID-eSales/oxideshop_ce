@@ -25,7 +25,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Article object assigned to userbasketitem
      *
-     * @var oxArticle
+     * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oArticle = null;
 
@@ -75,9 +75,9 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sItemKey the key that will be given to oxarticle setItemKey
      *
-     * @throws oxArticleException article exception
+     * @throws \OxidEsales\Eshop\Core\Exception\ArticleException
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getArticle($sItemKey)
     {

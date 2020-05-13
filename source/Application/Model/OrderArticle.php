@@ -457,7 +457,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      * @param array                                      $aSelList chosen selection list
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket  basket
      *
-     * @return oxprice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getBasketPrice($dAmount, $aSelList, $oBasket)
     {
@@ -523,7 +523,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * Returns order article unit price
      *
-     * @return oxprice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getPrice()
     {
@@ -671,7 +671,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     /**
      * get used wrapping
      *
-     * @return oxWrapping
+     * @return \OxidEsales\Eshop\Application\Model\Wrapping
      */
     public function getWrapping()
     {

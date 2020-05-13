@@ -113,7 +113,7 @@ class ModuleTemplatePathCalculator
                             $finalTemplatePath = $foundTemplate;
                             break;
                         } else {
-                            throw oxNew('oxException', sprintf('Cannot find template file "%s".', $foundTemplate));
+                            throw oxNew(\oxException::class, sprintf('Cannot find template file "%s".', $foundTemplate));
                         }
                     }
                 }
@@ -121,7 +121,7 @@ class ModuleTemplatePathCalculator
         }
 
         if (!$finalTemplatePath) {
-            throw oxNew('oxException', sprintf('Cannot find template "%s" in modules configuration.', $templateName));
+            throw oxNew(\oxException::class, sprintf('Cannot find template "%s" in modules configuration.', $templateName));
         }
 
         return $finalTemplatePath;

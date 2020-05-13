@@ -116,8 +116,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * Active recommendation's list
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
-     * @var oxRecommList
      */
     protected $_oActiveRecommList = null;
 
@@ -1834,7 +1832,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @return oxRecommList
+     * @return \OxidEsales\Eshop\Application\Model\RecommendationList|false
      */
     public function getActiveRecommList()
     {
@@ -2658,7 +2656,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * return last finished promotion list
      *
-     * @return oxActionList
+     * @return \OxidEsales\Eshop\Application\Model\ActionList
      */
     public function getPromoFinishedList()
     {
@@ -2674,7 +2672,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * return current promotion list
      *
-     * @return oxActionList
+     * @return \OxidEsales\Eshop\Application\Model\ActionList
      */
     public function getPromoCurrentList()
     {
@@ -2690,7 +2688,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * return future promotion list
      *
-     * @return oxActionList
+     * @return \OxidEsales\Eshop\Application\Model\ActionList
      */
     public function getPromoFutureList()
     {

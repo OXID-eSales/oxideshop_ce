@@ -24,8 +24,6 @@ class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
-     *
-     * @return oxLinks
      */
     public function __construct()
     {

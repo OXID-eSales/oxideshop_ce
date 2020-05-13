@@ -26,7 +26,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $moduleType can be either 'module' or 'theme'
      *
-     * @return oxSettingsHandler
+     * @return self
      */
     public function setModuleType($moduleType)
     {

@@ -22,8 +22,6 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
 {
     /**
      * Review user object
-     *
-     * @var oxuser
      */
     protected $_oRevUser = null;
 
@@ -242,7 +240,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     /**
      * Returns review user object
      *
-     * @return oxuser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getReviewUser()
     {
@@ -319,7 +317,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @return oxRecommList
+     * @return \OxidEsales\Eshop\Application\Model\RecommendationList|false
      */
     public function getActiveRecommList()
     {

@@ -93,7 +93,7 @@ class OnlineModuleVersionNotifier
     /**
      * Send request message to Online Module Version Notifier web service.
      *
-     * @return oxOnlineModulesNotifierRequest
+     * @return \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest
      * @deprecated underscore prefix violates PSR12, will be renamed to "formRequest" in next major
      */
     protected function _formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

@@ -393,8 +393,6 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      * Loads article default category
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
-     *
-     * @return record set
      */
     public function getDefaultCategoryString($oArticle)
     {

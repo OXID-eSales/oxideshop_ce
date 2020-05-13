@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Exception\CookieException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use oxpasswordhasher;
@@ -58,21 +59,21 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * User groups list
      *
-     * @var oxList
+     * @var ListModel
      */
     protected $_oGroups;
 
     /**
      * User address list array
      *
-     * @var oxUserAddressList
+     * @var array
      */
     protected $_aAddresses = [];
 
     /**
      * User payment list
      *
-     * @var oxList
+     * @var ListModel
      */
     protected $_oPayments;
 
@@ -81,7 +82,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @var oxList
+     * @var ListModel
      */
     protected $_oRecommList;
 
@@ -165,7 +166,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_oUserCountryTitle = null;
 
     /**
-     * @var oxState
+     * @var \OxidEsales\Eshop\Application\Model\State
      */
     protected $_oStateObject = null;
 
@@ -180,7 +181,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Gets state object.
      *
-     * @return oxState
+     * @return \OxidEsales\Eshop\Application\Model\State
      * @deprecated underscore prefix violates PSR12, will be renamed to "getStateObject" in next major
      */
     protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -352,7 +353,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         $sViewName = getViewName("oxgroups");
-        $this->_oGroups = oxNew('oxList', 'oxgroups');
+        $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
         $sSelect = "select {$sViewName}.* from {$sViewName} left join oxobject2group on oxobject2group.oxgroupsid = {$sViewName}.oxid
                      where oxobject2group.oxobjectid = :oxobjectid";
         $this->_oGroups->selectString($sSelect, [
@@ -492,7 +493,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sOXID object ID (default is null)
      *
-     * @return object oxList with oxuserpayments objects
+     * @return ListModel with oxuserpayments objects
      */
     public function getUserPayments($sOXID = null)
     {
@@ -504,7 +505,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sSelect = 'select * from oxuserpayments
                 where oxuserid = :oxuserid ';
 
-            $this->_oPayments = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
+            $this->_oPayments = oxNew(ListModel::class);
             $this->_oPayments->init('oxUserPayment');
             $this->_oPayments->selectString($sSelect, [
                 ':oxuserid' => $sOXID
@@ -718,11 +719,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param int $iLimit how many entries to load
      * @param int $iPage  which page to start
      *
-     * @return oxList
+     * @return ListModel
      */
     public function getOrders($iLimit = false, $iPage = 0)
     {
-        $oOrders = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
+        $oOrders = oxNew(ListModel::class);
         $oOrders->init('oxorder');
 
         if ($iLimit !== false) {
@@ -954,7 +955,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function removeFromGroup($sGroupID = null)
     {
         if ($sGroupID != null && $this->inGroup($sGroupID)) {
-            $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
+            $oGroups = oxNew(ListModel::class);
             $oGroups->init('oxobject2group');
             $sSelect = 'select * from oxobject2group
                 where oxobject2group.oxobjectid = :oxobjectid
@@ -1397,8 +1398,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $password         User password
      * @param bool   $setSessionCookie (default false)
      *
-     * @throws object
-     * @throws oxCookieException
+     * @throws CookieException
      * @throws UserException
      *
      * @return bool
@@ -1873,7 +1873,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @return object oxList with oxrecommlist objects
+     * @return ListModel with oxrecommlist objects
      */
     public function getUserRecommLists($sOXID = null)
     {
@@ -1890,7 +1890,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
 
-        $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
+        $oRecommList = oxNew(ListModel::class);
         $oRecommList->init('oxrecommlist');
         $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
         $iShopId = Registry::getConfig()->getShopId();
@@ -1987,7 +1987,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $sUid update id
      *
-     * @return oxuser
+     * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function loadUserByUpdateId($sUid)
     {
@@ -2078,10 +2078,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function encodePassword($sPassword, $sSalt)
     {
-        /** @var oxSha512Hasher $oSha512Hasher */
-        $oSha512Hasher = oxNew('oxSha512Hasher');
-        /** @var oxPasswordHasher $oHasher */
-        $oHasher = oxNew('oxPasswordHasher', $oSha512Hasher);
+        $oSha512Hasher = oxNew(\OxidEsales\Eshop\Core\Sha512Hasher::class);
+        $oHasher = oxNew(\OxidEsales\Eshop\Core\PasswordHasher::class, $oSha512Hasher);
 
         return $oHasher->hash($sPassword, $sSalt);
     }

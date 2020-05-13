@@ -24,7 +24,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * State list
      *
-     * @var oxStateList
+     * @var array
      */
     protected $_aStates = null;
 

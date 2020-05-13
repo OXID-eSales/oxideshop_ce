@@ -51,7 +51,8 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
 
     /**
      * @param int $shopId
-     * @return array
+     *
+     * @return ClassExtensionsChain
      */
     public function getActiveExtensionChain(int $shopId): ClassExtensionsChain
     {

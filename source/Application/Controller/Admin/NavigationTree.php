@@ -330,7 +330,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      * @param int    $act       current tab number
      * @param bool   $setActive marks tab as active
      *
-     * @return DOMNodeList
+     * @return \DOMNodeList
      */
     public function getTabs($id, $act, $setActive = true)
     {
@@ -530,7 +530,7 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $nodes Node array
      *
-     * @return DOMNodeList
+     * @return \DOMNodeList
      */
     public function getListNodes($nodes)
     {

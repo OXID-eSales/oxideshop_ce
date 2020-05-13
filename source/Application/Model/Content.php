@@ -164,7 +164,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Loads Content by using field oxloadid instead of oxid.
      *
      * @param string $loadId     content load ID
-     * @param string $onlyActive selection state - active/inactive
+     * @param string|false $onlyActive selection state - active/inactive
      *
      * @return bool
      */

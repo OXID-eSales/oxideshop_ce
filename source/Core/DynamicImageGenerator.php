@@ -477,7 +477,7 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $imageSource File path of the source image
          * @param string $imageTarget File path of the image to be generated
          *
-         * @throws OxidEsales\Eshop\Core\Exception\StandardException If the path of imageTarget and generated image are not the same
+         * @throws \OxidEsales\Eshop\Core\Exception\StandardException If the path of imageTarget and generated image are not the same
          *
          * @return bool|string Return false on failure or file path of the generated image on success
          * @deprecated underscore prefix violates PSR12, will be renamed to "generateImage" in next major

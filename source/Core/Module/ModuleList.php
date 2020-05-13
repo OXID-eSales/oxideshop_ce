@@ -370,7 +370,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns oxModule object.
      *
-     * @return oxModule
+     * @return \OxidEsales\Eshop\Core\Module\Module
      */
     public function getModule()
     {
@@ -462,7 +462,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     /**
      * Gets module validator factory.
      *
-     * @return oxModuleValidatorFactory
+     * @return \OxidEsales\Eshop\Core\Module\ModuleValidatorFactory
      */
     public function getModuleValidatorFactory()
     {

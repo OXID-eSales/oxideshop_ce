@@ -603,7 +603,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      * Makes safe seo uri - removes unsupported/reserved characters
      *
      * @param string $sUri  seo uri
-     * @param int    $iLang language ID, for which URI should be prepared
+     * @param int|bool $iLang language ID, for which URI should be prepared
      *
      * @return string
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareUri" in next major
@@ -670,9 +670,9 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     /**
      * Prepares and returns formatted object SEO id
      *
-     * @param string $sTitle         Original object title
-     * @param bool   $blSkipTruncate Truncate title into defined lenght or not
-     * @param int    $iLang          language ID, for which to prepare the title
+     * @param string   $sTitle         Original object title
+     * @param bool     $blSkipTruncate Truncate title into defined lenght or not
+     * @param int|bool $iLang          language ID, for which to prepare the title
      *
      * @return string
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareTitle" in next major
@@ -835,7 +835,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
      * Removes shop path part and session id from given url
      *
      * @param string $sUrl  url to clean bad chars
-     * @param int    $iLang active language
+     * @param int|null $iLang active language
      *
      * @access protected
      *
@@ -887,9 +887,9 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     /**
      * Replaces special chars in text
      *
-     * @param string $sString        string to encode
-     * @param bool   $blReplaceChars is true, replaces user defined (\OxidEsales\Eshop\Core\Language::getSeoReplaceChars) characters into alternative
-     * @param int    $iLang          language, for which to encode the string
+     * @param string    $sString        string to encode
+     * @param bool      $blReplaceChars is true, replaces user defined (\OxidEsales\Eshop\Core\Language::getSeoReplaceChars) characters into alternative
+     * @param int|false $iLang          language, for which to encode the string
      *
      * @return string
      */
@@ -1385,7 +1385,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     /**
      * Assemble full paginated url.
      *
-     * @param \OxidEsales\Eshop\Application\Model\ $object     Object, atm category, vendor, manufacturer, recommendationList.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object     Object, atm category, vendor, manufacturer, recommendationList.
      * @param string                               $type       Seo identifier, see oxseo.oxtype.
      * @param string                               $stdUrl     Standard url
      * @param string                               $seoUrl     Seo url

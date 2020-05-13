@@ -25,12 +25,12 @@ class ModuleVariablesLocator
     /** @var FileCache */
     private $fileCache;
 
-    /** @var ShopIdCalculator */
+    /** @var \OxidEsales\Eshop\Core\ShopIdCalculator */
     private $shopIdCalculator;
 
     /**
      * @param FileCache        $fileCache
-     * @param ShopIdCalculator $shopIdCalculator
+     * @param \OxidEsales\Eshop\Core\ShopIdCalculator $shopIdCalculator
      */
     public function __construct($fileCache, $shopIdCalculator)
     {
@@ -127,7 +127,7 @@ class ModuleVariablesLocator
     }
 
     /**
-     * @return ShopIdCalculator
+     * @return \OxidEsales\Eshop\Core\ShopIdCalculator
      */
     protected function getShopIdCalculator()
     {

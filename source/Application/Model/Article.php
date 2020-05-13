@@ -408,14 +408,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Multidimensional variant tree structure
      *
-     * @var oxMdVariant
+     * @var \OxidEsales\Eshop\Application\Model\MdVariant
      */
     protected $_oMdVariants = null;
 
     /**
      * Product long description field
      *
-     * @var oxField
+     * @var \OxidEsales\Eshop\Core\Field
      */
     protected $_oLongDesc = null;
 
@@ -452,7 +452,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * stores downloadable file list
      *
-     * @var array|oxList of oxArticleFile
+     * @var array|\OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_aArticleFiles = null;
 
@@ -1291,7 +1291,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Collects user written reviews about an article.
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getReviews()
     {
@@ -1408,7 +1408,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Loads and returns articles list, bought by same customer.
      *
-     * @return oxArticleList|null
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList|null
      */
     public function getCustomerAlsoBoughtThisProducts()
     {
@@ -1642,7 +1642,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
      *
-     * @return oxArticleList
+     * @return \OxidEsales\Eshop\Application\Model\ArticleList
      */
     public function getFullVariants($blRemoveNotOrderables = true, $blForceCoreTable = null)
     {
@@ -1715,7 +1715,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * assigned category and is such category does not exist, tries to
      * load category by price
      *
-     * @return oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
     public function getCategory()
     {
@@ -1813,7 +1813,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * @return oxi18n
+     * @return \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @deprecated underscore prefix violates PSR12, will be renamed to "createMultilanguageVendorObject" in next major
      */
     protected function _createMultilanguageVendorObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -3220,7 +3220,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Get parent article
      *
-     * @return oxArticle
+     * @return Article
      */
     public function getParentArticle()
     {
@@ -3405,7 +3405,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns multidimensional variant structure
      *
-     * @return oxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function getMdVariants()
     {
@@ -3430,7 +3430,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns first level variants from multidimensional variants list
      *
-     * @return oxMdVariant
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
     public function getMdSubvariants()
     {
@@ -3556,7 +3556,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool      $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool|null $forceCoreTableUsage   if true forces core table use, default is false [optional]
      *
-     * @return array|oxsimplevariantlist|oxarticlelist
+     * @return array|\OxidEsales\Eshop\Application\Model\SimpleVariantList|\OxidEsales\Eshop\Application\Model\ArticleList
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadVariantList" in next major
      */
     protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4992,7 +4992,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param bool $blCalculationModeNetto - if calculation mode netto - true
      *
-     * @return oxPice
+     * @return \OxidEsales\Eshop\Core\Price
      * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceObject" in next major
      */
     protected function _getPriceObject($blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5303,7 +5303,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param bool                      $blRemoveNotOrderables
      * @param bool                      $forceCoreTableUsage
-     * @param oxSimpleVariant|oxarticle $baseObject
+     * @param \OxidEsales\Eshop\Application\Model\Article|\OxidEsales\Eshop\Application\Model\SimpleVariant $baseObject
      * @param string                    $sArticleTable
      *
      * @return string

@@ -41,7 +41,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     /**
      * Returns active category
      *
-     * @return null|oxCategory
+     * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
     public function getActiveCategory()
     {

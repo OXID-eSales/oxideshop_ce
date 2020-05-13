@@ -559,13 +559,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $params = [
-          ':oxshopid' => $shopId,
-          ':oxmodule' => $module
+            ':oxshopid' => $shopId,
+            ':oxmodule' => $module
         ];
-        $select = "select oxvarname, oxvartype, oxvarvalue
-                    from oxconfig
-                    where oxshopid = :oxshopid and oxmodule LIKE :oxmodule";
 
+        $select = "
+            SELECT oxvarname, oxvartype, oxvarvalue
+            FROM oxconfig
+            WHERE oxshopid = :oxshopid AND oxmodule LIKE :oxmodule
+        ";
         $select .= $this->_getConfigParamsSelectSnippet($onlyVars);
 
         $result = $db->getAll($select, $params);

@@ -21,6 +21,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns target "extension" (/)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
     protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -37,6 +38,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * @access protected
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "categoryUrlLoader" in next major
      */
     protected function _categoryUrlLoader($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -60,6 +62,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * @access private
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryCacheId" in next major
      */
     private function _getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -254,6 +257,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int    $iLang     language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
     protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

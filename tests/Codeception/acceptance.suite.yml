@@ -5,6 +5,7 @@
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
 actor: AcceptanceTester
+bootstrap: _bootstrap.php
 modules:
     enabled:
         - Asserts
@@ -13,7 +14,7 @@ modules:
             url: '%SHOP_URL%'
             browser: firefox
             port: '%SELENIUM_SERVER_PORT%'
-            window_size: 1920x1080
+            window_size: 1600x1000
             clear_cookies: true
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
@@ -35,3 +36,5 @@ modules:
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
             paths: 'Application/views/flow/translations'
+        - \OxidEsales\Codeception\Module\FlowTheme:
+            depends: \OxidEsales\Codeception\Module\Database

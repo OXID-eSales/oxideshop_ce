@@ -770,31 +770,6 @@ class NavigationFrontendTest extends FrontendTestCase
     }
 
     /**
-     * Search in frontend. OR and AND separators
-     *
-     * @group frontend
-     */
-    public function testFrontendSearchOrAnd()
-    {
-        //AND is used for search keys
-        // Checking option ((If serveral Search Terms are entered, all Search Terms have to be found in Search Results (AND). (If this Setting is unchecked, only one Search Term has to be found (OR)) is ON
-        $this->callShopSC("oxConfig", null, null, array("blSearchUseAND" => array("type" => "bool", "value" => 'true')));
-        $this->clearCache();
-        $this->openShop();
-        $this->searchFor("1000 1001");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertTextPresent("%NO_ITEMS_FOUND%");
-        $this->assertEquals("0 %HITS_FOR% \"1000 1001\"", $this->getHeadingText("//h1"));
-
-        //OR is used for search keys
-        //Checking option ((If serveral Search Terms are entered, all Search Terms have to be found in Search Results (AND). (If this Setting is unchecked, only one Search Term has to be found (OR)) is OFF
-        $this->callShopSC("oxConfig", null, null, array("blSearchUseAND" => array("type" => "bool", "value" => "false")));
-        $this->clearTemp();
-        $this->searchFor("1000 1001");
-        $this->assertEquals("2 %HITS_FOR% \"1000 1001\"", $this->getHeadingText("//h1"));
-    }
-
-    /**
      * Search in frontend. Checking option: Fields to be considered in Search
      *
      * @group frontend
@@ -1112,43 +1087,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("productSelections");
     }
 
-
-
-    /**
-     * Listmania is disabled via performance options
-     *
-     * @group frontend
-     */
-    public function testFrontendDisabledListmania()
-    {
-        //Listmania is disabled
-        $this->callShopSC("oxConfig", null, null, array("bl_showListmania" => array("type" => "bool", "value" => "false", "module" => "theme:azure")));
-
-        $this->clearCache();
-        $this->openShop();
-        $this->loginInFrontend("example_test@oxid-esales.dev", "useruser");
-        $this->searchFor("100");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']/h3");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']//ul");
-        $this->assertElementNotPresent("searchRecomm");
-        $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']/h3");
-        $this->assertElementNotPresent("//article[@id='recommendationsBox']//ul");
-        $this->assertElementNotPresent("searchRecomm");
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
-        $this->click("productLinks");
-        $this->waitForItemAppear("suggest");
-        $this->assertElementPresent("linkToWishList");
-        $this->assertElementPresent("linkToNoticeList");
-        $this->assertElementNotPresent("recommList");
-        $this->clickAndWait("//dl[@id='footerServices']//a[text()='%ACCOUNT%']");
-        $this->assertElementPresent("//aside[@id='sidebar']//a[text()='%MY_WISH_LIST%']");
-        $this->assertElementPresent("//aside[@id='sidebar']//a[text()='%MY_GIFT_REGISTRY%']");
-        $this->assertElementNotPresent("//aside[@id='sidebar']//a[text()='%MY_LISTMANIA%']");
-    }
-
-
-
     /**
      * Checking contact sending
      *
@@ -1383,7 +1321,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->assertElementNotPresent("accessories");
 
         $this->click("productLinks");
-        $this->waitForItemAppear("suggest");
         $this->assertElementNotPresent("addToCompare");
 
         $this->clickAndWait("//dl[@id='footerServices']//a[text()='%ACCOUNT%']");
@@ -1518,10 +1455,10 @@ class NavigationFrontendTest extends FrontendTestCase
     }
 
     /**
-    * Testing Cookie solution. Is Message appears in frontend about cookies saving
+     * Testing Cookie solution. Is Message appears in frontend about cookies saving
      *
-    * @group frontend
-    */
+     * @group frontend
+     */
     public function testCookieSettingsInFrontend()
     {
         // Check if cookie option is off
@@ -1563,7 +1500,7 @@ class NavigationFrontendTest extends FrontendTestCase
             'OXFNAME' => 'name_šÄßüл',
             'OXLNAME' => 'surname_šÄßüл',
             'OXEMAIL' => 'example01@oxid-esales.dev',
-            'OXDBOPTIN' => (string)$iStatus
+            'OXDBOPTIN' => (string) $iStatus
         );
 
         return $aSubscribedUserData;

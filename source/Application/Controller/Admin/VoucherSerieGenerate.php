@@ -39,7 +39,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
     /**
      * Voucher serie object
      *
-     * @var oxvoucherserie
+     * @var \OxidEsales\Eshop\Application\Model\VoucherSerie
      */
     protected $_oVoucherSerie = null;
 

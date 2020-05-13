@@ -86,6 +86,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data fiels in DB. Returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -103,7 +104,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param boolean $blLoadEmpty true if want to load empty text reviews
      * @param int     $iLoadInLang language to select for loading
      *
-     * @return oxList
+     * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadList($sType, $aIds, $blLoadEmpty = false, $iLoadInLang = null)
     {

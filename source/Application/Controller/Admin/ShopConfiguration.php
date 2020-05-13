@@ -123,6 +123,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * return theme filter for config variables
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getModuleForConfigVars" in next major
      */
     protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -272,6 +273,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param string $constraint serialized constraint
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "parseConstraint" in next major
      */
     protected function _parseConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -290,6 +292,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param mixed  $constraint constraint value
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "serializeConstraint" in next major
      */
     protected function _serializeConstraint($type, $constraint) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -309,6 +312,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param string $value var value
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "unserializeConfVar" in next major
      */
     public function _unserializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -359,6 +363,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param mixed  $value var value
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "serializeConfVar" in next major
      */
     public function _serializeConfVar($type, $name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -396,6 +401,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param array $input Array with text
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "arrayToMultiline" in next major
      */
     protected function _arrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -408,6 +414,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param string $multiline Multiline text
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "multilineToArray" in next major
      */
     protected function _multilineToArray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -430,6 +437,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param array $input Array to convert
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "aarrayToMultiline" in next major
      */
     protected function _aarrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -452,6 +460,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      * @param string $multiline Multiline text
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "multilineToAarray" in next major
      */
     protected function _multilineToAarray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

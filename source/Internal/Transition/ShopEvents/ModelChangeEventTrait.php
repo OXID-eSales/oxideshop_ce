@@ -29,7 +29,7 @@ trait ModelChangeEventTrait
     /**
      * Getter for model class name.
      *
-     * @return string
+     * @return \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getModel(): \OxidEsales\Eshop\Core\Model\BaseModel
     {

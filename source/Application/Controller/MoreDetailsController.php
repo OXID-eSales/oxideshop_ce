@@ -110,7 +110,7 @@ class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\Art
     /**
      * Template variable getter. Returns active product
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getProduct()
     {

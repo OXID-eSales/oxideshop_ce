@@ -28,7 +28,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
     /**
      * Voucher serie object
      *
-     * @var oxvoucherserie
+     * @var \OxidEsales\Eshop\Application\Model\VoucherSerie
      */
     protected $_oVoucherSerie = null;
 
@@ -131,7 +131,8 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
     /**
      * Returns voucher serie object
      *
-     * @return oxvoucherserie
+     * @return \OxidEsales\Eshop\Application\Model\VoucherSerie
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVoucherSerie" in next major
      */
     protected function _getVoucherSerie() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

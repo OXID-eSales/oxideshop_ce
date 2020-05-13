@@ -141,6 +141,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -165,6 +166,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -184,6 +186,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Template variable getter. Returns if actions are ON
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLoadActionsParam" in next major
      */
     protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -329,7 +332,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Returns active banner list
      *
-     * @return objects
+     * @return \OxidEsales\Eshop\Application\Model\ActionList|null
      */
     public function getBanners()
     {
@@ -346,7 +349,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Returns manufacturer list for manufacturer slider
      *
-     * @return objects
+     * @return array|null
      */
     public function getManufacturerForSlider()
     {

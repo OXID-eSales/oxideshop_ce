@@ -363,7 +363,6 @@ interface DatabaseInterface
      *
      * @return bool|integer
      */
-
     /**
      * Set the transaction isolation level.
      * Allowed values 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ' and 'SERIALIZABLE'.

@@ -297,6 +297,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
     /**
      * initialize new session challenge token
+     * @deprecated underscore prefix violates PSR12, will be renamed to "initNewSessionChallenge" in next major
      */
     protected function _initNewSessionChallenge() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -307,6 +308,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Initialize session data (calls php::session_start())
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sessionStart" in next major
      */
     protected function _sessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -383,6 +385,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * @param bool $blUnset if true, calls session_unset [optional]
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNewSessionId" in next major
      */
     protected function _getNewSessionId($blUnset = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -623,6 +626,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket Basket object loaded from session.
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateBasket" in next major
      */
     protected function _validateBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -799,6 +803,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * or _GET parameter "su" (suggested user id) is set.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "forceSessionStart" in next major
      */
     protected function _forceSessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -809,6 +814,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Checks if we can start new session. Returns bool success status
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "allowSessionStart" in next major
      */
     protected function _allowSessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -844,6 +850,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Using this method we can detect different visitor with same session id.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isSwappedClient" in next major
      */
     protected function _isSwappedClient() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -875,6 +882,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * @param string $sExistingAgent existing user agent
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkUserAgent" in next major
      */
     protected function _checkUserAgent($sAgent, $sExistingAgent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -902,6 +910,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * @param array  $aSessCookieSetOnce if session cookie is set
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkCookies" in next major
      */
     protected function _checkCookies($sCookieSid, $aSessCookieSetOnce) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -949,6 +958,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * @param string $sSessId sesion ID
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSessionId" in next major
      */
     protected function _setSessionId($sSessId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -967,6 +977,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Returns name of shopping basket.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getBasketName" in next major
      */
     protected function _getBasketName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -982,6 +993,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Returns cookie sid value
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCookieSid" in next major
      */
     protected function _getCookieSid() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -993,6 +1005,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * start
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getRequireSessionWithParams" in next major
      */
     protected function _getRequireSessionWithParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1015,6 +1028,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Tests if current action requires session
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isSessionRequiredAction" in next major
      */
     protected function _isSessionRequiredAction() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1038,6 +1052,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * return cookies usage for sid possibilities
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSessionUseCookies" in next major
      */
     protected function _getSessionUseCookies() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1048,6 +1063,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Checks if token supplied over 'rtoken' parameter matches remote access session token.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidRemoteAccessToken" in next major
      */
     protected function _isValidRemoteAccessToken() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1060,7 +1076,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     /**
      * return basket reservations handler object
      *
-     * @return oxBasketReservation
+     * @return \OxidEsales\Eshop\Application\Model\BasketReservation
      */
     public function getBasketReservations()
     {

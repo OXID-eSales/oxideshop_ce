@@ -18,6 +18,7 @@ use oxOrder;
 use oxOutOfStockException;
 use oxRegistry;
 use oxUtilsObject;
+use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 
 /**
  * Order manager. Arranges user ordering data, checks/validates
@@ -35,7 +36,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Active basket
      *
-     * @var oxBasket
+     * @var \OxidEsales\Eshop\Application\Model\Basket
      */
     protected $_oBasket = null;
 
@@ -63,7 +64,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Delivery address
      *
-     * @var oxAddress|null
+     * @var \OxidEsales\Eshop\Application\Model\Address
      */
     protected $_oDelAddress = null;
 
@@ -273,7 +274,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Template variable getter. Returns active basket
      *
-     * @return oxBasket
+     * @return \OxidEsales\Eshop\Application\Model\Basket
      */
     public function getBasket()
     {
@@ -335,7 +336,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Template variable getter. Returns delivery address
      *
-     * @return object
+     * @return \OxidEsales\Eshop\Application\Model\Address|null
      */
     public function getDelAddress()
     {
@@ -484,11 +485,11 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     /**
      * Method returns object with explanation marks for articles in basket.
      *
-     * @return oxBasketContentMarkGenerator
+     * @return BasketContentMarkGenerator
      */
     public function getBasketContentMarkGenerator()
     {
-        return oxNew('oxBasketContentMarkGenerator', $this->getBasket());
+        return oxNew(BasketContentMarkGenerator::class, $this->getBasket());
     }
 
     /**
@@ -499,6 +500,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param integer $iSuccess status code
      *
      * @return  string  $sNextStep  partial parameter url for next step
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNextStep" in next major
      */
     protected function _getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -543,6 +545,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Validates whether necessary terms and conditions checkboxes were checked.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateTermsAndConditions" in next major
      */
     protected function _validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -63,7 +63,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns list of user groups assigned to current news object
      *
-     * @return oxlist
+     * @return ListModel
      */
     public function getGroups()
     {
@@ -131,6 +131,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Updates object information in DB.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -143,6 +144,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Inserts object details to DB, returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -164,6 +166,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param int    $iDataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

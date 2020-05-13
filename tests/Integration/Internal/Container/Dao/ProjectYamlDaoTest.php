@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
@@ -101,12 +101,12 @@ EOT;
 
     public function testClearingCacheOnWriting()
     {
-        $bootstrapContainer = (new BootstrapContainerBuilder())->create();
-        $bootstrapContainer->getDefinition(ProjectYamlDaoInterface::class)->setPublic(true);
-        $bootstrapContainer->compile();
+        $container = (new ContainerBuilder(new BasicContext()))->getContainer();
+        $container->getDefinition(ProjectYamlDaoInterface::class)->setPublic(true);
+        $container->compile();
 
-        $dao = $bootstrapContainer->get(ProjectYamlDaoInterface::class);
-        $context = $bootstrapContainer->get(BasicContextInterface::class);
+        $dao = $container->get(ProjectYamlDaoInterface::class);
+        $context = $container->get(BasicContextInterface::class);
 
         $projectYaml = new DIConfigWrapper([]);
 
@@ -118,7 +118,7 @@ EOT;
         // This should trigger the event that deletes the cachefile
         $dao->saveProjectConfigFile($projectYaml);
 
-        $this->assertFileNotExists($context->getContainerCacheFilePath());
+        $this->assertFileDoesNotExist($context->getContainerCacheFilePath());
 
         ContainerFactory::getInstance()->getContainer();
         // Verify container has been rebuild be checking that a cachefile exists

@@ -28,7 +28,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Payment info object
      *
-     * @var oxpayment
+     * @var \OxidEsales\Eshop\Application\Model\Payment
      */
     protected $_oPayment = null;
 
@@ -98,6 +98,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts payment information to DB. Returns insert status.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

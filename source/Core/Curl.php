@@ -93,8 +93,6 @@ class Curl
      * Sets url to call
      *
      * @param string $url URL to call.
-     *
-     * @throws oxException if url is not valid
      */
     public function setUrl($url)
     {
@@ -246,14 +244,11 @@ class Curl
      * @param string $name  curl option name to set value to.
      * @param string $value curl option value to set.
      *
-     * @throws oxException on curl errors
+     * @throws \OxidEsales\Eshop\Core\Exception\StandardException curl errors
      */
     public function setOption($name, $value)
     {
-        if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant = strtoupper($name))) {
-            /**
-             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
-             */
+        if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant  = strtoupper($name))) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
@@ -276,7 +271,7 @@ class Curl
     /**
      * Executes curl call and returns response data as associative array.
      *
-     * @throws oxException on curl errors
+     * @throws \OxidEsales\Eshop\Core\Exception\StandardException on curl errors
      *
      * @return string
      */
@@ -292,9 +287,6 @@ class Curl
         $this->_close();
 
         if ($curlErrorNumber) {
-            /**
-             * @var \OxidEsales\Eshop\Core\Exception\StandardException $exception
-             */
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
@@ -338,6 +330,7 @@ class Curl
      * Sets resource
      *
      * @param resource $rCurl curl.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setResource" in next major
      */
     protected function _setResource($rCurl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -348,6 +341,7 @@ class Curl
      * Returns curl resource
      *
      * @return resource
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getResource" in next major
      */
     protected function _getResource() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -360,6 +354,7 @@ class Curl
 
     /**
      * Set Curl Options
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setOptions" in next major
      */
     protected function _setOptions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -385,6 +380,7 @@ class Curl
      * Wrapper function to be mocked for testing.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "execute" in next major
      */
     protected function _execute() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -393,6 +389,7 @@ class Curl
 
     /**
      * Wrapper function to be mocked for testing.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "close" in next major
      */
     protected function _close() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -405,6 +402,7 @@ class Curl
      *
      * @param string $name  curl option name to set value to.
      * @param string $value curl option value to set.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setOpt" in next major
      */
     protected function _setOpt($name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -415,6 +413,7 @@ class Curl
      * Check if curl has errors. Set error message if has.
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getErrorNumber" in next major
      */
     protected function _getErrorNumber() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -423,6 +422,7 @@ class Curl
 
     /**
      * Sets current request HTTP status code.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveStatusCode" in next major
      */
     protected function _saveStatusCode() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -435,6 +435,7 @@ class Curl
      * @param array $params Parameters.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareQueryParameters" in next major
      */
     protected function _prepareQueryParameters($params) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -447,6 +448,7 @@ class Curl
      * @param mixed $mParam query
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "htmlDecode" in next major
      */
     protected function _htmlDecode($mParam) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

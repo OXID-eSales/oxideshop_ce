@@ -191,6 +191,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $sMasterImageFile master image file name
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getBaseMasterImageFileName" in next major
      */
     protected function _getBaseMasterImageFileName($sMasterImageFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -235,6 +236,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * @param int    $iShopId   shop id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPictureInfo" in next major
      */
     protected function _getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -300,7 +302,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      * @param string $sFile    picture file name
      * @param string $sSize    picture sizes (x, y)
      * @param string $sIndex   picture index [optional]
-     * @param string $sAltPath alternative picture path [optional]
+     * @param string|false $sAltPath alternative picture path [optional]
      * @param bool   $bSsl     Whether to force SSL
      *
      * @return string|bool

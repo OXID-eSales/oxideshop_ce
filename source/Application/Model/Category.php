@@ -210,6 +210,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * @param string $sOXID id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -722,7 +723,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     /**
      * Loads and returns attribute list associated with this category
      *
-     * @return oxAttributeList
+     * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     public function getAttributes()
     {
@@ -834,6 +835,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * Inserts new category (and updates existing node oxLeft amd oxRight accordingly). Returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -896,6 +898,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * Updates category tree, returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1021,6 +1024,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * @param int    $dataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

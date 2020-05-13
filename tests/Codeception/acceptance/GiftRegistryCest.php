@@ -190,7 +190,7 @@ class GiftRegistryCest
         $detailsPage->closeAccountMenu();
 
         $accountPage = $detailsPage->openAccountPage();
-        $I->dontSee(Translator::translate('MY_GIFT_REGISTRY'), $accountPage->giftRegistryLink);
+        $accountPage->dontSeeGiftRegistryLink();
 
         //(Use gift registry) is enabled again
         $I->updateConfigInDatabase('bl_showWishlist', true);

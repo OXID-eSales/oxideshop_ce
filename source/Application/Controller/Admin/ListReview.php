@@ -33,6 +33,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      * Viewable list size getter
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewListSize" in next major
      */
     protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -61,6 +62,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      * @param object $oObject list item object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
     protected function _buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -87,6 +89,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      * @param string $sSql   query string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
     protected function _prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

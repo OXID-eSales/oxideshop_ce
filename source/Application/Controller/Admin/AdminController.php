@@ -47,7 +47,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Navigation tree object
      *
-     * @var oxnavigationtree
+     * @var \OxidEsales\Eshop\Application\Controller\Admin\NavigationTree
      */
     protected static $_oNaviTree = null;
 
@@ -123,7 +123,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @param object $sShopId shop id
      *
-     * @return oxshop
+     * @return \OxidEsales\Eshop\Application\Model\Shop
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEditShop" in next major
      */
     protected function _getEditShop($sShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -204,6 +205,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Returns service url protocol: "https" is admin works in ssl mode, "http" if no ssl
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getServiceProtocol" in next major
      */
     protected function _getServiceProtocol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -226,6 +228,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Sets-up navigation parameters
      *
      * @param string $sNode active view id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
     protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -254,6 +257,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Store navigation history parameters to cookie
      *
      * @param string $sNode active view id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addNavigationHistory" in next major
      */
     protected function _addNavigationHistory($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -327,6 +331,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param bool $blFormatted  Return formated
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMaxUploadFileInfo" in next major
      */
     protected function _getMaxUploadFileInfo($iMaxFileSize, $blFormatted = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -414,6 +419,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Resets cache.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetContentCache" in next major
      */
     protected function _resetContentCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -426,6 +432,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param string $sUserId user id
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "allowAdminEdit" in next major
      */
     protected function _allowAdminEdit($sUserId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -438,6 +445,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param string $sCountryCode Country code
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCountryByCode" in next major
      */
     protected function _getCountryByCode($sCountryCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -475,6 +483,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * performs authorization of admin user
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "authorize" in next major
      */
     protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -489,7 +498,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Returns navigation object
      *
-     * @return oxnavigationtree
+     * @return \OxidEsales\Eshop\Application\Controller\Admin\NavigationTree
      */
     public function getNavigation()
     {

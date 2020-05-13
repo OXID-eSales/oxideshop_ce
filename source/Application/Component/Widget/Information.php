@@ -21,7 +21,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
     protected $_sThisTemplate = 'widget/footer/info.tpl';
 
     /**
-     * @var oxContentList
+     * @var \OxidEsales\Eshop\Application\Model\ContentList
      */
     protected $_oContentList;
 
@@ -40,7 +40,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
     /**
      * Get services content list
      *
-     * @return array
+     * @return \OxidEsales\Eshop\Application\Model\ContentList
      */
     public function getServicesList()
     {
@@ -53,7 +53,8 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
     /**
      * Returns content list object.
      *
-     * @return object|oxContentList
+     * @return \OxidEsales\Eshop\Application\Model\ContentList
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getContentList" in next major
      */
     protected function _getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -141,6 +141,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *  - else returns $this->_sThisLoginTemplate
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLoginTemplate" in next major
      */
     protected function _getLoginTemplate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

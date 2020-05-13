@@ -32,8 +32,6 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Initialises the instance
-     *
-     * @return oxOrderFile
      */
     public function __construct()
     {
@@ -131,6 +129,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sFieldName - field name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldLongName" in next major
      */
     protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

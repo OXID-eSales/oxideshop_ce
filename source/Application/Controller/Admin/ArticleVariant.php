@@ -164,6 +164,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * @param array                                       $aData    Data provided for check.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAnythingChanged" in next major
      */
     protected function _isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -185,6 +186,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * @param string $sParentId parent product id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductParent" in next major
      */
     protected function _getProductParent($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

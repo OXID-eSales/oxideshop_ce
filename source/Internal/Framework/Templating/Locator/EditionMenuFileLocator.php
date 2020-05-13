@@ -90,7 +90,7 @@ class EditionMenuFileLocator implements NavigationFileLocatorInterface
      */
     private function getEditionsRootPaths(): string
     {
-        $editionPath = $this->context->getCommunityEditionSourcePath();
+        $editionPath = $this->context->getSourcePath();
         if ($this->context->getEdition() === BasicContext::PROFESSIONAL_EDITION) {
             $editionPath = $this->context->getProfessionalEditionRootPath();
         } elseif ($this->context->getEdition() === BasicContext::ENTERPRISE_EDITION) {

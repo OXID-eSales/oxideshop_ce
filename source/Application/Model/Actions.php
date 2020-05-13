@@ -208,7 +208,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * return assigned banner article
      *
-     * @return oxArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getBannerArticle()
     {

@@ -92,7 +92,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     /**
      * Get class name from module controller provider.
      *
-     *  @param string $classId
+     * @param string $classId
      *
      * @return string|null
      */

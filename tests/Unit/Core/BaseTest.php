@@ -81,9 +81,9 @@ class _oxBase extends oxBase
      *
      * @return mixed
      */
-    public function setFieldData($sName, $sValue)
+    public function setFieldData($sName, $sValue, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
     {
-        return parent::_setFieldData($sName, $sValue);
+        return parent::_setFieldData($sName, $sValue, $dataType);
     }
 
     /**
@@ -136,9 +136,9 @@ class _oxBase extends oxBase
      *
      * @return string
      */
-    public function getObjectViewName($sTable)
+    public function getObjectViewName($sTable, $shopId = null)
     {
-        return parent::_getObjectViewName($sTable);
+        return parent::_getObjectViewName($sTable, $shopId);
     }
 
     /**

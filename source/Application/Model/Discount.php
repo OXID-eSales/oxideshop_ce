@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
+use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use stdClass;
 
@@ -92,7 +93,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * Returns saving status
      *
-     * @throws \oxInputException
+     * @throws InputException
      * @throws StandardException
      *
      * @return bool
@@ -109,6 +110,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // Validate oxsort before saving
         if (!is_numeric($this->oxdiscount__oxsort->value)) {
+            /** @var InputException $exception */
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
 
@@ -522,6 +524,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param object $oArticle article object to chesk
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkForArticleCategories" in next major
      */
     protected function _checkForArticleCategories($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -554,6 +557,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param \OxidEsales\Eshop\Application\Model\Article $oProduct product used for discount check
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductCheckQuery" in next major
      */
     protected function _getProductCheckQuery($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -574,6 +578,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isArticleAssigned" in next major
      */
     protected function _isArticleAssigned($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -598,6 +603,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param array $aCategoryIds
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isCategoriesAssigned" in next major
      */
     protected function _isCategoriesAssigned($aCategoryIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

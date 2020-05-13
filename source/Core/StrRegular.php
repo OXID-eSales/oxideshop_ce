@@ -161,12 +161,12 @@ class StrRegular
      * @param string $sString    string being converted
      * @param int    $iQuotStyle quoting rule
      *
+     * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+     *
      * @return string
      */
-    // phpcs:disable
     public function html_entity_decode($sString, $iQuotStyle = ENT_QUOTES)
     {
-        // phpcs:enable
         return html_entity_decode($sString, $iQuotStyle, $this->_sEncoding);
     }
 
@@ -178,12 +178,12 @@ class StrRegular
      * @param int    $iLimit   (optional) only substrings up to limit are returned
      * @param int    $iFlag    flags
      *
+     * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+     *
      * @return string
      */
-    // phpcs:disable
     public function preg_split($sPattern, $sString, $iLimit = -1, $iFlag = 0)
     {
-        // phpcs:enable
         return preg_split($sPattern, $sString, $iLimit, $iFlag);
     }
 
@@ -196,12 +196,12 @@ class StrRegular
      * @param int    $iLimit   maximum possible replacements
      * @param int    $iCount   number of replacements done
      *
+     * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+     *
      * @return string
      */
-    // phpcs:disable
     public function preg_replace($sPattern, $sString, $sSubject, $iLimit = -1, $iCount = null)
     {
-        // phpcs:enable
         return preg_replace($sPattern, $sString, $sSubject, $iLimit, $iCount);
     }
 
@@ -214,12 +214,12 @@ class StrRegular
      * @param int      $limit    maximum possible replacements
      * @param int      $count    number of replacements done
      *
+     * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+     *
      * @return string
      */
-    // phpcs:disable
     public function preg_replace_callback($pattern, $callback, $subject, $limit = -1, &$count = null)
     {
-        // phpcs:enable
         return preg_replace_callback($pattern, $callback, $subject, $limit, $count);
     }
 
@@ -232,12 +232,12 @@ class StrRegular
      * @param int    $iFlags   flags
      * @param int    $iOffset  place from which to start the search
      *
+     * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+     *
      * @return string
      */
-    // phpcs:disable
     public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        // phpcs:enable
         return preg_match($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
@@ -250,12 +250,12 @@ class StrRegular
      * @param int    $iFlags   flags
      * @param int    $iOffset  place from which to start the search
      *
+     * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+     *
      * @return string
      */
-    // phpcs:disable
     public function preg_match_all($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        // phpcs:enable
         return preg_match_all($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
@@ -380,12 +380,12 @@ class StrRegular
      * @param string $sString        the input string
      * @param string $sAllowableTags an optional parameter to specify tags which should not be stripped
      *
+     * @phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
+     *
      * @return string
      */
-    // phpcs:disable
     public function strip_tags($sString, $sAllowableTags = '')
     {
-        // phpcs:enable
         if (stripos($sAllowableTags, '<style>') === false) {
             // strip style tags with definitions within
             $sString = $this->preg_replace("'<style[^>]*>.*</style>'siU", '', $sString);

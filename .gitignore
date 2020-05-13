@@ -2,20 +2,24 @@
 /source/config.inc.php
 
 # Log
-/source/log/
+!/source/log/
+/source/log/*
 !/source/log/.htaccess
 
 # Cache
-/source/cache/
+!/source/cache/
+/source/cache/*
 !/source/cache/.htaccess
 !/source/cache/dir.txt
 
 # Export
-/source/export/
+!/source/export/
+/source/export/*
 !/source/export/.gitkeep
 
 # Temporary files
-/source/tmp/
+!/source/tmp/
+/source/tmp/*
 !/source/tmp/.htaccess
 
 # Composer
@@ -24,10 +28,6 @@
 
 # Testing library
 /test_config.yml
-/source/Services/
-
-# Editions
-/source/Edition/
 
 # IDE
 /.idea/
@@ -37,9 +37,5 @@
 # OS
 .DS_Store
 
-# DI cache
-/source/Internal/Container/container_cache.php
-
 # DI for modules and packages
 /var/generated_services.yaml
-/tests/Integration/Internal/Container/Dao/generated_project.yaml

@@ -5,8 +5,11 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
+use Codeception\Actor;
 use OxidEsales\Codeception\Page\Home;
 
 /**
@@ -24,7 +27,7 @@ use OxidEsales\Codeception\Page\Home;
  *
  * @SuppressWarnings(PHPMD)
 */
-class AcceptanceTester extends \Codeception\Actor
+class AcceptanceTester extends Actor
 {
     use _generated\AcceptanceTesterActions;
 
@@ -38,4 +41,5 @@ class AcceptanceTester extends \Codeception\Actor
         $I->amOnPage($homePage->URL);
         return $homePage;
     }
+
 }

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - More information about problems is shown after permission check in Setup [PR-764](https://github.com/OXID-eSales/oxideshop_ce/pull/764)
 - Logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
 - Checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
+- Performance improvement of Field class [PR-771](https://github.com/OXID-eSales/oxideshop_ce/pull/771)
+- Psalm static analysis tool [PR-766](https://github.com/OXID-eSales/oxideshop_ce/pull/766)
 
 ### Changed
 - Source/Application/views/admin/tpl/shop_license.tpl
@@ -22,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
 - Update symfony components to version 5
 - Change translations loading source for themes to be same as for core and modules
+- Turn off `autocomplete` for SMTP fields in admin template [PR-794](https://github.com/OXID-eSales/oxideshop_ce/pull/794)
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
@@ -146,13 +149,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Betanote:
     - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
     - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
-
+- Suggest (Recommend Product) feature:
+    - Class: `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
+    - Method:
+        - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest`
+        - `OxidEsales\EshopCommunity\Core\Email::sendSuggestMail`
+    - Property:
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplate`
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplatePlain`
+    - Language Constants:
+        - `CARD_TO`
+        - `CHECK`
+        - `MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE`
+        - `MESSAGE_RECOMMEND_CLICK_ON_SEND`
+        - `PRODUCT_POST_CARD_FROM`
+        - `RECOMMENDED_PRODUCTS`
+        - `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+        - `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+    - Config option (usage): `blAllowSuggestArticle`
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
 - Replaced BC classes with namespaced ones [PR-772](https://github.com/OXID-eSales/oxideshop_ce/pull/772)
+- Ensure out/pictures/generated directory existance [PR-789](https://github.com/OXID-eSales/oxideshop_ce/pull/789)
 - Improved various docs, variable and other coding style problems:
     - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
     - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
@@ -167,18 +188,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-773](https://github.com/OXID-eSales/oxideshop_ce/pull/773)
     - [PR-775](https://github.com/OXID-eSales/oxideshop_ce/pull/775)
     - [PR-776](https://github.com/OXID-eSales/oxideshop_ce/pull/776)
+    - [PR-790](https://github.com/OXID-eSales/oxideshop_ce/pull/790)
     
 ### Security
 
-## [6.5.4] - Unreleased
+## [6.5.5] - 2020-05-05
+
+### Deprecated
+- Methods starting with underscore have been deprecated, these methods will be renamed
+
+## [6.5.4] - 2020-04-21
 
 ### Deprecated
 - Betanote:
     - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
     - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
+- Suggest (Recommend Product) feature:
+    - Class `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
+    - Method: 
+        - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest`
+        - `OxidEsales\EshopCommunity\Core\Email::sendSuggestMail`
+    - Property:
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplate`
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplatePlain`
+    - Language Constants:
+        - `CARD_TO`
+        - `CHECK`
+        - `MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE`
+        - `MESSAGE_RECOMMEND_CLICK_ON_SEND`
+        - `PRODUCT_POST_CARD_FROM`
+        - `RECOMMENDED_PRODUCTS`
+        - `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+        - `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
 
 ### Fixed
 - Change visibility of Session::setSessionCookie to protected for overwriting possibility [PR-785](https://github.com/OXID-eSales/oxideshop_ce/pull/785)
+- Use cache directory from config file for the container cache: [#0007111](https://bugs.oxid-esales.com/view.php?id=7111)
+- Get the correct path to admin menu file: [#0007126](https://bugs.oxid-esales.com/view.php?id=7126)
 
 ## [6.5.3] - 2020-03-25
 
@@ -981,6 +1027,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/b-6.2.x...master
+[6.5.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.3...v6.5.4
 [6.5.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.2...v6.5.3
 [6.5.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.1...v6.5.2
 [6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...v6.5.1

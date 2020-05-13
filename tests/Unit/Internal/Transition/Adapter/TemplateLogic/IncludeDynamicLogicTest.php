@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class IncludeDynamicLogicTest
+ *
+ * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\IncludeDynamicLogic
  */
 class IncludeDynamicLogicTest extends TestCase
 {
@@ -28,7 +30,6 @@ class IncludeDynamicLogicTest extends TestCase
      * @param array $parameters
      * @param array $expected
      *
-     * @covers       IncludeExtension::includeDynamicPrefix
      * @dataProvider getIncludeDynamicPrefixTests
      */
     public function testIncludeDynamicPrefix(array $parameters, array $expected): void
@@ -40,7 +41,6 @@ class IncludeDynamicLogicTest extends TestCase
      * @param array  $parameters
      * @param string $expected
      *
-     * @covers       IncludeExtension::renderForCache
      * @dataProvider getRenderForCacheTests
      */
     public function testRenderForCache(array $parameters, string $expected): void

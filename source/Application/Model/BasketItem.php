@@ -461,11 +461,11 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param string $sProductId           product id
      * @param bool   $blDisableLazyLoading disable lazy loading
      *
-     * @throws oxArticleException exception in case of no current object product id is set
-     * @throws oxNoArticleException exception in case if product not exitst or not visible
-     * @throws oxArticleInputException exception if product is not buyable (stock and so on)
+     * @throws \OxidEsales\Eshop\Core\Exception\ArticleException exception in case of no current object product id is set
+     * @throws \OxidEsales\Eshop\Core\Exception\NoArticleException exception in case if product not exitst or not visible
+     * @throws \OxidEsales\Eshop\Core\Exception\ArticleInputException exception if product is not buyable (stock and so on)
      *
-     * @return \OxidEsales\Eshop\Application\Model\Article|oxOrderArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article|\OxidEsales\Eshop\Application\Model\OrderArticle
      */
     public function getArticle($blCheckProduct = false, $sProductId = null, $blDisableLazyLoading = false)
     {
@@ -718,6 +718,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param string $sProductId product id
      *
      * @throws oxNoArticleException exception
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setArticle" in next major
      */
     protected function _setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -756,6 +757,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *  - sNativeShopId  - article shop ID;
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFromOrderArticle" in next major
      */
     protected function _setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -777,6 +779,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * Stores item select lists ( oxbasketitem::aSelList )
      *
      * @param array $aSelList item select lists
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSelectList" in next major
      */
     protected function _setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -873,7 +876,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns basket item wrapping object
      *
-     * @return oxwrapping
+     * @return \OxidEsales\Eshop\Application\Model\Wrapping
      */
     public function getWrapping()
     {

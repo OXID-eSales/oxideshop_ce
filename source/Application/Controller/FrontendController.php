@@ -116,8 +116,6 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * Active recommendation's list
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
-     * @var oxRecommList
      */
     protected $_oActiveRecommList = null;
 
@@ -457,6 +455,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * so aUserComponentNames was added to config.inc.php file.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getComponentNames" in next major
      */
     protected function _getComponentNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -483,6 +482,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * If NOT, then tries to load alternative SEO url and if url is available -
      * redirects to it. If no alternative path was found - 404 header is emitted
      * and page is rendered
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processRequest" in next major
      */
     protected function _processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1023,6 +1023,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param string $dataType data type "oxkeywords" or "oxdescription"
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMetaFromSeo" in next major
      */
     protected function _getMetaFromSeo($dataType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1044,6 +1045,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param string $metaIdent meta content ident
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMetaFromContent" in next major
      */
     protected function _getMetaFromContent($metaIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1141,6 +1143,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Forces output no index meta data for current view
+     * @deprecated underscore prefix violates PSR12, will be renamed to "forceNoIndex" in next major
      */
     protected function _forceNoIndex() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1195,6 +1198,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Sets number of articles per page to config value
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setNrOfArtPerPage" in next major
      */
     protected function _setNrOfArtPerPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1250,6 +1254,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Override this function to return object it which is used to identify its seo meta info
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1263,6 +1268,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param bool   $removeDuplicatedWords If true - performs additional duplicate cleaning
      *
      * @return  string  $string    converted string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($meta, $length = 1024, $removeDuplicatedWords = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1309,6 +1315,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param bool   $removeDuplicatedWords If true - performs additional duplicate cleaning
      *
      * @return string of keywords separated by comma
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1328,6 +1335,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param array $skipTags in admin defined strings
      *
      * @return string of words separated by comma
+     * @deprecated underscore prefix violates PSR12, will be renamed to "removeDuplicatedWords" in next major
      */
     protected function _removeDuplicatedWords($input, $skipTags = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1507,6 +1515,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param int $languageId language id
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
     protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1629,6 +1638,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param bool $addPageNumber if TRUE - page number will be added
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getRequestParams" in next major
      */
     protected function _getRequestParams($addPageNumber = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1718,6 +1728,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * collects _GET parameters used by eShop SEO and returns uri
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoRequestParams" in next major
      */
     protected function _getSeoRequestParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1821,7 +1832,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @return oxRecommList
+     * @return \OxidEsales\Eshop\Application\Model\RecommendationList|false
      */
     public function getActiveRecommList()
     {
@@ -1987,6 +1998,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param int    $languageId Language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
     protected function _addPageNrParam($url, $page, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2408,6 +2420,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * Checks if current request parameters does not block SEO redirection process
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "canRedirect" in next major
      */
     protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -2643,7 +2656,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * return last finished promotion list
      *
-     * @return oxActionList
+     * @return \OxidEsales\Eshop\Application\Model\ActionList
      */
     public function getPromoFinishedList()
     {
@@ -2659,7 +2672,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * return current promotion list
      *
-     * @return oxActionList
+     * @return \OxidEsales\Eshop\Application\Model\ActionList
      */
     public function getPromoCurrentList()
     {
@@ -2675,7 +2688,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * return future promotion list
      *
-     * @return oxActionList
+     * @return \OxidEsales\Eshop\Application\Model\ActionList
      */
     public function getPromoFutureList()
     {

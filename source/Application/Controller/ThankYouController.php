@@ -8,10 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxUBase;
-use oxBasket;
-use oxOrder;
 
 /**
  * Thankyou page.
@@ -157,7 +153,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * Template variable getter. Returns active basket
      *
-     * @return oxBasket
+     * @return \OxidEsales\Eshop\Application\Model\Basket
      */
     public function getBasket()
     {
@@ -278,7 +274,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     /**
      * Template variable getter. Returns order
      *
-     * @return oxOrder
+     * @return \OxidEsales\Eshop\Application\Model\Order
      */
     public function getOrder()
     {

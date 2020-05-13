@@ -24,8 +24,6 @@ class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
-     *
-     * @return oxLinks
      */
     public function __construct()
     {
@@ -41,6 +39,7 @@ class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param int    $iDataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

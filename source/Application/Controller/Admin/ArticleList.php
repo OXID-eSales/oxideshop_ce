@@ -193,7 +193,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      * @param string $sType  active list type
      * @param string $sValue active list item id
      *
-     * @return oxManufacturerList
+     * @return \OxidEsales\Eshop\Application\Model\ManufacturerList
      */
     public function getManufacturerList($sType, $sValue)
     {
@@ -217,7 +217,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      * @param string $sType  active list type
      * @param string $sValue active list item id
      *
-     * @return oxVendorList
+     * @return \OxidEsales\Eshop\Application\Model\VendorList
      */
     public function getVendorList($sType, $sValue)
     {
@@ -241,6 +241,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      * @param object $oListObject list main object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
     protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

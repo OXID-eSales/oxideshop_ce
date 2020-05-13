@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Model\Country;
+
 /**
  * Company VAT identification number checker. Check if number belongs to the country.
  */
@@ -20,16 +22,14 @@ class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChec
     /**
      * Country
      *
-     * @var oxCountry
+     * @var Country
      */
     private $_oCountry = null;
 
     /**
      * Country setter
-     *
-     * @param \OxidEsales\Eshop\Application\Model\Country $country
      */
-    public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country)
+    public function setCountry(Country $country)
     {
         $this->_oCountry = $country;
     }
@@ -37,7 +37,7 @@ class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChec
     /**
      * Country getter
      *
-     * @return oxCountry
+     * @return Country
      */
     public function getCountry()
     {

@@ -130,7 +130,7 @@ class DatabaseProvider
     /**
      * Sets class properties needed for a successful database connection
      *
-     * @param ConfigFile $configFile The file config.inc.php wrapped in an object
+     * @param \OxidEsales\Eshop\Core\ConfigFile $configFile
      */
     public function setConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
     {
@@ -236,7 +236,7 @@ class DatabaseProvider
      * The parameters are validated and on failure the method behaves like this:
      * - if the shop is has not been configured yet, throws a DatabaseNotConfiguredException
      *
-     * @param ConfigFile $configFile
+     * @param \OxidEsales\Eshop\Core\ConfigFile $configFile
      *
      * @throws DatabaseNotConfiguredException
      */
@@ -289,16 +289,29 @@ class DatabaseProvider
          * @var string $databasePassword The password of the database user.
          */
         $databasePassword = $this->getConfigParam('dbPwd');
+        /**
+         * @var string $databaseDriverOptions The options to pass to the database driver.
+         */
+        $databaseDriverOptions = $this->getConfigParam('dbDriverOptions');
+        if (!is_array($databaseDriverOptions)) {
+            $databaseDriverOptions = array();
+        }
+        /**
+         * @var string $databaseUnixSocket The unix_socket path.
+         */
+        $databaseUnixSocket = $this->getConfigParam('dbUnixSocket');
 
         $connectionParameters = [
             'default' => [
-                'databaseDriver'    => $databaseDriver,
-                'databaseHost'      => $databaseHost,
-                'databasePort'      => $databasePort,
-                'databaseName'      => $databaseName,
-                'databaseUser'      => $databaseUser,
-                'databasePassword'  => $databasePassword,
-            ]
+                'databaseDriver'        => $databaseDriver,
+                'databaseHost'          => $databaseHost,
+                'databasePort'          => $databasePort,
+                'databaseName'          => $databaseName,
+                'databaseUser'          => $databaseUser,
+                'databasePassword'      => $databasePassword,
+                'databaseDriverOptions' => $databaseDriverOptions,
+                'databaseUnixSocket'    => $databaseUnixSocket,
+            ],
         ];
 
         /**
@@ -330,7 +343,7 @@ class DatabaseProvider
     /**
      * Return false if the database connection has not been configured in the eShop configuration file.
      *
-     * @param ConfigFile $config
+     * @param \OxidEsales\Eshop\Core\ConfigFile $config
      *
      * @return bool
      */

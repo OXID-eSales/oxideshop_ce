@@ -141,6 +141,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * Setter for param _iNewFilesCounter which counts how many new files added.
      *
      * @param integer $iNewFilesCounter New files count.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setNewFilesCounter" in next major
      */
     protected function _setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -262,6 +263,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blUnique   if TRUE - generates unique file name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareImageName" in next major
      */
     protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -300,6 +302,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sType image type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getImagePath" in next major
      */
     protected function _getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -317,6 +320,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sImgConf config parameter name, which keeps size info
      *
      * @return array|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getImageSize" in next major
      */
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -346,6 +350,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sTarget file location
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyFile" in next major
      */
     protected function _copyFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -372,6 +377,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sTarget image copy location
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "moveImage" in next major
      */
     protected function _moveImage($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -515,7 +521,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sFileName   form file item name
      * @param string $sUploadPath RELATIVE (to config sShopDir parameter) path for uploaded file to be copied
      *
-     * @throws oxException if file is not valid
+     * @throws \OxidEsales\Eshop\Core\Exception\StandardException if file is not valid
      *
      * @return string
      */
@@ -572,6 +578,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blUnique  TRUE - generates unique file name, FALSE - just glues given parts of file name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUniqueFileName" in next major
      */
     protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = "", $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

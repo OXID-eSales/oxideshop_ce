@@ -136,6 +136,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param string $sSelTitle selection list title
      *
      * @return mixed attribute id or false
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAttrId" in next major
      */
     protected function _getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -153,6 +154,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param array $aSelTitle selection list title
      *
      * @return string attribute id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createAttribute" in next major
      */
     protected function _createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

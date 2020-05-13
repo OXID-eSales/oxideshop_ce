@@ -38,7 +38,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
     /**
      * Active variant selection object
      *
-     * @var oxSelection
+     * @var \OxidEsales\Eshop\Application\Model\Selection
      */
     protected $_oActiveSelection = null;
 
@@ -103,7 +103,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
     /**
      * Returns active selection object
      *
-     * @return oxSelection
+     * @return \OxidEsales\Eshop\Application\Model\Selection
      */
     public function getActiveSelection()
     {

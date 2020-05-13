@@ -579,43 +579,6 @@ class EmailAzureTplTest extends \OxidTestCase
     }
 
     /**
-     * Test sending suggest email
-     */
-    public function testSendSuggestMail()
-    {
-        $oParams = new stdClass();
-        $oParams->rec_email = 'username@useremail.nl';
-        $oParams->rec_name = 'testUserFName testUserLName';
-        $oParams->send_subject = 'testSuggestSubject';
-        $oParams->send_email = 'orderemail@orderemail.nl';
-        $oParams->send_name = 'testShopName';
-
-
-        $oProduct = oxNew('oxArticle');
-        $oProduct->load('_testArticleId');
-
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop", "_getUseInlineImages"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
-        $oEmail->expects($this->any())->method('_getUseInlineImages')->will($this->returnValue(true));
-
-        $blRet = $oEmail->sendSuggestMail($oParams, $oProduct);
-        $this->assertTrue($blRet, 'Suggest mail was not sent to user');
-
-        // check mail fields
-        $aFields['sRecipient'] = $oParams->rec_email;
-        $aFields['sRecipientName'] = $oParams->rec_name;
-        $aFields['sSubject'] = $oParams->send_subject;
-        $aFields['sFrom'] = 'shopInfoEmail@shopOwnerEmail.nl';
-        $aFields['sFromName'] = '';
-        $aFields['sReplyTo'] = $oParams->send_email;
-        $aFields['sReplyToName'] = $oParams->send_name;
-
-        $this->checkMailFields($aFields, $oEmail);
-        $this->checkMailBody('testSendSuggestMail', $oEmail->getBody());
-    }
-
-    /**
      * Test sending order
      */
     public function testSendSendedNowMail()

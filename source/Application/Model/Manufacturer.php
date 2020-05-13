@@ -139,7 +139,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      *
      * @param string $sOxid object id
      *
-     * @return oxmanufacturer
+     * @return bool
      */
     public function load($sOxid)
     {
@@ -154,6 +154,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      * Sets root manufacturer data. Returns true
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setRootObjectData" in next major
      */
     protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -281,6 +281,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blOnlyDate       marker to format only date field (no time)
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaultFormatedValue" in next major
      */
     protected function _setDefaultFormatedValue($oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -319,6 +320,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param bool $blToTimeStamp -
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "defineAndCheckDefaultTimeValues" in next major
      */
     protected function _defineAndCheckDefaultTimeValues($blToTimeStamp) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -338,6 +340,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param bool $blToTimeStamp marker how to format
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "defineAndCheckDefaultDateValues" in next major
      */
     protected function _defineAndCheckDefaultDateValues($blToTimeStamp) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -355,6 +358,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * sets default date pattern
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "defaultDatePattern" in next major
      */
     protected function _defaultDatePattern() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -368,6 +372,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * sets default time pattern
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "defaultTimePattern" in next major
      */
     protected function _defaultTimePattern() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -381,6 +386,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * regular expressions to validate date input
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "regexp2ValidateDateInput" in next major
      */
     protected function _regexp2ValidateDateInput() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -394,6 +400,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * regular expressions to validate time input
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "regexp2ValidateTimeInput" in next major
      */
     protected function _regexp2ValidateTimeInput() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -407,6 +414,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * define date formatting rules
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "defineDateFormattingRules" in next major
      */
     protected function _defineDateFormattingRules() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -420,6 +428,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * defines time formatting rules
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "defineTimeFormattingRules" in next major
      */
     protected function _defineTimeFormattingRules() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -436,6 +445,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param string $sLocalDateFormat input format
      * @param string $sLocalTimeFormat local format
      * @param bool   $blOnlyDate       marker to format only date field (no time)
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaultDateTimeValue" in next major
      */
     protected function _setDefaultDateTimeValue($oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -463,6 +473,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param string $sDateFormat  date format
      * @param array  $aDFields     days
      * @param array  $aDateMatches new date as array (month, year)
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setDate" in next major
      */
     protected function _setDate($oObject, $sDateFormat, $aDFields, $aDateMatches) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -495,6 +506,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param array  $aTimeMatches new time
      * @param array  $aTFields     defines the time fields
      * @param array  $aDFields     defines the date fields
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formatCorrectTimeValue" in next major
      */
     protected function _formatCorrectTimeValue($oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -694,6 +706,7 @@ class UtilsDate extends \OxidEsales\Eshop\Core\Base
      * @param string $sFormat  date format to produce
      *
      * @return string formatted string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processDate" in next major
      */
     protected function _processDate($aTime, $aDate, $blGerman, $sFormat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

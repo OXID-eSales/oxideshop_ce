@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Exception\InputException;
 use oxRegistry;
 use oxDb;
 use stdClass;
@@ -142,7 +143,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oDiscount = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oDiscount);
         try {
             $oDiscount->save();
-        } catch (\oxInputException $exception) {
+        } catch (InputException $exception) {
             $newException = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $newException->setMessage($exception->getMessage());
             $this->addTplParam('discount_title', $aParams['oxdiscount__oxtitle']);

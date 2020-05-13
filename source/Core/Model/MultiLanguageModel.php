@@ -241,6 +241,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $fieldName Field name
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldStatus" in next major
      */
     protected function _getFieldStatus($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -262,6 +263,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool $forceFullStructure Whether to force loading of full data structure
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNonCachedFieldNames" in next major
      */
     protected function _getNonCachedFieldNames($forceFullStructure = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -300,6 +302,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $fieldName Field name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldLang" in next major
      */
     protected function _getFieldLang($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -337,6 +340,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Will try to get multilang table name for relevant field check.
      *
      * @param string $field Field name that will be checked
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setUpdateSeoOnFieldChange" in next major
      */
     protected function _setUpdateSeoOnFieldChange($field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -351,6 +355,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool   $useSkipSaveFields use skip save fields array?
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUpdateFieldsForTable" in next major
      */
     protected function _getUpdateFieldsForTable($table, $useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -418,6 +423,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool $useSkipSaveFields forces usage of skip save fields array (default is true)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUpdateFields" in next major
      */
     protected function _getUpdateFields($useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -433,6 +439,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxObjectException Throws on failure inserting
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -474,6 +481,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $coreTableName core table name [optional]
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageSetTables" in next major
      */
     protected function _getLanguageSetTables($coreTableName = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -488,6 +496,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * might be loaded through oxlist.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -512,6 +521,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param int    $shopId Shop ID
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getObjectViewName" in next major
      */
     protected function _getObjectViewName($table, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -532,6 +542,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAllFields" in next major
      */
     protected function _getAllFields($returnSimple = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -556,6 +567,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $length Field Length
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addField" in next major
      */
     protected function _addField($name, $status, $type = null, $length = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -576,6 +588,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $fieldName db field name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "canFieldBeNull" in next major
      */
     protected function _canFieldBeNull($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

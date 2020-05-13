@@ -22,14 +22,15 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     /**
      * Category list object
      *
-     * @var oxCategoryList
+     * @var \OxidEsales\Eshop\Application\Model\CategoryList
      */
     protected $_oCatList = null;
 
     /**
      * Returns category list object
      *
-     * @return oxCategoryList
+     * @return \OxidEsales\Eshop\Application\Model\CategoryList
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryList" in next major
      */
     protected function _getCategoryList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

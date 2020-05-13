@@ -30,7 +30,7 @@ interface ISelectList
     /**
      * Returns active selection object
      *
-     * @return oxSelection
+     * @return \OxidEsales\Eshop\Application\Model\Selection
      */
     public function getActiveSelection();
 }

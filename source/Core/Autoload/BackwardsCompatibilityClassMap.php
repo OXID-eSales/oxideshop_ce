@@ -317,7 +317,6 @@ return [
     'rss' => 'OxidEsales\\Eshop\\Application\\Controller\\RssController',
     'search' => 'OxidEsales\\Eshop\\Application\\Controller\\SearchController',
     'start' => 'OxidEsales\\Eshop\\Application\\Controller\\StartController',
-    'suggest' => 'OxidEsales\\Eshop\\Application\\Controller\\SuggestController',
     'tpl' => 'OxidEsales\\Eshop\\Application\\Controller\\TemplateController',
     'thankyou' => 'OxidEsales\\Eshop\\Application\\Controller\\ThankYouController',
     'user' => 'OxidEsales\\Eshop\\Application\\Controller\\UserController',

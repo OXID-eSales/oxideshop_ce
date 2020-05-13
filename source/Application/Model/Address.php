@@ -27,14 +27,15 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_blSelected = false;
 
     /**
-     * @var oxState
+     * @var \OxidEsales\Eshop\Application\Model\State
      */
     protected $_oStateObject = null;
 
     /**
      * Returns oxState object
      *
-     * @return oxState
+     * @return \OxidEsales\Eshop\Application\Model\State
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getStateObject" in next major
      */
     protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -148,6 +149,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns merged address fields.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMergedAddressFields" in next major
      */
     protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

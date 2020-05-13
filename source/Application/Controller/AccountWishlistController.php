@@ -39,21 +39,21 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
     /**
      * Wheter the var is false the wishlist will be shown
      *
-     * @var wishlist
+     * @var \OxidEsales\Eshop\Application\Model\UserBasket|bool|null
      */
     protected $_oWishList = null;
 
     /**
      * list the wishlist items
      *
-     * @var wishlist
+     * @var \OxidEsales\Eshop\Application\Model\UserBasket|bool|null
      */
     protected $_aRecommList = null;
 
     /**
      * Wheter the var is false the productlist will not be list
      *
-     * @var wishlist
+     * @var \OxidEsales\Eshop\Application\Model\UserBasket|bool|null
      */
     protected $_oEditval = null;
 

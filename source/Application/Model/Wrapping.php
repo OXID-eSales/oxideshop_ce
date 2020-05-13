@@ -26,7 +26,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Wrapping oxprice object.
      *
-     * @var oxprice
+     * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oPrice = null;
 
@@ -82,7 +82,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @param int $dAmount article amount
      *
-     * @return object
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getWrappingPrice($dAmount = 1)
     {
@@ -152,6 +152,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Checks and return true if price view mode is netto
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isPriceViewModeNetto" in next major
      */
     protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

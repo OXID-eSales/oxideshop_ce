@@ -39,7 +39,7 @@ interface ArticleInterface
      * @param string $aSelList Selection list
      * @param object $oBasket  User shopping basket object
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getBasketPrice($dAmount, $aSelList, $oBasket);
 
@@ -63,7 +63,7 @@ interface ArticleInterface
     /**
      * Calculates and returns price of article (adds taxes and discounts).
      *
-     * @return oxPrice
+     * @return \OxidEsales\Eshop\Core\Price
      */
     public function getPrice();
 

@@ -38,7 +38,7 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
      * Gets list of content pages which could be used for embedding
      * business entity, price specification, and delivery specification data
      *
-     * @return oxContentList
+     * @return \OxidEsales\Eshop\Application\Model\ContentList
      */
     public function getContentList()
     {

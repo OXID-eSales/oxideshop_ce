@@ -61,6 +61,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data to DB, returns true on success.
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -183,7 +184,8 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aSelList    product select lists
      * @param string $aPersParams persistent parameters
      *
-     * @return oxUserBasketItem
+     * @return \OxidEsales\Eshop\Application\Model\UserBasketItem
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createItem" in next major
      */
     protected function _createItem($sProductId, $aSelList = null, $aPersParams = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -217,7 +219,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aSelList    select lists
      * @param string $aPersParams persistent parameters
      *
-     * @return oxUserBasketItem
+     * @return \OxidEsales\Eshop\Application\Model\UserBasketItem
      */
     public function getItem($sProductId, $aSelList, $aPersParams = null)
     {
@@ -245,6 +247,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aPersParam basket item persistent parameters
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getItemKey" in next major
      */
     protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Update symfony components to version 5
 - Change translations loading source for themes to be same as for core and modules
 - Turn off `autocomplete` for SMTP fields in admin template [PR-794](https://github.com/OXID-eSales/oxideshop_ce/pull/794)
+- Load only necessary config options [PR-787](https://github.com/OXID-eSales/oxideshop_ce/pull/787)
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

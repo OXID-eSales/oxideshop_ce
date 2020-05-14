@@ -62,7 +62,8 @@ class DatabaseInstaller implements DatabaseInstallerInterface
     {
         try {
             $this->creator->createDatabase($host, $port, $username, $password, $name);
-        } catch (DatabaseAlreadyExistsException $exception) {}
+        } catch (DatabaseAlreadyExistsException $exception) {
+        }
 
         $this->addCredentialsToConfigFile($host, $username, $password, $name);
         $this->resetConfigFileCacheInRegistry();

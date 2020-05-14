@@ -193,6 +193,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
+## [unreleased]
+
+### Fixed
+- MariaDB column default values must be trimmed [PR-796](https://github.com/OXID-eSales/oxideshop_ce/pull/796)
+
 ## [6.5.5] - 2020-05-05
 
 ### Deprecated

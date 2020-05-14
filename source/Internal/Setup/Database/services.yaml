@@ -8,3 +8,6 @@ services:
 
     OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiatorInterface:
         class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiator
+
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstaller

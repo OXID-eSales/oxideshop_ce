@@ -28,7 +28,10 @@ class DefaultLanguage
     public function __construct(string $language)
     {
         if (!in_array($language, $this->availableLanguages)) {
-            throw new IncorrectLanguageException();
+            throw new IncorrectLanguageException(
+                'Invalid language argument: ' . $language
+                . ', available languages: ' . implode(', ', $this->availableLanguages)
+            );
         }
 
         $this->language = $language;

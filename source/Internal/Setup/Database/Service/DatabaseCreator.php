@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\CreateDatabaseException;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseAlreadyExistsException;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
 use PDO;
 
 /**
@@ -30,14 +31,14 @@ class DatabaseCreator implements DatabaseCreatorInterface
      * @param string $password
      * @param string $name
      *
-     * @throws CreateDatabaseException
+     * @throws DatabaseConnectionException
      */
     public function createDatabase(string $host, int $port, string $username, string $password, string $name): void
     {
         $this->getDatabaseConnection($host, $port, $username, $password);
 
         if ($this->isDatabaseExist($name)) {
-            throw new CreateDatabaseException(CreateDatabaseException::DATABASE_IS_EXIST);
+            throw new DatabaseAlreadyExistsException();
         }
 
         $this->dbConnection->exec('CREATE DATABASE ' . $name . ' CHARACTER SET utf8 COLLATE utf8_general_ci;');
@@ -49,7 +50,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
      * @param string $username
      * @param string $password
      *
-     * @throws CreateDatabaseException
+     * @throws DatabaseConnectionException
      */
     private function getDatabaseConnection(string $host, int $port, string $username, string $password): void
     {
@@ -63,8 +64,8 @@ class DatabaseCreator implements DatabaseCreatorInterface
             $this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->dbConnection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (\Throwable $exception) {
-            throw new CreateDatabaseException(
-                CreateDatabaseException::CONNECTION_PROBLEM,
+            throw new DatabaseConnectionException(
+                'Failed: Unable to connect to database',
                 $exception->getCode(),
                 $exception
             );

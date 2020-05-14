@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDao

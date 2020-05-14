@@ -17,5 +17,5 @@ interface DatabaseInitiatorInterface
     /**
      * @throws InitiateDatabaseException
      */
-    public function initiateDatabase(): void;
+    public function initiateDatabase(string $host, int $port, string $username, string $password, string $name): void;
 }

@@ -9,11 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
-use Doctrine\DBAL\Connection;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\InitiateDatabaseException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use PDO;
 
 /**
  * Class DatabaseInitiator
@@ -29,10 +28,7 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
     /** @var MigrationExecutorInterface */
     private $migrationExecutor;
 
-    /** @var ConnectionProviderInterface */
-    private $connectionProvider;
-
-    /** @var Connection */
+    /** @var PDO */
     private $dbConnection;
 
     /**
@@ -40,24 +36,21 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
      *
      * @param BasicContextInterface       $context
      * @param MigrationExecutorInterface  $migrationExecutor
-     * @param ConnectionProviderInterface $connectionProvider
      */
     public function __construct(
         BasicContextInterface $context,
-        MigrationExecutorInterface $migrationExecutor,
-        ConnectionProviderInterface $connectionProvider
+        MigrationExecutorInterface $migrationExecutor
     ) {
         $this->context = $context;
         $this->migrationExecutor = $migrationExecutor;
-        $this->connectionProvider = $connectionProvider;
     }
 
     /**
      * @throws InitiateDatabaseException
      */
-    public function initiateDatabase(): void
+    public function initiateDatabase(string $host, int $port, string $username, string $password, string $name): void
     {
-        $this->dbConnection = $this->connectionProvider->get();
+        $this->dbConnection = $this->getDatabaseConnection($host, $port, $username, $password, $name);
 
         $this->initiateSqlFiles();
 
@@ -67,7 +60,7 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
     /**
      * @throws InitiateDatabaseException
      */
-    public function initiateSqlFiles(): void
+    private function initiateSqlFiles(): void
     {
         $sqlFilePath = $this->context->getCommunityEditionSourcePath() . '/Internal/Setup/Database/Sql';
         $this->executeSqlQueryFromFile("$sqlFilePath/database_schema.sql");
@@ -102,6 +95,8 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
             throw new InitiateDatabaseException(InitiateDatabaseException::READ_SQL_FILE_PROBLEM);
         }
 
+        $this->dbConnection->exec($queries);
+
         try {
             $this->dbConnection->exec($queries);
         } catch (\Throwable $exception) {
@@ -111,5 +106,19 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
                 $exception
             );
         }
+    }
+
+    private function getDatabaseConnection(string $host, int $port, string $username, string $password, string $name): PDO
+    {
+        $dbConnection = new PDO(
+            sprintf('mysql:host=%s;port=%s;dbname=%s', $host, $port, $name),
+            $username,
+            $password,
+            [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+        );
+        $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $dbConnection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+        return $dbConnection;
     }
 }

@@ -9,18 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
-
-interface DatabaseCreatorInterface
+interface DatabaseInstallerInterface
 {
     /**
      * @param string $host
      * @param int    $port
-     * @param string $username
+     * @param string $user
      * @param string $password
      * @param string $name
-     *
-     * @throws DatabaseConnectionException
      */
-    public function createDatabase(string $host, int $port, string $username, string $password, string $name): void;
+    public function install(string $host, int $port, string $user, string $password, string $name): void;
 }

@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\ArgvInput;
 use Webmozart\PathUtil\Path;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 
 $autoloadFileExist = false;
 $autoloadFiles = [
@@ -41,7 +42,9 @@ if ($shopId !== 0) {
 $bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
 require_once $bootstrapFilePath;
 
-$container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
+$container = (new ContainerBuilderFactory())->create()->getContainer();
+$container->compile();
+
 $commandLoader = $container->get('console.command_loader');
 
 $idCommands = [];

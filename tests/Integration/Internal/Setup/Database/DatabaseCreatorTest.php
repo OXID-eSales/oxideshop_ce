@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseAlreadyExistsException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreator;
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\CreateDatabaseException;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
 use OxidEsales\Facts\Config\ConfigFile;
 use PDO;
 use PHPUnit\Framework\TestCase;
@@ -54,7 +55,7 @@ class DatabaseCreatorTest extends TestCase
 
     public function testCreateDatabaseWhenDatabaseCredentialsIsIncorrect(): void
     {
-        $this->expectException(CreateDatabaseException::class);
+        $this->expectException(DatabaseConnectionException::class);
         $this->databaseCreator->createDatabase(
             $this->params['dbHost'],
             $this->params['dbPort'],
@@ -74,7 +75,7 @@ class DatabaseCreatorTest extends TestCase
             $this->params['dbName']
         );
 
-        $this->expectException(CreateDatabaseException::class);
+        $this->expectException(DatabaseAlreadyExistsException::class);
         $this->databaseCreator->createDatabase(
             $this->params['dbHost'],
             $this->params['dbPort'],

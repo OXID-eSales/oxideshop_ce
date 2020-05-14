@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Factory\AdminFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
-class AdminUserService
+class AdminUserService implements AdminUserServiceInterface
 {
     /**
      * @var AdminDaoInterface
@@ -31,13 +31,6 @@ class AdminUserService
      */
     private $basicContext;
 
-    /**
-     * AdminUserService constructor.
-     *
-     * @param AdminDaoInterface $adminDao
-     * @param AdminFactoryInterface $adminFactory
-     *
-     */
     public function __construct(
         AdminDaoInterface $adminDao,
         AdminFactoryInterface $adminFactory,
@@ -45,7 +38,7 @@ class AdminUserService
     ) {
         $this->adminDao = $adminDao;
         $this->adminFactory = $adminFactory;
-        $this->basicContect = $basicContext;
+        $this->basicContext = $basicContext;
     }
 
     /**

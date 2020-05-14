@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoFactoryInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoFactory
+
+    OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateServiceInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateService

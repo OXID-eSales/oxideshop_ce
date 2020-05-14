@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParserInterface:
+    class: OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParser

@@ -992,7 +992,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsMainAjax::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => true
+        'isDeprecated'     => true,
     ],
     'OxidEsales\Eshop\Application\Controller\Admin\NewsText'                     => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsText::class,
@@ -1568,7 +1568,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\NewsController::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => true
+        'isDeprecated'     => true,
     ],
     'OxidEsales\Eshop\Application\Controller\NewsletterController'               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\NewsletterController::class,
@@ -1922,13 +1922,13 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\News::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => true
+        'isDeprecated'     => true,
     ],
     'OxidEsales\Eshop\Application\Model\NewsList'                                => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\NewsList::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => true
+        'isDeprecated'     => true,
     ],
     'OxidEsales\Eshop\Application\Model\NewsSubscribed'                          => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::class,

@@ -769,7 +769,7 @@ $aLang = [
     'NAVIGATION_HOME'                                => 'Home',
     'NAVIGATION_PAGE'                                => 'Page',
     'NAVIGATION_NEWVERSIONAVAILABLE'                 => 'Version %s is available.',
-    // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'NEWS_LIST_TITLE'                                => '[OXID News Administration]',
     'NEWS_LIST_SHORTTEXT'                            => 'Title',
     'NEWS_LIST_MENUITEM'                             => 'Customer Information',
@@ -849,7 +849,7 @@ $aLang = [
     'ORDER_REMARK_REMARK'                                => '[Remark]',
     'ORDER_REMARK_ORDER'                                 => '[Order]',
     'ORDER_REMARK_USER'                                  => '[Reg.]',
-    // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'ORDER_REMARK_NEWS'                                  => '[News]',
     // END deprecated
     'ORDER_OVERVIEW_VATIDCHECKFAIL'                      => 'VAT ID validation failed',
@@ -1013,7 +1013,7 @@ $aLang = [
     'SHOP_MALL_MALLINHERIT_OXDISCOUNT'                   => 'Inherit all <b>discounts</b> from parent shop',
     'SHOP_MALL_MALLINHERIT_OXLINKS'                      => 'Inherit all <b>shop links</b> from parent shop',
     'SHOP_MALL_MALLINHERIT_OXVOUCHERSERIES'              => 'Inherit all <b>coupon series</b> from parent shop',
-    // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'SHOP_MALL_MALLINHERIT_OXNEWS'                       => 'Inherit <b>shop news</b> from parent shop',
     // END deprecated
     'SHOP_MALL_MALLINHERIT_OXSELECTLIST'                 => 'Inherit all <b>select lists</b> from parent shop',
@@ -1082,7 +1082,7 @@ $aLang = [
     'SHOP_CONFIG_CALCULATEVATOFORPAYCHARGE'                   => 'Display VAT contained in Payment Method Charges in Shopping Cart and Invoice',
     'SHOP_CONFIG_CALCPAYVATONTOP'                             => 'Enter Payment Method Charges as net Price (plus VAT)',
     'SHOP_CONFIG_CMSFOLDER'                                   => 'CMS Page Folders',
-    // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'SHOP_CONFIG_CNTOFNEWS'                                   => 'Number of News which are displayed in the News Box',
     // END deprecated
     'SHOP_CONFIG_DATEFORMAT'                                  => 'Date Format in eShop Admin',
@@ -1382,7 +1382,7 @@ $aLang = [
     'USER_REMARK_REMARK'                      => '[Remark]',
     'USER_REMARK_ORDER'                       => '[Order]',
     'USER_REMARK_USER'                        => '[Reg.]',
-    // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'USER_REMARK_NEWS'                        => '[News]',
     // END deprecated
     'USERGROUP_LIST_MENUITEM'                 => 'Administer Users',
@@ -1461,8 +1461,8 @@ $aLang = [
     'SHOP_PERF_LOADCATTREE'                   => 'Load Categories and display Category Navigation',
     'SHOP_PERF_LOADCURRENCY'                  => 'Display Currencies',
     'SHOP_PERF_LOADLANGUAGES'                 => 'Display Languages',
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'SHOP_PERF_LOADNEWS'                      => 'Load News',
-    // @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
     'SHOP_PERF_LOADNEWSONLYSTART'             => 'Load News only on Start Page',
     // END deprecated
     'SHOP_PERF_LOADVARIANTS'                  => 'Load Variants in Lists (Search Results, Categories). This uses much Memory and may cause Performance Problems on small Servers',
@@ -1527,7 +1527,9 @@ $aLang = [
     'mxlist'                   => 'List All Users',
     'mxmanageprod'             => 'Administer Products',
     'mxmainmenu'               => 'Master Settings',
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'mxnews'                   => 'News',
+    // END deprecated
     'mxorders'                 => 'Administer Orders',
     'mxpaymeth'                => 'Payment Methods',
     'mxpricealarm'             => 'Price Alert',
@@ -1573,7 +1575,9 @@ $aLang = [
     'tbcldeliveryset_mall'     => 'Mall',
     'tbcldiscount_mall'        => 'Mall',
     'tbclmanufacturer_mall'    => 'Mall',
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'tbclnews_mall'            => 'Mall',
+    // END deprecated
     'tbclvendor_mall'          => 'Mall',
     'tbclselectlist_mall'      => 'Mall',
     'tbclvoucherserie_mall'    => 'Mall',
@@ -1632,9 +1636,10 @@ $aLang = [
     'tbcldiscount_users'       => 'Users',
     //languages
     'tbcllanguage_main'        => 'Main',
-    //  news_list',
+    // @deprecated 6.5.6 "News" feature will be removed completely
     'tbclnews_main'            => 'Main',
     'tbclnews_text'            => 'Text',
+    // END deprecated
     //  order_list',
     'tbclorder_overview'       => 'Overview',
     'tbclorder_main'           => 'Main',

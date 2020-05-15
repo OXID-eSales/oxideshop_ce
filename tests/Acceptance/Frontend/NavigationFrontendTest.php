@@ -333,6 +333,15 @@ class NavigationFrontendTest extends FrontendTestCase
      */
     public function testFrontendNewsBox()
     {
+        $this->callShopSC(
+            'oxConfig',
+            null,
+            null,
+            [
+                'bl_perfLoadNews' => ['type' => 'bool', 'value' => '0x07',],
+                'bl_perfLoadNewsOnlyStart' => ['type' => 'bool', 'value' => '0x07',],
+            ]
+        );
         $this->openShop();
         //there are news visible for not logged in users
         $this->assertElementPresent("newsBox");
@@ -767,49 +776,6 @@ class NavigationFrontendTest extends FrontendTestCase
         $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
         $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"1002\"", $this->getText("breadCrumb"));
         $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
-    }
-
-    /**
-     * Search in frontend. Checking option: Fields to be considered in Search
-     *
-     * @group frontend
-     */
-    public function testFrontendSearchConsideredFields()
-    {
-        //art num is not considered in search
-        $this->callShopSC("oxConfig", null, null, array("aSearchCols" => array("type" => "arr", "value" => array("oxtitle", "oxshortdesc"))));
-        $this->clearCache();
-        $this->openShop();
-        $this->searchFor("100");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertTextPresent("0 %HITS_FOR% \"100\"");
-
-        //art num is considered in search
-        $this->callShopSC("oxConfig", null, null, array("aSearchCols" => array("type" => "arr", "value" => array("oxtitle", "oxshortdesc", "oxsearchkeys", "oxartnum"))));
-        $this->clearTemp();
-        $this->searchFor("100");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertTextPresent("4 %HITS_FOR% \"100\"");
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->clearString($this->getText("searchList_1")));
-        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->clearString($this->getText("searchList_2")));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->clearString($this->getText("searchList_3")));
-        $this->assertEquals("Test product 3 [EN] šÄßüл", $this->clearString($this->getText("searchList_4")));
-        $this->assertElementNotPresent("searchList_5");
-
-        $this->clickAndWait("searchList_3");
-        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"100\"", $this->getText("breadCrumb"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
-        $this->selectVariant("variants", 1, "var2 [EN] šÄßüл", "var2 [EN] šÄßüл");
-        $this->assertEquals("%YOU_ARE_HERE%: / Search result for \"100\"", $this->getText("breadCrumb"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл var2 [EN] šÄßüл", $this->getText("//h1"));
-
-        $this->clickAndWait("//div[@id='overviewLink']/a");
-        $this->assertEquals("%YOU_ARE_HERE%: / %SEARCH%", $this->getText("breadCrumb"));
-        $this->assertTextPresent("4 %HITS_FOR% \"100\"");
-        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->clearString($this->getText("searchList_1")));
-        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->clearString($this->getText("searchList_2")));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->clearString($this->getText("searchList_3")));
-        $this->assertEquals("Test product 3 [EN] šÄßüл", $this->clearString($this->getText("searchList_4")));
     }
 
     /**

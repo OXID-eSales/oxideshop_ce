@@ -66,7 +66,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         }
 
         $this->addCredentialsToConfigFile($host, $username, $password, $name);
-        $this->resetConfigFileCacheInRegistry();
+        $this->updateConfigFileInRegistry();
 
         $this->initiator->initiateDatabase($host, $port, $username, $password, $name);
 
@@ -87,7 +87,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         $this->configFileDao->replacePlaceholder('dbName', $name);
     }
 
-    private function resetConfigFileCacheInRegistry(): void
+    private function updateConfigFileInRegistry(): void
     {
         /**
          * @todo We should not use Registry or ConfigFile classes directly in internal namespace, but shop setup is

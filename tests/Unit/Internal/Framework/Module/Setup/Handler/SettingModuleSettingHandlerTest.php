@@ -18,9 +18,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class SettingModuleSettingHandlerTest extends TestCase
+final class SettingModuleSettingHandlerTest extends TestCase
 {
-    public function testHandlingOnModuleActivation()
+    public function testHandlingOnModuleActivation(): void
     {
         $shopModuleSetting = $this->getTestSetting();
 
@@ -38,7 +38,7 @@ class SettingModuleSettingHandlerTest extends TestCase
         $handler->handleOnModuleActivation($moduleConfiguration, 1);
     }
 
-    public function testHandlingOnModuleDeactivation()
+    public function testHandlingOnModuleDeactivation(): void
     {
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testModule');

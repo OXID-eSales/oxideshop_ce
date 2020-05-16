@@ -9,14 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
 
-use function is_string;
-
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+
+use function is_string;
 
 class SettingDao implements SettingDaoInterface
 {
@@ -168,7 +168,7 @@ class SettingDao implements SettingDaoInterface
                 'oxshopid'      => ':shopId',
                 'oxvarname'     => ':name',
                 'oxvartype'     => ':type',
-                'oxvarvalue'    => 'encode(:value, :key)',
+                'oxvarvalue'    => ':value',
             ])
             ->setParameters([
                 'id'        => $this->shopAdapter->generateUniqueId(),
@@ -179,8 +179,7 @@ class SettingDao implements SettingDaoInterface
                 'value'     => $this->shopSettingEncoder->encode(
                     $shopModuleSetting->getType(),
                     $shopModuleSetting->getValue()
-                ),
-                'key'       => $this->context->getConfigurationEncryptionKey(),
+                )
             ]);
 
         $queryBuilder->execute();
@@ -227,7 +226,7 @@ class SettingDao implements SettingDaoInterface
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
-            ->select('decode(oxvarvalue, :key) as value, oxvartype as type, oxvarname as name')
+            ->select('oxvarvalue as value, oxvartype as type, oxvarname as name')
             ->from('oxconfig')
             ->where('oxshopid = :shopId')
             ->andWhere('oxmodule = :moduleId')
@@ -235,8 +234,7 @@ class SettingDao implements SettingDaoInterface
             ->setParameters([
                 'shopId'    => $shopId,
                 'moduleId'  => $this->getPrefixedModuleId($moduleId),
-                'name'      => $name,
-                'key'       => $this->context->getConfigurationEncryptionKey(),
+                'name'      => $name
             ]);
 
         $result = $queryBuilder->execute()->fetch();

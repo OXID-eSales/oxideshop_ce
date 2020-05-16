@@ -71,8 +71,9 @@ class ModuleCache extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Cleans PHP APC cache
+     * @deprecated underscore prefix violates PSR12, will be renamed to "clearApcCache" in next major
      */
-    protected function _clearApcCache()
+    protected function _clearApcCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (extension_loaded('apc') && ini_get('apc.enabled')) {
             apc_clear_cache();

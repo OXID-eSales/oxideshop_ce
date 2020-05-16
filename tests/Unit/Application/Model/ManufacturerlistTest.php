@@ -31,7 +31,7 @@ class ManufacturerlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxTestModules::addFunction('oxManufacturer', 'cleanRootManufacturer', '{oxManufacturer::$_aRootManufacturer = array();}');
         oxNew('oxManufacturer')->cleanRootManufacturer();

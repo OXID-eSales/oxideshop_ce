@@ -67,7 +67,7 @@ class DynExportBaseTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("drop TABLE if exists testdynexportbasetable");
 

@@ -27,8 +27,9 @@ class PasswordHasher
      * Gets hasher.
      *
      * @return \OxidEsales\Eshop\Core\Hasher
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getHasher" in next major
      */
-    protected function _getHasher()
+    protected function _getHasher() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_ohasher;
     }

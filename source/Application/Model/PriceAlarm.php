@@ -13,7 +13,6 @@ use oxField;
 /**
  * PriceAlarm manager.
  * Performs PriceAlarm data/objects loading, deleting.
- *
  */
 class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -87,8 +86,9 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data into DB, returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // set oxinsert value
         $this->oxpricealarm__oxinsert = new \OxidEsales\Eshop\Core\Field(date('Y-m-d', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));

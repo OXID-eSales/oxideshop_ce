@@ -20,7 +20,7 @@ final class ViewConfigTest extends TestCase
 {
     private $container;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->container = ContainerFactory::getInstance()->getContainer();
 

@@ -25,7 +25,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $response = shell_exec($command);
 
         $this->assertNotNull($response, 'This command failed to execute: ' . $command);
-        $this->assertContains('HTTP/1.1 404 Not Found', $response, 'When an image file is not found the HTTP status code 404 is returned');
+        $this->assertStringContainsString('HTTP/1.1 404 Not Found', $response, 'When an image file is not found the HTTP status code 404 is returned');
     }
 
     /**
@@ -39,6 +39,6 @@ class DynImgGeneratorTest extends \OxidTestCase
         $response = shell_exec($command);
 
         $this->assertNotNull($response, 'This command failed to execute: ' . $command);
-        $this->assertContains(strtolower('Content-Type: image/jpeg;'), strtolower($response), '');
+        $this->assertStringContainsString(strtolower('Content-Type: image/jpeg;'), strtolower($response), '');
     }
 }

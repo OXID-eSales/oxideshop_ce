@@ -81,11 +81,11 @@ REPLACE INTO `oxstates` (`OXID`, `OXCOUNTRYID`, `OXTITLE`, `OXISOALPHA2`, `OXTIT
 
 
 # createBasketUserAccountWithoutRegistration
-UPDATE `oxconfig` SET `OXVARVALUE` = 0xde         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
+UPDATE `oxconfig` SET `OXVARVALUE` = '0'         WHERE `OXVARNAME` = 'iNewBasketItemMessage';
 UPDATE `oxconfig` SET `OXVARVALUE` = ''           WHERE `OXVARNAME` = 'blDisableNavBars';
 REPLACE INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`,   `OXVARNAME`,                     `OXVARTYPE`, `OXVARVALUE`) VALUES
-                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       0x93ea1218),
-                       ('8563fba1965a219c9.51133344', 1, '', 'blUseStock',          'bool',       0x93ea1218);
+                       ('4742', 1, '', 'blPerfNoBasketSaving',          'bool',       'true'),
+                       ('8563fba1965a219c9.51133344', 1, '', 'blUseStock',          'bool',       'true');
 
 # createBasketUserAccountWithoutRegistrationTwice
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXTITLE_1` = 'Belgium';
@@ -126,7 +126,7 @@ REPLACE INTO `oxobject2discount` (`OXID`,                        `OXDISCOUNTID`,
 
 #Coupons demodata
 REPLACE INTO `oxvoucherseries` (`OXID`,         `OXSHOPID`,   `OXSERIENR`,           `OXSERIEDESCRIPTION`,      `OXDISCOUNT`, `OXDISCOUNTTYPE`, `OXBEGINDATE`,         `OXENDDATE`,          `OXALLOWSAMESERIES`, `OXALLOWOTHERSERIES`, `OXALLOWUSEANOTHER`, `OXMINIMUMVALUE`, `OXCALCULATEONCE`) VALUES
-                              ('testvoucher4', 1, '4 Coupon šÄßüл',      '4 Coupon šÄßüл',           50.00,       'percent',        '2008-01-01 00:00:00', '2020-01-01 00:00:00', 0,                   0,                    0,                   45.00,            1);
+                              ('testvoucher4', 1, '4 Coupon šÄßüл',      '4 Coupon šÄßüл',           50.00,       'percent',        '2008-01-01 00:00:00', now() + interval 1 day, 0,                   0,                    0,                   45.00,            1);
 
 REPLACE INTO `oxvouchers` (`OXDATEUSED`, `OXRESERVED`, `OXVOUCHERNR`, `OXVOUCHERSERIEID`, `OXID`) VALUES
                          ('0000-00-00',  0,           '123123',      'testvoucher4',     'testcoucher011');
@@ -135,3 +135,11 @@ REPLACE INTO `oxvouchers` (`OXDATEUSED`, `OXRESERVED`, `OXVOUCHERNR`, `OXVOUCHER
 REPLACE INTO `oxwrapping` (`OXID`,         `OXSHOPID`,  `OXACTIVE`, `OXACTIVE_1`, `OXACTIVE_2`, `OXACTIVE_3`, `OXTYPE`, `OXNAME`,                        `OXNAME_1`,                     `OXPRICE`) VALUES
                          ('testwrapping', 1, 1,          1,            1,            1,           'WRAP',   'Test wrapping [DE] šÄßüл',      'Test wrapping [EN] šÄßüл',      0.9),
                          ('testcard',     1, 1,          1,            1,            1,           'CARD',   'Test card [DE] šÄßüл',          'Test card [EN] šÄßüл',          0.2);
+
+#Select list demodata
+REPLACE INTO `oxselectlist` (`OXID`,          `OXSHOPID`,   `OXTITLE`,                        `OXIDENT`,              `OXVALDESC`,                                                                      `OXTITLE_1`,                      `OXVALDESC_1`) VALUES
+                           ('testsellist',   1, 'test selection list [DE] šÄßüл', 'test sellist šÄßüл',   'selvar1 [DE]!P!1__@@selvar2 [DE]__@@selvar3 [DE]!P!-2__@@selvar4 [DE]!P!2%__@@', 'test selection list [EN] šÄßüл', 'selvar1 [EN] šÄßüл!P!1__@@selvar2 [EN] šÄßüл__@@selvar3 [EN] šÄßüл!P!-2__@@selvar4 [EN] šÄßüл!P!2%__@@');
+
+#Article2SelectList
+REPLACE INTO `oxobject2selectlist` (`OXID`,                       `OXOBJECTID`, `OXSELNID`,   `OXSORT`) VALUES
+                                  ('testsellist.1001', '1001',       'testsellist', 0);

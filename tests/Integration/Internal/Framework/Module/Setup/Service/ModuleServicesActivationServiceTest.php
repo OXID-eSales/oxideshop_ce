@@ -60,7 +60,7 @@ class ModuleServicesActivationServiceTest extends TestCase
     /** @var ModuleStateService|MockObject */
     private $moduleStateService;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->projectYamlDao = $this->getMockBuilder(ProjectYamlDaoInterface::class)->getMock();
         $this->projectYamlDao

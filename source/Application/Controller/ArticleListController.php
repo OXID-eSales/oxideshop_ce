@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * List of articles for a selected product group.
@@ -237,8 +238,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * - redirecting to first page in case requested page does not exist
      * or
      * - displays 404 error if category has no products
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkRequestedPage" in next major
      */
-    protected function _checkRequestedPage()
+    protected function _checkRequestedPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $pageCount = $this->getPageCount();
         $currentPageNumber = $this->getActPage();
@@ -256,8 +258,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processListArticles" in next major
      */
-    protected function _processListArticles()
+    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($articleList = $this->getArticleList()) {
             $linkType = $this->_getProductLinkType();
@@ -313,8 +316,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *  - OXARTICLE_LINKTYPE_CATEGORY - when active category is regular category
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductLinkType" in next major
      */
-    protected function _getProductLinkType()
+    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $categoryType = OXARTICLE_LINKTYPE_CATEGORY;
         if (($category = $this->getActiveCategory()) && $category->isPriceCategory()) {
@@ -365,8 +369,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param Category $category category object
      *
      * @return oxArticleList
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadArticles" in next major
      */
-    protected function _loadArticles($category)
+    protected function _loadArticles($category) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -417,8 +422,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * soon product list loading is refactored
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getRequestPageNr" in next major
      */
-    protected function _getRequestPageNr()
+    protected function _getRequestPageNr() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return parent::getActPage();
     }
@@ -427,8 +433,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Get list display type
      *
      * @return null|string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getListDisplayType" in next major
      */
-    protected function _getListDisplayType()
+    protected function _getListDisplayType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $listDisplayType = Registry::getSession()->getVariable('ldtype');
 
@@ -443,8 +450,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Returns active product id to load its seo meta info
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
-    protected function _getSeoObjectId()
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($category = $this->getActiveCategory())) {
             return $category->getId();
@@ -455,8 +463,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Returns string built from category titles
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCatPathString" in next major
      */
-    protected function _getCatPathString()
+    protected function _getCatPathString() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_sCatPathString === null) {
             // marking as already set
@@ -464,7 +473,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
             //fetching category path
             if (is_array($categoryTreePath = $this->getCatTreePath())) {
-                $stringModifier = getStr();
+                $stringModifier = Str::getStr();
                 $this->_sCatPathString = '';
                 foreach ($categoryTreePath as $category) {
                     if ($this->_sCatPathString) {
@@ -486,8 +495,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param bool   $descriptionTag If true - performs additional duplicate cleaning.
      *
      * @return  string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
-    protected function _prepareMetaDescription($meta, $length = 1024, $descriptionTag = false)
+    protected function _prepareMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $description = '';
         // appending parent title
@@ -507,10 +517,11 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         }
 
         // making safe for output
-        $description = getStr()->html_entity_decode($description);
-        $description = getStr()->strip_tags($description);
-        $description = getStr()->cleanStr($description);
-        $description = getStr()->htmlspecialchars($description);
+        $str = Str::getStr();
+        $description = $str->html_entity_decode($description);
+        $description = $str->strip_tags($description);
+        $description = $str->cleanStr($description);
+        $description = $str->htmlspecialchars($description);
 
         return trim($description);
     }
@@ -545,8 +556,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param bool   $descriptionTag If true - performs additional duplicate cleaning
      *
      * @return  string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "collectMetaDescription" in next major
      */
-    protected function _collectMetaDescription($meta, $length = 1024, $descriptionTag = false)
+    protected function _collectMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //formatting description tag
         $category = $this->getActiveCategory();
@@ -583,8 +595,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param bool   $removeDuplicatedWords Remove duplicated words
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
-    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
+    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $keywords = '';
         if (($activeCategory = $this->getActiveCategory())) {
@@ -620,14 +633,15 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param string $keywords category path
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "collectMetaKeyword" in next major
      */
-    protected function _collectMetaKeyword($keywords)
+    protected function _collectMetaKeyword($keywords) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $maxTextLength = 60;
         $text = '';
 
         if (count($articleList = $this->getArticleList())) {
-            $stringModifier = getStr();
+            $stringModifier = Str::getStr();
             foreach ($articleList as $article) {
                 /** @var \OxidEsales\Eshop\Application\Model\Article $article */
                 $description = $stringModifier->strip_tags(
@@ -690,8 +704,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param int    $languageId  Requested language
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
-    protected function _addPageNrParam($url, $currentPage, $languageId = null)
+    protected function _addPageNrParam($url, $currentPage, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (Registry::getUtils()->seoIsActive() && ($category = $this->getActiveCategory())) {
             if ($currentPage) {
@@ -709,8 +724,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Returns true if we have category
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isActCategory" in next major
      */
-    protected function _isActCategory()
+    protected function _isActCategory() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blIsCat;
     }
@@ -783,8 +799,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param int $languageId Language id
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
-    protected function _getSubject($languageId)
+    protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getActiveCategory();
     }

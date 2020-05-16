@@ -8,3 +8,9 @@ services:
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstaller
+    arguments:
+      $bootstrapModuleInstaller: '@oxid_esales.module.install.service.bootstrap_module_installer'
+    public: true

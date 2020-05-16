@@ -9,15 +9,18 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
-use function is_array;
-
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ControllersDuplicationModuleConfigurationException;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use Psr\Log\LoggerInterface;
+
+use function is_array;
+use function in_array;
+use function array_key_exists;
 
 class ControllersValidator implements ModuleConfigurationValidatorInterface
 {
@@ -32,16 +35,23 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
     private $shopConfigurationSettingDao;
 
     /**
-     * ControllersValidator constructor.
-     * @param ShopAdapterInterface                 $shopAdapter
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @param ShopAdapterInterface $shopAdapter
      * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ShopAdapterInterface $shopAdapter,
-        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
+        LoggerInterface $logger
     ) {
         $this->shopAdapter = $shopAdapter;
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
+        $this->logger = $logger;
     }
 
     /**
@@ -53,16 +63,33 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
     public function validate(ModuleConfiguration $configuration, int $shopId)
     {
         if ($configuration->hasControllers()) {
-            $shopControllerClassMap = $this->shopAdapter->getShopControllerClassMap();
+            $controllerClassMap = $this->getControllersClassMap($shopId);
 
-            $controllerClassMap = array_merge(
-                $shopControllerClassMap,
-                $this->getModulesControllerClassMap($shopId)
-            );
-
-            $this->validateForControllerKeyDuplication($configuration->getControllers(), $controllerClassMap);
-            $this->validateForControllerNamespaceDuplication($configuration->getControllers(), $controllerClassMap);
+            foreach ($configuration->getControllers() as $controller) {
+                if (!$this->controllerAlreadyExistsInMap($controller, $controllerClassMap)) {
+                    $this->validateKeyDuplication($controller, $controllerClassMap);
+                    $this->validateNamespaceDuplication($controller, $controllerClassMap);
+                } else {
+                    /**
+                     * @TODO this is a wrong place to check and log database discrepancy, not only controllers should be
+                     *       checked. It should be moved to separate module data discrepancy checker outside the module
+                     *       validation.
+                     */
+                    $this->logger->error(
+                        'Module data discrepancy error: module data (controller with id '
+                        . $controller->getId() . ' and namespace: '
+                        . $controller->getControllerClassNameSpace() . ' ) for module '
+                        . $configuration->getId() . ' was present in the database before the module activation'
+                    );
+                }
+            }
         }
+    }
+
+    private function controllerAlreadyExistsInMap(Controller $controller, array $controllerClassMap): bool
+    {
+        return array_key_exists(strtolower($controller->getId()), $controllerClassMap)
+            && $controllerClassMap[strtolower($controller->getId())] === $controller->getControllerClassNameSpace();
     }
 
     /**
@@ -90,76 +117,42 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
     }
 
     /**
-     * @param Controller[] $controllers
+     * @param Controller $controller
      * @param array $controllerClassMap
-     *
      * @throws ControllersDuplicationModuleConfigurationException
      */
-    private function validateForControllerNamespaceDuplication(array $controllers, array $controllerClassMap)
+    private function validateKeyDuplication(Controller $controller, array $controllerClassMap): void
     {
-        $duplications = $this->findDuplicateControllerClassNameSpaces(
-            $controllers,
-            $controllerClassMap
-        );
-
-        if (!empty($duplications)) {
+        if (array_key_exists(strtolower($controller->getId()), $controllerClassMap)) {
             throw new ControllersDuplicationModuleConfigurationException(
-                'Controller namespaces duplication: ' . implode(', ', $duplications)
+                'Controller key duplication: ' . $controller->getId()
             );
         }
     }
 
     /**
-     * @param Controller[] $controllers
+     * @param Controller $controller
      * @param array $controllerClassMap
-     *
      * @throws ControllersDuplicationModuleConfigurationException
      */
-    private function validateForControllerKeyDuplication(array $controllers, array $controllerClassMap)
+    private function validateNamespaceDuplication(Controller $controller, array $controllerClassMap): void
     {
-        $duplications = $this->findDuplicateControllerIds(
-            $controllers,
-            $controllerClassMap
-        );
-
-        if (!empty($duplications)) {
+        if (in_array($controller->getControllerClassNameSpace(), $controllerClassMap, true)) {
             throw new ControllersDuplicationModuleConfigurationException(
-                'Controller keys duplication: ' . implode(', ', $duplications)
+                'Controller namespace duplication: ' . $controller->getControllerClassNameSpace()
             );
         }
     }
 
     /**
-     * @param Controller[] $controllers
-     * @param array $controllerClassMap
-     *
+     * @param int $shopId
      * @return array
      */
-    private function findDuplicateControllerClassNameSpaces(array $controllers, array $controllerClassMap): array
+    private function getControllersClassMap(int $shopId): array
     {
-        $controllerClassNameSpaces = [];
-
-        foreach ($controllers as $controller) {
-            $controllerClassNameSpaces[] = $controller->getControllerClassNameSpace();
-        }
-
-        return array_intersect($controllerClassNameSpaces, $controllerClassMap);
-    }
-
-    /**
-     * @param Controller[] $controllers
-     * @param array $controllerClassMap
-     *
-     * @return array
-     */
-    private function findDuplicateControllerIds(array $controllers, array $controllerClassMap): array
-    {
-        $controllerIds = [];
-
-        foreach ($controllers as $controller) {
-            $controllerIds[] = strtolower($controller->getId());
-        }
-
-        return array_intersect($controllerIds, $controllerClassMap);
+        return array_merge(
+            $this->shopAdapter->getShopControllerClassMap(),
+            $this->getModulesControllerClassMap($shopId)
+        );
     }
 }

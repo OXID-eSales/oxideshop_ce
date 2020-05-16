@@ -83,8 +83,6 @@ INSERT INTO `oxactions` (`OXID`, `OXSHOPID`, `OXTYPE`, `OXTITLE`, `OXTITLE_1`, `
 # Data for table `oxactions2article`
 #
 INSERT INTO `oxactions2article` (`OXID`, `OXSHOPID`, `OXACTIONID`, `OXARTID`, `OXSORT`) VALUES
-  ('d8842e3c913930f47.00463447', 1, 'oxstart', '2077', 0),
-  ('a57e08935cd79c71f23b18a531890427', 1, 'oxstart', '058de8224773a1d5fd54d523f0c823e0', 1),
   ('79042e787800a8465.75238508', 1, 'oxbargain', '85b42c94a32b3fdd2.66642220', 0),
   ('b568de76c34bafb4b881b4774ea00f0e', 1, 'oxnewest', 'b56597806428de2f58b1c6c7d3e0e093', 6),
   ('95842e9fde5c6f051.82672143', 1, 'oxnewest', '1952', 3),
@@ -99,7 +97,6 @@ INSERT INTO `oxactions2article` (`OXID`, `OXSHOPID`, `OXACTIONID`, `OXARTID`, `O
   ('d8842e3ca342c5fb8.21231681', 1, 'oxtop5', '1940', 1),
   ('79042e78791e8ef10.24050762', 1, 'oxbargain', 'd8842e3cbf9290351.59301740', 0),
   ('d0c10b636f2303d6c422a2896464171a', 1, 'oxcatoffer', 'ed6573c0259d6a6fb641d106dcb2faec', 2),
-  ('a57e05c9d11ea550a21c624482c6d095', 1, 'oxstart', 'ed6573c0259d6a6fb641d106dcb2faec', 2),
   ('d0cd4788290e30acd0fcc32e510e41c1', 1, 'oxcatoffer', 'ed6a4182ae58874e4fdaa4775566af6c', 3),
   ('b56b73a47578b357a761f696251ceb7d', 1, 'oxnewest', 'b563ab240dc19b89fc0349866b2be9c0', 7),
   ('c39e651303c494508b82463f638d2cd0', 1, 'oxtopstart', 'dc5ffdf380e15674b56dd562a7cb6aec', 1),
@@ -791,7 +788,7 @@ INSERT INTO `oxcategory2attribute` (`OXID`, `OXOBJECTID`, `OXATTRID`, `OXSORT`) 
 # Data for table `oxconfig`
 #
 INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES
-  ('ctf0430a9569214ea666264457dbb3c0', 1, '', 'blEnableDownloads', 'bool', 0x07);
+  ('ctf0430a9569214ea666264457dbb3c0', 1, '', 'blEnableDownloads', 'bool', '1');
 
 #
 # Data for table `oxcounters`
@@ -4041,18 +4038,6 @@ INSERT INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`) VA
   ('c193fddd471987391.56507198', 1, 'oxiddebitnote', 'oxidnewcustomer'),
   ('c193fddd4719915f1.10073644', 1, 'oxiddebitnote', 'oxidnewsletter'),
   ('c193fddd4719996f2.77898155', 1, 'oxiddebitnote', 'oxidadmin'),
-  ('c193fddd4831e2713.21232210', 1, 'oxidcreditcard', 'oxidsmallcust'),
-  ('c193fddd4831f6f46.50917349', 1, 'oxidcreditcard', 'oxidmiddlecust'),
-  ('c193fddd4831ff385.99230154', 1, 'oxidcreditcard', 'oxidgoodcust'),
-  ('c193fddd483207c10.92807988', 1, 'oxidcreditcard', 'oxidforeigncustomer'),
-  ('c193fddd483215d21.77186691', 1, 'oxidcreditcard', 'oxidnewcustomer'),
-  ('c193fddd48321e633.40782090', 1, 'oxidcreditcard', 'oxidpowershopper'),
-  ('c193fddd483225762.33412275', 1, 'oxidcreditcard', 'oxiddealer'),
-  ('c193fddd483233a87.07118337', 1, 'oxidcreditcard', 'oxidnewsletter'),
-  ('c193fddd48323bcb8.16273041', 1, 'oxidcreditcard', 'oxidadmin'),
-  ('c193fddd483242bc6.72020207', 1, 'oxidcreditcard', 'oxidpriceb'),
-  ('c193fddd483251c35.30210206', 1, 'oxidcreditcard', 'oxidpricea'),
-  ('c193fddd48325a223.07587162', 1, 'oxidcreditcard', 'oxidpricec'),
   ('c193fddd4939c95b3.22730175', 1, 'oxidinvoice', 'oxidnewcustomer'),
   ('c193fddd49772de88.87420931', 1, 'oxidinvoice', 'oxidgoodcust'),
   ('c193fddd49b560bf7.83973615', 1, 'oxidpayadvance', 'oxidblacklist'),
@@ -4095,25 +4080,18 @@ INSERT INTO `oxobject2payment` (`OXID`, `OXPAYMENTID`, `OXOBJECTID`, `OXTYPE`) V
   ('1b842e7375676dd84.15824521', 'oxidinvoice', 'oxidstandard', 'oxdelset'),
   ('1b842e737567681b7.32408586', 'oxidpayadvance', 'oxidstandard', 'oxdelset'),
   ('1b842e73756761653.33874589', 'oxiddebitnote', 'oxidstandard', 'oxdelset'),
-  ('1b842e7375675b807.24061946', 'oxidcreditcard', 'oxidstandard', 'oxdelset'),
-  ('f324215af5c89b870.26091752', 'oxidcreditcard', 'f324215af31591936.94392085', 'oxdelset'),
   ('f324215af5c8be899.90598822', 'oxiddebitnote', 'f324215af31591936.94392085', 'oxdelset'),
   ('1b842e737567541b1.16932982', 'oxidcashondel', 'oxidstandard', 'oxdelset'),
   ('0f941664de07fe713.78180932', 'oxiddebitnote', 'a7c40f631fc920687.20179984', 'oxcountry'),
   ('0f941664de081d815.03693723', 'oxiddebitnote', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
   ('0f941664de082a1b0.85265324', 'oxiddebitnote', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
-  ('0f941664e70744a73.85113769', 'oxidcreditcard', 'a7c40f631fc920687.20179984', 'oxcountry'),
-  ('0f941664e70758467.23169947', 'oxidcreditcard', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
-  ('0f941664e707657e4.30674465', 'oxidcreditcard', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
   ('0f941664e9e60f698.58333517', 'oxidcashondel', 'a7c40f631fc920687.20179984', 'oxcountry'),
   ('0f941664ee2448a22.44967166', 'oxidinvoice', 'a7c40f631fc920687.20179984', 'oxcountry'),
   ('0f941664ee245e458.07911799', 'oxidinvoice', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
   ('0f941664ee246ac84.39868591', 'oxidinvoice', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
   ('0f941664efa30a021.06837665', 'oxidpayadvance', 'a7c40f631fc920687.20179984', 'oxcountry'),
   ('0f941664efa320ca8.35650805', 'oxidpayadvance', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
-  ('0f941664efa32d4e5.28625433', 'oxidpayadvance', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
-  ('1b842e738b3f1ca46.72529947', 'oxidcreditcard', '1b842e732a23255b1.91207750', 'oxdelset'),
-  ('1b842e738b3f1ca46.72529948', 'oxidcreditcard', '1b842e732a23255b1.91207751', 'oxdelset');
+  ('0f941664efa32d4e5.28625433', 'oxidpayadvance', 'a7c40f6321c6f6109.43859248', 'oxcountry');
 
 #
 # Data for table `oxorder`

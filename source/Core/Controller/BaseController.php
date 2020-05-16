@@ -561,8 +561,9 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      * @param string $sNewAction new action params
      *
      * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
+     * @deprecated underscore prefix violates PSR12, will be renamed to "executeNewAction" in next major
      */
-    protected function _executeNewAction($sNewAction)
+    protected function _executeNewAction($sNewAction) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sNewAction) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -729,16 +730,6 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function isRCVersion()
     {
         return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'rc') !== false);
-    }
-
-    /**
-     * Template variable getter. Returns if beta note can be displayed (for header.tpl)
-     *
-     * @return bool
-     */
-    public function showBetaNote()
-    {
-        return ($this->isBetaVersion() || $this->isRCVersion());
     }
 
     /**

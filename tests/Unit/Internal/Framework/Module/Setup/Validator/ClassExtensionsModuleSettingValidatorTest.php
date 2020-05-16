@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ClassExtensionsValidator;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
 
 /**
  * @internal
@@ -45,11 +46,9 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException
-     */
     public function testNamespaceOfPatchedClassMustNotBeShopEditionNamespace()
     {
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
             ->method('isNamespace')
@@ -65,11 +64,9 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException
-     */
     public function testNamespaceOfPatchedClassIsShopUnifiedNamespaceButClassDoesNotExist()
     {
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
         $shopAdapter
             ->method('isNamespace')

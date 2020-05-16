@@ -21,7 +21,7 @@ class oxUtilsViewGetTemplateBlocksTest extends UnitTestCase
     /**
      * setup test data
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
@@ -199,7 +199,7 @@ class oxUtilsViewGetTemplateBlocksTest extends UnitTestCase
     /**
      * remove test data
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if (strpos($this->getName(), 'testGetTemplateBlocks') === 0) {
             oxDb::getDb()->Execute("delete from oxtplblocks where oxid like 'test_%'");

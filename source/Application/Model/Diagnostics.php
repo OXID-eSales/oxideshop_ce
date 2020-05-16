@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 /**
  * Diagnostic tool model
  * Stores configuration and public diagnostic methods for shop diagnostics
- *
  */
 class Diagnostics
 {
@@ -132,8 +131,9 @@ class Diagnostics
      * @param boolean $blMode mode
      *
      * @return integer
+     * @deprecated underscore prefix violates PSR12, will be renamed to "countRows" in next major
      */
-    protected function _countRows($sTable, $blMode)
+    protected function _countRows($sTable, $blMode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sRequest = 'SELECT COUNT(*) FROM ' . $sTable;
@@ -248,8 +248,9 @@ class Diagnostics
      * Returns Apache version
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getApacheVersion" in next major
      */
-    protected function _getApacheVersion()
+    protected function _getApacheVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (function_exists('apache_get_version')) {
             $sReturn = apache_get_version();
@@ -264,8 +265,9 @@ class Diagnostics
      * Tries to find out which VM is used
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVirtualizationSystem" in next major
      */
-    protected function _getVirtualizationSystem()
+    protected function _getVirtualizationSystem() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSystemType = '';
 
@@ -304,8 +306,9 @@ class Diagnostics
      * @param string $sSystemType System type.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDeviceList" in next major
      */
-    protected function _getDeviceList($sSystemType)
+    protected function _getDeviceList($sSystemType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return exec('lspci | grep -i ' . $sSystemType);
     }
@@ -314,8 +317,9 @@ class Diagnostics
      * Returns amount of CPU units.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuAmount" in next major
      */
-    protected function _getCpuAmount()
+    protected function _getCpuAmount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // cat /proc/cpuinfo | grep "processor" | sort -u | cut -d: -f2');
         return exec('cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l');
@@ -325,8 +329,9 @@ class Diagnostics
      * Returns CPU speed in Mhz
      *
      * @return float
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuMhz" in next major
      */
-    protected function _getCpuMhz()
+    protected function _getCpuMhz() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return round(exec('cat /proc/cpuinfo | grep "MHz" | sort -u | cut -d: -f2'), 0);
     }
@@ -335,8 +340,9 @@ class Diagnostics
      * Returns BogoMIPS evaluation of processor
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getBogoMips" in next major
      */
-    protected function _getBogoMips()
+    protected function _getBogoMips() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return exec('cat /proc/cpuinfo | grep "bogomips" | sort -u | cut -d: -f2');
     }
@@ -345,8 +351,9 @@ class Diagnostics
      * Returns total amount of memory
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMemoryTotal" in next major
      */
-    protected function _getMemoryTotal()
+    protected function _getMemoryTotal() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return exec('cat /proc/meminfo | grep "MemTotal" | sort -u | cut -d: -f2');
     }
@@ -355,8 +362,9 @@ class Diagnostics
      * Returns amount of free memory
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMemoryFree" in next major
      */
-    protected function _getMemoryFree()
+    protected function _getMemoryFree() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return exec('cat /proc/meminfo | grep "MemFree" | sort -u | cut -d: -f2');
     }
@@ -365,8 +373,9 @@ class Diagnostics
      * Returns CPU model information
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuModel" in next major
      */
-    protected function _getCpuModel()
+    protected function _getCpuModel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return exec('cat /proc/cpuinfo | grep "model name" | sort -u | cut -d: -f2');
     }
@@ -375,8 +384,9 @@ class Diagnostics
      * Returns total disk space
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDiskTotalSpace" in next major
      */
-    protected function _getDiskTotalSpace()
+    protected function _getDiskTotalSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return round(disk_total_space('/') / 1024 / 1024, 0) . ' GiB';
     }
@@ -385,8 +395,9 @@ class Diagnostics
      * Returns free disk space
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDiskFreeSpace" in next major
      */
-    protected function _getDiskFreeSpace()
+    protected function _getDiskFreeSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return round(disk_free_space('/') / 1024 / 1024, 0) . ' GiB';
     }
@@ -395,8 +406,9 @@ class Diagnostics
      * Returns PHP version
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPhpVersion" in next major
      */
-    protected function _getPhpVersion()
+    protected function _getPhpVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return phpversion();
     }
@@ -405,8 +417,9 @@ class Diagnostics
      * Returns MySQL server Information
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMySqlServerInfo" in next major
      */
-    protected function _getMySqlServerInfo()
+    protected function _getMySqlServerInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aResult = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
 

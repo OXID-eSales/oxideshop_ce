@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Order delivery manager.
  * Currently calculates price/costs.
- *
  */
 class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
@@ -427,7 +426,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    protected function _isForArticle($content, $artAmount)
+    protected function _isForArticle($content, $artAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->isDeliveryRuleFitByArticle($artAmount);
     }
@@ -456,8 +455,9 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param double $iAmount amount
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkDeliveryAmount" in next major
      */
-    protected function _checkDeliveryAmount($iAmount)
+    protected function _checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = false;
 
@@ -585,8 +585,9 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Calculate multiplier for price calculation
      *
      * @return float|int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMultiplier" in next major
      */
-    protected function _getMultiplier()
+    protected function _getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dAmount = 0;
 
@@ -605,8 +606,9 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Calculate cost sum
      *
      * @return float
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCostSum" in next major
      */
-    protected function _getCostSum()
+    protected function _getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getAddSumType() == 'abs') {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();

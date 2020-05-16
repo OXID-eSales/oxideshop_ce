@@ -11,6 +11,7 @@ use Exception;
 use OxidEsales\Eshop\Application\Model\OrderFileList;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -73,20 +74,6 @@ class Email extends PHPMailer
      * @var string
      */
     protected $_sNewsletterOptInTemplatePlain = "email/plain/newsletteroptin.tpl";
-
-    /**
-     * Product suggest mail template
-     *
-     * @var string
-     */
-    protected $_sSuggestTemplate = "email/html/suggest.tpl";
-
-    /**
-     * Product suggest plain mail template
-     *
-     * @var string
-     */
-    protected $_sSuggestTemplatePlain = "email/plain/suggest.tpl";
 
     /**
      * Product suggest mail template
@@ -346,7 +333,7 @@ class Email extends PHPMailer
      *
      * @return \Smarty
      */
-    protected function _getSmarty()
+    protected function _getSmarty() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oSmarty === null) {
             $this->_oSmarty = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty();
@@ -441,8 +428,9 @@ class Email extends PHPMailer
      * @param string $url initial smtp
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSmtpProtocol" in next major
      */
-    protected function _setSmtpProtocol($url)
+    protected function _setSmtpProtocol($url) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $protocol = '';
         $smtpHost = $url;
@@ -499,8 +487,9 @@ class Email extends PHPMailer
      * @param string $smtpHost currently used smtp server host name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidSmtpHost" in next major
      */
-    protected function _isValidSmtpHost($smtpHost)
+    protected function _isValidSmtpHost($smtpHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $isSmtp = false;
         if ($smtpHost) {
@@ -850,8 +839,9 @@ class Email extends PHPMailer
      * @param string $confirmCode confirmation code
      *
      * @return string $url
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNewsSubsLink" in next major
      */
-    protected function _getNewsSubsLink($id, $confirmCode = null)
+    protected function _getNewsSubsLink($id, $confirmCode = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
         $actShopLang = $myConfig->getActiveShop()->getLanguage();
@@ -896,64 +886,6 @@ class Email extends PHPMailer
         $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
         $this->setRecipient($user->oxuser__oxusername->value, $fullName);
         $this->setReplyTo($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
-
-        return $this->send();
-    }
-
-    /**
-     * Sets mailer additional settings and sends "SuggestMail" mail to user.
-     * Returns true on success.
-     *
-     * @param \OxidEsales\Eshop\Application\Model\User $user    Mailing parameters object
-     * @param object                                   $product Product object
-     *
-     * @return bool
-     */
-    public function sendSuggestMail($user, $product)
-    {
-        $myConfig = Registry::getConfig();
-
-        //sets language of shop
-        $currLang = $myConfig->getActiveShop()->getLanguage();
-
-        // shop info
-        $shop = $this->_getShop($currLang);
-
-        //sets language to article
-        if ($product->getLanguage() != $currLang) {
-            $product->setLanguage($currLang);
-            $product->load($product->getId());
-        }
-
-        // mailer stuff
-        // send not pretending from suggesting user, as different email domain rise spam filters
-        $this->setFrom($shop->oxshops__oxinfoemail->value);
-        $this->setSmtp();
-
-        // create messages
-        $renderer = $this->getRenderer();
-        $this->setViewData("product", $product);
-        $this->setUser($user);
-
-        $articleUrl = $product->getLink();
-
-        //setting recommended user id
-        if ($myConfig->getActiveView()->isActive('Invitations') && $activeUser = $shop->getUser()) {
-            $articleUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($articleUrl);
-            $articleUrl .= "su=" . $activeUser->getId();
-        }
-
-        $this->setViewData("sArticleUrl", $articleUrl);
-
-        // Process view data array through oxOutput processor
-        $this->_processViewArray();
-
-        $this->setBody($renderer->renderTemplate($this->_sSuggestTemplate, $this->getViewData()));
-        $this->setAltBody($renderer->renderTemplate($this->_sSuggestTemplatePlain, $this->getViewData()));
-        $this->setSubject($user->send_subject);
-
-        $this->setRecipient($user->rec_email, $user->rec_name);
-        $this->setReplyTo($user->send_email, $user->send_name);
 
         return $this->send();
     }
@@ -1416,8 +1348,9 @@ class Email extends PHPMailer
      * @param string $dynImageDir    Path to Dyn images
      * @param string $absImageDir    Absolute path to images
      * @param string $absDynImageDir Absolute path to Dyn images
+     * @deprecated underscore prefix violates PSR12, will be renamed to "includeImages" in next major
      */
-    protected function _includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null)
+    protected function _includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $body = $this->getBody();
         if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $body, $matches, PREG_SET_ORDER)) {
@@ -1609,7 +1542,8 @@ class Email extends PHPMailer
      */
     public function setReplyTo($email = null, $name = null)
     {
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($email)) {
+        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        if (!$emailValidator->isEmailValid($email)) {
             $email = $this->_getShop()->oxshops__oxorderemail->value;
         }
 
@@ -1860,8 +1794,9 @@ class Email extends PHPMailer
      * Gets use inline images.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUseInlineImages" in next major
      */
-    protected function _getUseInlineImages()
+    protected function _getUseInlineImages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blInlineImgEmail;
     }
@@ -1870,8 +1805,9 @@ class Email extends PHPMailer
      * Try to send error message when original mailing by smtp and via mail() fails
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sendMailErrorMsg" in next major
      */
-    protected function _sendMailErrorMsg()
+    protected function _sendMailErrorMsg() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // build addresses
         $recipients = $this->getRecipient();
@@ -1899,8 +1835,9 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\Order $order Ordering object
      *
      * @return \OxidEsales\Eshop\Application\Model\Order
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addUserInfoOrderEMail" in next major
      */
-    protected function _addUserInfoOrderEMail($order)
+    protected function _addUserInfoOrderEMail($order) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $order;
     }
@@ -1913,8 +1850,9 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\User $user User object
      *
      * @return \OxidEsales\Eshop\Application\Model\User
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addUserRegisterEmail" in next major
      */
-    protected function _addUserRegisterEmail($user)
+    protected function _addUserRegisterEmail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $user;
     }
@@ -1927,8 +1865,9 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addForgotPwdEmail" in next major
      */
-    protected function _addForgotPwdEmail($shop)
+    protected function _addForgotPwdEmail($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $shop;
     }
@@ -1941,16 +1880,18 @@ class Email extends PHPMailer
      * @param \OxidEsales\Eshop\Application\Model\User $user User object
      *
      * @return \OxidEsales\Eshop\Application\Model\User
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addNewsletterDbOptInMail" in next major
      */
-    protected function _addNewsletterDbOptInMail($user)
+    protected function _addNewsletterDbOptInMail($user) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $user;
     }
 
     /**
      * Clears mailer settings (AllRecipients, ReplyTos, Attachments, Errors)
+     * @deprecated underscore prefix violates PSR12, will be renamed to "clearMailer" in next major
      */
-    protected function _clearMailer()
+    protected function _clearMailer() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->clearAllRecipients();
         $this->clearReplyTos();
@@ -1963,8 +1904,9 @@ class Email extends PHPMailer
      * Set mail From, FromName, SMTP values
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop Shop object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setMailParams" in next major
      */
-    protected function _setMailParams($shop = null)
+    protected function _setMailParams($shop = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_clearMailer();
 
@@ -1984,8 +1926,9 @@ class Email extends PHPMailer
      * @param int $shopId shop id
      *
      * @return \OxidEsales\Eshop\Application\Model\Shop
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShop" in next major
      */
-    protected function _getShop($langId = null, $shopId = null)
+    protected function _getShop($langId = null, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($langId === null && $shopId === null) {
             if (isset($this->_oShop)) {
@@ -2014,8 +1957,9 @@ class Email extends PHPMailer
      *
      * @param string                                   $userName     smtp user
      * @param \OxidEsales\Eshop\Application\Model\Shop $userPassword smtp password
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSmtpAuthInfo" in next major
      */
-    protected function _setSmtpAuthInfo($userName = null, $userPassword = null)
+    protected function _setSmtpAuthInfo($userName = null, $userPassword = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->set("SMTPAuth", true);
         $this->set("Username", $userName);
@@ -2026,8 +1970,9 @@ class Email extends PHPMailer
      * Sets SMTP class debugging on or off
      *
      * @param bool $debug show debug info or not
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSmtpDebug" in next major
      */
-    protected function _setSmtpDebug($debug = null)
+    protected function _setSmtpDebug($debug = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->set("SMTPDebug", $debug);
     }
@@ -2035,8 +1980,9 @@ class Email extends PHPMailer
     /**
      * Process email body and alt body thought oxOutput.
      * Calls \OxidEsales\Eshop\Core\Output::processEmail() on class instance.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "makeOutputProcessing" in next major
      */
-    protected function _makeOutputProcessing()
+    protected function _makeOutputProcessing() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $output = oxNew(\OxidEsales\Eshop\Core\Output::class);
         $this->setBody($output->process($this->getBody(), "oxemail"));
@@ -2048,8 +1994,9 @@ class Email extends PHPMailer
      * Sends email via phpmailer.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sendMail" in next major
      */
-    protected function _sendMail()
+    protected function _sendMail() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $result = false;
         try {
@@ -2069,8 +2016,9 @@ class Email extends PHPMailer
 
     /**
      * Process view data array through oxOutput processor
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processViewArray" in next major
      */
-    protected function _processViewArray()
+    protected function _processViewArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);
 
@@ -2226,8 +2174,9 @@ class Email extends PHPMailer
      * @param string $altBody Body.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "clearSidFromBody" in next major
      */
-    private function _clearSidFromBody($altBody)
+    private function _clearSidFromBody($altBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return Str::getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . Registry::getConfig()->getShopId(), $altBody);
     }

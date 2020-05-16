@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ExtensionChainServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationService;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface;
@@ -22,20 +23,16 @@ class ModuleActivationServiceTest extends TestCase
 {
     private $shopId = 1;
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException
-     */
     public function testThrowOnActivationIfModuleIsAlreadyActive()
     {
+        $this->expectException(ModuleSetupException::class);
         $this->getTestModuleActivationService()
              ->activate('alreadyActiveModuleId', $this->shopId);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException
-     */
     public function testThrowOnDeactivationIfModuleIsNotActive()
     {
+        $this->expectException(ModuleSetupException::class);
         $this->getTestModuleActivationService()
              ->deactivate('alreadyDeactiveModuleId', $this->shopId);
     }

@@ -7,8 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
+use OxidEsales\Eshop\Core\DatabaseProvider as DatabaseConnectionProvider;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
@@ -141,7 +142,7 @@ class SystemRequirements
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      *
-     * @return null;
+     * @return null
      */
     public function __construct()
     {
@@ -218,14 +219,10 @@ class SystemRequirements
             ];
 
             $aRequiredServerConfigs = [
-                'php_version',
                 'mod_rewrite',
                 'server_permissions'
             ];
 
-            if ($this->isAdmin()) {
-                $aRequiredServerConfigs[] = 'mysql_version';
-            }
             $this->_aRequiredModules = array_fill_keys($aRequiredServerConfigs, 'server_config') +
                                        array_fill_keys($aRequiredPHPConfigs, 'php_config') +
                                        array_fill_keys($aRequiredPHPExtensions, 'php_extennsions')
@@ -258,82 +255,105 @@ class SystemRequirements
     /**
      * Checks if permissions on servers are correctly setup
      *
-     * @param string $sPath    check path [optional]
-     * @param int    $iMinPerm min permission level, default 777 [optional]
+     * @param string $path    check path [optional]
+     * @param int    $minPerm min permission level, default 777 [optional]
      *
      * @return int
      */
-    public function checkServerPermissions($sPath = null, $iMinPerm = 777)
+    public function checkServerPermissions($path = null, $minPerm = 777)
     {
         clearstatcache();
-        $sPath = $sPath ? $sPath : getShopBasePath();
-
+        $path = $path ? $path : getShopBasePath();
         // special config file check
-        $sFullPath = $sPath . "config.inc.php";
+        $configFilePath = $path . "config.inc.php";
         if (
-            !is_readable($sFullPath) ||
-            ($this->isAdmin() && is_writable($sFullPath)) ||
-            (!$this->isAdmin() && !is_writable($sFullPath))
+            !is_readable($configFilePath) ||
+            ($this->isAdmin() && is_writable($configFilePath)) ||
+            (!$this->isAdmin() && !is_writable($configFilePath))
         ) {
             return 0;
         }
 
-        $sTmp = "$sPath/tmp/";
-        $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
-        $sCfgTmp = $config->getVar('sCompileDir');
-        if ($sCfgTmp && strpos($sCfgTmp, '<sCompileDir') === false) {
-            $sTmp = $sCfgTmp;
+        $modStat = 2;
+        $permissionIssues = $this->getPermissionIssuesList($path, $minPerm);
+        if (count($permissionIssues['missing']) + count($permissionIssues['not_writable'])) {
+            $modStat = 0;
         }
 
-        $aPathsToCheck = [
-            $sPath . 'out/pictures/promo/',
-            $sPath . 'out/pictures/master/',
-            $sPath . 'out/pictures/generated/',
-            $sPath . 'out/pictures/media/', // @deprecated, use out/media instead
-            $sPath . 'out/media/',
-            $sPath . 'log/',
-            $sPath . '../var/',
-            $sTmp
+        return $modStat;
+    }
+
+    /**
+     * Get list of permission issues
+     *
+     * @param string $shopPath
+     * @param int $minPerm
+     *
+     * @return array
+     */
+    public function getPermissionIssuesList($shopPath = null, $minPerm = 777)
+    {
+        clearstatcache();
+        $shopPath = $shopPath ? $shopPath : getShopBasePath();
+        $pathCheckResults = [
+            'missing' => [],
+            'not_writable' => []
         ];
-        $iModStat = 2;
-        $sPathToCheck = reset($aPathsToCheck);
-        while ($sPathToCheck) {
+
+        $tmpPath = "$shopPath/tmp/";
+        $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
+        $configTmpPath = $config->getVar('sCompileDir');
+        if ($configTmpPath && strpos($configTmpPath, '<sCompileDir') === false) {
+            $tmpPath = $configTmpPath;
+        }
+
+        $pathsToCheck = [
+            $shopPath . 'out/pictures/promo/',
+            $shopPath . 'out/pictures/master/',
+            $shopPath . 'out/pictures/generated/',
+            $shopPath . 'out/pictures/media/', // @deprecated, use out/media instead
+            $shopPath . 'out/media/',
+            $shopPath . 'log/',
+            $shopPath . '../var/',
+            $tmpPath
+        ];
+
+        $onePathToCheck = reset($pathsToCheck);
+        while ($onePathToCheck) {
             // missing file/folder?
-            if (!file_exists($sPathToCheck)) {
-                $iModStat = 0;
-                break;
+            if (!file_exists($onePathToCheck)) {
+                $pathCheckResults['missing'][] = str_replace($shopPath, '', $onePathToCheck);
             }
 
-            if (is_dir($sPathToCheck)) {
+            if (is_dir($onePathToCheck)) {
                 // adding subfolders
-                $aSubF = glob($sPathToCheck . "*", GLOB_ONLYDIR);
-                if (is_array($aSubF)) {
-                    foreach ($aSubF as $sNewFolder) {
-                        $aPathsToCheck[] = $sNewFolder . "/";
+                $subDirectories = glob($onePathToCheck . '*', GLOB_ONLYDIR);
+                if (is_array($subDirectories)) {
+                    foreach ($subDirectories as $oneSubDirectory) {
+                        $pathsToCheck[] = $oneSubDirectory . '/';
                     }
                 }
             }
 
             // testing if file permissions >= $iMinPerm
-            if (!is_readable($sPathToCheck) || !is_writable($sPathToCheck)) {
-                $iModStat = 0;
-                break;
+            if (!is_readable($onePathToCheck) || !is_writable($onePathToCheck)) {
+                $pathCheckResults['not_writable'][] = str_replace($shopPath, '', $onePathToCheck);
             }
 
-            $sPathToCheck = next($aPathsToCheck);
+            $onePathToCheck = next($pathsToCheck);
         }
 
-        return $iModStat;
+        return $pathCheckResults;
     }
-
 
     /**
      * returns host, port, base dir, ssl information as assotiative array, false on error
      * takes this info from eShop config.inc.php (via oxConfig class)
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopHostInfoFromConfig" in next major
      */
-    protected function _getShopHostInfoFromConfig()
+    protected function _getShopHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopURL = Registry::getConfig()->getConfigParam('sShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
@@ -361,8 +381,9 @@ class SystemRequirements
      * takes this info from eShop config.inc.php (via oxConfig class)
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopSSLHostInfoFromConfig" in next major
      */
-    protected function _getShopSSLHostInfoFromConfig()
+    protected function _getShopSSLHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
@@ -390,8 +411,9 @@ class SystemRequirements
      * takes this info from _SERVER variable
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopHostInfoFromServerVars" in next major
      */
-    protected function _getShopHostInfoFromServerVars()
+    protected function _getShopHostInfoFromServerVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // got here from setup dir
         $sScript = $_SERVER['SCRIPT_NAME'];
@@ -414,8 +436,9 @@ class SystemRequirements
      * returns host, port, current script, ssl information as assotiative array, false on error
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopHostInfo" in next major
      */
-    protected function _getShopHostInfo()
+    protected function _getShopHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->isAdmin()) {
             return $this->_getShopHostInfoFromConfig();
@@ -429,8 +452,9 @@ class SystemRequirements
      * Takes ssl address from config so important only in admin.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopSSLHostInfo" in next major
      */
-    protected function _getShopSSLHostInfo()
+    protected function _getShopSSLHostInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->isAdmin()) {
             return $this->_getShopSSLHostInfoFromConfig();
@@ -476,8 +500,9 @@ class SystemRequirements
      * @param array $aHostInfo host info to open socket
      *
      * @return integer
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkModRewrite" in next major
      */
-    protected function _checkModRewrite($aHostInfo)
+    protected function _checkModRewrite($aHostInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sHostname = ($aHostInfo['ssl'] ? 'ssl://' : '') . $aHostInfo['host'];
         if ($rFp = @fsockopen($sHostname, $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {
@@ -534,45 +559,11 @@ class SystemRequirements
         $result = 1;
         $iErrNo = 0;
         $sErrStr = '';
-        if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
+        if ($oRes = @fsockopen('olc.oxid-esales.com', 80, $iErrNo, $sErrStr, 10)) {
             $result = 2;
             fclose($oRes);
         }
         return $result;
-    }
-
-    /**
-     * Checks supported PHP versions.
-     *
-     * @return integer
-     */
-    public function checkPhpVersion()
-    {
-        $requirementFits = null;
-
-        $minimalRequiredVersion = '7.1.0';
-        $minimalRecommendedVersion = '7.1.0';
-        $maximalRecommendedVersion = '7.2.9999';
-
-        $installedPhpVersion = $this->getPhpVersion();
-
-        if (version_compare($installedPhpVersion, $minimalRequiredVersion, '<')) {
-            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
-        }
-
-        if (
-            is_null($requirementFits) &&
-            version_compare($installedPhpVersion, $minimalRecommendedVersion, '>=') &&
-            version_compare($installedPhpVersion, $maximalRecommendedVersion, '<=')
-        ) {
-            $requirementFits = static::MODULE_STATUS_OK;
-        }
-
-        if (is_null($requirementFits)) {
-            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-        }
-
-        return $requirementFits;
     }
 
     /**
@@ -677,57 +668,6 @@ class SystemRequirements
     }
 
     /**
-     * Checks if current mysql version matches requirements
-     *
-     * @param string $installedVersion MySQL version
-     *
-     * @return int
-     */
-    public function checkMysqlVersion($installedVersion = null)
-    {
-        $requirementFits = null;
-
-        $minimalRequiredVersion = '5.5.0';
-        $maximalRequiredVersion = '5.7.9999';
-
-        if ($installedVersion === null) {
-            $resultContainingDatabaseVersion = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
-            $installedVersion = $resultContainingDatabaseVersion[1];
-        }
-
-        if (version_compare($installedVersion, $minimalRequiredVersion, '<')) {
-            $requirementFits = static::MODULE_STATUS_BLOCKS_SETUP;
-        }
-
-        /**
-         * There is a bug in MySQL 5.6,* which under certain conditions affects OXID eShop Enterprise Edition.
-         * Version MySQL 5.6.* in neither recommended nor supported by OXID eSales.
-         * See https://bugs.mysql.com/bug.php?id=79203
-         */
-        if (
-            is_null($requirementFits) &&
-            version_compare($installedVersion, '5.6.0', '>=') &&
-            version_compare($installedVersion, '5.7.0', '<')
-        ) {
-            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-        }
-
-        if (
-            is_null($requirementFits) &&
-            version_compare($installedVersion, $minimalRequiredVersion, '>=') &&
-            version_compare($installedVersion, $maximalRequiredVersion, '<=')
-        ) {
-            $requirementFits = static::MODULE_STATUS_OK;
-        }
-
-        if (is_null($requirementFits)) {
-            $requirementFits = static::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS;
-        }
-
-        return $requirementFits;
-    }
-
-    /**
      * Checks if GDlib extension is loaded
      *
      * @return integer
@@ -790,8 +730,9 @@ class SystemRequirements
      * Additional sql: do not check collation for \OxidEsales\Eshop\Core\SystemRequirements::$_aException columns
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAdditionalCheck" in next major
      */
-    protected function _getAdditionalCheck()
+    protected function _getAdditionalCheck() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = '';
         foreach ($this->_aException as $sTable => $sColumn) {
@@ -816,7 +757,7 @@ class SystemRequirements
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
                     and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
                    'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
-        $aRez = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll($sSelect);
+        $aRez = DatabaseConnectionProvider::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
             if (!$sCollation) {
                 $sCollation = $aRetTable[2];
@@ -1027,8 +968,9 @@ class SystemRequirements
      * @param string $sBytes string form byte value (64M, 32K etc)
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getBytes" in next major
      */
-    protected function _getBytes($sBytes)
+    protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sBytes = trim($sBytes);
         $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
@@ -1060,8 +1002,9 @@ class SystemRequirements
      * @see getMissingTemplateBlocks
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkTemplateBlock" in next major
      */
-    protected function _checkTemplateBlock($sTemplate, $sBlockName)
+    protected function _checkTemplateBlock($sTemplate, $sBlockName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var TemplateLoaderInterface $templateLoader */
         $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
@@ -1132,7 +1075,7 @@ class SystemRequirements
     {
         $activeThemeId = oxNew(\OxidEsales\Eshop\Core\Theme::class)->getActiveThemeId();
         $config = Registry::getConfig();
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseConnectionProvider::getDb(DatabaseConnectionProvider::FETCH_MODE_ASSOC);
 
         $query = "select * from oxtplblocks where oxactive = 1 and oxshopid = :oxshopid and oxtheme in ('', :oxtheme)";
 
@@ -1158,8 +1101,9 @@ class SystemRequirements
      * Return minimum memory limit by edition.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMinimumMemoryLimit" in next major
      */
-    protected function _getMinimumMemoryLimit()
+    protected function _getMinimumMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '32M';
     }
@@ -1168,8 +1112,9 @@ class SystemRequirements
      * Return recommend memory limit by edition.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getRecommendMemoryLimit" in next major
      */
-    protected function _getRecommendMemoryLimit()
+    protected function _getRecommendMemoryLimit() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '60M';
     }

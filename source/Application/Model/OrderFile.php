@@ -12,7 +12,6 @@ use oxField;
 
 /**
  * Article file link manager.
- *
  */
 class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -132,8 +131,9 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $sFieldName - field name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldLongName" in next major
      */
-    protected function _getFieldLongName($sFieldName)
+    protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aFieldNames = [
             'oxorderfiles__oxarticletitle',

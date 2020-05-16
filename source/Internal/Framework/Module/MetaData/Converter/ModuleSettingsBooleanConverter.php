@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 
 class ModuleSettingsBooleanConverter implements MetaDataConverterInterface
 {

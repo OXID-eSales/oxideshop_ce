@@ -3,8 +3,9 @@ services:
     autowire: true
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstaller
+
+  oxid_esales.module.install.service.bootstrap_module_installer:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\BootstrapModuleInstaller
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface:
@@ -18,6 +19,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstaller
     arguments:
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+    public: true
 
   oxid_esales.module.install.service.installed_shop_project_configuration_generator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ProjectConfigurationGenerator

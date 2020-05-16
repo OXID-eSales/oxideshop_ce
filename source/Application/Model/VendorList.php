@@ -13,7 +13,6 @@ use oxField;
 /**
  * Vendor list manager.
  * Collects list of vendors according to collection rules (activ, etc.).
- *
  */
 class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
@@ -147,8 +146,9 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Adds category specific fields to vendor object
      *
      * @param object $oVendor vendor object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addCategoryFields" in next major
      */
-    protected function _addCategoryFields($oVendor)
+    protected function _addCategoryFields($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oVendor->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("v_" . $oVendor->oxvendor__oxid->value);
         $oVendor->oxcategories__oxicon = $oVendor->oxvendor__oxicon;
@@ -181,8 +181,9 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Processes vendor category URLs
+     * @deprecated underscore prefix violates PSR12, will be renamed to "seoSetVendorData" in next major
      */
-    protected function _seoSetVendorData()
+    protected function _seoSetVendorData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

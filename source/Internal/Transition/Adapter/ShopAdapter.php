@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter;
 
-use OxidEsales\Eshop\Core\MailValidator;
+use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
@@ -18,18 +18,6 @@ use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 
 class ShopAdapter implements ShopAdapterInterface
 {
-    /**
-     * @param string $email
-     *
-     * @return bool
-     */
-    public function isValidEmail($email): bool
-    {
-        $emailValidator = oxNew(MailValidator::class);
-
-        return $emailValidator->isValidEmail($email);
-    }
-
     /**
      * @param string $string
      *

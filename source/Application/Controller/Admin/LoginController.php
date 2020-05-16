@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Administrator login form.
@@ -121,7 +122,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
         } catch (UserException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_ERROR');
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
@@ -129,7 +130,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $oEx) {
             $myUtilsView->addErrorToDisplay('LOGIN_NO_COOKIE_SUPPORT');
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $this->addTplParam('user', $oStr->htmlspecialchars($sUser));
             $this->addTplParam('pwd', $oStr->htmlspecialchars($sPass));
             $this->addTplParam('profile', $oStr->htmlspecialchars($sProfile));
@@ -177,8 +178,9 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Rewrites authorization method.
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "authorize" in next major
      */
-    protected function _authorize()
+    protected function _authorize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return true;
     }
@@ -197,8 +199,9 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Get available admin interface languages
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAvailableLanguages" in next major
      */
-    protected function _getAvailableLanguages()
+    protected function _getAvailableLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->_getBrowserLanguage();
@@ -215,8 +218,9 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Get detected user browser language abbervation
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getBrowserLanguage" in next major
      */
-    protected function _getBrowserLanguage()
+    protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }

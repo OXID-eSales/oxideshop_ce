@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Utility;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Exception\InvalidShopSettingValueException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,11 +43,9 @@ class ShopSettingEncoderTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Config\Exception\InvalidShopSettingValueException
-     */
     public function testEncodingInvalidValue()
     {
+        $this->expectException(InvalidShopSettingValueException::class);
         $shopSettingEncoder = new ShopSettingEncoder();
 
         $shopSettingEncoder->encode('object', new \stdClass());

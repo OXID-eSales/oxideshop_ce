@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * String manipulation class
  */
@@ -28,7 +30,7 @@ class UtilsString
      */
     public function prepareCSVField($sInField)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if ($oStr->strstr($sInField, '"')) {
             return '"' . str_replace('"', '""', $sInField) . '"';
         } elseif ($oStr->strstr($sInField, ';')) {
@@ -52,7 +54,7 @@ class UtilsString
     {
         //leading and ending whitespaces
         $sString = trim($sString);
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         //multiple whitespaces
         $sString = $oStr->preg_replace("/[ \t\n\r]+/", " ", $sString);
@@ -72,7 +74,7 @@ class UtilsString
      */
     public function prepareStrForSearch($sSearchStr)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if ($oStr->hasSpecialChars($sSearchStr)) {
             return $oStr->recodeEntities($sSearchStr, true, ['&amp;'], ['&']);
         }

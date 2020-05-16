@@ -14,7 +14,6 @@ use oxField;
  * Class manages news user groups rights
  *
  * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
- *
  */
 class NewsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
@@ -41,8 +40,9 @@ class NewsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListCo
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // active AJAX component
         $sGroupTable = $this->_getViewName('oxgroups');

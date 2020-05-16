@@ -36,7 +36,7 @@ class _oxI18n extends \oxI18n
 
 class I18ntest extends \OxidTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if ($this->getName() == "testMultilangObjectDeletion") {
             $this->_insertTestLanguage();
@@ -48,7 +48,7 @@ class I18ntest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->getName() == 'testUpdateAndSeoIsOn') {
             $oDB = oxDb::getDb();

@@ -89,13 +89,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_sCheckedPaymentId = null;
 
     /**
-     * array of years
-     *
-     * @var array
-     */
-    protected $_aCreditYears = null;
-
-    /**
      * Current class template name.
      *
      * @var string
@@ -117,18 +110,10 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_aTsProducts = null;
 
     /**
-     * Filtered dyndata marker
-     *
-     * @var bool
-     */
-    protected $_blDynDataFiltered = false;
-
-    /**
      * Executes parent method parent::init().
      */
     public function init()
     {
-        $this->_filterDynData();
         parent::init();
     }
 
@@ -206,8 +191,9 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * Set default empty payment. If config param 'blOtherCountryOrder' is on,
      * tries to set 'oxempty' payment to aViewData['oxemptypayment'].
      * On error sets aViewData['payerror'] to -2
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaultEmptyPayment" in next major
      */
-    protected function _setDefaultEmptyPayment()
+    protected function _setDefaultEmptyPayment() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // no shipping method there !!
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOtherCountryOrder')) {
@@ -225,8 +211,9 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * Unsets payment errors from session
+     * @deprecated underscore prefix violates PSR12, will be renamed to "unsetPaymentErrors" in next major
      */
-    protected function _unsetPaymentErrors()
+    protected function _unsetPaymentErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iPayError = Registry::getConfig()->getRequestParameter('payerror');
         $sPayErrorText = Registry::getConfig()->getRequestParameter('payerrortext');
@@ -261,7 +248,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Validates oxidcreditcard and oxiddebitnote user payment data.
+     * Validates oxiddebitnote user payment data.
      * Returns null if problems on validating occured. If everything
      * is OK - returns "order" and redirects to payment confirmation
      * page.
@@ -303,12 +290,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         //#1308C - check if we have paymentID, and it really exists
         if (!$sPaymentId) {
             $session->setVariable('payerror', 1);
-
-            return;
-        }
-
-        if ($this->getDynDataFiltered() && $sPaymentId == 'oxidcreditcard') {
-            $session->setVariable('payerror', 7);
 
             return;
         }
@@ -415,8 +396,9 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @param array                                      $aPaymentList payments array
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket      basket object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setValues" in next major
      */
-    protected function _setValues(&$aPaymentList, $oBasket = null)
+    protected function _setValues(&$aPaymentList, $oBasket = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aPaymentList)) {
             foreach ($aPaymentList as $oPayment) {
@@ -447,16 +429,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     public function getPaymentError()
     {
         return $this->_sPaymentError;
-    }
-
-    /**
-     * Dyndata filter marker getter. Returns if dyndata is filtered
-     *
-     * @return boolean
-     */
-    public function getDynDataFiltered()
-    {
-        return $this->_blDynDataFiltered;
     }
 
     /**
@@ -510,8 +482,9 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Assign debit note payment values to view data. Loads user debit note payment
      * if available and assigns payment data to $this->_aDynValue
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignDebitNoteParams" in next major
      */
-    protected function _assignDebitNoteParams()
+    protected function _assignDebitNoteParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #701A
         $oUserPayment = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
@@ -594,30 +567,15 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns array of years for credit cards
-     *
-     * @return array
-     */
-    public function getCreditYears()
-    {
-        if ($this->_aCreditYears === null) {
-            $this->_aCreditYears = false;
-
-            $this->_aCreditYears = range(date('Y'), date('Y') + 10);
-        }
-
-        return $this->_aCreditYears;
-    }
-
-    /**
      * Function to check if array values are empty againts given array keys
      *
      * @param array $aData array of data to check
      * @param array $aKeys array of array indexes
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkArrValuesEmpty" in next major
      */
-    protected function _checkArrValuesEmpty($aData, $aKeys)
+    protected function _checkArrValuesEmpty($aData, $aKeys) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_array($aKeys) || count($aKeys) < 1) {
             return false;
@@ -630,75 +588,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         return true;
-    }
-
-
-    /**
-     * Due to legal reasons probably you are not allowed to store or even handle credit card data.
-     * In this case we just delete and forget all submited credit card data from this point.
-     * Override this method if you actually want to process credit card data.
-     *
-     * Note: You should override this method as setting blStoreCreditCardInfo to true would
-     *       force storing CC data on shop side (what most often is illegal).
-     *
-     * @return null
-     */
-    protected function _filterDynData()
-    {
-        //in case we actually ARE allowed to store the data
-        if (Registry::getConfig()->getConfigParam("blStoreCreditCardInfo")) {
-            //then do nothing and reset _blDynDataFiltered
-            $this->_blDynDataFiltered = false;
-
-            return;
-        }
-
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        $aDynData = $session->getVariable("dynvalue");
-
-        $aFields = ["kktype", "kknumber", "kkname", "kkmonth", "kkyear", "kkpruef"];
-
-        if ($aDynData) {
-            if (!$this->_checkArrValuesEmpty($aDynData, $aFields)) {
-                $this->_blDynDataFiltered = true;
-            }
-            $aDynData["kktype"] = null;
-            $aDynData["kknumber"] = null;
-            $aDynData["kkname"] = null;
-            $aDynData["kkmonth"] = null;
-            $aDynData["kkyear"] = null;
-            $aDynData["kkpruef"] = null;
-            Registry::getSession()->setVariable("dynvalue", $aDynData);
-        }
-
-        if (
-            !$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_POST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_GET["dynvalue"], $aFields)
-        ) {
-            $this->_blDynDataFiltered = true;
-        }
-
-        unset($_REQUEST["dynvalue"]["kktype"]);
-        unset($_REQUEST["dynvalue"]["kknumber"]);
-        unset($_REQUEST["dynvalue"]["kkname"]);
-        unset($_REQUEST["dynvalue"]["kkmonth"]);
-        unset($_REQUEST["dynvalue"]["kkyear"]);
-        unset($_REQUEST["dynvalue"]["kkpruef"]);
-
-        unset($_POST["dynvalue"]["kktype"]);
-        unset($_POST["dynvalue"]["kknumber"]);
-        unset($_POST["dynvalue"]["kkname"]);
-        unset($_POST["dynvalue"]["kkmonth"]);
-        unset($_POST["dynvalue"]["kkyear"]);
-        unset($_POST["dynvalue"]["kkpruef"]);
-
-        unset($_GET["dynvalue"]["kktype"]);
-        unset($_GET["dynvalue"]["kknumber"]);
-        unset($_GET["dynvalue"]["kkname"]);
-        unset($_GET["dynvalue"]["kkmonth"]);
-        unset($_GET["dynvalue"]["kkyear"]);
-        unset($_GET["dynvalue"]["kkpruef"]);
     }
 
     /**

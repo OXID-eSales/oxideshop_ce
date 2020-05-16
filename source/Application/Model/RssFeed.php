@@ -9,12 +9,13 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 use stdClass;
 
 /**
  * Rss feed manager
  * loads needed rss data
- *
  */
 class RssFeed extends \OxidEsales\Eshop\Core\Base
 {
@@ -95,8 +96,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * _loadBaseChannel loads basic channel data
      *
      * @access protected
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadBaseChannel" in next major
      */
-    protected function _loadBaseChannel()
+    protected function _loadBaseChannel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
         $this->_aChannel['title'] = $oShop->oxshops__oxname->value;
@@ -107,7 +109,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_aChannel['language'] = $aLangIds[$oLang->getBaseLanguage()];
         $this->_aChannel['copyright'] = $oShop->oxshops__oxname->value;
         $this->_aChannel['selflink'] = '';
-        if (oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($oShop->oxshops__oxinfoemail->value)) {
+
+        $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
+        if ($emailValidator->isEmailValid($oShop->oxshops__oxinfoemail->value)) {
             $this->_aChannel['managingEditor'] = $oShop->oxshops__oxinfoemail->value;
             if ($oShop->oxshops__oxfname) {
                 $this->_aChannel['managingEditor'] .= " ({$oShop->oxshops__oxfname} {$oShop->oxshops__oxlname})";
@@ -131,8 +135,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCacheId" in next major
      */
-    protected function _getCacheId($name)
+    protected function _getCacheId($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -146,8 +151,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromCache" in next major
      */
-    protected function _loadFromCache($name)
+    protected function _loadFromCache($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($aRes = Registry::getUtils()->fromFileCache($this->_getCacheId($name))) {
             if ($aRes['timestamp'] > time() - self::CACHE_TTL) {
@@ -168,8 +174,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLastBuildDate" in next major
      */
-    protected function _getLastBuildDate($name, $aData)
+    protected function _getLastBuildDate($name, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($aData2 = Registry::getUtils()->fromFileCache($this->_getCacheId($name))) {
             $sLastBuildDate = $aData2['content']['lastBuildDate'];
@@ -194,8 +201,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return void
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveToCache" in next major
      */
-    protected function _saveToCache($name, $aContent)
+    protected function _saveToCache($name, $aContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aData = ['timestamp' => time(), 'content' => $aContent];
 
@@ -210,13 +218,14 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleItems" in next major
      */
-    protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList)
+    protected function _getArticleItems(\OxidEsales\Eshop\Application\Model\ArticleList $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
         $oLang = Registry::getLang();
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         foreach ($oList as $oArticle) {
             $oItem = new stdClass();
@@ -280,8 +289,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareUrl" in next major
      */
-    protected function _prepareUrl($sUri, $sTitle)
+    protected function _prepareUrl($sUri, $sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLang = Registry::getLang()->getBaseLanguage();
         $sUrl = $this->_getShopUrl();
@@ -303,8 +313,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareFeedName" in next major
      */
-    protected function _prepareFeedName($sTitle)
+    protected function _prepareFeedName($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop();
 
@@ -316,11 +327,12 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopUrl" in next major
      */
-    protected function _getShopUrl()
+    protected function _getShopUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if ($oStr->strpos($sUrl, '?') !== false) {
             if (!$oStr->preg_match('/[?&](amp;)?$/i', $sUrl)) {
                 $sUrl .= '&amp;';
@@ -343,8 +355,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @param string $sTargetUrl url of page rss represents
      *
      * @access protected
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadData" in next major
      */
-    protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null)
+    protected function _loadData($sTag, $sTitle, $sDesc, $aItems, $sRssUrl, $sTargetUrl = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_loadBaseChannel();
 
@@ -498,8 +511,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Category $oCat category object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCatPath" in next major
      */
-    protected function _getCatPath($oCat)
+    protected function _getCatPath($oCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCatPathString = '';
         $sSep = '';
@@ -579,7 +593,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     public function getSearchArticlesTitle($sSearch, $sCatId, $sVendorId, $sManufacturerId)
     {
-        return $this->_prepareFeedName(getStr()->htmlspecialchars($this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', $sSearch, $sCatId, $sVendorId, $sManufacturerId)));
+        return $this->_prepareFeedName(Str::getStr()->htmlspecialchars($this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', $sSearch, $sCatId, $sVendorId, $sManufacturerId)));
     }
 
     /**
@@ -593,8 +607,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @access protected
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchParamsUrl" in next major
      */
-    protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId)
+    protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sParams = "searchparam=" . urlencode($sSearch);
         if ($sCatId) {
@@ -621,8 +636,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getObjectField" in next major
      */
-    protected function _getObjectField($sId, $sObject, $sField)
+    protected function _getObjectField($sId, $sObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sId) {
             return '';
@@ -647,8 +663,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @access protected
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchParamsTranslation" in next major
      */
-    protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId)
+    protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oLang = Registry::getLang();
         $sCatTitle = '';
@@ -725,7 +742,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             null,
             //self::RSS_SEARCHARTS.md5($sSearch.$sCatId.$sVendorId),
             $this->getSearchArticlesTitle($sSearch, $sCatId, $sVendorId, $sManufacturerId),
-            $this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', getStr()->htmlspecialchars($sSearch), $sCatId, $sVendorId, $sManufacturerId),
+            $this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', Str::getStr()->htmlspecialchars($sSearch), $sCatId, $sVendorId, $sManufacturerId),
             $this->_getArticleItems($oArtList),
             $this->getSearchArticlesUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId),
             $this->_getShopUrl() . "cl=search&amp;" . $this->_getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId)
@@ -778,7 +795,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    protected function _getRecommListItems($oList)
+    protected function _getRecommListItems($oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsUrl = Registry::getUtilsUrl();
         $aItems = [];
@@ -964,8 +981,9 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      * @param string $sFilePath The path of the file we want to delete.
      *
      * @return bool Went everything well?
+     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteFile" in next major
      */
-    protected function _deleteFile($sFilePath)
+    protected function _deleteFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return @unlink($sFilePath);
     }

@@ -34,7 +34,7 @@ class ModuleEventsTest extends TestCase
      */
     private $databaseRestorer;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->databaseRestorer = new DatabaseRestorer();
         $this->databaseRestorer->dumpDB(__CLASS__);
@@ -42,7 +42,7 @@ class ModuleEventsTest extends TestCase
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->databaseRestorer->restoreDB(__CLASS__);
 

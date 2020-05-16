@@ -18,12 +18,18 @@ require_once TEST_LIBRARY_HELPERS_PATH . 'oxDatabaseHelper.php';
 
 class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
         $databaseHelper = new oxDatabaseHelper(DatabaseProvider::getDb());
         $databaseHelper->adjustTemplateBlocksOxModuleColumn();
+    }
+
+    public function testGetLicenseContent()
+    {
+        $utilities = new Utilities();
+        $this->assertNotNull($utilities->getLicenseContent('en'));
     }
 
     public function testExecuteExternalRegenerateViewsCommand()

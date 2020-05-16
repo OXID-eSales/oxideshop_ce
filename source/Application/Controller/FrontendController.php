@@ -457,8 +457,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * so aUserComponentNames was added to config.inc.php file.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getComponentNames" in next major
      */
-    protected function _getComponentNames()
+    protected function _getComponentNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (self::$_aCollectedComponentNames === null) {
             self::$_aCollectedComponentNames = array_merge($this->_aComponentNames, $this->_aUserComponentNames);
@@ -483,8 +484,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * If NOT, then tries to load alternative SEO url and if url is available -
      * redirects to it. If no alternative path was found - 404 header is emitted
      * and page is rendered
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processRequest" in next major
      */
-    protected function _processRequest()
+    protected function _processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $utils = Registry::getUtils();
 
@@ -1023,8 +1025,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param string $dataType data type "oxkeywords" or "oxdescription"
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMetaFromSeo" in next major
      */
-    protected function _getMetaFromSeo($dataType)
+    protected function _getMetaFromSeo($dataType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $seoObjectId = $this->_getSeoObjectId();
         $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
@@ -1044,8 +1047,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param string $metaIdent meta content ident
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMetaFromContent" in next major
      */
-    protected function _getMetaFromContent($metaIdent)
+    protected function _getMetaFromContent($metaIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($metaIdent) {
             $content = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
@@ -1053,7 +1057,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 $content->loadByIdent($metaIdent) &&
                 $content->oxcontents__oxactive->value
             ) {
-                return getStr()->strip_tags($content->oxcontents__oxcontent->value);
+                return Str::getStr()->strip_tags($content->oxcontents__oxcontent->value);
             }
         }
     }
@@ -1141,8 +1145,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Forces output no index meta data for current view
+     * @deprecated underscore prefix violates PSR12, will be renamed to "forceNoIndex" in next major
      */
-    protected function _forceNoIndex()
+    protected function _forceNoIndex() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_blForceNoIndex = true;
     }
@@ -1195,8 +1200,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Sets number of articles per page to config value
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setNrOfArtPerPage" in next major
      */
-    protected function _setNrOfArtPerPage()
+    protected function _setNrOfArtPerPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -1250,8 +1256,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
     /**
      * Override this function to return object it which is used to identify its seo meta info
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
-    protected function _getSeoObjectId()
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -1263,11 +1270,12 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param bool   $removeDuplicatedWords If true - performs additional duplicate cleaning
      *
      * @return  string  $string    converted string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
-    protected function _prepareMetaDescription($meta, $length = 1024, $removeDuplicatedWords = false)
+    protected function _prepareMetaDescription($meta, $length = 1024, $removeDuplicatedWords = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($meta) {
-            $stringModifier = getStr();
+            $stringModifier = Str::getStr();
             if ($length != -1) {
                 /* *
                  * performance - we do not need a huge amount of initial text.
@@ -1309,8 +1317,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param bool   $removeDuplicatedWords If true - performs additional duplicate cleaning
      *
      * @return string of keywords separated by comma
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
-    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true)
+    protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $string = $this->_prepareMetaDescription($keywords, -1, false);
 
@@ -1328,10 +1337,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param array $skipTags in admin defined strings
      *
      * @return string of words separated by comma
+     * @deprecated underscore prefix violates PSR12, will be renamed to "removeDuplicatedWords" in next major
      */
-    protected function _removeDuplicatedWords($input, $skipTags = [])
+    protected function _removeDuplicatedWords($input, $skipTags = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
         if (is_array($input)) {
             $input = implode(" ", $input);
         }
@@ -1507,8 +1517,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param int $languageId language id
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
-    protected function _getSubject($languageId)
+    protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return null;
     }
@@ -1629,8 +1640,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param bool $addPageNumber if TRUE - page number will be added
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getRequestParams" in next major
      */
-    protected function _getRequestParams($addPageNumber = true)
+    protected function _getRequestParams($addPageNumber = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $class = $this->getClassName();
         $function = $this->getFncName();
@@ -1718,8 +1730,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * collects _GET parameters used by eShop SEO and returns uri
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoRequestParams" in next major
      */
-    protected function _getSeoRequestParams()
+    protected function _getSeoRequestParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $class = $this->getClassName();
         $function = $this->getFncName();
@@ -1987,8 +2000,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * @param int    $languageId Language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
-    protected function _addPageNrParam($url, $page, $languageId = null)
+    protected function _addPageNrParam($url, $page, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($page) {
             if ((strpos($url, 'pgNr='))) {
@@ -2408,8 +2422,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * Checks if current request parameters does not block SEO redirection process
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "canRedirect" in next major
      */
-    protected function _canRedirect()
+    protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($this->_aBlockRedirectParams as $param) {
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($param) !== null) {
@@ -2571,7 +2586,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Returns array of fields which must be filled during registration
      *
-     * @return array | bool
+     * @return array|bool
      */
     public function getMustFillFields()
     {
@@ -2593,7 +2608,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      *
      * @param string $field required field to check
      *
-     * @return array | bool
+     * @return array|bool
      */
     public function isFieldRequired($field)
     {

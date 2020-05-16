@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -21,12 +21,11 @@ class MetaDataMapperTest extends TestCase
     /**
      * @dataProvider missingMetaDataKeysDataProvider
      *
-     * @expectedException \InvalidArgumentException
-     *
      * @param array $invalidData
      */
     public function testFromDataWillThrowExceptionOnInvalidParameterFormat(array $invalidData)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
         $metaDataDataMapper->fromData($invalidData);
     }
@@ -96,7 +95,7 @@ class MetaDataMapperTest extends TestCase
         );
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

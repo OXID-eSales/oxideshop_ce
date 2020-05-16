@@ -25,7 +25,7 @@ class QueryLoggerTest extends AdminTestCase
      */
     private $adminLogHelper;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -65,8 +65,8 @@ class QueryLoggerTest extends AdminTestCase
 
         $logged = $this->adminLogHelper->getExceptionLogFileContent();
 
-        $this->assertContains('query:', strtolower($logged));
-        $this->assertContains('function: saveshopconfvar', strtolower($logged));
+        $this->assertStringContainsString('query:', strtolower($logged));
+        $this->assertStringContainsString('function: saveshopconfvar', strtolower($logged));
     }
 
     /**

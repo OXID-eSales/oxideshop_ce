@@ -76,7 +76,6 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      * Deletes the entity with the given id.
      *
      * @param string $id An id of the entity to delete.
-     *
      */
     public function delete($id)
     {
@@ -159,12 +158,11 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     protected function update($appServer)
     {
-        $query = "UPDATE oxconfig SET oxvarvalue = ENCODE(:value, :key)
+        $query = "UPDATE oxconfig SET oxvarvalue = :value
                   WHERE oxvarname = :oxvarname and oxshopid = :oxshopid";
 
         $parameter = [
             ':value' => $this->convertAppServerToConfigOption($appServer),
-            ':key' => $this->config->getConfigParam('sConfigKey'),
             ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $appServer->getId(),
             ':oxshopid' => $this->config->getBaseShopId()
         ];
@@ -180,7 +178,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     protected function insert($appServer)
     {
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-                  values (:oxid, :oxshopid, '', :oxvarname, :oxvartype, ENCODE(:value, :key))";
+                  values (:oxid, :oxshopid, '', :oxvarname, :oxvartype, :value)";
 
         $parameter = [
             ':oxid' => \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID(),
@@ -188,7 +186,6 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
             ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $appServer->getId(),
             ':oxvartype' => 'arr',
             ':value' => $this->convertAppServerToConfigOption($appServer),
-            ':key' => $this->config->getConfigParam('sConfigKey')
         ];
 
         $this->database->execute($query, $parameter);
@@ -203,8 +200,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function selectDataById($id)
     {
-        $query = "SELECT " . $this->config->getDecodeValueQuery() .
-            " as oxvarvalue FROM oxconfig 
+        $query = "SELECT oxvarvalue FROM oxconfig 
             WHERE oxvarname = :oxvarname 
               AND oxshopid = :oxshopid FOR UPDATE";
 
@@ -224,7 +220,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function selectAllData()
     {
-        $query = "SELECT oxvarname, " . $this->config->getDecodeValueQuery() . " as oxvarvalue
+        $query = "SELECT oxvarname, oxvarvalue
                     FROM oxconfig
                     WHERE oxvarname like :oxvarname AND oxshopid = :oxshopid";
 

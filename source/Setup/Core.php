@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use \OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Facts\Facts;
 use oxSystemComponentException;
 
 /**
@@ -148,25 +148,6 @@ class Core
         }
 
         return $userDecidedOverwriteDatabase;
-    }
-
-    /**
-     * Return true if user already decided to ignore database recommended version related warnings.
-     *
-     * @return bool
-     */
-    protected function userDecidedIgnoreDBWarning()
-    {
-        $userDecidedIgnoreDBWarning = false;
-
-        $overwriteCheck = $this->getUtilitiesInstance()->getRequestVar("owrec", "get");
-        $session = $this->getSessionInstance();
-
-        if (isset($overwriteCheck) || $session->getSessionParam('blIgnoreDbRecommendations')) {
-            $userDecidedIgnoreDBWarning = true;
-        }
-
-        return $userDecidedIgnoreDBWarning;
     }
 
     /**

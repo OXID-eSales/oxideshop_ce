@@ -21,7 +21,7 @@ class NewsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $oBaseNews = oxNew('oxBase');
@@ -45,7 +45,7 @@ class NewsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $sDelete = "delete from oxnews where oxid='" . $this->_oNews->oxnews__oxid->value . "' or oxshortdesc='Test' ";

@@ -51,7 +51,7 @@ class OrderTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
@@ -62,7 +62,7 @@ class OrderTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRemClassModule('Unit\Application\Model\modoxdeliverylist_oxorder');
         $this->cleanUpTable('oxorder');
@@ -2387,36 +2387,6 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals(null, $myDb->getOne($sSql));
     }
 
-
-    public function testSetPaymentFromCC()
-    {
-        $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->oxorder__oxuserid = new oxField("_testUserId", oxField::T_RAW);
-
-        $oUserpayment = $oOrder->UNITsetPayment('oxidcreditcard');
-
-        $this->assertEquals("_testUserId", $oUserpayment->oxuserpayments__oxuserid->value);
-        $this->assertEquals("oxidcreditcard", $oUserpayment->oxuserpayments__oxpaymentsid->value);
-        $this->assertEquals("kktype__@@kknumber__@@kkmonth__@@kkyear__@@kkname__@@kkpruef__@@", $oUserpayment->oxuserpayments__oxvalue->value);
-        $this->assertEquals("Kreditkarte", $oUserpayment->oxpayments__oxdesc->value);
-        $this->assertEquals(6, count($oUserpayment->aDynValues));
-    }
-
-    public function testSetPaymentWithDynValues()
-    {
-        $aDynVal = array("kktype" => "visa", "kknumber" => "12345", "kkmonth" => "11", "kkyear" => "2008", "kkname" => "testName", "kkpruef" => "56789");
-        $this->getSession()->setVariable('dynvalue', $aDynVal);
-
-        $oOrder = $this->getProxyClass("oxOrder");
-        $oOrder->oxorder__oxuserid = new oxField();
-
-        $oUserpayment = $oOrder->UNITsetPayment('oxidcreditcard');
-
-        $sValue = "kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@";
-        $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
-        $this->assertEquals(6, count($oUserpayment->aDynValues));
-    }
-
     // #756M
     public function testPreserveOrderPaymentDynValues()
     {
@@ -3329,8 +3299,8 @@ class OrderTest extends \OxidTestCase
 
     public function testGetPaymentTypeDynValue()
     {
-        $sDyn = 'lsbankname__visa@@lsblz__12345@@lsktonr__56789@@lsktoinhaber__testName@@';
-        $aDynVal = array("lsbankname" => "visa", "lsblz" => "12345", "lsktonr" => "56789", "lsktoinhaber" => "testName");
+        $sDyn = 'lsbankname__cash@@lsblz__12345@@lsktonr__56789@@lsktoinhaber__testName@@';
+        $aDynVal = array("lsbankname" => "cash", "lsblz" => "12345", "lsktonr" => "56789", "lsktoinhaber" => "testName");
         $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");

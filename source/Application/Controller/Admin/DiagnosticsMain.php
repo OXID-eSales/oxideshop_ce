@@ -64,8 +64,9 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Error status getter
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "hasError" in next major
      */
-    protected function _hasError()
+    protected function _hasError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blError;
     }
@@ -74,8 +75,9 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Error status getter
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getErrorMessage" in next major
      */
-    protected function _getErrorMessage()
+    protected function _getErrorMessage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_sErrorMessage;
     }
@@ -83,7 +85,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     /**
      * Calls parent constructor and initializes checker object
-     *
      */
     public function __construct()
     {
@@ -129,8 +130,9 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Shop and module details, database health, php parameters, server information
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "runBasicDiagnostics" in next major
      */
-    protected function _runBasicDiagnostics()
+    protected function _runBasicDiagnostics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);

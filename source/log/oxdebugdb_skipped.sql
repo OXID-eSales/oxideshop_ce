@@ -17,7 +17,7 @@ select * from oxcontents where oxactive = '#VALUE#' and oxtype = '#VALUE#' and o
 -- -- ENTRY END
 select * from oxcontents where oxactive = '#VALUE#' and oxtype = '#VALUE#' and oxsnippet = '#VALUE#' and oxshopid = '#VALUE#'  order by oxloadid
 -- -- ENTRY END
-select oxvarname, oxvartype, DECODE( oxvarvalue, '#VALUE#') as oxvarvalue from oxconfig where oxshopid = '#VALUE#'
+select oxvarname, oxvartype, oxvarvalue from oxconfig where oxshopid = '#VALUE#'
 -- -- ENTRY END
 select oxv_oxselectlist_#NUMVALUE#.* from oxobject#NUMVALUE#selectlist left join oxv_oxselectlist_#NUMVALUE# on oxv_oxselectlist_#NUMVALUE#.oxid=oxobject#NUMVALUE#selectlist.oxselnid where oxobject#NUMVALUE#selectlist.oxobjectid='#VALUE#'  order by oxobject#NUMVALUE#selectlist.oxsort 
 -- -- ENTRY END

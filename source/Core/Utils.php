@@ -7,8 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use stdClass;
 use Exception;
+use OxidEsales\Eshop\Core\Str;
+use stdClass;
 
 /**
  * General utils class
@@ -424,7 +425,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sKey Cache key.
      *
-     * @return null;
+     * @return null
      */
     public function fromPhpFileCache($sKey)
     {
@@ -494,37 +495,33 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function fromFileCache($sKey)
     {
         if (!array_key_exists($sKey, $this->_aFileCacheContents)) {
-            $sRes = null;
-
             $aMeta = $this->getCacheMeta($sKey);
-            $blInclude = isset($aMeta["include"]) ? $aMeta["include"] : false;
             $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
-
-            // trying to lock
-            $this->_lockFile($sCachePath, $sKey, LOCK_SH);
 
             clearstatcache();
             if (is_readable($sCachePath)) {
+                $this->_lockFile($sCachePath, $sKey, LOCK_SH);
+
+                $blInclude = isset($aMeta["include"]) ? $aMeta["include"] : false;
                 $sRes = $blInclude ? $this->_includeFile($sCachePath) : $this->_readFile($sCachePath);
-            }
 
-            if (isset($sRes['ttl']) && $sRes['ttl'] != 0) {
-                $iTimestamp = $sRes['timestamp'];
-                $iTtl = $sRes['ttl'];
+                if (isset($sRes['ttl']) && $sRes['ttl'] != 0) {
+                    $iTimestamp = $sRes['timestamp'];
+                    $iTtl = $sRes['ttl'];
 
-                $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-                if ($iTime > $iTimestamp + $iTtl) {
-                    return null;
+                    $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+                    if ($iTime > $iTimestamp + $iTtl) {
+                        return null;
+                    }
                 }
-            }
-            // release lock
-            $this->_releaseFile($sKey, LOCK_SH);
 
-            // caching
-            $this->_aFileCacheContents[$sKey] = $sRes;
+                $this->_aFileCacheContents[$sKey] = $sRes;
+
+                $this->_releaseFile($sKey, LOCK_SH);
+            }
         }
 
-        return $this->_aFileCacheContents[$sKey]['content'];
+        return isset($this->_aFileCacheContents[$sKey]) ? $this->_aFileCacheContents[$sKey]['content'] : null;
     }
 
     /**
@@ -533,8 +530,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sFilePath cache fiel path
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "readFile" in next major
      */
-    protected function _readFile($sFilePath)
+    protected function _readFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sRes = file_get_contents($sFilePath);
 
@@ -547,8 +545,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sFilePath cache file path
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "includeFile" in next major
      */
-    protected function _includeFile($sFilePath)
+    protected function _includeFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $_aCacheContents = null;
         include $sFilePath;
@@ -563,8 +562,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param mixed  $mContents cache data
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processCache" in next major
      */
-    protected function _processCache($sKey, $mContents)
+    protected function _processCache($sKey, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for cache meta
         $aCacheMeta = $this->getCacheMeta($sKey);
@@ -615,8 +615,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param int    $iLockMode lock mode - LOCK_EX/LOCK_SH
      *
      * @return mixed lock file resource or false on error
+     * @deprecated underscore prefix violates PSR12, will be renamed to "lockFile" in next major
      */
-    protected function _lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX)
+    protected function _lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $rHandle = isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
         if ($rHandle === null) {
@@ -667,8 +668,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param int    $iLockMode lock mode
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "releaseFile" in next major
      */
-    protected function _releaseFile($sIdent, $iLockMode = LOCK_EX)
+    protected function _releaseFile($sIdent, $iLockMode = LOCK_EX) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blSuccess = true;
         if (
@@ -1003,7 +1005,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function isValidAlpha($sField)
     {
-        return (bool) getStr()->preg_match('/^[a-zA-Z0-9_]*$/', $sField);
+        return (bool) Str::getStr()->preg_match('/^[a-zA-Z0-9_]*$/', $sField);
     }
 
     /**
@@ -1012,8 +1014,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl        the URL to redirect to
      * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
+     * @deprecated underscore prefix violates PSR12, will be renamed to "simpleRedirect" in next major
      */
-    protected function _simpleRedirect($sUrl, $sHeaderCode)
+    protected function _simpleRedirect($sUrl, $sHeaderCode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oHeader = oxNew(\OxidEsales\Eshop\Core\Header::class);
         $oHeader->setHeader($sHeaderCode);
@@ -1141,10 +1144,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param array  $aParams the params which will be added
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addUrlParameters" in next major
      */
-    protected function _addUrlParameters($sUrl, $aParams)
+    protected function _addUrlParameters($sUrl, $aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sDelimiter = ((getStr()->strpos($sUrl, '?') !== false)) ? '&' : '?';
+        $sDelimiter = ((Str::getStr()->strpos($sUrl, '?') !== false)) ? '&' : '?';
         foreach ($aParams as $sName => $sVal) {
             $sUrl = $sUrl . $sDelimiter . $sName . '=' . $sVal;
             $sDelimiter = '&';
@@ -1163,8 +1167,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @todo rename function more closely to actual purpose
      * @todo finish refactoring
+     * @deprecated underscore prefix violates PSR12, will be renamed to "fillExplodeArray" in next major
      */
-    protected function _fillExplodeArray($aName, $dVat = null)
+    protected function _fillExplodeArray($aName, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oObject = new stdClass();
@@ -1175,7 +1180,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $oObject->price = isset($aPrice[1]) ? $aPrice[1] : 0;
             $aName[0] = isset($aPrice[0]) ? $aPrice[0] : '';
 
-            $iPercPos = getStr()->strpos($oObject->price, '%');
+            $iPercPos = Str::getStr()->strpos($oObject->price, '%');
             if ($iPercPos !== false) {
                 $oObject->priceUnit = '%';
                 $oObject->fprice = $oObject->price;
@@ -1210,7 +1215,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             }
         } elseif (isset($aPrice[0]) && isset($aPrice[1])) {
             // A. removing unused part of information
-            $aName[0] = getStr()->preg_replace("/!P!.*/", "", $aName[0]);
+            $aName[0] = Str::getStr()->preg_replace("/!P!.*/", "", $aName[0]);
         }
 
         $oObject->name = $aName[0];
@@ -1226,8 +1231,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param double $dVat   VAT
      *
      * @return float
+     * @deprecated underscore prefix violates PSR12, will be renamed to "preparePrice" in next major
      */
-    protected function _preparePrice($dPrice, $dVat)
+    protected function _preparePrice($dPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blCalculationModeNetto = $this->_isPriceViewModeNetto();
 
@@ -1247,8 +1253,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * Checks and return true if price view mode is netto.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isPriceViewModeNetto" in next major
      */
-    protected function _isPriceViewModeNetto()
+    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->_getArticleUser();
@@ -1263,8 +1270,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * Return article user.
      *
      * @return oxUser
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleUser" in next major
      */
-    protected function _getArticleUser()
+    protected function _getArticleUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oUser) {
             return $this->_oUser;
@@ -1411,7 +1419,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function checkUrlEndingSlash($sUrl)
     {
-        if (!getStr()->preg_match("/\/$/", $sUrl)) {
+        if (!Str::getStr()->preg_match("/\/$/", $sUrl)) {
             $sUrl .= '/';
         }
 
@@ -1449,7 +1457,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function extractDomain($sHost)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if (
             !$oStr->preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $sHost) &&
             ($iLastDot = strrpos($sHost, '.')) !== false

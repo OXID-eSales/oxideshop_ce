@@ -11,6 +11,9 @@ use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidatorServiceBridgeInterface;
 
 /**
  * Class for validating input.
@@ -28,19 +31,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     const INVALID_BANK_CODE = -4;
 
     /**
-     * Required fields for credit card payment.
-     *
-     * @var array
-     */
-    protected $_aRequiredCCFields = ['kktype',
-                                          'kknumber',
-                                          'kkmonth',
-                                          'kkyear',
-                                          'kkname',
-                                          'kkpruef'
-    ];
-
-    /**
      * Input validation errors.
      *
      * @var array
@@ -49,22 +39,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
 
     protected $_oCompanyVatInValidator = null;
-
-    /**
-     * Possible credit card types
-     *
-     * @var array
-     */
-    protected $_aPossibleCCType = ['mcd', // Master Card
-                                        'vis', // Visa
-                                        'amx', // American Express
-                                        'dsc', // Discover
-                                        'dnc', // Diners Club
-                                        'jcb', // JCB
-                                        'swi', // Switch
-                                        'dlt', // Delta
-                                        'enr' // EnRoute
-    ];
 
     /**
      * Required fields for debit cards.
@@ -78,7 +52,6 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
      */
     public function __construct()
     {
@@ -179,15 +152,16 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     public function checkEmail($user, $email)
     {
         // missing email address (user login name) ?
-        if (!$email) {
+        if (empty($email)) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
             return $this->addValidationError("oxuser__oxusername", $exception);
         }
 
-        // invalid email address ?
-        if (!oxNew(\OxidEsales\Eshop\Core\MailValidator::class)->isValidEmail($email)) {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $emailValidator = $container->get(EmailValidatorServiceBridgeInterface::class);
+        if (!$emailValidator->isEmailValid($email)) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'));
 
@@ -209,14 +183,14 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     public function checkPassword($user, $newPassword, $confirmationPassword, $shouldCheckPasswordLength = false)
     {
         //  no password at all
-        if ($shouldCheckPasswordLength && getStr()->strlen($newPassword) == 0) {
+        if ($shouldCheckPasswordLength && Str::getStr()->strlen($newPassword) == 0) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS'));
 
             return $this->addValidationError("oxuser__oxpassword", $exception);
         }
 
-        if ($shouldCheckPasswordLength && getStr()->strlen($newPassword) < $this->getPasswordLength()) {
+        if ($shouldCheckPasswordLength && Str::getStr()->strlen($newPassword) < $this->getPasswordLength()) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
 
@@ -288,8 +262,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array        $fields
      *
      * @return User|Address
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFields" in next major
      */
-    private function _setFields($object, $fields)
+    private function _setFields($object, $fields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $fields = is_array($fields) ? $fields : [];
         foreach ($fields as $sKey => $sValue) {
@@ -382,8 +357,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param string $countryId
      *
      * @return \OxidEsales\Eshop\Application\Model\Country
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCountry" in next major
      */
-    protected function _getCountry($countryId)
+    protected function _getCountry($countryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $country = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
         $country->load($countryId);
@@ -415,7 +391,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Validates payment input data for credit card and debit note.
+     * Validates payment input data debit note.
      *
      * @param string $paymentId    The payment id of current payment.
      * @param array  $dynamicValue Values of payment.
@@ -424,36 +400,15 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function validatePaymentInputData($paymentId, &$dynamicValue)
     {
-        $validationResult = true;
-
-        switch ($paymentId) {
-            case 'oxidcreditcard':
-                $validationResult = false;
-
-                $idAllCreditCardInformationSet = $this->_isAllBankInformationSet($this->_aRequiredCCFields, $dynamicValue);
-                $doesCreditCardTypeExist = in_array($dynamicValue['kktype'], $this->_aPossibleCCType);
-
-                if ($idAllCreditCardInformationSet && $doesCreditCardTypeExist) {
-                    $cardValidator = oxNew(\OxidEsales\Eshop\Core\CreditCardValidator::class);
-                    $validationResult = $cardValidator->isValidCard(
-                        $dynamicValue['kknumber'],
-                        $dynamicValue['kktype'],
-                        $dynamicValue['kkmonth'] . substr($dynamicValue['kkyear'], 2, 2)
-                    );
-                }
-                break;
-
-            case "oxiddebitnote":
-                $validationResult = false;
-
-                if ($this->_isAllBankInformationSet($this->_aRequiredDCFields, $dynamicValue)) {
-                    $validationResult = $this->_validateDebitNote($dynamicValue);
-                }
-
-                break;
+        if ($paymentId === "oxiddebitnote") {
+            if ($this->_isAllBankInformationSet($this->_aRequiredDCFields, $dynamicValue)) {
+                return $this->_validateDebitNote($dynamicValue);
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
-
-        return $validationResult;
     }
 
     /**
@@ -476,8 +431,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInformation Debit information
      *
      * @return bool|int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateDebitNote" in next major
      */
-    protected function _validateDebitNote($debitInformation)
+    protected function _validateDebitNote($debitInformation) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $debitInformation = $this->_cleanDebitInformation($debitInformation);
         $bankCode = $debitInformation['lsblz'];
@@ -505,10 +461,11 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInfo Debit info
      *
      * @return bool|int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateOldDebitInfo" in next major
      */
-    protected function _validateOldDebitInfo($debitInfo)
+    protected function _validateOldDebitInfo($debitInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $stringHelper = getStr();
+        $stringHelper = Str::getStr();
         $debitInfo = $this->_fixAccountNumber($debitInfo);
 
         $validationResult = true;
@@ -533,10 +490,11 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInfo Debit info.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "fixAccountNumber" in next major
      */
-    protected function _fixAccountNumber($debitInfo)
+    protected function _fixAccountNumber($debitInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         if ($oStr->strlen($debitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(
@@ -556,8 +514,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $bankInformation actual information.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isAllBankInformationSet" in next major
      */
-    protected function _isAllBankInformationSet($requiredFields, $bankInformation)
+    protected function _isAllBankInformationSet($requiredFields, $bankInformation) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $isSet = true;
         foreach ($requiredFields as $fieldName) {
@@ -576,8 +535,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $debitInformation Debit information.
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "cleanDebitInformation" in next major
      */
-    protected function _cleanDebitInformation($debitInformation)
+    protected function _cleanDebitInformation($debitInformation) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $debitInformation['lsblz'] = str_replace(' ', '', $debitInformation['lsblz']);
         $debitInformation['lsktonr'] = str_replace(' ', '', $debitInformation['lsktonr']);
@@ -591,8 +551,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      * @param array $invAddress Address.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "hasRequiredParametersForVatInCheck" in next major
      */
-    protected function _hasRequiredParametersForVatInCheck($invAddress)
+    protected function _hasRequiredParametersForVatInCheck($invAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $invAddress['oxuser__oxustid'] && $invAddress['oxuser__oxcountryid'] && $invAddress['oxuser__oxcompany'];
     }

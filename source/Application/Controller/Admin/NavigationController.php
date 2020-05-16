@@ -150,61 +150,63 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      * Every Time Admin starts we perform these checks
      * returns some messages if there is something to display
      *
-     * @return string
+     * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "doStartUpChecks" in next major
      */
-    protected function _doStartUpChecks()
+    protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aMessage = [];
+        $messages = [];
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blCheckSysReq') !== false) {
             // check if system requirements are ok
             $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
             if (!$oSysReq->getSysReqStatus()) {
-                $aMessage['warning'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
-                $aMessage['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
-                $aMessage['warning'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
+                $messages['warning'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
+                $messages['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
+                $messages['warning'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
             }
         } else {
-            $aMessage['message'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
-            $aMessage['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
-            $aMessage['message'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
+            $messages['message'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
+            $messages['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
+            $messages['message'] .= \OxidEsales\Eshop\Core\Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
         }
 
         // version check
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blCheckForUpdates')) {
             if ($sVersionNotice = $this->_checkVersion()) {
-                $aMessage['message'] .= $sVersionNotice;
+                $messages['message'] .= $sVersionNotice;
             }
         }
 
 
         // check if setup dir is deleted
         if (file_exists(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
-            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
+            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
         // check if updateApp dir is deleted or empty
         $sUpdateDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . '/updateApp/';
         if (file_exists($sUpdateDir) && !(count(glob("$sUpdateDir/*")) === 0)) {
-            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('UPDATEAPP_DIRNOTDELETED_WARNING');
+            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('UPDATEAPP_DIRNOTDELETED_WARNING');
         }
 
         // check if config file is writable
         $sConfPath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {
-            $aMessage['warning'] .= ((!empty($aMessage['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
+            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }
 
-        return $aMessage;
+        return $messages;
     }
 
     /**
      * Checks if newer shop version available. If true - returns message
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkVersion" in next major
      */
-    protected function _checkVersion()
+    protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $edition = \OxidEsales\Eshop\Core\Registry::getConfig()->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';

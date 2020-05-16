@@ -20,7 +20,7 @@ class OrderMainTest extends \OxidTestCase
     /**
      * tear down the test.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $_POST = array();
         parent::tearDown();

@@ -35,7 +35,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Modules info array
      *
      *
-     * @var array(id => array)
+     * @var array<string, array>
      */
     protected $_aModules = [];
 
@@ -517,8 +517,9 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param object $oModule2 module object
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sortModules" in next major
      */
-    protected function _sortModules($oModule1, $oModule2)
+    protected function _sortModules($oModule1, $oModule2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return strcasecmp($oModule1->getTitle(), $oModule2->getTitle());
     }
@@ -529,8 +530,9 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param string $sModuleDir dir path
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isVendorDir" in next major
      */
-    protected function _isVendorDir($sModuleDir)
+    protected function _isVendorDir($sModuleDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_dir($sModuleDir)) {
             return false;
@@ -553,8 +555,9 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param string $moduleId Module id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getInvalidExtensions" in next major
      */
-    private function _getInvalidExtensions($moduleId)
+    private function _getInvalidExtensions($moduleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $extendedShopClasses = $this->getModuleExtensions($moduleId);
         $invalidModuleClasses = [];

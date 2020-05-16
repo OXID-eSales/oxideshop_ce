@@ -22,7 +22,7 @@ class LangTest extends \OxidTestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ class LangTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // cleanup
         oxRegistry::getUtils()->oxResetFileCache();
@@ -150,7 +150,7 @@ class LangTest extends \OxidTestCase
         $languagePaths = $language->UNITgetLangFilesPathArray($languageId);
 
         foreach ($languagePaths as $languagePath) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 '/' . $currentLanguageAbbreviation . '/',
                 $languagePath,
                 "The path" . $languagePath . "contains a different language than " .  $currentLanguageAbbreviation . "."
@@ -176,6 +176,7 @@ class LangTest extends \OxidTestCase
         $aPathArray = array(
             $sPath . "translations/de/lang.php",
             $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/translations/de/lang.php",
             $sPath . "views/azure/de/lang.php",
             $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php",
             $sPath . "views/azure/de/cust_lang.php"
@@ -212,6 +213,7 @@ class LangTest extends \OxidTestCase
         $aPathArray = array(
             $sPath . "translations/de/lang.php",
             $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/azure/translations/de/lang.php",
             $sPath . "views/azure/de/lang.php",
             $sShopPath . "modules/oxlangTestModule/Application/translations/de/test_lang.php",
             $sPath . "views/azure/de/cust_lang.php"

@@ -225,8 +225,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * @param string $sParentId parent product id
      *
      * @return Article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getParentProduct" in next major
      */
-    protected function _getParentProduct($sParentId)
+    protected function _getParentProduct($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
@@ -244,8 +245,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * In case list type is "search" returns search parameters which will be added to product details link.
      *
      * @return string|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAddUrlParams" in next major
      */
-    protected function _getAddUrlParams()
+    protected function _getAddUrlParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getListType() == "search") {
             return $this->getDynUrlParams();
@@ -256,8 +258,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * Processes product by setting link type and in case list type is search adds search parameters to details link.
      *
      * @param object $oProduct Product to process.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processProduct" in next major
      */
-    protected function _processProduct($oProduct)
+    protected function _processProduct($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oProduct->setLinkType($this->getLinkType());
         if ($sAddParams = $this->_getAddUrlParams()) {
@@ -697,8 +700,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      * @param int $iLang language id
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
-    protected function _getSubject($iLang)
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getProduct();
     }
@@ -898,8 +902,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
     /**
      * Set item sorting for widget based of retrieved parameters.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSortingParameters" in next major
      */
-    protected function _setSortingParameters()
+    protected function _setSortingParameters() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
@@ -968,8 +973,9 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @param Utils  $myUtils  General utils.
      * @param Config $myConfig Main shop configuration.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "additionalChecksForArticle" in next major
      */
-    protected function _additionalChecksForArticle($myUtils, $myConfig)
+    protected function _additionalChecksForArticle($myUtils, $myConfig) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blContinue = true;
         if (!$this->_oProduct->isVisible()) {

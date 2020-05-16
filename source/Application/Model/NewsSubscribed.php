@@ -14,7 +14,6 @@ use oxField;
  * Newsletter Subscriptions manager
  * Performs user managing function
  * information, deletion and other.
- *
  */
 class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -60,9 +59,9 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $blRet = parent::load($oxId);
 
-        if ($this->oxnewssubscribed__oxdboptin->value == 1) {
+        if ($this->getFieldData('oxnewssubscribed__oxdboptin') == 1) {
             $this->_blWasSubscribed = true;
-        } elseif ($this->oxnewssubscribed__oxdboptin->value == 2) {
+        } elseif ($this->getFieldData('oxnewssubscribed__oxdboptin') == 2) {
             $this->_blWasPreSubscribed = true;
         }
 
@@ -127,8 +126,9 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts nbews object data to DB. Returns true on success.
      *
      * @return mixed oxid on success or false on failure
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // set subscription date
         $this->oxnewssubscribed__oxsubscribed = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -140,8 +140,9 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      * We need to check if we unsubscribe here
      *
      * @return mixed oxid on success or false on failure
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($this->_blWasSubscribed || $this->_blWasPreSubscribed) && !$this->oxnewssubscribed__oxdboptin->value) {
             // set unsubscription date

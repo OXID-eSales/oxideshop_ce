@@ -28,7 +28,7 @@ class StrMbTest extends \OxidTestCase
     /** @var oxStrMb */
     protected $_oSubj = null;
 
-    public function setup()
+    public function setup(): void
     {
         parent::setUp();
         $this->_oSubj = oxNew('oxStrMb');

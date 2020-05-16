@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Class manages article attributes
@@ -52,8 +53,9 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -100,8 +102,9 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * @param string $sQ query to add filter condition
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
-    protected function _addFilter($sQ)
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_addFilter($sQ);
 
@@ -109,7 +112,7 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
-            $oStr = getStr();
+            $oStr = Str::getStr();
             if ($oStr->strpos($sQ, "select count( * ) ") === 0) {
                 $sQ = "select count( * ) from ( {$sQ} ) as _cnttable";
             }

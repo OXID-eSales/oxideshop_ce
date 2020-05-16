@@ -16,7 +16,6 @@ use oxUtilsFile;
 
 /**
  * Article actions manager. Collects and keeps actions of chosen article.
- *
  */
 class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

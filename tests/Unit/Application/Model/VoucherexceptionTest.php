@@ -27,9 +27,9 @@ class VoucherexceptionTest extends \OxidTestCase
         $this->assertEquals('OxidEsales\Eshop\Core\Exception\VoucherException', get_class($oTestObject));
         $oTestObject->setVoucherNr($sVoucher);
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains($sMsg, $sStringOut);
-        $this->assertContains('VoucherException', $sStringOut);
-        $this->assertContains($sVoucher, $sStringOut);
+        $this->assertStringContainsString($sMsg, $sStringOut);
+        $this->assertStringContainsString('VoucherException', $sStringOut);
+        $this->assertStringContainsString($sVoucher, $sStringOut);
     }
 
     public function testGetValues()

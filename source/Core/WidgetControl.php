@@ -70,8 +70,9 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 
     /**
      * Runs actions that should be performed at the controller finish.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "runLast" in next major
      */
-    protected function _runLast()
+    protected function _runLast() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -100,8 +101,9 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * @throws ObjectException
      *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
+     * @deprecated underscore prefix violates PSR12, will be renamed to "initializeViewObject" in next major
      */
-    protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
+    protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $activeViewsIds = $config->getActiveViewsIds();

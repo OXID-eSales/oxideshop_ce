@@ -46,8 +46,9 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -137,8 +138,9 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      * fields to load from DB. Adds subselect to get variant title from parent article
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQueryCols" in next major
      */
-    protected function _getQueryCols()
+    protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();

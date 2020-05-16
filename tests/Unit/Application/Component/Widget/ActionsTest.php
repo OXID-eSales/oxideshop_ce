@@ -18,7 +18,7 @@ class ActionsTest extends \OxidTestCase
     /**
      * Fixture tearDown
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $query = "UPDATE oxactions2article set OXSORT = 0 WHERE OXACTIONID = 'oxtop5' AND OXSORT = 666";
         \oxDb::getDb()->execute($query);

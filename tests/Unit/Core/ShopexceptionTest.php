@@ -17,8 +17,8 @@ class ShopexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $testObject = oxNew(\OxidEsales\Eshop\Core\Exception\ShopException::class, $message);
         $this->assertEquals(\OxidEsales\Eshop\Core\Exception\ShopException::class, get_class($testObject));
         $stringOut = $testObject->getString(); // (string)$testObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains($message, $stringOut);
-        $this->assertContains('ShopException', $stringOut);
+        $this->assertStringContainsString($message, $stringOut);
+        $this->assertStringContainsString('ShopException', $stringOut);
     }
 
     /**

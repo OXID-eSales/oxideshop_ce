@@ -129,7 +129,7 @@ class OrderTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         oxTestModules::addFunction('oxSeoEncoderManufacturer', '_saveToDb', '{return null;}');
@@ -147,7 +147,7 @@ class OrderTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         //remove data from db
         $this->cleanUpTable('oxuser');

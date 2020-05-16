@@ -22,7 +22,7 @@ class ManufacturerlistTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         oxTestModules::addFunction('oxSeoEncoderManufacturer', '_saveToDb', '{return null;}');
@@ -31,7 +31,7 @@ class ManufacturerlistTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxTestModules::addFunction('oxManufacturer', 'cleanRootManufacturer', '{oxManufacturer::$_aRootManufacturer = array();}');
         oxNew('oxManufacturer')->cleanRootManufacturer();

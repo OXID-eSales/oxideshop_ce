@@ -19,9 +19,9 @@ use Webmozart\PathUtil\Path;
 
 class InstallModuleConfigurationCommand extends Command
 {
-    const MESSAGE_INSTALLATION_WAS_SUCCESSFUL = 'Module configuration has been installed.';
-    const MESSAGE_INSTALLATION_FAILED = 'An error occurred while installing module configuration.';
-    const MESSAGE_TARGET_PATH_IS_REQUIRED = 'The given module source path is not inside the shop modules ' .
+    public const MESSAGE_INSTALLATION_WAS_SUCCESSFUL = 'Module configuration has been installed.';
+    public const MESSAGE_INSTALLATION_FAILED = 'An error occurred while installing module configuration.';
+    public const MESSAGE_TARGET_PATH_IS_REQUIRED = 'The given module source path is not inside the shop modules ' .
     'directory. Please provide a second parameter with the modules ' .
     'target path inside the shop modules directory.';
 
@@ -100,6 +100,8 @@ class InstallModuleConfigurationCommand extends Command
 
             throw $throwable;
         }
+
+        return 0;
     }
 
     /**

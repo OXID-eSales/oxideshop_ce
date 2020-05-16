@@ -81,7 +81,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'oxshopid'      => ':shopId',
                 'oxvarname'     => ':name',
                 'oxvartype'     => ':type',
-                'oxvarvalue'    => 'encode(:value, :key)',
+                'oxvarvalue'    => ':value',
             ])
             ->setParameters([
                 'id'        => $this->shopAdapter->generateUniqueId(),
@@ -91,18 +91,17 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'value'     => $this->shopSettingEncoder->encode(
                     $shopConfigurationSetting->getType(),
                     $shopConfigurationSetting->getValue()
-                ),
-                'key'       => $this->context->getConfigurationEncryptionKey(),
+                )
             ]);
 
         $queryBuilder->execute();
 
         $this->eventDispatcher->dispatch(
-            ShopConfigurationChangedEvent::NAME,
             new ShopConfigurationChangedEvent(
                 $shopConfigurationSetting->getName(),
                 $shopConfigurationSetting->getShopId()
-            )
+            ),
+            ShopConfigurationChangedEvent::NAME
         );
     }
 
@@ -116,15 +115,14 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
-            ->select('decode(oxvarvalue, :key) as value, oxvartype as type, oxvarname as name')
+            ->select('oxvarvalue as value, oxvartype as type, oxvarname as name')
             ->from('oxconfig')
             ->where('oxshopid = :shopId')
             ->andWhere('oxvarname = :name')
             ->andWhere('oxmodule = ""')
             ->setParameters([
                 'shopId'    => $shopId,
-                'name'      => $name,
-                'key'       => $this->context->getConfigurationEncryptionKey(),
+                'name'      => $name
             ]);
 
         $result = $queryBuilder->execute()->fetch();

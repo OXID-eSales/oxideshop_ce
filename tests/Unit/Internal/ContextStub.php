@@ -18,7 +18,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private $logFilePath;
     private $currentShopId;
     private $shopIds;
-    private $configurationEncryptionKey;
     private $requiredContactFormFields = [];
     private $adminLogFilePath;
     private $doLogAdminQueries;
@@ -36,7 +35,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->logLevel = $context->getLogLevel();
         $this->shopIds = $context->getAllShopIds();
         $this->currentShopId = $context->getCurrentShopId();
-        $this->configurationEncryptionKey = $context->getConfigurationEncryptionKey();
         $this->logFilePath = $context->getLogFilePath();
         $this->adminLogFilePath = $context->getAdminLogFilePath();
         $this->doLogAdminQueries = $context->isEnabledAdminQueryLog();
@@ -106,14 +104,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
     public function getCurrentShopId(): int
     {
         return $this->currentShopId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConfigurationEncryptionKey(): string
-    {
-        return $this->configurationEncryptionKey;
     }
 
     /**

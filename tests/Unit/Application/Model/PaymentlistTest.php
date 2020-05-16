@@ -33,7 +33,7 @@ class PaymentlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -177,7 +177,7 @@ class PaymentlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->getName() != "testGetPaymentListWithSomeWrongData") {
             // enabling default payments
@@ -807,7 +807,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToPayment->init('oxobject2payment');
         $oObjectToPayment->setId('_testoxobject2payment');
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[0]->getId());
-        $oObjectToPayment->oxobject2payment__oxobjectid = new oxField('VISA');
+        $oObjectToPayment->oxobject2payment__oxobjectid = new oxField('CASH');
         $oObjectToPayment->oxobject2payment__oxtype = new oxField('rdfapayment');
         $oObjectToPayment->save();
 
@@ -831,7 +831,7 @@ class PaymentlistTest extends \OxidTestCase
         $oObjectToPayment->init('oxobject2payment');
         $oObjectToPayment->setId('_testoxobject2payment');
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[0]->getId());
-        $oObjectToPayment->oxobject2payment__oxobjectid = new oxField('VISA');
+        $oObjectToPayment->oxobject2payment__oxobjectid = new oxField('CASH');
         $oObjectToPayment->oxobject2payment__oxtype = new oxField('rdfapayment');
         $oObjectToPayment->save();
 
@@ -841,7 +841,7 @@ class PaymentlistTest extends \OxidTestCase
         $this->assertEquals(4, $oPaymentList->count());
         foreach ($oPaymentList as $oPayment) {
             if ($oPayment->getId() == $this->_aPayList[0]->getId()) {
-                $this->assertEquals('VISA', $oPayment->oxpayments__oxobjectid->value);
+                $this->assertEquals('CASH', $oPayment->oxpayments__oxobjectid->value);
             } else {
                 $this->assertNull($oPayment->oxpayments__oxobjectid->value);
             }

@@ -51,8 +51,9 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $request = \OxidEsales\Eshop\Core\Registry::getRequest();
@@ -98,7 +99,7 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @return string
      */
-    /*protected function _addFilter( $sQ )
+    /*protected function _addFilter( $sQ ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = $this->_getViewName('oxarticles');
         $sQ = parent::_addFilter( $sQ );

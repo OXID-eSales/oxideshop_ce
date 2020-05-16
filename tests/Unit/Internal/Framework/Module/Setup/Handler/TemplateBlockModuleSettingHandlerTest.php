@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class TemplateBlockModuleSettingHandlerTest extends TestCase
+final class TemplateBlockModuleSettingHandlerTest extends TestCase
 {
     public function testHandlingOnModuleActivation()
     {

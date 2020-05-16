@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,6 +13,8 @@ $this->dbPort  = 3306; // tcp port to which the database is bound
 $this->dbName = '<dbName>'; // database name
 $this->dbUser = '<dbUser>'; // database user name
 $this->dbPwd  = '<dbPwd>'; // database user password
+$this->dbDriverOptions = []; // database driver options
+$this->dbUnixSocket = null; // unix domain socket, optional
 $this->sShopURL     = '<sShopURL>'; // eShop base url, required
 $this->sSSLShopURL  = null;            // eShop SSL url, optional
 $this->sAdminSSLURL = null;            // eShop Admin SSL url, optional

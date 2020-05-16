@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Exception\CookieException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
@@ -21,7 +22,6 @@ use oxsha512hasher;
  * User manager.
  * Performs user managing function, as assigning to groups, updating
  * information, deletion and other.
- *
  */
 class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -181,8 +181,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Gets state object.
      *
      * @return oxState
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getStateObject" in next major
      */
-    protected function _getStateObject()
+    protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_null($this->_oStateObject)) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
@@ -324,7 +325,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getUserCountryId($sCountry = null)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select oxid from " . getviewName("oxcountry") . " 
+        $sQ = "select oxid from " . getviewName("oxcountry") . "
             where oxactive = '1' and oxisoalpha2 = :oxisoalpha2";
         $sCountryId = $oDb->getOne($sQ, [
             ':oxisoalpha2' => $sCountry
@@ -423,8 +424,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Checks if product from wishlist is added
      *
      * @return $sWishId
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getWishListId" in next major
      */
-    protected function _getWishListId()
+    protected function _getWishListId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $this->_sWishId = null;
@@ -499,7 +501,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $sOXID = $this->getId();
             }
 
-            $sSelect = 'select * from oxuserpayments 
+            $sSelect = 'select * from oxuserpayments
                 where oxuserid = :oxuserid ';
 
             $this->_oPayments = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
@@ -735,8 +737,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         //loading order for registered user
         if ($this->oxuser__oxregister->value > 1) {
-            $sQ = 'select * from oxorder 
-                where oxuserid = :oxuserid 
+            $sQ = 'select * from oxorder
+                where oxuserid = :oxuserid
                 and oxorderdate >= :oxorderdate ';
             $sQ = $this->updateGetOrdersQuery($sQ);
 
@@ -760,8 +762,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iCnt = 0;
         if ($this->getId() && $this->oxuser__oxregister->value > 1) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = 'select count(*) from oxorder 
-                where oxuserid = :oxuserid 
+            $sQ = 'select count(*) from oxorder
+                where oxuserid = :oxuserid
                     AND oxorderdate >= :oxorderdate
                     and oxshopid = :oxshopid ';
             $iCnt = (int) $oDb->getOne($sQ, [
@@ -857,8 +859,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sShopID = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         // check if user exists AND there is no password - in this case we update otherwise we try to insert
-        $sSelect = "select oxid from oxuser 
-            where oxusername = :oxusername 
+        $sSelect = "select oxid from oxuser
+            where oxusername = :oxusername
             and oxpassword = :oxpassword ";
         $params = [
             ':oxusername' => (string) $this->oxuser__oxusername->value,
@@ -876,7 +878,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->delete($oldUserId);
         } elseif ($this->_blMallUsers) {
             // must be sure if there is no duplicate user
-            $sQ = "select oxid from oxuser 
+            $sQ = "select oxid from oxuser
                 where oxusername = :oxusername
                 and oxusername != '' ";
             $params = [
@@ -954,8 +956,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($sGroupID != null && $this->inGroup($sGroupID)) {
             $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oGroups->init('oxobject2group');
-            $sSelect = 'select * from oxobject2group 
-                where oxobject2group.oxobjectid = :oxobjectid 
+            $sSelect = 'select * from oxobject2group
+                where oxobject2group.oxobjectid = :oxobjectid
                 and oxobject2group.oxgroupsid = :oxgroupsid ';
             $oGroups->selectString($sSelect, [
                 ':oxobjectid' => $this->getId(),
@@ -1110,7 +1112,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aInvAddress array of user profile data
      * @param array  $aDelAddress array of user profile data
      *
-     * @throws UserException, oxInputException
+     * @throws StandardException
      */
     public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
@@ -1208,7 +1210,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aInvAddress user billing address
      * @param array  $aDelAddress delivery address
      *
-     * @throws UserException, oxInputException, oxConnectionException
+     * @throws StandardException
      */
     public function changeUserData($sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
     {
@@ -1235,8 +1237,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns merged delivery address fields.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMergedAddressFields" in next major
      */
-    protected function _getMergedAddressFields()
+    protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDelAddress = '';
         $sDelAddress .= $this->oxuser__oxcompany;
@@ -1262,8 +1265,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * creates new address entry or updates existing
      *
      * @param array $aDelAddress address data array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignAddress" in next major
      */
-    protected function _assignAddress($aDelAddress)
+    protected function _assignAddress($aDelAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aDelAddress) && count($aDelAddress)) {
             $sAddressId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxaddressid');
@@ -1296,7 +1300,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $userName login name
      * @param string $password login password
-     * @param string $shopId   shopid
+     * @param int    $shopId   shopid
      * @param bool   $isAdmin  admin/non admin mode
      *
      * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface`
@@ -1307,7 +1311,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getLoginQueryHashedWithMD5($userName, $password, $shopId, $isAdmin)
+    protected function _getLoginQueryHashedWithMD5($userName, $password, $shopId, $isAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -1317,11 +1321,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `oxid`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $passwordCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $passwordCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 
@@ -1344,7 +1348,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return string
      */
-    protected function _getLoginQuery($userName, $password, $shopId, $isAdmin)
+    protected function _getLoginQuery($userName, $password, $shopId, $isAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = DatabaseProvider::getDb();
         $userNameCondition = $this->formQueryPartForUserName($userName, $database);
@@ -1354,11 +1358,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
 
         $query = "SELECT `oxid`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $passwordCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $passwordCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 
@@ -1373,8 +1377,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool   $blAdmin  admin/non admin mode
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopSelect" in next major
      */
-    protected function _getShopSelect($myConfig, $sShopID, $blAdmin)
+    protected function _getShopSelect($myConfig, $sShopID, $blAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
 
@@ -1501,10 +1506,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `OXID`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 
@@ -1600,8 +1605,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Checks if user is connected via cookies and if so, returns user id.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCookieUserId" in next major
      */
-    protected function _getCookieUserId()
+    protected function _getCookieUserId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sUserID = null;
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -1646,14 +1652,14 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws $oEx if user is wrong
      */
-    protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect)
+    protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLDAPParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLDAPParams');
         $oLDAP = oxNew(\OxidEsales\Eshop\Core\LDAP::class, $aLDAPParams['HOST'], $aLDAPParams['PORT']);
 
         // maybe this is LDAP user but supplied email Address instead of LDAP login
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $ldapSql = "select oxldapkey from oxuser 
+        $ldapSql = "select oxldapkey from oxuser
             where oxuser.oxactive = :oxactive and oxuser.oxusername = :oxusername $sShopSelect";
         $sLDAPKey = $oDb->getOne($ldapSql, [
             ':oxactive' => 1,
@@ -1671,7 +1677,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             // login successful
 
             // check if user is already in database
-            $sSelect = "select oxid from oxuser 
+            $sSelect = "select oxid from oxuser
                 where oxuser.oxusername = :oxusername $sShopSelect";
             $sOXID = $oDb->getOne($sSelect, [
                 ':oxusername' => (string) $aData['OXUSERNAME']
@@ -1712,8 +1718,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * user rights index.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUserRights" in next major
      */
-    protected function _getUserRights()
+    protected function _getUserRights() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // previously user had no rights defined
         if (!$this->oxuser__oxrights instanceof \OxidEsales\Eshop\Core\Field || !$this->oxuser__oxrights->value) {
@@ -1764,8 +1771,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts user object data to DB. Returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
 
         // set oxcreate date
@@ -1782,8 +1790,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates changed user object data to DB. Returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //V #M418: for not registered users, don't change boni during update
         if (!$this->oxuser__oxpassword->value && $this->oxuser__oxregister->value < 1) {
@@ -1885,8 +1894,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oRecommList->init('oxrecommlist');
         $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
         $iShopId = Registry::getConfig()->getShopId();
-        $sSelect = 'select * from oxrecommlists 
-            where oxuserid = :oxuserid 
+        $sSelect = 'select * from oxrecommlists
+            where oxuserid = :oxuserid
                 and oxshopid = :oxshopid';
         $oRecommList->selectString($sSelect, [
             ':oxuserid' => $sOXID,
@@ -1915,7 +1924,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $this->_iCntRecommLists = 0;
             $iShopId = Registry::getConfig()->getShopId();
-            $sSelect = 'select count(oxid) from oxrecommlists 
+            $sSelect = 'select count(oxid) from oxrecommlists
                 where oxuserid = :oxuserid and oxshopid = :oxshopid';
             $this->_iCntRecommLists = $oDb->getOne($sSelect, [
                 ':oxuserid' => $sOx,
@@ -1931,8 +1940,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * according to users country information
      *
      * @param string $sCountryId users country id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setAutoGroups" in next major
      */
-    protected function _setAutoGroups($sCountryId)
+    protected function _setAutoGroups($sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // assigning automatically to specific groups
         $blForeigner = true;
@@ -1982,8 +1992,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function loadUserByUpdateId($sUid)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select oxid from " . $this->getViewName() . " 
-            where oxupdateexp >= :time 
+        $sQ = "select oxid from " . $this->getViewName() . "
+            where oxupdateexp >= :time
                 and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = :hash";
         if ($sUserId = $oDb->getOne($sQ, [':time' => time(), ':hash' => $sUid])) {
             return $this->load($sUserId);
@@ -2031,8 +2041,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function isExpiredUpdateId($sKey)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select 1 from " . $this->getViewName() . " 
-            where oxupdateexp >= :time 
+        $sQ = "select 1 from " . $this->getViewName() . "
+            where oxupdateexp >= :time
             and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = :hash";
 
         return !((bool) $oDb->getOne($sQ, [':time' => time(), ':hash' => $sKey]));
@@ -2063,8 +2073,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *                                        MD5 and SHA512 is still supported in order support login with older
      *                                        password hashes. Therefor this method might not be
      *                                        compatible with the current passhword hash any more.
-     *
-
      *
      * @return string
      */
@@ -2138,7 +2146,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getReviewUserHash($sUserId)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $hashSql = 'select md5(concat("oxid", oxpassword, oxusername )) from oxuser 
+        $hashSql = 'select md5(concat("oxid", oxpassword, oxusername )) from oxuser
             where oxid = :oxid';
         $sReviewUserHash = $oDb->getOne($hashSql, [
             ':oxid' => $sUserId
@@ -2237,10 +2245,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         // check if this invitation is still not accepted
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $pendingSql = "select count(oxuserid) from oxinvitations 
+        $pendingSql = "select count(oxuserid) from oxinvitations
             where oxuserid = :oxuserid
                 and md5(oxemail) = :oxemailhash
-                and oxpending = :oxpending 
+                and oxpending = :oxpending
                 and oxaccepted = :oxaccepted";
         $iPending = $masterDb->getOne($pendingSql, [
             ':oxuserid' => $sUserId,
@@ -2371,7 +2379,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $userName User
      * @param string $password Password
-     * @param string $shopID   Shop id
+     * @param int    $shopId   Shop id
      *
      * @throws UserException
      *
@@ -2383,12 +2391,12 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @return void
      */
-    protected function _dbLogin(string $userName, $password, $shopID)
+    protected function _dbLogin(string $userName, $password, $shopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopID, $this->isAdmin()));
+        $userId = $database->getOne($this->_getLoginQuery($userName, $password, $shopId, $this->isAdmin()));
         if (!$userId) {
-            $userId = $database->getOne($this->_getLoginQueryHashedWithMD5($userName, $password, $shopID, $this->isAdmin()));
+            $userId = $database->getOne($this->_getLoginQueryHashedWithMD5($userName, $password, $shopId, $this->isAdmin()));
         }
 
         /** Return here to give other log-in mechanisms the possibility to be triggered */
@@ -2396,7 +2404,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             return;
         }
 
-        $this->loadAuthenticatedUser($userName, $shopID);
+        $this->loadAuthenticatedUser($userName, $shopId);
         $this->isOutdatedPasswordHashAlgorithmUsed = true;
     }
 
@@ -2416,10 +2424,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $userActiveCondition = $this->formQueryPartForActiveUser();
 
         $query = "SELECT `oxpassword`
-                    FROM oxuser 
-                    WHERE 1  
-                    AND $userActiveCondition 
-                    AND $userNameCondition 
+                    FROM oxuser
+                    WHERE 1
+                    AND $userActiveCondition
+                    AND $userNameCondition
                     $shopOrRightsCondition
                     ";
 
@@ -2430,8 +2438,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Return true - if shop is in demo mode
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isDemoShop" in next major
      */
-    protected function _isDemoShop()
+    protected function _isDemoShop() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blDemoMode = false;
 
@@ -2451,8 +2460,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws object $oEx
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDemoShopLoginQuery" in next major
      */
-    protected function _getDemoShopLoginQuery($sUser, $sPassword)
+    protected function _getDemoShopLoginQuery($sUser, $sPassword) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sPassword == "admin" && $sUser == "admin") {
             $sSelect = "SELECT `oxid` FROM `oxuser` WHERE `oxrights` = 'malladmin' ";
@@ -2789,7 +2799,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Updates given query. Method is for overriding.
      *
      * @param string $user
-     * @param string $shopId
+     * @param int    $shopId
      *
      * @return string
      */

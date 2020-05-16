@@ -15,7 +15,6 @@ use stdClass;
 
 /**
  * UserBasketItem class, responsible for storing most important fields
- *
  */
 class BasketItem extends \OxidEsales\Eshop\Core\Base
 {
@@ -227,7 +226,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Getter for basketItemkey.
      *
-     * @return string | null
+     * @return string|null
      */
     public function getBasketItemKey()
     {
@@ -279,7 +278,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param array  $aPersParam persistent params
      * @param bool   $blBundle   bundle
      *
-     * @throws oxNoArticleException, oxOutOfStockException, oxArticleInputException
+     * @throws oxNoArticleException
+     * @throws oxOutOfStockException
+     * @throws oxArticleInputException
      */
     public function init($sProductID, $dAmount, $aSel = null, $aPersParam = null, $blBundle = null)
     {
@@ -717,8 +718,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param string $sProductId product id
      *
      * @throws oxNoArticleException exception
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setArticle" in next major
      */
-    protected function _setArticle($sProductId)
+    protected function _setArticle($sProductId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oArticle = $this->getArticle(true, $sProductId);
@@ -755,8 +757,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *  - sNativeShopId  - article shop ID;
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderArticle $oOrderArticle order article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFromOrderArticle" in next major
      */
-    protected function _setFromOrderArticle($oOrderArticle)
+    protected function _setFromOrderArticle($oOrderArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // overriding whole article
         $this->_oArticle = $oOrderArticle;
@@ -776,8 +779,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * Stores item select lists ( oxbasketitem::aSelList )
      *
      * @param array $aSelList item select lists
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setSelectList" in next major
      */
-    protected function _setSelectList($aSelList)
+    protected function _setSelectList($aSelList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checking for default select list
         $aSelectLists = $this->getArticle()->getSelectLists();

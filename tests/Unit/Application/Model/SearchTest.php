@@ -32,7 +32,7 @@ class SearchTest extends UnitTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oSearchHandler = oxNew('oxSearch');
@@ -48,7 +48,7 @@ class SearchTest extends UnitTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $myDB = oxDb::getDb();
         $myDB->execute('delete from oxselectlist where oxid = "oxsellisttest" ');

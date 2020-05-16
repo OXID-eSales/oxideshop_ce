@@ -61,7 +61,7 @@ class ViewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oView = oxNew('oxView');
@@ -78,7 +78,7 @@ class ViewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -501,36 +501,6 @@ class ViewTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
         $this->assertEquals($isRCVersion, $oView->isRCVersion());
-    }
-
-    /**
-     * testShowBetaBote data provider.
-     */
-    public function _dptestShowBetaNote()
-    {
-        return array(
-            array(false, false, false),
-            array(true, false, true),
-            array(false, true, true),
-            array(true, true, true),
-        );
-    }
-
-    /**
-     * @dataProvider _dptestShowBetaNote
-     */
-    public function testShowBetaNote($isBetaVersion, $isRCVersion, $showBetaNote)
-    {
-        $oxView = oxNew('oxView');
-        if (!$oxView->showBetaNote()) {
-            $this->markTestSkipped('there is no real beta note for this version');
-        }
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('isBetaVersion', 'isRCVersion'), array(), '', false);
-        $oView->expects($this->any())->method('isBetaVersion')->will($this->returnValue($isBetaVersion));
-        $oView->expects($this->any())->method('isRCVersion')->will($this->returnValue($isRCVersion));
-
-        $this->assertEquals($showBetaNote, $oView->showBetaNote());
     }
 
     public function testEditionIsNotEmpty()

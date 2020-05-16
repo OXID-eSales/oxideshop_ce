@@ -21,7 +21,7 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -24,7 +24,7 @@ class Registry
     /**
      * Hold BC class to Unified Namespace class map
      *
-     * @var null| array
+     * @var null|array
      */
     protected static $backwardsCompatibilityClassMap = null;
 
@@ -37,11 +37,13 @@ class Registry
      * to the corresponding class name from the Unified Namespace, as they store and retrieve the same instances.
      * But be aware, that support for old class names will be dropped in the future.
      *
-     * @param string $className The class name from the Unified Namespace.
+     * @template T
+     * @param class-string<T> $className The class name from the Unified Namespace.
+     * param mixed  ...$args   constructor arguments
      *
      * @static
      *
-     * @return object
+     * @return T
      */
     public static function get($className)
     {
@@ -413,9 +415,13 @@ class Registry
     /**
      * Return a well known object from the registry
      *
-     * @param string $className A unified namespace class name
+     * @template T
+     * @param class-string<T> $className A unified namespace class name
+     * param mixed  ...$args   constructor arguments
      *
-     * @return mixed
+     * @static
+     *
+     * @return T
      */
     protected static function getObject($className)
     {

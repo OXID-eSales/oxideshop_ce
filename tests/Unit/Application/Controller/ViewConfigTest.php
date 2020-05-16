@@ -153,10 +153,9 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetShowCompareList()
     {
-        $oView = $this->createPartialMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getIsOrderStep'));
-        $oView->expects($this->any())->method('getIsOrderStep')->will($this->returnValue(true));
+        $oView = $this->createMock(\OxidEsales\Eshop\Core\Controller\BaseController::class);
 
-        $oCfg = $this->createPartialMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'getActiveView'));
+        $oCfg = $this->createMock(\OxidEsales\Eshop\Core\Config::class);
         $oCfg->expects($this->any())
             ->method('getConfigParam')
             ->will($this->returnValueMap([
@@ -825,7 +824,7 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testIsFunctionalityEnabled()
     {
-        $oConfig = $this->createPartialMock(\OxidEsales\Eshop\Core\Config::class, array("getConfigParam"));
+        $oConfig = $this->createMock(\OxidEsales\Eshop\Core\Config::class);
         $oConfig->expects($this->once())->method("getConfigParam")->with($this->equalTo('bl_showWishlist'))->will($this->returnValue("will"));
 
         $oViewConfig = oxNew(ViewConfig::class);

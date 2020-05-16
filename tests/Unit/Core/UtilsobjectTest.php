@@ -67,7 +67,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Tear down the fixture.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\modOxUtilsObject_oxUtilsObject::class);
 
@@ -153,7 +153,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
          * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
          * existing file we expect an error to be thrown
          */
-        $this->expectException(\PHPUnit\Framework\Error\Warning::class);
+        $this->expectWarning();
 
         $structure = array(
             'modules' => array(
@@ -248,7 +248,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
         $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
-        $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
+        $this->assertEquals($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
         $expectedExceptionClass = SystemComponentException::class;
         $this->assertLoggedException($expectedExceptionClass);
     }

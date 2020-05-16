@@ -18,7 +18,7 @@ class DeliverySetTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $oDelSet = oxNew('oxdeliveryset');
@@ -51,7 +51,7 @@ class DeliverySetTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxdeliveryset');
         $this->cleanUpTable('oxobject2payment');

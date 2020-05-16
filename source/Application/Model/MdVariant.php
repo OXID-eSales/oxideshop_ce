@@ -11,7 +11,6 @@ use oxRegistry;
 
 /**
  * Defines an element of multidimentional variant name tree structure. Contains article id, variant name, URL, price, price text, and a subset of MD variants.
- *
  */
 class MdVariant extends \OxidEsales\Eshop\Core\Base
 {
@@ -67,7 +66,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Subvariant array
      *
-     * @var array[string]oxMdVariant
+     * @var \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
     protected $_aSubvariants = [];
 
@@ -124,7 +123,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns full array of subvariants
      *
-     * @return array[string]OxMdSubvariants
+     * @return \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
     public function getMdSubvariants()
     {
@@ -361,8 +360,9 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      * Adds one subvariant to subvariant set
      *
      * @param \OxidEsales\Eshop\Application\Model\MdVariant $oSubvariant Subvariant
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addMdSubvariant" in next major
      */
-    protected function _addMdSubvariant($oSubvariant)
+    protected function _addMdSubvariant($oSubvariant) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aSubvariants[$oSubvariant->getId()] = $oSubvariant;
     }
@@ -371,8 +371,9 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      * Checks if variant price is fixed or not ("from" price)
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isFixedPrice" in next major
      */
-    protected function _isFixedPrice()
+    protected function _isFixedPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dPrice = $this->getDPrice();
         $aVariants = $this->getMdSubvariants();

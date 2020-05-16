@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
 /**
  * Change oxtplblocks oxmodule field max length to 100
@@ -19,7 +19,7 @@ class Version20170718124421 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->addSql("ALTER TABLE `oxtplblocks` 
           CHANGE `OXMODULE` `OXMODULE` varchar(100) 
@@ -30,7 +30,7 @@ class Version20170718124421 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }

@@ -60,8 +60,9 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      * Loads and sets active url info to view
      *
      * @param int $iShopId active shop id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadActiveUrl" in next major
      */
-    protected function _loadActiveUrl($iShopId)
+    protected function _loadActiveUrl($iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sActObject = null;
         if ($this->_sActSeoObject) {
@@ -118,8 +119,9 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      * @param array $aUrls urls to process
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processUrls" in next major
      */
-    protected function _processUrls($aUrls)
+    protected function _processUrls($aUrls) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($aUrls['oxseo__oxstdurl']) && $aUrls['oxseo__oxstdurl']) {
             $aUrls['oxseo__oxstdurl'] = $this->_cleanupUrl($aUrls['oxseo__oxstdurl']);
@@ -140,8 +142,9 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      * @param string $sUrl processable url
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "cleanupUrl" in next major
      */
-    protected function _cleanupUrl($sUrl)
+    protected function _cleanupUrl($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // replacing &amp; to & or removing double &&
         while ((stripos($sUrl, '&amp;') !== false) || (stripos($sUrl, '&&') !== false)) {

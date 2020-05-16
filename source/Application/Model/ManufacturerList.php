@@ -13,7 +13,6 @@ use oxField;
 /**
  * Manufacturer list manager.
  * Collects list of manufacturers according to collection rules (activ, etc.).
- *
  */
 class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
@@ -146,8 +145,9 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Adds category specific fields to manufacturer object
      *
      * @param object $oManufacturer manufacturer object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addCategoryFields" in next major
      */
-    protected function _addCategoryFields($oManufacturer)
+    protected function _addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oManufacturer->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field($oManufacturer->oxmanufacturers__oxid->value);
         $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
@@ -180,8 +180,9 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Processes manufacturer category URLs
+     * @deprecated underscore prefix violates PSR12, will be renamed to "seoSetManufacturerData" in next major
      */
-    protected function _seoSetManufacturerData()
+    protected function _seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

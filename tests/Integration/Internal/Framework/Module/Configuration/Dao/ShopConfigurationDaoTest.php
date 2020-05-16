@@ -18,8 +18,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 final class ShopConfigurationDaoTest extends TestCase
 {
@@ -123,11 +125,10 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testWithIncorrectNode(): void
     {
+        $this->expectException(InvalidConfigurationException::class);
+
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
@@ -143,11 +144,9 @@ final class ShopConfigurationDaoTest extends TestCase
         $shopConfigurationDao->get(1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException
-     */
     public function testGetIncorrectShopId(): void
     {
+        $this->expectException(ShopConfigurationNotFoundException::class);
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->save(new ShopConfiguration(), 1);
         $shopConfigurationDao->save(new ShopConfiguration(), 2);
@@ -169,11 +168,9 @@ final class ShopConfigurationDaoTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testBadShopConfigurationFile(): void
     {
+        $this->expectException(InvalidConfigurationException::class);
         $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
         $storage = $fileStorageFactory->create(
             $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory() . '/shops/1.yaml'
@@ -184,11 +181,9 @@ final class ShopConfigurationDaoTest extends TestCase
         $shopConfigurationDao->get(1);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testBadEnvironmentConfigurationFile(): void
     {
+        $this->expectException(InvalidConfigurationException::class);
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->save(new ShopConfiguration(), 1);
 
@@ -201,11 +196,9 @@ final class ShopConfigurationDaoTest extends TestCase
         $shopConfigurationDao->get(1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException
-     */
     public function testDeleteAll(): void
     {
+        $this->expectException(ShopConfigurationNotFoundException::class);
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->save(new ShopConfiguration(), 1);
         $shopConfigurationDao->save(new ShopConfiguration(), 2);

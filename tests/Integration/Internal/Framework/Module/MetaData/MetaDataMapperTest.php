@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -396,12 +396,11 @@ class MetaDataMapperTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException  UnsupportedMetaDataValueTypeException
-     */
     public function testModuleWithSurplusData(): void
     {
+        $this->expectException(UnsupportedMetaDataValueTypeException::class);
         $this->expectException(UnsupportedMetaDataKeyException::class);
+        
         $metaDataFilePath = $this->getMetaDataFilePath('TestModuleWithSurplusData');
         $expectedModuleData = [
             'id' => 'TestModuleWithSurplusData',
@@ -411,7 +410,7 @@ class MetaDataMapperTest extends TestCase
 
         $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
-
+        
         $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 

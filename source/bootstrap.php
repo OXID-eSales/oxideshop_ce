@@ -28,7 +28,7 @@ register_shutdown_function(
         $sessionResetErrorTypes = [E_ERROR];
 
         $error = error_get_last();
-        if (in_array($error['type'], $handledErrorTypes)) {
+        if ($error !== null && in_array($error['type'], $handledErrorTypes)) {
             $errorType = array_flip(array_slice(get_defined_constants(true)['Core'], 0, 16, true))[$error['type']];
 
             $errorMessage = $error['message'];
@@ -68,6 +68,7 @@ register_shutdown_function(
     }
 );
 
+// phpcs:disable
 /**
  * Helper for loading and getting the config file contents
  */
@@ -91,6 +92,7 @@ class BootstrapConfigFileReader
         return (bool) $this->iDebug;
     }
 }
+// phpcs:enable
 
 /**
  * Ensure shop config and autoload files are available.
@@ -208,23 +210,25 @@ ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
-/**
- * Bulletproof offline page loader
- */
-function oxTriggerOfflinePageDisplay()
-{
-    // Do not display the offline page, if this running in CLI mode
-    if ('cli' !== strtolower(php_sapi_name())) {
-        header("HTTP/1.1 500 Internal Server Error");
-        header("Connection: close");
+if (!function_exists('oxTriggerOfflinePageDisplay')) {
+    /**
+     * Bulletproof offline page loader
+     */
+    function oxTriggerOfflinePageDisplay()
+    {
+        // Do not display the offline page, if this running in CLI mode
+        if ('cli' !== strtolower(php_sapi_name())) {
+            header("HTTP/1.1 500 Internal Server Error");
+            header("Connection: close");
 
-        /**
-         * Render an error message.
-         * If offline.php exists its content is displayed.
-         * Like this the error message is overridable within that file.
-         */
-        if (is_readable(OX_OFFLINE_FILE)) {
-            echo file_get_contents(OX_OFFLINE_FILE);
-        };
+            /**
+             * Render an error message.
+             * If offline.php exists its content is displayed.
+             * Like this the error message is overridable within that file.
+             */
+            if (is_readable(OX_OFFLINE_FILE)) {
+                echo file_get_contents(OX_OFFLINE_FILE);
+            };
+        }
     }
 }

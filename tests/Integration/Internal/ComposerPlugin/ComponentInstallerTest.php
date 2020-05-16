@@ -26,7 +26,7 @@ class ComponentInstallerTest extends TestCase
 
     private $servicesFilePath = __DIR__ . '/Fixtures/services.yaml';
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

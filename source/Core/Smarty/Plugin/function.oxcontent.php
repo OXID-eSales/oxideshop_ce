@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -29,7 +30,7 @@ function smarty_function_oxcontent($params, &$smarty)
     $sOxid  = isset($params['oxid']) ? $params['oxid'] : null;
 
     if ($sIdent || $sOxid) {
-        $oContent = oxNew("oxcontent");
+        $oContent = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
         if ($sOxid) {
             $blLoaded = $oContent->load($sOxid);
         } else {

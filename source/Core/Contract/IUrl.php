@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
 
 /**
  * Interface for object URLs getters
- *
  */
 interface IUrl
 {

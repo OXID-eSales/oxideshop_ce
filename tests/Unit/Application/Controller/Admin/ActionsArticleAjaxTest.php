@@ -19,7 +19,7 @@ class ActionsArticleAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -31,7 +31,7 @@ class ActionsArticleAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDB()->execute("delete from oxobject2action where oxactionid='_testActionDelete'");
         oxDb::getDB()->execute("delete from oxobject2action where oxactionid='_testActionSet'");

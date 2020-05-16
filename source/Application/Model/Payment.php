@@ -7,13 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Model\ListModel;
 use oxRegistry;
 use oxDb;
 
 /**
  * Payment manager.
  * Performs payment methods, such as assigning to someone, returning value etc.
- *
  */
 class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
@@ -131,7 +131,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if ($this->_oGroups == null && ($sOxid = $this->getId())) {
             // user groups
-            $this->_oGroups = oxNew('oxlist', 'oxgroups');
+            $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
             $sViewName = getViewName("oxgroups", $this->getLanguage());
 
             // performance
@@ -366,7 +366,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if ($this->_aCountries === null) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $this->_aCountries = [];
-            $sSelect = 'select oxobjectid from oxobject2payment 
+            $sSelect = 'select oxobjectid from oxobject2payment
                 where oxpaymentid = :oxpaymentid and oxtype = :oxtype ';
             $rs = $oDb->getCol($sSelect, [
                 ':oxpaymentid' => $this->getId(),
@@ -405,7 +405,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Function checks if loaded payment is valid to current basket
      *
-     * @param array                                    $aDynValue    dynamical value (in this case oxidcreditcard and oxiddebitnote are checked only)
+     * @param array                                    $aDynValue    dynamical value (in this case oxiddebitnote is checked only)
      * @param string                                   $sShopId      id of current shop
      * @param \OxidEsales\Eshop\Application\Model\User $oUser        the current user
      * @param double                                   $dBasketPrice the current basket price (oBasket->dPrice)

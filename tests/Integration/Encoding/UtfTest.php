@@ -52,7 +52,7 @@ class UtfTest extends \OxidTestCase
     /**
      * Sets up test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -63,7 +63,7 @@ class UtfTest extends \OxidTestCase
     /**
      * Cleans up database.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->getConfig()->setConfigParam('sTheme', $this->_sOrigTheme);
 
@@ -930,18 +930,22 @@ class UtfTest extends \OxidTestCase
 
     public function testOxOrderSetPaymentWithDynValues()
     {
-        $sValue = 'agentūrų Литовские für';
-        $aDynVal = array("kktype" => "visa", "kknumber" => "12345", "kkmonth" => "11", "kkyear" => "2008", "kkname" => $sValue, "kkpruef" => "56789");
+        $aDynVal = array('lsbankname'   => 'Bank name',
+                         'lsblz'        => '12345678',
+                         'lsktonr'      => '123456789',
+                         'lsktoinhaber' => 'Hans Mustermann'
+        );
+
         $this->getSession()->setVariable('dynvalue', $aDynVal);
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->oxorder__oxuserid = new oxField();
 
-        $oUserpayment = $oOrder->UNITsetPayment('oxidcreditcard');
+        $oUserpayment = $oOrder->UNITsetPayment('oxiddebitnote');
 
-        $sValue = "kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__" . $sValue . "@@kkpruef__56789@@";
+        $sValue = "lsbankname__Bank name@@lsblz__12345678@@lsktonr__123456789@@lsktoinhaber__Hans Mustermann@@";
         $this->assertEquals($sValue, $oUserpayment->oxuserpayments__oxvalue->value);
-        $this->assertEquals(6, count($oUserpayment->aDynValues));
+        $this->assertEquals(4, count($oUserpayment->aDynValues));
     }
 
     public function testOxOrderArticleSetAndGetPersParams()

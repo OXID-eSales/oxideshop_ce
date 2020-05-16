@@ -17,7 +17,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * @return null|void
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->getConfig()->saveShopConfVar('str', 'sOnlineLicenseNextCheckTime', null);
@@ -142,7 +142,7 @@ class SystemEventHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $checkTime = $this->getConfigParam('sOnlineLicenseCheckTime');
         $this->assertNotNull($checkTime);
-        $this->assertRegExp('/\d{1,2}:\d{1,2}:\d{1,2}/', $checkTime);
+        $this->assertMatchesRegularExpression('/\d{1,2}:\d{1,2}:\d{1,2}/', $checkTime);
 
         return $checkTime;
     }

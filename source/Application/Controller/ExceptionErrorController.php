@@ -46,8 +46,9 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
      * return page errors array
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getErrors" in next major
      */
-    protected function _getErrors()
+    protected function _getErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aErrors = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('Errors');
 

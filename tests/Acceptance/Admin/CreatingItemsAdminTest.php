@@ -1531,7 +1531,7 @@ class CreatingItemsAdminTest extends AdminTestCase
         $shopId = ShopIdCalculator::BASE_SHOP_ID;
         $shopId = $this->getTestConfig()->isSubShop() ? 2 : $shopId;
         $id = $this->getTestConfig()->isSubShop() ? 'ee3uioiop3795dea7855be2d1e' : '9d1ef0f8237werea96756e2d1e';
-        $this->executeSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES ('$id', '$shopId', 'blUseMultidimensionVariants', 'bool', 0x07);");
+        $this->executeSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES ('$id', '$shopId', 'blUseMultidimensionVariants', 'bool', '1');");
 
         $this->loginAdmin("Administer Products", "Products");
         $this->openListItem("link=10010");
@@ -2529,8 +2529,8 @@ class CreatingItemsAdminTest extends AdminTestCase
             $this->assertElementNotPresent("nav.page.2");
         }
         $this->clickAndWaitFrame("link=A");
-        $newListItemNumber = 10;
-        $listItemWeeksSpecialItemNumber = 9;
+        $newListItemNumber = 9;
+        $listItemWeeksSpecialItemNumber = 8;
         $this->assertEquals("create_delete promotion", $this->getText("//tr[@id='row.$newListItemNumber']/td[2]"));
         $this->clickDeleteListItem($newListItemNumber);
         $this->assertElementNotPresent("nav.page.2");
@@ -2600,8 +2600,8 @@ class CreatingItemsAdminTest extends AdminTestCase
             $this->assertElementNotPresent("nav.page.2");
         }
         $this->changeListSorting("link=A");
-        $newListItemNumber = 10;
-        $listItemWeeksSpecialItemNumber = 9;
+        $newListItemNumber = 9;
+        $listItemWeeksSpecialItemNumber = 8;
         $this->assertEquals("create_delete action", $this->getText("//tr[@id='row.$newListItemNumber']/td[2]"));
         $this->clickDeleteListItem($newListItemNumber);
         $this->assertElementNotPresent("nav.page.2");

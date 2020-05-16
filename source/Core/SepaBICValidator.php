@@ -7,9 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * SEPA (Single Euro Payments Area) BIC validation class
- *
  */
 class SepaBICValidator
 {
@@ -30,6 +31,6 @@ class SepaBICValidator
     {
         $sBIC = strtoupper(trim($sBIC));
 
-        return (bool) getStr()->preg_match("(^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$)", $sBIC);
+        return (bool) Str::getStr()->preg_match("(^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$)", $sBIC);
     }
 }

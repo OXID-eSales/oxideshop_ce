@@ -278,8 +278,9 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      * Template variable getter. Returns active object (oxarticle or oxrecommlist)
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveObject" in next major
      */
-    protected function _getActiveObject()
+    protected function _getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oActObject === null) {
             $this->_oActObject = false;
@@ -300,8 +301,9 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      * Template variable getter. Returns active type (oxarticle or oxrecommlist)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveType" in next major
      */
-    protected function _getActiveType()
+    protected function _getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getProduct()) {
             return 'oxarticle';

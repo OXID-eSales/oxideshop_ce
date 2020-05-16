@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Shop manager.
  * Performs configuration and object loading or deletion.
@@ -91,7 +93,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         parent::__construct();
 
         if (!$this->isShopValid()) {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->error('Shop is not valid');
+            Registry::getLogger()->error('Shop is not valid');
 
             return;
         }
@@ -191,8 +193,9 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param int    $iLang  Language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewSelect" in next major
      */
-    protected function _getViewSelect($sTable, $iLang)
+    protected function _getViewSelect($sTable, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
@@ -211,8 +214,9 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param string $sTable table name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewSelectMultilang" in next major
      */
-    protected function _getViewSelectMultilang($sTable)
+    protected function _getViewSelectMultilang($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aFields = [];
 
@@ -236,8 +240,9 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param string $sTable table name
      *
      * @return string $sSQL
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewJoinAll" in next major
      */
-    protected function _getViewJoinAll($sTable)
+    protected function _getViewJoinAll($sTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sJoin = ' ';
         $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
@@ -258,8 +263,9 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param int    $iLang  language id
      *
      * @return string $sSQL
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewJoinLang" in next major
      */
-    protected function _getViewJoinLang($sTable, $iLang)
+    protected function _getViewJoinLang($sTable, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sJoin = ' ';
         $sLangTable = getLangTableName($sTable, $iLang);
@@ -272,17 +278,18 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Gets all invalid views and drops them from database
+     * @deprecated underscore prefix violates PSR12, will be renamed to "cleanInvalidViews" in next major
      */
-    protected function _cleanInvalidViews()
+    protected function _cleanInvalidViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $aMultilangTables = Registry::getLang()->getMultiLangTables();
         $aMultishopTables = $this->getMultiShopTables();
 
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
         $oViewsValidator = oxNew(\OxidEsales\Eshop\Application\Model\ShopViewValidator::class);
@@ -302,13 +309,14 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Creates all view queries and adds them in query array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareViewsQueries" in next major
      */
-    protected function _prepareViewsQueries()
+    protected function _prepareViewsQueries() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        $aMultilangTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $aMultilangTables = Registry::getLang()->getMultiLangTables();
         $aTables = $this->getTables();
         foreach ($aTables as $sTable) {
             $this->createViewQuery($sTable);
@@ -340,6 +348,11 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $sJoin = $this->_getViewJoinLang($table, $languageId);
         }
 
+        if ("" === $sFields) {
+            Registry::getLogger()->error("View for $table can not be generated, Please check if table exists");
+            return;
+        }
+
         $sQuery = "{$queryStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$table}{$sJoin}";
         $this->addQuery($sQuery);
     }
@@ -349,8 +362,9 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Returns false when any of the queries fail, otherwise return true
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "runQueries" in next major
      */
-    protected function _runQueries()
+    protected function _runQueries() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $aQueries = $this->getQueries();
@@ -374,7 +388,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     protected function formDatabaseTablesArray()
     {
-        $multilanguageTables = \OxidEsales\Eshop\Core\Registry::getLang()->getMultiLangTables();
+        $multilanguageTables = Registry::getLang()->getMultiLangTables();
 
         return array_unique($multilanguageTables);
     }

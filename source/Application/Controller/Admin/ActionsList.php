@@ -60,8 +60,9 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      * @param string $sqlFull SQL query string
      *
      * @return $sQ
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
-    protected function _prepareWhereQuery($aWhere, $sqlFull)
+    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
         $sDisplayType = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('displaytype');

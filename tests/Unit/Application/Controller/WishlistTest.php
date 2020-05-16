@@ -19,7 +19,7 @@ class WishlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->tearDown();
         parent::setUp();
@@ -36,7 +36,7 @@ class WishlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxuserbaskets');

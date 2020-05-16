@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
+use OxidEsales\Eshop\Core\Str;
 use oxRegistry;
 
 /**
@@ -105,8 +106,9 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * get active category id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActCat" in next major
      */
-    protected function _getActCat()
+    protected function _getActCat() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sActManufacturer = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('mnid');
 
@@ -119,7 +121,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
 
             $sActManufacturer = $myConfig->getConfigParam('bl_perfLoadManufacturerTree') ? $sActManufacturer : null;
 
-            $sActVendor = (getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
+            $sActVendor = (Str::getStr()->preg_match('/^v_.?/i', $sActCat)) ? $sActCat : null;
 
             $sActCat = $this->_addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor);
         }
@@ -141,8 +143,9 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * Category tree loader
      *
      * @param string $sActCat active category id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadCategoryTree" in next major
      */
-    protected function _loadCategoryTree($sActCat)
+    protected function _loadCategoryTree($sActCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Application\Model\CategoryList $oCategoryTree */
         $oCategoryTree = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
@@ -162,8 +165,9 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * Manufacturer tree loader
      *
      * @param string $sActManufacturer active Manufacturer id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadManufacturerTree" in next major
      */
-    protected function _loadManufacturerTree($sActManufacturer)
+    protected function _loadManufacturerTree($sActManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($myConfig->getConfigParam('bl_perfLoadManufacturerTree')) {
@@ -217,8 +221,9 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * @param string                                      $sActVendor       active vendor
      *
      * @return string $sActCat
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addAdditionalParams" in next major
      */
-    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor)
+    protected function _addAdditionalParams($oProduct, $sActCat, $sActManufacturer, $sActVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSearchPar = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam');
         $sSearchCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid');
@@ -261,8 +266,9 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * @param \OxidEsales\Eshop\Application\Model\Article $oProduct current product object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDefaultParams" in next major
      */
-    protected function _getDefaultParams($oProduct)
+    protected function _getDefaultParams($oProduct) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sListType = null;
         $aArticleCats = $oProduct->getCategoryIds(true);

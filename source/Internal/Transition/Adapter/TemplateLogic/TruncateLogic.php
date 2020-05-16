@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Str;
+
 class TruncateLogic
 {
     /**
@@ -18,20 +20,25 @@ class TruncateLogic
      *
      * @return string
      */
-    public function truncate(string $sString = null, int $iLength = 80, string $sSufix = '...', bool $blBreakWords = false, bool $middle = false): string
-    {
+    public function truncate(
+        string $sString = null,
+        int $iLength = 80,
+        string $sSufix = '...',
+        bool $blBreakWords = false,
+        bool $middle = false
+    ): string {
         if ($iLength == 0) {
             return '';
-        } elseif ($iLength > 0 && getStr()->strlen($sString) > $iLength) {
-            $iLength -= getStr()->strlen($sSufix);
+        } elseif ($iLength > 0 && Str::getStr()->strlen($sString) > $iLength) {
+            $iLength -= Str::getStr()->strlen($sSufix);
 
             $sString = str_replace(['&#039;', '&quot;'], ["'", '"'], $sString);
 
             if (!$blBreakWords) {
-                $sString = getStr()->preg_replace('/\s+?(\S+)?$/', '', getStr()->substr($sString, 0, $iLength + 1));
+                $sString = Str::getStr()->preg_replace('/\s+?(\S+)?$/', '', Str::getStr()->substr($sString, 0, $iLength + 1));
             }
 
-            $sString = getStr()->substr($sString, 0, $iLength) . $sSufix;
+            $sString = Str::getStr()->substr($sString, 0, $iLength) . $sSufix;
 
             return str_replace(["'", '"'], ['&#039;', '&quot;'], $sString);
         }

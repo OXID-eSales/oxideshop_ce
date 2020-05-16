@@ -42,8 +42,9 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $categoriesTable = $this->_getViewName('oxcategories');
         $objectToCategoryView = $this->_getViewName('oxobject2category');
@@ -74,8 +75,9 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * @param string $sQ SQL query
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDataFields" in next major
      */
-    protected function _getDataFields($sQ)
+    protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dataFields = parent::_getDataFields($sQ);
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid') && is_array($dataFields) && count($dataFields)) {
@@ -196,8 +198,9 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      * Updates oxtime value for product
      *
      * @param string $oxId product id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "updateOxTime" in next major
      */
-    protected function _updateOxTime($oxId)
+    protected function _updateOxTime($oxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $objectToCategoryView = $this->_getViewName('oxobject2category');

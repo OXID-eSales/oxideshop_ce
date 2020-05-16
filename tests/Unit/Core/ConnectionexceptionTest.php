@@ -40,10 +40,10 @@ class ConnectionexceptionTest extends \OxidTestCase
         $sConnectionError = 'sSomeConnectionError';
         $oTestObject->setConnectionError($sConnectionError);
         $sStringOut = $oTestObject->getString();
-        $this->assertContains($sMsg, $sStringOut); // Message
-        $this->assertContains('ConnectionException', $sStringOut); // Exception class name
-        $this->assertContains($sAddress, $sStringOut); // Server Address
-        $this->assertContains($sConnectionError, $sStringOut); // Connection error
+        $this->assertStringContainsString($sMsg, $sStringOut); // Message
+        $this->assertStringContainsString('ConnectionException', $sStringOut); // Exception class name
+        $this->assertStringContainsString($sAddress, $sStringOut); // Server Address
+        $this->assertStringContainsString($sConnectionError, $sStringOut); // Connection error
     }
 
     public function testGetValues()

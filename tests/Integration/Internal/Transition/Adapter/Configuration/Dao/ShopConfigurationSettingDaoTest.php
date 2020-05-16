@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -44,11 +45,9 @@ class ShopConfigurationSettingDaoTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException
-     */
     public function testGetNonExistentSetting()
     {
+        $this->expectException(EntryDoesNotExistDaoException::class);
         $settingDao = $this->getConfigurationSettingDao();
 
         $settingDao->get('onExistentSetting', 1);
@@ -78,11 +77,9 @@ class ShopConfigurationSettingDaoTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException
-     */
     public function testDelete()
     {
+        $this->expectException(EntryDoesNotExistDaoException::class);
         $settingDao = $this->getConfigurationSettingDao();
 
         $shopConfigurationSetting = new ShopConfigurationSetting();

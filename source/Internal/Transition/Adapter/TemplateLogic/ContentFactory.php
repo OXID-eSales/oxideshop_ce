@@ -21,7 +21,7 @@ class ContentFactory
      */
     public function getContent(string $key, string $value): ?Content
     {
-        $content = oxNew("oxcontent");
+        $content = oxNew(Content::class);
 
         if ($key == 'ident') {
             $isLoaded = $content->loadbyIdent($value);

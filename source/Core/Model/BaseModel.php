@@ -19,7 +19,7 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
 use oxObjectException;
-use \OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
@@ -423,8 +423,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * and if atleast one requires seo update, other checks won't override that.
      *
      * @param string $fieldName Field name that will be checked
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setUpdateSeoOnFieldChange" in next major
      */
-    protected function _setUpdateSeoOnFieldChange($fieldName)
+    protected function _setUpdateSeoOnFieldChange($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getId() && in_array($fieldName, $this->getFieldNames())) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -529,8 +530,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             if ($this->getCoreTableName() == 'oxobject2category') {
                 $objectId = $this->oxobject2category__oxobjectid;
                 $categoryId = $this->oxobject2category__oxcatnid;
-                $shopID = $this->oxobject2category__oxshopid;
-                $this->_sOXID = md5($objectId . $categoryId . $shopID);
+                $shopId = $this->oxobject2category__oxshopid;
+                $this->_sOXID = md5($objectId . $categoryId . $shopId);
             } else {
                 $this->_sOXID = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
             }
@@ -817,8 +818,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Removes relevant mapping data for selected object if it is a multishop inheritable table
      *
      * @param string $oxid Object ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "removeElement2ShopRelations" in next major
      */
-    protected function _removeElement2ShopRelations($oxid)
+    protected function _removeElement2ShopRelations($oxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -986,8 +988,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Checks if this instance is one of oxList elements.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isInList" in next major
      */
-    protected function _isInList()
+    protected function _isInList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blIsInList;
     }
@@ -996,13 +999,14 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Returns actual object view or table name
      *
      * @param string $table  Original table name
-     * @param int    $shopID Shop ID
+     * @param int    $shopId Shop ID
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getObjectViewName" in next major
      */
-    protected function _getObjectViewName($table, $shopID = null)
+    protected function _getObjectViewName($table, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return getViewName($table, -1, $shopID);
+        return getViewName($table, -1, $shopId);
     }
 
     /**
@@ -1014,8 +1018,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param bool   $returnSimpleArray Set $returnSimple to true when you need simple array (meta data array is returned otherwise)
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getTableFields" in next major
      */
-    protected function _getTableFields($table, $returnSimpleArray = false)
+    protected function _getTableFields($table, $returnSimpleArray = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
@@ -1057,8 +1062,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAllFields" in next major
      */
-    protected function _getAllFields($returnSimple = false)
+    protected function _getAllFields($returnSimple = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->getCoreTableName()) {
             return [];
@@ -1072,8 +1078,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Either by trying to load from cache or by calling $this->_getNonCachedFieldNames
      *
      * @param bool $forceFullStructure Set to true if you want to load full structure in any case.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "initDataStructure" in next major
      */
-    protected function _initDataStructure($forceFullStructure = false)
+    protected function _initDataStructure($forceFullStructure = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
 
@@ -1108,8 +1115,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param bool $forceFullStructure Whether to force loading of full data structure
      *
      * @return array|bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNonCachedFieldNames" in next major
      */
-    protected function _getNonCachedFieldNames($forceFullStructure = false)
+    protected function _getNonCachedFieldNames($forceFullStructure = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //T2008-02-22
         //so if this method is executed on cached version we see it when profiling
@@ -1159,8 +1167,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldName Field name
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldStatus" in next major
      */
-    protected function _getFieldStatus($fieldName)
+    protected function _getFieldStatus($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 0;
     }
@@ -1174,8 +1183,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $length      Field Length
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addField" in next major
      */
-    protected function _addField($fieldName, $fieldStatus, $type = null, $length = null)
+    protected function _addField($fieldName, $fieldStatus, $type = null, $length = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //preparation
         $fieldName = strtolower($fieldName);
@@ -1217,8 +1227,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldName Short field name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldLongName" in next major
      */
-    protected function _getFieldLongName($fieldName)
+    protected function _getFieldLongName($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //trying to avoid strpos call as often as possible
         $coreTableName = $this->getCoreTableName();
@@ -1235,8 +1246,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldName  Index OR name (eg. 'oxarticles__oxtitle') of a data field to set
      * @param string $fieldValue Value of data field
      * @param int    $dataType   Field type
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
-    protected function _setFieldData($fieldName, $fieldValue, $dataType = Field::T_TEXT)
+    protected function _setFieldData($fieldName, $fieldValue, $dataType = Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $longFieldName = $this->_getFieldLongName($fieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
@@ -1284,8 +1296,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldName db field name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "canFieldBeNull" in next major
      */
-    protected function _canFieldBeNull($fieldName)
+    protected function _canFieldBeNull($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $metaData = $this->_getAllFields();
         foreach ($metaData as $metaInfo) {
@@ -1303,8 +1316,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param string $fieldName db field name
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldDefaultValue" in next major
      */
-    protected function _getFieldDefaultValue($fieldName)
+    protected function _getFieldDefaultValue($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $metaData = $this->_getAllFields();
         foreach ($metaData as $metaInfo) {
@@ -1323,8 +1337,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param Field  $field     field object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUpdateFieldValue" in next major
      */
-    protected function _getUpdateFieldValue($fieldName, $field)
+    protected function _getUpdateFieldValue($fieldName, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $fieldValue = null;
         if ($field instanceof Field) {
@@ -1353,8 +1368,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @param bool $useSkipSaveFields forces usage of skip save fields array (default is true)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUpdateFields" in next major
      */
-    protected function _getUpdateFields($useSkipSaveFields = true)
+    protected function _getUpdateFields($useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $query = '';
         $useSeparator = false;
@@ -1397,8 +1413,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @throws DatabaseException On database errors
      *
      * @return bool Will always return true. On failure an exception is thrown.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //do not allow derived item update
         if (!$this->allowDerivedUpdate()) {
@@ -1447,8 +1464,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * might be loaded through oxlist.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
@@ -1484,8 +1502,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * This method is primary used in unit tests.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isDisabledFieldCache" in next major
      */
-    protected function _isDisabledFieldCache()
+    protected function _isDisabledFieldCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $class = get_class($this);
         if (isset(self::$_blDisableFieldCaching[$class]) && self::$_blDisableFieldCaching[$class]) {
@@ -1497,15 +1516,17 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Add additional fields to skipped save fields
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addSkippedSaveFieldsForMapping" in next major
      */
-    protected function _addSkippedSaveFieldsForMapping()
+    protected function _addSkippedSaveFieldsForMapping() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
     /**
      * Disable lazy loading if cache is enabled
+     * @deprecated underscore prefix violates PSR12, will be renamed to "disableLazyLoadingForCaching" in next major
      */
-    protected function _disableLazyLoadingForCaching()
+    protected function _disableLazyLoadingForCaching() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 

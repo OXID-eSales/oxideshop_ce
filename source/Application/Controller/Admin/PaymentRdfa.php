@@ -29,7 +29,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
     /**
      * Predefined RDFa payment methods
-     * 0 value have general payments, 1 have creditcar payments
+     * 0 value have general payments
      *
      * @var array
      */
@@ -41,13 +41,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                                       "DirectDebit"             => 0,
                                       "GoogleCheckout"          => 0,
                                       "PayPal"                  => 0,
-                                      "PaySwarm"                => 0,
-                                      "AmericanExpress"         => 1,
-                                      "DinersClub"              => 1,
-                                      "Discover"                => 1,
-                                      "JCB"                     => 1,
-                                      "MasterCard"              => 1,
-                                      "VISA"                    => 1];
+                                      "PaySwarm"                => 0];
 
     /**
      * Saves changed mapping configurations

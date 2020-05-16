@@ -1,8 +1,11 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Smarty function
@@ -18,7 +21,7 @@
  */
 function smarty_modifier_oxaddparams($sUrl, $sDynParams)
 {
-    $oStr = getStr();
+    $oStr = Str::getStr();
     // removing empty parameters
     $sDynParams = $sDynParams ? $oStr->preg_replace([ '/^\?/', '/^\&(amp;)?$/' ], '', $sDynParams) : false;
     if ($sDynParams) {

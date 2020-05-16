@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
@@ -85,11 +86,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
                     $sValue,
                     \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->getBaseAddUrlParams()
                 );
-                $sValue = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sValue);
+                $sValue = Str::getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sValue);
             }
 
             if (!$sValue) {
-                $sValue = getStr()->preg_replace('#index.php\??$#', '', $this->getSelfLink());
+                $sValue = Str::getStr()->preg_replace('#index.php\??$#', '', $this->getSelfLink());
             }
 
             $this->setViewConfigParam('homeLink', $sValue);
@@ -189,8 +190,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * Returns help content link idents
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getHelpContentIdents" in next major
      */
-    protected function _getHelpContentIdents()
+    protected function _getHelpContentIdents() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sClass = $this->getActiveClassName();
 
@@ -861,18 +863,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns config param "blAllowSuggestArticle" value.
-     *
-     * @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
-     *
-     * @return bool
-     */
-    public function getShowSuggest()
-    {
-        return Registry::getConfig()->getConfigParam('blAllowSuggestArticle');
-    }
-
-    /**
      * Returns config param "bl_showVouchers" value
      *
      * @return bool
@@ -984,7 +974,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getNavFormParams()
     {
         if (($sParams = $this->getViewConfigParam('navformparams')) === null) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $sParams = '';
             $aNavParams = Registry::getConfig()->getTopActiveView()->getNavigationParams();
             foreach ($aNavParams as $sName => $sValue) {
@@ -1404,8 +1394,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param array  $aModuleVersions Modules from oxconfig 'aModuleVersions'
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "moduleExists" in next major
      */
-    private function _moduleExists($sModuleId, $aModuleVersions)
+    private function _moduleExists($sModuleId, $aModuleVersions) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (in_array($sModuleId, array_keys($aModuleVersions)));
     }
@@ -1436,8 +1427,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sVersionTo   Version to
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isModuleVersionCorrect" in next major
      */
-    private function _isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo)
+    private function _isModuleVersionCorrect($sModuleId, $sVersionFrom, $sVersionTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blModuleIsActive = true;
 

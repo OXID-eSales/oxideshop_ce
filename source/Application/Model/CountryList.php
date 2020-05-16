@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 /**
  * Country list manager class.
  * Collects a list of countries according to collection rules (active).
- *
  */
 class CountryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

@@ -14,9 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var SettingDaoInterface
-     */
+    /** @var SettingDaoInterface */
     private $settingDao;
 
     /**

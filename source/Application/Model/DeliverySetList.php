@@ -12,7 +12,6 @@ use oxDb;
 
 /**
  * DeliverySet list manager.
- *
  */
 class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
@@ -79,8 +78,9 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string                                   $sCountryId user country id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getList" in next major
      */
-    protected function _getList($oUser = null, $sCountryId = null)
+    protected function _getList($oUser = null, $sCountryId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
         if ($oUser === null) {
@@ -120,8 +120,9 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string                                   $sCountryId user country id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterSelect" in next major
      */
-    protected function _getFilterSelect($oUser, $sCountryId)
+    protected function _getFilterSelect($oUser, $sCountryId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTable = getViewName('oxdeliveryset');
         $sQ = "select $sTable.* from $sTable ";

@@ -30,8 +30,9 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      * Returns category list object
      *
      * @return oxCategoryList
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryList" in next major
      */
-    protected function _getCategoryList()
+    protected function _getCategoryList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_oCatList == null) {
             $this->_oCatList = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);

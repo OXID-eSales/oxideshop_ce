@@ -14,6 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class ScriptLogicTest
+ *
+ * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic
  */
 class ScriptLogicTest extends TestCase
 {
@@ -31,7 +33,7 @@ class ScriptLogicTest extends TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      */
-    public function setUp(): void
+    public function setup(): void
     {
         $this->config = Registry::getConfig();
         $this->oldIDebug = $this->config->getConfigParam("iDebug");
@@ -49,19 +51,12 @@ class ScriptLogicTest extends TestCase
         $this->config->setConfigParam("iDebug", $this->oldIDebug);
     }
 
-    /**
-     * @covers ScriptLogic::include
-     *
-     * @expectedException \PHPUnit\Framework\Error\Warning
-     */
     public function testIncludeFileNotExists(): void
     {
+        $this->expectWarning();
         $this->scriptLogic->include('somescript.js');
     }
 
-    /**
-     * @covers ScriptLogic::include
-     */
     public function testIncludeFileExists(): void
     {
         $includes = $this->config->getGlobalParameter('includes');
@@ -73,9 +68,6 @@ class ScriptLogicTest extends TestCase
         $this->config->setGlobalParameter('includes', $includes);
     }
 
-    /**
-     * @covers ScriptLogic::add
-     */
     public function testAddNotDynamic(): void
     {
         $scripts = $this->config->getGlobalParameter('scripts');
@@ -86,9 +78,6 @@ class ScriptLogicTest extends TestCase
         $this->config->setGlobalParameter('scripts', $scripts);
     }
 
-    /**
-     * @covers ScriptLogic::add
-     */
     public function testAddDynamic(): void
     {
         $scripts = $this->config->getGlobalParameter('scripts_dynamic');
@@ -103,7 +92,6 @@ class ScriptLogicTest extends TestCase
      * @param string $script
      * @param string $output
      *
-     * @covers       ScriptLogic::render
      * @dataProvider addWidgetProvider
      */
     public function testRenderAddWidget(string $script, string $output): void
@@ -132,9 +120,6 @@ class ScriptLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @covers ScriptLogic::render
-     */
     public function testRenderIncludeWidget(): void
     {
         $includes = $this->config->getGlobalParameter('includes');

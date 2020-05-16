@@ -11,6 +11,7 @@ use Exception;
 use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Str;
 use oxList;
 
 // defining supported link types
@@ -26,7 +27,6 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  * Article manager.
  * Creates fully detailed article object, with such information as VAT,
  * discounts, etc.
- *
  */
 class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface, \OxidEsales\Eshop\Core\Contract\IUrl
 {
@@ -70,21 +70,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * cached article variant min price
      *
-     * @var double | null
+     * @var double|null
      */
     protected $_dVarMinPrice = null;
 
     /**
      * cached article variant max price
      *
-     * @var double | null
+     * @var double|null
      */
     protected $_dVarMaxPrice = null;
 
     /**
      * caches article vat
      *
-     * @var double | null
+     * @var double|null
      */
     protected $_dArticleVat = null;
 
@@ -701,8 +701,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool $forceCoreTable forces core table usage (optional)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createSqlActiveSnippet" in next major
      */
-    protected function _createSqlActiveSnippet($forceCoreTable)
+    protected function _createSqlActiveSnippet($forceCoreTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if article is still active
         $sQ = $this->getActiveCheckQuery($forceCoreTable);
@@ -880,13 +881,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns price per unit
      *
-     * @return string
+     * @return \OxidEsales\Eshop\Core\Price|null
      */
     public function getUnitPrice()
     {
         // Performance
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
-            return;
+            return null;
         }
 
         $oPrice = null;
@@ -942,7 +943,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getVarMinPrice()
     {
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadPrice') || !$this->_blLoadPrice) {
-            return;
+            return null;
         }
 
         $oPrice = null;
@@ -960,8 +961,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Calculates lowest price of available article variants.
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "calculateVarMinPrice" in next major
      */
-    protected function _calculateVarMinPrice()
+    protected function _calculateVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dPrice = $this->_getVarMinPrice();
 
@@ -998,8 +1000,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param double $dPrice
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareModifiedPrice" in next major
      */
-    protected function _prepareModifiedPrice($dPrice)
+    protected function _prepareModifiedPrice($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dPrice = $this->_preparePrice($dPrice, $this->getArticleVat());
 
@@ -1127,8 +1130,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * @param \OxidEsales\Eshop\Application\Model\Article $article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setShopValues" in next major
      */
-    protected function _setShopValues($article)
+    protected function _setShopValues($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -1170,8 +1174,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $articleId
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadData" in next major
      */
-    protected function _loadData($articleId)
+    protected function _loadData($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_loadFromDb($articleId);
     }
@@ -1269,7 +1274,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param bool $blIncludeVariants - include variant ratings
      *
-     * @return double
+     * @return int
      */
     public function getArticleRatingCount($blIncludeVariants = false)
     {
@@ -1690,8 +1695,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $oBaseObj->setLanguage($sLanguage);
             }
 
-            $sSql = "select * from " . $oBaseObj->getViewName() . " 
-                where oxparentid = :oxparentid 
+            $sSql = "select * from " . $oBaseObj->getViewName() . "
+                where oxparentid = :oxparentid
                 order by oxsort ";
             $oVariants->selectString($sSql, [':oxparentid' => $sId]);
 
@@ -1727,7 +1732,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             // if the oxcategory instance of this article is not cached
             if (!isset($this->_aCategoryCache[$sOXID])) {
                 startPRofile('getCategory');
-                $oStr = getStr();
+                $oStr = Str::getStr();
                 $sWhere = $oCategory->getSqlActiveSnippet();
                 $sSelect = $this->_generateSearchStr($sOXID);
                 $sSelect .= ($oStr->strstr(
@@ -1809,8 +1814,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * @return oxi18n
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createMultilanguageVendorObject" in next major
      */
-    protected function _createMultilanguageVendorObject()
+    protected function _createMultilanguageVendorObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oVendor = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
         $oVendor->init('oxvendor');
@@ -1994,10 +2000,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sO2CView = getViewName('oxobject2category', $this->getLanguage());
             $sViewName = getViewName('oxcategories', $this->getLanguage());
-            $sSelect = "select 1 from $sO2CView as $sO2CView 
+            $sSelect = "select 1 from $sO2CView as $sO2CView
                 left join {$sViewName} on {$sViewName}.oxid = $sO2CView.oxcatnid
-                where $sO2CView.oxobjectid = :oxobjectid 
-                    and {$sViewName}.oxactive = :oxactive 
+                where $sO2CView.oxobjectid = :oxobjectid
+                    and {$sViewName}.oxactive = :oxactive
                     and {$sViewName}.oxskipdiscounts = :oxskipdiscounts ";
             $params = [
                 ':oxobjectid' => $this->getId(),
@@ -2051,8 +2057,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param int $amount
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getModifiedAmountPrice" in next major
      */
-    protected function _getModifiedAmountPrice($amount)
+    protected function _getModifiedAmountPrice($amount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_getAmountPrice($amount);
     }
@@ -2215,8 +2222,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->beforeUpdate();
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $query = 'select oxstock 
-            from oxarticles 
+        $query = 'select oxstock
+            from oxarticles
             where oxid = :oxid FOR UPDATE ';
         $actualStock = $database->getOne($query, [
             ':oxid' => $this->getId()
@@ -2341,7 +2348,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $iActPicId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('actpicid');
         }
 
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $iCntr = 0;
         $iPicCount = $myConfig->getConfigParam('iPicCount');
         $blCheckActivePicId = true;
@@ -2504,7 +2511,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         // fetching DB info as its up-to-date
-        $sQ = 'select oxstock, oxstockflag from oxarticles 
+        $sQ = 'select oxstock, oxstockflag from oxarticles
             where oxid = :oxid';
         $sQ .= $selectForUpdate ? ' FOR UPDATE ' : '';
         $rs = $oDb->select($sQ, [
@@ -2959,13 +2966,24 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
      *
-     * @return string | bool
+     * @deprecated since v6.2 (2020-02-26); use getRestockDate();
+     * @return string|bool
      */
     public function getDeliveryDate()
     {
-        $deliveryDate = $this->getFieldData("oxdelivery");
-        if ($deliveryDate >= date('Y-m-d')) {
-            return \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($deliveryDate);
+        return $this->getRestockDate();
+    }
+
+    /**
+     * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
+     *
+     * @return string|bool
+     */
+    public function getRestockDate()
+    {
+        $restockDate = $this->getFieldData('oxdelivery');
+        if ($restockDate >= date('Y-m-d')) {
+            return Registry::getUtilsDate()->formatDBDate($restockDate);
         }
 
         return false;
@@ -2976,7 +2994,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @deprecated since v5.1 (2013-10-03); use getTPrice() and oxPrice modifier;
      *
-     * @return double | bool
+     * @return double|bool
      */
     public function getFTPrice()
     {
@@ -3538,9 +3556,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool      $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool|null $forceCoreTableUsage   if true forces core table use, default is false [optional]
      *
-     * @return array | oxsimplevariantlist | oxarticlelist
+     * @return array|oxsimplevariantlist|oxarticlelist
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadVariantList" in next major
      */
-    protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null)
+    protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $variants = [];
         if (($articleId = $this->getId())) {
@@ -3622,8 +3641,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $field category ID field name
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "selectCategoryIds" in next major
      */
-    protected function _selectCategoryIds($query, $field)
+    protected function _selectCategoryIds($query, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $aResult = $oDb->getAll($query);
@@ -3644,8 +3664,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool $blActCats select categories if all parents are active
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryIdsSelect" in next major
      */
-    protected function _getCategoryIdsSelect($blActCats = false)
+    protected function _getCategoryIdsSelect($blActCats = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sO2CView = $this->_getObjectViewName('oxobject2category');
         $sCatView = $this->_getObjectViewName('oxcategories');
@@ -3670,8 +3691,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Returns active category select snippet
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveCategorySelectSnippet" in next major
      */
-    protected function _getActiveCategorySelectSnippet()
+    protected function _getActiveCategorySelectSnippet() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCatView = $this->_getObjectViewName('oxcategories');
 
@@ -3685,8 +3707,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param double                       $dVat   vat value, optional, if passed, bypasses "bl_perfCalcVatOnlyForBasketOrder" config value
      *
      * @return \OxidEsales\Eshop\Core\Price
+     * @deprecated underscore prefix violates PSR12, will be renamed to "calculatePrice" in next major
      */
-    protected function _calculatePrice($oPrice, $dVat = null)
+    protected function _calculatePrice($oPrice, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // apply VAT only if configuration requires it
         if (isset($dVat) || !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
@@ -3716,8 +3739,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool $blForceCoreTable force core table usage
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "hasAnyVariant" in next major
      */
-    protected function _hasAnyVariant($blForceCoreTable = null)
+    protected function _hasAnyVariant($blForceCoreTable = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($sId = $this->getId())) {
             if ($this->oxarticles__oxshopid->value == \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()) {
@@ -3738,8 +3762,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Check if stock status has changed since loading the article
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isStockStatusChanged" in next major
      */
-    protected function _isStockStatusChanged()
+    protected function _isStockStatusChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_iStockStatus != $this->_iStockStatusOnLoad;
     }
@@ -3748,8 +3773,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Check if visibility has changed since loading the article
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isVisibilityChanged" in next major
      */
-    protected function _isVisibilityChanged()
+    protected function _isVisibilityChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_isStockStatusChanged() && ($this->_iStockStatus == -1 || $this->_iStockStatusOnLoad == -1);
     }
@@ -3758,8 +3784,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * inserts article long description to artextends table
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveArtLongDesc" in next major
      */
-    protected function _saveArtLongDesc()
+    protected function _saveArtLongDesc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (in_array("oxlongdesc", $this->_aSkipSaveFields)) {
             return;
@@ -3810,8 +3837,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Removes object data fields (oxarticles__oxtimestamp, oxarticles__oxparentid, oxarticles__oxinsert).
+     * @deprecated underscore prefix violates PSR12, will be renamed to "skipSaveFields" in next major
      */
-    protected function _skipSaveFields()
+    protected function _skipSaveFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aSkipSaveFields = [];
 
@@ -3833,8 +3861,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array $aItemDiscounts Discount array
      *
      * @return array $aDiscounts
+     * @deprecated underscore prefix violates PSR12, will be renamed to "mergeDiscounts" in next major
      */
-    protected function _mergeDiscounts($aDiscounts, $aItemDiscounts)
+    protected function _mergeDiscounts($aDiscounts, $aItemDiscounts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aItemDiscounts as $sKey => $oDiscount) {
             // add prices of the same discounts
@@ -3852,8 +3881,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * get user Group A, B or C price, returns db price if user is not in groups
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getGroupPrice" in next major
      */
-    protected function _getGroupPrice()
+    protected function _getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPriceSufix = $this->_getUserPriceSufix();
         $sVarName = "oxarticles__oxprice{$sPriceSufix}";
@@ -3874,8 +3904,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param int $amount Basket amount
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAmountPrice" in next major
      */
-    protected function _getAmountPrice($amount = 1)
+    protected function _getAmountPrice($amount = 1) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile("_getAmountPrice");
 
@@ -3903,8 +3934,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array  $aChosenList Selection list array
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "modifySelectListPrice" in next major
      */
-    protected function _modifySelectListPrice($dPrice, $aChosenList = null)
+    protected function _modifySelectListPrice($dPrice, $aChosenList = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         // #690
@@ -3932,8 +3964,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array $aAmPriceList Amount price list
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "fillAmountPriceList" in next major
      */
-    protected function _fillAmountPriceList($aAmPriceList)
+    protected function _fillAmountPriceList($aAmPriceList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
 
@@ -3985,7 +4018,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $sActiveSqlSnippet = " and " . $this->getSqlActiveSnippet(true);
             }
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-            $sQ = "select oxid from " . $this->getViewName(true) . " 
+            $sQ = "select oxid from " . $this->getViewName(true) . "
                 where oxparentid = :oxparentid" . $sActiveSqlSnippet . " order by oxsort";
             $oRs = $oDb->select($sQ, [
                 ':oxparentid' => $sId
@@ -4020,8 +4053,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param double                       $dVat   VAT percent
+     * @deprecated underscore prefix violates PSR12, will be renamed to "applyVAT" in next major
      */
-    protected function _applyVAT(\OxidEsales\Eshop\Core\Price $oPrice, $dVat)
+    protected function _applyVAT(\OxidEsales\Eshop\Core\Price $oPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile(__FUNCTION__);
         $oPrice->setVAT($dVat);
@@ -4038,8 +4072,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param object                       $oCur   Currency object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "applyCurrency" in next major
      */
-    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null)
+    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$oCur) {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
@@ -4053,12 +4088,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sAttributeSql Attribute selection snippet
      * @param int    $iCnt          The number of selected attributes
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAttribsString" in next major
      */
-    protected function _getAttribsString(&$sAttributeSql, &$iCnt)
+    protected function _getAttribsString(&$sAttributeSql, &$iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // we do not use lists here as we don't need this overhead right now
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sSelect = 'select oxattrid from oxobject2attribute 
+        $sSelect = 'select oxattrid from oxobject2attribute
             where oxobject2attribute.oxobjectid = :oxobjectid';
         if ($this->getParentId()) {
             $sSelect .= ' OR oxobject2attribute.oxobjectid = :oxparentid';
@@ -4082,8 +4118,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param int    $iCnt          Similar list article count
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSimList" in next major
      */
-    protected function _getSimList($sAttributeSql, $iCnt)
+    protected function _getSimList($sAttributeSql, $iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #523A
         $iAttrPercent = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iAttributesPercent') / 100;
@@ -4118,8 +4155,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array  $aList         A list of original articles
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "generateSimListSearchStr" in next major
      */
-    protected function _generateSimListSearchStr($sArticleTable, $aList)
+    protected function _generateSimListSearchStr($sArticleTable, $aList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFieldList = $this->getSelectFields();
         $aList = array_slice($aList, 0, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofSimilarArticles'));
@@ -4141,8 +4179,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool   $blSearchPriceCat Whether to perform the search within price categories
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "generateSearchStr" in next major
      */
-    protected function _generateSearchStr($sOXID, $blSearchPriceCat = false)
+    protected function _generateSearchStr($sOXID, $blSearchPriceCat = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCatView = getViewName('oxcategories', $this->getLanguage());
         $sO2CView = getViewName('oxobject2category');
@@ -4162,8 +4201,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Generates SQL select string for getCustomerAlsoBoughtThisProduct
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "generateSearchStrForCustomerBought" in next major
      */
-    protected function _generateSearchStrForCustomerBought()
+    protected function _generateSearchStrForCustomerBought() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = $this->getViewName();
         $sOrderArtTable = getViewName('oxorderarticles');
@@ -4185,8 +4225,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             ':oxparentid' => $sParentIdForVariants,
             ':oxid' => $this->oxarticles__oxid->value
         ];
-        $oRs = $oDb->select("select oxid from {$sArtTable} 
-            where oxparentid = :oxparentid 
+        $oRs = $oDb->select("select oxid from {$sArtTable}
+            where oxparentid = :oxparentid
             and oxid != :oxid ", $params);
         if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
@@ -4225,8 +4265,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool   $dPriceFromTo Article price for price categories
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "generateSelectCatStr" in next major
      */
-    protected function _generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo = false)
+    protected function _generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCategoryView = getViewName('oxcategories');
         $sO2CView = getViewName('oxobject2category');
@@ -4257,7 +4298,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @return \OxidEsales\Eshop\Application\Model\AmountPriceList
      */
-    protected function _getAmountPriceList()
+    protected function _getAmountPriceList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->buildAmountPriceList();
     }
@@ -4302,8 +4343,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sFieldName Field name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isFieldEmpty" in next major
      */
-    protected function _isFieldEmpty($sFieldName)
+    protected function _isFieldEmpty($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $mValue = $this->$sFieldName->value;
 
@@ -4356,9 +4398,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sFieldName field name
      *
-     * @return null;
+     * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignParentFieldValue" in next major
      */
-    protected function _assignParentFieldValue($sFieldName)
+    protected function _assignParentFieldValue($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!($oParentArticle = $this->getParentArticle())) {
             return;
@@ -4395,9 +4438,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param string $sFieldName Field name
      *
-     * @return bool.
+     * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isImageField" in next major
      */
-    protected function _isImageField($sFieldName)
+    protected function _isImageField($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return (stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr(
             $sFieldName,
@@ -4407,8 +4451,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Assigns parent field values to article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignParentFieldValues" in next major
      */
-    protected function _assignParentFieldValues()
+    protected function _assignParentFieldValues() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile('articleAssignParentInternal');
         if ($this->oxarticles__oxparentid->value) {
@@ -4424,8 +4469,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * if we have variants then depending on config option the parent may be non buyable
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignNotBuyableParent" in next major
      */
-    protected function _assignNotBuyableParent()
+    protected function _assignNotBuyableParent() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantParentBuyable') &&
@@ -4437,8 +4483,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Assigns stock status to article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignStock" in next major
      */
-    protected function _assignStock()
+    protected function _assignStock() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         // -----------------------------------
@@ -4480,7 +4527,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $iOnStock = $this->oxarticles__oxstock->value;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $session = \OxidEsales\Eshop\Core\Registry::getSession();
-                if ($reservations = $session->getBasketReservations()){
+                if ($reservations = $session->getBasketReservations()) {
                     $iOnStock += $reservations->getReservedAmount($this->getId());
                 }
             }
@@ -4514,7 +4561,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.
      */
-    protected function _assignPersistentParam()
+    protected function _assignPersistentParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Persistent Parameter Handling
         $aPersParam = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('persparam');
@@ -4525,8 +4572,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * assigns dynimagedir to article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignDynImageDir" in next major
      */
-    protected function _assignDynImageDir()
+    protected function _assignDynImageDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -4540,8 +4588,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Adds a flag if article is on comparisonlist.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignComparisonListFlag" in next major
      */
-    protected function _assignComparisonListFlag()
+    protected function _assignComparisonListFlag() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #657 add a flag if article is on comparisonlist
 
@@ -4557,8 +4606,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * parent::_insert() and returns insertion status.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // set oxinsert
         $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
@@ -4574,8 +4624,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Executes \OxidEsales\Eshop\Application\Model\Article::_skipSaveFields() and updates article information
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
@@ -4591,8 +4642,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $articleId Article ID
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteRecords" in next major
      */
-    protected function _deleteRecords($articleId)
+    protected function _deleteRecords($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -4671,8 +4723,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Deletes variant records
      *
      * @param string $sOXID Article ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "deleteVariantRecords" in next major
      */
-    protected function _deleteVariantRecords($sOXID)
+    protected function _deleteVariantRecords($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sOXID) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4694,8 +4747,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Delete pics
+     * @deprecated underscore prefix violates PSR12, will be renamed to "deletePics" in next major
      */
-    protected function _deletePics()
+    protected function _deletePics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oPictureHandler = \OxidEsales\Eshop\Core\Registry::getPictureHandler();
@@ -4719,8 +4773,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sOxid           object to reset id ID
      * @param string $sVendorId       Vendor ID
      * @param string $sManufacturerId Manufacturer ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeResetCounts" in next major
      */
-    protected function _onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null)
+    protected function _onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount();
 
@@ -4743,8 +4798,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Updates article stock. This method is supposed to be called on article change trigger.
      *
      * @param string $parentId product parent id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeUpdateStock" in next major
      */
-    protected function _onChangeUpdateStock($parentId)
+    protected function _onChangeUpdateStock($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4756,9 +4812,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $vendorId = $rs->fields[1];
             $manufacturerId = $rs->fields[2];
 
-            $query = 'SELECT SUM(oxstock) FROM ' . $this->getViewName(true) . ' 
-                WHERE oxparentid = :oxparentid 
-                AND ' . $this->getSqlActiveSnippet(true) . ' 
+            $query = 'SELECT SUM(oxstock) FROM ' . $this->getViewName(true) . '
+                WHERE oxparentid = :oxparentid
+                AND ' . $this->getSqlActiveSnippet(true) . '
                 AND oxstock > 0 ';
             $stock = (float) $database->getOne($query, [
                 ':oxparentid' => $parentId
@@ -4790,8 +4846,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Resets article count cache when stock value is zero and article goes offline.
      *
      * @param string $sOxid product id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeStockResetCount" in next major
      */
-    protected function _onChangeStockResetCount($sOxid)
+    protected function _onChangeStockResetCount($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -4811,8 +4868,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Updates variant count. This method is supposed to be called on article change trigger.
      *
      * @param string $parentId Parent ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeUpdateVarCount" in next major
      */
-    protected function _onChangeUpdateVarCount($parentId)
+    protected function _onChangeUpdateVarCount($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4834,8 +4892,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Updates variant min price. This method is supposed to be called on article change trigger.
      *
      * @param string $sParentId Parent ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setVarMinMaxPrice" in next major
      */
-    protected function _setVarMinMaxPrice($sParentId)
+    protected function _setVarMinMaxPrice($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -4883,8 +4942,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param int $iIndex master picture index
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "hasMasterImage" in next major
      */
-    protected function _hasMasterImage($iIndex)
+    protected function _hasMasterImage($iIndex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPicName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
 
@@ -4913,8 +4973,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Checks and return true if price view mode is netto
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isPriceViewModeNetto" in next major
      */
-    protected function _isPriceViewModeNetto()
+    protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getArticleUser();
@@ -4932,8 +4993,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool $blCalculationModeNetto - if calculation mode netto - true
      *
      * @return oxPice
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceObject" in next major
      */
-    protected function _getPriceObject($blCalculationModeNetto = null)
+    protected function _getPriceObject($blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var \OxidEsales\Eshop\Core\Price $oPrice */
         $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
@@ -4957,8 +5019,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceForView" in next major
      */
-    protected function _getPriceForView($oPrice)
+    protected function _getPriceForView($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_isPriceViewModeNetto()) {
             $dPrice = $oPrice->getNettoPrice();
@@ -4978,8 +5041,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool   $blCalculationModeNetto - if calculation mode netto - true
      *
      * @return double
+     * @deprecated underscore prefix violates PSR12, will be renamed to "preparePrice" in next major
      */
-    protected function _preparePrice($dPrice, $dVat, $blCalculationModeNetto = null)
+    protected function _preparePrice($dPrice, $dVat, $blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($blCalculationModeNetto === null) {
             $blCalculationModeNetto = $this->_isPriceViewModeNetto();
@@ -5002,8 +5066,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Return price suffix
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUserPriceSufix" in next major
      */
-    protected function _getUserPriceSufix()
+    protected function _getUserPriceSufix() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPriceSuffix = '';
         $oUser = $this->getArticleUser();
@@ -5025,8 +5090,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Return prepared price
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPrice" in next major
      */
-    protected function _getPrice()
+    protected function _getPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPriceSuffix = $this->_getUserPriceSufix();
         if ($sPriceSuffix === '') {
@@ -5046,8 +5112,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Return variant min price
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVarMinPrice" in next major
      */
-    protected function _getVarMinPrice()
+    protected function _getVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_dVarMinPrice === null) {
             $dPrice = $this->_getShopVarMinPrice();
@@ -5084,8 +5151,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Return variant max price
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVarMaxPrice" in next major
      */
-    protected function _getVarMaxPrice()
+    protected function _getVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_dVarMaxPrice === null) {
             $dPrice = $this->_getShopVarMaxPrice();
@@ -5123,8 +5191,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * for example for subshops.
      *
      * @return double|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopVarMinPrice" in next major
      */
-    protected function _getShopVarMinPrice()
+    protected function _getShopVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return null;
     }
@@ -5134,8 +5203,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * for example for subshops.
      *
      * @return double|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopVarMaxPrice" in next major
      */
-    protected function _getShopVarMaxPrice()
+    protected function _getShopVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return null;
     }
@@ -5146,8 +5216,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $articleId id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
-    protected function _loadFromDb($articleId)
+    protected function _loadFromDb($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = $this->buildSelectString([$this->getViewName() . ".oxid" => $articleId]);
 
@@ -5169,8 +5240,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Set parent field value to child - variants in DB
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "updateParentDependFields" in next major
      */
-    protected function _updateParentDependFields()
+    protected function _updateParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
@@ -5190,16 +5262,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Returns array of fields which should not changed in variants
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCopyParentFields" in next major
      */
-    protected function _getCopyParentFields()
+    protected function _getCopyParentFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_aCopyParentField;
     }
 
     /**
      * Set parent field value to child - variants
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignParentDependFields" in next major
      */
-    protected function _assignParentDependFields()
+    protected function _assignParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sParent = $this->getParentArticle();
         if ($sParent) {
@@ -5211,8 +5285,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Saves values of sorting fields on article load.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveSortingFieldValuesOnLoad" in next major
      */
-    protected function _saveSortingFieldValuesOnLoad()
+    protected function _saveSortingFieldValuesOnLoad() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aSortingFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols');
         $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : [];

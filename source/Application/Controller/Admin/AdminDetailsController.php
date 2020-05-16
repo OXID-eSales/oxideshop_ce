@@ -68,8 +68,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param string                                 $sField  name of editable field
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEditValue" in next major
      */
-    protected function _getEditValue($oObject, $sField)
+    protected function _getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sEditObjectValue = '';
         if ($oObject && $sField && isset($oObject->$sField)) {
@@ -92,8 +93,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param string $sValue string to process
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processEditValue" in next major
      */
-    protected function _processEditValue($sValue)
+    protected function _processEditValue($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // A. replace ONLY if long description is not processed by smarty, or users will not be able to
         // store smarty tags ([{$shop->currenthomedir}]/[{$oViewConf->getCurrentHomeDir()}]) in long
@@ -118,7 +120,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      */
-    protected function _getPlainEditor($width, $height, $object, $field)
+    protected function _getPlainEditor($width, $height, $object, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $objectValue = $this->_getEditValue($object, $field);
 
@@ -140,7 +142,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string Editor output
      */
-    protected function _generateTextEditor($width, $height, $object, $field, $stylesheet = null)
+    protected function _generateTextEditor($width, $height, $object, $field, $stylesheet = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->generateTextEditor($width, $height, $object, $field, $stylesheet);
     }
@@ -202,8 +204,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param int    $iTreeShopId     tree shop id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createCategoryTree" in next major
      */
-    protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null)
+    protected function _createCategoryTree($sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // caching category tree, to load it once, not many times
         if (!isset($this->oCatTree) || $blForceNonCache) {
@@ -247,8 +250,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * @param int    $iTreeShopId     tree shop id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryTree" in next major
      */
-    protected function _getCategoryTree(
+    protected function _getCategoryTree( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $sTplVarName,
         $sSelectedCatId,
         $sEditCatId = '',
@@ -304,8 +308,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * Sets-up navigation parameters.
      *
      * @param string $sNode active view id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
-    protected function _setupNavigation($sNode)
+    protected function _setupNavigation($sNode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // navigation according to class
         if ($sNode) {
@@ -323,8 +328,9 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      * Resets count of vendor/manufacturer category items.
      *
      * @param array $aIds to reset type => id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetCounts" in next major
      */
-    protected function _resetCounts($aIds)
+    protected function _resetCounts($aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aIds as $sType => $aResetInfo) {
             foreach ($aResetInfo as $sResetId => $iPos) {
@@ -351,7 +357,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      *                                             else
      * @param string            $field             The input field we want to edit
      * @param string            $stylesheet        The name of the CSS file
-     *
      */
     protected function configureTextEditorHandler(
         TextEditorHandler $textEditorHandler,

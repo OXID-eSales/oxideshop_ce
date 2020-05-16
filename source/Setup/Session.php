@@ -54,8 +54,9 @@ class Session extends Core
 
     /**
      * Start session
+     * @deprecated underscore prefix violates PSR12, will be renamed to "startSession" in next major
      */
-    protected function _startSession()
+    protected function _startSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         session_name($this->_sSessionName);
 
@@ -80,8 +81,9 @@ class Session extends Core
      * Validate if session is started by setup script, if not, generate new session.
      *
      * @return string Session ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateSession" in next major
      */
-    protected function _validateSession()
+    protected function _validateSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->getIsNewSession() === true) {
             $this->setSessionParam('setup_session', true);
@@ -101,8 +103,9 @@ class Session extends Core
      * Generate new unique session ID
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNewSessionID" in next major
      */
-    protected function _getNewSessionID()
+    protected function _getNewSessionID() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         session_regenerate_id(false);
         $this->setIsNewSession(true);
@@ -133,8 +136,9 @@ class Session extends Core
 
     /**
      * Initializes setup session data array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "initSessionData" in next major
      */
-    protected function _initSessionData()
+    protected function _initSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
@@ -174,8 +178,9 @@ class Session extends Core
      * Return session object reference.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSessionData" in next major
      */
-    protected function &_getSessionData()
+    protected function &_getSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $_SESSION;
     }

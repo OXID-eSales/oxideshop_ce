@@ -31,7 +31,7 @@ class GenericImportTest extends OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class);
         $this->cleanUpTable('oxuser');

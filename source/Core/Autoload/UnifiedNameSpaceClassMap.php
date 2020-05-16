@@ -82,12 +82,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Component\Widget\BetaNote'                     => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Application\Component\Widget\CategoryTree'                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree::class,
         'isAbstract'       => false,
@@ -1648,12 +1642,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Controller\SuggestController'                  => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\SuggestController::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Application\Controller\TemplateController'                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\TemplateController::class,
         'isAbstract'       => false,
@@ -2440,12 +2428,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\CreditCardValidator'                                  => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\CreditCardValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Curl'                                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Curl::class,
         'isAbstract'       => false,
@@ -2850,12 +2832,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\Language'                                             => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Language::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\MailValidator'                                        => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\MailValidator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

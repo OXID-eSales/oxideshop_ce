@@ -21,7 +21,7 @@ class NewsletterTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,7 +35,7 @@ class NewsletterTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
         $sDelete = "delete from oxobject2group where oxobjectid='test'";

@@ -19,7 +19,6 @@ use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories  as EshopModuleSm
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
- *
  */
 class ModuleSmartyPluginDirectoryValidator
 {

@@ -11,8 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
 class DICallWrapper
 {
-    const METHOD_KEY = 'method';
-    const PARAMETER_KEY = 'arguments';
+    private const METHOD_KEY = 'method';
+    private const PARAMETER_KEY = 'arguments';
 
     private $callArray;
 
@@ -24,7 +24,7 @@ class DICallWrapper
     public function __construct(array $callArray = [])
     {
         if (!$callArray) {
-            $this->callArray = ['method' => '', 'arguments' => []];
+            $this->callArray = [static::METHOD_KEY => '', static::PARAMETER_KEY => []];
         } else {
             $this->callArray = $callArray;
         }
@@ -35,7 +35,7 @@ class DICallWrapper
      */
     public function getMethodName(): string
     {
-        return $this->callArray[$this::METHOD_KEY];
+        return $this->callArray[static::METHOD_KEY];
     }
 
     /**
@@ -43,7 +43,7 @@ class DICallWrapper
      */
     public function setMethodName(string $methodName)
     {
-        $this->callArray[$this::METHOD_KEY] = $methodName;
+        $this->callArray[static::METHOD_KEY] = $methodName;
     }
 
     /**
@@ -52,7 +52,7 @@ class DICallWrapper
      */
     public function setParameter(int $index, $parameter)
     {
-        $this->callArray[$this::PARAMETER_KEY][$index] = $parameter;
+        $this->callArray[static::PARAMETER_KEY][$index] = $parameter;
     }
 
     /**
@@ -62,7 +62,7 @@ class DICallWrapper
      */
     public function getParameter(int $index)
     {
-        return $this->callArray[$this::PARAMETER_KEY][$index];
+        return $this->callArray[static::PARAMETER_KEY][$index];
     }
 
     /**

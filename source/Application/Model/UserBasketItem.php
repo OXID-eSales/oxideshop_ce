@@ -12,7 +12,6 @@ use oxField;
 /**
  * Shopping basket item manager.
  * Manager class for shopping basket item (class may be overriden).
- *
  */
 class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -195,8 +194,9 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param int    $iDataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             'oxsellist' === strtolower($sFieldName) || 'oxuserbasketitems__oxsellist' === strtolower($sFieldName)

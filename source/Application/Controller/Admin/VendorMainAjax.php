@@ -51,8 +51,9 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
@@ -88,8 +89,9 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      * @param string $sQ query to add filter condition
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
-    protected function _addFilter($sQ)
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = $this->_getViewName('oxarticles');
         $sQ = parent::_addFilter($sQ);

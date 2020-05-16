@@ -60,8 +60,9 @@ class OnlineModuleVersionNotifier
      * Collects only required modules information and returns as array.
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareModulesInformation" in next major
      */
-    protected function _prepareModulesInformation()
+    protected function _prepareModulesInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $preparedModules = [];
 
@@ -93,8 +94,9 @@ class OnlineModuleVersionNotifier
      * Send request message to Online Module Version Notifier web service.
      *
      * @return oxOnlineModulesNotifierRequest
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formRequest" in next major
      */
-    protected function _formRequest()
+    protected function _formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oRequestParams = new \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest();
 
@@ -108,8 +110,9 @@ class OnlineModuleVersionNotifier
      * Returns caller.
      *
      * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getOnlineModuleNotifierCaller" in next major
      */
-    protected function _getOnlineModuleNotifierCaller()
+    protected function _getOnlineModuleNotifierCaller() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_oCaller;
     }
@@ -121,7 +124,7 @@ class OnlineModuleVersionNotifier
      *
      * @return array
      */
-    protected function _getModules()
+    protected function _getModules() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();

@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
  * Basic exception class
- *
  */
 class StandardException extends \Exception
 {

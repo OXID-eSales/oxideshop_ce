@@ -77,8 +77,8 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
         $oInputValidator = \OxidEsales\Eshop\Core\Registry::getInputValidator();
         if (($oExcp = $oInputValidator->checkPassword($oUser, $sNewPass, $sConfPass, true))) {
             switch ($oExcp->getMessage()) {
-                case 'ERROR_MESSAGE_INPUT_EMPTYPASS':
-                case 'ERROR_MESSAGE_PASSWORD_TOO_SHORT':
+                case \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS'):
+                case \OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'):
                     return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(
                         'ERROR_MESSAGE_PASSWORD_TOO_SHORT',
                         false,

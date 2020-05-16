@@ -171,8 +171,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Returns shops base path
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getShopBasePath" in next major
          */
-        protected function _getShopBasePath()
+        protected function _getShopBasePath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             return Registry::getConfig()->getConfigParam("sShopDir");
         }
@@ -181,8 +182,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Returns requested image uri
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getImageUri" in next major
          */
-        protected function _getImageUri()
+        protected function _getImageUri() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             if ($this->_sImageUri === null) {
                 $this->_sImageUri = "";
@@ -204,8 +206,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Returns requested image name
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getImageName" in next major
          */
-        protected function _getImageName()
+        protected function _getImageName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             return basename($this->_getImageUri());
         }
@@ -214,8 +217,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Returns path to possible master image
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getImageMasterPath" in next major
          */
-        protected function _getImageMasterPath()
+        protected function _getImageMasterPath() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $uri = $this->_getImageUri();
             $path = false;
@@ -231,8 +235,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Returns image info array
          *
          * @return array
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getImageInfo" in next major
          */
-        protected function _getImageInfo()
+        protected function _getImageInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $info = [];
             if (($uri = $this->_getImageUri())) {
@@ -246,8 +251,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Returns full requested image path on file system
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getImageTarget" in next major
          */
-        protected function _getImageTarget()
+        protected function _getImageTarget() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             return $this->_getShopBasePath() . $this->_getImageUri();
         }
@@ -256,8 +262,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Nopic image path
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getNopicImageTarget" in next major
          */
-        protected function _getNopicImageTarget()
+        protected function _getNopicImageTarget() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $path = $this->_getShopBasePath() . $this->_getImageUri();
 
@@ -268,8 +275,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Returns image type used for image generation and header setting
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getImageType" in next major
          */
-        protected function _getImageType()
+        protected function _getImageType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $fileExtension = strtolower(pathinfo($this->_getImageName(), PATHINFO_EXTENSION));
             if (!$this->validateImageFileExtension($fileExtension)) {
@@ -294,8 +302,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param int    $height image height
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "generatePng" in next major
          */
-        protected function _generatePng($source, $target, $width, $height)
+        protected function _generatePng($source, $target, $width, $height) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             return resizePng($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null);
         }
@@ -310,8 +319,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param int    $quality new image quality
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "generateJpg" in next major
          */
-        protected function _generateJpg($source, $target, $width, $height, $quality)
+        protected function _generateJpg($source, $target, $width, $height, $quality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             return resizeJpeg($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null, $quality);
         }
@@ -325,8 +335,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param int    $height image height
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "generateGif" in next major
          */
-        protected function _generateGif($source, $target, $width, $height)
+        protected function _generateGif($source, $target, $width, $height) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $imageInfo = @getimagesize($source);
 
@@ -340,8 +351,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $path image path name to check
          *
          * @return bool
+         * @deprecated underscore prefix violates PSR12, will be renamed to "isTargetPathValid" in next major
          */
-        protected function _isTargetPathValid($path)
+        protected function _isTargetPathValid($path) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $valid = true;
             $dir = dirname(trim($path));
@@ -361,8 +373,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $dir folder(s) to create
          *
          * @return bool
+         * @deprecated underscore prefix violates PSR12, will be renamed to "createFolders" in next major
          */
-        protected function _createFolders($dir)
+        protected function _createFolders($dir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $config = Registry::getConfig();
             $picFolderPath = dirname($config->getMasterPictureDir());
@@ -390,8 +403,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $path image path name to check
          *
          * @return bool
+         * @deprecated underscore prefix violates PSR12, will be renamed to "isValidPath" in next major
          */
-        protected function _isValidPath($path)
+        protected function _isValidPath($path) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $valid = false;
 
@@ -414,13 +428,11 @@ namespace OxidEsales\EshopCommunity\Core {
 
                 // any name matching path?
                 if ($names) {
-                    $decodeField = $config->getDecodeValueQuery();
-
                     // selecting shop which image quality matches user given
                     $q = "select oxshopid
                             from oxconfig
                             where oxvarname = 'sDefaultImageQuality' and
-                       {$decodeField} = :quality";
+                            oxvarvalue = :quality";
 
                     $shopIdsArray = $db->getAll($q, [
                         ':quality' => $quality
@@ -439,7 +451,7 @@ namespace OxidEsales\EshopCommunity\Core {
                         $checkSize = "$width*$height";
 
                         // selecting config variables to check
-                        $q = "select oxvartype, {$decodeField} as oxvarvalue from oxconfig
+                        $q = "select oxvartype, oxvarvalue from oxconfig
                            where oxvarname in ( {$names} ) and oxshopid in ( {$shopIds} ) order by oxshopid";
 
                         $values = $db->getAll($q);
@@ -468,8 +480,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @throws OxidEsales\Eshop\Core\Exception\StandardException If the path of imageTarget and generated image are not the same
          *
          * @return bool|string Return false on failure or file path of the generated image on success
+         * @deprecated underscore prefix violates PSR12, will be renamed to "generateImage" in next major
          */
-        protected function _generateImage($imageSource, $imageTarget)
+        protected function _generateImage($imageSource, $imageTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $generatedImagePath = false;
             list($targetWidth, $targetHeight, $targetQuality) = $this->_getImageInfo();
@@ -533,8 +546,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $name original file name
          *
          * @return string
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getLockName" in next major
          */
-        protected function _getLockName($name)
+        protected function _getLockName($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             return "$name.lck";
         }
@@ -545,8 +559,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $source source file which should be locked
          *
          * @return bool
+         * @deprecated underscore prefix violates PSR12, will be renamed to "lock" in next major
          */
-        protected function _lock($source)
+        protected function _lock($source) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $locked = false;
             $lockName = $this->_getLockName($source);
@@ -578,8 +593,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Deletes lock file
          *
          * @param string $source source file which should be locked
+         * @deprecated underscore prefix violates PSR12, will be renamed to "unlock" in next major
          */
-        protected function _unlock($source)
+        protected function _unlock($source) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             if (is_resource($this->_hLockHandle)) {
                 flock($this->_hLockHandle, LOCK_UN);
@@ -698,8 +714,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Custom header setter
          *
          * @param string $header header
+         * @deprecated underscore prefix violates PSR12, will be renamed to "setHeader" in next major
          */
-        protected function _setHeader($header)
+        protected function _setHeader($header) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $this->_aHeaders[] = $header;
         }
@@ -708,8 +725,9 @@ namespace OxidEsales\EshopCommunity\Core {
          * Return headers array
          *
          * @return array
+         * @deprecated underscore prefix violates PSR12, will be renamed to "getHeaders" in next major
          */
-        protected function _getHeaders()
+        protected function _getHeaders() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             return $this->_aHeaders;
         }

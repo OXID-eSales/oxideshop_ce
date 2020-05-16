@@ -52,7 +52,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Sets up test
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -74,10 +74,10 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Tear down test.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         //restore theme, do it directly in database as it might be dummy 'basic' theme
-        $query = "UPDATE `oxconfig` SET `OXVARVALUE` = encode('" . $this->origTheme . "', 'fq45QS09_fqyx09239QQ') WHERE `OXVARNAME` = 'sTheme'";
+        $query = "UPDATE `oxconfig` SET `OXVARVALUE` = '" . $this->origTheme . "' WHERE `OXVARNAME` = 'sTheme'";
         \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
 
         $this->cleanRegistry();
@@ -113,7 +113,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         //check what shop does
         $response = $this->callCurl($seoUrl);
-        $this->assertContains($checkResponse, $response, "Should get $checkResponse");
+        $this->assertStringContainsString($checkResponse, $response, "Should get $checkResponse");
     }
 
     /**
@@ -135,7 +135,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $response = $this->callCurl($urlToCall);
 
-        $this->assertContains($checkResponse, $response, "Should get $checkResponse");
+        $this->assertStringContainsString($checkResponse, $response, "Should get $checkResponse");
     }
 
     /**
@@ -575,10 +575,10 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $response = $this->callCurl($urlToCall);
 
         foreach ($responseContains as $checkFor) {
-            $this->assertContains($checkFor, $response, "Should get $checkFor");
+            $this->assertStringContainsString($checkFor, $response, "Should get $checkFor");
         }
         foreach ($responseNotContains as $checkFor) {
-            $this->assertNotContains($checkFor, $response, "Should not get $checkFor");
+            $this->assertStringNotContainsString($checkFor, $response, "Should not get $checkFor");
         }
     }
 

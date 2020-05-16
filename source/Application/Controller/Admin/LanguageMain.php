@@ -183,8 +183,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param string $sOxId language abbervation
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageInfo" in next major
      */
-    protected function _getLanguageInfo($sOxId)
+    protected function _getLanguageInfo($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDefaultLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultLang');
 
@@ -202,8 +203,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * Languages array setter
      *
      * @param array $aLangData languages parameters array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setLanguages" in next major
      */
-    protected function _setLanguages($aLangData)
+    protected function _setLanguages($aLangData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aLangData = $aLangData;
     }
@@ -214,8 +216,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * Returns collected languages parameters array.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguages" in next major
      */
-    protected function _getLanguages()
+    protected function _getLanguages() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLangData['params'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageParams');
         $aLangData['lang'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguages');
@@ -235,8 +238,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      *
      * @param string $sOldId old ID
      * @param string $sNewId new ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "updateAbbervation" in next major
      */
-    protected function _updateAbbervation($sOldId, $sNewId)
+    protected function _updateAbbervation($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach (array_keys($this->_aLangData) as $sTypeKey) {
             if (is_array($this->_aLangData[$sTypeKey]) && count($this->_aLangData[$sTypeKey]) > 0) {
@@ -258,8 +262,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Sort languages, languages parameters, urls, ssl urls arrays according
      * base land ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sortLangArraysByBaseId" in next major
      */
-    protected function _sortLangArraysByBaseId()
+    protected function _sortLangArraysByBaseId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aUrls = [];
         $aSslUrls = [];
@@ -285,8 +290,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param array $aLanguages language array
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignDefaultLangParams" in next major
      */
-    protected function _assignDefaultLangParams($aLanguages)
+    protected function _assignDefaultLangParams($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aParams = [];
         $iBaseId = 0;
@@ -306,8 +312,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * Sets default language base ID to config var 'sDefaultLang'
      *
      * @param string $sOxId language abbervation
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaultLang" in next major
      */
-    protected function _setDefaultLang($sOxId)
+    protected function _setDefaultLang($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDefaultId = $this->_aLangData['params'][$sOxId]['baseId'];
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'sDefaultLang', $sDefaultId);
@@ -317,8 +324,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * Get availabale language base ID
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAvailableLangBaseId" in next major
      */
-    protected function _getAvailableLangBaseId()
+    protected function _getAvailableLangBaseId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aBaseId = [];
         foreach ($this->_aLangData['params'] as $aLang) {
@@ -345,8 +353,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * If not - displays warning
      *
      * @param string $sOxId language abbervation
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkLangTranslations" in next major
      */
-    protected function _checkLangTranslations($sOxId)
+    protected function _checkLangTranslations($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -365,8 +374,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param string $sOxId language abbervation
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkMultilangFieldsExistsInDb" in next major
      */
-    protected function _checkMultilangFieldsExistsInDb($sOxId)
+    protected function _checkMultilangFieldsExistsInDb($sOxId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iBaseId = $this->_aLangData['params'][$sOxId]['baseId'];
         $sTable = getLangTableName('oxarticles', $iBaseId);
@@ -382,8 +392,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * language ID (e.g. oxtitle_4)
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addNewMultilangFieldsToDb" in next major
      */
-    protected function _addNewMultilangFieldsToDb()
+    protected function _addNewMultilangFieldsToDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //creating new multilingual fields with new id over whole DB
         $oDbMeta = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
@@ -411,8 +422,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param string $sAbbr language abbervation
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkLangExists" in next major
      */
-    protected function _checkLangExists($sAbbr)
+    protected function _checkLangExists($sAbbr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAbbrs = array_keys($this->_aLangData['lang']);
 
@@ -427,8 +439,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * @param object $oLang2 language array
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sortLangParamsByBaseIdCallback" in next major
      */
-    protected function _sortLangParamsByBaseIdCallback($oLang1, $oLang2)
+    protected function _sortLangParamsByBaseIdCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return ($oLang1['baseId'] < $oLang2['baseId']) ? -1 : 1;
     }
@@ -437,8 +450,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      * Check language input errors
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "validateInput" in next major
      */
-    protected function _validateInput()
+    protected function _validateInput() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $result = true;
 

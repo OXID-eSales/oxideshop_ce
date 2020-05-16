@@ -60,7 +60,7 @@ class ConfigFile
     /**
      * Returns all loaded vars as an array
      *
-     * @return array[string]mixed
+     * @return array
      */
     public function getVars()
     {
@@ -85,8 +85,9 @@ class ConfigFile
      * this method is a subject to be changed.
      *
      * @param string $fileName Configuration file name
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadVars" in next major
      */
-    private function _loadVars($fileName)
+    private function _loadVars($fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         include $fileName;
     }

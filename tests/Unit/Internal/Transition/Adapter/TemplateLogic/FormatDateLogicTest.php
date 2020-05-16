@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Class FormatDateLogicTest
+ *
+ * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic
  */
 class FormatDateLogicTest extends TestCase
 {
@@ -26,9 +28,6 @@ class FormatDateLogicTest extends TestCase
         $this->formDateLogic = new FormatDateLogic();
     }
 
-    /**
-     * @covers FormatDateLogic::formdate
-     */
     public function testFormdateWithDatetime(): void
     {
         $input = '01.08.2007 11.56.25';
@@ -37,9 +36,6 @@ class FormatDateLogicTest extends TestCase
         $this->assertEquals($expected, $this->formDateLogic->formdate($input, 'datetime', true));
     }
 
-    /**
-     * @covers FormatDateLogic::formdate
-     */
     public function testFormdateWithTimestamp(): void
     {
         $input = '20070801115625';
@@ -48,9 +44,6 @@ class FormatDateLogicTest extends TestCase
         $this->assertEquals($expected, $this->formDateLogic->formdate($input, 'timestamp', true));
     }
 
-    /**
-     * @covers FormatDateLogic::formdate
-     */
     public function testFormdateWithDate(): void
     {
         $input = '2007-08-01 11:56:25';
@@ -59,9 +52,6 @@ class FormatDateLogicTest extends TestCase
         $this->assertEquals($expected, $this->formDateLogic->formdate($input, 'date', true));
     }
 
-    /**
-     * @covers FormatDateLogic::formdate
-     */
     public function testFormdateUsingObject(): void
     {
         $expected = "2007-08-01 11:56:25";

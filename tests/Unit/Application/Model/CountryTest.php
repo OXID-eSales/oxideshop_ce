@@ -18,7 +18,7 @@ class CountryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -37,7 +37,7 @@ class CountryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->oObj->delete();
         parent::tearDown();

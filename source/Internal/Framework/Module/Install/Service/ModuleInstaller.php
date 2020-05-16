@@ -9,49 +9,107 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 
 class ModuleInstaller implements ModuleInstallerInterface
 {
     /**
-     * @var ModuleFilesInstallerInterface
+     * @var ModuleInstallerInterface
      */
-    private $moduleFilesInstaller;
+    private $bootstrapModuleInstaller;
 
     /**
-     * @var ModuleConfigurationInstallerInterface
+     * @var ModuleActivationServiceInterface
      */
-    private $moduleConfigurationInstaller;
+    private $moduleActivationService;
+
+    /**
+     * @var ModuleConfigurationDaoInterface
+     */
+    private $moduleConfigurationDao;
+
+    /**
+     * @var ShopConfigurationDaoInterface
+     */
+    private $shopConfigurationDao;
+
+    /**
+     * @var ModuleStateServiceInterface
+     */
+    private $moduleStateService;
 
     /**
      * ModuleInstaller constructor.
-     * @param ModuleFilesInstallerInterface         $moduleFilesInstaller
-     * @param ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
+     * @param ModuleInstallerInterface $bootstrapModuleInstaller
+     * @param ModuleActivationServiceInterface $moduleActivationService
+     * @param ModuleConfigurationDaoInterface $moduleConfigurationDao
+     * @param ShopConfigurationDaoInterface $shopConfigurationDao
+     * @param ModuleStateServiceInterface $moduleStateService
      */
     public function __construct(
-        ModuleFilesInstallerInterface $moduleFilesInstaller,
-        ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
+        ModuleInstallerInterface $bootstrapModuleInstaller,
+        ModuleActivationServiceInterface $moduleActivationService,
+        ModuleConfigurationDaoInterface $moduleConfigurationDao,
+        ShopConfigurationDaoInterface $shopConfigurationDao,
+        ModuleStateServiceInterface $moduleStateService
     ) {
-        $this->moduleFilesInstaller = $moduleFilesInstaller;
-        $this->moduleConfigurationInstaller = $moduleConfigurationInstaller;
+        $this->bootstrapModuleInstaller = $bootstrapModuleInstaller;
+        $this->moduleActivationService = $moduleActivationService;
+        $this->moduleConfigurationDao = $moduleConfigurationDao;
+        $this->shopConfigurationDao = $shopConfigurationDao;
+        $this->moduleStateService = $moduleStateService;
     }
 
     /**
      * @param OxidEshopPackage $package
      */
-    public function install(OxidEshopPackage $package)
+    public function install(OxidEshopPackage $package): void
     {
-        $this->moduleFilesInstaller->install($package);
-        $this->moduleConfigurationInstaller->install($package->getPackageSourcePath(), $package->getTargetDirectory());
+        $this->bootstrapModuleInstaller->install($package);
     }
 
     /**
      * @param OxidEshopPackage $package
+     *
+     * @throws ModuleSetupException
+     */
+    public function uninstall(OxidEshopPackage $package): void
+    {
+        $moduleConfiguration = $this->moduleConfigurationDao->get($package->getPackagePath());
+        $this->deactivateModule($moduleConfiguration->getId());
+
+        $this->bootstrapModuleInstaller->uninstall($package);
+    }
+
+    /**
+     * @param OxidEshopPackage $package
+     *
      * @return bool
      */
     public function isInstalled(OxidEshopPackage $package): bool
     {
-        return $this->moduleFilesInstaller->isInstalled($package)
-            && $this->moduleConfigurationInstaller->isInstalled($package->getPackageSourcePath());
+        return $this->bootstrapModuleInstaller->isInstalled($package);
+    }
+
+    /**
+     * @param string $moduleId
+     *
+     * @throws ModuleSetupException
+     */
+    private function deactivateModule(string $moduleId): void
+    {
+        foreach ($this->shopConfigurationDao->getAll() as $shopId => $shopConfiguration) {
+            if (
+                $shopConfiguration->hasModuleConfiguration($moduleId)
+                && $this->moduleStateService->isActive($moduleId, $shopId)
+            ) {
+                $this->moduleActivationService->deactivate($moduleId, $shopId);
+            }
+        }
     }
 }

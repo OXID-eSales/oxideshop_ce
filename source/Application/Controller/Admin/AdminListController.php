@@ -14,6 +14,7 @@ use stdClass;
 use oxList;
 use oxBase;
 use oxI18n;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Admin selectlist list manager.
@@ -154,8 +155,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Viewable list size getter
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewListSize" in next major
      */
-    protected function _getViewListSize()
+    protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_iViewListSize) {
             $config = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -189,8 +191,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Viewable list size getter (used in list_*.php views)
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUserDefListSize" in next major
      */
-    protected function _getUserDefListSize()
+    protected function _getUserDefListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->_iViewListSize) {
             if (!($viewListSize = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('viewListSize'))) {
@@ -250,10 +253,11 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Calculates list items count
      *
      * @param string $sql SQL query used co select list items
+     * @deprecated underscore prefix violates PSR12, will be renamed to "calcListItemsCount" in next major
      */
-    protected function _calcListItemsCount($sql)
+    protected function _calcListItemsCount($sql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
 
         // count SQL
         $sql = $stringModifier->preg_replace('/select .* from/i', 'select count(*) from ', $sql);
@@ -273,8 +277,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Set current list position
      *
      * @param string $page jump page string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setCurrentListPosition" in next major
      */
-    protected function _setCurrentListPosition($page = null)
+    protected function _setCurrentListPosition($page = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $adminListSize = $this->_getViewListSize();
 
@@ -297,8 +302,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $query sql string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareOrderByQuery" in next major
      */
-    protected function _prepareOrderByQuery($query = null)
+    protected function _prepareOrderByQuery($query = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // sorting
         $sortFields = $this->getListSorting();
@@ -341,8 +347,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param object $listObject list main object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
-    protected function _buildSelectString($listObject = null)
+    protected function _buildSelectString($listObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $listObject !== null ? $listObject->buildSelectString(null) : "";
     }
@@ -356,10 +363,11 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fieldValue Filters
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processFilter" in next major
      */
-    protected function _processFilter($fieldValue)
+    protected function _processFilter($fieldValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
 
         //removing % symbols
         $fieldValue = $stringModifier->preg_replace("/^%|%$/", "", trim($fieldValue));
@@ -374,8 +382,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param bool   $isSearchValue filter value type, true means surrount search key with '%'
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildFilter" in next major
      */
-    protected function _buildFilter($value, $isSearchValue)
+    protected function _buildFilter($value, $isSearchValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($isSearchValue) {
             //is search string, using LIKE
@@ -394,10 +403,11 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fieldValue filter value
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isSearchValue" in next major
      */
-    protected function _isSearchValue($fieldValue)
+    protected function _isSearchValue($fieldValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (getStr()->preg_match('/^%/', $fieldValue) && getStr()->preg_match('/%$/', $fieldValue));
+        return (Str::getStr()->preg_match('/^%/', $fieldValue) && Str::getStr()->preg_match('/%$/', $fieldValue));
     }
 
     /**
@@ -409,8 +419,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fullQuery  SQL query string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
-    protected function _prepareWhereQuery($whereQuery, $fullQuery)
+    protected function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($whereQuery) && count($whereQuery)) {
             $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
@@ -468,8 +479,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $query SQL select to change
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "changeselect" in next major
      */
-    protected function _changeselect($query)
+    protected function _changeselect($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $query;
     }
@@ -522,8 +534,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fieldType Field type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "convertToDBDate" in next major
      */
-    protected function _convertToDBDate($value, $fieldType)
+    protected function _convertToDBDate($value, $fieldType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $convertedObject = new \OxidEsales\Eshop\Core\Field();
         $convertedObject->setValue($value);
@@ -554,8 +567,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $date searched date
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "convertDate" in next major
      */
-    protected function _convertDate($date)
+    protected function _convertDate($date) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // regexps to validate input
         $datePatterns = [
@@ -575,7 +589,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
         // looking for date field
         $dateMatches = [];
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
         foreach ($datePatterns as $pattern => $type) {
             if ($stringModifier->preg_match($pattern, $date, $dateMatches)) {
                 $date = $dateMatches[$dateFormats[$type][0]] . "-" . $dateMatches[$dateFormats[$type][1]];
@@ -592,14 +606,15 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $fullDate searched date
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "convertTime" in next major
      */
-    protected function _convertTime($fullDate)
+    protected function _convertTime($fullDate) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $date = substr($fullDate, 0, 10);
         $convertedObject = new \OxidEsales\Eshop\Core\Field();
         $convertedObject->setValue($date);
         \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($convertedObject, true);
-        $stringModifier = getStr();
+        $stringModifier = Str::getStr();
 
         // looking for time field
         $time = substr($fullDate, 11);
@@ -630,8 +645,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
 
     /**
      * Set parameters needed for list navigation
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setListNavigationParams" in next major
      */
-    protected function _setListNavigationParams()
+    protected function _setListNavigationParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // list navigation
         $showNavigation = false;
@@ -715,8 +731,9 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      * Sets-up navigation parameters
      *
      * @param string $node active view id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setupNavigation" in next major
      */
-    protected function _setupNavigation($node)
+    protected function _setupNavigation($node) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // navigation according to class
         if ($node) {

@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
  */
 class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 {
-    const SERVICE_FILE_NAME = 'services.yaml';
+    private const SERVICE_FILE_NAME = 'services.yaml';
 
     /**
      * @var ProjectYamlDaoInterface

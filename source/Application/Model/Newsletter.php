@@ -15,7 +15,6 @@ use oxDb;
  * Newsletter manager.
  * Performs creation of newsletter text, assign newsletter to user groups,
  * deletes and etc.
- *
  */
 class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -182,8 +181,9 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * this user, generates HTML and plaintext format newsletters.
      *
      * @param bool $blPerfLoadAktion perform option load actions
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setParams" in next major
      */
-    protected function _setParams($blPerfLoadAktion = false)
+    protected function _setParams($blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -214,8 +214,9 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Creates oxuser object (user ID passed to method),
      *
      * @param string $sUserid User ID or OBJECT
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setUser" in next major
      */
-    protected function _setUser($sUserid)
+    protected function _setUser($sUserid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_string($sUserid)) {
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -233,8 +234,9 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\Eshop\Core\Controller\BaseController $oView            view object to store view data
      * @param bool                                             $blPerfLoadAktion perform option load actions
+     * @deprecated underscore prefix violates PSR12, will be renamed to "assignProducts" in next major
      */
-    protected function _assignProducts($oView, $blPerfLoadAktion = false)
+    protected function _assignProducts($oView, $blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($blPerfLoadAktion) {
             $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -274,8 +276,9 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param int    $iDataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ('oxtemplate' === $sFieldName || 'oxplaintemplate' === $sFieldName) {
             $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;

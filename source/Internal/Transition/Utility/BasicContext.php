@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
@@ -20,11 +21,9 @@ use Webmozart\PathUtil\Path;
  */
 class BasicContext implements BasicContextInterface
 {
-    const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
-
-    const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
-
-    const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
+    public const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
+    public const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
+    public const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
     /**
      * @var Facts
@@ -32,12 +31,11 @@ class BasicContext implements BasicContextInterface
     private $facts;
 
     /**
-     * @todo change placement of container cache file and move logic to Facts.
      * @return string
      */
     public function getContainerCacheFilePath(): string
     {
-        return Path::join($this->getSourcePath(), 'tmp', 'container_cache.php');
+        return Path::join($this->getCacheDirectory(), 'container_cache.php');
     }
 
     /**
@@ -114,17 +112,6 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
-     * @return Facts
-     */
-    private function getFacts(): Facts
-    {
-        if ($this->facts === null) {
-            $this->facts = new Facts();
-        }
-        return $this->facts;
-    }
-
-    /**
      * @return array
      */
     public function getAllShopIds(): array
@@ -180,5 +167,21 @@ class BasicContext implements BasicContextInterface
     public function getConfigTableName(): string
     {
         return 'oxconfig';
+    }
+
+    private function getCacheDirectory(): string
+    {
+        return (new ConfigFile())->getVar('sCompileDir');
+    }
+
+    /**
+     * @return Facts
+     */
+    private function getFacts(): Facts
+    {
+        if ($this->facts === null) {
+            $this->facts = new Facts();
+        }
+        return $this->facts;
     }
 }

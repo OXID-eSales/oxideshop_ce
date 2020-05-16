@@ -30,7 +30,7 @@ class PaymentHelper2 extends oxPayment
 
 class PaymentTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         PaymentHelper2::$dBasketPrice = null;
@@ -41,7 +41,7 @@ class PaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $sDelete = "Delete from oxuserpayments where oxuserid = '_testOxId'";
         oxDb::getDb()->Execute($sDelete);
@@ -84,7 +84,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $oPaymentList = $oPayment->getPaymentList();
 
-        $this->assertEquals(4, count($oPaymentList));
+        $this->assertEquals(3, count($oPaymentList));
     }
 
     /**
@@ -119,7 +119,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $iCnt = $oPayment->getPaymentCnt();
 
-        $this->assertEquals(4, $iCnt);
+        $this->assertEquals(3, $iCnt);
     }
 
     public function testGetAllSets()
@@ -148,8 +148,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $aAllSets = $oPayment->getAllSets();
         $aResultSets = array_keys($aAllSets);
-        $aSetsIds = array('1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751', 'oxidstandard');
-        sort($aResultSets);
+        $aSetsIds = array('oxidstandard');
 
         $this->assertEquals($aSetsIds, $aResultSets);
     }
@@ -180,7 +179,7 @@ class PaymentTest extends \OxidTestCase
         $oPayment->setUser($oUser);
         $iCnt = $oPayment->getAllSetsCnt();
 
-        $this->assertEquals(3, $iCnt);
+        $this->assertEquals(1, $iCnt);
     }
 
     public function testGetEmptyPayment()
@@ -401,13 +400,6 @@ class PaymentTest extends \OxidTestCase
         $this->assertEquals('testId', $oPayment->getCheckedPaymentId());
     }
 
-    public function testGetCreditYears()
-    {
-        $oPayment = $this->getProxyClass("payment");
-
-        $this->assertEquals(range(date('Y'), date('Y') + 10), $oPayment->getCreditYears());
-    }
-
     /*
      * Check if payment validation uses basket price getted from oxBasket::getPriceForPayment()
      * (M:1145)
@@ -461,146 +453,6 @@ class PaymentTest extends \OxidTestCase
         $oPayment->validatePayment();
 
         $this->assertEquals('newShipping', $oBasket->getShippingId());
-    }
-
-    public function testFilterDynDataNotFiltered()
-    {
-        $oSubj = $this->getProxyClass("payment");
-        $this->setConfigParam("blStoreCreditCardInfo", 1);
-
-        $sTNumber = "tstNumber";
-        $sTName = "tstName";
-        $sTMonth = "tstMonth";
-        $sTYear = "tstYEar";
-        $sTProof = "tstProof";
-        $sTVal = "testVal";
-
-        $aDynData = array("testKey"  => $sTVal,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
-        );
-
-        $this->setRequestParameter("dynvalue", $aDynData);
-
-
-        $_REQUEST["dynvalue"]["testKey"] = $sTVal;
-        $_REQUEST["dynvalue"]["kknumber"] = $sTNumber;
-        $_REQUEST["dynvalue"]["kkname"] = $sTName;
-        $_REQUEST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_REQUEST["dynvalue"]["kkyear"] = $sTYear;
-        $_REQUEST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_POST["dynvalue"]["testKey"] = $sTVal;
-        $_POST["dynvalue"]["kknumber"] = $sTNumber;
-        $_POST["dynvalue"]["kkname"] = $sTName;
-        $_POST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_POST["dynvalue"]["kkyear"] = $sTYear;
-        $_POST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_GET["dynvalue"]["testKey"] = $sTVal;
-        $_GET["dynvalue"]["kknumber"] = $sTNumber;
-        $_GET["dynvalue"]["kkname"] = $sTName;
-        $_GET["dynvalue"]["kkmonth"] = $sTMonth;
-        $_GET["dynvalue"]["kkyear"] = $sTYear;
-        $_GET["dynvalue"]["kkpruef"] = $sTProof;
-
-        $oSubj->UNITfilterDynData();
-
-        $aDynData = $this->getRequestParameter("dynvalue");
-
-        $this->assertEquals($aDynData["kknumber"], $sTNumber);
-        $this->assertEquals($_REQUEST["dynvalue"]["kknumber"], $sTNumber);
-        $this->assertEquals($_POST["dynvalue"]["kknumber"], $sTNumber);
-        $this->assertEquals($_GET["dynvalue"]["kknumber"], $sTNumber);
-    }
-
-    public function testFilterDynDataFiltered()
-    {
-        $oSubj = $this->getProxyClass("payment");
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
-
-        $sTNumber = "tstNumber";
-        $sTName = "tstName";
-        $sTMonth = "tstMonth";
-        $sTYear = "tstYEar";
-        $sTProof = "tstProof";
-        $sTVal = "testVal";
-
-        $aDynData = array("testKey"  => $sTVal,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
-        );
-
-        $this->setRequestParameter("dynvalue", $aDynData);
-
-        $_REQUEST["dynvalue"]["testKey"] = $sTVal;
-        $_REQUEST["dynvalue"]["kknumber"] = $sTNumber;
-        $_REQUEST["dynvalue"]["kkname"] = $sTName;
-        $_REQUEST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_REQUEST["dynvalue"]["kkyear"] = $sTYear;
-        $_REQUEST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_POST["dynvalue"]["testKey"] = $sTVal;
-        $_POST["dynvalue"]["kknumber"] = $sTNumber;
-        $_POST["dynvalue"]["kkname"] = $sTName;
-        $_POST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_POST["dynvalue"]["kkyear"] = $sTYear;
-        $_POST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_GET["dynvalue"]["testKey"] = $sTVal;
-        $_GET["dynvalue"]["kknumber"] = $sTNumber;
-        $_GET["dynvalue"]["kkname"] = $sTName;
-        $_GET["dynvalue"]["kkmonth"] = $sTMonth;
-        $_GET["dynvalue"]["kkyear"] = $sTYear;
-        $_GET["dynvalue"]["kkpruef"] = $sTProof;
-
-        $oSubj->UNITfilterDynData();
-
-        $aDynData = $this->getRequestParameter("dynvalue");
-
-        //$this->assertEquals($aDynData["testKey"], $sTVal);
-        //$this->assertNull($aDynData["kknumber"]);
-        //$this->assertNull($aDynData["kkname"]);
-        //$this->assertNull($aDynData["kkmonth"]);
-        //$this->assertNull($aDynData["kkyear"]);
-        //$this->assertNull($aDynData["kkpruef"]);
-
-        $this->assertNull($this->getSessionParam("kknumber"));
-        $this->assertNull($this->getSessionParam("kkname"));
-        $this->assertNull($this->getSessionParam("kkmonth"));
-        $this->assertNull($this->getSessionParam("kkyear"));
-        $this->assertNull($this->getSessionParam("kkpruef"));
-
-        $this->assertFalse($this->_checkInArrayRecursive($sTNumber, $_REQUEST));
-        $this->assertFalse($this->_checkInArrayRecursive($sTNumber, $_POST));
-        $this->assertFalse($this->_checkInArrayRecursive($sTNumber, $_GET));
-        if (is_array($_SERVER)) {
-            $this->assertFalse($this->_checkInArrayRecursive($sTNumber, $_SERVER));
-        }
-
-        $this->assertNull($_REQUEST["dynvalue[kknumber]"]);
-        $this->assertNull($_REQUEST["dynvalue[kkname]"]);
-        $this->assertNull($_REQUEST["dynvalue[kkmonth]"]);
-        $this->assertNull($_REQUEST["dynvalue[kkyear]"]);
-        $this->assertNull($_REQUEST["dynvalue[kkpruef]"]);
-
-        $this->assertNull($_POST["dynvalue[kknumber]"]);
-        $this->assertNull($_POST["dynvalue[kkname]"]);
-        $this->assertNull($_POST["dynvalue[kkmonth]"]);
-        $this->assertNull($_POST["dynvalue[kkyear]"]);
-        $this->assertNull($_POST["dynvalue[kkpruef]"]);
-
-        $this->assertNull($_GET["dynvalue[kknumber]"]);
-        $this->assertNull($_GET["dynvalue[kkname]"]);
-        $this->assertNull($_GET["dynvalue[kkmonth]"]);
-        $this->assertNull($_GET["dynvalue[kkyear]"]);
-        $this->assertNull($_GET["dynvalue[kkpruef]"]);
     }
 
     protected function _checkInArrayRecursive($needle, $haystack)
@@ -739,207 +591,6 @@ class PaymentTest extends \OxidTestCase
         $oPayment = oxNew('Payment');
 
         $this->assertEquals(1, count($oPayment->getBreadCrumb()));
-    }
-
-    /**
-     * Testing Payment::getDynDataFiltered() against false on creation
-     *
-     * @return null
-     */
-    public function testGetDynDataFilteredFalse()
-    {
-        $oPayment = oxNew('Payment');
-
-        $this->assertFalse($oPayment->getDynDataFiltered());
-    }
-
-    /**
-     * Testing Payment::getDynDataFiltered() against false after payment->init()
-     * when credit card fields are not populated
-     */
-    public function testGetDynDataFilteredFalseInit()
-    {
-        $oPayment = oxNew('Payment');
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
-        $oPayment->init();
-        $this->assertFalse($oPayment->getDynDataFiltered());
-    }
-
-    /**
-     * Testing Payment::getDynDataFiltered() against true after payment->init()
-     * when credit card fields are populated with session data
-     */
-    public function testGetDynDataFilteredTrueSessDataInit()
-    {
-        $oPayment = oxNew('Payment');
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
-        $sTNumber = "tstNumber";
-        $sTName = "tstName";
-        $sTMonth = "tstMonth";
-        $sTYear = "tstYEar";
-        $sTProof = "tstProof";
-        $sTType = "tstType";
-
-        $aDynData = array("kktype"   => $sTType,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
-        );
-
-        $this->setSessionParam("dynvalue", $aDynData);
-
-        $oPayment->init();
-        $this->assertTrue($oPayment->getDynDataFiltered());
-    }
-
-    /**
-     * Testing Payment::getDynDataFiltered() against true after payment->init()
-     * when credit card fields are populated with request data
-     *
-     * @return null
-     */
-    public function testGetDynDataFilteredTrueReqDataInit()
-    {
-        $oPayment = oxNew('Payment');
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
-        //TODO populate session and request variables with data
-        $sTNumber = "tstNumber";
-        $sTName = "tstName";
-        $sTMonth = "tstMonth";
-        $sTYear = "tstYEar";
-        $sTProof = "tstProof";
-        $sTType = "tstType";
-
-
-        $_REQUEST["dynvalue"]["kktype"] = $sTType;
-        $_REQUEST["dynvalue"]["kknumber"] = $sTNumber;
-        $_REQUEST["dynvalue"]["kkname"] = $sTName;
-        $_REQUEST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_REQUEST["dynvalue"]["kkyear"] = $sTYear;
-        $_REQUEST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_POST["dynvalue"]["testKey"] = $sTVal;
-        $_POST["dynvalue"]["kknumber"] = $sTNumber;
-        $_POST["dynvalue"]["kkname"] = $sTName;
-        $_POST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_POST["dynvalue"]["kkyear"] = $sTYear;
-        $_POST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_GET["dynvalue"]["testKey"] = $sTVal;
-        $_GET["dynvalue"]["kknumber"] = $sTNumber;
-        $_GET["dynvalue"]["kkname"] = $sTName;
-        $_GET["dynvalue"]["kkmonth"] = $sTMonth;
-        $_GET["dynvalue"]["kkyear"] = $sTYear;
-        $_GET["dynvalue"]["kkpruef"] = $sTProof;
-
-        $oPayment->init();
-        $this->assertTrue($oPayment->getDynDataFiltered());
-    }
-
-    /**
-     * Testing Payment::ValidatePayment() when we use creditcard payment
-     * and do not store CC data, using session saved CC entered data
-     *
-     * @return null
-     */
-    public function testValidatePayment_NoStoreCardInfoSession()
-    {
-        $oUser = oxNew('oxUser');
-        $oUser->load('oxdefaultadmin');
-
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
-        $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));
-        $oBasket->setShipping('currentShipping');
-
-        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
-
-        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser'));
-        $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-
-        $this->setRequestParameter("paymentid", 'oxidcreditcard');
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
-
-        $sTNumber = "4111111111111111";
-        $sTName = "Hans Mustermann";
-        $sTMonth = "01";
-        $sTYear = "2013";
-        $sTProof = "333";
-        $sTTtype = "vis";
-
-        $aDynData = array("kktype"   => $sTTtype,
-                          "kknumber" => $sTNumber,
-                          "kkname"   => $sTName,
-                          "kkmonth"  => $sTMonth,
-                          "kkyear"   => $sTYear,
-                          "kkpruef"  => $sTProof
-        );
-
-        $this->setSessionParam("dynvalue", $aDynData);
-        $oPayment->init();
-        $sRetVal = $oPayment->validatePayment();
-        $this->assertEquals(null, $sRetVal);
-    }
-
-    /**
-     * Testing Payment::ValidatePayment() when we use creditcard payment
-     * and do not store CC data, using CC entered data from $_REQUEST, $_POST or $_GET
-     *
-     * @return null
-     */
-    public function testValidatePayment_NoStoreCardInfoRequest()
-    {
-        $oUser = oxNew('oxUser');
-        $oUser->load('oxdefaultadmin');
-
-        $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
-        $oBasket->expects($this->any())->method('getPriceForPayment')->will($this->returnValue(100));
-        $oBasket->setShipping('currentShipping');
-
-        $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket'));
-        $session->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
-
-        $oPayment = $this->getMock(\OxidEsales\Eshop\Application\Controller\PaymentController::class, array('getUser'));
-        $oPayment->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-
-        $this->setRequestParameter("paymentid", 'oxidcreditcard');
-        $this->setConfigParam("blStoreCreditCardInfo", 0);
-
-        $sTNumber = "4111111111111111";
-        $sTName = "Hans Mustermann";
-        $sTMonth = "01";
-        $sTYear = "2013";
-        $sTProof = "333";
-        $sTTtype = "vis";
-
-        $_REQUEST["dynvalue"]["kktype"] = $sTTtype;
-        $_REQUEST["dynvalue"]["kknumber"] = $sTNumber;
-        $_REQUEST["dynvalue"]["kkname"] = $sTName;
-        $_REQUEST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_REQUEST["dynvalue"]["kkyear"] = $sTYear;
-        $_REQUEST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_POST["dynvalue"]["kktype"] = $sTTtype;
-        $_POST["dynvalue"]["kknumber"] = $sTNumber;
-        $_POST["dynvalue"]["kkname"] = $sTName;
-        $_POST["dynvalue"]["kkmonth"] = $sTMonth;
-        $_POST["dynvalue"]["kkyear"] = $sTYear;
-        $_POST["dynvalue"]["kkpruef"] = $sTProof;
-
-        $_GET["dynvalue"]["kktype"] = $sTTtype;
-        $_GET["dynvalue"]["kknumber"] = $sTNumber;
-        $_GET["dynvalue"]["kkname"] = $sTName;
-        $_GET["dynvalue"]["kkmonth"] = $sTMonth;
-        $_GET["dynvalue"]["kkyear"] = $sTYear;
-        $_GET["dynvalue"]["kkpruef"] = $sTProof;
-
-        $oPayment->init();
-        $sRetVal = $oPayment->validatePayment();
-        $this->assertEquals(null, $sRetVal);
     }
 
     /**

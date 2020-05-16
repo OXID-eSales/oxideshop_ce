@@ -19,7 +19,7 @@ class FormatCurrencyLogicTest extends UnitTestCase
     /** @var FormatCurrencyLogic */
     private $numberFormatLogic;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->numberFormatLogic = new FormatCurrencyLogic();
         parent::setUp();

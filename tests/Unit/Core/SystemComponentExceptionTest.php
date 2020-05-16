@@ -13,7 +13,7 @@ class SystemComponentExceptionTest extends \OxidTestCase
     {
         $sComponent = "a Component";
         $oTestObject = oxNew('oxSystemComponentException');
-        $this->assertContains('SystemComponentException', get_class($oTestObject));
+        $this->assertStringContainsString('SystemComponentException', get_class($oTestObject));
         $oTestObject->setComponent($sComponent);
         $this->assertEquals($sComponent, $oTestObject->getComponent());
     }
@@ -26,9 +26,9 @@ class SystemComponentExceptionTest extends \OxidTestCase
         $oTestObject = oxNew('oxSystemComponentException', $sMsg);
         $oTestObject->setComponent($sComponent);
         $sStringOut = $oTestObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains($sMsg, $sStringOut);
-        $this->assertContains('SystemComponentException', $sStringOut);
-        $this->assertContains($sComponent, $sStringOut);
+        $this->assertStringContainsString($sMsg, $sStringOut);
+        $this->assertStringContainsString('SystemComponentException', $sStringOut);
+        $this->assertStringContainsString($sComponent, $sStringOut);
     }
 
     public function testGetValues()

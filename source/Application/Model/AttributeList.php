@@ -13,7 +13,6 @@ use stdClass;
 
 /**
  * Attribute list manager.
- *
  */
 class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
@@ -57,8 +56,9 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sSelect SQL select
      *
      * @return array $aAttributes
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createAttributeListFromSql" in next major
      */
-    protected function _createAttributeListFromSql($sSelect)
+    protected function _createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sSelect);
@@ -154,7 +154,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string  $sCategoryId category Id
      * @param integer $iLang       language No
      *
-     * @return object;
+     * @return object
      */
     public function getCategoryAttributes($sCategoryId, $iLang)
     {
@@ -218,8 +218,9 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array $aParentAttributes array of parent article attributes
      *
      * @return array $aAttributes
+     * @deprecated underscore prefix violates PSR12, will be renamed to "mergeAttributes" in next major
      */
-    protected function _mergeAttributes($aAttributes, $aParentAttributes)
+    protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (count($aParentAttributes)) {
             $aAttrIds = [];

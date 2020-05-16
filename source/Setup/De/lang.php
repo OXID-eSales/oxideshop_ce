@@ -50,9 +50,6 @@ $aLang = [
 'ERROR_PASSWORD_TOO_SHORT'                      => 'Passwort zu kurz',
 'ERROR_PASSWORDS_DO_NOT_MATCH'                  => 'Passwörter stimmen nicht überein',
 'ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
-'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' => 'Die MySQL Version erfüllt nicht die Systemvoraussetzungen!',
-'ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS' => 'WARNUNG: Ein Bug in MySQL 5.6 kann zu Problemen in der OXID eShop Enterprise Edition führen. MySQL 5.6 wird daher nicht empfohlen. Siehe auch: <a href="https://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-neu-installieren/server-und-systemvoraussetzungen/systemvoraussetzungen-ee.html">Systemvoraussetzungen OXID eShop Enterprise Edition</a>.',
-
 
 'ERROR_VIEWS_CANT_CREATE'                       => 'FEHLER: Kann Views nicht erstellen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
 'ERROR_VIEWS_CANT_SELECT'                       => 'FEHLER: Kann nicht auf Views zugreifen. Bitte prüfen Sie Ihre Benutzerrechte für die Datenbank.',
@@ -64,9 +61,10 @@ $aLang = [
 
 'MOD_MOD_REWRITE'                               => 'Apache mod_rewrite Modul',
 'MOD_SERVER_PERMISSIONS'                        => 'Dateizugriffsrechte',
+'MOD_SERVER_PERMISSIONS_MISSING'                => 'Fehlende Pfade:',
+'MOD_SERVER_PERMISSIONS_NOTWRITABLE'            => 'Fehlende Schreibrechte:',
 'MOD_ALLOW_URL_FOPEN'                           => 'allow_url_fopen und fsockopen auf Port 80',
 'MOD_PHP4_COMPAT'                               => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
-'MOD_PHP_VERSION'                               => 'PHP Version 7.1 oder 7.2',
 'MOD_REQUEST_URI'                               => 'REQUEST_URI vorhanden',
 'MOD_LIB_XML2'                                  => 'LIB XML2',
 'MOD_PHP_XML'                                   => 'DOM',
@@ -75,7 +73,7 @@ $aLang = [
 'MOD_TOKENIZER'                                 => 'Tokenizer',
 'MOD_BC_MATH'                                   => 'BCMath',
 'MOD_MYSQL_CONNECT'                             => 'PDO_MySQL',
-'MOD_MYSQL_VERSION'                             => 'MySQL Version 5.5 oder 5.7',
+'MOD_MYSQL_VERSION'                             => 'MySQL Version 5.5, 5.7, 8 oder MariaDB',
 'MOD_GD_INFO'                                   => 'GDlib v2 incl. JPEG Unterstützung',
 'MOD_INI_SET'                                   => 'ini_set erlaubt',
 'MOD_REGISTER_GLOBALS'                          => 'register_globals muss ausgeschaltet sein',
@@ -153,7 +151,6 @@ $aLang = [
 
 'STEP_4_2_TITLE'                                => 'Datenbank - Tabellen erstellen ...',
 'STEP_4_2_OVERWRITE_DB'                         => 'Falls Sie dennoch installieren wollen und die alten Daten überschreiben, klicken Sie ',
-'STEP_4_2_NOT_RECOMMENDED_MYSQL_VERSION'        => 'Falls Sie dennoch installieren wollen, klicken Sie ',
 'STEP_4_2_UPDATING_DATABASE'                    => 'Datenbank erfolgreich aktualisiert. Bitte warten ...',
 
 'STEP_5_TITLE'                                  => 'OXID eShop Lizenz',

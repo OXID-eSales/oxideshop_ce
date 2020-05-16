@@ -7,11 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Database\Adapter;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\TransactionIsolationLevel;
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use ReflectionClass;
 
 /**
@@ -27,6 +30,7 @@ use ReflectionClass;
  */
 abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImplementationBaseTest
 {
+    use ContainerTrait;
 
     /**
      * The data provider for the method testGetAllForAllFetchModes.
@@ -204,7 +208,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $rows = $this->database->getAll($sql);
 
-        $this->assertInternalType('array', $rows, 'Expected an array as result!');
+        $this->assertIsArray($rows, 'Expected an array as result!');
         // sometimes the array gets filled in different order, we sort them to be sure, the content is same
         $this->assertEquals($expectedRows, $rows);
     }
@@ -263,7 +267,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $actualRows = $database->getAll($sql);
 
-        $this->assertInternalType('array', $actualRows, 'Expected an array as result!');
+        $this->assertIsArray($actualRows, 'Expected an array as result!');
         // sometimes the array gets filled in different order, we sort them to be sure, the content is same
         $this->assertSame(sort($expectedRows), sort($actualRows), $assertionMessage);
     }
@@ -495,7 +499,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         // check normal (associative array) case
         $row = $this->fetchFirstTestTableOxId();
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertSame(array(0), array_keys($row));
 
         // check numeric array case
@@ -503,27 +507,23 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $row = $this->fetchFirstTestTableOxId();
 
         // check result
-        $this->assertInternalType('array', $row);
+        $this->assertIsArray($row);
         $this->assertSame(array(0), array_keys($row));
     }
 
-    /**
-     * Test, that the set of the transaction isolation level works.
-     */
-    public function testSetTransactionIsolationLevel()
+    public function testSetTransactionIsolationLevel(): void
     {
-        $transactionIsolationLevelPre = $this->fetchTransactionIsolationLevel();
+        $connection = $this->get(Connection::class);
 
-        $expectedLevel = 'READ COMMITTED';
-        $this->database->setTransactionIsolationLevel($expectedLevel);
-        $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
+        $transactionIsolationLevelPre = $connection->getTransactionIsolation();
+
+        $expectedLevel = TransactionIsolationLevel::READ_COMMITTED;
+        $this->database->setTransactionIsolationLevel('READ COMMITTED');
+        $transactionIsolationLevel = $connection->getTransactionIsolation();
 
         $this->assertSame($expectedLevel, $transactionIsolationLevel);
 
-        $this->database->setTransactionIsolationLevel($transactionIsolationLevelPre);
-        $transactionIsolationLevel = $this->fetchTransactionIsolationLevel();
-
-        $this->assertSame($transactionIsolationLevelPre, $transactionIsolationLevel);
+        $connection->setTransactionIsolation($transactionIsolationLevelPre);
     }
 
     /**
@@ -533,7 +533,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
     {
         $result = $this->database->getCol("SELECT OXID FROM " . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(0, count($result));
     }
 
@@ -546,7 +546,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(3, count($result));
         $this->assertSame(array(self::FIXTURE_OXUSERID_1, self::FIXTURE_OXUSERID_2, self::FIXTURE_OXUSERID_3), $result);
     }
@@ -562,7 +562,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(3, count($result));
         $this->assertSame(array(self::FIXTURE_OXUSERID_1, self::FIXTURE_OXUSERID_2, self::FIXTURE_OXUSERID_3), $result);
     }
@@ -576,7 +576,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getCol("SELECT OXUSERID FROM " . self::TABLE_NAME . " WHERE OXUSERID LIKE ? ", array('%2'));
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertSame(1, count($result));
         $this->assertSame(array(self::FIXTURE_OXUSERID_2), $result);
     }
@@ -1019,7 +1019,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
          */
         $result = $this->database->getRow('INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')");
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEmpty($result);
 
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\DatabaseErrorException::class;
@@ -1035,7 +1035,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 
@@ -1048,7 +1048,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
         $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME . ' WHERE oxid = ?', array(self::FIXTURE_OXID_2));
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEquals(array(self::FIXTURE_OXID_2, self::FIXTURE_OXUSERID_2), $result);
     }
 
@@ -1130,7 +1130,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
         $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 
@@ -1154,10 +1154,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
     }
 
-    /**
-     * Test, that the method 'MetaColumns' works as expected.
-     */
-    public function testMetaColumns()
+    public function testMetaColumnsMethod()
     {
         $metaColumnsTestTable = self::TABLE_NAME . '_testmetacolumns';
         $this->createTableForTestMetaColumns($metaColumnsTestTable);
@@ -1233,7 +1230,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         return array(
             array(
                 'name'           => 'OXINT',
-                'max_length'     => '11',
                 'type'           => 'int',
                 'not_null'       => true,
                 'primary_key'    => true,
@@ -1252,7 +1248,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'auto_increment' => false,
                 'binary'         => false,
                 'unsigned'       => false,
-                'has_default'    => false,
                 'comment'        => 'a column with type CHAR',
                 'characterSet'   => 'utf8',
                 'collation'      => 'utf8_general_ci'
@@ -1265,7 +1260,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
                 'auto_increment' => false,
                 'binary'         => false,
                 'unsigned'       => false,
-                'has_default'    => false,
                 'comment'        => 'a column of type TIME',
             ),
             array(
@@ -1345,25 +1339,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
             )
         );
     }
-
-    /**
-     * Fetch the transaction isolation level.
-     *
-     * @return string The transaction isolation level.
-     */
-    protected function fetchTransactionIsolationLevel()
-    {
-        $sql = "SELECT @@tx_isolation;";
-
-        $masterDb = oxDb::getMaster();
-        $resultSet = $masterDb->select($sql, array());
-
-        return str_replace('-', ' ', $resultSet->fields[0]);
-    }
-
-    /**
-     * Helper methods used in this class only
-     */
 
     /**
      * Assure, that the table oxdoctrinetest has only the given oxId.

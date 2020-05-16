@@ -16,7 +16,7 @@ class LanguageexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->testObject = oxNew(\OxidEsales\Eshop\Core\Exception\LanguageException::class, $this->message);
@@ -33,9 +33,9 @@ class LanguageexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testGetString()
     {
         $sStringOut = $this->testObject->getString();
-        $this->assertContains($this->message, $sStringOut); // Message
-        $this->assertContains('LanguageException', $sStringOut); // Exception class name
-        $this->assertContains($this->languageConstant, $sStringOut); // Language constant
+        $this->assertStringContainsString($this->message, $sStringOut); // Message
+        $this->assertStringContainsString('LanguageException', $sStringOut); // Exception class name
+        $this->assertStringContainsString($this->languageConstant, $sStringOut); // Language constant
     }
 
     public function testGetValues()

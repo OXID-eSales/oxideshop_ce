@@ -29,8 +29,6 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
  */
 class Config extends \OxidEsales\Eshop\Core\Base
 {
-    const DEFAULT_CONFIG_KEY = 'fq45QS09_fqyx09239QQ';
-
     // this column of params are defined in config.inc.php file,
     // so for backwards compatibility. names starts without underscore
 
@@ -144,6 +142,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @var bool
      */
     protected $blNativeImages = true;
+
+    /**
+     * Only for multishops
+     * Unload news from all shops in multishop.
+     * If $blOtherShopNews is set to true the multishop does not load news from all shops,
+     * This is applicable for depending on mall
+     * if mall mode is available.
+     *
+     * @var bool
+     */
+    protected $blDoNotLoadAllShopNews = true;
 
     /**
      * Names of tables which are multi-shop
@@ -295,9 +304,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected $_blInit = false;
 
-    /** @var string Default configuration encryption key for database values. */
-    protected $sConfigKey = self::DEFAULT_CONFIG_KEY;
-
     /**
      * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
      *
@@ -354,8 +360,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Parse SEO url parameters.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processSeoCall" in next major
      */
-    protected function _processSeoCall()
+    protected function _processSeoCall() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // TODO: refactor shop bootstrap and parse url params as soon as possible
         if (isSearchEngineUrl()) {
@@ -367,17 +374,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Initialize configuration variables
      *
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseException
-     * @param int $shopID
+     * @param int $shopId
      */
-    public function initVars($shopID)
+    public function initVars($shopId)
     {
         $this->_loadVarsFromFile();
 
         $this->_setDefaults();
 
-        $configLoaded = $this->_loadVarsFromDb($shopID);
+        $configLoaded = $this->_loadVarsFromDb($shopId);
         // loading shop config
-        if (empty($shopID) || !$configLoaded) {
+        if (empty($shopId) || !$configLoaded) {
             // if no config values where loaded (some problems with DB), throwing an exception
             $exception = new \OxidEsales\Eshop\Core\Exception\DatabaseException(
                 "Unable to load shop config values from database",
@@ -388,15 +395,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         // loading theme config options
-        $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
 
         // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
         if ($this->getConfigParam('sCustomTheme')) {
-            $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+            $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
         }
 
         // loading modules config
-        $this->_loadVarsFromDb($shopID, null, Config::OXMODULE_MODULE_PREFIX);
+        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX);
 
         $this->loadAdditionalConfiguration();
 
@@ -466,8 +473,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Loads vars from default config file
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadVarsFromFile" in next major
      */
-    protected function _loadVarsFromFile()
+    protected function _loadVarsFromFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //config variables from config.inc.php takes priority over the ones loaded from db
         include getShopBasePath() . '/config.inc.php';
@@ -485,8 +493,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Set important defaults.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaults" in next major
      */
-    protected function _setDefaults()
+    protected function _setDefaults() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setConfigParam('sTheme', 'azure');
 
@@ -528,8 +537,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Loads vars from custom config file
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadCustomConfig" in next major
      */
-    protected function _loadCustomConfig()
+    protected function _loadCustomConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $custConfig = getShopBasePath() . '/cust_config.inc.php';
         if (is_readable($custConfig)) {
@@ -540,21 +550,22 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Load config values from DB
      *
-     * @param string $shopID   shop ID to load parameters
+     * @param int    $shopId   shop ID to load parameters
      * @param array  $onlyVars array of params to load (optional)
      * @param string $module   module vars to load, empty for base options
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadVarsFromDb" in next major
      */
-    protected function _loadVarsFromDb($shopID, $onlyVars = null, $module = '')
+    protected function _loadVarsFromDb($shopId, $onlyVars = null, $module = '') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $params = [
-          ':oxshopid' => $shopID
+          ':oxshopid' => $shopId
         ];
         $select = "select
-                        oxvarname, oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue
+                        oxvarname, oxvartype, oxvarvalue
                     from oxconfig
                     where oxshopid = :oxshopid and ";
 
@@ -591,8 +602,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param array $vars
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getConfigParamsSelectSnippet" in next major
      */
-    protected function _getConfigParamsSelectSnippet($vars)
+    protected function _getConfigParamsSelectSnippet($vars) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $select = '';
         if (is_array($vars) && !empty($vars)) {
@@ -614,8 +626,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $varVal  serialized by type value
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setConfVarFromDb" in next major
      */
-    protected function _setConfVarFromDb($varName, $varType, $varVal)
+    protected function _setConfVarFromDb($varName, $varType, $varVal) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             ($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
@@ -781,7 +794,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Active Shop id setter
      *
-     * @param string $shopId shop id
+     * @param int    $shopId shop id
      */
     public function setShopId($shopId)
     {
@@ -822,8 +835,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Checks if WEB session is SSL.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkSsl" in next major
      */
-    protected function _checkSsl()
+    protected function _checkSsl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsServer = Registry::getUtilsServer();
         $serverVars = $myUtilsServer->getServerVar();
@@ -1091,7 +1105,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns active shop currency object.
      *
-     * @return object
+     * @return stdClass
      */
     public function getActShopCurrencyObject()
     {
@@ -1638,7 +1652,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param integer $currency Active currency number (default null)
      *
-     * @return array
+     * @return stdClass[]
      */
     public function getCurrencyArray($currency = null)
     {
@@ -1689,7 +1703,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $name Name of active currency
      *
-     * @return object
+     * @return stdClass|null
      */
     public function getCurrencyObject($name)
     {
@@ -1806,7 +1820,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $varType Variable Type
      * @param string $varName Variable name
      * @param mixed  $varVal  Variable value (can be string, integer or array)
-     * @param string $shopId  Shop ID, default is current shop
+     * @param int    $shopId  Shop ID, default is current shop
      * @param string $module  Module name (empty for base options)
      */
     public function saveShopConfVar($varType, $varName, $varVal, $shopId = null, $module = '')
@@ -1852,7 +1866,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         ]);
 
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, ENCODE(:value, :key))";
+                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, :value)";
         $db->execute($query, [
             ':oxid' => $newOXID,
             ':oxshopid' => $shopId,
@@ -1860,7 +1874,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             ':oxvarname' => $varName,
             ':oxvartype' => $varType,
             ':value' => $value ?? '',
-            ':key' => $this->getConfigParam('sConfigKey'),
         ]);
 
         $this->informServicesAfterConfigurationChanged($varName, $shopId, $module);
@@ -1870,7 +1883,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Retrieves shop configuration parameters from DB.
      *
      * @param string $varName Variable name
-     * @param string $shopId  Shop ID
+     * @param int    $shopId  Shop ID
      * @param string $module  module identifier
      *
      * @return object - raw configuration value in DB
@@ -1890,7 +1903,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $query = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname";
+        $query = "select oxvartype, oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname";
         $rs = $db->select($query, [
             ':oxshopid' => $shopId,
             ':oxmodule' => $module,
@@ -1924,18 +1937,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         return $value;
-    }
-
-    /**
-     * Returns decode query part user to decode config field value
-     *
-     * @param string $fieldName field name, default "oxvarvalue" [optional]
-     *
-     * @return string
-     */
-    public function getDecodeValueQuery($fieldName = "oxvarvalue")
-    {
-        return " DECODE( {$fieldName}, '" . $this->getConfigParam('sConfigKey') . "') ";
     }
 
     /**
@@ -2224,8 +2225,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * So just go straight and call the ExceptionHandler.
      *
      * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
+     * @deprecated underscore prefix violates PSR12, will be renamed to "handleDbConnectionException" in next major
      */
-    protected function _handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
+    protected function _handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $exceptionHandler = $this->getExceptionHandler();
         $exceptionHandler->handleDatabaseException($exception);
@@ -2235,8 +2237,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Redirect to start page and display the error
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
+     * @deprecated underscore prefix violates PSR12, will be renamed to "handleCookieException" in next major
      */
-    protected function _handleCookieException($ex)
+    protected function _handleCookieException($ex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_processSeoCall();
 
@@ -2276,11 +2279,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns whether given shop id is valid.
      *
-     * @param string $shopId
+     * @param int    $shopId
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isValidShopId" in next major
      */
-    protected function _isValidShopId($shopId)
+    protected function _isValidShopId($shopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return !empty($shopId);
     }

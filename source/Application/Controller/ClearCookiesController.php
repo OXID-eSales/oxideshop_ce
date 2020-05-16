@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use \OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AllCookiesRemovedEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AllCookiesRemovedEvent;
 
 /**
  * CMS - loads pages and displays it
@@ -40,8 +40,9 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
 
     /**
      * Clears all cookies
+     * @deprecated underscore prefix violates PSR12, will be renamed to "removeCookies" in next major
      */
-    protected function _removeCookies()
+    protected function _removeCookies() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oUtilsServer = Registry::getUtilsServer();
         if (isset($_SERVER['HTTP_COOKIE'])) {

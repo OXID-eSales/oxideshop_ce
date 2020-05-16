@@ -274,7 +274,7 @@ class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
 
         $rows = $resultSet->fetchAll();
 
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertEmpty($rows);
     }
 
@@ -288,7 +288,7 @@ class ResultSetTest extends DatabaseInterfaceImplementationBaseTest
         $this->assertSame(array(self::FIXTURE_OXID_1), $resultSet->fields);
         $rows = $resultSet->fetchAll();
 
-        $this->assertInternalType('array', $rows);
+        $this->assertIsArray($rows);
         $this->assertNotEmpty($rows);
         $this->assertSame(3, count($rows));
         $this->assertSame(self::FIXTURE_OXID_1, $rows[0][0]);

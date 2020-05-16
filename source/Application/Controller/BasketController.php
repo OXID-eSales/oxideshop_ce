@@ -121,7 +121,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Return the current articles from the basket
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getBasketArticles()
     {
@@ -141,7 +141,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * return the basket articles
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getFirstBasketProduct()
     {
@@ -160,7 +160,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * return the similar articles
      *
-     * @return object | bool
+     * @return object|bool
      */
     public function getBasketSimilarList()
     {
@@ -408,8 +408,9 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      * @param array                                      $aWrapping
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setWrappingInfo" in next major
      */
-    protected function _setWrappingInfo($oBasket, $aWrapping)
+    protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_array($aWrapping) && count($aWrapping)) {
             foreach ($oBasket->getContents() as $sKey => $oBasketItem) {

@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Payment list manager.
- *
  */
 class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
@@ -53,8 +52,9 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterSelect" in next major
      */
-    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser)
+    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;

@@ -22,21 +22,21 @@ class ShopLicenseTest extends \OxidTestCase
      *
      * @return null|void
      */
-    public function setUp()
+    public function setup(): void
     {
         $this->getSession()->setVariable("malladmin", true);
 
-        return parent::setUp();
+        parent::setUp();
     }
 
     /**
      * Unsets malladmin parameter
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->getSession()->setVariable("malladmin", null);
 
-        return parent::tearDown();
+        parent::tearDown();
     }
 
     /**

@@ -6,16 +6,15 @@ notifications:
   email: false
 
 php:
-  - "7.1"
-  - "7.2"
   - "7.3"
-  - "7.4snapshot"
+  - "7.4"
 
 matrix:
   fast_finish: true
-  allow_failures:
-    - php: "7.3"
-    - php: "7.4snapshot"
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 
 # Numeric values of error reporting levels:
 # 32767: E_ALL
@@ -27,7 +26,7 @@ matrix:
 #
 # Keep TRAVIS_ERROR_LEVEL in sync with the value in vendor/oxid-esales/testing-library/base.php
 #
-env: TRAVIS_ERROR_LEVEL=32767 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/" OXID_ESHOP_CS_THRESHOLD=1242
+env: TRAVIS_ERROR_LEVEL=32767 OX_BASE_PATH="$TRAVIS_BUILD_DIR/source/"
 
 services: mysql
 
@@ -67,8 +66,8 @@ before_script:
   - chmod -R 777 "${TRAVIS_BUILD_DIR}/source/log"
 
   # composer initiation
-  - SHOP_PATH='source' SHOP_TESTS_PATH='tests' MODULES_PATH='' composer install
+  - COMPOSER_MEMORY_LIMIT=-1 SHOP_PATH='source' SHOP_TESTS_PATH='tests' MODULES_PATH='' composer install
 
 script:
-  - php vendor/bin/oe-eshop-phpcs_with_thresholds
+  - php vendor/bin/phpcs
   - php vendor/bin/runtests

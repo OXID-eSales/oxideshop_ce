@@ -118,7 +118,7 @@ class DeliveryMainTest extends \OxidTestCase
         $oType->sDesc = $oLang->translateString("test", $iLang);
         $aDelTypes['t'] = $oType;
 
-        $this->assertInternalType('array', $aDelTypes);
+        $this->assertIsArray($aDelTypes);
         $aDelTypeKeys = array('a', 's', 'w', 'p', 't');
         foreach ($aDelTypeKeys as $sDelTypeKey) {
             $this->assertArrayHasKey($sDelTypeKey, $aDelTypes);

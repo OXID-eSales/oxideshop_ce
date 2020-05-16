@@ -12,6 +12,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ComposerPlugin;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ModulePackageInstaller;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -23,8 +27,9 @@ class ModulePackageInstallerTest extends TestCase
 
     private $modulePackagePath = __DIR__ . '/Fixtures/test-module-package-installation';
     private $packageName = 'test-module-package-installation';
+    private $moduleId = 'testModule';
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         $fileSystem->remove($this->getModulesPath() . '/' . $this->packageName);
@@ -32,10 +37,10 @@ class ModulePackageInstallerTest extends TestCase
         parent::tearDown();
     }
 
-    public function testModuleNotInstalledByDefault()
+    public function testModuleNotInstalledByDefault(): void
     {
         $installer = $this->getPackageInstaller($this->packageName);
-        $this->assertFalse($installer->isInstalled($this->packageName));
+        $this->assertFalse($installer->isInstalled());
     }
 
     public function testModuleIsInstalledAfterInstallProcess()
@@ -46,7 +51,7 @@ class ModulePackageInstallerTest extends TestCase
         $this->assertTrue($installer->isInstalled());
     }
 
-    public function testModuleFilesAreCopiedAfterInstallProcess()
+    public function testModuleFilesAreCopiedAfterInstallProcess(): void
     {
         $installer = $this->getPackageInstaller($this->packageName);
         $installer->install($this->modulePackagePath);
@@ -57,11 +62,34 @@ class ModulePackageInstallerTest extends TestCase
         );
     }
 
+    public function testModuleIsInstalledAfterUninstallProcess(): void
+    {
+        $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->packageName);
+        $package->setTargetDirectory('oeTest/' . $this->moduleId);
+
+        $installer = $this->getPackageInstaller($this->packageName);
+
+        $installer->install($this->modulePackagePath);
+        $this->activateTestModule($package);
+        $installer->uninstall($this->modulePackagePath);
+
+        $this->assertFalse($installer->isInstalled());
+    }
+
+    /**
+     * @return string
+     */
     private function getModulesPath(): string
     {
         return $this->get(ContextInterface::class)->getModulesPath();
     }
 
+    /**
+     * @param string $packageName
+     * @param array  $extra
+     *
+     * @return ModulePackageInstaller
+     */
     private function getPackageInstaller(string $packageName, array $extra = []): ModulePackageInstaller
     {
         $package = new Package($packageName, '1.0.0', '1.0.0');
@@ -72,5 +100,17 @@ class ModulePackageInstallerTest extends TestCase
             $this->get(BasicContextInterface::class)->getSourcePath(),
             $package
         );
+    }
+
+    /**
+     * @param OxidEshopPackage $package
+     */
+    private function activateTestModule(OxidEshopPackage $package): void
+    {
+        $this->get(ModuleInstallerInterface::class)
+            ->install($package);
+        $this
+            ->get(ModuleActivationBridgeInterface::class)
+            ->activate($this->moduleId, 1);
     }
 }

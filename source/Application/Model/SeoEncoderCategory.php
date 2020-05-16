@@ -21,8 +21,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns target "extension" (/)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
-    protected function _getUrlExtension()
+    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '/';
     }
@@ -37,8 +38,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * @access protected
      *
      * @return boolean
+     * @deprecated underscore prefix violates PSR12, will be renamed to "categoryUrlLoader" in next major
      */
-    protected function _categoryUrlLoader($oCat, $iLang)
+    protected function _categoryUrlLoader($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCacheId = $this->_getCategoryCacheId($oCat, $iLang);
         if (isset($this->_aCatCache[$sCacheId])) {
@@ -60,8 +62,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * @access private
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryCacheId" in next major
      */
-    private function _getCategoryCacheId($oCat, $iLang)
+    private function _getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $oCat->getId() . '_' . ((int) $iLang);
     }
@@ -254,8 +257,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int    $iLang     language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
-    protected function _getAltUri($sObjectId, $iLang)
+    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSeoUrl = null;
         $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);

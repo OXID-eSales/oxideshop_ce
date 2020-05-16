@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * URL utility class
  */
@@ -68,8 +70,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function prepareUrlForNoSession($sUrl)
     {
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
@@ -116,8 +117,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function prepareCanonicalUrl($sUrl)
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
@@ -185,8 +185,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function cleanUrl($sUrl, $aParams = null)
     {
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
         if (is_array($aParams)) {
             foreach ($aParams as $sParam) {
                 $sUrl = $oStr->preg_replace(
@@ -398,8 +397,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $sUrl = $aUrlParts[0];
         $sUrlParams = $aUrlParts[1];
 
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStrUtils */
-        $oStrUtils = getStr();
+        $oStrUtils = Str::getStr();
         $sUrlParams = $oStrUtils->preg_replace(
             ['@(\&(amp;){1,})@ix', '@\&{1,}@', '@\?&@x'],
             ['&', '&', '?'],
@@ -500,8 +498,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl   url to extract
      * @param array  $aHosts hosts array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addHost" in next major
      */
-    protected function _addHost($sUrl, &$aHosts)
+    protected function _addHost($sUrl, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sUrl && ($sHost = @parse_url($sUrl, PHP_URL_HOST))) {
             if (!in_array($sHost, $aHosts)) {
@@ -515,8 +514,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aLanguageUrls array of language urls to extract
      * @param array $aHosts        hosts array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addLanguageHost" in next major
      */
-    protected function _addLanguageHost($aLanguageUrls, &$aHosts)
+    protected function _addLanguageHost($aLanguageUrls, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
@@ -529,8 +529,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * Collects and returns current shop hosts array.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getHosts" in next major
      */
-    protected function _getHosts()
+    protected function _getHosts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_aHosts === null) {
             $this->_aHosts = [];
@@ -558,8 +559,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * Appends shop mall urls to $aHosts if needed
      *
      * @param array $aHosts hosts array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addMallHosts" in next major
      */
-    protected function _addMallHosts(&$aHosts)
+    protected function _addMallHosts(&$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -572,8 +574,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function getUrlParametersSeparator($url)
     {
-        /** @var \OxidEsales\Eshop\Core\StrRegular $oStr */
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         $urlSeparator = '&amp;';
         if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $url)) {
@@ -632,6 +633,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function rightTrimAmp($url)
     {
-        return getStr()->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
+        return Str::getStr()->preg_replace('/(\?|&(amp;)?)$/i', '', $url);
     }
 }

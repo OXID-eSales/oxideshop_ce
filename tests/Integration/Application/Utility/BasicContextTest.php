@@ -23,7 +23,7 @@ class BasicContextTest extends TestCase
      */
     private $basicContext;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 

@@ -111,8 +111,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string                                 $sField  name of editable field
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEditValue" in next major
      */
-    protected function _getEditValue($oObject, $sField)
+    protected function _getEditValue($oObject, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sEditObjectValue = '';
         if ($oObject) {
@@ -214,8 +215,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param string $sValue value to fix
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processLongDesc" in next major
      */
-    protected function _processLongDesc($sValue)
+    protected function _processLongDesc($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // TODO: the code below is redundant, optimize it, assignments should go smooth without conversions
         // hack, if editor screws up text, htmledit tends to do so
@@ -233,8 +235,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * Resets article categories counters
      *
      * @param string $sArticleId Article id
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetCategoriesCounter" in next major
      */
-    protected function _resetCategoriesCounter($sArticleId)
+    protected function _resetCategoriesCounter($sArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = DatabaseProvider::getDb();
         $sQ = "select oxcatnid from oxobject2category where oxobjectid = :oxobjectid";
@@ -376,8 +379,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId       Id from old article
      * @param string $newArticleId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyCategories" in next major
      */
-    protected function _copyCategories($sOldId, $newArticleId)
+    protected function _copyCategories($sOldId, $newArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -404,8 +408,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyAttributes" in next major
      */
-    protected function _copyAttributes($sOldId, $sNewId)
+    protected function _copyAttributes($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -433,8 +438,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyFiles" in next major
      */
-    protected function _copyFiles($sOldId, $sNewId)
+    protected function _copyFiles($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
@@ -463,8 +469,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copySelectlists" in next major
      */
-    protected function _copySelectlists($sOldId, $sNewId)
+    protected function _copySelectlists($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -494,8 +501,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyCrossseling" in next major
      */
-    protected function _copyCrossseling($sOldId, $sNewId)
+    protected function _copyCrossseling($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -525,8 +533,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyAccessoires" in next major
      */
-    protected function _copyAccessoires($sOldId, $sNewId)
+    protected function _copyAccessoires($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
         $oDb = DatabaseProvider::getDb();
@@ -556,8 +565,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyStaffelpreis" in next major
      */
-    protected function _copyStaffelpreis($sOldId, $sNewId)
+    protected function _copyStaffelpreis($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
@@ -582,8 +592,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param string $sOldId Id from old article
      * @param string $sNewId Id from new article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyArtExtends" in next major
      */
-    protected function _copyArtExtends($sOldId, $sNewId)
+    protected function _copyArtExtends($sOldId, $sNewId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oExt = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
         $oExt->init("oxartextends");
@@ -618,8 +629,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @param object $oArticle       article object
      * @param object $oParentArticle article parent object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "formJumpList" in next major
      */
-    protected function _formJumpList($oArticle, $oParentArticle)
+    protected function _formJumpList($oArticle, $oParentArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aJumpList = [];
         //fetching parent article variants
@@ -662,8 +674,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      * @param object $oObj product object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getTitle" in next major
      */
-    protected function _getTitle($oObj)
+    protected function _getTitle($oObj) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTitle = $oObj->oxarticles__oxtitle->value;
         if (!strlen($sTitle)) {

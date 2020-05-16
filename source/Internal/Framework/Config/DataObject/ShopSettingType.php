@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject;
 
 class ShopSettingType
 {
-    const BOOLEAN           = 'bool';
-    const ARRAY             = 'arr';
-    const ASSOCIATIVE_ARRAY = 'aarr';
+    public const BOOLEAN = 'bool';
+    public const ARRAY = 'arr';
+    public const ASSOCIATIVE_ARRAY = 'aarr';
 }

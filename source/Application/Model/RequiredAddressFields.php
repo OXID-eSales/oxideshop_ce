@@ -37,7 +37,6 @@ class RequiredAddressFields
 
     /**
      * Sets default required fields either from config or from _aDefaultRequiredFields.
-     *
      */
     public function __construct()
     {
@@ -100,8 +99,9 @@ class RequiredAddressFields
      * @param string $sPrefix
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "filterFields" in next major
      */
-    private function _filterFields($aFields, $sPrefix)
+    private function _filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {

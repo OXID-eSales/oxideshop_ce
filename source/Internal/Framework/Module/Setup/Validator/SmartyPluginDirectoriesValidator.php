@@ -11,7 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotReadableException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\SmartyPluginDirectoriesDataMapper;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
+    ModuleConfiguration\SmartyPluginDirectoriesDataMapper
+};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
@@ -86,12 +88,6 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
      */
     private function isEmptyArray(array $directories): bool
     {
-        if (count($directories) == 1) {
-            if ($directories[0] === "") {
-                return true;
-            }
-        }
-
-        return false;
+        return count($directories) === 1 && $directories[0] === '';
     }
 }

@@ -25,7 +25,7 @@ class AlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // deleting test data
         oxDb::getDb()->execute("delete from oxseo where oxtype != 'static' ");

@@ -125,8 +125,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * In case any condition is not satisfied redirects user to:
      *  (1) login page;
      *  (2) terms agreement page;
+     * @deprecated underscore prefix violates PSR12, will be renamed to "checkPsState" in next major
      */
-    protected function _checkPsState()
+    protected function _checkPsState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($this->getParent()->isEnabledPrivateSales()) {
@@ -149,8 +150,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Tries to load user ID from session.
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadSessionUser" in next major
      */
-    protected function _loadSessionUser()
+    protected function _loadSessionUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -234,21 +236,18 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "afterLogin" in next major
      */
-    protected function _afterLogin($oUser)
+    protected function _afterLogin($oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
-
-        // generating new session id after login
-        if ($this->getLoginStatus() === USER_LOGIN_SUCCESS) {
+        if ($session->isSessionStarted()) {
             $session->regenerateSessionId();
         }
 
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
         // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = $myConfig->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
+            $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked.tpl';
             Registry::getUtils()->redirect($sUrl, true, 302);
         }
 
@@ -264,7 +263,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Executes oxcmp_user::login() method. After loggin user will not be
      * redirected to user or payment screens.
      */
-    public function login_noredirect()
+    public function login_noredirect() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         $blAgb = Registry::getConfig()->getRequestParameter('ord_agb');
 
@@ -294,8 +293,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * oxcmp_user::logout is called. Currently it unsets such
      * session parameters as user chosen payment id, delivery
      * address id, active delivery set.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "afterLogout" in next major
      */
-    protected function _afterLogout()
+    protected function _afterLogout() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
@@ -372,7 +372,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return null
      */
-    public function changeuser_testvalues()
+    public function changeuser_testvalues() //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         // skip updating user info if this is just form reload
         // on selecting delivery address
@@ -617,8 +617,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Saves invitor ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveInvitor" in next major
      */
-    protected function _saveInvitor()
+    protected function _saveInvitor() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blInvitationsEnabled')) {
             $this->getInvitor();
@@ -628,8 +629,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
     /**
      * Saving show/hide delivery address state
+     * @deprecated underscore prefix violates PSR12, will be renamed to "saveDeliveryAddressState" in next major
      */
-    protected function _saveDeliveryAddressState()
+    protected function _saveDeliveryAddressState() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oSession = Registry::getSession();
 
@@ -656,7 +658,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @return  bool true on success, false otherwise
      */
-    protected function _changeUser_noRedirect()
+    protected function _changeUser_noRedirect() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->changeUserWithoutRedirect();
     }
@@ -701,14 +703,14 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
 
-        try { // testing user input
-            // delete user if it is a guest user
-            if (isset($aInvAdress['oxuser__oxusername'])) {
-                if (!$this->deleteGuestUser($aInvAdress['oxuser__oxusername'])) {
-                    return;
-                }
+        try {
+            $newName = $aInvAdress['oxuser__oxusername'] ?? '';
+            if (
+                $this->isGuestUser($oUser)
+                && $this->isUserNameUpdated($oUser->oxuser__oxusername->value ?? '', $newName)
+            ) {
+                $this->deleteExistingGuestUser($newName);
             }
-
             $oUser->changeUserData($sUserName, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
             // assigning to newsletter
             if (($blOptin = Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
@@ -735,6 +737,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
 
             return;
+        } catch (\Throwable $e) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_USER_UPDATE_FAILED', false, true);
+            return false;
         }
 
         $this->resetPermissions();
@@ -761,8 +766,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * all needed data is there
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDelAddressData" in next major
      */
-    protected function _getDelAddressData()
+    protected function _getDelAddressData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // if user company name, user name and additional info has special chars
         $blShowShipAddressParameter = Registry::getConfig()->getRequestParameter('blshowshipaddress');
@@ -789,8 +795,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * Returns logout link with additional params
      *
      * @return string $sLogoutLink
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLogoutLink" in next major
      */
-    protected function _getLogoutLink()
+    protected function _getLogoutLink() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -904,26 +911,34 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * check if this user is guest user then delete user
-     *
-     * @param string $username
-     *
+     * @param $user
      * @return bool
+     */
+    private function isGuestUser(User $user): bool
+    {
+        return empty($user->oxuser__oxpassword->value);
+    }
+
+    /**
+     * @param $currentName
+     * @param $newName
+     * @return bool
+     */
+    private function isUserNameUpdated(string $currentName, string $newName): bool
+    {
+        return $currentName && $newName && $currentName !== $newName;
+    }
+
+    /**
+     * @param string $newName
      * @throws Exception
      */
-    private function deleteGuestUser(string $username): bool
+    private function deleteExistingGuestUser(string $newName): void
     {
-        $user = oxNew(User::class);
-        $user->load($user->getIdByUserName($username));
-
-        if ($user) {
-            if (isset($user->oxuser__oxpassword->value) && empty($user->oxuser__oxpassword->value)) {
-                if (!$user->delete()) {
-                    return false;
-                }
-            }
+        $existingUser = oxNew(User::class);
+        $existingUser->load($existingUser->getIdByUserName($newName));
+        if ($existingUser && $this->isGuestUser($existingUser)) {
+            $existingUser->delete();
         }
-
-        return true;
     }
 }

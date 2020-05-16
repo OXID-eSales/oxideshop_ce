@@ -19,7 +19,7 @@ class FileexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->testObject = oxNew(\OxidEsales\Eshop\Core\Exception\FileException::class, $this->message);
@@ -42,10 +42,10 @@ class FileexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testGetString()
     {
         $stringOut = $this->testObject->getString();
-        $this->assertContains($this->message, $stringOut); // Message
-        $this->assertContains('FileException', $stringOut); // Exception class name
-        $this->assertContains($this->fileName, $stringOut); // File name
-        $this->assertContains($this->fileError, $stringOut); // File error
+        $this->assertStringContainsString($this->message, $stringOut); // Message
+        $this->assertStringContainsString('FileException', $stringOut); // Exception class name
+        $this->assertStringContainsString($this->fileName, $stringOut); // File name
+        $this->assertStringContainsString($this->fileError, $stringOut); // File error
     }
 
     public function testGetValues()

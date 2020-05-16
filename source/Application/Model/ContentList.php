@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Content list manager.
  * Collects list of content
- *
  */
 class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
@@ -115,8 +114,9 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param integer $iType - type of content
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
-    protected function _loadFromDb($iType)
+    protected function _loadFromDb($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSql = $this->_getSQLByType($iType);
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
@@ -128,8 +128,9 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Load category list data
      *
      * @param integer $type - type of content
+     * @deprecated underscore prefix violates PSR12, will be renamed to "load" in next major
      */
-    protected function _load($type)
+    protected function _load($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $data = $this->_loadFromDb($type);
         $this->assignArray($data);
@@ -146,8 +147,9 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Extract oxContentList object to associative array with oxloadid as keys.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "extractListToArray" in next major
      */
-    protected function _extractListToArray()
+    protected function _extractListToArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aExtractedContents = [];
         foreach ($this as $oContent) {
@@ -163,8 +165,9 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param integer $iType type.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSQLByType" in next major
      */
-    protected function _getSQLByType($iType)
+    protected function _getSQLByType($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSQLAdd = '';
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

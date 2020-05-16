@@ -22,7 +22,7 @@ class UserPaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuserpayments');
         parent::tearDown();
@@ -193,7 +193,7 @@ class UserPaymentTest extends \OxidTestCase
             $paymentsIds .= $payment->getId() . "\n";
         }
 
-        $this->assertEquals(6, $oPaymentList->count(), $paymentsIds);
+        $this->assertEquals(5, $oPaymentList->count(), $paymentsIds);
     }
 
     /**

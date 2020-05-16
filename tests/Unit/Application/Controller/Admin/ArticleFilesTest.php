@@ -24,7 +24,7 @@ class ArticleFilesTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oDb = oxDb::getDb();
         $oDb->execute("delete from oxfiles where oxid='_testFileId'");

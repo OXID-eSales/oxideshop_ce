@@ -23,7 +23,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
     /**
      * Standard set up method. Calls parent first.
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
@@ -33,7 +33,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
     /**
      * Standard tear down method. Calls parent last.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->environment->clean();
 

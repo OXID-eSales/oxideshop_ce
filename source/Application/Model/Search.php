@@ -12,7 +12,6 @@ use oxDb;
 
 /**
  * Implements search
- *
  */
 class Search extends \OxidEsales\Eshop\Core\Base
 {
@@ -112,8 +111,9 @@ class Search extends \OxidEsales\Eshop\Core\Base
      * @param string $sSortBy                    sort by
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major
      */
-    protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
+    protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
             //no search string
@@ -239,8 +239,9 @@ class Search extends \OxidEsales\Eshop\Core\Base
      * @param string $sSearchString searching string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getWhere" in next major
      */
-    protected function _getWhere($sSearchString)
+    protected function _getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

@@ -69,14 +69,14 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
     /**
      * Returns user payment used for current order. In case current order was executed using
-     * credit card and user payment info is not stored in db (if \OxidEsales\Eshop\Core\Config::blStoreCreditCardInfo = false),
      * just for preview user payment is set from oxPayment
      *
      * @param object $oOrder Order object
      *
      * @return oxUserPayment
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getPaymentType" in next major
      */
-    protected function _getPaymentType($oOrder)
+    protected function _getPaymentType($oOrder) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!($oUserPayment = $oOrder->getPaymentType()) && $oOrder->oxorder__oxpaymenttype->value) {
             $oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);

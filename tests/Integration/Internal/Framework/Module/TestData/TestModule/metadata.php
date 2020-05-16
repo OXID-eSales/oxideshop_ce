@@ -31,6 +31,11 @@ $aModule = array(
             'name' => 'test-setting',
             'type' => 'arr',
             'value' => ['Preis', 'Hersteller'],
+        ],
+        [
+            'name' => 'string-setting',
+            'type' => 'str',
+            'value' => 'default',
         ]
     ],
 );

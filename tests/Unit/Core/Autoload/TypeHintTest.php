@@ -44,7 +44,7 @@ class TypeHintTest extends UnitTestCase
     /**
      * Executed after test is down.
     **/
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (\OxidEsales\Eshop\Core\DatabaseProvider::getDb()->isTransactionActive()) {
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();

@@ -33,8 +33,9 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelTable = $this->_getViewName('oxselectlist');
         $sArtId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
@@ -47,8 +48,9 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
      * Returns SQL query addon for sorting
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSorting" in next major
      */
-    protected function _getSorting()
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'order by oxobject2selectlist.oxsort ';
     }

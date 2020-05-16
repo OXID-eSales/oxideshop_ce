@@ -1,0 +1,10 @@
+imports:
+    - { resource: bootstrap-services.yaml }
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    OxidEsales\EshopCommunity\Internal\Container\Event\ConfigurationChangedEventSubscriber:
+        class: OxidEsales\EshopCommunity\Internal\Container\Event\ConfigurationChangedEventSubscriber
+        tags: ['kernel.event_subscriber']

@@ -15,14 +15,14 @@ use OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage;
  *
  * @package Unit\Core\Routing\Module
  */
-class ControllerProviderCacheTest extends UnitTestCase
+class ClassProviderStorageTest extends UnitTestCase
 {
     /**
      * Standard setup method, called before every method.
      *
      * Calls parent method first.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

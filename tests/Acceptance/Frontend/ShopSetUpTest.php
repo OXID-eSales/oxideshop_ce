@@ -54,7 +54,7 @@ class ShopSetUpTest extends FrontendTestCase
     /** @var int How much more time wait for these tests. */
     protected $_iWaitTimeMultiplier = 7;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->preventModuleVersionNotify = false;
         parent::setUp();
@@ -62,7 +62,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->restoreModifiedFiles();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->restoreModifiedFiles();
 
@@ -77,15 +77,16 @@ class ShopSetUpTest extends FrontendTestCase
 
     /**
      * Tests installation of new shop version (setup).
-     * Test chooses demo data if possible test data otherwise.
-     * In CI:
-     * - nightlies run with demo data
-     * - dailies run without demo data
+     * Test chooses demo data if is not test will skip
      *
      * @group main
      */
     public function testInstallShop()
     {
+        if (!$this->checkDemodataPackageExists()) {
+            $this->markTestSkipped('test needs demo_data package to work');
+        }
+
         $this->clearDatabase();
 
         $this->goToSetup();
@@ -774,9 +775,9 @@ class ShopSetUpTest extends FrontendTestCase
     {
         $this->goToSetup();
 
-        $this->assertContains("Server configuration", $this->getText("//li[@class='group'][1]"));
-        $this->assertContains("PHP configuration", $this->getText("//li[@class='group'][2]"));
-        $this->assertContains("PHP extensions", $this->getText("//li[@class='group'][3]"));
+        $this->assertStringContainsString("Server configuration", $this->getText("//li[@class='group'][1]"));
+        $this->assertStringContainsString("PHP configuration", $this->getText("//li[@class='group'][2]"));
+        $this->assertStringContainsString("PHP extensions", $this->getText("//li[@class='group'][3]"));
     }
 
     /**
@@ -1222,11 +1223,11 @@ class ShopSetUpTest extends FrontendTestCase
         $contents = <<<'EOL'
 <?php
 namespace OxidEsales\EshopCommunity\Migrations;
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 class Version20170101 extends AbstractMigration {
-public function up(Schema $schema) {$this->addSql('INVALID_SQL_SYNTAX');}
-public function down(Schema $schema) {}
+public function up(Schema $schema): void {$this->addSql('INVALID_SQL_SYNTAX');}
+public function down(Schema $schema): void {}
 }
 EOL;
         file_put_contents($this->getInvalidMigrationFilePath(), $contents);

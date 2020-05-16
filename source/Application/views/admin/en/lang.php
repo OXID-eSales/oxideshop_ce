@@ -995,6 +995,7 @@ $aLang = [
     'SHOP_MALL_SHOPURL'                                  => 'Shop URL',
     'SHOP_MALL_SHOPSSLSHOPURL'                           => 'Shop SSL URL',
     'SHOP_MALL_NATIVEIMAGES'                             => 'Load /out directory from active shop',
+    'SHOP_MALL_DONOTLOADALLSHOPNEWS'                     => 'Do not show news from all shops',
     'SHOP_MALL_NOSTARTSITE'                              => 'Show main shop front page',
     'SHOP_MALL_STARTSITE'                                => 'Show shop selector',
     'SHOP_MALL_MALLMODE'                                 => 'Start page type',
@@ -1059,9 +1060,6 @@ $aLang = [
     'SHOP_CONFIG_CSVSEPARATOR'                                => 'CSV Separation Char for Im/Export',
     'SHOP_CONFIG_CSVFIELDENCLOSER'                            => 'CSV-Encloser for Im/Export',
     'SHOP_CONFIG_DISABLEARTDUBLICATES'                        => 'When Products are copied: Do not set copied Product to active',
-    // @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
-    'SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'                       => 'Allow the recommendation of products',
-    // END deprecated
     'SHOP_CONFIG_EXPORTNUMBEROFLINES'                         => 'Number of Lines which are exported per Tick in CSV Export',
     'SHOP_CONFIG_MWSTSETTING'                                 => 'VAT Settings for XML export',
     'SHOP_CONFIG_NUMBEROFEMAILSPERTICK'                       => 'Number of Newsletters sent per Tick',
@@ -1120,7 +1118,6 @@ $aLang = [
     'SHOP_CONFIG_STOCKWARNINGLIMIT'                           => 'Stock Level at which Users are informed that only a few Products remain in Stock',
     'SHOP_CONFIG_STOCKOFFDEFAULTMESSAGE'                      => 'Use default "out-of-stock" Message',
     'SHOP_CONFIG_STOCKONDEFAULTMESSAGE'                       => 'Use default "in-stock" Message',
-    'SHOP_CONFIG_STORECREDITCARDINFO'                         => 'Save Credit Card information',
     'SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE'              => 'Display a message about possible international delivery fees',
     'SHOP_CONFIG_SHOWTSCODMESSAGE'                            => 'Display a message about possible "cash on delivery" payment method fees',
     'SHOP_CONFIG_TIMEFORMAT'                                  => 'Time Format in eShop Admin',
@@ -1238,7 +1235,6 @@ $aLang = [
     'SYSREQ_MOD_REWRITE'                      => 'Apache mod_rewrite module',
     'SYSREQ_ALLOW_URL_FOPEN'                  => 'allow_url_fopen or fsockopen to port 80',
     'SYSREQ_PHP4_COMPAT'                      => 'Zend compatibility mode must be off',
-    'SYSREQ_PHP_VERSION'                      => 'PHP version 7.1 or 7.2',
     'SYSREQ_REQUEST_URI'                      => 'REQUEST_URI set',
     'SYSREQ_LIB_XML2'                         => 'LIB XML2',
     'SYSREQ_PHP_XML'                          => 'DOM',
@@ -1247,7 +1243,6 @@ $aLang = [
     'SYSREQ_TOKENIZER'                        => 'Tokenizer',
     'SYSREQ_BC_MATH'                          => 'BCMath',
     'SYSREQ_MYSQL_CONNECT'                    => 'PDO_MySQL',
-    'SYSREQ_MYSQL_VERSION'                    => 'MySQL version 5.5 or 5.7',
     'SYSREQ_GD_INFO'                          => 'GDlib v2 incl. JPEG support',
     'SYSREQ_INI_SET'                          => 'ini_set allowed',
     'SYSREQ_REGISTER_GLOBALS'                 => 'register_globals must be off',
@@ -1846,13 +1841,6 @@ $aLang = [
     'PAYMENT_RDFA_BYINVOICE'               => 'Invoice',
     'PAYMENT_RDFA_CHECKINADVANCE'          => 'Check in advance',
     'PAYMENT_RDFA_BYBANKTRANSFERINADVANCE' => 'Cash in advance',
-    'PAYMENT_RDFA_CREDITCARD'              => 'Credit card payment',
-    'PAYMENT_RDFA_AMERICANEXPRESS'         => 'American Express',
-    'PAYMENT_RDFA_DINERSCLUB'              => 'Diners Club',
-    'PAYMENT_RDFA_DISCOVER'                => 'Discover',
-    'PAYMENT_RDFA_JCB'                     => 'JCB',
-    'PAYMENT_RDFA_MASTERCARD'              => 'MasterCard',
-    'PAYMENT_RDFA_VISA'                    => 'VISA',
 
     'DELIVERY_RDFA_ASIGN_DELIVERY'             => 'Assign delivery method',
     'DELIVERY_RDFA_ADVICE'                     => '<b>Hint:</b> Please choose only those delivery methods, pre-defined in GoodRelations, that comply with your shipping method',
@@ -1970,7 +1958,8 @@ $aLang = [
     'TITLE'                          => 'Salutation',
     'SUBJECT'                        => 'Subject',
     'MESSAGE'                        => 'Message',
-
+    'ADMIN_SETTINGS_LICENSE_VERSION_FETCH_INFO_ERROR' => 'Error when fetching version information',
+    'CURL_EXECUTE_ERROR' => 'Connection error (%s). Please try again later',
 ];
 
 /*

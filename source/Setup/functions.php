@@ -5,8 +5,8 @@
  * See LICENSE file for license details.
  */
 
-use \OxidEsales\Facts\Facts;
-use \OxidEsales\EshopProfessional\Core\Serial;
+use OxidEsales\Facts\Facts;
+use OxidEsales\EshopProfessional\Core\Serial;
 
 if (!function_exists('getInstallPath')) {
     /**
@@ -140,22 +140,5 @@ if (!function_exists('getVendorDirectory')) {
     function getVendorDirectory()
     {
         return VENDOR_PATH;
-    }
-}
-
-if (!class_exists("Conf", false)) {
-    /**
-     * Config key loader class
-     */
-    class Conf
-    {
-        /**
-         * Conf constructor.
-         */
-        public function __construct()
-        {
-            $config = new \OxidEsales\EshopCommunity\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
-            $this->sConfigKey = $config->getVar('sConfigKey') ?: \OxidEsales\EshopCommunity\Core\Config::DEFAULT_CONFIG_KEY;
-        }
     }
 }

@@ -7,74 +7,37 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use Conf;
 use Exception;
+use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
+use OxidEsales\Facts\Facts;
 use PDO;
 use PDOException;
 use PDOStatement;
-use \OxidEsales\Facts\Facts;
 
-/**
- * Setup database manager class
- */
 class Database extends Core
 {
-    /**
-     * Connection resource object
-     *
-     * @var PDO
-     */
+    /** @var int */
+    public const ERROR_DB_CONNECT = 1;
+    /** @var int */
+    public const ERROR_COULD_NOT_CREATE_DB = 2;
+    /** @var int */
+    private const ERROR_OPENING_SQL_FILE = 1;
+    /** @var PDO */
     protected $_oConn = null;
-
-    /**
-     * Error while opening sql file
-     *
-     * @var int
-     */
-    const ERROR_OPENING_SQL_FILE = 1;
-
-    /**
-     * Error while opening db connection
-     *
-     * @var int
-     */
-    const ERROR_DB_CONNECT = 1;
-
-    /**
-     * Error while creating db
-     *
-     * @var int
-     */
-    const ERROR_COULD_NOT_CREATE_DB = 2;
-
-    /**
-     * MySQL version does not fir requirements
-     *
-     * @var int
-     */
-    const ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS = 3;
-
-    /**
-     * MySQL version does not fir recommendations
-     *
-     * @var int
-     */
-    const ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS = 4;
 
     /**
      * Executes sql query. Returns query execution resource object
      *
      * @param string $sQ query to execute
      *
-     * @throws Exception exception is thrown if error occured during sql execution
-     *
      * @return PDOStatement|int
+     * @throws Exception exception is thrown if error occured during sql execution
      */
     public function execSql($sQ)
     {
         try {
             $pdo = $this->getConnection();
-            list($sStatement) = explode(" ", ltrim($sQ));
+            list($sStatement) = explode(' ', ltrim($sQ));
             if (in_array(strtoupper($sStatement), ['SELECT', 'SHOW'])) {
                 $oStatement = $pdo->query($sQ);
             } else {
@@ -84,7 +47,7 @@ class Database extends Core
             return $oStatement;
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("Language")->getText('ERROR_BAD_SQL') . "( $sQ ): {$e->getMessage()}\n"
+                $this->translate('ERROR_BAD_SQL') . "( $sQ ): {$e->getMessage()}\n"
             );
         }
     }
@@ -99,31 +62,31 @@ class Database extends Core
         $oPdo = $this->getConnection();
         try {
             // testing creation
-            $sQ      = "create or replace view oxviewtest as select 1";
+            $sQ = "create or replace view oxviewtest as select 1";
             $oPdo->exec($sQ);
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("Language")->getText('ERROR_VIEWS_CANT_CREATE') . " {$e->getMessage()}\n"
+                $this->translate('ERROR_VIEWS_CANT_CREATE') . " {$e->getMessage()}\n"
             );
         }
 
         try {
             // testing data selection
-            $sQ      = "SELECT * FROM oxviewtest";
+            $sQ = "SELECT * FROM oxviewtest";
             $oPdo->query($sQ)->closeCursor();
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("Language")->getText('ERROR_VIEWS_CANT_SELECT') . " {$e->getMessage()}\n"
+                $this->translate('ERROR_VIEWS_CANT_SELECT') . " {$e->getMessage()}\n"
             );
         }
 
         try {
             // testing view dropping
-            $sQ      = "drop view oxviewtest";
+            $sQ = "drop view oxviewtest";
             $oPdo->exec($sQ);
         } catch (PDOException $e) {
             throw new Exception(
-                $this->getInstance("Language")->getText('ERROR_VIEWS_CANT_DROP') . " {$e->getMessage()}\n"
+                $this->translate('ERROR_VIEWS_CANT_DROP') . " {$e->getMessage()}\n"
             );
         }
     }
@@ -141,7 +104,7 @@ class Database extends Core
             $oSetup = $this->getInstance("Setup");
             // problems with file
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            throw new Exception(sprintf($this->getInstance("Language")->getText('ERROR_OPENING_SQL_FILE'), $sFilename), Database::ERROR_OPENING_SQL_FILE);
+            throw new Exception(sprintf($this->translate('ERROR_OPENING_SQL_FILE'), $sFilename), Database::ERROR_OPENING_SQL_FILE);
         }
 
         $sQuery = fread($fp, filesize($sFilename));
@@ -184,78 +147,16 @@ class Database extends Core
     }
 
     /**
-     * Opens database connection and returns connection resource object
-     *
-     * @param array $aParams database connection parameters array
-     *
-     * @throws Exception exception is thrown if connection failed or was unable to select database
-     *
-     * @return object
-     */
-    public function openDatabase($aParams)
-    {
-        $aParams = (is_array($aParams) && count($aParams)) ? $aParams : $this->getInstance("Session")->getSessionParam('aDB');
-        if ($this->_oConn === null) {
-            // ok open DB
-            try {
-                $dsn = sprintf('mysql:host=%s;port=%s', $aParams['dbHost'], $aParams['dbPort']);
-                $this->_oConn = new PDO(
-                    $dsn,
-                    $aParams['dbUser'],
-                    $aParams['dbPwd'],
-                    [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
-                );
-                $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $this->_oConn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            } catch (PDOException $e) {
-                /** @var Setup $oSetup */
-                $oSetup = $this->getInstance("Setup");
-                $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-                throw new Exception($this->getInstance("Language")->getText('ERROR_DB_CONNECT') . " - " . $e->getMessage(), Database::ERROR_DB_CONNECT, $e);
-            }
-
-            // testing version
-            $oSysReq = getSystemReqCheck();
-            if (0 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
-                throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
-            }
-
-            $databaseConnectProblem = null;
-            try {
-                $this->_oConn->exec("USE `{$aParams['dbName']}`");
-            } catch (Exception $e) {
-                $databaseConnectException = new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
-            }
-
-            if ((1 === $oSysReq->checkMysqlVersion($this->getDatabaseVersion())) && !$this->userDecidedIgnoreDBWarning()) {
-                throw new Exception($this->getInstance("Language")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS'), Database::ERROR_MYSQL_VERSION_DOES_NOT_FIT_RECOMMENDATIONS);
-            }
-
-            if (is_a($databaseConnectException, 'Exception')) {
-                throw $databaseConnectException;
-            }
-        } else {
-            // Make sure the database is connected
-            $this->connectDb($aParams['dbName']);
-        }
-
-        return $this->_oConn;
-    }
-
-    /**
-     * Connect to database.
-     *
-     * @param string $sDbName
-     *
+     * @param $parameters
+     * @return PDO
      * @throws Exception
      */
-    public function connectDb($sDbName)
+    public function openDatabase($parameters)
     {
-        try {
-            $this->_oConn->exec("USE `$sDbName`");
-        } catch (Exception $e) {
-            throw new Exception($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . $e->getMessage(), Database::ERROR_COULD_NOT_CREATE_DB, $e);
-        }
+        $connectionParameters = $this->prepareConnectionParameters($parameters);
+        $this->preparePdoConnection($connectionParameters);
+        $this->executeUseStatement($connectionParameters['dbName']);
+        return $this->_oConn;
     }
 
     /**
@@ -269,11 +170,11 @@ class Database extends Core
     {
         try {
             $this->execSql("CREATE DATABASE `$sDbName` CHARACTER SET utf8 COLLATE utf8_general_ci;");
-            $this->connectDb($sDbName);
+            $this->executeUseStatement($sDbName);
         } catch (Exception $e) {
             $oSetup = $this->getInstance("Setup");
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            throw new Exception(sprintf($this->getInstance("Language")->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . $e->getMessage(), $e->getCode(), $e);
+            throw new Exception(sprintf($this->translate('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . $e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -288,8 +189,6 @@ class Database extends Core
         $oUtils = $this->getInstance("Utilities");
         /** @var Session $oSession */
         $oSession = $this->getInstance("Session");
-
-        $oConfk = new Conf();
 
         $oPdo = $this->getConnection();
 
@@ -314,15 +213,14 @@ class Database extends Core
         // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
 
         $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                             values (:oxid, :shopId, :name, :type, ENCODE(:value, :key))");
+                                             values (:oxid, :shopId, :name, :type, :value)");
         $oInsert->execute(
             [
                 'oxid' => $oUtils->generateUid(),
                 'shopId' => $sBaseShopId,
                 'name' => 'blSendTechnicalInformationToOxid',
                 'type' => 'bool',
-                'value' => $blSendTechnicalInformationToOxid,
-                'key' => $oConfk->sConfigKey
+                'value' => $blSendTechnicalInformationToOxid
             ]
         );
 
@@ -332,8 +230,7 @@ class Database extends Core
                 'shopId' => $sBaseShopId,
                 'name' => 'blCheckForUpdates',
                 'type' => 'bool',
-                'value' => $blCheckForUpdates,
-                'key' => $oConfk->sConfigKey
+                'value' => $blCheckForUpdates
             ]
         );
 
@@ -343,16 +240,20 @@ class Database extends Core
                 'shopId' => $sBaseShopId,
                 'name' => 'sDefaultLang',
                 'type' => 'str',
-                'value' => $sShopLang,
-                'key' => $oConfk->sConfigKey
+                'value' => $sShopLang
             ]
         );
 
-        $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk, $oSession);
+        $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oSession);
 
         //set only one active language
-        $oStatement = $oPdo->query("select oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
+        $oStatement = $oPdo->query("select oxvarname, oxvartype, oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
         if ($oStatement && false !== ($aRow = $oStatement->fetch())) {
+            if (!is_array(unserialize($aRow['oxvarvalue']))) {
+                throw new LanguageParamsException("aLanguageParams can not be type of 
+                " . gettype($aRow['oxvarvalue']) . ", aLanguageParams must be type of array");
+            }
+
             if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
                 $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
             }
@@ -371,8 +272,7 @@ class Database extends Core
                     'shopId' => $sBaseShopId,
                     'name' => 'aLanguageParams',
                     'type' => 'aarr',
-                    'value' => $sValue,
-                    'key' => $oConfk->sConfigKey
+                    'value' => $sValue
                 ]
             );
         }
@@ -436,7 +336,7 @@ class Database extends Core
      * Updates default admin user login name and password
      *
      * @param string $sLoginName admin user login name
-     * @param string $sPassword  admin user login password
+     * @param string $sPassword admin user login password
      */
     public function writeAdminLoginData($sLoginName, $sPassword)
     {
@@ -454,13 +354,12 @@ class Database extends Core
     /**
      * Adds config value if shop info should be set.
      *
-     * @param Utilities $utilities  Setup utilities
-     * @param string    $baseShopId Shop id
-     * @param array     $parameters Parameters
-     * @param Conf      $configKey  Config key loader
-     * @param Session   $session    Setup session manager
+     * @param Utilities $utilities Setup utilities
+     * @param string $baseShopId Shop id
+     * @param array $parameters Parameters
+     * @param Session $session Setup session manager
      */
-    protected function addConfigValueIfShopInfoShouldBeSent($utilities, $baseShopId, $parameters, $configKey, $session)
+    protected function addConfigValueIfShopInfoShouldBeSent($utilities, $baseShopId, $parameters, $session)
     {
         $blSendShopDataToOxid = isset($parameters["blSendShopDataToOxid"]) ? $parameters["blSendShopDataToOxid"] : $session->getSessionParam('blSendShopDataToOxid');
 
@@ -468,7 +367,85 @@ class Database extends Core
         $this->execSql("delete from oxconfig where oxvarname = 'blSendShopDataToOxid'");
         $this->execSql(
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                             values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $configKey->sConfigKey . "'))"
+                             values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', '$blSendShopDataToOxid')"
         );
+    }
+
+    /**
+     * @param $parameters
+     * @return array
+     */
+    private function prepareConnectionParameters($parameters): array
+    {
+        return (is_array($parameters) && !empty($parameters)) ?
+            $parameters :
+            $this->getInstance('Session')->getSessionParam('aDB');
+    }
+
+    /**
+     * @param array $connectionParameters
+     * @throws Exception
+     */
+    private function preparePdoConnection(array $connectionParameters): void
+    {
+        if ($this->_oConn !== null) {
+            return;
+        }
+        try {
+            $this->createPdoConnection($connectionParameters);
+        } catch (PDOException $e) {
+            $this->resetSetupStep();
+            throw new Exception(
+                $this->translate('ERROR_DB_CONNECT') . ' - ' . $e->getMessage(),
+                Database::ERROR_DB_CONNECT,
+                $e
+            );
+        }
+    }
+
+    /** @param array $parameters */
+    private function createPdoConnection(array $parameters): void
+    {
+        $dsn = sprintf('mysql:host=%s;port=%s', $parameters['dbHost'], $parameters['dbPort']);
+        $this->_oConn = new PDO(
+            $dsn,
+            $parameters['dbUser'],
+            $parameters['dbPwd'],
+            [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+        );
+        $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->_oConn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    }
+
+    private function resetSetupStep(): void
+    {
+        $setup = $this->getInstance('Setup');
+        $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
+    }
+
+    /**
+     * @param string $name
+     * @throws Exception
+     */
+    private function executeUseStatement(string $name): void
+    {
+        try {
+            $this->_oConn->exec("USE `$name`");
+        } catch (Exception $e) {
+            throw new Exception(
+                $this->translate('ERROR_COULD_NOT_CREATE_DB') . ' - ' . $e->getMessage(),
+                Database::ERROR_COULD_NOT_CREATE_DB,
+                $e
+            );
+        }
+    }
+
+    /**
+     * @param string $message
+     * @return string
+     */
+    private function translate(string $message): string
+    {
+        return (string)$this->getInstance('Language')->getText($message);
     }
 }

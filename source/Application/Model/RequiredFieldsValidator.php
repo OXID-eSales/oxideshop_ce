@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Class for validating address
- *
  */
 class RequiredFieldsValidator
 {
@@ -125,8 +124,9 @@ class RequiredFieldsValidator
      * Add fields to invalid fields array.
      *
      * @param array $aFields Invalid field name.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setInvalidFields" in next major
      */
-    private function _setInvalidFields($aFields)
+    private function _setInvalidFields($aFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aInvalidFields = $aFields;
     }

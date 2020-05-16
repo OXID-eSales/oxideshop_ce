@@ -42,6 +42,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later
  * inclusion in a HTML/PHP Page.
@@ -388,8 +390,8 @@ class Emos
         foreach ($aBasket as $oItem) {
             $oItem = $this->_emos_ItemFormat($oItem);
             $aBasketItems[] = ["buy", $oItem->productId, $oItem->productName,
-                                  $oItem->price, $oItem->productGroup, $oItem->quantity,
-                                  $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
+                $oItem->price, $oItem->productGroup, $oItem->quantity,
+                $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
         }
 
         $this->_ecEvent = $aBasketItems;
@@ -449,8 +451,9 @@ class Emos
      * @param string $sCountry        customer country title
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setEmosBillingArray" in next major
      */
-    protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "")
+    protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /******************* prepare data *************************************/
         /* md5 the customer id to fullfill requirements of german datenschutzgeesetz */
@@ -467,7 +470,7 @@ class Emos
         }
 
         if ($sCip) {
-            $ort .= getStr()->substr($sCip, 0, 1) . "/" . getStr()->substr($sCip, 0, 2) . "/";
+            $ort .= Str::getStr()->substr($sCip, 0, 1) . "/" . Str::getStr()->substr($sCip, 0, 2) . "/";
         }
 
         if ($sCity) {
@@ -486,15 +489,16 @@ class Emos
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem      an instance of class EMOS_Item
      * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setEmosECPageArray" in next major
      */
-    protected function _setEmosECPageArray($oItem, $sEvent)
+    protected function _setEmosECPageArray($oItem, $sEvent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oItem = $this->_emos_ItemFormat($oItem);
 
         $this->_ecEvent = [[$sEvent, $oItem->productId, $oItem->productName,
-                 $oItem->price, $oItem->productGroup,
-                 $oItem->quantity, $oItem->variant1,
-                 $oItem->variant2, $oItem->variant3]];
+            $oItem->price, $oItem->productGroup,
+            $oItem->quantity, $oItem->variant1,
+            $oItem->variant2, $oItem->variant3]];
     }
 
     /**
@@ -503,8 +507,9 @@ class Emos
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to format its parameters
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "emos_ItemFormat" in next major
      */
-    protected function _emos_ItemFormat($oItem)
+    protected function _emos_ItemFormat($oItem) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         $oItem->productId = $this->_emos_DataFormat($oItem->productId);
         $oItem->productName = $this->_emos_DataFormat($oItem->productName);
@@ -522,8 +527,9 @@ class Emos
      * @param string $sStr data input to format
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "emos_DataFormat" in next major
      */
-    protected function _emos_DataFormat($sStr)
+    protected function _emos_DataFormat($sStr) //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         //null check
         if (is_null($sStr)) {
@@ -532,7 +538,7 @@ class Emos
 
         //$sStr = urldecode($sStr);
         $sStr = htmlspecialchars_decode($sStr, ENT_QUOTES);
-        $sStr = getStr()->html_entity_decode($sStr);
+        $sStr = Str::getStr()->html_entity_decode($sStr);
         $sStr = strip_tags($sStr);
         $sStr = trim($sStr);
 
@@ -557,21 +563,22 @@ class Emos
         $sStr = str_replace(" /", "/", $sStr);
         $sStr = str_replace("/ ", "/", $sStr);
 
-        $sStr = getStr()->substr($sStr, 0, 254);
+        $sStr = Str::getStr()->substr($sStr, 0, 254);
         //$sStr = rawurlencode( $sStr );
         return $sStr;
     }
 
     /**
      * formats up the connector script in a Econda ver 2 JS format
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareScript" in next major
      */
-    public function _prepareScript()
+    public function _prepareScript() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_sPrescript =  '<script type="text/javascript">window.emosTrackVersion = 2;</script>' . $this->_br;
 
         $this->_sIncScript .= "<script type=\"text/javascript\" " .
-        "src=\"" . $this->_sPathToFile . $this->_sScriptFileName . "\">" .
-        "</script>" . $this->_br;
+            "src=\"" . $this->_sPathToFile . $this->_sScriptFileName . "\">" .
+            "</script>" . $this->_br;
 
         $this->_sPostscript  = '<script type="text/javascript"><!--' . $this->_br;
         $this->_sPostscript .= $this->_tab . 'var emospro = {};' . $this->_br;
@@ -603,8 +610,9 @@ class Emos
      * @param mixed  $mContents Variable value
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addJsFormat" in next major
      */
-    protected function _addJsFormat($sVarName, $mContents)
+    protected function _addJsFormat($sVarName, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //get the first non array $mContents element
         $mVal = $mContents;
@@ -627,8 +635,9 @@ class Emos
      * @param mixed $mContents Input contents
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "jsEncode" in next major
      */
-    protected function _jsEncode($mContents)
+    protected function _jsEncode($mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return json_encode($mContents);
     }

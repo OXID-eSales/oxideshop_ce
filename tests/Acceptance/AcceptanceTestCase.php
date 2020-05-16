@@ -18,7 +18,7 @@ abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceT
     /**
      * Sets up default environment for tests.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->activateTheme('azure');

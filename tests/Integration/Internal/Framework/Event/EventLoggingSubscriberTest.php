@@ -24,7 +24,7 @@ class EventLoggingSubscriberTest extends UnitTestCase
 
     private $testlog = __DIR__ . DIRECTORY_SEPARATOR . 'test.log';
 
-    public function setUp()
+    public function setup(): void
     {
         $containerBuilder = new ContainerBuilder(new BasicContextStub());
         $this->container = $containerBuilder->getContainer();
@@ -33,7 +33,7 @@ class EventLoggingSubscriberTest extends UnitTestCase
         $this->container->compile();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if (file_exists($this->testlog)) {
             unlink($this->testlog);
@@ -49,8 +49,8 @@ class EventLoggingSubscriberTest extends UnitTestCase
         /** @var EventDispatcherInterface $dispatcher */
         $dispatcher = $this->container->get(EventDispatcherInterface::class);
         $dispatcher->dispatch(
-            ServicesYamlConfigurationErrorEvent::NAME,
-            new ServicesYamlConfigurationErrorEvent('error', 'just/some/path/services.yaml')
+            new ServicesYamlConfigurationErrorEvent('error', 'just/some/path/services.yaml'),
+            ServicesYamlConfigurationErrorEvent::NAME
         );
 
         $this->assertTrue(file_exists(__DIR__ . DIRECTORY_SEPARATOR . 'test.log'));

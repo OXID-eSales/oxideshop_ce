@@ -1,10 +1,10 @@
 SET @@session.sql_mode = '';
 
 # Reset theme in config
-UPDATE `oxconfig` SET `OXVARVALUE` = encode('basic', 'fq45QS09_fqyx09239QQ') WHERE `OXVARNAME` = 'sTheme';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'basic' WHERE `OXVARNAME` = 'sTheme';
 
 # Activate en and de languages
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba832f744c5786a371d9df33778f9525f408b6efbc82de7c3c5ae3396caa6f8afb6864afa833b43597cad1fb8f9b8970c8e9098d10aae1be4637faa40a012a04e45a8a1cdd1b2ac3da558638600e58acf70fe8c192b668995bb533dac95be7af7d343b3a9c9b8daeaf4d637f065895346773476d667de331fe40d18765d4b98faf7375e1090587d8dd4bf98ad5005eb30666410920 WHERE `OXVARNAME` = 'aLanguageParams';
+UPDATE `oxconfig` SET `OXVARVALUE` = 'a:2:{s:2:"de";a:3:{s:6:"baseId";i:0;s:6:"active";s:1:"1";s:4:"sort";s:1:"1";}s:2:"en";a:3:{s:6:"baseId";i:1;s:6:"active";s:1:"1";s:4:"sort";s:1:"2";}}' WHERE `OXVARNAME` = 'aLanguageParams';
 
 # Activate all coutries
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXISOALPHA2` in ('DE', 'AT', 'CH', 'GB', 'US');
@@ -19,8 +19,6 @@ UPDATE `oxnewssubscribed` SET OXUSERID = 'oxdefaultadmin' WHERE OXID='0b742e66fd
 # Data for table `oxactions2article`
 #
 INSERT INTO `oxactions2article` (`OXID`, `OXSHOPID`, `OXACTIONID`, `OXARTID`, `OXSORT`) VALUES
-('38c44b6536b1446e2.17112560', 1, 'oxstart', '943ed656e21971fb2f1827facbba9bec', 0),
-('d8842e3c913930f47.00463447', 1, 'oxstart', '2077', 0),
 ('79042e787800a8465.75238508', 1, 'oxbargain', '85b42c94a32b3fdd2.66642220', 0),
 ('00f42e7bc564eb0c5.98400825', 1, 'oxtop5', '2080', 0),
 ('0a842e4f4e51ca939.48788613', 1, 'oxbargain', '1431', 1),
@@ -3217,25 +3215,18 @@ INSERT INTO `oxobject2payment` (`OXID`, `OXPAYMENTID`, `OXOBJECTID`, `OXTYPE`) V
 ('1b842e7375676dd84.15824521', 'oxidinvoice', 'oxidstandard', 'oxdelset'),
 ('1b842e737567681b7.32408586', 'oxidpayadvance', 'oxidstandard', 'oxdelset'),
 ('1b842e73756761653.33874589', 'oxiddebitnote', 'oxidstandard', 'oxdelset'),
-('1b842e7375675b807.24061946', 'oxidcreditcard', 'oxidstandard', 'oxdelset'),
-('f324215af5c89b870.26091752', 'oxidcreditcard', 'f324215af31591936.94392085', 'oxdelset'),
 ('f324215af5c8be899.90598822', 'oxiddebitnote', 'f324215af31591936.94392085', 'oxdelset'),
 ('1b842e737567541b1.16932982', 'oxidcashondel', 'oxidstandard', 'oxdelset'),
 ('0f941664de07fe713.78180932', 'oxiddebitnote', 'a7c40f631fc920687.20179984', 'oxcountry'),
 ('0f941664de081d815.03693723', 'oxiddebitnote', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
 ('0f941664de082a1b0.85265324', 'oxiddebitnote', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
-('0f941664e70744a73.85113769', 'oxidcreditcard', 'a7c40f631fc920687.20179984', 'oxcountry'),
-('0f941664e70758467.23169947', 'oxidcreditcard', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
-('0f941664e707657e4.30674465', 'oxidcreditcard', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
 ('0f941664e9e60f698.58333517', 'oxidcashondel', 'a7c40f631fc920687.20179984', 'oxcountry'),
 ('0f941664ee2448a22.44967166', 'oxidinvoice', 'a7c40f631fc920687.20179984', 'oxcountry'),
 ('0f941664ee245e458.07911799', 'oxidinvoice', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
 ('0f941664ee246ac84.39868591', 'oxidinvoice', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
 ('0f941664efa30a021.06837665', 'oxidpayadvance', 'a7c40f631fc920687.20179984', 'oxcountry'),
 ('0f941664efa320ca8.35650805', 'oxidpayadvance', 'a7c40f6320aeb2ec2.72885259', 'oxcountry'),
-('0f941664efa32d4e5.28625433', 'oxidpayadvance', 'a7c40f6321c6f6109.43859248', 'oxcountry'),
-('1b842e738b3f1ca46.72529947', 'oxidcreditcard', '1b842e732a23255b1.91207750', 'oxdelset'),
-('1b842e738b3f1ca46.72529948', 'oxidcreditcard', '1b842e732a23255b1.91207751', 'oxdelset');
+('0f941664efa32d4e5.28625433', 'oxidpayadvance', 'a7c40f6321c6f6109.43859248', 'oxcountry');
 
 #
 # Data for table `oxnewsletter`
@@ -3290,18 +3281,6 @@ INSERT INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`) VA
 ('c193fddd471987391.56507198', 1, 'oxiddebitnote', 'oxidnewcustomer'),
 ('c193fddd4719915f1.10073644', 1, 'oxiddebitnote', 'oxidnewsletter'),
 ('c193fddd4719996f2.77898155', 1, 'oxiddebitnote', 'oxidadmin'),
-('c193fddd4831e2713.21232210', 1, 'oxidcreditcard', 'oxidsmallcust'),
-('c193fddd4831f6f46.50917349', 1, 'oxidcreditcard', 'oxidmiddlecust'),
-('c193fddd4831ff385.99230154', 1, 'oxidcreditcard', 'oxidgoodcust'),
-('c193fddd483207c10.92807988', 1, 'oxidcreditcard', 'oxidforeigncustomer'),
-('c193fddd483215d21.77186691', 1, 'oxidcreditcard', 'oxidnewcustomer'),
-('c193fddd48321e633.40782090', 1, 'oxidcreditcard', 'oxidpowershopper'),
-('c193fddd483225762.33412275', 1, 'oxidcreditcard', 'oxiddealer'),
-('c193fddd483233a87.07118337', 1, 'oxidcreditcard', 'oxidnewsletter'),
-('c193fddd48323bcb8.16273041', 1, 'oxidcreditcard', 'oxidadmin'),
-('c193fddd483242bc6.72020207', 1, 'oxidcreditcard', 'oxidpriceb'),
-('c193fddd483251c35.30210206', 1, 'oxidcreditcard', 'oxidpricea'),
-('c193fddd48325a223.07587162', 1, 'oxidcreditcard', 'oxidpricec'),
 ('c193fddd4939c95b3.22730175', 1, 'oxidinvoice', 'oxidnewcustomer'),
 ('c193fddd49772de88.87420931', 1, 'oxidinvoice', 'oxidgoodcust'),
 ('c193fddd49b560bf7.83973615', 1, 'oxidpayadvance', 'oxidblacklist'),
@@ -3754,4 +3733,4 @@ INSERT INTO `oxactions` (`OXID`, `OXSHOPID`, `OXSORT`, `OXTYPE`, `OXTITLE`, `OXT
 ('d51f5e7446e9193188fb315c9d60520a', 1, 1, 2, 'Expired promotion', 'Expired promotion', '', '',   '<a href="[{ oxgetseourl type=\'oxarticle\' oxid=\'1651\' }]">                                 <img alt="" src="[{$oViewConf->getPictureDir()}]promo/expired_de.jpg" /></a>', '<a href="[{ oxgetseourl type=\'oxarticle\' oxid=\'1651\' }]">                                  <img alt="" src="[{$oViewConf->getPictureDir()}]promo/expired_en.jpg" /></a>',  '', '', 0, '2010-01-01 00:00:00', '2010-02-01 00:00:00'),
 ('d51545e80843be666a9326783a73e91d', 1, 3, 2, 'Upcoming Promotion', 'Upcoming Promotion', '', '', '<a href="[{ oxgetseourl type=\'oxmanufacturer\' oxid=\'9434afb379a46d6c141de9c9e5b94fcf\' }]"><img alt="" src="[{$oViewConf->getPictureDir()}]promo/upcoming_de.jpg" /></a>', '<a href="[{ oxgetseourl type=\'oxmanufacturer\' oxid=\'9434afb379a46d6c141de9c9e5b94fcf\' }]"><img alt="" src="[{$oViewConf->getPictureDir()}]promo/upcoming_en.jpg" /></a>', '', '', 0, '2010-10-10 00:00:00', '2011-10-10 00:00:00');
 
-UPDATE `oxactions` SET OXACTIVE = '1' WHERE OXID='oxstart';
+UPDATE `oxactions` SET OXACTIVE = '1' WHERE OXID='oxtopstart';

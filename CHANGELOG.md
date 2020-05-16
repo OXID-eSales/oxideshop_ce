@@ -7,22 +7,50 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
+- Support for MySQL v8.0
+- More information about problems is shown after permission check in Setup [PR-764](https://github.com/OXID-eSales/oxideshop_ce/pull/764)
+- Logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
+- Checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
+- Performance improvement of Field class [PR-771](https://github.com/OXID-eSales/oxideshop_ce/pull/771)
 
 ### Changed
-
-- source/Application/views/admin/tpl/shop_license.tpl
+- Source/Application/views/admin/tpl/shop_license.tpl
+- Block names in source/Application/views/admin/tpl/shop_main.tpl were switched [PR-730](https://github.com/OXID-eSales/oxideshop_ce/pull/730):
+    - ``admin_shop_main_leftform``
+    - ``admin_shop_main_rightform``
+- Added arguments to oxNew method signature to improve static analysis possibilities [PR-744](https://github.com/OXID-eSales/oxideshop_ce/pull/744)
+- Skip currency url generation if "Display Currencies" option is disabled [PR-750](https://github.com/OXID-eSales/oxideshop_ce/pull/750)
+- Removed multilines in translation files to make it fit for localization platforms [PR-729](https://github.com/OXID-eSales/oxideshop_ce/pull/729)
+- Update symfony components to version 5
+- Change translations loading source for themes to be same as for core and modules
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
 - `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`
 
 ### Removed
+- Support for PHP v7.1, v7.2
+- Support for MySQL v5.5, v5.6
+- Database encoding:
+    - Changed database fields:
+        - `oxvalue` field in `oxconfig` table changed from `blob` to `text`
+        - `oxvalue` field in `oxuserpayments` table changed from `blob` to `text`
+    - Removed methods and properties:
+        - `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
+        - `OxidEsales\Eshop\Core\Config::$sConfigKey`
+        - `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
+    - Removed classes:
+        - `Conf`
+    - Removed settings:
+        - `sConfigKey` from `config.inc.php`
+- Functionality for MySQL version check in Setup
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\AdminController::getServiceUrl()
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenController
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenList
-- class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynEconda
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicInterface
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenController
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenList
+- Class \OxidEsales\EshopCommunity\Application\Controller\Admin\DynamicScreenLocal
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_addDynLinks()
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_checkDynFile()
 - \OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::_getDynMenuLang()
@@ -30,11 +58,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - \OxidEsales\EshopCommunity\Application\Component\Widget::getCompareItemsCnt()
 - \OxidEsales\EshopCommunity\Core\Config::getRevision()
 - \OxidEsales\EshopCommunity\Core\Controller\BaseController::getRevision()
-- template source/Application/views/admin/tpl/dyn_econda.tpl
-- template source/Application/views/admin/tpl/dynscreen.tpl
-- template source/Application/views/admin/tpl/dynscreen_list.tpl
-- template source/Application/views/admin/tpl/dynscreen_local.tpl
-- template source/Application/views/admin/tpl/version_checker_result.tpl
+- Template source/Application/views/admin/tpl/dyn_econda.tpl
+- Template source/Application/views/admin/tpl/dynscreen.tpl
+- Template source/Application/views/admin/tpl/dynscreen_list.tpl
+- Template source/Application/views/admin/tpl/dynscreen_local.tpl
+- Template source/Application/views/admin/tpl/version_checker_result.tpl
 - `sOXIDPHP` parameter in `config.inc.php`
 - `blDoNotDisableModuleOnError` parameter in `config.inc.php`
 - \OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler::writeExceptionToLog
@@ -52,10 +80,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `writeToLog` in `bootstrap.php`
 - \OxidEsales\EshopCommunity\Core\Base::$_oConfig
 - \OxidEsales\EshopCommunity\Core\Base::$_oSession
-- class `\OxidEsales\Eshop\Application\Model\FileChecker`
-- class `\OxidEsales\Eshop\Application\Model\FileCheckerResult`
-- class `\OxidEsales\EshopCommunity\Application\Model\FileChecker`
-- class `\OxidEsales\EshopCommunity\Application\Model\FileCheckerResult`
+- \OxidEsales\EshopCommunity\Core\Base::$_oRights
+- Class `\OxidEsales\Eshop\Application\Model\FileChecker`
+- Class `\OxidEsales\Eshop\Application\Model\FileCheckerResult`
+- Class `\OxidEsales\EshopCommunity\Application\Model\FileChecker`
+- Class `\OxidEsales\EshopCommunity\Application\Model\FileCheckerResult`
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_checkOxidFiles`
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFileCheckReport`
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\DiagnosticsMain::_getFilesToCheck`
@@ -74,19 +103,211 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module::getConfigBlDoNotDisableModuleOnError`
 - `\OxidEsales\EshopCommunity\Application\Model\OrderArticle::$_aOrderCache`
 - Removed deprecated getSession and setSession usages around the code
-
+- `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
+- `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+- PHP version checker
+    - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
+    - Language Variable:
+        - `SYSREQ_PHP_VERSION`
+        - `MOD_PHP_VERSION`
+- Credit Card:
+    - Class:
+        - `OxidEsales\Eshop\Core\CreditCardValidator`
+    - Function: 
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::getDynDataFiltered()`
+    - Property:     
+        - `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
+        - `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
+    - Language Variable:
+        - `CREDITCARD`
+        - `PAYMENT_CREDITCARD`
+        - `SHOP_CONFIG_STORECREDITCARDINFO`
+        - `PAYMENT_RDFA_CREDITCARD`
+        - `PAYMENT_RDFA_MASTERCARD`
+        - `PAYMENT_RDFA_VISA`
+        - `PAYMENT_RDFA_AMERICANEXPRESS`
+        - `PAYMENT_RDFA_DINERSCLUB`
+        - `PAYMENT_RDFA_DISCOVER`
+        - `PAYMENT_RDFA_JCB`
+        - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
+        - `CARD_SECURITY_CODE_DESCRIPTION`
+        - `HELP_SHOP_CONFIG_ATTENTION`
+        - `CARD_MASTERCARD`
+        - `CARD_SECURITY_CODE`
+        - `CARD_VISA`
+- Language Variable:
+    - `SYSREQ_MYSQL_VERSION`
+- Betanote:
+    - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
+    - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
+- Suggest (Recommend Product) feature:
+    - Class: `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
+    - Method:
+        - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest`
+        - `OxidEsales\EshopCommunity\Core\Email::sendSuggestMail`
+    - Property:
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplate`
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplatePlain`
+    - Language Constants:
+        - `CARD_TO`
+        - `CHECK`
+        - `MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE`
+        - `MESSAGE_RECOMMEND_CLICK_ON_SEND`
+        - `PRODUCT_POST_CARD_FROM`
+        - `RECOMMENDED_PRODUCTS`
+        - `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+        - `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+    - Config option (usage): `blAllowSuggestArticle`
 ### Fixed
-
-### Security
-
-## [6.6.0] - Unreleased
-
-### Added
-- Add logging to shop constructor if shop is not valid [PR-733](https://github.com/OXID-eSales/oxideshop_ce/pull/733)
-
-### Fixed
+- Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)
+- Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)
 - Fixed missed deprecated getConfig and getSession method usages [PR-721](https://github.com/OXID-eSales/oxideshop_ce/pull/721)
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
+- Replaced BC classes with namespaced ones [PR-772](https://github.com/OXID-eSales/oxideshop_ce/pull/772)
+- Ensure out/pictures/generated directory existance [PR-789](https://github.com/OXID-eSales/oxideshop_ce/pull/789)
+- Improved various docs, variable and other coding style problems:
+    - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
+    - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)
+    - [PR-748](https://github.com/OXID-eSales/oxideshop_ce/pull/748) 
+    - [PR-756](https://github.com/OXID-eSales/oxideshop_ce/pull/756)
+    - [PR-765](https://github.com/OXID-eSales/oxideshop_ce/pull/765)
+    - [PR-780](https://github.com/OXID-eSales/oxideshop_ce/pull/780)
+    - [PR-778](https://github.com/OXID-eSales/oxideshop_ce/pull/778)
+    - [PR-779](https://github.com/OXID-eSales/oxideshop_ce/pull/779)
+    - [PR-777](https://github.com/OXID-eSales/oxideshop_ce/pull/777)
+    - [PR-774](https://github.com/OXID-eSales/oxideshop_ce/pull/774)
+    - [PR-773](https://github.com/OXID-eSales/oxideshop_ce/pull/773)
+    - [PR-775](https://github.com/OXID-eSales/oxideshop_ce/pull/775)
+    - [PR-776](https://github.com/OXID-eSales/oxideshop_ce/pull/776)
+    - [PR-790](https://github.com/OXID-eSales/oxideshop_ce/pull/790)
+    
+### Security
+
+## [6.5.4] - 2020-04-21
+
+### Deprecated
+- Betanote:
+    - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
+    - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
+- Suggest (Recommend Product) feature:
+    - Class `OxidEsales\EshopCommunity\Application\Controller\SuggestController`
+    - Method: 
+        - `OxidEsales\EshopCommunity\Core\ViewConfig::getShowSuggest`
+        - `OxidEsales\EshopCommunity\Core\Email::sendSuggestMail`
+    - Property:
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplate`
+        - `OxidEsales\EshopCommunity\Core\Email::$_sSuggestTemplatePlain`
+    - Language Constants:
+        - `CARD_TO`
+        - `CHECK`
+        - `MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE`
+        - `MESSAGE_RECOMMEND_CLICK_ON_SEND`
+        - `PRODUCT_POST_CARD_FROM`
+        - `RECOMMENDED_PRODUCTS`
+        - `SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+        - `HELP_SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE`
+- Methods starting with underscore have been deprecated, these methods will be renamed
+
+### Fixed
+- Change visibility of Session::setSessionCookie to protected for overwriting possibility [PR-785](https://github.com/OXID-eSales/oxideshop_ce/pull/785)
+- Use cache directory from config file for the container cache: [#0007111](https://bugs.oxid-esales.com/view.php?id=7111)
+- Get the correct path to admin menu file: [#0007126](https://bugs.oxid-esales.com/view.php?id=7126)
+
+## [6.5.3] - 2020-03-25
+
+### Fixed
+- Issue with module controllers validator
+
+### Changed
+- Option `blSessionUseCookies` is no longer used in the Session class    
+
+## [6.5.2] - 2020-03-16
+
+### Deprecated
+- `OxidEsales\EshopCommunity\Application\Model\Article::getDeliveryDate()` [PR-768](https://github.com/OXID-eSales/oxideshop_ce/pull/768)
+- Language Variable:
+    - `SYSREQ_MYSQL_VERSION`
+### Fixed
+- Issue with session ID regeneration on user registration
+- Problem with guest account update during checkout: [#0007109](https://bugs.oxid-esales.com/view.php?id=7109)
+### Removed
+- `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationModuleSettingHandler`
+
+## [6.5.1] - 2020-02-25
+
+### Deprecated
+- `OxidEsales\Eshop\Core\Config::getDecodeValueQuery()`
+- `OxidEsales\Eshop\Core\Config::$sConfigKey`
+- `OxidEsales\EshopCommunity\Core\Base::$_oRights`
+- `OxidEsales\Eshop\Core\Config::DEFAULT_CONFIG_KEY`
+- `Conf`
+- `OxidEsales\Eshop\Core\Session::$_blStarted`
+- `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
+- `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
+- `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
+- `OxidEsales\EshopCommunity\Core\MailValidator`
+- Language Variable:
+    - `SYSREQ_PHP_VERSION`
+    - `MOD_PHP_VERSION`
+- Credit Card:
+    - Class:
+        - `OxidEsales\Eshop\Core\CreditCardValidator`
+    - Function: 
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::_filterDynData()`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::setStoreCreditCardInfo()`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::getStoreCreditCardInfo()`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::getCreditYears()`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::getDynDataFiltered()`
+    - Property:     
+        - `OxidEsales\Eshop\Core\InputValidator::$_aRequiredCCFields`
+        - `OxidEsales\Eshop\Core\InputValidator::$_aPossibleCCType`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
+        - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
+        - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
+    - Language Variable:
+        - `CREDITCARD`
+        - `PAYMENT_CREDITCARD`
+        - `SHOP_CONFIG_STORECREDITCARDINFO`
+        - `PAYMENT_RDFA_CREDITCARD`
+        - `PAYMENT_RDFA_MASTERCARD`
+        - `PAYMENT_RDFA_VISA`
+        - `PAYMENT_RDFA_AMERICANEXPRESS`
+        - `PAYMENT_RDFA_DINERSCLUB`
+        - `PAYMENT_RDFA_DISCOVER`
+        - `PAYMENT_RDFA_JCB`
+        - `PAGE_CHECKOUT_PAYMENT_CREDITCARD`
+        - `CARD_SECURITY_CODE_DESCRIPTION`
+        - `HELP_SHOP_CONFIG_ATTENTION`
+        - `CARD_MASTERCARD`
+        - `CARD_SECURITY_CODE`
+        - `CARD_VISA`
+
+### Fixed
+- Warnings in order discounts recalculation [PR-742](https://github.com/OXID-eSales/oxideshop_ce/pull/742)
+- Require at least 3.4.26 DI component [PR-746](https://github.com/OXID-eSales/oxideshop_ce/pull/746)
+- Fix return type annotation for `OxidEsales\EshopCommunity\Application\Model::load()` to `bool`
+- Handle translated error message from validator in password change correctly [PR-731](https://github.com/OXID-eSales/oxideshop_ce/pull/731)
+- Fix docblock and var name in NavigationController::_doStartUpChecks [PR-751](https://github.com/OXID-eSales/oxideshop_ce/pull/751)
+
+### Added
+- Support MariaDB (tested for MariaDB 10.4)
+- Support PHP 7.3 and 7.4
+- Utilizes Travis CI caching feature for faster builds
+- Uninstall method for removing module
+- Add possibility to overwrite the offline page [PR-755](https://github.com/OXID-eSales/oxideshop_ce/pull/755)
+- Email validation extracted to service `OxidEsales\EshopCommunity\Internal\Domain\Email\EmailValidationService`
+- Events:
+    - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxRequestProcessedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent`
 
 ## [6.5.0] - 2019-11-07
 
@@ -183,17 +404,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent`
     - `\OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelDeleteEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelInsertEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AfterModelUpdateEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\AllCookiesRemovedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ApplicationExitEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BasketChangedEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeHeadersSendEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelDeleteEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeModelUpdateEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\BeforeSessionStartEvent`
-    - `\OxidEsales\EshopCommunity\Internal\ShopEvents\ViewRenderedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelInsertEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AllCookiesRemovedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelDeleteEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeModelUpdateEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeSessionStartEvent`
+    - `\OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent`
     - `\OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent`
 - Interface:
     - `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface` as the new default 
@@ -240,6 +461,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The value for the password salt will not be stored in the database column `oxuser.OXPASSSALT` anymore, but in the password hash itself  
 
 ### Deprecated
+- `\OxidEsales\EshopCommunity\Application\Controller\StartController::getArticleList`
 - `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface` was added as the new default 
   for hashing passwords. Hashing passwords with MD5 and SHA512 is still supported in order support login with 
   older password hashes. Therefor the methods and classes below might not be compatible with the current passhword hash 
@@ -287,6 +509,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory` Module metadata validation moved to Internal\Framework\Module package
 - `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage` Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
 - `\OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface` Use `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ModuleConfigurationDaoBridgeInterface`.
+
+## [6.3.8] - Unreleased
+
+### Fixed
+- Port missing resetFilter action [#0007051](https://bugs.oxid-esales.com/view.php?id=7051) [PR-739](https://github.com/OXID-eSales/oxideshop_ce/pull/739)
+
+## [6.3.7] - 2020-03-16
+
+### Deprecated
+- `\OxidEsales\EshopCommunity\Application\Controller\StartController::getArticleList`
+
+### Fixed
+- Fix the host for checking the SystemRequirements->fsockopen to working one [#0006606](https://bugs.oxid-esales.com/view.php?id=6606) [PR-556](https://github.com/OXID-eSales/oxideshop_ce/pull/556)
+- Fix more complex multiline query command detection [PR-734](https://github.com/OXID-eSales/oxideshop_ce/pull/734)
+- Issue with session ID regeneration on user registration
 
 ## [6.3.6] - 2019-10-29
 
@@ -783,9 +1020,15 @@ See
 - [OXID eShop v6.0.0 Beta1: Overview of Changes](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-overview-of-changes.html)
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
-[6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...b-6.x
+[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/b-6.2.x...master
+[6.5.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.3...v6.5.4
+[6.5.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.2...v6.5.3
+[6.5.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.1...v6.5.2
+[6.5.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.0...v6.5.1
 [6.5.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.4.0...v6.5.0
 [6.4.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.4.0
+[6.3.8]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.7...b-6.1.x
+[6.3.7]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.6...v6.3.7
 [6.3.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.5...v6.3.6
 [6.3.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.4...v6.3.5
 [6.3.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.3.3...v6.3.4

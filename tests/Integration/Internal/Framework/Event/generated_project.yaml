@@ -3,7 +3,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface:
     class: OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub
     autowire: true
-    public: false
+    public: true
 
   OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber1:
     class: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber

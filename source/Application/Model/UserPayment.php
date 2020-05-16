@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxDb;
 
@@ -14,35 +15,15 @@ use oxDb;
  * User payment manager.
  * Performs assigning, loading, inserting and updating functions for
  * user payment.
- *
  */
 class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-    // you can change this if you want more security
-    // DO NOT !! CHANGE THIS FILE AND STORE CREDIT CARD INFORMATION
-    // THIS IS MORE THAN LIKELY ILLEGAL !!
-    // CHECK YOUR CREDIT CARD CONTRACT
-
-    /**
-     * Payment information encryption key
-     *
-     * @var string.
-     */
-    protected $_sPaymentKey = 'fq45QS09_fqyx09239QQ';
-
     /**
      * Name of current class
      *
      * @var string
      */
     protected $_sClassName = 'oxuserpayment';
-
-    /**
-     * Store credit card information in db or not
-     *
-     * @var bool
-     */
-    protected $_blStoreCreditCardInfo = null;
 
     /**
      * Payment info object
@@ -95,18 +76,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         parent::__construct();
         $this->init('oxuserpayments');
-        $this->_sPaymentKey = str_rot13($this->_sPaymentKey);
-        $this->setStoreCreditCardInfo(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blStoreCreditCardInfo'));
-    }
-
-    /**
-     * Returns payment key used for DB value decription
-     *
-     * @return string
-     */
-    public function getPaymentKey()
-    {
-        return $this->_sPaymentKey;
     }
 
     /**
@@ -118,7 +87,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function load($sOxId)
     {
-        $sSelect = 'select oxid, oxuserid, oxpaymentsid, DECODE( oxvalue, "' . $this->getPaymentKey() . '" ) as oxvalue
+        $sSelect = 'select oxid, oxuserid, oxpaymentsid, oxvalue
                     from oxuserpayments where oxid = ' . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOxId);
 
         return $this->assignRecord($sSelect);
@@ -129,81 +98,13 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts payment information to DB. Returns insert status.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        // we do not store credit card information
-        // check and in case skip it
-        if (!$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard') {
-            return true;
-        }
-
-        //encode sensitive data
-        $sEncodedValue = '';
-        if ($sValue = $this->oxuserpayments__oxvalue->value) {
-            // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
-            // No need to explicitly force master here.
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sEncodedValue = $database->getOne("select encode( " . $database->quote($sValue) . ", '" . $this->getPaymentKey() . "' )");
-            $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
-        }
-
         $blRet = parent::_insert();
 
-        //restore, as encoding was needed only for saving
-        if ($sEncodedValue) {
-            $this->oxuserpayments__oxvalue->setValue($sValue);
-        }
-
         return $blRet;
-    }
-
-    /**
-     * Updates payment record in DB. Returns update status.
-     *
-     * @return bool
-     */
-    protected function _update()
-    {
-
-        //encode sensitive data
-        if ($sValue = $this->oxuserpayments__oxvalue->value) {
-            // Function is called from inside a transaction in Category::save (see ESDEV-3804 and ESDEV-3822).
-            // No need to explicitly force master here.
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-
-            $sEncodedValue = $database->getOne("select encode( " . $database->quote($sValue) . ", '" . $this->getPaymentKey() . "' )");
-            $this->oxuserpayments__oxvalue->setValue($sEncodedValue);
-        }
-
-        $blRet = parent::_update();
-
-        //restore, as encoding was needed only for saving
-        if ($sEncodedValue) {
-            $this->oxuserpayments__oxvalue->setValue($sValue);
-        }
-
-        return $blRet;
-    }
-
-    /**
-     * Set store or not credit card information in db
-     *
-     * @param bool $blStoreCreditCardInfo store or not credit card info
-     */
-    public function setStoreCreditCardInfo($blStoreCreditCardInfo)
-    {
-        $this->_blStoreCreditCardInfo = $blStoreCreditCardInfo;
-    }
-
-    /**
-     * Get store or not credit card information in db parameter
-     *
-     * @return bool
-     */
-    public function getStoreCreditCardInfo()
-    {
-        return $this->_blStoreCreditCardInfo;
     }
 
     /**
@@ -241,10 +142,6 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getDynValues()
     {
-        if (!$this->getStoreCreditCardInfo() && $this->oxuserpayments__oxpaymentsid->value == 'oxidcreditcard') {
-            return null;
-        }
-
         if (!$this->_aDynValues) {
             $sRawDynValue = null;
             if (is_object($this->oxuserpayments__oxvalue)) {

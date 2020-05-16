@@ -74,14 +74,6 @@ class Context extends BasicContext implements ContextInterface
     }
 
     /**
-     * @return string
-     */
-    public function getConfigurationEncryptionKey(): string
-    {
-        return $this->getConfigParameter('sConfigKey');
-    }
-
-    /**
      * @return bool
      */
     public function isAdmin(): bool

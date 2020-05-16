@@ -87,7 +87,7 @@ class NewsletterTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -122,7 +122,7 @@ class NewsletterTest extends \OxidTestCase
       `OXBILLFON` = '0800 1234567',
       `OXBILLFAX` = '0800 1234567',
       `OXBILLSAL` = 'Herr',
-      `OXPAYMENTTYPE` = 'oxidcreditcard',
+      `OXPAYMENTTYPE` = 'oxiddebitnote',
       `OXTOTALNETSUM` = 3.9,
       `OXTOTALBRUTSUM` = 0,
       `OXTOTALORDERSUM` = 20.9,
@@ -198,7 +198,7 @@ class NewsletterTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
         $sDelete = "delete from oxnewsletter where oxid='newstest'";

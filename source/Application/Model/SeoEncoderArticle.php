@@ -15,7 +15,6 @@ use oxCategory;
 
 /**
  * Seo encoder for articles
- *
  */
 class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
 {
@@ -30,8 +29,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns target "extension" (.html)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
-    protected function _getUrlExtension()
+    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '.html';
     }
@@ -44,8 +44,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int                                         $iLang    user defined language id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductForLang" in next major
      */
-    protected function _getProductForLang($oArticle, $iLang)
+    protected function _getProductForLang($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($iLang) && $iLang != $oArticle->getLanguage()) {
             $sId = $oArticle->getId();
@@ -110,9 +111,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
-     * @return \OxidEsales\Eshop\Application\Model\RecommendationList | null
+     * @return \OxidEsales\Eshop\Application\Model\RecommendationList|null
      */
-    protected function _getRecomm($oArticle, $iLang)
+    protected function _getRecomm($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oList = null;
         $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
@@ -127,8 +128,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns active list type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getListType" in next major
      */
-    protected function _getListType()
+    protected function _getListType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getListType();
     }
@@ -141,8 +143,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int                                          $iLang     language to generate uri for
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createArticleCategoryUri" in next major
      */
-    protected function _createArticleCategoryUri($oArticle, $oCategory, $iLang)
+    protected function _createArticleCategoryUri($oArticle, $oCategory, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile(__FUNCTION__);
         $oArticle = $this->_getProductForLang($oArticle, $iLang);
@@ -223,9 +226,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      * @param int                                         $iLang    language id
      *
-     * @return \OxidEsales\Eshop\Application\Model\Category | null
+     * @return \OxidEsales\Eshop\Application\Model\Category|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategory" in next major
      */
-    protected function _getCategory($oArticle, $iLang)
+    protected function _getCategory($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oCat = null;
         $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
@@ -244,8 +248,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getMainCategory" in next major
      */
-    protected function _getMainCategory($oArticle)
+    protected function _getMainCategory($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oMainCat = null;
 
@@ -331,8 +336,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareArticleTitle" in next major
      */
-    protected function _prepareArticleTitle($oArticle)
+    protected function _prepareArticleTitle($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // create title part for uri
         if (!($sTitle = $oArticle->oxarticles__oxtitle->value)) {
@@ -415,9 +421,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      * @param int                                         $iLang    language id
      *
-     * @return \OxidEsales\Eshop\Application\Model\Vendor | null
+     * @return \OxidEsales\Eshop\Application\Model\Vendor|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendor" in next major
      */
-    protected function _getVendor($oArticle, $iLang)
+    protected function _getVendor($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
 
@@ -492,9 +499,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle product
      * @param int                                         $iLang    language id
      *
-     * @return \OxidEsales\Eshop\Application\Model\Manufacturer | null
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturer" in next major
      */
-    protected function _getManufacturer($oArticle, $iLang)
+    protected function _getManufacturer($oArticle, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oManufacturer = null;
         if ($sActManufacturerId = $oArticle->oxarticles__oxmanufacturerid->value) {
@@ -602,8 +610,9 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int    $iLang     language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
-    protected function _getAltUri($sObjectId, $iLang)
+    protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSeoUrl = null;
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

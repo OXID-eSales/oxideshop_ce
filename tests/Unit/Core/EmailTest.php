@@ -30,7 +30,7 @@ class EmailTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -94,7 +94,7 @@ class EmailTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(0);
@@ -656,7 +656,7 @@ class EmailTest extends \OxidTestCase
     }
 
     /*
-     * Test setting reply to with empty value. Should assign deffault reply to address
+     * Test setting reply to with empty value. Should assign default reply to address
      */
     public function testSetReplyToWithNoParams()
     {
@@ -1018,8 +1018,8 @@ class EmailTest extends \OxidTestCase
     {
         $headerLine = $this->_oEmail->headerLine('testName', 'testValue');
 
-        $this->assertContains('testName', $headerLine);
-        $this->assertContains('testValue', $headerLine);
+        $this->assertStringContainsString('testName', $headerLine);
+        $this->assertStringContainsString('testValue', $headerLine);
     }
 
     public function testHeaderLineXMailer()
@@ -1103,35 +1103,6 @@ class EmailTest extends \OxidTestCase
         $aTo[0][0] = 'order@myoxideshop.com';
         $aTo[0][1] = 'order';
         $this->assertEquals($aTo, $oEmail->getRecipient());
-    }
-
-    /**
-     * Testing the correct recipient (#3586)
-     */
-    public function testSendSuggestMailCorrectSender()
-    {
-        $oSmartyMock = $this->getMock("Smarty", array("fetch"));
-        $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(''));
-
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("send", "_getSmarty"));
-        $oEmail->expects($this->once())->method("send")->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method("_getSmarty")->will($this->returnValue($oSmartyMock));
-
-        // oxParams mock
-        $oParams = $this->getMock("oxParams");
-
-        // oxProduct mock
-        $oProduct = $this->getMock("oxProduct", array("getId", "getLanguage", "setLanguage", "load", "getLink"));
-        $oProduct->expects($this->once())->method("getId")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("getLanguage")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("setLanguage")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("load")->will($this->returnValue(true));
-        $oProduct->expects($this->once())->method("getLink")->will($this->returnValue(true));
-
-        $oEmail->sendSuggestMail($oParams, $oProduct);
-
-        //testing actual From field Value
-        $this->assertEquals("info@myoxideshop.com", $oEmail->getFrom());
     }
 
     public function testProductReviewLinksAreIncludedByDefaultInSendedNowMail()

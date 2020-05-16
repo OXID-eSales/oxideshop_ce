@@ -9,11 +9,11 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
-use \OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use \OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use \OxidEsales\Facts\Facts;
-use \OxidEsales\Eshop\Core\Edition\EditionSelector;
-use \OxidEsales\DoctrineMigrationWrapper\Migrations;
+use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
+use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
+use OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -121,8 +121,9 @@ class Utilities extends Core
      * @param array $aPath path info array
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "extractPath" in next major
      */
-    protected function _extractPath($aPath)
+    protected function _extractPath($aPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sExtPath = '';
         $blBuildPath = false;
@@ -377,7 +378,7 @@ class Utilities extends Core
      *
      * @param string $sFile path to file
      *
-     * @return string | mixed
+     * @return string|mixed
      */
     public function getFileContents($sFile)
     {
@@ -508,14 +509,15 @@ class Utilities extends Core
      */
     public function getRootDirectory()
     {
-        $facts = oxNew(\OxidEsales\Facts\Facts::class);
+        $facts = new Facts();
 
-        $rootDirectory = $facts->getShopRootPath();
-
+        $rootDirectory = '';
         if ($facts->isProfessional()) {
             $rootDirectory = $facts->getProfessionalEditionRootPath();
         } elseif ($facts->isEnterprise()) {
             $rootDirectory = $facts->getEnterpriseEditionRootPath();
+        } else {
+            $rootDirectory = $facts->getCommunityEditionRootPath();
         }
 
         return $rootDirectory;
@@ -605,11 +607,8 @@ class Utilities extends Core
      */
     public function getLicenseContent($languageId)
     {
-        $licensePath = $this->getRootDirectory() . DIRECTORY_SEPARATOR . self::LICENSE_TEXT_FILENAME;
-
-        $licenseContent = $this->getFileContents($licensePath);
-
-        return $licenseContent;
+        return $this->getFileContents($this->getRootDirectory() . DIRECTORY_SEPARATOR .
+                                      self::LICENSE_TEXT_FILENAME);
     }
 
     /**

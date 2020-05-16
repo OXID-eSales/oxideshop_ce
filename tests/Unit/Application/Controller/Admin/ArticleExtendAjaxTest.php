@@ -23,7 +23,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -59,7 +59,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->addTeardownSql("delete from oxcategories where oxid like '%_testCategory%'");
         $this->addTeardownSql("delete from oxobject2category where oxid='_testObject2Category'");
@@ -184,7 +184,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
     public function testGetDataFieldsFalse()
     {
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals(array(array('FALSE' => 0)), $oView->UNITgetDataFields('select false'));
+        $this->assertEquals(array(array('FALSE' => 0)), $oView->UNITgetDataFields('select FALSE'));
     }
 
     /**
@@ -196,7 +196,7 @@ class ArticleExtendAjaxTest extends \OxidTestCase
     {
         $this->setRequestParameter("oxid", true);
         $oView = oxNew('article_extend_ajax');
-        $this->assertEquals(array(array('FALSE' => 0, '_3' => 0)), $oView->UNITgetDataFields('select false'));
+        $this->assertEquals(array(array('FALSE' => 0, '_3' => 0)), $oView->UNITgetDataFields('select FALSE'));
     }
 
     /**

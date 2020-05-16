@@ -22,11 +22,11 @@ require "_header.php"; ?>
                                 $sLanguage   = $this->getViewParam("sLanguage");
                                 $sCountryLang = $this->getViewParam("sCountryLang");
 
-                                if (isset($aCountries[$sLanguage])) {
-                                    foreach ($aCountries[$sLanguage] as $sKey => $sValue) {
-                                        $sSelected = ($sCountryLang !== null && $sCountryLang == $sKey) ? 'selected' : ''; ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
-                                    }
+                            if (isset($aCountries[$sLanguage])) {
+                                foreach ($aCountries[$sLanguage] as $sKey => $sValue) {
+                                    $sSelected = ($sCountryLang !== null && $sCountryLang == $sKey) ? 'selected' : ''; ?><option value="<?php echo $sKey; ?>" <?php echo $sSelected; ?>><?php echo $sValue; ?></option><?php
                                 }
+                            }
                             ?>
                         </select>
                     </td>
@@ -53,7 +53,7 @@ require "_header.php"; ?>
                                 ?>
                                 <option value="<?php echo $sLangId; ?>" <?php if ($this->getViewParam("sShopLang") == $sLangId) {
                                     echo 'selected';
-                                } ?>><?php echo $sLangTitle; ?></option>
+                                               } ?>><?php echo $sLangTitle; ?></option>
                                 <?php
                             }
                             ?>

@@ -21,7 +21,7 @@ class NewssubscribedTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oNewsSub = oxNew("oxnewssubscribed");
@@ -48,7 +48,7 @@ class NewssubscribedTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_oNewsSub->delete('_testNewsSubscrId');
         $this->_oNewsSub->delete('_testNewsSubscr2Id');

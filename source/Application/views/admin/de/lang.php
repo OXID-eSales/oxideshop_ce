@@ -991,6 +991,7 @@ $aLang = [
     'SHOP_MALL_SHOPURL'                                  => 'URL des Shops',
     'SHOP_MALL_SHOPSSLSHOPURL'                           => 'SSL-URL des Shops',
     'SHOP_MALL_NATIVEIMAGES'                             => 'Datenverzeichnis /out aus aktivem Shop laden',
+    'SHOP_MALL_DONOTLOADALLSHOPNEWS'                     => 'Keine Nachrichten aus allen Shops anzeigen',
     'SHOP_MALL_NOSTARTSITE'                              => 'Hauptshop anzeigen',
     'SHOP_MALL_STARTSITE'                                => 'Shop-Auswahlseite',
     'SHOP_MALL_MALLMODE'                                 => 'Startseiten-Typ',
@@ -1055,9 +1056,6 @@ $aLang = [
     'SHOP_CONFIG_CSVSEPARATOR'                                => 'CSV-Trennzeichen beim Im- und Export',
     'SHOP_CONFIG_CSVFIELDENCLOSER'                            => 'Zeichen, um CSV-Daten beim Im/Export einzufassen',
     'SHOP_CONFIG_DISABLEARTDUBLICATES'                        => 'Wenn Artikel kopiert werden: Kopierten Artikel <b>nicht</b> auf "Aktiv" setzen',
-    // @deprecated since v6.2.0 (2017-02-15); Recommendations feature will be moved to an own module.
-    'SHOP_CONFIG_ALLOW_SUGGEST_ARTICLE'                       => 'Empfehlen von Artikeln erlauben',
-    // END deprecated
     'SHOP_CONFIG_EXPORTNUMBEROFLINES'                         => 'Anzahl von Zeilen im CSV, die pro Tick exportiert werden',
     'SHOP_CONFIG_MWSTSETTING'                                 => 'MwSt.-Einstellungen für XML-Export',
     'SHOP_CONFIG_NUMBEROFEMAILSPERTICK'                       => 'Anzahl von E-Mails, die der Newsletter pro Tick verschickt',
@@ -1114,7 +1112,6 @@ $aLang = [
     'SHOP_CONFIG_STOCKWARNINGLIMIT'                           => 'Lagerbestand, ab dem den Benutzern angezeigt wird, dass nur noch wenige Artikel auf Lager sind',
     'SHOP_CONFIG_STOCKOFFDEFAULTMESSAGE'                      => 'Die "Nicht-auf-Lager"-Standardmeldung nutzen',
     'SHOP_CONFIG_STOCKONDEFAULTMESSAGE'                       => 'Die "Auf-Lager"-Standardmeldung nutzen',
-    'SHOP_CONFIG_STORECREDITCARDINFO'                         => 'Kreditkarten-Informationen speichern',
     'SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE'              => 'Zeige Meldung über mögliche internationale Liefergebühren',
     'SHOP_CONFIG_SHOWTSCODMESSAGE'                            => 'Zeige Meldung über mögliche Nachnahmegebühren',
     'SHOP_CONFIG_TIMEFORMAT'                                  => 'Zeitformat im Administrationsbereich',
@@ -1232,7 +1229,6 @@ $aLang = [
     'SYSREQ_MOD_REWRITE'                      => 'Apache mod_rewrite Modul',
     'SYSREQ_ALLOW_URL_FOPEN'                  => 'allow_url_fopen oder fsockopen auf Port 80',
     'SYSREQ_PHP4_COMPAT'                      => 'Zend Kompatibilitätsmodus muss ausgeschaltet sein',
-    'SYSREQ_PHP_VERSION'                      => 'PHP Version 7.1 oder 7.2',
     'SYSREQ_REQUEST_URI'                      => 'REQUEST_URI vorhanden',
     'SYSREQ_LIB_XML2'                         => 'LIB XML2',
     'SYSREQ_PHP_XML'                          => 'DOM',
@@ -1241,7 +1237,6 @@ $aLang = [
     'SYSREQ_TOKENIZER'                        => 'Tokenizer',
     'SYSREQ_BC_MATH'                          => 'BCMath',
     'SYSREQ_MYSQL_CONNECT'                    => 'PDO_MySQL',
-    'SYSREQ_MYSQL_VERSION'                    => 'MySQL Version 5.5 oder 5.7',
     'SYSREQ_GD_INFO'                          => 'GDlib v2 incl. JPEG Unterstützung',
     'SYSREQ_INI_SET'                          => 'ini_set erlaubt',
     'SYSREQ_REGISTER_GLOBALS'                 => 'register_globals muss ausgeschaltet sein',
@@ -1841,13 +1836,6 @@ $aLang = [
     'PAYMENT_RDFA_BYINVOICE'               => 'Rechnung',
     'PAYMENT_RDFA_CHECKINADVANCE'          => 'Barscheck',
     'PAYMENT_RDFA_BYBANKTRANSFERINADVANCE' => 'Vorauskasse',
-    'PAYMENT_RDFA_CREDITCARD'              => 'Kreditkartenzahlung',
-    'PAYMENT_RDFA_AMERICANEXPRESS'         => 'American Express',
-    'PAYMENT_RDFA_DINERSCLUB'              => 'Diners Club',
-    'PAYMENT_RDFA_DISCOVER'                => 'Discover',
-    'PAYMENT_RDFA_JCB'                     => 'JCB',
-    'PAYMENT_RDFA_MASTERCARD'              => 'MasterCard',
-    'PAYMENT_RDFA_VISA'                    => 'VISA',
 
     'DELIVERY_RDFA_ASIGN_DELIVERY'             => 'Versandarten zuordnen',
     'DELIVERY_RDFA_ADVICE'                     => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Versandarten aus, die Ihrer Versandart %s entsprechen',
@@ -1965,6 +1953,8 @@ $aLang = [
     'TITLE'                          => 'Anrede',
     'SUBJECT'                        => 'Betreff',
     'MESSAGE'                        => 'Nachricht',
+    'ADMIN_SETTINGS_LICENSE_VERSION_FETCH_INFO_ERROR' => 'Fehler beim Abrufen von Versionsinformationen!',
+    'CURL_EXECUTE_ERROR' => 'Verbindungsfehler (%s). Bitte versuchen Sie es später noch einmal.',
 ];
 
 /*

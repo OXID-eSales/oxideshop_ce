@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ClassExtensionsChain implements \IteratorAggregate
 {
-    const NAME = 'classExtensions';
+    public const NAME = 'classExtensions';
 
     /**
      * @var array
@@ -70,7 +70,7 @@ class ClassExtensionsChain implements \IteratorAggregate
         $extension = $classExtension->getModuleExtensionClassName();
         
         if (
-            false === array_key_exists($extended, $this->chain) ||
+            false === \array_key_exists($extended, $this->chain) ||
             false === \array_search($extension, $this->chain[$extended], true)
         ) {
             throw new ExtensionNotInChainException(
@@ -93,7 +93,7 @@ class ClassExtensionsChain implements \IteratorAggregate
      */
     public function addExtension(ClassExtension $extension): void
     {
-        if (array_key_exists($extension->getShopClassName(), $this->chain)) {
+        if (\array_key_exists($extension->getShopClassName(), $this->chain)) {
             if (!$this->isModuleExtensionClassNameInChain($extension)) {
                 array_push(
                     $this->chain[$extension->getShopClassName()],
@@ -112,7 +112,7 @@ class ClassExtensionsChain implements \IteratorAggregate
      */
     private function isModuleExtensionClassNameInChain(ClassExtension $extension): bool
     {
-        if (in_array($extension->getModuleExtensionClassName(), $this->chain[$extension->getShopClassName()])) {
+        if (\in_array($extension->getModuleExtensionClassName(), $this->chain[$extension->getShopClassName()])) {
             return true;
         }
 

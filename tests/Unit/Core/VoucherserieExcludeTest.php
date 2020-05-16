@@ -19,7 +19,7 @@ class VoucherserieExcludeTest extends \OxidTestCase
     /**
      * Setting up environment
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_insertData();

@@ -7,6 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
+use function is_string;
+
 /**
  * Database field description object.
  *
@@ -58,14 +62,9 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     {
         // duplicate content here is needed for performance.
         // as this function is called *many* (a lot) times, it is crucial to be fast here!
-        switch ($type) {
-            case self::T_TEXT:
-            default:
-                $this->rawValue = $value;
-                break;
-            case self::T_RAW:
-                $this->value = $value;
-                break;
+        $this->rawValue = $value;
+        if ($type == self::T_RAW) {
+            $this->value = $value;
         }
     }
 
@@ -78,16 +77,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function __isset($name)
     {
-        switch ($name) {
-            case 'rawValue':
-                return ($this->rawValue !== null);
-                break;
-            case 'value':
-                return ($this->value !== null);
-                break;
-            //return true;
-        }
-        return false;
+        return $this->{$name} !== null;
     }
 
     /**
@@ -95,7 +85,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $name Variable name
      *
-     * @return string | null
+     * @return string|null
      */
     public function __get($name)
     {
@@ -105,7 +95,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
                 break;
             case 'value':
                 if (is_string($this->rawValue)) {
-                    $this->value = getStr()->htmlspecialchars($this->rawValue);
+                    $this->value = Str::getStr()->htmlspecialchars($this->rawValue);
                 } else {
                     // TODO: call htmlentities for each value (recursively?)
                     $this->value = $this->rawValue;
@@ -113,7 +103,6 @@ class Field // extends \OxidEsales\Eshop\Core\Base
                 if ($this->rawValue == $this->value) {
                     unset($this->rawValue);
                 }
-
                 return $this->value;
                 break;
             default:
@@ -145,7 +134,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function convertToPseudoHtml()
     {
-        $this->setValue(str_replace("\r", '', nl2br(getStr()->htmlspecialchars($this->rawValue))), self::T_RAW);
+        $this->setValue(str_replace("\r", '', nl2br(Str::getStr()->htmlspecialchars($this->rawValue))), self::T_RAW);
     }
 
     /**
@@ -153,16 +142,14 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      *
      * @param mixed $value Field value
      * @param int   $type  Value type
+     * @deprecated underscore prefix violates PSR12, will be renamed to "initValue" in next major
      */
-    protected function _initValue($value = null, $type = self::T_TEXT)
+    protected function _initValue($value = null, $type = self::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        switch ($type) {
-            case self::T_TEXT:
-                $this->rawValue = $value;
-                break;
-            case self::T_RAW:
-                $this->value = $value;
-                break;
+        if ($type == self::T_TEXT) {
+            $this->rawValue = $value;
+        } else {
+            $this->value = $value;
         }
     }
 

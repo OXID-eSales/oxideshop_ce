@@ -11,14 +11,12 @@ use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator;
 use OxidEsales\TestingLibrary\UnitTestCase;
-
+use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
 class ModuleSmartyPluginDirectoryValidatorTest extends UnitTestCase
 {
-    /**
-     * @expectedException \OxidEsales\Eshop\Core\Exception\ModuleValidationException
-     */
     public function testNonExistingDirectoriesValidation()
     {
+        $this->expectException(ModuleValidationException::class);
         $directories = $this->getModuleSmartyPluginDirectories();
         $directories->add(['fakeDir'], 'id');
         ;

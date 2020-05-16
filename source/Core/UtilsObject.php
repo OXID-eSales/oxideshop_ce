@@ -126,7 +126,7 @@ class UtilsObject
      *
      * @param string $className class name in the cache
      *
-     * @return null;
+     * @return null
      */
     public function resetInstanceCache($className = null)
     {
@@ -185,15 +185,14 @@ class UtilsObject
      * error message.
      *
      * @param string $className Name of class
+     * @param array  $arguments constructor arguments
      *
      * @throws SystemComponentException in case that class does not exists
      *
      * @return object
      */
-    public function oxNew($className)
+    public function oxNew($className, ...$arguments)
     {
-        $arguments = func_get_args();
-        array_shift($arguments);
         $argumentsCount = count($arguments);
         $shouldUseCache = $this->shouldCacheObject($className, $arguments);
         if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {

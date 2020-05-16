@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -134,7 +135,7 @@ if (!function_exists("resizeGif")) {
      * @param int    $iOriginalHeight original height
      * @param int    $iGDVer          GD library version @deprecated
      *
-     * @return string | false
+     * @return string|false
      */
     function resizeGif($sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeight, $iGDVer)
     {
@@ -173,7 +174,7 @@ if (!function_exists("resizePng")) {
      * @param int      $iGdVer            GD library version @deprecated
      * @param resource $hDestinationImage destination image handle
      *
-     * @return string | false
+     * @return string|false
      */
     function resizePng($sSrc, $sTarget, $iWidth, $iHeight, $aImageInfo, $iGdVer, $hDestinationImage)
     {
@@ -221,7 +222,7 @@ if (!function_exists("resizeJpeg")) {
      * @param resource $hDestinationImage destination image handle
      * @param int      $iDefQuality       new image quality
      *
-     * @return string | false
+     * @return string|false
      */
     function resizeJpeg($sSrc, $sTarget, $iWidth, $iHeight, $aImageInfo, $iGdVer, $hDestinationImage, $iDefQuality)
     {

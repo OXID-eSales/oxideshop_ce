@@ -7,7 +7,7 @@ services:
     public: false
 
   Doctrine\DBAL\Connection:
-    factory: ['OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactory', get]
+    factory: ['OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactory', 'get']
     class: Doctrine\DBAL\Connection
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface:

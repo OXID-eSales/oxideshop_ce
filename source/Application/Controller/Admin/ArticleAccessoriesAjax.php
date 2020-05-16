@@ -63,8 +63,9 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @return string
      * @throws DatabaseConnectionException
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = Registry::getConfig();
         $oxidId = Registry::getConfig()->getRequestEscapedParameter('oxid');
@@ -117,8 +118,9 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
      * overide default sorting and replace it with OXSORT field
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSorting" in next major
      */
-    protected function _getSorting()
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->containerId == 'container2') {
             return ' order by _2,_0';

@@ -141,8 +141,9 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *  - else returns $this->_sThisLoginTemplate
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLoginTemplate" in next major
      */
-    protected function _getLoginTemplate()
+    protected function _getLoginTemplate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->isEnabledPrivateSales() ? $this->_sThisAltLoginTemplate : $this->_sThisLoginTemplate;
     }
@@ -150,7 +151,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Confirms term agreement. Returns value of confirmed term
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function confirmTerms()
     {
@@ -241,7 +242,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Return the active article id
      *
-     * @return string | bool
+     * @return string|bool
      */
     public function getArticleId()
     {

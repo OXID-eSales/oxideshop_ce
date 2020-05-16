@@ -23,11 +23,11 @@ class DiscountMainTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable("oxdiscount");
 
-        return parent::tearDown();
+        parent::tearDown();
     }
 
     /**

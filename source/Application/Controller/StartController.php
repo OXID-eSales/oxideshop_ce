@@ -141,8 +141,9 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
+    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !$sMeta &&
@@ -165,8 +166,9 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !$sKeywords &&
@@ -184,8 +186,9 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Template variable getter. Returns if actions are ON
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLoadActionsParam" in next major
      */
-    protected function _getLoadActionsParam()
+    protected function _getLoadActionsParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blLoadActions === null) {
             $this->_blLoadActions = false;
@@ -195,28 +198,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
         }
 
         return $this->_blLoadActions;
-    }
-
-    /**
-     * Template variable getter. Returns start page articles (OXSTART)
-     *
-     * @return array
-     */
-    public function getArticleList()
-    {
-        if ($this->_aArticleList === null) {
-            $this->_aArticleList = [];
-            if ($this->_getLoadActionsParam()) {
-                // start list
-                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-                $oArtList->loadActionArticles('OXSTART');
-                if ($oArtList->count()) {
-                    $this->_aArticleList = $oArtList;
-                }
-            }
-        }
-
-        return $this->_aArticleList;
     }
 
     /**

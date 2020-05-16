@@ -29,7 +29,7 @@ class ModuleControllersTest extends AdminTestCase
     /**
      * Set up
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

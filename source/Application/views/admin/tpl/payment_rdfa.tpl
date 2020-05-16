@@ -50,7 +50,7 @@
         </table>
     </td>
     <td valign="top" class="edittext" align="left" width="50%">
-        <b>[{oxmultilang ident="PAYMENT_RDFA_CREDITCARD"}]</b>
+        <b>[{oxmultilang ident="PAYMENT_RDFA_COD"}]</b>
         <table cellspacing="0" cellpadding="0" border="0">
         [{block name="admin_payment_main_form"}]
             [{foreach key=key item=oPayment from=$aAllRDFaPayments}]

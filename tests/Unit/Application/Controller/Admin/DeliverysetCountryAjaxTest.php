@@ -22,7 +22,7 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -45,7 +45,7 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxobject2delivery where oxid='_testDeliverysetCountry1'");
         oxDb::getDb()->execute("delete from oxobject2delivery where oxid='_testDeliverysetCountry2'");

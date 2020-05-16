@@ -145,8 +145,9 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      * Returns array of config variables which cannot be copied
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getNonCopyConfigVars" in next major
      */
-    protected function _getNonCopyConfigVars()
+    protected function _getNonCopyConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $nonCopyVars = [
             'aSerials',
@@ -180,8 +181,9 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
      * Copies base shop config variables to current
      *
      * @param \OxidEsales\Eshop\Application\Model\Shop $shop new shop object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyConfigVars" in next major
      */
-    protected function _copyConfigVars($shop)
+    protected function _copyConfigVars($shop) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $utilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
@@ -190,8 +192,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $nonCopyVars = $this->_getNonCopyConfigVars();
 
         $selectShopConfigurationQuery =
-            "select oxvarname, oxvartype,
-            DECODE( oxvarvalue, " . $db->quote($config->getConfigParam('sConfigKey')) . ") as oxvarvalue, oxmodule
+            "select oxvarname, oxvartype, oxvarvalue, oxmodule
             from oxconfig where oxshopid = '1'";
         $shopConfiguration = $db->select($selectShopConfigurationQuery);
         if ($shopConfiguration != false && $shopConfiguration->count() > 0) {
@@ -201,14 +202,13 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
                     $newId = $utilsObject->generateUID();
                     $insertNewConfigQuery =
                         "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule)
-                         values (:oxid, :oxshopid, :oxvarname, :oxvartype, ENCODE(:value, :key), :oxmodule)";
+                         values (:oxid, :oxshopid, :oxvarname, :oxvartype, :value, :oxmodule)";
                     $db->execute($insertNewConfigQuery, [
                         ':oxid' => $newId,
                         ':oxshopid' => $shop->getId(),
                         ':oxvarname' => $shopConfiguration->fields[0],
                         ':oxvartype' => $shopConfiguration->fields[1],
                         ':value' => $shopConfiguration->fields[2],
-                        ':key' => $config->getConfigParam('sConfigKey'),
                         ':oxmodule' => $shopConfiguration->fields[3]
                     ]);
                 }

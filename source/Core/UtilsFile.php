@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Str;
+
 /**
  * File manipulation utility class
  */
@@ -139,8 +141,9 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * Setter for param _iNewFilesCounter which counts how many new files added.
      *
      * @param integer $iNewFilesCounter New files count.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setNewFilesCounter" in next major
      */
-    protected function _setNewFilesCounter($iNewFilesCounter)
+    protected function _setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_iNewFilesCounter = (int) $iNewFilesCounter;
     }
@@ -169,7 +172,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function copyDir($sSourceDir, $sTargetDir)
     {
-        $oStr = getStr();
+        $oStr = Str::getStr();
         $handle = opendir($sSourceDir);
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
@@ -260,8 +263,9 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blUnique   if TRUE - generates unique file name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareImageName" in next major
      */
-    protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true)
+    protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sValue) {
             // add type to name
@@ -270,8 +274,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $sFileType = trim($aFilename[count($aFilename) - 1]);
 
             if (isset($sFileType)) {
-                $oStr = getStr();
-
                 // unallowed files ?
                 if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
                     \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
@@ -284,7 +286,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
                 $sFName = '';
                 if (isset($aFilename[0])) {
-                    $sFName = $oStr->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', implode('.', $aFilename));
+                    $sFName = Str::getStr()->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', implode('.', $aFilename));
                 }
 
                 $sValue = $this->_getUniqueFileName($sImagePath, "{$sFName}", $sFileType, "", $blUnique);
@@ -300,8 +302,9 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sType image type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getImagePath" in next major
      */
-    protected function _getImagePath($sType)
+    protected function _getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
@@ -316,9 +319,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param int    $iImgNum  number of image (e.g. numper of ZOOM1 is 1)
      * @param string $sImgConf config parameter name, which keeps size info
      *
-     * @return array | null
+     * @return array|null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getImageSize" in next major
      */
-    protected function _getImageSize($sImgType, $iImgNum, $sImgConf)
+    protected function _getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -346,8 +350,9 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sTarget file location
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "copyFile" in next major
      */
-    protected function _copyFile($sSource, $sTarget)
+    protected function _copyFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_dir(dirname($sTarget))) {
             mkdir(dirname($sTarget), 0744, true);
@@ -372,8 +377,9 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sTarget image copy location
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "moveImage" in next major
      */
-    protected function _moveImage($sSource, $sTarget)
+    protected function _moveImage($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!is_dir(dirname($sTarget))) {
             mkdir(dirname($sTarget), 0744, true);
@@ -499,34 +505,14 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if given URL is accessible (HTTP-Code: 200)
      *
-     * @param string $sLink given link
+     * @param string $url
      *
      * @return boolean
      */
-    public function urlValidate($sLink)
+    public function urlValidate($url)
     {
-        $aUrlParts = @parse_url($sLink);
-        $sHost = (isset($aUrlParts["host"]) && $aUrlParts["host"]) ? $aUrlParts["host"] : null;
-
-        if ($sHost) {
-            $sDocumentPath = (isset($aUrlParts["path"]) && $aUrlParts["path"]) ? $aUrlParts["path"] : '/';
-            $sDocumentPath .= (isset($aUrlParts["query"]) && $aUrlParts["query"]) ? '?' . $aUrlParts["query"] : '';
-
-            $sPort = (isset($aUrlParts["port"]) && $aUrlParts["port"]) ? $aUrlParts["port"] : '80';
-
-            // Now (HTTP-)GET $documentpath at $sHost";
-            if (($oConn = @fsockopen($sHost, $sPort, $iErrNo, $sErrStr, 30))) {
-                fwrite($oConn, "HEAD {$sDocumentPath} HTTP/1.0\r\nHost: {$sHost}\r\n\r\n");
-                $sResponse = fgets($oConn, 22);
-                fclose($oConn);
-
-                if (preg_match("/200 OK/", $sResponse)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        return $this->isUrlSchemaValid($url)
+            && $this->isUrlAccessible($url);
     }
 
     /**
@@ -551,7 +537,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
 
         //wrong chars in file name?
-        if (!getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $aFileInfo['name'])) {
+        if (!Str::getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $aFileInfo['name'])) {
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILENAMEINVALIDCHARS');
         }
 
@@ -592,13 +578,14 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blUnique  TRUE - generates unique file name, FALSE - just glues given parts of file name
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUniqueFileName" in next major
      */
-    protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = "", $blUnique = true)
+    protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = "", $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFilePath = $this->normalizeDir($sFilePath);
         $iFileCounter = 0;
         $sTempFileName = $sFileName;
-        $oStr = getStr();
+        $oStr = Str::getStr();
 
         //file exists ?
         while ($blUnique && file_exists($sFilePath . "/" . $sFileName . $sSufix . "." . $sFileExt)) {
@@ -649,5 +636,36 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
 
         return $message;
+    }
+
+    /**
+     * @param string $url
+     * @return bool
+     */
+    private function isUrlSchemaValid(string $url): bool
+    {
+        return filter_var($url, FILTER_VALIDATE_URL) === false ? false : true;
+    }
+
+    /**
+     * @param string $url
+     * @return bool
+     */
+    private function isUrlAccessible(string $url): bool
+    {
+        $curl = curl_init($url);
+
+        curl_setopt($curl, CURLOPT_NOBODY, true);
+
+        $result = curl_exec($curl);
+
+        if ($result !== false) {
+            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if ($statusCode === 200) {
+                return true;
+            }
+        }
+        return false;
     }
 }

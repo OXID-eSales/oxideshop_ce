@@ -20,7 +20,7 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -38,7 +38,7 @@ class DiscountCategoriesAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxobject2discount');
         $this->cleanUpTable('oxcategories');

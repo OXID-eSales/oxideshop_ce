@@ -91,16 +91,16 @@ function cmpart($a, $b)
  * Creates and returns new object. If creation is not available, dies and outputs
  * error message.
  *
- * @param string $className Name of class
- * @param mixed  ...$args   constructor arguments
+ * @template T
+ * @param class-string<T> $className
+ * param mixed  ...$args   constructor arguments
  *
- * @return object
+ * @return T
  */
-function oxNew($className)
+function oxNew($className, ...$args)
 {
     startProfile('oxNew');
-    $arguments = func_get_args();
-    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], $arguments);
+    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], array_merge([$className], $args));
     stopProfile('oxNew');
 
     return $object;

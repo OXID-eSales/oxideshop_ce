@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use oxRegistry;
 use oxDb;
 use oxField;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Article seo config class
@@ -40,7 +41,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $sType = false;
         $aData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $iEndPos = $oStr->strpos($aData["oxparams"], "#");
             $sType = $oStr->substr($aData["oxparams"], 0, $iEndPos);
         } elseif ($aList = $this->getSelectionList()) {
@@ -65,7 +66,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $iLang = false;
         $aData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
             $iEndPos = $oStr->strpos($aData["oxparams"], "#", $iStartPos + 1);
             $iLang = $oStr->substr($aData["oxparams"], $iEndPos + 1);
@@ -87,7 +88,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         $sId = false;
         $aData = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSeoData");
         if ($aData && isset($aData["oxparams"])) {
-            $oStr = getStr();
+            $oStr = Str::getStr();
             $iStartPos = $oStr->strpos($aData["oxparams"], "#");
             $iEndPos = $oStr->strpos($aData["oxparams"], "#", $iStartPos + 1);
             $iLen = $oStr->strlen($aData["oxparams"]);
@@ -137,8 +138,9 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryList" in next major
      */
-    protected function _getCategoryList($oArticle)
+    protected function _getCategoryList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sMainCatId = false;
         if ($oMainCat = $oArticle->getCategory()) {
@@ -183,8 +185,9 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorList" in next major
      */
-    protected function _getVendorList($oArticle)
+    protected function _getVendorList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oArticle->oxarticles__oxvendorid->value) {
             $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
@@ -200,8 +203,9 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturerList" in next major
      */
-    protected function _getManufacturerList($oArticle)
+    protected function _getManufacturerList($oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oArticle->oxarticles__oxmanufacturerid->value) {
             $oManufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
@@ -214,7 +218,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active category object, used for seo url getter
      *
-     * @return \OxidEsales\Eshop\Application\Model\Category | null
+     * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
     public function getActCategory()
     {
@@ -226,7 +230,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active vendor object if available
      *
-     * @return \OxidEsales\Eshop\Application\Model\Vendor | null
+     * @return \OxidEsales\Eshop\Application\Model\Vendor|null
      */
     public function getActVendor()
     {
@@ -238,7 +242,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     /**
      * Returns active manufacturer object if available
      *
-     * @return \OxidEsales\Eshop\Application\Model\Manufacturer | null
+     * @return \OxidEsales\Eshop\Application\Model\Manufacturer|null
      */
     public function getActManufacturer()
     {
@@ -277,8 +281,9 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns alternative seo entry id
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltSeoEntryId" in next major
      */
-    protected function _getAltSeoEntryId()
+    protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getEditObjectId();
     }
@@ -287,8 +292,9 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns url type
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
-    protected function _getType()
+    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return 'oxarticle';
     }
@@ -309,8 +315,9 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      * Returns current object type seo encoder object
      *
      * @return oxSeoEncoderCategory
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
-    protected function _getEncoder()
+    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
     }

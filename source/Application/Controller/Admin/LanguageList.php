@@ -92,8 +92,9 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      * Collects shop languages list.
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguagesList" in next major
      */
-    protected function _getLanguagesList()
+    protected function _getLanguagesList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aLangParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageParams');
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray();
@@ -138,8 +139,9 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      * @param object $oLang2 language object
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "sortLanguagesCallback" in next major
      */
-    protected function _sortLanguagesCallback($oLang1, $oLang2)
+    protected function _sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSortParam = $this->_sDefSortField;
         $sVal1 = is_string($oLang1->$sSortParam) ? strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
@@ -157,8 +159,9 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      * to default value in all tables.
      *
      * @param string $iLangId language ID
+     * @deprecated underscore prefix violates PSR12, will be renamed to "resetMultiLangDbFields" in next major
      */
-    protected function _resetMultiLangDbFields($iLangId)
+    protected function _resetMultiLangDbFields($iLangId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLangId = (int) $iLangId;
 

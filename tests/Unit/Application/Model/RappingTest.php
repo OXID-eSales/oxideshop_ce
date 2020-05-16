@@ -42,7 +42,7 @@ class RappingTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->sTableName = getViewName("oxwrapping");
@@ -130,7 +130,7 @@ class RappingTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $myConfig = $this->getConfig();
         $this->getConfig()->setConfigParam('blEnterNetPrice', false);
@@ -245,7 +245,7 @@ class RappingTest extends \OxidTestCase
         $oWrapPrice = $oWrap->getWrappingPrice(2);
 
         $dVat = 1 + $this->getConfig()->getConfigParam('dDefaultVAT') / 100;
-        $this->assertEquals(5.9 * $dVat, $oWrapPrice->getBruttoPrice(), '', 2);
+        $this->assertEqualsWithDelta(5.9 * $dVat, $oWrapPrice->getBruttoPrice(), 2);
         $this->assertEquals(5.9, $oWrapPrice->getNettoPrice());
         $this->assertEquals('7,02', oxRegistry::getLang()->formatCurrency($oWrapPrice->getBruttoPrice()));
         $this->assertEquals('5,90', oxRegistry::getLang()->formatCurrency($oWrapPrice->getNettoPrice()));

@@ -22,7 +22,7 @@ class AttributelistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $myDB = oxDb::getDB();
 

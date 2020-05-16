@@ -26,7 +26,7 @@ class Str
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      *
-     * @return null;
+     * @return null
      */
     public function __construct()
     {
@@ -53,8 +53,9 @@ class Str
      * possibility to extend it in modules by overriding _getStrHandler() method.
      *
      * @return oxStrRegular|oxStrMb
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getStrHandler" in next major
      */
-    protected function _getStrHandler()
+    protected function _getStrHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (function_exists('mb_strlen')) {
             return oxNew(\OxidEsales\Eshop\Core\StrMb::class);

@@ -51,7 +51,7 @@ class DeliverysetListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -77,7 +77,7 @@ class DeliverysetListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxaddress');

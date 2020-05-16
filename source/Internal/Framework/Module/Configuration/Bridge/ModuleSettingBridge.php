@@ -63,12 +63,12 @@ class ModuleSettingBridge implements ModuleSettingBridgeInterface
         $this->moduleConfigurationDao->save($moduleConfiguration, $this->context->getCurrentShopId());
 
         $this->eventDispatcher->dispatch(
-            SettingChangedEvent::NAME,
             new SettingChangedEvent(
                 $name,
                 $this->context->getCurrentShopId(),
                 $moduleId
-            )
+            ),
+            SettingChangedEvent::NAME
         );
     }
 

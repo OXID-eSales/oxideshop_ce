@@ -65,11 +65,9 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $exceptionHandlerMock->handleDatabaseException($databaseException);
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testHandleUncaughtExceptionWritesToLogFile()
     {
+        $this->expectException(\Exception::class);
         $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
         $logger
             ->expects($this->atLeastOnce())

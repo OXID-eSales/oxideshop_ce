@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject;
 
@@ -38,7 +38,7 @@ class ShopConfiguration
      */
     public function getModuleConfiguration(string $moduleId): ModuleConfiguration
     {
-        if (array_key_exists($moduleId, $this->moduleConfigurations)) {
+        if (\array_key_exists($moduleId, $this->moduleConfigurations)) {
             return $this->moduleConfigurations[$moduleId];
         }
         throw new ModuleConfigurationNotFoundException('There is no module configuration with id ' . $moduleId);
@@ -70,7 +70,8 @@ class ShopConfiguration
      */
     public function deleteModuleConfiguration(string $moduleId)
     {
-        if (array_key_exists($moduleId, $this->moduleConfigurations)) {
+        if (\array_key_exists($moduleId, $this->moduleConfigurations)) {
+            $this->removeModuleExtensionFromClassChain($moduleId);
             unset($this->moduleConfigurations[$moduleId]);
         } else {
             throw new ModuleConfigurationNotFoundException('There is no module configuration with id ' . $moduleId);
@@ -108,5 +109,16 @@ class ShopConfiguration
     public function hasModuleConfiguration(string $moduleId): bool
     {
         return isset($this->moduleConfigurations[$moduleId]);
+    }
+
+    /**
+     * @param string $moduleId
+     */
+    private function removeModuleExtensionFromClassChain(string $moduleId): void
+    {
+        $moduleConfiguration = $this->moduleConfigurations[$moduleId];
+        foreach ($moduleConfiguration->getClassExtensions() as $classExtension) {
+            $this->getClassExtensionsChain()->removeExtension($classExtension);
+        }
     }
 }

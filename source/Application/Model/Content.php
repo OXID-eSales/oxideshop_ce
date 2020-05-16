@@ -14,7 +14,6 @@ use oxDb;
 /**
  * Content manager.
  * Base object for content pages
- *
  */
 class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
@@ -126,8 +125,9 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sLoadId id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
-    protected function _loadFromDb($sLoadId)
+    protected function _loadFromDb($sLoadId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTable = $this->getViewName();
         $sShopId = $this->getShopId();
@@ -199,7 +199,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array $data
      * @param bool  $checkIfActive
      *
-     * @return array | null
+     * @return array|null
      */
     protected function filterInactive($data, $checkIfActive = false)
     {
@@ -351,8 +351,9 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param int    $iDataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sLoweredFieldName = strtolower($sFieldName);
         if ('oxcontent' === $sLoweredFieldName || 'oxcontents__oxcontent' === $sLoweredFieldName) {
@@ -368,8 +369,9 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sFieldName name of the field which value to get
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldData" in next major
      */
-    protected function _getFieldData($sFieldName)
+    protected function _getFieldData($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->{$sFieldName}->value;
     }

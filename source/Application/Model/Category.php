@@ -15,7 +15,6 @@ use oxField;
  * Category manager.
  * Collects category information (articles, etc.), performs insertion/deletion
  * of categories nodes. By recursion methods are set structure of category.
- *
  */
 class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
@@ -211,8 +210,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * @param string $sOXID id
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
-    protected function _loadFromDb($sOXID)
+    protected function _loadFromDb($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSelect = $this->buildSelectString(["`{$this->getViewName()}`.`oxid`" => $sOXID]);
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow($sSelect);
@@ -835,8 +835,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * Inserts new category (and updates existing node oxLeft amd oxRight accordingly). Returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->oxcategories__oxparentid->value != "oxrootid") {
             // load parent
@@ -897,8 +898,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * Updates category tree, returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setUpdateSeo(true);
         $this->_setUpdateSeoOnFieldChange('oxtitle');
@@ -1022,8 +1024,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      * @param int    $dataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
-    protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($fieldName, $value, $dataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
         $fieldNameIndex2 = $fieldName[2];

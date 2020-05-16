@@ -52,8 +52,9 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -90,8 +91,9 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      * @param string $query query to add filter condition
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
-    protected function _addFilter($query)
+    protected function _addFilter($query) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $articleViewName = $this->_getViewName('oxarticles');

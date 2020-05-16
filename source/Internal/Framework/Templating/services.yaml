@@ -5,7 +5,7 @@ services:
 
   OxidEsales\Eshop\Core\Config:
     class: OxidEsales\Eshop\Core\Config
-    factory: ['OxidEsales\Eshop\Core\Registry', getConfig]
+    factory: ['OxidEsales\Eshop\Core\Registry', 'getConfig']
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
     public: true

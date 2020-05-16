@@ -18,8 +18,9 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
      * Viewable list size getter
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewListSize" in next major
      */
-    protected function _getViewListSize()
+    protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_getUserDefListSize();
     }

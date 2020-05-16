@@ -10,8 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\{
+    ModuleConfiguration,
+    ModuleConfiguration\ClassWithoutNamespace
+};
 
 class ClassesWithoutNamespaceDataMapper implements ModuleConfigurationDataMapperInterface
 {
@@ -56,7 +58,7 @@ class ClassesWithoutNamespaceDataMapper implements ModuleConfigurationDataMapper
 
     /**
      * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $classes
+     * @param array $classes
      */
     private function setClassWithoutNamespace(ModuleConfiguration $moduleConfiguration, array $classes): void
     {

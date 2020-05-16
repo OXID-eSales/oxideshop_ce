@@ -11,11 +11,11 @@ use \oxDb;
 
 class CounterTest extends \OxidTestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb("delete from oxcounters");
 
-        return parent::tearDown();
+        parent::tearDown();
     }
 
     /**

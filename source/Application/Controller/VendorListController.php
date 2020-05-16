@@ -119,8 +119,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * Returns product link type (OXARTICLE_LINKTYPE_VENDOR)
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getProductLinkType" in next major
      */
-    protected function _getProductLinkType()
+    protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return OXARTICLE_LINKTYPE_VENDOR;
     }
@@ -131,8 +132,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * @param object $oVendor vendor object
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadArticles" in next major
      */
-    protected function _loadArticles($oVendor)
+    protected function _loadArticles($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sVendorId = $oVendor->getId();
 
@@ -157,8 +159,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * Returns active product id to load its seo meta info
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
-    protected function _getSeoObjectId()
+    protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oVendor = $this->getActVendor())) {
             return $oVendor->getId();
@@ -174,8 +177,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * @param int    $iLang active language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
-    protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
+    protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && ($oVendor = $this->getActVendor())) {
             if ($iPage) {
@@ -295,8 +299,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * Returns request parameter of vendor id.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorId" in next major
      */
-    protected function _getVendorId()
+    protected function _getVendorId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
     }
@@ -357,8 +362,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
-    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return parent::_collectMetaKeyword($sKeywords);
     }
@@ -372,8 +378,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
-    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
+    protected function _prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return parent::_collectMetaDescription($sMeta, $iLength, $blDescTag);
     }
@@ -385,8 +392,9 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      * @param int $iLang language id
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
-    protected function _getSubject($iLang)
+    protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->getActVendor();
     }

@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Order article list manager.
- *
  */
 class OrderArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 {

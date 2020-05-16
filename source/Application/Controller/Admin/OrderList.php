@@ -117,8 +117,9 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      * @param string $fullQuery  SQL query string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
-    protected function _prepareWhereQuery($whereQuery, $fullQuery)
+    protected function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
@@ -142,8 +143,9 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      * @param object $listObject list main object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
-    protected function _buildSelectString($listObject = null)
+    protected function _buildSelectString($listObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $query = parent::_buildSelectString($listObject);
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();

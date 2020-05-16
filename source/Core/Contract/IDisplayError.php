@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
 
 /**
  * DisplayError interface
- *
  */
 interface IDisplayError
 {

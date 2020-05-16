@@ -11,6 +11,7 @@ use oxRegistry;
 use oxDb;
 use oxField;
 use Exception;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * Class controls article assignment to action
@@ -54,8 +55,9 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * Returns SQL query for data to fetc
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery()
+    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -103,8 +105,9 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * @param string $sQ query to add filter condition
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
-    protected function _addFilter($sQ)
+    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_addFilter($sQ);
 
@@ -112,7 +115,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection')) {
             $sQ .= ' group by ' . $this->_getViewName('oxarticles') . '.oxid ';
 
-            $oStr = getStr();
+            $oStr = Str::getStr();
             if ($oStr->strpos($sQ, "select count( * ) ") === 0) {
                 $sQ = "select count( * ) from ( {$sQ} ) as _cnttable";
             }
@@ -125,8 +128,9 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * Returns SQL query addon for sorting
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getSorting" in next major
      */
-    protected function _getSorting()
+    protected function _getSorting() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSynchOxidParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -273,8 +277,9 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
      * Getter for the rss feed handler.
      *
      * @return \OxidEsales\Eshop\Application\Model\RssFeed The rss feed handler.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getOxRssFeed" in next major
      */
-    protected function _getOxRssFeed()
+    protected function _getOxRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return oxNew(\OxidEsales\Eshop\Application\Model\RssFeed::class);
     }

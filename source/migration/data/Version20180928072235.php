@@ -2,7 +2,7 @@
 
 namespace OxidEsales\EshopCommunity\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\ConfigFile;
@@ -16,7 +16,7 @@ class Version20180928072235 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $configSettingName = 'includeProductReviewLinksInEmail';
         $configSettingType = 'bool';
@@ -35,7 +35,7 @@ class Version20180928072235 extends AbstractMigration
                       `OXID`,
                       ?, 
                       ?, 
-                      ENCODE(?, ?)
+                      ?
                   FROM `oxshops`                  
                   WHERE NOT EXISTS (
                       SELECT `OXVARNAME` 
@@ -50,7 +50,6 @@ class Version20180928072235 extends AbstractMigration
                 $configSettingName,
                 $configSettingType,
                 $configSettingValue,
-                $this->getConfigEncryptionKey(),
                 $configSettingName,
             ]
         );
@@ -59,19 +58,8 @@ class Version20180928072235 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-    }
-
-    /**
-     * @return string
-     */
-    private function getConfigEncryptionKey(): string
-    {
-        $facts = new Facts();
-        $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
-
-        return $configFile->getVar('sConfigKey') ?? Config::DEFAULT_CONFIG_KEY;
     }
 }

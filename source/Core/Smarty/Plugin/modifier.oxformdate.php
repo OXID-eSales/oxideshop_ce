@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,12 +15,14 @@
  *
  * @param object $oConvObject   oxField object
  * @param string $sFieldType    additional type if field (this may help to force formatting)
- * @param bool   $blPassedValue bool if true, will simulate object as sometimes we need to apply formatting to some regulat values
+ * @param bool   $blPassedValue bool if true, will simulate object as sometimes we need to apply formatting to some
+ *                              regulat values
  *
  * @return string
  */
 function smarty_modifier_oxformdate($oConvObject, $sFieldType = null, $blPassedValue = false)
-{   // creating fake bject
+{
+   // creating fake object
     if ($blPassedValue || is_string($oConvObject)) {
         $sValue = $oConvObject;
         $oConvObject = new \OxidEsales\Eshop\Core\Field();

@@ -17,14 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHandlerInterface
 {
-    /**
-     * @var ShopConfigurationSettingDaoInterface
-     */
+    /** @var ShopConfigurationSettingDaoInterface */
     private $shopConfigurationSettingDao;
 
-    /**
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     */
+    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
     {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
@@ -40,7 +36,7 @@ class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHand
             $classExtensions = [];
 
             foreach ($configuration->getClassExtensions() as $extension) {
-                $classExtensions[$extension->getShopClassName()] = $extension->getModuleExtensionClassName();
+                $classExtensions[] = $extension->getModuleExtensionClassName();
             }
 
             $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);

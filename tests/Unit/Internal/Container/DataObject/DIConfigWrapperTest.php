@@ -31,7 +31,7 @@ class DIConfigWrapperTest extends TestCase
     private $servicePath1;
     private $servicePath2;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->servicePath1 = __DIR__ . DIRECTORY_SEPARATOR .
                        '..' . DIRECTORY_SEPARATOR .

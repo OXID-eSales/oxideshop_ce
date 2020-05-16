@@ -9,20 +9,27 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Psr\EventDispatcher\StoppableEventInterface;
 
 class ShopAwareEventDispatcher extends EventDispatcher
 {
     /**
-     * @param \callable[] $listeners
-     * @param string      $eventName
-     * @param Event       $event
+     * Triggers the listeners of an event.
+     *
+     * This method checks if this event should be called within the given shop
+     *
+     * @param callable[] $listeners The event listeners
+     * @param string     $eventName The name of the event to dispatch
+     * @param object     $event     The event object to pass to the event handlers/listeners
      */
-    protected function doDispatch($listeners, $eventName, Event $event)
+    protected function callListeners(iterable $listeners, string $eventName, object $event)
     {
+        $stoppable = $event instanceof StoppableEventInterface;
+
         foreach ($listeners as $listener) {
-            if ($event->isPropagationStopped()) {
+            if ($stoppable && $event->isPropagationStopped()) {
                 break;
             }
             if (
@@ -33,7 +40,7 @@ class ShopAwareEventDispatcher extends EventDispatcher
             ) {
                 continue;
             }
-            call_user_func($listener, $event, $eventName, $this);
+            $listener($event, $eventName, $this);
         }
     }
 }

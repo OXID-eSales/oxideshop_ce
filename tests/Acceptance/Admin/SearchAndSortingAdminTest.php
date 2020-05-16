@@ -16,7 +16,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
     /**
      * Sets default language to English.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->getTranslator()->setLanguage(1);
@@ -25,7 +25,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
     /**
      * TearDown
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $queries = array();
         $queries[] = "UPDATE oxcategories set OXSORT = (OXSORT-500)";
@@ -954,16 +954,16 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertElementPresent("link=2007-12-31 00:00:00");
         $this->assertElementNotPresent("//tr[@id='row.3']/td[3]");
         $this->assertEquals("2007", $this->getValue("where[oxvoucherseries][oxbegindate]"));
-        $this->type("where[oxvoucherseries][oxenddate]", "2020");
+        $this->type("where[oxvoucherseries][oxenddate]", "2030");
         $this->clickAndWait("submitit");
-        $this->assertElementPresent("link=2020-12-31 00:00:00");
+        $this->assertElementPresent("link=2030-12-31 00:00:00");
         $this->assertElementNotPresent("//tr[@id='row.2']/td[3]");
         $this->type("where[oxvoucherseries][oxbegindate]", "");
         $this->clickAndWait("submitit");
-        $this->assertElementPresent("link=2020-12-31 00:00:00");
+        $this->assertElementPresent("link=2030-12-31 00:00:00");
         $this->assertElementPresent("//tr[@id='row.3']/td[4]");
         $this->assertElementNotPresent("//tr[@id='row.11']/td[4]");
-        $this->assertEquals("2020", $this->getValue("where[oxvoucherseries][oxenddate]"));
+        $this->assertEquals("2030", $this->getValue("where[oxvoucherseries][oxenddate]"));
         $this->type("where[oxvoucherseries][oxenddate]", "");
         $this->type("where[oxvoucherseries][oxminimumvalue]", "10");
         $this->clickAndWait("submitit");
@@ -995,13 +995,13 @@ class SearchAndSortingAdminTest extends AdminTestCase
 
         //Sorting
         $this->clickAndWait("link=Name");
-        $this->assertEquals("1 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[" . $iNameCol . "]"));
-        $this->assertEquals("5.00", $this->getText("//tr[@id='row.1']/td[" . $iDiscountCol . "]"));
-        $this->assertEquals("2007-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidFromCol . "]"));
-        $this->assertEquals("2020-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidToCol . "]"));
-        $this->assertEquals("10.00", $this->getText("//tr[@id='row.1']/td[" . $iOrderSumCol . "]"));
-        $this->assertEquals("2 Coupon šÄßüл", $this->getText("//tr[@id='row.2']/td[" . $iNameCol . "]"));
-        $this->assertEquals("3 Coupon šÄßüл", $this->getText("//tr[@id='row.3']/td[" . $iNameCol . "]"));
+        $this->assertEquals("1 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertEquals("5.00", $this->getText("//tr[@id='row.1']/td[".$iDiscountCol."]"));
+        $this->assertEquals("2007-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidFromCol."]"));
+        $this->assertEquals("2030-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidToCol."]"));
+        $this->assertEquals("10.00", $this->getText("//tr[@id='row.1']/td[".$iOrderSumCol."]"));
+        $this->assertEquals("2 Coupon šÄßüл", $this->getText("//tr[@id='row.2']/td[".$iNameCol."]"));
+        $this->assertEquals("3 Coupon šÄßüл", $this->getText("//tr[@id='row.3']/td[".$iNameCol."]"));
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.next");
@@ -1011,38 +1011,38 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->clickAndWait("nav.prev");
         $this->assertEquals("1 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[" . $iNameCol . "]"));
         $this->clickAndWait("link=Discount");
-        $this->assertEquals("2 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[" . $iNameCol . "]"));
-        $this->assertEquals("3.00", $this->getText("//tr[@id='row.1']/td[" . $iDiscountCol . "]"));
-        $this->assertEquals("2009-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidFromCol . "]"));
-        $this->assertEquals("2020-10-10 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidToCol . "]"));
-        $this->assertEquals("25.00", $this->getText("//tr[@id='row.1']/td[" . $iOrderSumCol . "]"));
-        $this->assertEquals("5.00 %", $this->getText("//tr[@id='row.2']/td[" . $iDiscountCol . "]"));
-        $this->assertEquals("5.00", $this->getText("//tr[@id='row.3']/td[" . $iDiscountCol . "]"));
+        $this->assertEquals("2 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertEquals("3.00", $this->getText("//tr[@id='row.1']/td[".$iDiscountCol."]"));
+        $this->assertEquals("2009-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidFromCol."]"));
+        $this->assertEquals("2030-10-10 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidToCol."]"));
+        $this->assertEquals("25.00", $this->getText("//tr[@id='row.1']/td[".$iOrderSumCol."]"));
+        $this->assertEquals("5.00 %", $this->getText("//tr[@id='row.2']/td[".$iDiscountCol."]"));
+        $this->assertEquals("5.00", $this->getText("//tr[@id='row.3']/td[".$iDiscountCol."]"));
         $this->clickAndWait("link=Valid from");
-        $this->assertEquals("1 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[" . $iNameCol . "]"));
-        $this->assertEquals("5.00", $this->getText("//tr[@id='row.1']/td[" . $iDiscountCol . "]"));
-        $this->assertEquals("2007-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidFromCol . "]"));
-        $this->assertEquals("2020-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidToCol . "]"));
-        $this->assertEquals("10.00", $this->getText("//tr[@id='row.1']/td[" . $iOrderSumCol . "]"));
-        $this->assertEquals("2007-12-31 00:00:00", $this->getText("//tr[@id='row.2']/td[" . $iValidFromCol . "]"));
-        $this->assertEquals("2008-01-01 00:00:00", $this->getText("//tr[@id='row.3']/td[" . $iValidFromCol . "]"));
+        $this->assertEquals("1 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertEquals("5.00", $this->getText("//tr[@id='row.1']/td[".$iDiscountCol."]"));
+        $this->assertEquals("2007-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidFromCol."]"));
+        $this->assertEquals("2030-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidToCol."]"));
+        $this->assertEquals("10.00", $this->getText("//tr[@id='row.1']/td[".$iOrderSumCol."]"));
+        $this->assertEquals("2007-12-31 00:00:00", $this->getText("//tr[@id='row.2']/td[".$iValidFromCol."]"));
+        $this->assertEquals("2008-01-01 00:00:00", $this->getText("//tr[@id='row.3']/td[".$iValidFromCol."]"));
         $this->clickAndWait("link=Valid until");
-        $this->assertEquals("3 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[" . $iNameCol . "]"));
-        $this->assertEquals("15.00 %", $this->getText("//tr[@id='row.1']/td[" . $iDiscountCol . "]"));
-        $this->assertEquals("2007-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidFromCol . "]"));
-        $this->assertEquals("2019-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidToCol . "]"));
-        $this->assertEquals("100.00", $this->getText("//tr[@id='row.1']/td[" . $iOrderSumCol . "]"));
-        $this->assertEquals("2020-01-01 00:00:00", $this->getText("//tr[@id='row.2']/td[" . $iValidToCol . "]"));
-        $this->assertEquals("2020-01-01 00:00:00", $this->getText("//tr[@id='row.3']/td[" . $iValidToCol . "]"));
+        $this->assertEquals("3 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertEquals("15.00 %", $this->getText("//tr[@id='row.1']/td[".$iDiscountCol."]"));
+        $this->assertEquals("2007-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidFromCol."]"));
+        $this->assertEquals("2029-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidToCol."]"));
+        $this->assertEquals("100.00", $this->getText("//tr[@id='row.1']/td[".$iOrderSumCol."]"));
+        $this->assertEquals("2030-01-01 00:00:00", $this->getText("//tr[@id='row.2']/td[".$iValidToCol."]"));
+        $this->assertEquals("2030-01-01 00:00:00", $this->getText("//tr[@id='row.3']/td[".$iValidToCol."]"));
         $this->clickAndWait("link=Min. Order Sum");
-        $this->assertEquals("1 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[" . $iNameCol . "]"));
-        $this->assertEquals("5.00", $this->getText("//tr[@id='row.1']/td[" . $iDiscountCol . "]"));
-        $this->assertEquals("2007-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidFromCol . "]"));
-        $this->assertEquals("2020-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[" . $iValidToCol . "]"));
-        $this->assertEquals("10.00", $this->getText("//tr[@id='row.1']/td[" . $iOrderSumCol . "]"));
-        $this->assertEquals("25.00", $this->getText("//tr[@id='row.2']/td[" . $iOrderSumCol . "]"));
-        $this->assertEquals("45.00", $this->getText("//tr[@id='row.3']/td[" . $iOrderSumCol . "]"));
-        $this->assertEquals("75.00", $this->getText("//tr[@id='row.4']/td[" . $iOrderSumCol . "]"));
+        $this->assertEquals("1 Coupon šÄßüл", $this->getText("//tr[@id='row.1']/td[".$iNameCol."]"));
+        $this->assertEquals("5.00", $this->getText("//tr[@id='row.1']/td[".$iDiscountCol."]"));
+        $this->assertEquals("2007-01-01 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidFromCol."]"));
+        $this->assertEquals("2030-12-31 00:00:00", $this->getText("//tr[@id='row.1']/td[".$iValidToCol."]"));
+        $this->assertEquals("10.00", $this->getText("//tr[@id='row.1']/td[".$iOrderSumCol."]"));
+        $this->assertEquals("25.00", $this->getText("//tr[@id='row.2']/td[".$iOrderSumCol."]"));
+        $this->assertEquals("45.00", $this->getText("//tr[@id='row.3']/td[".$iOrderSumCol."]"));
+        $this->assertEquals("75.00", $this->getText("//tr[@id='row.4']/td[".$iOrderSumCol."]"));
         $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
         $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
         $this->clickAndWait("nav.last");
@@ -1454,15 +1454,15 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->clickAndWait("submitit");
         $this->clickAndWait("link=Name");
         $this->clickAndWait("nav.next");
-        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.4']/td[2]/div"));
+        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.3']/td[2]/div"));
         $this->clickAndWait("nav.last");
-        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.4']/td[2]/div"));
-        $this->assertEquals("Top seller", $this->getText("//tr[@id='row.2']/td[2]"));
+        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.3']/td[2]/div"));
+        $this->assertEquals("Top seller", $this->getText("//tr[@id='row.1']/td[2]"));
         $this->clickAndWait("nav.first");
         //checking in DE lang
         $this->assertEquals("English", $this->getSelectedLabel("changelang"));
         $this->changeAdminListLanguage('Deutsch');
-        $this->assertElementPresent("//tr[@id='row.4']/td[2]");
+        $this->assertElementPresent("//tr[@id='row.3']/td[2]");
         $this->type("where[oxactions][oxtitle]", "top");
         $this->clickAndWait("submitit");
         $this->assertElementPresent("link=Kategorien-Topangebot");
@@ -1494,9 +1494,9 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("Current Promotion", $this->getText("//tr[@id='row.5']/td[2]"));
         $this->assertEquals("2010-01-01 00:00:00", $this->getText("//tr[@id='row.5']/td[3]"));
         $this->clickAndWaitFrame("nav.next");
-        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.4']/td[2]/div"));
-        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.4']/td[3]"));
-        $currentPromotionPosition = 2; // PE/CE versions have additional Newsletter item which shfts list
+        $this->assertEquals("Week's Special", $this->getText("//tr[@id='row.3']/td[2]/div"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.3']/td[3]"));
+        $currentPromotionPosition = 1; // PE/CE versions have additional Newsletter item which shfts list
         $this->clickAndWait("link=Start Time");
         $this->assertEquals("2010-01-01 00:00:00", $this->getText("//tr[@id='row." . $currentPromotionPosition . "']/td[3]/div"));
         $this->assertEquals("2010-01-01 00:00:00", $this->getText("//tr[@id='row." . ($currentPromotionPosition + 1) . "']/td[3]/div"));

@@ -14,11 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingUp
 
 class DIServiceWrapper
 {
-    const CALLS_SECTION = 'calls';
-
-    const SET_ACTIVE_SHOPS_METHOD = 'setActiveShops';
-    const SET_CONTEXT_METHOD = 'setContext';
-    const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface';
+    private const CALLS_SECTION = 'calls';
+    private const SET_ACTIVE_SHOPS_METHOD = 'setActiveShops';
+    private const SET_CONTEXT_METHOD = 'setContext';
+    public const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface';
 
     /** @var  string $key */
     private $key;
@@ -58,7 +57,7 @@ class DIServiceWrapper
         $class = $this->getClass();
         $interfaces = class_implements($class);
 
-        return in_array(ShopAwareInterface::class, $interfaces, true);
+        return \in_array(ShopAwareInterface::class, $interfaces, true);
     }
 
     /**
@@ -129,9 +128,6 @@ class DIServiceWrapper
         return class_exists($this->getClass());
     }
 
-    /**
-     *
-     */
     private function addShopAwareCallsIfMissing()
     {
         if (!$this->hasCall($this::SET_ACTIVE_SHOPS_METHOD)) {
@@ -153,7 +149,7 @@ class DIServiceWrapper
      */
     private function getCalls(): array
     {
-        if (!array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
+        if (!\array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
             return [];
         }
         $calls = [];
@@ -185,7 +181,7 @@ class DIServiceWrapper
      */
     private function addCall(DICallWrapper $call)
     {
-        if (!array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
+        if (!\array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
             $this->serviceArray[$this::CALLS_SECTION] = [];
         }
         $this->serviceArray[$this::CALLS_SECTION][] = $call->getCallAsArray();
@@ -220,7 +216,7 @@ class DIServiceWrapper
      */
     private function getCall(string $methodName): DICallWrapper
     {
-        if (array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
+        if (\array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
             foreach ($this->serviceArray[$this::CALLS_SECTION] as $callArray) {
                 $call = new DICallWrapper($callArray);
                 if ($call->getMethodName() === $methodName) {
@@ -245,6 +241,6 @@ class DIServiceWrapper
      */
     private function hasClass(): bool
     {
-        return array_key_exists('class', $this->serviceArray);
+        return \array_key_exists('class', $this->serviceArray);
     }
 }

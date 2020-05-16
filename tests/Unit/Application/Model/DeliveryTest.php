@@ -70,7 +70,7 @@ class DeliveryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, 'oxDelivery');
@@ -141,7 +141,7 @@ class DeliveryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class);
 
@@ -955,9 +955,9 @@ class DeliveryTest extends \OxidTestCase
         $oPrice = $oDelivery->getDeliveryPrice(20);
 
         $this->assertEquals(50 * 1.2, $oPrice->getBruttoPrice());
-        $this->assertEquals(50, $oPrice->getNettoPrice(), '', 0.0001);
-        $this->assertEquals(50 * 1.2 - 50, $oPrice->getVatValue(), '', 0.0001);
-        $this->assertEquals(20, $oPrice->getVat(), '', 0.0001);
+        $this->assertEqualsWithDelta(50, $oPrice->getNettoPrice(), 0.0001);
+        $this->assertEqualsWithDelta(50 * 1.2 - 50, $oPrice->getVatValue(), 0.0001);
+        $this->assertEqualsWithDelta(20, $oPrice->getVat(), 0.0001);
     }
 
     /*

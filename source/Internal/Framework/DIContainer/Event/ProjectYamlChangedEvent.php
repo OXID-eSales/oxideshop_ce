@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @stable
@@ -17,5 +17,5 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ProjectYamlChangedEvent extends Event
 {
-    const NAME = self::class;
+    public const NAME = self::class;
 }

@@ -26,9 +26,9 @@ class ArticleinputexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $articleNumber = 'sArticleNumber';
         $testObject->setArticleNr($articleNumber);
         $stringOut = $testObject->getString();
-        $this->assertContains($msg, $stringOut); // Message
-        $this->assertContains('ArticleInputException', $stringOut); // Exception class name
-        $this->assertContains($articleNumber, $stringOut); // Article nr
+        $this->assertStringContainsString($msg, $stringOut); // Message
+        $this->assertStringContainsString('ArticleInputException', $stringOut); // Exception class name
+        $this->assertStringContainsString($articleNumber, $stringOut); // Article nr
     }
 
     /**

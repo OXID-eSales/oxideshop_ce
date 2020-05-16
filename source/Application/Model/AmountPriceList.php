@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Article amount price list
- *
  */
 class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
@@ -76,8 +75,9 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Get data from db
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
-    protected function _loadFromDb()
+    protected function _loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleId = $this->getArticle()->getId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);

@@ -23,7 +23,7 @@ class ModuleExtensionsCleanerTest extends UnitTestCase
      */
     private $testModuleId = 'with_class_extensions_cleaner';
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $fileSystem = $container->get('oxid_esales.symfony.file_system');

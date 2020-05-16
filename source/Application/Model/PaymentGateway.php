@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 /**
  * Payment gateway manager.
  * Checks and sets payment method data, executes payment.
- *
  */
 class PaymentGateway extends \OxidEsales\Eshop\Core\Base
 {
@@ -105,8 +104,9 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      * Returns true is payment active.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isActive" in next major
      */
-    protected function _isActive()
+    protected function _isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_blActive;
     }

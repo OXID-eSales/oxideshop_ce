@@ -31,7 +31,7 @@ class VatSelectorTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         // demo article
@@ -77,7 +77,7 @@ class VatSelectorTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // deleting demo items
         if ($this->oArticle) {

@@ -77,7 +77,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return string
      */
-    protected function _getModuleForConfigVars()
+    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
     }
@@ -95,7 +95,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return array
      */
-    public function _loadMetadataConfVars($aModuleSettings)
+    public function _loadMetadataConfVars($aModuleSettings) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -132,7 +132,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                             $sValue = $aValue["value"];
                             break;
                     }
-                    $sValue = getStr()->htmlentities($sValue);
+                    $sValue = Str::getStr()->htmlentities($sValue);
                 } else {
                     $sDbType = $this->_getDbConfigTypeName($sType);
                     $sValue = $aDbVariables['vars'][$sDbType][$sName];
@@ -331,8 +331,9 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      * @param string $type Metadata type.
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getDbConfigTypeName" in next major
      */
-    private function _getDbConfigTypeName($type)
+    private function _getDbConfigTypeName($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $type === 'password' ? 'str' : $type;
     }

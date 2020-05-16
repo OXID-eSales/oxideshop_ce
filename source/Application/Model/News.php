@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Model\ListModel;
 use oxRegistry;
 use oxDb;
 use oxField;
@@ -18,7 +19,6 @@ use oxUtilsView;
  * these user may read news), etc.
  *
  * @deprecated since v.5.3.0 (2016-06-17); The Admin Menu: Customer Info -> News feature will be moved to a module in v6.0.0
- *
  */
 class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
@@ -69,7 +69,7 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if ($this->_oGroups == null && $sOxid = $this->getId()) {
             // usergroups
-            $this->_oGroups = oxNew('oxlist', 'oxgroups');
+            $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
             $sViewName = getViewName("oxgroups", $this->getLanguage());
             $sSelect = "select {$sViewName}.* from {$sViewName}, oxobject2group ";
             $sSelect .= "where oxobject2group.oxobjectid = :oxobjectid ";
@@ -131,8 +131,9 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Updates object information in DB.
+     * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
-    protected function _update()
+    protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->oxnews__oxdate->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxnews__oxdate->value, true));
 
@@ -143,8 +144,9 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Inserts object details to DB, returns true on success.
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$this->oxnews__oxdate || \OxidEsales\Eshop\Core\Registry::getUtilsDate()->isEmptyDate($this->oxnews__oxdate->value)) {
             // if date field is empty, assigning current date
@@ -164,8 +166,9 @@ class News extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * @param int    $iDataType  field type
      *
      * @return null
+     * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
-    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         switch (strtolower($sFieldName)) {
             case 'oxlongdesc':

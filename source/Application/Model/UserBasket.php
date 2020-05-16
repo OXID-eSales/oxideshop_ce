@@ -17,7 +17,6 @@ use oxDb;
  * It is more relevant to wishlist and noticelist than to shoping basket.
  * Collects shopping basket information, updates it (DB level), removes or adds
  * articles to it.
- *
  */
 class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -62,8 +61,9 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data to DB, returns true on success.
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
-    protected function _insert()
+    protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // marking basket as not new any more
         $this->_blNewBasket = false;
@@ -185,8 +185,9 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $aPersParams persistent parameters
      *
      * @return oxUserBasketItem
+     * @deprecated underscore prefix violates PSR12, will be renamed to "createItem" in next major
      */
-    protected function _createItem($sProductId, $aSelList = null, $aPersParams = null)
+    protected function _createItem($sProductId, $aSelList = null, $aPersParams = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oNewItem = oxNew(\OxidEsales\Eshop\Application\Model\UserBasketItem::class);
         $oNewItem->oxuserbasketitems__oxartid = new \OxidEsales\Eshop\Core\Field($sProductId, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -246,8 +247,9 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param array  $aPersParam basket item persistent parameters
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getItemKey" in next major
      */
-    protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null)
+    protected function _getItemKey($sProductId, $aSel = null, $aPersParam = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 

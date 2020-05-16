@@ -20,7 +20,7 @@ class LanguageTest extends \OxidTestCase
     /**
      * Test teardown
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($_GET['istep'])) {
             unset($_GET['istep']);

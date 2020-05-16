@@ -19,7 +19,7 @@ class OutofstockexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->testObject = oxNew(\OxidEsales\Eshop\Core\Exception\OutOfStockException::class, $this->message);
@@ -45,9 +45,9 @@ class OutofstockexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testGetString()
     {
         $stringOut = $this->testObject->getString();
-        $this->assertContains($this->message, $stringOut); // Message
-        $this->assertContains('OutOfStockException', $stringOut); // Exception class name
-        $this->assertContains((string) $this->amount, $stringOut); // Amount remaining
+        $this->assertStringContainsString($this->message, $stringOut); // Message
+        $this->assertStringContainsString('OutOfStockException', $stringOut); // Exception class name
+        $this->assertStringContainsString((string) $this->amount, $stringOut); // Amount remaining
     }
 
     public function testGetValues()

@@ -12,7 +12,6 @@ use oxDb;
 /**
  * Shop view validator.
  * checks which views are valid / invalid
- *
  */
 class ShopViewValidator
 {
@@ -138,8 +137,9 @@ class ShopViewValidator
      * Returns list of all shop views
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAllViews" in next major
      */
-    protected function _getAllViews()
+    protected function _getAllViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($this->_aAllViews)) {
             $this->_aAllViews = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SHOW TABLES LIKE  'oxv\_%'");
@@ -154,8 +154,9 @@ class ShopViewValidator
      * @param string $sViewName View name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isCurrentShopView" in next major
      */
-    protected function _isCurrentShopView($sViewName)
+    protected function _isCurrentShopView($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = false;
 
@@ -178,8 +179,9 @@ class ShopViewValidator
      * Returns list of shop specific views currently in database
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopViews" in next major
      */
-    protected function _getShopViews()
+    protected function _getShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($this->_aShopViews)) {
             $this->_aShopViews = [];
@@ -199,8 +201,9 @@ class ShopViewValidator
      * Returns list of valid shop views
      *
      * @return array
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getValidShopViews" in next major
      */
-    protected function _getValidShopViews()
+    protected function _getValidShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (empty($this->_aValidShopViews)) {
             $aTables = $this->getShopTables();
@@ -248,8 +251,9 @@ class ShopViewValidator
      * @param string $sViewName View name
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isViewValid" in next major
      */
-    protected function _isViewValid($sViewName)
+    protected function _isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return in_array($sViewName, $this->_getValidShopViews());
     }

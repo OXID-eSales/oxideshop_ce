@@ -23,7 +23,7 @@ class ManufacturerSeoTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $sQ = "delete from oxmanufacturers where oxid like '_test%'";
         oxDb::getDb()->execute($sQ);

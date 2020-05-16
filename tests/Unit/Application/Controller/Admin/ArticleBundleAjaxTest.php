@@ -17,7 +17,7 @@ class ArticleBundleAjaxTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -29,7 +29,7 @@ class ArticleBundleAjaxTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxarticles where oxid='_testArticleBundle'");
 

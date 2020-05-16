@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Country manager
- *
  */
 class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {

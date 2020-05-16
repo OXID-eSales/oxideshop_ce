@@ -18,7 +18,7 @@ class DiscountUsersAjaxTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -35,7 +35,7 @@ class DiscountUsersAjaxTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxobject2discount where oxdiscountid like '_test%'");
         oxDb::getDb()->execute("delete from oxuser where oxid like '_test%'");

@@ -12,7 +12,6 @@ use oxObjectException;
 
 /**
  * Class, responsible for retrieving correct vat for users and articles
- *
  */
 class VatSelector extends \OxidEsales\Eshop\Core\Base
 {
@@ -37,7 +36,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param bool                                     $blCacheReset reset cache
      *
      * @throws oxObjectException if wrong country
-     * @return double | false
+     * @return double|false
      */
     public function getUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, $blCacheReset = false)
     {
@@ -78,8 +77,9 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\Country $oCountry given country object
      *
      * @return mixed
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getForeignCountryUserVat" in next major
      */
-    protected function _getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry)
+    protected function _getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($oCountry->isInEU()) {
             if ($oUser->oxuser__oxustid->value) {
@@ -97,9 +97,10 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle given article
      *
-     * @return float | false
+     * @return float|false
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVatForArticleCategory" in next major
      */
-    protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle)
+    protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCatT = getViewName('oxcategories');
@@ -182,7 +183,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
-     * @return double | false
+     * @return double|false
      */
     public function getArticleUserVat(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
@@ -201,8 +202,9 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getVatCountry" in next major
      */
-    protected function _getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser)
+    protected function _getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blUseShippingCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blShippingCountryVat");
 

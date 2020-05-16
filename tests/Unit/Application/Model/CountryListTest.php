@@ -17,7 +17,7 @@ class CountryListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         /** Insert a total of 8 inactive countries with different titles and the same oxorder */
@@ -49,7 +49,7 @@ class CountryListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxcountry');
 

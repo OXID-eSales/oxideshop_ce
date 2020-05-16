@@ -137,7 +137,7 @@ class UserTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -246,7 +246,7 @@ class UserTest extends \OxidTestCase
         // creating test executed user payment
         $aDynValue = $this->_aDynPaymentFields;
         $oPayment = oxNew('oxPayment');
-        $oPayment->load('oxidcreditcard');
+        $oPayment->load('oxiddebitnote');
         $oPayment->setDynValues($oUtils->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value, true, true, true));
 
         $aDynValues = $oPayment->getDynValues();
@@ -261,7 +261,7 @@ class UserTest extends \OxidTestCase
             $sDynValues = $oUtils->assignValuesToText($aDynVal);
         }
 
-        $sQ = 'insert into oxuserpayments ( oxid, oxuserid, oxpaymentsid, oxvalue ) values ( "' . $sId . '", "' . $sUserId . '", "oxidcreditcard", "' . $sDynValues . '" ) ';
+        $sQ = 'insert into oxuserpayments ( oxid, oxuserid, oxpaymentsid, oxvalue ) values ( "' . $sId . '", "' . $sUserId . '", "oxiddebitnote", "' . $sDynValues . '" ) ';
         $oDb->Execute($sQ);
 
         $this->_aUsers[$sUserId] = $oUser;
@@ -977,8 +977,7 @@ class UserTest extends \OxidTestCase
         $oUserPayment = $oUserPayments->current();
 
         $this->assertEquals($oUserPayment->oxuserpayments__oxuserid->value, $oUser->getId());
-        $this->assertEquals($oUserPayment->oxpayments__oxdesc->value, 'Kreditkarte'); //important for compatibility to templates
-        $this->assertEquals($oUserPayment->oxuserpayments__oxpaymentsid->value, 'oxidcreditcard'); //important for compatibility to templates
+        $this->assertEquals($oUserPayment->oxuserpayments__oxpaymentsid->value, 'oxiddebitnote'); //important for compatibility to templates
     }
 
     // 2. fetching payment info for not existing user - must return 0 payment

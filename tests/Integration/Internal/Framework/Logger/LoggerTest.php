@@ -23,14 +23,14 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
 {
     private $logFilePath;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
         $this->logFilePath = tempnam(sys_get_temp_dir(), 'test_');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         unlink($this->logFilePath);
         parent::tearDown();
@@ -47,7 +47,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
             file_exists($context->getLogFilePath())
         );
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'Carthago delenda est',
             file_get_contents($context->getLogFilePath())
         );

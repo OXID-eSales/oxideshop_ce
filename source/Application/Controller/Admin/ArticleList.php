@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Core\Str;
 use oxRegistry;
 use oxDb;
 
@@ -240,8 +241,9 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      * @param object $oListObject list main object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
-    protected function _buildSelectString($oListObject = null)
+    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sQ = parent::_buildSelectString($oListObject);
         if ($sQ) {
@@ -257,7 +259,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
             switch ($sType) {
                 // add category
                 case 'cat':
-                    $oStr = getStr();
+                    $oStr = Str::getStr();
                     $sViewName = getViewName("oxobject2category");
                     $sInsert = "from $sTable left join {$sViewName} on {$sTable}.oxid = {$sViewName}.oxobjectid " .
                                "where {$sViewName}.oxcatnid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sValue) . " and ";

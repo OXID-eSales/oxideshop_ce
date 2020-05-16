@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use oxAdminList;
+use OxidEsales\Eshop\Core\Str;
 
 /**
  * user list "view" class.
@@ -32,8 +33,9 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      * Viewable list size getter
      *
      * @return int
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getViewListSize" in next major
      */
-    protected function _getViewListSize()
+    protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return $this->_getUserDefListSize();
     }
@@ -60,8 +62,9 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      * @param object $oObject list item object
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
-    protected function _buildSelectString($oObject = null)
+    protected function _buildSelectString($oObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArtTable = getViewName('oxarticles', $this->_iEditLang);
 
@@ -74,7 +77,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
 
         //removing parent id checking from sql
         $sStr = "/\s+and\s+" . $sArtTable . "\.oxparentid\s*=\s*''/";
-        $sQ = getStr()->preg_replace($sStr, " ", $sQ);
+        $sQ = Str::getStr()->preg_replace($sStr, " ", $sQ);
 
         return " $sQ and {$sArtTable}.oxid is not null ";
     }
@@ -86,8 +89,9 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      * @param string $sSql   query string
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
-    protected function _prepareWhereQuery($aWhere, $sSql)
+    protected function _prepareWhereQuery($aWhere, $sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSql = parent::_prepareWhereQuery($aWhere, $sSql);
 
@@ -97,7 +101,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
         // if searching in article title field, updating sql for this case
         if ($this->_aWhere[$sArtTitleField]) {
             $sSqlForTitle = " (CONCAT( {$sArtTable}.oxtitle, if(isnull(oxparentarticles.oxtitle), '', oxparentarticles.oxtitle), {$sArtTable}.oxvarselect)) ";
-            $sSql = getStr()->preg_replace("/{$sArtTable}\.oxtitle\s+like/", "$sSqlForTitle like", $sSql);
+            $sSql = Str::getStr()->preg_replace("/{$sArtTable}\.oxtitle\s+like/", "$sSqlForTitle like", $sSql);
         }
 
         return $sSql;

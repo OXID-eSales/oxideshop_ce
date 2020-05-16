@@ -11,7 +11,6 @@ use oxDb;
 
 /**
  * Seo encoder base
- *
  */
 class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
 {
@@ -26,8 +25,9 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      * Returns target "extension" (/)
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
-    protected function _getUrlExtension()
+    protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return '/';
     }
@@ -146,8 +146,9 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int    $languageId Language id
      *
      * @return string
+     * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
-    protected function _getAltUri($vendorId, $languageId)
+    protected function _getAltUri($vendorId, $languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $seoUrl = null;
         $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);

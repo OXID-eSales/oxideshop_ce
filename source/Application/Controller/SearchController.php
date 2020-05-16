@@ -236,8 +236,9 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Iterates through list articles and performs list view specific tasks:
      *  - sets type of link which needs to be generated (Manufacturer link)
+     * @deprecated underscore prefix violates PSR12, will be renamed to "processListArticles" in next major
      */
-    protected function _processListArticles()
+    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
@@ -287,8 +288,9 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * Template variable getter. Returns similar recommendation lists
      *
      * @return object
+     * @deprecated underscore prefix violates PSR12, will be renamed to "isSearchClass" in next major
      */
-    protected function _isSearchClass()
+    protected function _isSearchClass() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
@@ -487,8 +489,9 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * Checks if current request parameters does not block SEO redirection process
      *
      * @return bool
+     * @deprecated underscore prefix violates PSR12, will be renamed to "canRedirect" in next major
      */
-    protected function _canRedirect()
+    protected function _canRedirect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return false;
     }

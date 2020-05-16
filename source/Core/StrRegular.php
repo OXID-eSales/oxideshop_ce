@@ -417,6 +417,7 @@ class StrRegular implements IStr
      *
      * @return bool
      */
+    // phpcs:disable
     public function str_starts_with(string $haystack, string $needle): bool
     {
         // According to https://wiki.php.net/rfc/str_contains:
@@ -438,6 +439,7 @@ class StrRegular implements IStr
      *
      * @return bool
      */
+    // phpcs:disable
     public function str_ends_with(string $haystack, string $needle): bool
     {
         // According to https://wiki.php.net/rfc/str_contains:
@@ -458,6 +460,7 @@ class StrRegular implements IStr
      *
      * @return bool
      */
+    // phpcs:disable
     public function str_contains(string $haystack, string $needle): bool
     {
         // According to https://wiki.php.net/rfc/str_contains:

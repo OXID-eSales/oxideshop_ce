@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Class dealing with regular string handling
  */
-class StrRegular
+class StrRegular implements IStr
 {
     /**
      * The character encoding.
@@ -406,5 +406,67 @@ class StrRegular
     public function strrcmp($sStr1, $sStr2)
     {
         return -strcmp($sStr1, $sStr2);
+    }
+
+    /**
+     * Checks if $haystack begins with $needle
+     * (If $needle is longer than $haystack, it returns false)
+     *
+     * @param string $haystack value to search in
+     * @param string $needle   value to search for
+     *
+     * @return bool
+     */
+    public function str_starts_with(string $haystack, string $needle): bool
+    {
+        // According to https://wiki.php.net/rfc/str_contains:
+        // 'behavior of '' in string search functions is well defined, and we consider '' to occur at every position
+        // in the string
+        if ($needle === '') {
+            return true;
+        }
+
+        return ($this->substr($haystack, 0, $this->strlen($needle)) === $needle);
+    }
+
+    /**
+     * Checks if $haystack ends with $needle
+     * (If $needle is longer than $haystack, it returns false)
+     *
+     * @param string $haystack value to search in
+     * @param string $needle   value to search for
+     *
+     * @return bool
+     */
+    public function str_ends_with(string $haystack, string $needle): bool
+    {
+        // According to https://wiki.php.net/rfc/str_contains:
+        // 'behavior of '' in string search functions is well defined, and we consider '' to occur at every position
+        // in the string
+        if ($needle === '') {
+            return true;
+        }
+
+        return ($this->substr($haystack, -$this->strlen($needle)) === $needle);
+    }
+
+    /**
+     * Returns true if $needle is found in $haystack
+     *
+     * @param string $haystack value to search in
+     * @param string $needle   value to search for
+     *
+     * @return bool
+     */
+    public function str_contains(string $haystack, string $needle): bool
+    {
+        // According to https://wiki.php.net/rfc/str_contains:
+        // 'behavior of '' in string search functions is well defined, and we consider '' to occur at every position
+        // in the string
+        if ($needle === '') {
+            return true;
+        }
+
+        return ($this->strpos($haystack, $needle) !== false);
     }
 }

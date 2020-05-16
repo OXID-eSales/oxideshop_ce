@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright Â© OXID eSales AG. All rights reserved.
+ * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
@@ -311,5 +311,251 @@ class StrMbTest extends \OxidTestCase
     {
         $this->assertEquals('without styling definition.', $this->_oSubj->strip_tags('<div>without</div> <style type="text/css">p {color:blue;}</style>styling definition.'));
         $this->assertEquals('with <style type="text/css">p {color:blue;}</style>styling definition.', $this->_oSubj->strip_tags('<div>with</div> <style type="text/css">p {color:blue;}</style>styling definition.', '<style>'));
+    }
+
+    public function testStrStartsWith()
+    {
+        // analog to phps /ext/standard/tests/strings/str_starts_with.phpt
+
+        $testStr = $this->_2Utf("Höher, schneller, weiter");
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with($testStr, $this->_2Utf("Höher"))
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with($this->_2Utf("Höher, schneller, weiter"), $this->_2Utf("höher"))
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with($this->_2Utf("Höher, schneller, weiter"), $this->_2Utf("öher"))
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with($testStr, $testStr)
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with($testStr, $testStr . $testStr)
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with($testStr, "")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with("", "")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with("", " ")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with($testStr, "\x00")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with("\x00", "")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with("\x00", "\x00")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with("\x00a", "\x00")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_starts_with("a\x00bc", "a\x00b")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with("a\x00b", "a\x00d")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with("a\x00b", "z\x00b")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with("a", "a\x00")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_starts_with("a", "\x00a")
+        );
+    }
+
+    public function testStrEndWith()
+    {
+        // analog to phps /ext/standard/tests/strings/str_ends_with.phpt
+
+        $testStr = $this->_2Utf("Höher, schneller, weiter");
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_ends_with($testStr, $this->_2Utf("weiter"))
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with($testStr, $this->_2Utf("Weiter"))
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with($testStr, $this->_2Utf("weite"))
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_ends_with($testStr, $testStr)
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with($testStr, $this->_2Utf($testStr . $testStr))
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_ends_with($testStr, "")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_ends_with("", "")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with("", " ")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with($testStr, "\x00")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_ends_with("\x00", "")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_ends_with("\x00", "\x00")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_ends_with("ab\x00c", "b\x00c")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with("a\x00b", "d\x00b")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with("a\x00b", "a\x00z")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with("a", "\x00a")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_ends_with("a", "a\x00")
+        );
+    }
+
+    public function testStrContains()
+    {
+        // analog to phps /ext/standard/tests/strings/str_contains.phpt
+
+        $testStr = $this->_2Utf("Höher, schneller, weiter");
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains($testStr, $this->_2Utf("Höher"))
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains($testStr, $this->_2Utf("weiter"))
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains($testStr, $this->_2Utf("weite"))
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains($testStr, $this->_2Utf("r, s"))
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains($testStr, "r")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains("te" . chr(0) . "st", chr(0))
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_contains("tEst", "test")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_contains("teSt", "test")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains("", "")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains("a", "")
+        );
+
+        $this->assertEquals(
+            false,
+            $this->_oSubj->str_contains("", "a")
+        );
+
+        $this->assertEquals(
+            true,
+            $this->_oSubj->str_contains("\\\\a", "\\a")
+        );
     }
 }

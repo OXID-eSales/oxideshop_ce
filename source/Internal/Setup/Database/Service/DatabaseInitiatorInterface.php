@@ -13,8 +13,12 @@ use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\InitiateDatabase
 
 interface DatabaseInitiatorInterface
 {
-
     /**
+     * @param string $host
+     * @param int $port
+     * @param string $username
+     * @param string $password
+     * @param string $name
      * @throws InitiateDatabaseException
      */
     public function initiateDatabase(string $host, int $port, string $username, string $password, string $name): void;

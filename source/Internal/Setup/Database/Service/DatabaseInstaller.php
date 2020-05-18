@@ -57,7 +57,13 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         $this->basicContext = $basicContext;
     }
 
-
+    /**
+     * @param string $host
+     * @param int $port
+     * @param string $username
+     * @param string $password
+     * @param string $name
+     */
     public function install(string $host, int $port, string $username, string $password, string $name): void
     {
         try {

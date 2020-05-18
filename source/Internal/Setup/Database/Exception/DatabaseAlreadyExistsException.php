@@ -11,5 +11,4 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Exception;
 
 class DatabaseAlreadyExistsException extends \Exception
 {
-
 }

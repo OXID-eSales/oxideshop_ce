@@ -11,11 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Exception;
 
 use Exception;
 
-/**
- * Class CreateDatabaseException
- *
- * @package OxidEsales\EshopCommunity\Internal\Setup\Database
- */
 class DatabaseConnectionException extends Exception
 {
 }

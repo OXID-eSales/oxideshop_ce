@@ -46,6 +46,11 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
     }
 
     /**
+     * @param string $host
+     * @param int $port
+     * @param string $username
+     * @param string $password
+     * @param string $name
      * @throws InitiateDatabaseException
      */
     public function initiateDatabase(string $host, int $port, string $username, string $password, string $name): void
@@ -96,20 +101,15 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
         }
 
         $this->dbConnection->exec($queries);
-
-        try {
-            $this->dbConnection->exec($queries);
-        } catch (\Throwable $exception) {
-            throw new InitiateDatabaseException(
-                InitiateDatabaseException::RUN_SQL_FILE_PROBLEM,
-                $exception->getCode(),
-                $exception
-            );
-        }
     }
 
-    private function getDatabaseConnection(string $host, int $port, string $username, string $password, string $name): PDO
-    {
+    private function getDatabaseConnection(
+        string $host,
+        int $port,
+        string $username,
+        string $password,
+        string $name
+    ): PDO {
         $dbConnection = new PDO(
             sprintf('mysql:host=%s;port=%s;dbname=%s', $host, $port, $name),
             $username,

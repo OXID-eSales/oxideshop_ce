@@ -31,6 +31,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
      * @param string $password
      * @param string $name
      *
+     * @throws DatabaseAlreadyExistsException
      * @throws DatabaseConnectionException
      */
     public function createDatabase(string $host, int $port, string $username, string $password, string $name): void

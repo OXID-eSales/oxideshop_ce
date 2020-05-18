@@ -72,7 +72,7 @@ class ProductInfoAdminTest extends AdminTestCase
         $aPriceAlarmData['oxartid'] = '1001';
         $this->callShopSC('oxPriceAlarm', 'save', null, $aPriceAlarmData);
 
-        $this->loginAdmin("Customer Info", "Price Alert");
+        $this->loginAdmin("Customer Info", "Wished Price");
         $this->type("where[oxpricealarm][oxemail]", "example_test@oxid-esales.dev");
         $this->clickAndWait("submitit");
         $this->assertEquals("example_test@oxid-esales.dev", $this->getText("//tr[@id='row.1']/td[1]"));

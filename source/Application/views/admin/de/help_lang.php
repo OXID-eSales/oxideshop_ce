@@ -300,7 +300,7 @@ $aLang =  [
 
 'HELP_ARTICLE_EXTEND_FREESHIPPING'            => 'Einstellung wird vom Vater-Artikel an die Varianten vererbt und gilt für den gesamten Artikel.',
 
-'HELP_ARTICLE_EXTEND_BLFIXEDPRICE'            => 'Der Preisalarm kann für diesen Artikel ausgeschaltet werden.',
+'HELP_ARTICLE_EXTEND_BLFIXEDPRICE'            => 'Der Wunschpreis kann für diesen Artikel ausgeschaltet werden.',
 
 'HELP_ARTICLE_EXTEND_TEMPLATE'                => 'Sie können die Detailansicht des Artikels mit einem anderen Template anzeigen lassen. Tragen Sie dazu Pfad und Namen des Templates ein, das verwendet werden soll.',
 

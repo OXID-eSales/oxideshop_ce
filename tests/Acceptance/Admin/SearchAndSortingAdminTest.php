@@ -3258,7 +3258,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
      */
     public function testSearchPriceAlert()
     {
-        $this->loginAdmin("Customer Info", "Price Alert");
+        $this->loginAdmin("Customer Info", "Wished Price");
         //search
         $this->type("where[oxpricealarm][oxemail]", "example02");
         $this->clickAndWait("submitit");
@@ -3338,13 +3338,13 @@ class SearchAndSortingAdminTest extends AdminTestCase
     }
 
     /**
-     * sorting Price Alert
+     * sorting Wished Price
      *
      * @group search_sort
      */
     public function testSortPriceAlert()
     {
-        $this->loginAdmin("Customer Info", "Price Alert");
+        $this->loginAdmin("Customer Info", "Wished Price");
         //sorting
         $this->clickAndWait("link=E-mail");
         $this->assertEquals("example02@oxid-esales.dev", $this->getText("//tr[@id='row.1']/td[1]"));

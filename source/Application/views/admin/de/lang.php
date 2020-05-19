@@ -1305,7 +1305,6 @@ $aLang = [
     'TOOLTIPS_NEWMWST'                        => 'Neuen MwSt. Satz anlegen',
     'TOOLTIPS_NEWDELIVERY'                    => 'Neue Versandkostenregel anlegen',
     'TOOLTIPS_NEWDELIVERYSET'                 => 'Neue Versandart anlegen',
-    'TOOLTIPS_NEWNEWS'                        => 'Neue Nachricht anlegen',
     'TOOLTIPS_NEWVOUCHER'                     => 'Neue Gutscheinserie anlegen',
     'TOOLTIPS_NEWCATTREE'                     => 'Kategoriebaum neu indizieren',
     'TOOLTIPS_NEWLINK'                        => 'Neuen Link anlegen',

@@ -69,7 +69,7 @@ class ComponentInstallerTest extends TestCase
 
     private function doesServiceLineExists()
     {
-        $context = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
+        $context = $this->get(BasicContextInterface::class);
         $contentsOfProjectFile = file_get_contents(
             $context->getGeneratedServicesFilePath()
         );

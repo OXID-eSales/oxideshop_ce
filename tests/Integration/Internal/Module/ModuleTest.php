@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
+use Webmozart\PathUtil\Path;
 
 class ModuleTest extends TestCase
 {
@@ -50,7 +51,7 @@ class ModuleTest extends TestCase
     public function testIsActiveIfModuleIsActive()
     {
         $moduleId = 'with_metadata_v21';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $module = oxNew(Module::class);
@@ -62,7 +63,7 @@ class ModuleTest extends TestCase
     public function testIsActiveIfModuleIsNotActive()
     {
         $moduleId = 'with_metadata_v21';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
 
         $module = oxNew(Module::class);
         $module->load($moduleId);
@@ -73,7 +74,7 @@ class ModuleTest extends TestCase
     public function testHasExtendClassReturnsTrue()
     {
         $moduleId = 'with_class_extensions';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $module = oxNew(Module::class);
@@ -85,7 +86,7 @@ class ModuleTest extends TestCase
     public function testHasExtendClassReturnsFalse()
     {
         $moduleId = 'with_metadata_v21';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $module = oxNew(Module::class);
@@ -97,7 +98,7 @@ class ModuleTest extends TestCase
     public function testGetExtensions()
     {
         $moduleId = 'with_class_extensions';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $module = oxNew(Module::class);
@@ -114,7 +115,7 @@ class ModuleTest extends TestCase
     public function testGetExtensionsReturnsEmptyArrayIfNoExtensions()
     {
         $moduleId = 'with_metadata_v21';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $module = oxNew(Module::class);
@@ -130,7 +131,7 @@ class ModuleTest extends TestCase
     {
         $moduleId = "with_extending_blocks";
 
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $module = oxNew(Module::class);
@@ -149,8 +150,8 @@ class ModuleTest extends TestCase
 
     public function testGetPathsReturnsInstalledModulePaths()
     {
-        $this->installModule('with_class_extensions');
-        $this->installModule('with_metadata_v21');
+        $this->installModule('with_class_extensions', Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
+        $this->installModule('with_metadata_v21', Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
 
         $module = oxNew(Module::class);
 
@@ -194,7 +195,7 @@ class ModuleTest extends TestCase
     public function testHasMetadataReturnsTrue()
     {
         $moduleId = 'with_metadata_v21';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $module = oxNew(Module::class);
@@ -206,7 +207,7 @@ class ModuleTest extends TestCase
     public function testGetModuleIdByClassName()
     {
         $moduleId = 'with_class_extensions';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($moduleId);
 
         $this->assertEquals(

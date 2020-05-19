@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
 
 use OxidEsales\Eshop\Core\ViewConfig;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use PHPUnit\Framework\TestCase;
+use Webmozart\PathUtil\Path;
 
 final class ViewConfigTest extends TestCase
 {
@@ -40,7 +41,7 @@ final class ViewConfigTest extends TestCase
     public function testIsModuleActive(): void
     {
         $moduleId = 'with_metadata_v21';
-        $this->installModule($moduleId);
+        $this->installModule($moduleId, Path::canonicalize(Path::join(__DIR__, 'Module', 'Fixtures')));
         $this->activateModule($moduleId);
 
         $viewConfig = oxNew(ViewConfig::class);

@@ -80,7 +80,6 @@ function popDown(currElem)
 <span class="popUpStyle" id="delivery_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWDELIVERY"}]</span>
 <span class="popUpStyle" id="deliveryset_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWDELIVERYSET"}]</span>
 <span class="popUpStyle" id="order_date" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_FORMAT"}]</span>
-<span class="popUpStyle" id="news_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWNEWS"}]</span>
 <span class="popUpStyle" id="voucher_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWVOUCHER"}]</span>
 <span class="popUpStyle" id="category_refresh" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWCATTREE"}]</span>
 <span class="popUpStyle" id="editvariant" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_EDITVAR"}]</span>
@@ -122,7 +121,6 @@ function popDown(currElem)
 <span class="popUpStyle" id="delivery_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWDELIVERY"}]</span>
 <span class="popUpStyle" id="deliveryset_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWDELIVERYSET"}]</span>
 <span class="popUpStyle" id="order_date" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_FORMAT"}]</span>
-<span class="popUpStyle" id="news_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWNEWS"}]</span>
 <span class="popUpStyle" id="voucher_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWVOUCHER"}]</span>
 <span class="popUpStyle" id="category_refresh" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWCATTREE"}]</span>
 <span class="popUpStyle" id="editvariant" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_EDITVAR"}]</span>

@@ -222,6 +222,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `tbclnews_main`
         - `tbclnews_mall`
         - `tbclnews_text`
+        - `TOOLTIPS_NEWNEWS`
 
 ## [6.5.5] - 2020-05-05
 

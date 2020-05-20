@@ -180,6 +180,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.5.6] - unreleased
 
+### Renamed
+- Price alert is renamed to wished price
+
 ### Fixed
 - MariaDB column default values must be trimmed [PR-796](https://github.com/OXID-eSales/oxideshop_ce/pull/796)
 

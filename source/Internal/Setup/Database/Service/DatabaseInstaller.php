@@ -72,6 +72,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         }
 
         $this->addCredentialsToConfigFile($host, $username, $password, $name);
+        $this->resetConfigFileOpcache();
         $this->updateConfigFileInRegistry();
 
         $this->initiator->initiateDatabase($host, $port, $username, $password, $name);
@@ -105,5 +106,12 @@ class DatabaseInstaller implements DatabaseInstallerInterface
     private function generateViews(): void
     {
         (new ViewsGenerator())->generate();
+    }
+
+    private function resetConfigFileOpcache(): void
+    {
+        if (opcache_get_status() !== false) {
+            opcache_invalidate($this->basicContext->getConfigFilePath());
+        }
     }
 }

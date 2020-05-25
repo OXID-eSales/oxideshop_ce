@@ -1467,7 +1467,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _selectLanguageParamValues($sParamName, $sShopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $oConfig = Registry::getConfig();
 
         $params = [
             ':oxvarname' => $sParamName

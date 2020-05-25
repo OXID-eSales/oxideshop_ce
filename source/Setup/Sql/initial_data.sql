@@ -76,6 +76,8 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('4994145b9e87481c5.69580772',	1,	'',	'aSortCols',	'arr',	'a:2:{i:0;s:7:\"oxtitle\";i:1;s:13:\"oxvarminprice\";}'),
 ('4c08e5642affe98d92efa0d88c5f9f45',	1,	'theme:flow',	'sGoogleShoppingAccountId',	'str',	''),
 ('4ce74be75654d89aebb4d003af00af36',	1,	'theme:flow',	'blFooterShowLinks',	'bool',	'1'),
+('e2f220830be47ee41df7a9d4542a0128',	1,	'theme:flow',	'blFooterShowNewsletter',	'bool',	'1'),
+('839b5d6e01ff652ff7150e7dad3ccd61',	1,	'theme:flow',	'blFooterShowNewsletterForm',	'bool',	'1'),
 ('4f76c809ff3bd883b96b0689a0796609',	1,	'theme:flow',	'sDefaultListDisplayType',	'select',	'infogrid'),
 ('5fb544d09b282311c4c43581f541b851',	1,	'theme:flow',	'sFavicon512File',	'str',	'favicon_512x512.png'),
 ('5fc3af6becbf279eda64416260cc371e',	1,	'theme:flow',	'sBackgroundColor',	'str',	'#CCEBF5'),

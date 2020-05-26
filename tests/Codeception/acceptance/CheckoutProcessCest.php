@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
-use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 
@@ -374,6 +373,42 @@ final class CheckoutProcessCest
         $paymentPage->goToPreviousStep()
             ->goToNextStep()
             ->selectPayment('oxidcashondel');
+    }
+
+    public function checkCreateShippingAddress(AcceptanceTester $I): void
+    {
+        $I->wantToTest('creating shipping address during authenticated user`s checkout');
+        $basket = new Basket($I);
+        $userData = $this->getExistingUserData();
+        $existingProductId = '1001';
+        $userShippingAddress = [
+            'userSalutation' => 'Mrs',
+            'userFirstName' => 'Some first name',
+            'userLastName' => 'Some last name',
+            'companyName' => 'Some company',
+            'street' => 'Some street',
+            'streetNr' => '1-1',
+            'ZIP' => '1234',
+            'city' => 'Some city',
+            'fonNr' => '111-111-1',
+            'faxNr' => '111-111-111-1',
+            'countryId' => 'Germany',
+            'stateId' => 'Berlin',
+        ];
+
+        $homePage = $I->openShop();
+        $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $basket->addProductToBasket($existingProductId, 1);
+        $paymentPage = $homePage->openMiniBasket()
+            ->openBasket()
+            ->goToNextStep();
+
+        $paymentPage->openShippingAddressForm();
+        $paymentPage->enterShippingAddressData($userShippingAddress);
+
+        $paymentPage->goToNextStep()
+            ->goToNextStep()
+            ->validateUserDeliveryAddress($userShippingAddress);
     }
 
     /**

@@ -254,6 +254,7 @@ final class UserAccountCest
         $userAddressPage = $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword'])
             ->openAccountPage()
             ->openUserAddressPage()
+            ->seeNumberOfShippingAddresses(0)
             ->openUserBillingAddressForm();
         $I->see('Germany', $userAddressPage->billCountryId);
         $I->see(Translator::translate('PLEASE_SELECT_STATE'), $userAddressPage->billStateId);
@@ -282,6 +283,12 @@ final class UserAccountCest
             ->enterShippingAddressData($deliveryAddressData)
             ->saveAddress()
             ->validateUserDeliveryAddress($deliveryAddressData, 1);
+
+        $userAddressPage->seeNumberOfShippingAddresses(2)
+            ->selectShippingAddress(2)
+            ->deleteShippingAddress(2)
+            ->seeNumberOfShippingAddresses(1);
+
         $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
     }
 

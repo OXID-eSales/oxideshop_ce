@@ -31,7 +31,7 @@
             $(".sortable,.sortable2").sortable({
                 opacity: 0.5,
                 update: function () {
-                    $("#myedit [name=saveButton]").attr("disabled", "");
+                    $("#myedit [name=saveButton]").prop("disabled", false);
                 }
             });
 

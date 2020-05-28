@@ -433,7 +433,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @var array
      */
-    protected static $_aCategoryCache = null;
+    protected static $_aCategoryCache = [];
 
     /**
      * stores if are stored any amount price
@@ -1695,47 +1695,47 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getCategory()
     {
-        $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-        $oCategory->setLanguage($this->getLanguage());
-
-        // variant handling
-        $sOXID = $this->getId();
-        if (isset($this->oxarticles__oxparentid->value) && $this->oxarticles__oxparentid->value) {
-            $sOXID = $this->oxarticles__oxparentid->value;
+        $id = $this->getParentId();
+        if (!$id || $id === '') {
+            $id = $this->getId();
         }
 
-        if ($sOXID) {
-            // if the oxcategory instance of this article is not cached
-            if (!isset($this->_aCategoryCache[$sOXID])) {
-                startProfile('getCategory');
-                $oStr = Str::getStr();
-                $sWhere = $oCategory->getSqlActiveSnippet();
-                $sSelect = $this->generateSearchStr($sOXID);
-                $sSelect .= ($oStr->strstr(
-                    $sSelect,
-                    'where'
-                ) ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
+        if (\array_key_exists($id, self::$_aCategoryCache)) {
+            return self::$_aCategoryCache[$id];
+        }
 
-                // category not found ?
-                if (!$oCategory->assignRecord($sSelect)) {
-                    $sSelect = $this->generateSearchStr($sOXID, true);
-                    $sSelect .= ($oStr->strstr($sSelect, 'where') ? ' and ' : ' where ') . $sWhere . " limit 1";
+        startProfile('getCategory');
 
-                    // looking for price category
-                    if (!$oCategory->assignRecord($sSelect)) {
-                        $oCategory = null;
-                    }
-                }
-                // add the category instance to cache
-                $this->_aCategoryCache[$sOXID] = $oCategory;
-                stopPRofile('getCategory');
-            } else {
-                // if the oxcategory instance is cached
-                $oCategory = $this->_aCategoryCache[$sOXID];
+        $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+        $category->setLanguage($this->getLanguage());
+
+        $str = Str::getStr();
+        $where = $category->getSqlActiveSnippet();
+        $select = $this->_generateSearchStr($id);
+        $select .= (
+            $str->strstr(
+                $select,
+                'where'
+            ) ? ' and ' : ' where '
+        ) . $where . " order by oxobject2category.oxtime limit 1";
+
+
+        // category not found ?
+        if (!$category->assignRecord($select)) {
+            $select = $this->_generateSearchStr($id, true);
+            $select .= ($str->strstr($select, 'where') ? ' and ' : ' where ') . $where . " limit 1";
+
+            // looking for price category
+            if (!$category->assignRecord($select)) {
+                $category = null;
             }
         }
 
-        return $oCategory;
+        // add the category instance to cache
+        self::$_aCategoryCache[$id] = $category;
+        stopProfile('getCategory');
+
+        return $category;
     }
 
     /**

@@ -2805,18 +2805,28 @@ class ArticleTest extends \OxidTestCase
         // test variables
         $sCacheIndex = "test";
         $sCacheResult = "already cached";
-        $aCache = array($sCacheIndex => $sCacheResult);
 
         // setting the "cached" variables
-        $oArticle = $this->getProxyClass('oxarticle');
-        $oArticle->setNonPublicVar('_aCategoryCache', $aCache);
+        $reflectedArticles = new \ReflectionClass(\OxidEsales\EshopCommunity\Application\Model\Article::class);
+        $property = $reflectedArticles->getProperty('_aCategoryCache');
+        $property->setAccessible(true);
+        $property->setValue('_aCategoryCache', [
+            $sCacheIndex => $sCacheResult
+        ]);
 
         // setting the used article ID
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $oArticle->setId($sCacheIndex);
 
         // asserts are equals if the articles ID is in the caches index
         // and returns the cached result
-        $this->assertEquals($sCacheResult, $oArticle->getCategory());
+        $this->assertSame(
+            $sCacheResult,
+            $oArticle->getCategory()
+        );
+
+        // reset to old state
+        $property->setValue('_aCategoryCache', []);
     }
 
     /**
@@ -2915,7 +2925,7 @@ class ArticleTest extends \OxidTestCase
     }
 
     /**
-     * Test if get category returns empty result.
+     * Test that get category returns cached `_testCat` result.
      *
      * @return null
      */
@@ -2924,7 +2934,10 @@ class ArticleTest extends \OxidTestCase
         $oArticle = $this->createArticle('_testArt');
         $oArticle->oxarticles__oxprice = new oxField(75, oxField::T_RAW);
         $oCat = $oArticle->getCategory();
-        $this->assertNull($oCat);
+        $this->assertSame(
+            '_testCat',
+            $oCat->getId()
+        );
     }
 
     /**

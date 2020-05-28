@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Admin\Service;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
-
 interface AdminUserServiceInterface
 {
     public function createAdmin(

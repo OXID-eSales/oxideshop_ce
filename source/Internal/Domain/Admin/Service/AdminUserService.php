@@ -10,9 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Domain\Admin\Service;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao\AdminDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Factory\AdminFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class AdminUserService implements AdminUserServiceInterface
 {
@@ -26,34 +24,24 @@ class AdminUserService implements AdminUserServiceInterface
      */
     private $adminFactory;
 
-    /**
-     * @var BasicContextInterface
-     */
-    private $basicContext;
-
     public function __construct(
         AdminDaoInterface $adminDao,
-        AdminFactoryInterface $adminFactory,
-        BasicContextInterface $basicContext
+        AdminFactoryInterface $adminFactory
     ) {
         $this->adminDao = $adminDao;
         $this->adminFactory = $adminFactory;
-        $this->basicContext = $basicContext;
     }
 
     /**
+     * @inheritDoc
      * @throws \InvalidArgumentException
      */
     public function createAdmin(
         string $email,
         string $password,
-        string $rights = Admin::MALL_ADMIN,
-        int $shopId = 0
+        string $rights,
+        int $shopId
     ): void {
-        if ($shopId === 0) {
-            $shopId = $this->basicContext->getDefaultShopId();
-        }
-
         $this->adminDao->create($this->adminFactory->createAdmin(
             $email,
             $password,

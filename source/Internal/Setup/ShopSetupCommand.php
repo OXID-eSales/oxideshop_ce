@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
@@ -16,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidato
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -53,13 +55,19 @@ class ShopSetupCommand extends Command
      */
     private $adminService;
 
+    /**
+     * @var BasicContextInterface
+     */
+    private $basicContext;
+
     public function __construct(
         DatabaseInstallerInterface $databaseInstaller,
         ConfigFileDaoInterface $configFileDao,
         DirectoryValidatorInterface $directoriesValidator,
         LanguageInstallerInterface $languageInstaller,
         HtaccessUpdateServiceInterface $htaccessUpdateService,
-        AdminUserServiceInterface $adminService
+        AdminUserServiceInterface $adminService,
+        BasicContextInterface $basicContext
     ) {
         parent::__construct();
 
@@ -69,6 +77,7 @@ class ShopSetupCommand extends Command
         $this->languageInstaller = $languageInstaller;
         $this->htaccessUpdateService = $htaccessUpdateService;
         $this->adminService = $adminService;
+        $this->basicContext = $basicContext;
     }
 
     protected function configure()
@@ -103,7 +112,12 @@ class ShopSetupCommand extends Command
         $this->languageInstaller->install($this->getLanguage($input));
 
         $output->writeln('<info>Creating administrator account...</info>');
-        $this->adminService->createAdmin($input->getArgument('admin-email'), $input->getArgument('admin-password'));
+        $this->adminService->createAdmin(
+            $input->getArgument('admin-email'),
+            $input->getArgument('admin-password'),
+            Admin::MALL_ADMIN,
+            $this->basicContext->getDefaultShopId()
+        );
 
         $output->writeln('<info>Setup has been finished.</info>');
 

@@ -102,7 +102,14 @@ class ModuleTest extends \OxidTestCase
 
         $this->assertEquals("test DE value", $oModule->getInfo("description", 0));
         $this->assertEquals("test EN value", $oModule->getInfo("description", 1));
-        $this->assertEquals("test EN value", $oModule->getInfo("description", 2));
+
+        $this->expectException(
+            \OxidEsales\EshopCommunity\Core\Exception\LanguageNotFoundException::class
+        );
+        $this->expectExceptionMessage(
+            'Could not find language abbreviation for language-id 2! Available languages: de, en'
+        );
+        $oModule->getInfo("description", 2);
     }
 
     /**

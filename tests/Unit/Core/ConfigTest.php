@@ -1139,7 +1139,6 @@ class ConfigTest extends \OxidTestCase
 
     public function testGetTemplateDirExpectsDefault()
     {
-        oxRegistry::getLang()->setBaseLanguage(999);
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $sDir = $this->_getViewsPath($oConfig, 'admin') . 'tpl/';
@@ -1163,7 +1162,6 @@ class ConfigTest extends \OxidTestCase
     public function testGetTemplateUrlExpectsDefault()
     {
         $oConfig = oxNew('oxConfig');
-        oxRegistry::getLang()->setBaseLanguage(999);
         $oConfig->init();
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getViewsPath($oConfig, 'admin', false) . 'tpl/';
         $this->assertEquals($sDir, $oConfig->getTemplateUrl(null, true));
@@ -1306,7 +1304,6 @@ class ConfigTest extends \OxidTestCase
      */
     public function testGetAbsAdminGetImageDirDefault()
     {
-        oxRegistry::getLang()->setBaseLanguage(999);
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $sDir = $oConfig->getConfigParam('sShopDir') . 'out/admin/img/';
@@ -1414,7 +1411,6 @@ class ConfigTest extends \OxidTestCase
 
     public function testGetImageDirDefaultLanguage()
     {
-        oxRegistry::getLang()->setBaseLanguage(999);
         $oConfig = $this->getMock(Config::class, array('isAdmin'));
         $oConfig->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         $oConfig->init();
@@ -1450,9 +1446,6 @@ class ConfigTest extends \OxidTestCase
 
     public function testGetNoSslgetImageUrlDefaults()
     {
-        $this->getConfig()->setConfigParam('aLanguages', array(0 => 'DE', 1 => 'EN', 2 => 'LT'));
-        oxRegistry::getLang()->setBaseLanguage(2);
-
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $sDir = $oConfig->getConfigParam('sShopURL') . $this->_getOutPath($oConfig, null, false) . 'img/';

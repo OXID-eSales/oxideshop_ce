@@ -188,8 +188,9 @@ class OrderTest extends \OxidTestCase
         $this->assertNull($oOrder->validateOrder(0, 0));
 
         // stock check failed
+        $this->expectException('OxidEsales\Eshop\Core\Exception\OutOfStockException');
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
-        $oOrder->expects($this->once())->method('validateStock')->will($this->returnValue("validateStock"));
+        $oOrder->expects($this->once())->method('validateStock')->will($this->throwException(new \OxidEsales\Eshop\Core\Exception\OutOfStockException()));
         $oOrder->expects($this->never())->method('validateDelivery');
         $oOrder->expects($this->never())->method('validatePayment');
         $oOrder->expects($this->never())->method('validateDeliveryAddress');
@@ -199,30 +200,29 @@ class OrderTest extends \OxidTestCase
         // delivery check failed
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
         $oOrder->expects($this->once())->method('validateStock');
-        $oOrder->expects($this->once())->method('validateDelivery')->will($this->returnValue("validateDelivery"));
-        ;
+        $oOrder->expects($this->once())->method('validateDelivery')->will($this->returnValue(4));
         $oOrder->expects($this->never())->method('validatePayment');
         $oOrder->expects($this->never())->method('validateDeliveryAddress');
         $oOrder->expects($this->never())->method('validateBasket');
-        $this->assertEquals("validateDelivery", $oOrder->validateOrder(0, 0));
+        $this->assertEquals(4, $oOrder->validateOrder(0, 0));
 
         // payment check failed
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
         $oOrder->expects($this->once())->method('validateStock');
         $oOrder->expects($this->once())->method('validateDelivery');
-        $oOrder->expects($this->once())->method('validatePayment')->will($this->returnValue("validatePayment"));
+        $oOrder->expects($this->once())->method('validatePayment')->will($this->returnValue(5));
         $oOrder->expects($this->never())->method('validateDeliveryAddress');
         $oOrder->expects($this->never())->method('validateBasket');
-        $this->assertEquals("validatePayment", $oOrder->validateOrder(0, 0));
+        $this->assertEquals(5, $oOrder->validateOrder(0, 0));
 
         // payment check failed
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
         $oOrder->expects($this->once())->method('validateStock');
         $oOrder->expects($this->once())->method('validateDelivery');
         $oOrder->expects($this->once())->method('validatePayment');
-        $oOrder->expects($this->once())->method('validateDeliveryAddress')->will($this->returnValue("validateDeliveryAddress", "validateBasket"));
+        $oOrder->expects($this->once())->method('validateDeliveryAddress')->will($this->returnValue(7));
         $oOrder->expects($this->never())->method('validateBasket');
-        $this->assertEquals("validateDeliveryAddress", $oOrder->validateOrder(0, 0));
+        $this->assertEquals(7, $oOrder->validateOrder(0, 0));
 
         // min basket price check failed
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
@@ -230,8 +230,8 @@ class OrderTest extends \OxidTestCase
         $oOrder->expects($this->once())->method('validateDelivery');
         $oOrder->expects($this->once())->method('validatePayment');
         $oOrder->expects($this->once())->method('validateDeliveryAddress');
-        $oOrder->expects($this->once())->method('validateBasket')->will($this->returnValue("validateBasket"));
-        $this->assertEquals("validateBasket", $oOrder->validateOrder(0, 0));
+        $oOrder->expects($this->once())->method('validateBasket')->will($this->returnValue(8));
+        $this->assertEquals(8, $oOrder->validateOrder(0, 0));
     }
 
     public function testValidateDeliveryAddress()

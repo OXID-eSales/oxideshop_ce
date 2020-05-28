@@ -34,21 +34,6 @@ class OrderListTest extends \OxidTestCase
     }
 
     /**
-     * order_list::storno() test case
-     *
-     * @return null
-     */
-    public function testStorno()
-    {
-        oxTestModules::addFunction('oxorder', 'load', '{ return true; }');
-        oxTestModules::addFunction('oxorder', 'cancelOrder', '{ return true; }');
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\OrderList::class, array("init"));
-        $oView->expects($this->once())->method('init');
-        $oView->storno();
-    }
-
-    /**
      * order_list::_buildSelectString() test case
      *
      * @return null

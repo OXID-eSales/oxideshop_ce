@@ -117,7 +117,7 @@ class OrderTest extends BaseTestCase
         ));
 
         $order->expects($this->any())->method('_sendOrderByEmail')->will($this->returnValue(0));
-        $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(null));
+        $order->expects($this->any())->method('validateDeliveryAddress')->will($this->returnValue(0));
         $order->expects($this->any())->method('validateDelivery')->will($this->returnValue(null));
 
         // if basket has products

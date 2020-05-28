@@ -18,13 +18,28 @@ use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateServiceInter
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Console\Command\NamedArgumentsTrait;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShopSetupCommand extends Command
 {
+    use NamedArgumentsTrait;
+
+    private const DB_HOST = 'db-host';
+    private const DB_PORT = 'db-port';
+    private const DB_NAME = 'db-name';
+    private const DB_USER = 'db-user';
+    private const DB_PASSWORD = 'db-password';
+    private const SHOP_URL = 'shop-url';
+    private const SHOP_DIRECTORY = 'shop-directory';
+    private const COMPILE_DIRECTORY = 'compile-directory';
+    private const ADMIN_EMAIL = 'admin-email';
+    private const ADMIN_PASSWORD = 'admin-password';
+    private const LANGUAGE = 'language';
+
     /**
      * @var DatabaseInstallerInterface
      */
@@ -83,21 +98,23 @@ class ShopSetupCommand extends Command
     protected function configure()
     {
         $this
-            ->addArgument('host', InputArgument::REQUIRED)
-            ->addArgument('port', InputArgument::REQUIRED)
-            ->addArgument('dbname', InputArgument::REQUIRED)
-            ->addArgument('user', InputArgument::REQUIRED)
-            ->addArgument('password', InputArgument::REQUIRED)
-            ->addArgument('shop-url', InputArgument::REQUIRED)
-            ->addArgument('shop-directory', InputArgument::REQUIRED)
-            ->addArgument('compile-directory', InputArgument::REQUIRED)
-            ->addArgument('admin-email', InputArgument::REQUIRED)
-            ->addArgument('admin-password', InputArgument::REQUIRED)
-            ->addArgument('language', InputArgument::OPTIONAL, '', 'en');
+            ->addOption(self::DB_HOST, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::DB_PORT, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::DB_NAME, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::DB_USER, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::DB_PASSWORD, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::SHOP_URL, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::SHOP_DIRECTORY, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::COMPILE_DIRECTORY, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::ADMIN_EMAIL, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::ADMIN_PASSWORD, null, InputOption::VALUE_REQUIRED)
+            ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', 'en');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->validateRequiredOptions($this->getDefinition()->getOptions(), $input);
+
         $output->writeln('<info>Validating input...</info>');
         $this->validateInput($input);
 
@@ -105,7 +122,7 @@ class ShopSetupCommand extends Command
         $this->updateConfigFile($input);
 
         $output->writeln('<info>Updating htaccess file...</info>');
-        $this->htaccessUpdateService->updateRewriteBaseDirective($input->getArgument('shop-url'));
+        $this->htaccessUpdateService->updateRewriteBaseDirective($input->getArgument(self::SHOP_URL));
 
         $output->writeln('<info>Installing database data...</info>');
         $this->installDatabase($input);
@@ -113,8 +130,8 @@ class ShopSetupCommand extends Command
 
         $output->writeln('<info>Creating administrator account...</info>');
         $this->adminService->createAdmin(
-            $input->getArgument('admin-email'),
-            $input->getArgument('admin-password'),
+            $input->getArgument(self::ADMIN_EMAIL),
+            $input->getArgument(self::ADMIN_PASSWORD),
             Admin::MALL_ADMIN,
             $this->basicContext->getDefaultShopId()
         );
@@ -127,31 +144,31 @@ class ShopSetupCommand extends Command
     protected function installDatabase(InputInterface $input): void
     {
         $this->databaseInstaller->install(
-            $input->getArgument('host'),
-            (int) $input->getArgument('port'),
-            $input->getArgument('user'),
-            $input->getArgument('password'),
-            $input->getArgument('dbname')
+            $input->getOption(self::DB_HOST),
+            (int) $input->getArgument(self::DB_PORT),
+            $input->getArgument(self::DB_USER),
+            $input->getArgument(self::DB_PASSWORD),
+            $input->getArgument(self::DB_NAME)
         );
     }
 
     private function updateConfigFile(InputInterface $input): void
     {
-        $this->configFileDao->replacePlaceholder('sShopURL', $input->getArgument('shop-url'));
-        $this->configFileDao->replacePlaceholder('sShopDir', $input->getArgument('shop-directory'));
-        $this->configFileDao->replacePlaceholder('sCompileDir', $input->getArgument('compile-directory'));
+        $this->configFileDao->replacePlaceholder('sShopURL', $input->getArgument(self::SHOP_URL));
+        $this->configFileDao->replacePlaceholder('sShopDir', $input->getArgument(self::SHOP_DIRECTORY));
+        $this->configFileDao->replacePlaceholder('sCompileDir', $input->getArgument(self::COMPILE_DIRECTORY));
     }
 
     private function getLanguage(InputInterface $input): DefaultLanguage
     {
-        return new DefaultLanguage($input->getArgument('language'));
+        return new DefaultLanguage($input->getOption(self::LANGUAGE));
     }
 
     protected function validateInput(InputInterface $input): void
     {
         $this->directoriesValidator->validateDirectory(
-            $input->getArgument('shop-directory'),
-            $input->getArgument('compile-directory')
+            $input->getArgument(self::SHOP_DIRECTORY),
+            $input->getArgument(self::COMPILE_DIRECTORY)
         );
         $this->getLanguage($input);
     }

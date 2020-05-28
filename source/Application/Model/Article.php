@@ -1731,7 +1731,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if ($sOXID) {
             // if the oxcategory instance of this article is not cached
             if (!isset($this->_aCategoryCache[$sOXID])) {
-                startPRofile('getCategory');
+                startProfile('getCategory');
                 $oStr = Str::getStr();
                 $sWhere = $oCategory->getSqlActiveSnippet();
                 $sSelect = $this->_generateSearchStr($sOXID);

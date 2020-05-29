@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ComposerPlugin;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ModulePackageInstaller;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
@@ -71,6 +71,18 @@ class ModulePackageInstallerTest extends TestCase
         $installer->uninstall($this->modulePackagePath);
 
         $this->assertFalse($installer->isInstalled());
+    }
+
+    public function testModuleInstallDoesNotUseMainContainer(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+
+        ContainerFactory::resetContainer();
+        $installer->install($this->modulePackagePath);
+
+        $this->assertFileNotExists(
+            $this->get(ContextInterface::class)->getContainerCacheFilePath()
+        );
     }
 
     /**

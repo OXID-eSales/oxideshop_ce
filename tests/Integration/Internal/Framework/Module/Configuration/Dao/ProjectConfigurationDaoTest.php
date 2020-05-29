@@ -133,6 +133,7 @@ class ProjectConfigurationDaoTest extends TestCase
         $moduleConfiguration
             ->setId('testModuleConfiguration')
             ->setPath('somePath')
+            ->setSourcePath('test')
             ->setVersion('v2.1')
             ->setDescription([
                 'de' => 'ja',

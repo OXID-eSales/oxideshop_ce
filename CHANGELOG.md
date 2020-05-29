@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Checking if multilanguage base table from configuration exists, before trying to generate its views [PR-754](https://github.com/OXID-eSales/oxideshop_ce/pull/754)
 - Performance improvement of Field class [PR-771](https://github.com/OXID-eSales/oxideshop_ce/pull/771)
 - Psalm static analysis tool [PR-766](https://github.com/OXID-eSales/oxideshop_ce/pull/766)
+- New module configuration option `sourcePath`
 
 ### Changed
 - Source/Application/views/admin/tpl/shop_license.tpl

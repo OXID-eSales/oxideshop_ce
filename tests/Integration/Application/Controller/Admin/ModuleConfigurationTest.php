@@ -72,6 +72,7 @@ class ModuleConfigurationTest extends UnitTestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('testModule');
+        $moduleConfiguration->setSourcePath('test');
         $moduleConfiguration->addModuleSetting($setting);
 
         $container = ContainerFactory::getInstance()->getContainer();

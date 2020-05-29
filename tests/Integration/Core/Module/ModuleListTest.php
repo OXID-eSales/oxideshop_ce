@@ -157,7 +157,8 @@ class ModuleListTest extends TestCase
         $moduleWhichHasNoMetadata = new ModuleConfiguration();
         $moduleWhichHasNoMetadata
             ->setId('moduleWhichHasNoMetadata')
-            ->setPath('moduleWhichHasNoMetadata');
+            ->setPath('moduleWhichHasNoMetadata')
+            ->setSourcePath('test');
 
         $shopConfiguration->addModuleConfiguration($moduleWhichHasNoMetadata);
         $shopConfigurationDao->save($shopConfiguration);

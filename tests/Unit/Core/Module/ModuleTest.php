@@ -582,7 +582,8 @@ class ModuleTest extends \OxidTestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModule')
-            ->setPath('oe/testModule');
+            ->setPath('oe/testModule')
+            ->setSourcePath('oe/testModule');
 
         $container = ContainerFactory::getInstance()->getContainer();
         $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);

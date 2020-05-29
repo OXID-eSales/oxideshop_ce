@@ -154,6 +154,24 @@ final class ModuleConfigurationInstallerTest extends TestCase
         );
     }
 
+    public function testRelativeModuleSourcePathIsSetToModuleConfigurations(): void
+    {
+        $modulesPath = $this->get(ContextInterface::class)->getModulesPath();
+
+        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $moduleConfigurationInstaller->install($this->modulePath, $modulesPath . '/myModules/TestModule');
+
+        $shopConfiguration = $this
+            ->projectConfigurationDao
+            ->getConfiguration()
+            ->getShopConfiguration(1);
+
+        $this->assertStringContainsString(
+            $shopConfiguration->getModuleConfiguration($this->testModuleId)->getSourcePath(),
+            $this->modulePath
+        );
+    }
+
     private function assertProjectConfigurationHasModuleConfigurationForAllShops(): void
     {
         $environmentConfiguration = $this

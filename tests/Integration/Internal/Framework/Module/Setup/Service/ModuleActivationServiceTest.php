@@ -218,6 +218,7 @@ class ModuleActivationServiceTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('TestModule');
+        $moduleConfiguration->setSourcePath('test');
 
         $setting = new Setting();
         $setting

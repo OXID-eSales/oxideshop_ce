@@ -34,6 +34,11 @@ class ModuleConfiguration
     /**
      * @var string
      */
+    private $sourcePath;
+
+    /**
+     * @var string
+     */
     private $version = '';
 
     /**
@@ -145,6 +150,24 @@ class ModuleConfiguration
     public function setPath(string $path): ModuleConfiguration
     {
         $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourcePath(): string
+    {
+        return $this->sourcePath;
+    }
+
+    /**
+     * @param string $sourcePath
+     * @return ModuleConfiguration
+     */
+    public function setSourcePath(string $sourcePath): ModuleConfiguration
+    {
+        $this->sourcePath = $sourcePath;
         return $this;
     }
 

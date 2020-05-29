@@ -28,7 +28,7 @@ class DatabaseCreatorTest extends TestCase
     public function setUp(): void
     {
         $this->params = $this->getDatabaseConnectionInfo();
-        $this->params['dbName'] = 'setup_command_db_test';
+        $this->params['dbName'] = 'oxid_setup_command_db_test';
 
         $this->databaseCreator = new DatabaseCreator();
 

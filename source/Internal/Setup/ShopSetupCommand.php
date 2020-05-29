@@ -39,6 +39,7 @@ class ShopSetupCommand extends Command
     private const ADMIN_EMAIL = 'admin-email';
     private const ADMIN_PASSWORD = 'admin-password';
     private const LANGUAGE = 'language';
+    private const DEFAULT_LANG = 'en';
 
     /**
      * @var DatabaseInstallerInterface
@@ -108,7 +109,7 @@ class ShopSetupCommand extends Command
             ->addOption(self::COMPILE_DIRECTORY, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::ADMIN_EMAIL, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::ADMIN_PASSWORD, null, InputOption::VALUE_REQUIRED)
-            ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', 'en');
+            ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', self::DEFAULT_LANG);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -122,7 +123,7 @@ class ShopSetupCommand extends Command
         $this->updateConfigFile($input);
 
         $output->writeln('<info>Updating htaccess file...</info>');
-        $this->htaccessUpdateService->updateRewriteBaseDirective($input->getArgument(self::SHOP_URL));
+        $this->htaccessUpdateService->updateRewriteBaseDirective($input->getOption(self::SHOP_URL));
 
         $output->writeln('<info>Installing database data...</info>');
         $this->installDatabase($input);
@@ -130,8 +131,8 @@ class ShopSetupCommand extends Command
 
         $output->writeln('<info>Creating administrator account...</info>');
         $this->adminService->createAdmin(
-            $input->getArgument(self::ADMIN_EMAIL),
-            $input->getArgument(self::ADMIN_PASSWORD),
+            $input->getOption(self::ADMIN_EMAIL),
+            $input->getOption(self::ADMIN_PASSWORD),
             Admin::MALL_ADMIN,
             $this->basicContext->getDefaultShopId()
         );
@@ -145,18 +146,18 @@ class ShopSetupCommand extends Command
     {
         $this->databaseInstaller->install(
             $input->getOption(self::DB_HOST),
-            (int) $input->getArgument(self::DB_PORT),
-            $input->getArgument(self::DB_USER),
-            $input->getArgument(self::DB_PASSWORD),
-            $input->getArgument(self::DB_NAME)
+            (int) $input->getOption(self::DB_PORT),
+            $input->getOption(self::DB_USER),
+            $input->getOption(self::DB_PASSWORD),
+            $input->getOption(self::DB_NAME)
         );
     }
 
     private function updateConfigFile(InputInterface $input): void
     {
-        $this->configFileDao->replacePlaceholder('sShopURL', $input->getArgument(self::SHOP_URL));
-        $this->configFileDao->replacePlaceholder('sShopDir', $input->getArgument(self::SHOP_DIRECTORY));
-        $this->configFileDao->replacePlaceholder('sCompileDir', $input->getArgument(self::COMPILE_DIRECTORY));
+        $this->configFileDao->replacePlaceholder('sShopURL', $input->getOption(self::SHOP_URL));
+        $this->configFileDao->replacePlaceholder('sShopDir', $input->getOption(self::SHOP_DIRECTORY));
+        $this->configFileDao->replacePlaceholder('sCompileDir', $input->getOption(self::COMPILE_DIRECTORY));
     }
 
     private function getLanguage(InputInterface $input): DefaultLanguage
@@ -167,8 +168,8 @@ class ShopSetupCommand extends Command
     protected function validateInput(InputInterface $input): void
     {
         $this->directoriesValidator->validateDirectory(
-            $input->getArgument(self::SHOP_DIRECTORY),
-            $input->getArgument(self::COMPILE_DIRECTORY)
+            $input->getOption(self::SHOP_DIRECTORY),
+            $input->getOption(self::COMPILE_DIRECTORY)
         );
         $this->getLanguage($input);
     }

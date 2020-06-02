@@ -36,7 +36,7 @@ class ModuleConfigurationDaoTest extends TestCase
         $moduleConfiguration
             ->setId('testId')
             ->setPath('somePath')
-            ->setSourcePath('test');
+            ->setModuleSource('test');
 
         $dao = $this->get(ModuleConfigurationDaoInterface::class);
         $dao->save($moduleConfiguration, 1);

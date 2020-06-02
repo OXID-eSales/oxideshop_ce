@@ -36,7 +36,7 @@ class ShopConfigurationDaoBridgeTest extends TestCase
         $someModule
             ->setId('someId')
             ->setPath('somePath')
-            ->setSourcePath('test');
+            ->setModuleSource('test');
 
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($someModule);
@@ -63,7 +63,7 @@ class ShopConfigurationDaoBridgeTest extends TestCase
         $module
             ->setId($this->testModuleId)
             ->setPath('test')
-            ->setSourcePath('test')
+            ->setModuleSource('test')
             ->addModuleSetting($originalSetting);
 
         $shopConfiguration = new ShopConfiguration();

@@ -46,7 +46,7 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                 ->isRequired()
                                 ->cannotBeEmpty()
                             ->end()
-                            ->scalarNode('sourcePath')
+                            ->scalarNode('moduleSource')
                                 ->isRequired()
                                 ->cannotBeEmpty()
                             ->end()

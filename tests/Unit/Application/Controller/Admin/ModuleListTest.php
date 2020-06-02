@@ -72,14 +72,14 @@ class ModuleListTest extends \OxidTestCase
         $moduleA
             ->setId('a')
             ->setPath('some')
-            ->setSourcePath('some')
+            ->setModuleSource('some')
             ->setTitle(['en' => 'A']);
 
         $moduleB = new ModuleConfiguration();
         $moduleB
             ->setId('b')
             ->setPath('some')
-            ->setSourcePath('some')
+            ->setModuleSource('some')
             ->setTitle(['en' => 'B']);
 
         $shopConfiguration->addModuleConfiguration($moduleB);

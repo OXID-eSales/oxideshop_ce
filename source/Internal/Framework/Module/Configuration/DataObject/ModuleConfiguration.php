@@ -34,7 +34,7 @@ class ModuleConfiguration
     /**
      * @var string
      */
-    private $sourcePath;
+    private $moduleSource;
 
     /**
      * @var string
@@ -156,18 +156,18 @@ class ModuleConfiguration
     /**
      * @return string
      */
-    public function getSourcePath(): string
+    public function getModuleSource(): string
     {
-        return $this->sourcePath;
+        return $this->moduleSource;
     }
 
     /**
-     * @param string $sourcePath
+     * @param string $moduleSource
      * @return ModuleConfiguration
      */
-    public function setSourcePath(string $sourcePath): ModuleConfiguration
+    public function setModuleSource(string $moduleSource): ModuleConfiguration
     {
-        $this->sourcePath = $sourcePath;
+        $this->moduleSource = $moduleSource;
         return $this;
     }
 

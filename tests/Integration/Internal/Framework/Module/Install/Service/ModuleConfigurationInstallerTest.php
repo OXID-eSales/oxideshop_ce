@@ -167,7 +167,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
             ->getShopConfiguration(1);
 
         $this->assertStringContainsString(
-            $shopConfiguration->getModuleConfiguration($this->testModuleId)->getSourcePath(),
+            $shopConfiguration->getModuleConfiguration($this->testModuleId)->getModuleSource(),
             $this->modulePath
         );
     }

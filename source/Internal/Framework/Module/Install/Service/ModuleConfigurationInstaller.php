@@ -68,7 +68,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleSourcePath);
 
         $moduleConfiguration->setPath($this->getModuleRelativePath($moduleTargetPath));
-        $moduleConfiguration->setSourcePath($this->getSourceRelativePath($moduleSourcePath));
+        $moduleConfiguration->setModuleSource($this->getModuleSourceRelativePath($moduleSourcePath));
 
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
         $projectConfiguration = $this->addModuleConfigurationToAllShops($moduleConfiguration, $projectConfiguration);
@@ -143,7 +143,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
             : Path::makeRelative($moduleTargetPath, $this->context->getModulesPath());
     }
 
-    private function getSourceRelativePath(string $moduleSourcePath): string
+    private function getModuleSourceRelativePath(string $moduleSourcePath): string
     {
         return Path::makeRelative($moduleSourcePath, $this->context->getShopRootPath());
     }

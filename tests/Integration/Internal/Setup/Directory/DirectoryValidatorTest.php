@@ -2,50 +2,39 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Directory;
 
-use org\bovigo\vfs\vfsStream;
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\DirectoryValidatorException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidator;
+use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 
 final class DirectoryValidatorTest extends TestCase
 {
-    private const SHOP_SOURCE_PATH = 'vfs://root/test-folder';
-    private const SHOP_COMPILE_PATH = 'vfs://root/test-folder/tmp';
+    /** @var string */
+    private $shopSourcePath;
 
     protected function setUp(): void
     {
-        $this->createDirectoryStructure();
+        $this->shopSourcePath = __DIR__ . '/Fixtures/dir-structure/test-folder';
 
         parent::setUp();
-    }
-
-    private function createDirectoryStructure(): void
-    {
-        $structure = [
-            'test-folder' => [
-                'out' => [
-                    'pictures' => [
-                        'promo' => [],
-                        'master' => [],
-                        'generated' => [],
-                        'media' => []
-                    ],
-                    'media' => [],
-                ],
-                'log' => [],
-                'tmp' => []
-            ],
-            'var' => []
-        ];
-
-        $root = vfsStream::setup('root');
-        vfsStream::create($structure, $root);
     }
 
     public function testDirectoriesExistentAndPermission(): void
     {
         $directoryValidator = new DirectoryValidator();
-        $directoryValidator->validateDirectory(self::SHOP_SOURCE_PATH, self::SHOP_COMPILE_PATH);
+        $directoryValidator->validateDirectory($this->shopSourcePath, $this->shopSourcePath . '/tmp');
+    }
+
+    public function testCheckPathIsAbsolute(): void
+    {
+        $shopSourcePath  = 'source';
+        $shopCompilePath  = 'source/tmp';
+
+        $directoryValidator = new DirectoryValidator();
+
+        $this->expectException(NotAbsolutePathException::class);
+        $directoryValidator->checkPathIsAbsolute($shopSourcePath, $shopCompilePath);
     }
 
     public function testNonExistentDirectories(): void
@@ -54,19 +43,7 @@ final class DirectoryValidatorTest extends TestCase
 
         $directoryValidator = new DirectoryValidator();
 
-        $this->expectException(DirectoryValidatorException::class);
-        $directoryValidator->validateDirectory($shopSourcePath, self::SHOP_COMPILE_PATH);
-    }
-
-    public function testNoPermissionDirectories(): void
-    {
-        $directoryValidator = new DirectoryValidator();
-
-        $directoryValidator->validateDirectory(self::SHOP_SOURCE_PATH, self::SHOP_COMPILE_PATH);
-
-        chmod('vfs://root/test-folder/out/pictures/promo', 0111);
-
-        $this->expectException(DirectoryValidatorException::class);
-        $directoryValidator->validateDirectory(self::SHOP_SOURCE_PATH, self::SHOP_COMPILE_PATH);
+        $this->expectException(NonExistenceDirectoryException::class);
+        $directoryValidator->validateDirectory($shopSourcePath, $this->shopSourcePath . '/tmp');
     }
 }

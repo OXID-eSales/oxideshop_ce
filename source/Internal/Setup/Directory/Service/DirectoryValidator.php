@@ -9,7 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Directory\Service;
 
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\DirectoryValidatorException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NoPermissionDirectoryException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
+use Webmozart\PathUtil\Path;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 
 /**
  * Class DirectoryValidator
@@ -32,61 +37,68 @@ class DirectoryValidator implements DirectoryValidatorInterface
      * @param string $shopSourcePath
      * @param string $compileDirectory
      *
-     * @throws DirectoryValidatorException
+     * @throws NoPermissionDirectoryException
+     * @throws NonExistenceDirectoryException
      */
     public function validateDirectory(string $shopSourcePath, string $compileDirectory): void
     {
         $directories = $this->getDirectories($shopSourcePath, $compileDirectory);
 
-        $nonExistentDirectories = $this->checkDirectoriesExistent($directories);
-        if (count($nonExistentDirectories) > 0) {
-            throw new DirectoryValidatorException(
-                DirectoryValidatorException::NON_EXISTENCE_DIRECTORY . ': ' . implode(', ', $nonExistentDirectories)
-            );
-        }
+        $this->checkDirectoriesExistent($directories);
 
-        $noPermissionDirectories = $this->checkDirectoriesPermission($directories);
-        if (count($noPermissionDirectories) > 0) {
-            throw new DirectoryValidatorException(
-                DirectoryValidatorException::NO_PERMISSION_DIRECTORY . ': ' . implode(', ', $noPermissionDirectories)
-            );
+        $this->checkDirectoriesPermission($directories);
+    }
+
+    /**
+     * @param string $shopSourcePath
+     * @param string $compileDirectory
+     *
+     * @throws NotAbsolutePathException
+     */
+    public function checkPathIsAbsolute(string $shopSourcePath, string $compileDirectory): void
+    {
+        if (
+            !Path::isAbsolute($shopSourcePath) ||
+            !Path::isAbsolute($compileDirectory)
+        ) {
+            throw new NotAbsolutePathException(NotAbsolutePathException::NOT_ABSOLUTE_PATHS);
         }
     }
 
     /**
      * @param array $directories
      *
-     * @return array
+     * @return void
+     * @throws NonExistenceDirectoryException
      */
-    private function checkDirectoriesExistent(array $directories): array
+    private function checkDirectoriesExistent(array $directories): void
     {
-        $nonExistentDirectories = [];
         foreach ($directories as $directory) {
             if (!is_dir($directory)) {
-                $nonExistentDirectories[] = $directory;
+                throw new NonExistenceDirectoryException(
+                    NonExistenceDirectoryException::NON_EXISTENCE_DIRECTORY . ': ' . $directory
+                );
             }
         }
-
-        return $nonExistentDirectories;
     }
 
     /**
      * @param array $directories
      *
-     * @return array
+     * @return void
+     * @throws NoPermissionDirectoryException
      */
-    private function checkDirectoriesPermission(array $directories): array
+    private function checkDirectoriesPermission(array $directories): void
     {
         $subDirectories = $this->getDirectoriesAndSubDirectories($directories);
 
-        $noPermissionDirectories = [];
         foreach ($subDirectories as $subDirectory) {
             if (!is_readable($subDirectory) || !is_writable($subDirectory)) {
-                $noPermissionDirectories[] = $subDirectory;
+                throw new NoPermissionDirectoryException(
+                    NoPermissionDirectoryException::NO_PERMISSION_DIRECTORY . ': ' . $subDirectory
+                );
             }
         }
-
-        return $noPermissionDirectories;
     }
 
     /**
@@ -96,17 +108,18 @@ class DirectoryValidator implements DirectoryValidatorInterface
      */
     private function getDirectoriesAndSubDirectories(array $directories): array
     {
-        $directory = reset($directories);
-        while ($directory) {
-            $subDirectories = glob($directory . '*', GLOB_ONLYDIR);
+        foreach ($directories as $directory) {
+            $recursiveIterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::SELF_FIRST,
+                RecursiveIteratorIterator::CATCH_GET_CHILD
+            );
 
-            if (is_array($subDirectories)) {
-                foreach ($subDirectories as $subDirectory) {
-                    $directories[] = $subDirectory . DIRECTORY_SEPARATOR;
+            foreach ($recursiveIterator as $path => $dir) {
+                if ($dir->isDir()) {
+                    $directories[] = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
                 }
             }
-
-            $directory = next($directories);
         }
 
         return $directories;
@@ -120,7 +133,7 @@ class DirectoryValidator implements DirectoryValidatorInterface
      */
     private function getDirectories(string $shopSourcePath, string $compileDirectory): array
     {
-        $shopSourcePath = $this->checkPathHasSlashAtTheEnd($shopSourcePath);
+        $shopSourcePath = rtrim($shopSourcePath, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
 
         $directories = array_map(
             static function ($value) use ($shopSourcePath) {
@@ -129,24 +142,8 @@ class DirectoryValidator implements DirectoryValidatorInterface
             self::DIRECTORIES_LIST
         );
 
-        $directories[] = $this->checkPathHasSlashAtTheEnd($compileDirectory);
+        $directories[] = rtrim($compileDirectory, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
 
         return $directories;
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    private function checkPathHasSlashAtTheEnd(string $path): string
-    {
-        $lastChar = substr($path, -1);
-
-        if ($lastChar !== DIRECTORY_SEPARATOR) {
-            $path .= DIRECTORY_SEPARATOR;
-        }
-
-        return $path;
     }
 }

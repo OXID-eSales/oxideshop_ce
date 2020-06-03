@@ -187,10 +187,16 @@ class ShopSetupCommand extends Command
 
     protected function validateInput(InputInterface $input): void
     {
+        $this->directoriesValidator->checkPathIsAbsolute(
+            $input->getOption(self::SHOP_DIRECTORY),
+            $input->getOption(self::COMPILE_DIRECTORY)
+        );
+
         $this->directoriesValidator->validateDirectory(
             $input->getOption(self::SHOP_DIRECTORY),
             $input->getOption(self::COMPILE_DIRECTORY)
         );
+
         $this->getLanguage($input);
     }
 }

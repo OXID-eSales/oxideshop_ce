@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Directory\Service;
 
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\DirectoryValidatorException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NoPermissionDirectoryException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
 
 interface DirectoryValidatorInterface
 {
@@ -17,7 +19,16 @@ interface DirectoryValidatorInterface
      * @param string $shopSourcePath
      * @param string $compileDirectory
      *
-     * @throws DirectoryValidatorException
+     * @throws NoPermissionDirectoryException
+     * @throws NonExistenceDirectoryException
      */
     public function validateDirectory(string $shopSourcePath, string $compileDirectory): void;
+
+    /**
+     * @param string $shopSourcePath
+     * @param string $compileDirectory
+     *
+     * @throws NotAbsolutePathException
+     */
+    public function checkPathIsAbsolute(string $shopSourcePath, string $compileDirectory): void;
 }

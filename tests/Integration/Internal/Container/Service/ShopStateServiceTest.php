@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateSe
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\Facts\Config\ConfigFile;
 use PHPUnit\Framework\TestCase;
 
 class ShopStateServiceTest extends TestCase
@@ -111,6 +112,30 @@ class ShopStateServiceTest extends TestCase
 
         $this->assertFalse(
             $shopStateService->isLaunched()
+        );
+    }
+
+    public function testCheckIfDbExistsAndNotEmpty()
+    {
+        $configFile = new ConfigFile();
+
+        $dbHost = $configFile->getVar('dbHost');
+        $dbPort = $configFile->getVar('dbPort');
+        $dbUser = $configFile->getVar('dbUser');
+        $dbPwd = $configFile->getVar('dbPwd');
+        $dbName = $configFile->getVar('dbName');
+
+        $shopStateService = new ShopStateService(
+            $this->get(BasicContextInterface::class),
+            'fakeNamespace'
+        );
+
+        $this->assertTrue(
+            $shopStateService->checkIfDbExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, $dbName)
+        );
+
+        $this->assertFalse(
+            $shopStateService->checkIfDbExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, 'new-oxid')
         );
     }
 }

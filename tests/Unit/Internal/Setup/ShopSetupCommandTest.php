@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
@@ -57,6 +58,8 @@ final class ShopSetupCommandTest extends TestCase
     private $htaccessUpdateService;
     /** @var AdminUserServiceInterface|ObjectProphecy */
     private $adminUserService;
+    /** @var ShopStateServiceInterface|ObjectProphecy */
+    private $shopStateService;
     /** @var BasicContextInterface|ObjectProphecy */
     private $basicContext;
 
@@ -127,6 +130,7 @@ final class ShopSetupCommandTest extends TestCase
             $this->languageInstaller->reveal(),
             $this->htaccessUpdateService->reveal(),
             $this->adminUserService->reveal(),
+            $this->shopStateService->reveal(),
             $this->basicContext->reveal()
         );
     }
@@ -139,6 +143,16 @@ final class ShopSetupCommandTest extends TestCase
         $this->languageInstaller = $this->prophesize(LanguageInstallerInterface::class);
         $this->htaccessUpdateService = $this->prophesize(HtaccessUpdateServiceInterface::class);
         $this->adminUserService = $this->prophesize(AdminUserServiceInterface::class);
+
+        $this->shopStateService = $this->prophesize(ShopStateServiceInterface::class);
+        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+            self::HOST,
+            self::PORT,
+            self::DB_USER,
+            self::DB_PASS,
+            self::DB
+        )->willReturn(false);
+
         $this->basicContext = $this->prophesize(BasicContextInterface::class);
     }
 

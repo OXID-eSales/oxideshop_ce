@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Setup;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
@@ -72,6 +73,11 @@ class ShopSetupCommand extends Command
     private $adminService;
 
     /**
+     * @var ShopStateServiceInterface
+     */
+    private $shopStateService;
+
+    /**
      * @var BasicContextInterface
      */
     private $basicContext;
@@ -83,6 +89,7 @@ class ShopSetupCommand extends Command
         LanguageInstallerInterface $languageInstaller,
         HtaccessUpdateServiceInterface $htaccessUpdateService,
         AdminUserServiceInterface $adminService,
+        ShopStateServiceInterface $shopStateService,
         BasicContextInterface $basicContext
     ) {
         parent::__construct();
@@ -93,6 +100,7 @@ class ShopSetupCommand extends Command
         $this->languageInstaller = $languageInstaller;
         $this->htaccessUpdateService = $htaccessUpdateService;
         $this->adminService = $adminService;
+        $this->shopStateService = $shopStateService;
         $this->basicContext = $basicContext;
     }
 
@@ -115,6 +123,18 @@ class ShopSetupCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->validateRequiredOptions($this->getDefinition()->getOptions(), $input);
+
+        if (
+            $this->shopStateService->checkIfDbExistsAndNotEmpty(
+                $input->getOption(self::DB_HOST),
+                (int) $input->getOption(self::DB_PORT),
+                $input->getOption(self::DB_USER),
+                $input->getOption(self::DB_PASSWORD),
+                $input->getOption(self::DB_NAME)
+            )
+        ) {
+            throw new ShopAlreadyInstalledException('Shop is already installed.');
+        }
 
         $output->writeln('<info>Validating input...</info>');
         $this->validateInput($input);

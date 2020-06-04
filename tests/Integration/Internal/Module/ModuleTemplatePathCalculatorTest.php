@@ -10,9 +10,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\EshopCommunity\Core\FileSystem\FileSystem;
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\BCTrait;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
 
@@ -20,24 +23,8 @@ use Webmozart\PathUtil\Path;
  * @group module
  * @package Unit\Core\Module
  */
-class ModuleTemplatePathCalculatorTest extends TestCase
+class ModuleTemplatePathCalculatorTest extends IntegrationTestCase
 {
-    use BCTrait;
-    use ContainerTrait;
-
-    public function setUp(): void
-    {
-        $this->setupBCAutoloader();
-        $this->setupTestContainer();
-        $this->forceDatabaseSetup();
-        parent::setUp();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-    }
-
     /**
      * Full path to modules directory. Any path like string for testing purposes.
      *
@@ -174,8 +161,8 @@ class ModuleTemplatePathCalculatorTest extends TestCase
      */
     public function testCalculateModuleTemplatePathFileNotExists()
     {
+        $this->resetRegistry();
         /** @var ShopConfigurationSettingDaoInterface $dao */
-
         $this->loadFixture(Path::join(__DIR__, 'Fixtures', 'db_fixtures', 'calculate_module_template_path_file_not_exists.yaml'));
 
         $this->expectException('oxException');
@@ -196,13 +183,13 @@ class ModuleTemplatePathCalculatorTest extends TestCase
      */
     private function getModuleTemplatePathCalculator($modulesPath, $configTheme, $configCustomTheme)
     {
-        $this->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
-        $this->setConfigParam('sTheme', $configTheme);
-        $this->setConfigParam('sCustomTheme', $configCustomTheme);
-        $this->setConfigParam('aModulePaths', [$this->exampleModuleId => true]);
+        Registry::getConfig()->setConfigParam('aModuleTemplates', $this->exampleModuleTemplateConfiguration);
+        Registry::getConfig()->setConfigParam('sTheme', $configTheme);
+        Registry::getConfig()->setConfigParam('sCustomTheme', $configCustomTheme);
+        Registry::getConfig()->setConfigParam('aModulePaths', [$this->exampleModuleId => true]);
 
-        /** @var FileSystem|PHPUnit\Framework\MockObject\MockObject $fileSystemMock */
-        $fileSystemMock = $this->getMock(FileSystem::class, ['isReadable']);
+        /** @var MockObject $fileSystemMock */
+        $fileSystemMock = $this->getMockBuilder(FileSystem::class)->setMethods(['isReadable'])->getMock();
         $fileSystemMock->method('isReadable')->willReturn($this->returnValue(true));
 
         $templatePathCalculator = new ModuleTemplatePathCalculator(oxNew(ModuleList::class), oxNew('oxTheme'), $fileSystemMock);

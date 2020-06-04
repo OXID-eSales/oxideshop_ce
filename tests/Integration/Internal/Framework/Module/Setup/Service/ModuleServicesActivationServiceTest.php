@@ -20,13 +20,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event\TestEventSubscriber;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\PathUtil\Path;
 
-class ModuleServicesActivationServiceTest extends TestCase
+class ModuleServicesActivationServiceTest extends IntegrationTestCase
 {
     private $testModuleId = 'testModuleId';
 
@@ -63,6 +64,7 @@ class ModuleServicesActivationServiceTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $this->projectYamlDao = $this->getMockBuilder(ProjectYamlDaoInterface::class)->getMock();
         $this->projectYamlDao
             ->method('saveProjectConfigFile')

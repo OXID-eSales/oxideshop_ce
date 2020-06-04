@@ -14,9 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
-class ModuleExtensionsCleanerTest extends TestCase
+class ModuleExtensionsCleanerTest extends IntegrationTestCase
 {
     /**
      * Test case for bug #6342
@@ -25,9 +26,8 @@ class ModuleExtensionsCleanerTest extends TestCase
 
     public function tearDown(): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $fileSystem = $container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($container->get(ContextInterface::class)->getModulesPath() . '/' . $this->testModuleId);
+        $fileSystem = $this->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->get(ContextInterface::class)->getModulesPath() . '/' . $this->testModuleId);
         parent::tearDown();
     }
 

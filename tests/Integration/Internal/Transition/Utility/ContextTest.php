@@ -12,26 +12,18 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Utilit
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 
-class ContextTest extends TestCase
+class ContextTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     public function setUp(): void
     {
-        parent::setUp();
         /** Unmocking the context */
         $this->overrideService(ContextInterface::class, new Context());
-        $this->setupIntegrationTest();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
+        parent::setUp();
     }
 
     public function testGetLogLevel()

@@ -17,29 +17,12 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingService;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
 
-class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
+class UserRatingBridgeTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->setupIntegrationTest();
-        // TODO: Use fixtures instead of traditional classes
-        // This sets up the connection for traditional code needed for initalizing data in this test
-        // A better solution would be to use fixtures
-        $this->get(Connection::class);
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
-    }
-
     public function testDeleteRating()
     {
         $this->createTestRating();

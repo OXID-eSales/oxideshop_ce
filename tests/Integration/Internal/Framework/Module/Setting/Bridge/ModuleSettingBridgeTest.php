@@ -13,29 +13,20 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-final class ModuleSettingBridgeTest extends TestCase
+final class ModuleSettingBridgeTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     public function setup(): void
     {
-        $this->setupIntegrationTest();
+        parent::setUp();
 
         $modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
         $configurationInstaller->install($modulePath, 'targetPath');
-
-        parent::setUp();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
     }
 
     public function testSave(): void

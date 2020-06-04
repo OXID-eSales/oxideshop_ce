@@ -11,9 +11,10 @@ use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator;
 use OxidEsales\Eshop\Core\Exception\ModuleValidationException;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
-class ModuleSmartyPluginDirectoryValidatorTest extends TestCase
+class ModuleSmartyPluginDirectoryValidatorTest extends IntegrationTestCase
 {
     public function testNonExistingDirectoriesValidation()
     {

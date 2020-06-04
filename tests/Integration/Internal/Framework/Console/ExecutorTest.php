@@ -20,7 +20,6 @@ use Symfony\Component\Console\Output\StreamOutput;
 class ExecutorTest extends TestCase
 {
     use ConsoleTrait;
-    use ContainerTrait;
 
     public function testIfRegisteredCommandInList()
     {

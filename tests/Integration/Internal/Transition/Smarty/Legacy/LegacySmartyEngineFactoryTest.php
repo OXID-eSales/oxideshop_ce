@@ -10,26 +10,16 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty\Legacy;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy\LegacySmartyEngine;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class LegacySmartyEngineFactoryTest extends \PHPUnit\Framework\TestCase
+class LegacySmartyEngineFactoryTest extends IntegrationTestCase
 {
     public function testGetTemplateEngine()
     {
-        $factory = $this->getCompiledTestContainer()->get('smarty.smarty_engine_factory');
+        $factory = $this->get('smarty.smarty_engine_factory');
 
         $this->assertInstanceOf(LegacySmartyEngine::class, $factory->getTemplateEngine());
-    }
-
-    /**
-     * @return ContainerBuilder
-     */
-    private function getCompiledTestContainer(): ContainerBuilder
-    {
-        $container = TestContainerFactory::getInstance()->create();
-        $container->compile();
-
-        return $container;
     }
 }

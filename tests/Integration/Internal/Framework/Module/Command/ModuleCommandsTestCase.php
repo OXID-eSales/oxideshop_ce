@@ -17,9 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\ConsoleTrait;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
@@ -28,10 +26,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * @internal
  */
-class ModuleCommandsTestCase extends TestCase
+class ModuleCommandsTestCase extends IntegrationTestCase
 {
     use ConsoleTrait;
-    use ContainerTrait;
 
     protected $modulesPath = __DIR__ . '/Fixtures/modules/';
 
@@ -40,14 +37,12 @@ class ModuleCommandsTestCase extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->setupIntegrationTest();
         $this->installTestModule();
     }
 
     public function tearDown(): void
     {
         $this->cleanupTestModule();
-        $this->tearDownTestContainer();
         parent::tearDown();
     }
 

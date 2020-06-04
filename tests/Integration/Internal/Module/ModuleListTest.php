@@ -19,15 +19,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use Webmozart\PathUtil\Path;
 
 /**
  * @internal
  */
-class ModuleListTest extends TestCase
+class ModuleListTest extends IntegrationTestCase
 {
     /**
      * @var ContainerInterface
@@ -40,22 +39,7 @@ class ModuleListTest extends TestCase
     {
         $this->container = ContainerFactory::getInstance()->getContainer();
         parent::setUp();
-        $this->setupIntegrationTest();
         $this->fixturePath = Path::canonicalize(Path::join(__DIR__, 'Fixtures'));
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
-
-        $this->removeTestModules();
-
-        $this->container
-            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
-
-        Registry::getConfig()->saveShopConfVar('aarr', 'activeModules', []);
     }
 
     public function testDisabledModules()

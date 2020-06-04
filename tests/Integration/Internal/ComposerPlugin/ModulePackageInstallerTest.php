@@ -18,28 +18,20 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ModulePackageInstallerTest extends TestCase
+class ModulePackageInstallerTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     private $modulePackagePath = __DIR__ . '/Fixtures/test-module-package-installation';
     private $packageName = 'test-module-package-installation';
     private $moduleId = 'testModule';
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->setupIntegrationTest();
-    }
 
     public function tearDown(): void
     {
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         $fileSystem->remove($this->getModulesPath() . '/' . $this->packageName);
-        $this->tearDownTestContainer();
         parent::tearDown();
     }
 

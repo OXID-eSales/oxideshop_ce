@@ -10,43 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
 
-class ModuleTest extends TestCase
+class ModuleTest extends IntegrationTestCase
 {
     private $container;
-
-    public function setup(): void
-    {
-        $this->container = ContainerFactory::getInstance()->getContainer();
-
-        $this->container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-             ->generate();
-
-        parent::setUp();
-        $this->setupIntegrationTest();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
-
-        $this->removeTestModules();
-
-        $this->container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
-
-        Registry::getConfig()->saveShopConfVar('aarr', 'activeModules', []);
-    }
 
     public function testIsActiveIfModuleIsActive()
     {

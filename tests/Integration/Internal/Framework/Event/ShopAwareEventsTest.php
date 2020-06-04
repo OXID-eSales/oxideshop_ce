@@ -12,11 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
+class ShopAwareEventsTest extends IntegrationTestCase
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerBuilder
@@ -30,6 +31,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
+        parent::setUp();
         $context = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
             ->setMethods([
@@ -67,6 +69,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
          */
         $event = $this->dispatcher->dispatch(new TestEvent(), 'oxidesales.testevent');
         $this->assertEquals(2, $event->getNumberOfActiveHandlers());
+        parent::tearDown();
     }
 
     /**

@@ -16,43 +16,31 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ConfigHandlingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use Webmozart\PathUtil\Path;
 
-class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
+class SmartyBuilderTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-    private $debugMode;
-
-    public function setup(): void
-    {
-        parent::setUp();
-        $this->setupIntegrationTest();
-        $this->debugMode = Registry::getConfig()->getConfigParam('iDebug');
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        Registry::getConfig()->setConfigParam('iDebug', $this->debugMode);
-        parent::tearDown();
-    }
-
     /**
      * @dataProvider smartySettingsDataProvider
      *
-     * @param bool  $securityMode
+     * @param bool $securityOn
      * @param array $smartySettings
      */
-    public function testSmartySettingsAreSetCorrect($securityMode, $smartySettings)
+    public function testSmartySettingsAreSetCorrect($securityOn)
     {
-        /** @var SmartyConfigurationFactory $configurationFactory */
-        $configurationFactory = $this->setupAndConfigureContainer($securityMode)
-            ->get(SmartyConfigurationFactoryInterface::class);
+        if ($securityOn) {
+            $smartySettings = $this->getSmartySettingsWithSecurityOn();
+        } else {
+            $smartySettings = $this->getSmartySettingsWithSecurityOff();
+        }
+        $smartyBuilder = new SmartyBuilder();
+        $this->setupAndConfigureContainer($securityOn);
+        $configurationFactory = $this->get(SmartyConfigurationFactoryInterface::class);
         $configuration = $configurationFactory->getConfiguration();
-        $smarty = (new SmartyBuilder())
-            ->setSettings($configuration->getSettings())
+
+        $smarty = $smartyBuilder->setSettings($configuration->getSettings())
             ->setSecuritySettings($configuration->getSecuritySettings())
             ->registerPlugins($configuration->getPlugins())
             ->registerPrefilters($configuration->getPrefilters())
@@ -71,8 +59,8 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
     public function smartySettingsDataProvider()
     {
         return [
-            'security on' => [1, $this->getSmartySettingsWithSecurityOn()],
-            'security off' => [0, $this->getSmartySettingsWithSecurityOff()]
+            'securityOn' => [1],
+            'security off' => [0]
         ];
     }
 

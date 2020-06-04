@@ -12,9 +12,10 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database\Logge
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 
-class DatabaseLoggerFactoryTest extends \PHPUnit\Framework\TestCase
+class DatabaseLoggerFactoryTest extends IntegrationTestCase
 {
     public function testCreationForAdminLogEnabled()
     {

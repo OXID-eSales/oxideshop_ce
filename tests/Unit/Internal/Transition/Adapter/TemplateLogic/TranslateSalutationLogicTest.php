@@ -8,22 +8,19 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\LanguageHandlingTrait;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 
 /**
  * Class TranslateSalutationLogic
  */
-class TranslateSalutationLogicTest extends UnitTestCase
+class TranslateSalutationLogicTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /** @var TranslateSalutationLogic */
     private $translateSalutationLogic;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
+        parent::setUp();
         $this->translateSalutationLogic = new TranslateSalutationLogic();
     }
 

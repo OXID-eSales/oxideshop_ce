@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database\Logger;
 
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter;
 use Psr\Log\LoggerInterface;
 use OxidEsales\Eshop\Core\Registry;
 
-class QueryLoggerTest extends \PHPUnit\Framework\TestCase
+class QueryLoggerTest extends IntegrationTestCase
 {
     public function providerTestLogging()
     {

@@ -15,28 +15,15 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingTy
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ActiveClassExtensionChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ClassExtensionChainService;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ClassExtensionChainServiceTest extends TestCase
+class ClassExtensionChainServiceTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
-    public function setup(): void
-    {
-        $this->setupIntegrationTest();
-        parent::setUp();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
-    }
-
     public function testUpdateChain()
     {
         $activeClassExtensionChain = new ClassExtensionsChain();

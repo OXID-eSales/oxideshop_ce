@@ -13,32 +13,26 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
 
 /**
  * Class ModuleSmartyPluginDirectoryTest
  */
-class ModuleSmartyPluginDirectoriesTest extends TestCase
+class ModuleSmartyPluginDirectoriesTest extends IntegrationTestCase
 {
     private $container;
 
     public function setup(): void
     {
         parent::setUp();
-        $this->setupIntegrationTest();
         $module = 'with_metadata_v21';
         $this->installModule($module, Path::canonicalize(Path::join(__DIR__, 'Fixtures')));
         $this->activateModule($module);
 
         $this->activateTestModule();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
     }
 
     /**

@@ -16,29 +16,18 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingService;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
+use Webmozart\PathUtil\Path;
 
-class ProductRatingBridgeTest extends \PHPUnit\Framework\TestCase
+class ProductRatingBridgeTest extends IntegrationTestCase
 {
-    use DatabaseTestingTrait;
-
-    private $ratingIds = [];
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->setupIntegrationTest();
-        $this->forceDatabaseSetup();
-        $this->createTestProduct();
-        $this->createTestRatings();
-    }
-
-    public function tearDown(): void
-    {
-        $this->deleteTestRatings();
-        $this->deleteTestProduct();
-        $this->tearDownTestContainer();
-        parent::tearDown();
+        $this->loadFixtures([Path::join(__DIR__, 'Fixtures', 'rating_bridge_fixtures.yaml')]);
     }
 
     public function testUpdateProductRating()
@@ -91,25 +80,11 @@ class ProductRatingBridgeTest extends \PHPUnit\Framework\TestCase
 
     private function getProductRatingBridge()
     {
-        return ContainerFactory::getInstance()->getContainer()->get(ProductRatingBridgeInterface::class);
+        return $this->get(ProductRatingBridgeInterface::class);
     }
 
-    /**
-     * Accessing the dao is difficult, because it is a private service.
-     * In newer versions of the Symfony Container (since 4.1) this may be
-     * done more elegant.
-     *
-     * @return ProductRatingDao
-     */
     private function getProductRatingDao()
     {
-        $bridge = $this->getProductRatingBridge();
-        $serviceProperty = new \ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
-        $serviceProperty->setAccessible(true);
-        $service = $serviceProperty->getValue($bridge);
-        $daoProperty = new \ReflectionProperty(ProductRatingService::class, 'productRatingDao');
-        $daoProperty->setAccessible(true);
-
-        return $daoProperty->getValue($service);
+        return $this->get(ProductRatingDaoInterface::class);
     }
 }

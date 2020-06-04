@@ -11,27 +11,19 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\Templ
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class TranslateLogicTest extends UnitTestCase
+class TranslateLogicTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /** @var TranslateFilterLogic */
     private $multiLangFilterLogic;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
-        $this->setupIntegrationTest();
         $this->multiLangFilterLogic = new TranslateFilterLogic();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
     }
 
     /**
@@ -124,7 +116,6 @@ class TranslateLogicTest extends UnitTestCase
      */
     public function testTranslateFrontend_isMissingTranslation($isProductiveMode, $ident, $translation)
     {
-        $this->forceDatabaseSetup();
         $this->setAdminMode(false);
         $this->setLanguage(1);
 

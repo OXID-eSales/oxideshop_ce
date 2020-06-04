@@ -11,10 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridge;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyEngine;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class SmartyEngineTest extends \PHPUnit\Framework\TestCase
+class SmartyEngineTest extends IntegrationTestCase
 {
 
     public function testExists()
@@ -84,15 +85,13 @@ class SmartyEngineTest extends \PHPUnit\Framework\TestCase
         $fragment = '[{assign var=\'title\' value=$title|default:\'Hello OXID!\'}][{$title}]';
         $context = ['title' => 'Hello Test!'];
 
-        $factory = $this->getCompiledTestContainer();
-        $engine = $factory->get('smarty.smarty_engine_factory')->getTemplateEngine();
+        $engine = $this->get('smarty.smarty_engine_factory')->getTemplateEngine();
         $this->assertSame('Hello Test!', $engine->renderFragment($fragment, 'ox:testid', $context));
     }
 
     public function testMagicSetterAndGetter()
     {
-        $factory = $this->getCompiledTestContainer();
-        $engine = $factory->get('smarty.smarty_engine_factory')->getTemplateEngine();
+        $engine = $this->get('smarty.smarty_engine_factory')->getTemplateEngine();
         $engine->_tpl_vars = 'testValue';
         $this->assertSame('testValue', $engine->_tpl_vars);
     }
@@ -109,16 +108,5 @@ class SmartyEngineTest extends \PHPUnit\Framework\TestCase
     private function getTemplateDirectory()
     {
         return __DIR__ . '/Fixtures/';
-    }
-
-    /**
-     * @return ContainerBuilder
-     */
-    private function getCompiledTestContainer(): ContainerBuilder
-    {
-        $container = TestContainerFactory::getInstance()->create();
-        $container->compile();
-
-        return $container;
     }
 }

@@ -10,8 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Storage;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\YamlFileStorage;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Lock\LockFactory;
@@ -20,22 +19,8 @@ use Symfony\Component\Yaml\Exception\ParseException;
 /**
  * @internal
  */
-class YamlFileStorageTest extends TestCase
+class YamlFileStorageTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->setupIntegrationTest();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
-    }
-
     /**
      * @var resource
      */

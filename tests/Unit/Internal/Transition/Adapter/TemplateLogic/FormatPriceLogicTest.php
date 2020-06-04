@@ -8,9 +8,10 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
-class FormatPriceLogicTest extends TestCase
+class FormatPriceLogicTest extends IntegrationTestCase
 {
 
     /**
@@ -18,10 +19,10 @@ class FormatPriceLogicTest extends TestCase
      */
     private $formatPriceLogic;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->formatPriceLogic = new FormatPriceLogic();
         parent::setUp();
+        $this->formatPriceLogic = new FormatPriceLogic();
     }
 
     /**

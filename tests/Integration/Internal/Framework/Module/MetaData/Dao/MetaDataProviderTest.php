@@ -16,13 +16,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNor
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class MetaDataProviderTest extends TestCase
+class MetaDataProviderTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /** @var MetaDataNormalizer */
     private $metaDataNormalizerStub;
 
@@ -35,17 +34,10 @@ class MetaDataProviderTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->setupIntegrationTest();
         $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
         $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
         $this->contextStub = $this->getMockBuilder(BasicContextInterface::class)->getMock();
         $this->validatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)->getMock();
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
     }
 
     public function testGetDataThrowsExceptionOnNonExistingFile()

@@ -15,27 +15,12 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\Eshop\Core\SubShopSpecificFileCache;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ModuleSmartyPluginDirectoryRepositoryTest extends TestCase
+class ModuleSmartyPluginDirectoryRepositoryTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->setupIntegrationTest();
-        $this->forceDatabaseSetup();
-
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
-    }
-
     public function testSaving()
     {
         $directories = oxNew(

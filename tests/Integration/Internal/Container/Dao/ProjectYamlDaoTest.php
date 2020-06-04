@@ -16,15 +16,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\DummyExecutor;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
 
-class ProjectYamlDaoTest extends TestCase
+class ProjectYamlDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /**
      * @var ProjectYamlDaoInterface $dao
      */
@@ -32,7 +30,7 @@ class ProjectYamlDaoTest extends TestCase
 
     public function setup(): void
     {
-        $this->setupIntegrationTest();
+        parent::setUp();
 
         $contextStub = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
@@ -45,12 +43,6 @@ class ProjectYamlDaoTest extends TestCase
             $contextStub,
             $this->get('oxid_esales.symfony.file_system')
         );
-    }
-
-    protected function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
     }
 
     public function testLoading()

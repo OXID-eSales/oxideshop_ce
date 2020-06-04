@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
 use PHPUnit\Framework\TestCase;
@@ -25,24 +26,14 @@ use PHPUnit\Framework\TestCase;
 /**
  * @internal
  */
-class SettingDaoTest extends TestCase
+class SettingDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     const TESTPREFIX = 'test';
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->setupIntegrationTest();
-        $this->forceDatabaseSetup();
         $this->cleanupTable('oxconfigdisplay');
-    }
-
-    public function tearDown(): void
-    {
-        $this->tearDownTestContainer();
-        parent::tearDown();
     }
 
     /**

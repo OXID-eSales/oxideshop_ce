@@ -11,13 +11,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Utility;
 
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class BasicContextTest extends TestCase
+class BasicContextTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /**
      * @var BasicContextInterface
      */
@@ -25,9 +24,8 @@ class BasicContextTest extends TestCase
 
     public function setup(): void
     {
-        $this->basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
-
         parent::setUp();
+        $this->basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
     }
 
     public function testGetConfigFilePath()

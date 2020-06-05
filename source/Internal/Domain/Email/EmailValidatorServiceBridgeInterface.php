@@ -11,4 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Email;
 
 interface EmailValidatorServiceBridgeInterface extends EmailValidatorServiceInterface
 {
+    public function isEmailValid($email): bool;
 }

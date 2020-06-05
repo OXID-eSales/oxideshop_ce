@@ -51,7 +51,7 @@ class BootstrapModuleInstaller implements ModuleInstallerInterface
      */
     public function uninstall(OxidEshopPackage $package): void
     {
-        $this->moduleConfigurationInstaller->uninstall($package->getPackagePath());
+        $this->moduleConfigurationInstaller->uninstall($package->getPackageSourcePath());
         $this->moduleFilesInstaller->uninstall($package);
     }
 

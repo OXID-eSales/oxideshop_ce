@@ -185,6 +185,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - MariaDB column default values must be trimmed [PR-796](https://github.com/OXID-eSales/oxideshop_ce/pull/796)
+- Module class extensions cannot be sorted in backend [#0007116](https://bugs.oxid-esales.com/view.php?id=7116)
+
+### Changed
+- jQuery UI updated to v1.12.1
 
 ### Deprecated
 - News feature:

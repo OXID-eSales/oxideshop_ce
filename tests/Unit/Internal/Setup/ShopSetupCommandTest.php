@@ -81,6 +81,14 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
 
+        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+            self::HOST,
+            self::PORT,
+            self::DB_USER,
+            self::DB_PASS,
+            self::DB
+        )->willReturn(false);
+
         $act = $this->commandTester->execute([
             '--db-host' => self::HOST,
             '--db-port' => self::PORT,
@@ -102,6 +110,15 @@ final class ShopSetupCommandTest extends TestCase
     public function testExecuteWithMissingOptionalArgs(): void
     {
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
+
+        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+            self::HOST,
+            self::PORT,
+            self::DB_USER,
+            self::DB_PASS,
+            self::DB
+        )->willReturn(false);
+
 
         $act = $this->commandTester->execute([
             '--db-host' => self::HOST,
@@ -143,16 +160,7 @@ final class ShopSetupCommandTest extends TestCase
         $this->languageInstaller = $this->prophesize(LanguageInstallerInterface::class);
         $this->htaccessUpdateService = $this->prophesize(HtaccessUpdateServiceInterface::class);
         $this->adminUserService = $this->prophesize(AdminUserServiceInterface::class);
-
         $this->shopStateService = $this->prophesize(ShopStateServiceInterface::class);
-        $this->shopStateService->checkIfDbExistsAndNotEmpty(
-            self::HOST,
-            self::PORT,
-            self::DB_USER,
-            self::DB_PASS,
-            self::DB
-        )->willReturn(false);
-
         $this->basicContext = $this->prophesize(BasicContextInterface::class);
     }
 

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup;
 
-class ShopAlreadyInstalledException extends \Exception
+class DbExistsAndNotEmptyException extends \Exception
 {
 
 }

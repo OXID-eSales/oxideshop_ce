@@ -135,7 +135,7 @@ class ShopStateServiceTest extends TestCase
         );
 
         $this->assertFalse(
-            $shopStateService->checkIfDbExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, 'new-oxid')
+            $shopStateService->checkIfDbExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, 'testCheckIfDbExistsAndNotEmpty')
         );
     }
 }

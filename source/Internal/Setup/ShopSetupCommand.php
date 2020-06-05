@@ -133,7 +133,7 @@ class ShopSetupCommand extends Command
                 $input->getOption(self::DB_NAME)
             )
         ) {
-            throw new ShopAlreadyInstalledException('Shop is already installed.');
+            throw new DbExistsAndNotEmptyException('Database is already exist and not-empty');
         }
 
         $output->writeln('<info>Validating input...</info>');

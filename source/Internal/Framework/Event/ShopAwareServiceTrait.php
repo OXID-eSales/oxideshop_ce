@@ -56,6 +56,11 @@ trait ShopAwareServiceTrait
      */
     public function isActive()
     {
+        if(!$this->context) {
+            return false;
+        }
+//        PHP Fatal error:  Uncaught Error: Call to a member function getCurrentShopId() on null in /var/www/html/vendor/oxid-esales/oxideshop-ce/source/Internal/Framework/Event/ShopAwareServiceTrait.php:62
+
         return in_array(strval($this->context->getCurrentShopId()), $this->activeShops);
     }
 }

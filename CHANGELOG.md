@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Module class extensions cannot be sorted in backend [#0007116](https://bugs.oxid-esales.com/view.php?id=7116)
 - Take oxsort field into account for showing cross-seling articles [PR-738](https://github.com/OXID-eSales/oxideshop_ce/pull/738)
 - Fix second page of article list load via SEO [#0007014](https://bugs.oxid-esales.com/view.php?id=7014) [PR-740](https://github.com/OXID-eSales/oxideshop_ce/pull/740)
+- Fix using special symbols in smtp password [PR-806](https://github.com/OXID-eSales/oxideshop_ce/pull/806)
 - Fix docblocks
     - [PR-815](https://github.com/OXID-eSales/oxideshop_ce/pull/815)
     - [PR-816](https://github.com/OXID-eSales/oxideshop_ce/pull/816)

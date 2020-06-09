@@ -133,7 +133,9 @@ class ShopSetupCommand extends Command
                 $input->getOption(self::DB_NAME)
             )
         ) {
-            throw new DbExistsAndNotEmptyException('Database is already exist and not-empty');
+            throw new DbExistsAndNotEmptyException(
+                sprintf('Database `%s` already exists and is not empty', $input->getOption(self::DB_NAME))
+            );
         }
 
         $output->writeln('<info>Validating input...</info>');

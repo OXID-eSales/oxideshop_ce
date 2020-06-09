@@ -14,10 +14,12 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInte
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\DbExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\ShopIsLaunchedException;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\TestCase;
@@ -77,6 +79,64 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester->execute([]);
     }
 
+    public function testExecuteWithExistingDb(): void
+    {
+        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+            self::HOST,
+            self::PORT,
+            self::DB_USER,
+            self::DB_PASS,
+            self::DB
+        )
+            ->willReturn(true);
+
+        $this->expectException(DbExistsAndNotEmptyException::class);
+
+        $this->commandTester->execute([
+            '--db-host' => self::HOST,
+            '--db-port' => self::PORT,
+            '--db-name' => self::DB,
+            '--db-user' => self::DB_USER,
+            '--db-password' => self::DB_PASS,
+            '--shop-url' => self::URL,
+            '--shop-directory' => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
+            '--admin-email' => self::ADMIN_EMAIL,
+            '--admin-password' => self::ADMIN_PASS,
+            '--language' => self::LANG,
+        ]);
+    }
+
+    public function testExecuteWithNewDbButShopAlreadyLaunched(): void
+    {
+        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+            self::HOST,
+            self::PORT,
+            self::DB_USER,
+            self::DB_PASS,
+            self::DB
+        )
+            ->willReturn(false);
+        $this->shopStateService->isLaunched()
+            ->willReturn(true);
+
+        $this->expectException(ShopIsLaunchedException::class);
+
+        $act = $this->commandTester->execute([
+            '--db-host' => self::HOST,
+            '--db-port' => self::PORT,
+            '--db-name' => self::DB,
+            '--db-user' => self::DB_USER,
+            '--db-password' => self::DB_PASS,
+            '--shop-url' => self::URL,
+            '--shop-directory' => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
+            '--admin-email' => self::ADMIN_EMAIL,
+            '--admin-password' => self::ADMIN_PASS,
+            '--language' => self::LANG,
+        ]);
+    }
+
     public function testExecuteWithCompleteArgs(): void
     {
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
@@ -87,7 +147,10 @@ final class ShopSetupCommandTest extends TestCase
             self::DB_USER,
             self::DB_PASS,
             self::DB
-        )->willReturn(false);
+        )
+            ->willReturn(false);
+        $this->shopStateService->isLaunched()
+            ->willReturn(false);
 
         $act = $this->commandTester->execute([
             '--db-host' => self::HOST,
@@ -117,7 +180,10 @@ final class ShopSetupCommandTest extends TestCase
             self::DB_USER,
             self::DB_PASS,
             self::DB
-        )->willReturn(false);
+        )
+            ->willReturn(false);
+        $this->shopStateService->isLaunched()
+            ->willReturn(false);
 
 
         $act = $this->commandTester->execute([

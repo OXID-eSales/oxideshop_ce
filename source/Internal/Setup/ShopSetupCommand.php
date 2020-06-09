@@ -120,23 +120,19 @@ class ShopSetupCommand extends Command
             ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', self::DEFAULT_LANG);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     * @throws DbExistsAndNotEmptyException
+     * @throws ShopIsLaunchedException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->validateRequiredOptions($this->getDefinition()->getOptions(), $input);
 
-        if (
-            $this->shopStateService->checkIfDbExistsAndNotEmpty(
-                $input->getOption(self::DB_HOST),
-                (int) $input->getOption(self::DB_PORT),
-                $input->getOption(self::DB_USER),
-                $input->getOption(self::DB_PASSWORD),
-                $input->getOption(self::DB_NAME)
-            )
-        ) {
-            throw new DbExistsAndNotEmptyException(
-                sprintf('Database `%s` already exists and is not empty', $input->getOption(self::DB_NAME))
-            );
-        }
+        $this->checkCanCreateDb($input);
+        $this->checkCanUpdateConfigFile();
 
         $output->writeln('<info>Validating input...</info>');
         $this->validateInput($input);
@@ -200,5 +196,33 @@ class ShopSetupCommand extends Command
         );
 
         $this->getLanguage($input);
+    }
+
+    /**
+     * @param InputInterface $input
+     * @throws DbExistsAndNotEmptyException
+     */
+    private function checkCanCreateDb(InputInterface $input): void
+    {
+        $dbExists = $this->shopStateService->checkIfDbExistsAndNotEmpty(
+            $input->getOption(self::DB_HOST),
+            (int)$input->getOption(self::DB_PORT),
+            $input->getOption(self::DB_USER),
+            $input->getOption(self::DB_PASSWORD),
+            $input->getOption(self::DB_NAME)
+        );
+        if ($dbExists) {
+            throw new DbExistsAndNotEmptyException(
+                sprintf('Database `%s` already exists and is not empty', $input->getOption(self::DB_NAME))
+            );
+        }
+    }
+
+    /** @throws ShopIsLaunchedException */
+    private function checkCanUpdateConfigFile(): void
+    {
+        if ($this->shopStateService->isLaunched()) {
+            throw new ShopIsLaunchedException('Configuration file can\'t be updated - shop was launched before');
+        }
     }
 }

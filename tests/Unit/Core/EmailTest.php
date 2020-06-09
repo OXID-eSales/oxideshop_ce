@@ -18,12 +18,12 @@ use oxPrice;
 use oxRegistry;
 use oxTestModules;
 
-class EmailTest extends \OxidTestCase
+final class EmailTest extends \OxidTestCase
 {
-    protected $_oEmail = null;
-    protected $_oUser = null;
-    protected $_oShop = null;
-    protected $_oArticle = null;
+    protected $email = null;
+    protected $user = null;
+    protected $shop = null;
+    protected $article = null;
 
     /**
      * Initialize the fixture.
@@ -36,52 +36,52 @@ class EmailTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam('sTheme', 'azure');
 
-        $this->_oEmail = oxNew("oxEmail");
+        $this->email = oxNew("oxEmail");
 
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxorderarticles');
 
         //set default user
-        $this->_oUser = oxNew("oxuser");
-        $this->_oUser->setId('_testUserId');
-        $this->_oUser->oxuser__oxactive = new oxField('1', oxField::T_RAW);
-        $this->_oUser->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
-        $this->_oUser->oxuser__oxcustnr = new oxField('998', oxField::T_RAW);
-        $this->_oUser->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
-        $this->_oUser->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);
-        $this->_oUser->oxuser__oxpassword = new oxField('ox_BBpaRCslUU8u', oxField::T_RAW); //pass = admin
-        $this->_oUser->oxuser__oxregister = new oxField(date("Y-m-d H:i:s"), oxField::T_RAW);
-        $this->_oUser->save();
+        $this->user = oxNew("oxuser");
+        $this->user->setId('_testUserId');
+        $this->user->oxuser__oxactive = new oxField('1', oxField::T_RAW);
+        $this->user->oxuser__oxusername = new oxField('username@useremail.nl', oxField::T_RAW);
+        $this->user->oxuser__oxcustnr = new oxField('998', oxField::T_RAW);
+        $this->user->oxuser__oxfname = new oxField('testUserFName', oxField::T_RAW);
+        $this->user->oxuser__oxlname = new oxField('testUserLName', oxField::T_RAW);
+        $this->user->oxuser__oxpassword = new oxField('ox_BBpaRCslUU8u', oxField::T_RAW); //pass = admin
+        $this->user->oxuser__oxregister = new oxField(date("Y-m-d H:i:s"), oxField::T_RAW);
+        $this->user->save();
 
         // set shop params for testing
-        $this->_oShop = oxNew("oxshop");
-        $this->_oShop->load($this->getConfig()->getShopId());
-        $this->_oShop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
-        $this->_oShop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
-        $this->_oShop->oxshops__oxsendednowsubject = new oxField('testSendedNowSubject', oxField::T_RAW);
-        $this->_oShop->oxshops__oxname = new oxField('testShopName', oxField::T_RAW);
-        $this->_oShop->oxshops__oxowneremail = new oxField('shopOwner@shopOwnerEmail.nl', oxField::T_RAW);
-        $this->_oShop->oxshops__oxinfoemail = new oxField('shopInfoEmail@shopOwnerEmail.nl', oxField::T_RAW);
-        //$this->_oShop->oxshops__oxsmtp = new oxField('localhost', oxField::T_RAW);
-        $this->_oShop->oxshops__oxsmtp = new oxField('127.0.0.1', oxField::T_RAW);
-        $this->_oShop->oxshops__oxsmtpuser = new oxField('testSmtpUser', oxField::T_RAW);
-        $this->_oShop->oxshops__oxsmtppwd = new oxField('testSmtpPassword', oxField::T_RAW);
-        $this->_oShop->oxshops__oxregistersubject = new oxField('testUserRegistrationSubject', oxField::T_RAW);
-        $this->_oShop->oxshops__oxforgotpwdsubject = new oxField('testUserFogotPwdSubject', oxField::T_RAW);
+        $this->shop = oxNew("oxshop");
+        $this->shop->load($this->getConfig()->getShopId());
+        $this->shop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
+        $this->shop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
+        $this->shop->oxshops__oxsendednowsubject = new oxField('testSendedNowSubject', oxField::T_RAW);
+        $this->shop->oxshops__oxname = new oxField('testShopName', oxField::T_RAW);
+        $this->shop->oxshops__oxowneremail = new oxField('shopOwner@shopOwnerEmail.nl', oxField::T_RAW);
+        $this->shop->oxshops__oxinfoemail = new oxField('shopInfoEmail@shopOwnerEmail.nl', oxField::T_RAW);
+        //$this->shop->oxshops__oxsmtp = new oxField('localhost', oxField::T_RAW);
+        $this->shop->oxshops__oxsmtp = new oxField('127.0.0.1', oxField::T_RAW);
+        $this->shop->oxshops__oxsmtpuser = new oxField('testSmtpUser', oxField::T_RAW);
+        $this->shop->oxshops__oxsmtppwd = new oxField('testSmtpPassword', oxField::T_RAW);
+        $this->shop->oxshops__oxregistersubject = new oxField('testUserRegistrationSubject', oxField::T_RAW);
+        $this->shop->oxshops__oxforgotpwdsubject = new oxField('testUserFogotPwdSubject', oxField::T_RAW);
 
         // insert test article
-        $this->_oArticle = oxNew("oxArticle");
-        $this->_oArticle->setId('_testArticleId');
-        $this->_oArticle->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxtitle_1 = new oxField('testArticle_EN', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxshortdesc = new oxField('testArticleDescription', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxremindactive = new oxField('1', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxstock = new oxField('9', oxField::T_RAW);
+        $this->article = oxNew("oxArticle");
+        $this->article->setId('_testArticleId');
+        $this->article->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
+        $this->article->oxarticles__oxtitle_1 = new oxField('testArticle_EN', oxField::T_RAW);
+        $this->article->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);
+        $this->article->oxarticles__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+        $this->article->oxarticles__oxshortdesc = new oxField('testArticleDescription', oxField::T_RAW);
+        $this->article->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
+        $this->article->oxarticles__oxremindactive = new oxField('1', oxField::T_RAW);
+        $this->article->oxarticles__oxstock = new oxField('9', oxField::T_RAW);
 
-        $this->_oArticle->save();
+        $this->article->save();
 
         oxDb::getDb()->Execute(
             "Insert into oxorderarticles (`oxid`, `oxartid`, `oxamount`, `oxtitle`, `oxartnum`)
@@ -117,21 +117,18 @@ class EmailTest extends \OxidTestCase
      */
     public function testSendRegisterConfirmEmail()
     {
-        $oUser = oxNew('oxuser');
+        $user = oxNew('oxuser');
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendRegisterEmail"));
-        $oEmail->expects($this->once())->method('sendRegisterEmail')->with($this->equalTo($oUser), $this->equalTo(null));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("sendRegisterEmail"));
+        $email->expects($this->once())->method('sendRegisterEmail')->with($this->equalTo($user), $this->equalTo(null));
 
-        $oEmail->sendRegisterConfirmEmail($oUser);
+        $email->sendRegisterConfirmEmail($user);
 
-        $aViewData = $oEmail->getViewData();
-        $this->assertEquals($aViewData["contentident"], "oxregisteraltemail");
-        $this->assertEquals($aViewData["contentplainident"], "oxregisterplainaltemail");
+        $viewData = $email->getViewData();
+        $this->assertEquals($viewData["contentident"], "oxregisteraltemail");
+        $this->assertEquals($viewData["contentplainident"], "oxregisterplainaltemail");
     }
 
-    /**
-     * When image is taken using getter, it is not included into email by native oxid code
-     */
     public function testIncludeImagesErrorTestCase()
     {
         $config = $this->getConfig();
@@ -176,164 +173,134 @@ class EmailTest extends \OxidTestCase
         );
     }
 
-    /*
-     * Test sending message by smtp
-     */
     public function testSendMailBySmtp()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
 
-        $oEmail->setRecipient($this->_oShop->oxshops__oxorderemail->value, $this->_oShop->oxshops__oxname->value);
-        $oEmail->setHost("localhost");
-        $oEmail->setMailer("smtp");
+        $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
+        $email->setHost("localhost");
+        $email->setMailer("smtp");
 
-        $this->assertTrue($oEmail->send());
-        $this->assertEquals('smtp', $oEmail->getMailer());
+        $this->assertTrue($email->send());
+        $this->assertEquals('smtp', $email->getMailer());
     }
 
-    /*
-     * Test sending mail by mail()
-     */
     public function testSendMailByPhpMailFunction()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
 
-        $oEmail->setMailer('mail');
-        $oEmail->setRecipient($this->_oShop->oxshops__oxorderemail->value, $this->_oShop->oxshops__oxname->value);
-        $this->assertTrue($oEmail->send());
-        $this->assertEquals('mail', $oEmail->getMailer());
+        $email->setMailer('mail');
+        $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
+        $this->assertTrue($email->send());
+        $this->assertEquals('mail', $email->getMailer());
     }
 
-    /*
-     * Test sending mail by mail() function when sending by smtp fails
-     */
     public function testSendMailByPhpMailWhenSmtpFails()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_sendMail', '_sendMailErrorMsg'));
-        $oEmail->expects($this->atLeast(2))->method('_sendMail')->will($this->returnValue(false));
-        $oEmail->expects($this->atLeastOnce())->method('_sendMailErrorMsg');
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_sendMail', '_sendMailErrorMsg'));
+        $email->expects($this->atLeast(2))->method('_sendMail')->will($this->returnValue(false));
+        $email->expects($this->atLeastOnce())->method('_sendMailErrorMsg');
 
-        $oEmail->setRecipient($this->_oShop->oxshops__oxorderemail->value, $this->_oShop->oxshops__oxname->value);
-        $oEmail->setHost("localhost");
-        $oEmail->setMailer("smtp");
+        $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
+        $email->setHost("localhost");
+        $email->setMailer("smtp");
 
-        $this->assertFalse($oEmail->send());
-        $this->assertEquals('mail', $oEmail->getMailer());
+        $this->assertFalse($email->send());
+        $this->assertEquals('mail', $email->getMailer());
     }
 
-    /*
-     * Test sending error message to shop owner when mailing fails
-     */
     public function testSendMailErrorMsgWhenMailingFails()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_sendMailErrorMsg", "getMailer"));
-        $oEmail->expects($this->exactly(2))->method('_sendMail')->will($this->returnValue(false));
-        $oEmail->expects($this->exactly(2))->method('_sendMailErrorMsg');
-        $oEmail->expects($this->once())->method('getMailer')->will($this->returnValue("smtp"));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_sendMailErrorMsg", "getMailer"));
+        $email->expects($this->exactly(2))->method('_sendMail')->will($this->returnValue(false));
+        $email->expects($this->exactly(2))->method('_sendMailErrorMsg');
+        $email->expects($this->once())->method('getMailer')->will($this->returnValue("smtp"));
 
-        $oEmail->setRecipient($this->_oShop->oxshops__oxorderemail->value, $this->_oShop->oxshops__oxname->value);
-        $oEmail->send();
+        $email->setRecipient($this->shop->oxshops__oxorderemail->value, $this->shop->oxshops__oxname->value);
+        $email->send();
     }
 
-    /*
-     * Test set SMTP params
-     */
     public function testSetSmtp()
     {
         // just forcing to connect to webserver..
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_isValidSmtpHost'));
-        $oEmail->expects($this->once())->method('_isValidSmtpHost')
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_isValidSmtpHost'));
+        $email->expects($this->once())->method('_isValidSmtpHost')
             ->with($this->equalTo('127.0.0.1'))
             ->will($this->returnValue(true));
 
-        $oEmail->setSmtp($this->_oShop);
-        $this->assertEquals('smtp', $oEmail->getMailer());
-        $this->assertEquals('127.0.0.1', $oEmail->Host);
-        $this->assertEquals('testSmtpUser', $oEmail->Username);
-        $this->assertEquals('testSmtpPassword', $oEmail->Password);
+        $email->setSmtp($this->shop);
+        $this->assertEquals('smtp', $email->getMailer());
+        $this->assertEquals('127.0.0.1', $email->Host);
+        $this->assertEquals('testSmtpUser', $email->Username);
+        $this->assertEquals('testSmtpPassword', $email->Password);
     }
 
-    /*
-     * Test set SMTP params when no smtp values is set
-     */
     public function testSetSmtpWithNoSmtpValues()
     {
-        $oEmail = oxNew('oxEmail');
+        $email = oxNew('oxEmail');
 
-        $this->_oShop->oxshops__oxsmtp = new oxField(null, oxField::T_RAW);
-        $oEmail->setSmtp($this->_oShop);
-        $this->assertEquals('mail', $oEmail->getMailer());
+        $this->shop->oxshops__oxsmtp = new oxField(null, oxField::T_RAW);
+        $email->setSmtp($this->shop);
+        $this->assertEquals('mail', $email->getMailer());
     }
 
-    /**
-     * Test if sending ordering mail to shop owner adds history record into DB
-     */
     public function testSendOrderEMailToOwnerAddsHistoryRecord()
     {
         $myDb = oxDb::getDb();
 
-        $oPayment = oxNew('oxPayment');
-        $oPayment->oxpayments__oxdesc = new oxField("testPaymentDesc");
+        $payment = oxNew('oxPayment');
+        $payment->oxpayments__oxdesc = new oxField("testPaymentDesc");
 
-        $oBasket = oxNew('oxBasket');
-        $oBasket->setCost('oxpayment', new oxPrice(0));
-        $oBasket->setCost('oxdelivery', new oxPrice(6626));
+        $basket = oxNew('oxBasket');
+        $basket->setCost('oxpayment', new oxPrice(0));
+        $basket->setCost('oxdelivery', new oxPrice(6626));
 
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
-        $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
-        $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-        $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
+        $order->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->user));
+        $order->expects($this->any())->method('getBasket')->will($this->returnValue($basket));
+        $order->expects($this->any())->method('getPayment')->will($this->returnValue($payment));
 
-        $oOrder->oxorder__oxbillcompany = new oxField('');
-        $oOrder->oxorder__oxbillfname = new oxField('');
-        $oOrder->oxorder__oxbilllname = new oxField('');
-        $oOrder->oxorder__oxbilladdinfo = new oxField('');
-        $oOrder->oxorder__oxbillstreet = new oxField('');
-        $oOrder->oxorder__oxbillcity = new oxField('');
-        $oOrder->oxorder__oxbillcountry = new oxField('');
-        $oOrder->oxorder__oxdeltype = new oxField("oxidstandard");
+        $order->oxorder__oxbillcompany = new oxField('');
+        $order->oxorder__oxbillfname = new oxField('');
+        $order->oxorder__oxbilllname = new oxField('');
+        $order->oxorder__oxbilladdinfo = new oxField('');
+        $order->oxorder__oxbillstreet = new oxField('');
+        $order->oxorder__oxbillcity = new oxField('');
+        $order->oxorder__oxbillcountry = new oxField('');
+        $order->oxorder__oxdeltype = new oxField("oxidstandard");
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->sendOrderEmailToOwner($oOrder);
+        $blRet = $email->sendOrderEmailToOwner($order);
         $this->assertTrue($blRet, 'Order email was not sent to shop owner');
 
-        $this->assertEquals($oEmail->getAltBody(), $myDb->getOne('SELECT oxtext FROM oxremark where oxparentid=' . $myDb->quote($this->_oUser->getId())));
+        $this->assertEquals($email->getAltBody(), $myDb->getOne('SELECT oxtext FROM oxremark where oxparentid=' . $myDb->quote($this->user->getId())));
     }
 
-    /*
-     * Test sending forgot password to not existing user
-     */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->never())->method('_sendMail');
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $email->expects($this->never())->method('_sendMail');
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->SendForgotPwdEmail('nosuchuser@useremail.nl');
+        $blRet = $email->SendForgotPwdEmail('nosuchuser@useremail.nl');
         $this->assertFalse($blRet, 'Mail was sent to not existing user');
     }
 
-    /*
-     * Test sending forgot password when oxemail::send fails
-     */
     public function testSendForgotPwdEmailSendingFailed()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("send", "_getShop"));
-        $oEmail->expects($this->any())->method('send')->will($this->returnValue(false));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("send", "_getShop"));
+        $email->expects($this->any())->method('send')->will($this->returnValue(false));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->SendForgotPwdEmail('username@useremail.nl');
+        $blRet = $email->SendForgotPwdEmail('username@useremail.nl');
         $this->assertEquals(-1, $blRet);
     }
 
-    /*
-     * Test sending backup mail to shop owner with attachment
-     */
     public function testSendBackupMailWithAttachment()
     {
         $fileToAttach = $this->getFileToAttach();
@@ -348,15 +315,12 @@ class EmailTest extends \OxidTestCase
         /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->shop));
 
         $blRet = $email->sendBackupMail($filesToAttach, $filesToAttachDirectory, $emailAddress, $subject, $message, $status, $errors);
         $this->assertTrue($blRet, 'Backup mail was not sent to shop owner');
     }
 
-    /*
-     * Test sending backup mail to shop owner with attachment status code
-     */
     public function testSendBackupMailWithAttachmentStatusCode()
     {
         $fileToAttach = $this->getFileToAttach();
@@ -371,7 +335,7 @@ class EmailTest extends \OxidTestCase
         /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
         $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->shop));
 
         $email->sendBackupMail($filesToAttach, $filesToAttachDirectories, $emailAddress, $subject, $message, $status, $errors);
 
@@ -379,10 +343,6 @@ class EmailTest extends \OxidTestCase
         $this->assertEquals(3, $status[0], "Attachment was not icluded im mail");
     }
 
-    /*
-     * Test sending backup mail to shop owner with wrong attachment
-     * generates error codes
-     */
     public function testSendBackupMailWithWrongAttachmentGeneratesErrorCodes()
     {
         $fileToAttach = $this->createFile('alternativeFile.php', '');
@@ -396,11 +356,11 @@ class EmailTest extends \OxidTestCase
         $errors = array();
 
         /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->never())->method('_sendMail');
-        $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $email->expects($this->never())->method('_sendMail');
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->sendBackupMail($filesToAttach, $filesToAttachDirectory, $emailAddress, $subject, $message, $status, $errors);
+        $blRet = $email->sendBackupMail($filesToAttach, $filesToAttachDirectory, $emailAddress, $subject, $message, $status, $errors);
         $this->assertFalse($blRet, 'Bad backup mail was not sent to shop owner');
 
         // checking error codes
@@ -410,23 +370,20 @@ class EmailTest extends \OxidTestCase
         $this->assertTrue((in_array(4, $errors[1])), "Wrong attachment was was sent");
     }
 
-    /*
-     * Test sending mail with to multiple users
-     */
     public function testSendEmailToMultipleUsers()
     {
         $aTo = array('username@useremail.nl', 'username2@useremail.nl');
         $sSubject = 'testSubject';
         $sBody = 'testBody';
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->once())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->sendEmail($aTo, $sSubject, $sBody);
+        $blRet = $email->sendEmail($aTo, $sSubject, $sBody);
         $this->assertTrue($blRet, 'Mail was not sent');
 
-        $aRecipients = $oEmail->getRecipient();
+        $aRecipients = $email->getRecipient();
         $this->assertEquals(2, count($aRecipients));
         $this->assertEquals('username@useremail.nl', $aRecipients[0][0]);
         $this->assertEquals('username2@useremail.nl', $aRecipients[1][0]);
@@ -438,87 +395,76 @@ class EmailTest extends \OxidTestCase
     public function testSendStockReminderIfStockFlag2()
     {
         //set params for stock reminder
-        $this->_oArticle->oxarticles__oxstock = new oxField('0', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxstockflag = new oxField('2', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxremindamount = new oxField('0', oxField::T_RAW);
-        $this->_oArticle->save();
+        $this->article->oxarticles__oxstock = new oxField('0', oxField::T_RAW);
+        $this->article->oxarticles__oxstockflag = new oxField('2', oxField::T_RAW);
+        $this->article->oxarticles__oxremindamount = new oxField('0', oxField::T_RAW);
+        $this->article->save();
 
-        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
-        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
-        $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
+        $basketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
+        $basketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->article));
+        $basketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
-        $aBasketContents[] = $oBasketItem;
+        $aBasketContents[] = $basketItem;
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $email->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->sendStockReminder($aBasketContents);
+        $blRet = $email->sendStockReminder($aBasketContents);
         $this->assertTrue($blRet, 'Stock remind mail was not sent');
     }
 
-    /*
-     * Test sends reminder email to shop owner when articles amount is more than
-     * remind amount
-     */
     public function testSendStockReminderWhenStockAmountIsGreaterThanRemindAmount()
     {
         //set params for stock reminder
-        $this->_oArticle->oxarticles__oxstock = new oxField('10', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxremindamount = new oxField('9', oxField::T_RAW);
-        $this->_oArticle->save();
+        $this->article->oxarticles__oxstock = new oxField('10', oxField::T_RAW);
+        $this->article->oxarticles__oxremindamount = new oxField('9', oxField::T_RAW);
+        $this->article->save();
 
-        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
-        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
-        $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
+        $basketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
+        $basketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->article));
+        $basketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
-        $aBasketContents[] = $oBasketItem;
+        $aBasketContents[] = $basketItem;
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->never())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $email->expects($this->never())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->sendStockReminder($aBasketContents);
+        $blRet = $email->sendStockReminder($aBasketContents);
         $this->assertFalse($blRet, 'No need to send stock remind mail');
     }
-
-    /*
-     * Test sends reminder email to shop owner when remind is off
-     */
     public function testSendStockReminderWhenRemindIsOff()
     {
         //set params for stock reminder
-        $this->_oArticle->oxarticles__oxremindactive = new oxField('0', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxstock = new oxField('9', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxremindamount = new oxField('10', oxField::T_RAW);
-        $this->_oArticle->save();
+        $this->article->oxarticles__oxremindactive = new oxField('0', oxField::T_RAW);
+        $this->article->oxarticles__oxstock = new oxField('9', oxField::T_RAW);
+        $this->article->oxarticles__oxremindamount = new oxField('10', oxField::T_RAW);
+        $this->article->save();
 
-        $oBasketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
-        $oBasketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->_oArticle));
-        $oBasketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
+        $basketItem = $this->getMock(BasketItem::class, array('getArticle', 'getProductId'));
+        $basketItem->expects($this->any())->method('getArticle')->will($this->returnValue($this->article));
+        $basketItem->expects($this->any())->method('getProductId')->will($this->returnValue('_testArticleId'));
 
-        $aBasketContents[] = $oBasketItem;
+        $aBasketContents[] = $basketItem;
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->never())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
+        $email->expects($this->never())->method('_sendMail')->will($this->returnValue(true));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $blRet = $oEmail->sendStockReminder($aBasketContents);
+        $blRet = $email->sendStockReminder($aBasketContents);
         $this->assertFalse($blRet, 'No need to send stock remind mail');
     }
 
-    /*
-     * Test including images to mail
-     */
     public function testIncludeImages()
     {
         $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir();
 
-        $oEmail = oxNew('oxEmail');
-        $oEmail->setBody("<img src='{$sImageDir}/logo.png'> --- <img src='{$sImageDir}/stars.jpg'>");
+        $email = oxNew('oxEmail');
+        $email->setBody("<img src='{$sImageDir}/logo.png'> --- <img src='{$sImageDir}/stars.jpg'>");
 
-        $oEmail->UNITincludeImages(
+        $email->UNITincludeImages(
             $myConfig->getImageDir(),
             $myConfig->getImageUrl(isAdmin()),
             $myConfig->getPictureUrl(null),
@@ -526,320 +472,239 @@ class EmailTest extends \OxidTestCase
             $myConfig->getPictureDir(false)
         );
 
-        $aAttachments = $oEmail->getAttachments();
+        $aAttachments = $email->getAttachments();
         $this->assertEquals('logo.png', $aAttachments[0][1]);
         $this->assertEquals('stars.jpg', $aAttachments[1][1]);
     }
 
-    /*
-     * Test setting/getting subject
-     */
     public function testSetGetSubject()
     {
-        $oEmail = oxNew('oxEmail');
-        $oEmail->setSubject('testSubject');
-        $this->assertEquals('testSubject', $oEmail->getSubject());
+        $email = oxNew('oxEmail');
+        $email->setSubject('testSubject');
+        $this->assertEquals('testSubject', $email->getSubject());
     }
 
-    /*
-     * Test setting/getting body
-     */
     public function testSetGetBody()
     {
-        $oEmail = oxNew('oxEmail');
-        $oEmail->setBody('testBody');
-        $this->assertEquals('testBody', $oEmail->getBody());
+        $email = oxNew('oxEmail');
+        $email->setBody('testBody');
+        $this->assertEquals('testBody', $email->getBody());
     }
 
-    /*
-     * Test clearing sid from body
-     */
     public function testClearSidFromBody()
     {
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oEmail = oxNew('oxEmail');
+        $email = oxNew('oxEmail');
 
-        $oEmail->setBody('testBody index.php?bonusid=111&sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $oEmail->getBody());
+        $email->setBody('testBody index.php?bonusid=111&sid=123456789 blabla', true);
+        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
 
-        $oEmail->setBody('testBody index.php?bonusid=111&force_sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $oEmail->getBody());
+        $email->setBody('testBody index.php?bonusid=111&force_sid=123456789 blabla', true);
+        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
 
-        $oEmail->setBody('testBody index.php?bonusid=111&admin_sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $oEmail->getBody());
+        $email->setBody('testBody index.php?bonusid=111&admin_sid=123456789 blabla', true);
+        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
 
-        $oEmail->setBody('testBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true);
-        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $oEmail->getBody());
+        $email->setBody('testBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true);
+        $this->assertEquals('testBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $email->getBody());
     }
 
-    /*
-     * Test setting/getting alt body
-     */
     public function testSetGetAltBody()
     {
-        $oEmail = oxNew('oxEmail');
+        $email = oxNew('oxEmail');
 
-        $oEmail->setAltBody('testAltBody');
-        $this->assertEquals('testAltBody', $oEmail->getAltBody());
+        $email->setAltBody('testAltBody');
+        $this->assertEquals('testAltBody', $email->getAltBody());
     }
 
-    /*
-     * Test clearing sid from alt body
-     */
     public function testClearSidFromAltBody()
     {
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
+        $this->email->setAltBody('testAltBody index.php?bonusid=111&sid=123456789 blabla', true);
+        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
 
-        $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&force_sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
+        $this->email->setAltBody('testAltBody index.php?bonusid=111&force_sid=123456789 blabla', true);
+        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
 
-        $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&admin_sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
+        $this->email->setAltBody('testAltBody index.php?bonusid=111&admin_sid=123456789 blabla', true);
+        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
 
-        $this->_oEmail->setAltBody('testAltBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true);
-        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->_oEmail->getAltBody());
+        $this->email->setAltBody('testAltBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true);
+        $this->assertEquals('testAltBody index.php?bonusid=111&shp=' . $sShopId . ' blabla', $this->email->getAltBody());
     }
 
-    /*
-     * Test eliminate HTML entities from body
-     */
     public function testClearHtmlEntitiesFromAltBody()
     {
-        $this->_oEmail->setAltBody('testAltBody &amp; &quot; &#039; &lt; &gt;');
-        $this->assertEquals('testAltBody & " \' < >', $this->_oEmail->getAltBody());
+        $this->email->setAltBody('testAltBody &amp; &quot; &#039; &lt; &gt;');
+        $this->assertEquals('testAltBody & " \' < >', $this->email->getAltBody());
     }
 
-    /*
-     * Test setting/getting mail recipient
-     */
     public function testSetGetRecipient()
     {
         $aUser[0][0] = 'testuser@testuser.com';
         $aUser[0][1] = 'testUserName';
 
-        $this->_oEmail->setRecipient($aUser[0][0], $aUser[0][1]);
-        $this->assertEquals($aUser, $this->_oEmail->getRecipient());
+        $this->email->setRecipient($aUser[0][0], $aUser[0][1]);
+        $this->assertEquals($aUser, $this->email->getRecipient());
     }
 
-    /*
-     * Test setting recipient with empty email
-     */
     public function testSetRecipient_emptyEmail()
     {
-        $this->_oEmail->setRecipient("", "");
-        $this->assertEquals(array(), $this->_oEmail->getRecipient());
+        $this->email->setRecipient("", "");
+        $this->assertEquals(array(), $this->email->getRecipient());
     }
 
-    /*
-     * Test setting recipient with empty user name
-     */
     public function testSetRecipient_emptyName()
     {
-        $this->_oEmail->setRecipient("test@test.lt", "");
-        $this->assertEquals(array(array("test@test.lt", "")), $this->_oEmail->getRecipient());
+        $this->email->setRecipient("test@test.lt", "");
+        $this->assertEquals(array(array("test@test.lt", "")), $this->email->getRecipient());
     }
 
-    /*
-     * Test setting/getting reply to
-     */
     public function testSetGetReplyTo()
     {
         $aUser[0][0] = 'testuser@testuser.com';
         $aUser[0][1] = 'testUserName';
 
-        $this->_oEmail->setReplyTo($aUser[0][0], $aUser[0][1]);
-        $this->assertEquals($aUser, $this->_oEmail->getReplyTo());
+        $this->email->setReplyTo($aUser[0][0], $aUser[0][1]);
+        $this->assertEquals($aUser, $this->email->getReplyTo());
     }
 
-    /*
-     * Test setting reply to with empty value. Should assign default reply to address
-     */
     public function testSetReplyToWithNoParams()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_getShop"));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_getShop"));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
-        $oEmail->setReplyTo();
-        $aReplyTo = $oEmail->getReplyTo();
+        $email->setReplyTo();
+        $aReplyTo = $email->getReplyTo();
 
-        $this->assertEquals($this->_oShop->oxshops__oxorderemail->value, $aReplyTo[0][0]);
+        $this->assertEquals($this->shop->oxshops__oxorderemail->value, $aReplyTo[0][0]);
     }
 
-    /*
-     * Test setting/getting from field
-     */
     public function testSetGetFrom()
     {
-        $this->_oEmail->setFrom('testuser@testuser.com', 'testUserName');
-        $this->assertEquals('testuser@testuser.com', $this->_oEmail->getFrom());
-        $this->assertEquals('testUserName', $this->_oEmail->getFromName());
+        $this->email->setFrom('testuser@testuser.com', 'testUserName');
+        $this->assertEquals('testuser@testuser.com', $this->email->getFrom());
+        $this->assertEquals('testUserName', $this->email->getFromName());
     }
 
-    /*
-     * Test setting/getting charset
-     */
     public function testSetCharSet()
     {
-        $this->_oEmail->setCharSet('testCharset');
-        $this->assertEquals('testCharset', $this->_oEmail->getCharSet());
+        $this->email->setCharSet('testCharset');
+        $this->assertEquals('testCharset', $this->email->getCharSet());
     }
 
-    /*
-     * Test getting charset default charset
-     */
     public function testSetDefaultCharSet()
     {
-        $this->_oEmail->setCharSet();
-        $this->assertEquals(oxRegistry::getLang()->translateString("charset"), $this->_oEmail->getCharSet());
+        $this->email->setCharSet();
+        $this->assertEquals(oxRegistry::getLang()->translateString("charset"), $this->email->getCharSet());
     }
 
-    /*
-     * Test setting/getting mailer
-     */
     public function testSetGetMailer()
     {
-        $this->_oEmail->setMailer('smtp');
-        $this->assertEquals('smtp', $this->_oEmail->getMailer());
+        $this->email->setMailer('smtp');
+        $this->assertEquals('smtp', $this->email->getMailer());
     }
 
-    /*
-     * Test setting/getting host
-     */
     public function testSetGetHost()
     {
-        $this->_oEmail->setHost('localhost');
-        $this->assertEquals('localhost', $this->_oEmail->Host);
+        $this->email->setHost('localhost');
+        $this->assertEquals('localhost', $this->email->Host);
     }
 
-    /*
-     * Test getting error message
-     */
     public function testGetErrorInfo()
     {
-        $this->_oEmail->ErrorInfo = 'testErrorMessage';
-        $this->assertEquals('testErrorMessage', $this->_oEmail->getErrorInfo());
+        $this->email->ErrorInfo = 'testErrorMessage';
+        $this->assertEquals('testErrorMessage', $this->email->getErrorInfo());
     }
 
-    /*
-     * Test setting mail word wrapping
-     */
     public function testSetMailWordWrap()
     {
-        $this->_oEmail->setMailWordWrap('500');
-        $this->assertEquals('500', $this->_oEmail->WordWrap);
+        $this->email->setMailWordWrap('500');
+        $this->assertEquals('500', $this->email->WordWrap);
     }
 
-
-    /*
-     * Test getting use inline images property from config
-     */
     public function testGetUseInlineImagesFromConfig()
     {
         $this->getConfig()->setConfigParam("blInlineImgEmail", true);
-        $oEmail = oxNew("oxemail");
-        $this->assertTrue($oEmail->UNITgetUseInlineImages());
+        $email = oxNew("oxemail");
+        $this->assertTrue($email->UNITgetUseInlineImages());
 
         $this->getConfig()->setConfigParam("blInlineImgEmail", false);
-        $oEmail = oxNew("oxemail");
-        $this->assertFalse($oEmail->UNITgetUseInlineImages());
+        $email = oxNew("oxemail");
+        $this->assertFalse($email->UNITgetUseInlineImages());
 
         $this->getConfig()->setConfigParam("blInlineImgEmail", true);
-        $oEmail = oxNew("oxemail");
-        $this->assertTrue($oEmail->UNITgetUseInlineImages());
+        $email = oxNew("oxemail");
+        $this->assertTrue($email->UNITgetUseInlineImages());
     }
 
-    /*
-     * Test setting/getting use inline images
-     */
     public function testSetGetUseInlineImages()
     {
-        $this->_oEmail->setUseInlineImages(true);
-        $this->assertTrue($this->_oEmail->UNITgetUseInlineImages());
+        $this->email->setUseInlineImages(true);
+        $this->assertTrue($this->email->UNITgetUseInlineImages());
     }
 
-    /*
-     * Test addding attachment to mail
-     */
     public function testAddAttachment()
     {
         $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
-        $this->_oEmail->AddAttachment($sImageDir, 'barrcode.gif');
-        $aAttachment = $this->_oEmail->getAttachments();
+        $this->email->AddAttachment($sImageDir, 'barrcode.gif');
+        $aAttachment = $this->email->getAttachments();
 
         $this->assertEquals('barrcode.gif', $aAttachment[0][1]);
     }
 
-    /*
-     * Test clearing attachments from mail
-     */
     public function testClearAttachments()
     {
         $myConfig = $this->getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
-        $this->_oEmail->AddAttachment($sImageDir, 'barrcode.gif');
-        $aAttachment = $this->_oEmail->getAttachments();
+        $this->email->AddAttachment($sImageDir, 'barrcode.gif');
+        $aAttachment = $this->email->getAttachments();
         $this->assertEquals('barrcode.gif', $aAttachment[0][1]);
 
-        $this->_oEmail->clearAttachments();
-        $aAttachment = $this->_oEmail->getAttachments();
+        $this->email->clearAttachments();
+        $aAttachment = $this->email->getAttachments();
         $this->assertEquals(0, count($aAttachment));
     }
 
-    /*
-     * Test sending error message to shop owner when mailing by smtp and via mail() fails
-     */
     public function testSendMailErrorMsg()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
-        $oEmail->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
-        $oEmail->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
-        $oEmail->expects($this->at(3))->method('_sendMailErrorMsg');
-        $oEmail->expects($this->at(4))->method('_sendMail')->will($this->returnValue(false));
-        $oEmail->expects($this->exactly(2))->method('_sendMail');
-        $oEmail->expects($this->exactly(2))->method('_sendMailErrorMsg');
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
+        $email->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
+        $email->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
+        $email->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
+        $email->expects($this->at(3))->method('_sendMailErrorMsg');
+        $email->expects($this->at(4))->method('_sendMail')->will($this->returnValue(false));
+        $email->expects($this->at(5))->method('_sendMailErrorMsg');
 
-        $this->assertFalse($oEmail->send());
+        $this->assertFalse($email->send());
     }
 
-    /*
-     * Test sending error message to shop owner when only mailing by smtp fails
-     */
     public function testSendMailErrorMsg_failsOnlySmtp()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
-        $oEmail->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
-        $oEmail->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
-        $oEmail->expects($this->at(3))->method('_sendMailErrorMsg');
-        $oEmail->expects($this->at(4))->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->exactly(2))->method('_sendMail');
-        $oEmail->expects($this->exactly(1))->method('_sendMailErrorMsg');
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
+        $email->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
+        $email->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
+        $email->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
+        $email->expects($this->at(3))->method('_sendMailErrorMsg');
+        $email->expects($this->at(4))->method('_sendMail')->will($this->returnValue(true));
 
-        $this->assertTrue($oEmail->send());
+        $this->assertTrue($email->send());
     }
 
-    /*
-     * Test sending error message to shop owner when only mailing by "mail" fails
-     */
     public function testSendMailErrorMsg_failsMail()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $oEmail->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
-        $oEmail->expects($this->at(1))->method('getMailer')->will($this->returnValue("mail"));
-        $oEmail->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
-        $oEmail->expects($this->at(3))->method('_sendMailErrorMsg');
-        $oEmail->expects($this->exactly(1))->method('_sendMail');
-        $oEmail->expects($this->exactly(1))->method('_sendMailErrorMsg');
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
+        $email->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
+        $email->expects($this->at(1))->method('getMailer')->will($this->returnValue("mail"));
+        $email->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
+        $email->expects($this->at(3))->method('_sendMailErrorMsg');
 
-        $this->assertFalse($oEmail->send());
+        $this->assertFalse($email->send());
     }
 
     /*
@@ -847,77 +712,58 @@ class EmailTest extends \OxidTestCase
      */
     public function testAddUserInfoOrderEmail()
     {
-        $oOrder = oxNew("oxorder");
-        //$this->assertEquals( $oOrder, $this->_oEmail->UNITaddUserInfoOrderEmail($oOrder) );
+        $order = oxNew("oxorder");
+        $this->assertEquals($order, $this->email->UNITaddUserInfoOrderEmail($order));
     }
 
-    /*
-     * Test hook up method
-     */
     public function testAddUserRegisterEmail()
     {
-        $this->assertEquals($this->_oUser, $this->_oEmail->UNITaddUserRegisterEmail($this->_oUser));
+        $this->assertEquals($this->user, $this->email->UNITaddUserRegisterEmail($this->user));
     }
 
-    /*
-     * Test hook up method
-     */
     public function testAddForgotPwdEmail()
     {
-        $this->assertEquals($this->_oShop, $this->_oEmail->UNITaddForgotPwdEmail($this->_oShop));
+        $this->assertEquals($this->shop, $this->email->UNITaddForgotPwdEmail($this->shop));
     }
-
-    /*
-     * Test hook up method
-     */
     public function testAddNewsletterDBOptInMail()
     {
-        $this->assertEquals($this->_oUser, $this->_oEmail->UNITaddNewsletterDbOptInMail($this->_oUser));
+        $this->assertEquals($this->user, $this->email->UNITaddNewsletterDbOptInMail($this->user));
     }
 
-    /*
-     * Test clearing mail fields - recipient, reply to, error message
-     */
     public function testClearMailer()
     {
-        $this->_oEmail->setRecipient('testuser@testuser.com', 'testUser');
-        $this->_oEmail->setReplyTo('testuser@testuser.com', 'testUser');
-        $this->_oEmail->ErrorInfo = 'testErrorMessage';
+        $this->email->setRecipient('testuser@testuser.com', 'testUser');
+        $this->email->setReplyTo('testuser@testuser.com', 'testUser');
+        $this->email->ErrorInfo = 'testErrorMessage';
 
-        $this->_oEmail->UNITclearMailer();
+        $this->email->UNITclearMailer();
 
-        $this->assertEquals(array(), $this->_oEmail->getRecipient());
-        $this->assertEquals(array(), $this->_oEmail->getReplyTo());
-        $this->assertEquals('', $this->_oEmail->getErrorInfo());
+        $this->assertEquals(array(), $this->email->getRecipient());
+        $this->assertEquals(array(), $this->email->getReplyTo());
+        $this->assertEquals('', $this->email->getErrorInfo());
     }
 
-    /*
-     * Test setting mail From, FromName, SMTP values with default shop
-     */
     public function testSetMailParamsWithDefaultShop()
     {
         // no smtp connect
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_isValidSmtpHost', '_getShop'));
-        $oEmail->expects($this->any())->method('_isValidSmtpHost')->will($this->returnValue(false));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_isValidSmtpHost', '_getShop'));
+        $email->expects($this->any())->method('_isValidSmtpHost')->will($this->returnValue(false));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
         //with no params must get default shop values
-        $oEmail->UNITsetMailParams();
+        $email->UNITsetMailParams();
 
-        $this->assertEquals('orderemail@orderemail.nl', $oEmail->getFrom());
-        $this->assertEquals('testShopName', $oEmail->getFromName());
-        $this->assertEquals('mail', $oEmail->getMailer());
+        $this->assertEquals('orderemail@orderemail.nl', $email->getFrom());
+        $this->assertEquals('testShopName', $email->getFromName());
+        $this->assertEquals('mail', $email->getMailer());
     }
 
-    /*
-     * Test setting mail From, FromName, SMTP values with shop param
-     */
     public function testSetMailParamsWithSelectedShop()
     {
         // with smtp connect
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_isValidSmtpHost', '_getShop'));
-        $oEmail->expects($this->any())->method('_isValidSmtpHost')->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method('_getShop')->will($this->returnValue($this->_oShop));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_isValidSmtpHost', '_getShop'));
+        $email->expects($this->any())->method('_isValidSmtpHost')->will($this->returnValue(true));
+        $email->expects($this->any())->method('_getShop')->will($this->returnValue($this->shop));
 
         $oShop = oxNew("oxshop");
         $oShop->oxshops__oxorderemail = new oxField('orderemail2@orderemail2.nl', oxField::T_RAW);
@@ -926,97 +772,76 @@ class EmailTest extends \OxidTestCase
         $oShop->oxshops__oxsmtpuser = new oxField('testSmtpUser2', oxField::T_RAW);
         $oShop->oxshops__oxsmtppwd = new oxField('testSmtpPassword2', oxField::T_RAW);
 
-        $oEmail->UNITsetMailParams($oShop);
+        $email->UNITsetMailParams($oShop);
 
-        $this->assertEquals('orderemail2@orderemail2.nl', $oEmail->getFrom());
-        $this->assertEquals('testShopName2', $oEmail->getFromName());
-        $this->assertEquals('smtp', $oEmail->getMailer());
-        $this->assertEquals('127.0.0.1', $oEmail->Host);
-        $this->assertEquals('testSmtpUser2', $oEmail->Username);
-        $this->assertEquals('testSmtpPassword2', $oEmail->Password);
+        $this->assertEquals('orderemail2@orderemail2.nl', $email->getFrom());
+        $this->assertEquals('testShopName2', $email->getFromName());
+        $this->assertEquals('smtp', $email->getMailer());
+        $this->assertEquals('127.0.0.1', $email->Host);
+        $this->assertEquals('testSmtpUser2', $email->Username);
+        $this->assertEquals('testSmtpPassword2', $email->Password);
     }
 
-    /*
-     * Test getting active shop when shop is not set
-     */
     public function testGetShopWhenShopIsNotSet()
     {
-        $this->assertEquals($this->getConfig()->getActiveShop(), $this->_oEmail->UNITgetShop());
+        $this->assertEquals($this->getConfig()->getActiveShop(), $this->email->UNITgetShop());
     }
 
-    /*
-     * Test getting shop when only shop id is given
-     */
     public function testGetShopWithShopId()
     {
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oShop = $this->_oEmail->UNITgetShop(null, $sShopId);
+        $oShop = $this->email->UNITgetShop(null, $sShopId);
         $this->assertEquals($sShopId, $oShop->getShopId());
         $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oShop->getLanguage());
     }
 
-    /*
-     * Test getting shop when only language id is given
-     */
     public function testGetShopWithLanguageId()
     {
-        $oShop = $this->_oEmail->UNITgetShop(1);
+        $oShop = $this->email->UNITgetShop(1);
         $this->assertEquals(1, $oShop->getLanguage());
         $this->assertEquals($this->getConfig()->getShopId(), $oShop->getShopId());
     }
 
-    /*
-    * Test getting active shop when both language id and shop id is given
-    */
     public function testGetShopWithLanguageIdAndShopId()
     {
-        $this->_oEmail->setShop($this->_oShop);
+        $this->email->setShop($this->shop);
 
         $sShopId = $this->getConfig()->getBaseShopId();
 
-        $oShop = $this->_oEmail->UNITgetShop(1, $sShopId);
+        $oShop = $this->email->UNITgetShop(1, $sShopId);
         $this->assertEquals(1, $oShop->getLanguage());
         $this->assertEquals($sShopId, $oShop->getShopId());
-        $this->assertEquals($this->_oShop, $this->_oEmail->UNITgetShop());
+        $this->assertEquals($this->shop, $this->email->UNITgetShop());
     }
 
-    /*
-     * Test setting smtp authentification information
-     */
     public function testSetSmtpAuthInfo()
     {
-        $this->_oEmail->UNITsetSmtpAuthInfo('testUserName', 'testPassword');
+        $this->email->UNITsetSmtpAuthInfo('testUserName', 'testPassword');
 
-        $this->assertEquals('testUserName', $this->_oEmail->Username);
-        $this->assertEquals('testPassword', $this->_oEmail->Password);
+        $this->assertEquals('testUserName', $this->email->Username);
+        $this->assertEquals('testPassword', $this->email->Password);
     }
 
-    /*
-     * Test setting smtp debug
-     */
     public function testSetSmtpDebug()
     {
-        $this->_oEmail->UNITsetSmtpDebug(true);
-        $this->assertTrue($this->_oEmail->SMTPDebug);
+        $this->email->UNITsetSmtpDebug(true);
+        $this->assertTrue($this->email->SMTPDebug);
     }
 
-    /**
-     * Test passing mail body and alt body proccesing through oxoutput
-     */
     public function testMakeOutputProcessingInUtf8Mode()
     {
-        $this->_oEmail->setBody('testbody 55 €'); //with euro sign
-        $this->_oEmail->setAltBody('testaltbody 55 €'); //with euro sign
-        $this->_oEmail->UNITmakeOutputProcessing();
+        $this->email->setBody('testbody 55 €'); //with euro sign
+        $this->email->setAltBody('testaltbody 55 €'); //with euro sign
+        $this->email->UNITmakeOutputProcessing();
 
-        $this->assertEquals('testbody 55 €', $this->_oEmail->getBody());
-        $this->assertEquals('testaltbody 55 €', $this->_oEmail->getAltBody());
+        $this->assertEquals('testbody 55 €', $this->email->getBody());
+        $this->assertEquals('testaltbody 55 €', $this->email->getAltBody());
     }
 
     public function testHeaderLine()
     {
-        $headerLine = $this->_oEmail->headerLine('testName', 'testValue');
+        $headerLine = $this->email->headerLine('testName', 'testValue');
 
         $this->assertStringContainsString('testName', $headerLine);
         $this->assertStringContainsString('testValue', $headerLine);
@@ -1024,85 +849,79 @@ class EmailTest extends \OxidTestCase
 
     public function testHeaderLineXMailer()
     {
-        $this->assertNull($this->_oEmail->headerLine('X-Mailer', 'testVal'));
-        $this->assertNull($this->_oEmail->headerLine('x-Mailer', 'testVal'));
-        $this->assertNull($this->_oEmail->headerLine('X-Priority', 'testVal'));
+        $this->assertNull($this->email->headerLine('X-Mailer', 'testVal'));
+        $this->assertNull($this->email->headerLine('x-Mailer', 'testVal'));
+        $this->assertNull($this->email->headerLine('X-Priority', 'testVal'));
     }
 
-    /*
-     * Test sending mail when no recipient defined
-     */
     public function testSend_noRecipient()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_sendMail'));
-        $oEmail->expects($this->never())->method('_sendMail');
-        $oEmail->setRecipient("");
-        $this->assertFalse($this->_oEmail->send());
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('_sendMail'));
+        $email->expects($this->never())->method('_sendMail');
+        $email->setRecipient("");
+        $this->assertFalse($this->email->send());
     }
 
     public function testGetNewsSubsLink()
     {
         $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
-        $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
+        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX'));
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
-        $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
+        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX'));
     }
 
     public function testGetNewsSubsLinkWithConfirm()
     {
         $sUrl = $this->getConfig()->getShopHomeURL() . 'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
-        $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
+        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX', 'AAAA'));
         $oActShop = $this->getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
-        $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
+        $this->assertEquals($sUrl, $this->email->UNITgetNewsSubsLink('XXXX', 'AAAA'));
     }
 
     public function testSetSmtpProtocol()
     {
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('set'));
-        $oEmail->expects($this->at(0))->method('set')
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('set'));
+        $email->expects($this->at(0))->method('set')
             ->with(
                 $this->equalTo('SMTPSecure'),
                 $this->equalTo('ssl')
             );
-        $oEmail->expects($this->at(1))->method('set')
+        $email->expects($this->at(1))->method('set')
             ->with(
                 $this->equalTo('SMTPSecure'),
                 $this->equalTo('tls')
             );
-        $this->assertEquals("hostname:23", $oEmail->UNITsetSmtpProtocol('ssl://hostname:23'));
-        $this->assertEquals("hostname:23", $oEmail->UNITsetSmtpProtocol('tls://hostname:23'));
-        $this->assertEquals("ssx://hostname:23", $oEmail->UNITsetSmtpProtocol('ssx://hostname:23'));
+        $this->assertEquals("hostname:23", $email->UNITsetSmtpProtocol('ssl://hostname:23'));
+        $this->assertEquals("hostname:23", $email->UNITsetSmtpProtocol('tls://hostname:23'));
+        $this->assertEquals("ssx://hostname:23", $email->UNITsetSmtpProtocol('ssx://hostname:23'));
     }
 
-    /**
-     * Testing the correct recipient (#1964)
-     */
     public function testSendOrderEmailToOwnerCorrectSenderReceiver()
     {
         $oSmartyMock = $this->getMock("Smarty", array("fetch"));
         $oSmartyMock->expects($this->any())->method("fetch")->will($this->returnValue(''));
 
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getSmarty"));
-        $oEmail->expects($this->once())->method("_sendMail")->will($this->returnValue(true));
-        $oEmail->expects($this->any())->method("_getSmarty")->will($this->returnValue($oSmartyMock));
+        $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getSmarty"));
+        $email->expects($this->once())->method("_sendMail")->will($this->returnValue(true));
+        $email->expects($this->any())->method("_getSmarty")->will($this->returnValue($oSmartyMock));
 
-        $oUser = oxNew('oxUser');
-        $oUser->load("oxdefaultadmin");
+        $user = oxNew('oxUser');
+        $user->load("oxdefaultadmin");
         //oxOrder mock
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser"));
-        $oOrder->expects($this->once())->method("getOrderUser")->will($this->returnValue($oUser));
+        $order = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser"));
+        $order->expects($this->once())->method("getOrderUser")->will($this->returnValue($user));
 
-        $oEmail->sendOrderEmailToOwner($oOrder);
+        $email->sendOrderEmailToOwner($order);
 
         //testing actual From field Value
-        $this->assertEquals("order@myoxideshop.com", $oEmail->getFrom());
+        $this->assertEquals("order@myoxideshop.com", $email->getFrom());
         //testing actual To field Value
         $aTo = array();
         $aTo[0][0] = 'order@myoxideshop.com';
         $aTo[0][1] = 'order';
-        $this->assertEquals($aTo, $oEmail->getRecipient());
+        $this->assertEquals($aTo, $email->getRecipient());
     }
 
     public function testProductReviewLinksAreIncludedByDefaultInSendedNowMail()

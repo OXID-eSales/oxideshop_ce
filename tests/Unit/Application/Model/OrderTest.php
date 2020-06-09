@@ -1683,6 +1683,7 @@ class OrderTest extends \OxidTestCase
         $testMethods[] = '_setUser';
         $testMethods[] = 'validateOrder';
         $testMethods[] = '_setOrderStatus';
+
         $order = $this->getMock(Order::class, $testMethods);
 
         foreach ($methods as $key => $method) {
@@ -1690,11 +1691,6 @@ class OrderTest extends \OxidTestCase
                 ->method($method)
                 ->will($this->returnValue(true));
         }
-
-        $order->expects($this->atLeastOnce())->method('_setUser');
-        $order->expects($this->atLeastOnce())->method('_setOrderStatus');
-        $order->expects($this->once())->method('validateOrder');
-        $order->expects($this->once())->method('_updateOrderDate');
 
         $order->finalizeOrder($basket, $user);
     }

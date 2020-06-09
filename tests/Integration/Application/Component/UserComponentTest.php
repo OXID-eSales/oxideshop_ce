@@ -1449,7 +1449,6 @@ class UserComponentTest extends \OxidTestCase
             ['_getDelAddressData', 'getUser']
         );
         $userComponent->expects($this->atLeastOnce())->method('getUser')->willReturn($user);
-        $userComponent->expects($this->atLeastOnce())->method('getUser')->willReturn($user);
 
         $this->assertFalse($userComponent->UNITchangeUser_noRedirect());
     }

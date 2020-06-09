@@ -16,18 +16,13 @@ use \oxTestModules;
 class UserListTest extends \OxidTestCase
 {
 
-    /**
-     * User_List::Init() test case
-     *
-     * @return null
-     */
     public function testInit()
     {
         $oUser1 = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("inGroup"));
         $oUser1->expects($this->once())->method('inGroup')->will($this->returnValue(true));
 
         $oUser2 = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array("inGroup"));
-        $oUser1->expects($this->once())->method('inGroup')->will($this->returnValue(false));
+        $oUser2->expects($this->exactly(2))->method('inGroup')->will($this->returnValue(false));
 
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, array("_authorize", "getItemList", "_allowAdminEdit"));
@@ -71,11 +66,6 @@ class UserListTest extends \OxidTestCase
         $this->fail("Error in User_List::deleteEntry()");
     }
 
-    /**
-     * User_List::DeleteEntry() should clean up static cache list before when deleting some value
-     *
-     * @return null
-     */
     public function testDeleteEntryAfterGettingItems()
     {
         oxTestModules::addFunction('oxuser', 'isDerived', '{ return false; }');
@@ -87,20 +77,36 @@ class UserListTest extends \OxidTestCase
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, array("_allowAdminEdit", "buildWhere"));
             $oView->expects($this->any())->method('_allowAdminEdit')->will($this->returnValue(true));
-            $oView->expects($this->any())->method('buildWhere')->will($this->returnValue([]));
+            $oView->expects($this->once())->method('buildWhere')->will($this->returnValue([]));
             $oView->getItemList();
             $oView->deleteEntry();
         } catch (Exception $oExcp) {
             $this->assertEquals("deleteEntry", $oExcp->getMessage(), "Error in User_List::deleteEntry()");
-            try {
-                $oView->expects($this->any())->method('buildWhere')->will($this->throwException(new Exception("list was empty")));
-                $oView->getItemList();
-            } catch (Exception $oNewExcp) {
-                $this->assertEquals("list was empty", $oNewExcp->getMessage(), "Error in User_List::deleteEntry()");
-            }
 
             return;
         }
+        $this->fail("Error in User_List::deleteEntry()");
+    }
+
+    public function testDeleteOnEmptyList()
+    {
+        oxTestModules::addFunction('oxuser', 'isDerived', '{ return false; }');
+        oxTestModules::addFunction('oxuser', 'delete', '{ throw new Exception( "deleteEntry" ); }');
+
+        $this->setRequestParameter("oxid", "testId");
+
+        // testing..
+        try {
+            $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserList::class, array("_allowAdminEdit", "buildWhere"));
+            $oView->expects($this->any())->method('_allowAdminEdit')->will($this->returnValue(true));
+            $oView->expects($this->once())->method('buildWhere')->will($this->throwException(new Exception("list was empty")));
+            $oView->getItemList();
+            $oView->deleteEntry();
+        } catch (Exception $oNewExcp) {
+            $this->assertEquals("list was empty", $oNewExcp->getMessage(), "Error in User_List::deleteEntry()");
+            return;
+        }
+        
         $this->fail("Error in User_List::deleteEntry()");
     }
 

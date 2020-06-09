@@ -16,10 +16,7 @@ use OxidEsales\Eshop\CoreCommunity\DatabaseProvider;
 use oxRegistry;
 use oxTestModules;
 
-/**
- * Testing oxArticleList class
- */
-class ArticlelistTest extends \OxidTestCase
+final class ArticlelistTest extends \OxidTestCase
 {
 
     /**
@@ -1532,95 +1529,62 @@ EOT;
         );
     }
 
-    /**
-     * Test load history articles single article.
-     *
-     * @return null
-     */
     public function testLoadHistoryArticlesSingleArticle()
     {
         /** @var oxArticleList|PHPUnit\Framework\MockObject\MockObject $articleList */
         $articleList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds', 'sortByIds'));
-        $articleList->expects($this->any())->method("loadIds")->will($this->returnValue(true));
-        $articleList->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
-        $articleList->loadHistoryArticles(1);
 
-        $articleList->expects($this->once())->method('loadIds')->with(array())->will($this->returnValue(true));
+        $articleList->expects($this->once())->method('loadIds')->with([])->will($this->returnValue(true));
         $articleList->expects($this->once())->method("sortByIds")->will($this->returnValue(true));
         $articleList->loadHistoryArticles(1);
     }
 
-    /**
-     * Test load history articles short history.
-     *
-     * @return null
-     */
     public function testLoadHistoryArticlesShortHistory()
     {
         $this->getSession()->setId('sessionId');
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds'));
-        $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
         $oTest->loadHistoryArticles(2);
 
-        $oTest->expects($this->once())->method('loadIds')->with(array(1, 2))->will($this->returnValue(true));
+        $oTest->expects($this->once())->method('loadIds')->with([1, 2])->will($this->returnValue(true));
         $oTest->loadHistoryArticles(3);
     }
 
-    /**
-     * Test load history articles not full history.
-     *
-     * @return null
-     */
     public function testLoadHistoryArticlesNotFullHistory()
     {
         $this->getSession()->setId('sessionId');
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds', 'sortByIds'));
-        $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
-        $oTest->expects($this->any())->method("sortByIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
         $oTest->loadHistoryArticles(2);
         $oTest->loadHistoryArticles(3);
 
-        $oTest->expects($this->once())->method('loadIds')->with(array(1, 2, 3))->will($this->returnValue(true));
-        $oTest->expects($this->once())->method('sortByIds')->with(array(1, 2, 3))->will($this->returnValue(true));
+        $oTest->expects($this->once())->method('loadIds')->with([1, 2, 3])->will($this->returnValue(true));
+        $oTest->expects($this->once())->method('sortByIds')->with([1, 2, 3])->will($this->returnValue(true));
         $oTest->loadHistoryArticles(4);
     }
 
-    /**
-     * Test load history articles long history.
-     *
-     * @return null
-     */
     public function testLoadHistoryArticlesLongHistory()
     {
         $this->getSession()->setId('sessionId');
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds'));
-        $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
         $oTest->loadHistoryArticles(2);
         $oTest->loadHistoryArticles(3);
         $oTest->loadHistoryArticles(4);
         $oTest->loadHistoryArticles(5);
 
-        $oTest->expects($this->once())->method('loadIds')->with(array(2, 3, 4, 5))->will($this->returnValue(true));
+        $oTest->expects($this->once())->method('loadIds')->with([2, 3, 4, 5])->will($this->returnValue(true));
         $oTest->loadHistoryArticles(6);
     }
 
-    /**
-     * Test load history articles duplicate.
-     *
-     * @return null
-     */
     public function testLoadHistoryArticlesDuplicate()
     {
         $this->getSession()->setId('sessionId');
 
         $oTest = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array('loadIds'));
-        $oTest->expects($this->any())->method("loadIds")->will($this->returnValue(true));
         $oTest->loadHistoryArticles(1);
         $oTest->loadHistoryArticles(2);
         $oTest->loadHistoryArticles(3);
@@ -1628,7 +1592,7 @@ EOT;
         $oTest->loadHistoryArticles(5);
         $oTest->loadHistoryArticles(6);
 
-        $oTest->expects($this->once())->method('loadIds')->with(array(2, 3, 4, 6))->will($this->returnValue(true));
+        $oTest->expects($this->once())->method('loadIds')->with([2, 3, 4, 6])->will($this->returnValue(true));
         $oTest->loadHistoryArticles(5);
     }
 

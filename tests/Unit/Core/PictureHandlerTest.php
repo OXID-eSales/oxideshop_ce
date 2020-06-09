@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use \oxTestModules;
 
-class PictureHandlerTest extends \OxidTestCase
+final class PictureHandlerTest extends \OxidTestCase
 {
 
     /**
@@ -253,9 +253,6 @@ class PictureHandlerTest extends \OxidTestCase
         $oPicHandler->deleteArticleMasterPicture($oArticle, 1, true);
     }
 
-    /**
-     * Testing deleting article main icon
-     */
     public function testDeleteMainIcon()
     {
         $sAbsImageDir = $this->getConfig()->getPictureDir(false);
@@ -270,8 +267,7 @@ class PictureHandlerTest extends \OxidTestCase
 
         // testing functions calls
         $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
-        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
-        $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
+        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
@@ -298,9 +294,6 @@ class PictureHandlerTest extends \OxidTestCase
         $oPicHandler->deleteMainIcon($oArticle);
     }
 
-    /**
-     * Testing deleting article thumbnail
-     */
     public function testDeleteThumbnail()
     {
         $sAbsImageDir = $this->getConfig()->getPictureDir(false);
@@ -315,8 +308,7 @@ class PictureHandlerTest extends \OxidTestCase
 
         // testing functions calls
         $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
-        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
-        $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
+        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
@@ -343,9 +335,6 @@ class PictureHandlerTest extends \OxidTestCase
         $oPicHandler->deleteThumbnail($oArticle);
     }
 
-    /**
-     * Testing deleting article zoom picture when oxzoom field exist
-     */
     public function testDeleteZoomPicture_dbFieldExists()
     {
         $sAbsImageDir = $this->getConfig()->getPictureDir(false);
@@ -361,8 +350,7 @@ class PictureHandlerTest extends \OxidTestCase
 
         // testing functions calls
         $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
-        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
-        $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
+        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete')->with($this->equalTo($sFileName), $this->equalTo($sAbsImageDir . $sDir), $this->equalTo("oxarticles"), $this->equalTo($sField));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
@@ -412,9 +400,6 @@ class PictureHandlerTest extends \OxidTestCase
         $oPicHandler->deleteZoomPicture($oArticle, 1);
     }
 
-    /**
-     * Testing deleting article zoom picture - using master image as source
-     */
     public function testDeleteZoomPicture_usingMasterImage()
     {
         $sAbsImageDir = $this->getConfig()->getPictureDir(false);
@@ -430,8 +415,7 @@ class PictureHandlerTest extends \OxidTestCase
 
         // testing functions calls
         $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
-        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete');
-        $oUtilsPic->expects($this->at(0))->method('safePictureDelete')->with($this->equalTo($aDelPics[0]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[0]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[0]["sField"]));
+        $oUtilsPic->expects($this->exactly(1))->method('safePictureDelete')->with($this->equalTo($aDelPics[0]["sFileName"]), $this->equalTo($sAbsImageDir . $aDelPics[0]["sDir"]), $this->equalTo("oxarticles"), $this->equalTo($aDelPics[0]["sField"]));
 
         oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 

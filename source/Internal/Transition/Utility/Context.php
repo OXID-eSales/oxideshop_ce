@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
+use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use PDO;
 use Psr\Log\LogLevel;
@@ -33,7 +34,7 @@ class Context extends BasicContext implements ContextInterface
     {
         try {
             $logLevel = $this->getConfigParameter('sLogLevel');
-        } catch (DatabaseConnectionException $e) {
+        } catch (DatabaseConnectionException | DatabaseNotConfiguredException $e) {
             $logLevel = $this->getFactsConfigFile()->getVar('sLogLevel');
         }
 
@@ -47,7 +48,7 @@ class Context extends BasicContext implements ContextInterface
     {
         try {
             $logFilePath = Registry::getConfig()->getLogsDir();
-        } catch (DatabaseConnectionException $e) {
+        } catch (DatabaseConnectionException | DatabaseNotConfiguredException $e) {
             $logFilePath = Path::join($this->getFactsConfigFile()->getVar('sShopDir'), 'log');
         }
 

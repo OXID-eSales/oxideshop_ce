@@ -16,11 +16,6 @@ use Webmozart\PathUtil\Path;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
-/**
- * Class DirectoryValidator
- *
- * @package OxidEsales\EshopCommunity\Internal\Setup\Directory
- */
 class DirectoryValidator implements DirectoryValidatorInterface
 {
     private const DIRECTORIES_LIST = [

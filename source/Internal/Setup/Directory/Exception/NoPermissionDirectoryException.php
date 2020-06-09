@@ -10,13 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception;
 
 use Exception;
-use Throwable;
 
-/**
- * Class NoPermissionDirectoryException
- *
- * @package OxidEsales\EshopCommunity\Internal\Setup\Directory
- */
 class NoPermissionDirectoryException extends Exception
 {
     public const NO_PERMISSION_DIRECTORY = 'Following folder has no writing and reading permission';

@@ -5,7 +5,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Directory;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidator;
-use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 
 final class DirectoryValidatorTest extends TestCase

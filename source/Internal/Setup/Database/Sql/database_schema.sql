@@ -727,38 +727,6 @@ CREATE TABLE `oxmediaurls` (
 ) ENGINE = InnoDB COMMENT 'Stores objects media';
 
 #
-# Table structure for table `oxnews`
-#
-
-DROP TABLE IF EXISTS `oxnews`;
-
-CREATE TABLE `oxnews` (
-  `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'News id',
-  `OXSHOPID` int(11) NOT NULL default '1' COMMENT 'Shop id (oxshops)',
-  `OXACTIVE` tinyint(1) NOT NULL default '1' COMMENT 'Is active',
-  `OXACTIVEFROM` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Active from specified date',
-  `OXACTIVETO` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Active to specified date',
-  `OXDATE` date NOT NULL default '0000-00-00' COMMENT 'Creation date (entered by user)',
-  `OXSHORTDESC` varchar(255) NOT NULL default '' COMMENT 'Short description (multilanguage)',
-  `OXLONGDESC` text NOT NULL COMMENT 'Long description (multilanguage)',
-  `OXACTIVE_1` tinyint(1) NOT NULL default '0',
-  `OXSHORTDESC_1` varchar(255) NOT NULL default '',
-  `OXLONGDESC_1` text NOT NULL,
-  `OXACTIVE_2` tinyint(1) NOT NULL default '0',
-  `OXSHORTDESC_2` varchar(255) NOT NULL default '',
-  `OXLONGDESC_2` text NOT NULL,
-  `OXACTIVE_3` tinyint(1) NOT NULL default '0',
-  `OXSHORTDESC_3` varchar(255) NOT NULL default '',
-  `OXLONGDESC_3` text NOT NULL,
-  `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  PRIMARY KEY  (`OXID`),
-  KEY `OXSHOPID` (`OXSHOPID`),
-  KEY `OXACTIVE` (`OXACTIVE`),
-  KEY `OXACTIVEFROM` (`OXACTIVEFROM`),
-  KEY `OXACTIVETO` (`OXACTIVETO`)
-) ENGINE=InnoDB COMMENT 'Shop news';
-
-#
 # Table structure for table `oxnewsletter`
 #
 

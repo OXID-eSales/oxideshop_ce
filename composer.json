@@ -37,7 +37,7 @@
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^3.0",
         "oxid-esales/azure-theme": "^v1.4.1",
-        "oxid-esales/oxideshop-facts": "^2.3.1",
+        "oxid-esales/oxideshop-facts": "^2.0.0",
         "squizlabs/php_codesniffer": "^3.5.4"
     },
     "autoload": {

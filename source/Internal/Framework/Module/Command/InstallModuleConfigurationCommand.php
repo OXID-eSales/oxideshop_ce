@@ -73,7 +73,8 @@ class InstallModuleConfigurationCommand extends Command
                 'module-target-path',
                 InputArgument::OPTIONAL,
                 'Path to module target, e.g. source/modules/vendor/my_module'
-            );
+            )
+            ->setAliases(['m:ic']);
     }
 
     /**

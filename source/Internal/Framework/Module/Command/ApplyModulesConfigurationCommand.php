@@ -49,7 +49,8 @@ class ApplyModulesConfigurationCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Applies configuration for installed modules.');
+        $this->setDescription('Applies configuration for installed modules.')
+             ->setAliases(['m:ac']);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

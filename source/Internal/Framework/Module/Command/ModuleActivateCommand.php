@@ -53,7 +53,7 @@ class ModuleActivateCommand extends Command
         ModuleActivationServiceInterface $moduleActivationService
     ) {
         parent::__construct(null);
-        
+
         $this->shopConfigurationDao = $shopConfigurationDao;
         $this->context = $context;
         $this->moduleActivationService = $moduleActivationService;
@@ -67,7 +67,8 @@ class ModuleActivateCommand extends Command
     {
         $this->setDescription('Activates a module.')
             ->addArgument('module-id', InputArgument::REQUIRED, 'Module ID')
-            ->setHelp('Command activates module by defined module ID.');
+            ->setHelp('Command activates module by defined module ID.')
+            ->setAliases(['m:a']);
     }
 
     /**
@@ -77,7 +78,7 @@ class ModuleActivateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $moduleId = $input->getArgument('module-id');
-        
+
         if ($this->isInstalled($moduleId)) {
             $this->activateModule($output, $moduleId);
         } else {
@@ -112,7 +113,7 @@ class ModuleActivateCommand extends Command
         $shopConfiguration = $this->shopConfigurationDao->get(
             $this->context->getCurrentShopId()
         );
-        
+
         return $shopConfiguration->hasModuleConfiguration($moduleId);
     }
 }

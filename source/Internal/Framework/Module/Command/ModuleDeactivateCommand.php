@@ -68,7 +68,8 @@ class ModuleDeactivateCommand extends Command
     {
         $this->setDescription('Deactivates a module.')
             ->addArgument(static::ARGUMENT_MODULE_ID, InputArgument::REQUIRED, 'Module ID')
-            ->setHelp('Command deactivates module by defined module ID.');
+            ->setHelp('Command deactivates module by defined module ID.')
+            ->setAliases(['m:d']);
     }
 
     /**

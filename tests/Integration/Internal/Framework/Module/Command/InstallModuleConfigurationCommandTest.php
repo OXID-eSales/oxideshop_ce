@@ -154,13 +154,13 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(
                 [
-                    'command'            => 'm:ic',
+                    'command' => 'm:ic',
                     '--help',
                 ]
             )
         );
 
-        $this->assertContains('oe:module:install-configuration', $consoleOutput);
+        $this->assertStringContainsString('oe:module:install-configuration', $consoleOutput);
     }
 
     private function executeModuleInstallCommand(string $moduleSourcePath, string $moduleTargetPath = null): string

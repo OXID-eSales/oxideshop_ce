@@ -81,12 +81,12 @@ final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(
                 [
-                    'command'            => 'm:d',
+                    'command' => 'm:d',
                     '--help',
                 ]
             )
         );
 
-        $this->assertContains('oe:module:deactivate', $consoleOutput);
+        $this->assertStringContainsString('oe:module:deactivate', $consoleOutput);
     }
 }

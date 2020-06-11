@@ -82,12 +82,12 @@ final class ModuleActivateCommandTest extends ModuleCommandsTestCase
             $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
             new ArrayInput(
                 [
-                    'command'            => 'm:a',
+                    'command' => 'm:a',
                     '--help',
                 ]
             )
         );
 
-        $this->assertContains('oe:module:activate', $consoleOutput);
+        $this->assertStringContainsString('oe:module:activate', $consoleOutput);
     }
 }

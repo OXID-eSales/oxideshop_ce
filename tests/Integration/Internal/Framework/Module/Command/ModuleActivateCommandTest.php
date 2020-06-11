@@ -72,4 +72,22 @@ final class ModuleActivateCommandTest extends ModuleCommandsTestCase
             $consoleOutput
         );
     }
+
+    public function testModuleActivationCommandCanBeCalledByCommandAlias()
+    {
+        $app = $this->getApplication();
+
+        $consoleOutput = $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput(
+                [
+                    'command'            => 'm:a',
+                    '--help',
+                ]
+            )
+        );
+
+        $this->assertContains('oe:module:activate', $consoleOutput);
+    }
 }

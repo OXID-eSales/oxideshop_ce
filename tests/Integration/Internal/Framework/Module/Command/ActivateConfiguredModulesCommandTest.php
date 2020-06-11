@@ -119,6 +119,24 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         );
     }
 
+    public function testModuleApplyConfigurationCommandCanBeCalledByCommandAlias()
+    {
+        $app = $this->getApplication();
+
+        $consoleOutput = $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput(
+                [
+                    'command'            => 'm:ac',
+                    '--help',
+                ]
+            )
+        );
+
+        $this->assertContains('oe:module:apply-configuration', $consoleOutput);
+    }
+
     private function prepareTestModuleConfigurations(bool $isConfigured, int $shopId, array $settings): void
     {
         $moduleToActivate = new ModuleConfiguration();

@@ -145,6 +145,24 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);
     }
 
+    public function testInstallCommandCanBeCalledByCommandAlias()
+    {
+        $app = $this->getApplication();
+
+        $consoleOutput = $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput(
+                [
+                    'command'            => 'm:ic',
+                    '--help',
+                ]
+            )
+        );
+
+        $this->assertContains('oe:module:install-configuration', $consoleOutput);
+    }
+
     private function executeModuleInstallCommand(string $moduleSourcePath, string $moduleTargetPath = null): string
     {
         $input = [

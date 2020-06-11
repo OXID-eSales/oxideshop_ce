@@ -71,4 +71,22 @@ final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
             $consoleOutput
         );
     }
+
+    public function testModuleDeactivationCommandCanBeCalledByCommandAlias()
+    {
+        $app = $this->getApplication();
+
+        $consoleOutput = $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput(
+                [
+                    'command'            => 'm:d',
+                    '--help',
+                ]
+            )
+        );
+
+        $this->assertContains('oe:module:deactivate', $consoleOutput);
+    }
 }

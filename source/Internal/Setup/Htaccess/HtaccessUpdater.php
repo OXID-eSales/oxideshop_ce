@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Htaccess;
 
 use OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParserInterface;
 
-class HtaccessUpdateService implements HtaccessUpdateServiceInterface
+class HtaccessUpdater implements HtaccessUpdaterInterface
 {
     private const REWRITE_BASE_FOR_EMPTY_PATH = '/';
     /** @var HtaccessDaoFactoryInterface */

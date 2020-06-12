@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Htaccess;
 
-interface HtaccessUpdateServiceInterface
+interface HtaccessUpdaterInterface
 {
     /** @param string $url */
     public function updateRewriteBaseDirective(string $url): void;

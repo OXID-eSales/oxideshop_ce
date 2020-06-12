@@ -11,12 +11,12 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup\Htaccess;
 
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateService;
+use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdater;
 use OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParserInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-final class HtaccessUpdateServiceTest extends TestCase
+final class HtaccessUpdaterTest extends TestCase
 {
     use ProphecyTrait;
 
@@ -30,7 +30,7 @@ final class HtaccessUpdateServiceTest extends TestCase
         $urlParser = $this->prophesize(UrlParserInterface::class);
         $urlParser->getPathWithoutTrailingSlash($url)->willReturn($urlPath);
 
-        (new HtaccessUpdateService(
+        (new HtaccessUpdater(
             $htaccessDaoFactory->reveal(),
             $urlParser->reveal()
         ))->updateRewriteBaseDirective($url);
@@ -48,7 +48,7 @@ final class HtaccessUpdateServiceTest extends TestCase
         $urlParser = $this->prophesize(UrlParserInterface::class);
         $urlParser->getPathWithoutTrailingSlash($url)->willReturn('');
 
-        (new HtaccessUpdateService(
+        (new HtaccessUpdater(
             $htaccessDaoFactory->reveal(),
             $urlParser->reveal()
         ))->updateRewriteBaseDirective($url);

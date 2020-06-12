@@ -10,16 +10,18 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Setup;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Console\Command\NamedArgumentsTrait;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -48,6 +50,11 @@ class ShopSetupCommand extends Command
     private $databaseInstaller;
 
     /**
+     * @var EmailValidatorServiceInterface
+     */
+    private $emailValidatorService;
+
+    /**
      * @var ConfigFileDaoInterface
      */
     private $configFileDao;
@@ -63,7 +70,7 @@ class ShopSetupCommand extends Command
     private $languageInstaller;
 
     /**
-     * @var HtaccessUpdateServiceInterface
+     * @var HtaccessUpdaterInterface
      */
     private $htaccessUpdateService;
 
@@ -84,10 +91,11 @@ class ShopSetupCommand extends Command
 
     public function __construct(
         DatabaseInstallerInterface $databaseInstaller,
+        EmailValidatorServiceInterface $emailValidatorService,
         ConfigFileDaoInterface $configFileDao,
         DirectoryValidatorInterface $directoriesValidator,
         LanguageInstallerInterface $languageInstaller,
-        HtaccessUpdateServiceInterface $htaccessUpdateService,
+        HtaccessUpdaterInterface $htaccessUpdateService,
         AdminUserServiceInterface $adminService,
         ShopStateServiceInterface $shopStateService,
         BasicContextInterface $basicContext
@@ -95,6 +103,7 @@ class ShopSetupCommand extends Command
         parent::__construct();
 
         $this->databaseInstaller = $databaseInstaller;
+        $this->emailValidatorService = $emailValidatorService;
         $this->configFileDao = $configFileDao;
         $this->directoriesValidator = $directoriesValidator;
         $this->languageInstaller = $languageInstaller;
@@ -125,17 +134,19 @@ class ShopSetupCommand extends Command
      * @param OutputInterface $output
      * @return int
      * @throws DbExistsAndNotEmptyException
+     * @throws InvalidEmailException
      * @throws ShopIsLaunchedException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('<info>Validating input...</info>');
+
         $this->validateRequiredOptions($this->getDefinition()->getOptions(), $input);
 
-        $this->checkCanCreateDb($input);
-        $this->checkCanUpdateConfigFile();
-
-        $output->writeln('<info>Validating input...</info>');
-        $this->validateInput($input);
+        $this->validateAdminEmail($input->getOption(self::ADMIN_EMAIL));
+        $this->validateDatabaseName($input);
+        $this->validateDirectories($input);
+        $this->checkShopIsNotLaunched();
 
         $output->writeln('<info>Updating config file...</info>');
         $this->updateConfigFile($input);
@@ -160,7 +171,7 @@ class ShopSetupCommand extends Command
         return 0;
     }
 
-    protected function installDatabase(InputInterface $input): void
+    private function installDatabase(InputInterface $input): void
     {
         $this->databaseInstaller->install(
             $input->getOption(self::DB_HOST),
@@ -183,7 +194,7 @@ class ShopSetupCommand extends Command
         return new DefaultLanguage($input->getOption(self::LANGUAGE));
     }
 
-    protected function validateInput(InputInterface $input): void
+    private function validateDirectories(InputInterface $input): void
     {
         $this->directoriesValidator->checkPathIsAbsolute(
             $input->getOption(self::SHOP_DIRECTORY),
@@ -199,10 +210,21 @@ class ShopSetupCommand extends Command
     }
 
     /**
+     * @param string $email
+     * @throws InvalidEmailException
+     */
+    private function validateAdminEmail(string $email): void
+    {
+        if (!$this->emailValidatorService->isEmailValid($email)) {
+            throw new InvalidEmailException($email);
+        }
+    }
+
+    /**
      * @param InputInterface $input
      * @throws DbExistsAndNotEmptyException
      */
-    private function checkCanCreateDb(InputInterface $input): void
+    private function validateDatabaseName(InputInterface $input): void
     {
         $dbExists = $this->shopStateService->checkIfDbExistsAndNotEmpty(
             $input->getOption(self::DB_HOST),
@@ -219,7 +241,7 @@ class ShopSetupCommand extends Command
     }
 
     /** @throws ShopIsLaunchedException */
-    private function checkCanUpdateConfigFile(): void
+    private function checkShopIsNotLaunched(): void
     {
         if ($this->shopStateService->isLaunched()) {
             throw new ShopIsLaunchedException('Configuration file can\'t be updated - shop was launched before');

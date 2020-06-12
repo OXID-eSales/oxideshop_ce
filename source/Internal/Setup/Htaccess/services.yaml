@@ -6,5 +6,5 @@ services:
     OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoFactoryInterface:
         class: OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoFactory
 
-    OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateServiceInterface:
-        class: OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateService
+    OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdater

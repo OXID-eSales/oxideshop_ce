@@ -45,9 +45,14 @@ class AdminFactory implements AdminFactoryInterface
     }
 
     /**
+     * @param string $email
+     * @param string $password
+     * @param string $rights
+     * @param int $shopId
+     * @return Admin
      * @throws InvalidEmailException
-     * @throws InvalidShopException
      * @throws InvalidRightsException
+     * @throws InvalidShopException
      */
     public function createAdmin(
         string $email,

@@ -10,18 +10,21 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Admin\CredentialsValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\DbExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopIsLaunchedException;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -56,7 +59,7 @@ final class ShopSetupCommandTest extends TestCase
     private $directoryValidator;
     /** @var LanguageInstallerInterface|ObjectProphecy */
     private $languageInstaller;
-    /** @var HtaccessUpdateServiceInterface|ObjectProphecy */
+    /** @var HtaccessUpdaterInterface|ObjectProphecy */
     private $htaccessUpdateService;
     /** @var AdminUserServiceInterface|ObjectProphecy */
     private $adminUserService;
@@ -64,6 +67,8 @@ final class ShopSetupCommandTest extends TestCase
     private $shopStateService;
     /** @var BasicContextInterface|ObjectProphecy */
     private $basicContext;
+    /** @var EmailValidatorServiceInterface|ObjectProphecy */
+     private $emailValidatorService;
 
     protected function setUp(): void
     {
@@ -79,8 +84,36 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester->execute([]);
     }
 
+    public function testExecuteWitInvalidAdminEmailWillExitEarly(): void
+    {
+        $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
+        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
+            ->willReturn(false);
+
+        $this->expectException(InvalidEmailException::class);
+
+        $this->databaseInstall->install(self::HOST, self::PORT, self::DB_USER, self::DB_PASS, self::DB)
+            ->shouldNotBeCalled();
+
+        $this->commandTester->execute([
+            '--db-host' => self::HOST,
+            '--db-port' => self::PORT,
+            '--db-name' => self::DB,
+            '--db-user' => self::DB_USER,
+            '--db-password' => self::DB_PASS,
+            '--shop-url' => self::URL,
+            '--shop-directory' => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
+            '--admin-email' => self::ADMIN_EMAIL,
+            '--admin-password' => self::ADMIN_PASS,
+            '--language' => self::LANG,
+        ]);
+    }
+
     public function testExecuteWithExistingDb(): void
     {
+        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
+            ->willReturn(true);
         $this->shopStateService->checkIfDbExistsAndNotEmpty(
             self::HOST,
             self::PORT,
@@ -109,6 +142,8 @@ final class ShopSetupCommandTest extends TestCase
 
     public function testExecuteWithNewDbButShopAlreadyLaunched(): void
     {
+        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
+            ->willReturn(true);
         $this->shopStateService->checkIfDbExistsAndNotEmpty(
             self::HOST,
             self::PORT,
@@ -139,6 +174,8 @@ final class ShopSetupCommandTest extends TestCase
 
     public function testExecuteWithCompleteArgs(): void
     {
+        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
+            ->willReturn(true);
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
 
         $this->shopStateService->checkIfDbExistsAndNotEmpty(
@@ -173,7 +210,8 @@ final class ShopSetupCommandTest extends TestCase
     public function testExecuteWithMissingOptionalArgs(): void
     {
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
-
+        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
+            ->willReturn(true);
         $this->shopStateService->checkIfDbExistsAndNotEmpty(
             self::HOST,
             self::PORT,
@@ -208,6 +246,7 @@ final class ShopSetupCommandTest extends TestCase
         $this->prepareMocks();
         return new ShopSetupCommand(
             $this->databaseInstall->reveal(),
+            $this->emailValidatorService->reveal(),
             $this->configFileDao->reveal(),
             $this->directoryValidator->reveal(),
             $this->languageInstaller->reveal(),
@@ -221,10 +260,11 @@ final class ShopSetupCommandTest extends TestCase
     private function prepareMocks(): void
     {
         $this->databaseInstall = $this->prophesize(DatabaseInstallerInterface::class);
+        $this->emailValidatorService = $this->prophesize(EmailValidatorServiceInterface::class);
         $this->configFileDao = $this->prophesize(ConfigFileDaoInterface::class);
         $this->directoryValidator = $this->prophesize(DirectoryValidatorInterface::class);
         $this->languageInstaller = $this->prophesize(LanguageInstallerInterface::class);
-        $this->htaccessUpdateService = $this->prophesize(HtaccessUpdateServiceInterface::class);
+        $this->htaccessUpdateService = $this->prophesize(HtaccessUpdaterInterface::class);
         $this->adminUserService = $this->prophesize(AdminUserServiceInterface::class);
         $this->shopStateService = $this->prophesize(ShopStateServiceInterface::class);
         $this->basicContext = $this->prophesize(BasicContextInterface::class);
@@ -239,6 +279,8 @@ final class ShopSetupCommandTest extends TestCase
             self::DB_PASS,
             self::DB
         )
+            ->shouldHaveBeenCalledOnce();
+        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->shouldHaveBeenCalledOnce();
         $this->configFileDao->replacePlaceholder('sShopURL', self::URL)
             ->shouldHaveBeenCalledOnce();

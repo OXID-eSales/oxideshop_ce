@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\UserNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\Factory\AdminFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 class AdminDao implements AdminDaoInterface

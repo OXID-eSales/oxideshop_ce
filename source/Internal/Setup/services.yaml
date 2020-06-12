@@ -1,9 +1,9 @@
 imports:
-    - { resource: Database/services.yaml }
-    - { resource: Language/services.yaml }
     - { resource: ConfigFile/services.yaml }
+    - { resource: Database/services.yaml }
     - { resource: Directory/services.yaml }
     - { resource: Htaccess/services.yaml }
+    - { resource: Language/services.yaml }
 
 services:
     _defaults:

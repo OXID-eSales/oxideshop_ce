@@ -49,34 +49,7 @@ class ShopStateService implements ShopStateServiceInterface
     {
         return $this->areUnifiedNamespacesGenerated()
                && $this->doesConfigFileExist()
-               && $this->doesConfigTableExist([]);
-    }
-
-    /**
-     * @param string $dbHost
-     * @param int    $dbPort
-     * @param string $dbUser
-     * @param string $dbPwd
-     * @param string $dbName
-     *
-     * @return bool
-     */
-    public function checkIfDbExistsAndNotEmpty(
-        string $dbHost,
-        int $dbPort,
-        string $dbUser,
-        string $dbPwd,
-        string $dbName
-    ): bool {
-        $dbParams = [
-            'dbHost' => $dbHost,
-            'dbPort' => $dbPort,
-            'dbUser' => $dbUser,
-            'dbPwd'  => $dbPwd,
-            'dbName' => $dbName
-        ];
-
-        return $this->doesConfigTableExist($dbParams);
+               && $this->doesConfigTableExist();
     }
 
     /**
@@ -96,14 +69,12 @@ class ShopStateService implements ShopStateServiceInterface
     }
 
     /**
-     * @param array $dbParams
-     *
      * @return bool
      */
-    private function doesConfigTableExist(array $dbParams): bool
+    private function doesConfigTableExist(): bool
     {
         try {
-            $connection = $this->getConnection($dbParams);
+            $connection = $this->getConnection();
             $connection->exec(
                 'SELECT 1 FROM ' . $this->basicContext->getConfigTableName() . ' LIMIT 1'
             );
@@ -115,21 +86,11 @@ class ShopStateService implements ShopStateServiceInterface
     }
 
     /**
-     * @param array $dbParams
-     *
      * @return \PDO
      */
-    private function getConnection(array $dbParams): \PDO
+    private function getConnection(): \PDO
     {
         include $this->basicContext->getConfigFilePath();
-
-        if (count($dbParams) > 0) {
-            $this->dbHost = $dbParams['dbHost'];
-            $this->dbPort = $dbParams['dbPort'];
-            $this->dbUser = $dbParams['dbUser'];
-            $this->dbPwd = $dbParams['dbPwd'];
-            $this->dbName = $dbParams['dbName'];
-        }
 
         $dsn = sprintf('mysql:host=%s;port=%s', $this->dbHost, $this->dbPort);
 

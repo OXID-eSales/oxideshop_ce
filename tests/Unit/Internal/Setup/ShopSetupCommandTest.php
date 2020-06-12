@@ -14,8 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailExcept
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\DbExistsAndNotEmptyException;
+use OxidEsales\EshopCommunity\Internal\Setup\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
@@ -50,6 +51,8 @@ final class ShopSetupCommandTest extends TestCase
 
     /** @var CommandTester */
     private $commandTester;
+    /** @var DatabaseCheckerInterface|ObjectProphecy */
+    private $databaseChecker;
     /** @var DatabaseInstallerInterface|ObjectProphecy */
     private $databaseInstall;
     /** @var ConfigFileDaoInterface|ObjectProphecy */
@@ -110,7 +113,7 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
-        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
             self::HOST,
             self::PORT,
             self::DB_USER,
@@ -119,7 +122,7 @@ final class ShopSetupCommandTest extends TestCase
         )
             ->willReturn(true);
 
-        $this->expectException(DbExistsAndNotEmptyException::class);
+        $this->expectException(DatabaseExistsAndNotEmptyException::class);
 
         $this->commandTester->execute([
             '--db-host' => self::HOST,
@@ -140,7 +143,7 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
-        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
             self::HOST,
             self::PORT,
             self::DB_USER,
@@ -174,7 +177,7 @@ final class ShopSetupCommandTest extends TestCase
             ->willReturn(true);
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
 
-        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
             self::HOST,
             self::PORT,
             self::DB_USER,
@@ -208,7 +211,7 @@ final class ShopSetupCommandTest extends TestCase
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
-        $this->shopStateService->checkIfDbExistsAndNotEmpty(
+        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
             self::HOST,
             self::PORT,
             self::DB_USER,
@@ -241,6 +244,7 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->prepareMocks();
         return new ShopSetupCommand(
+            $this->databaseChecker->reveal(),
             $this->databaseInstall->reveal(),
             $this->emailValidatorService->reveal(),
             $this->configFileDao->reveal(),
@@ -255,6 +259,7 @@ final class ShopSetupCommandTest extends TestCase
 
     private function prepareMocks(): void
     {
+        $this->databaseChecker = $this->prophesize(DatabaseCheckerInterface::class);
         $this->databaseInstall = $this->prophesize(DatabaseInstallerInterface::class);
         $this->emailValidatorService = $this->prophesize(EmailValidatorServiceInterface::class);
         $this->configFileDao = $this->prophesize(ConfigFileDaoInterface::class);

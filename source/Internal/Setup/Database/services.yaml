@@ -11,3 +11,6 @@ services:
 
     OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface:
         class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstaller
+
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseChecker

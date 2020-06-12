@@ -18,15 +18,4 @@ interface ShopStateServiceInterface
      * @return bool
      */
     public function isLaunched(): bool;
-
-    /**
-     * @param string $dbHost
-     * @param int    $dbPort
-     * @param string $dbUser
-     * @param string $dbPwd
-     * @param string $dbName
-     *
-     * @return bool
-     */
-    public function checkIfDbExistsAndNotEmpty(string $dbHost, int $dbPort, string $dbUser, string $dbPwd, string $dbName): bool;
 }

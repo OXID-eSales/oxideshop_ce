@@ -14,6 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailExcept
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseChecker;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
@@ -43,6 +45,11 @@ class ShopSetupCommand extends Command
     private const ADMIN_PASSWORD = 'admin-password';
     private const LANGUAGE = 'language';
     private const DEFAULT_LANG = 'en';
+
+    /**
+     * @var DatabaseCheckerInterface
+     */
+    private $databaseChecker;
 
     /**
      * @var DatabaseInstallerInterface
@@ -90,6 +97,7 @@ class ShopSetupCommand extends Command
     private $basicContext;
 
     public function __construct(
+        DatabaseCheckerInterface $databaseChecker,
         DatabaseInstallerInterface $databaseInstaller,
         EmailValidatorServiceInterface $emailValidatorService,
         ConfigFileDaoInterface $configFileDao,
@@ -102,6 +110,7 @@ class ShopSetupCommand extends Command
     ) {
         parent::__construct();
 
+        $this->databaseChecker = $databaseChecker;
         $this->databaseInstaller = $databaseInstaller;
         $this->emailValidatorService = $emailValidatorService;
         $this->configFileDao = $configFileDao;
@@ -133,7 +142,7 @@ class ShopSetupCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
-     * @throws DbExistsAndNotEmptyException
+     * @throws DatabaseExistsAndNotEmptyException
      * @throws InvalidEmailException
      * @throws ShopIsLaunchedException
      */
@@ -222,11 +231,11 @@ class ShopSetupCommand extends Command
 
     /**
      * @param InputInterface $input
-     * @throws DbExistsAndNotEmptyException
+     * @throws DatabaseExistsAndNotEmptyException
      */
     private function validateDatabaseName(InputInterface $input): void
     {
-        $dbExists = $this->shopStateService->checkIfDbExistsAndNotEmpty(
+        $dbExists = $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
             $input->getOption(self::DB_HOST),
             (int)$input->getOption(self::DB_PORT),
             $input->getOption(self::DB_USER),
@@ -234,7 +243,7 @@ class ShopSetupCommand extends Command
             $input->getOption(self::DB_NAME)
         );
         if ($dbExists) {
-            throw new DbExistsAndNotEmptyException(
+            throw new DatabaseExistsAndNotEmptyException(
                 sprintf('Database `%s` already exists and is not empty', $input->getOption(self::DB_NAME))
             );
         }

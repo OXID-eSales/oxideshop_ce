@@ -114,28 +114,4 @@ class ShopStateServiceTest extends TestCase
             $shopStateService->isLaunched()
         );
     }
-
-    public function testCheckIfDbExistsAndNotEmpty()
-    {
-        $configFile = new ConfigFile();
-
-        $dbHost = $configFile->getVar('dbHost');
-        $dbPort = $configFile->getVar('dbPort');
-        $dbUser = $configFile->getVar('dbUser');
-        $dbPwd = $configFile->getVar('dbPwd');
-        $dbName = $configFile->getVar('dbName');
-
-        $shopStateService = new ShopStateService(
-            $this->get(BasicContextInterface::class),
-            'fakeNamespace'
-        );
-
-        $this->assertTrue(
-            $shopStateService->checkIfDbExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, $dbName)
-        );
-
-        $this->assertFalse(
-            $shopStateService->checkIfDbExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, 'testCheckIfDbExistsAndNotEmpty')
-        );
-    }
 }

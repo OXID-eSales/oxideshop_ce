@@ -317,6 +317,30 @@ final class ModuleConfigurationMergingServiceTest extends TestCase
         );
     }
 
+    public function testConfiguredOptionValueStaysTheSameAfterMerging(): void
+    {
+        $newModuleConfiguration = new ModuleConfiguration();
+        $newModuleConfiguration->setId('test');
+        $newModuleConfiguration->setConfigured(false);
+
+        $oldModuleConfiguration = new ModuleConfiguration();
+        $oldModuleConfiguration->setId('test');
+        $oldModuleConfiguration->setConfigured(true);
+
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($oldModuleConfiguration);
+
+        $moduleConfigurationMergingService = $this->getMergingService();
+        $shopConfiguration = $moduleConfigurationMergingService->merge(
+            $shopConfiguration,
+            $newModuleConfiguration
+        );
+
+        $this->assertTrue(
+            $shopConfiguration->getModuleConfiguration('test')->isConfigured()
+        );
+    }
+
     private function getShopConfigurationWithAlreadyInstalledModule(): ShopConfiguration
     {
         $moduleConfiguration = new ModuleConfiguration();

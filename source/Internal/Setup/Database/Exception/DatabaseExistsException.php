@@ -7,9 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Setup;
+namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Exception;
 
-class DatabaseExistsAndNotEmptyException extends \Exception
+class DatabaseExistsException extends \Exception
 {
-
 }

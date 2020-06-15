@@ -13,7 +13,7 @@ use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseAlreadyExistsException;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class DatabaseInstaller implements DatabaseInstallerInterface
@@ -68,7 +68,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
     {
         try {
             $this->creator->createDatabase($host, $port, $username, $password, $name);
-        } catch (DatabaseAlreadyExistsException $exception) {
+        } catch (DatabaseExistsException $exception) {
         }
 
         $this->addCredentialsToConfigFile($host, $username, $password, $name);

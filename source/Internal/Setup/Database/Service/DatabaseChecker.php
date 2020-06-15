@@ -9,14 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PDO;
 
-/**
- * Class DatabaseCreator
- *
- * @package OxidEsales\EshopCommunity\Internal\Setup\Database
- */
 class DatabaseChecker implements DatabaseCheckerInterface
 {
 
@@ -33,33 +29,22 @@ class DatabaseChecker implements DatabaseCheckerInterface
         $this->basicContext = $basicContext;
     }
 
-    /**
-     * @param string $host
-     * @param int    $port
-     * @param string $user
-     * @param string $password
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function checkIfDatabaseExistsAndNotEmpty(
+    /** @inheritDoc */
+    public function canCreateDatabase(
         string $host,
         int $port,
         string $user,
         string $password,
         string $name
-    ): bool {
+    ): void {
         try {
             $connection = $this->getDatabaseConnection($host, $port, $user, $password);
-
             $connection->exec("USE `{$name}`");
-
             $connection->exec('SELECT 1 FROM ' . $this->basicContext->getConfigTableName() . ' LIMIT 1');
         } catch (\PDOException $exception) {
-            return false;
+            return;
         }
-
-        return true;
+        throw new DatabaseExistsAndNotEmptyException("Database `$name` already exists and is not empty");
     }
 
     /**

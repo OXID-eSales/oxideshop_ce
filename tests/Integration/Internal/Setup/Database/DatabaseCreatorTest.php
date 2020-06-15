@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseAlreadyExistsException;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreator;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
 use OxidEsales\Facts\Config\ConfigFile;
@@ -75,7 +75,7 @@ class DatabaseCreatorTest extends TestCase
             $this->params['dbName']
         );
 
-        $this->expectException(DatabaseAlreadyExistsException::class);
+        $this->expectException(DatabaseExistsException::class);
         $this->databaseCreator->createDatabase(
             $this->params['dbHost'],
             $this->params['dbPort'],

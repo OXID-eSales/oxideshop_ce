@@ -5,26 +5,25 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
+
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 
 interface DatabaseCheckerInterface
 {
     /**
      * @param string $host
-     * @param int    $port
+     * @param int $port
      * @param string $user
      * @param string $password
      * @param string $name
-     *
-     * @return bool
+     * @throws DatabaseExistsAndNotEmptyException
      */
-    public function checkIfDatabaseExistsAndNotEmpty(
+    public function canCreateDatabase(
         string $host,
         int $port,
         string $user,
         string $password,
         string $name
-    ): bool;
+    ): void;
 }

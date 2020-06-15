@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseChecker;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
@@ -19,24 +20,36 @@ class DatabaseCheckerTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testCheckIfDatabaseExistsAndNotEmpty(): void
+    public function testCanCreateDatabaseWithExistingDatabaseWillThrow(): void
     {
         $configFile = new ConfigFile();
-        $dbHost = $configFile->getVar('dbHost');
-        $dbPort =  $configFile->getVar('dbPort');
-        $dbUser = $configFile->getVar('dbUser');
-        $dbPwd = $configFile->getVar('dbPwd');
-        $dbName = $configFile->getVar('dbName');
+        $existingDatabaseName = $configFile->getVar('dbName');
 
-        $basicContext = $this->get(BasicContextInterface::class);
-        $databaseChecker = new DatabaseChecker($basicContext);
+        $this->expectException(DatabaseExistsAndNotEmptyException::class);
 
-        $this->assertTrue(
-            $databaseChecker->checkIfDatabaseExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, $dbName)
-        );
+        (new DatabaseChecker($this->get(BasicContextInterface::class)))
+            ->canCreateDatabase(
+                $configFile->getVar('dbHost'),
+                $configFile->getVar('dbPort'),
+                $configFile->getVar('dbUser'),
+                $configFile->getVar('dbPwd'),
+                $existingDatabaseName
+            );
+    }
 
-        $this->assertFalse(
-            $databaseChecker->checkIfDatabaseExistsAndNotEmpty($dbHost, $dbPort, $dbUser, $dbPwd, 'testCheckIfDbExistsAndNotEmpty')
-        );
+    /** @doesNotPerformAssertions */
+    public function testCanCreateDatabaseWithNewDatabaseName(): void
+    {
+        $configFile = new ConfigFile();
+        $nonExistingDatabaseName = uniqid('some-string-', true);
+
+        (new DatabaseChecker($this->get(BasicContextInterface::class)))
+            ->canCreateDatabase(
+                $configFile->getVar('dbHost'),
+                $configFile->getVar('dbPort'),
+                $configFile->getVar('dbUser'),
+                $configFile->getVar('dbPwd'),
+                $nonExistingDatabaseName
+            );
     }
 }

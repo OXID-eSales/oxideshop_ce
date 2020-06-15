@@ -14,9 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailExcept
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
@@ -113,14 +113,14 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
-        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
+        $this->databaseChecker->canCreateDatabase(
             self::HOST,
             self::PORT,
             self::DB_USER,
             self::DB_PASS,
             self::DB
         )
-            ->willReturn(true);
+            ->willThrow(DatabaseExistsAndNotEmptyException::class);
 
         $this->expectException(DatabaseExistsAndNotEmptyException::class);
 
@@ -143,14 +143,6 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
-        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
-            self::HOST,
-            self::PORT,
-            self::DB_USER,
-            self::DB_PASS,
-            self::DB
-        )
-            ->willReturn(false);
         $this->shopStateService->isLaunched()
             ->willReturn(true);
 
@@ -176,15 +168,6 @@ final class ShopSetupCommandTest extends TestCase
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
-
-        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
-            self::HOST,
-            self::PORT,
-            self::DB_USER,
-            self::DB_PASS,
-            self::DB
-        )
-            ->willReturn(false);
         $this->shopStateService->isLaunched()
             ->willReturn(false);
 
@@ -211,14 +194,6 @@ final class ShopSetupCommandTest extends TestCase
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
-        $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
-            self::HOST,
-            self::PORT,
-            self::DB_USER,
-            self::DB_PASS,
-            self::DB
-        )
-            ->willReturn(false);
         $this->shopStateService->isLaunched()
             ->willReturn(false);
 

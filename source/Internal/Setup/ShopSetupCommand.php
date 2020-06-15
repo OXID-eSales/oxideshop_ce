@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailExcept
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseChecker;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
@@ -235,18 +235,13 @@ class ShopSetupCommand extends Command
      */
     private function validateDatabaseName(InputInterface $input): void
     {
-        $dbExists = $this->databaseChecker->checkIfDatabaseExistsAndNotEmpty(
+        $this->databaseChecker->canCreateDatabase(
             $input->getOption(self::DB_HOST),
             (int)$input->getOption(self::DB_PORT),
             $input->getOption(self::DB_USER),
             $input->getOption(self::DB_PASSWORD),
             $input->getOption(self::DB_NAME)
         );
-        if ($dbExists) {
-            throw new DatabaseExistsAndNotEmptyException(
-                sprintf('Database `%s` already exists and is not empty', $input->getOption(self::DB_NAME))
-            );
-        }
     }
 
     /** @throws ShopIsLaunchedException */

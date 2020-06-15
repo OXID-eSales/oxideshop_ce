@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseAlreadyExistsException;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
 use PDO;
 
@@ -31,7 +31,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
      * @param string $password
      * @param string $name
      *
-     * @throws DatabaseAlreadyExistsException
+     * @throws DatabaseExistsException
      * @throws DatabaseConnectionException
      */
     public function createDatabase(string $host, int $port, string $username, string $password, string $name): void
@@ -39,7 +39,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
         $this->getDatabaseConnection($host, $port, $username, $password);
 
         if ($this->isDatabaseExist($name)) {
-            throw new DatabaseAlreadyExistsException();
+            throw new DatabaseExistsException();
         }
 
         $this->dbConnection->exec('CREATE DATABASE ' . $name . ' CHARACTER SET utf8 COLLATE utf8_general_ci;');

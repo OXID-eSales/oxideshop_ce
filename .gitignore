@@ -38,4 +38,4 @@
 .DS_Store
 
 # DI for modules and packages
-/var/generated_services.yaml
+/var/generated/generated_services.yaml

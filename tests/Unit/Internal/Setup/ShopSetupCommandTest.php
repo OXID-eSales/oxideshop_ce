@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\Admin\CredentialsValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\DbExistsAndNotEmptyException;
@@ -84,16 +83,13 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester->execute([]);
     }
 
-    public function testExecuteWitInvalidAdminEmailWillExitEarly(): void
+    public function testExecuteWitInvalidAdminEmailWillThrow(): void
     {
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(false);
 
         $this->expectException(InvalidEmailException::class);
-
-        $this->databaseInstall->install(self::HOST, self::PORT, self::DB_USER, self::DB_PASS, self::DB)
-            ->shouldNotBeCalled();
 
         $this->commandTester->execute([
             '--db-host' => self::HOST,

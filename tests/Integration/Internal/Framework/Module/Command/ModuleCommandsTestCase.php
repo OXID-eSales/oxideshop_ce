@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\Conso
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
@@ -70,5 +71,16 @@ class ModuleCommandsTestCase extends TestCase
                     Path::join($this->modulesPath, $this->moduleId)
                 )
             );
+    }
+
+    protected function executeCommand(array $input): void
+    {
+        $app = $this->getApplication();
+
+        $this->execute(
+            $app,
+            $this->get('oxid_esales.console.commands_provider.services_commands_provider'),
+            new ArrayInput($input)
+        );
     }
 }

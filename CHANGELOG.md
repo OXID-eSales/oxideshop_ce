@@ -161,6 +161,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Improve oxseo::OXOBJECTID index to fit current queries [PR-466](https://github.com/OXID-eSales/oxideshop_ce/pull/466)
 - Replaced BC classes with namespaced ones [PR-772](https://github.com/OXID-eSales/oxideshop_ce/pull/772)
 - Ensure out/pictures/generated directory existance [PR-789](https://github.com/OXID-eSales/oxideshop_ce/pull/789)
+- Fix generated_services file path in gitignore [PR-808](https://github.com/OXID-eSales/oxideshop_ce/pull/808)
 - Improved various docs, variable and other coding style problems:
     - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
     - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)

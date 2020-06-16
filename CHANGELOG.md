@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Performance improvement of Field class [PR-771](https://github.com/OXID-eSales/oxideshop_ce/pull/771)
 - Psalm static analysis tool [PR-766](https://github.com/OXID-eSales/oxideshop_ce/pull/766)
 - New module configuration option `moduleSource`
+- Console Shop installer
 
 ### Changed
 - Source/Application/views/admin/tpl/shop_license.tpl

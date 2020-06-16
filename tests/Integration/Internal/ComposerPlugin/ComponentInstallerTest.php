@@ -21,7 +21,7 @@ class ComponentInstallerTest extends TestCase
 {
     use ContainerTrait;
 
-    private $servicesFilePath = __DIR__ . '/Fixtures/services.yaml';
+    private $servicesFilePath = 'Fixtures/services.yaml';
 
     public function tearDown()
     {

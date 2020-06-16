@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\PathUtil\Path;
 
 class ModuleServicesActivationServiceTest extends TestCase
 {
@@ -114,7 +115,7 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->shopActivationService->activateModuleServices($this->testModuleId, 4);
         $this->shopActivationService->activateModuleServices($this->testModuleId, 5);
 
-        $this->assertProjectYamlHasImport($this->getTestModuleServiceYamlPath());
+        $this->assertProjectYamlHasImport($this->getRelativeTestServiceYamlPath());
         $this->assertModuleServiceIsActiveForShops('testEventSubscriber', [1,4,5]);
     }
 
@@ -167,7 +168,7 @@ class ModuleServicesActivationServiceTest extends TestCase
 
         $projectConfig = new DIConfigWrapper([
             'imports' => [
-                ['resource' => $this->getTestModuleServiceYamlPath()]
+                ['resource' => $this->getRelativeTestServiceYamlPath()]
             ],
             'services' => [
                 'testEventSubscriber' => [
@@ -251,5 +252,13 @@ class ModuleServicesActivationServiceTest extends TestCase
     private function getTestModuleServiceYamlPath(): string
     {
         return realpath($this->testModuleDirectory . DIRECTORY_SEPARATOR . 'services.yaml');
+    }
+
+    public function getRelativeTestServiceYamlPath(): string
+    {
+        return Path::makeRelative(
+            $this->getTestModuleServiceYamlPath(),
+            Path::getDirectory($this->contextStub->getGeneratedServicesFilePath())
+        );
     }
 }

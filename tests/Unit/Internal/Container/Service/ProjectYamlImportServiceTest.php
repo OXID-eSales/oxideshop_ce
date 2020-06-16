@@ -10,6 +10,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +38,10 @@ class ProjectYamlImportServiceTest extends TestCase
             ->setMethods(['loadProjectConfigFile', 'saveProjectConfigFile', 'loadDIConfigFile'])->getMock();
         $this->savedArray = [];
         $this->dao->method('saveProjectConfigFile')->willReturnCallback([$this, 'getConfigWrapper']);
-        $this->service = new ProjectYamlImportService($this->dao);
+
+        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__);
+        $this->service = new ProjectYamlImportService($this->dao, $context);
     }
 
     public function getConfigWrapper(DIConfigWrapper $config)
@@ -51,7 +55,7 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->service->addImport(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1');
         $resource = $this->savedArray['imports'][0]['resource'];
         $this->assertStringEndsWith(
-            'tests/Unit/Internal/Container/TestModule1/services.yaml',
+            'TestModule1/services.yaml',
             $resource
         );
     }
@@ -74,7 +78,7 @@ class ProjectYamlImportServiceTest extends TestCase
         $resource = $this->savedArray['imports'][0]['resource'];
         $this->assertEquals(1, count($this->savedArray['imports']));
         $this->assertStringEndsWith(
-            'tests/Unit/Internal/Container/TestModule2/services.yaml',
+            'TestModule2/services.yaml',
             $resource
         );
     }

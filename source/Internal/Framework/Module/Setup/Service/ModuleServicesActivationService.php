@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\Services
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\PathUtil\Path;
 
 class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
@@ -87,7 +88,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         };
 
         $projectConfig = $this->dao->loadProjectConfigFile();
-        $projectConfig->addImport($moduleConfigFile);
+        $projectConfig->addImport($this->getRelativeModuleConfigFilePath($moduleConfigFile));
 
         /** @var DIServiceWrapper $service */
         foreach ($moduleConfig->getServices() as $service) {
@@ -129,7 +130,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         $this->cleanupShopAwareServices($projectConfig, $moduleConfig, $shopId);
 
         if ($this->isLastActiveShop($moduleId, $shopId)) {
-            $projectConfig->removeImport($moduleConfigFile);
+            $projectConfig->removeImport($this->getRelativeModuleConfigFilePath($moduleConfigFile));
         }
 
         $this->dao->saveProjectConfigFile($projectConfig);
@@ -201,5 +202,17 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
     {
         return $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId)
             . DIRECTORY_SEPARATOR . 'services.yaml';
+    }
+
+    /**
+     * @param string $moduleConfigFile
+     * @return string
+     */
+    private function getRelativeModuleConfigFilePath(string $moduleConfigFile): string
+    {
+        return Path::makeRelative(
+            $moduleConfigFile,
+            Path::getDirectory($this->context->getGeneratedServicesFilePath())
+        );
     }
 }

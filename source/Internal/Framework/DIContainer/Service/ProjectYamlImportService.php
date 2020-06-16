@@ -10,6 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
@@ -24,13 +27,14 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     private $projectYamlDao;
 
     /**
-     * ProjectYamlImportService constructor.
-     *
-     * @param ProjectYamlDaoInterface $projectYamlDao
+     * @var BasicContextInterface
      */
-    public function __construct(ProjectYamlDaoInterface $projectYamlDao)
+    private $context;
+
+    public function __construct(ProjectYamlDaoInterface $projectYamlDao, BasicContextInterface $context)
     {
         $this->projectYamlDao = $projectYamlDao;
+        $this->context = $context;
     }
 
     /**
@@ -38,9 +42,11 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
      */
     public function addImport(string $serviceDir)
     {
+        if (!realpath($serviceDir)) {
+            throw new NoServiceYamlException();
+        }
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
-
-        $projectConfig->addImport($serviceDir . DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME);
+        $projectConfig->addImport($this->getServiceRelativeFilePath($serviceDir));
 
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
@@ -52,7 +58,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     {
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
 
-        $projectConfig->removeImport($serviceDir . DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME);
+        $projectConfig->removeImport($this->getServiceRelativeFilePath($serviceDir));
 
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
@@ -66,7 +72,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
         $configChanged = false;
         foreach ($projectConfig->getImportFileNames() as $fileName) {
-            if (file_exists($fileName)) {
+            if (file_exists($this->getAbsolutePath($fileName))) {
                 continue;
             }
             $projectConfig->removeImport($fileName);
@@ -76,5 +82,30 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
         if ($configChanged) {
             $this->projectYamlDao->saveProjectConfigFile($projectConfig);
         }
+    }
+
+    /**
+     * @param $fileName
+     * @return string
+     */
+    private function getAbsolutePath($fileName): string
+    {
+        $fileAbsolutePath = Path::makeAbsolute(
+            $fileName,
+            Path::getDirectory($this->context->getGeneratedServicesFilePath())
+        );
+        return $fileAbsolutePath;
+    }
+
+    /**
+     * @param string $serviceDir
+     * @return string
+     */
+    private function getServiceRelativeFilePath(string $serviceDir): string
+    {
+        return Path::makeRelative(
+            $serviceDir . DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME,
+            Path::getDirectory($this->context->getGeneratedServicesFilePath())
+        );
     }
 }

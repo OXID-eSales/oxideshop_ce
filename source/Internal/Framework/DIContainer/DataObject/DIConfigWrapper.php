@@ -9,10 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingServiceException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
 use Psr\Container\ContainerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 
 class DIConfigWrapper
 {

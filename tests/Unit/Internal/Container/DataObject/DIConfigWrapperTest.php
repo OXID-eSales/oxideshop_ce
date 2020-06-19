@@ -52,19 +52,19 @@ class DIConfigWrapperTest extends TestCase
 
     public function testGetAllImportFileNames()
     {
-        $configArray = ['imports' => [['resource' => realpath($this->servicePath1)],
-                                      ['resource' => realpath($this->servicePath2)]]];
+        $configArray = ['imports' => [['resource' => $this->servicePath1],
+                                      ['resource' => $this->servicePath2]]];
 
         $wrapper = new DIConfigWrapper($configArray);
         $names = $wrapper->getImportFileNames();
 
-        $this->assertEquals(realpath($this->servicePath1), $names[0]);
-        $this->assertEquals(realpath($this->servicePath2), $names[1]);
+        $this->assertEquals($this->servicePath1, $names[0]);
+        $this->assertEquals($this->servicePath2, $names[1]);
     }
 
     public function testAddImport()
     {
-        $configArray = ['imports' => [['resource' => realpath($this->servicePath1)]]];
+        $configArray = ['imports' => [['resource' => $this->servicePath1]]];
 
         $wrapper = new DIConfigWrapper($configArray);
         $wrapper->addImport($this->servicePath2);
@@ -79,14 +79,14 @@ class DIConfigWrapperTest extends TestCase
         $wrapper = new DIConfigWrapper($configArray);
         $wrapper->addImport($this->servicePath1);
 
-        $expected = ['imports' => [['resource' => realpath($this->servicePath1)]]];
+        $expected = ['imports' => [['resource' => $this->servicePath1]]];
         $this->assertEquals($expected, $wrapper->getConfigAsArray());
     }
 
     public function testRemoveImport()
     {
-        $configArray = ['imports' => [['resource' => realpath($this->servicePath1)],
-                                      ['resource' => realpath($this->servicePath2)]]];
+        $configArray = ['imports' => [['resource' => $this->servicePath1],
+                                      ['resource' => $this->servicePath2]]];
 
         $wrapper = new DIConfigWrapper($configArray);
         $wrapper->removeImport($this->servicePath1);
@@ -96,7 +96,7 @@ class DIConfigWrapperTest extends TestCase
 
     public function testRemoveLastImport()
     {
-        $configArray = ['imports' => [['resource' => realpath($this->servicePath1)]]];
+        $configArray = ['imports' => [['resource' => $this->servicePath1]]];
 
         $wrapper = new DIConfigWrapper($configArray);
         $wrapper->removeImport($this->servicePath1);

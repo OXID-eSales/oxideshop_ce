@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use Symfony\Component\DependencyInjection\Definition;
 use Webmozart\PathUtil\Path;
 
 class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
@@ -70,7 +69,6 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
         $containerBuilder = new ContainerBuilder($this->basicContext);
         $container = $containerBuilder->getContainer();
         foreach ($container->getDefinitions() as $definitionKey => $definition) {
-            /** @var Definition $definition $isPublic */
             $definition->setPublic(true);
         }
         $container->compile();

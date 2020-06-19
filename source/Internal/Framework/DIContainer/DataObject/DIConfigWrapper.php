@@ -9,10 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingServiceException;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
 use Psr\Container\ContainerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 
 use function array_key_exists;
 
@@ -41,20 +40,17 @@ class DIConfigWrapper
 
     /**
      * @param string $importFilePath
-     * @throws NoServiceYamlException
      * @return void
      */
     public function addImport(string $importFilePath): void
     {
-        $normalizedImportPath = $this->normalizePath($importFilePath);
-
         $this->addSectionIfMissing(static::IMPORTS_SECTION);
         foreach ($this->getImports() as $import) {
-            if ($import[static::RESOURCE_KEY] === $normalizedImportPath) {
+            if ($import[static::RESOURCE_KEY] === $importFilePath) {
                 return;
             }
         }
-        $this->configArray[static::IMPORTS_SECTION][] = [static::RESOURCE_KEY => $normalizedImportPath];
+        $this->configArray[static::IMPORTS_SECTION][] = [static::RESOURCE_KEY => $importFilePath];
     }
 
     /**
@@ -74,15 +70,9 @@ class DIConfigWrapper
      */
     public function removeImport(string $importFilePath)
     {
-        try {
-            $normalizedImportPath = $this->normalizePath($importFilePath);
-        } catch (NoServiceYamlException $e) {
-            $normalizedImportPath = $importFilePath;
-        }
-
         $imports = [];
         foreach ($this->getImports() as $import) {
-            if ($import[static::RESOURCE_KEY] !== $normalizedImportPath) {
+            if ($import[static::RESOURCE_KEY] !== $importFilePath) {
                 $imports[] = $import;
             }
         }
@@ -200,22 +190,6 @@ class DIConfigWrapper
             $services[] = new DIServiceWrapper($serviceKey, $serviceArray);
         }
         return $services;
-    }
-
-    /**
-     * @param string $path
-     *
-     * @return string
-     * @throws NoServiceYamlException
-     */
-    private function normalizePath(string $path)
-    {
-        $realPath = realpath($path);
-        if (!$realPath) {
-            throw new NoServiceYamlException();
-        }
-
-        return $realPath;
     }
 
     /**

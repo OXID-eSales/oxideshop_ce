@@ -195,6 +195,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - jQuery UI updated to v1.12.1
+- Imports in `generated_services.yaml` changed from absolute paths to relative  
 
 ### Deprecated
 - News feature:

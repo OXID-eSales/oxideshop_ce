@@ -84,6 +84,8 @@ class WishListCest
         $start = new Start($I);
         $I->wantToTest('user wish list functionality, if a variant of product was added');
 
+        $I->updateConfigInDatabase('blUseMultidimensionVariants', true, 'bool');
+
         $productData = [
             'id' => '10014',
             'title' => '14 EN product šÄßüл',
@@ -93,37 +95,43 @@ class WishListCest
 
         $userData = $this->getExistingUserData();
 
-        $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword']);
+        try {
+            $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword']);
 
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see('14 EN product šÄßüл');
-        //add parent to wish list
-        $wishListPage = $detailsPage->addToWishList()
-            ->selectVariant(1, 'S')
-            ->selectVariant(2, 'black')
-            ->selectVariant(3, 'lether')
-            ->addToWishList()
-            ->openAccountMenu()
-            ->checkWishListItemCount(2)
-            ->closeAccountMenu()
-            ->openUserWishListPage()
-            ->seeProductData($productData);
-
-        //assert variant
-        $productData = [
-            'id' => '10014-1-1',
-            'title' => '14 EN product šÄßüл S | black | lether',
-            'description' => '',
-            'price' => '25,00 €'
-        ];
-        $wishListPage->seeProductData($productData, 2);
-
-        $wishListPage->removeProductFromList(2)
-            ->removeProductFromList(1);
-
-        $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
-        $I->see(Translator::translate('WISH_LIST_EMPTY'));
+            //open details page
+            $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+            $I->see('14 EN product šÄßüл');
+            //add parent to wish list
+            $wishListPage = $detailsPage->addToWishList()
+                ->selectVariant(1, 'S')
+                ->selectVariant(2, 'black')
+                ->selectVariant(3, 'lether')
+                ->addToWishList()
+                ->openAccountMenu()
+                ->checkWishListItemCount(2)
+                ->closeAccountMenu()
+                ->openUserWishListPage()
+                ->seeProductData($productData);
+    
+            //assert variant
+            $productData = [
+                'id' => '10014-1-1',
+                'title' => '14 EN product šÄßüл S | black | lether',
+                'description' => '',
+                'price' => '25,00 €'
+            ];
+            $wishListPage->seeProductData($productData, 2);
+    
+            $wishListPage->removeProductFromList(2)
+                ->removeProductFromList(1);
+    
+            $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
+            $I->see(Translator::translate('WISH_LIST_EMPTY'));
+        } catch (\Throwable $th) {
+            throw $th;
+        } finally {
+            $I->updateConfigInDatabase('blUseMultidimensionVariants', false, 'bool');
+        }
     }
 
     private function getExistingUserData()

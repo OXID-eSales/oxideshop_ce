@@ -506,13 +506,21 @@ final class ProductDetailsPageCest
             'price' => 'from 15,00 €'
         ];
 
-        $searchListPage = $I->openShop()
+        try {
+            $searchListPage = $I->openShop()
             ->searchFor($productData['id']);
 
-        $searchListPage->seeProductData($productData, 1);
+            $searchListPage->seeProductData($productData, 1);
 
-        $detailsPage = $searchListPage->selectVariant(1, 'M');
-        $detailsPage->seeProductData($productData);
+            $detailsPage = $searchListPage->selectVariant(1, 'M');
+            $detailsPage->seeProductData($productData);
+        } catch (\Throwable $th) {
+            throw $th;
+        } finally {
+            $I->updateConfigInDatabase('blUseMultidimensionVariants', false, 'bool');
+            $I->updateConfigInDatabase('bl_perfLoadSelectListsInAList', false, 'bool');
+            $I->updateConfigInDatabase('bl_perfLoadSelectLists', false, 'bool');
+        }
     }
 
     /**

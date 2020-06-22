@@ -87,14 +87,14 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester->execute([]);
     }
 
-    public function testExecuteWithShopAlreadyLaunchedWillThrow(): void
+    public function testExecuteWithShopAlreadyLaunched(): void
     {
         $this->shopStateService->isLaunched()
             ->willReturn(true);
 
         $this->expectException(ShopIsLaunchedException::class);
 
-        $act = $this->commandTester->execute([
+        $this->commandTester->execute([
             '--db-host' => self::HOST,
             '--db-port' => self::PORT,
             '--db-name' => self::DB . uniqid('_', false),
@@ -109,7 +109,7 @@ final class ShopSetupCommandTest extends TestCase
         ]);
     }
 
-    public function testExecuteWithConfigNotEditableWillThrow(): void
+    public function testExecuteWithConfigNotEditable(): void
     {
         $this->shopStateService->isLaunched()
             ->willReturn(false);
@@ -118,7 +118,7 @@ final class ShopSetupCommandTest extends TestCase
 
         $this->expectException(FileNotEditableException::class);
 
-        $act = $this->commandTester->execute([
+        $this->commandTester->execute([
             '--db-host' => self::HOST,
             '--db-port' => self::PORT,
             '--db-name' => self::DB . uniqid('_', false),
@@ -133,7 +133,7 @@ final class ShopSetupCommandTest extends TestCase
         ]);
     }
 
-    public function testExecuteWitInvalidAdminEmailWillThrow(): void
+    public function testExecuteWitInvalidAdminEmail(): void
     {
         $this->shopStateService->isLaunched()
             ->willReturn(false);
@@ -158,7 +158,7 @@ final class ShopSetupCommandTest extends TestCase
         ]);
     }
 
-    public function testExecuteWithExistingDbWillThrow(): void
+    public function testExecuteWithExistingDb(): void
     {
         $this->shopStateService->isLaunched()
             ->willReturn(false);
@@ -198,7 +198,7 @@ final class ShopSetupCommandTest extends TestCase
         $this->shopStateService->isLaunched()
             ->willReturn(false);
 
-        $act = $this->commandTester->execute([
+        $exitCode = $this->commandTester->execute([
             '--db-host' => self::HOST,
             '--db-port' => self::PORT,
             '--db-name' => self::DB,
@@ -213,7 +213,7 @@ final class ShopSetupCommandTest extends TestCase
         ]);
 
         $this->assertServiceCallsWithCompleteArgs();
-        $this->assertSame(0, $act);
+        $this->assertSame(0, $exitCode);
     }
 
     public function testExecuteWithMissingOptionalArgs(): void
@@ -225,7 +225,7 @@ final class ShopSetupCommandTest extends TestCase
             ->willReturn(false);
 
 
-        $act = $this->commandTester->execute([
+        $exitCode = $this->commandTester->execute([
             '--db-host' => self::HOST,
             '--db-port' => self::PORT,
             '--db-name' => self::DB,
@@ -239,7 +239,7 @@ final class ShopSetupCommandTest extends TestCase
         ]);
 
         $this->assertServiceCallsWithOptionalArgs();
-        $this->assertSame(0, $act);
+        $this->assertSame(0, $exitCode);
     }
 
     private function createCommand(): Command

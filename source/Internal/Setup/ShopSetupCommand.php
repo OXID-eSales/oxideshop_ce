@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInte
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Command\NamedArgumentsTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidatorInterface;
@@ -96,18 +95,6 @@ class ShopSetupCommand extends Command
      */
     private $basicContext;
 
-    /**
-     * @param DatabaseCheckerInterface $databaseChecker
-     * @param DatabaseInstallerInterface $databaseInstaller
-     * @param EmailValidatorServiceInterface $emailValidatorService
-     * @param ConfigFileDaoInterface $configFileDao
-     * @param DirectoryValidatorInterface $directoriesValidator
-     * @param LanguageInstallerInterface $languageInstaller
-     * @param HtaccessUpdaterInterface $htaccessUpdateService
-     * @param AdminUserServiceInterface $adminService
-     * @param ShopStateServiceInterface $shopStateService
-     * @param BasicContextInterface $basicContext
-     */
     public function __construct(
         DatabaseCheckerInterface $databaseChecker,
         DatabaseInstallerInterface $databaseInstaller,
@@ -155,16 +142,6 @@ class ShopSetupCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
-     * @throws ConfigFile\ConfigFileNotFoundException
-     * @throws ConfigFile\FileNotEditableException
-     * @throws DatabaseExistsAndNotEmptyException
-     * @throws Directory\Exception\NoPermissionDirectoryException
-     * @throws Directory\Exception\NonExistenceDirectoryException
-     * @throws Directory\Exception\NotAbsolutePathException
-     * @throws \InvalidArgumentException
-     * @throws InvalidEmailException
-     * @throws Language\IncorrectLanguageException
-     * @throws ShopIsLaunchedException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -195,15 +172,6 @@ class ShopSetupCommand extends Command
 
     /**
      * @param InputInterface $input
-     * @throws ConfigFile\ConfigFileNotFoundException
-     * @throws ConfigFile\FileNotEditableException
-     * @throws DatabaseExistsAndNotEmptyException
-     * @throws Directory\Exception\NoPermissionDirectoryException
-     * @throws Directory\Exception\NonExistenceDirectoryException
-     * @throws Directory\Exception\NotAbsolutePathException
-     * @throws InvalidEmailException
-     * @throws Language\IncorrectLanguageException
-     * @throws ShopIsLaunchedException
      */
     private function runPreSetupChecks(InputInterface $input): void
     {
@@ -233,10 +201,7 @@ class ShopSetupCommand extends Command
         }
     }
 
-    /**
-     * @param InputInterface $input
-     * @throws DatabaseExistsAndNotEmptyException
-     */
+    /** @param InputInterface $input */
     private function checkCanCreateDatabase(InputInterface $input): void
     {
         $this->databaseChecker->canCreateDatabase(
@@ -248,13 +213,7 @@ class ShopSetupCommand extends Command
         );
     }
 
-    /**
-     * @param InputInterface $input
-     * @throws Directory\Exception\NoPermissionDirectoryException
-     * @throws Directory\Exception\NonExistenceDirectoryException
-     * @throws Directory\Exception\NotAbsolutePathException
-     * @throws Language\IncorrectLanguageException
-     */
+    /** @param InputInterface $input */
     private function checkDirectories(InputInterface $input): void
     {
         $this->directoriesValidator->checkPathIsAbsolute(
@@ -270,11 +229,7 @@ class ShopSetupCommand extends Command
         $this->getLanguage($input);
     }
 
-    /**
-     * @param InputInterface $input
-     * @throws ConfigFile\ConfigFileNotFoundException
-     * @throws ConfigFile\FileNotEditableException
-     */
+    /** @param InputInterface $input */
     private function updateConfigFile(InputInterface $input): void
     {
         $this->configFileDao->replacePlaceholder('sShopURL', $input->getOption(self::SHOP_URL));
@@ -282,9 +237,7 @@ class ShopSetupCommand extends Command
         $this->configFileDao->replacePlaceholder('sCompileDir', $input->getOption(self::COMPILE_DIRECTORY));
     }
 
-    /**
-     * @param InputInterface $input
-     */
+    /** @param InputInterface $input */
     private function installDatabase(InputInterface $input): void
     {
         $this->databaseInstaller->install(
@@ -299,16 +252,13 @@ class ShopSetupCommand extends Command
     /**
      * @param InputInterface $input
      * @return DefaultLanguage
-     * @throws Language\IncorrectLanguageException
      */
     private function getLanguage(InputInterface $input): DefaultLanguage
     {
         return new DefaultLanguage($input->getOption(self::LANGUAGE));
     }
 
-    /**
-     * @param InputInterface $input
-     */
+    /** @param InputInterface $input */
     private function createAdmin(InputInterface $input): void
     {
         $this->adminService->createAdmin(

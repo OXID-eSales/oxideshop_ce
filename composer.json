@@ -28,7 +28,7 @@
     },
     "require-dev": {
         "oxid-esales/flow-theme": "^v3.4.1",
-        "oxid-esales/oxideshop-doctrine-migration-wrapper": "^v3.0.0",
+        "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-b-3.x",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
         "oxid-esales/oxideshop-composer-plugin": "dev-b-6.x",

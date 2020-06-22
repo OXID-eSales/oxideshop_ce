@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\BasketItem;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Session manager.
@@ -137,6 +138,17 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected $_aPersistentParams = ["actshop", "lang", "currency", "language", "tpllanguage"];
 
     /**
+     * Order steps which should not accept force_sid
+     *
+     * @var array
+     */
+    private $orderControllers = [
+        'payment',
+        'order',
+        'thankyou'
+    ];
+
+    /**
      * Returns session ID
      *
      * @return string
@@ -193,19 +205,22 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getSidFromRequest()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $sid = null;
 
-        $sForceSidParam = $myConfig->getRequestParameter($this->getForcedName());
-        $sSidParam = $myConfig->getRequestParameter($this->getName());
+        $forceSidParam = null;
+        if (!in_array($myConfig->getRequestParameter('cl'), $this->orderControllers)) {
+            $forceSidParam = $myConfig->getRequestParameter($this->getForcedName());
+        }
+        $sidParam = $myConfig->getRequestParameter($this->getName());
 
         //forcing sid for SSL<->nonSSL transitions
-        if ($sForceSidParam) {
-            $sid = $sForceSidParam;
+        if ($forceSidParam) {
+            $sid = $forceSidParam;
         } elseif ($this->_getSessionUseCookies() && $this->_getCookieSid()) {
             $sid = $this->_getCookieSid();
-        } elseif ($sSidParam) {
-            $sid = $sSidParam;
+        } elseif ($sidParam) {
+            $sid = $sidParam;
         }
 
         return $sid;
@@ -247,11 +262,11 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
                 $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
                 if ($this->_sErrorMsg && $myConfig->getConfigParam('iDebug')) {
-                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
+                    Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
                 }
             } elseif (!$blSwapped) {
                 // transferring cookies between hosts
-                \OxidEsales\Eshop\Core\Registry::getUtilsServer()->loadSessionCookies();
+                Registry::getUtilsServer()->loadSessionCookies();
             }
         }
     }
@@ -301,7 +316,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _initNewSessionChallenge() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->setVariable('sess_stoken', sprintf('%X', crc32(\OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID())));
+        $this->setVariable('sess_stoken', sprintf('%X', crc32(Registry::getUtilsObject()->generateUID())));
     }
 
     /**
@@ -356,7 +371,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $this->_initNewSessionChallenge();
 
         // (re)setting actual user agent when initiating new session
-        $this->setVariable("sessionagent", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar('HTTP_USER_AGENT'));
+        $this->setVariable("sessionagent", Registry::getUtilsServer()->getServerVar('HTTP_USER_AGENT'));
     }
 
     /**
@@ -368,7 +383,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             $this->_sessionStart();
 
             // (re)setting actual user agent when initiating new session
-            $this->setVariable("sessionagent", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar('HTTP_USER_AGENT'));
+            $this->setVariable("sessionagent", Registry::getUtilsServer()->getServerVar('HTTP_USER_AGENT'));
         }
 
         $sessionId = $this->_getNewSessionId(false);
@@ -479,7 +494,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $blUseCookies = $this->_getSessionUseCookies();
         $sRet = '';
 
-        $blDisableSid = \OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()
+        $blDisableSid = Registry::getUtils()->isSearchEngine()
                         && is_array($myConfig->getConfigParam('aCacheViews'))
                         && !$this->isAdmin();
 
@@ -635,7 +650,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        $iCurrLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $iCurrLang = Registry::getLang()->getBaseLanguage();
         foreach ($aCurrContent as $oContent) {
             if ($oContent->getLanguageId() != $iCurrLang) {
                 $oContent->setLanguageId($iCurrLang);
@@ -709,9 +724,9 @@ class Session extends \OxidEsales\Eshop\Core\Base
             $this->_blSidNeeded = false;
 
             // no SIDs for search engines
-            if (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
+            if (!Registry::getUtils()->isSearchEngine()) {
                 // cookie found - SID is not needed
-                if (\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName())) {
+                if (Registry::getUtilsServer()->getOxCookie($this->getName())) {
                     $this->_blSidNeeded = false;
                 } elseif ($this->_forceSessionStart()) {
                     $this->_blSidNeeded = true;
@@ -807,7 +822,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _forceSessionStart() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) && (((bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blForceSessionStart')) || \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
+        return (!Registry::getUtils()->isSearchEngine()) && (((bool) Registry::getConfig()->getConfigParam('blForceSessionStart')) || Registry::getConfig()->getRequestParameter("su") || $this->_blForceNewSession);
     }
 
     /**
@@ -823,16 +838,16 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         // special handling only in non-admin mode
         if (!$this->isAdmin()) {
-            if (\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine() || $myConfig->getRequestParameter('skipSession')) {
+            if (Registry::getUtils()->isSearchEngine() || $myConfig->getRequestParameter('skipSession')) {
                 $blAllowSessionStart = false;
-            } elseif (\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxid_' . $myConfig->getShopId() . '_autologin') === '1') {
+            } elseif (Registry::getUtilsServer()->getOxCookie('oxid_' . $myConfig->getShopId() . '_autologin') === '1') {
                 $blAllowSessionStart = true;
-            } elseif (!$this->_forceSessionStart() && !\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('sid_key')) {
+            } elseif (!$this->_forceSessionStart() && !Registry::getUtilsServer()->getOxCookie('sid_key')) {
                 // session is not needed to start when it is not necessary:
                 // - no sid in request and also user executes no session connected action
                 // - no cookie set and user executes no session connected action
                 if (
-                    !\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName()) &&
+                    !Registry::getUtilsServer()->getOxCookie($this->getName()) &&
                     !($myConfig->getRequestParameter($this->getName()) || $myConfig->getRequestParameter($this->getForcedName())) &&
                     !$this->_isSessionRequiredAction()
                 ) {
@@ -855,11 +870,11 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function _isSwappedClient() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blSwapped = false;
-        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
+        $myUtilsServer = Registry::getUtilsServer();
 
         // check only for non search engines
-        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine() && !$myUtilsServer->isTrustedClientIp() && !$this->_isValidRemoteAccessToken()) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        if (!Registry::getUtils()->isSearchEngine() && !$myUtilsServer->isTrustedClientIp() && !$this->_isValidRemoteAccessToken()) {
+            $myConfig = Registry::getConfig();
 
             // checking if session user agent matches actual
             $blSwapped = $this->_checkUserAgent($myUtilsServer->getServerVar('HTTP_USER_AGENT'), $this->getVariable('sessionagent'));
@@ -888,7 +903,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         $blCheck = false;
         // processing
-        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
+        $oUtils = Registry::getUtilsServer();
         $sAgent = $oUtils->processUserAgentInfo($sAgent);
         $sExistingAgent = $oUtils->processUserAgentInfo($sExistingAgent);
 
@@ -946,7 +961,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         //if we have no cookie then try to set it
         if (!$sCookieSid) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('sid_key', 'oxid');
+            Registry::getUtilsServer()->setOxCookie('sid_key', 'oxid');
         }
 
         return $blSwapped;
@@ -997,7 +1012,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getCookieSid() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie($this->getName());
+        return Registry::getUtilsServer()->getOxCookie($this->getName());
     }
 
     /**

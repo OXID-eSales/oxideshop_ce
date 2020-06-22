@@ -411,6 +411,27 @@ final class CheckoutProcessCest
             ->validateUserDeliveryAddress($userShippingAddress);
     }
 
+    public function checkForceIdDisabledDuringCheckout(AcceptanceTester $I): void
+    {
+        $I->wantToTest('Change session during payment');
+
+        $basket = new Basket($I);
+        $userRegistration = new UserRegistrationInCheckout($I);
+        $email1 = 'abc@def.gh';
+
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 10);
+        $userRegistration->createNotRegisteredUserInCheckout(
+            $email1,
+            $this->getUserFormData(),
+            $this->getUserAddressFormData()
+        );
+
+        $userSid = $I->grabCookie('sid');
+        $I->amOnPage('/index.php?cl=payment&new_user=1&success=1&force_sid=pdgfk373csd38v3uhm02mo4qeu');
+
+        $I->assertEquals($userSid, $I->grabCookie('sid'));
+    }
+
     /**
      * @return mixed
      */

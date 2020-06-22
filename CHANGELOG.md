@@ -58,6 +58,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `tbclnews_text`
         - `TOOLTIPS_NEWNEWS`
 
+### Security
+- [Bug 7134](https://bugs.oxid-esales.com/view.php?id=7134)
+
 ## [6.5.5] - 2020-05-05
 
 ### Deprecated

@@ -490,6 +490,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         //Output processing - useful for modules as sometimes you may want to process output manually.
         $output = $outputManager->process($output, $view->getClassName());
 
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isProductiveMode()) {
+            return $output;
+        }
+
         return $outputManager->addVersionTags($output);
     }
 

@@ -15,6 +15,13 @@ interface ConfigFileDaoInterface
      * @param string $placeholderName
      * @param string $value
      * @throws ConfigFileNotFoundException
+     * @throws FileNotEditableException
      */
     public function replacePlaceholder(string $placeholderName, string $value): void;
+
+    /**
+     * @throws ConfigFileNotFoundException
+     * @throws FileNotEditableException
+     */
+    public function checkIsEditable(): void;
 }

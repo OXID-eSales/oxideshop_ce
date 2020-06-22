@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Utility\Console\Command;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,8 +22,9 @@ trait NamedArgumentsTrait
     /**
      * @param InputOption[] $inputOptions
      * @param InputInterface $input
+     * @throws \InvalidArgumentException
      */
-    public function validateRequiredOptions(array $inputOptions, InputInterface $input): void
+    public function checkRequiredCommandOptions(array $inputOptions, InputInterface $input): void
     {
         foreach ($inputOptions as $option) {
             $name  = $option->getName();

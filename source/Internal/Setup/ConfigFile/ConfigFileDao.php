@@ -13,9 +13,17 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class ConfigFileDao implements ConfigFileDaoInterface
 {
-    /**
-     * @var BasicContextInterface
-     */
+    private const PLACEHOLDERS = [
+        'dbHost',
+        'dbName',
+        'dbUser',
+        'dbPwd',
+        'sShopURL',
+        'sShopDir',
+        'sCompileDir',
+    ];
+
+    /** @var BasicContextInterface */
     private $context;
 
     public function __construct(BasicContextInterface $context)
@@ -23,17 +31,30 @@ class ConfigFileDao implements ConfigFileDaoInterface
         $this->context = $context;
     }
 
+    /** @inheritDoc */
     public function replacePlaceholder(string $placeholderName, string $value): void
     {
-        $configFileContent = str_replace(
-            "<{$placeholderName}>",
-            $value,
-            $this->getConfigFileContent()
-        );
+        $placeholder = $this->getPlaceholder($placeholderName);
+        $originalContents = $this->getConfigFileContent();
+        $this->checkPlaceholderPresent($placeholder, $originalContents);
+        $replacedContents = str_replace($placeholder, $value, $originalContents);
 
-        file_put_contents($this->context->getConfigFilePath(), $configFileContent);
+        file_put_contents($this->context->getConfigFilePath(), $replacedContents);
     }
 
+    /** @inheritDoc */
+    public function checkIsEditable(): void
+    {
+        $fileContents = $this->getConfigFileContent();
+        foreach (self::PLACEHOLDERS as $placeholderName) {
+            $this->checkPlaceholderPresent($this->getPlaceholder($placeholderName), $fileContents);
+        }
+    }
+
+    /**
+     * @return string
+     * @throws ConfigFileNotFoundException
+     */
     private function getConfigFileContent(): string
     {
         if (!file_exists($this->context->getConfigFilePath())) {
@@ -41,5 +62,26 @@ class ConfigFileDao implements ConfigFileDaoInterface
         }
 
         return file_get_contents($this->context->getConfigFilePath());
+    }
+
+    /**
+     * @param string $placeholderName
+     * @return string
+     */
+    private function getPlaceholder(string $placeholderName): string
+    {
+        return "<{$placeholderName}>";
+    }
+
+    /**
+     * @param string $placeholder
+     * @param string $fileContents
+     * @throws FileNotEditableException
+     */
+    private function checkPlaceholderPresent(string $placeholder, string $fileContents): void
+    {
+        if (strpos($fileContents, $placeholder) === false) {
+            throw new FileNotEditableException("Configuration file is not editable - value for $placeholder can not be set.");
+        }
     }
 }

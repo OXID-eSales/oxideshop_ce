@@ -13,4 +13,4 @@ services:
     OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand:
         class: OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand
         tags:
-            - { name: 'console.command', command: 'oe:setup-shop' }
+            - { name: 'console.command', command: 'oe:setup:shop' }

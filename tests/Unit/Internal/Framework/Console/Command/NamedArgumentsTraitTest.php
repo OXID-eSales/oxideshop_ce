@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Console\Command;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Console\Command;
 
-use OxidEsales\EshopCommunity\Internal\Utility\Console\Command\NamedArgumentsTrait;
+use OxidEsales\EshopCommunity\Internal\Framework\Console\Command\NamedArgumentsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -32,7 +32,7 @@ class NamedArgumentsTraitTest extends TestCase
     /** @doesNotPerformAssertions */
     public function testValidateRequiredOptionsWithEmptyList(): void
     {
-        $this->namedArgumentsTrait->validateRequiredOptions(
+        $this->namedArgumentsTrait->checkRequiredCommandOptions(
             [],
             $this->prophesize(InputInterface::class)->reveal()
         );
@@ -48,7 +48,7 @@ class NamedArgumentsTraitTest extends TestCase
         $input = $this->prophesize(InputInterface::class);
         $input->getOption($optionName)->willReturn(null);
 
-        $this->namedArgumentsTrait->validateRequiredOptions(
+        $this->namedArgumentsTrait->checkRequiredCommandOptions(
             [$option->reveal()],
             $input->reveal()
         );
@@ -64,7 +64,7 @@ class NamedArgumentsTraitTest extends TestCase
         $input = $this->prophesize(InputInterface::class);
         $input->getOption($optionName)->willReturn(0);
 
-        $this->namedArgumentsTrait->validateRequiredOptions(
+        $this->namedArgumentsTrait->checkRequiredCommandOptions(
             [$option->reveal()],
             $input->reveal()
         );
@@ -81,7 +81,7 @@ class NamedArgumentsTraitTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
 
-        $this->namedArgumentsTrait->validateRequiredOptions(
+        $this->namedArgumentsTrait->checkRequiredCommandOptions(
             [$option->reveal()],
             $input->reveal()
         );

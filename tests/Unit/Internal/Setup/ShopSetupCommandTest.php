@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailExcept
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\FileNotEditableException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAndNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface;
@@ -86,8 +87,56 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester->execute([]);
     }
 
+    public function testExecuteWithShopAlreadyLaunchedWillThrow(): void
+    {
+        $this->shopStateService->isLaunched()
+            ->willReturn(true);
+
+        $this->expectException(ShopIsLaunchedException::class);
+
+        $act = $this->commandTester->execute([
+            '--db-host' => self::HOST,
+            '--db-port' => self::PORT,
+            '--db-name' => self::DB . uniqid('_', false),
+            '--db-user' => self::DB_USER,
+            '--db-password' => self::DB_PASS,
+            '--shop-url' => self::URL,
+            '--shop-directory' => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
+            '--admin-email' => self::ADMIN_EMAIL,
+            '--admin-password' => self::ADMIN_PASS,
+            '--language' => self::LANG,
+        ]);
+    }
+
+    public function testExecuteWithConfigNotEditableWillThrow(): void
+    {
+        $this->shopStateService->isLaunched()
+            ->willReturn(false);
+        $this->configFileDao->checkIsEditable()
+            ->willThrow(FileNotEditableException::class);
+
+        $this->expectException(FileNotEditableException::class);
+
+        $act = $this->commandTester->execute([
+            '--db-host' => self::HOST,
+            '--db-port' => self::PORT,
+            '--db-name' => self::DB . uniqid('_', false),
+            '--db-user' => self::DB_USER,
+            '--db-password' => self::DB_PASS,
+            '--shop-url' => self::URL,
+            '--shop-directory' => self::DIR,
+            '--compile-directory' => self::TMP_DIR,
+            '--admin-email' => self::ADMIN_EMAIL,
+            '--admin-password' => self::ADMIN_PASS,
+            '--language' => self::LANG,
+        ]);
+    }
+
     public function testExecuteWitInvalidAdminEmailWillThrow(): void
     {
+        $this->shopStateService->isLaunched()
+            ->willReturn(false);
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(false);
@@ -109,8 +158,10 @@ final class ShopSetupCommandTest extends TestCase
         ]);
     }
 
-    public function testExecuteWithExistingDb(): void
+    public function testExecuteWithExistingDbWillThrow(): void
     {
+        $this->shopStateService->isLaunched()
+            ->willReturn(false);
         $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
             ->willReturn(true);
         $this->databaseChecker->canCreateDatabase(
@@ -125,30 +176,6 @@ final class ShopSetupCommandTest extends TestCase
         $this->expectException(DatabaseExistsAndNotEmptyException::class);
 
         $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB,
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => self::ADMIN_PASS,
-            '--language' => self::LANG,
-        ]);
-    }
-
-    public function testExecuteWithNewDbButShopAlreadyLaunched(): void
-    {
-        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
-            ->willReturn(true);
-        $this->shopStateService->isLaunched()
-            ->willReturn(true);
-
-        $this->expectException(ShopIsLaunchedException::class);
-
-        $act = $this->commandTester->execute([
             '--db-host' => self::HOST,
             '--db-port' => self::PORT,
             '--db-name' => self::DB,

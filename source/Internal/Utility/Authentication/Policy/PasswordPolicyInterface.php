@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy;
 
 interface PasswordPolicyInterface
 {

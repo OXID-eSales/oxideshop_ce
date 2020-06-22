@@ -12,5 +12,5 @@ services:
   OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\BcryptPasswordHashService
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface'
+      - '@OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface'
       - '%oxid_esales.utility.hash.service.password_hash.bcrypt.cost%'

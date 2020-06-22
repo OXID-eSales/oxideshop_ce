@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Authentication\Exception;
 
 class PasswordPolicyException extends \Exception
 {

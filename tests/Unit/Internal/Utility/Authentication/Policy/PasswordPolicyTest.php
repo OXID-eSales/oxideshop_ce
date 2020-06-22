@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Authentication\Policy\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Authentication\Policy;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\PasswordPolicyException;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicy;
+use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Exception\PasswordPolicyException;
+use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicy;
 use PHPUnit\Framework\TestCase;
 
 /**

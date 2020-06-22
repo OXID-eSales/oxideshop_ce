@@ -10,5 +10,5 @@ services:
   OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationService
 
-  OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicyInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy\PasswordPolicy
+  OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface:
+    class: OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicy

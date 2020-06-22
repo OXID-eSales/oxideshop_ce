@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Policy;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\PasswordPolicyException;
+use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Exception\PasswordPolicyException;
 
 class PasswordPolicy implements PasswordPolicyInterface
 {

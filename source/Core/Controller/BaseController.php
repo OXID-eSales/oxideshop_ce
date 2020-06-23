@@ -343,7 +343,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @deprecated since v6.0 (2017-02-3). Use BaseController::getClassId() instead.
+     * @deprecated since v6.0 (2017-02-3). Use BaseController::getClassKey() instead.
      *
      * Returns class name of current class
      *

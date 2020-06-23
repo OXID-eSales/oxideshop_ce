@@ -2103,7 +2103,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      * While ordering disables navigation controls if \OxidEsales\Eshop\Core\Config::blDisableNavBars
      * is on and executes parent::render()
      *
-     * @return null
+     * @return string
      */
     public function render()
     {

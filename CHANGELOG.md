@@ -185,6 +185,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.5.6] - unreleased
 
+### Added
+- Add module migrations
+
 ### Renamed
 - Price alert is renamed to wished price
 

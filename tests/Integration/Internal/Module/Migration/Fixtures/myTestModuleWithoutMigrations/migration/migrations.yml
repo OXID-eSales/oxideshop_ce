@@ -1,0 +1,4 @@
+name: Oxid test moduleWithoutMigrations
+migrations_namespace: OxidEsales\EshopCommunity\Migrations
+table_name: test_module_without_migrations
+migrations_directory: data

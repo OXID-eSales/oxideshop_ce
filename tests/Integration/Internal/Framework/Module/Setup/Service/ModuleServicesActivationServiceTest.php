@@ -237,6 +237,26 @@ class ModuleServicesActivationServiceTest extends TestCase
         $this->shopActivationService->activateModuleServices($this->testModuleId, 1);
     }
 
+    public function testDeactivationWorksIfModuleServiceIsNotInProjectConfiguration(): void
+    {
+        $shopAwareService = TestEventSubscriber::class;
+
+        $emptyProjectConfig = new DIConfigWrapper([]);
+
+        $moduleConfig = new DIConfigWrapper([
+            'services' => [
+                'testEventSubscriber'   => ['class' => $shopAwareService],
+            ],
+        ]);
+
+        $this->projectYamlDao->method('loadProjectConfigFile')->willReturn($emptyProjectConfig);
+        $this->projectYamlDao->method('loadDIConfigFile')->willReturn($moduleConfig);
+
+        $this->moduleStateService->method('isActive')->willReturn(true);
+
+        $this->shopActivationService->deactivateModuleServices($this->testModuleId, 1);
+    }
+
     private function assertProjectYamlHasImport(string $import)
     {
         $this->assertArrayHasKey('imports', $this->projectYamlArray);

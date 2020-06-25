@@ -155,12 +155,11 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         int $shopId
     ) {
         foreach ($moduleConfig->getServices() as $service) {
-            if (!$service->isShopAware()) {
-                continue;
+            if ($service->isShopAware() && $projectConfig->hasService($service->getKey())) {
+                $service = $projectConfig->getService($service->getKey());
+                $service->removeActiveShops([$shopId]);
+                $projectConfig->addOrUpdateService($service);
             }
-            $service = $projectConfig->getService($service->getKey());
-            $service->removeActiveShops([$shopId]);
-            $projectConfig->addOrUpdateService($service);
         }
     }
 

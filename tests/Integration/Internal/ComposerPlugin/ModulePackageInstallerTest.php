@@ -85,6 +85,18 @@ class ModulePackageInstallerTest extends TestCase
         );
     }
 
+    public function testModuleUpdateDoesNotUseMainContainer(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+
+        ContainerFactory::resetContainer();
+        $installer->update($this->modulePackagePath);
+
+        $this->assertFileNotExists(
+            $this->get(ContextInterface::class)->getContainerCacheFilePath()
+        );
+    }
+
     /**
      * @return string
      */

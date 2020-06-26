@@ -1175,16 +1175,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $shopUrl = null;
         if ($this->isAdmin()) {
             if ($c->isSsl()) {
-                // From admin and with SSL we try to use sAdminSSLURL config directive
-                $shopUrl = $c->getConfigParam('sAdminSSLURL');
-                if ($shopUrl) {
-                    // but we don't need the admin directory
-                    $adminDir = '/' . $c->getConfigParam('sAdminDir');
-                    $shopUrl = substr($shopUrl, 0, -strlen($adminDir));
-                } else {
-                    // if no sAdminSSLURL directive were defined we use sSSLShopURL config directive instead
-                    $shopUrl = $c->getConfigParam('sSSLShopURL');
-                }
+                $shopUrl = $c->getConfigParam('sSSLShopURL');
             }
             // From admin and with no config usefull directive, we use the sShopURL directive
             if (!$shopUrl) {

@@ -325,15 +325,16 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sArticleTable = $oBaseObject->getViewName();
 
         $sSelect = "SELECT $sArticleTable.*
-                        FROM $sArticleTable INNER JOIN oxobject2article ON oxobject2article.oxobjectid=$sArticleTable.oxid ";
-        $sSelect .= "WHERE oxobject2article.oxarticlenid = :oxarticlenid ";
-        $sSelect .= " AND " . $oBaseObject->getSqlActiveSnippet();
+            FROM $sArticleTable INNER JOIN oxobject2article ON oxobject2article.oxobjectid=$sArticleTable.oxid 
+            WHERE oxobject2article.oxarticlenid = :oxarticlenid
+              AND {$oBaseObject->getSqlActiveSnippet()} 
+            ORDER BY oxobject2article.oxsort";
 
         // #525 bidirectional cross selling
         if ($myConfig->getConfigParam('blBidirectCross')) {
             $sSelect = "
                 (
-                    SELECT $sArticleTable.* FROM $sArticleTable
+                    SELECT $sArticleTable.*, O2A1.OXSORT as sorting FROM $sArticleTable
                         INNER JOIN oxobject2article AS O2A1 on
                             ( O2A1.oxobjectid = $sArticleTable.oxid AND O2A1.oxarticlenid = :oxarticlenid )
                     WHERE 1
@@ -342,13 +343,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 )
                 UNION
                 (
-                    SELECT $sArticleTable.* FROM $sArticleTable
+                    SELECT $sArticleTable.*, O2A2.OXSORT as sorting FROM $sArticleTable
                         INNER JOIN oxobject2article AS O2A2 ON
                             ( O2A2.oxarticlenid = $sArticleTable.oxid AND O2A2.oxobjectid = :oxarticlenid )
                     WHERE 1
                     AND " . $oBaseObject->getSqlActiveSnippet() . "
                     AND ($sArticleTable.oxid != :oxarticlenid)
-                )";
+                )
+                ORDER BY sorting";
         }
 
         $this->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));

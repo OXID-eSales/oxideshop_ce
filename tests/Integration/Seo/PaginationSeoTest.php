@@ -308,7 +308,8 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $data['old_style_paginated_page'] = ['params'   => $this->seoUrl . '2/',
                                              'expected' => ['cl'   => 'alist',
                                                             'cnid' => $this->categoryOxid,
-                                                            'lang' => '0']
+                                                            'lang' => '0',
+                                                            'pgNr' => 1]
         ];
 
         return $data;

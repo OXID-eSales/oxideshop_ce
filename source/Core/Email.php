@@ -473,7 +473,7 @@ class Email extends PHPMailer
         $this->setMailer("smtp");
 
         if ($shop->oxshops__oxsmtpuser->value) {
-            $this->_setSmtpAuthInfo($shop->oxshops__oxsmtpuser->value, $shop->oxshops__oxsmtppwd->value);
+            $this->_setSmtpAuthInfo($shop->oxshops__oxsmtpuser->value, $shop->oxshops__oxsmtppwd->getRawValue());
         }
 
         if ($myConfig->getConfigParam('iDebug') == 6) {

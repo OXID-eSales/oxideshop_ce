@@ -437,7 +437,7 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * Test case for oxInputValidator::checkPassword()
+     * Test case for oxInputValidator::checkRequiredFields()
      * 1. defining required fields in aMustFillFields. While testing original
      * function must throw an exception that not all required fields are filled
      *
@@ -445,41 +445,37 @@ class InputValidatorTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testCheckRequiredFieldsSomeMissingAccordingToaMustFillFields()
     {
-        $aMustFillFields = array('oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxstreet',
-                                 'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
-                                 'oxuser__oxcountryid',
-                                 'oxaddress__oxfname', 'oxaddress__oxlname', 'oxaddress__oxstreet',
-                                 'oxaddress__oxstreetnr', 'oxaddress__oxzip', 'oxaddress__oxcity',
-                                 'oxaddress__oxcountryid'
-        );
+        $aMustFillFields = [
+            'oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxstreet',
+            'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
+            'oxuser__oxcountryid',
+            'oxaddress__oxfname', 'oxaddress__oxlname', 'oxaddress__oxstreet',
+            'oxaddress__oxstreetnr', 'oxaddress__oxzip', 'oxaddress__oxcity',
+            'oxaddress__oxcountryid'
+        ];
 
         $this->getConfig()->setConfigParam('aMustFillFields', $aMustFillFields);
 
-        $aInvAdress = array();
-        $aDelAdress = array();
+        $aInvAdress = [];
+        $aDelAdress = [
+            'foo' => 'bar'
+        ];
 
-        $oUser = oxNew('oxuser');
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock(\OxidEsales\Eshop\Core\InputValidator::class, array('_addValidationError'));
-        $oValidator->expects($this->at(0))->method('_addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxfname'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
-                )
-            );
-        $oValidator->expects($this->at(1))->method('_addValidationError')
-            ->with(
-                $this->equalTo('oxuser__oxlname'),
-                $this->logicalAnd(
-                    $this->isInstanceOf('oxInputException'),
-                    $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
-                )
-            );
+        $validator = oxNew(\OxidEsales\Eshop\Core\InputValidator::class);
+        $this->assertSame(
+            [],
+            $validator->getFieldValidationErrors()
+        );
 
-        $oValidator->checkRequiredFields($oUser, $aInvAdress, $aDelAdress);
+        $validator->checkRequiredFields($oUser, $aInvAdress, $aDelAdress);
+
+        $this->assertSame(
+            $aMustFillFields,
+            array_keys($validator->getFieldValidationErrors())
+        );
     }
 
     public function testGetPasswordLengthDefaultValue()

@@ -95,7 +95,7 @@ class ModulePackageInstallerTest extends TestCase
         ContainerFactory::resetContainer();
         $installer->update($this->modulePackagePath);
 
-        $this->assertFileNotExists(
+        $this->assertFileDoesNotExist(
             $this->get(ContextInterface::class)->getContainerCacheFilePath()
         );
     }

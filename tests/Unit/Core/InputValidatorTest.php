@@ -319,18 +319,22 @@ class InputValidatorTest extends UnitTestCase
         $user->setId("testlalaa_");
 
         $validator = oxNew(InputValidator::class);
-        $validator->checkRequiredFields($user, [], [1]);
-        
-        $fieldError = $validator->getFirstValidationError();
-        $this->assertInstanceOf(
-            InputException::class,
-            $fieldError
+
+        $this->assertSame(
+            [],
+            \array_keys($validator->getFieldValidationErrors())
         );
 
-        $fieldErrors = $validator->getFieldValidationErrors();
+        $validator->checkRequiredFields($user, [], ['foo' => 'bar']);
+
+        $this->assertInstanceOf(
+            InputException::class,
+            $validator->getFirstValidationError()
+        );
+
         $this->assertSame(
             $mustFillFields,
-            \array_keys($fieldErrors)
+            \array_keys($validator->getFieldValidationErrors())
         );
     }
 

@@ -1373,7 +1373,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     protected function _getUpdateFields($useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $query = '';
-        $useSeparator = false;
+        $separator = '';
 
         foreach (array_keys($this->_aFieldNames) as $oneFieldName) {
             $longName = $this->_getFieldLongName($oneFieldName);
@@ -1384,8 +1384,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             }
 
             if (!$useSkipSaveFields || ($useSkipSaveFields && !in_array(strtolower($oneFieldName), $this->_aSkipSaveFields))) {
-                $query .= (($useSeparator) ? ',' : '') . $oneFieldName . ' = ' . $this->_getUpdateFieldValue($oneFieldName, $field);
-                $useSeparator = true;
+                $query .= $separator . $oneFieldName . ' = ' . $this->_getUpdateFieldValue($oneFieldName, $field);
+                $separator = ',';
             }
         }
 

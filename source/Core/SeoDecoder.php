@@ -81,7 +81,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             $urlParameters = $this->parseStdUrl($resultSet->fields['oxstdurl']);
             $urlParameters['lang'] = $resultSet->fields['oxlang'];
         }
-        if (is_array($urlParameters) && !is_null($pageNumber) && (1 < $pageNumber)) {
+        if (is_array($urlParameters) && !is_null($pageNumber) && ($pageNumber > 0)) {
             $urlParameters['pgNr'] = $pageNumber;
         }
 

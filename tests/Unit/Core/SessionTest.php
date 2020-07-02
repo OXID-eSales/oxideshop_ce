@@ -1049,7 +1049,7 @@ class SessionTest extends \OxidTestCase
         $oSession->expects($this->any())->method('isSidNeeded')->will($this->returnValue(true));
         $oSession->UNITsetSessionId('testSid');
         $sSid = $oSession->hiddenSid();
-        $this->assertEquals('<input type="hidden" name="stoken" value="stok" /><input type="hidden" name="force_sid" value="testSid" />', $sSid);
+        $this->assertEquals('<input type="hidden" name="stoken" value="stok" /><input type="hidden" name="sid" value="testSid" />', $sSid);
     }
 
     /**
@@ -1077,7 +1077,7 @@ class SessionTest extends \OxidTestCase
         $oSession->expects($this->any())->method('isSidNeeded')->will($this->returnValue(true));
         $oSession->UNITsetSessionId('testSid');
         $sSid = $oSession->hiddenSid();
-        $this->assertEquals('<input type="hidden" name="stoken" value="stok" /><input type="hidden" name="force_sid" value="testSid" />', $sSid);
+        $this->assertEquals('<input type="hidden" name="stoken" value="stok" /><input type="hidden" name="sid" value="testSid" />', $sSid);
     }
 
     /**

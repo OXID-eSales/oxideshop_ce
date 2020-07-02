@@ -534,7 +534,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         $sSid = $sToken = '';
         if ($this->isSidNeeded()) {
-            $sSid = "<input type=\"hidden\" name=\"" . $this->getForcedName() . "\" value=\"" . $this->getId() . "\" />";
+            $sSid = "<input type=\"hidden\" name=\"" . $this->getName() . "\" value=\"" . $this->getId() . "\" />";
         }
         if ($this->getId()) {
             $sToken = "<input type=\"hidden\" name=\"stoken\" value=\"" . $this->getSessionChallengeToken() . "\" />";

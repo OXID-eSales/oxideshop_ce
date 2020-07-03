@@ -13,6 +13,7 @@ use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
+use OxidEsales\Facts\Facts;
 
 final class CheckoutProcessCest
 {
@@ -431,6 +432,37 @@ final class CheckoutProcessCest
 
         $I->assertEquals($userSid, $I->grabCookie('sid'));
     }
+
+    public function checkNoSessionCookiesCheckout(AcceptanceTester $I): void
+    {
+        $I->wantToTest('Check if checkout is possible without cookies');
+       
+        file_put_contents(
+            (new Facts())->getShopRootPath() . '/cust_config.inc.php',
+            '<?php $this->blSessionUseCookies = false;'
+        );
+
+        $basket = new Basket($I);
+        $userRegistration = new UserRegistrationInCheckout($I);
+        $email1 = 'abc@def.gh';
+
+        $basket->addProductToBasketAndOpenUserCheckout('1000', 10);
+        $paymentPage = $userRegistration->createNotRegisteredUserInCheckout(
+            $email1,
+            $this->getUserFormData(),
+            $this->getUserAddressFormData()
+        );
+
+        $orderPage = $paymentPage->selectPayment('oxidcashondel')
+            ->goToNextStep();
+
+
+        $orderPage->submitOrder();
+
+        $breadCrumb = Translator::translate('ORDER_COMPLETED');
+        $orderPage->seeOnBreadCrumb($breadCrumb);
+    }
+
 
     /**
      * @return mixed

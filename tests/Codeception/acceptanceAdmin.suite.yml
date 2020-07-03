@@ -26,6 +26,8 @@ modules:
             depends:
               - WebDriver
               - Db
+        - \OxidEsales\Codeception\Module\OxideshopModules:
+             screen_shot_url: '%SCREEN_SHOT_URL%'
         - \OxidEsales\Codeception\Module\OxideshopAdmin:
              screen_shot_url: '%SCREEN_SHOT_URL%'
              depends:

@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.5.7] - unreleased
 
+### Added
+- Add remove module configuration command
+
 ### Deprecated
 - Use of two stars (**) for filter strings in modules composer blacklist-filter.
 

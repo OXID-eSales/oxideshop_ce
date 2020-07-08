@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use oxRegistry;
 use oxField;
 use oxDb;
+use OxidEsales\Eshop\Application\Model\User;
 
 /**
  * Newsletter manager.
@@ -144,8 +145,8 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Creates oxshop object and sets base parameters (such as currency and
      * language).
      *
-     * @param string $sUserid          User ID or OBJECT
-     * @param bool   $blPerfLoadAktion perform option load actions
+     * @param string|User $sUserid          User ID or OBJECT
+     * @param bool        $blPerfLoadAktion perform option load actions
      */
     public function prepare($sUserid, $blPerfLoadAktion = false)
     {
@@ -214,13 +215,13 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Creates oxuser object (user ID passed to method),
      *
-     * @param string $sUserid User ID or OBJECT
+     * @param string|User $sUserid User ID or OBJECT
      * @deprecated underscore prefix violates PSR12, will be renamed to "setUser" in next major
      */
     protected function _setUser($sUserid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (is_string($sUserid)) {
-            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+            $oUser = oxNew(User::class);
             if ($oUser->load($sUserid)) {
                 $this->_oUser = $oUser;
             }

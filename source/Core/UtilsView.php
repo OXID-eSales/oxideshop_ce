@@ -69,7 +69,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * @param bool $blReload set true to force smarty reload
      *
-     * @return smarty
+     * @return Smarty
      */
     public function getSmarty($blReload = false)
     {

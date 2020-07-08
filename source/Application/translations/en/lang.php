@@ -675,6 +675,7 @@ $aLang = [
 'PAGE_DETAILS_THANKYOUMESSAGE2'                               => ' appreciates your comments.',
 'PAGE_DETAILS_THANKYOUMESSAGE3'                               => 'We will inform you as soon as the price falls below',
 'PAGE_DETAILS_THANKYOUMESSAGE4'                               => '.',
+'PAGE_TITLE_START'                                            => 'Home page',
 'PAGE_TITLE_BASKET'                                           => 'Cart',
 'PAGE_TITLE_USER'                                             => 'Shipping address',
 'PAGE_TITLE_PAYMENT'                                          => 'Shipping & payment',

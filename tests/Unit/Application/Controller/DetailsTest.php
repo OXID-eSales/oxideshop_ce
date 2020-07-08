@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\EshopCommunity\Application\Controller\ArticleDetailsController;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\ArticleList;
 use OxidEsales\EshopCommunity\Application\Model\PaymentList;
@@ -1261,11 +1262,10 @@ class DetailsTest extends \OxidTestCase
         $oProduct = oxNew('oxArticle');
         $oProduct->oxarticles__oxtemplate = new oxField('test_template.tpl');
 
-        $oView = $this->getMock($this->getProxyClassName('Details'), array('getProduct'));
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
+        $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertSame('test_template.tpl', $oView->render());
-        $this->assertSame('test_template.tpl', $oView->getNonPublicVar('_sThisTemplate'));
     }
 
     public function testRender_customParamTpl()
@@ -1274,12 +1274,11 @@ class DetailsTest extends \OxidTestCase
         $oProduct->oxarticles__oxtemplate = new oxField('test_template.tpl');
         $this->setRequestParameter('tpl', '../some/path/test_paramtpl.tpl');
 
-        $oView = $this->getMock($this->getProxyClassName('Details'), array('getProduct'));
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
+        $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $sExpected = 'custom/test_paramtpl.tpl';
         $this->assertSame($sExpected, $oView->render());
-        $this->assertSame($sExpected, $oView->getNonPublicVar('_sThisTemplate'));
     }
 
     public function testRender_partial_productinfo()
@@ -1289,8 +1288,8 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('tpl', '../some/path/test_paramtpl.tpl');
         $this->setRequestParameter('renderPartial', 'productInfo');
 
-        $oView = $this->getMock($this->getProxyClassName('Details'), array('getProduct'));
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
+        $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertSame('page/details/ajax/fullproductinfo.tpl', $oView->render());
     }
@@ -1302,8 +1301,8 @@ class DetailsTest extends \OxidTestCase
         $this->setRequestParameter('tpl', '../some/path/test_paramtpl.tpl');
         $this->setRequestParameter('renderPartial', 'detailsMain');
 
-        $oView = $this->getMock($this->getProxyClassName('Details'), array('getProduct'));
-        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
+        $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
         $this->assertSame('page/details/ajax/productmain.tpl', $oView->render());
     }

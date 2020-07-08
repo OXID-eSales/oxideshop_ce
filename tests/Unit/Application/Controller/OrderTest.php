@@ -178,7 +178,10 @@ class OrderTest extends \OxidTestCase
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', true);
 
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+
         $oOrder = oxNew("order");
+        $oOrder->setUser($oUser);
         $oOrder->init();
 
         //test reseting to false config var bl_perfCalcVatOnlyForBasketOrder
@@ -204,6 +207,8 @@ class OrderTest extends \OxidTestCase
         $oBasket->expects($this->once())
             ->method('onUpdate');
 
+        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+
         //basket name in session will be "basket"
         $oConfig->setConfigParam('blMallSharedBasket', 1);
 
@@ -212,6 +217,7 @@ class OrderTest extends \OxidTestCase
         //$this->getSession()->setVariable( 'basket', $oBasket );
 
         $oOrder = oxNew("order");
+        $oOrder->setUser($oUser);
 
         $oOrder->init();
     }

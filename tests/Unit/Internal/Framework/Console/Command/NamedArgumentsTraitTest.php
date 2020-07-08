@@ -12,14 +12,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Console\Comman
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Command\NamedArgumentsTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
 class NamedArgumentsTraitTest extends TestCase
 {
-    use ProphecyTrait;
-
     /** @var NamedArgumentsTrait|MockObject */
     private $namedArgumentsTrait;
 
@@ -34,7 +31,7 @@ class NamedArgumentsTraitTest extends TestCase
     {
         $this->namedArgumentsTrait->checkRequiredCommandOptions(
             [],
-            $this->prophesize(InputInterface::class)->reveal()
+            $this->createMock(InputInterface::class)
         );
     }
 
@@ -42,15 +39,21 @@ class NamedArgumentsTraitTest extends TestCase
     public function testValidateRequiredOptionsWithNonRequiredEmptyValue(): void
     {
         $optionName = 'abc';
-        $option = $this->prophesize(InputOption::class);
-        $option->getName()->willReturn($optionName);
-        $option->isValueRequired()->willReturn(false);
-        $input = $this->prophesize(InputInterface::class);
-        $input->getOption($optionName)->willReturn(null);
+
+        $option = $this->createMock(InputOption::class);
+        $option->method('getName')
+            ->willReturn($optionName);
+        $option->method('isValueRequired')
+            ->willReturn(false);
+
+        $input = $this->createMock(InputInterface::class);
+        $input->method('getOption')
+            ->with($optionName)
+            ->willReturn(null);
 
         $this->namedArgumentsTrait->checkRequiredCommandOptions(
-            [$option->reveal()],
-            $input->reveal()
+            [$option],
+            $input
         );
     }
 
@@ -58,32 +61,44 @@ class NamedArgumentsTraitTest extends TestCase
     public function testValidateRequiredOptionsWithRequiredNonEmptyValue(): void
     {
         $optionName = 'abc';
-        $option = $this->prophesize(InputOption::class);
-        $option->getName()->willReturn($optionName);
-        $option->isValueRequired()->willReturn(true);
-        $input = $this->prophesize(InputInterface::class);
-        $input->getOption($optionName)->willReturn(0);
+
+        $option = $this->createMock(InputOption::class);
+        $option->method('getName')
+            ->willReturn($optionName);
+        $option->method('isValueRequired')
+            ->willReturn(true);
+
+        $input = $this->createMock(InputInterface::class);
+        $input->method('getOption')
+            ->with($optionName)
+            ->willReturn(0);
 
         $this->namedArgumentsTrait->checkRequiredCommandOptions(
-            [$option->reveal()],
-            $input->reveal()
+            [$option],
+            $input
         );
     }
 
     public function testValidateRequiredOptionsWithRequiredEmptyValue(): void
     {
         $optionName = 'abc';
-        $option = $this->prophesize(InputOption::class);
-        $option->getName()->willReturn($optionName);
-        $option->isValueRequired()->willReturn(true);
-        $input = $this->prophesize(InputInterface::class);
-        $input->getOption($optionName)->willReturn(null);
+
+        $option = $this->createMock(InputOption::class);
+        $option->method('getName')
+            ->willReturn($optionName);
+        $option->method('isValueRequired')
+            ->willReturn(true);
+
+        $input = $this->createMock(InputInterface::class);
+        $input->method('getOption')
+            ->with($optionName)
+            ->willReturn(null);
 
         $this->expectException(\InvalidArgumentException::class);
 
         $this->namedArgumentsTrait->checkRequiredCommandOptions(
-            [$option->reveal()],
-            $input->reveal()
+            [$option],
+            $input
         );
     }
 }

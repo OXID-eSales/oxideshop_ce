@@ -692,6 +692,7 @@ $aLang = [
 'PAGE_DETAILS_THANKYOUMESSAGE2'                               => '.',
 'PAGE_DETAILS_THANKYOUMESSAGE3'                               => 'Sie bekommen eine Nachricht von uns sobald der Preis unter',
 'PAGE_DETAILS_THANKYOUMESSAGE4'                               => 'fällt.',
+'PAGE_TITLE_START'                                            => 'Startseite',
 'PAGE_TITLE_BASKET'                                           => 'Warenkorb',
 'PAGE_TITLE_USER'                                             => 'Lieferadresse',
 'PAGE_TITLE_PAYMENT'                                          => 'Versand & Zahlungsart ',

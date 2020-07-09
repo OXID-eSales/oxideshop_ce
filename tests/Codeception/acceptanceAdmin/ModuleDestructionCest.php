@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
-use Codeception\Util\Fixtures;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
-final class ModuleNamespaceCest
+final class ModuleDestructionCest
 {
-    private $testModule1Path = __DIR__ . '/fixtures/modules/WithNamespaceAndMetadataV2';
+    private $testModule1Path = __DIR__ . '/../_data/modules/WithNamespaceAndMetadataV2';
     private $testModule1Id = 'EshopAcceptanceTestModuleNine';
-    private $testModule2Path = __DIR__ . '/fixtures/modules/without_own_module_namespace';
+    private $testModule2Path = __DIR__ . '/../_data/modules/without_own_module_namespace';
     private $testModule2Id = 'without_own_module_namespace';
 
     /** @param AcceptanceAdminTester $I */
@@ -32,6 +31,8 @@ final class ModuleNamespaceCest
     /** @param AcceptanceAdminTester $I */
     public function _after(AcceptanceAdminTester $I)
     {
+        $I->deactivateModule($this->testModule1Id);
+        $I->deactivateModule($this->testModule2Id);
         $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
         $I->uninstallModule($this->testModule2Path, $this->testModule2Id);
     }
@@ -43,7 +44,7 @@ final class ModuleNamespaceCest
         
         exec('rm ' . $I->getShopModulePath($this->testModule1Path) . ' -R');
 
-        $this->checkFrontend($I);
+        $this->checkAdmin($I);
     }
 
     /** @param AcceptanceAdminTester $I */
@@ -56,7 +57,7 @@ final class ModuleNamespaceCest
         $I->deactivateModule($this->testModule1Id);
         exec('rm ' . $I->getShopModulePath($this->testModule1Path) . ' -R');
 
-        $this->checkFrontend($I);
+        $this->checkAdmin($I);
 
         $I->installModule($this->testModule2Path);
     }
@@ -70,10 +71,10 @@ final class ModuleNamespaceCest
         $I->deactivateModule($this->testModule1Id);
         exec('rm ' . $I->getShopModulePath($this->testModule1Path) . ' -R');
 
-        $this->checkFrontend($I);
+        $this->checkAdmin($I);
     }
 
-    protected function checkFrontend(AcceptanceAdminTester $I)
+    protected function checkAdmin(AcceptanceAdminTester $I)
     {
         $adminPanel = $I->loginAdmin();
         $moduleList = $adminPanel->openModules();

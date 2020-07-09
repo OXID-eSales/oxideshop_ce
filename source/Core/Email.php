@@ -28,7 +28,7 @@ class Email extends PHPMailer
      * The PHPMailer Version number.
      * @var string
      */
-    public $Version = '5.2.27';
+    public $Version = PHPMailer::VERSION;
 
     /**
      * Default Smtp server port

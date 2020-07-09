@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - jQuery UI updated to v1.12.1
-- Imports in `generated_services.yaml` changed from absolute paths to relative  
+- Imports in `generated_services.yaml` changed from absolute paths to relative
+- Updated PHPMailer to v6.1.6
 
 ### Deprecated
 - News feature:

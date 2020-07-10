@@ -157,6 +157,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Suggest (Recommend Product) feature [see](#654---2020-04-21)
 - News feature [see](#656---unreleased)
 - 'theme:flow' defaults within 'initial_data.sql'
+- Supporting two stars (**) in modules composer blacklist-filter, in order to use standard Symfony/finder functionality
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

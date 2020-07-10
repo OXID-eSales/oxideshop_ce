@@ -28,7 +28,6 @@ class ModuleFilesInstallerTest extends TestCase
         $packageName = 'myvendor/mymodule';
         $packagePath = '/var/www/vendor/myvendor/mymodule';
         $blackListFilters = [
-            "documentation/**/*.*",
             "CHANGELOG.md",
             "composer.json",
             "CONTRIBUTING.md",

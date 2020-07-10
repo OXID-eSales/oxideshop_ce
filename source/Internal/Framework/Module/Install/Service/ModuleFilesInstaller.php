@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\TwoStarsWithinBlacklistFilterException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use Symfony\Component\Filesystem\Filesystem;
@@ -80,7 +81,9 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
     /**
      * @param string $sourceDirectory
      * @param array  $blackListFilters
+     *
      * @return Finder
+     * @throws TwoStarsWithinBlacklistFilterException
      */
     private function getFinder(string $sourceDirectory, array $blackListFilters): Finder
     {
@@ -88,10 +91,12 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
         $finder->in($sourceDirectory);
 
         foreach ($blackListFilters as $filter) {
-            if ($this->isDirectoryFilter($filter)) {
-                $finder->notPath($this->getDirectoryForFilter($filter));
+            $this->checkTwoStars($filter);
+
+            if ($this->isAFilenameInTheRootOfModule($filter)) {
+                $finder->notName($filter);
             } else {
-                $finder->notName($this->normalizeFileFilter($filter));
+                $finder->notPath($filter);
             }
         }
 
@@ -100,33 +105,27 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
 
     /**
      * @param string $filter
+     *
+     * @throws TwoStarsWithinBlacklistFilterException
+     */
+    private function checkTwoStars(string $filter): void
+    {
+        if (strpos($filter, '**') !== false) {
+            throw new TwoStarsWithinBlacklistFilterException(
+                "Invalid 'blacklist-filter' value in composer.json. "
+                . "Glob patterns (**) are not allowed here: $filter"
+            );
+        }
+    }
+
+    /**
+     * @param string $filter
+     *
      * @return bool
      */
-    private function isDirectoryFilter(string $filter): bool
+    private function isAFilenameInTheRootOfModule(string $filter): bool
     {
-        return substr($filter, -5) === '/**/*';
-    }
-
-    /**
-     * @param string $filter
-     * @return string
-     */
-    private function getDirectoryForFilter(string $filter): string
-    {
-        return substr($filter, 0, -5);
-    }
-
-    /**
-     * @param string $filter
-     * @return string
-     */
-    private function normalizeFileFilter(string $filter): string
-    {
-        if (substr($filter, 0, 3) === '**/') {
-            $filter = substr($filter, 3);
-        }
-
-        return $filter;
+        return Path::hasExtension($filter) && !Path::getDirectory($filter);
     }
 
     /**

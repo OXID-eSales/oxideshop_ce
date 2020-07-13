@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
 use oxRegistry;
@@ -273,43 +274,68 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     public function discardUnusedReservations($iLimit)
     {
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getMaster(DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $iStartTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iPsBasketReservationTimeout');
+        $psBasketReservationTimeout = (int)$this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+        $startTime = Registry::getUtilsDate()->getTime() - $psBasketReservationTimeout;
 
         $parameters = [
-            ':oxtitle' => 'reservations',
-            ':oxupdate' => $iStartTime
+            ':oxtitle'  => 'reservations',
+            ':oxupdate' => $startTime
         ];
-        $oRs = $database->select("select oxid from oxuserbaskets 
+
+        $reservation = $database->select("select oxid from oxuserbaskets 
             where oxtitle = :oxtitle and oxupdate <= :oxupdate limit $iLimit", $parameters);
-        if ($oRs->EOF) {
+        if ($reservation->EOF) {
             return;
         }
-        $aFinished = [];
-        while (!$oRs->EOF) {
-            $aFinished[] = $database->quote($oRs->fields['oxid']);
-            $oRs->fetchRow();
+
+        $finished = [];
+        while (!$reservation->EOF) {
+            $finished[] = $database->quote($reservation->fields['oxid']);
+            $reservation->fetchRow();
         }
 
         $database->startTransaction();
         try {
-            $oRs = $database->select("select oxartid, oxamount from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")", false);
-            while (!$oRs->EOF) {
-                $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-                if ($oArticle->load($oRs->fields['oxartid'])) {
-                    $oArticle->reduceStock(-$oRs->fields['oxamount'], true);
-                }
-                $oRs->fetchRow();
-            }
-            $database->execute("delete from oxuserbasketitems where oxbasketid in (" . implode(",", $aFinished) . ")");
-            $database->execute("delete from oxuserbaskets where oxid in (" . implode(",", $aFinished) . ")");
+            $finished = implode(',', $finished);
 
-            // cleanup basket history also..
-            $database->execute("delete from oxuserbaskets where oxtitle = 'savedbasket' and oxupdate <= :startTime", [
-                ':startTime' => $iStartTime
-            ]);
+            $reservation = $database->select(
+                'select oxartid, oxamount from oxuserbasketitems where oxbasketid in (' . $finished . ')',
+                false
+            );
+
+            while (!$reservation->EOF) {
+                $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+
+                if ($article->load($reservation->fields['oxartid'])) {
+                    $article->reduceStock(-$reservation->fields['oxamount'], true);
+                }
+
+                $reservation->fetchRow();
+            }
+
+            $shopId = Registry::getConfig()->getShopId();
+
+            $database->execute('delete from oxuserbasketitems where oxbasketid in (' . $finished . ')');
+            $database->execute(
+                "delete from oxuserbasketitems where oxbasketid in (select oxid from oxuserbaskets where 
+                        oxuserid in (select oxid from oxuser where oxshopid= :oxshopid))",
+                [
+                    ':oxshopid' => $shopId
+                ]
+            );
+
+            $database->execute('delete from oxuserbaskets where oxid in (' . $finished . ')');
+            $database->execute(
+                "delete from oxuserbaskets where 
+                        oxuserid in (select oxid from oxuser where oxshopid= :oxshopid) and 
+                        oxuserbaskets.oxtitle = 'savedbasket' and oxuserbaskets.oxupdate <= :startTime",
+                [
+                    ':startTime' => $startTime,
+                    ':oxshopid'  => $shopId
+                ]
+            );
 
             $database->commitTransaction();
         } catch (Exception $exception) {
@@ -317,7 +343,6 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
             throw $exception;
         }
-
 
         $this->_aCurrentlyReserved = null;
     }

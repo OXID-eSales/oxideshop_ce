@@ -192,7 +192,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         } elseif ($exception instanceof \Throwable) {
             $tempException = $exception;
             $exception = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
-            $exception->setMessage($tempException->getTraceAsString());
+            $exception->setMessage($tempException->getMessage());
         } elseif ($exception && !($exception instanceof \OxidEsales\Eshop\Core\Contract\IDisplayError)) {
             $tempException = $exception;
             $exception = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);

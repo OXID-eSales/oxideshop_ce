@@ -75,7 +75,5 @@ if ($blAjaxCall) {
 
     $myConfig->pageClose();
 
-    // closing session handlers
-    // session_write_close();
     return;
 }

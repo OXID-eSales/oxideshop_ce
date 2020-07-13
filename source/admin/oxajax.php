@@ -77,5 +77,4 @@ if ($blAjaxCall) {
 
     // closing session handlers
     // session_write_close();
-    return;
 }

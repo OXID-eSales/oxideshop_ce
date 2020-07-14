@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use Exception;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\UtilsObject;
 use oxRegistry;
 use oxField;
 use oxDb;
@@ -276,7 +275,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     {
         $database = DatabaseProvider::getMaster(DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $psBasketReservationTimeout = (int)$this->getConfig()->getConfigParam('iPsBasketReservationTimeout');
+        $psBasketReservationTimeout = (int)Registry::getConfig()->getConfigParam('iPsBasketReservationTimeout');
         $startTime = Registry::getUtilsDate()->getTime() - $psBasketReservationTimeout;
 
         $parameters = [

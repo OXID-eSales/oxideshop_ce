@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-815](https://github.com/OXID-eSales/oxideshop_ce/pull/815)
     - [PR-816](https://github.com/OXID-eSales/oxideshop_ce/pull/816)
 - Fix Shop deletes savedbasket from all subshops when discarding reservation basket [#0007136](https://bugs.oxid-esales.com/view.php?id=7136)
+- Fix a bug with composer uninstall if module has custom source  [#0007137](https://bugs.oxid-esales.com/view.php?id=7137)
 
 ### Changed
 - jQuery UI updated to v1.12.1

@@ -74,6 +74,4 @@ if ($blAjaxCall) {
     }
 
     $myConfig->pageClose();
-
-    return;
 }

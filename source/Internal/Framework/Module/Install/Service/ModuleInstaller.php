@@ -80,7 +80,7 @@ class ModuleInstaller implements ModuleInstallerInterface
      */
     public function uninstall(OxidEshopPackage $package): void
     {
-        $moduleConfiguration = $this->moduleConfigurationDao->get($package->getPackagePath());
+        $moduleConfiguration = $this->moduleConfigurationDao->get($package->getPackageSourcePath());
         $this->deactivateModule($moduleConfiguration->getId());
 
         $this->bootstrapModuleInstaller->uninstall($package);

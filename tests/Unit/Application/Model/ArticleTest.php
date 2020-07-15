@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use \oxArticle;
 use oxArticleHelper;
@@ -3931,8 +3932,9 @@ class ArticleTest extends \OxidTestCase
      */
     public function testOnChangeNewArt()
     {
-        $oArticle = oxNew('oxArticle');
-        $this->assertNull($oArticle->onChange());
+        $article = oxNew(Article::class);
+        $this->assertNull($article->onChange());
+        $this->assertSame(ACTION_NA, $article->getActionType());
     }
 
     /**
@@ -4265,6 +4267,7 @@ class ArticleTest extends \OxidTestCase
         $oArticle->save();
         $this->assertEquals(10, $oArticle->reduceStock(10, true));
         $this->assertEquals(-8, $oArticle->oxarticles__oxstock->value);
+        $this->assertEquals(ACTION_UPDATE_STOCK, $oArticle->getActionType());
 
         $oA = oxNew('oxArticle');
         $oA->load($oArticle->getId());

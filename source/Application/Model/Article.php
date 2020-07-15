@@ -2426,6 +2426,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function onChange($action = null, $articleId = null, $parentArticleId = null)
     {
+        $this->actionType = !is_null($action) ? $action : $this->actionType;
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (!isset($articleId)) {

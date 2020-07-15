@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfig
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
+use Webmozart\PathUtil\Path;
 
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
@@ -50,6 +51,8 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
      */
     public function saveProjectConfigFile(DIConfigWrapper $config)
     {
+        $config = $this->convertAbsolutePathsToRelative($config);
+
         if (!$this->filesystem->exists($this->getGeneratedServicesFileDirectory())) {
             $this->filesystem->mkdir($this->getGeneratedServicesFileDirectory());
         }
@@ -82,5 +85,25 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
     private function getGeneratedServicesFileDirectory(): string
     {
         return \dirname($this->context->getGeneratedServicesFilePath());
+    }
+
+    /**
+     * @param DIConfigWrapper $configWrapper
+     * @return DIConfigWrapper
+     */
+    private function convertAbsolutePathsToRelative(DIConfigWrapper $configWrapper): DIConfigWrapper
+    {
+        foreach ($configWrapper->getImportFileNames() as $fileName) {
+            if (Path::isAbsolute($fileName)) {
+                $relativePath = Path::makeRelative(
+                    $fileName,
+                    Path::getDirectory($this->context->getGeneratedServicesFilePath())
+                );
+                $configWrapper->addImport($relativePath);
+                $configWrapper->removeImport($fileName);
+            }
+        }
+
+        return $configWrapper;
     }
 }

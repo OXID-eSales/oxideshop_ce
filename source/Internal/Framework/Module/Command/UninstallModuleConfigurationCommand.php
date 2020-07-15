@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RemoveModuleConfigurationCommand extends Command
+class UninstallModuleConfigurationCommand extends Command
 {
     const MESSAGE_REMOVE_WAS_SUCCESSFULL = 'Module configuration for module %s has been removed.';
     const MESSAGE_REMOVE_FAILED = 'An error occurred while removing module %s configuration.';
@@ -43,10 +43,10 @@ class RemoveModuleConfigurationCommand extends Command
     {
         $this
             ->setName(
-                'oe:module:remove-configuration'
+                'oe:module:uninstall-configuration'
             )
             ->setDescription(
-                'Remove module configuration from project configuration file.'
+                'Uninstall module configuration from project configuration file.'
             )
             ->addArgument('module-id', InputArgument::REQUIRED, 'Module ID, it can be found on moduleRootPath/metadata.php');
     }

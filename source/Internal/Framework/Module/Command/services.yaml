@@ -17,10 +17,10 @@ services:
     tags:
     - { name: 'console.command', command: 'oe:module:install-configuration' }
   
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Command\RemoveModuleConfigurationCommand:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\RemoveModuleConfigurationCommand
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Command\UninstallModuleConfigurationCommand:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\UninstallModuleConfigurationCommand
     tags:
-    - { name: 'console.command', command: 'oe:module:remove-configuration' }
+    - { name: 'console.command', command: 'oe:module:uninstall-configuration' }
 
   oxid_esales.command.apply_modules_configuration_command:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ApplyModulesConfigurationCommand

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use Codeception\Actor;
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Page\Home;
 
 /**
@@ -33,8 +34,9 @@ class AcceptanceTester extends Actor
 
     /**
      * Open shop first page.
+     * @return Home
      */
-    public function openShop()
+    public function openShop(): Home
     {
         $I = $this;
         $homePage = new Home($I);
@@ -42,4 +44,14 @@ class AcceptanceTester extends Actor
         return $homePage;
     }
 
+    /**
+     * Login with existing user and open shop first page.
+     * @return Home
+     */
+    public function loginShopWithExistingUser(): Home
+    {
+        $homePage = $this->openShop();
+        $user = Fixtures::get('existingUser');
+        return $homePage->loginUser($user['userLoginName'], $user['userPassword']);
+    }
 }

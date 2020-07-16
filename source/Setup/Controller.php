@@ -443,6 +443,11 @@ class Controller extends Core
 
         try {
             $this->getUtilitiesInstance()->executeExternalRegenerateViewsCommand(); // move to last step possible?
+
+            /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
+            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
+            $oTheme->load("flow");
+            $oTheme->activate();
         } catch (CommandExecutionFailedException $exception) {
             $this->handleCommandExecutionFailedException($exception);
 

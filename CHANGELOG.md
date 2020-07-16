@@ -156,6 +156,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
 - Suggest (Recommend Product) feature [see](#654---2020-04-21)
 - News feature [see](#656---unreleased)
+- 'theme:flow' defaults within 'initial_data.sql'
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

@@ -11,39 +11,20 @@ use oxDynImgGenerator;
 use OxidEsales\EshopCommunity\Core\DynamicImageGenerator;
 use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 
-/**
- * Tests for Actions_List class
- */
-class DynImgGeneratorTest extends \OxidTestCase
+final class DynImgGeneratorTest extends \OxidTestCase
 {
-
-    /**
-     * Testing instance getter
-     *
-     * @return null
-     */
-    public function testGetInstance()
+    public function testGetInstance(): void
     {
         $this->assertInstanceOf('oxDynImgGenerator', \OxidEsales\EshopCommunity\Core\DynamicImageGenerator::getInstance());
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetImageUri()
+    public function testGetImageUri(): void
     {
         $oGen = oxNew('oxDynImgGenerator');
         $this->assertEquals(isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : "", $oGen->UNITgetImageUri());
     }
 
-    /**
-     * Testing image uri getter with double slashed URI
-     *
-     * @return null
-     */
-    public function testGetImageUriWithDoubleSlash()
+    public function testGetImageUriWithDoubleSlash(): void
     {
         $sRequestedImageUri = "/out/pictures//generated/path/to/test.jpg";
         $sExpectedUri = "out/pictures/generated/path/to/test.jpg";
@@ -57,12 +38,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $_SERVER['REQUEST_URI'] = $sRequestUri;
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetImageName()
+    public function testGetImageName(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
         $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/test4/test.jpg"));
@@ -72,12 +48,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertEquals("", $oGen->UNITgetImageName());
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetImageMasterPath()
+    public function testGetImageMasterPath(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
         $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue(""));
@@ -87,12 +58,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertEquals("/master/test2/test3/", $oGen->UNITgetImageMasterPath());
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetImageInfo()
+    public function testGetImageInfo(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
         $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue(""));
@@ -104,12 +70,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertEquals(array("12", "12", "12"), $oGen->UNITgetImageInfo());
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetImageTarget()
+    public function testGetImageTarget(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
         $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
@@ -117,12 +78,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/test.jpg", $oGen->UNITgetImageTarget());
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetNopicImageTarget()
+    public function testGetNopicImageTarget(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri", "_getImageName"));
         $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
@@ -131,12 +87,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/nopic.jpg", $oGen->UNITgetNopicImageTarget());
     }
 
-    /**
-     * Testing path checker
-     *
-     * @return null
-     */
-    public function testIsTargetPathValid()
+    public function testIsTargetPathValid(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_isValidPath", "_createFolders"));
         $oGen->expects($this->once())->method('_isValidPath')->with($this->equalTo("/test1/test2/test3/12_12_12"))->will($this->returnValue(false));
@@ -153,12 +104,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertTrue($oGen->UNITisTargetPathValid("/test1/test2/test3/12_12_12/nopic.jpg"));
     }
 
-    /**
-     * Testing path validator
-     *
-     * @return null
-     */
-    public function testIsValidPath()
+    public function testIsValidPath(): void
     {
         $i = 0;
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageInfo"));
@@ -166,7 +112,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(1, 2, 3)));
         $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(4, 5, 6)));
         $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(7, 8, 75)));
-        $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(87, 87, 75)));
+        $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(56, 42, 75)));
 
         // missing image info
         $this->assertFalse($oGen->UNITisValidPath("any/path"));
@@ -181,15 +127,10 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITisValidPath("/wrong/size/param/generated/product/icon/7_8_75"));
 
         // all parameters are fine
-        $this->assertTrue($oGen->UNITisValidPath("/all/params/fine/generated/product/icon/87_87_75"));
+        $this->assertTrue($oGen->UNITisValidPath("/all/params/fine/generated/product/icon/56_42_75"));
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetImageType()
+    public function testGetImageType(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageName"));
         $oGen->expects($this->at(0))->method('_getImageName')->will($this->returnValue("test.jpg"));
@@ -215,10 +156,12 @@ class DynImgGeneratorTest extends \OxidTestCase
      * @param $sourceFilePath
      * @param $targetFilePath
      * @param $expectedGenerationMethod
-     * @param $message
      */
-    public function testGenerateImagePickGenerationMethodFromFileExtension($sourceFilePath, $targetFilePath, $expectedGenerationMethod, $message)
-    {
+    public function testGenerateImagePickGenerationMethodFromFileExtension(
+        $sourceFilePath,
+        $targetFilePath,
+        $expectedGenerationMethod
+    ) {
         $oGen = $this->getMock(DynamicImageGenerator::class, [
             '_getImageInfo',
             'validateGdVersion',
@@ -239,7 +182,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $oGen->UNITgenerateImage($sourceFilePath, $targetFilePath);
     }
 
-    public function testGenerateImageThrowsException()
+    public function testGenerateImageThrowsException(): void
     {
         $sourceFilePath = 'source.jpg';
         $targetFilePath = 'target.jpg';
@@ -272,27 +215,22 @@ class DynImgGeneratorTest extends \OxidTestCase
         $oGen->UNITgenerateImage($sourceFilePath, $targetFilePath);
     }
 
-    public function dataProviderTestGenerateImagePickGenerationMethodFromFileExtension()
+    public function dataProviderTestGenerateImagePickGenerationMethodFromFileExtension(): array
     {
         return [
-            ['sourceFile.jpeg', 'targetFile.jpeg', '_generateJpg', 'For files with the extension jpeg the _generateJpg method is called'],
-            ['sourceFile.jpg', 'targetFile.jpg', '_generateJpg', 'For files with the extension jpg _generateJpg method is called'],
-            ['sourceFile.png', 'targetFile.png', '_generatePng', 'For files with the extension png _generatePng method is called'],
-            ['sourceFile.gif', 'targetFile.gif', '_generateGif', 'For files with the extension gif _generateGif method is called'],
+            ['sourceFile.jpeg', 'targetFile.jpeg', '_generateJpg'],
+            ['sourceFile.jpg', 'targetFile.jpg', '_generateJpg'],
+            ['sourceFile.png', 'targetFile.png', '_generatePng'],
+            ['sourceFile.gif', 'targetFile.gif', '_generateGif'],
             // Test for case insensitivity
-            ['sourceFile.JPEG', 'targetFile.jpeg', '_generateJpg', 'For files with the extension JPEG the _generateJpg method is called'],
-            ['sourceFile.JPG', 'targetFile.jpg', '_generateJpg', 'For files with the extension JPG _generateJpg method is called'],
-            ['sourceFile.PNG', 'targetFile.png', '_generatePng', 'For files with the extension PNG _generatePng method is called'],
-            ['sourceFile.GIF', 'targetFile.gif', '_generateGif', 'For files with the extension GIF _generateGif method is called'],
+            ['sourceFile.JPEG', 'targetFile.jpeg', '_generateJpg'],
+            ['sourceFile.JPG', 'targetFile.jpg', '_generateJpg'],
+            ['sourceFile.PNG', 'targetFile.png', '_generatePng'],
+            ['sourceFile.GIF', 'targetFile.gif', '_generateGif'],
         ];
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function __testGenerateImageFromSource()
+    public function __testGenerateImageFromSource(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, [
             '_getImageType',
@@ -336,7 +274,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITgenerateImage("source.jpg", "target.jpg"));
     }
 
-    public function testGenerateImageGdVersionValidation()
+    public function testGenerateImageGdVersionValidation(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion']);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(false));
@@ -344,7 +282,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
     }
 
-    public function testGenerateImageSourceFileExistValidation()
+    public function testGenerateImageSourceFileExistValidation(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist']);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
@@ -353,7 +291,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
     }
 
-    public function testGenerateImageTargetPathValidation()
+    public function testGenerateImageTargetPathValidation(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid']);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
@@ -363,7 +301,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
     }
 
-    public function testGenerateImageFileExtensionValidationSource()
+    public function testGenerateImageFileExtensionValidationSource(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension']);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
@@ -374,7 +312,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITgenerateImage('source.sourcejpg', 'target.jpg'));
     }
 
-    public function testGenerateImageFileExtensionValidationTarget()
+    public function testGenerateImageFileExtensionValidationTarget(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension']);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
@@ -388,7 +326,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITgenerateImage('source.sourcejpg', 'target.targetjpg'));
     }
 
-    public function testGenerateImageFileSourceAndTargetExtensionEqualityValidation()
+    public function testGenerateImageFileSourceAndTargetExtensionEqualityValidation(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension']);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
@@ -400,7 +338,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.png'));
     }
 
-    public function testGenerateImageTargetFileExistsValidation()
+    public function testGenerateImageTargetFileExistsValidation(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion', 'validateFileExist', '_isTargetPathValid', 'validateImageFileExtension', 'getImageDimensions', '_getImageInfo', '_generateJpg']);
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
@@ -415,12 +353,7 @@ class DynImgGeneratorTest extends \OxidTestCase
         $this->assertSame("target.jpg", $oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
     }
 
-    /**
-     * Testing image uri getter
-     *
-     * @return null
-     */
-    public function testGetImagePath()
+    public function testGetImagePath(): void
     {
         $sDir = basename($this->getConfig()->getPictureDir(false));
         $i = 0;

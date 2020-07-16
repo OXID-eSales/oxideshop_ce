@@ -188,10 +188,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
-## [6.5.6] - unreleased
+## [6.5.6] - 2020-07-16
 
 ### Added
 - Add module migrations
+- New language constants in `Application/translations/[de/en]/lang.php` [PR-821](https://github.com/OXID-eSales/oxideshop_ce/pull/821)
+    - `PAGE_TITLE_START`
 
 ### Renamed
 - Price alert is renamed to wished price
@@ -213,6 +215,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - jQuery UI updated to v1.12.1
 - Imports in `generated_services.yaml` changed from absolute paths to relative
 - Updated PHPMailer to v6.1.6
+- Make module deactivation possible if module service is missing in generated_services.yaml
 
 ### Deprecated
 - News feature:

@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+use Webmozart\PathUtil\Path;
 
 class ProjectYamlDaoTest extends TestCase
 {
@@ -67,6 +68,17 @@ EOT;
 
         $projectYaml = $this->dao->loadProjectConfigFile();
         $this->assertArrayHasKey('imports', $projectYaml->getConfigAsArray());
+    }
+
+    public function testConvertsAbsolutePathsToRelativeOnSaving(): void
+    {
+        $configArray = ['imports' => [['resource' => '/some/non/existing/path/services.yaml']]];
+        $wrapper = new DIConfigWrapper($configArray);
+
+        $this->dao->saveProjectConfigFile($wrapper);
+
+        $imports = $this->dao->loadProjectConfigFile()->getImportFileNames();
+        $this->assertTrue(Path::isRelative($imports[0]));
     }
 
     public function testLoadingEmptyFile()

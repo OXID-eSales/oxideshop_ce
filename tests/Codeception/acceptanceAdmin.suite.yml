@@ -9,7 +9,7 @@ modules:
             browser: firefox
             port: '%SELENIUM_SERVER_PORT%'
             host: '%SELENIUM_SERVER_HOST%'
-            window_size: 1920x1080
+            window_size: 1600x1000
             clear_cookies: true
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
@@ -27,6 +27,8 @@ modules:
             depends:
               - WebDriver
               - Db
+        - \OxidEsales\Codeception\Module\OxideshopModules:
+             screen_shot_url: '%SCREEN_SHOT_URL%'
         - \OxidEsales\Codeception\Module\OxideshopAdmin:
              screen_shot_url: '%SCREEN_SHOT_URL%'
              depends:
@@ -38,3 +40,5 @@ modules:
         - \OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%SHOP_SOURCE_PATH%'
             paths: 'Application/views/admin'
+        - \OxidEsales\Codeception\Module\OxideshopModules:
+

@@ -105,6 +105,16 @@ final class ModuleConfigurationInstallerTest extends TestCase
         $this->assertModuleConfigurationDeletedForAllShops();
     }
 
+    public function testUninstallById(): void
+    {
+        $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+
+        $configurationInstaller->uninstallById($this->testModuleId);
+
+        $this->assertModuleConfigurationDeletedForAllShops();
+    }
+
     public function testIsInstalled(): void
     {
         $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);

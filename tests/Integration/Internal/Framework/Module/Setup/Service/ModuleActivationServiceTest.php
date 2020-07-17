@@ -197,6 +197,31 @@ class ModuleActivationServiceTest extends TestCase
         $this->assertFalse($event->isHandled());
     }
 
+    public function testActivationWillNotAffectPersistedConfigs(): void
+    {
+        $author = 'abc';
+        $url = 'xyz';
+        /** @var ModuleActivationServiceInterface $moduleActivationService */
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+        $moduleConfiguration = $this->getTestModuleConfiguration();
+        $moduleConfiguration->setAuthor($author);
+        $moduleConfiguration->setUrl($url);
+        $moduleConfiguration->setConfigured(true);
+        $this->persistModuleConfiguration($moduleConfiguration);
+
+        $moduleActivationService->activate($this->testModuleId, $this->shopId);
+
+        $this->assertSame($author, $moduleConfiguration->getAuthor());
+        $this->assertSame($url, $moduleConfiguration->getUrl());
+        $this->assertTrue($moduleConfiguration->isConfigured());
+
+        $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
+
+        $this->assertSame($author, $moduleConfiguration->getAuthor());
+        $this->assertSame($url, $moduleConfiguration->getUrl());
+        $this->assertTrue($moduleConfiguration->isConfigured());
+    }
+
     /**
      * @return ShopAdapterInterface|\PHPUnit\Framework\MockObject\MockObject
      */

@@ -23,6 +23,11 @@ interface ModuleConfigurationInstallerInterface
     public function uninstall(string $modulePath): void;
 
     /**
+     * @param string $moduleId
+     */
+    public function uninstallById(string $moduleId): void;
+
+    /**
      * @param string $packagePath
      * @return bool
      */

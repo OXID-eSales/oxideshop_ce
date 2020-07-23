@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Add remove module configuration command
+- Support symfony's optional class for named services
 
 ### Deprecated
 - Use of two stars (**) for filter strings in modules composer blacklist-filter.

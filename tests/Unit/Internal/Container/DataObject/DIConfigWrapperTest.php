@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Container\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -34,13 +35,13 @@ class DIConfigWrapperTest extends TestCase
     public function setup(): void
     {
         $this->servicePath1 = __DIR__ . DIRECTORY_SEPARATOR .
-                       '..' . DIRECTORY_SEPARATOR .
-                       'TestModule1' . DIRECTORY_SEPARATOR .
-                       'services.yaml';
+            '..' . DIRECTORY_SEPARATOR .
+            'TestModule1' . DIRECTORY_SEPARATOR .
+            'services.yaml';
         $this->servicePath2 = __DIR__ . DIRECTORY_SEPARATOR .
-                              '..' . DIRECTORY_SEPARATOR .
-                              'TestModule2' . DIRECTORY_SEPARATOR .
-                              'services.yaml';
+            '..' . DIRECTORY_SEPARATOR .
+            'TestModule2' . DIRECTORY_SEPARATOR .
+            'services.yaml';
     }
 
     public function testCleaningSections()
@@ -52,8 +53,10 @@ class DIConfigWrapperTest extends TestCase
 
     public function testGetAllImportFileNames()
     {
-        $configArray = ['imports' => [['resource' => $this->servicePath1],
-                                      ['resource' => $this->servicePath2]]];
+        $configArray = ['imports' => [
+            ['resource' => $this->servicePath1],
+            ['resource' => $this->servicePath2]
+        ]];
 
         $wrapper = new DIConfigWrapper($configArray);
         $names = $wrapper->getImportFileNames();
@@ -85,8 +88,10 @@ class DIConfigWrapperTest extends TestCase
 
     public function testRemoveImport()
     {
-        $configArray = ['imports' => [['resource' => $this->servicePath1],
-                                      ['resource' => $this->servicePath2]]];
+        $configArray = ['imports' => [
+            ['resource' => $this->servicePath1],
+            ['resource' => $this->servicePath2]
+        ]];
 
         $wrapper = new DIConfigWrapper($configArray);
         $wrapper->removeImport($this->servicePath1);
@@ -106,9 +111,17 @@ class DIConfigWrapperTest extends TestCase
 
     public function testActivateServicesForShop()
     {
-        $projectYaml = new DIConfigWrapper(['services' =>
-                                                ['testmodulesubscriber' =>
-                                                     ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber']]]);
+        $projectYaml = new DIConfigWrapper(
+            [
+                'services' =>
+                [
+                    'testmodulesubscriber' =>
+                    [
+                        'class' => TestEventSubscriber::class
+                    ]
+                ]
+            ]
+        );
         $service = $projectYaml->getService('testmodulesubscriber');
         $activeShops = $service->addActiveShops([1, 5]);
         $projectYaml->addOrUpdateService($service);
@@ -121,10 +134,25 @@ class DIConfigWrapperTest extends TestCase
 
     public function testRemovingActiveShops()
     {
-        $projectYaml = new DIConfigWrapper(['services' =>
-                                                ['testmodulesubscriber' =>
-                                                     ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber',
-                                                      'calls' => [['method' => 'setActiveShops', 'arguments' => [[1, 5, 7]]]]]]]);
+        $projectYaml = new DIConfigWrapper(
+            [
+                'services' =>
+                [
+                    'testmodulesubscriber' =>
+                    [
+                        'class' => TestEventSubscriber::class,
+                        'calls' => [
+                            [
+                                'method' => 'setActiveShops',
+                                'arguments' => [
+                                    [1, 5, 7]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
 
         $service = $projectYaml->getService('testmodulesubscriber');
         $activeShops = $service->removeActiveShops([1, 5]);
@@ -137,23 +165,73 @@ class DIConfigWrapperTest extends TestCase
 
     public function testGetServices()
     {
-        $projectYaml = new DIConfigWrapper(['services' =>
-                                                ['testmodulesubscriber' =>
-                                                     ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber',
-                                                      'calls' => [['method' => 'setActiveShops', 'arguments' => [[1, 5, 7]]]]]]]);
+        $projectYaml = new DIConfigWrapper(
+            [
+                'services' =>
+                [
+                    'testmodulesubscriber' =>
+                    [
+                        'class' => TestEventSubscriber::class,
+                        'calls' => [
+                            [
+                                'method' => 'setActiveShops',
+                                'arguments' => [[1, 5, 7]]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
 
         $services = $projectYaml->getServices();
         $this->assertCount(1, $services);
         $this->assertEquals('testmodulesubscriber', $services[0]->getKey());
     }
 
+    public function testGetServicesWithNullArguments()
+    {
+        $projectYaml = new DIConfigWrapper(
+            [
+                'services' =>
+                [
+                    TestEventSubscriber::class => null
+                ]
+            ]
+        );
+
+        $services = $projectYaml->getServices();
+        $this->assertCount(1, $services);
+        $this->assertEquals(
+            TestEventSubscriber::class,
+            $services[0]->getKey()
+        );
+        $this->assertTrue($projectYaml->checkServiceClassesCanBeLoaded());
+    }
+
+    public function testGetServicesWithNoClassArguments()
+    {
+        $projectYaml = new DIConfigWrapper(
+            [
+                'services' =>
+                [
+                    TestEventSubscriber::class => []
+                ]
+            ]
+        );
+
+        $services = $projectYaml->getServices();
+        $serviceArray = $services[0]->getServiceAsArray();
+        $this->assertArrayHasKey('class', $serviceArray);
+    }
 
     public function testCleaningUncalledServices()
     {
         $projectYaml = new DIConfigWrapper(['services' =>
-                                                ['testmodulesubscriber' =>
-                                                     ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber',
-                                                      'calls' => [['method' => 'setActiveShops', 'arguments' => [[1]]]]]]]);
+        ['testmodulesubscriber' =>
+        [
+            'class' => TestEventSubscriber::class,
+            'calls' => [['method' => 'setActiveShops', 'arguments' => [[1]]]]
+        ]]]);
         $service = $projectYaml->getService('testmodulesubscriber');
         $service->removeActiveShops([1]);
         $projectYaml->addOrUpdateService($service);
@@ -183,8 +261,8 @@ class DIConfigWrapperTest extends TestCase
     public function testServiceClassCheckWorking()
     {
         $servicesYaml = new DIConfigWrapper(['services' =>
-                                                ['testmodulesubscriber' =>
-                                                     ['class' => 'OxidEsales\EshopCommunity\Tests\Unit\Internal\ProjectDIConfig\TestModule\TestEventSubscriber']]]);
+        ['testmodulesubscriber' =>
+        ['class' => TestEventSubscriber::class]]]);
 
 
         $this->assertTrue($servicesYaml->checkServiceClassesCanBeLoaded());
@@ -193,8 +271,8 @@ class DIConfigWrapperTest extends TestCase
     public function testServiceClassCheckFailing()
     {
         $servicesYaml = new DIConfigWrapper(['services' =>
-                                                 ['testmodulesubscriber' =>
-                                                      ['class' => 'OxidEsales\EshopCommunity\Tests\SomeNotExistingClass']]]);
+        ['testmodulesubscriber' =>
+        ['class' => 'OxidEsales\EshopCommunity\Tests\SomeNotExistingClass']]]);
 
 
         $this->assertFalse($servicesYaml->checkServiceClassesCanBeLoaded());

@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\DummyExecutor;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
@@ -101,8 +102,15 @@ EOT;
     public function testWriting()
     {
         $projectYaml = new DIConfigWrapper(
-            ['imports'  => [['resource' => 'some/path']],
-                'services' => ['somekey' => ['factory' => ['some/factory', 'someMethod']]]]
+            [
+                'imports'  => [['resource' => 'some/path']],
+                'services' => [
+                    'somekey' => [
+                        'class' => DummyExecutor::class,
+                        'factory' => ['some/factory', 'someMethod']
+                    ]
+                ]
+            ]
         );
         $this->dao->saveProjectConfigFile($projectYaml);
 

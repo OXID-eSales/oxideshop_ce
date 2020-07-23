@@ -186,8 +186,11 @@ class DIConfigWrapper
             return [];
         }
         $services = [];
-        foreach ($this->configArray[static::SERVICE_SECTION] as $serviceKey => $serviceArray) {
-            $services[] = new DIServiceWrapper($serviceKey, $serviceArray);
+        foreach ($this->configArray[$this::SERVICE_SECTION] as $serviceId => $serviceArguments) {
+            if ($serviceId !== '_defaults') {
+                $serviceArguments['class'] = $serviceArguments['class'] ?? $serviceId;
+            }
+            $services[] = new DIServiceWrapper($serviceId, $serviceArguments);
         }
         return $services;
     }

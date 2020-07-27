@@ -53,7 +53,7 @@ abstract class BaseRegistrator
      *
      * @return string
      */
-    protected function fromUrl($fullUrl)
+    protected function formLocalFileUrl($fullUrl)
     {
         $parts = explode('?', $fullUrl);
         $url = $parts[0];

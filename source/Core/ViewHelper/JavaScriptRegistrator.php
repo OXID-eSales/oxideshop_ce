@@ -50,7 +50,7 @@ class JavaScriptRegistrator extends BaseRegistrator
         $includes = (array) $this->config->getGlobalParameter($filesParameterName);
 
         if (!preg_match('#^https?://#', $file) || Registry::getUtilsUrl()->isCurrentShopHost($file)) {
-            $file = $this->fromUrl($file);
+            $file = $this->formLocalFileUrl($file);
         }
 
         if ($file) {

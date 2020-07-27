@@ -49,7 +49,7 @@ class JavaScriptRegistrator extends BaseRegistrator
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
         $includes = (array) $this->config->getGlobalParameter($filesParameterName);
 
-        if (!preg_match('#^https?://#', $file) || $this->getUtilsUrl()->isSameBaseUrl($file)) {
+        if (!preg_match('#^https?://#', $file) || $this->getUtilsUrl()->isCurrentShopHost($file)) {
             $file = $this->fromUrl($file);
         }
 

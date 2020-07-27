@@ -29,7 +29,7 @@ class StyleRegistrator extends BaseRegistrator
     {
         $suffix = $isDynamic ? '_dynamic' : '';
 
-        if (!preg_match('#^https?://#', $style) || $this->getUtilsUrl()->isSameBaseUrl($style)) {
+        if (!preg_match('#^https?://#', $style) || $this->getUtilsUrl()->isCurrentShopHost($style)) {
             $style = $this->fromUrl($style);
         }
 

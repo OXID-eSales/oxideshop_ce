@@ -73,8 +73,8 @@ abstract class BaseRegistrator
         $url = $parts[0];
         $parameters = $parts[1];
         if (empty($parameters)) {
-            if ($this->getUtilsUrl()->isSameBaseUrl($url)) {
-                $path = $this->getUtilsUrl()->getPathByUrl($url);
+            if ($this->getUtilsUrl()->isCurrentShopHost($url)) {
+                $path = $this->getPathByUrl($url);
             } else {
                 $path = $this->config->getResourcePath($url, $this->config->isAdmin());
                 $url = $this->config->getResourceUrl($url, $this->config->isAdmin());
@@ -100,5 +100,22 @@ abstract class BaseRegistrator
     protected function getFileModificationTime($file)
     {
         return filemtime($file);
+    }
+
+    /**
+     * get absolute path to file from url
+     *
+     * @param string $url url to file
+     *
+     * @return string path to file
+     */
+    protected function getPathByUrl($url)
+    {
+        $config = Registry::getConfig();
+        return str_replace(
+            rtrim($config->getCurrentShopUrl(false), '/'),
+            rtrim($config->getConfigParam('sShopDir'), '/'),
+            $url
+        );
     }
 }

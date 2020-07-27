@@ -33,11 +33,13 @@ class StyleRegistratorTest extends \OxidTestCase
     /**
      * @dataProvider addFileProvider
      */
-    public function testAddFile($file, $shopurl, $expected)
+    public function testAddFile($file, $expected)
     {
-        $config = $this->getMock('oxConfig', ['getCurrentShopUrl']);
-        $config->expects($this->any())->method('getCurrentShopUrl')->will($this->returnValue($shopurl));
-        Registry::set('oxConfig', $config);
+        $utils = $this->getMock('oxUtilsUrl', ['_getHosts']);
+        $utils->expects($this->any())->method('_getHosts')->will($this->returnValue([
+            'shopurl.de'
+        ]));
+        Registry::set('oxUtilsUrl', $utils);
 
         $styleRegistrator = $this->getMock(StyleRegistrator::class, ['getFileModificationTime']);
         $styleRegistrator->expects($this->any())->method('getFileModificationTime')->will($this->returnValue(123456789));
@@ -50,14 +52,14 @@ class StyleRegistratorTest extends \OxidTestCase
     public function addFileProvider()
     {
         return [
-            ['http://someurl/style.css', 'http://shopurl.de', 'http://someurl/style.css'],
-            ['http://someurl/style.css', 'http://shopurl.de', 'http://someurl/style.css'],
-            ['http://shopurl.de/style.css', 'http://shopurl.de', 'http://shopurl.de/style.css?123456789'],
-            ['https://shopurl.de/style.css', 'https://shopurl.de', 'https://shopurl.de/style.css?123456789'],
-            ['http://shopurl.de/style.css', 'https://shopurl.de', 'http://shopurl.de/style.css?123456789'],
-            ['https://shopurl.de/style.css', 'http://shopurl.de', 'https://shopurl.de/style.css?123456789'],
-            ['//shopurl.de/style.css', 'http://shopurl.de', '//shopurl.de/style.css?123456789'],
-            ['//shopurl.de/style.css', 'https://shopurl.de', '//shopurl.de/style.css?123456789'],
+            ['http://someurl/style.css', 'http://someurl/style.css'],
+            ['http://someurl/style.css', 'http://someurl/style.css'],
+            ['http://shopurl.de/style.css', 'http://shopurl.de/style.css?123456789'],
+            ['https://shopurl.de/style.css', 'https://shopurl.de/style.css?123456789'],
+            ['http://shopurl.de/style.css', 'http://shopurl.de/style.css?123456789'],
+            ['https://shopurl.de/style.css', 'https://shopurl.de/style.css?123456789'],
+            ['//shopurl.de/style.css', '//shopurl.de/style.css?123456789'],
+            ['//shopurl.de/style.css', '//shopurl.de/style.css?123456789'],
         ];
     }
 }

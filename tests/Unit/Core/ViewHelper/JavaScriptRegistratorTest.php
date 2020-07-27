@@ -33,11 +33,13 @@ class JavaScriptRegistratorTest extends \OxidTestCase
     /**
      * @dataProvider addFileProvider
      */
-    public function testAddFile($file, $shopurl, $expected)
+    public function testAddFile($file, $expected)
     {
-        $config = $this->getMock('oxConfig', ['getCurrentShopUrl']);
-        $config->expects($this->any())->method('getCurrentShopUrl')->will($this->returnValue($shopurl));
-        Registry::set('oxConfig', $config);
+        $utils = $this->getMock('oxUtilsUrl', ['_getHosts']);
+        $utils->expects($this->any())->method('_getHosts')->will($this->returnValue([
+            'shopurl.de'
+        ]));
+        Registry::set('oxUtilsUrl', $utils);
 
         $scriptRegistrator = $this->getMock(JavaScriptRegistrator::class, ['getFileModificationTime']);
         $scriptRegistrator->expects($this->any())->method('getFileModificationTime')->will($this->returnValue(123456789));
@@ -50,14 +52,14 @@ class JavaScriptRegistratorTest extends \OxidTestCase
     public function addFileProvider()
     {
         return [
-            ['http://someurl/script.js', 'http://shopurl.de', 'http://someurl/script.js'],
-            ['http://someurl/script.js', 'http://shopurl.de', 'http://someurl/script.js'],
-            ['http://shopurl.de/script.js', 'http://shopurl.de', 'http://shopurl.de/script.js?123456789'],
-            ['https://shopurl.de/script.js', 'https://shopurl.de', 'https://shopurl.de/script.js?123456789'],
-            ['http://shopurl.de/script.js', 'https://shopurl.de', 'http://shopurl.de/script.js?123456789'],
-            ['https://shopurl.de/script.js', 'http://shopurl.de', 'https://shopurl.de/script.js?123456789'],
-            ['//shopurl.de/script.js', 'http://shopurl.de', '//shopurl.de/script.js?123456789'],
-            ['//shopurl.de/script.js', 'https://shopurl.de', '//shopurl.de/script.js?123456789'],
+            ['http://someurl/script.js', 'http://someurl/script.js'],
+            ['http://someurl/script.js', 'http://someurl/script.js'],
+            ['http://shopurl.de/script.js', 'http://shopurl.de/script.js?123456789'],
+            ['https://shopurl.de/script.js', 'https://shopurl.de/script.js?123456789'],
+            ['http://shopurl.de/script.js', 'http://shopurl.de/script.js?123456789'],
+            ['https://shopurl.de/script.js', 'https://shopurl.de/script.js?123456789'],
+            ['//shopurl.de/script.js', '//shopurl.de/script.js?123456789'],
+            ['//shopurl.de/script.js', '//shopurl.de/script.js?123456789'],
         ];
     }
 }

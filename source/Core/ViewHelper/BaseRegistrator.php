@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of OXID eShop Community Edition.
  *
@@ -30,10 +31,12 @@ use OxidEsales\EshopCommunity\Core\Registry;
  */
 abstract class BaseRegistrator
 {
-    /** @var oxConfig */
+    const TAG_NAME = 'base';
+
+    /** @var \OxidEsales\Eshop\Core\Config */
     protected $config;
 
-    /** @var UtilsUrl|null */
+    /** @var \OxidEsales\Eshop\Core\UtilsUrl|null */
     protected $utilsUrl;
 
     /**
@@ -49,7 +52,7 @@ abstract class BaseRegistrator
     /**
      * Returns UtilsUrl instance.
      *
-     * @return UtilsUrl
+     * @return \OxidEsales\Eshop\Core\UtilsUrl
      */
     public function getUtilsUrl()
     {

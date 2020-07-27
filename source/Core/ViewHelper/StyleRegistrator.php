@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
-use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class for preparing Stylesheets.
@@ -29,7 +29,7 @@ class StyleRegistrator extends BaseRegistrator
     {
         $suffix = $isDynamic ? '_dynamic' : '';
 
-        if (!preg_match('#^https?://#', $style) || $this->getUtilsUrl()->isCurrentShopHost($style)) {
+        if (!preg_match('#^https?://#', $style) || Registry::getUtilsUrl()->isCurrentShopHost($style)) {
             $style = $this->fromUrl($style);
         }
 

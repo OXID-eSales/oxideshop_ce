@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
-use OxidEsales\Eshop\Core\Str;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class for preparing JavaScript.
@@ -49,7 +49,7 @@ class JavaScriptRegistrator extends BaseRegistrator
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
         $includes = (array) $this->config->getGlobalParameter($filesParameterName);
 
-        if (!preg_match('#^https?://#', $file) || $this->getUtilsUrl()->isCurrentShopHost($file)) {
+        if (!preg_match('#^https?://#', $file) || Registry::getUtilsUrl()->isCurrentShopHost($file)) {
             $file = $this->fromUrl($file);
         }
 

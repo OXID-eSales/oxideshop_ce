@@ -36,9 +36,6 @@ abstract class BaseRegistrator
     /** @var \OxidEsales\Eshop\Core\Config */
     protected $config;
 
-    /** @var \OxidEsales\Eshop\Core\UtilsUrl|null */
-    protected $utilsUrl;
-
     /**
      * BaseRegistrator constructor.
      *
@@ -47,20 +44,6 @@ abstract class BaseRegistrator
     public function __construct()
     {
         $this->config = Registry::getConfig();
-    }
-
-    /**
-     * Returns UtilsUrl instance.
-     *
-     * @return \OxidEsales\Eshop\Core\UtilsUrl
-     */
-    public function getUtilsUrl()
-    {
-        if (!$this->utilsUrl) {
-            $this->utilsUrl = Registry::get('oxUtilsUrl');
-        }
-
-        return $this->utilsUrl;
     }
 
     /**
@@ -76,7 +59,7 @@ abstract class BaseRegistrator
         $url = $parts[0];
         $parameters = $parts[1];
         if (empty($parameters)) {
-            if ($this->getUtilsUrl()->isCurrentShopHost($url)) {
+            if (Registry::getUtilsUrl()->isCurrentShopHost($url)) {
                 $path = $this->getPathByUrl($url);
             } else {
                 $path = $this->config->getResourcePath($url, $this->config->isAdmin());

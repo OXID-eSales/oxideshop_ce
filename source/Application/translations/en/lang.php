@@ -768,7 +768,7 @@ $aLang = [
 'COD_CHARGE'                                                  => 'C.O.D. charge',
 'REGISTERED_YOUR_ORDER'                                       => 'We registered your order with number %s ',
 'THANK_YOU_FOR_ORDER'                                         => 'Thank you for ordering at',
-'PRICE_ALERT_THANK_YOU_MESSAGE'                               => 'Thank you for your message to %s. We\'ll inform you as soon as the price decreases below %s %s.',
+'PRICE_ALERT_THANK_YOU_MESSAGE'                               => 'Many thanks for the transmission of your wished price of %s %s. You will receive an e-mail as soon as this is reached.',
 'THANK_YOU_MESSAGE'                                           => 'Thank you for your message to %s.',
 
 

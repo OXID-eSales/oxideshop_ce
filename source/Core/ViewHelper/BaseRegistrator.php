@@ -57,7 +57,7 @@ abstract class BaseRegistrator
     {
         $parts = explode('?', $fullUrl);
         $url = $parts[0];
-        $parameters = $parts[1];
+        $parameters = $parts[1] ?? '';
         if (empty($parameters)) {
             if (Registry::getUtilsUrl()->isCurrentShopHost($url)) {
                 $path = $this->getPathByUrl($url);

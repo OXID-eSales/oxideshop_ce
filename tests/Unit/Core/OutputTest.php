@@ -70,10 +70,7 @@ class OutputTest extends \OxidTestCase
 
     public function testAddVersionTags()
     {
-        $version = oxNew(ShopVersion::class)->getVersion();
         $currentYear = date("Y");
-
-        $majorVersion = explode('.', $version)[0];
 
         $output = oxNew('oxOutput');
         // should add tag only to first head item
@@ -82,7 +79,7 @@ class OutputTest extends \OxidTestCase
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($test, $result);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . " Edition, Version $majorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $currentYear - https://www.oxid-esales.com -->bar<head>test2</head>", $result);
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . " Edition, Shopping Cart System (c) OXID eSales AG 2003 - $currentYear - https://www.oxid-esales.com -->bar<head>test2</head>", $result);
     }
 
     /**
@@ -90,10 +87,7 @@ class OutputTest extends \OxidTestCase
      */
     public function testAddVersionTagsUpperCase()
     {
-        $version = oxNew(ShopVersion::class)->getVersion();
         $sCurYear = date("Y");
-
-        $sMajorVersion = explode('.', $version)[0];
 
         $oOutput = oxNew('oxOutput');
         $sTest = "<head>foo</Head>bar";
@@ -101,7 +95,7 @@ class OutputTest extends \OxidTestCase
 
         $editionName = $this->getEditionName();
         $this->assertNotEquals($sTest, $sRes);
-        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . " Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - https://www.oxid-esales.com -->bar", $sRes);
+        $this->assertEquals("<head>foo</head>\n  <!-- OXID eShop " . $editionName . " Edition, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - https://www.oxid-esales.com -->bar", $sRes);
     }
 
     /**

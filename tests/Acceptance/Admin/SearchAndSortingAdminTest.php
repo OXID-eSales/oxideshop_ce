@@ -3353,7 +3353,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("example03@oxid-esales.dev", $this->getText("//tr[@id='row.4']/td[1]"));
         $this->assertEquals("example04@oxid-esales.dev", $this->getText("//tr[@id='row.5']/td[1]"));
         $this->assertEquals("example05@oxid-esales.dev", $this->getText("//tr[@id='row.6']/td[1]"));
-        $this->clickAndWait("link=Confirmation Date");
+        $this->clickAndWait("link=Received");
         $this->assertEquals("2007-09-14 00:00:08", $this->getText("//tr[@id='row.1']/td[3]"));
         $this->assertEquals("2007-10-09 00:00:08", $this->getText("//tr[@id='row.2']/td[3]"));
         $this->assertEquals("2007-11-11 00:00:06", $this->getText("//tr[@id='row.3']/td[3]"));
@@ -3366,7 +3366,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("2UserSurnamešÄßüл 2useršÄßüл", $this->getText("//tr[@id='row.3']/td[2]"));
         $this->assertEquals("2UserSurnamešÄßüл 2useršÄßüл", $this->getText("//tr[@id='row.4']/td[2]"));
         $this->assertEquals("3UserSurnamešÄßüл 3useršÄßüл", $this->getText("//tr[@id='row.5']/td[2]"));
-        $this->clickAndWait("link=Shipping Date");
+        $this->clickAndWait("link=Notified");
         $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.1']/td[4]"));
         $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.2']/td[4]"));
         $this->assertEquals("0000-00-00 00:00:00", $this->getText("//tr[@id='row.3']/td[4]"));
@@ -3380,7 +3380,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
         $this->assertEquals("11 EN product šÄßüл", $this->getText("//tr[@id='row.4']/td[5]"));
         $this->assertEquals("11 EN product šÄßüл", $this->getText("//tr[@id='row.5']/td[5]"));
         //$this->assertEquals("11,00 EUR", $this->getText("//tr[@id='row.8']/td[6]"));
-        $this->clickAndWait("link=Cust. Price");
+        $this->clickAndWait("link=Wished price");
         $this->assertEquals("1,00 EUR", $this->getText("//tr[@id='row.1']/td[6]"));
         $this->assertEquals("2,00 EUR", $this->getText("//tr[@id='row.2']/td[6]"));
         $this->assertEquals("3,00 EUR", $this->getText("//tr[@id='row.3']/td[6]"));

@@ -220,8 +220,11 @@ class DIConfigWrapperTest extends TestCase
         );
 
         $services = $projectYaml->getServices();
-        $serviceArray = $services[0]->getServiceAsArray();
-        $this->assertArrayHasKey('class', $serviceArray);
+        $this->assertEquals(
+            TestEventSubscriber::class,
+            $services[0]->getKey()
+        );
+        $this->assertTrue($projectYaml->checkServiceClassesCanBeLoaded());
     }
 
     public function testCleaningUncalledServices()

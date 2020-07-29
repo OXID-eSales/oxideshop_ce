@@ -44,6 +44,8 @@ namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
  * This class is a reference implementation of a PHP Function to include
  * ECONDA Trackiong into a Shop-System.
  *
+ * @deprecated since v6.5.6 (2020-07-29); moved the functionality to 'OXID personalization' module
+ *
  * The smarty tempaltes should include s tag like
  * [{insert name="oxid_tracker" title=$template_title}]
  */

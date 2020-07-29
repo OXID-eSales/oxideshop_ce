@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - Use of two stars (**) for filter strings in modules composer blacklist-filter.
+- Econda smarty plugin:
+    - Classes:
+        - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
+        - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
+        - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
 
 ## [6.5.6] - 2020-07-16
 

@@ -17,6 +17,24 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceTester;
 final class DownloadableProductCest
 {
     /** @param AcceptanceTester $I */
+    public function _before(AcceptanceTester $I)
+    {
+        $I->updateConfigInDatabase('iMaxDownloadsCount', "2", 'str');
+        $I->updateConfigInDatabase('iLinkExpirationTime', "240", 'str');
+
+        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1002-1']);
+    }
+
+    /** @param AcceptanceTester $I */
+    public function _after(AcceptanceTester $I)
+    {
+        $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
+        $I->updateConfigInDatabase('iLinkExpirationTime', "168", 'str');
+
+        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 0], ['oxartnum' => '1002-1']);
+    }
+
+    /** @param AcceptanceTester $I */
     public function downloadableFiles(AcceptanceTester $I): void
     {
         $I->wantToTest('Product downloadable files');
@@ -24,25 +42,10 @@ final class DownloadableProductCest
         $I->clearShopCache();
         $startPage = $I->loginShopWithExistingUser();
 
-        $this->enableDownloadableFilesAndSetForAProduct($I);
         $this->makePurchaseComplete($I, $startPage);
         $this->checkMyDownloads($I, $startPage);
         $this->makeOrderComplete($I);
         $this->checkFileInMyDownloads($I, $startPage);
-    }
-
-    /**
-     * @param AcceptanceTester $I
-     */
-    private function enableDownloadableFilesAndSetForAProduct(AcceptanceTester $I): void
-    {
-        $I->updateConfigInDatabase('blEnableDownloads', true, 'bool');
-        $I->updateConfigInDatabase('iMaxDownloadsCount', "2", 'str');
-        $I->updateConfigInDatabase('iLinkExpirationTime', "240", 'str');
-        $I->updateConfigInDatabase('iDownloadExpirationTime', "24", 'str');
-        $I->updateConfigInDatabase('iMaxDownloadsCountUnregistered', "1", 'str');
-
-        $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1002-1']);
     }
 
     /**
@@ -77,7 +80,7 @@ final class DownloadableProductCest
     private function makeOrderComplete(AcceptanceTester $I): void
     {
         $currentTime = date('Y-m-d H:i:s');
-        $I->updateInDatabase('oxorder', ['oxpaid' => $currentTime], ['oxordernr' => 2]);
+        $I->updateInDatabase('oxorder', ['oxpaid' => $currentTime]);
     }
 
     /**

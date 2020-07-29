@@ -90,11 +90,10 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
      */
     private function getAbsolutePath($fileName): string
     {
-        $fileAbsolutePath = Path::makeAbsolute(
+        return Path::makeAbsolute(
             $fileName,
             Path::getDirectory($this->context->getGeneratedServicesFilePath())
         );
-        return $fileAbsolutePath;
     }
 
     /**

@@ -47,6 +47,8 @@ use OxidEsales\Eshop\Core\Str;
 /**
  * PHP Helper Class to construct a ECONDA Monitor statement for the later
  * inclusion in a HTML/PHP Page.
+ *
+ * @deprecated since v6.5.6 (2020-07-29); moved the functionality to 'OXID personalization' module
  */
 class Emos
 {

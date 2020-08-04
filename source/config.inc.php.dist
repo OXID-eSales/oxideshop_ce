@@ -9,7 +9,7 @@
 $this->dbType = 'pdo_mysql';
 $this->dbCharset = 'utf8';
 $this->dbHost = '<dbHost>'; // database host name
-$this->dbPort  = 3306; // tcp port to which the database is bound
+$this->dbPort  = '<dbPort>'; // tcp port to which the database is bound
 $this->dbName = '<dbName>'; // database name
 $this->dbUser = '<dbUser>'; // database user name
 $this->dbPwd  = '<dbPwd>'; // database user password

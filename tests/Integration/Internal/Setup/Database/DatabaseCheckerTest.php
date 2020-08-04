@@ -30,7 +30,7 @@ class DatabaseCheckerTest extends TestCase
         (new DatabaseChecker($this->get(BasicContextInterface::class)))
             ->canCreateDatabase(
                 $configFile->getVar('dbHost'),
-                $configFile->getVar('dbPort'),
+                (int) $configFile->getVar('dbPort'),
                 $configFile->getVar('dbUser'),
                 $configFile->getVar('dbPwd'),
                 $existingDatabaseName
@@ -46,7 +46,7 @@ class DatabaseCheckerTest extends TestCase
         (new DatabaseChecker($this->get(BasicContextInterface::class)))
             ->canCreateDatabase(
                 $configFile->getVar('dbHost'),
-                $configFile->getVar('dbPort'),
+                (int) $configFile->getVar('dbPort'),
                 $configFile->getVar('dbUser'),
                 $configFile->getVar('dbPwd'),
                 $nonExistingDatabaseName

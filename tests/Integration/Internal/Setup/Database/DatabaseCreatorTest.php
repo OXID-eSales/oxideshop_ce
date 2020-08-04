@@ -109,7 +109,7 @@ class DatabaseCreatorTest extends TestCase
 
         return [
             'dbHost' => $configFile->getVar('dbHost'),
-            'dbPort' => $configFile->getVar('dbPort'),
+            'dbPort' => (int) $configFile->getVar('dbPort'),
             'dbUser' => $configFile->getVar('dbUser'),
             'dbPwd'  => $configFile->getVar('dbPwd')
         ];

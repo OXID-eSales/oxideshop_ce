@@ -16,6 +16,7 @@ class ConfigFileDao implements ConfigFileDaoInterface
     private const PLACEHOLDERS = [
         'dbHost',
         'dbName',
+        'dbPort',
         'dbUser',
         'dbPwd',
         'sShopURL',

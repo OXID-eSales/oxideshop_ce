@@ -25,6 +25,9 @@ class DIServiceWrapper
     /** @var  array $serviceArray */
     private $serviceArray;
 
+    /** @var  string $class */
+    private $class;
+
     /**
      * DIServiceWrapper constructor.
      *
@@ -35,6 +38,12 @@ class DIServiceWrapper
     {
         $this->key = $key;
         $this->serviceArray = $serviceArray;
+
+        if (isset($serviceArray['class'])) {
+            $this->class = $serviceArray['class'];
+        } elseif (class_exists($this->key)) {
+            $this->class = $this->key;
+        }
     }
 
     /**
@@ -227,13 +236,12 @@ class DIServiceWrapper
         throw new MissingUpdateCallException();
     }
 
-
     /**
      * @return string
      */
     private function getClass(): string
     {
-        return $this->serviceArray['class'];
+        return $this->class;
     }
 
     /**
@@ -241,6 +249,6 @@ class DIServiceWrapper
      */
     private function hasClass(): bool
     {
-        return \array_key_exists('class', $this->serviceArray);
+        return isset($this->class);
     }
 }

@@ -57,6 +57,8 @@ namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
  * Shopping carts:
  *  A shopping cart / basket is a simple Array[] of EMOS items.
  *  Convert your cart to a Array of EMOS_Items and your job is nearly done.
+ *
+ * @deprecated since v6.5.6 (2020-07-29); moved the functionality to 'OXID personalization' module
  */
 class EmosItem
 {

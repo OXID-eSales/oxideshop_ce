@@ -187,6 +187,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-809](https://github.com/OXID-eSales/oxideshop_ce/pull/809)
     - [PR-823](https://github.com/OXID-eSales/oxideshop_ce/pull/823)
     - [PR-824](https://github.com/OXID-eSales/oxideshop_ce/pull/824)
+    - [PR-825](https://github.com/OXID-eSales/oxideshop_ce/pull/825)
     
 ### Security
 
@@ -198,6 +199,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - Use of two stars (**) for filter strings in modules composer blacklist-filter.
+- Econda smarty plugin:
+    - Classes:
+        - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
+        - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
+        - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
 
 ## [6.5.6] - 2020-07-16
 

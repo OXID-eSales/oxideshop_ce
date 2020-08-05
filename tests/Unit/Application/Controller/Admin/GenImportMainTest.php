@@ -26,7 +26,7 @@ class GenImportMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('GenImport_Main');
-        $this->assertEquals('genimport_main.tpl', $oView->render());
+        $this->assertEquals('genimport_main', $oView->render());
     }
 
 

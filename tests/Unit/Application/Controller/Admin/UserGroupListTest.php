@@ -22,6 +22,6 @@ class UserGroupListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('UserGroup_List');
-        $this->assertEquals('usergroup_list.tpl', $oView->render());
+        $this->assertEquals('usergroup_list', $oView->render());
     }
 }

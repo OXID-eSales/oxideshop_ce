@@ -34,7 +34,7 @@ class DeliveryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @var string
      */
-    protected $_sThisTemplate = 'delivery_list.tpl';
+    protected $_sThisTemplate = 'delivery_list';
 
     /**
      * Default SQL sorting parameter (default null).

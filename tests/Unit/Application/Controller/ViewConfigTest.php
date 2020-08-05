@@ -510,7 +510,7 @@ class ViewConfigTest extends \OxidTestCase
         $this->expectExceptionMessage($message);
 
         $viewConfig = oxNew(ViewConfig::class);
-        $viewConfig->getModulePath('testModule', '/non_existing_template.tpl');
+        $viewConfig->getModulePath('testModule', '/non_existing_template');
     }
 
     /**
@@ -525,7 +525,7 @@ class ViewConfigTest extends \OxidTestCase
         Registry::getConfig()->setConfigParam("iDebug", 0);
 
         $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
-        $viewConfig->getModulePath('testModule', '/non_existing_template.tpl');
+        $viewConfig->getModulePath('testModule', '/non_existing_template');
 
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\FileException::class;
         $this->assertLoggedException($expectedExceptionClass);
@@ -595,7 +595,7 @@ class ViewConfigTest extends \OxidTestCase
         $viewConfig = oxNew(ViewConfig::class);
 
         $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class);
-        $viewConfig->getModuleUrl('testModule', '/non_existing_template.tpl');
+        $viewConfig->getModuleUrl('testModule', '/non_existing_template');
     }
 
     /**

@@ -16,7 +16,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
     arguments:
-      - ['%oxid_esales.templating.engine_template_extension%']
       - '%oxid_esales.templating.engine_template_extension%'
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
@@ -70,4 +69,8 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
       - '@oxid_esales.symfony.file_system'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge
     public: true

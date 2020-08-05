@@ -15,7 +15,7 @@ use oxUBase;
 /**
  * List of articles for a selected Manufacturer.
  * Collects list of articles, according to it generates links for list gallery,
- * metatags (for search engines). Result - "manufacturerlist.tpl" template.
+ * metatags (for search engines). Result - "manufacturerlist" template.
  * OXID eShop -> (Any selected shop product category).
  */
 class ManufacturerListController extends \OxidEsales\Eshop\Application\Controller\ArticleListController

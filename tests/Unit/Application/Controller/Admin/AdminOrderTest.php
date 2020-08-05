@@ -22,6 +22,6 @@ class AdminOrderTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Admin_Order');
-        $this->assertEquals('order.tpl', $oView->render());
+        $this->assertEquals('order', $oView->render());
     }
 }

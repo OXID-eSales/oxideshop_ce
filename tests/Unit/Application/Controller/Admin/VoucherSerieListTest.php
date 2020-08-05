@@ -53,6 +53,6 @@ class VoucherSerieListTest extends \OxidTestCase
         $this->assertNull($aViewData["updatelist"]);
         $this->assertNull($aViewData["sort"]);
 
-        $this->assertEquals('voucherserie_list.tpl', $sTplName);
+        $this->assertEquals('voucherserie_list', $sTplName);
     }
 }

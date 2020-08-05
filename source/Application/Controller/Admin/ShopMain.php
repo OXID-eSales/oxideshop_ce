@@ -73,7 +73,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $this->_aViewData['updatenav'] = Registry::getRequest()->getRequestEscapedParameter('updatenav');
         }
 
-        return "shop_main.tpl";
+        return "shop_main";
     }
 
     /**

@@ -22,6 +22,6 @@ class DiagnosticsTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Diagnostics');
-        $this->assertEquals('diagnostics.tpl', $oView->render());
+        $this->assertEquals('diagnostics', $oView->render());
     }
 }

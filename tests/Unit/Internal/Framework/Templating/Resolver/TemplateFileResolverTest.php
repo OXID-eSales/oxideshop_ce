@@ -19,13 +19,13 @@ final class TemplateFileResolverTest extends TestCase
     {
         $this->expectException(InvalidTemplateNameException::class);
 
-        (new TemplateFileResolver(['tpl'], 'tpl'))->getFilename('');
+        (new TemplateFileResolver('tpl'))->getFilename('');
     }
 
     /** @dataProvider smartyTemplateNameFileDataProvider */
     public function testGetFilenameSmartyTemplate($templateName, $expectedFilename): void
     {
-        $filename = (new TemplateFileResolver(['tpl'], 'tpl'))->getFilename($templateName);
+        $filename = (new TemplateFileResolver('tpl'))->getFilename($templateName);
 
         $this->assertEquals($expectedFilename, $filename);
     }
@@ -33,7 +33,7 @@ final class TemplateFileResolverTest extends TestCase
     /** @dataProvider twigTemplateNameFileDataProvider */
     public function testGetFilenameTwigTemplate($templateName, $expectedFilename): void
     {
-        $filename = (new TemplateFileResolver(['tpl', 'html.twig'], 'html.twig'))->getFilename($templateName);
+        $filename = (new TemplateFileResolver('html.twig'))->getFilename($templateName);
 
         $this->assertEquals($expectedFilename, $filename);
     }

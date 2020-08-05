@@ -19,5 +19,5 @@ class ShopSystem extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConf
      *
      * @var string
      */
-    protected $_sThisTemplate = 'shop_system.tpl';
+    protected $_sThisTemplate = 'shop_system';
 }

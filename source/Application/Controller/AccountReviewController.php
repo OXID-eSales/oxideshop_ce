@@ -23,7 +23,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
 {
     protected $itemsPerPage = 10;
 
-    protected $_sThisTemplate = 'page/account/reviews.tpl';
+    protected $_sThisTemplate = 'page/account/reviews';
 
     /**
      * Redirect to My Account, if validation does not pass.

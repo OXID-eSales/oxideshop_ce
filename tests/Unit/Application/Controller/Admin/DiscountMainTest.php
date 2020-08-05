@@ -42,7 +42,7 @@ class DiscountMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Discount_Main');
-        $this->assertEquals('discount_main.tpl', $oView->render());
+        $this->assertEquals('discount_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof discount);
@@ -59,7 +59,7 @@ class DiscountMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Discount_Main');
-        $this->assertEquals('discount_main.tpl', $oView->render());
+        $this->assertEquals('discount_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

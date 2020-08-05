@@ -59,7 +59,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/info/newsletter.tpl';
+    protected $_sThisTemplate = 'page/info/newsletter';
 
     /**
      * Current view search engine indexing state

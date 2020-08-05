@@ -58,7 +58,7 @@ class NavigationTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Navigation');
-        $this->assertEquals('nav_frame.tpl', $oView->render());
+        $this->assertEquals('nav_frame', $oView->render());
     }
 
     /**
@@ -70,7 +70,7 @@ class NavigationTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'setOxCookie', '{}');
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{return "a|b";}');
-        $this->setRequestParameter("item", "home.tpl");
+        $this->setRequestParameter("item", "home");
         $this->setRequestParameter("favorites", array(0, 1, 2));
         $this->setRequestParameter("navReload", false);
         $this->setRequestParameter("openHistory", true);
@@ -87,7 +87,7 @@ class NavigationTest extends \OxidTestCase
         $oView = $this->getMock(NavigationController::class, array("getNavigation", "doStartUpChecks"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
         $oView->expects($this->once())->method('doStartUpChecks')->will($this->returnValue("check"));
-        $this->assertEquals('home.tpl', $oView->render());
+        $this->assertEquals('home', $oView->render());
 
         // checking vew data
         $aViewData = $oView->getViewData();
@@ -109,7 +109,7 @@ class NavigationTest extends \OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'setOxCookie', '{}');
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{return "a|b";}');
-        $this->setRequestParameter("item", "home.tpl");
+        $this->setRequestParameter("item", "home");
         $this->setRequestParameter("favorites", array(0, 1, 2));
         $this->setRequestParameter("navReload", true);
         $this->setRequestParameter("openHistory", true);
@@ -127,7 +127,7 @@ class NavigationTest extends \OxidTestCase
         $oView = $this->getMock(NavigationController::class, array("getNavigation", "doStartUpChecks"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
         $oView->expects($this->never())->method('doStartUpChecks')->will($this->returnValue("check"));
-        $this->assertEquals('home.tpl', $oView->render());
+        $this->assertEquals('home', $oView->render());
 
         // checking vew data
         $aViewData = $oView->getViewData();

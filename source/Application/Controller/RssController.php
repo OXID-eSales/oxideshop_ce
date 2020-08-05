@@ -44,7 +44,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/rss.tpl';
+    protected $_sThisTemplate = 'widget/rss';
 
     /**
      * get RssFeed

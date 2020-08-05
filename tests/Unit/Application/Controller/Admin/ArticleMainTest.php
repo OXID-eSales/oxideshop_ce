@@ -316,7 +316,7 @@ class ArticleMainTest extends \OxidTestCase
         $oView = $this->getProxyClass("Article_Main");
         $oView->setNonPublicVar("_sSavedId", $sOxid);
 
-        $this->assertEquals("article_main.tpl", $oView->render());
+        $this->assertEquals("article_main", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData['edit'] instanceof Article);
     }
@@ -336,7 +336,7 @@ class ArticleMainTest extends \OxidTestCase
         $this->setRequestParameter("oxparentid", $sParentOxid);
 
         $oView = oxNew('Article_Main');
-        $this->assertEquals("article_main.tpl", $oView->render());
+        $this->assertEquals("article_main", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData['edit'] instanceof Article);
         $this->assertTrue($aViewData['parentarticle'] instanceof Article);

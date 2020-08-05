@@ -27,7 +27,7 @@ class DeliveryUsersTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Delivery_Users');
-        $this->assertEquals('delivery_users.tpl', $oView->render());
+        $this->assertEquals('delivery_users', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['readonly']));
     }

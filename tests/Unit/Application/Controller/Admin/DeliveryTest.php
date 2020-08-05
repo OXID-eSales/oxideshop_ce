@@ -22,6 +22,6 @@ class DeliveryTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Delivery');
-        $this->assertEquals('delivery.tpl', $oView->render());
+        $this->assertEquals('delivery', $oView->render());
     }
 }

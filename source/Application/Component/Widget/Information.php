@@ -18,7 +18,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/footer/info.tpl';
+    protected $_sThisTemplate = 'widget/footer/info';
 
     /**
      * @var \OxidEsales\Eshop\Application\Model\ContentList

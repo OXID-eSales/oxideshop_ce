@@ -19,7 +19,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     /**
      * Executes parent method parent::render(),
      * and returns name of template file
-     * "vendor_main.tpl".
+     * "vendor_main".
      *
      * @return string
      */
@@ -76,10 +76,10 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $oVendorMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class);
             $this->_aViewData['oxajax'] = $oVendorMainAjax->getColumns();
 
-            return "popups/vendor_main.tpl";
+            return "popups/vendor_main";
         }
 
-        return "vendor_main.tpl";
+        return "vendor_main";
     }
 
     /**

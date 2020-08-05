@@ -27,7 +27,7 @@ class ArticleUserdefTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Article_Userdef');
-        $this->assertEquals('article_userdef.tpl', $oView->render());
+        $this->assertEquals('article_userdef', $oView->render());
         $this->assertTrue($oView->getViewDataElement('readonly'));
     }
 }

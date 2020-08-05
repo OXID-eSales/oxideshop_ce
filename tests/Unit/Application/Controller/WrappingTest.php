@@ -20,7 +20,7 @@ class WrappingTest extends \OxidTestCase
     public function testRender()
     {
         $oView = oxNew('Wrapping');
-        $this->assertEquals('page/checkout/wrapping.tpl', $oView->render());
+        $this->assertEquals('page/checkout/wrapping', $oView->render());
     }
 
     /**

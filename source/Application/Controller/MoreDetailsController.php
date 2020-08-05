@@ -21,7 +21,7 @@ class MoreDetailsController extends \OxidEsales\Eshop\Application\Controller\Art
      *
      * @var string
      */
-    protected $_sThisTemplate = 'moredetails.tpl';
+    protected $_sThisTemplate = 'moredetails';
 
     /**
      * Current article id

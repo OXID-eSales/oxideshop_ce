@@ -19,7 +19,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/wishlist/wishlist.tpl';
+    protected $_sThisTemplate = 'page/wishlist/wishlist';
 
     /**
      * user object list

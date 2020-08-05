@@ -22,7 +22,7 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
      *
      * @var array
      */
-    protected $_sThisTemplate = 'shop_rdfa.tpl';
+    protected $_sThisTemplate = 'shop_rdfa';
 
     /**
      * Predefined customer types

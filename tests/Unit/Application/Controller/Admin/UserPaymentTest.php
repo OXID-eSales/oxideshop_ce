@@ -42,7 +42,7 @@ class UserPaymentTest extends \OxidTestCase
         $oView->expects($this->once())->method('getUser')->will($this->returnValue("getUser"));
         $oView->expects($this->once())->method('getUserPayments')->will($this->returnValue("getUserPayments"));
         $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(false));
-        $this->assertEquals("user_payment.tpl", $oView->render());
+        $this->assertEquals("user_payment", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue(isset($aViewData['oxpaymentid']));

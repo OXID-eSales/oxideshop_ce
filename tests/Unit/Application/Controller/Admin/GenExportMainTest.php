@@ -22,6 +22,6 @@ class GenExportMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('GenExport_Main');
-        $this->assertEquals('dyn_exportdefault.tpl', $oView->render());
+        $this->assertEquals('dyn_exportdefault', $oView->render());
     }
 }

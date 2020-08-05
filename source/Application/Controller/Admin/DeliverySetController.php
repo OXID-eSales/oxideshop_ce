@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin article deliveryset manager.
- * Returns template, that arranges two other templates ("deliveryset_list.tpl"
- * and "deliveryset_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("deliveryset_list"
+ * and "deliveryset_main") to frame.
  * Admin Menu: Shop settings -> Shipping & Handling Sets.
  */
 class DeliverySetController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -20,5 +20,5 @@ class DeliverySetController extends \OxidEsales\Eshop\Application\Controller\Adm
      *
      * @var string
      */
-    protected $_sThisTemplate = 'deliveryset.tpl';
+    protected $_sThisTemplate = 'deliveryset';
 }

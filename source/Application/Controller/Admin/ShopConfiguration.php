@@ -23,7 +23,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\Mod
  */
 class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    protected $_sThisTemplate = 'shop_config.tpl';
+    protected $_sThisTemplate = 'shop_config';
     protected $_aSkipMultiline = ['aHomeCountry'];
     protected $_aParseFloat = ['iMinOrderPrice'];
 
@@ -38,7 +38,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
     /**
      * Executes parent method parent::render(), passes shop configuration parameters
-     * to Smarty and returns name of template file "shop_config.tpl".
+     * to Smarty and returns name of template file "shop_config".
      *
      * @return string
      */
@@ -73,7 +73,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 $shopDefaultCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ShopDefaultCategoryAjax::class);
                 $this->_aViewData['oxajax'] = $shopDefaultCategoryAjax->getColumns();
 
-                return "popups/shop_default_category.tpl";
+                return "popups/shop_default_category";
             }
         }
 

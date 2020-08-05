@@ -43,7 +43,7 @@ class ShopSeoTest extends \OxidTestCase
         }
         $oView = $this->getProxyClass("Shop_Seo");
         $oView->setNonPublicVar("_sEditObjectId", $shopId);
-        $this->assertEquals('shop_seo.tpl', $oView->render());
+        $this->assertEquals('shop_seo', $oView->render());
     }
 
     /**

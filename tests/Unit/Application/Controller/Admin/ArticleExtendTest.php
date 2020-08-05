@@ -52,7 +52,7 @@ class ArticleExtendTest extends \OxidTestCase
         $this->assertTrue($aViewData["artcattree"] instanceof CategoryList);
         $this->assertTrue($aViewData["aMediaUrls"] instanceof ListModel);
 
-        $this->assertEquals('article_extend.tpl', $sTplName);
+        $this->assertEquals('article_extend', $sTplName);
     }
 
     /**

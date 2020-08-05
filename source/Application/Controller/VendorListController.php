@@ -12,7 +12,7 @@ use OxidEsales\Eshop\Core\Registry;
 /**
  * List of articles for a selected vendor.
  * Collects list of articles, according to it generates links for list gallery,
- * meta tags (for search engines). Result - "vendorlist.tpl" template.
+ * meta tags (for search engines). Result - "vendorlist" template.
  * OXID eShop -> (Any selected shop product category).
  */
 class VendorListController extends \OxidEsales\Eshop\Application\Controller\ArticleListController

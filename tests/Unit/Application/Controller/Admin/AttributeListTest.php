@@ -44,6 +44,6 @@ class AttributeListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Attribute_List');
-        $this->assertEquals('attribute_list.tpl', $oView->render());
+        $this->assertEquals('attribute_list', $oView->render());
     }
 }

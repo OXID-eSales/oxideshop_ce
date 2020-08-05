@@ -31,7 +31,7 @@ class DeliveryMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Delivery_Main');
-        $this->assertEquals('delivery_main.tpl', $oView->render());
+        $this->assertEquals('delivery_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof Delivery);
@@ -48,7 +48,7 @@ class DeliveryMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Delivery_Main');
-        $this->assertEquals('delivery_main.tpl', $oView->render());
+        $this->assertEquals('delivery_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

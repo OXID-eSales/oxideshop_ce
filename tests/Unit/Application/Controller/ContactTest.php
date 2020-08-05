@@ -25,7 +25,7 @@ class ContactTest extends \OxidTestCase
     public function testRender()
     {
         $oContact = oxNew('Contact');
-        $this->assertEquals('page/info/contact.tpl', $oContact->render());
+        $this->assertEquals('page/info/contact', $oContact->render());
     }
 
     /**

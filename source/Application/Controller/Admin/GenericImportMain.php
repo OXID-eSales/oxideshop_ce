@@ -68,14 +68,9 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @var string
      */
-    protected $_sThisTemplate = "genimport_main.tpl";
+    protected $_sThisTemplate = "genimport_main";
 
-    /**
-     * Creates shop object, passes shop data to Smarty engine and returns name of
-     * template file
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();

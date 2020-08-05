@@ -20,7 +20,7 @@ class RatingTest extends \OxidTestCase
     public function testRender()
     {
         $oRating = oxNew('oxwRating');
-        $this->assertEquals('widget/reviews/rating.tpl', $oRating->render());
+        $this->assertEquals('widget/reviews/rating', $oRating->render());
     }
 
     /**

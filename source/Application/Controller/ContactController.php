@@ -54,7 +54,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/info/contact.tpl';
+    protected $_sThisTemplate = 'page/info/contact';
 
     /**
      * Current view search engine indexing state

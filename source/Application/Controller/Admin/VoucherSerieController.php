@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin voucherserie manager.
- * Returns template, that arranges two other templates ("voucherserie_list.tpl"
- * and "voucherserie_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("voucherserie_list"
+ * and "voucherserie_main") to frame.
  * Admin Menu: Shop Settings -> Vouchers.
  */
 class VoucherSerieController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -20,5 +20,5 @@ class VoucherSerieController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @var string
      */
-    protected $_sThisTemplate = 'voucherserie.tpl';
+    protected $_sThisTemplate = 'voucherserie';
 }

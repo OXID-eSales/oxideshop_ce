@@ -81,7 +81,7 @@ class PriceAlarmMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('PriceAlarm_Main');
-        $this->assertEquals('pricealarm_main.tpl', $oView->render());
+        $this->assertEquals('pricealarm_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof pricealarm);
@@ -161,7 +161,7 @@ class PriceAlarmMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('PriceAlarm_Main');
-        $this->assertEquals('pricealarm_main.tpl', $oView->render());
+        $this->assertEquals('pricealarm_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

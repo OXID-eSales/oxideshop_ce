@@ -33,7 +33,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @var string
      */
-    protected $_sThisTemplate = "voucherserie_export.tpl";
+    protected $_sThisTemplate = "voucherserie_export";
 
     /**
      * Number of records to export per tick

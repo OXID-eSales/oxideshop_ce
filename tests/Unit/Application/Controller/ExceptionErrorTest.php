@@ -23,7 +23,7 @@ class ExceptionErrorTest extends \OxidTestCase
     public function testRender()
     {
         $oErr = oxNew('exceptionError');
-        $this->assertEquals('message/exception.tpl', $oErr->render());
+        $this->assertEquals('message/exception', $oErr->render());
     }
 
     /**

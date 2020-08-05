@@ -98,7 +98,7 @@ class DynExportBaseTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('DynExportBase');
-        $this->assertEquals('dynexportbase.tpl', $oView->render());
+        $this->assertEquals('dynexportbase', $oView->render());
     }
 
     /**

@@ -21,7 +21,7 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sThisTemplate = 'pricealarm_list.tpl';
+    protected $_sThisTemplate = 'pricealarm_list';
 
     /**
      * Name of chosen object class (default null).

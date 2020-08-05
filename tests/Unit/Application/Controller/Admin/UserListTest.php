@@ -145,6 +145,6 @@ class UserListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('User_List');
-        $this->assertEquals('user_list.tpl', $oView->render());
+        $this->assertEquals('user_list', $oView->render());
     }
 }

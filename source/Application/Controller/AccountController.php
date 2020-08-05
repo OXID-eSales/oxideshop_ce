@@ -58,21 +58,21 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/dashboard.tpl';
+    protected $_sThisTemplate = 'page/account/dashboard';
 
     /**
      * Current class login template name.
      *
      * @var string
      */
-    protected $_sThisLoginTemplate = 'page/account/login.tpl';
+    protected $_sThisLoginTemplate = 'page/account/login';
 
     /**
      * Alternative login template name.
      *
      * @var string
      */
-    protected $_sThisAltLoginTemplate = 'page/privatesales/login.tpl';
+    protected $_sThisAltLoginTemplate = 'page/privatesales/login';
 
     /**
      * Current view search engine indexing state

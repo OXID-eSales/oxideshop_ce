@@ -34,7 +34,7 @@ class ModuleListTest extends \OxidTestCase
     public function testRender()
     {
         $moduleList = oxNew(ModuleList::class);
-        $this->assertEquals('module_list.tpl', $moduleList->render());
+        $this->assertEquals('module_list', $moduleList->render());
     }
 
     public function testRenderWithCorrectModuleNames()
@@ -43,7 +43,7 @@ class ModuleListTest extends \OxidTestCase
         $this->installModule($modulesDirectory . 'testmodule');
 
         $oView = oxNew('Module_List');
-        $this->assertEquals('module_list.tpl', $oView->render());
+        $this->assertEquals('module_list', $oView->render());
 
         $aViewData = $oView->getViewData();
         $aModulesNames = array_keys($aViewData['mylist']);

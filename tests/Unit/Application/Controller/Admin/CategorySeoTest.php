@@ -40,7 +40,7 @@ class CategorySeoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Category_Seo');
-        $this->assertEquals('object_seo.tpl', $oView->render());
+        $this->assertEquals('object_seo', $oView->render());
     }
 
     /**

@@ -34,7 +34,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/search/search.tpl';
+    protected $_sThisTemplate = 'page/search/search';
 
     /**
      * List type

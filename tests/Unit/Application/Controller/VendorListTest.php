@@ -47,7 +47,7 @@ class VendorListTest extends \OxidTestCase
         $oView->expects($this->any())->method('getVendorTree')->will($this->returnValue($oVendorTree));
         $oView->expects($this->any())->method('getActVendor')->will($this->returnValue($oVendor));
 
-        $this->assertEquals("page/list/list.tpl", $oView->render());
+        $this->assertEquals("page/list/list", $oView->render());
     }
 
     /**

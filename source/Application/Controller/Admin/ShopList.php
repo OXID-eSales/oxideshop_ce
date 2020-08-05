@@ -50,7 +50,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
 
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "shop_list.tpl".
+     * file "shop_list".
      *
      * @return string
      */
@@ -88,7 +88,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $soxId);
         }
 
-        return 'shop_list.tpl';
+        return 'shop_list';
     }
 
     /**

@@ -22,6 +22,6 @@ class AdminUserTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Admin_User');
-        $this->assertEquals('user.tpl', $oView->render());
+        $this->assertEquals('user', $oView->render());
     }
 }

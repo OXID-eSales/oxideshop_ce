@@ -29,7 +29,7 @@ class CountryMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Country_Main');
-        $this->assertEquals('country_main.tpl', $oView->render());
+        $this->assertEquals('country_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof Country);
@@ -46,7 +46,7 @@ class CountryMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Country_Main');
-        $this->assertEquals('country_main.tpl', $oView->render());
+        $this->assertEquals('country_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

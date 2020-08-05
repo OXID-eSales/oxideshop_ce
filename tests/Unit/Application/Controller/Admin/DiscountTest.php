@@ -22,6 +22,6 @@ class DiscountTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Discount');
-        $this->assertEquals('discount.tpl', $oView->render());
+        $this->assertEquals('discount', $oView->render());
     }
 }

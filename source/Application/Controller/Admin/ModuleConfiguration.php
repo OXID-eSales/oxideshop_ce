@@ -23,7 +23,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /** @var string Template name. */
-    protected $_sModule = 'shop_config.tpl';
+    protected $_sModule = 'shop_config';
 
     /**
      * Add additional config type for modules.
@@ -34,12 +34,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $this->_aConfParams['password'] = 'confpassword';
     }
 
-    /**
-     * Executes parent method parent::render(), creates deliveryset category tree,
-     * passes data to Smarty engine and returns name of template file "deliveryset_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $this->_sModuleId = $this->getSelectedModuleId();
@@ -67,7 +62,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
         $this->_aViewData['oModule'] = $module;
 
-        return 'module_config.tpl';
+        return 'module_config';
     }
 
     /**

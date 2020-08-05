@@ -33,7 +33,7 @@ class AdminLinksMainTest extends \OxidTestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertEquals('-1', $aViewData["oxid"]);
-        $this->assertEquals('adminlinks_main.tpl', $sTplName);
+        $this->assertEquals('adminlinks_main', $sTplName);
     }
 
     /**
@@ -52,7 +52,7 @@ class AdminLinksMainTest extends \OxidTestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertNotNull($aViewData["edit"]);
-        $this->assertEquals("adminlinks_main.tpl", $sTplName);
+        $this->assertEquals("adminlinks_main", $sTplName);
     }
 
     /**

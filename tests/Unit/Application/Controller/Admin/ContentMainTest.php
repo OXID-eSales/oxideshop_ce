@@ -28,7 +28,7 @@ class ContentMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertEquals('content_main.tpl', $oView->render());
+        $this->assertEquals('content_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof Content);
@@ -45,7 +45,7 @@ class ContentMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Content_Main');
-        $this->assertEquals('content_main.tpl', $oView->render());
+        $this->assertEquals('content_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

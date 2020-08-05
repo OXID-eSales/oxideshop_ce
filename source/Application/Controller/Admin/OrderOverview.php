@@ -16,13 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxOrder, passes
-     * it's data to Smarty engine and returns name of template file
-     * "order_overview.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -61,7 +55,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $this->_aViewData["currency"] = $oCur;
 
-        return "order_overview.tpl";
+        return "order_overview";
     }
 
     /**

@@ -11,18 +11,15 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Exception\InvalidTemplateNameException;
 
-use function preg_replace;
+use function str_ends_with;
 
 final class TemplateFileResolver implements TemplateFileResolverInterface
 {
-    private array $supportedTemplateNameSuffixes;
     private string $filenameExtension;
 
     public function __construct(
-        array $supportedTemplateNameSuffixes,
         string $filenameExtension
     ) {
-        $this->supportedTemplateNameSuffixes = $supportedTemplateNameSuffixes;
         $this->filenameExtension = $filenameExtension;
     }
 
@@ -30,10 +27,7 @@ final class TemplateFileResolver implements TemplateFileResolverInterface
     public function getFilename(string $templateName): string
     {
         $this->validateTemplateName($templateName);
-        foreach ($this->supportedTemplateNameSuffixes as $suffix) {
-            $templateName = preg_replace("/\.$suffix$/", '', $templateName);
-        }
-        return "$templateName.$this->filenameExtension";
+        return $this->addExtension($templateName);
     }
 
     private function validateTemplateName(string $templateName): void
@@ -41,5 +35,12 @@ final class TemplateFileResolver implements TemplateFileResolverInterface
         if (empty($templateName)) {
             throw new InvalidTemplateNameException('Template name can\'t be empty!');
         }
+    }
+
+    private function addExtension(string $templateName): string
+    {
+        return str_ends_with($templateName, $this->filenameExtension)
+            ? $templateName
+            : "$templateName.$this->filenameExtension";
     }
 }

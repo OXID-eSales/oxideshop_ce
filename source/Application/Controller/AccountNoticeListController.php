@@ -23,7 +23,7 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/noticelist.tpl';
+    protected $_sThisTemplate = 'page/account/noticelist';
 
     /**
      * Check if there is an product in the noticelist.

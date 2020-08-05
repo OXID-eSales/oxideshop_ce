@@ -27,7 +27,7 @@ class DiscountUsersTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Discount_Users');
-        $this->assertEquals('discount_users.tpl', $oView->render());
+        $this->assertEquals('discount_users', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['allgroups2']));
         $this->assertTrue(isset($aViewData['readonly']));

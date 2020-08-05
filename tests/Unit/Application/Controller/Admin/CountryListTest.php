@@ -48,7 +48,7 @@ final class CountryListTest extends \OxidTestCase
         $view = oxNew('Country_List');
 
         $this->assertEquals(array('oxcountry' => array('oxactive' => 'asc', 'oxtitle' => 'asc')), $view->getListSorting());
-        $this->assertEquals('country_list.tpl', $view->render());
+        $this->assertEquals('country_list', $view->render());
     }
 
     /**

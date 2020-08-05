@@ -25,13 +25,6 @@ interface TemplateEngineInterface
     public function getGlobals(): array;
 
     /**
-     * Returns the template file extension.
-     *
-     * @return string
-     */
-    public function getDefaultFileExtension(): string;
-
-    /**
      * Renders a template.
      *
      * @param string $name    A template name

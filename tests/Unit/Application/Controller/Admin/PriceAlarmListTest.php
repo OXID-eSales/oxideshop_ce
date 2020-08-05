@@ -46,7 +46,7 @@ class PriceAlarmListTest extends \OxidTestCase
     public function testRender()
     {
         $oView = oxNew('PriceAlarm_List');
-        $this->assertEquals('pricealarm_list.tpl', $oView->render());
+        $this->assertEquals('pricealarm_list', $oView->render());
     }
 
     /**

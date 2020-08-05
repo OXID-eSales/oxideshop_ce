@@ -25,7 +25,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/wishlist.tpl';
+    protected $_sThisTemplate = 'page/account/wishlist';
 
     /**
      * If true, list will be shown, if false - will not

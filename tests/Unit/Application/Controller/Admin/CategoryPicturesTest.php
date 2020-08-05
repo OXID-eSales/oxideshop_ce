@@ -30,6 +30,6 @@ class CategoryPicturesTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Category);
 
-        $this->assertEquals('category_pictures.tpl', $sTplName);
+        $this->assertEquals('category_pictures', $sTplName);
     }
 }

@@ -83,7 +83,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/checkout/thankyou.tpl';
+    protected $_sThisTemplate = 'page/checkout/thankyou';
 
     /**
      * Executes parent::init(), loads basket from session

@@ -16,12 +16,7 @@ use oxRegistry;
  */
 class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), passes data to Smarty engine
-     * and returns name of template file "imex_export.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
@@ -37,6 +32,6 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $blShowUpdateViews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowUpdateViews');
         $this->_aViewData['showViewUpdate'] = (isset($blShowUpdateViews) && !$blShowUpdateViews) ? false : true;
 
-        return "tools_main.tpl";
+        return "tools_main";
     }
 }

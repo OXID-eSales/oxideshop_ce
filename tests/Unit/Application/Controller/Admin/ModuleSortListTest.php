@@ -21,7 +21,7 @@ class ModuleSortListTest extends \OxidTestCase
     public function testRender()
     {
         $oView = oxNew(ModuleSortList::class);
-        $this->assertEquals('module_sortlist.tpl', $oView->render());
+        $this->assertEquals('module_sortlist', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['aExtClasses']));
         $this->assertTrue(isset($aViewData['aDisabledModules']));

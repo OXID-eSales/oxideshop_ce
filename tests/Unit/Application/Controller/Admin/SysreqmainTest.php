@@ -24,7 +24,7 @@ class SysreqmainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('sysreq_main');
-        $this->assertEquals('sysreq_main.tpl', $oView->render());
+        $this->assertEquals('sysreq_main', $oView->render());
     }
 
     /**

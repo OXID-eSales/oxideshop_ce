@@ -18,5 +18,5 @@ class ServiceList extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/footer/services.tpl';
+    protected $_sThisTemplate = 'widget/footer/services';
 }

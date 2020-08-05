@@ -16,13 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxorder and
-     * oxlist objects, passes it's data to Smarty engine and returns
-     * name of template file "user_remark.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -59,7 +53,7 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
         }
 
-        return "order_remark.tpl";
+        return "order_remark";
     }
 
     /**

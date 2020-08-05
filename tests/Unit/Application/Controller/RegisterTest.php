@@ -23,7 +23,7 @@ class RegisterTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\RegisterController::class, array("isConfirmed"));
         $oView->expects($this->once())->method('isConfirmed')->will($this->returnValue(true));
-        $this->assertEquals('page/account/register_confirm.tpl', $oView->render());
+        $this->assertEquals('page/account/register_confirm', $oView->render());
     }
 
     /**
@@ -119,7 +119,7 @@ class RegisterTest extends \OxidTestCase
     public function testRenderNoRStat()
     {
         $oRegister = oxNew('register');
-        $this->assertEquals('page/account/register.tpl', $oRegister->render());
+        $this->assertEquals('page/account/register', $oRegister->render());
     }
 
     public function testRenderRStat()
@@ -128,7 +128,7 @@ class RegisterTest extends \OxidTestCase
         $oRegister->expects($this->exactly(2))->method('getRegistrationStatus')->will($this->returnValue('rst'));
         $oRegister->expects($this->once())->method('getRegistrationError')->will($this->returnValue('rer'));
 
-        $this->assertEquals('page/account/register_success.tpl', $oRegister->render());
+        $this->assertEquals('page/account/register_success', $oRegister->render());
         $this->assertEquals('rst', $oRegister->getRegistrationStatus());
         $this->assertEquals('rer', $oRegister->getRegistrationError());
     }

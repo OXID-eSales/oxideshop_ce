@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin selectlist manager.
- * Returns template, that arranges two other templates ("selectlist_list.tpl"
- * and "selectlist_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("selectlist_list"
+ * and "selectlist_main") to frame.
  */
 class SelectListController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
@@ -19,5 +19,5 @@ class SelectListController extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @var string
      */
-    protected $_sThisTemplate = 'selectlist.tpl';
+    protected $_sThisTemplate = 'selectlist';
 }

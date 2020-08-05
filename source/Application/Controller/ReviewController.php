@@ -100,14 +100,14 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/review/review.tpl';
+    protected $_sThisTemplate = 'page/review/review';
 
     /**
      * Current class login template name.
      *
      * @var string
      */
-    protected $_sThisLoginTemplate = 'page/review/review_login.tpl';
+    protected $_sThisLoginTemplate = 'page/review/review_login';
 
     /**
      * Current view search engine indexing state

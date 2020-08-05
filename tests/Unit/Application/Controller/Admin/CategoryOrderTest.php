@@ -34,6 +34,6 @@ class CategoryOrderTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Category);
 
-        $this->assertEquals('category_order.tpl', $sTplName);
+        $this->assertEquals('category_order', $sTplName);
     }
 }

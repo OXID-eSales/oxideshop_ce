@@ -25,7 +25,7 @@ class PriceAlarmSendTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\PriceAlarmSend::class, array("setupNavigation"));
         $oView->expects($this->once())->method('setupNavigation');
-        $this->assertEquals('pricealarm_done.tpl', $oView->render());
+        $this->assertEquals('pricealarm_done', $oView->render());
     }
 
     /**

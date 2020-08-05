@@ -81,7 +81,7 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $this->_aViewData["amountprices"] = $oPriceList;
         }
 
-        return "article_stock.tpl";
+        return "article_stock";
     }
 
     /**

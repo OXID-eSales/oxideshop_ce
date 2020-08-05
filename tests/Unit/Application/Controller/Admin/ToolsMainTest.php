@@ -22,6 +22,6 @@ class ToolsMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Tools_Main');
-        $this->assertEquals('tools_main.tpl', $oView->render());
+        $this->assertEquals('tools_main', $oView->render());
     }
 }

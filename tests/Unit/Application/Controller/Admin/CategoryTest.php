@@ -22,6 +22,6 @@ class CategoryTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Category');
-        $this->assertEquals('category.tpl', $oView->render());
+        $this->assertEquals('category', $oView->render());
     }
 }

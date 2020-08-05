@@ -30,7 +30,7 @@ class OrderListTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('order_list');
-        $this->assertEquals('order_list.tpl', $oView->render());
+        $this->assertEquals('order_list', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['folder']));
         $this->assertTrue(isset($aViewData['afolder']));

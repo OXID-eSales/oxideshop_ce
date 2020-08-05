@@ -92,7 +92,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/checkout/order.tpl';
+    protected $_sThisTemplate = 'page/checkout/order';
 
     /**
      * Order step marker

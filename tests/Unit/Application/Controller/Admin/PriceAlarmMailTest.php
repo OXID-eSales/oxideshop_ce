@@ -22,6 +22,6 @@ class PriceAlarmMailTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('PriceAlarm_Mail');
-        $this->assertEquals('pricealarm_mail.tpl', $oView->render());
+        $this->assertEquals('pricealarm_mail', $oView->render());
     }
 }

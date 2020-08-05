@@ -10,43 +10,28 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
+use Smarty;
 
 /**
- * Class SmartyEngine
  * @internal
  */
 class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineInterface
 {
-    /**
-     * The template engine.
-     *
-     * @var \Smarty
-     */
-    private $engine;
+    private Smarty $engine;
+    private SmartyEngineBridgeInterface $smartyEngineBridge;
+    private array $globals = [];
+    private TemplateFileResolverBridgeInterface $templateFileResolverBridge;
 
-    /**
-     * @var SmartyEngineBridgeInterface
-     */
-    private $bridge;
-
-    /**
-     * Array of global parameters
-     *
-     * @var array
-     */
-    private $globals = [];
-
-    /**
-     * Constructor.
-     *
-     * @param \Smarty                     $engine
-     * @param SmartyEngineBridgeInterface $bridge
-     */
-    public function __construct(\Smarty $engine, SmartyEngineBridgeInterface $bridge)
-    {
+    public function __construct(
+        Smarty $engine,
+        SmartyEngineBridgeInterface $smartyEngineBridge,
+        TemplateFileResolverBridgeInterface $templateFileResolverBridge
+    ) {
         $this->engine = $engine;
-        $this->bridge = $bridge;
+        $this->smartyEngineBridge = $smartyEngineBridge;
+        $this->templateFileResolverBridge = $templateFileResolverBridge;
     }
 
     /**
@@ -62,10 +47,14 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
         foreach ($context as $key => $value) {
             $this->engine->assign($key, $value);
         }
-        if (isset($context['oxEngineTemplateId'])) {
-            return $this->engine->fetch($name, $context['oxEngineTemplateId']);
+        if (empty($name)) {
+            return '';
         }
-        return $this->engine->fetch($name);
+        $templateFileName = $this->templateFileResolverBridge->getFilename($name);
+        if (isset($context['oxEngineTemplateId'])) {
+            return $this->engine->fetch($templateFileName, $context['oxEngineTemplateId']);
+        }
+        return $this->engine->fetch($templateFileName);
     }
 
     /**
@@ -79,7 +68,7 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
      */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
     {
-        return $this->bridge->renderFragment($this->engine, $fragment, $fragmentId, $context);
+        return $this->smartyEngineBridge->renderFragment($this->engine, $fragment, $fragmentId, $context);
     }
 
     /**
@@ -115,16 +104,6 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     }
 
     /**
-     * Returns the template file extension.
-     *
-     * @return string
-     */
-    public function getDefaultFileExtension(): string
-    {
-        return 'tpl';
-    }
-
-    /**
      * Pass parameters to the Smarty instance.
      *
      * @param string $name  The name of the parameter.
@@ -150,18 +129,19 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     }
 
     /**
-     * @return \Smarty
+     * @return Smarty
      */
-    public function getSmarty(): \Smarty
+    public function getSmarty(): Smarty
     {
         return $this->engine;
     }
 
     /**
-     * @param \Smarty $smarty
+     * @param Smarty $smarty
      */
-    public function setSmarty(\Smarty $smarty)
+    public function setSmarty(Smarty $smarty)
     {
         $this->engine = $smarty;
     }
+
 }

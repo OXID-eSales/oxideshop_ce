@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class DiscountArticles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates discount category tree,
-     * passes data to Smarty engine and returns name of template file "discount_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -48,14 +43,14 @@ class DiscountArticles extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             $oDiscountArticlesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountArticlesAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountArticlesAjax->getColumns();
 
-            return "popups/discount_articles.tpl";
+            return "popups/discount_articles";
         } elseif ($iAoc == 2) {
             $oDiscountCategoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountCategoriesAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountCategoriesAjax->getColumns();
 
-            return "popups/discount_categories.tpl";
+            return "popups/discount_categories";
         }
 
-        return 'discount_articles.tpl';
+        return 'discount_articles';
     }
 }

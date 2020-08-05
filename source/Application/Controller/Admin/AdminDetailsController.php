@@ -24,11 +24,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
      */
     protected $_oEditor = null;
 
-    /**
-     * Calls parent::render, sets admin help url.
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $sReturn = parent::render();

@@ -11,17 +11,17 @@ use OxidEsales\Eshop\Core\ShopIdCalculator;
 
 /**
  * Admin shop manager.
- * Returns template, that arranges two other templates ("shop_list.tpl"
- * and "shop_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("shop_list"
+ * and "shop_main") to frame.
  * Admin Menu: Main Menu -> Core Settings.
  */
 class ShopController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-    const CURRENT_TEMPLATE = 'shop.tpl';
+    const CURRENT_TEMPLATE = 'shop';
 
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "shop.tpl".
+     * file "shop".
      *
      * @return string
      */

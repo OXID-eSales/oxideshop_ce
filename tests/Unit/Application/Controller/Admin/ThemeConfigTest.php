@@ -18,7 +18,7 @@ class ThemeConfigTest extends \OxidTestCase
     public function testRender()
     {
         $oView = oxNew('Theme_Config');
-        $this->assertEquals('theme_config.tpl', $oView->render());
+        $this->assertEquals('theme_config', $oView->render());
     }
 
     /**

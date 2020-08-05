@@ -27,7 +27,7 @@ class AccountWishlistTest extends \OxidTestCase
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login.tpl', $oView->render());
+        $this->assertEquals('page/account/login', $oView->render());
     }
 
     /**
@@ -42,7 +42,7 @@ class AccountWishlistTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountWishlistController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals('page/account/wishlist.tpl', $oView->render());
+        $this->assertEquals('page/account/wishlist', $oView->render());
     }
 
     /**

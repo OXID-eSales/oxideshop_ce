@@ -9,12 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
-interface TemplateNameResolverInterface
+interface TemplateFileResolverBridgeInterface
 {
     /**
-     * @param string $name
-     *
+     * @param string $templateName
      * @return string
      */
-    public function resolve(string $name): string;
+    public function getFilename(string $templateName): string;
 }

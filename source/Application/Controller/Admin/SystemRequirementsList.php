@@ -18,5 +18,5 @@ class SystemRequirementsList extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @var string
      */
-    protected $_sThisTemplate = 'sysreq_list.tpl';
+    protected $_sThisTemplate = 'sysreq_list';
 }

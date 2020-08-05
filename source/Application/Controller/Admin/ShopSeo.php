@@ -23,7 +23,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
 
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "shop_system.tpl".
+     * file "shop_system".
      *
      * @return string
      */
@@ -52,7 +52,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         // loading active url info
         $this->loadActiveUrl($oShop->getId());
 
-        return "shop_seo.tpl";
+        return "shop_seo";
     }
 
     /**

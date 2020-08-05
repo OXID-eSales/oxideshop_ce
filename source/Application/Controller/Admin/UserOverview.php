@@ -12,12 +12,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class UserOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), passes data to Smarty engine and
-     * returns name of template file "user_overview.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -30,6 +25,6 @@ class UserOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $this->_aViewData["edit"] = $oUser;
         }
 
-        return "user_overview.tpl";
+        return "user_overview";
     }
 }

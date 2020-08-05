@@ -56,7 +56,7 @@ class ArticleListTest extends \OxidTestCase
         $this->setRequestParameter("art_category", "cat@@" . $sCatId);
         // testing..
         $oView = oxNew('Article_List');
-        $this->assertEquals('article_list.tpl', $oView->render());
+        $this->assertEquals('article_list', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();
@@ -82,7 +82,7 @@ class ArticleListTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue(oxNew('oxarticlelist')));
-        $this->assertEquals('article_list.tpl', $oView->render());
+        $this->assertEquals('article_list', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();
@@ -124,7 +124,7 @@ class ArticleListTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleList::class, array("getItemList"));
         $oView->expects($this->any())->method('getItemList')->will($this->returnValue($oList));
-        $this->assertEquals('article_list.tpl', $oView->render());
+        $this->assertEquals('article_list', $oView->render());
 
         // testing view data
         $aViewData = $oView->getViewData();

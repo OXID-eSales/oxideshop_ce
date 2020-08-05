@@ -24,7 +24,7 @@ class ShopMainTest extends \OxidTestCase
         $oView = oxNew('Shop_Main');
 
         $this->setRequestParameter("oxid", $this->getConfig()->getBaseShopId());
-        $this->assertEquals('shop_main.tpl', $oView->render());
+        $this->assertEquals('shop_main', $oView->render());
     }
 
     /**

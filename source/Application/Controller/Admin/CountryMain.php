@@ -16,13 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxCategoryList object,
-     * passes it's data to Smarty engine and returns name of template file
-     * "selectlist_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -62,7 +56,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData["blForeignCountry"] = true;
         }
 
-        return "country_main.tpl";
+        return "country_main";
     }
 
     /**

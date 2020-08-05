@@ -30,7 +30,7 @@ class SelectListMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('SelectList_Main');
-        $this->assertEquals('selectlist_main.tpl', $oView->render());
+        $this->assertEquals('selectlist_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof selectlist);
@@ -47,7 +47,7 @@ class SelectListMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('SelectList_Main');
-        $this->assertEquals('selectlist_main.tpl', $oView->render());
+        $this->assertEquals('selectlist_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

@@ -42,7 +42,7 @@ class VoucherSerieMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('VoucherSerie_Main');
-        $this->assertEquals('voucherserie_main.tpl', $oView->render());
+        $this->assertEquals('voucherserie_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -60,7 +60,7 @@ class VoucherSerieMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('VoucherSerie_Main');
-        $this->assertEquals('voucherserie_main.tpl', $oView->render());
+        $this->assertEquals('voucherserie_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertFalse(isset($aViewData['edit']));

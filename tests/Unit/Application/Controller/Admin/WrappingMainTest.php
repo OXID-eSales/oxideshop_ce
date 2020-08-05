@@ -30,7 +30,7 @@ class WrappingMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Wrapping_Main');
-        $this->assertEquals('wrapping_main.tpl', $oView->render());
+        $this->assertEquals('wrapping_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
@@ -48,7 +48,7 @@ class WrappingMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Wrapping_Main');
-        $this->assertEquals('wrapping_main.tpl', $oView->render());
+        $this->assertEquals('wrapping_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertFalse(isset($aViewData['edit']));

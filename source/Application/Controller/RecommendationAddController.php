@@ -23,7 +23,7 @@ class RecommendationAddController extends \OxidEsales\Eshop\Application\Controll
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/recommendationadd.tpl';
+    protected $_sThisTemplate = 'page/account/recommendationadd';
 
     /**
      * User recommendation lists

@@ -28,12 +28,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     protected $_aUnitsArray = null;
 
-    /**
-     * Collects available article extended parameters, passes them to
-     * Smarty engine and returns template file name "article_extend.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -80,18 +75,18 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oArticleExtendAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleExtendAjax::class);
             $this->_aViewData['oxajax'] = $oArticleExtendAjax->getColumns();
 
-            return "popups/article_extend.tpl";
+            return "popups/article_extend";
         } elseif ($iAoc == 2) {
             $oArticleBundleAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleBundleAjax::class);
             $this->_aViewData['oxajax'] = $oArticleBundleAjax->getColumns();
 
-            return "popups/article_bundle.tpl";
+            return "popups/article_bundle";
         }
 
         //load media files
         $this->_aViewData['aMediaUrls'] = $article->getMediaUrls();
 
-        return "article_extend.tpl";
+        return "article_extend";
     }
 
     /**

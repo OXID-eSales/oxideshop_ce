@@ -19,12 +19,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
  */
 class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates article category tree, passes
-     * data to Smarty engine and returns name of template file "discount_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -68,7 +63,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 $oDiscountMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountMainAjax::class);
                 $this->_aViewData['oxajax'] = $oDiscountMainAjax->getColumns();
 
-                return "popups/discount_main.tpl";
+                return "popups/discount_main";
             } elseif ($iAoc == "2") {
                 // generating category tree for artikel choose select list
                 $this->createCategoryTree("artcattree");
@@ -76,11 +71,11 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 $oDiscountItemAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountItemAjax::class);
                 $this->_aViewData['oxajax'] = $oDiscountItemAjax->getColumns();
 
-                return "popups/discount_item.tpl";
+                return "popups/discount_item";
             }
         }
 
-        return "discount_main.tpl";
+        return "discount_main";
     }
 
     /**

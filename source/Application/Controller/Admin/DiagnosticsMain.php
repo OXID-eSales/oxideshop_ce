@@ -104,7 +104,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $this->_aViewData['sErrorMessage'] = $this->getErrorMessage();
         }
 
-        return "diagnostics_form.tpl";
+        return "diagnostics_form";
     }
 
     /**
@@ -115,7 +115,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $sReport = "";
 
         $aDiagnosticsResult = $this->runBasicDiagnostics();
-        $sReport .= $this->_oRenderer->renderTemplate("diagnostics_main.tpl", $aDiagnosticsResult);
+        $sReport .= $this->_oRenderer->renderTemplate("diagnostics_main", $aDiagnosticsResult);
 
         $this->_oOutput->storeResult($sReport);
 

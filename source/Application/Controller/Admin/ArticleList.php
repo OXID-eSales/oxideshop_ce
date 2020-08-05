@@ -38,7 +38,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
     /**
      * Collects articles base data and passes them according to filtering rules,
-     * returns name of template file "article_list.tpl".
+     * returns name of template file "article_list".
      *
      * @return string
      */
@@ -83,7 +83,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         // vendor list
         $this->_aViewData['vndtree'] = $this->getVendorList($listType, $activeItemId);
 
-        return 'article_list.tpl';
+        return "article_list";
     }
     /**
      * Returns array of fields which may be used for product data search

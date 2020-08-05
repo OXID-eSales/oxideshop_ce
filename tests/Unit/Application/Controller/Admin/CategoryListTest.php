@@ -50,6 +50,6 @@ class CategoryListTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["cattree"] instanceof CategoryList);
 
-        $this->assertEquals('category_list.tpl', $sTplName);
+        $this->assertEquals('category_list', $sTplName);
     }
 }

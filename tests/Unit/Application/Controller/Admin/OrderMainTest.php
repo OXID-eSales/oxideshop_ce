@@ -38,7 +38,7 @@ class OrderMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Order_Main');
-        $this->assertEquals('order_main.tpl', $oView->render());
+        $this->assertEquals('order_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof order);
@@ -55,7 +55,7 @@ class OrderMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Order_Main');
-        $this->assertEquals('order_main.tpl', $oView->render());
+        $this->assertEquals('order_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

@@ -20,7 +20,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/checkout/wrapping.tpl';
+    protected $_sThisTemplate = 'page/checkout/wrapping';
 
     /**
      * Basket items array

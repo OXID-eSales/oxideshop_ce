@@ -25,7 +25,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     /**
      * Executes parent method parent::render(), creates oxpricealarm object,
      * sends pricealarm to iAllCnts of chosen groups and returns name of template
-     * file "pricealarm_send.tpl"/"pricealarm_done.tpl".
+     * file "pricealarm_send"/"pricealarm_done".
      *
      * @return string
      */
@@ -54,9 +54,9 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $this->_aViewData["actlang"] = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
         if ($start < $activeAlertsAmount) {
-            $template = "pricealarm_send.tpl";
+            $template = "pricealarm_send";
         } else {
-            $template = "pricealarm_done.tpl";
+            $template = "pricealarm_done";
         }
 
         return $template;

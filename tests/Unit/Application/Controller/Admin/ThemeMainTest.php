@@ -30,7 +30,7 @@ class ThemeMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Theme_Main');
-        $this->assertEquals('theme_main.tpl', $oView->render());
+        $this->assertEquals('theme_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oTheme']));

@@ -22,6 +22,6 @@ class ShopSystemTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Shop_System');
-        $this->assertEquals('shop_system.tpl', $oView->render());
+        $this->assertEquals('shop_system', $oView->render());
     }
 }

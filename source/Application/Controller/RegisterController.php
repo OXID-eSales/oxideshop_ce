@@ -20,21 +20,21 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/register.tpl';
+    protected $_sThisTemplate = 'page/account/register';
 
     /**
      * Successful registration confirmation template
      *
      * @var string
      */
-    protected $_sSuccessTemplate = 'page/account/register_success.tpl';
+    protected $_sSuccessTemplate = 'page/account/register_success';
 
     /**
      * Successful Confirmation state template name
      *
      * @var string
      */
-    protected $_sConfirmTemplate = 'page/account/register_confirm.tpl';
+    protected $_sConfirmTemplate = 'page/account/register_confirm';
 
     /**
      * Order step marker

@@ -26,7 +26,7 @@ class AttributeCategoryTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Attribute_Category');
-        $this->assertEquals('attribute_category.tpl', $oView->render());
+        $this->assertEquals('attribute_category', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof Attribute);

@@ -39,7 +39,7 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/order.tpl';
+    protected $_sThisTemplate = 'page/account/order';
 
     /**
      * collecting orders

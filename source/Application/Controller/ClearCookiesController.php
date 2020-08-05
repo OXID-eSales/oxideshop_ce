@@ -20,7 +20,7 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/info/clearcookies.tpl';
+    protected $_sThisTemplate = 'page/info/clearcookies';
 
     /**
      * Executes parent::render(), passes template variables to

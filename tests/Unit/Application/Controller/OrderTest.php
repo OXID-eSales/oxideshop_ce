@@ -186,7 +186,7 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals(false, $oConfig->getConfigParam('bl_perfCalcVatOnlyForBasketOrder'));
 
         //test template var
-        $this->assertEquals("page/checkout/order.tpl", $oOrder->getTemplateName());
+        $this->assertEquals("page/checkout/order", $oOrder->getTemplateName());
     }
 
 
@@ -402,7 +402,7 @@ class OrderTest extends \OxidTestCase
         $order->expects($this->any())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
 
         //checking return value
-        $this->assertEquals('page/checkout/order.tpl', $order->render());
+        $this->assertEquals('page/checkout/order', $order->render());
 
         //checking view data
         $this->assertEquals('oxidcashondel', $order->getPayment()->getId());

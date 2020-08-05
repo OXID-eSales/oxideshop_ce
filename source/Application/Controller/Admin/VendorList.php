@@ -17,7 +17,7 @@ class VendorList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
      *
      * @var string
      */
-    protected $_sThisTemplate = 'vendor_list.tpl';
+    protected $_sThisTemplate = 'vendor_list';
 
     /**
      * Name of chosen object class (default null).

@@ -12,12 +12,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
  */
 class ArticleUserdef extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads article data from DB, passes it to Smarty engine, returns name
-     * of template file "article_userdef.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -35,6 +30,6 @@ class ArticleUserdef extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oArticle->load($soxId);
         }
 
-        return "article_userdef.tpl";
+        return "article_userdef";
     }
 }

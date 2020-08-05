@@ -20,6 +20,6 @@ class MiniBasketTest extends \OxidTestCase
     public function testRender()
     {
         $oWMiniBasket = oxNew('oxwMiniBasket');
-        $this->assertEquals('widget/header/minibasket.tpl', $oWMiniBasket->render());
+        $this->assertEquals('widget/header/minibasket', $oWMiniBasket->render());
     }
 }

@@ -16,7 +16,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 /**
  * List of articles for a selected product group.
  * Collects list of articles, according to it generates links for list gallery,
- * meta tags (for search engines). Result - "list.tpl" template.
+ * meta tags (for search engines). Result - "list" template.
  * OXID eShop -> (Any selected shop product category).
  */
 class ArticleListController extends \OxidEsales\Eshop\Application\Controller\FrontendController
@@ -40,14 +40,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/list/list.tpl';
+    protected $_sThisTemplate = 'page/list/list';
 
     /**
      * New layout list template
      *
      * @var string
      */
-    protected $_sThisMoreTemplate = 'page/list/morecategories.tpl';
+    protected $_sThisMoreTemplate = 'page/list/morecategories';
 
     /**
      * Category path string

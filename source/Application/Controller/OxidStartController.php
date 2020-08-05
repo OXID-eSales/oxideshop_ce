@@ -47,7 +47,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
         if (array_key_exists($errorNumber, $templates)) {
             return $templates[$errorNumber];
         } else {
-            return 'message/err_unknown.tpl';
+            return 'message/err_unknown';
         }
     }
 
@@ -97,7 +97,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
     protected function getErrorTemplates()
     {
         return [
-            'unknown' => 'message/err_unknown.tpl',
+            'unknown' => 'message/err_unknown',
         ];
     }
 

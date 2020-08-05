@@ -193,11 +193,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
         return $this->_iViewListSize;
     }
 
-    /**
-     * Executes parent::render(), sets back search keys to view, sets navigation params
-     *
-     * @return null
-     */
+    /** @inheritdoc */
     public function render()
     {
         $return = parent::render();

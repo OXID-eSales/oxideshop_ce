@@ -172,7 +172,7 @@ class InviteTest extends \OxidTestCase
         $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\InviteController::class, array("getUser"));
         $view->expects($this->any())->method('getUser')->will($this->returnValue($user));
 
-        $this->assertEquals('page/privatesales/invite.tpl', $view->render());
+        $this->assertEquals('page/privatesales/invite', $view->render());
     }
 
     /**

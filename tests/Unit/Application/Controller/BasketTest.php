@@ -81,7 +81,7 @@ class BasketTest extends \OxidTestCase
 
         $oBasket = oxNew('basket');
 
-        $this->assertEquals('page/checkout/basket.tpl', $oBasket->render());
+        $this->assertEquals('page/checkout/basket', $oBasket->render());
     }
 
     public function testGetBasketArticles()

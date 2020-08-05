@@ -110,7 +110,7 @@ class AccountNoticeListControllerTest extends \OxidTestCase
         /** @var \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController|MockObject $oView */
         $oView = $this->getMock(AccountNoticeListController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login.tpl', $oView->render());
+        $this->assertEquals('page/account/login', $oView->render());
     }
 
     /**
@@ -126,7 +126,7 @@ class AccountNoticeListControllerTest extends \OxidTestCase
         /** @var \OxidEsales\EshopCommunity\Application\Controller\AccountNoticeListController|MockObject $oView */
         $oView = $this->getMock(AccountNoticeListController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals('page/account/noticelist.tpl', $oView->render());
+        $this->assertEquals('page/account/noticelist', $oView->render());
     }
 
     /**

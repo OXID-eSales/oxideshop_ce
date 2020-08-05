@@ -28,7 +28,7 @@ class DiscountArticlesTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Discount_Articles');
-        $this->assertEquals('discount_articles.tpl', $oView->render());
+        $this->assertEquals('discount_articles', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue(isset($aViewData['readonly']));

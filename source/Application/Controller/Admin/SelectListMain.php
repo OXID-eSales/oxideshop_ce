@@ -31,13 +31,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public $aFieldArray = null;
 
-    /**
-     * Executes parent method parent::render(), creates oxCategoryList object,
-     * passes it's data to Smarty engine and returns name of template file
-     * "selectlist_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -104,10 +98,10 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oSelectlistMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\SelectListMainAjax::class);
             $this->_aViewData['oxajax'] = $oSelectlistMainAjax->getColumns();
 
-            return "popups/selectlist_main.tpl";
+            return "popups/selectlist_main";
         }
 
-        return "selectlist_main.tpl";
+        return "selectlist_main";
     }
 
     /**

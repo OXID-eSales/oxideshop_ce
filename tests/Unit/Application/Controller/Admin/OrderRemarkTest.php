@@ -41,7 +41,7 @@ class OrderRemarkTest extends \OxidTestCase
         $this->setRequestParameter("rem_oxid", "testId");
 
         $oView = oxNew('order_remark');
-        $this->assertEquals("order_remark.tpl", $oView->render());
+        $this->assertEquals("order_remark", $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['allremark']));
         $this->assertTrue($aViewData['allremark'] instanceof \OxidEsales\EshopCommunity\Core\Model\ListModel);

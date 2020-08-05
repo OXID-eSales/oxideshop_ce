@@ -24,7 +24,7 @@ class ManufacturerListTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerList::class, array("authorize"));
         $oView->expects($this->any())->method('authorize')->will($this->returnValue(true));
         $oView->init();
-        $this->assertEquals("manufacturer_list.tpl", $oView->render());
+        $this->assertEquals("manufacturer_list", $oView->render());
         $this->assertEquals(array('oxmanufacturers' => array("oxtitle" => "asc")), $oView->getListSorting());
     }
 }

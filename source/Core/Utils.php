@@ -1331,7 +1331,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $oView->render();
         $oView->setClassKey('oxUBase');
         $oView->addTplParam('sUrl', $sUrl);
-        if ($sRet = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutput('message/err_404.tpl', $oView)) {
+        if ($sRet = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getTemplateOutput('message/err_404', $oView)) {
             $sReturn = $sRet;
         }
         $this->showMessageAndExit($sReturn);

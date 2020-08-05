@@ -28,7 +28,7 @@ class DeliverySetPaymentTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('DeliverySet_Payment');
-        $this->assertEquals('deliveryset_payment.tpl', $oView->render());
+        $this->assertEquals('deliveryset_payment', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue(isset($aViewData['readonly']));
@@ -46,7 +46,7 @@ class DeliverySetPaymentTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('DeliverySet_Payment');
-        $this->assertEquals('deliveryset_payment.tpl', $oView->render());
+        $this->assertEquals('deliveryset_payment', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

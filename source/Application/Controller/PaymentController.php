@@ -91,7 +91,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/checkout/payment.tpl';
+    protected $_sThisTemplate = 'page/checkout/payment';
 
     /**
      * Order step marker

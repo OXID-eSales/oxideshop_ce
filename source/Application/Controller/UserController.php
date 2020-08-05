@@ -20,7 +20,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/checkout/user.tpl';
+    protected $_sThisTemplate = 'page/checkout/user';
 
     /**
      * Order step marker

@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\Header\Bridge\HeaderGeneratorBrid
 
 /**
  * Admin newsletter manager.
- * Returns template, that arranges template ("newsletter.tpl") to frame.
+ * Returns template, that arranges template ("newsletter") to frame.
  * Admin Menu: Customer Info -> Newsletter.
  */
 class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -27,7 +27,7 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @var string
      */
-    protected $_sThisTemplate = 'newsletter.tpl';
+    protected $_sThisTemplate = 'newsletter';
 
     public function export(): void
     {

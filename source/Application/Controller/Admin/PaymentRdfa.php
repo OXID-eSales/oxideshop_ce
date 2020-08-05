@@ -24,7 +24,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @var string
      */
-    protected $_sThisTemplate = "payment_rdfa.tpl";
+    protected $_sThisTemplate = "payment_rdfa";
 
     /**
      * Predefined RDFa payment methods

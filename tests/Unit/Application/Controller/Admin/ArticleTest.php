@@ -22,6 +22,6 @@ class ArticleTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Article');
-        $this->assertEquals('article.tpl', $oView->render());
+        $this->assertEquals('article', $oView->render());
     }
 }

@@ -8,8 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
- * Sets template, that arranges two other templates ("article_list.tpl"
- * and "article_main.tpl") to frame.
+ * Sets template, that arranges two other templates ("article_list"
+ * and "article_main") to frame.
  * Admin Menu: Manage Products -> Articles.
  */
 class LanguageController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -19,5 +19,5 @@ class LanguageController extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @var string
      */
-    protected $_sThisTemplate = 'language.tpl';
+    protected $_sThisTemplate = 'language';
 }

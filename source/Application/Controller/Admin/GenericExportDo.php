@@ -41,7 +41,7 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
      *
      * @var string
      */
-    protected $_sThisTemplate = "dynbase_do.tpl";
+    protected $_sThisTemplate = "dynbase_do";
 
     /**
      * Does Export line by line on position iCnt
@@ -67,7 +67,7 @@ class GenericExportDo extends \OxidEsales\Eshop\Application\Controller\Admin\Dyn
 
             $this->write(
                 $this->getRenderer()->renderTemplate(
-                    "genexport.tpl",
+                    "genexport",
                     $context
                 )
             );

@@ -43,7 +43,7 @@ class OrderOverviewTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Order_Overview');
-        $this->assertEquals('order_overview.tpl', $oView->render());
+        $this->assertEquals('order_overview', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof order);

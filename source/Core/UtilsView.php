@@ -581,56 +581,56 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * Example of $activeBlockTemplates:
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_a" (group a)
      *  OXTHEME = ""
      *  "content_a_default"
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_a" (group a)
      *  OXTHEME = "parent_of_active_theme"
      *  "content_a_parent"
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_a" (group a)
      *  OXTHEME = "active_theme"
      *  "content_a_active"
      *
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_b" (group b)
      *  OXTHEME = ""
      *  "content_b_default"
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_b" (group b)
      *  OXTHEME = "parent_of_active_theme"
      *  "content_b_parent"
      *
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_c" (group c)
      *  OXTHEME = ""
      *  OXFILE = "x"
      *  "content_c_x_default"
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_c" (group c)
      *  OXTHEME = ""
      *  OXFILE = "y"
      *  "content_c_y_default"
      *
      * Example of return:
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a" (group a)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_a" (group a)
      *  OXTHEME = "active_theme"
      *  "content_a_active"
      *
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b" (group b)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_b" (group b)
      *  OXTHEME = "parent_of_active_theme"
      *  "content_b_parent"
      *
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_c" (group c)
      *  OXTHEME = ""
      *  OXFILE = "x"
      *  "content_c_x_default"
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_c" (group c)
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_c" (group c)
      *  OXTHEME = ""
      *  OXFILE = "y"
      *  "content_c_y_default"
@@ -735,14 +735,14 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      *
      * Example of $activeBlockTemplates:
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_a"
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_a"
      *  "content_a_active"
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b"
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_b"
      *  OXFILE = "x"
      *  "content_b_x_default"
      *
-     *  OXTEMPLATE = "requested_template_name.tpl"  OXBLOCKNAME = "block_name_b"
+     *  OXTEMPLATE = "requested_template_name"  OXBLOCKNAME = "block_name_b"
      *  OXFILE = "y"
      *  "content_b_y_default"
      *

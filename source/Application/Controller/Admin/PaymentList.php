@@ -19,7 +19,7 @@ class PaymentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sThisTemplate = 'payment_list.tpl';
+    protected $_sThisTemplate = 'payment_list';
 
     /**
      * Name of chosen object class (default null).

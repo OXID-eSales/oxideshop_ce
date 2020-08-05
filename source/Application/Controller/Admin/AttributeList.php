@@ -20,7 +20,7 @@ class AttributeList extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @var string
      */
-    protected $_sThisTemplate = 'attribute_list.tpl';
+    protected $_sThisTemplate = 'attribute_list';
 
     /**
      * Name of chosen object class (default null).

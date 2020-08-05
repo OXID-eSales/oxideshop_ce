@@ -20,5 +20,5 @@ class AdminStart extends \OxidEsales\Eshop\Application\Controller\Admin\AdminCon
      *
      * @var string
      */
-    protected $_sThisTemplate = 'start.tpl';
+    protected $_sThisTemplate = 'start';
 }

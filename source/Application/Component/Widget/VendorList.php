@@ -18,7 +18,7 @@ class VendorList extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/footer/vendorlist.tpl';
+    protected $_sThisTemplate = 'widget/footer/vendorlist';
 
     /**
      * Template variable getter. Returns vendorlist for search

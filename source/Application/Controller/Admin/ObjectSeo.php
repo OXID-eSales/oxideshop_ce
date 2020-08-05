@@ -18,7 +18,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     /**
      * Executes parent method parent::render(),
      * and returns name of template file
-     * "object_main.tpl".
+     * "object_main".
      *
      * @return string
      */
@@ -52,7 +52,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             $this->_aViewData['otherlang'][$sLangId] = clone $oLang;
         }
 
-        return 'object_seo.tpl';
+        return 'object_seo';
     }
 
     /**

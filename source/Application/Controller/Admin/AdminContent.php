@@ -8,8 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
- * Sets template, that arranges two other templates ("content_list.tpl"
- * and "content_main.tpl") to frame.
+ * Sets template, that arranges two other templates ("content_list"
+ * and "content_main") to frame.
  * Admin Menu: Customerinformations -> Content.
  */
 class AdminContent extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -19,5 +19,5 @@ class AdminContent extends \OxidEsales\Eshop\Application\Controller\Admin\AdminC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'content.tpl';
+    protected $_sThisTemplate = 'content';
 }

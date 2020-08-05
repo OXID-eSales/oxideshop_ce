@@ -23,7 +23,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/forgotpwd.tpl';
+    protected $_sThisTemplate = 'page/account/forgotpwd';
 
     /**
      * Send forgot E-Mail.

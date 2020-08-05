@@ -67,7 +67,7 @@ class ShopLicenseTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Shop_License');
-        $this->assertEquals('shop_license.tpl', $oView->render());
+        $this->assertEquals('shop_license', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof shop);
@@ -85,7 +85,7 @@ class ShopLicenseTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Shop_License');
-        $this->assertEquals('shop_license.tpl', $oView->render());
+        $this->assertEquals('shop_license', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

@@ -47,13 +47,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected $_oEditObject = null;
 
-    /**
-     * Executes parent method parent::render(), creates oxorder and oxvoucherlist
-     * objects, appends voucherlist information to order object and passes data
-     * to Smarty engine, returns name of template file "order_article.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -63,7 +57,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $this->_aViewData["aProductVats"] = $oOrder->getProductVats(true);
         }
 
-        return "order_article.tpl";
+        return "order_article";
     }
 
     /**

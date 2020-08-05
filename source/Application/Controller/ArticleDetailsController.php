@@ -25,7 +25,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/details/details.tpl';
+    protected $_sThisTemplate = 'page/details/details';
 
     /**
      * Current product parent article object
@@ -280,10 +280,10 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         switch ($renderPartial) {
             case "productInfo":
-                return 'page/details/ajax/fullproductinfo.tpl';
+                return 'page/details/ajax/fullproductinfo';
                 break;
             case "detailsMain":
-                return 'page/details/ajax/productmain.tpl';
+                return 'page/details/ajax/productmain';
                 break;
             default:
                 // can not be removed, as it is used for breadcrumb loading

@@ -22,7 +22,7 @@ class CategoryTreeTest extends UnitTestCase
     public function testRender()
     {
         $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
-        $this->assertEquals('widget/sidebar/categorytree.tpl', $categoryTree->render());
+        $this->assertEquals('widget/sidebar/categorytree', $categoryTree->render());
     }
 
     /**
@@ -37,6 +37,6 @@ class CategoryTreeTest extends UnitTestCase
 
         $categoryTree = oxNew('OxidEsales\EshopCommunity\Application\Component\Widget\CategoryTree');
         $categoryTree->setViewParameters(array("sWidgetType" => "header"));
-        $this->assertEquals('widget/header/categorylist.tpl', $categoryTree->render());
+        $this->assertEquals('widget/header/categorylist', $categoryTree->render());
     }
 }

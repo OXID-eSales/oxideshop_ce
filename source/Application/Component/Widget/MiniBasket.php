@@ -26,5 +26,5 @@ class MiniBasket extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/header/minibasket.tpl';
+    protected $_sThisTemplate = 'widget/header/minibasket';
 }

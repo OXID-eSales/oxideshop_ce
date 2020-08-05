@@ -20,7 +20,7 @@ class DiscountList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @var string
      */
-    protected $_sThisTemplate = 'discount_list.tpl';
+    protected $_sThisTemplate = 'discount_list';
 
     /**
      * Name of chosen object class (default null).

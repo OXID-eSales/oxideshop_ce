@@ -23,13 +23,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected $_blDelete = false;
 
-    /**
-     * Executes parent method parent::render(), creates oxuser and oxbase objects,
-     * passes data to Smarty engine and returns name of template file
-     * "user_address.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -72,7 +66,7 @@ class UserAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData['readonly'] = true;
         }
 
-        return "user_address.tpl";
+        return "user_address";
     }
 
     /**

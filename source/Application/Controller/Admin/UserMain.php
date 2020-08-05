@@ -20,13 +20,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 {
     private $_sSaveError = null;
 
-    /**
-     * Executes parent method parent::render(), creates oxuser, oxshops and oxlist
-     * objects, passes data to Smarty engine and returns name of template
-     * file "user_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -93,10 +87,10 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             $oUserMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\UserMainAjax::class);
             $this->_aViewData['oxajax'] = $oUserMainAjax->getColumns();
 
-            return "popups/user_main.tpl";
+            return "popups/user_main";
         }
 
-        return "user_main.tpl";
+        return "user_main";
     }
 
     /**

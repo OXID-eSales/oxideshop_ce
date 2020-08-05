@@ -28,7 +28,7 @@ class UserGroupMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('UserGroup_Main');
-        $this->assertEquals('usergroup_main.tpl', $oView->render());
+        $this->assertEquals('usergroup_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof groups);
@@ -45,7 +45,7 @@ class UserGroupMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('UserGroup_Main');
-        $this->assertEquals('usergroup_main.tpl', $oView->render());
+        $this->assertEquals('usergroup_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertFalse(isset($aViewData['edit']));

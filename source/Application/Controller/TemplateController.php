@@ -16,11 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class TemplateController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
-    /**
-     * Executes parent method parent::render(), returns name of template file.
-     *
-     * @return  string  $sTplName   template file name
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();

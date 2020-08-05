@@ -237,8 +237,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns name of template to render
-     *
+     * Entry point to pass controller-specific data to the view.
      * @return string current view template file name
      */
     public function render()
@@ -717,7 +716,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Template variable getter. Returns if newsletter can be displayed (for _right.tpl)
+     * Template variable getter. Returns if newsletter can be displayed (for _right)
      *
      * @return integer
      */

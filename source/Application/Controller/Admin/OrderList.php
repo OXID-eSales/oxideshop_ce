@@ -39,7 +39,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
 
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "order_list.tpl".
+     * file "order_list".
      *
      * @return string
      */
@@ -65,7 +65,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $this->_aViewData["addsearch"] = $searchQuery;
         $this->_aViewData["afolder"] = $folders;
 
-        return "order_list.tpl";
+        return "order_list";
     }
 
     /**

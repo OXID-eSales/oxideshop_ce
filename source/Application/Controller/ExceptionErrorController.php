@@ -17,7 +17,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @var string
      */
-    protected $_sThisTemplate = 'message/exception.tpl';
+    protected $_sThisTemplate = 'message/exception';
 
     /** @var array Remove loading of components on exception handling. */
     protected $_aComponentNames = [];

@@ -8,8 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
- * Sets view template, that arranges two other templates ("actions_list.tpl"
- * and "actions_main.tpl") to frame.
+ * Sets view template, that arranges two other templates ("actions_list"
+ * and "actions_main") to frame.
  * Admin Menu: Manage Products -> Actions.
  */
 class ActionsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -19,5 +19,5 @@ class ActionsController extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @var string
      */
-    protected $_sThisTemplate = 'actions.tpl';
+    protected $_sThisTemplate = 'actions';
 }

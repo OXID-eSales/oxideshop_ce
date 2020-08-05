@@ -22,6 +22,6 @@ class AdminStartTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Admin_Start');
-        $this->assertEquals('start.tpl', $oView->render());
+        $this->assertEquals('start', $oView->render());
     }
 }

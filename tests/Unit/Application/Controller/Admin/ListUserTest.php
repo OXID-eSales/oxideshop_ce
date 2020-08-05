@@ -41,6 +41,6 @@ class ListUserTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("getNavigation"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavTree));
-        $this->assertEquals("list_user.tpl", $oView->render());
+        $this->assertEquals("list_user", $oView->render());
     }
 }

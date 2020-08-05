@@ -31,7 +31,7 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/recommendations/recommlist.tpl';
+    protected $_sThisTemplate = 'page/recommendations/recommlist';
 
     /**
      * Other recommendations list

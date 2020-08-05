@@ -14,12 +14,7 @@ use oxException;
 
 class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates deliveryset category tree,
-     * passes data to Smarty engine and returns name of template file "deliveryset_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $soxId = $this->getEditObjectId();
@@ -42,7 +37,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
         }
 
-        return 'theme_main.tpl';
+        return 'theme_main';
     }
 
     /**

@@ -8,7 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Str;
+
+use function basename;
 
 /**
  * CMS - loads pages and displays it
@@ -34,14 +35,14 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/info/content.tpl';
+    protected $_sThisTemplate = 'page/info/content';
 
     /**
      * Current view plain template
      *
      * @var string
      */
-    protected $_sThisPlainTemplate = 'page/info/content_plain.tpl';
+    protected $_sThisPlainTemplate = 'page/info/content_plain';
 
     /**
      * Current view content category (if available)
@@ -74,21 +75,21 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var string
      */
-    protected $_sBusinessTemplate = 'rdfa/content/inc/business_entity.tpl';
+    protected $_sBusinessTemplate = 'rdfa/content/inc/business_entity';
 
     /**
      * Delivery charge data template
      *
      * @var string
      */
-    protected $_sDeliveryTemplate = 'rdfa/content/inc/delivery_charge.tpl';
+    protected $_sDeliveryTemplate = 'rdfa/content/inc/delivery_charge';
 
     /**
      * Payment charge data template
      *
      * @var string
      */
-    protected $_sPaymentTemplate = 'rdfa/content/inc/payment_charge.tpl';
+    protected $_sPaymentTemplate = 'rdfa/content/inc/payment_charge';
 
     /**
      * An array including all ShopConfVars which are used to extend business
@@ -96,13 +97,15 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      *
      * @var array
      */
-    protected $_aBusinessEntityExtends = ["sRDFaLogoUrl",
-                                               "sRDFaLongitude",
-                                               "sRDFaLatitude",
-                                               "sRDFaGLN",
-                                               "sRDFaNAICS",
-                                               "sRDFaISIC",
-                                               "sRDFaDUNS"];
+    protected $_aBusinessEntityExtends = [
+        'sRDFaLogoUrl',
+        'sRDFaLongitude',
+        'sRDFaLatitude',
+        'sRDFaGLN',
+        'sRDFaNAICS',
+        'sRDFaISIC',
+        'sRDFaDUNS',
+    ];
 
     /**
      * Returns prefix ID used by template engine.
@@ -118,40 +121,24 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         return $this->_sViewId;
     }
 
-    /**
-     * Executes parent::render(), passes template variables to
-     * template engine and generates content. Returns the name
-     * of template to render content::_sThisTemplate
-     *
-     * @return  string  $this->_sThisTemplate   current template file name
-     */
+    /** @inheritdoc  */
     public function render()
     {
         parent::render();
 
-        $oContent = $this->getContent();
-        if ($oContent && !$this->canShowContent($oContent->oxcontents__oxloadid->value)) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=account');
+        $content = $this->getContent();
+        if ($content && $content->getLoadId()) {
+            $this->validateContentAccessPermissions($content->getLoadId());
+            $this->getViewConfig()->setViewConfigParam('oxloadid', $content->getLoadId());
         }
-
-        $sTpl = false;
-        if ($sTplName = $this->getTplName()) {
-            $this->_sThisTemplate = $sTpl = $sTplName;
-        } elseif ($oContent) {
-            $sTpl = $oContent->getId();
-        }
-
-        if (!$sTpl) {
+        $templateName = $this->getTplName();
+        if (!$templateName && (!$content || !$content->getId())) {
             error_404_handler();
         }
-
-        // sometimes you need to display plain templates (e.g. when showing popups)
         if ($this->showPlainTemplate()) {
             $this->_sThisTemplate = $this->_sThisPlainTemplate;
-        }
-
-        if ($oContent) {
-            $this->getViewConfig()->setViewConfigParam('oxloadid', $oContent->getLoadId());
+        } elseif ($templateName) {
+            $this->_sThisTemplate = $templateName;
         }
 
         return $this->_sThisTemplate;
@@ -329,22 +316,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function getTplName()
     {
-        // assign template name
-        $sTplName = Registry::getRequest()->getRequestEscapedParameter('tpl');
-
-        if ($sTplName) {
-            // security fix so that you cant access files from outside template dir
-            $sTplName = basename($sTplName);
-
-            //checking if it is template name, not content id
-            if (!Str::getStr()->preg_match("/\.tpl$/", $sTplName)) {
-                $sTplName = null;
-            } else {
-                $sTplName = 'message/' . $sTplName;
-            }
+        $requestedTemplate = Registry::getRequest()->getRequestEscapedParameter('tpl');
+        if (!$requestedTemplate) {
+            return null;
         }
-
-        return $sTplName;
+        // security fix so that you can't access files from outside template dir
+        $baseName = basename($requestedTemplate);
+        return "message/$baseName";
     }
 
     /**
@@ -388,7 +366,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function showRdfa()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blRDFaEmbedding');
+        return Registry::getConfig()->getConfigParam('blRDFaEmbedding');
     }
 
     /**
@@ -401,7 +379,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $aTemplate = [];
         $sContentId = $this->getContent()->oxcontents__oxloadid->value;
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         if ($sContentId == $myConfig->getConfigParam('sRDFaBusinessEntityLoc')) {
             $aTemplate[] = $this->_sBusinessTemplate;
         }
@@ -422,7 +400,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getBusinessEntityExtends()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $aExtends = [];
 
         foreach ($this->_aBusinessEntityExtends as $sExtend) {
@@ -505,7 +483,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getRdfaVAT()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iRDFaVAT');
+        return Registry::getConfig()->getConfigParam('iRDFaVAT');
     }
 
     /**
@@ -515,8 +493,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getRdfaPriceValidity()
     {
-        $iDays = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iRDFaPriceValidity');
-        $iFrom = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
+        $iDays = Registry::getConfig()->getConfigParam('iRDFaPriceValidity');
+        $iFrom = Registry::getUtilsDate()->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = [];
         $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
@@ -560,5 +538,17 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         return $url;
+    }
+
+    /**
+     * Terminates execution with exit() on no permissions
+     * @param string $contentId
+     * @return void
+     */
+    private function validateContentAccessPermissions(string $contentId): void
+    {
+        if (!$this->canShowContent($contentId)) {
+            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=account');
+        }
     }
 }

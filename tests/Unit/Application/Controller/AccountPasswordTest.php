@@ -203,7 +203,7 @@ class AccountPasswordTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountPasswordController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
 
-        $this->assertEquals('page/account/login.tpl', $oView->render());
+        $this->assertEquals('page/account/login', $oView->render());
     }
 
     /**
@@ -220,7 +220,7 @@ class AccountPasswordTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountPasswordController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
-        $this->assertEquals('page/account/password.tpl', $oView->render());
+        $this->assertEquals('page/account/password', $oView->render());
     }
 
     /**

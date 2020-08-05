@@ -59,7 +59,7 @@ class ArticleOverviewTest extends \OxidTestCase
         $this->assertNull($aViewData["afolder"]);
         $this->assertNull($aViewData["aSubclass"]);
 
-        $this->assertEquals('article_overview.tpl', $sTplName);
+        $this->assertEquals('article_overview', $sTplName);
     }
 
     /**
@@ -83,6 +83,6 @@ class ArticleOverviewTest extends \OxidTestCase
         $this->assertNull($aViewData["afolder"]);
         $this->assertNull($aViewData["aSubclass"]);
 
-        $this->assertEquals('article_overview.tpl', $sTplName);
+        $this->assertEquals('article_overview', $sTplName);
     }
 }

@@ -99,10 +99,10 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oCategoryMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\CategoryMainAjax::class);
             $this->_aViewData['oxajax'] = $oCategoryMainAjax->getColumns();
 
-            return "popups/category_main.tpl";
+            return "popups/category_main";
         }
 
-        return "category_main.tpl";
+        return "category_main";
     }
 
     /**

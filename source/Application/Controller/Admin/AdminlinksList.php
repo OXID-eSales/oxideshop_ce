@@ -20,7 +20,7 @@ class AdminlinksList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sThisTemplate = 'adminlinks_list.tpl';
+    protected $_sThisTemplate = 'adminlinks_list';
 
     /**
      * Name of chosen object class (default null).

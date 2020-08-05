@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render()
-     * passes data to Smarty engine and returns name of template file "deliveryset_payment.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -55,14 +50,14 @@ class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\
             $oDeliverysetPaymentAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetPaymentAjax->getColumns();
 
-            return "popups/deliveryset_payment.tpl";
+            return "popups/deliveryset_payment";
         } elseif ($iAoc == 2) {
             $oDeliverysetCountryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetCountryAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetCountryAjax->getColumns();
 
-            return "popups/deliveryset_country.tpl";
+            return "popups/deliveryset_country";
         }
 
-        return "deliveryset_payment.tpl";
+        return "deliveryset_payment";
     }
 }

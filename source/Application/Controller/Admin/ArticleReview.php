@@ -19,7 +19,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 {
     /**
      * Loads selected article review information, returns name of template
-     * file "article_review.tpl".
+     * file "article_review".
      *
      * @return string
      */
@@ -66,7 +66,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $this->_aViewData["blShowActBox"] = $config->getConfigParam('blGBModerate');
         }
 
-        return "article_review.tpl";
+        return "article_review";
     }
 
     /**

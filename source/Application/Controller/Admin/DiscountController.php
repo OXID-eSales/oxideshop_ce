@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin article discount manager.
- * Returns template, that arranges two other templates ("discount_list.tpl"
- * and "discount_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("discount_list"
+ * and "discount_main") to frame.
  * Admin Menu: Shop Settings -> Discounts.
  */
 class DiscountController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -20,5 +20,5 @@ class DiscountController extends \OxidEsales\Eshop\Application\Controller\Admin\
      *
      * @var string
      */
-    protected $_sThisTemplate = 'discount.tpl';
+    protected $_sThisTemplate = 'discount';
 }

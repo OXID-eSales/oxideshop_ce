@@ -22,7 +22,7 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/newsletter.tpl';
+    protected $_sThisTemplate = 'page/account/newsletter';
 
     /**
      * Whether the newsletter option had been changed give some affirmation.

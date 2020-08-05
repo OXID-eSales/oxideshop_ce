@@ -2,6 +2,9 @@ services:
   _defaults:
     autowire: true
 
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProvider
+
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridge
     public: true

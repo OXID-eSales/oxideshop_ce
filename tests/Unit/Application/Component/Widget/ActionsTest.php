@@ -32,7 +32,7 @@ class ActionsTest extends \OxidTestCase
     public function testRender()
     {
         $action = oxNew('oxwActions');
-        $this->assertSame('widget/product/action.tpl', $action->render());
+        $this->assertSame('widget/product/action', $action->render());
     }
 
     /**

@@ -43,7 +43,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'user_list.tpl';
+    protected $_sThisTemplate = 'user_list';
 
     /**
      * Executes parent::render(), sets blacklist and preventdelete flag

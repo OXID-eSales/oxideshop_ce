@@ -20,7 +20,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 {
     /**
      * Sets link information data (or leaves empty), returns name of template
-     * file "adminlinks_main.tpl".
+     * file "adminlinks_main".
      *
      * @return string
      */
@@ -67,10 +67,10 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             255,
             $oLinks,
             "oxlinks__oxurldesc",
-            "links.tpl.css"
+            "links.css"
         );
 
-        return "adminlinks_main.tpl";
+        return "adminlinks_main";
     }
 
     /**

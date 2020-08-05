@@ -352,6 +352,6 @@ class LoginTest extends \OxidTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oView->expects($this->once())->method('getAvailableLanguages')->will($this->returnValue($aLanguages));
 
-        $this->assertEquals("login.tpl", $oView->render());
+        $this->assertEquals("login", $oView->render());
     }
 }

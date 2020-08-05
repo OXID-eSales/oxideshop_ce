@@ -19,7 +19,7 @@ class RecommAddTest extends \OxidTestCase
     {
         $oProduct = oxNew('oxArticle');
         $oProduct->load("1126");
-        $oProduct->oxarticles__oxtemplate->value = 'details_persparam.tpl';
+        $oProduct->oxarticles__oxtemplate->value = 'details_persparam';
 
         $oRecomm = $this->getMock(\OxidEsales\Eshop\Application\Controller\RecommendationAddController::class, array("getProduct"));
         $oRecomm->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));

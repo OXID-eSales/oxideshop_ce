@@ -103,7 +103,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      *
      * @var string
      */
-    protected $_sThisTemplate = "dynexportbase.tpl";
+    protected $_sThisTemplate = "dynexportbase";
 
     /**
      * Category data cache

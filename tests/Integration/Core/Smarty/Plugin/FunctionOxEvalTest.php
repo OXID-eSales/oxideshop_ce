@@ -12,12 +12,15 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Smarty\Plugin;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\SmartyTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 final class FunctionOxEvalTest extends UnitTestCase
 {
+    use SmartyTrait;
+
     private string $templatePath;
     private string $unparsedValue = '[{1|cat:2|cat:3}]';
     private array $contextData;
@@ -29,6 +32,7 @@ final class FunctionOxEvalTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->skipIfNotSmarty();
         $this->prepareTestData();
     }
 
@@ -107,7 +111,7 @@ final class FunctionOxEvalTest extends UnitTestCase
     {
         $this->templatePath = Path::join(
             $this->getTemplateDir(),
-            uniqid('test-tpl-', true)
+            uniqid('test-tpl-', true) . $this->getSmartyFileExtension()
         );
         file_put_contents($this->templatePath, $contents);
     }

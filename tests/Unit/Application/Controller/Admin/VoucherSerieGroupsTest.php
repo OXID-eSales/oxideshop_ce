@@ -28,7 +28,7 @@ class VoucherSerieGroupsTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('VoucherSerie_Groups');
-        $this->assertEquals('voucherserie_groups.tpl', $oView->render());
+        $this->assertEquals('voucherserie_groups', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof voucherserie);

@@ -16,13 +16,7 @@ use oxDb;
  */
 class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates oxpricealarm object
-     * and passes it's data to Smarty engine. Returns name of template file
-     * "pricealarm_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -61,6 +55,6 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        return "pricealarm_mail.tpl";
+        return "pricealarm_mail";
     }
 }

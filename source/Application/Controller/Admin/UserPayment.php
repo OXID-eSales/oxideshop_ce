@@ -78,7 +78,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData['readonly'] = true;
         }
 
-        return "user_payment.tpl";
+        return "user_payment";
     }
 
     /**

@@ -179,7 +179,7 @@ class SearchTest extends \OxidTestCase
         );
         $n->expects($this->once())->method('processListArticles');
 
-        $this->assertEquals('page/search/search.tpl', $n->render());
+        $this->assertEquals('page/search/search', $n->render());
     }
 
     public function testRenderRss()
@@ -217,7 +217,7 @@ class SearchTest extends \OxidTestCase
         $n->expects($this->once())->method('processListArticles');
         $n->expects($this->once())->method('addRssFeed')->with($this->equalTo('rss1title'), $this->equalTo('rss1url'), $this->equalTo('searchArticles'));
 
-        $this->assertEquals('page/search/search.tpl', $n->render());
+        $this->assertEquals('page/search/search', $n->render());
     }
 
     public function testGetAddUrlParams()

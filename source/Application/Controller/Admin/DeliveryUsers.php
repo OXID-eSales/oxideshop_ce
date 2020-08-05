@@ -18,12 +18,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
  */
 class DeliveryUsers extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates delivery category tree,
-     * passes data to Smarty engine and returns name of template file "delivery_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -69,14 +64,14 @@ class DeliveryUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oDeliveryUsersAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryUsersAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryUsersAjax->getColumns();
 
-            return "popups/delivery_users.tpl";
+            return "popups/delivery_users";
         } elseif ($iAoc == 2) {
             $oDeliveryGroupsAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryGroupsAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryGroupsAjax->getColumns();
 
-            return "popups/delivery_groups.tpl";
+            return "popups/delivery_groups";
         }
 
-        return "delivery_users.tpl";
+        return "delivery_users";
     }
 }

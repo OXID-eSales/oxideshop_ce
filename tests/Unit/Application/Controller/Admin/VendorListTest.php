@@ -22,6 +22,6 @@ class VendorListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Vendor_List');
-        $this->assertEquals('vendor_list.tpl', $oView->render());
+        $this->assertEquals('vendor_list', $oView->render());
     }
 }

@@ -26,5 +26,5 @@ class CurrencyList extends \OxidEsales\Eshop\Application\Component\Widget\Widget
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/header/currencies.tpl';
+    protected $_sThisTemplate = 'widget/header/currencies';
 }

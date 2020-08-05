@@ -239,7 +239,7 @@ class AlistTest extends \OxidTestCase
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('setActiveCategory'));
         $oListView->expects($this->once())->method('setActiveCategory')->with($this->equalto($oMoreCat));
-        $this->assertEquals('page/list/morecategories.tpl', $oListView->render());
+        $this->assertEquals('page/list/morecategories', $oListView->render());
     }
 
     /**
@@ -701,22 +701,22 @@ class AlistTest extends \OxidTestCase
     public function testGetTemplateName()
     {
         $oCategory = oxNew('oxcategory');
-        $oCategory->oxcategories__oxtemplate = new oxfield('test.tpl');
+        $oCategory->oxcategories__oxtemplate = new oxfield('test');
 
         // default template name
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
-        $this->assertEquals('page/list/list.tpl', $oListView->getTemplateName());
+        $this->assertEquals('page/list/list', $oListView->getTemplateName());
 
         $oListView = $this->getMock(\OxidEsales\Eshop\Application\Controller\ArticleListController::class, array('getActiveCategory'));
         $oListView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
 
         // category template name
-        $this->assertEquals('test.tpl', $oListView->getTemplateName());
+        $this->assertEquals('test', $oListView->getTemplateName());
 
-        $this->setRequestParameter('tpl', 'http://www.shop.com/somepath/test2.tpl');
+        $this->setRequestParameter('tpl', 'http://www.shop.com/somepath/test2');
 
         // template name passed by request param
-        $this->assertSame('custom/test2.tpl', $oListView->getTemplateName());
+        $this->assertSame('custom/test2', $oListView->getTemplateName());
     }
 
     /**

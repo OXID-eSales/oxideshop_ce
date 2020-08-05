@@ -30,7 +30,7 @@ class ActionsListTest extends \OxidTestCase
 
         $this->assertEquals('oxactions', $oView->getNonPublicVar("_sListClass"));
         $this->assertEquals(array('oxactions' => array('oxtitle' => 'asc')), $oView->getListSorting());
-        $this->assertEquals('actions_list.tpl', $sTplName);
+        $this->assertEquals('actions_list', $sTplName);
     }
 
     /**
@@ -49,7 +49,7 @@ class ActionsListTest extends \OxidTestCase
         $this->assertEquals('oxactions', $oView->getNonPublicVar("_sListClass"));
         $this->assertEquals(array('oxactions' => array('oxtitle' => 'asc')), $oView->getListSorting());
         $this->assertEquals('testType', $aViewData['displaytype']);
-        $this->assertEquals('actions_list.tpl', $sTplName);
+        $this->assertEquals('actions_list', $sTplName);
     }
 
     /**

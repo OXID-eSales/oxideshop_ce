@@ -65,7 +65,7 @@ class ArticleReviewTest extends \OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Article);
 
-        $this->assertEquals('article_review.tpl', $sTplName);
+        $this->assertEquals('article_review', $sTplName);
     }
 
     /**

@@ -30,6 +30,6 @@ class WrappingListTest extends \OxidTestCase
         $this->assertNull($aViewData["malladmin"]);
         $this->assertNull($aViewData["updatelist"]);
 
-        $this->assertEquals('wrapping_list.tpl', $sTplName);
+        $this->assertEquals('wrapping_list', $sTplName);
     }
 }

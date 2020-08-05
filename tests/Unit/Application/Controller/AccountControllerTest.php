@@ -33,7 +33,7 @@ class AccountControllerTest extends UnitTestCase
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountController::class, array('confirmTerms', 'getUser'));
         $oUserView->expects($this->any())->method('confirmTerms')->will($this->returnValue(true));
         $oUserView->expects($this->any())->method('getUser')->will($this->returnValue(true));
-        $this->assertEquals('page/privatesales/login.tpl', $oUserView->render());
+        $this->assertEquals('page/privatesales/login', $oUserView->render());
     }
 
     /**
@@ -50,7 +50,7 @@ class AccountControllerTest extends UnitTestCase
         $oUserView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oUserView->expects($this->any())->method('getOrderCnt');
         $oUserView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
-        $this->assertEquals('page/account/dashboard.tpl', $oUserView->render());
+        $this->assertEquals('page/account/dashboard', $oUserView->render());
     }
 
     /**
@@ -244,7 +244,7 @@ class AccountControllerTest extends UnitTestCase
         $oView->expects($this->once())->method("getUser")->will($this->returnValue($oUser));
         $oView->expects($this->any())->method('isEnabledPrivateSales')->will($this->returnValue(false));
 
-        $this->assertEquals('page/account/dashboard.tpl', $oView->render());
+        $this->assertEquals('page/account/dashboard', $oView->render());
     }
 
     /**
@@ -270,7 +270,7 @@ class AccountControllerTest extends UnitTestCase
         $oView->expects($this->once())->method("getUser")->will($this->returnValue(false));
         $oView->expects($this->any())->method('isActive')->will($this->returnValue(true));
 
-        $this->assertEquals('page/privatesales/login.tpl', $oView->render());
+        $this->assertEquals('page/privatesales/login', $oView->render());
     }
 
     /**

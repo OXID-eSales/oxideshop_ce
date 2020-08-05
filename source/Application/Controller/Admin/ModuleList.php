@@ -36,7 +36,7 @@ class ModuleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
 
         $this->_aViewData['mylist'] = $this->getInstalledModules();
 
-        return 'module_list.tpl';
+        return 'module_list';
     }
 
     /**

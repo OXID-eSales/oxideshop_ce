@@ -29,7 +29,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @var string
      */
-    protected $_sTemplate = 'widget/product/boxproduct.tpl';
+    protected $_sTemplate = 'widget/product/boxproduct';
 
     /**
      * Current article
@@ -66,7 +66,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
         $sListType = $this->getViewParameter('sListType');
 
         if ($sWidgetType && $sListType) {
-            $this->_sTemplate = "widget/" . $sWidgetType . "/" . $sListType . ".tpl";
+            $this->_sTemplate = "widget/" . $sWidgetType . "/" . $sListType;
         }
 
         $sForceTemplate = $this->getViewParameter('oxwtemplate');

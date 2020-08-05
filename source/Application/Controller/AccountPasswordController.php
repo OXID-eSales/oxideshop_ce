@@ -24,7 +24,7 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/password.tpl';
+    protected $_sThisTemplate = 'page/account/password';
 
     /**
      * Whether the password had been changed.

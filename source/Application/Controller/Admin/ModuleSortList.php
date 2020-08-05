@@ -26,7 +26,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
     /**
      * Executes parent method parent::render(), loads active and disabled extensions,
-     * checks if there are some deleted and registered modules and returns name of template file "module_sortlist.tpl".
+     * checks if there are some deleted and registered modules and returns name of template file "module_sortlist".
      *
      * @return string
      */
@@ -58,7 +58,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        return 'module_sortlist.tpl';
+        return 'module_sortlist';
     }
 
     /**

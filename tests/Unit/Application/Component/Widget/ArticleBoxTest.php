@@ -22,11 +22,11 @@ class ArticleBoxTest extends \OxidTestCase
     public function _dpTemplateViewParams()
     {
         return array(
-            array("product", "listitem_grid", "widget/product/listitem_grid.tpl"),
-            array("product", "listitem_infogrid", "widget/product/listitem_infogrid.tpl"),
-            array("product", "listitem_line", "widget/product/listitem_line.tpl"),
-            array("product", "boxproduct", "widget/product/boxproduct.tpl"),
-            array("product", "bargainitem", "widget/product/bargainitem.tpl"),
+            array("product", "listitem_grid", "widget/product/listitem_grid"),
+            array("product", "listitem_infogrid", "widget/product/listitem_infogrid"),
+            array("product", "listitem_line", "widget/product/listitem_line"),
+            array("product", "boxproduct", "widget/product/boxproduct"),
+            array("product", "bargainitem", "widget/product/bargainitem"),
         );
     }
 
@@ -37,7 +37,7 @@ class ArticleBoxTest extends \OxidTestCase
     {
         $oArticleBox = oxNew('oxwArticleBox');
 
-        $this->assertEquals("widget/product/boxproduct.tpl", $oArticleBox->render(), "Default template should be loaded");
+        $this->assertEquals("widget/product/boxproduct", $oArticleBox->render(), "Default template should be loaded");
     }
 
     /**
@@ -65,7 +65,7 @@ class ArticleBoxTest extends \OxidTestCase
     {
         $oArticleBox = oxNew('oxwArticleBox');
 
-        $sForcedTemplate = "page/compare/inc/compareitem.tpl";
+        $sForcedTemplate = "page/compare/inc/compareitem";
 
         $aViewParams = array(
             "oxwtemplate" => $sForcedTemplate,

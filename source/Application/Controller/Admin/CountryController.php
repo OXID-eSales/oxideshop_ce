@@ -8,8 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
- * Sets template, that arranges two other templates ("article_list.tpl"
- * and "article_main.tpl") to frame.
+ * Sets template, that arranges two other templates ("article_list"
+ * and "article_main") to frame.
  * Admin Menu: Manage Products -> Articles.
  */
 class CountryController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -19,5 +19,5 @@ class CountryController extends \OxidEsales\Eshop\Application\Controller\Admin\A
      *
      * @var string
      */
-    protected $_sThisTemplate = 'country.tpl';
+    protected $_sThisTemplate = 'country';
 }

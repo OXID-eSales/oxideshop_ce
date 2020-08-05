@@ -8,8 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
- * Returns template, that arranges two other templates ("manufacturer_list.tpl"
- * and "manufacturer_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("manufacturer_list"
+ * and "manufacturer_main") to frame.
  * Admin Menu: Settings -> Manufacturers
  */
 class ManufacturerController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -19,5 +19,5 @@ class ManufacturerController extends \OxidEsales\Eshop\Application\Controller\Ad
      *
      * @var string
      */
-    protected $_sThisTemplate = 'manufacturer.tpl';
+    protected $_sThisTemplate = 'manufacturer';
 }

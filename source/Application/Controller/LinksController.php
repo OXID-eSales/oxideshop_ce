@@ -22,7 +22,7 @@ class LinksController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/info/links.tpl';
+    protected $_sThisTemplate = 'page/info/links';
 
     /**
      * Links list.

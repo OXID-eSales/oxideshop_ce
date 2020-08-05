@@ -1,54 +1,76 @@
+parameters:
+  oxid_esales.templating.engine_template_extension: 'tpl'
+
 services:
   _defaults:
     autowire: true
 
   OxidEsales\Eshop\Core\Config:
     factory: ['OxidEsales\Eshop\Core\Registry', 'getConfig']
+
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
     public: true
     tags: ['templating']
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolver
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver'
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver:
+      - '%oxid_esales.templating.engine_template_extension%'
+
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
+
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
+
   oxid_esales.templating.template.loader:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderDelegator
+    public: true
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      - '@oxid_esales.templating.admin.template.loader'
+      - '@oxid_esales.templating.frontend.template.loader'
+
+  oxid_esales.templating.frontend.template.loader:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
     public: true
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator'
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface'
+
   oxid_esales.templating.admin.template.loader:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
     public: true
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator'
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface'
+
   oxid_esales.templating.admin.navigation.file.locator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminNavigationFileLocator
     arguments:
       - !tagged oxid.menu.file.locator
     public: true
+
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator:
     tags:
       - { name: 'oxid.menu.file.locator', priority: 10 }
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator:
     tags:
       - { name: 'oxid.menu.file.locator', priority: 20 }
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
       - '@oxid_esales.symfony.file_system'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge
     public: true

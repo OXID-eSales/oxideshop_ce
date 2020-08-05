@@ -33,7 +33,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     /**
      * Executes parent method parent::render(), creates shop object, sets template parameters
-     * and returns name of template file "login.tpl".
+     * and returns name of template file "login".
      *
      * @return string
      */
@@ -73,7 +73,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             }
         }
 
-        return "login.tpl";
+        return "login";
     }
 
     /**

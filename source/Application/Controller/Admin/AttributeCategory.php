@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class AttributeCategory extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads Attribute categories info, passes it to Smarty engine and
-     * returns name of template file "attribute_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -40,9 +35,9 @@ class AttributeCategory extends \OxidEsales\Eshop\Application\Controller\Admin\A
             $oAttributeCategoryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\AttributeCategoryAjax::class);
             $this->_aViewData['oxajax'] = $oAttributeCategoryAjax->getColumns();
 
-            return "popups/attribute_category.tpl";
+            return "popups/attribute_category";
         }
 
-        return "attribute_category.tpl";
+        return "attribute_category";
     }
 }

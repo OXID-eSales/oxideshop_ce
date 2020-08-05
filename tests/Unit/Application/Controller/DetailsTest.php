@@ -1261,51 +1261,51 @@ class DetailsTest extends \OxidTestCase
     public function testRender_customArtTpl()
     {
         $oProduct = oxNew('oxArticle');
-        $oProduct->oxarticles__oxtemplate = new oxField('test_template.tpl');
+        $oProduct->oxarticles__oxtemplate = new oxField('test_template');
 
         $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $this->assertSame('test_template.tpl', $oView->render());
+        $this->assertSame('test_template', $oView->render());
     }
 
     public function testRender_customParamTpl()
     {
         $oProduct = oxNew('oxArticle');
-        $oProduct->oxarticles__oxtemplate = new oxField('test_template.tpl');
-        $this->setRequestParameter('tpl', '../some/path/test_paramtpl.tpl');
+        $oProduct->oxarticles__oxtemplate = new oxField('test_template');
+        $this->setRequestParameter('tpl', '../some/path/test_paramtpl');
 
         $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $sExpected = 'custom/test_paramtpl.tpl';
+        $sExpected = 'custom/test_paramtpl';
         $this->assertSame($sExpected, $oView->render());
     }
 
     public function testRender_partial_productinfo()
     {
         $oProduct = oxNew('oxArticle');
-        $oProduct->oxarticles__oxtemplate = new oxField('test_template.tpl');
-        $this->setRequestParameter('tpl', '../some/path/test_paramtpl.tpl');
+        $oProduct->oxarticles__oxtemplate = new oxField('test_template');
+        $this->setRequestParameter('tpl', '../some/path/test_paramtpl');
         $this->setRequestParameter('renderPartial', 'productInfo');
 
         $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $this->assertSame('page/details/ajax/fullproductinfo.tpl', $oView->render());
+        $this->assertSame('page/details/ajax/fullproductinfo', $oView->render());
     }
 
     public function testRender_partial_detailsMain()
     {
         $oProduct = oxNew('oxArticle');
-        $oProduct->oxarticles__oxtemplate = new oxField('test_template.tpl');
-        $this->setRequestParameter('tpl', '../some/path/test_paramtpl.tpl');
+        $oProduct->oxarticles__oxtemplate = new oxField('test_template');
+        $this->setRequestParameter('tpl', '../some/path/test_paramtpl');
         $this->setRequestParameter('renderPartial', 'detailsMain');
 
         $oView = $this->getMock(ArticleDetailsController::class, array('getProduct'));
         $oView->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $this->assertSame('page/details/ajax/productmain.tpl', $oView->render());
+        $this->assertSame('page/details/ajax/productmain', $oView->render());
     }
 
     /**

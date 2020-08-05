@@ -50,7 +50,7 @@ class GenExportDoTest extends \OxidTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $renderer->expects($this->any())->method('renderTemplate')->with(
-            $this->equalTo('genexport.tpl'),
+            $this->equalTo('genexport'),
             $this->equalTo($parameters)
         );
 
@@ -98,7 +98,7 @@ class GenExportDoTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('GenExport_Do');
-        $this->assertEquals('dynbase_do.tpl', $oView->render());
+        $this->assertEquals('dynbase_do', $oView->render());
     }
 
     /**

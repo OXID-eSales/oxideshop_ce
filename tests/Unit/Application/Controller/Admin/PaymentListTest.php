@@ -22,6 +22,6 @@ class PaymentListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Payment_List');
-        $this->assertEquals('payment_list.tpl', $oView->render());
+        $this->assertEquals('payment_list', $oView->render());
     }
 }

@@ -22,6 +22,6 @@ class SelectListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('SelectList');
-        $this->assertEquals('selectlist.tpl', $oView->render());
+        $this->assertEquals('selectlist', $oView->render());
     }
 }

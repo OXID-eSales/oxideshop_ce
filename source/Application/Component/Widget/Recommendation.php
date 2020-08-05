@@ -29,7 +29,7 @@ class Recommendation extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/sidebar/recommendation.tpl';
+    protected $_sThisTemplate = 'widget/sidebar/recommendation';
 
     /**
      * Returns similar recommendation list.

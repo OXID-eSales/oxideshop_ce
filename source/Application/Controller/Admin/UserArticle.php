@@ -16,7 +16,7 @@ class UserArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 {
     /**
      * Executes parent method parent::render(), creates oxlist object and returns name
-     * of template file "user_article.tpl".
+     * of template file "user_article".
      *
      * @return string
      */
@@ -33,6 +33,6 @@ class UserArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData['oArticlelist'] = $oArticlelist;
         }
 
-        return 'user_article.tpl';
+        return 'user_article';
     }
 }

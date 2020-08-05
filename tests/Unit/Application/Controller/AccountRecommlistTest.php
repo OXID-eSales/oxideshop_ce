@@ -523,7 +523,7 @@ class AccountRecommlistTest extends \OxidTestCase
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountRecommlistController::class, array('getUser'));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login.tpl', $oView->render());
+        $this->assertEquals('page/account/login', $oView->render());
     }
 
     /**
@@ -544,7 +544,7 @@ class AccountRecommlistTest extends \OxidTestCase
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
         $oView->expects($this->once())->method('getRecommLists')->will($this->returnValue($oLists));
         $oView->expects($this->once())->method('getActiveRecommList')->will($this->returnValue(false));
-        $this->assertEquals('page/account/recommendationlist.tpl', $oView->render());
+        $this->assertEquals('page/account/recommendationlist', $oView->render());
     }
 
     /**

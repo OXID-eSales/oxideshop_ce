@@ -14,12 +14,16 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\SmartyTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 final class BlockOxIfContentTest extends UnitTestCase
 {
+    use SmartyTrait;
+
     private string $cmsContentId = 'test-smarty-content';
     private string $unparsedCmsContent = '[{1|cat:2|cat:3}]';
     private string $parsedCmsContent = '123';
@@ -29,6 +33,7 @@ final class BlockOxIfContentTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->skipIfNotSmarty();
         $this->prepareTestData();
     }
 
@@ -58,7 +63,7 @@ final class BlockOxIfContentTest extends UnitTestCase
     {
         $this->addCmsContent();
         $this->addTemplateFile();
-        $this->renderer = ContainerFactory::getInstance()->getContainer()->get(TemplateRendererInterface::class);
+        $this->renderer = $this->getContainer()->get(TemplateRendererInterface::class);
     }
 
     private function clearTestData(): void
@@ -82,7 +87,7 @@ final class BlockOxIfContentTest extends UnitTestCase
             '[{oxifcontent ident="test-smarty-content" object="content"}][{$content->oxcontents__oxcontent->value}][{/oxifcontent}]';
         $this->templatePath = Path::join(
             $this->getTemplateDir(),
-            uniqid('test-tpl-', true)
+            uniqid('test-tpl-', true) . $this->getSmartyFileExtension(),
         );
         file_put_contents($this->templatePath, $templateContents);
     }
@@ -91,7 +96,7 @@ final class BlockOxIfContentTest extends UnitTestCase
     {
         $templateDir = Registry::getUtilsView()->getTemplateDirs(false)[0];
         /** @var Filesystem $filesystem */
-        $filesystem = ContainerFactory::getInstance()->getContainer()->get('oxid_esales.symfony.file_system');
+        $filesystem = $this->getContainer()->get('oxid_esales.symfony.file_system');
         if (!$filesystem->exists($templateDir)) {
             $filesystem->mkdir($templateDir);
         }
@@ -103,5 +108,10 @@ final class BlockOxIfContentTest extends UnitTestCase
         if (is_file($this->templatePath)) {
             unlink($this->templatePath);
         }
+    }
+
+    private function getContainer(): ContainerInterface
+    {
+        return ContainerFactory::getInstance()->getContainer();
     }
 }

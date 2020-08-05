@@ -23,7 +23,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
      *
      * @var string
      */
-    protected $_sThisTemplate = "deliveryset_rdfa.tpl";
+    protected $_sThisTemplate = "deliveryset_rdfa";
 
     /**
      * Predefined delivery methods

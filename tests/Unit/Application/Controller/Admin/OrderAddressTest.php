@@ -28,7 +28,7 @@ class OrderAddressTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Order_Address');
-        $this->assertEquals('order_address.tpl', $oView->render());
+        $this->assertEquals('order_address', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof order);
@@ -45,7 +45,7 @@ class OrderAddressTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Order_Address');
-        $this->assertEquals('order_address.tpl', $oView->render());
+        $this->assertEquals('order_address', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

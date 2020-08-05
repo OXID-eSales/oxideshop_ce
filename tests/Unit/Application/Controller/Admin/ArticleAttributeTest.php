@@ -36,6 +36,6 @@ class ArticleAttributeTest extends \OxidTestCase
         $this->assertTrue($aViewData["edit"] instanceof Article);
         $this->assertTrue($aViewData["readonly"]);
 
-        $this->assertEquals('article_attribute.tpl', $sTplName);
+        $this->assertEquals('article_attribute', $sTplName);
     }
 }

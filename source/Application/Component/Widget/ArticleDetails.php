@@ -42,7 +42,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/product/details.tpl';
+    protected $_sThisTemplate = 'widget/product/details';
 
     /**
      * Current product parent article object.

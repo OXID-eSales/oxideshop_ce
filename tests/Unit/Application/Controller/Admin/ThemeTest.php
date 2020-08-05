@@ -22,6 +22,6 @@ class ThemeTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Theme');
-        $this->assertEquals('theme.tpl', $oView->render());
+        $this->assertEquals('theme', $oView->render());
     }
 }

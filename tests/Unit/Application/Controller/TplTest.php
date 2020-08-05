@@ -17,9 +17,9 @@ class TplTest extends \OxidTestCase
      */
     public function testRender()
     {
-        $this->setRequestParameter("tpl", 'fulder/subfolder/test.tpl');
+        $this->setRequestParameter("tpl", 'fulder/subfolder/test');
 
         $oView = oxNew('Tpl');
-        $this->assertEquals('custom/test.tpl', $oView->render());
+        $this->assertEquals('custom/test', $oView->render());
     }
 }

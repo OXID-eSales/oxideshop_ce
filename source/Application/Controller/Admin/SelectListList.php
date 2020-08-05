@@ -24,7 +24,7 @@ class SelectListList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sThisTemplate = 'selectlist_list.tpl';
+    protected $_sThisTemplate = 'selectlist_list';
 
     /**
      * Default SQL sorting parameter (default null).

@@ -17,12 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class DeliveryArticles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Executes parent method parent::render(), creates delivery category tree,
-     * passes data to Smarty engine and returns name of template file "delivery_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -48,14 +43,14 @@ class DeliveryArticles extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             $oDeliveryArticlesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryArticlesAjax->getColumns();
 
-            return "popups/delivery_articles.tpl";
+            return "popups/delivery_articles";
         } elseif ($iAoc == 2) {
             $oDeliveryCategoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryCategoriesAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryCategoriesAjax->getColumns();
 
-            return "popups/delivery_categories.tpl";
+            return "popups/delivery_categories";
         }
 
-        return "delivery_articles.tpl";
+        return "delivery_articles";
     }
 }

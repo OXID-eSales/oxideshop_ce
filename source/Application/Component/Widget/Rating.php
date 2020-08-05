@@ -27,7 +27,7 @@ class Rating extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/reviews/rating.tpl';
+    protected $_sThisTemplate = 'widget/reviews/rating';
 
     /**
      * Rating value

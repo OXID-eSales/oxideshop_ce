@@ -11,8 +11,8 @@ use oxRegistry;
 
 /**
  * Admin systeminfo manager.
- * Returns template, that arranges two other templates ("delivery_list.tpl"
- * and "delivery_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("delivery_list"
+ * and "delivery_main") to frame.
  */
 class ToolsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
@@ -30,6 +30,6 @@ class ToolsController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         parent::render();
 
-        return "tools.tpl";
+        return "tools";
     }
 }

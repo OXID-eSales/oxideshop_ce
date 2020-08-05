@@ -26,5 +26,5 @@ class LanguageList extends \OxidEsales\Eshop\Application\Component\Widget\Widget
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/header/languages.tpl';
+    protected $_sThisTemplate = 'widget/header/languages';
 }

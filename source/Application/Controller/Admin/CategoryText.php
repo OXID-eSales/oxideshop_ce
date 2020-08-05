@@ -17,12 +17,7 @@ use stdClass;
  */
 class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
-    /**
-     * Loads category object data, pases it to Smarty engine and returns
-     * name of template file "category_text.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -55,9 +50,9 @@ class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
         }
 
-        $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oCategory, "oxcategories__oxlongdesc", "list.tpl.css");
+        $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oCategory, "oxcategories__oxlongdesc", "list.css");
 
-        return "category_text.tpl";
+        return "category_text";
     }
 
     /**

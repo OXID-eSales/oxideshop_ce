@@ -146,7 +146,7 @@ class ArticleSeoTest extends \OxidTestCase
     public function testRender()
     {
         $oView = oxNew('Article_Seo');
-        $this->assertEquals("object_seo.tpl", $oView->render());
+        $this->assertEquals("object_seo", $oView->render());
     }
 
     /**

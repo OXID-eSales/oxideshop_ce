@@ -18,7 +18,7 @@ class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 {
     /**
      * Loads article category ordering info, passes it to Smarty
-     * engine and returns name of template file "category_order.tpl".
+     * engine and returns name of template file "category_order".
      *
      * @return string
      */
@@ -46,9 +46,9 @@ class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oCategoryOrderAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\CategoryOrderAjax::class);
             $this->_aViewData['oxajax'] = $oCategoryOrderAjax->getColumns();
 
-            return "popups/category_order.tpl";
+            return "popups/category_order";
         }
 
-        return "category_order.tpl";
+        return "category_order";
     }
 }

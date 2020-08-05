@@ -47,13 +47,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /** @var \OxidEsales\Eshop\Core\NoJsValidator */
     private $noJsValidator;
 
-    /**
-     * Executes parent method parent::render(), creates oxCategoryList object,
-     * passes it's data to Smarty engine and returns name of template file
-     * "selectlist_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -68,7 +62,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $this->_aViewData["edit"] = $this->getLanguageInfo($sOxId);
         }
 
-        return "language_main.tpl";
+        return "language_main";
     }
 
     /**

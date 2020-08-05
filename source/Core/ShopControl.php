@@ -429,19 +429,15 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         // render it
         $templateName = $view->render();
 
-        // check if template exists
-        /** @var \OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface */
+        /** @var TemplateLoaderInterface $templateLoader */
         $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
-        if ($this->isAdmin()) {
-            $templateLoader = $this->getContainer()->get('oxid_esales.templating.admin.template.loader');
-        }
 
         if (!$templateLoader->exists($templateName)) {
             $ex = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);
             $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' . ' ' . $templateName);
             $ex->setComponent($templateName);
 
-            $templateName = "message/exception.tpl";
+            $templateName = "message/exception";
 
             if ($this->isDebugMode()) {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
@@ -549,7 +545,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
             if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
-                $tpl = 'message/err_setup.tpl';
+                $tpl = 'message/err_setup';
                 $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
                 $context = [
                     "oViewConf" => $activeView->getViewConfig(),

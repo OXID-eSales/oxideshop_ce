@@ -22,14 +22,14 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\AccountC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/privatesales/invite.tpl';
+    protected $_sThisTemplate = 'page/privatesales/invite';
 
     /**
      * Current class login template name.
      *
      * @var string
      */
-    protected $_sThisLoginTemplate = 'page/account/login.tpl';
+    protected $_sThisLoginTemplate = 'page/account/login';
 
     /**
      * Required fields to fill before sending suggest email

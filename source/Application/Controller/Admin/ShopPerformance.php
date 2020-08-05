@@ -19,5 +19,5 @@ class ShopPerformance extends \OxidEsales\Eshop\Application\Controller\Admin\Sho
      *
      * @var string
      */
-    protected $_sThisTemplate = 'shop_performance.tpl';
+    protected $_sThisTemplate = 'shop_performance';
 }

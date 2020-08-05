@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin payment manager.
- * Returns template, that arranges two other templates ("payment_list.tpl"
- * and "payment_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("payment_list"
+ * and "payment_main") to frame.
  * Admin Menu: Shop Settings -> Payment Methods.
  */
 class AdminPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -20,5 +20,5 @@ class AdminPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminC
      *
      * @var string
      */
-    protected $_sThisTemplate = 'admin_payment.tpl';
+    protected $_sThisTemplate = 'admin_payment';
 }

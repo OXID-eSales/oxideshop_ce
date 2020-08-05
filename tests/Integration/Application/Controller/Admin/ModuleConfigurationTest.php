@@ -40,7 +40,7 @@ final class ModuleConfigurationTest extends UnitTestCase
 
         $moduleConfigurationController = oxNew(ModuleConfigurationController::class);
 
-        $this->assertEquals('module_config.tpl', $moduleConfigurationController->render());
+        $this->assertEquals('module_config', $moduleConfigurationController->render());
 
         $viewData = $moduleConfigurationController->getViewData();
 

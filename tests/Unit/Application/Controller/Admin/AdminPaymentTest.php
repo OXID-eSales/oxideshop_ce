@@ -21,6 +21,6 @@ class AdminPaymentTest extends \OxidTestCase
     public function testRender()
     {
         $oView = oxNew('Admin_Payment');
-        $this->assertEquals('admin_payment.tpl', $oView->render());
+        $this->assertEquals('admin_payment', $oView->render());
     }
 }

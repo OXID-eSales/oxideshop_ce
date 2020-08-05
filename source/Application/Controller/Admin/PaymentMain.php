@@ -22,13 +22,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected $_aFieldArray = null;
 
-    /**
-     * Executes parent method parent::render(), creates oxlist object,
-     * passes it's data to Smarty engine and retutns name of template
-     * file "payment_main.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -70,12 +64,12 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oPaymentMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\PaymentMainAjax::class);
             $this->_aViewData['oxajax'] = $oPaymentMainAjax->getColumns();
 
-            return "popups/payment_main.tpl";
+            return "popups/payment_main";
         }
 
         $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oPayment, "oxpayments__oxlongdesc");
 
-        return "payment_main.tpl";
+        return "payment_main";
     }
 
     /**

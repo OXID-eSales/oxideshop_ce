@@ -155,7 +155,7 @@ class WishlistTest extends \OxidTestCase
     {
         $oWishList = $this->getProxyClass("Wishlist");
 
-        $this->assertEquals('page/wishlist/wishlist.tpl', $oWishList->render());
+        $this->assertEquals('page/wishlist/wishlist', $oWishList->render());
     }
 
     /**

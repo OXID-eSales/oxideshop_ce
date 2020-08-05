@@ -29,7 +29,7 @@ class UserExtendTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserExtend::class, array("allowAdminEdit"));
         $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(false));
-        $this->assertEquals('user_extend.tpl', $oView->render());
+        $this->assertEquals('user_extend', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof user);

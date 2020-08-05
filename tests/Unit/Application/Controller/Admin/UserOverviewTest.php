@@ -26,7 +26,7 @@ class UserOverviewTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('User_Overview');
-        $this->assertEquals('user_overview.tpl', $oView->render());
+        $this->assertEquals('user_overview', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof user);

@@ -25,7 +25,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/recommendationlist.tpl';
+    protected $_sThisTemplate = 'page/account/recommendationlist';
 
     /**
      * Is recomendation list entry was saved this marker gets value TRUE. Default is FALSE
@@ -226,7 +226,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
                 $oRecommList->oxrecommlists__oxuserid = new \OxidEsales\Eshop\Core\Field($oUser->getId());
                 $oRecommList->oxrecommlists__oxshopid = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
             } else {
-                $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
+                $this->_sThisTemplate = 'page/account/recommendationedit';
             }
 
             $sTitle = trim((string) Registry::getRequest()->getRequestParameter('recomm_title'));
@@ -281,7 +281,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             $oRecommList->delete();
             $this->setActiveRecommList(false);
         } else {
-            $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
+            $this->_sThisTemplate = 'page/account/recommendationedit';
         }
     }
 
@@ -306,7 +306,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         ) {
             $oRecommList->removeArticle($sArtId);
         }
-        $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
+        $this->_sThisTemplate = 'page/account/recommendationedit';
     }
 
     /**

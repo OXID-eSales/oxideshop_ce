@@ -38,7 +38,7 @@ class ClearcookiesTest extends \OxidTestCase
 
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);
 
-        $this->assertEquals('page/info/clearcookies.tpl', $oView->render());
+        $this->assertEquals('page/info/clearcookies', $oView->render());
     }
 
     /**

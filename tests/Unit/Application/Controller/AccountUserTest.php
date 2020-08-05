@@ -24,7 +24,7 @@ class AccountUserTest extends \OxidTestCase
     {
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountUserController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
-        $this->assertEquals('page/account/login.tpl', $oView->render());
+        $this->assertEquals('page/account/login', $oView->render());
     }
 
     /**
@@ -39,7 +39,7 @@ class AccountUserTest extends \OxidTestCase
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\AccountUserController::class, array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertEquals('page/account/user.tpl', $oView->render());
+        $this->assertEquals('page/account/user', $oView->render());
     }
 
     /**

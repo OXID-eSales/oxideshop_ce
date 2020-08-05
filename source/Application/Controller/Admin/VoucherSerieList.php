@@ -27,7 +27,7 @@ class VoucherSerieList extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
      *
      * @var string
      */
-    protected $_sThisTemplate = 'voucherserie_list.tpl';
+    protected $_sThisTemplate = 'voucherserie_list';
 
     /**
      * Deletes selected Voucherserie.

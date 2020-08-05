@@ -28,7 +28,7 @@ class PaymentCountryTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Payment_Country');
-        $this->assertEquals('payment_country.tpl', $oView->render());
+        $this->assertEquals('payment_country', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof payment);
@@ -45,7 +45,7 @@ class PaymentCountryTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Payment_Country');
-        $this->assertEquals('payment_country.tpl', $oView->render());
+        $this->assertEquals('payment_country', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

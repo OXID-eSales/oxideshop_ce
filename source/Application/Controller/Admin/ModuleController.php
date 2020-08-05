@@ -9,15 +9,15 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin theme manager.
- * Returns template, that arranges two other templates ("theme_list.tpl"
- * and "theme_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("theme_list"
+ * and "theme_main") to frame.
  * Admin Menu: Main Menu -> Theme.
  */
 class ModuleController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "theme.tpl".
+     * file "theme".
      *
      * @return string
      */
@@ -25,6 +25,6 @@ class ModuleController extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
     {
         parent::render();
 
-        return "module.tpl";
+        return "module";
     }
 }

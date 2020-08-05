@@ -22,6 +22,6 @@ class AttributeTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Attribute');
-        $this->assertEquals('attribute.tpl', $oView->render());
+        $this->assertEquals('attribute', $oView->render());
     }
 }

@@ -31,7 +31,7 @@ class UserAddressTest extends \OxidTestCase
         // testing..
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserAddress::class, array("allowAdminEdit"));
         $oView->expects($this->once())->method('allowAdminEdit')->will($this->returnValue(false));
-        $this->assertEquals('user_address.tpl', $oView->render());
+        $this->assertEquals('user_address', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxaddressid']));
         $this->assertTrue(isset($aViewData['edituser']));

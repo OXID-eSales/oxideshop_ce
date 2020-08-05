@@ -8,8 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
- * Returns template, that arranges two other templates ("vendor_list.tpl"
- * and "vendor_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("vendor_list"
+ * and "vendor_main") to frame.
  * Admin Menu: Settings -> Vendors
  */
 class VendorController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -19,5 +19,5 @@ class VendorController extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
      *
      * @var string
      */
-    protected $_sThisTemplate = 'vendor.tpl';
+    protected $_sThisTemplate = 'vendor';
 }

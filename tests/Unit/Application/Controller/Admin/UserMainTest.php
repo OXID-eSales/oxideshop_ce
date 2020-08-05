@@ -30,7 +30,7 @@ class UserMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('User_Main');
-        $this->assertEquals('user_main.tpl', $oView->render());
+        $this->assertEquals('user_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['countrylist']));
@@ -51,7 +51,7 @@ class UserMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('User_Main');
-        $this->assertEquals('user_main.tpl', $oView->render());
+        $this->assertEquals('user_main', $oView->render());
 
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));

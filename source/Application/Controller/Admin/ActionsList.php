@@ -23,7 +23,7 @@ class ActionsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sThisTemplate = 'actions_list.tpl';
+    protected $_sThisTemplate = 'actions_list';
 
     /**
      * Name of chosen object class (default null).

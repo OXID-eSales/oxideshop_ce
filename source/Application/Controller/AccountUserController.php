@@ -25,7 +25,7 @@ class AccountUserController extends \OxidEsales\Eshop\Application\Controller\Acc
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/user.tpl';
+    protected $_sThisTemplate = 'page/account/user';
 
     /**
      * If user is not logged in - returns name of template

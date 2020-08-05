@@ -33,7 +33,7 @@ class VoucherSerieGenerate extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @var string
      */
-    protected $_sThisTemplate = "voucherserie_generate.tpl";
+    protected $_sThisTemplate = "voucherserie_generate";
 
     /**
      * Voucher serie object

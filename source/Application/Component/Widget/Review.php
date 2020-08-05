@@ -26,7 +26,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/reviews/reviews.tpl';
+    protected $_sThisTemplate = 'widget/reviews/reviews';
 
     /**
      * Executes parent::render().

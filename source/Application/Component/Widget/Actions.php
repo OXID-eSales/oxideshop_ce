@@ -18,7 +18,7 @@ class Actions extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContr
      *
      * @var string
      */
-    protected $_sThisTemplate = 'widget/product/action.tpl';
+    protected $_sThisTemplate = 'widget/product/action';
 
     /**
      * Are actions on

@@ -20,7 +20,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/account/downloads.tpl';
+    protected $_sThisTemplate = 'page/account/downloads';
 
     /**
      * Current view search engine indexing state

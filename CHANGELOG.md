@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [7.0.0-rc.2] - Unreleased
 
+### Added
+- Twig templates multi inheritance for modules
+
 ### Changed
 - Update Symfony components to v6
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`
@@ -15,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - PHP must have access to a secure source of randomness [See more](https://www.php.net/manual/en/function.random-bytes.php). 
 - Respond with 404 error code on controller or method miss [PR-715](https://github.com/OXID-eSales/oxideshop_ce/pull/715)
 - Change type of default value for iIndex parameter in ``OxidProfessionalServices\Bergspezl\Model\Article::getZoomPictureUrl`` [PR-893](https://github.com/OXID-eSales/oxideshop_ce/pull/893)
+- Switched to templating-engine agnostic names in Controller templates (e.g. `Controller::$_sThisTemplate = 'page/content'` instead of `'page/content.tpl'`)
 
 ### Fixed
 - Ensure \OxidEsales\EshopCommunity\Application\Model\NewsSubscribed::getOptInStatus int result type
@@ -29,11 +33,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Composer v1 support
 - Support for NAME constants in Event classes
 - Module re-activation on module settings change
-- Class:
+- Interfaces:
+  - `Internal\Framework\Templating\Resolver\TemplateNameResolverInterface`
+- Classes:
   - `Core\PasswordSaltGenerator`
   - `Internal\Transition\Utility\FallbackTokenGenerator`
+  - `Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver`
 - Methods:
   - `Application\Model\User::getUtilsObjectInstance()`
+  - `Internal\Framework\Templating\TemplateEngineInterface::getDefaultFileExtension()`
+  - `Internal\Framework\Templating\Loader\TemplateLoaderInteface::getPath()`
   - `Application\Model\UserPayment`
     - `load()`
     - `insert()`

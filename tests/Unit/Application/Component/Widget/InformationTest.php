@@ -20,7 +20,7 @@ class InformationTest extends \OxidTestCase
     {
         $oInformation = oxNew('oxwInformation');
 
-        $this->assertEquals('widget/footer/info.tpl', $oInformation->render());
+        $this->assertEquals('widget/footer/info', $oInformation->render());
     }
 
     /**

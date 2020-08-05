@@ -17,5 +17,5 @@ class GenericImport extends \OxidEsales\Eshop\Application\Controller\Admin\Gener
      *
      * @var string
      */
-    protected $_sThisTemplate = "genimport_main.tpl";
+    protected $_sThisTemplate = "genimport_main";
 }

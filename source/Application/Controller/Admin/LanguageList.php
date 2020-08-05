@@ -76,7 +76,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "selectlist_list.tpl".
+     * file "selectlist_list".
      *
      * @return string
      */
@@ -85,7 +85,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         parent::render();
         $this->_aViewData['mylist'] = $this->getLanguagesList();
 
-        return "language_list.tpl";
+        return "language_list";
     }
 
     /**

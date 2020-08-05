@@ -29,7 +29,7 @@ class ManufacturerMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Manufacturer_Main');
-        $this->assertEquals('manufacturer_main.tpl', $oView->render());
+        $this->assertEquals('manufacturer_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof manufacturer);
@@ -47,7 +47,7 @@ class ManufacturerMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Manufacturer_Main');
-        $this->assertEquals('manufacturer_main.tpl', $oView->render());
+        $this->assertEquals('manufacturer_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

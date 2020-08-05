@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin order manager.
- * Returns template, that arranges two other templates ("order_list.tpl"
- * and "order_overview.tpl") to frame.
+ * Returns template, that arranges two other templates ("order_list"
+ * and "order_overview") to frame.
  * Admin Menu: Orders -> Display Orders.
  */
 class AdminOrder extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -20,5 +20,5 @@ class AdminOrder extends \OxidEsales\Eshop\Application\Controller\Admin\AdminCon
      *
      * @var string
      */
-    protected $_sThisTemplate = 'order.tpl';
+    protected $_sThisTemplate = 'order';
 }

@@ -19,7 +19,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
     /**
      * Executes parent method parent::render(),
      * and returns name of template file
-     * "manufacturer_main.tpl".
+     * "manufacturer_main".
      *
      * @return string
      */
@@ -75,10 +75,10 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             $oManufacturerMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class);
             $this->_aViewData['oxajax'] = $oManufacturerMainAjax->getColumns();
 
-            return "popups/manufacturer_main.tpl";
+            return "popups/manufacturer_main";
         }
 
-        return "manufacturer_main.tpl";
+        return "manufacturer_main";
     }
 
     /**

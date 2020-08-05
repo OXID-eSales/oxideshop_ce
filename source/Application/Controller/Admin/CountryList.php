@@ -42,7 +42,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
     /**
      * Executes parent method parent::render() and returns name of template
-     * file "selectlist_list.tpl".
+     * file "selectlist_list".
      *
      * @return string
      */
@@ -50,7 +50,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         parent::render();
 
-        return "country_list.tpl";
+        return "country_list";
     }
 
     /**

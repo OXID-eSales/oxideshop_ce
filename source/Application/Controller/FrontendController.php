@@ -2409,7 +2409,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     }
 
     /**
-     * Template variable getter. Returns if newsletter is really active (for user.tpl)
+     * Template variable getter. Returns if newsletter is really active (for "user" template)
      *
      * @return integer
      */

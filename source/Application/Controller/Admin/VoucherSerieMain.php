@@ -36,7 +36,7 @@ class VoucherSerieMain extends \OxidEsales\Eshop\Application\Controller\Admin\Dy
      *
      * @var string
      */
-    protected $_sThisTemplate = "voucherserie_main.tpl";
+    protected $_sThisTemplate = "voucherserie_main";
 
     /**
      * View id, use old class name for compatibility reasons.

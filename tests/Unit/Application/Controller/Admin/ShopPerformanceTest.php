@@ -22,6 +22,6 @@ class ShopPerformanceTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Shop_Performance');
-        $this->assertEquals('shop_performance.tpl', $oView->render());
+        $this->assertEquals('shop_performance', $oView->render());
     }
 }

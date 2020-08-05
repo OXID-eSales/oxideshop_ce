@@ -37,7 +37,7 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sThisTemplate = "content_list.tpl";
+    protected $_sThisTemplate = "content_list";
 
     /**
      * Executes parent method parent::render() and returns current class template

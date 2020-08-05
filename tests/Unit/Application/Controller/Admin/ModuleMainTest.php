@@ -22,6 +22,6 @@ class ModuleMainTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Module_Main');
-        $this->assertEquals('module_main.tpl', $oView->render());
+        $this->assertEquals('module_main', $oView->render());
     }
 }

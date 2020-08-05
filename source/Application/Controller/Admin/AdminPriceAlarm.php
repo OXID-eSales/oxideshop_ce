@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin admin_pricealarm manager.
- * Returns template, that arranges two other templates ("apricealarm_list.tpl"
- * and "pricealarm_main.tpl") to frame.
+ * Returns template, that arranges two other templates ("apricealarm_list"
+ * and "pricealarm_main") to frame.
  * Admin Menu: Customer Info -> admin_pricealarm.
  */
 class AdminPriceAlarm extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -27,5 +27,5 @@ class AdminPriceAlarm extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @var string
      */
-    protected $_sThisTemplate = 'admin_pricealarm.tpl';
+    protected $_sThisTemplate = 'admin_pricealarm';
 }

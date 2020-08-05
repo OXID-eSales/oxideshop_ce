@@ -34,7 +34,7 @@ class CategoryTextTest extends \OxidTestCase
         // testing view data
         $aViewData = $oView->getViewData();
         $this->assertTrue($aViewData["edit"] instanceof Category);
-        $this->assertEquals('category_text.tpl', $sTplName);
+        $this->assertEquals('category_text', $sTplName);
     }
 
     /**
@@ -48,7 +48,7 @@ class CategoryTextTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Category_Text');
-        $this->assertEquals('category_text.tpl', $oView->render());
+        $this->assertEquals('category_text', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

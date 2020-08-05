@@ -18,6 +18,6 @@ class ShopTest extends \OxidTestCase
     public function testRender()
     {
         $oView = oxNew('Shop');
-        $this->assertEquals('shop.tpl', $oView->render());
+        $this->assertEquals('shop', $oView->render());
     }
 }

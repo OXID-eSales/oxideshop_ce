@@ -28,7 +28,7 @@ class PaymentMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Payment_Main');
-        $this->assertEquals('payment_main.tpl', $oView->render());
+        $this->assertEquals('payment_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof payment);
@@ -45,7 +45,7 @@ class PaymentMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('payment_main');
-        $this->assertEquals('payment_main.tpl', $oView->render());
+        $this->assertEquals('payment_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

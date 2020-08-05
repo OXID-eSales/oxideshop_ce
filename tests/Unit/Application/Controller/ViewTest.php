@@ -135,9 +135,9 @@ class ViewTest extends \OxidTestCase
     public function testRenderMock()
     {
         $oView = $this->getMock(BaseController::class, array("getTemplateName"));
-        $oView->expects($this->once())->method("getTemplateName")->will($this->returnValue("testTemplate.tpl"));
+        $oView->expects($this->once())->method("getTemplateName")->will($this->returnValue("testTemplate"));
         $sRes = $oView->render();
-        $this->assertEquals("testTemplate.tpl", $sRes);
+        $this->assertEquals("testTemplate", $sRes);
     }
 
     /*

@@ -25,12 +25,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     protected $_oProductParent = null;
 
-    /**
-     * Loads article variants data, passes it to Smarty engine and returns name of
-     * template file "article_variant.tpl".
-     *
-     * @return string
-     */
+    /** @inheritdoc */
     public function render()
     {
         parent::render();
@@ -98,7 +93,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        return "article_variant.tpl";
+        return "article_variant";
     }
 
     /**

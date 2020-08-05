@@ -22,6 +22,6 @@ class LanguageTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Language');
-        $this->assertEquals('language.tpl', $oView->render());
+        $this->assertEquals('language', $oView->render());
     }
 }

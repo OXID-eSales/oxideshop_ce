@@ -25,7 +25,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      *
      * @var string
      */
-    protected $_sThisTemplate = 'page/checkout/basket.tpl';
+    protected $_sThisTemplate = 'page/checkout/basket';
 
     /**
      * Order step marker
@@ -98,7 +98,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Executes parent::render(), creates list with basket articles
      * Returns name of template file basket::_sThisTemplate (for Search
-     * engines return "content.tpl" template to avoid fake orders etc).
+     * engines return "content" template to avoid fake orders etc).
      *
      * @return  string   $this->_sThisTemplate  current template file name
      */

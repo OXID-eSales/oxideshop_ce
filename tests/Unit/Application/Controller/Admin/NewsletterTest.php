@@ -23,7 +23,7 @@ class NewsletterTest extends \OxidTestCase
     public function testRender(): void
     {
         $oView = oxNew('Admin_Newsletter');
-        $this->assertEquals('newsletter.tpl', $oView->render());
+        $this->assertEquals('newsletter', $oView->render());
     }
 
     public function testIfExportRecipientsGenerateCSVFile(): void

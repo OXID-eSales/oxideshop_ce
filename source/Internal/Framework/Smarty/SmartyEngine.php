@@ -93,16 +93,6 @@ class SmartyEngine implements TemplateEngineInterface
     }
 
     /**
-     * Returns the template file extension.
-     *
-     * @return string
-     */
-    public function getDefaultFileExtension(): string
-    {
-        return 'tpl';
-    }
-
-    /**
      * Pass parameters to the Smarty instance.
      *
      * @param string $name  The name of the parameter.

@@ -29,7 +29,7 @@ class AttributeMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Attribute_Main');
-        $this->assertEquals('attribute_main.tpl', $oView->render());
+        $this->assertEquals('attribute_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['edit']));
         $this->assertTrue($aViewData['edit'] instanceof Attribute);
@@ -46,7 +46,7 @@ class AttributeMainTest extends \OxidTestCase
 
         // testing..
         $oView = oxNew('Attribute_Main');
-        $this->assertEquals('attribute_main.tpl', $oView->render());
+        $this->assertEquals('attribute_main', $oView->render());
         $aViewData = $oView->getViewData();
         $this->assertTrue(isset($aViewData['oxid']));
         $this->assertEquals("-1", $aViewData['oxid']);

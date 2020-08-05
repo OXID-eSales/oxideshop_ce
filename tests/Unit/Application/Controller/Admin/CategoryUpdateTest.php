@@ -54,6 +54,6 @@ class CategoryUpdateTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Category_Update');
-        $this->assertEquals('category_update.tpl', $oView->render());
+        $this->assertEquals('category_update', $oView->render());
     }
 }

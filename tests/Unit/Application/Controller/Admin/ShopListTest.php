@@ -41,7 +41,7 @@ class ShopListTest extends \OxidTestCase
     {
         // testing..
         $oView = oxNew('Shop_List');
-        $this->assertEquals('shop_list.tpl', $oView->render());
+        $this->assertEquals('shop_list', $oView->render());
     }
 
     /**

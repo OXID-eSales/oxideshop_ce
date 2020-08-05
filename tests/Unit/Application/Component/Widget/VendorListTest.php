@@ -23,7 +23,7 @@ class VendorListTest extends \OxidTestCase
     public function testRender()
     {
         $oVendorList = oxNew('oxwVendorList');
-        $this->assertEquals('widget/footer/vendorlist.tpl', $oVendorList->render());
+        $this->assertEquals('widget/footer/vendorlist', $oVendorList->render());
     }
 
     /**

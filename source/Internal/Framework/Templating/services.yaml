@@ -9,6 +9,8 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
     public: true
     tags: ['templating']
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Provider\NamespaceHierarchyProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Provider\NamespaceHierarchyProvider
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver
     arguments:

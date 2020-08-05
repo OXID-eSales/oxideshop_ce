@@ -19,6 +19,9 @@ services:
     arguments:
       - '%oxid_esales.templating.engine_template_extension%'
 
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Provider\NamespaceHierarchyProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Provider\NamespaceHierarchyProvider
+    
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver
     arguments:

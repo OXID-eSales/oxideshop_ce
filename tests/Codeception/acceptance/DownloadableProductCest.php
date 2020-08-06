@@ -7,13 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception;
 
 use DateTime;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Home;
 use OxidEsales\Codeception\Step\Basket;
-use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceTester;
 
 final class DownloadableProductCest
 {

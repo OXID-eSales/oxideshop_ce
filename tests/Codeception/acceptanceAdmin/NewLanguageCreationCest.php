@@ -36,7 +36,7 @@ final class NewLanguageCreationCest
     }
 
     /** @param AcceptanceAdminTester $I */
-    public function downloadableFiles(AcceptanceAdminTester $I): void
+    public function newLanguageCreation(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('if we can create a new language successfully');
 

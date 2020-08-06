@@ -192,8 +192,7 @@ class Controller extends Core
         $databaseConfigValues = $this->getUtilitiesInstance()->getRequestVar("aDB", "post");
         $session->setSessionParam('aDB', $databaseConfigValues);
 
-        // check if important parameters are set
-        if (!$databaseConfigValues['dbHost'] || !$databaseConfigValues['dbName']) {
+        if (!$this->areRequiredParametersFilled($databaseConfigValues)) {
             $setup->setNextStep($setup->getStep('STEP_DB_INFO'));
             $view->setMessage($language->getText('ERROR_FILL_ALL_FIELDS'));
 
@@ -743,5 +742,14 @@ class Controller extends Core
             throw new SetupControllerExitException();
         }
         $this->getView()->setViewParam("blCreated", 1);
+    }
+
+    /**
+     * @param $databaseConfigValues
+     * @return bool
+     */
+    private function areRequiredParametersFilled($databaseConfigValues): bool
+    {
+        return $databaseConfigValues['dbHost'] && $databaseConfigValues['dbName'] && $databaseConfigValues['dbPort'];
     }
 }

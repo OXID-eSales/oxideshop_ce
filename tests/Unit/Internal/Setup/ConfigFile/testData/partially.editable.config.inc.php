@@ -8,7 +8,7 @@
 $this->dbType = 'pdo_mysql';
 $this->dbCharset = 'utf8';
 $this->dbHost = '<dbHost>';
-$this->dbPort  = 3306;
+$this->dbPort  = '<dbPort>';
 $this->dbName = 'abc'; /** missing placeholder - dbName */
 $this->dbUser = '<dbUser>';
 $this->dbPwd  = '<dbPwd>';

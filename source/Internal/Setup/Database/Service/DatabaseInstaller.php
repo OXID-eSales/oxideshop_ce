@@ -71,7 +71,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         } catch (DatabaseExistsException $exception) {
         }
 
-        $this->addCredentialsToConfigFile($host, $username, $password, $name);
+        $this->addCredentialsToConfigFile($host, (string) $port, $username, $password, $name);
         $this->resetConfigFileOpcache();
         $this->updateConfigFileInRegistry();
 
@@ -80,15 +80,15 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         $this->generateViews();
     }
 
-    /**
-     * @param string $host
-     * @param string $username
-     * @param string $password
-     * @param string $name
-     */
-    private function addCredentialsToConfigFile(string $host, string $username, string $password, string $name): void
-    {
+    private function addCredentialsToConfigFile(
+        string $host,
+        string $port,
+        string $username,
+        string $password,
+        string $name
+    ): void {
         $this->configFileDao->replacePlaceholder('dbHost', $host);
+        $this->configFileDao->replacePlaceholder('dbPort', $port);
         $this->configFileDao->replacePlaceholder('dbUser', $username);
         $this->configFileDao->replacePlaceholder('dbPwd', $password);
         $this->configFileDao->replacePlaceholder('dbName', $name);

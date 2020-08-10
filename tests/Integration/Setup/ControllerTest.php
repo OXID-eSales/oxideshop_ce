@@ -70,6 +70,20 @@ class ControllerTest extends UnitTestCase
         }
     }
 
+    public function testDbConnectWithEmptyDbPortShowsError(): void
+    {
+        $databaseCredentials = $this->getDatabaseCredentials();
+        $databaseCredentials['dbPort'] = '';
+        $this->setPostDatabase($databaseCredentials);
+
+        $controller = $this->getTestController();
+        $this->expectException(SetupControllerExitException::class);
+        $controller->dbConnect();
+        $view = $controller->getView();
+
+        $this->assertStringContainsString('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
+    }
+
     /**
      * Test case that all is well but database does not yet exist.
      * We get an Exception from Database::opeDatabase that is caught in Controller::dbConnect and

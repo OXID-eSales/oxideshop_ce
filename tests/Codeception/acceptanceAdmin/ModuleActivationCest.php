@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
-use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
@@ -19,10 +18,24 @@ final class ModuleActivationCest
     private $testModule1Path = __DIR__ . '/../_data/modules/test-module-1';
 
     /** @param AcceptanceAdminTester $I */
+    public function _before(AcceptanceAdminTester $I)
+    {
+        $I->installModule($this->testModule1Path);
+    }
+
+    /** @param AcceptanceAdminTester $I */
+    public function _after(AcceptanceAdminTester $I)
+    {
+        $I->deactivateModule($this->testModule1Id);
+        $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
+    }
+
+
+    /** @param AcceptanceAdminTester $I */
     public function moduleActivation(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module activation in normal mode');
-        $I->installModule($this->testModule1Path);
+        
         $this->openModuleOverview($I);
 
         $I->seeElement('#module_activate');
@@ -32,8 +45,6 @@ final class ModuleActivationCest
 
         $I->seeElement('#module_deactivate');
         $I->dontSeeElement('#module_activate');
-
-        $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
     }
 
     /** @param AcceptanceAdminTester $I */
@@ -41,7 +52,7 @@ final class ModuleActivationCest
     {
         $I->wantToTest('module activation disabled in demo mode');
         $I->updateConfigInDatabase('blDemoShop', true, 'bool');
-        $I->installModule($this->testModule1Path);
+        
         $this->openModuleOverview($I);
 
         $I->dontSeeElement('#module_activate');
@@ -55,15 +66,12 @@ final class ModuleActivationCest
         $I->see(Translator::translate('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'));
 
         $I->updateConfigInDatabase('blDemoShop', false, 'bool');
-        $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
     }
 
     /** @param AcceptanceAdminTester $I */
     private function openModuleOverview(AcceptanceAdminTester $I): void
     {
-        $userData = Fixtures::get('adminUser');
-        $loginPage = $I->openAdmin();
-        $loginPage->login($userData['userLoginName'], $userData['userPassword']);
+        $loginPage = $I->loginAdmin();
         $moduleList = $loginPage->openModules();
         $module = $moduleList->selectModule('Codeception test module #1');
         $module->openModuleTab('Overview');

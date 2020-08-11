@@ -790,44 +790,6 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-     * Master Settings -> Languages
-     *
-     * @group adminFunctionality
-     */
-    public function testNewLanguageCreatingAndNavigation()
-    {
-        $this->skipTranslationCheck();
-
-        //EN lang
-        $this->loginAdmin("Master Settings", "Languages");
-        $this->clickCreateNewItem();
-        $this->check("editval[active]");
-        $this->type("editval[abbr]", "lt");
-        $this->type("editval[desc]", "Lietuviu");
-        $this->type("editval[sort]", "3");
-        $this->clickAndWaitFrame("saveArticle", "list");
-        $this->selectMenu("Service", "Tools");
-        $this->frame("edit");
-        $this->clickAndConfirm("//input[@value='Update DB Views now']", "list");
-        $this->selectWindow(null);
-        $this->clearCache();
-        $this->openShop();
-        $this->assertElementPresent("//a/span[text()='Lietuviu']");
-        $this->searchFor("1001");
-        $this->assertEquals("1 %HITS_FOR% \"1001\"", $this->getHeadingText("//h1"));
-        $this->clickAndWait("searchList_1");
-        $this->assertEquals("%PRODUCT_NO%: 1001", $this->getText("productArtnum"));
-        $this->clickAndWait("link=%HOME%");
-        //LT lang
-        $this->switchLanguage("Lietuviu");
-        $this->getTranslator()->setLanguage(2);
-        $this->searchFor("1001");
-        $this->assertEquals("1 Hits for [LT] \"1001\"", $this->getHeadingText("//h1"));
-        $this->clickAndWait("searchList_1");
-        $this->assertEquals("Item #: 1001", $this->getText("productArtnum"));
-    }
-
-    /**
      * Administer Products -> Categories (price categories testing)
      *
      * @group adminFunctionality

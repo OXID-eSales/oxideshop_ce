@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
-use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
@@ -76,9 +75,7 @@ final class ModuleSortListCest
      */
     private function selectModule(AcceptanceAdminTester $I, string $moduleId): void
     {
-        $userData = Fixtures::get('adminUser');
-        $loginPage = $I->openAdmin();
-        $loginPage->login($userData['userLoginName'], $userData['userPassword']);
+        $loginPage = $I->loginAdmin();
         $moduleList = $loginPage->openModules();
         $this->module = $moduleList->selectModule($moduleId);
     }

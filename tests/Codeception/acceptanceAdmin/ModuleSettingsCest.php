@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
-use Codeception\Util\Fixtures;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ModuleSettingsCest
@@ -19,27 +18,44 @@ final class ModuleSettingsCest
     private $testModule1Path = __DIR__ . '/../_data/modules/test-module-1';
 
     /** @param AcceptanceAdminTester $I */
-    public function moduleSettingsForm(AcceptanceAdminTester $I): void
+    public function _before(AcceptanceAdminTester $I)
     {
-        $I->wantToTest('module settings are loaded from metadata and form save works');
         $I->installModule($this->testModule1Path);
         $I->activateModule($this->testModule1Id);
+    }
 
+    /** @param AcceptanceAdminTester $I */
+    public function _after(AcceptanceAdminTester $I)
+    {
+        $I->deactivateModule($this->testModule1Id);
+        $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
+    }
+
+    /** @param AcceptanceAdminTester $I */
+    public function moduleEmptySettingsForm(AcceptanceAdminTester $I): void
+    {
+        $I->wantToTest('module empty settings are loaded from metadata and form save works');
         $this->selectModule($I, 'Codeception test module #1');
         $this->module->openModuleTab('Settings');
 
         $I->click($I->see('Empty settings group'));
         $this->checkEmptyInitialSettingsLoaded($I);
 
-        $I->click($I->see('Filled Settings Group'));
-        $this->checkFilledInitialSettingsLoaded($I);
-
-        $I->click($I->see('Empty settings group'));
         $this->modifyEmptyInitialSettings($I);
         $I->click('save');
+        $I->click($I->see('Empty settings group'));
         $this->checkModifiedSettingsNotEmpty($I);
+    }
 
-        $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
+    /** @param AcceptanceAdminTester $I */
+    public function moduleSettingsForm(AcceptanceAdminTester $I): void
+    {
+        $I->wantToTest('module settings are loaded from metadata');
+        $this->selectModule($I, 'Codeception test module #1');
+        $this->module->openModuleTab('Settings');
+
+        $I->click($I->see('Filled Settings Group'));
+        $this->checkFilledInitialSettingsLoaded($I);
     }
 
     /**
@@ -48,10 +64,7 @@ final class ModuleSettingsCest
      */
     private function selectModule(AcceptanceAdminTester $I, string $moduleName): void
     {
-        $userData = Fixtures::get('adminUser');
-
-        $loginPage = $I->openAdmin();
-        $loginPage->login($userData['userLoginName'], $userData['userPassword']);
+        $loginPage = $I->loginAdmin();
 
         $moduleList = $loginPage->openModules();
         $this->module = $moduleList->selectModule($moduleName);
@@ -64,7 +77,7 @@ final class ModuleSettingsCest
         $I->canSeeInField('confstrs[testEmptyStrConfig]', '');
         $I->canSeeInField('confarrs[testEmptyArrConfig]', '');
         $I->canSeeInField('confaarrs[testEmptyAArrConfig]', '');
-        $I->canSeeInField('confselects[testEmptySelectConfig]', 0);
+        $I->canSeeOptionIsSelected('confselects[testEmptySelectConfig]', 'Option 0');
         $I->canSeeInField('confpassword[testEmptyPasswordConfig]', '');
     }
 
@@ -75,7 +88,7 @@ final class ModuleSettingsCest
         $I->canSeeInField('confstrs[testFilledStrConfig]', 'testStr');
         $I->canSeeInField('confarrs[testFilledArrConfig]', "option1\noption2");
         $I->canSeeInField('confaarrs[testFilledAArrConfig]', "key1 => option1\nkey2 => option2");
-        $I->canSeeInField('confselects[testFilledSelectConfig]', 2);
+        $I->canSeeInField('confselects[testFilledSelectConfig]', '2');
         $I->dontSee('confpassword[testFilledPasswordConfig]');
         $I->canSeeInField('confpassword[testFilledPasswordConfig]', '');
     }
@@ -98,7 +111,7 @@ final class ModuleSettingsCest
         $I->canSeeInField('confstrs[testEmptyStrConfig]', 'new-string');
         $I->canSeeInField('confarrs[testEmptyArrConfig]', "new-option-1\nnew-option-2");
         $I->canSeeInField('confaarrs[testEmptyAArrConfig]', "key1 => new-option-1\nkey2 => new-option-2");
-        $I->canSeeInField('confselects[testEmptySelectConfig]', 2);
+        $I->canSeeOptionIsSelected('confselects[testEmptySelectConfig]', 'Option 2');
         $I->dontSee('confpassword[testEmptyPasswordConfig]');
         $I->canSeeInField('confpassword[testEmptyPasswordConfig]', '');
     }

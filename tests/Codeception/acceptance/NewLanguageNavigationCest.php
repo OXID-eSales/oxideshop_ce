@@ -80,9 +80,7 @@ final class NewLanguageNavigationCest
     private function checkProductDetails(Home $shop, AcceptanceTester $I): ProductDetails
     {
         $searchListPage = $shop->searchFor($this->productData['id']);
-
-        $expectedHeader = '1 ' . Translator::translate('HITS_FOR') . ' ' . sprintf('"%s"', $this->productData['id']);
-        $I->assertEquals($expectedHeader, $I->grabTextFrom("//h1"));
+        $I->see($this->productData['title'], "#searchList_1");
 
         $productDetailsPage = $searchListPage->openProductDetailsPage(1);
         $productDetailsPage->seeProductData($this->productData);

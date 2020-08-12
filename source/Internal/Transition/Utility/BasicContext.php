@@ -98,6 +98,14 @@ class BasicContext implements BasicContextInterface
     /**
      * @return string
      */
+    public function getOutPath(): string
+    {
+        return $this->getFacts()->getOutPath();
+    }
+
+    /**
+     * @return string
+     */
     public function getEnterpriseEditionRootPath(): string
     {
         return $this->getFacts()->getEnterpriseEditionRootPath();
@@ -151,6 +159,22 @@ class BasicContext implements BasicContextInterface
     public function getShopRootPath(): string
     {
         return $this->getFacts()->getShopRootPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorPath(): string
+    {
+        return $this->getFacts()->getVendorPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerVendorName(): string
+    {
+        return $this->getFacts()::COMPOSER_VENDOR_OXID_ESALES;
     }
 
     /**

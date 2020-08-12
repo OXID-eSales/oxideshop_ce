@@ -62,6 +62,11 @@ interface BasicContextInterface
     public function getEnterpriseEditionRootPath(): string;
 
     /**
+     * @return string
+     */
+    public function getOutPath(): string;
+
+    /**
      * @return int
      */
     public function getDefaultShopId(): int;
@@ -90,6 +95,16 @@ interface BasicContextInterface
      * @return string
      */
     public function getShopRootPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getVendorPath(): string;
+
+    /**
+     * @return string
+     */
+    public function getComposerVendorName(): string;
 
     /**
      * @return string

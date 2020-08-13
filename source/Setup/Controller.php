@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 use OxidEsales\Facts\Edition\EditionSelector;
+use OxidEsales\Facts\Facts;
 
 /**
  * Class holds scripts (controllers) needed to perform shop setup steps
@@ -548,10 +549,10 @@ class Controller extends Core
             if ($demoDataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
                 $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
-                // Install demo data.
-                $database->queryFile($this->getUtilitiesInstance()->getActiveEditionDemodataPackageSqlFilePath());
-                // Copy demo data files.
-                $this->getUtilitiesInstance()->executeExternalDemodataAssetsInstallCommand();
+                exec(
+                    (new Facts())->getCommunityEditionRootPath() .
+                    '/bin/oe-console oe:setup:demodata'
+                );
             } else {
                 $database->queryFile("$baseSqlDir/initial_data.sql");
 

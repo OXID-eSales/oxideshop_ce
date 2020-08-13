@@ -15,7 +15,6 @@ use OxidEsales\Facts\Facts;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
-use OxidEsales\DemoDataInstaller\DemoDataInstallerBuilder;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -463,18 +462,6 @@ class Utilities extends Core
     }
 
     /**
-     * Calls external demodata assets install command.
-     *
-     * @return int Error code of the install command.
-     */
-    public function executeExternalDemodataAssetsInstallCommand()
-    {
-        $demoDataInstaller = $this->createDemoDataInstaller();
-
-        return $demoDataInstaller->execute();
-    }
-
-    /**
      * Return path to composer vendor directory.
      *
      * @return string
@@ -632,15 +619,5 @@ class Utilities extends Core
         $migrationsBuilder = new MigrationsBuilder();
 
         return $migrationsBuilder->build($facts);
-    }
-
-    /**
-     * @return \OxidEsales\DemoDataInstaller\DemoDataInstaller
-     */
-    protected function createDemoDataInstaller()
-    {
-        $demoDataInstallerBuilder = new DemoDataInstallerBuilder();
-
-        return $demoDataInstallerBuilder->build();
     }
 }

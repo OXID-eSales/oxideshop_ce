@@ -31,11 +31,17 @@
 
 # IDE
 /.idea/
-/.phpstorm-oxid.meta.php
+/.phpstorm.meta.php
 /.ide-helper.php
 
 # OS
 .DS_Store
 
-# DI for modules and packages
-/var/generated/generated_services.yaml
+# Shop config & DI for modules and packages
+/var/
+
+# Template files
+source/Application/views/flow
+source/out/flow
+source/Application/views/azure
+source/out/azure

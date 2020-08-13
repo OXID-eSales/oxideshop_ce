@@ -9,6 +9,7 @@ use Symfony\Component\Console\Application;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
 
@@ -39,7 +40,16 @@ $shopId = (int) (new ArgvInput())->getParameterOption(
 if ($shopId !== 0) {
     $_POST['shp'] = $shopId;
 }
-$bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
+
+$sourcePath = (new Facts())->getSourcePath();
+$filesystem = new Filesystem();
+$configFilePath = Path::join($sourcePath, 'config.inc.php');
+if (!$filesystem->exists($configFilePath)) {
+    $distConfigFilePath = Path::join($sourcePath, 'config.inc.php.dist');
+    $filesystem->copy($distConfigFilePath, $configFilePath);
+}
+
+$bootstrapFilePath = Path::join($sourcePath, 'bootstrap.php');
 require_once $bootstrapFilePath;
 
 $container = (new ContainerBuilderFactory())->create()->getContainer();
@@ -58,4 +68,3 @@ $application->addCommands(
     $idCommands
 );
 $application->run();
-

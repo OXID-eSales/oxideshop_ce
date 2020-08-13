@@ -32,6 +32,9 @@ class BasicContextStub implements BasicContextInterface
     private $projectConfigurationDirectory;
     private $backwardsCompatibilityClassMap;
     private $facts;
+    private $outPath;
+    private $vendorPath;
+    private $composerVendorName;
 
     public function __construct()
     {
@@ -51,6 +54,9 @@ class BasicContextStub implements BasicContextInterface
         $this->shopRootPath = $basicContext->getShopRootPath();
         $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
         $this->facts = $basicContext->getFacts();
+        $this->outPath = $basicContext->getOutPath();
+        $this->vendorPath = $basicContext->getVendorPath();
+        $this->composerVendorName = $basicContext->getComposerVendorName();
     }
 
     /**
@@ -267,5 +273,29 @@ class BasicContextStub implements BasicContextInterface
     public function getShopRootPath(): string
     {
         return $this->shopRootPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOutPath(): string
+    {
+        return $this->outPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorPath(): string
+    {
+        return $this->vendorPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerVendorName(): string
+    {
+        return $this->composerVendorName;
     }
 }

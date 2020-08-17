@@ -290,7 +290,6 @@ $aLang = array(
 'MESSAGE_PLEASE_DELETE_DIRECTORY'                             => "Please delete directory",
 'MESSAGE_PLEASE_DELETE_DIRECTORY_SET'                         => 'Please delete directory: %ssetup!',
 'MESSAGE_PLEASE_DELETE_DIRECTORY_SETUP'                       => "setup!",
-'MESSAGE_PLEASE_DELETE_DIRECTORY_UPDATEAPP'                   => "updateApp",
 'MESSAGE_PLEASE_DELETE_FOLLOWING_DIRECTORY'                   => "Please delete the following directory",
 'MESSAGE_PRICE_ALARM_PRICE_CHANGE'                            => "We are happy to inform you about a price change of this product respectively when it hits the price you want to purchase.",
 'MESSAGE_RATE_THIS_ARTICLE'                                   => "Rate this product!",

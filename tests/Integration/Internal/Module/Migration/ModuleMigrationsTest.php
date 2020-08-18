@@ -53,9 +53,6 @@ class ModuleMigrationsTest extends IntegrationTestCase
         $this->removeTestModule($this->moduleIdWithoutMigrations);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
     public function testAllMigrationsExecuteHasModuleMigrationInside(): void
     {
         $this->installModule($this->moduleIdWithMigrations);

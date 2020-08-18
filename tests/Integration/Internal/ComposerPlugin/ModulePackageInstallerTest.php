@@ -22,8 +22,10 @@ use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ModulePackageInstallerTest extends IntegrationTestCase
+class ModulePackageInstallerTest extends TestCase
 {
+    use ContainerTrait;
+
     private $modulePackagePath = __DIR__ . '/Fixtures/test-module-package-installation';
     private $packageName = 'test-module-package-installation';
     private $moduleId = 'testModule';

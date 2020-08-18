@@ -26,6 +26,13 @@ class ComponentInstallerTest extends TestCase
 
     private $servicesFilePath = 'Fixtures/services.yaml';
 
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->removeGeneratedLineFromProjectFile();
+    }
+
     public function testInstall()
     {
         $installer = $this->createInstaller();

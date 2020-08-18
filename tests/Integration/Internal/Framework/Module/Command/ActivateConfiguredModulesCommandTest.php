@@ -26,6 +26,20 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
 {
     private $commandName = "oe:module:apply-configuration";
 
+    public function setup(): void
+    {
+        $this->installTestModule();
+
+        parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        $this->cleanupTestData();
+
+        parent::tearDown();
+    }
+
     public function testModuleActivation(): void
     {
         $this->prepareTestModuleConfigurations(true, 1, []);

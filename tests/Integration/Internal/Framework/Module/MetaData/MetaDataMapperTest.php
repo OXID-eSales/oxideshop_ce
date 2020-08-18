@@ -14,8 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Modul
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface;
 use Webmozart\PathUtil\Path;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class MetaDataMapperTest extends IntegrationTestCase
 {
@@ -80,10 +82,12 @@ class MetaDataMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
+        $container = $this->getCompiledTestContainer();
+
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
@@ -235,10 +239,12 @@ class MetaDataMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
+        $container = $this->getCompiledTestContainer();
+
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         $this->assertSame($expectedModuleData['id'], $moduleConfiguration->getId());
@@ -354,10 +360,12 @@ class MetaDataMapperTest extends IntegrationTestCase
             ],
         ];
 
-        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
+        $container = $this->getCompiledTestContainer();
+
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
 
-        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         /**
@@ -398,10 +406,12 @@ class MetaDataMapperTest extends IntegrationTestCase
             'id' => 'TestModuleWithSurplusData',
         ];
 
-        $metaDataDataProvider = $this->get(MetaDataProviderInterface::class);
+        $container = $this->getCompiledTestContainer();
+
+        $metaDataDataProvider = $container->get(MetaDataProviderInterface::class);
         $normalizedMetaData = $metaDataDataProvider->getData($metaDataFilePath);
         
-        $metaDataDataMapper = $this->get('oxid_esales.module.metadata.datamapper.metadatamapper');
+        $metaDataDataMapper = $container->get('oxid_esales.module.metadata.datamapper.metadatamapper');
         $moduleConfiguration = $metaDataDataMapper->fromData($normalizedMetaData);
 
         $this->assertEquals($expectedModuleData['id'], $moduleConfiguration->getId());
@@ -417,6 +427,17 @@ class MetaDataMapperTest extends IntegrationTestCase
         $metaDataFilePath = Path::join(__DIR__, 'TestData', $testModuleDirectory, 'metadata.php');
 
         return $metaDataFilePath;
+    }
+
+    /**
+     * @return ContainerBuilder
+     */
+    private function getCompiledTestContainer(): ContainerBuilder
+    {
+        $container = (new TestContainerFactory())->create();
+        $container->compile();
+
+        return $container;
     }
 
     /**

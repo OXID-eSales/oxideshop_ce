@@ -46,6 +46,15 @@ class ProjectYamlDaoTest extends IntegrationTestCase
         );
     }
 
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $projectFilePath = $this->getTestGeneratedServicesFilePath();
+        if (file_exists($projectFilePath)) {
+            unlink($projectFilePath);
+        }
+    }
+
     public function testLoading()
     {
         $testData = <<<EOT

@@ -22,7 +22,11 @@ final class NewCMSCreationCest
         $I->deleteFromDatabase('oxcontents', ['oxloadid' => $this->ident]);
     }
 
-    /** @param AcceptanceAdminTester $I */
+    /**
+     * @param AcceptanceAdminTester $I
+     *
+     * @group exclude_from_compilation
+     */
     public function newCMSCreation(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('Create a new CMS and check if it is saved in database');

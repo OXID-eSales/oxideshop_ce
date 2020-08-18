@@ -167,7 +167,8 @@ final class ModuleFilesInstallerTest extends IntegrationTestCase
 
         $installer->install($package);
 
-        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/readme.txt');
+        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/bl-list-3/bl-sub-3/bl-3-1.txt');
+        $this->assertFileExists($this->getTestedModuleInstallPath() . '/bl-list-3/bl-sub-3/bl-3-2.php');
     }
 
     public function testBlacklistWithMultiFiles(): void
@@ -180,6 +181,7 @@ final class ModuleFilesInstallerTest extends IntegrationTestCase
         $installer->install($package);
 
         $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/readme.txt');
+        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/bl-list-3/bl-sub-3/bl-3-1.txt');
     }
 
     public function testBlacklistWithTwoStarts(): void
@@ -191,9 +193,6 @@ final class ModuleFilesInstallerTest extends IntegrationTestCase
 
         $this->expectException(TwoStarsWithinBlacklistFilterException::class);
         $installer->install($package);
-
-        $this->assertDirectoryExists($this->modulePackagePath . '/BlackListDirectory');
-        $this->assertDirectoryDoesNotExist($this->getTestedModuleInstallPath() . '/BlackListDirectory');
     }
 
     public function testUninstall(): void

@@ -16,14 +16,15 @@ use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 
-class ComponentInstallerTest extends IntegrationTestCase
+class ComponentInstallerTest extends TestCase
 {
-    private $servicesFilePath = __DIR__ . '/Fixtures/services.yaml';
+    use ContainerTrait;
+
+    private $servicesFilePath = 'Fixtures/services.yaml';
 
     public function testInstall()
     {
@@ -57,11 +58,20 @@ class ComponentInstallerTest extends IntegrationTestCase
 
     private function doesServiceLineExists()
     {
-        $context = $this->get(BasicContextInterface::class);
+        $context = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
         $contentsOfProjectFile = file_get_contents(
             $context->getGeneratedServicesFilePath()
         );
 
         return (bool)strpos($contentsOfProjectFile, $this->servicesFilePath);
+    }
+
+    private function removeGeneratedLineFromProjectFile()
+    {
+        /** @var ProjectYamlDao $projectYamlDao */
+        $projectYamlDao = $this->get(ProjectYamlDaoInterface::class);
+        $DIconfig = $projectYamlDao->loadProjectConfigFile();
+        $DIconfig->removeImport($this->servicesFilePath);
+        $projectYamlDao->saveProjectConfigFile($DIconfig);
     }
 }

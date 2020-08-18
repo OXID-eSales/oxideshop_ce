@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use Webmozart\PathUtil\Path;
@@ -28,11 +29,6 @@ use Webmozart\PathUtil\Path;
  */
 class ModuleListTest extends IntegrationTestCase
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-
     private $fixturePath;
 
     public function setup(): void
@@ -112,7 +108,7 @@ class ModuleListTest extends IntegrationTestCase
             );
         $moduleList->cleanup();
 
-        $moduleActivationBridge = $this->container->get(ModuleActivationBridgeInterface::class);
+        $moduleActivationBridge = $this->get(ModuleActivationBridgeInterface::class);
 
         $this->assertFalse(
             $moduleActivationBridge->isActive('with_metadata_v21', 1)
@@ -135,7 +131,7 @@ class ModuleListTest extends IntegrationTestCase
 
     public function testGetDeletedExtensionsForModuleWithNoMetadata()
     {
-        $shopConfigurationDao = $this->container->get(ShopConfigurationDaoBridgeInterface::class);
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoBridgeInterface::class);
         $shopConfiguration = $shopConfigurationDao->get();
 
         $moduleWhichHasNoMetadata = new ModuleConfiguration();
@@ -147,7 +143,7 @@ class ModuleListTest extends IntegrationTestCase
         $shopConfiguration->addModuleConfiguration($moduleWhichHasNoMetadata);
         $shopConfigurationDao->save($shopConfiguration);
 
-        $this->container->get(ModuleActivationBridgeInterface::class)->activate(
+        $this->get(ModuleActivationBridgeInterface::class)->activate(
             'moduleWhichHasNoMetadata',
             Registry::getConfig()->getShopId()
         );
@@ -280,7 +276,7 @@ class ModuleListTest extends IntegrationTestCase
 
     private function removeTestModules()
     {
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
+        $fileSystem = $this->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

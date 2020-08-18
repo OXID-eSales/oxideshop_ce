@@ -16,7 +16,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActi
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\ModuleEvents;
-use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 

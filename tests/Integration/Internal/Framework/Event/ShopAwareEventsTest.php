@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Facts;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ShopAwareEventsTest extends IntegrationTestCase

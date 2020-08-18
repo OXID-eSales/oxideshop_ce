@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Container\Fixtures\CE\DummyExecutor;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;

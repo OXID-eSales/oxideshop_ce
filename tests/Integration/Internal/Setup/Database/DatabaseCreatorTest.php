@@ -42,6 +42,9 @@ class DatabaseCreatorTest extends TestCase
         parent::tearDown();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testCreateDatabase(): void
     {
         $this->databaseCreator->createDatabase(

@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventLoggingSubscriberTest extends IntegrationTestCase

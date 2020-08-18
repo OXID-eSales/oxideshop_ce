@@ -8,13 +8,12 @@
 namespace OxidEsales\DoctrineMigrationWrapper;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Database\TestConnectionFactory;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Database\TestDatabaseHandler;
 use OxidEsales\Facts\Facts;
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\TestingLibrary\Services\Library\DatabaseDefaultsFileGenerator;
+use Webmozart\PathUtil\Path;
 
 require_once Path::join(dirname(__DIR__, 2), 'bootstrap.php');
-TestConnectionFactory::initAcceptance();
+TestDatabaseHandler::setupTestConfigInc();
 
 $facts = new Facts();
 
@@ -53,7 +52,7 @@ function getShopSuitePath($facts)
 {
     $testSuitePath = getenv('TEST_SUITE');
     if (!$testSuitePath) {
-        $testSuitePath = $facts->getShopRootPath() . '/tests';
+        $testSuitePath = INSTALLATION_ROOT_PATH . '/tests';
     }
     return $testSuitePath;
 }
@@ -72,10 +71,5 @@ function getShopTestPath()
 
 function getMysqlConfigPath()
 {
-    $facts = new Facts();
-    $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
-
-    $generator = new DatabaseDefaultsFileGenerator($configFile);
-
-    return $generator->generate();
+    return Path::join(INSTALLATION_ROOT_PATH, 'tests', 'Codeception', 'config', 'params.php');
 }

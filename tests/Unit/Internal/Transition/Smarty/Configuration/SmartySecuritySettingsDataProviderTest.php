@@ -26,7 +26,7 @@ class SmartySecuritySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
 
         $dataProvider = new SmartySecuritySettingsDataProvider($smartyContextMock);
         $settings = [
-            'php_handling' => SMARTY_PHP_REMOVE,
+            'php_handling' => 2,
             'security' => true,
             'secure_dir' => ['testTemplateDir'],
             'security_settings' => [

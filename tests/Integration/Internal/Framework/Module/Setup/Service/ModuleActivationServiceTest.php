@@ -25,16 +25,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverI
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\SomeModuleService;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Module\TestData\TestModule\TestEvent;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleSettingsRestorer;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
-use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorer;
+use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
@@ -55,10 +49,12 @@ class ModuleActivationServiceTest extends IntegrationTestCase
     private $container;
     private $shopId = 1;
     private $testModuleId = 'testModuleId';
+    private $testContainerFactory = null;
 
     public function setup(): void
     {
-        $this->overrideService(ModulePathResolverInterface::class, $this->getModulePathResolverMock());
+        $this->container = $this->setupAndConfigureContainer();
+
         parent::setUp();
     }
 
@@ -66,8 +62,8 @@ class ModuleActivationServiceTest extends IntegrationTestCase
     {
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
-        $moduleStateService = $this->get(ModuleStateServiceInterface::class);
-        $moduleActivationService = $this->get(ModuleActivationServiceInterface::class);
+        $moduleStateService = $this->container->get(ModuleStateServiceInterface::class);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
 
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
 
@@ -82,8 +78,8 @@ class ModuleActivationServiceTest extends IntegrationTestCase
     {
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
 
-        $moduleConfigurationDao = $this->get(ModuleConfigurationDaoInterface::class);
-        $moduleActivationService = $this->get(ModuleActivationServiceInterface::class);
+        $moduleConfigurationDao = $this->container->get(ModuleConfigurationDaoInterface::class);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
 
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
         $moduleConfiguration = $moduleConfigurationDao->get($this->testModuleId, $this->shopId);
@@ -98,14 +94,14 @@ class ModuleActivationServiceTest extends IntegrationTestCase
 
     public function testClassExtensionChainUpdate()
     {
-        $shopConfigurationSettingDao = $this->get(ShopConfigurationSettingDaoInterface::class);
+        $shopConfigurationSettingDao = $this->container->get(ShopConfigurationSettingDaoInterface::class);
 
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $moduleConfiguration->addClassExtension(new ClassExtension('originalClassNamespace', 'moduleClassNamespace'));
 
         $this->persistModuleConfiguration($moduleConfiguration);
 
-        $moduleActivationService = $this->get(ModuleActivationServiceInterface::class);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
 
         $moduleClassExtensionChain = $shopConfigurationSettingDao->get(
@@ -136,13 +132,12 @@ class ModuleActivationServiceTest extends IntegrationTestCase
         $moduleConfiguration = $this->getTestModuleConfiguration();
         $this->persistModuleConfiguration($moduleConfiguration);
 
-        $moduleActivationService = $this->get(ModuleActivationServiceInterface::class);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
-        // Need a new container that relects the changes
-        $this->setupTestContainer();
+
         $this->assertInstanceOf(
             SomeModuleService::class,
-            $this->get(SomeModuleService::class)
+            $this->setupAndConfigureContainer()->get(SomeModuleService::class)
         );
     }
 
@@ -162,25 +157,26 @@ class ModuleActivationServiceTest extends IntegrationTestCase
         $this->persistModuleConfiguration($moduleConfiguration);
 
         /** @var ModuleActivationServiceInterface $moduleActivationService */
-        $moduleActivationService = $this->get(ModuleActivationServiceInterface::class);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->activate($this->testModuleId, $this->shopId);
 
         // We need a new container to assert that the even subscriber now is active
         $this->container = $this->setupAndConfigureContainer();
         /** @var EventDispatcher $eventDispatcher */
-        $eventDispatcher = $this->get(EventDispatcherInterface::class);
+        $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         /** @var TestEvent $event */
         $event = $eventDispatcher->dispatch(
             new TestEvent(),
             TestEvent::NAME
         );
-        $this->get("OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\TestData\TestModule\TestEventSubscriber");
         $this->assertTrue($event->isHandled());
 
-        $moduleActivationService = $this->get(ModuleActivationServiceInterface::class);
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
         $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
 
-        $eventDispatcher = $this->get(EventDispatcherInterface::class);
+        // Again we need a new container to assert that our changes worked
+        $this->container = $this->setupAndConfigureContainer();
+        $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         $event = $eventDispatcher->dispatch(
             new TestEvent(),
             TestEvent::NAME
@@ -335,7 +331,7 @@ class ModuleActivationServiceTest extends IntegrationTestCase
         $shopConfiguration->setClassExtensionsChain($chain);
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
-        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao = $this->container->get(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->save($shopConfiguration, $this->shopId);
     }
 

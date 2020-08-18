@@ -11,8 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy\LegacySmartyEngine;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class LegacySmartyEngineFactoryTest extends IntegrationTestCase
 {

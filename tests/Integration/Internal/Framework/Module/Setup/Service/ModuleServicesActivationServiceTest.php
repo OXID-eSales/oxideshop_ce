@@ -239,6 +239,9 @@ class ModuleServicesActivationServiceTest extends IntegrationTestCase
         $this->shopActivationService->activateModuleServices($this->testModuleId, 1);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testDeactivationWorksIfModuleServiceIsNotInProjectConfiguration(): void
     {
         $shopAwareService = TestEventSubscriber::class;

@@ -12,8 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Smarty
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridge;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyEngine;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class SmartyEngineTest extends IntegrationTestCase
 {

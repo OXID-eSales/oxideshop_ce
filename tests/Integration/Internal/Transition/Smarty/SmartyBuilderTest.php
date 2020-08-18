@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Smarty;
 
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
@@ -17,30 +18,40 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConf
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use Webmozart\PathUtil\Path;
 
 class SmartyBuilderTest extends IntegrationTestCase
 {
+    private $debugMode;
+
+    public function setup(): void
+    {
+        parent::setUp();
+        $this->debugMode = Registry::getConfig()->getConfigParam('iDebug');
+    }
+
+    public function tearDown(): void
+    {
+        Registry::getConfig()->setConfigParam('iDebug', $this->debugMode);
+        parent::tearDown();
+    }
+
     /**
      * @dataProvider smartySettingsDataProvider
      *
-     * @param bool $securityOn
+     * @param bool  $securityMode
      * @param array $smartySettings
      */
-    public function testSmartySettingsAreSetCorrect($securityOn)
+    public function testSmartySettingsAreSetCorrect($securityMode, $smartySettings)
     {
-        if ($securityOn) {
-            $smartySettings = $this->getSmartySettingsWithSecurityOn();
-        } else {
-            $smartySettings = $this->getSmartySettingsWithSecurityOff();
-        }
-        $smartyBuilder = new SmartyBuilder();
-        $this->setupAndConfigureContainer($securityOn);
-        $configurationFactory = $this->get(SmartyConfigurationFactoryInterface::class);
+        /** @var SmartyConfigurationFactory $configurationFactory */
+        $configurationFactory = $this->setupAndConfigureContainer($securityMode)
+            ->get(SmartyConfigurationFactoryInterface::class);
         $configuration = $configurationFactory->getConfiguration();
-
-        $smarty = $smartyBuilder->setSettings($configuration->getSettings())
+        $smarty = (new SmartyBuilder())
+            ->setSettings($configuration->getSettings())
             ->setSecuritySettings($configuration->getSecuritySettings())
             ->registerPlugins($configuration->getPlugins())
             ->registerPrefilters($configuration->getPrefilters())
@@ -49,7 +60,7 @@ class SmartyBuilderTest extends IntegrationTestCase
 
         foreach ($smartySettings as $varName => $varValue) {
             $this->assertTrue(isset($smarty->$varName), $varName . ' setting was not set');
-            $this->assertEquals($varValue, $smarty->$varName, 'Not correct value of the smarty setting: ' . $varName);
+            $this->assertEquals($varValue, $smarty->$varName, 'Not correct value of the smarts setting: ' . $varName);
         }
     }
 
@@ -59,8 +70,8 @@ class SmartyBuilderTest extends IntegrationTestCase
     public function smartySettingsDataProvider()
     {
         return [
-            'securityOn' => [1],
-            'security off' => [0]
+            'security on' => [1, $this->getSmartySettingsWithSecurityOn()],
+            'security off' => [0, $this->getSmartySettingsWithSecurityOff()]
         ];
     }
 
@@ -70,7 +81,7 @@ class SmartyBuilderTest extends IntegrationTestCase
         $templateDirs = Registry::getUtilsView()->getTemplateDirs();
         return [
             'security' => true,
-            'php_handling' => SMARTY_PHP_REMOVE,
+            'php_handling' => 2,
             'left_delimiter' => '[{',
             'right_delimiter' => '}]',
             'caching' => false,
@@ -148,7 +159,7 @@ class SmartyBuilderTest extends IntegrationTestCase
         $config->setConfigParam('blDemoShop', $securityMode);
         $config->setConfigParam('iDebug', 0);
 
-        return new SmartyContext($this->get(BasicContextInterface::class), $config, Registry::getUtilsView());
+        return new SmartyContext(new BasicContext(), $config, Registry::getUtilsView());
     }
 
     /**
@@ -168,7 +179,5 @@ class SmartyBuilderTest extends IntegrationTestCase
         $container->compile();
 
         return $container;
-        $this->overrideService(SmartyContextInterface::class, $this->getSmartyContext($securityMode));
-        $this->reloadTestContainer();
     }
 }

@@ -10,6 +10,7 @@ modules:
     enabled:
         - Asserts
         - \OxidEsales\EshopCommunity\Tests\Codeception\Helper\Acceptance
+        - \OxidEsales\Codeception\Module\ShopSetup
         - WebDriver:
             url: '%SHOP_URL%'
             browser: firefox

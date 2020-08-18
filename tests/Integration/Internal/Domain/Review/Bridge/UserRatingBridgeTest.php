@@ -33,7 +33,6 @@ class UserRatingBridgeTest extends IntegrationTestCase
         $this->assertFalse(
             $this->ratingExists('testRatingId')
         );
-        $this->tearDownTestContainer();
     }
 
     public function testDeleteRatingForSubShop()

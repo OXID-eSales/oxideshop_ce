@@ -12,6 +12,9 @@ use \PHPUnit\Framework\TestCase;
 
 class ModuleStateMapGeneratorTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testCanCreateSUT()
     {
         $this->getSUT([]);

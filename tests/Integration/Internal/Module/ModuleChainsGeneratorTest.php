@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Module;
 
 use OxidEsales\Eshop\Core\Module\ModuleChainsGenerator;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;

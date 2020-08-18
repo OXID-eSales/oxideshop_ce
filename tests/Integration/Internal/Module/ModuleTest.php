@@ -10,6 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use PHPUnit\Framework\TestCase;
@@ -17,8 +22,6 @@ use Webmozart\PathUtil\Path;
 
 class ModuleTest extends IntegrationTestCase
 {
-    private $container;
-
     public function testIsActiveIfModuleIsActive()
     {
         $moduleId = 'with_metadata_v21';
@@ -141,26 +144,26 @@ class ModuleTest extends IntegrationTestCase
         $package = new OxidEshopPackage($id, __DIR__ . '/Fixtures/' . $id);
         $package->setTargetDirectory('oeTest/' . $id);
 
-        $this->container->get(ModuleInstallerInterface::class)
+        $this->get(ModuleInstallerInterface::class)
             ->install($package);
     }
 
     private function activateModule(string $id)
     {
-        $this->container->get(ModuleActivationBridgeInterface::class)
+        $this->get(ModuleActivationBridgeInterface::class)
             ->activate($id, 1);
     }
 
     private function getModuleConfiguration(string $moduleId)
     {
-        return $this->container->get(ModuleConfigurationDaoBridgeInterface::class)
+        return $this->get(ModuleConfigurationDaoBridgeInterface::class)
             ->get($moduleId);
     }
 
     private function removeTestModules()
     {
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
+        $fileSystem = $this->get('oxid_esales.symfony.file_system');
+        $fileSystem->remove($this->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 
     public function testHasMetadataReturnsTrue()

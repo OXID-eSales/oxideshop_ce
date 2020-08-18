@@ -36,7 +36,7 @@ class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataPr
     public function getSecuritySettings(): array
     {
         return [
-            'php_handling' => SMARTY_PHP_REMOVE,
+            'php_handling' => 2,
             'security' => true,
             'secure_dir' => $this->context->getTemplateDirectories(),
             'security_settings' => [

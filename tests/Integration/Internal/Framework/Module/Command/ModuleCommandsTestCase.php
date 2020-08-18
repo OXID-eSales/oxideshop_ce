@@ -34,18 +34,6 @@ class ModuleCommandsTestCase extends IntegrationTestCase
 
     protected $moduleId = 'testmodule';
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->installTestModule();
-    }
-
-    public function tearDown(): void
-    {
-        $this->cleanupTestModule();
-        parent::tearDown();
-    }
-
     /**
      * @return Application
      */

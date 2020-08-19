@@ -8,7 +8,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 
 /**
@@ -16,15 +18,6 @@ use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
  */
 class TranslateSalutationLogicTest extends IntegrationTestCase
 {
-    /** @var TranslateSalutationLogic */
-    private $translateSalutationLogic;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->translateSalutationLogic = new TranslateSalutationLogic();
-    }
-
     /**
      * Provides data for testTranslateSalutation
      *
@@ -49,19 +42,20 @@ class TranslateSalutationLogicTest extends IntegrationTestCase
      */
     public function testTranslateSalutation(string $ident, int $languageId, string $expected): void
     {
-        $this->setLanguage($languageId);
-        $this->assertEquals($expected, $this->translateSalutationLogic->translateSalutation($ident));
+        $translateSalutationLogic = new TranslateSalutationLogic($this->getTranslator($languageId));
+        $this->assertEquals($expected, $translateSalutationLogic->translateSalutation($ident));
     }
 
     /**
-     * Sets language
-     *
-     * @param int $languageId
+     * @param $languageId
+     * @return LegacyTemplateTranslator
      */
-    private function setLanguage($languageId)
+    private function getTranslator($languageId)
     {
-        $oxLang = Registry::getLang();
-        $oxLang->setBaseLanguage($languageId);
+        $language = Registry::getLang();
+        $language->setTplLanguage($languageId);
+        $language->setAdminMode(false);
+        Registry::set(Language::class, $language);
+        return new LegacyTemplateTranslator();
     }
-
 }

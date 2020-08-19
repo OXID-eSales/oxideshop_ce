@@ -12,12 +12,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Factory
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
 
-class MonologFactoryTest extends IntegrationTestCase
+class MonologFactoryTest extends TestCase
 {
     public function testCreation()
     {

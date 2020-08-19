@@ -9,13 +9,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Language;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFunctionLogic;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 
-class TranslateLogicTest extends IntegrationTestCase
+class TranslateFunctionLogicTest extends IntegrationTestCase
 {
     use ProphecyTrait;
 
@@ -29,7 +29,8 @@ class TranslateLogicTest extends IntegrationTestCase
         return [
             ['FIRST_NAME', 0, 'Vorname'],
             ['FIRST_NAME', 1, 'First name'],
-            ['VAT', 1, 'VAT']
+            ['VAT', 1, 'VAT'],
+            [null, 1, 'ERROR: Translation for IDENT MISSING not found!']
         ];
     }
 
@@ -44,9 +45,10 @@ class TranslateLogicTest extends IntegrationTestCase
      */
     public function testSimpleAssignments($ident, $languageId, $result)
     {
-        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
+        $translateLogic = new TranslateFunctionLogic($this->getContextMock(), $this->getTranslator($languageId));
+        $params['ident'] = $ident;
 
-        $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident));
+        $this->assertEquals($result, $translateLogic->getTranslation($params));
     }
 
     /**
@@ -76,9 +78,43 @@ class TranslateLogicTest extends IntegrationTestCase
      */
     public function testAssignmentsWithArguments($ident, $languageId, $arguments, $result)
     {
-        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
+        $translateLogic = new TranslateFunctionLogic($this->getContextMock(), $this->getTranslator($languageId));
+        $params['ident'] = $ident;
+        $params['args'] = $arguments;
 
-        $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident, $arguments));
+        $this->assertEquals($result, $translateLogic->getTranslation($params));
+    }
+
+    /**
+     * Provides data to testAssignmentsWithSuffix
+     *
+     * @return array
+     */
+    public function withSuffixProvider(): array
+    {
+        return [
+            ['FIRST_NAME', 0, 'LAST_NAME', 'VornameNachname'],
+            ['FIRST_NAME', 0, 'NO_SUFFIX', 'Vorname'],
+        ];
+    }
+
+    /**
+     * Tests value assignments when translating strings containing %s
+     *
+     * @param string $ident
+     * @param int    $languageId
+     * @param mixed  $suffix
+     * @param string $result
+     *
+     * @dataProvider withSuffixProvider
+     */
+    public function testAssignmentsWithSuffix($ident, $languageId, $suffix, $result)
+    {
+        $translateLogic = new TranslateFunctionLogic($this->getContextMock(), $this->getTranslator($languageId));
+        $params['ident'] = $ident;
+        $params['suffix'] = $suffix;
+
+        $this->assertEquals($result, $translateLogic->getTranslation($params));
     }
 
     /**
@@ -91,13 +127,13 @@ class TranslateLogicTest extends IntegrationTestCase
         return [
             [
                 true,
-                'MY_MISING_TRANSLATION',
-                'MY_MISING_TRANSLATION',
+                'MY_MISSING_TRANSLATION',
+                'MY_MISSING_TRANSLATION',
             ],
             [
                 false,
-                'ident' => 'MY_MISING_TRANSLATION',
-                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+                'ident' => 'MY_MISSING_TRANSLATION',
+                'ERROR: Translation for MY_MISSING_TRANSLATION not found!',
             ],
         ];
     }
@@ -113,9 +149,29 @@ class TranslateLogicTest extends IntegrationTestCase
     {
         $context = $this->prophesize(ContextInterface::class);
         $context->isShopInProductiveMode()->willReturn($isProductiveMode);
-        $multiLangFilterLogic = new TranslateFilterLogic($context->reveal(), $this->getTranslator(1));
+        $context->isAdmin()->willReturn(false);
+        $translateLogic = new TranslateFunctionLogic($context->reveal(), $this->getTranslator(1));
+        $params['ident'] = $ident;
 
-        $this->assertEquals($translation, $multiLangFilterLogic->multiLang($ident));
+        $this->assertEquals($translation, $translateLogic->getTranslation($params));
+    }
+
+    public function testAlternativeTranslation()
+    {
+        $translateLogic = new TranslateFunctionLogic($this->getContextMock(), $this->getTranslator(1));
+        $params['ident'] = 'MY_MISSING_TRANSLATION';
+        $params['alternative'] = 'Alternative translation';
+
+        $this->assertEquals('Alternative translation', $translateLogic->getTranslation($params));
+    }
+
+    public function testNotExistingTranslationWithoutError()
+    {
+        $translateLogic = new TranslateFunctionLogic($this->getContextMock(), $this->getTranslator(1));
+        $params['ident'] = 'MY_MISSING_TRANSLATION';
+        $params['noerror'] = true;
+
+        $this->assertEquals('MY_MISSING_TRANSLATION', $translateLogic->getTranslation($params));
     }
 
     /**

@@ -8,18 +8,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ServicesYamlValidator;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
-class ServicesYamlValidatorTest extends IntegrationTestCase
+class ServicesYamlValidatorTest extends TestCase
 {
-    use ContainerTrait;
-
     /** @var ModuleConfigurationValidatorInterface */
     private $validator;
 
@@ -35,7 +31,6 @@ class ServicesYamlValidatorTest extends IntegrationTestCase
     public function setup(): void
     {
         parent::setUp();
-     //   $this->setupTestContainer();
 
         $context = new BasicContextStub();
         $context->setModulesPath(Path::join(__DIR__, 'Fixtures'));

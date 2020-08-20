@@ -13,7 +13,6 @@ use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
 
 require_once Path::join(dirname(__DIR__, 2), 'bootstrap.php');
-TestDatabaseHandler::setupTestConfigInc();
 
 $facts = new Facts();
 

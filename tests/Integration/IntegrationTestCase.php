@@ -35,8 +35,6 @@ class IntegrationTestCase extends TestCase
     {
         parent::setUp();
         $this->cleanupCaching();
-        TestDatabaseHandler::setupTestConfigInc();
-      //  $this->setupTestContainer();
         FixtureLoader::getInstance()->reset();
         FixtureLoader::getInstance()->loadBasicFixtures();
         $this->activateModules();
@@ -45,9 +43,7 @@ class IntegrationTestCase extends TestCase
     public function tearDown(): void
     {
         $this->deactivateModules();
-        //$this->tearDownTestContainer();
         $this->cleanupCaching();
-        TestDatabaseHandler::cleanupTestConfigInc();
         parent::tearDown();
     }
 

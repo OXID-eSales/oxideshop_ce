@@ -16,9 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
     ModuleConfigurationMergingServiceInterface
 };
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 
 final class ModuleConfigurationMergingServiceTest extends IntegrationTestCase

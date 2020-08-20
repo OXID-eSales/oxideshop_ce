@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database\Logger;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Database\Logger;
 
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;

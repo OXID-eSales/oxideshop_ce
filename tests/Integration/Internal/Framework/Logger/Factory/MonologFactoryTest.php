@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Logger\Factory;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Logger\Factory;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory;

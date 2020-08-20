@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\Argon2IPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\BcryptPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 class PasswordHashServiceTest extends IntegrationTestCase
 {

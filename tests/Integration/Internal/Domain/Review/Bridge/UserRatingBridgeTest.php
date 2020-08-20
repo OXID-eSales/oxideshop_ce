@@ -17,8 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingService;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceInterface;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
 
 class UserRatingBridgeTest extends IntegrationTestCase

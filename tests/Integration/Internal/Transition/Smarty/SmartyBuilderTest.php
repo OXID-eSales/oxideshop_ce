@@ -13,13 +13,10 @@ use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\TestUtils\TestContainerFactory;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
-use Webmozart\PathUtil\Path;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\Utils\TestContainerFactory;
 
 class SmartyBuilderTest extends IntegrationTestCase
 {

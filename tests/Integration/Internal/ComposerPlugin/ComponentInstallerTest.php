@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Utils\Traits\ContainerTrait;
 use OxidEsales\Facts\Facts;
 use PHPUnit\Framework\TestCase;
 

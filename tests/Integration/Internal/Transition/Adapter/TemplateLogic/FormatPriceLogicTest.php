@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
 class FormatPriceLogicTest extends IntegrationTestCase

@@ -5,7 +5,6 @@
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
 actor: AcceptanceTester
-bootstrap: _bootstrap.php
 modules:
     enabled:
         - Asserts
@@ -15,8 +14,7 @@ modules:
             url: '%SHOP_URL%'
             browser: firefox
             port: '%SELENIUM_SERVER_PORT%'
-            host: '%SELENIUM_SERVER_HOST%'
-            window_size: 1600x1000
+            window_size: 1920x1080
             clear_cookies: true
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
@@ -25,10 +23,9 @@ modules:
             port: '%DB_PORT%'
             dump: '%DUMP_PATH%'
             mysql_config: '%MYSQL_CONFIG_PATH%'
-            populate: true # run populator before all tests
-            cleanup: false # run populator before each test
-            populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
-        - \OxidEsales\Codeception\Module\OxideshopModules
+            #populate: true # run populator before all tests
+            #cleanup: true # run populator before each test
+            #populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
         - \OxidEsales\Codeception\Module\Oxideshop:
             screen_shot_url: '%SCREEN_SHOT_URL%'
             depends:

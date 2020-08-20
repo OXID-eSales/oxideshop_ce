@@ -8,7 +8,7 @@
 namespace OxidEsales\DoctrineMigrationWrapper;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\TestUtils\Database\TestDatabaseHandler;
+use OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler;
 use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
 

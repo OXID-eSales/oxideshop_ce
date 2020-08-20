@@ -27,5 +27,5 @@ ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
-\OxidEsales\EshopCommunity\Tests\TestUtils\Database\TestDatabaseHandler::init();
-\OxidEsales\EshopCommunity\Tests\TestUtils\Database\TestDatabaseHandler::setupTestConfigInc();
+//\OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler::init();
+//\OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler::setupTestConfigInc();

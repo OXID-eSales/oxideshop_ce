@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoExcepti
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewPermissionException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserReviewService;
-use OxidEsales\EshopCommunity\Tests\TestUtils\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 class UserReviewBridgeTest extends IntegrationTestCase
 {

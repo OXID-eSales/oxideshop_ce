@@ -92,10 +92,9 @@ function cmpart($a, $b)
  * error message.
  *
  * @template T
- * @param class-string<T> $className
- * param mixed  ...$args   constructor arguments
- *
- * @return T
+ * @psalm-param T $className
+ * @param mixed ...$args constructor arguments
+ * @psalm-return  T
  */
 function oxNew($className, ...$args)
 {

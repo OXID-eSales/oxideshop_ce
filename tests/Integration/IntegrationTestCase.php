@@ -31,8 +31,14 @@ class IntegrationTestCase extends TestCase
 
     const TESTVENDOR = 'oeTest';
 
+    protected static $initialized = false;
     public function setUp(): void
     {
+        if (!self::$initialized) {
+            \OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler::init();
+            // Do something once here for _all_ test subclasses.
+            self::$initialized = true;
+        }
         parent::setUp();
         $this->cleanupCaching();
         FixtureLoader::getInstance()->reset();

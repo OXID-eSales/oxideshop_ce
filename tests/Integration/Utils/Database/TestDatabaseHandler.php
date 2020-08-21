@@ -26,7 +26,6 @@ class TestDatabaseHandler
         if (! is_null(self::$connection)) {
             throw new \Exception("Test database already initialized.");
         }
-        self::configureTestConfig();
         $connectionProvider = new ConnectionProvider();
         self::$connection = $connectionProvider->get();
 

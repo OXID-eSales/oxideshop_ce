@@ -28,7 +28,7 @@ final class ActiveModulesDataProviderTest extends TestCase
 
         $this->assertSame(
             ['activeModuleId'],
-            $this->get(ActiveModulesDataProviderInterface::class)->getModuleIds(1)
+            $this->get(ActiveModulesDataProviderInterface::class)->getModuleIds()
         );
     }
 

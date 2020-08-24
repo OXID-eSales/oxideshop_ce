@@ -149,6 +149,7 @@ $aLang = [
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'Diese Seite ist nicht mehr gültig. Bitte benutzen Sie die Funktion "Passwort vergessen?" erneut.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Fehler: Ihr Passwort ist zu kurz.',
+'ERROR_MESSAGE_PASSWORD_SIMILAR_TO_USERNAME'                  => 'Fehler: Ihr Passwort ist Ihrem Benutzernamen zu ähnlich.',
 'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'Bewertung und Sterne-Rating konnten nicht gelöscht werden',
 'ERROR_MESSAGE_CURRENT_PASSWORD_INVALID'                      => 'Fehler: Ihr aktuelles Passwort ist falsch.',
 'ERROR_MESSAGE_RECOMMLIST_NOTITLE'                            => 'Kein Titel angegeben',

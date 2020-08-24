@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Exception\CookieException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
@@ -1115,9 +1116,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws StandardException
      */
-    public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress)
+    public function checkValues($sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress): void
     {
-        /** @var \OxidEsales\Eshop\Core\InputValidator $oInputValidator */
+        /** @var InputValidator $oInputValidator */
         $oInputValidator = Registry::getInputValidator();
 
         // 1. checking user name
@@ -1127,7 +1128,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oInputValidator->checkEmail($this, $sLogin);
 
         // 3. password
-        $oInputValidator->checkPassword($this, $sPassword, $sPassword2, ((int) Registry::getConfig()->getRequestParameter('option') == 3));
+        $oInputValidator->checkPassword($sLogin, $sPassword, $sPassword2, ((int) Registry::getConfig()->getRequestParameter('option') == 3));
 
         // 4. required fields
         $oInputValidator->checkRequiredFields($this, $aInvAddress, $aDelAddress);

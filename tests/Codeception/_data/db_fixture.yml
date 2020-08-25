@@ -63,7 +63,7 @@ oxwrapping:
   - {OXID: 'testcard', OXSHOPID: 1, OXACTIVE: 1, OXACTIVE_1: 1, OXACTIVE_2: 1, OXACTIVE_3: 1, OXTYPE: 'CARD', OXNAME: 'Test card [DE] šÄßüл', OXNAME_1: 'Test card [EN] šÄßüл', OXPRICE: 0.2 }
 oxdeliveryset:
   - {OXID: 'oxidstandard', OXSHOPID: 1, OXACTIVE: 1, OXACTIVEFROM: '0000-00-00 00:00:00', OXACTIVETO: '0000-00-00 00:00:00', OXTITLE: 'Standard', OXTITLE_1: 'Standard', OXPOS: 10 }
-  - {OXID: 'oxidalternative', OXSHOPID: 1, OXACTIVE: 1, OXACTIVEFROM: '0000-00-00 00:00:00', OXACTIVETO: '0000-00-00 00:00:00', OXTITLE: 'Alternative', OXTITLE_1: 'Alternative', OXPOS: 10 }
+  - {OXID: 'oxidalternative', OXSHOPID: 1, OXACTIVE: 1, OXACTIVEFROM: '0000-00-00 00:00:00', OXACTIVETO: '0000-00-00 00:00:00', OXTITLE: 'Alternative', OXTITLE_1: 'Alternative', OXPOS: 20 }
 oxdelivery:
   - {OXID: 'testdelivery', OXSHOPID: 1, OXACTIVE: 1, OXFIXED: 0, OXPARAM: 0, OXPARAMEND: 9999999 }
 oxdel2delset:

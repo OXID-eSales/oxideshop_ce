@@ -8,11 +8,11 @@
 namespace OxidEsales\DoctrineMigrationWrapper;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler;
 use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
 
 require_once Path::join(dirname(__DIR__, 2), 'bootstrap.php');
+\OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler::init();
 
 $facts = new Facts();
 

@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Setup;
+namespace OxidEsales\EshopCommunity\Internal\Setup\Exception;
 
 class ShopIsLaunchedException extends \Exception
 {

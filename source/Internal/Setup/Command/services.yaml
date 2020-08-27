@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        public: false
+
+    OxidEsales\EshopCommunity\Internal\Setup\Command\ShopSetupCommand:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Command\ShopSetupCommand
+        tags:
+            - { name: 'console.command', command: 'oe:setup:shop' }
+
+    OxidEsales\EshopCommunity\Internal\Setup\Command\DatabaseSetupCommand:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Command\DatabaseSetupCommand
+        tags:
+            - { name: 'console.command', command: 'oe:setup:database' }

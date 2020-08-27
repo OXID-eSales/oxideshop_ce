@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup\Command;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
@@ -22,8 +22,8 @@ use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidato
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Setup\ShopIsLaunchedException;
-use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
+use OxidEsales\EshopCommunity\Internal\Setup\Exception\ShopIsLaunchedException;
+use OxidEsales\EshopCommunity\Internal\Setup\Command\ShopSetupCommand;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use PHPUnit\Framework\TestCase;

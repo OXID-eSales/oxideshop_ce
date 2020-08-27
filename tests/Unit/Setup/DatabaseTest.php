@@ -274,27 +274,6 @@ final class DatabaseTest extends \OxidTestCase
     }
 
     /**
-     * Testing SetupDb::writeAdminLoginData()
-     */
-    public function testWriteAdminLoginData()
-    {
-        $loginName = 'testLoginName';
-        $password = 'testPassword';
-        $passwordSalt = 'testSalt';
-
-        $oUtils = $this->getMock("Utilities", array("generateUID"));
-        $oUtils->expects($this->once())->method("generateUID")->will($this->returnValue($passwordSalt));
-
-        $at = 0;
-        /** @var Mock $database */
-        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance", "execSql"));
-        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oUtils));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("update oxuser set oxusername='{$loginName}', oxpassword='" . hash('sha512', $password . $passwordSalt) . "', oxpasssalt='{$passwordSalt}' where OXUSERNAME='admin'"));
-        $database->expects($this->at($at))->method("execSql")->with($this->equalTo("update oxnewssubscribed set oxemail='{$loginName}' where OXEMAIL='admin'"));
-        $database->writeAdminLoginData($loginName, $password);
-    }
-
-    /**
      * Resets logged queries.
      */
     protected function setUp(): void

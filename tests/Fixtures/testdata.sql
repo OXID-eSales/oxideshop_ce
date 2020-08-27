@@ -1,5 +1,11 @@
 SET @@session.sql_mode = '';
 
+INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`) VALUES
+('oxdefaultadmin', 1, 'malladmin', 1, 'admin', 'e3a8a383819630e42d9ef90be2347ea70364b5efbb11dfc59adbf98487e196fffe4ef4b76174a7be3f2338581e507baa61c852b7d52f4378e21bd2de8c1efa5e', '61646D696E61646D696E61646D696E', 1, '', 'Your Company Name', 'John', 'Doe', 'Maple Street', '2425', '', 'Any City', 'a7c40f631fc920687.20179984', '', '9041', '217-8918712', '217-8918713', 'MR', 1000, '2003-01-01 00:00:00', '2003-01-01 00:00:00', '', '', '0000-00-00', '', '', 0, 0);
+
+INSERT INTO `oxnewssubscribed` (`OXID`, `OXSHOPID`, `OXUSERID`, `OXSAL`, `OXFNAME`, `OXLNAME`, `OXEMAIL`, `OXDBOPTIN`, `OXEMAILFAILED`, `OXSUBSCRIBED`, `OXUNSUBSCRIBED`) VALUES
+('0b742e66fd94c88b8.61001136', 1, 'oxdefaultadmin', 'MR', 'John', 'Doe', 'admin', 1, 0, '2005-07-26 19:16:09', '0000-00-00 00:00:00');
+
 # Reset theme in config
 UPDATE `oxconfig` SET `OXVARVALUE` = 'basic' WHERE `OXVARNAME` = 'sTheme';
 
@@ -8,12 +14,6 @@ UPDATE `oxconfig` SET `OXVARVALUE` = 'a:2:{s:2:"de";a:3:{s:6:"baseId";i:0;s:6:"a
 
 # Activate all coutries
 UPDATE `oxcountry` SET `OXACTIVE` = 1 WHERE `OXISOALPHA2` in ('DE', 'AT', 'CH', 'GB', 'US');
-
-#set country for default user
-UPDATE oxuser SET oxid = 'oxdefaultadmin' where OXUSERNAME='admin';
-UPDATE oxuser SET oxcountryid = 'a7c40f631fc920687.20179984' where oxid='oxdefaultadmin';
-
-UPDATE `oxnewssubscribed` SET OXUSERID = 'oxdefaultadmin' WHERE OXID='0b742e66fd94c88b8.61001136';
 
 #
 # Data for table `oxactions2article`
@@ -3297,9 +3297,8 @@ INSERT INTO `oxobject2group` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXGROUPSID`) VA
 ('c193fddd49b5ed246.01214326', 1, 'oxidpayadvance', 'oxidpricea'),
 ('c193fddd49b5f65d4.60703125', 1, 'oxidpayadvance', 'oxidpricec'),
 ('dfc42e744180bf4a9.98598495', 1, 'dfc42e74417f07347.45624764', 'oxidnewcustomer'),
-('34f5e54f695bf109454aa152d9440a1f', 1, 'oxdefaultadmin', 'oxidforeigncustomer');
-
-UPDATE `oxobject2group` SET OXOBJECTID = 'oxdefaultadmin' WHERE OXID = 'e913fdd8443ed43e1.51222316';
+('34f5e54f695bf109454aa152d9440a1f', 1, 'oxdefaultadmin', 'oxidforeigncustomer'),
+('e913fdd8443ed43e1.51222316', 1, 'oxdefaultadmin', 'oxidadmin');
 
 #
 # Data for table `oxlinks`

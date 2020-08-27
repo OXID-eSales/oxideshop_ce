@@ -8,6 +8,10 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Bridge\AdminUserServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\Facts\Facts;
 use PDO;
@@ -340,15 +344,16 @@ class Database extends Core
      */
     public function writeAdminLoginData($sLoginName, $sPassword)
     {
-        $sPassSalt = $this->getInstance("Utilities")->generateUID();
+        $adminUserServiceBridge = ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(AdminUserServiceBridgeInterface::class);
 
-        $sPassword = hash('sha512', $sPassword . $sPassSalt);
-
-        $sQ = "update oxuser set oxusername='{$sLoginName}', oxpassword='{$sPassword}', oxpasssalt='{$sPassSalt}' where OXUSERNAME='admin'";
-        $this->execSql($sQ);
-
-        $sQ = "update oxnewssubscribed set oxemail='{$sLoginName}' where OXEMAIL='admin'";
-        $this->execSql($sQ);
+        $adminUserServiceBridge->createAdmin(
+            $sLoginName,
+            $sPassword,
+            Admin::MALL_ADMIN,
+            Registry::getConfig()->getBaseShopId()
+        );
     }
 
     /**

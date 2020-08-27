@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Admin\Bridge\AdminUserServiceBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Admin\Bridge\AdminUserServiceBridge
+    public: true

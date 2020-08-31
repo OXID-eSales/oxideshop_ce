@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Load only necessary config options [PR-787](https://github.com/OXID-eSales/oxideshop_ce/pull/787)
 - Move hash service from `\OxidEsales\EshopCommunity\Internal\Authentication\` to `\OxidEsales\EshopCommunity\Internal\Utility\Hash`
 - Email validation service moved to Utility `OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidationService`
+- Shop-setup command does not add admin user
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

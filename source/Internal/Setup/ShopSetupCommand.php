@@ -9,9 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Command\NamedArgumentsTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
@@ -22,7 +19,6 @@ use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -40,8 +36,6 @@ class ShopSetupCommand extends Command
     private const SHOP_URL = 'shop-url';
     private const SHOP_DIRECTORY = 'shop-directory';
     private const COMPILE_DIRECTORY = 'compile-directory';
-    private const ADMIN_EMAIL = 'admin-email';
-    private const ADMIN_PASSWORD = 'admin-password';
     private const LANGUAGE = 'language';
     private const DEFAULT_LANG = 'en';
 
@@ -54,11 +48,6 @@ class ShopSetupCommand extends Command
      * @var DatabaseInstallerInterface
      */
     private $databaseInstaller;
-
-    /**
-     * @var EmailValidatorServiceInterface
-     */
-    private $emailValidatorService;
 
     /**
      * @var ConfigFileDaoInterface
@@ -81,11 +70,6 @@ class ShopSetupCommand extends Command
     private $htaccessUpdateService;
 
     /**
-     * @var AdminUserServiceInterface
-     */
-    private $adminService;
-
-    /**
      * @var ShopStateServiceInterface
      */
     private $shopStateService;
@@ -98,12 +82,10 @@ class ShopSetupCommand extends Command
     public function __construct(
         DatabaseCheckerInterface $databaseChecker,
         DatabaseInstallerInterface $databaseInstaller,
-        EmailValidatorServiceInterface $emailValidatorService,
         ConfigFileDaoInterface $configFileDao,
         DirectoryValidatorInterface $directoriesValidator,
         LanguageInstallerInterface $languageInstaller,
         HtaccessUpdaterInterface $htaccessUpdateService,
-        AdminUserServiceInterface $adminService,
         ShopStateServiceInterface $shopStateService,
         BasicContextInterface $basicContext
     ) {
@@ -111,12 +93,10 @@ class ShopSetupCommand extends Command
 
         $this->databaseChecker = $databaseChecker;
         $this->databaseInstaller = $databaseInstaller;
-        $this->emailValidatorService = $emailValidatorService;
         $this->configFileDao = $configFileDao;
         $this->directoriesValidator = $directoriesValidator;
         $this->languageInstaller = $languageInstaller;
         $this->htaccessUpdateService = $htaccessUpdateService;
-        $this->adminService = $adminService;
         $this->shopStateService = $shopStateService;
         $this->basicContext = $basicContext;
     }
@@ -132,8 +112,6 @@ class ShopSetupCommand extends Command
             ->addOption(self::SHOP_URL, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::SHOP_DIRECTORY, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::COMPILE_DIRECTORY, null, InputOption::VALUE_REQUIRED)
-            ->addOption(self::ADMIN_EMAIL, null, InputOption::VALUE_REQUIRED)
-            ->addOption(self::ADMIN_PASSWORD, null, InputOption::VALUE_REQUIRED)
             ->addOption(self::LANGUAGE, null, InputOption::VALUE_OPTIONAL, '', self::DEFAULT_LANG);
         $this->setDescription('Performs initial shop setup');
     }
@@ -162,9 +140,6 @@ class ShopSetupCommand extends Command
         $output->writeln('<info>Installing language...</info>');
         $this->languageInstaller->install($this->getLanguage($input));
 
-        $output->writeln('<info>Creating administrator account...</info>');
-        $this->createAdmin($input);
-
         $output->writeln('<info>Setup has been finished.</info>');
 
         return 0;
@@ -177,7 +152,6 @@ class ShopSetupCommand extends Command
     {
         $this->checkShopIsNotLaunched();
         $this->configFileDao->checkIsEditable();
-        $this->validateAdminEmail($input->getOption(self::ADMIN_EMAIL));
         $this->checkCanCreateDatabase($input);
         $this->checkDirectories($input);
     }
@@ -187,17 +161,6 @@ class ShopSetupCommand extends Command
     {
         if ($this->shopStateService->isLaunched()) {
             throw new ShopIsLaunchedException('Setup interrupted - shop is already launched.');
-        }
-    }
-
-    /**
-     * @param string $email
-     * @throws InvalidEmailException
-     */
-    private function validateAdminEmail(string $email): void
-    {
-        if (!$this->emailValidatorService->isEmailValid($email)) {
-            throw new InvalidEmailException($email);
         }
     }
 
@@ -256,16 +219,5 @@ class ShopSetupCommand extends Command
     private function getLanguage(InputInterface $input): DefaultLanguage
     {
         return new DefaultLanguage($input->getOption(self::LANGUAGE));
-    }
-
-    /** @param InputInterface $input */
-    private function createAdmin(InputInterface $input): void
-    {
-        $this->adminService->createAdmin(
-            $input->getOption(self::ADMIN_EMAIL),
-            $input->getOption(self::ADMIN_PASSWORD),
-            Admin::MALL_ADMIN,
-            $this->basicContext->getDefaultShopId()
-        );
     }
 }

@@ -9,9 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\ConfigFileDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ConfigFile\FileNotEditableException;
@@ -25,7 +22,6 @@ use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface
 use OxidEsales\EshopCommunity\Internal\Setup\ShopIsLaunchedException;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -44,8 +40,6 @@ final class ShopSetupCommandTest extends TestCase
     private const URL = 'some-url';
     private const DIR = 'some-dir';
     private const TMP_DIR = 'some-tmp-dir';
-    private const ADMIN_EMAIL = 'someone@test.com';
-    private const ADMIN_PASS = 'some-admin-pass';
     private const LANG = 'de';
     private const DEFAULT_LANG = 'en';
     private const DEFAULT_SHOP_ID = 12345;
@@ -64,14 +58,10 @@ final class ShopSetupCommandTest extends TestCase
     private $languageInstaller;
     /** @var HtaccessUpdaterInterface|ObjectProphecy */
     private $htaccessUpdateService;
-    /** @var AdminUserServiceInterface|ObjectProphecy */
-    private $adminUserService;
     /** @var ShopStateServiceInterface|ObjectProphecy */
     private $shopStateService;
     /** @var BasicContextInterface|ObjectProphecy */
     private $basicContext;
-    /** @var EmailValidatorServiceInterface|ObjectProphecy */
-     private $emailValidatorService;
 
     protected function setUp(): void
     {
@@ -103,8 +93,6 @@ final class ShopSetupCommandTest extends TestCase
             '--shop-url' => self::URL,
             '--shop-directory' => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => self::ADMIN_PASS,
             '--language' => self::LANG,
         ]);
     }
@@ -127,33 +115,6 @@ final class ShopSetupCommandTest extends TestCase
             '--shop-url' => self::URL,
             '--shop-directory' => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => self::ADMIN_PASS,
-            '--language' => self::LANG,
-        ]);
-    }
-
-    public function testExecuteWitInvalidAdminEmail(): void
-    {
-        $this->shopStateService->isLaunched()
-            ->willReturn(false);
-        $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
-        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
-            ->willReturn(false);
-
-        $this->expectException(InvalidEmailException::class);
-
-        $this->commandTester->execute([
-            '--db-host' => self::HOST,
-            '--db-port' => self::PORT,
-            '--db-name' => self::DB,
-            '--db-user' => self::DB_USER,
-            '--db-password' => self::DB_PASS,
-            '--shop-url' => self::URL,
-            '--shop-directory' => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => self::ADMIN_PASS,
             '--language' => self::LANG,
         ]);
     }
@@ -162,8 +123,7 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->shopStateService->isLaunched()
             ->willReturn(false);
-        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
-            ->willReturn(true);
+
         $this->databaseChecker->canCreateDatabase(
             self::HOST,
             self::PORT,
@@ -184,16 +144,12 @@ final class ShopSetupCommandTest extends TestCase
             '--shop-url' => self::URL,
             '--shop-directory' => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => self::ADMIN_PASS,
             '--language' => self::LANG,
         ]);
     }
 
     public function testExecuteWithCompleteArgs(): void
     {
-        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
-            ->willReturn(true);
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
         $this->shopStateService->isLaunched()
             ->willReturn(false);
@@ -207,8 +163,6 @@ final class ShopSetupCommandTest extends TestCase
             '--shop-url' => self::URL,
             '--shop-directory' => self::DIR,
             '--compile-directory' => self::TMP_DIR,
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => self::ADMIN_PASS,
             '--language' => self::LANG,
         ]);
 
@@ -219,8 +173,7 @@ final class ShopSetupCommandTest extends TestCase
     public function testExecuteWithMissingOptionalArgs(): void
     {
         $this->basicContext->getDefaultShopId()->willReturn(self::DEFAULT_SHOP_ID);
-        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
-            ->willReturn(true);
+
         $this->shopStateService->isLaunched()
             ->willReturn(false);
 
@@ -233,9 +186,7 @@ final class ShopSetupCommandTest extends TestCase
             '--db-password' => self::DB_PASS,
             '--shop-url' => self::URL,
             '--shop-directory' => self::DIR,
-            '--compile-directory' => self::TMP_DIR,
-            '--admin-email' => self::ADMIN_EMAIL,
-            '--admin-password' => self::ADMIN_PASS,
+            '--compile-directory' => self::TMP_DIR
         ]);
 
         $this->assertServiceCallsWithOptionalArgs();
@@ -248,12 +199,10 @@ final class ShopSetupCommandTest extends TestCase
         return new ShopSetupCommand(
             $this->databaseChecker->reveal(),
             $this->databaseInstall->reveal(),
-            $this->emailValidatorService->reveal(),
             $this->configFileDao->reveal(),
             $this->directoryValidator->reveal(),
             $this->languageInstaller->reveal(),
             $this->htaccessUpdateService->reveal(),
-            $this->adminUserService->reveal(),
             $this->shopStateService->reveal(),
             $this->basicContext->reveal()
         );
@@ -263,12 +212,10 @@ final class ShopSetupCommandTest extends TestCase
     {
         $this->databaseChecker = $this->prophesize(DatabaseCheckerInterface::class);
         $this->databaseInstall = $this->prophesize(DatabaseInstallerInterface::class);
-        $this->emailValidatorService = $this->prophesize(EmailValidatorServiceInterface::class);
         $this->configFileDao = $this->prophesize(ConfigFileDaoInterface::class);
         $this->directoryValidator = $this->prophesize(DirectoryValidatorInterface::class);
         $this->languageInstaller = $this->prophesize(LanguageInstallerInterface::class);
         $this->htaccessUpdateService = $this->prophesize(HtaccessUpdaterInterface::class);
-        $this->adminUserService = $this->prophesize(AdminUserServiceInterface::class);
         $this->shopStateService = $this->prophesize(ShopStateServiceInterface::class);
         $this->basicContext = $this->prophesize(BasicContextInterface::class);
     }
@@ -283,8 +230,6 @@ final class ShopSetupCommandTest extends TestCase
             self::DB
         )
             ->shouldHaveBeenCalledOnce();
-        $this->emailValidatorService->isEmailValid(self::ADMIN_EMAIL)
-            ->shouldHaveBeenCalledOnce();
         $this->configFileDao->replacePlaceholder('sShopURL', self::URL)
             ->shouldHaveBeenCalledOnce();
         $this->configFileDao->replacePlaceholder('sShopDir', self::DIR)
@@ -296,13 +241,6 @@ final class ShopSetupCommandTest extends TestCase
         $this->languageInstaller->install(new DefaultLanguage(self::LANG))
             ->shouldHaveBeenCalledOnce();
         $this->htaccessUpdateService->updateRewriteBaseDirective(self::URL)
-            ->shouldHaveBeenCalledOnce();
-        $this->adminUserService->createAdmin(
-            self::ADMIN_EMAIL,
-            self::ADMIN_PASS,
-            Admin::MALL_ADMIN,
-            self::DEFAULT_SHOP_ID
-        )
             ->shouldHaveBeenCalledOnce();
     }
 

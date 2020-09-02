@@ -9,23 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
-
 class TemplateNameResolver implements TemplateNameResolverInterface
 {
     /**
-     * @var TemplateEngineInterface
+     * @var string
      */
-    private $templateEngine;
+    private $templateExtension;
 
-    /**
-     * TemplateNameResolver constructor.
-     *
-     * @param TemplateEngineInterface       $templateEngine
-     */
-    public function __construct(TemplateEngineInterface $templateEngine)
+    public function __construct(string $templateExtension)
     {
-        $this->templateEngine = $templateEngine;
+        $this->templateExtension = $templateExtension;
     }
 
     /**
@@ -36,7 +29,7 @@ class TemplateNameResolver implements TemplateNameResolverInterface
     public function resolve(string $name): string
     {
         if ($name !== '') {
-            $name = $name . '.' . $this->templateEngine->getDefaultFileExtension();
+            $name = $name . '.' . $this->templateExtension;
         }
         return $name;
     }

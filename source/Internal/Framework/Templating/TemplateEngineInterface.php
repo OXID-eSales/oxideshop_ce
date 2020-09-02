@@ -25,6 +25,7 @@ interface TemplateEngineInterface
     public function getGlobals(): array;
 
     /**
+     * @deprecated Use oxid_esales.templating.engine_template_extension parameter from DI container.
      * Returns the template file extension.
      *
      * @return string

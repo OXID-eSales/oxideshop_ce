@@ -111,6 +111,7 @@ class SmartyEngine implements TemplateEngineInterface
     }
 
     /**
+     * @deprecated Use oxid_esales.templating.engine_template_extension parameter from DI container.
      * Returns the template file extension.
      *
      * @return string

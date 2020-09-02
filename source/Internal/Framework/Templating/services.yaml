@@ -28,6 +28,9 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver'
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver
+    arguments:
+      - '%oxid_esales.templating.engine_template_extension%'
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
@@ -74,7 +77,10 @@ services:
       - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
       - '@oxid_esales.symfony.file_system'
     public: true
+<<<<<<< HEAD
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateFileResolverBridge
     public: true
+=======
+>>>>>>> OXDEV-3696 Move template extension to the container configuration

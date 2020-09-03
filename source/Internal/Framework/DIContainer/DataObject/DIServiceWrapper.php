@@ -14,69 +14,85 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingUp
 
 class DIServiceWrapper
 {
+    private const CLASS_SECTION = 'class';
     private const CALLS_SECTION = 'calls';
     private const SET_ACTIVE_SHOPS_METHOD = 'setActiveShops';
     private const SET_CONTEXT_METHOD = 'setContext';
     public const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface';
 
-    /** @var  string $key */
-    private $key;
+    /** @var  string $id */
+    private $id;
 
-    /** @var  array $serviceArray */
-    private $serviceArray;
+    /** @var  array $serviceArguments */
+    private $serviceArguments;
 
     /** @var  string $class */
     private $class;
 
+    /** @var  array $calls */
+    private $calls = [];
+
     /**
      * DIServiceWrapper constructor.
      *
-     * @param string $key
-     * @param array  $serviceArray
+     * @param string $id
+     * @param array  $serviceArguments
      */
-    public function __construct(string $key, array $serviceArray)
+    public function __construct(string $id, array $serviceArguments)
     {
-        $this->key = $key;
-        $this->serviceArray = $serviceArray;
+        $this->id = $id;
+        $this->serviceArguments = $serviceArguments;
 
-        if (isset($serviceArray['class'])) {
-            $this->class = $serviceArray['class'];
-        } elseif (class_exists($this->key)) {
-            $this->class = $this->key;
+        $this->setClass();
+        $this->setCalls();
+    }
+
+    private function setClass(): void
+    {
+        if (isset($this->serviceArguments[self::CLASS_SECTION])) {
+            $this->class = $this->serviceArguments[self::CLASS_SECTION];
+        } elseif ($this->checkIfIdIsResolvableClassName()) {
+            $this->class = $this->id;
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getServiceAsArray(): array
+    private function checkIfIdIsResolvableClassName(): bool
     {
-        return $this->serviceArray;
+        return class_exists($this->id);
     }
 
-    /**
-     * @return bool
-     */
+    private function setCalls(): void
+    {
+        if (array_key_exists(self::CALLS_SECTION, $this->serviceArguments)) {
+            $this->calls = $this->serviceArguments[self::CALLS_SECTION];
+        }
+    }
+
+    public function getServiceAsArray(): array
+    {
+        $this->updateCalls();
+        return $this->serviceArguments;
+    }
+
+    private function updateCalls(): void
+    {
+        if (!empty($this->calls)) {
+            $this->serviceArguments[self::CALLS_SECTION] = $this->calls;
+        }
+    }
+
     public function isShopAware(): bool
     {
         if (!$this->hasClass()) {
             return false;
         }
-
-        $class = $this->getClass();
-        $interfaces = class_implements($class);
-
-        return \in_array(ShopAwareInterface::class, $interfaces, true);
+        return in_array(ShopAwareInterface::class, class_implements($this->getClass()), true);
     }
 
-    /**
-     * @param array $shops
-     * @return array
-     */
-    public function addActiveShops(array $shops)
+    public function addActiveShops(array $shops): array
     {
         $this->addShopAwareCallsIfMissing();
-        $setActiveShopsCall = $this->getCall($this::SET_ACTIVE_SHOPS_METHOD);
+        $setActiveShopsCall = $this->getCall(self::SET_ACTIVE_SHOPS_METHOD);
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
         $newActiveShops = array_merge($currentlyActiveShops, $shops);
         $setActiveShopsCall->setParameter(0, $newActiveShops);
@@ -84,13 +100,9 @@ class DIServiceWrapper
         return $newActiveShops;
     }
 
-    /**
-     * @param array $shops
-     * @return array
-     */
-    public function removeActiveShops(array $shops)
+    public function removeActiveShops(array $shops): array
     {
-        $setActiveShopsCall = $this->getCall($this::SET_ACTIVE_SHOPS_METHOD);
+        $setActiveShopsCall = $this->getCall(self::SET_ACTIVE_SHOPS_METHOD);
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
         $newActiveShops = [];
         foreach ($currentlyActiveShops as $shopId) {
@@ -104,32 +116,24 @@ class DIServiceWrapper
         return $newActiveShops;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasActiveShops()
+    public function hasActiveShops(): bool
     {
         $this->addShopAwareCallsIfMissing();
-        $setActiveShopsCall = $this->getCall($this::SET_ACTIVE_SHOPS_METHOD);
+        $setActiveShopsCall = $this->getCall(self::SET_ACTIVE_SHOPS_METHOD);
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
         return count($currentlyActiveShops) > 0;
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
+    public function getKey(): string
     {
-        return $this->key;
+        return $this->id;
     }
 
     /**
      * Check if the class for the service definition exists.
      * If no class is defined, it also returns true.
-     *
-     * @return bool
      */
-    public function checkClassExists()
+    public function checkClassExists(): bool
     {
         if (! $this->hasClass()) {
             return true;
@@ -137,44 +141,33 @@ class DIServiceWrapper
         return class_exists($this->getClass());
     }
 
-    private function addShopAwareCallsIfMissing()
+    private function addShopAwareCallsIfMissing(): void
     {
-        if (!$this->hasCall($this::SET_ACTIVE_SHOPS_METHOD)) {
+        if (!$this->hasCall(self::SET_ACTIVE_SHOPS_METHOD)) {
             $setActiveShopCall = new DICallWrapper();
-            $setActiveShopCall->setMethodName($this::SET_ACTIVE_SHOPS_METHOD);
+            $setActiveShopCall->setMethodName(self::SET_ACTIVE_SHOPS_METHOD);
             $setActiveShopCall->setParameter(0, []);
             $this->addCall($setActiveShopCall);
         }
-        if (!$this->hasCall($this::SET_CONTEXT_METHOD)) {
+        if (!$this->hasCall(self::SET_CONTEXT_METHOD)) {
             $setContextCall = new DICallWrapper();
-            $setContextCall->setMethodName($this::SET_CONTEXT_METHOD);
-            $setContextCall->setParameter(0, $this::SET_CONTEXT_PARAMETER);
+            $setContextCall->setMethodName(self::SET_CONTEXT_METHOD);
+            $setContextCall->setParameter(0, self::SET_CONTEXT_PARAMETER);
             $this->addCall($setContextCall);
         }
     }
 
-    /**
-     * @return array
-     */
     private function getCalls(): array
     {
-        if (!\array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
-            return [];
-        }
         $calls = [];
-        foreach ($this->serviceArray[$this::CALLS_SECTION] as $callArray) {
+        foreach ($this->calls as $callArray) {
             $calls[] = new DICallWrapper($callArray);
         }
 
         return $calls;
     }
 
-    /**
-     * @param string $methodName
-     *
-     * @return bool
-     */
-    private function hasCall(string $methodName)
+    private function hasCall(string $methodName): bool
     {
         foreach ($this->getCalls() as $call) {
             if ($call->getMethodName() === $methodName) {
@@ -188,28 +181,22 @@ class DIServiceWrapper
     /**
      * @param DICallWrapper $call
      */
-    private function addCall(DICallWrapper $call)
+    private function addCall(DICallWrapper $call): void
     {
-        if (!\array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
-            $this->serviceArray[$this::CALLS_SECTION] = [];
-        }
-        $this->serviceArray[$this::CALLS_SECTION][] = $call->getCallAsArray();
+        $this->calls[] = $call->getCallAsArray();
     }
 
     /**
-     * @param DICallWrapper $call
-     *
      * @throws MissingUpdateCallException
-     * @return void
      */
-    private function updateCall(DICallWrapper $call)
+    private function updateCall(DICallWrapper $call): void
     {
-        $callsCount = count($this->serviceArray[$this::CALLS_SECTION]);
+        $callsCount = count($this->calls);
 
         for ($i = 0; $i < $callsCount; $i++) {
-            $existingCall = new DICallWrapper($this->serviceArray[$this::CALLS_SECTION][$i]);
+            $existingCall = new DICallWrapper($this->calls[$i]);
             if ($existingCall->getMethodName() === $call->getMethodName()) {
-                $this->serviceArray[$this::CALLS_SECTION][$i] = $call->getCallAsArray();
+                $this->calls[$i] = $call->getCallAsArray();
                 return;
             }
         }
@@ -218,35 +205,24 @@ class DIServiceWrapper
 
 
     /**
-     * @param string $methodName
-     *
-     * @return DICallWrapper
      * @throws MissingUpdateCallException
      */
     private function getCall(string $methodName): DICallWrapper
     {
-        if (\array_key_exists($this::CALLS_SECTION, $this->serviceArray)) {
-            foreach ($this->serviceArray[$this::CALLS_SECTION] as $callArray) {
-                $call = new DICallWrapper($callArray);
-                if ($call->getMethodName() === $methodName) {
-                    return $call;
-                }
+        foreach ($this->calls as $callArray) {
+            $call = new DICallWrapper($callArray);
+            if ($call->getMethodName() === $methodName) {
+                return $call;
             }
         }
         throw new MissingUpdateCallException();
     }
 
-    /**
-     * @return string
-     */
     private function getClass(): string
     {
         return $this->class;
     }
 
-    /**
-     * @return bool
-     */
     private function hasClass(): bool
     {
         return isset($this->class);

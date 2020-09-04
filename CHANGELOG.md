@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Psalm static analysis tool [PR-766](https://github.com/OXID-eSales/oxideshop_ce/pull/766)
 - New module configuration option `moduleSource`
 - Console Shop installer
+- Example dist files for translations in Application/translations folder [PR-826](https://github.com/OXID-eSales/oxideshop_ce/pull/826)
 
 ### Changed
 - Source/Application/views/admin/tpl/shop_license.tpl

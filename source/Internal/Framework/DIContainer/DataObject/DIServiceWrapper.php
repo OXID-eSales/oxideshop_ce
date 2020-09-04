@@ -157,19 +157,19 @@ class DIServiceWrapper
         }
     }
 
-    private function getCalls(): array
+    private function getWrappedCalls(): array
     {
-        $calls = [];
+        $wrappedCalls = [];
         foreach ($this->calls as $callArray) {
-            $calls[] = new DICallWrapper($callArray);
+            $wrappedCalls[] = new DICallWrapper($callArray);
         }
 
-        return $calls;
+        return $wrappedCalls;
     }
 
     private function hasCall(string $methodName): bool
     {
-        foreach ($this->getCalls() as $call) {
+        foreach ($this->getWrappedCalls() as $call) {
             if ($call->getMethodName() === $methodName) {
                 return true;
             }

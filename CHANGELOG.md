@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [7.0.0-rc.2] - Unreleased
 
+### Added
+- Twig templates multi inheritance for modules
+
 ### Changed
 
 - Cache storage format in `Internal\Framework\Module\Cache\FilesystemModuleCache` to `JSON`

@@ -21,9 +21,7 @@ class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testResolveSmartyTemplate($templateName, $response): void
     {
         $resolver = new LegacyTemplateNameResolver(
-            new TemplateNameResolver(
-                $this->getTemplateEngineMock('tpl')
-            )
+            new TemplateNameResolver('tpl')
         );
 
         $this->assertSame($response, $resolver->resolve($templateName));
@@ -61,9 +59,7 @@ class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
     public function testResolveTwigTemplate($response, $templateName): void
     {
         $resolver = new LegacyTemplateNameResolver(
-            new TemplateNameResolver(
-                $this->getTemplateEngineMock('html.twig')
-            )
+            new TemplateNameResolver('html.twig')
         );
 
         $this->assertSame($response, $resolver->resolve($templateName));

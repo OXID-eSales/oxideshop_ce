@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Resolver;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\LegacyTemplateNameResolver;
 
@@ -85,24 +84,5 @@ class LegacyTemplateNameResolverTest extends \PHPUnit\Framework\TestCase
                 ''
             ]
         ];
-    }
-
-    /**
-     * @param string $extension
-     *
-     * @return TemplateEngineInterface
-     */
-    private function getTemplateEngineMock($extension): TemplateEngineInterface
-    {
-        $engine = $this
-            ->getMockBuilder('OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $engine->expects($this->any())
-            ->method('getDefaultFileExtension')
-            ->will($this->returnValue($extension));
-
-        return $engine;
     }
 }

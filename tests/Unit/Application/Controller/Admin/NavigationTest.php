@@ -7,11 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use Exception;
+use OxidEsales\Eshop\Application\Controller\Admin\NavigationController;
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
-use \stdClass;
-use \Exception;
-use \oxRegistry;
-use \oxTestModules;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 /**
  * Tests for Navigation class
@@ -81,7 +83,7 @@ class NavigationTest extends \OxidTestCase
         $oNavigation->expects($this->any())->method('getListNodes')->will($this->returnValue("testNodes"));
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getNavigation", "_doStartUpChecks"));
+        $oView = $this->getMock(NavigationController::class, array("getNavigation", "_doStartUpChecks"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
         $oView->expects($this->once())->method('_doStartUpChecks')->will($this->returnValue("check"));
         $this->assertEquals('home.tpl', $oView->render());
@@ -121,7 +123,7 @@ class NavigationTest extends \OxidTestCase
         $oNavigation->expects($this->any())->method('getListNodes')->will($this->returnValue("testNodes"));
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getNavigation", "_doStartUpChecks"));
+        $oView = $this->getMock(NavigationController::class, array("getNavigation", "_doStartUpChecks"));
         $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavigation));
         $oView->expects($this->never())->method('_doStartUpChecks')->will($this->returnValue("check"));
         $this->assertEquals('home.tpl', $oView->render());
@@ -157,10 +159,10 @@ class NavigationTest extends \OxidTestCase
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array("destroy", "getId"));
         $session->expects($this->once())->method('destroy');
         $session->expects($this->never())->method('getId');
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
+        Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig", "resetContentCache"), array(), '', false);
+        $oView = $this->getMock(NavigationController::class, array("getConfig", "resetContentCache"), array(), '', false);
         $oView->expects($this->once())->method('resetContentCache');
         $oView->logout();
 
@@ -203,7 +205,7 @@ class NavigationTest extends \OxidTestCase
         $this->getConfig()->setConfigParam("blCheckForUpdates", true);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("_checkVersion"));
+        $oView = $this->getMock(NavigationController::class, array("_checkVersion"));
         $oView->expects($this->once())->method('_checkVersion')->will($this->returnValue("versionnotice"));
         $aState = $oView->UNITdoStartUpChecks();
         $this->assertTrue(is_array($aState));
@@ -211,22 +213,19 @@ class NavigationTest extends \OxidTestCase
         $this->assertTrue(isset($aState['warning']));
     }
 
-    /**
-     * Navigation::CheckVersion() test case
-     *
-     * @return null
-     */
-    public function testCheckVersion()
+    public function testCheckVersion(): void
     {
-        oxTestModules::addFunction('oxUtilsFile', 'readRemoteFileAsString', '{ return 4; }');
-        oxTestModules::addFunction('oxLang', 'translateString', '{ return "Version %s is available."; }');
+        $currentVersion = '123';
+        $latestVersion = '987';
+        oxTestModules::addFunction('oxUtilsFile', 'readRemoteFileAsString', "{ return $latestVersion; }");
+        oxTestModules::addFunction('oxLang', 'translateString', '{ return "current ver.: %s new ver.: %s"; }');
+        $configMock = $this->createConfiguredMock(Config::class, ['getVersion' => $currentVersion]);
+        $controllerMock = $this->getMock(NavigationController::class, ['getConfig']);
+        Registry::set(Config::class, $configMock);
 
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getVersion"));
-        $oConfig->expects($this->once())->method('getVersion')->will($this->returnValue(3));
+        $actual =  $controllerMock->UNITcheckVersion();
 
-        // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationController::class, array("getConfig"), array(), '', false);
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $this->assertEquals("Version 4 is available.", $oView->UNITcheckVersion());
+        $this->assertStringContainsString($currentVersion, $actual);
+        $this->assertStringContainsString($latestVersion, $actual);
     }
 }

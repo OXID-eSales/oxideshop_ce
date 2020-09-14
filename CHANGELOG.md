@@ -194,7 +194,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
-## [6.5.7] - unreleased
+## [6.6.0] - unreleased
 
 ### Added
 - Add remove module configuration command
@@ -207,6 +207,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\Eshop\Core\Smarty\Plugin\Emos`
         - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosAdapter`
         - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
+- Language Constants:
+    - `NAVIGATION_NEWVERSIONAVAILABLE`
 
 ## [6.5.6] - 2020-07-16
 
@@ -1118,7 +1120,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/b-6.2.x...master
-[6.5.7]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.5.7
+[6.5.7]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.6.0
 [6.5.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.5...v6.5.6
 [6.5.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.4...v6.5.5
 [6.5.4]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.3...v6.5.4

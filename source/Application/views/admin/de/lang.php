@@ -763,7 +763,10 @@ $aLang = [
     'NAVIGATION_LOGOUT'                              => 'Abmelden',
     'NAVIGATION_HOME'                                => 'Home',
     'NAVIGATION_PAGE'                                => 'Seite',
+    // @deprecated
     'NAVIGATION_NEWVERSIONAVAILABLE'                 => 'Version %s ist verfügbar!',
+    // END deprecated
+    'NAVIGATION_NEW_VERSION_AVAILABLE'               => 'Sie verwenden Version %s, Version %s ist jetzt verfügbar. Bitte aktualisieren Sie jetzt.',
     // @deprecated 6.5.6 "News" feature will be removed completely
     'NEWS_LIST_TITLE'                                => '[OXID Newsverwaltung]',
     'NEWS_LIST_SHORTTEXT'                            => 'Titel',

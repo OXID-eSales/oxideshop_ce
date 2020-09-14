@@ -28,13 +28,13 @@ final class ModuleSettingsCest
         $this->selectModule($I, 'Codeception test module #1');
         $this->module->openModuleTab('Settings');
 
-        $I->click($I->see('Empty settings group'));
+        $I->click($I->see('Empty Settings Group'));
         $this->checkEmptyInitialSettingsLoaded($I);
 
         $I->click($I->see('Filled Settings Group'));
         $this->checkFilledInitialSettingsLoaded($I);
 
-        $I->click($I->see('Empty settings group'));
+        $I->click($I->see('Empty Settings Group'));
         $this->modifyEmptyInitialSettings($I);
         $I->click('save');
         $this->checkModifiedSettingsNotEmpty($I);

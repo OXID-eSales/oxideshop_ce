@@ -17,17 +17,17 @@ use PHPUnit\Framework\TestCase;
 
 class ModulePathResolverTest extends TestCase
 {
-    public function testGetFullModulePathFromConfiguration()
+    public function testGetFullModulePathFromConfiguration(): void
     {
         $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
         $context
-            ->method('getModulesPath')
-            ->willReturn('modules');
+            ->method('getShopRootPath')
+            ->willReturn('shopRoot');
 
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModuleId')
-            ->setPath('modulePath');
+            ->setModuleSource('vendor/modulePath');
 
         $moduleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
         $moduleConfigurationDao
@@ -38,7 +38,7 @@ class ModulePathResolverTest extends TestCase
         $pathResolver = new ModulePathResolver($moduleConfigurationDao, $context);
 
         $this->assertSame(
-            'modules/modulePath',
+            'shopRoot/vendor/modulePath',
             $pathResolver->getFullModulePathFromConfiguration('testModuleId', 1)
         );
     }

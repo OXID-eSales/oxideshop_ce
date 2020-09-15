@@ -115,7 +115,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
 - PHP version checker
     - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
-    - Language Variable:
+    - Language Constants:
         - `SYSREQ_PHP_VERSION`
         - `MOD_PHP_VERSION`
 - Credit Card:
@@ -133,7 +133,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
         - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
         - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
-    - Language Variable:
+    - Language Constants:
         - `CREDITCARD`
         - `PAYMENT_CREDITCARD`
         - `SHOP_CONFIG_STORECREDITCARDINFO`
@@ -150,8 +150,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `CARD_MASTERCARD`
         - `CARD_SECURITY_CODE`
         - `CARD_VISA`
-- Language Variable:
+- Language Constants:
     - `SYSREQ_MYSQL_VERSION`
+    - `NAVIGATION_NEWVERSIONAVAILABLE`
 - Betanote:
     - Class: `OxidEsales\EshopCommunity\Application\Component\Widget\BetaNote`
     - Method: `OxidEsales\EshopCommunity\Core\Controller\BaseController::showBetaNote()`
@@ -331,7 +332,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Model\Article::getDeliveryDate()` [PR-768](https://github.com/OXID-eSales/oxideshop_ce/pull/768)
-- Language Variable:
+- Language Constants:
     - `SYSREQ_MYSQL_VERSION`
 ### Fixed
 - Issue with session ID regeneration on user registration
@@ -353,7 +354,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
 - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
 - `OxidEsales\EshopCommunity\Core\MailValidator`
-- Language Variable:
+- Language Constants:
     - `SYSREQ_PHP_VERSION`
     - `MOD_PHP_VERSION`
 - Credit Card:
@@ -371,7 +372,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
         - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
         - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
-    - Language Variable:
+    - Language Constants:
         - `CREDITCARD`
         - `PAYMENT_CREDITCARD`
         - `SHOP_CONFIG_STORECREDITCARDINFO`

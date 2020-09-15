@@ -764,9 +764,6 @@ $aLang = [
     'NAVIGATION_LOGOUT'                              => 'Abmelden',
     'NAVIGATION_HOME'                                => 'Home',
     'NAVIGATION_PAGE'                                => 'Seite',
-    // @deprecated
-    'NAVIGATION_NEWVERSIONAVAILABLE'                 => 'Version %s ist verfügbar!',
-    // END deprecated
     'NAVIGATION_NEW_VERSION_AVAILABLE'               => 'Sie verwenden Version %s, Version %s ist jetzt verfügbar. Bitte aktualisieren Sie jetzt.',
     'NAVIGATION_FAVORITES'                           => 'Favoriten',
     'NAVIGATION_FAVORITES_EDIT'                      => '[ändern]',

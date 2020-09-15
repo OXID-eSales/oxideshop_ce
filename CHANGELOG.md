@@ -141,7 +141,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Deprecated
 - `OxidEsales\EshopCommunity\Application\Model\Article::getDeliveryDate()` [PR-768](https://github.com/OXID-eSales/oxideshop_ce/pull/768)
-- Language Variable:
+- Language Constants:
     - `SYSREQ_MYSQL_VERSION`
 ### Fixed
 - Issue with session ID regeneration on user registration
@@ -163,7 +163,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkMysqlVersion()`
 - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
 - `OxidEsales\EshopCommunity\Core\MailValidator`
-- Language Variable:
+- Language Constants:
     - `SYSREQ_PHP_VERSION`
     - `MOD_PHP_VERSION`
 - Credit Card:
@@ -181,7 +181,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\Eshop\Application\Controller\PaymentController::$_blDynDataFiltered`
         - `OxidEsales\Eshop\Application\Model\UserPayment::$_blStoreCreditCardInfo`
         - `OxidEsales\Eshop\Application\Controller\PaymentController::$_aCreditYears`
-    - Language Variable:
+    - Language Constants:
         - `CREDITCARD`
         - `PAYMENT_CREDITCARD`
         - `SHOP_CONFIG_STORECREDITCARDINFO`

@@ -37,6 +37,8 @@ final class ModuleSettingsCest
         $I->click($I->see('Empty Settings Group'));
         $this->modifyEmptyInitialSettings($I);
         $I->click('save');
+
+        $I->click($I->see('Empty Settings Group'));
         $this->checkModifiedSettingsNotEmpty($I);
 
         $I->uninstallModule($this->testModule1Path, $this->testModule1Id);

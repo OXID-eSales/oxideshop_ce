@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Add remove module configuration command
 - Support symfony's optional class for named services
 
+### Changed
+- Streamlined lang files for work with translation platforms [PR-833](https://github.com/OXID-eSales/oxideshop_ce/pull/833)
+
 ### Deprecated
 - Use of two stars (**) for filter strings in modules composer blacklist-filter.
 - Econda smarty plugin:

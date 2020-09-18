@@ -43,6 +43,7 @@ final class ModuleSettingsCest
 
         $this->modifyEmptyInitialSettings($I);
         $I->click('save');
+
         $I->click($I->see('Empty Settings Group'));
         $this->checkModifiedSettingsNotEmpty($I);
     }

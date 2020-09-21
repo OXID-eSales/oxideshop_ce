@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceAdmin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\CodeceptionAdmin;
 
 use OxidEsales\Codeception\Admin\DataObject\AdminUserAddresses;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;

@@ -3,6 +3,9 @@ services:
     autowire: true
     public: false
 
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ActiveModulesDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ActiveModulesDataProvider
+
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridge
     public: true

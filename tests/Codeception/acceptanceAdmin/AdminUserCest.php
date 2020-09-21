@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptanceAdmin;
 
 use OxidEsales\Codeception\Admin\DataObject\AdminUser;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserAddresses;
+use OxidEsales\Codeception\Admin\DataObject\AdminUserExtendedInfo;
 use OxidEsales\Codeception\Admin\Users;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
@@ -21,7 +22,10 @@ final class AdminUserCest
      */
     public function testUserMainInfo(AcceptanceAdminTester $I): void
     {
+        $I->wantToTest('User main info');
+
         $adminPanel = $I->loginAdmin();
+
         // Main tab
         $adminUsersPage = $adminPanel->openUsers();
 
@@ -38,41 +42,43 @@ final class AdminUserCest
 
         // History Tab
         $adminUsersPage->openHistoryTab();
-        $I->dontSeeOptionIsSelected($adminUsersPage->historyTabRemarkSelect,"");
+        $I->dontSeeOptionIsSelected($adminUsersPage->historyTabRemarkSelect, "");
 
         $adminUsersPage->createNewRemark("new note_šÄßüл");
 
-        $I->selectOption($adminUsersPage->historyTabRemarkSelect,"0");
-        $I->assertEquals("new note_šÄßüл", $adminUsersPage->getHistoryRemarkTextValue());
+        $I->selectOption($adminUsersPage->historyTabRemarkSelect, "0");
+        $I->assertEquals("new note_šÄßüл", $I->grabValueFrom($adminUsersPage->remarkField));
 
         $adminUsersPage->deleteRemark();
 
-        $I->dontSeeOptionIsSelected($adminUsersPage->historyTabRemarkSelect,"");
+        $I->dontSeeOptionIsSelected($adminUsersPage->historyTabRemarkSelect, "");
 
-        $I->selectOption($adminUsersPage->historyTabRemarkSelect,"0");
+        $I->selectOption($adminUsersPage->historyTabRemarkSelect, "0");
 
-        $I->assertNotEquals("new note_šÄßüл", $adminUsersPage->getHistoryRemarkTextValue());
+        $I->assertNotEquals("new note_šÄßüл", $I->grabValueFrom($adminUsersPage->remarkField));
 
         $adminUsersPage->openProductsTab();
         $adminUsersPage->openPaymentTab();
 
         //checking if created user can be found
+        $adminUsersPage->find($adminUsersPage->usernameSearchField, "example00");
         $I->selectListFrame();
-        $I->fillField("where[oxuser][oxusername]", "example00");
-        $I->click("submitit");
-        $I->assertEquals("example00@oxid-esa...", $I->grabTextFrom("//tr[@id='row.1']/td[3]"));
-        $I->dontSeeElement("//tr[@id='row.2']/td[3]");
+        $I->assertEquals("example00@oxid-esa...", $I->grabTextFrom($adminUsersPage->searchResultFirtRowUsernameColumn));
+        $I->dontSeeElement($adminUsersPage->searchResultSecondRowUsernameColumn);
     }
 
     public function testUserAddresses(AcceptanceAdminTester $I): void
     {
+        $I->wantToTest('User addresses');
+
         $this->createAdminTestUser($I);
 
         $adminPanel = $I->loginAdmin();
 
         $adminUsersPage = $adminPanel->openUsers();
-        $I->selectListFrame();
-        $adminUsersPage->find("where[oxuser][oxusername]", "example00@oxid-esales.dev");
+
+        $adminUsersPage->find($adminUsersPage->usernameSearchField, "example00@oxid-esales.dev");
+
         $adminUsersPage->openAddressesTab();
 
         $I->seeOptionIsSelected($adminUsersPage->addressesTabAddressSelect, "-");
@@ -92,9 +98,12 @@ final class AdminUserCest
         $adminUserAddress->setFax("8887877");
         $adminUsersPage->createNewAddress($adminUserAddress);
 
-        $I->seeOptionIsSelected($adminUsersPage->addressesTabAddressSelect, "shipping name_šÄßüл shipping surname_šÄßüл, shipping street_šÄßüл, shipping city_šÄßüл");
+        $I->seeOptionIsSelected(
+            $adminUsersPage->addressesTabAddressSelect,
+            "shipping name_šÄßüл shipping surname_šÄßüл, shipping street_šÄßüл, shipping city_šÄßüл"
+        );
         $I->seeOptionIsSelected($adminUsersPage->addressTitleField, "Mr");
-        $I->assertEquals("shipping name_šÄßüл",$I->grabValueFrom( $adminUsersPage->addressFirstNameField));
+        $I->assertEquals("shipping name_šÄßüл", $I->grabValueFrom($adminUsersPage->addressFirstNameField));
         $I->assertEquals("shipping surname_šÄßüл", $I->grabValueFrom($adminUsersPage->addressLastNameField));
         $I->assertEquals("shipping company_šÄßüл", $I->grabValueFrom($adminUsersPage->addressCompanyField));
         $I->assertEquals("shipping street_šÄßüл", $I->grabValueFrom($adminUsersPage->addressStreetField));
@@ -124,7 +133,7 @@ final class AdminUserCest
         $I->selectOption($adminUsersPage->addressesTabAddressSelect, "-");
 
         $I->selectOption($adminUsersPage->addressesTabAddressSelect, "name2 last name 2, street2, city2");
-        $I->seeOptionIsSelected($adminUsersPage->addressTitleField,"Mrs");
+        $I->seeOptionIsSelected($adminUsersPage->addressTitleField, "Mrs");
         $I->assertEquals("name2", $I->grabValueFrom($adminUsersPage->addressFirstNameField));
         $I->assertEquals("last name 2", $I->grabValueFrom($adminUsersPage->addressLastNameField));
         $I->assertEquals("company 2", $I->grabValueFrom($adminUsersPage->addressCompanyField));
@@ -133,12 +142,15 @@ final class AdminUserCest
         $I->assertEquals("2001", $I->grabValueFrom($adminUsersPage->addressZipCodeField));
         $I->assertEquals("city2", $I->grabValueFrom($adminUsersPage->addressCityField));
         $I->assertEquals("additional info2", $I->grabValueFrom($adminUsersPage->addressAdditonalInformationField));
-        $I->seeOptionIsSelected($adminUsersPage->addressCountryIdField,"United States");
+        $I->seeOptionIsSelected($adminUsersPage->addressCountryIdField, "United States");
         $I->assertEquals("999666", $I->grabValueFrom($adminUsersPage->addressPhoneField));
         $I->assertEquals("666999", $I->grabValueFrom($adminUsersPage->addressFaxField));
 
-        $I->selectOption($adminUsersPage->addressesTabAddressSelect, "shipping name_šÄßüл shipping surname_šÄßüл, shipping street_šÄßüл, shipping city_šÄßüл");
-        $I->seeOptionIsSelected($adminUsersPage->addressTitleField,"Mr");
+        $I->selectOption(
+            $adminUsersPage->addressesTabAddressSelect,
+            "shipping name_šÄßüл shipping surname_šÄßüл, shipping street_šÄßüл, shipping city_šÄßüл"
+        );
+        $I->seeOptionIsSelected($adminUsersPage->addressTitleField, "Mr");
         $I->assertEquals("shipping name_šÄßüл", $I->grabValueFrom($adminUsersPage->addressFirstNameField));
         $I->assertEquals("shipping surname_šÄßüл", $I->grabValueFrom($adminUsersPage->addressLastNameField));
         $I->assertEquals("shipping company_šÄßüл", $I->grabValueFrom($adminUsersPage->addressCompanyField));
@@ -146,8 +158,11 @@ final class AdminUserCest
         $I->assertEquals("1", $I->grabValueFrom($adminUsersPage->addressStreetNumberField));
         $I->assertEquals("1000", $I->grabValueFrom($adminUsersPage->addressZipCodeField));
         $I->assertEquals("shipping city_šÄßüл", $I->grabValueFrom($adminUsersPage->addressCityField));
-        $I->assertEquals("shipping additional info_šÄßüл", $I->grabValueFrom($adminUsersPage->addressAdditonalInformationField));
-        $I->seeOptionIsSelected($adminUsersPage->addressCountryIdField,"Germany");
+        $I->assertEquals(
+            "shipping additional info_šÄßüл",
+            $I->grabValueFrom($adminUsersPage->addressAdditonalInformationField)
+        );
+        $I->seeOptionIsSelected($adminUsersPage->addressCountryIdField, "Germany");
         $I->assertEquals("7778788", $I->grabValueFrom($adminUsersPage->addressPhoneField));
         $I->assertEquals("8887877", $I->grabValueFrom($adminUsersPage->addressFaxField));
 
@@ -174,44 +189,58 @@ final class AdminUserCest
         $I->assertEquals("", $I->grabValueFrom($adminUsersPage->addressFaxField));
     }
 
-    private function createAdminTestUser(AcceptanceAdminTester $I): void
+    public function testCreateUserExtendedInfo(AcceptanceAdminTester $I): void
     {
-        $I->haveInDatabase(
-            'oxuser',
-            [
-                'OXID'        => "kdiruuc",
-                'OXACTIVE'    => 0,
-                'OXRIGHTS'    => 'malladmin',
-                'OXSHOPID'    => 1,
-                'OXUSERNAME'  => 'example00@oxid-esales.dev',
-                'OXPASSWORD'  => '1397d0b4392f452a5bd058891c9b255e',
-                'OXPASSSALT'  => '3032396331663033316535343361356231363666653666316533376235353830',
-                'OXCUSTNR'    => 121,
-                'OXUSTID'     => '111222',
-                'OXCOMPANY'   => 'company1',
-                'OXFNAME'     => 'Name1',
-                'OXLNAME'     => 'Surname1',
-                'OXSTREET'    => 'street1',
-                'OXSTREETNR'  => '11',
-                'OXADDINFO'   => 'additional info1',
-                'OXCITY'      => 'City11',
-                'OXCOUNTRYID' => 'a7c40f632e04633c9.47194042',
-                'OXSTATEID'   => 'BE',
-                'OXZIP'       => '30001',
-                'OXFON'       => '1112223331',
-                'OXFAX'       => '2223334441',
-                'OXSAL'       => 'MR',
-                'OXBONI'      => 1000,
-                'OXCREATE'    => '2010-02-05 10:22:37',
-                'OXREGISTER'  => '2010-02-05 10:22:48',
-                'OXPRIVFON'   => '5554445551',
-                'OXMOBFON'    => '6665556661',
-                'OXBIRTHDATE' => '1979-01-03',
-                'OXURL'       => 'http://www.url1.com',
-                'OXUPDATEKEY' => '',
-                'OXUPDATEEXP' => 0,
-            ]
+        $I->wantToTest('Create user extended info');
+
+        $this->createAdminTestUser($I);
+
+        $adminPanel = $I->loginAdmin();
+        $adminUsersPage = $adminPanel->openUsers();
+
+        $adminUsersPage->find($adminUsersPage->usernameSearchField, "example00@oxid-esales.dev");
+        $adminUsersPage->openExtendedTab();
+
+        $I->assertEquals(
+            "Mr Name1 Surname1 company1 street1 11 BE 30001 City11 additional info1 Belgium 1112223331",
+            $I->clearString($I->grabTextFrom($adminUsersPage->extendedInfoTabUserAddress))
         );
+
+        $I->dontSeeCheckboxIsChecked($adminUsersPage->extendedInfoRecievesNewsletterField);
+        $I->dontSeeCheckboxIsChecked($adminUsersPage->extendedInfoEmailInvalidField);
+        $I->assertEquals("1000", $I->grabValueFrom($adminUsersPage->extendedInfoCreditRatingField));
+
+        $adminUserExtendedInfo = new AdminUserExtendedInfo();
+        $adminUserExtendedInfo->setEveningPhone('555444555');
+        $adminUserExtendedInfo->setCelluarPhone('666555666');
+        $adminUserExtendedInfo->setRecievesNewsletter(true);
+        $adminUserExtendedInfo->setEmailInvalid(true);
+        $adminUserExtendedInfo->setCreditRating('1500');
+        $adminUserExtendedInfo->setUrl('http://www.url.com');
+        $adminUsersPage->editExtentedInfo($adminUserExtendedInfo);
+
+        $I->assertEquals("555444555", $I->grabValueFrom($adminUsersPage->extendedInfoEveningPhoneField));
+        $I->assertEquals("666555666", $I->grabValueFrom($adminUsersPage->extendedInfoCelluarPhoneField));
+        $I->seeCheckboxIsChecked($adminUsersPage->extendedInfoRecievesNewsletterField);
+        $I->seeCheckboxIsChecked($adminUsersPage->extendedInfoEmailInvalidField);
+        $I->assertEquals("1500", $I->grabValueFrom($adminUsersPage->extendedInfoCreditRatingField));
+        $I->assertEquals("http://www.url.com", $I->grabValueFrom($adminUsersPage->extendedInfoUrlField));
+
+        $adminUserExtendedInfo = new AdminUserExtendedInfo();
+        $adminUserExtendedInfo->setEveningPhone('5554445551');
+        $adminUserExtendedInfo->setCelluarPhone('6665556661');
+        $adminUserExtendedInfo->setRecievesNewsletter(false);
+        $adminUserExtendedInfo->setEmailInvalid(false);
+        $adminUserExtendedInfo->setCreditRating('1000');
+        $adminUserExtendedInfo->setUrl('http://www.url1.com');
+        $adminUsersPage->editExtentedInfo($adminUserExtendedInfo);
+
+        $I->assertEquals("5554445551", $I->grabValueFrom($adminUsersPage->extendedInfoEveningPhoneField));
+        $I->assertEquals("6665556661", $I->grabValueFrom($adminUsersPage->extendedInfoCelluarPhoneField));
+        $I->dontSeeCheckboxIsChecked($adminUsersPage->extendedInfoRecievesNewsletterField);
+        $I->dontSeeCheckboxIsChecked($adminUsersPage->extendedInfoEmailInvalidField);
+        $I->assertEquals("1000", $I->grabValueFrom($adminUsersPage->extendedInfoCreditRatingField));
+        $I->assertEquals("http://www.url1.com", $I->grabValueFrom($adminUsersPage->extendedInfoUrlField));
     }
 
     private function createNewAdminUser(AcceptanceAdminTester $I, Users $adminUsersPage): void
@@ -240,10 +269,10 @@ final class AdminUserCest
         $adminUsersPage->createNewUser($adminUser);
 
         $I->seeCheckboxIsChecked($adminUsersPage->userActiveField);
-        $I->seeOptionIsSelected($adminUsersPage->userRightsField,"Customer");
+        $I->seeOptionIsSelected($adminUsersPage->userRightsField, "Customer");
         $I->assertEquals("example01@oxid-esales.dev", $I->grabValueFrom($adminUsersPage->usernameField));
         $I->assertEquals("20", $I->grabValueFrom($adminUsersPage->userCustomerNumberField));
-        $I->seeOptionIsSelected($adminUsersPage->userTitleField,"Mrs");
+        $I->seeOptionIsSelected($adminUsersPage->userTitleField, "Mrs");
         $I->assertEquals("Name_šÄßüл", $I->grabValueFrom($adminUsersPage->userFirstNameField));
         $I->assertEquals("Surname_šÄßüл", $I->grabValueFrom($adminUsersPage->userLastNameField));
         $I->assertEquals("company_šÄßüл", $I->grabValueFrom($adminUsersPage->userCompanyField));
@@ -253,7 +282,7 @@ final class AdminUserCest
         $I->assertEquals("City_šÄßüл", $I->grabValueFrom($adminUsersPage->userCityField));
         $I->assertEquals("111222", $I->grabValueFrom($adminUsersPage->userUstidField));
         $I->assertEquals("additional info_šÄßüл", $I->grabValueFrom($adminUsersPage->userAdditonalInformationField));
-        $I->seeOptionIsSelected($adminUsersPage->userCountryIdField,"Germany");
+        $I->seeOptionIsSelected($adminUsersPage->userCountryIdField, "Germany");
         $I->assertEquals("BW", $I->grabValueFrom($adminUsersPage->userStateIdField));
         $I->assertEquals("111222333", $I->grabValueFrom($adminUsersPage->userPhoneField));
         $I->assertEquals("222333444", $I->grabValueFrom($adminUsersPage->userFaxField));
@@ -314,4 +343,43 @@ final class AdminUserCest
         $I->assertEquals("", $I->grabValueFrom($adminUsersPage->userPasswordField));
     }
 
+    private function createAdminTestUser(AcceptanceAdminTester $I): void
+    {
+        $I->haveInDatabase(
+            'oxuser',
+            [
+                'OXID'        => "kdiruuc",
+                'OXACTIVE'    => 0,
+                'OXRIGHTS'    => 'malladmin',
+                'OXSHOPID'    => 1,
+                'OXUSERNAME'  => 'example00@oxid-esales.dev',
+                'OXPASSWORD'  => '1397d0b4392f452a5bd058891c9b255e',
+                'OXPASSSALT'  => '3032396331663033316535343361356231363666653666316533376235353830',
+                'OXCUSTNR'    => 121,
+                'OXUSTID'     => '111222',
+                'OXCOMPANY'   => 'company1',
+                'OXFNAME'     => 'Name1',
+                'OXLNAME'     => 'Surname1',
+                'OXSTREET'    => 'street1',
+                'OXSTREETNR'  => '11',
+                'OXADDINFO'   => 'additional info1',
+                'OXCITY'      => 'City11',
+                'OXCOUNTRYID' => 'a7c40f632e04633c9.47194042',
+                'OXSTATEID'   => 'BE',
+                'OXZIP'       => '30001',
+                'OXFON'       => '1112223331',
+                'OXFAX'       => '2223334441',
+                'OXSAL'       => 'MR',
+                'OXBONI'      => 1000,
+                'OXCREATE'    => '2010-02-05 10:22:37',
+                'OXREGISTER'  => '2010-02-05 10:22:48',
+                'OXPRIVFON'   => '5554445551',
+                'OXMOBFON'    => '6665556661',
+                'OXBIRTHDATE' => '1979-01-03',
+                'OXURL'       => 'http://www.url1.com',
+                'OXUPDATEKEY' => '',
+                'OXUPDATEEXP' => 0,
+            ]
+        );
+    }
 }

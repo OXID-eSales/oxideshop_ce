@@ -183,12 +183,6 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
-        // check if updateApp dir is deleted or empty
-        $sUpdateDir = Registry::getConfig()->getConfigParam('sShopDir') . '/updateApp/';
-        if (file_exists($sUpdateDir) && !(count(glob("$sUpdateDir/*")) === 0)) {
-            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('UPDATEAPP_DIRNOTDELETED_WARNING');
-        }
-
         // check if config file is writable
         $sConfPath = Registry::getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {

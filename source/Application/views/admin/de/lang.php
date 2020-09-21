@@ -744,7 +744,6 @@ $aLang = [
     'LANGUAGE_EMPTYLANGUAGENAME_ERROR'               => 'Bitte geben Sie den Namen der Sprache ein!',
     'LANGUAGE_ABBREVIATION_INVALID_ERROR'            => 'Sprachkürzel nicht zulässig! Erlaubte Zeichen sind a-z, A-Z, 0-9 und der Unterstrich.',
     'SETUP_DIRNOTDELETED_WARNING'                    => 'Bitte löschen Sie das Setup-Verzeichnis',
-    'UPDATEAPP_DIRNOTDELETED_WARNING'                => 'Bitte löschen Sie das updateApp-Verzeichnis',
     'SETUP_CONFIGPERMISSIONS_WARNING'                => 'WICHTIG: Aus Sicherheitsgründen setzen Sie Ihre config.inc.php Datei auf read-only-Modus!',
     'LOGIN_TITLE'                                    => 'OXID eShop Login',
     'LOGIN_ERROR'                                    => 'Fehler! Falscher Benutzername und/oder Passwort.',

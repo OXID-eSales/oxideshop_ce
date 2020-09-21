@@ -21,13 +21,14 @@ final class ActiveModulesDataProviderTest extends TestCase
     use ContainerTrait;
 
     private $activeModuleId = 'activeModuleId';
+    private $inactiveModuleId = 'inActiveModuleId';
 
     public function testGetIds(): void
     {
         $this->prepareTestShopConfiguration();
 
         $this->assertSame(
-            ['activeModuleId'],
+            [$this->activeModuleId],
             $this->get(ActiveModulesDataProviderInterface::class)->getModuleIds()
         );
     }
@@ -37,12 +38,14 @@ final class ActiveModulesDataProviderTest extends TestCase
         $activeModule = new ModuleConfiguration();
         $activeModule
             ->setId($this->activeModuleId)
-            ->setPath('some');
+            ->setPath('some-path')
+            ->setModuleSource('some-source');
 
         $inactiveModule = new ModuleConfiguration();
         $inactiveModule
-            ->setId('inactiveModuleId')
-            ->setPath('some');
+            ->setId($this->inactiveModuleId)
+            ->setPath('some-path')
+            ->setModuleSource('some-source');
 
         /** @var ShopConfigurationDaoInterface $dao */
         $dao = $this->get(ShopConfigurationDaoInterface::class);

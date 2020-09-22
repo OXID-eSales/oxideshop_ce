@@ -274,6 +274,39 @@ final class DatabaseTest extends \OxidTestCase
     }
 
     /**
+     * Testing SetupDb::writeAdminLoginData()
+     */
+    public function testWriteAdminLoginData()
+    {
+        $loginName = 'testLoginName';
+        $password = 'testPassword';
+        $uniqueId = 'testSalt';
+        $baseShopId = 1;
+
+        $setup = $this->getMock("Setup", array("getShopId"));
+        $setup->expects($this->once())->method("getShopId")->will($this->returnValue($baseShopId));
+
+        $utils = $this->getMock("Utilities", array("generateUID"));
+        $utils->expects($this->once())->method("generateUID")->will($this->returnValue($uniqueId));
+
+        $at = 0;
+        /** @var Mock $database */
+        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance", "execSql"));
+
+        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($setup));
+
+        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($utils));
+
+        $passSalt = hash('sha512', $password . $uniqueId);
+        $query = "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
+                             values('$uniqueId', '$loginName', '$passSalt', '$uniqueId', 'malladmin', '$baseShopId')";
+        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo($query));
+
+        $database->writeAdminLoginData($loginName, $password);
+    }
+
+
+    /**
      * Resets logged queries.
      */
     protected function setUp(): void

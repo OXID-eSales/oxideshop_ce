@@ -1,5 +1,4 @@
 imports:
-    - { resource: Bridge/services.yaml }
     - { resource: Dao/services.yaml }
     - { resource: Factory/services.yaml }
     - { resource: Service/services.yaml }

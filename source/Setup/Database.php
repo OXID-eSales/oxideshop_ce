@@ -8,10 +8,6 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\Bridge\AdminUserServiceBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\Facts\Facts;
 use PDO;
@@ -339,20 +335,18 @@ class Database extends Core
     /**
      * Updates default admin user login name and password
      *
-     * @param string $sLoginName admin user login name
-     * @param string $sPassword admin user login password
+     * @param string $loginName admin user login name
+     * @param string $password admin user login password
      */
-    public function writeAdminLoginData($sLoginName, $sPassword)
+    public function writeAdminLoginData($loginName, $password)
     {
-        $adminUserServiceBridge = ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(AdminUserServiceBridgeInterface::class);
+        $baseShopId = $this->getInstance("Setup")->getShopId();
+        $uniqueId = $this->getInstance("Utilities")->generateUID();
+        $password = hash('sha512', $password . $uniqueId);
 
-        $adminUserServiceBridge->createAdmin(
-            $sLoginName,
-            $sPassword,
-            Admin::MALL_ADMIN,
-            Registry::getConfig()->getBaseShopId()
+        $this->execSql(
+            "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
+                             values('$uniqueId', '$loginName', '$password', '$uniqueId', 'malladmin', '$baseShopId')"
         );
     }
 

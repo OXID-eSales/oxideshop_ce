@@ -213,6 +213,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem`
 - Language Constants:
     - `NAVIGATION_NEWVERSIONAVAILABLE`
+    - `UPDATEAPP_DIRNOTDELETED_WARNING`
 
 ## [6.5.6] - 2020-07-16
 

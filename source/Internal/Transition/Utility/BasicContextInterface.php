@@ -120,4 +120,11 @@ interface BasicContextInterface
      * @return Facts
      */
     public function getFacts(): Facts;
+
+    /**
+     * @param int $shopId
+     *
+     * @return string
+     */
+    public function getModulePathCacheFilePath(int $shopId): string;
 }

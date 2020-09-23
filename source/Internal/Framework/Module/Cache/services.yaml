@@ -4,7 +4,9 @@ services:
     public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ShopModuleCacheService
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheService
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
   oxid_esales.module.cache.invalidate_module_cache_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\InvalidateModuleCacheEventSubscriber
     tags:

@@ -36,7 +36,7 @@ class ShopAdapter implements ShopAdapterInterface
     public function invalidateModuleCache(string $moduleId)
     {
         /**
-         * @TODO we have to implement it in ShopModuleCacheService or use ModuleCache::resetCache() method.
+         * @TODO we have to implement it in ModuleCacheService or use ModuleCache::resetCache() method.
          */
         $module = oxNew(Module::class);
 

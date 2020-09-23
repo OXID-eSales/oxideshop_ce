@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
@@ -24,17 +25,21 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
     private $context;
     /** @var ModulePathResolverInterface */
     private $modulePathResolver;
+    /** @var ModuleCacheServiceInterface */
+    private $moduleCacheService;
 
     public function __construct(
         ShopConfigurationDaoInterface $shopConfigurationDao,
         ModuleStateServiceInterface $moduleStateService,
         ModulePathResolverInterface $modulePathResolver,
-        ContextInterface $context
+        ContextInterface $context,
+        ModuleCacheServiceInterface $moduleCacheService
     ) {
         $this->shopConfigurationDao = $shopConfigurationDao;
         $this->moduleStateService = $moduleStateService;
         $this->modulePathResolver = $modulePathResolver;
         $this->context = $context;
+        $this->moduleCacheService = $moduleCacheService;
     }
 
     /** @inheritDoc */
@@ -53,12 +58,23 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
     public function getModulePaths(): array
     {
         $modulePaths = [];
+
         foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
-            $modulePaths[] = $this->modulePathResolver->getFullModulePathFromConfiguration(
-                $moduleConfiguration->getId(),
-                $this->context->getCurrentShopId()
-            );
+            $shopId = $this->context->getCurrentShopId();
+            $moduleId = $moduleConfiguration->getId();
+
+            if (!$this->moduleCacheService->exists($moduleId, $shopId)) {
+                $modulePaths[] = $this->modulePathResolver->getFullModulePathFromConfiguration(
+                    $moduleId,
+                    $shopId
+                );
+
+                $this->moduleCacheService->put($moduleId, $shopId, $modulePaths);
+            } else {
+                $modulePaths[] = $this->moduleCacheService->get($moduleId, $shopId);
+            }
         }
+
         return $modulePaths;
     }
 

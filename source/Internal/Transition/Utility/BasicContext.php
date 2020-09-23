@@ -208,4 +208,19 @@ class BasicContext implements BasicContextInterface
         }
         return $this->facts;
     }
+
+    /**
+     * @param int $shopId
+     *
+     * @return string
+     */
+    public function getModulePathCacheFilePath(int $shopId): string
+    {
+        return Path::join(
+            $this->getCacheDirectory(),
+            'modules',
+            (string)$shopId,
+            'module_path_cache.txt'
+        );
+    }
 }

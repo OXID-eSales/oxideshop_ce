@@ -7,12 +7,13 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Templating\Locator;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Locator;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator;
+use PHPUnit\Framework\TestCase;
 
-class TemplateFileLocatorTest extends \PHPUnit\Framework\TestCase
+final class TemplateFileLocatorTest extends TestCase
 {
     public function testLocate(): void
     {

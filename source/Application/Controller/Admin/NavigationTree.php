@@ -7,20 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use DOMXPath;
 use DOMDocument;
 use DOMElement;
-use stdClass;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use DOMXPath;
+use OxidEsales\Eshop\Core\Base;
 use OxidEsales\Eshop\Core\Str;
+use stdClass;
 
-/**
- * Navigation tree control class
- */
-class NavigationTree extends \OxidEsales\Eshop\Core\Base
+class NavigationTree extends Base
 {
     /**
      * stores DOM object for all navigation tree

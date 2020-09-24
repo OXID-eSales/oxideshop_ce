@@ -7,15 +7,16 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\Templating\Locator;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Locator;
 
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class EditionUserFileLocatorTest extends \PHPUnit\Framework\TestCase
+final class EditionUserFileLocatorTest extends TestCase
 {
     /** @var vfsStream */
     private $vfsStreamDirectory;

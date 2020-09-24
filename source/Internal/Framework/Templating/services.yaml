@@ -4,7 +4,6 @@ services:
     public: false
 
   OxidEsales\Eshop\Core\Config:
-    class: OxidEsales\Eshop\Core\Config
     factory: ['OxidEsales\Eshop\Core\Registry', 'getConfig']
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRenderer
@@ -15,13 +14,10 @@ services:
     arguments:
       - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver'
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolver
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
   oxid_esales.templating.template.loader:
@@ -42,13 +38,11 @@ services:
       - !tagged oxid.menu.file.locator
     public: true
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator
     tags:
       - { name: 'oxid.menu.file.locator', priority: 10 }
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator
     tags:
       - { name: 'oxid.menu.file.locator', priority: 20 }
     arguments:

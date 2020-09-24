@@ -10,36 +10,34 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
 {
-    /**
-     * @var ShopConfigurationDaoInterface
-     */
+    /** @var ShopConfigurationDaoInterface */
     private $shopConfigurationDao;
-
-    /**
-     * @var ModuleStateServiceInterface
-     */
+    /** @var ModuleStateServiceInterface */
     private $moduleStateService;
-
-    /**
-     * @var ContextInterface
-     */
+    /** @var ContextInterface */
     private $context;
+    /** @var ModulePathResolverInterface */
+    private $modulePathResolver;
 
     public function __construct(
         ShopConfigurationDaoInterface $shopConfigurationDao,
         ModuleStateServiceInterface $moduleStateService,
+        ModulePathResolverInterface $modulePathResolver,
         ContextInterface $context
     ) {
         $this->shopConfigurationDao = $shopConfigurationDao;
         $this->moduleStateService = $moduleStateService;
+        $this->modulePathResolver = $modulePathResolver;
         $this->context = $context;
     }
 
+    /** @inheritDoc */
     public function getModuleIds(): array
     {
         $moduleIds = [];
@@ -49,6 +47,19 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         }
 
         return $moduleIds;
+    }
+
+    /** @inheritDoc */
+    public function getModulePaths(): array
+    {
+        $modulePaths = [];
+        foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
+            $modulePaths[] = $this->modulePathResolver->getFullModulePathFromConfiguration(
+                $moduleConfiguration->getId(),
+                $this->context->getCurrentShopId()
+            );
+        }
+        return $modulePaths;
     }
 
     private function getActiveModuleConfigurations(): array

@@ -400,28 +400,9 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $adminNavigationFileLocator = $this->getContainer()->get('oxid_esales.templating.admin.navigation.file.locator');
-        $filesToLoad = $adminNavigationFileLocator->locate();
-
-        // including module menu files
-        $path = getShopBasePath();
-        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-        $activeModuleInfo = $moduleList->getActiveModuleInfo();
-        if (is_array($activeModuleInfo)) {
-            foreach ($activeModuleInfo as $modulePath) {
-                $fullPath = $path . "modules/" . $modulePath;
-                // missing file/folder?
-                if (is_dir($fullPath)) {
-                    // including menu file
-                    $menuFile = $fullPath . "/menu.xml";
-                    if (file_exists($menuFile) && is_readable($menuFile)) {
-                        $filesToLoad[] = $menuFile;
-                    }
-                }
-            }
-        }
-
-        return $filesToLoad;
+        return $this->getContainer()
+            ->get('oxid_esales.templating.admin.navigation.file.locator')
+            ->locate();
     }
 
     /**

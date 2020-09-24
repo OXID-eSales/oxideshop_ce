@@ -15,4 +15,9 @@ interface ActiveModulesDataProviderInterface
      * @return string[]
      */
     public function getModuleIds(): array;
+
+    /**
+     * @return string[]
+     */
+    public function getModulePaths(): array;
 }

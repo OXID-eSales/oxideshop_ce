@@ -53,3 +53,8 @@ services:
       - { name: 'oxid.menu.file.locator', priority: 20 }
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\ModulesMenuFileLocator:
+    tags:
+      - { name: 'oxid.menu.file.locator', priority: -255 }
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'

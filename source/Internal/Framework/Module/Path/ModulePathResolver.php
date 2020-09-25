@@ -48,6 +48,6 @@ class ModulePathResolver implements ModulePathResolverInterface
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
-        return Path::join($this->context->getModulesPath(), $moduleConfiguration->getPath());
+        return Path::join($this->context->getShopRootPath(), $moduleConfiguration->getModuleSource());
     }
 }

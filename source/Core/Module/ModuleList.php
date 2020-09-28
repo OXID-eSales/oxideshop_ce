@@ -26,7 +26,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     const MODULE_KEY_PATHS = 'Paths';
     const MODULE_KEY_EVENTS = 'Events';
     const MODULE_KEY_VERSIONS = 'Versions';
-    const MODULE_KEY_FILES = 'Files';
     const MODULE_KEY_TEMPLATES = 'Templates';
     const MODULE_KEY_EXTENSIONS = 'Extensions';
     const MODULE_KEY_CONTROLLERS = 'Controllers';
@@ -216,16 +215,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         }
 
         return $aModulePaths;
-    }
-
-    /**
-     * Get all modules files paths
-     *
-     * @return array
-     */
-    public function getModuleFiles()
-    {
-        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleFiles');
     }
 
     /**

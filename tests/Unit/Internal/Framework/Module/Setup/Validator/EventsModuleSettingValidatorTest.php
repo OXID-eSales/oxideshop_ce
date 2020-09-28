@@ -43,21 +43,6 @@ class EventsModuleSettingValidatorTest extends TestCase
     }
 
     /**
-     * This is needed only for the modules which has non namespaced classes.
-     * This test MUST be removed when support for non namespaced modules will be dropped (metadata v1.*).
-     */
-    public function testDoNotValidateForNonNamespacedClasses()
-    {
-        $validator = $this->createValidator();
-
-        $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->addEvent(new Event('onActivate', 'class::noCallableMethod'));
-        $moduleConfiguration->addEvent(new Event('onDeactivate', 'class::noCallableMethod'));
-
-        $validator->validate($moduleConfiguration, 1);
-    }
-
-    /**
      * @dataProvider invalidEventsProvider
      *
      * @param Event $invalidEvent

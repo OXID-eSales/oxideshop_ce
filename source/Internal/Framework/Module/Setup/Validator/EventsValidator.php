@@ -63,27 +63,8 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
      */
     private function checkIfMethodIsCallable(string $method)
     {
-        $this->isNamespacedClass($method);
-        if (!\is_callable($method) && $this->isNamespacedClass($method)) {
+        if (!\is_callable($method)) {
             throw new ModuleSettingNotValidException('The method ' . $method . ' is not callable.');
         }
-    }
-
-    /**
-     * @deprecated 6.6 Will be removed completely
-     *
-     * This is needed only for the modules which has non namespaced classes.
-     * This method MUST be removed when support for non namespaced modules will be dropped (metadata v1.*).
-     *
-     * @param string $method
-     * @return bool
-     */
-    private function isNamespacedClass(string $method): bool
-    {
-        $className = explode('::', $method)[0];
-        if ($this->shopAdapter->isNamespace($className)) {
-            return true;
-        }
-        return false;
     }
 }

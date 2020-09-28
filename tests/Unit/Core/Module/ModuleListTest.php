@@ -234,26 +234,6 @@ class ModuleListTest extends \OxidTestCase
         $this->assertSame($isVendor, $moduleList->_isVendorDir($modulesDir . "/$vendorDirectoryName"));
     }
 
-    public function testGetModuleFilesWhenFileWasSet()
-    {
-        $aModuleFiles = array(
-            'myext1' => array("title" => "test title 1")
-        );
-        $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles);
-        $oModuleList = oxNew('oxModuleList');
-
-        $this->assertSame($aModuleFiles, $oModuleList->getModuleFiles());
-    }
-
-    public function testGetModuleFilesWhenFileWasNotSet()
-    {
-        $this->getConfig()->setConfigParam('aModuleFiles', array());
-
-        $oModuleList = oxNew('oxModuleList');
-
-        $this->assertSame(array(), $oModuleList->getModuleFiles());
-    }
-
     /**
      * ModuleList::parseModuleChains() test case, empty
      *

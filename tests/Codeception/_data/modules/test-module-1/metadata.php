@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-$sMetadataVersion = '1.1';
+$sMetadataVersion = '2.1';
 
 $aModule = [
     'id' => 'codeception/test-module-1',

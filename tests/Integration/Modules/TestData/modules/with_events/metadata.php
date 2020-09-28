@@ -8,19 +8,20 @@
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.0';
+$sMetadataVersion = '2.0';
 
 /**
  * Module information
  */
-$aModule = array(
+$aModule = [
     'id'           => 'with_events',
     'title'        => 'Test module with onActivate and onDeactivate events',
     'description'  => 'Module testing with onActivate and onDeactivate events',
     'thumbnail'    => 'picture.png',
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
-    'files' => array(
-        'MyEvents'  => 'with_events/files/myevents.php',
-    ),
-);
+    'events'       => [
+        'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onActivate',
+        'onDeactivate' => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onDeactivate'
+    ]
+];

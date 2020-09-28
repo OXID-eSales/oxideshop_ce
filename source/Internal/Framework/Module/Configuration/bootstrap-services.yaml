@@ -51,8 +51,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapper
     arguments:
-      - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
-      - '@oxid_esales.module.configuration.classses_without_namespace_data_mapper'
       - '@oxid_esales.module.configuration.class_extensions_data_mapper'
       - '@oxid_esales.module.configuration.controllers_data_mapper'
       - '@oxid_esales.module.configuration.events_data_mapper'
@@ -60,9 +58,6 @@ services:
       - '@oxid_esales.module.configuration.smarty_plugin_directories_data_mapper'
       - '@oxid_esales.module.configuration.template_blocks_data_mapper'
       - '@oxid_esales.module.configuration.templates_data_mapper'
-
-  oxid_esales.module.configuration.classses_without_namespace_data_mapper:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper
 
   oxid_esales.module.configuration.class_extensions_data_mapper:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper

@@ -4,7 +4,11 @@
  * See LICENSE file for license details.
  */
 
-class TestModuleTenPaymentController extends TestModuleTenPaymentController_parent
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\ModuleWithNamespace\Application\Controller;
+
+use OxidEsales\Eshop\Application\Controller\FrontendController;
+
+class TestModuleTenPaymentController extends FrontendController
 {
     /**
      * @return mixed The template name.

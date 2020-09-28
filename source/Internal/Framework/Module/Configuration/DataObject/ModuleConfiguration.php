@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
@@ -104,11 +103,6 @@ class ModuleConfiguration
      * @var Event[]
      */
     private $events = [];
-
-    /**
-     * @var ClassWithoutNamespace[]
-     */
-    private $classesWithoutNamespace = [];
 
     /**
      * @var Setting[]
@@ -538,40 +532,6 @@ class ModuleConfiguration
     public function hasEvents(): bool
     {
         return !empty($this->events);
-    }
-
-    /**
-     * @deprecated 6.6 Will be removed completely
-     *
-     * @param ClassWithoutNamespace $class
-     *
-     * @return $this
-     */
-    public function addClassWithoutNamespace(ClassWithoutNamespace $class)
-    {
-        $this->classesWithoutNamespace[] = $class;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated 6.6 Will be removed completely
-     *
-     * @return ClassWithoutNamespace[]
-     */
-    public function getClassesWithoutNamespace(): array
-    {
-        return $this->classesWithoutNamespace;
-    }
-
-    /**
-     * @deprecated 6.6 Will be removed completely
-     *
-     * @return bool
-     */
-    public function hasClassWithoutNamespaces(): bool
-    {
-        return !empty($this->classesWithoutNamespace);
     }
 
     /**

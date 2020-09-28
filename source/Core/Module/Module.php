@@ -229,16 +229,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns array of module PHP files.
-     *
-     * @return array
-     */
-    public function getFiles()
-    {
-        return isset($this->_aModule['files']) ? $this->_aModule['files'] : [];
-    }
-
-    /**
      * Get module ID
      *
      * @param string $module extension full path
@@ -585,8 +575,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $data[MetaDataProvider::METADATA_CONTROLLERS] = $this->convertControllersToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SMARTY_PLUGIN_DIRECTORIES] =
             $this->convertSmartyPluginDirectoriesToArray($moduleConfiguration);
-        $data[MetaDataProvider::METADATA_FILES] =
-            $this->convertClassesWithoutNamespaceToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_BLOCKS] = $this->convertTemplateBlocksToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_EVENTS] = $this->convertEventsToArray($moduleConfiguration);
         $data[MetaDataProvider::METADATA_SETTINGS] = $this->convertSettingsToArray($moduleConfiguration);

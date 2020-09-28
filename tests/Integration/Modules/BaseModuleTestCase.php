@@ -98,10 +98,6 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
             );
         }
 
-        if (isset($expectedResult['files'])) {
-            $this->assertTrue($validator->checkFiles($expectedResult['files']), 'Files do not match expectations');
-        }
-
         if (isset($expectedResult['controllers'])) {
             $this->assertTrue($validator->checkControllers($expectedResult['controllers']), 'Controllers do not match expectations');
         }

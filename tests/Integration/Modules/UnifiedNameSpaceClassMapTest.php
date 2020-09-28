@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module1\Controller\Test1ContentController;
 /**
  * Class UnifiedNameSpaceClassMapTest
  *
@@ -51,7 +52,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
             array(
                 'modulesToActivate'          => array('unifiednamespace_module1'),
                 'expectedInheritanceChain'   => array(
-                    'Test1ContentController',
+                    Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'OxidEsales\Eshop\Application\Controller\FrontendController',
@@ -62,7 +63,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                     'OxidEsales\EshopCommunity\Core\Base',
                 ),
                 'expectedInheritanceChainPE' => array(
-                    'Test1ContentController',
+                    Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'OxidEsales\Eshop\Application\Controller\FrontendController',
@@ -76,7 +77,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                     'OxidEsales\EshopCommunity\Core\Base',
                 ),
                 'expectedInheritanceChainEE' => array(
-                    'Test1ContentController',
+                    Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'OxidEsales\Eshop\Application\Controller\FrontendController',
@@ -99,7 +100,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                 'modulesToActivate'          => array('unifiednamespace_module1', 'unifiednamespace_module2'),
                 'expectedInheritanceChain'   => array(
                     'Test2ContentController',
-                    'Test1ContentController',
+                    Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'OxidEsales\Eshop\Application\Controller\FrontendController',
@@ -111,7 +112,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                 ),
                 'expectedInheritanceChainPE' => array(
                     'Test2ContentController',
-                    'Test1ContentController',
+                    Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'OxidEsales\Eshop\Application\Controller\FrontendController',
@@ -126,7 +127,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                 ),
                 'expectedInheritanceChainEE' => array(
                     'Test2ContentController',
-                    'Test1ContentController',
+                    Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
                     'OxidEsales\Eshop\Application\Controller\FrontendController',
@@ -143,55 +144,6 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                     'OxidEsales\EshopCommunity\Core\Base'
                 ),
                 'expectedTitle'              => 'Impressum - Module_1_Controller - Module_1_Model - Module_2_Controller'
-            ),
-            array(
-                'modulesToActivate'          => array('unifiednamespace_module1', 'unifiednamespace_module2', 'unifiednamespace_module3'),
-                'expectedInheritanceChain'   => array(
-                    'Test2ContentController',
-                    'Test1ContentController',
-                    'OxidEsales\Eshop\Application\Controller\ContentController',
-                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
-                    'OxidEsales\Eshop\Application\Controller\FrontendController',
-                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
-                    'OxidEsales\Eshop\Core\Controller\BaseController',
-                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
-                    'OxidEsales\Eshop\Core\Base',
-                    'OxidEsales\EshopCommunity\Core\Base',
-                ),
-                'expectedInheritanceChainPE' => array(
-                    'Test2ContentController',
-                    'Test1ContentController',
-                    'OxidEsales\Eshop\Application\Controller\ContentController',
-                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
-                    'OxidEsales\Eshop\Application\Controller\FrontendController',
-                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
-                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
-                    'OxidEsales\Eshop\Core\Controller\BaseController',
-                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
-                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
-                    'OxidEsales\Eshop\Core\Base',
-                    'OxidEsales\EshopProfessional\Core\Base',
-                    'OxidEsales\EshopCommunity\Core\Base',
-                ),
-                'expectedInheritanceChainEE' => array(
-                    'Test2ContentController',
-                    'Test1ContentController',
-                    'OxidEsales\Eshop\Application\Controller\ContentController',
-                    'OxidEsales\EshopCommunity\Application\Controller\ContentController',
-                    'OxidEsales\Eshop\Application\Controller\FrontendController',
-                    'OxidEsales\EshopEnterprise\Application\Controller\FrontendController',
-                    'OxidEsales\EshopProfessional\Application\Controller\FrontendController',
-                    'OxidEsales\EshopCommunity\Application\Controller\FrontendController',
-                    'OxidEsales\Eshop\Core\Controller\BaseController',
-                    'OxidEsales\EshopEnterprise\Core\Controller\BaseController',
-                    'OxidEsales\EshopProfessional\Core\Controller\BaseController',
-                    'OxidEsales\EshopCommunity\Core\Controller\BaseController',
-                    'OxidEsales\Eshop\Core\Base',
-                    'OxidEsales\EshopEnterprise\Core\Base',
-                    'OxidEsales\EshopProfessional\Core\Base',
-                    'OxidEsales\EshopCommunity\Core\Base'
-                ),
-                'expectedTitle'              => 'Impressum - Module_1_Controller - Module_3_Model - Module_2_Controller'
             )
         );
     }

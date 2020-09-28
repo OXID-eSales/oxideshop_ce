@@ -12,7 +12,7 @@
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.1';
+$sMetadataVersion = '2.1';
 
 /**
  * Module information
@@ -33,9 +33,7 @@ $aModule = array(
     'email'       => 'john@doe.com',
     'extend'      => array(
         'content' => 'oeTest/unifiednamespace_module2/Controller/Test2ContentController',
-    ),
-    'files'       => array(
-        'Test2Content'          => 'oeTest/unifiednamespace_module2/Model/Test2Content.php',
+        'test2content' => 'oeTest/unifiednamespace_module2/Model/Test2Content.php',
     ),
     'templates'   => array(),
     'blocks'      => array(),

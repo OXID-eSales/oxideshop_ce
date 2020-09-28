@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configuration\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ControllersDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\EventsDataMapper;
@@ -49,9 +48,6 @@ class ModuleConfigurationDataMapperTest extends TestCase
             'email'       => 'test@example.com',
             'keyWithoutDataMapperAssigned' => [
                 'subkey' => 'subvalue'
-            ],
-            ClassesWithoutNamespaceDataMapper::MAPPING_KEY => [
-                'myvendor_mymodule_file1' => 'path/to/file1.php'
             ],
             ClassExtensionsDataMapper::MAPPING_KEY => [
                 'shopClass' => 'moduleClass',
@@ -125,16 +121,6 @@ class ModuleConfigurationDataMapperTest extends TestCase
     public function moduleConfigurationDataProvider()
     {
         return [
-            [
-                'data' => [
-                    ClassesWithoutNamespaceDataMapper::MAPPING_KEY => [
-                        'myvendor_mymodule_file1' => 'path/to/file1.php',
-                        'myvendor_mymodule_file2' => 'path/to/file2.php',
-                    ]
-                ],
-                'dataMapper' => new ClassesWithoutNamespaceDataMapper()
-
-            ],
             [
                 'data' => [
                     ClassExtensionsDataMapper::MAPPING_KEY => [

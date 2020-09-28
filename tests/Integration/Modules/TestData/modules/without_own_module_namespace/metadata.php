@@ -1,6 +1,6 @@
 <?php
 
-$sMetadataVersion = '1.1';
+$sMetadataVersion = '2.0';
 
 /**
  * Module information
@@ -16,9 +16,6 @@ $aModule = array(
        'payment' => 'oeTest/without_own_module_namespace/Application/Controller/TestModuleTwoPaymentController',
        'oxprice' => 'oeTest/without_own_module_namespace/Application/Model/TestModuleTwoPrice'
 
-    ),
-    'files' => array(
-        'TestModuleTwoModel'  => 'without_own_module_namespace/Application/Model/TestModuleTwoModel.php'
     ),
     'settings' => array(
     )

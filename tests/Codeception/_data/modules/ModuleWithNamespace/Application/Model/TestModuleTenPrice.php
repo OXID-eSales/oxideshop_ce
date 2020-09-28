@@ -4,6 +4,8 @@
  * See LICENSE file for license details.
  */
 
+namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\ModuleWithNamespace\Application\Model;
+
 class TestModuleTenPrice extends TestModuleTenPrice_parent
 {
     protected $originalPrice = null;

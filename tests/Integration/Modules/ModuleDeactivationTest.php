@@ -22,7 +22,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
             $this->caseTwoModulesPreparedDeactivatedWithEverything(),
             $this->caseFourModulesPreparedDeactivatedWithExtendedClasses(),
             $this->caseEightModulesPreparedDeactivatedWithoutExtending(),
-            $this->caseTwoModulesPreparedDeactivatedWithFiles(),
+            $this->caseTwoModulesPreparedDeactivatedWithEvents(),
             $this->caseTwoModulesPreparedDeactivatedWithTemplates(),
             $this->caseTwoModulesPreparedDeactivatedWithSettings(),
         );
@@ -94,7 +94,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
 
             // modules to be activated during test preparation
             array(
-                'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
+                'extending_1_class', 'with_2_templates', 'with_2_settings',
                 'extending_3_blocks', 'with_everything', 'with_events'
             ),
 
@@ -110,15 +110,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                 ),
                 'extend'          => array(
                     \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder',
-                ),
-                'files'           => array(
-                    'with_2_files' => array(
-                        'myexception'  => 'with_2_files/core/exception/myexception.php',
-                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
-                    ),
-                    'with_events'  => array(
-                        'myevents' => 'with_events/files/myevents.php',
-                    ),
                 ),
                 'settings'        => array(
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
@@ -137,7 +128,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     'extending_1_class'  => '1.0',
                     'with_2_templates'   => '1.0',
                     'with_2_settings'    => '1.0',
-                    'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
                 ),
@@ -233,7 +223,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
 
             // modules to be activated during test preparation
             array(
-                'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
+                'extending_1_class', 'with_2_templates', 'with_2_settings',
                 'extending_3_blocks', 'with_everything', 'with_events', 'no_extending'
             ),
 
@@ -253,19 +243,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
-                ),
-                'files'           => array(
-                    'with_2_files'    => array(
-                        'myexception'  => 'with_2_files/core/exception/myexception.php',
-                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
-                    ),
-                    'with_everything' => array(
-                        'myexception'  => 'with_everything/core/exception/myexception.php',
-                        'myconnection' => 'with_everything/core/exception/myconnection.php',
-                    ),
-                    'with_events'     => array(
-                        'myevents' => 'with_events/files/myevents.php',
-                    ),
                 ),
                 'settings'        => array(
                     array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
@@ -290,7 +267,6 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                     'extending_1_class'  => '1.0',
                     'with_2_templates'   => '1.0',
                     'with_2_settings'    => '1.0',
-                    'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
@@ -300,21 +276,21 @@ class ModuleDeactivationTest extends BaseModuleTestCase
     }
 
     /**
-     * Data provider case with 2 modules prepared and with_2_files module deactivated
+     * Data provider case with 2 modules prepared and with_events module deactivated
      *
      * @return array
      */
-    private function caseTwoModulesPreparedDeactivatedWithFiles()
+    private function caseTwoModulesPreparedDeactivatedWithEvents()
     {
         return array(
 
             // modules to be activated during test preparation
             array(
-                'with_2_files', 'no_extending'
+                'with_events', 'no_extending'
             ),
 
             // module that will be deactivated
-            'with_2_files',
+            'with_events',
 
             // environment asserts
             array(
@@ -325,6 +301,7 @@ class ModuleDeactivationTest extends BaseModuleTestCase
                 'disabledModules' => array(
                     'with_2_files'
                 ),
+                'events'          => [],
                 'templates'       => array(),
                 'versions'        => array(
                     'no_extending' => '1.0',

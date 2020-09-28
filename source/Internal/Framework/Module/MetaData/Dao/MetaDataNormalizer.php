@@ -23,10 +23,6 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     public function normalizeData(array $data): array
     {
         $normalizedMetaData = $data;
-        foreach ($data as $key => $value) {
-            $normalizedValue = $this->lowerCaseFileClassesNames($key, $value);
-            $normalizedMetaData[$key] = $normalizedValue;
-        }
 
         if (isset($normalizedMetaData[MetaDataProvider::METADATA_SETTINGS])) {
             $normalizedMetaData[MetaDataProvider::METADATA_SETTINGS] = $this->convertModuleSettingConstraintsToArray(
@@ -84,26 +80,5 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         }
 
         return $normalizedMetaData;
-    }
-
-    /**
-     * @deprecated 6.6 Will be removed completely
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return mixed
-     */
-    private function lowerCaseFileClassesNames($key, $value)
-    {
-        $normalizedValue = $value;
-        if (is_array($value) && $key === MetaDataProvider::METADATA_FILES) {
-            $normalizedValue = [];
-            foreach ($value as $className => $path) {
-                $normalizedValue[strtolower($className)] = $path;
-            }
-        }
-
-        return $normalizedValue;
     }
 }

@@ -4,10 +4,12 @@
  * See LICENSE file for license details.
  */
 
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module1\Model;
+
 /**
  * CMS - loads pages and displays it
  */
-class Test3Content
+class Module1TestContent
 {
     /**
      * Template variable getter. Returns tag title
@@ -16,6 +18,6 @@ class Test3Content
      */
     public function getTitle()
     {
-        return "- Module_3_Model";
+        return "- Module_1_Model";
     }
 }

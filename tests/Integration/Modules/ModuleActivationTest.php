@@ -7,401 +7,390 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
-use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 
-class ModuleActivationTest extends BaseModuleTestCase
+final class ModuleActivationTest extends BaseModuleTestCase
 {
     /**
      * @return array
      */
     public function providerModuleActivation()
     {
-        return array(
-            $this->caseSixModulesPreparedReactivatedWithEverything(),
-            $this->caseTwoModulesPreparedReactivatedWithEverything(),
-            $this->caseFourModulesPreparedReactivatedExtendingThreeClassesWithOneExtension(),
-            $this->caseEightModulesPreparedReactivatedNoExtending(),
-            $this->caseTwoModulesPreparedReactivatedWithTwoFiles(),
-            $this->caseTwoModulesPreparedReactivatedWithTwoSettings(),
-            $this->caseTwoModulesPreparedReactivatedWithTwoTemplates(),
-        );
+        return [
+            $this->caseReactivatedWithRemovedExtension(),
+            $this->caseOneModulePreparedActivatedWithEverything(),
+            $this->caseThreeModulesPreparedActivatedExtendingThreeClassesWithOneExtension(),
+            $this->caseSevenModulesPreparedActivatedNoExtending(),
+            $this->caseOneModulePreparedActivatedWithTwoEvents(),
+            $this->caseOneModulePreparedActivatedWithTwoSettings(),
+            $this->caseOneModulePreparedActivatedWithTwoTemplates(),
+        ];
     }
 
     /**
-     * Tests if module was activated.
-     *
      * @dataProvider providerModuleActivation
-     *
-     * @param array  $aInstallModules
-     * @param string $sModule
-     * @param array  $aResultToAsserts
      */
-    public function testModuleActivation($aInstallModules, $sModule, $aResultToAsserts)
+    public function testModuleActivation(array $aInstallModules, string $sModule, array $aResultToAsserts): void
     {
         foreach ($aInstallModules as $moduleId) {
             $this->installAndActivateModule($moduleId);
         }
 
-        $oModule = oxNew(Module::class);
-        $oModule->load($sModule);
-        $this->deactivateModule($oModule);
-        $this->installAndActivateModule($oModule->getId());
+        $oModule = oxNew('oxModule');
+        $this->deactivateModule($oModule, $sModule);
+
+        $this->installAndActivateModule($sModule);
 
         $this->runAsserts($aResultToAsserts);
     }
 
-    /**
-     * Data provider case with 6 modules prepared and with_everything module reactivated
-     *
-     * @return array
-     */
-    protected function caseSixModulesPreparedReactivatedWithEverything()
+    public function testModuleDeactivationInMainShopDidNotDeactivateItInSubShop(): void
     {
-        return array(
+        if ($this->getTestConfig()->getShopEdition() != 'EE') {
+            $this->markTestSkipped("This test case is only actual when SubShops are available.");
+        }
+
+        $this->prepareProjectConfigurationWitSubshops();
+
+        $moduleId = 'with_everything';
+        
+        $this->installAndActivateModule($moduleId);
+
+        $this->installAndActivateModule($moduleId, 2);
+
+        $this->deactivateModule(oxNew('oxModule'), $moduleId, 1);
+
+        $environment = new Environment();
+        $environment->setShopId(2);
+
+        $this->expectException(ModuleSetupException::class);
+        $this->installAndActivateModule($moduleId, 2);
+    }
+
+    private function caseReactivatedWithRemovedExtension(): array
+    {
+        return [
 
             // modules to be activated during test preparation
-            array(
-                'extending_1_class', 'with_2_templates', 'with_2_files',
-                'with_everything', 'extending_3_blocks', 'with_events',
-            ),
+            [
+                'extending_1_class',
+                'with_2_templates',
+                'with_everything',
+                'extending_3_blocks',
+                'with_events'
+            ],
 
             // module that will be reactivated
             'with_everything',
 
             // environment asserts
-            array(
-                'blocks'          => array(
-                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
-                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
-                ),
-                'extend'          => array(
+            [
+                'blocks'          => [
+                    ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'],
+                    ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'],
+                    ['template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'],
+                    ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'],
+                    ['template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'],
+                ],
+                'extend'          => [
                     \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
-                ),
-                'files'           => array(
-                    'with_2_files'    => array(
-                        'myexception'  => 'with_2_files/core/exception/myexception.php',
-                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
-                    ),
-                    'with_everything' => array(
-                        'myexception'  => 'with_everything/core/exception/myexception.php',
-                        'myconnection' => 'with_everything/core/exception/myconnection.php',
-                    ),
-                    'with_events'     => array(
-                        'myevents' => 'with_events/files/myevents.php',
-                    ),
-                ),
-                'settings'        => array(
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-                ),
-                'disabledModules' => array(),
-                'templates'       => array(
-                    'with_2_templates' => array(
+                ],
+                'settings'        => [
+                    ['group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'],
+                    ['group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'],
+                ],
+                'disabledModules' => [],
+                'templates'       => [
+                    'with_2_templates' => [
                         'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
                         'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
-                    ),
-                    'with_everything'  => array(
+                    ],
+                    'with_everything'  => [
                         'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
                         'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
-                    ),
-                ),
-                'versions'        => array(
+                    ],
+                ],
+                'events'          => [
+                    'with_everything' => [
+                        'onActivate'   => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_everything\Event\MyEvents::onActivate',
+                        'onDeactivate' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_everything\Event\MyEvents::onDeactivate'
+                    ],
+                    'with_events' => [
+                        'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onActivate',
+                        'onDeactivate' => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onDeactivate'
+                    ]
+                ],
+                'versions'        => [
                     'extending_1_class'  => '1.0',
                     'with_2_templates'   => '1.0',
-                    'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
-                ),
-            )
-        );
+                ],
+            ]
+        ];
     }
 
-    /**
-     * Data provider case with 2 modules prepared and with_everything module reactivated
-     *
-     * @return array
-     */
-    private function caseTwoModulesPreparedReactivatedWithEverything()
+    private function caseOneModulePreparedActivatedWithEverything(): array
     {
-        return array(
+        return [
 
             // modules to be activated during test preparation
-            array(
-                'with_everything', 'no_extending'
-            ),
+            [
+                'no_extending',
+                'with_everything'
+            ],
 
-            // module that will be reactivated
+            // module that will be activated
             'with_everything',
 
             // environment asserts
-            array(
-                'blocks'          => array(
-                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
-                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                ),
-                'extend'          => array(
+            [
+                'blocks'          => [
+                    ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'],
+                    ['template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'],
+                ],
+                'extend'          => [
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
-                ),
-                'files'           => array(
-                    'with_everything' => array(
-                        'myexception'  => 'with_everything/core/exception/myexception.php',
-                        'myconnection' => 'with_everything/core/exception/myconnection.php',
-                    )
-                ),
-                'settings'        => array(
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-                ),
-                'disabledModules' => array(),
-                'templates'       => array(
-                    'with_everything' => array(
+                    \OxidEsales\Eshop\Application\Model\Order::class => 'with_everything/myorder1'
+                ],
+                'settings'        => [
+                    ['group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'],
+                    ['group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'],
+                ],
+                'disabledModules' => [],
+                'templates'       => [
+                    'with_everything' => [
                         'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
                         'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
-                    ),
-                ),
-                'versions'        => array(
+                    ],
+                ],
+                'versions'        => [
                     'no_extending'    => '1.0',
                     'with_everything' => '1.0',
-                ),
-            )
-        );
+                ],
+            ]
+        ];
     }
 
-
-    /**
-     * Data provider case with 4 modules prepared and extending_3_classes_with_1_extension module reactivated
-     *
-     * @return array
-     */
-    private function caseFourModulesPreparedReactivatedExtendingThreeClassesWithOneExtension()
+    private function caseThreeModulesPreparedActivatedExtendingThreeClassesWithOneExtension(): array
     {
-        return array(
+        return [
 
             // modules to be activated during test preparation
-            array(
-                'extending_1_class', 'extending_3_classes_with_1_extension',
-                'extending_3_classes', 'extending_1_class_3_extensions',
-            ),
+            [
+                'extending_1_class',
+                'extending_3_classes_with_1_extension',
+                'extending_3_classes',
+                'extending_1_class_3_extensions'
+            ],
 
-            // module that will be reactivated
+            // module that will be activated
             'extending_1_class_3_extensions',
 
             // environment asserts
-            array(
-                'blocks'          => array(),
-                'extend'          => array(
-
-                    \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder&oeTest/extending_1_class_3_extensions/myorder1',
+            [
+                'blocks'          => [],
+                'extend'          => [
+                    \OxidEsales\Eshop\Application\Model\Order::class   => '' .
+                        'oeTest/extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder&oeTest/extending_1_class_3_extensions/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
-                ),
-                'files'           => array(),
-                'settings'        => array(),
-                'disabledModules' => array(),
-                'templates'       => array(),
-                'versions'        => array(
+                ],
+                'settings'        => [],
+                'disabledModules' => [],
+                'templates'       => [],
+                'versions'        => [
                     'extending_3_classes_with_1_extension' => '1.0',
                     'extending_1_class'                    => '1.0',
                     'extending_3_classes'                  => '1.0',
                     'extending_1_class_3_extensions'       => '1.0',
-                ),
-            )
-        );
+                ],
+            ]
+        ];
     }
 
-    /**
-     * Data provider case with 8 modules prepared and no_extending module reactivated
-     *
-     * @return array
-     */
-    private function caseEightModulesPreparedReactivatedNoExtending()
+    private function caseSevenModulesPreparedActivatedNoExtending(): array
     {
-        return array(
-
+        return [
             // modules to be activated during test preparation
-            array(
-                'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
-                'no_extending', 'extending_3_blocks', 'with_everything', 'with_events'
-            ),
+            [
+                'extending_1_class',
+                'with_2_templates',
+                'with_2_settings',
+                'extending_3_blocks',
+                'with_everything',
+                'with_events',
+                'no_extending'
+            ],
 
-            // module that will be reactivated
+            // module that will be activated
             'no_extending',
 
             // environment asserts
-            array(
-                'blocks'          => array(
-                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
-                    array('template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                    array('template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'),
-                ),
-                'extend'          => array(
+            [
+                'blocks'          => [
+                    ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'],
+                    ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'],
+                    ['template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'],
+                    ['template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl'],
+                    ['template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl'],
+                ],
+                'extend'          => [
                     \OxidEsales\Eshop\Application\Model\Order::class   => 'oeTest/extending_1_class/myorder&with_everything/myorder1',
                     \OxidEsales\Eshop\Application\Model\Article::class => 'with_everything/myarticle',
                     \OxidEsales\Eshop\Application\Model\User::class    => 'with_everything/myuser',
-                ),
-                'files'           => array(
-                    'with_2_files'    => array(
-                        'myexception'  => 'with_2_files/core/exception/myexception.php',
-                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
-                    ),
-                    'with_everything' => array(
-                        'myexception'  => 'with_everything/core/exception/myexception.php',
-                        'myconnection' => 'with_everything/core/exception/myconnection.php',
-                    ),
-                    'with_events'     => array(
-                        'myevents' => 'with_events/files/myevents.php',
-                    ),
-                ),
-                'settings'        => array(
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-                ),
-                'disabledModules' => array(),
-                'templates'       => array(
-                    'with_2_templates' => array(
+                ],
+                'settings'        => [
+                    ['group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'],
+                    ['group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'],
+                    ['group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'],
+                    ['group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'],
+                ],
+                'disabledModules' => [],
+                'templates'       => [
+                    'with_2_templates' => [
                         'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
                         'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
-                    ),
-                    'with_everything'  => array(
+                    ],
+                    'with_everything'  => [
                         'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
                         'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
-                    ),
-                ),
-                'versions'        => array(
+                    ],
+                ],
+                'events'          => [
+                    'with_everything' => [
+                        'onActivate'   => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_everything\Event\MyEvents::onActivate',
+                        'onDeactivate' => 'OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_everything\Event\MyEvents::onDeactivate'
+                    ],
+                    'with_events' => [
+                        'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onActivate',
+                        'onDeactivate' => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onDeactivate'
+                    ]
+                ],
+                'versions'        => [
                     'extending_1_class'  => '1.0',
                     'with_2_templates'   => '1.0',
                     'with_2_settings'    => '1.0',
-                    'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'no_extending'       => '1.0',
                     'with_events'        => '1.0',
                     'with_everything'    => '1.0',
-                ),
-            )
-        );
+                ],
+            ]
+        ];
     }
 
-    /**
-     * Data provider case with 2 modules prepared and with_2_files module reactivated
-     *
-     * @return array
-     */
-    private function caseTwoModulesPreparedReactivatedWithTwoFiles()
+    private function caseOneModulePreparedActivatedWithTwoEvents(): array
     {
-        return array(
+        return [
 
             // modules to be activated during test preparation
-            array(
-                'with_2_files', 'no_extending'
-            ),
+            [
+                'no_extending',
+                'with_events'
+            ],
 
-            // module that will be reactivated
-            'with_2_files',
+            // module that will be activated
+            'with_events',
 
             // environment asserts
-            array(
-                'blocks'          => array(),
-                'extend'          => array(),
-                'files'           => array(
-                    'with_2_files' => array(
-                        'myexception'  => 'with_2_files/core/exception/myexception.php',
-                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
-                    ),
-                ),
-                'settings'        => array(),
-                'disabledModules' => array(),
-                'templates'       => array(),
-                'versions'        => array(
+            [
+                'blocks'          => [],
+                'extend'          => [],
+                'settings'        => [],
+                'disabledModules' => [],
+                'templates'       => [],
+                'events'          => [
+                    'with_events' => [
+                        'onActivate'   => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onActivate',
+                        'onDeactivate' => '\OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\with_events\Event\MyEvents::onDeactivate'
+                    ]
+                ],
+                'versions'        => [
                     'no_extending' => '1.0',
-                    'with_2_files' => '1.0',
-                ),
-            )
-        );
+                    'with_events' => '1.0',
+                ],
+            ]
+        ];
     }
 
-    /**
-     * Data provider case with 2 modules prepared and with_2_settings module reactivated
-     *
-     * @return array
-     */
-    private function caseTwoModulesPreparedReactivatedWithTwoSettings()
+    private function caseOneModulePreparedActivatedWithTwoSettings(): array
     {
-        return array(
+        return [
 
             // modules to be activated during test preparation
-            array(
-                'with_2_settings', 'no_extending'
-            ),
+            [
+                'no_extending',
+                'with_2_settings'
+            ],
 
-            // module that will be reactivated
+            // module that will be activated
             'with_2_settings',
 
             // environment asserts
-            array(
-                'blocks'          => array(),
-                'extend'          => array(),
-                'files'           => array(),
-                'settings'        => array(
-                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                    array('group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'),
-                ),
-                'disabledModules' => array(),
-                'templates'       => array(),
-                'versions'        => array(
+            [
+                'blocks'          => [],
+                'extend'          => [],
+                'settings'        => [
+                    ['group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'],
+                    ['group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name'],
+                ],
+                'disabledModules' => [],
+                'templates'       => [],
+                'versions'        => [
                     'no_extending'    => '1.0',
                     'with_2_settings' => '1.0',
-                ),
-            )
-        );
+                ],
+            ]
+        ];
     }
 
-    /**
-     * Data provider case with 2 modules prepared and with_2_templates module reactivated
-     *
-     * @return array
-     */
-    private function caseTwoModulesPreparedReactivatedWithTwoTemplates()
+    private function caseOneModulePreparedActivatedWithTwoTemplates(): array
     {
-        return array(
+        return [
 
             // modules to be activated during test preparation
-            array(
-                'with_2_templates', 'no_extending'
-            ),
+            [
+                'no_extending',
+                'with_2_templates'
+            ],
 
-            // module that will be reactivated
+            // module that will be activated
             'with_2_templates',
 
             // environment asserts
-            array(
-                'blocks'          => array(),
-                'extend'          => array(),
-                'files'           => array(),
-                'settings'        => array(),
-                'disabledModules' => array(),
-                'templates'       => array(
-                    'with_2_templates' => array(
+            [
+                'blocks'          => [],
+                'extend'          => [],
+                'settings'        => [],
+                'disabledModules' => [],
+                'templates'       => [
+                    'with_2_templates' => [
                         'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
                         'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
-                    ),
-                ),
-                'versions'        => array(
+                    ],
+                ],
+                'versions'        => [
                     'no_extending'     => '1.0',
                     'with_2_templates' => '1.0',
-                ),
-            )
-        );
+                ],
+            ]
+        ];
+    }
+
+    private function prepareProjectConfigurationWitSubshops()
+    {
+        $projectConfigurationDao = $this->container->get(ProjectConfigurationDaoInterface::class);
+        $projectConfiguration = $projectConfigurationDao->getConfiguration();
+
+        $projectConfiguration->addShopConfiguration(2, new ShopConfiguration());
+
+        $projectConfigurationDao->save($projectConfiguration);
     }
 }

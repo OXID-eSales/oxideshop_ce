@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMappe
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplateBlocksMappingKeys;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
@@ -127,26 +126,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                 $moduleConfiguration->addEvent(
                     new Event($action, $method)
                 );
-            }
-        }
-
-        if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
-            if (count($moduleData[MetaDataProvider::METADATA_FILES]) === 0) {
-                $moduleConfiguration->addClassWithoutNamespace(
-                    new ClassWithoutNamespace(
-                        '',
-                        ''
-                    )
-                );
-            } else {
-                foreach ($moduleData[MetaDataProvider::METADATA_FILES] as $shopClass => $moduleClass) {
-                    $moduleConfiguration->addClassWithoutNamespace(
-                        new ClassWithoutNamespace(
-                            $shopClass,
-                            $moduleClass
-                        )
-                    );
-                }
             }
         }
 

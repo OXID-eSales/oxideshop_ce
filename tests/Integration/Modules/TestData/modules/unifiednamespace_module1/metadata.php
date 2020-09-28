@@ -14,7 +14,7 @@ use unifiednamespace_module1\Model\TestContent;
 /**
  * Metadata version
  */
-$sMetadataVersion = '1.1';
+$sMetadataVersion = '2.0';
 
 /**
  * Module information
@@ -34,11 +34,10 @@ $aModule = array(
     'url'         => 'www.johndoe.com',
     'email'       => 'john@doe.com',
     'extend'      => array(
-        'content' => 'oeTest/unifiednamespace_module1/Controller/Test1ContentController',
+        'content' => OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module1\Controller\Test1ContentController::class,
+        'test1content' => OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module1\Model\Module1TestContent::class
     ),
-    'files'       => array(
-        'Test1Content' => 'oeTest/unifiednamespace_module1/Model/Test1Content.php',
-    ),
+    'controllers'       => array(),
     'templates'   => array(),
     'blocks'      => array(),
     'settings'    => array(),

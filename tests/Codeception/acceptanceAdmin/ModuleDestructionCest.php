@@ -15,8 +15,8 @@ final class ModuleDestructionCest
 {
     private $testModule1Path = __DIR__ . '/../_data/modules/WithNamespaceAndMetadataV2';
     private $testModule1Id = 'EshopAcceptanceTestModuleNine';
-    private $testModule2Path = __DIR__ . '/../_data/modules/without_own_module_namespace';
-    private $testModule2Id = 'without_own_module_namespace';
+    private $testModule2Path = __DIR__ . '/../_data/modules/ModuleWithNamespace';
+    private $testModule2Id = 'ModuleWithNamespace';
 
     /** @param AcceptanceAdminTester $I */
     public function _before(AcceptanceAdminTester $I)

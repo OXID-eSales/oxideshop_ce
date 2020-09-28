@@ -39,35 +39,6 @@ class MetaDataMapperTest extends TestCase
         ];
     }
 
-    public function testMetadataFilesMapping()
-    {
-        $metadata = [
-            MetaDataProvider::METADATA_METADATA_VERSION => '0',
-            MetaDataProvider::METADATA_FILEPATH         => '',
-            MetaDataProvider::METADATA_MODULE_DATA      => [
-                MetaDataProvider::METADATA_ID       => 'id',
-                MetaDataProvider::METADATA_FILES    => [
-                    'name' => 'path',
-                ]
-            ]
-        ];
-        $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);
-        $moduleConfiguration = $metaDataDataMapper->fromData($metadata);
-
-        $classes = [];
-
-        foreach ($moduleConfiguration->getClassesWithoutNamespace() as $class) {
-            $classes[$class->getShopClass()] = $class->getModuleClass();
-        }
-
-        $this->assertSame(
-            [
-                'name' => 'path',
-            ],
-            $classes
-        );
-    }
-
     public function testSettingPositionIsConvertedToInt(): void
     {
         $metaDataDataMapper = new MetaDataMapper($this->metaDataValidatorStub);

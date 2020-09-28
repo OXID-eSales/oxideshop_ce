@@ -30,7 +30,6 @@ services:
       - [addHandler, ['@oxid_esales.module.setup.template_blocks_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.shop_module_setting_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.events_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.files_without_namespace_module_setting_handler']]
       - [addValidator, ['@oxid_esales.module.setup.validator.controllers_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator']]
       - [addValidator, ['@oxid_esales.module.setup.validator.class_extensions_module_setting_validator']]
@@ -69,11 +68,6 @@ services:
 
   oxid_esales.module.setup.events_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationEventsHandler
-
-  oxid_esales.module.setup.files_without_namespace_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationClassesWithoutNamespaceHandler
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface'
 
   oxid_esales.module.setup.validator.smarty_plugin_directories_module_setting_validator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\SmartyPluginDirectoriesValidator

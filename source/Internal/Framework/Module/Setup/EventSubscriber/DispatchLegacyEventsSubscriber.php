@@ -43,7 +43,6 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      */
     public function executeMetadataOnActivationEvent(FinalizingModuleActivationEvent $event)
     {
-        $this->invalidateModuleCache($event);
         $this->executeMetadataEvent(
             'onActivate',
             $event->getModuleId(),
@@ -94,18 +93,5 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
             FinalizingModuleActivationEvent::NAME   => 'executeMetadataOnActivationEvent',
             BeforeModuleDeactivationEvent::NAME     => 'executeMetadataOnDeactivationEvent',
         ];
-    }
-
-    /**
-     * @deprecated 6.6 Will be removed completely
-     *
-     * This is needed only for the modules which has non namespaced classes.
-     * This method MUST be removed when support for non namespaced modules will be dropped (metadata v1.*).
-     *
-     * @param FinalizingModuleActivationEvent $event
-     */
-    private function invalidateModuleCache(FinalizingModuleActivationEvent $event)
-    {
-        $this->shopAdapter->invalidateModuleCache($event->getModuleId());
     }
 }

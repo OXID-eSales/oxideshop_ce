@@ -7,6 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension37a;
 
-class MyClass37a extends MyClass37a_parent
+class MyClass37a extends \OxidEsales\Eshop\Application\Model\Article
 {
 }

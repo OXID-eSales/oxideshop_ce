@@ -336,31 +336,6 @@ class ModuleTest extends \OxidTestCase
         $this->assertEquals('testModuleId', $oModule->getId());
     }
 
-    public function testGetFilesWhenModuleHasFiles()
-    {
-        $aModule = array(
-            'id'    => 'testModuleId',
-            'files' => array('class' => 'vendor/module/path/class.php')
-        );
-
-        $oModule = oxNew('oxModule');
-        $oModule->setModuleData($aModule);
-
-        $this->assertEquals(array('class' => 'vendor/module/path/class.php'), $oModule->getFiles());
-    }
-
-    public function testGetFilesWhenModuleHasNoFiles()
-    {
-        $aModule = array(
-            'id' => 'testModuleId'
-        );
-
-        $oModule = oxNew('oxModule');
-        $oModule->setModuleData($aModule);
-
-        $this->assertEquals(array(), $oModule->getFiles());
-    }
-
     /**
      * @covers OxidEsales\Eshop\Core\Module\Module::getControllers()
      */

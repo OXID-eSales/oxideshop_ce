@@ -34,7 +34,6 @@ use Psr\Container\ContainerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -298,16 +297,6 @@ class ModuleActivationServiceTest extends TestCase
                 new ClassExtension(
                     'otherOriginalClassNamespace',
                     'moduleClassNamespace'
-                )
-            )->addClassWithoutNamespace(
-                new ClassWithoutNamespace(
-                    'class1',
-                    'class1.php'
-                )
-            )->addClassWithoutNamespace(
-                new ClassWithoutNamespace(
-                    'class2',
-                    'class2.php'
                 )
             );
 

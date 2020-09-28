@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Smarty;
 
-use \testModuleInclusion_parent;
+use \testmoduleinclusion;
 use \oxRegistry;
 
 /**
@@ -39,10 +39,12 @@ class ModuleFileInclusionTest extends \OxidTestCase
             )
         ));
 
-        \OxidEsales\Eshop\Core\Registry::getUtilsObject()->setModuleVar('aModules', array('oxarticle' => 'testmoduleinclusion'));
-
-        $oTestMod = oxNew('testModuleInclusion');
-        $this->assertEquals("Hi!", $oTestMod->sayHi());
+        \OxidEsales\Eshop\Core\Registry::getUtilsObject()->setModuleVar(
+            'aModules',
+            [
+                'oxarticle' => testModuleInclusion::class
+            ]
+        );
 
         $oTestArt = oxNew('oxArticle');
         $this->assertEquals("Hi!", $oTestArt->sayHi());

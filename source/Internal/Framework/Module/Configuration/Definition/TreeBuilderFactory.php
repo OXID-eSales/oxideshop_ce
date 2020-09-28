@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Definition;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\{
-    ClassesWithoutNamespaceDataMapper,
     ClassExtensionsDataMapper,
     ControllersDataMapper,
     EventsDataMapper,
@@ -83,9 +82,6 @@ class TreeBuilderFactory implements TreeBuilderFactoryInterface
                                 ->normalizeKeys(false)->scalarPrototype()->end()
                             ->end()
                             ->arrayNode(EventsDataMapper::MAPPING_KEY)
-                                ->normalizeKeys(false)->scalarPrototype()->end()
-                            ->end()
-                            ->arrayNode(ClassesWithoutNamespaceDataMapper::MAPPING_KEY)
                                 ->normalizeKeys(false)->scalarPrototype()->end()
                             ->end()
                             ->arrayNode(TemplateBlocksDataMapper::MAPPING_KEY)

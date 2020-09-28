@@ -144,6 +144,16 @@ final class AdminUserCest
         $adminUserAddress2->setFax("666999");
 
         $emptyAddress = new AdminUserAddresses();
+        $emptyAddress->setFirstName("");
+        $emptyAddress->setLastName("");
+        $emptyAddress->setCompany("");
+        $emptyAddress->setStreet("");
+        $emptyAddress->setStreetNumber("");
+        $emptyAddress->setZip("");
+        $emptyAddress->setCity("");
+        $emptyAddress->setAdditionalInfo("");
+        $emptyAddress->setPhone("");
+        $emptyAddress->setFax("");
 
         $adminUsersPage->createNewAddress($adminUserAddress2)
             ->selectAddress($emptyAddress)

@@ -26,6 +26,8 @@ modules:
             mysql_config: '%MYSQL_CONFIG_PATH%'
             populate: true # whether the the dump should be loaded before the test suite is started
             cleanup: true # whether the dump should be reloaded before each test
+            initial_queries:
+                - 'SET @@SESSION.sql_mode=""'
             populator: '%PHP_BIN% %VENDOR_PATH%/bin/reset-shop && mysql --defaults-file=$mysql_config --default-character-set=utf8 $dbname < $dump'
         - \OxidEsales\Codeception\Module\Oxideshop:
             screen_shot_url: '%SCREEN_SHOT_URL%'

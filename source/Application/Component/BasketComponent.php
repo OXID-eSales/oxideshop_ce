@@ -372,6 +372,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
                 foreach ($aProducts as $sProductId => $aProduct) {
                     if (isset($aProduct['remove']) && $aProduct['remove']) {
                         $aProducts[$sProductId]['am'] = 0;
+                        Registry::getSession()->getBasket()->addRecentlyRemoved($sProductId);
                     } else {
                         unset($aProducts[$sProductId]);
                     }

@@ -291,6 +291,21 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     protected $_sCardMessage = '';
 
     /**
+     * recently removed bundle items to avoid auto reinsert to basket
+     * @var array
+     */
+    protected $_aRecentlyRemoved = [];
+
+    /**
+     * @param string $sItemId
+     */
+    public function addRecentlyRemoved($sItemId)
+    {
+        if (in_array($sItemId, $this->_aRecentlyRemoved) === false) {
+            $this->_aRecentlyRemoved[] = $sItemId;
+        }
+    }
+    /**
      * Enables or disable saving to data base
      *
      * @param boolean $blSave
@@ -481,6 +496,9 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             //inserting new
             $oBasketItem = oxNew(\OxidEsales\Eshop\Application\Model\BasketItem::class);
             try {
+                if ($blBundle && in_array($sItemId, $this->_aRecentlyRemoved)) {
+                    throw new \OxidEsales\Eshop\Core\Exception\ArticleInputException('Article was removed before.');
+                }
                 $oBasketItem->setStockCheckStatus($this->getStockCheckMode());
                 $oBasketItem->init($sProductID, $dAmount, $aSel, $aPersParam, $blBundle);
             } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $oEx) {

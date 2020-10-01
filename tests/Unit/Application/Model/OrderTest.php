@@ -3219,11 +3219,6 @@ class OrderTest extends \OxidTestCase
         //checking if email functions were called with correct param
         $this->assertEquals(oxEmailHelper::$oOwnerOrder, $oOrder);
         $this->assertEquals(oxEmailHelper::$oUserOrder, $oOrder);
-
-        //checking if oUser, oBasket, oPayment were attached to oOrder
-        $this->assertEquals($oUser, $oOrder->getNonPublicVar('_oUser'));
-        $this->assertEquals($oBasket, $oOrder->getNonPublicVar('_oBasket'));
-        $this->assertEquals($oPayment, $oOrder->getNonPublicVar('_oPayment'));
     }
 
     public function testSendOrderByEmailWhenMailingFails()

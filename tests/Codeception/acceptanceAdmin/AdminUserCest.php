@@ -30,60 +30,44 @@ final class AdminUserCest
         $adminUser->setActive(true);
         $adminUser->setUsername('example01@oxid-esales.dev');
         $adminUser->setCustomerNumber('20');
-        $adminUser->setTitle('Mrs');
-        $adminUser->setFistName('Name_šÄßüл');
-        $adminUser->setFamilyName('Surname_šÄßüл');
-        $adminUser->setCompany('company_šÄßüл');
-        $adminUser->setStreet('street_šÄßüл');
-        $adminUser->setStreetNumber('1');
-        $adminUser->setZipCode('3000');
-        $adminUser->setCity('City_šÄßüл');
-        $adminUser->setUstid('111222');
-        $adminUser->setAdditionalInfo('additional info_šÄßüл');
-        $adminUser->setCountryId('Germany');
-        $adminUser->setStateId('BW');
-        $adminUser->setPhone('111222333');
-        $adminUser->setFax('222333444');
         $adminUser->setBirthday('01');
         $adminUser->setBirthMonth('12');
         $adminUser->setBirthYear('1980');
-        $adminUsersPage = $adminUsersPage->createNewUser($adminUser);
+        $adminUser->setUstid('111222');
+
+        $adminUserAddress = new AdminUserAddresses();
+        $adminUserAddress->setTitle('Mrs');
+        $adminUserAddress->setFirstName('Name_šÄßüл');
+        $adminUserAddress->setLastName('Surname_šÄßüл');
+        $adminUserAddress->setCompany('company_šÄßüл');
+        $adminUserAddress->setStreet('street_šÄßüл');
+        $adminUserAddress->setStreetNumber('1');
+        $adminUserAddress->setZip('3000');
+        $adminUserAddress->setCity('City_šÄßüл');
+        $adminUserAddress->setAdditionalInfo('additional info_šÄßüл');
+        $adminUserAddress->setCountryId('Germany');
+        $adminUserAddress->setStateId('BW');
+        $adminUserAddress->setPhone('111222333');
+        $adminUserAddress->setFax('222333444');
+
+        $adminUsersPage = $adminUsersPage->createNewUser($adminUser, $adminUserAddress);
 
         //By default is Customer
         $adminUser->setUserRights("Customer");
 
-        $adminUsersPage = $adminUsersPage->seeUserInformation($adminUser);
+        $adminUsersPage = $adminUsersPage->seeUserInformation($adminUser, $adminUserAddress);
 
-        $adminUser->setActive(false);
-        $adminUser->setUserRights("Admin");
-        $adminUser->setPassword("adminpass");
-        $adminUser->setUsername('example00@oxid-esales.dev');
-        $adminUser->setCustomerNumber('121');
-        $adminUser->setTitle('Mr');
-        $adminUser->setFistName('Name1');
-        $adminUser->setFamilyName('Surname1');
-        $adminUser->setCompany('company1');
-        $adminUser->setStreet('street1');
-        $adminUser->setStreetNumber('11');
-        $adminUser->setZipCode('30001');
-        $adminUser->setCity('City11');
-        $adminUser->setAdditionalInfo('additional info1');
-        $adminUser->setCountryId('Belgium');
-        $adminUser->setStateId('BE');
-        $adminUser->setPhone('1112223331');
-        $adminUser->setFax('2223334441');
-        $adminUser->setBirthday('03');
-        $adminUser->setBirthMonth('13');
-        $adminUser->setBirthYear('1979');
+        $changedAdminUser = $this->getAdminUser();
+        $changedAdminUserAddress = $this->getAdminUserAddress();
 
-        $adminUsersPage = $adminUsersPage->editUser($adminUser);
+        $adminUsersPage = $adminUsersPage->editUser($changedAdminUser, $changedAdminUserAddress);
         //entering wrong month, set to default 01
-        $adminUser->setBirthMonth('01');
+        $changedAdminUser->setBirthMonth('01');
 
-        $adminUsersPage = $adminUsersPage->seeUserInformation($adminUser);
+        $adminUsersPage = $adminUsersPage->seeUserInformation($changedAdminUser, $changedAdminUserAddress);
 
         $adminUserExtendedPage = $adminUsersPage->openExtendedTab()
-            ->seeUserAddress("Mr Name1 Surname1 company1 street1 11 BE 30001 City11 additional info1 Belgium 1112223331");
+            ->seeUserAddress($changedAdminUserAddress);
 
         $adminUserHistoryPage = $adminUserExtendedPage->openHistoryTab()
             ->createNewRemark("new note_šÄßüл")
@@ -97,16 +81,20 @@ final class AdminUserCest
         $adminUserPaymentPage = $adminUserProductPage->openPaymentTab();
 
         //checking if created user can be found
-        $adminUserPaymentPage->findByUserName("example00@oxid-esales.dev")
+        $adminUserPaymentPage->findByUserName($changedAdminUser->getUsername())
             ->openExtendedTab()
-            ->seeUserAddress("Mr Name1 Surname1 company1 street1 11 BE 30001 City11 additional info1 Belgium 1112223331");
+            ->seeUserAddress($changedAdminUserAddress);
     }
 
     public function testUserAddresses(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('User addresses');
 
-        $this->createAdminTestUser($I);
+        $this->createAdminTestUser($I,
+            $this->getAdminUser(),
+            $this->getAdminUserAddress(),
+            $this->getAdminUserExtendedInfo()
+        );
 
         $adminUsersPage = $I->loginAdmin()->openUsers();
 
@@ -171,25 +159,124 @@ final class AdminUserCest
     {
         $I->wantToTest('Create user extended info');
 
-        $this->createAdminTestUser($I);
+        $user = $this->getAdminUser();
+        $userAddress = $this->getAdminUserAddress();
+        $userOriginalExtendedInfo = $this->getAdminUserExtendedInfo();
+        $this->createAdminTestUser($I, $user, $userAddress, $userOriginalExtendedInfo);
 
         $adminPanel = $I->loginAdmin();
         $adminUsersPage = $adminPanel->openUsers();
 
-        $adminUsersPage = $adminUsersPage->findByUserName("example00@oxid-esales.dev")
+        $adminUsersPage = $adminUsersPage->findByUserName($user->getUsername())
             ->openExtendedTab()
-            ->seeUserAddress("Mr Name1 Surname1 company1 street1 11 BE 30001 City11 additional info1 Belgium 1112223331");
+            ->seeUserAddress($userAddress);
 
-        $adminUserExtendedInfo = new AdminUserExtendedInfo();
-        $adminUserExtendedInfo->setEveningPhone('555444555');
-        $adminUserExtendedInfo->setCelluarPhone('666555666');
-        $adminUserExtendedInfo->setRecievesNewsletter(true);
-        $adminUserExtendedInfo->setEmailInvalid(true);
-        $adminUserExtendedInfo->setCreditRating('1500');
-        $adminUserExtendedInfo->setUrl('http://www.url.com');
-        $adminUsersPage = $adminUsersPage->editExtendedInfo($adminUserExtendedInfo)
-            ->seeUserExtendedInformation($adminUserExtendedInfo);
+        $adminUserChangedExtendedInfo = new AdminUserExtendedInfo();
+        $adminUserChangedExtendedInfo->setEveningPhone('555444555');
+        $adminUserChangedExtendedInfo->setCelluarPhone('666555666');
+        $adminUserChangedExtendedInfo->setRecievesNewsletter(true);
+        $adminUserChangedExtendedInfo->setEmailInvalid(true);
+        $adminUserChangedExtendedInfo->setCreditRating('1500');
+        $adminUserChangedExtendedInfo->setUrl('http://www.url.com');
+        $adminUsersPage = $adminUsersPage->editExtendedInfo($adminUserChangedExtendedInfo)
+            ->seeUserExtendedInformation($adminUserChangedExtendedInfo);
 
+        $adminUsersPage->editExtendedInfo($userOriginalExtendedInfo)
+            ->seeUserExtendedInformation($userOriginalExtendedInfo);
+    }
+
+    private function createAdminTestUser(
+        AcceptanceAdminTester $I,
+        AdminUser $user,
+        AdminUserAddresses $userAddress,
+        AdminUserExtendedInfo $userExtendedInfo): void
+    {
+        $I->haveInDatabase(
+            'oxuser',
+            [
+                'OXID'        => "kdiruuc",
+                'OXACTIVE'    => $user->getActive(),
+                'OXRIGHTS'    => 'malladmin',
+                'OXSHOPID'    => 1,
+                'OXUSERNAME'  => $user->getUsername(),
+                'OXPASSWORD'  => '1397d0b4392f452a5bd058891c9b255e',
+                'OXPASSSALT'  => '3032396331663033316535343361356231363666653666316533376235353830',
+                'OXCUSTNR'    => $user->getCustomerNumber(),
+                'OXUSTID'     => $user->getUstid(),
+                'OXCOMPANY'   => $userAddress->getCompany(),
+                'OXFNAME'     => $userAddress->getFirstName(),
+                'OXLNAME'     => $userAddress->getLastName(),
+                'OXSTREET'    => $userAddress->getStreet(),
+                'OXSTREETNR'  => $userAddress->getStreetNumber(),
+                'OXADDINFO'   => $userAddress->getAdditionalInfo(),
+                'OXCITY'      => $userAddress->getCity(),
+                'OXCOUNTRYID' => 'a7c40f632e04633c9.47194042',
+                'OXSTATEID'   => $userAddress->getStateId(),
+                'OXZIP'       => $userAddress->getZip(),
+                'OXFON'       => $userAddress->getPhone(),
+                'OXFAX'       => $userAddress->getFax(),
+                'OXSAL'       => $userAddress->getTitle(),
+                'OXBONI'      => $userExtendedInfo->getCreditRating(),
+                'OXCREATE'    => '2010-02-05 10:22:37',
+                'OXREGISTER'  => '2010-02-05 10:22:48',
+                'OXPRIVFON'   => $userExtendedInfo->getEveningPhone(),
+                'OXMOBFON'    => $userExtendedInfo->getCelluarPhone(),
+                'OXBIRTHDATE' => $user->getBirthYear() . '-' . $user->getBirthMonth(). '-' . $user->getBirthday(),
+                'OXURL'       => $userExtendedInfo->getUrl(),
+                'OXUPDATEKEY' => '',
+                'OXUPDATEEXP' => 0,
+            ]
+        );
+    }
+
+    /**
+     * @return AdminUser
+     */
+    private function getAdminUser(): AdminUser
+    {
+        $adminUser = new AdminUser();
+        $adminUser->setActive(false);
+        $adminUser->setUserRights("Admin");
+        $adminUser->setPassword("adminpass");
+        $adminUser->setUsername('example00@oxid-esales.dev');
+        $adminUser->setCustomerNumber('121');
+        $adminUser->setBirthday('01');
+        $adminUser->setBirthMonth('12');
+        $adminUser->setBirthYear('1980');
+        $adminUser->setUstid('111222');
+        $adminUser->setBirthday('03');
+        $adminUser->setBirthMonth('13');
+        $adminUser->setBirthYear('1979');
+        return $adminUser;
+    }
+
+    /**
+     * @return AdminUserAddresses
+     */
+    private function getAdminUserAddress(): AdminUserAddresses
+    {
+        $adminUserAddress = new AdminUserAddresses();
+        $adminUserAddress->setTitle('Mr');
+        $adminUserAddress->setFirstName('Name1');
+        $adminUserAddress->setLastName('Surname1');
+        $adminUserAddress->setCompany('company1');
+        $adminUserAddress->setStreet('street1');
+        $adminUserAddress->setStreetNumber('11');
+        $adminUserAddress->setZip('30001');
+        $adminUserAddress->setCity('City11');
+        $adminUserAddress->setAdditionalInfo('additional info1');
+        $adminUserAddress->setCountryId('Belgium');
+        $adminUserAddress->setStateId('BE');
+        $adminUserAddress->setPhone('1112223331');
+        $adminUserAddress->setFax('2223334441');
+        return $adminUserAddress;
+    }
+
+    /**
+     * @return AdminUserExtendedInfo
+     */
+    private function getAdminUserExtendedInfo(): AdminUserExtendedInfo
+    {
         $adminUserExtendedInfo = new AdminUserExtendedInfo();
         $adminUserExtendedInfo->setEveningPhone('5554445551');
         $adminUserExtendedInfo->setCelluarPhone('6665556661');
@@ -197,47 +284,6 @@ final class AdminUserCest
         $adminUserExtendedInfo->setEmailInvalid(false);
         $adminUserExtendedInfo->setCreditRating('1000');
         $adminUserExtendedInfo->setUrl('http://www.url1.com');
-        $adminUsersPage->editExtendedInfo($adminUserExtendedInfo)
-            ->seeUserExtendedInformation($adminUserExtendedInfo);
-    }
-
-    private function createAdminTestUser(AcceptanceAdminTester $I): void
-    {
-        $I->haveInDatabase(
-            'oxuser',
-            [
-                'OXID'        => "kdiruuc",
-                'OXACTIVE'    => 0,
-                'OXRIGHTS'    => 'malladmin',
-                'OXSHOPID'    => 1,
-                'OXUSERNAME'  => 'example00@oxid-esales.dev',
-                'OXPASSWORD'  => '1397d0b4392f452a5bd058891c9b255e',
-                'OXPASSSALT'  => '3032396331663033316535343361356231363666653666316533376235353830',
-                'OXCUSTNR'    => 121,
-                'OXUSTID'     => '111222',
-                'OXCOMPANY'   => 'company1',
-                'OXFNAME'     => 'Name1',
-                'OXLNAME'     => 'Surname1',
-                'OXSTREET'    => 'street1',
-                'OXSTREETNR'  => '11',
-                'OXADDINFO'   => 'additional info1',
-                'OXCITY'      => 'City11',
-                'OXCOUNTRYID' => 'a7c40f632e04633c9.47194042',
-                'OXSTATEID'   => 'BE',
-                'OXZIP'       => '30001',
-                'OXFON'       => '1112223331',
-                'OXFAX'       => '2223334441',
-                'OXSAL'       => 'MR',
-                'OXBONI'      => 1000,
-                'OXCREATE'    => '2010-02-05 10:22:37',
-                'OXREGISTER'  => '2010-02-05 10:22:48',
-                'OXPRIVFON'   => '5554445551',
-                'OXMOBFON'    => '6665556661',
-                'OXBIRTHDATE' => '1979-01-03',
-                'OXURL'       => 'http://www.url1.com',
-                'OXUPDATEKEY' => '',
-                'OXUPDATEEXP' => 0,
-            ]
-        );
+        return $adminUserExtendedInfo;
     }
 }

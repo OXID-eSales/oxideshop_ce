@@ -17,7 +17,7 @@ interface ModuleCacheServiceInterface
      * @param string $moduleId
      * @param int    $shopId
      */
-    public function invalidateModuleCache(string $moduleId, int $shopId): void;
+    public function invalidate(string $moduleId, int $shopId): void;
 
     /**
      * @param string $key
@@ -41,10 +41,4 @@ interface ModuleCacheServiceInterface
      * @return bool
      */
     public function exists(string $key, int $shopId): bool;
-
-    /**
-     * @param string $key
-     * @param int    $shopId
-     */
-    public function evict(string $key, int $shopId): void;
 }

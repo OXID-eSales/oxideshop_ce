@@ -57,25 +57,22 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
     /** @inheritDoc */
     public function getModulePaths(): array
     {
-        $modulePaths = [];
+        $shopId = $this->context->getCurrentShopId();
+        $cacheKey = 'absolute_module_paths';
 
-        foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
-            $shopId = $this->context->getCurrentShopId();
-            $moduleId = $moduleConfiguration->getId();
-
-            if (!$this->moduleCacheService->exists($moduleId, $shopId)) {
+        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
+            $modulePaths = [];
+            foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
                 $modulePaths[] = $this->modulePathResolver->getFullModulePathFromConfiguration(
-                    $moduleId,
-                    $shopId
+                    $moduleConfiguration->getId(),
+                    $this->context->getCurrentShopId()
                 );
-
-                $this->moduleCacheService->put($moduleId, $shopId, $modulePaths);
-            } else {
-                $modulePaths[] = $this->moduleCacheService->get($moduleId, $shopId);
             }
+
+            $this->moduleCacheService->put($cacheKey, $shopId, $modulePaths);
         }
 
-        return $modulePaths;
+        return $this->moduleCacheService->get($cacheKey, $shopId);
     }
 
     private function getActiveModuleConfigurations(): array

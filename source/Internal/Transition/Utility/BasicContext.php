@@ -193,7 +193,7 @@ class BasicContext implements BasicContextInterface
         return 'oxconfig';
     }
 
-    private function getCacheDirectory(): string
+    public function getCacheDirectory(): string
     {
         return (new ConfigFile())->getVar('sCompileDir');
     }
@@ -207,20 +207,5 @@ class BasicContext implements BasicContextInterface
             $this->facts = new Facts();
         }
         return $this->facts;
-    }
-
-    /**
-     * @param int $shopId
-     *
-     * @return string
-     */
-    public function getModulePathCacheFilePath(int $shopId): string
-    {
-        return Path::join(
-            $this->getCacheDirectory(),
-            'modules',
-            (string)$shopId,
-            'module_path_cache.txt'
-        );
     }
 }

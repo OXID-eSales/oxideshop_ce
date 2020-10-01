@@ -9,13 +9,19 @@ declare(strict_types=1);
 
 namespace Integration\Internal\Framework\Module\Configuration\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ActiveModulesDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ActiveModulesDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+use Webmozart\PathUtil\Path;
 
 final class ActiveModulesDataProviderTest extends TestCase
 {
@@ -27,6 +33,7 @@ final class ActiveModulesDataProviderTest extends TestCase
     private $inactiveModuleId = 'inActiveModuleId';
     private $inactiveModulePath = 'some-path-inactive';
     private $inactiveModuleSource = 'some-source-inactive';
+
     /** @var BasicContext */
     private $context;
 
@@ -55,13 +62,37 @@ final class ActiveModulesDataProviderTest extends TestCase
 
     public function testGetModulePathsWillReturnSourcePathForActiveModule(): void
     {
-        $countOfActivatedModules = 1;
+        $this->assertEquals(
+            [
+                Path::join($this->context->getShopRootPath(), $this->activeModuleSource)
+            ],
+            $this->get(ActiveModulesDataProviderInterface::class)->getModulePaths()
+        );
+    }
 
-        $paths = $this->get(ActiveModulesDataProviderInterface::class)->getModulePaths();
+    public function testGetModulePathsUsesCacheIfItExists(): void
+    {
+        $cache = $this->getDummyCache();
+        $cache->put('absolute_module_paths', 1, ['somePath']);
 
-        $this->assertCount($countOfActivatedModules, $paths);
-        $path = $paths[array_key_first($paths)];
-        $this->assertStringContainsString($this->activeModuleSource, $path);
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
+
+        $this->assertEquals(
+            ['somePath'],
+            $activeModulesDataProvider->getModulePaths()
+        );
+    }
+
+    public function testGetModulePathsUsesCacheIfItDoesNotExist(): void
+    {
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($this->getDummyCache());
+
+        $this->assertEquals(
+            [
+                Path::join($this->context->getShopRootPath(), $this->activeModuleSource)
+            ],
+            $activeModulesDataProvider->getModulePaths()
+        );
     }
 
     private function prepareTestShopConfiguration(): void
@@ -93,5 +124,42 @@ final class ActiveModulesDataProviderTest extends TestCase
     private function cleanUpTestData(): void
     {
         $this->get(ModuleActivationServiceInterface::class)->deactivate($this->activeModuleId, $this->context->getDefaultShopId());
+    }
+
+    private function getActiveModulesDataProviderWithCache(ModuleCacheServiceInterface $cache
+    ): ActiveModulesDataProvider {
+        return new ActiveModulesDataProvider(
+            $this->get(ShopConfigurationDaoInterface::class),
+            $this->get(ModuleStateServiceInterface::class),
+            $this->get(ModulePathResolverInterface::class),
+            $this->get(ContextInterface::class),
+            $cache
+        );
+    }
+
+    private function getDummyCache(): ModuleCacheServiceInterface
+    {
+        return new class implements ModuleCacheServiceInterface {
+            private $cache;
+
+            public function invalidate(string $moduleId, int $shopId): void
+            {
+            }
+
+            public function put(string $key, int $shopId, array $data): void
+            {
+                $this->cache[$shopId][$key] = $data;
+            }
+
+            public function get(string $key, int $shopId): array
+            {
+                return $this->cache[$shopId][$key];
+            }
+
+            public function exists(string $key, int $shopId): bool
+            {
+                return isset($this->cache[$shopId][$key]);
+            }
+        };
     }
 }

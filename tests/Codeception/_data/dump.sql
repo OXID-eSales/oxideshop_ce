@@ -107,14 +107,9 @@ REPLACE INTO `oxattribute` (`OXID`,           `OXSHOPID`,   `OXTITLE`,          
                           ('testattribute3', 1, 'Test attribute 3 [DE] šÄßüл', 'Test attribute 3 [EN] šÄßüл', 2);
 UPDATE `oxattribute` SET `OXDISPLAYINBASKET` = 0;
 
-#set country, username, password for default user
-UPDATE oxuser
-  SET
-      oxcountryid = 'a7c40f631fc920687.20179984',
-      oxusername = 'admin@myoxideshop.com',
-      oxpassword = '6cb4a34e1b66d3445108cd91b67f98b9',
-      oxpasssalt = '6631386565336161636139613634663766383538633566623662613036636539'
-  WHERE OXUSERNAME='admin';
+#Add default admin user
+REPLACE INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`, `OXTIMESTAMP`) VALUES
+('oxdefaultadmin',1,'malladmin',1,'admin@myoxideshop.com','6cb4a34e1b66d3445108cd91b67f98b9','6631386565336161636139613634663766383538633566623662613036636539',1,'','Your Company Name','John','Doe','Maple Street','2425','','Any City','a7c40f631fc920687.20179984','','9041','217-8918712','217-8918713','MR',1000,'2003-01-01 00:00:00','2003-01-01 00:00:00','','','0000-00-00','','',0,0,'2020-07-16 14:22:01');
 
 REPLACE INTO `oxdiscount` (`OXID`,            `OXSHOPID`,  `OXACTIVE`, `OXTITLE`,                          `OXTITLE_1`,             `OXAMOUNT`, `OXAMOUNTTO`, `OXPRICETO`, `OXPRICE`, `OXADDSUMTYPE`, `OXADDSUM`, `OXITMARTID`, `OXITMAMOUNT`, `OXITMMULTIPLE`, `OXSORT`) VALUES
                          ('testcatdiscount', 1, 0,         'discount for category [DE] šÄßüл', 'discount for category [EN] šÄßüл',  1,          999999,       0,           0,        'abs',           5,         '',            0,             0,               100);

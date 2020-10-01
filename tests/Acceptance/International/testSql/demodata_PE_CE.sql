@@ -1,13 +1,8 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
-#set country, username, password for default user
-UPDATE oxuser
-  SET
-      oxcountryid = 'a7c40f631fc920687.20179984',
-      oxusername = 'admin@myoxideshop.com',
-      oxpassword = '6cb4a34e1b66d3445108cd91b67f98b9',
-      oxpasssalt = '6631386565336161636139613634663766383538633566623662613036636539'
-  WHERE OXUSERNAME='admin';
+#Add default admin user
+REPLACE INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`, `OXTIMESTAMP`) VALUES
+('oxdefaultadmin',1,'malladmin',1,'admin@myoxideshop.com','6cb4a34e1b66d3445108cd91b67f98b9','6631386565336161636139613634663766383538633566623662613036636539',1,'','Your Company Name','John','Doe','Maple Street','2425','','Any City','a7c40f631fc920687.20179984','','9041','217-8918712','217-8918713','MR',1000,'2003-01-01 00:00:00','2003-01-01 00:00:00','','','0000-00-00','','',0,0,'2020-07-16 14:22:01');
 
 INSERT INTO `oxarticles` (`OXID`,   `OXSHOPID`,   `OXPARENTID`, `OXACTIVE`, `OXARTNUM`, `OXTITLE`,                    `OXSHORTDESC`,                          `OXPRICE`, `OXPRICEA`, `OXPRICEB`, `OXPRICEC`, `OXTPRICE`, `OXUNITNAME`, `OXUNITQUANTITY`, `OXVAT`, `OXWEIGHT`, `OXSTOCK`, `OXSTOCKFLAG`, `OXSTOCKTEXT`,          `OXNOSTOCKTEXT`,            `OXDELIVERY`, `OXINSERT`,   `OXTIMESTAMP`,        `OXLENGTH`, `OXWIDTH`, `OXHEIGHT`, `OXSEARCHKEYS`, `OXISSEARCH`, `OXISCONFIGURABLE`, `OXVARNAME`,           `OXVARSTOCK`, `OXVARCOUNT`, `OXVARSELECT`,     `OXVARMINPRICE`, `OXVARNAME_1`,   `OXVARSELECT_1`, `OXTITLE_1`,                    `OXSHORTDESC_1`,                  `OXSEARCHKEYS_1`, `OXSTOCKTEXT_1`, `OXNOSTOCKTEXT_1`,   `OXSORT`, `OXVENDORID`,      `OXMANUFACTURERID`, `OXSKIPDISCOUNTS`, `OXRATING`, `OXRATINGCNT`, `OXMINDELTIME`, `OXMAXDELTIME`, `OXDELTIMEUNIT`) VALUES
                          ('1000',   1, '',            1,         '1000',     'Test product 0 [EN] šųößлы', 'Test product 0 short desc [EN] šųößлы', 50,        35,         45,         55,         0,         'kg',          2,                NULL,    24,         15,        1,            'In stock [EN] šųößлы', 'Out of stock [EN] šųößлы', '0000-00-00', '2008-02-04', '2010-03-16 10:53:43', 1,          2,         2,         'šųößлы1000',    1,            0,                 '',                     0,            0,           '',                 50,             '',              '',              '[DE 4] Test product 0 šųößлы', 'Test product 0 short desc [DE]', 'search1000',     'In stock [DE]', 'Out of stock [DE]', 0,        'testdistributor', 'testmanufacturer', 0,                  0,          0,             1,              1,             'DAY'),

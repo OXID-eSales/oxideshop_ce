@@ -28,7 +28,7 @@ final class UserRegistrationCest
         $userRegistration = new UserRegistration($I);
         $I->wantToTest('simple user account opening');
 
-        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool', 1, 'theme:flow');
         // prepare user data
         $userId = '1';
         $userLoginData = $this->getUserLoginData($userId);
@@ -54,8 +54,8 @@ final class UserRegistrationCest
         $start = new Start($I);
         $I->wantToTest('the user standard registration and the newsletter subscription with the same email');
 
-        $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool');
-        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->updateConfigInDatabase('blFooterShowNewsletterForm', true, 'bool', 1, 'theme:flow');
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool', 1, 'theme:flow');
         $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
 
         // prepare user data

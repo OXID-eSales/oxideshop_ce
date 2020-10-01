@@ -66,7 +66,7 @@ final class NewLanguageNavigationCest
     {
         $languages = unserialize($this->languages);
         $languages[$code] = $name;
-        $I->updateConfigInDatabase('aLanguages', serialize($languages));
+        $I->updateConfigInDatabase('aLanguages', serialize($languages), 'aarr');
 
         $languageParams = unserialize($this->languageParams);
         $languageParams[$code] = [
@@ -74,7 +74,7 @@ final class NewLanguageNavigationCest
             'active' => '1',
             'sort'   => (string)(count($languageParams) + 1),
         ];
-        $I->updateConfigInDatabase('aLanguageParams', serialize($languageParams));
+        $I->updateConfigInDatabase('aLanguageParams', serialize($languageParams), 'aarr');
     }
 
     private function checkProductDetails(Home $shop, AcceptanceTester $I): ProductDetails

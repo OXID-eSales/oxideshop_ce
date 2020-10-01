@@ -552,12 +552,15 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         // send order by email to shop owner and current user
         // skipping this action in case of order recalculation
         if (!$blRecalculatingOrder) {
-            $iRet = $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
-        } else {
-            $iRet = self::ORDER_STATE_OK;
+            // add user, basket and payment to order
+            $this->_oUser = $oUser;
+            $this->_oBasket = $oBasket;
+            $this->_oPayment = $oUserPayment;
+
+            return $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
         }
 
-        return $iRet;
+        return self::ORDER_STATE_OK;
     }
 
     /**
@@ -1731,25 +1734,18 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _sendOrderByEmail($oUser = null, $oBasket = null, $oPayment = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $iRet = self::ORDER_STATE_MAILINGERROR;
-
-        // add user, basket and payment to order
-        $this->_oUser = $oUser;
-        $this->_oBasket = $oBasket;
-        $this->_oPayment = $oPayment;
-
         $oxEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-
-        // send order email to user
-        if ($oxEmail->sendOrderEMailToUser($this)) {
-            // mail to user was successfully sent
-            $iRet = self::ORDER_STATE_OK;
-        }
 
         // send order email to shop owner
         $oxEmail->sendOrderEMailToOwner($this);
 
-        return $iRet;
+        // send order email to user
+        if (!$oxEmail->sendOrderEMailToUser($this)) {
+            // mail to user was successfully sent
+            return self::ORDER_STATE_MAILINGERROR;
+        }
+
+        return self::ORDER_STATE_OK;
     }
 
     /**

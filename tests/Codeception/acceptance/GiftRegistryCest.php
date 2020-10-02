@@ -167,7 +167,7 @@ class GiftRegistryCest
         $I->wantToTest('disabled user gift registry via performance options');
 
         //(Use gift registry) is disabled
-        $I->updateConfigInDatabase('bl_showWishlist', false, "bool", 1, "theme:flow");
+        $I->updateConfigInDatabase('bl_showWishlist', false, "bool");
 
         $productData = [
             'id' => '1000',
@@ -193,7 +193,7 @@ class GiftRegistryCest
         $accountPage->dontSeeGiftRegistryLink();
 
         //(Use gift registry) is enabled again
-        $I->updateConfigInDatabase('bl_showWishlist', true, "bool", 1, "theme:flow");
+        $I->updateConfigInDatabase('bl_showWishlist', true, "bool");
     }
 
     public function _failed(AcceptanceTester $I)

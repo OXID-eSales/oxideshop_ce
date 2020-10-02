@@ -28,7 +28,7 @@ final class UserRegistrationCest
         $userRegistration = new UserRegistration($I);
         $I->wantToTest('simple user account opening');
 
-        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool', 1, 'theme:flow');
+        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         // prepare user data
         $userId = '1';
         $userLoginData = $this->getUserLoginData($userId);

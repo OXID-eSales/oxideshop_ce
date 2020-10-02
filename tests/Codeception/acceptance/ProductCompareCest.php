@@ -165,7 +165,7 @@ class ProductCompareCest
         $I->wantToTest('if product compare functionality is correctly disabled');
 
         //(Use product compare) is disabled
-        $I->updateConfigInDatabase('bl_showCompareList', false, "bool", 1, 'theme:flow');
+        $I->updateConfigInDatabase('bl_showCompareList', false, "bool");
 
         $productData = [
             'id' => '1000',
@@ -192,7 +192,7 @@ class ProductCompareCest
 
         $I->cleanUp();
         //(Use product compare) is enabled
-        $I->updateConfigInDatabase('bl_showCompareList', true, "bool", 1, 'theme:flow');
+        $I->updateConfigInDatabase('bl_showCompareList', true, "bool");
     }
 
     public function _failed(AcceptanceTester $I)

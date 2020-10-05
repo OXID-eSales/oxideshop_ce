@@ -87,6 +87,8 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     }
 
     /**
+     * @deprecated 6.6 Will be removed completely
+     *
      * @param string $key
      * @param mixed  $value
      *

@@ -36,6 +36,9 @@ class MetaDataProvider implements MetaDataProviderInterface
     const METADATA_SETTINGS = 'settings';
     const METADATA_SMARTY_PLUGIN_DIRECTORIES = 'smartyPluginDirectories';
     const METADATA_FILEPATH = 'metaDataFilePath';
+    /**
+     * @deprecated 6.6 Will be removed completely
+     */
     const METADATA_FILES = 'files';
 
     /**

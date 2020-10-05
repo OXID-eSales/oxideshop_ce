@@ -15,6 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingTy
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
+/**
+ * @deprecated 6.6 Will be removed completely
+ */
 class ShopConfigurationClassesWithoutNamespaceHandler implements ModuleConfigurationHandlerInterface
 {
     /** @var ShopConfigurationSettingDaoInterface */

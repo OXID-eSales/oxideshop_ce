@@ -24,12 +24,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Language Constants:
     - `NAVIGATION_NEWVERSIONAVAILABLE`
     - `UPDATEAPP_DIRNOTDELETED_WARNING`
+- Support of metadata version 1, 1.1 and 1.2
+  - Class: 
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassesWithoutNamespaceDataMapper`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ShopConfigurationClassesWithoutNamespaceHandler`
+    - `OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload`
+  - Method: 
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::addClassWithoutNamespace`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getClassesWithoutNamespace`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::hasClassWithoutNamespaces`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer::lowerCaseFileClassesNames` 
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\EventsValidator::isNamespacedClass`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber::invalidateModuleCache`
+  - Constant:
+    -  `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES`
     
 ### Fixed
 - Impossible save module settings from the admin area if module has services.yaml [#0007180](https://bugs.oxid-esales.com/view.php?id=7180)
 - Collect unique article ids for seo links update [#0007167](https://bugs.oxid-esales.com/view.php?id=7167)
-
-### Fixed
 - Fix OXID in _set tables has wrong collation [#0007084](https://bugs.oxid-esales.com/view.php?id=7084)
 
 ## [6.5.6] - 2020-07-16

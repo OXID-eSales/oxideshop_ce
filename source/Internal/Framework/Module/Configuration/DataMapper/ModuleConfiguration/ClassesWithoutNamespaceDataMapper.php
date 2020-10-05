@@ -13,6 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace;
 
+/**
+ * @deprecated 6.6 Will be removed completely
+ */
 class ClassesWithoutNamespaceDataMapper implements ModuleConfigurationDataMapperInterface
 {
     public const MAPPING_KEY = 'classesWithoutNamespace';

@@ -29,7 +29,7 @@ class StyleRegistrator
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
 
-        if (!preg_match('#^https?://#', $style)) {
+        if (!\preg_match('#^https?://#', $style)) {
             $style = $this->formLocalFileUrl($style);
         }
 
@@ -43,7 +43,7 @@ class StyleRegistrator
                 $stylesParameterName = static::STYLES_PARAMETER_NAME . $suffix;
                 $styles = (array) $config->getGlobalParameter($stylesParameterName);
                 $styles[] = $style;
-                $styles = array_unique($styles);
+                $styles = \array_unique($styles);
                 $config->setGlobalParameter($stylesParameterName, $styles);
             }
         }
@@ -59,17 +59,17 @@ class StyleRegistrator
     protected function formLocalFileUrl($file)
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $parts = explode('?', $file);
+        $parts = \explode('?', $file);
         $url = $config->getResourceUrl($parts[0], $config->isAdmin());
         $parameters = $parts[1];
         if (empty($parameters)) {
             $path = $config->getResourcePath($file, $config->isAdmin());
-            $parameters = filemtime($path);
+            $parameters = \filemtime($path);
         }
 
         if (empty($url) && $config->getConfigParam('iDebug') != 0) {
             $error = "{oxstyle} resource not found: " . Str::getStr()->htmlspecialchars($file);
-            trigger_error($error, E_USER_WARNING);
+            \trigger_error($error, E_USER_WARNING);
         }
 
         return $url ? "$url?$parameters" : '';

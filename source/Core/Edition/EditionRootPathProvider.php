@@ -52,7 +52,7 @@ class EditionRootPathProvider
             $path = $editionsPath . '/' .  static::PROFESSIONAL_DIRECTORY;
         }
 
-        return realpath($path) . DIRECTORY_SEPARATOR;
+        return \realpath($path) . DIRECTORY_SEPARATOR;
     }
 
     /**

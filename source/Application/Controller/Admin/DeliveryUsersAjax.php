@@ -96,8 +96,8 @@ class DeliveryUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+        } elseif ($aRemoveGroups && \is_array($aRemoveGroups)) {
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
@@ -116,7 +116,7 @@ class DeliveryUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $aChosenUsr = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
         }
 
-        if ($soxId && $soxId != "-1" && is_array($aChosenUsr)) {
+        if ($soxId && $soxId != "-1" && \is_array($aChosenUsr)) {
             foreach ($aChosenUsr as $sChosenUsr) {
                 $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');

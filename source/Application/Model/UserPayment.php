@@ -144,7 +144,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if (!$this->_aDynValues) {
             $sRawDynValue = null;
-            if (is_object($this->oxuserpayments__oxvalue)) {
+            if (\is_object($this->oxuserpayments__oxvalue)) {
                 $sRawDynValue = $this->oxuserpayments__oxvalue->getRawValue();
             }
 

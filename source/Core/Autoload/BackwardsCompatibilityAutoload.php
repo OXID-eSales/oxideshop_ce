@@ -29,7 +29,7 @@ class BackwardsCompatibilityAutoload
          * Classes from unified namespace canot be loaded by this auto loader.
          * Do not try to load them in order to avoid strange errors in edge cases.
          */
-        if (false !== strpos($class, 'OxidEsales\Eshop\\')) {
+        if (false !== \strpos($class, 'OxidEsales\Eshop\\')) {
             return false;
         }
 
@@ -49,7 +49,7 @@ class BackwardsCompatibilityAutoload
     private static function getUnifiedNamespaceClassForBcAlias($bcAlias)
     {
         $classMap = static::getBackwardsCompatibilityClassMap();
-        $bcAlias = strtolower($bcAlias);
+        $bcAlias = \strtolower($bcAlias);
         $result = isset($classMap[$bcAlias]) ? $classMap[$bcAlias] : "";
 
         return $result;
@@ -63,7 +63,7 @@ class BackwardsCompatibilityAutoload
      */
     private static function forceBackwardsCompatiblityClassLoading($class)
     {
-        class_exists($class);
+        \class_exists($class);
     }
 
     /**

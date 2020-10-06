@@ -47,7 +47,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getTables()
     {
-        if (is_null($this->_aTables)) {
+        if (\is_null($this->_aTables)) {
             $aTables = $this->formDatabaseTablesArray();
             $this->setTables($aTables);
         }
@@ -122,7 +122,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getMultiShopTables()
     {
-        if (is_null($this->_aMultiShopTables)) {
+        if (\is_null($this->_aMultiShopTables)) {
             $this->_aMultiShopTables = [];
         }
 
@@ -177,7 +177,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
 
-        if (!is_array($aLanguages)) {
+        if (!\is_array($aLanguages)) {
             $aLanguages = [null => null];
         }
 
@@ -205,7 +205,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             }
         }
 
-        return implode(',', $aFields);
+        return \implode(',', $aFields);
     }
 
     /**
@@ -221,7 +221,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $aFields = [];
 
         $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
-        $aTables = array_merge([$sTable], $oMetaData->getAllMultiTables($sTable));
+        $aTables = \array_merge([$sTable], $oMetaData->getAllMultiTables($sTable));
         foreach ($aTables as $sTableKey => $sTableName) {
             $aTableFields = $oMetaData->getFields($sTableName);
             foreach ($aTableFields as $sCoreField => $sField) {
@@ -231,7 +231,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             }
         }
 
-        return implode(',', $aFields);
+        return \implode(',', $aFields);
     }
 
     /**
@@ -247,7 +247,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sJoin = ' ';
         $oMetaData = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
         $aTables = $oMetaData->getAllMultiTables($sTable);
-        if (count($aTables)) {
+        if (\count($aTables)) {
             foreach ($aTables as $sTableKey => $sTableName) {
                 $sJoin .= "LEFT JOIN {$sTableName} USING (OXID) ";
             }
@@ -320,7 +320,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $aTables = $this->getTables();
         foreach ($aTables as $sTable) {
             $this->createViewQuery($sTable);
-            if (in_array($sTable, $aMultilangTables)) {
+            if (\in_array($sTable, $aMultilangTables)) {
                 $this->createViewQuery($sTable, $aLanguages);
             }
         }
@@ -390,7 +390,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $multilanguageTables = Registry::getLang()->getMultiLangTables();
 
-        return array_unique($multilanguageTables);
+        return \array_unique($multilanguageTables);
     }
 
     /**

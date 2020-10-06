@@ -40,7 +40,7 @@ class RequiredFieldsValidator
      */
     public function __construct($oFieldValidator = null)
     {
-        if (is_null($oFieldValidator)) {
+        if (\is_null($oFieldValidator)) {
             $oFieldValidator = oxNew(\OxidEsales\Eshop\Application\Model\RequiredFieldValidator::class);
         }
         $this->setFieldValidator($oFieldValidator);

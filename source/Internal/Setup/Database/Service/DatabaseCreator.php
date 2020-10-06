@@ -57,7 +57,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
     {
         try {
             $this->dbConnection = new PDO(
-                sprintf('mysql:host=%s;port=%s', $host, $port),
+                \sprintf('mysql:host=%s;port=%s', $host, $port),
                 $username,
                 $password,
                 [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']

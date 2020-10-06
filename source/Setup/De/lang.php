@@ -10,7 +10,7 @@ $aLang = [
 'charset'                                       => 'UTF-8',
 'HEADER_META_MAIN_TITLE'                        => 'OXID eShop Installationsassistent',
 'HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'        => 'Sollte das Setup nicht nach einigen Sekunden automatisch weiterspringen, dann klicken Sie bitte',
-'FOOTER_OXID_ESALES'                            => '&copy; OXID eSales AG 2003-' . @date("Y"),
+'FOOTER_OXID_ESALES'                            => '&copy; OXID eSales AG 2003-' . @\date("Y"),
 
 'TAB_0_TITLE'                                   => 'Voraussetzungen',
 'TAB_1_TITLE'                                   => 'Willkommen',

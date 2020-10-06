@@ -25,7 +25,7 @@ class Version20180703135728 extends AbstractMigration
     {
         $varName = 'contactFormRequiredFields';
         $varType = 'arr';
-        $rawValue = serialize(['email']);
+        $rawValue = \serialize(['email']);
 
         $query = "INSERT INTO `oxconfig` 
                   (

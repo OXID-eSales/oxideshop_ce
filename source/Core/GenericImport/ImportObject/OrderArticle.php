@@ -32,13 +32,13 @@ class OrderArticle extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\Imp
         $data = parent::preAssignObject($shopObject, $data, $allowCustomShopId);
 
         // check if data is not serialized
-        $persParamValues = @unserialize($data['OXPERSPARAM']);
-        if (!is_array($persParamValues)) {
+        $persParamValues = @\unserialize($data['OXPERSPARAM']);
+        if (!\is_array($persParamValues)) {
             // data is a string with | separation, prepare for oxid
-            $persParamValues = explode("|", $data['OXPERSPARAM']);
-            $data['OXPERSPARAM'] = serialize($persParamValues);
+            $persParamValues = \explode("|", $data['OXPERSPARAM']);
+            $data['OXPERSPARAM'] = \serialize($persParamValues);
         }
-        if (array_key_exists('OXORDERSHOPID', $data)) {
+        if (\array_key_exists('OXORDERSHOPID', $data)) {
             $data['OXORDERSHOPID'] = $this->getOrderShopId($data['OXORDERSHOPID']);
         }
 

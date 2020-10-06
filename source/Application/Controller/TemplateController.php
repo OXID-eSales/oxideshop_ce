@@ -26,7 +26,7 @@ class TemplateController extends \OxidEsales\Eshop\Application\Controller\Fronte
         parent::render();
 
         // security fix so that you cant access files from outside template dir
-        $sTplName = basename((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("tpl"));
+        $sTplName = \basename((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("tpl"));
         if ($sTplName) {
             $sTplName = 'custom/' . $sTplName;
         }

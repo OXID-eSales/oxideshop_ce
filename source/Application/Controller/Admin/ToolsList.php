@@ -50,15 +50,15 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             $sUpdateSQL = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("updatesql");
             $sUpdateSQLFile = $this->_processFiles();
 
-            if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {
-                if (isset($sUpdateSQL) && strlen($sUpdateSQL)) {
+            if ($sUpdateSQLFile && \strlen($sUpdateSQLFile) > 0) {
+                if (isset($sUpdateSQL) && \strlen($sUpdateSQL)) {
                     $sUpdateSQL .= ";\r\n" . $sUpdateSQLFile;
                 } else {
                     $sUpdateSQL = $sUpdateSQLFile;
                 }
             }
 
-            $sUpdateSQL = trim(stripslashes($sUpdateSQL));
+            $sUpdateSQL = \trim(\stripslashes($sUpdateSQL));
             $oStr = Str::getStr();
             $iLen = $oStr->strlen($sUpdateSQL);
             if ($this->_prepareSQL($sUpdateSQL, $iLen)) {
@@ -69,16 +69,16 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 $aQErrorMessages = [];
                 $aQErrorNumbers = [];
 
-                if (!empty($aQueries) && is_array($aQueries)) {
+                if (!empty($aQueries) && \is_array($aQueries)) {
                     $blStop = false;
                     $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                     $iQueriesCounter = 0;
-                    for ($i = 0; $i < count($aQueries); $i++) {
+                    for ($i = 0; $i < \count($aQueries); $i++) {
                         $sUpdateSQL = $aQueries[$i];
-                        $sUpdateSQL = trim($sUpdateSQL);
+                        $sUpdateSQL = \trim($sUpdateSQL);
 
                         if ($oStr->strlen($sUpdateSQL) > 0) {
-                            $aPassedQueries[$iQueriesCounter] = nl2br($oStr->htmlentities($sUpdateSQL));
+                            $aPassedQueries[$iQueriesCounter] = \nl2br($oStr->htmlentities($sUpdateSQL));
                             if ($oStr->strlen($aPassedQueries[$iQueriesCounter]) > 200) {
                                 $aPassedQueries[$iQueriesCounter] = $oStr->substr($aPassedQueries[$iQueriesCounter], 0, 200) . "...";
                             }
@@ -132,23 +132,23 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             foreach ($_FILES['myfile']['name'] as $key => $value) {
                 $aSource = $_FILES['myfile']['tmp_name'];
                 $sSource = $aSource[$key];
-                $value = strtolower($value);
+                $value = \strtolower($value);
                 // add type to name
-                $aFilename = explode(".", $value);
+                $aFilename = \explode(".", $value);
 
                 //hack?
 
                 $aBadFiles = ["php", 'php4', 'php5', "jsp", "cgi", "cmf", "exe"];
 
-                if (in_array($aFilename[1], $aBadFiles)) {
+                if (\in_array($aFilename[1], $aBadFiles)) {
                     \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 //reading SQL dump file
-                if (filesize($sSource) > 0) {
-                    $rHandle = fopen($sSource, "r");
-                    $sContents = fread($rHandle, filesize($sSource));
-                    fclose($rHandle);
+                if (\filesize($sSource) > 0) {
+                    $rHandle = \fopen($sSource, "r");
+                    $sContents = \fread($rHandle, \filesize($sSource));
+                    \fclose($rHandle);
 
                     //reading only one SQL dump file
                     return $sContents;
@@ -178,10 +178,10 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
 
         //removing "mysqldump" application comments
         while ($oStr->preg_match("/^\-\-.*\n/", $sSQL)) {
-            $sSQL = trim($oStr->preg_replace("/^\-\-.*\n/", "", $sSQL));
+            $sSQL = \trim($oStr->preg_replace("/^\-\-.*\n/", "", $sSQL));
         }
         while ($oStr->preg_match("/\n\-\-.*\n/", $sSQL)) {
-            $sSQL = trim($oStr->preg_replace("/\n\-\-.*\n/", "\n", $sSQL));
+            $sSQL = \trim($oStr->preg_replace("/\n\-\-.*\n/", "\n", $sSQL));
         }
 
         for ($iPos = 0; $iPos < $iSQLlen; ++$iPos) {
@@ -218,7 +218,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
             } elseif ($sChar == ";") {
                 // delimiter found, appending query array
                 $this->aSQLs[] = $oStr->substr($sSQL, 0, $iPos);
-                $sSQL = ltrim($oStr->substr($sSQL, min($iPos + 1, $iSQLlen)));
+                $sSQL = \ltrim($oStr->substr($sSQL, \min($iPos + 1, $iSQLlen)));
                 $iSQLlen = $oStr->strlen($sSQL);
                 if ($iSQLlen) {
                     $iPos = -1;
@@ -236,12 +236,12 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                     : $oStr->strpos(' ' . $sSQL, "\015", $iPos + 2);
                 if (!$iCommEnd) {
                     if ($iCommStart > 0) {
-                        $this->aSQLs[] = trim($oStr->substr($sSQL, 0, $iCommStart));
+                        $this->aSQLs[] = \trim($oStr->substr($sSQL, 0, $iCommStart));
                     }
 
                     return true;
                 } else {
-                    $sSQL = $oStr->substr($sSQL, 0, $iCommStart) . ltrim($oStr->substr($sSQL, $iCommEnd));
+                    $sSQL = $oStr->substr($sSQL, 0, $iCommStart) . \ltrim($oStr->substr($sSQL, $iCommEnd));
                     $iSQLlen = $oStr->strlen($sSQL);
                     $iPos--;
                 }

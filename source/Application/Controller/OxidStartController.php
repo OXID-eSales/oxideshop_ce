@@ -43,7 +43,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
         $errorNumber = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('execerror');
         $templates = $this->getErrorTemplates();
 
-        if (array_key_exists($errorNumber, $templates)) {
+        if (\array_key_exists($errorNumber, $templates)) {
             return $templates[$errorNumber];
         } else {
             return 'message/err_unknown.tpl';

@@ -48,12 +48,12 @@ class AttributeMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oOtherLang = $oAttr->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oAttr->loadInLang(key($oOtherLang), $soxId);
+                $oAttr->loadInLang(\key($oOtherLang), $soxId);
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 

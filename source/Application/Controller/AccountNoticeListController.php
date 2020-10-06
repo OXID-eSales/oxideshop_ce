@@ -107,12 +107,12 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
     public function getSimilarProducts()
     {
         // similar products list
-        if ($this->_aSimilarProductList === null && count($this->getNoticeProductList())) {
+        if ($this->_aSimilarProductList === null && \count($this->getNoticeProductList())) {
             // just ensuring that next call will skip this check
             $this->_aSimilarProductList = false;
 
             // loading similar products
-            if ($oSimilarProd = current($this->getNoticeProductList())) {
+            if ($oSimilarProd = \current($this->getNoticeProductList())) {
                 $this->_aSimilarProductList = $oSimilarProd->getSimilarProducts();
             }
         }
@@ -131,8 +131,8 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
             $this->_aSimilarRecommListIds = false;
 
             $aNoticeProdList = $this->getNoticeProductList();
-            if (is_array($aNoticeProdList) && count($aNoticeProdList)) {
-                $this->_aSimilarRecommListIds = array_keys($aNoticeProdList);
+            if (\is_array($aNoticeProdList) && \count($aNoticeProdList)) {
+                $this->_aSimilarRecommListIds = \array_keys($aNoticeProdList);
             }
         }
 

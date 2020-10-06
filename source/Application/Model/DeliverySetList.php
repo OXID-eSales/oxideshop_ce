@@ -59,8 +59,8 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function setHomeCountry($sHomeCountry)
     {
-        if (is_array($sHomeCountry)) {
-            $this->_sHomeCountry = current($sHomeCountry);
+        if (\is_array($sHomeCountry)) {
+            $this->_sHomeCountry = \current($sHomeCountry);
         } else {
             $this->_sHomeCountry = $sHomeCountry;
         }
@@ -142,7 +142,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $aIds = [];
-        if (count($aGroupIds)) {
+        if (\count($aGroupIds)) {
             foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
             }
@@ -156,7 +156,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
         $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetu' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
-        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ") )" : '0';
+        $sGroupSql = \count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (" . \implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ") )" : '0';
 
         $sQ .= "and (
             select
@@ -197,7 +197,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             $oDelSet = $aList[$sDelSet];
             unset($aList[$sDelSet]);
 
-            $aList = array_merge([$sDelSet => $oDelSet], $aList);
+            $aList = \array_merge([$sDelSet => $oDelSet], $aList);
         }
 
         return $aList;
@@ -245,7 +245,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
             // checking if these ship sets available (number of possible payment methods > 0)
             foreach ($this as $sShipSetId => $oShipSet) {
                 $aPaymentList = $oPayList->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
-                if (count($aPaymentList)) {
+                if (\count($aPaymentList)) {
                     // now checking for deliveries
                     if ($oDelList->hasDeliveries($oBasket, $oUser, $oUser->getActiveCountry(), $sShipSetId)) {
                         $aActSets[$sShipSetId] = $oShipSet;

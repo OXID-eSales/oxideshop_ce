@@ -307,7 +307,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function isSaveToDataBaseEnabled()
     {
-        if (is_null($this->_blSaveToDataBase)) {
+        if (\is_null($this->_blSaveToDataBase)) {
             $this->_blSaveToDataBase = (bool) !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPerfNoBasketSaving');
         }
 
@@ -399,15 +399,15 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _changeBasketItemKey($sOldKey, $sNewKey, $value = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        reset($this->_aBasketContents);
+        \reset($this->_aBasketContents);
         $iOldKeyPlace = 0;
-        while (key($this->_aBasketContents) != $sOldKey && next($this->_aBasketContents)) {
+        while (\key($this->_aBasketContents) != $sOldKey && \next($this->_aBasketContents)) {
             ++$iOldKeyPlace;
         }
-        $aNewCopy = array_merge(
-            array_slice($this->_aBasketContents, 0, $iOldKeyPlace, true),
+        $aNewCopy = \array_merge(
+            \array_slice($this->_aBasketContents, 0, $iOldKeyPlace, true),
             [$sNewKey => $value],
-            array_slice($this->_aBasketContents, $iOldKeyPlace + 1, count($this->_aBasketContents) - $iOldKeyPlace, true)
+            \array_slice($this->_aBasketContents, $iOldKeyPlace + 1, \count($this->_aBasketContents) - $iOldKeyPlace, true)
         );
         $this->_aBasketContents = $aNewCopy;
     }
@@ -448,7 +448,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         }
 
         $sItemId = $this->getItemKey($sProductID, $aSel, $aPersParam, $blBundle);
-        if ($sOldBasketItemId && (strcmp($sOldBasketItemId, $sItemId) != 0)) {
+        if ($sOldBasketItemId && (\strcmp($sOldBasketItemId, $sItemId) != 0)) {
             if (isset($this->_aBasketContents[$sItemId])) {
                 // we are merging, so params will just go to the new key
                 unset($this->_aBasketContents[$sOldBasketItemId]);
@@ -590,7 +590,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     {
         $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 
-        $sItemKey = md5($sProductId . '|' . serialize($aSel) . '|' . serialize($aPersParam) . '|' . (int) $blBundle . '|' . serialize($sAdditionalParam));
+        $sItemKey = \md5($sProductId . '|' . \serialize($aSel) . '|' . \serialize($aPersParam) . '|' . (int) $blBundle . '|' . \serialize($sAdditionalParam));
 
         return $sItemKey;
     }
@@ -615,7 +615,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         unset($this->_aBasketContents[$sItemKey]);
 
         // basket exclude
-        if (!count($this->_aBasketContents) && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blBasketExcludeEnabled')) {
+        if (!\count($this->_aBasketContents) && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blBasketExcludeEnabled')) {
             $this->setBasketRootCatId(null);
         }
     }
@@ -626,7 +626,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function _clearBundles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        reset($this->_aBasketContents);
+        \reset($this->_aBasketContents);
         foreach ($this->_aBasketContents as $sItemKey => $oBasketItem) {
             if ($oBasketItem->isBundle()) {
                 $this->removeItem($sItemKey);
@@ -826,7 +826,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 if (!$oArticle->skipDiscounts() && $this->canCalcDiscounts()) {
                     // apply basket type discounts for item
                     $aDiscounts = $oDiscountList->getBasketItemDiscounts($oArticle, $this, $this->getBasketUser());
-                    reset($aDiscounts);
+                    \reset($aDiscounts);
                     /** @var \oxDiscount $oDiscount */
                     foreach ($aDiscounts as $oDiscount) {
                         $oBasketPrice->setDiscount($oDiscount->getAddSum(), $oDiscount->getAddSumType());
@@ -890,7 +890,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     {
         foreach ($aItemDiscounts as $sKey => $oDiscount) {
             // add prices of the same discounts
-            if (array_key_exists($sKey, $aDiscounts)) {
+            if (\array_key_exists($sKey, $aDiscounts)) {
                 $aDiscounts[$sKey]->dDiscount += $oDiscount->dDiscount;
             } else {
                 $aDiscounts[$sKey] = $oDiscount;
@@ -939,7 +939,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 $this->getShippingId()
             );
 
-            if (count($aDeliveryList) > 0) {
+            if (\count($aDeliveryList) > 0) {
                 foreach ($aDeliveryList as $oDelivery) {
                     //debug trace
                     if ($myConfig->getConfigParam('iDebug') == 5) {
@@ -1093,7 +1093,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             $dPrice = $this->_oDiscountProductsPriceList->getSum($this->isCalculationModeNetto()) - $this->_oTotalDiscount->getPrice();
 
             // recalculating
-            if (count($this->_aVouchers)) {
+            if (\count($this->_aVouchers)) {
                 $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
                 foreach ($this->_aVouchers as $sVoucherId => $oStdVoucher) {
                     $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
@@ -1281,7 +1281,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         if ($this->_oTotalDiscount === null || (!$this->isAdmin())) {
             $this->_oTotalDiscount = $this->_getPriceObject();
 
-            if (is_array($this->_aDiscounts)) {
+            if (\is_array($this->_aDiscounts)) {
                 foreach ($this->_aDiscounts as $oDiscount) {
                     // skipping bundle discounts
                     if ($oDiscount->sType == 'itm') {
@@ -1661,7 +1661,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         // discount information
         // formatting discount value
         $this->aDiscounts = $this->getDiscounts();
-        if (is_array($this->aDiscounts) && count($this->aDiscounts) > 0) {
+        if (\is_array($this->aDiscounts) && \count($this->aDiscounts) > 0) {
             $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
             foreach ($this->aDiscounts as $oDiscount) {
                 $oDiscount->fDiscount = $oLang->formatCurrency($oDiscount->dDiscount, $this->getBasketCurrency());
@@ -1768,8 +1768,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         if (!$oUser) {
             // don't calculate if not logged in unless specified otherwise
             $aHomeCountry = $myConfig->getConfigParam('aHomeCountry');
-            if ($myConfig->getConfigParam('blCalculateDelCostIfNotLoggedIn') && is_array($aHomeCountry)) {
-                $sDeliveryCountry = current($aHomeCountry);
+            if ($myConfig->getConfigParam('blCalculateDelCostIfNotLoggedIn') && \is_array($aHomeCountry)) {
+                $sDeliveryCountry = \current($aHomeCountry);
             }
         } else {
             // ok, logged in
@@ -1897,8 +1897,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadSelectLists')) {
                     // marking chosen select list
                     $aSelList = $oBasketItem->getSelList();
-                    if (is_array($aSelList) && ($aSelectlist = $oProduct->getSelectLists($sItemKey))) {
-                        reset($aSelList);
+                    if (\is_array($aSelList) && ($aSelectlist = $oProduct->getSelectLists($sItemKey))) {
+                        \reset($aSelList);
                         foreach ($aSelList as $conkey => $iSel) {
                             $aSelectlist[$conkey][$iSel]->selected = 1;
                         }
@@ -1940,7 +1940,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getProductsPrice()
     {
-        if (is_null($this->_oProductsPriceList)) {
+        if (\is_null($this->_oProductsPriceList)) {
             $this->_oProductsPriceList = oxNew(\OxidEsales\Eshop\Core\PriceList::class);
         }
 
@@ -1954,7 +1954,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getPrice()
     {
-        if (is_null($this->_oPrice)) {
+        if (\is_null($this->_oPrice)) {
             /** @var \OxidEsales\Eshop\Core\Price $price */
             $price = oxNew(\OxidEsales\Eshop\Core\Price::class);
             $this->setPrice($price);
@@ -2030,7 +2030,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getProductsCount()
     {
-        return count($this->_aBasketContents);
+        return \count($this->_aBasketContents);
     }
 
     /**
@@ -2183,11 +2183,11 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getDiscounts()
     {
-        if ($this->getTotalDiscount() && $this->getTotalDiscount()->getBruttoPrice() == 0 && count($this->_aItemDiscounts) == 0) {
+        if ($this->getTotalDiscount() && $this->getTotalDiscount()->getBruttoPrice() == 0 && \count($this->_aItemDiscounts) == 0) {
             return [];
         }
 
-        return array_merge($this->_aItemDiscounts, $this->_aDiscounts);
+        return \array_merge($this->_aItemDiscounts, $this->_aDiscounts);
     }
 
     /**
@@ -2793,7 +2793,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     {
         $blIsBelowMinOrderPrice = false;
         $sConfValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iMinOrderPrice');
-        if (is_numeric($sConfValue) && $this->getProductsCount()) {
+        if (\is_numeric($sConfValue) && $this->getProductsCount()) {
             $dMinOrderPrice = \OxidEsales\Eshop\Core\Price::getPriceInActCurrency((double) $sConfValue);
             $dNotDiscountedProductPrice = 0;
             if ($oPrice = $this->getNotDiscountProductsPrice()) {

@@ -59,7 +59,7 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     {
         foreach ($metadataModuleSettings as $key => $setting) {
             if (isset($setting['constraints'])) {
-                $metadataModuleSettings[$key]['constraints'] = explode('|', $setting['constraints']);
+                $metadataModuleSettings[$key]['constraints'] = \explode('|', $setting['constraints']);
             }
         }
 
@@ -75,7 +75,7 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     {
         $title = $normalizedMetaData[$fieldName];
 
-        if (is_string($title)) {
+        if (\is_string($title)) {
             $defaultLanguage = $normalizedMetaData[MetaDataProvider::METADATA_LANG] ?? 'en';
             $normalizedTitle = [
                 $defaultLanguage => $title,
@@ -95,10 +95,10 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
     private function lowerCaseFileClassesNames($key, $value)
     {
         $normalizedValue = $value;
-        if (is_array($value) && $key === MetaDataProvider::METADATA_FILES) {
+        if (\is_array($value) && $key === MetaDataProvider::METADATA_FILES) {
             $normalizedValue = [];
             foreach ($value as $className => $path) {
-                $normalizedValue[strtolower($className)] = $path;
+                $normalizedValue[\strtolower($className)] = $path;
             }
         }
 

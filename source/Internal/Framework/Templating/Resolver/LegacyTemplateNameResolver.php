@@ -47,9 +47,9 @@ class LegacyTemplateNameResolver implements TemplateNameResolverInterface
      */
     private function getFileNameWithoutExtension(string $fileName): string
     {
-        $pos = strrpos($fileName, '.tpl');
+        $pos = \strrpos($fileName, '.tpl');
         if (false !== $pos) {
-            $fileName = substr($fileName, 0, $pos);
+            $fileName = \substr($fileName, 0, $pos);
         }
         return $fileName;
     }

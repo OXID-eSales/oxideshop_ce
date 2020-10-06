@@ -19,12 +19,12 @@
  */
 function smarty_function_oxid_include_widget($params, &$oSmarty)
 {
-    $class = isset($params['cl']) ? strtolower($params['cl']) : '';
+    $class = isset($params['cl']) ? \strtolower($params['cl']) : '';
     unset($params['cl']);
 
     $parentViews = null;
     if (!empty($params["_parent"])) {
-        $parentViews = explode("|", $params["_parent"]);
+        $parentViews = \explode("|", $params["_parent"]);
         unset($params["_parent"]);
     }
 

@@ -265,7 +265,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
 
         // add main category caching;
         $sQ = "select oxcatnid from " . $categoryViewName . " where oxobjectid = :oxobjectid order by oxtime";
-        $sIdent = md5($categoryViewName . $sArtId);
+        $sIdent = \md5($categoryViewName . $sArtId);
 
         if (($sMainCatId = $this->_loadFromCache($sIdent, "oxarticle")) === false) {
             $sMainCatId = $oDb->getOne($sQ, [

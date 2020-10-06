@@ -31,7 +31,7 @@ class DisplayError implements \OxidEsales\Eshop\Core\Contract\IDisplayError
     {
         $translatedMessage = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->_sMessage);
         if (!empty($this->_aFormatParameters)) {
-            $translatedMessage = vsprintf($translatedMessage, $this->_aFormatParameters);
+            $translatedMessage = \vsprintf($translatedMessage, $this->_aFormatParameters);
         }
 
         return $translatedMessage;

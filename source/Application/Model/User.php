@@ -186,7 +186,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($this->_oStateObject)) {
+        if (\is_null($this->_oStateObject)) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
         }
 
@@ -476,7 +476,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                     $oAddress = $oAddresses->current();
                 } else {
                     $aAddresses = $oAddresses->getArray();
-                    $oAddress = array_pop($aAddresses);
+                    $oAddress = \array_pop($aAddresses);
                 }
                 $oAddress->selected = 1;
                 $oAddress->setSelected();
@@ -529,7 +529,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         ) {
             $blAddRemark = true;
             //save oxregister value
-            $this->oxuser__oxregister = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxuser__oxregister = new \OxidEsales\Eshop\Core\Field(\date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         // setting user rights
@@ -539,7 +539,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         );
 
         // processing birth date which came from output as array
-        if ($this->oxuser__oxbirthdate && is_array($this->oxuser__oxbirthdate->value)) {
+        if ($this->oxuser__oxbirthdate && \is_array($this->oxuser__oxbirthdate->value)) {
             $this->oxuser__oxbirthdate = new \OxidEsales\Eshop\Core\Field(
                 $this->convertBirthday($this->oxuser__oxbirthdate->value),
                 \OxidEsales\Eshop\Core\Field::T_RAW
@@ -818,7 +818,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getEncodedDeliveryAddress()
     {
-        return md5($this->_getMergedAddressFields());
+        return \md5($this->_getMergedAddressFields());
     }
 
     /**
@@ -891,7 +891,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                 /** @var UserException $oEx */
                 $oEx = oxNew(UserException::class);
                 $oLang = Registry::getLang();
-                $oEx->setMessage(sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $this->oxuser__oxusername->value));
+                $oEx->setMessage(\sprintf($oLang->translateString('ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage()), $this->oxuser__oxusername->value));
                 throw $oEx;
             }
         }
@@ -980,7 +980,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function onOrderExecute($oBasket, $iSuccess)
     {
-        if (is_numeric($iSuccess) && $iSuccess != 2 && $iSuccess <= 3) {
+        if (\is_numeric($iSuccess) && $iSuccess != 2 && $iSuccess <= 3) {
             //adding user to particular customer groups
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $dMidlleCustPrice = (float) $myConfig->getConfigParam('sMidlleCustPrice');
@@ -1056,7 +1056,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // year
         if (!$iYear || $iYear < 1000 || $iYear > 9999) {
-            $iYear = date('Y');
+            $iYear = \date('Y');
         }
 
         // month
@@ -1076,7 +1076,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             case 6:
             case 9:
             case 11:
-                $iMaxDays = min(30, $iMaxDays);
+                $iMaxDays = \min(30, $iMaxDays);
                 break;
         }
 
@@ -1086,7 +1086,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // whole date
-        return sprintf("%04d-%02d-%02d", $iYear, $iMonth, $iDay);
+        return \sprintf("%04d-%02d-%02d", $iYear, $iMonth, $iDay);
     }
 
     /**
@@ -1270,7 +1270,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _assignAddress($aDelAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($aDelAddress) && count($aDelAddress)) {
+        if (\is_array($aDelAddress) && \count($aDelAddress)) {
             $sAddressId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxaddressid');
             $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
 
@@ -1614,7 +1614,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sShopID = $oConfig->getShopId();
         if (($sSet = Registry::getUtilsServer()->getUserCookie($sShopID))) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $aData = explode('@@@', $sSet);
+            $aData = \explode('@@@', $sSet);
             $sUser = $aData[0];
             $sPWD = @$aData[1];
 
@@ -1622,7 +1622,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
-                    $sTest = crypt($rs->fields[1], static::USER_COOKIE_SALT);
+                    $sTest = \crypt($rs->fields[1], static::USER_COOKIE_SALT);
                     if ($sTest == $sPWD) {
                         // found
                         $sUserID = $rs->fields[0];
@@ -1690,7 +1690,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
                 // map all user data fields
                 foreach ($aData as $fldname => $value) {
-                    $sField = "oxuser__" . strtolower($fldname);
+                    $sField = "oxuser__" . \strtolower($fldname);
                     $this->$sField = new Field($aData[$fldname]);
                 }
 
@@ -1755,11 +1755,11 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $aRights[] = 'user';
 
         if (!$sAuthRights || !($sAuthRights == 'malladmin' || $sAuthRights == $myConfig->getShopId())) {
-            return current($aRights);
+            return \current($aRights);
         } elseif ($sAuthRights == $myConfig->getShopId()) {
             $aRights[] = $sAuthRights;
-            if (!in_array($this->oxuser__oxrights->value, $aRights)) {
-                return current($aRights);
+            if (!\in_array($this->oxuser__oxrights->value, $aRights)) {
+                return \current($aRights);
             }
         }
 
@@ -1777,7 +1777,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
 
         // set oxcreate date
-        $this->oxuser__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuser__oxcreate = new \OxidEsales\Eshop\Core\Field(\date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
 
         if (!isset($this->oxuser__oxboni->value)) {
             $this->oxuser__oxboni = new \OxidEsales\Eshop\Core\Field($this->getBoni(), \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -1951,8 +1951,8 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $aHomeCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry');
         // foreigner ?
-        if (is_array($aHomeCountry)) {
-            if (in_array($sCountryId, $aHomeCountry)) {
+        if (\is_array($aHomeCountry)) {
+            if (\in_array($sCountryId, $aHomeCountry)) {
                 $blForeigner = false;
             }
         } elseif ($sCountryId == $aHomeCountry) {
@@ -1995,7 +1995,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sQ = "select oxid from " . $this->getViewName() . "
             where oxupdateexp >= :time
                 and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = :hash";
-        if ($sUserId = $oDb->getOne($sQ, [':time' => time(), ':hash' => $sUid])) {
+        if ($sUserId = $oDb->getOne($sQ, [':time' => \time(), ':hash' => $sUid])) {
             return $this->load($sUserId);
         }
     }
@@ -2045,7 +2045,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             where oxupdateexp >= :time
             and MD5( CONCAT( oxid, oxshopid, oxupdatekey ) ) = :hash";
 
-        return !((bool) $oDb->getOne($sQ, [':time' => time(), ':hash' => $sKey]));
+        return !((bool) $oDb->getOne($sQ, [':time' => \time(), ':hash' => $sKey]));
     }
 
     /**
@@ -2057,7 +2057,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_sUpdateKey === null) {
             $this->setUpdateKey();
-            $this->_sUpdateKey = md5($this->getId() . $this->oxuser__oxshopid->value . $this->oxuser__oxupdatekey->value);
+            $this->_sUpdateKey = \md5($this->getId() . $this->oxuser__oxshopid->value . $this->oxuser__oxupdatekey->value);
         }
 
         return $this->_sUpdateKey;
@@ -2121,7 +2121,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function isSamePassword($password)
     {
-        return  password_verify($password, $this->oxuser__oxpassword->value);
+        return  \password_verify($password, $this->oxuser__oxpassword->value);
     }
 
     /**
@@ -2192,7 +2192,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oState = $this->_getStateObject();
 
-        if (is_null($sId)) {
+        if (\is_null($sId)) {
             $sId = $this->getStateId();
         }
 
@@ -2307,9 +2307,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sUserId = $this->getId();
 
-        if ($sUserId && is_array($aRecEmail) && count($aRecEmail) > 0) {
+        if ($sUserId && \is_array($aRecEmail) && \count($aRecEmail) > 0) {
             //iserting statistics about invitation
-            $sDate = Registry::getUtilsDate()->formatDBDate(date("Y-m-d"), true);
+            $sDate = Registry::getUtilsDate()->formatDBDate(\date("Y-m-d"), true);
             foreach ($aRecEmail as $sRecEmail) {
                 $sSql = "INSERT INTO oxinvitations SET oxuserid = :oxuserid, oxemail = :oxemail, oxdate = :oxdate, oxpending = '1', oxaccepted = '0', oxtype = '1'";
                 $oDb->execute($sSql, [
@@ -2588,7 +2588,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $ids = $database->getCol('SELECT oxid FROM oxaddress WHERE oxuserid = :oxuserid', [
             ':oxuserid' => $this->getId()
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Address::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Address::class);
     }
 
     /**
@@ -2601,7 +2601,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $ids = $database->getCol('SELECT oxid FROM oxuserbaskets WHERE oxuserid = :oxuserid', [
             ':oxuserid' => $this->getId()
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\UserBasket::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\UserBasket::class);
     }
 
     /**
@@ -2616,7 +2616,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             ':oxparentid' => $this->getId(),
             ':notoxtype' => 'o'
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Remark::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Remark::class);
     }
 
     /**
@@ -2629,7 +2629,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $ids = $database->getCol('SELECT oxid FROM oxrecommlists WHERE oxuserid = :oxuserid ', [
             ':oxuserid' => $this->getId()
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\RecommendationList::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\RecommendationList::class);
     }
 
     /**
@@ -2642,7 +2642,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $ids = $database->getCol('SELECT oxid FROM oxnewssubscribed WHERE oxuserid = :oxuserid ', [
             ':oxuserid' => $this->getId()
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\NewsSubscribed::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\NewsSubscribed::class);
     }
 
 
@@ -2656,7 +2656,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $ids = $database->getCol('select oxid from oxreviews where oxuserid = :oxuserid', [
             ':oxuserid' => $this->getId()
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Review::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Review::class);
     }
 
     /**
@@ -2669,7 +2669,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $ids = $database->getCol('SELECT oxid FROM oxratings WHERE oxuserid = :oxuserid', [
             ':oxuserid' => $this->getId()
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Rating::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Rating::class);
     }
 
     /**
@@ -2682,7 +2682,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $ids = $database->getCol('SELECT oxid FROM oxpricealarm WHERE oxuserid = :oxuserid', [
             ':oxuserid' => $this->getId()
         ]);
-        array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\PriceAlarm::class);
+        \array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\PriceAlarm::class);
     }
 
     /**

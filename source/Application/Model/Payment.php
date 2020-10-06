@@ -176,7 +176,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if (!$this->_aDynValues) {
             $sRawDynValue = null;
-            if (is_object($this->oxpayments__oxvaldesc)) {
+            if (\is_object($this->oxpayments__oxvaldesc)) {
                 $sRawDynValue = $this->oxpayments__oxvaldesc->getRawValue();
             }
 
@@ -424,7 +424,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 return false;
             }
             if (
-                count(
+                \count(
                     \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)
                     ->getDeliverySetList(
                         $oUser,
@@ -442,7 +442,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $mxValidationResult = \OxidEsales\Eshop\Core\Registry::getInputValidator()->validatePaymentInputData($this->oxpayments__oxid->value, $aDynValue);
 
-        if (is_integer($mxValidationResult)) {
+        if (\is_integer($mxValidationResult)) {
             $this->_iPaymentError = $mxValidationResult;
 
             return false;
@@ -458,7 +458,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if ($sShipSetId) {
             $aPaymentList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\PaymentList::class)->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
 
-            if (!array_key_exists($this->getId(), $aPaymentList)) {
+            if (!\array_key_exists($this->getId(), $aPaymentList)) {
                 $this->_iPaymentError = -3;
 
                 return false;

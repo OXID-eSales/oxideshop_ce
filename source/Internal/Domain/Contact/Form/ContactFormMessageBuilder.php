@@ -52,7 +52,7 @@ class ContactFormMessageBuilder implements ContactFormMessageBuilderInterface
         $message .= '(' . $form->email->getValue() . ')<br /><br />';
 
         if ($form->message->getValue()) {
-            $message .= nl2br($form->message->getValue());
+            $message .= \nl2br($form->message->getValue());
         }
 
         return $message;

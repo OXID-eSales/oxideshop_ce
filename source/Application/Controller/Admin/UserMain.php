@@ -41,13 +41,13 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $iTplLang = $oLang->getTplLanguage();
 
-        $iPos = count($aUserRights);
+        $iPos = \count($aUserRights);
         $aUserRights[$iPos] = new stdClass();
         $aUserRights[$iPos]->name = $oLang->translateString("user", $iTplLang);
         $aUserRights[$iPos]->id = "user";
 
         if ($blisMallAdmin) {
-            $iPos = count($aUserRights);
+            $iPos = \count($aUserRights);
             $aUserRights[$iPos] = new stdClass();
             $aUserRights[$iPos]->id = "malladmin";
             $aUserRights[$iPos]->name = $oLang->translateString("Admin", $iTplLang);
@@ -64,7 +64,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
             if (!($oUser->oxuser__oxrights->value == "malladmin" && !$blisMallAdmin)) {
                 // generate selected right
-                reset($aUserRights);
+                \reset($aUserRights);
                 foreach ($aUserRights as $val) {
                     if ($val->id == $oUser->oxuser__oxrights->value) {
                         $val->selected = 1;

@@ -38,7 +38,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oOtherLang = $oDiscount->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oDiscount->loadInLang(key($oOtherLang), $sOxId);
+                $oDiscount->loadInLang(\key($oOtherLang), $sOxId);
             }
 
             $this->_aViewData["edit"] = $oDiscount;
@@ -49,9 +49,9 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
-            if (count($aLang)) {
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
@@ -148,7 +148,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $newException->setMessage($exception->getMessage());
             $this->addTplParam('discount_title', $aParams['oxdiscount__oxtitle']);
 
-            if (false !== strpos($exception->getMessage(), 'DISCOUNT_ERROR_OXSORT')) {
+            if (false !== \strpos($exception->getMessage(), 'DISCOUNT_ERROR_OXSORT')) {
                 $messageArgument = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('DISCOUNT_MAIN_SORT', \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage(), true);
                 $newException->setMessageArgs($messageArgument);
             }

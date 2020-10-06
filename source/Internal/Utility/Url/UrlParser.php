@@ -25,7 +25,7 @@ class UrlParser implements UrlParserInterface
      */
     private function getPath(string $url): string
     {
-        return (string)parse_url($url, PHP_URL_PATH);
+        return (string)\parse_url($url, PHP_URL_PATH);
     }
 
     /**
@@ -34,6 +34,6 @@ class UrlParser implements UrlParserInterface
      */
     private function removeTrailingSlash(string $path): string
     {
-        return rtrim($path, '/');
+        return \rtrim($path, '/');
     }
 }

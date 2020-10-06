@@ -29,7 +29,7 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
         switch ($encodingType) {
             case ShopSettingType::ARRAY:
             case ShopSettingType::ASSOCIATIVE_ARRAY:
-                $encodedValue = serialize($value);
+                $encodedValue = \serialize($value);
                 break;
             case ShopSettingType::BOOLEAN:
                 $encodedValue = $value === true ? '1' : '';
@@ -51,7 +51,7 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
         switch ($encodingType) {
             case ShopSettingType::ARRAY:
             case ShopSettingType::ASSOCIATIVE_ARRAY:
-                $decodedValue = unserialize($value, ['allowed_classes' => false]);
+                $decodedValue = \unserialize($value, ['allowed_classes' => false]);
                 break;
             case ShopSettingType::BOOLEAN:
                 $decodedValue = ($value === 'true' || $value === '1');
@@ -69,7 +69,7 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
      */
     private function validateSettingValue($value)
     {
-        if (is_object($value)) {
+        if (\is_object($value)) {
             throw new InvalidShopSettingValueException(
                 'Shop setting value must not be an object.'
             );

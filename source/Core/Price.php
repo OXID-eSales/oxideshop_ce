@@ -63,7 +63,7 @@ class Price
     {
         $this->setNettoMode(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnterNetPrice'));
 
-        if (!is_null($dPrice)) {
+        if (!\is_null($dPrice)) {
             $this->setPrice($dPrice);
         }
     }
@@ -151,7 +151,7 @@ class Price
      */
     public function setPrice($dPrice, $dVat = null)
     {
-        if (!is_null($dVat)) {
+        if (!\is_null($dVat)) {
             $this->setVat($dVat);
         }
 

@@ -131,7 +131,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // set subscription date
-        $this->oxnewssubscribed__oxsubscribed = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxnewssubscribed__oxsubscribed = new \OxidEsales\Eshop\Core\Field(\date('Y-m-d H:i:s'), \OxidEsales\Eshop\Core\Field::T_RAW);
 
         return parent::_insert();
     }
@@ -146,11 +146,11 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if (($this->_blWasSubscribed || $this->_blWasPreSubscribed) && !$this->oxnewssubscribed__oxdboptin->value) {
             // set unsubscription date
-            $this->oxnewssubscribed__oxunsubscribed->setValue(date('Y-m-d H:i:s'));
+            $this->oxnewssubscribed__oxunsubscribed->setValue(\date('Y-m-d H:i:s'));
             // 0001974 Same object can be called many times without requiring to renew date.
             // If so happens, it would have _aSkipSaveFields set to skip date field. So need to check and
             // release if _aSkipSaveFields are set for field oxunsubscribed.
-            $aSkipSaveFieldsKeys = array_keys($this->_aSkipSaveFields, 'oxunsubscribed');
+            $aSkipSaveFieldsKeys = \array_keys($this->_aSkipSaveFields, 'oxunsubscribed');
             foreach ($aSkipSaveFieldsKeys as $iSkipSaveFieldKey) {
                 unset($this->_aSkipSaveFields[$iSkipSaveFieldKey]);
             }

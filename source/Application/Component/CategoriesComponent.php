@@ -241,7 +241,7 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
                 // setting list type directly
                 $sListType = 'manufacturer';
                 $sActCat = $sActManufacturer;
-            } elseif ($sActVendor && (substr($sActVendor, 2) == $oProduct->getVendorId())) {
+            } elseif ($sActVendor && (\substr($sActVendor, 2) == $oProduct->getVendorId())) {
                 // such vendor is available ?
                 $sListType = 'vendor';
                 $sActCat = $sActVendor;
@@ -272,8 +272,8 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
     {
         $sListType = null;
         $aArticleCats = $oProduct->getCategoryIds(true);
-        if (is_array($aArticleCats) && count($aArticleCats)) {
-            $sActCat = reset($aArticleCats);
+        if (\is_array($aArticleCats) && \count($aArticleCats)) {
+            $sActCat = \reset($aArticleCats);
         } elseif (($sActCat = $oProduct->getManufacturerId())) {
             // not assigned to any category ? maybe it is assigned to Manufacturer ?
             $sListType = 'manufacturer';

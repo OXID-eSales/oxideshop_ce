@@ -116,7 +116,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     {
         $shopControllerMapProvider = $this->getShopControllerMapProvider();
         $idToNameMap = $shopControllerMapProvider->getControllerMap();
-        $classId = $this->arrayLookup($className, array_flip($idToNameMap));
+        $classId = $this->arrayLookup($className, \array_flip($idToNameMap));
 
         return $classId;
     }
@@ -132,7 +132,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     {
         $moduleControllerMapProvider = $this->getModuleControllerMapProvider();
         $idToNameMap = $moduleControllerMapProvider->getControllerMap();
-        $classId = $this->arrayLookup($className, array_flip($idToNameMap));
+        $classId = $this->arrayLookup($className, \array_flip($idToNameMap));
 
         return $classId;
     }
@@ -145,9 +145,9 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     protected function arrayLookup($key, $keys2Values)
     {
-        $keys2Values = array_change_key_case($keys2Values);
-        $key = strtolower($key);
-        $match = array_key_exists($key, $keys2Values) ? $keys2Values[$key] : null;
+        $keys2Values = \array_change_key_case($keys2Values);
+        $key = \strtolower($key);
+        $match = \array_key_exists($key, $keys2Values) ? $keys2Values[$key] : null;
 
         return $match;
     }
@@ -159,7 +159,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     protected function getShopControllerMapProvider()
     {
-        if (is_null($this->shopControllerMapProvider)) {
+        if (\is_null($this->shopControllerMapProvider)) {
             $this->shopControllerMapProvider = oxNew(\OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider::class);
         }
 
@@ -173,7 +173,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     protected function getModuleControllerMapProvider()
     {
-        if (is_null($this->moduleControllerMapProvider)) {
+        if (\is_null($this->moduleControllerMapProvider)) {
             $this->moduleControllerMapProvider = oxNew(\OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider::class);
         }
 

@@ -13,6 +13,6 @@ final class PathNotFoundException extends \Exception
 {
     public static function byPath(string $path): self
     {
-        return new self(sprintf('Path %s does not exist', $path));
+        return new self(\sprintf('Path %s does not exist', $path));
     }
 }

@@ -39,11 +39,11 @@ class HtaccessDaoFactory implements HtaccessDaoFactoryInterface
      */
     private function getRootHtaccessPath(): string
     {
-        clearstatcache();
-        $path = realpath($this->basicContext->getSourcePath() . DIRECTORY_SEPARATOR . self::FILENAME);
-        if (!$path || !is_file($path)) {
+        \clearstatcache();
+        $path = \realpath($this->basicContext->getSourcePath() . DIRECTORY_SEPARATOR . self::FILENAME);
+        if (!$path || !\is_file($path)) {
             throw new HtaccessAccessException(
-                sprintf('Root %s file not found or not accessible', self::FILENAME)
+                \sprintf('Root %s file not found or not accessible', self::FILENAME)
             );
         }
         return $path;

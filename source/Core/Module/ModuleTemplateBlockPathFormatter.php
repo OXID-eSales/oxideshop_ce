@@ -68,16 +68,16 @@ class ModuleTemplateBlockPathFormatter
      */
     public function getPath()
     {
-        if (is_null($this->moduleId) || is_null($this->fileName)) {
+        if (\is_null($this->moduleId) || \is_null($this->fileName)) {
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
         }
 
         $fileName = $this->fileName;
 
         // for < 4.6 modules, since 4.7/5.0 insert in oxtplblocks the full file name and path
-        if (basename($fileName) === $fileName) {
+        if (\basename($fileName) === $fileName) {
             // for 4.5 modules, since 4.6 insert in oxtplblocks the full file name
-            if (substr($fileName, -4) !== '.tpl') {
+            if (\substr($fileName, -4) !== '.tpl') {
                 $fileName = $fileName . ".tpl";
             }
 
@@ -86,7 +86,7 @@ class ModuleTemplateBlockPathFormatter
 
         $activeModuleInfo = (array) Registry::getConfig()->getConfigParam('aModulePaths');
 
-        if (!array_key_exists($this->moduleId, $activeModuleInfo)) {
+        if (!\array_key_exists($this->moduleId, $activeModuleInfo)) {
             throw oxNew(\oxException::class, 'Module: ' . $this->moduleId . ' is not active.');
         }
 

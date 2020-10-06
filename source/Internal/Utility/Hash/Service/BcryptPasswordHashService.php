@@ -54,7 +54,7 @@ class BcryptPasswordHashService implements PasswordHashServiceInterface
     {
         $this->passwordPolicy->enforcePasswordPolicy($password);
 
-        $hash = password_hash(
+        $hash = \password_hash(
             $password,
             PASSWORD_BCRYPT,
             $this->getOptions()
@@ -76,7 +76,7 @@ class BcryptPasswordHashService implements PasswordHashServiceInterface
      */
     public function passwordNeedsRehash(string $passwordHash): bool
     {
-        return password_needs_rehash(
+        return \password_needs_rehash(
             $passwordHash,
             PASSWORD_BCRYPT,
             $this->getOptions()

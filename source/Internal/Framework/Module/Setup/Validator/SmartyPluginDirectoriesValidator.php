@@ -55,7 +55,7 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
                     'Module setting ' .
                     SmartyPluginDirectoriesDataMapper::MAPPING_KEY .
                     ' must be of type array but ' .
-                    gettype($directories[0]) .
+                    \gettype($directories[0]) .
                     ' given'
                 );
             }
@@ -67,12 +67,12 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
 
             foreach ($directories as $directory) {
                 $fullPathSmartyPluginDirectory = $fullPathToModule . DIRECTORY_SEPARATOR . $directory;
-                if (!is_dir($fullPathSmartyPluginDirectory)) {
+                if (!\is_dir($fullPathSmartyPluginDirectory)) {
                     throw new DirectoryNotExistentException(
                         'Directory ' . $fullPathSmartyPluginDirectory . ' does not exist.'
                     );
                 }
-                if (!is_readable($fullPathSmartyPluginDirectory)) {
+                if (!\is_readable($fullPathSmartyPluginDirectory)) {
                     throw new DirectoryNotReadableException(
                         'Directory ' . $fullPathSmartyPluginDirectory . ' not readable.'
                     );
@@ -88,6 +88,6 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
      */
     private function isEmptyArray(array $directories): bool
     {
-        return count($directories) === 1 && $directories[0] === '';
+        return \count($directories) === 1 && $directories[0] === '';
     }
 }

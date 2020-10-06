@@ -43,7 +43,7 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
         parent::render();
 
         if ($sTpl = $this->getViewParameter("sWidgetType")) {
-            $sTemplateName = 'widget/' . basename($sTpl) . '/categorylist.tpl';
+            $sTemplateName = 'widget/' . \basename($sTpl) . '/categorylist.tpl';
             /** @var TemplateLoaderInterface $templateLoader */
             $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
             if ($templateLoader->exists($sTemplateName)) {

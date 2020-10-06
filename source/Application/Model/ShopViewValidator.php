@@ -160,8 +160,8 @@ class ShopViewValidator
     {
         $blResult = false;
 
-        $blEndsWithShopId = preg_match("/[_]([0-9]+)$/", $sViewName, $aMatchEndsWithShopId);
-        $blContainsShopId = preg_match("/[_]([0-9]+)[_]/", $sViewName, $aMatchContainsShopId);
+        $blEndsWithShopId = \preg_match("/[_]([0-9]+)$/", $sViewName, $aMatchEndsWithShopId);
+        $blContainsShopId = \preg_match("/[_]([0-9]+)[_]/", $sViewName, $aMatchContainsShopId);
 
         if (
             (!$blEndsWithShopId && !$blContainsShopId) ||
@@ -238,7 +238,7 @@ class ShopViewValidator
     {
         $this->_aValidShopViews[] = 'oxv_' . $tableName;
 
-        if (in_array($tableName, $this->getMultiLangTables())) {
+        if (\in_array($tableName, $this->getMultiLangTables())) {
             foreach ($this->getAllShopLanguages() as $sLang) {
                 $this->_aValidShopViews[] = 'oxv_' . $tableName . '_' . $sLang;
             }
@@ -255,7 +255,7 @@ class ShopViewValidator
      */
     protected function _isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return in_array($sViewName, $this->_getValidShopViews());
+        return \in_array($sViewName, $this->_getValidShopViews());
     }
 
     /**

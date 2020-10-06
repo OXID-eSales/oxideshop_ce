@@ -32,7 +32,7 @@ class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadWishlistUsers($sSearchStr)
     {
-        $sSearchStr = trim($sSearchStr);
+        $sSearchStr = \trim($sSearchStr);
 
         if (!$sSearchStr) {
             return;

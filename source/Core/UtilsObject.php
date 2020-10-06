@@ -87,7 +87,7 @@ class UtilsObject
     public static function getInstance()
     {
         // disable caching for test modules
-        if (defined('OXID_PHP_UNIT')) {
+        if (\defined('OXID_PHP_UNIT')) {
             static::$_instance = null;
         }
 
@@ -144,7 +144,7 @@ class UtilsObject
         }
 
         //looping due to possible memory "leak".
-        if (is_array(static::$_aInstanceCache)) {
+        if (\is_array(static::$_aInstanceCache)) {
             foreach (static::$_aInstanceCache as $key => $instance) {
                 unset(static::$_aInstanceCache[$key]);
             }
@@ -193,32 +193,32 @@ class UtilsObject
      */
     public function oxNew($className, ...$arguments)
     {
-        $argumentsCount = count($arguments);
+        $argumentsCount = \count($arguments);
         $shouldUseCache = $this->shouldCacheObject($className, $arguments);
         if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
-            $className = strtolower($className);
+            $className = \strtolower($className);
         }
 
         //Get storage key as the class might be aliased.
         $storageKey = Registry::getStorageKey($className);
 
         //UtilsObject::$_aClassInstances is only intended to be used in unit tests.
-        if (defined('OXID_PHP_UNIT') && isset(static::$_aClassInstances[$storageKey])) {
+        if (\defined('OXID_PHP_UNIT') && isset(static::$_aClassInstances[$storageKey])) {
             return static::$_aClassInstances[$storageKey];
         }
-        if (!defined('OXID_PHP_UNIT') && $shouldUseCache) {
-            $cacheKey = ($argumentsCount) ? $storageKey . md5(serialize($arguments)) : $storageKey;
+        if (!\defined('OXID_PHP_UNIT') && $shouldUseCache) {
+            $cacheKey = ($argumentsCount) ? $storageKey . \md5(\serialize($arguments)) : $storageKey;
             if (isset(static::$_aInstanceCache[$cacheKey])) {
                 return clone static::$_aInstanceCache[$cacheKey];
             }
         }
 
-        if (!defined('OXID_PHP_UNIT') && isset($this->_aClassNameCache[$className])) {
+        if (!\defined('OXID_PHP_UNIT') && isset($this->_aClassNameCache[$className])) {
             $realClassName = $this->_aClassNameCache[$className];
         } else {
             $realClassName = $this->getClassName($className);
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
-            if (!class_exists($realClassName)) {
+            if (!\class_exists($realClassName)) {
                 $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
                 /** Use setMessage here instead of passing it in constructor in order to test exception message */
                 $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $realClassName);
@@ -243,7 +243,7 @@ class UtilsObject
      */
     public function generateUId()
     {
-        return md5(uniqid('', true) . '|' . microtime());
+        return \md5(\uniqid('', true) . '|' . \microtime());
     }
 
     /**
@@ -308,7 +308,7 @@ class UtilsObject
      */
     protected function getClassNameProvider()
     {
-        if (is_null($this->classNameProvider)) {
+        if (\is_null($this->classNameProvider)) {
             $backwardsCompatibleClassMap = include 'Autoload/BackwardsCompatibilityClassMap.php';
             $this->classNameProvider = new BackwardsCompatibleClassNameProvider($backwardsCompatibleClassMap);
         }
@@ -320,7 +320,7 @@ class UtilsObject
      */
     protected function getModuleChainsGenerator()
     {
-        if (is_null($this->moduleChainsGenerator)) {
+        if (\is_null($this->moduleChainsGenerator)) {
             $subShopSpecificCache = new \OxidEsales\Eshop\Core\SubShopSpecificFileCache($this->getShopIdCalculator());
             $moduleVariablesLocator = new \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator($subShopSpecificCache, $this->getShopIdCalculator());
             $this->moduleChainsGenerator = new \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator($moduleVariablesLocator);
@@ -333,7 +333,7 @@ class UtilsObject
      */
     protected function getShopIdCalculator()
     {
-        if (is_null($this->shopIdCalculator)) {
+        if (\is_null($this->shopIdCalculator)) {
             $moduleVariablesCache = new \OxidEsales\Eshop\Core\FileCache();
             $this->shopIdCalculator = new \OxidEsales\Eshop\Core\ShopIdCalculator($moduleVariablesCache);
         }
@@ -351,6 +351,6 @@ class UtilsObject
      */
     protected function shouldCacheObject($className, $arguments)
     {
-        return count($arguments) < 2 && (!isset($arguments[0]) || is_scalar($arguments[0]));
+        return \count($arguments) < 2 && (!isset($arguments[0]) || \is_scalar($arguments[0]));
     }
 }

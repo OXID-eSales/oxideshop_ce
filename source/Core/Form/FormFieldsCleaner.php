@@ -53,9 +53,9 @@ class FormFieldsCleaner
      */
     private function filterFieldsByWhiteList(\ArrayIterator $allowedFields, array $listToClean)
     {
-        $allowedFieldsLowerCase = array_map('strtolower', (array)$allowedFields);
-        $cleanedList = array_filter($listToClean, function ($field) use ($allowedFieldsLowerCase) {
-            return in_array(strtolower($field), $allowedFieldsLowerCase);
+        $allowedFieldsLowerCase = \array_map('strtolower', (array)$allowedFields);
+        $cleanedList = \array_filter($listToClean, function ($field) use ($allowedFieldsLowerCase) {
+            return \in_array(\strtolower($field), $allowedFieldsLowerCase);
         }, ARRAY_FILTER_USE_KEY);
 
         return $cleanedList;

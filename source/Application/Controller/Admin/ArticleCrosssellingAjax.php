@@ -128,8 +128,8 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2article.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
+        } elseif (\is_array($aChosenArt)) {
+            $sChosenArticles = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2article where oxobject2article.oxid in (" . $sChosenArticles . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
@@ -150,7 +150,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
         }
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-        if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
+        if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && \is_array($aChosenArt)) {
             foreach ($aChosenArt as $sAdd) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init('oxobject2article');

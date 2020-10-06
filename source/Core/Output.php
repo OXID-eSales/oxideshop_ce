@@ -90,15 +90,15 @@ class Output extends \OxidEsales\Eshop\Core\Base
     {
         // DISPLAY IT
         $sEdition = \OxidEsales\Eshop\Core\Registry::getConfig()->getFullEdition();
-        $sCurYear = date("Y");
+        $sCurYear = \date("Y");
 
         // Replacing only once per page
         $sSearch = "</head>";
         $sReplace = "</head>\n  <!-- OXID eShop {$sEdition}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - https://www.oxid-esales.com -->";
 
-        $sOutput = ltrim($sOutput);
-        if (($pos = stripos($sOutput, $sSearch)) !== false) {
-            $sOutput = substr_replace($sOutput, $sReplace, $pos, strlen($sSearch));
+        $sOutput = \ltrim($sOutput);
+        if (($pos = \stripos($sOutput, $sSearch)) !== false) {
+            $sOutput = \substr_replace($sOutput, $sReplace, $pos, \strlen($sSearch));
         }
 
         return $sOutput;

@@ -20,15 +20,15 @@ class DateFormatHelper
     {
         $winFormatSearch = ['%D', '%h', '%n', '%r', '%R', '%t', '%T'];
         $winFormatReplace = ['%m/%d/%y', '%b', "\n", '%I:%M:%S %p', '%H:%M', "\t", '%H:%M:%S'];
-        if (strpos($format, '%e') !== false) {
+        if (\strpos($format, '%e') !== false) {
             $winFormatSearch[] = '%e';
-            $winFormatReplace[] = sprintf('%\' 2d', date('j', $timestamp));
+            $winFormatReplace[] = \sprintf('%\' 2d', \date('j', $timestamp));
         }
-        if (strpos($format, '%l') !== false) {
+        if (\strpos($format, '%l') !== false) {
             $winFormatSearch[] = '%l';
-            $winFormatReplace[] = sprintf('%\' 2d', date('h', $timestamp));
+            $winFormatReplace[] = \sprintf('%\' 2d', \date('h', $timestamp));
         }
-        $format = str_replace($winFormatSearch, $winFormatReplace, $format);
+        $format = \str_replace($winFormatSearch, $winFormatReplace, $format);
 
         return $format;
     }

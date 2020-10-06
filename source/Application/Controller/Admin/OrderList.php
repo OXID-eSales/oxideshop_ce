@@ -51,8 +51,8 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $folders = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aOrderfolder');
         $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("folder");
         // first display new orders
-        if (!$folder && is_array($folders)) {
-            $names = array_keys($folders);
+        if (!$folder && \is_array($folders)) {
+            $names = \array_keys($folders);
             $folder = $names[0];
         }
 
@@ -129,8 +129,8 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         // Searching for empty oxfolder fields
         if ($folder && $folder != '-1') {
             $query .= " and ( oxorder.oxfolder = " . $database->quote($folder) . " )";
-        } elseif (!$folder && is_array($folders)) {
-            $folderNames = array_keys($folders);
+        } elseif (!$folder && \is_array($folders)) {
+            $folderNames = \array_keys($folders);
             $query .= " and ( oxorder.oxfolder = " . $database->quote($folderNames[0]) . " )";
         }
 
@@ -151,7 +151,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $searchQuery = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addsearch');
-        $searchQuery = trim($searchQuery);
+        $searchQuery = \trim($searchQuery);
         $searchField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addsearchfld');
 
         if ($searchQuery) {
@@ -166,7 +166,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                     $queryPart = "oxorder where oxorder.oxpaid like " . $database->quote("%{$searchQuery}%") . " and ";
                     break;
             }
-            $query = str_replace('oxorder where', $queryPart, $query);
+            $query = \str_replace('oxorder where', $queryPart, $query);
         }
 
         return $query;

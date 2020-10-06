@@ -69,7 +69,7 @@ class DirectoryValidator implements DirectoryValidatorInterface
     private function checkDirectoriesExistent(array $directories): void
     {
         foreach ($directories as $directory) {
-            if (!is_dir($directory)) {
+            if (!\is_dir($directory)) {
                 throw new NonExistenceDirectoryException(
                     NonExistenceDirectoryException::NON_EXISTENCE_DIRECTORY . ': ' . $directory
                 );
@@ -88,7 +88,7 @@ class DirectoryValidator implements DirectoryValidatorInterface
         $subDirectories = $this->getDirectoriesAndSubDirectories($directories);
 
         foreach ($subDirectories as $subDirectory) {
-            if (!is_readable($subDirectory) || !is_writable($subDirectory)) {
+            if (!\is_readable($subDirectory) || !\is_writable($subDirectory)) {
                 throw new NoPermissionDirectoryException(
                     NoPermissionDirectoryException::NO_PERMISSION_DIRECTORY . ': ' . $subDirectory
                 );
@@ -112,7 +112,7 @@ class DirectoryValidator implements DirectoryValidatorInterface
 
             foreach ($recursiveIterator as $path => $dir) {
                 if ($dir->isDir()) {
-                    $directories[] = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+                    $directories[] = \rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
                 }
             }
         }
@@ -128,16 +128,16 @@ class DirectoryValidator implements DirectoryValidatorInterface
      */
     private function getDirectories(string $shopSourcePath, string $compileDirectory): array
     {
-        $shopSourcePath = rtrim($shopSourcePath, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
+        $shopSourcePath = \rtrim($shopSourcePath, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
 
-        $directories = array_map(
+        $directories = \array_map(
             static function ($value) use ($shopSourcePath) {
                 return $shopSourcePath . $value;
             },
             self::DIRECTORIES_LIST
         );
 
-        $directories[] = rtrim($compileDirectory, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
+        $directories[] = \rtrim($compileDirectory, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
 
         return $directories;
     }

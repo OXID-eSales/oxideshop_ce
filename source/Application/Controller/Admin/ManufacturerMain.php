@@ -35,7 +35,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
 
             $oOtherLang = $oManufacturer->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                $oManufacturer->loadInLang(key($oOtherLang), $soxId);
+                $oManufacturer->loadInLang(\key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oManufacturer;
 
@@ -48,8 +48,8 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 

@@ -71,7 +71,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         //update article files
         $aArticleFiles = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('article_files');
-        if (is_array($aArticleFiles)) {
+        if (\is_array($aArticleFiles)) {
             foreach ($aArticleFiles as $sArticleFileId => $aArticleFileUpdate) {
                 $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
                 $oArticleFile->load($sArticleFileId);
@@ -207,7 +207,7 @@ class ArticleFiles extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected function _processOptions($aParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_array($aParams)) {
+        if (!\is_array($aParams)) {
             $aParams = [];
         }
 

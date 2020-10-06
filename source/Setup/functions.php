@@ -8,7 +8,7 @@
 use OxidEsales\Facts\Facts;
 use OxidEsales\EshopProfessional\Core\Serial;
 
-if (!function_exists('getInstallPath')) {
+if (!\function_exists('getInstallPath')) {
     /**
      * Returns shop installation directory
      *
@@ -20,7 +20,7 @@ if (!function_exists('getInstallPath')) {
     }
 }
 
-if (!function_exists('getSystemReqCheck')) {
+if (!\function_exists('getSystemReqCheck')) {
     /**
      * Returns class responsible for system requirements check
      *
@@ -41,7 +41,7 @@ if (!function_exists('getSystemReqCheck')) {
     }
 }
 
-if (!function_exists('getCountryList')) {
+if (!\function_exists('getCountryList')) {
     /**
      * Includes country list for setup
      *
@@ -59,7 +59,7 @@ if (!function_exists('getCountryList')) {
     }
 }
 
-if (!function_exists('getLocation')) {
+if (!\function_exists('getLocation')) {
     /**
      * Includes country list for setup
      *
@@ -77,7 +77,7 @@ if (!function_exists('getLocation')) {
     }
 }
 
-if (!function_exists('getLanguages')) {
+if (!\function_exists('getLanguages')) {
     /**
      * Includes country list for setup
      *
@@ -95,7 +95,7 @@ if (!function_exists('getLanguages')) {
     }
 }
 
-if (!function_exists('getDefaultFileMode')) {
+if (!\function_exists('getDefaultFileMode')) {
     /**
      * Returns mode which must be set for files or folders
      *
@@ -107,7 +107,7 @@ if (!function_exists('getDefaultFileMode')) {
     }
 }
 
-if (!function_exists('getDefaultConfigFileMode')) {
+if (!\function_exists('getDefaultConfigFileMode')) {
     /**
      * Returns mode which must be set for config file
      *
@@ -119,7 +119,7 @@ if (!function_exists('getDefaultConfigFileMode')) {
     }
 }
 
-if (!function_exists('getSerial') && class_exists(Serial::class)) {
+if (!\function_exists('getSerial') && \class_exists(Serial::class)) {
     /**
      * Creates and returns oxSerial object
      *
@@ -131,7 +131,7 @@ if (!function_exists('getSerial') && class_exists(Serial::class)) {
     }
 }
 
-if (!function_exists('getVendorDirectory')) {
+if (!\function_exists('getVendorDirectory')) {
     /**
      * Returns vendors directory
      *

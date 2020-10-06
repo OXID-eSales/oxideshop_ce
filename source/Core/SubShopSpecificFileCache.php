@@ -35,8 +35,8 @@ class SubShopSpecificFileCache extends \OxidEsales\Eshop\Core\FileCache
      */
     protected function getCacheFileName($key)
     {
-        $name = strtolower(basename($key));
-        $shopId = strtolower(basename($this->getShopIdCalculator()->getShopId()));
+        $name = \strtolower(\basename($key));
+        $shopId = \strtolower(\basename($this->getShopIdCalculator()->getShopId()));
 
         return parent::CACHE_FILE_PREFIX . ".$shopId.$name.txt";
     }

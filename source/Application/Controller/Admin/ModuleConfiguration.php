@@ -112,12 +112,12 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
         $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
 
-        if (is_array($aModuleSettings)) {
+        if (\is_array($aModuleSettings)) {
             foreach ($aModuleSettings as $aValue) {
                 $sName = $aValue["name"];
                 $sType = $aValue["type"];
                 $sValue = null;
-                if (is_null($oConfig->getConfigParam($sName))) {
+                if (\is_null($oConfig->getConfigParam($sName))) {
                     switch ($aValue["type"]) {
                         case "arr":
                             $sValue = $this->_arrayToMultiline($aValue["value"]);
@@ -126,7 +126,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                             $sValue = $this->_aarrayToMultiline($aValue["value"]);
                             break;
                         case "bool":
-                            $sValue = filter_var($aValue["value"], FILTER_VALIDATE_BOOLEAN);
+                            $sValue = \filter_var($aValue["value"], FILTER_VALIDATE_BOOLEAN);
                             break;
                         default:
                             $sValue = $aValue["value"];
@@ -232,7 +232,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                             $value = $this->_multilineToArray($value);
                         }
                         if ($moduleSetting->getType() === 'bool') {
-                            $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+                            $value = \filter_var($value, FILTER_VALIDATE_BOOLEAN);
                         }
                         $moduleSetting->setValue($value);
                     }
@@ -294,7 +294,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                         $value = $this->_aarrayToMultiline($setting->getValue());
                         break;
                     case 'bool':
-                        $value = filter_var($setting->getValue(), FILTER_VALIDATE_BOOLEAN);
+                        $value = \filter_var($setting->getValue(), FILTER_VALIDATE_BOOLEAN);
                         break;
                     default:
                         $value = $setting->getValue();

@@ -153,19 +153,19 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $paramSeparator = self::PARAMETER_SEPARATOR;
         $finalParameters = $this->removeNotSetParameters($parametersToAdd);
 
-        if (is_array($finalParameters) && !empty($finalParameters)) {
+        if (\is_array($finalParameters) && !empty($finalParameters)) {
             $urlWithoutQuery = $sUrl;
-            $separatorPlace = strpos($sUrl, '?');
+            $separatorPlace = \strpos($sUrl, '?');
             if ($separatorPlace !== false) {
-                $urlWithoutQuery = substr($sUrl, 0, $separatorPlace);
-                $urlQueryEscaped = substr($sUrl, $separatorPlace + 1);
-                $urlQuery = str_replace($paramSeparator, '&', $urlQueryEscaped);
+                $urlWithoutQuery = \substr($sUrl, 0, $separatorPlace);
+                $urlQueryEscaped = \substr($sUrl, $separatorPlace + 1);
+                $urlQuery = \str_replace($paramSeparator, '&', $urlQueryEscaped);
 
                 $finalParameters = $this->mergeDuplicatedParameters($finalParameters, $urlQuery, $allowParameterOverwrite);
             }
 
             $sUrl = $this->appendParamSeparator($urlWithoutQuery);
-            $sUrl .= http_build_query($finalParameters, null, $paramSeparator);
+            $sUrl .= \http_build_query($finalParameters, null, $paramSeparator);
         }
 
         if ($sUrl && !$blFinalUrl) {
@@ -186,10 +186,10 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function cleanUrl($sUrl, $aParams = null)
     {
         $oStr = Str::getStr();
-        if (is_array($aParams)) {
+        if (\is_array($aParams)) {
             foreach ($aParams as $sParam) {
                 $sUrl = $oStr->preg_replace(
-                    '/(\?|&(amp;)?)' . preg_quote($sParam) . '=[a-z0-9\.]+&?(amp;)?/i',
+                    '/(\?|&(amp;)?)' . \preg_quote($sParam) . '=[a-z0-9\.]+&?(amp;)?/i',
                     '\1',
                     $sUrl
                 );
@@ -198,7 +198,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $sUrl = $oStr->preg_replace('/(\?|&(amp;)?).+/i', '\1', $sUrl);
         }
 
-        return trim($sUrl, "?");
+        return \trim($sUrl, "?");
     }
 
 
@@ -211,7 +211,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function addShopHost($sUrl)
     {
-        if (!preg_match("#^https?://#i", $sUrl)) {
+        if (!\preg_match("#^https?://#i", $sUrl)) {
             $sShopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getSslShopUrl();
             $sUrl = $sShopUrl . $sUrl;
         }
@@ -322,9 +322,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function isCurrentShopHost($sUrl)
     {
         $blCurrent = false;
-        $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
+        $sUrlHost = @\parse_url($sUrl, PHP_URL_HOST);
         // checks if it is relative url.
-        if (is_null($sUrlHost)) {
+        if (\is_null($sUrlHost)) {
             $blCurrent = true;
         } else {
             $aHosts = $this->_getHosts();
@@ -351,11 +351,11 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function parseUrlAndAppendSchema($url, $flag, $appendScheme = 'http')
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        if (!\filter_var($url, FILTER_VALIDATE_URL)) {
             $url = $appendScheme . '://' . $url;
         }
 
-        return parse_url($url, $flag);
+        return \parse_url($url, $flag);
     }
 
     /**
@@ -387,10 +387,10 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function cleanUrlParams($sUrl, $sConnector = '&amp;')
     {
-        $aUrlParts = explode('?', $sUrl);
+        $aUrlParts = \explode('?', $sUrl);
 
         // check for params part
-        if (!is_array($aUrlParts) || count($aUrlParts) != 2) {
+        if (!\is_array($aUrlParts) || \count($aUrlParts) != 2) {
             return $sUrl;
         }
 
@@ -405,11 +405,11 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         );
 
         // remove duplicate entries
-        parse_str($sUrlParams, $aUrlParams);
-        $sUrl .= '?' . http_build_query($aUrlParams, '', $sConnector);
+        \parse_str($sUrlParams, $aUrlParams);
+        $sUrl .= '?' . \http_build_query($aUrlParams, '', $sConnector);
 
         // replace brackets
-        $sUrl = str_replace(
+        $sUrl = \str_replace(
             ['%5B', '%5D'],
             ['[', ']'],
             $sUrl
@@ -469,12 +469,12 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     {
         // url building
         // replace possible ampersands, explode, and filter out empty values
-        $sValue = str_replace("&amp;", "&", $sValue);
-        $aNavParams = explode("&", $sValue);
-        $aNavParams = array_filter($aNavParams);
+        $sValue = \str_replace("&amp;", "&", $sValue);
+        $aNavParams = \explode("&", $sValue);
+        $aNavParams = \array_filter($aNavParams);
         $aParams = [];
         foreach ($aNavParams as $sValue) {
-            $exp = explode("=", $sValue);
+            $exp = \explode("=", $sValue);
             $aParams[$exp[0]] = $exp[1];
         }
 
@@ -502,8 +502,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _addHost($sUrl, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($sUrl && ($sHost = @parse_url($sUrl, PHP_URL_HOST))) {
-            if (!in_array($sHost, $aHosts)) {
+        if ($sUrl && ($sHost = @\parse_url($sUrl, PHP_URL_HOST))) {
+            if (!\in_array($sHost, $aHosts)) {
                 $aHosts[] = $sHost;
             }
         }
@@ -595,9 +595,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function removeNotSetParameters($parametersToAdd)
     {
-        if (is_array($parametersToAdd) && !empty($parametersToAdd)) {
+        if (\is_array($parametersToAdd) && !empty($parametersToAdd)) {
             foreach ($parametersToAdd as $key => $value) {
-                if (is_null($value)) {
+                if (\is_null($value)) {
                     unset($parametersToAdd[$key]);
                 }
             }
@@ -615,12 +615,12 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function mergeDuplicatedParameters($aAddParams, $query, $allowParameterOverwrite = true)
     {
-        parse_str($query, $currentUrlParameters);
+        \parse_str($query, $currentUrlParameters);
         if ($allowParameterOverwrite) {
-            $newParameters = array_merge($currentUrlParameters, $aAddParams);
+            $newParameters = \array_merge($currentUrlParameters, $aAddParams);
         } else {
-            $newFilteredParameters = array_diff_key($aAddParams, $currentUrlParameters);
-            $newParameters = array_merge($currentUrlParameters, $newFilteredParameters);
+            $newFilteredParameters = \array_diff_key($aAddParams, $currentUrlParameters);
+            $newParameters = \array_merge($currentUrlParameters, $newFilteredParameters);
         }
 
         return $newParameters;

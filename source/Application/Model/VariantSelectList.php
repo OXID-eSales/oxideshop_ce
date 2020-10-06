@@ -50,7 +50,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
      */
     public function __construct($sLabel, $iIndex)
     {
-        $this->_sLabel = trim($sLabel);
+        $this->_sLabel = \trim($sLabel);
         $this->_iIndex = $iIndex;
     }
 
@@ -74,7 +74,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
      */
     public function addVariant($sName, $sValue, $blDisabled, $blActive)
     {
-        $sName = trim($sName);
+        $sName = \trim($sName);
         //#6053 Allow "0" as a valid value.
         if (!empty($sName) || $sName === '0') {
             $sKey = $sValue;

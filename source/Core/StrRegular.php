@@ -49,7 +49,7 @@ class StrRegular
      */
     public function strlen($sStr)
     {
-        return strlen($sStr);
+        return \strlen($sStr);
     }
 
     /**
@@ -63,10 +63,10 @@ class StrRegular
      */
     public function substr($sStr, $iStart, $iLength = null)
     {
-        if (is_null($iLength)) {
-            return substr($sStr, $iStart);
+        if (\is_null($iLength)) {
+            return \substr($sStr, $iStart);
         }
-        return substr($sStr, $iStart, $iLength);
+        return \substr($sStr, $iStart, $iLength);
     }
 
     /**
@@ -82,10 +82,10 @@ class StrRegular
     {
         $iPos = false;
         if ($sHaystack && $sNeedle) {
-            if (is_null($iOffset)) {
-                $iPos = strpos($sHaystack, $sNeedle);
+            if (\is_null($iOffset)) {
+                $iPos = \strpos($sHaystack, $sNeedle);
             } else {
-                $iPos = strpos($sHaystack, $sNeedle, $iOffset);
+                $iPos = \strpos($sHaystack, $sNeedle, $iOffset);
             }
         }
 
@@ -102,7 +102,7 @@ class StrRegular
      */
     public function strstr($sHaystack, $sNeedle)
     {
-        return strstr($sHaystack, $sNeedle);
+        return \strstr($sHaystack, $sNeedle);
     }
 
     /**
@@ -114,7 +114,7 @@ class StrRegular
      */
     public function strtolower($sString)
     {
-        return strtolower($sString);
+        return \strtolower($sString);
     }
 
     /**
@@ -126,7 +126,7 @@ class StrRegular
      */
     public function strtoupper($sString)
     {
-        return strtoupper($sString);
+        return \strtoupper($sString);
     }
 
     /**
@@ -139,7 +139,7 @@ class StrRegular
      */
     public function htmlspecialchars($sString, $iQuotStyle = ENT_QUOTES)
     {
-        return htmlspecialchars($sString, $iQuotStyle, $this->_sEncoding);
+        return \htmlspecialchars($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
@@ -152,7 +152,7 @@ class StrRegular
      */
     public function htmlentities($sString, $iQuotStyle = ENT_QUOTES)
     {
-        return htmlentities($sString, $iQuotStyle, $this->_sEncoding);
+        return \htmlentities($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
@@ -167,7 +167,7 @@ class StrRegular
      */
     public function html_entity_decode($sString, $iQuotStyle = ENT_QUOTES)
     {
-        return html_entity_decode($sString, $iQuotStyle, $this->_sEncoding);
+        return \html_entity_decode($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
@@ -184,7 +184,7 @@ class StrRegular
      */
     public function preg_split($sPattern, $sString, $iLimit = -1, $iFlag = 0)
     {
-        return preg_split($sPattern, $sString, $iLimit, $iFlag);
+        return \preg_split($sPattern, $sString, $iLimit, $iFlag);
     }
 
     /**
@@ -202,7 +202,7 @@ class StrRegular
      */
     public function preg_replace($sPattern, $sString, $sSubject, $iLimit = -1, $iCount = null)
     {
-        return preg_replace($sPattern, $sString, $sSubject, $iLimit, $iCount);
+        return \preg_replace($sPattern, $sString, $sSubject, $iLimit, $iCount);
     }
 
     /**
@@ -220,7 +220,7 @@ class StrRegular
      */
     public function preg_replace_callback($pattern, $callback, $subject, $limit = -1, &$count = null)
     {
-        return preg_replace_callback($pattern, $callback, $subject, $limit, $count);
+        return \preg_replace_callback($pattern, $callback, $subject, $limit, $count);
     }
 
     /**
@@ -238,7 +238,7 @@ class StrRegular
      */
     public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        return preg_match($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
+        return \preg_match($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
     /**
@@ -256,7 +256,7 @@ class StrRegular
      */
     public function preg_match_all($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        return preg_match_all($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
+        return \preg_match_all($sPattern, $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
     /**
@@ -285,7 +285,7 @@ class StrRegular
      */
     public function wordwrap($sString, $iLength = 75, $sBreak = "\n", $blCut = null)
     {
-        return wordwrap($sString, $iLength, $sBreak, $blCut);
+        return \wordwrap($sString, $iLength, $sBreak, $blCut);
     }
 
     /**
@@ -302,14 +302,14 @@ class StrRegular
      */
     public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = [], $aUmlEntities = [])
     {
-        $aUmls = (count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
-        $aUmlEntities = (count($aUmlEntities) > 0)
-            ? array_merge($this->_aUmlEntities, $aUmlEntities)
+        $aUmls = (\count($aUmls) > 0) ? \array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
+        $aUmlEntities = (\count($aUmlEntities) > 0)
+            ? \array_merge($this->_aUmlEntities, $aUmlEntities)
             : $this->_aUmlEntities;
 
         return $blToHtmlEntities
-            ? str_replace($aUmls, $aUmlEntities, $sInput)
-            : str_replace($aUmlEntities, $aUmls, $sInput);
+            ? \str_replace($aUmls, $aUmlEntities, $sInput)
+            : \str_replace($aUmlEntities, $aUmls, $sInput);
     }
 
     /**
@@ -321,7 +321,7 @@ class StrRegular
      */
     public function hasSpecialChars($sStr)
     {
-        return $this->preg_match("/(" . implode("|", $this->_aUmls) . "|(&amp;))/", $sStr);
+        return $this->preg_match("/(" . \implode("|", $this->_aUmls) . "|(&amp;))/", $sStr);
     }
 
     /**
@@ -347,16 +347,16 @@ class StrRegular
      */
     public function jsonEncode($data)
     {
-        if (is_array($data)) {
+        if (\is_array($data)) {
             $ret = "";
             $blWasOne = false;
             $blNumerical = true;
-            reset($data);
-            while ($blNumerical && $key = key($data)) {
-                $blNumerical = !is_string($key);
+            \reset($data);
+            while ($blNumerical && $key = \key($data)) {
+                $blNumerical = !\is_string($key);
             }
             if ($blNumerical) {
-                return '[' . implode(',', array_map([$this, 'jsonEncode'], $data)) . ']';
+                return '[' . \implode(',', \array_map([$this, 'jsonEncode'], $data)) . ']';
             } else {
                 foreach ($data as $key => $val) {
                     if ($blWasOne) {
@@ -364,13 +364,13 @@ class StrRegular
                     } else {
                         $blWasOne = true;
                     }
-                    $ret .= '"' . addslashes($key) . '":' . $this->jsonEncode($val);
+                    $ret .= '"' . \addslashes($key) . '":' . $this->jsonEncode($val);
                 }
 
                 return "{" . $ret . "}";
             }
         } else {
-            return '"' . addcslashes((string) $data, "\r\n\t\"\\") . '"';
+            return '"' . \addcslashes((string) $data, "\r\n\t\"\\") . '"';
         }
     }
 
@@ -386,12 +386,12 @@ class StrRegular
      */
     public function strip_tags($sString, $sAllowableTags = '')
     {
-        if (stripos($sAllowableTags, '<style>') === false) {
+        if (\stripos($sAllowableTags, '<style>') === false) {
             // strip style tags with definitions within
             $sString = $this->preg_replace("'<style[^>]*>.*</style>'siU", '', $sString);
         }
 
-        return strip_tags($sString, $sAllowableTags);
+        return \strip_tags($sString, $sAllowableTags);
     }
 
     /**
@@ -405,6 +405,6 @@ class StrRegular
      */
     public function strrcmp($sStr1, $sStr2)
     {
-        return -strcmp($sStr1, $sStr2);
+        return -\strcmp($sStr1, $sStr2);
     }
 }

@@ -58,12 +58,12 @@ class DIServiceWrapper
 
     private function checkIfIdIsResolvableClassName(): bool
     {
-        return class_exists($this->id);
+        return \class_exists($this->id);
     }
 
     private function setCalls(): void
     {
-        if (array_key_exists(self::CALLS_SECTION, $this->serviceArguments)) {
+        if (\array_key_exists(self::CALLS_SECTION, $this->serviceArguments)) {
             $this->calls = $this->serviceArguments[self::CALLS_SECTION];
         }
     }
@@ -86,7 +86,7 @@ class DIServiceWrapper
         if (!$this->hasClass()) {
             return false;
         }
-        return in_array(ShopAwareInterface::class, class_implements($this->getClass()), true);
+        return \in_array(ShopAwareInterface::class, \class_implements($this->getClass()), true);
     }
 
     public function addActiveShops(array $shops): array
@@ -94,7 +94,7 @@ class DIServiceWrapper
         $this->addShopAwareCallsIfMissing();
         $setActiveShopsCall = $this->getCall(self::SET_ACTIVE_SHOPS_METHOD);
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
-        $newActiveShops = array_merge($currentlyActiveShops, $shops);
+        $newActiveShops = \array_merge($currentlyActiveShops, $shops);
         $setActiveShopsCall->setParameter(0, $newActiveShops);
         $this->updateCall($setActiveShopsCall);
         return $newActiveShops;
@@ -106,7 +106,7 @@ class DIServiceWrapper
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
         $newActiveShops = [];
         foreach ($currentlyActiveShops as $shopId) {
-            if (array_search($shopId, $shops) === false) {
+            if (\array_search($shopId, $shops) === false) {
                 $newActiveShops[] = $shopId;
             }
         }
@@ -121,7 +121,7 @@ class DIServiceWrapper
         $this->addShopAwareCallsIfMissing();
         $setActiveShopsCall = $this->getCall(self::SET_ACTIVE_SHOPS_METHOD);
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
-        return count($currentlyActiveShops) > 0;
+        return \count($currentlyActiveShops) > 0;
     }
 
     public function getKey(): string
@@ -138,7 +138,7 @@ class DIServiceWrapper
         if (! $this->hasClass()) {
             return true;
         }
-        return class_exists($this->getClass());
+        return \class_exists($this->getClass());
     }
 
     private function addShopAwareCallsIfMissing(): void
@@ -191,7 +191,7 @@ class DIServiceWrapper
      */
     private function updateCall(DICallWrapper $call): void
     {
-        $callsCount = count($this->calls);
+        $callsCount = \count($this->calls);
 
         for ($i = 0; $i < $callsCount; $i++) {
             $existingCall = new DICallWrapper($this->calls[$i]);

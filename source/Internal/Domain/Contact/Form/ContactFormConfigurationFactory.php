@@ -85,7 +85,7 @@ class ContactFormConfigurationFactory implements FormConfigurationFactoryInterfa
      */
     private function isFieldRequired(FieldConfigurationInterface $fieldConfiguration)
     {
-        return in_array(
+        return \in_array(
             $fieldConfiguration->getName(),
             $this->context->getRequiredContactFormFields()
         );

@@ -87,7 +87,7 @@ class Database implements DatabaseInterface
      */
     public function setConnectionParameters(array $connectionParameters)
     {
-        if (array_key_exists('default', $connectionParameters)) {
+        if (\array_key_exists('default', $connectionParameters)) {
             $this->connectionParameters = $this->getPdoMysqlConnectionParameters($connectionParameters['default']);
         }
     }
@@ -122,7 +122,7 @@ class Database implements DatabaseInterface
      */
     public function forceMasterConnection()
     {
-        if (is_null($this->connection)) {
+        if (\is_null($this->connection)) {
             $this->connect();
         }
     }
@@ -132,7 +132,7 @@ class Database implements DatabaseInterface
      */
     public function forceSlaveConnection()
     {
-        if (is_null($this->connection)) {
+        if (\is_null($this->connection)) {
             $this->connect();
         }
     }
@@ -143,7 +143,7 @@ class Database implements DatabaseInterface
     public function closeConnection()
     {
         $this->connection->close();
-        gc_collect_cycles();
+        \gc_collect_cycles();
     }
 
     /**
@@ -242,7 +242,7 @@ class Database implements DatabaseInterface
      */
     protected function addConnectionCharset(array &$existingParameters, $connectionCharset)
     {
-        $sanitizedCharset = trim(strtolower((string) $connectionCharset));
+        $sanitizedCharset = \trim(\strtolower((string) $connectionCharset));
 
         if (!empty($sanitizedCharset)) {
             $existingParameters['charset'] = $sanitizedCharset;
@@ -315,7 +315,7 @@ class Database implements DatabaseInterface
                 $this->handleException($exception);
             }
         } else {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [debug_backtrace()]);
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [\debug_backtrace()]);
         }
 
         return false;
@@ -391,7 +391,7 @@ class Database implements DatabaseInterface
             $identifierQuoteCharacter = '`';
         }
 
-        $string = trim(str_replace($identifierQuoteCharacter, '', $string));
+        $string = \trim(\str_replace($identifierQuoteCharacter, '', $string));
         try {
             $result = $this->getConnection()->quoteIdentifier($string);
         } catch (DBALException $exception) {
@@ -524,9 +524,9 @@ class Database implements DatabaseInterface
      */
     public function setTransactionIsolationLevel($level)
     {
-        $level = strtoupper($level);
+        $level = \strtoupper($level);
 
-        if (!array_key_exists($level, $this->transactionIsolationLevelMap)) {
+        if (!\array_key_exists($level, $this->transactionIsolationLevelMap)) {
             throw new \InvalidArgumentException('Transaction isolation level is invalid');
         }
 
@@ -655,8 +655,8 @@ class Database implements DatabaseInterface
          * At the moment there will be no InvalidArgumentException thrown on non numeric values as this may break
          * too many things.
          */
-        if (!is_numeric($rowCount) || !is_numeric($offset)) {
-            trigger_error(
+        if (!\is_numeric($rowCount) || !\is_numeric($offset)) {
+            \trigger_error(
                 'Parameters rowCount and offset have to be numeric in DatabaseInterface::selectLimit(). ' .
                 'Please fix your code as this error may trigger an exception in future versions of OXID eShop.',
                 E_USER_DEPRECATED
@@ -713,7 +713,7 @@ class Database implements DatabaseInterface
             $rows = $this->getConnection()->fetchAll($query, $parameters);
             foreach ($rows as $row) {
                 // cause there is no doctrine equivalent, we take this little detour and restructure the result
-                $columnNames = array_keys($row);
+                $columnNames = \array_keys($row);
                 $columnName = $columnNames[0];
 
                 $result[] = $row[$columnName];
@@ -803,12 +803,12 @@ class Database implements DatabaseInterface
     private function assureParameterIsAnArray($parameter)
     {
         /** If $parameter evaluates to true and it is not an array throw an InvalidArgumentException */
-        if ($parameter && !is_array($parameter)) {
+        if ($parameter && !\is_array($parameter)) {
             throw new \InvalidArgumentException();
         }
 
         /** If $parameter evaluates to false and it is not an array convert it into an array */
-        if (!is_array($parameter)) {
+        if (!\is_array($parameter)) {
             $parameter = [];
         }
 
@@ -855,7 +855,7 @@ class Database implements DatabaseInterface
         ];
         $command = $this->getFirstCommandInStatement($query);
 
-        return in_array($command, $allowedCommands);
+        return \in_array($command, $allowedCommands);
     }
 
     /**
@@ -884,7 +884,7 @@ class Database implements DatabaseInterface
                  */
                 // ConnectionException will be mapped to DatabaseConnectionException::class
                 // no break
-            case is_a($exception->getPrevious(), '\Exception') && in_array($exception->getPrevious()->getCode(), ['2003']):
+            case \is_a($exception->getPrevious(), '\Exception') && \in_array($exception->getPrevious()->getCode(), ['2003']):
                 $exceptionClass = DatabaseConnectionException::class;
                 break;
             case $exception instanceof DBALException:
@@ -913,7 +913,7 @@ class Database implements DatabaseInterface
                 $message = $exception->errorInfo[2];
 
                 /** In case the original code (int) cannot be recovered, code is set to 0 */
-                if (!is_integer($code)) {
+                if (!\is_integer($code)) {
                     $code = 0;
                 }
 
@@ -1004,7 +1004,7 @@ class Database implements DatabaseInterface
         if ($this->doesStatementProduceOutput($query)) {
             $result = $statement->fetchAll();
         } else {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [debug_backtrace()]);
+            \OxidEsales\Eshop\Core\Registry::getLogger()->warning('Given statement does not produce output and was not executed', [\debug_backtrace()]);
         }
 
         return $result;
@@ -1087,21 +1087,21 @@ class Database implements DatabaseInterface
 
             if ($default !== null) {
                 // MariaDB puts quotes around default values:
-                $default = trim($default, "'");
+                $default = \trim($default, "'");
             }
 
-            $typeInformation = explode('(', $type);
-            $typeName = trim($typeInformation[0]);
+            $typeInformation = \explode('(', $type);
+            $typeName = \trim($typeInformation[0]);
 
             $item = new \stdClass();
             $item->name = $field;
             $item->type = $typeName;
-            $item->not_null = ('no' === strtolower($null));
-            $item->primary_key = (strtolower($key) == 'pri');
-            $item->auto_increment = strtolower($extra) == 'auto_increment';
-            $item->binary = (false !== strpos(strtolower($type), 'blob'));
-            $item->unsigned = (false !== strpos(strtolower($type), 'unsigned'));
-            $item->has_default = ((is_null($default)) || ($default === '')) ? false : true;
+            $item->not_null = ('no' === \strtolower($null));
+            $item->primary_key = (\strtolower($key) == 'pri');
+            $item->auto_increment = \strtolower($extra) == 'auto_increment';
+            $item->binary = (false !== \strpos(\strtolower($type), 'blob'));
+            $item->unsigned = (false !== \strpos(\strtolower($type), 'unsigned'));
+            $item->has_default = ((\is_null($default)) || ($default === '')) ? false : true;
             if ($item->has_default) {
                 $item->default_value = $default;
             }
@@ -1139,7 +1139,7 @@ class Database implements DatabaseInterface
              */
             // $item->enums
 
-            if (array_key_exists('Field', $column)) {
+            if (\array_key_exists('Field', $column)) {
                 $result[$item->name] = $item;
             } else {
                 $result[] = $item;
@@ -1203,7 +1203,7 @@ class Database implements DatabaseInterface
      */
     protected function getMetaColumnValueByKey(array $column, $key)
     {
-        if (array_key_exists('Field', $column)) {
+        if (\array_key_exists('Field', $column)) {
             $keyMap = [
                 'Field'        => 'Field',
                 'Type'         => 'Type',
@@ -1256,27 +1256,27 @@ class Database implements DatabaseInterface
         /** Get the maximum display width for the type */
 
         /** Match Precision an scale E.g DECIMAL(5,2) */
-        if (preg_match("/^(.+)\((\d+),(\d+)/", $mySqlType, $matches)) {
-            if (is_numeric($matches[2])) {
+        if (\preg_match("/^(.+)\((\d+),(\d+)/", $mySqlType, $matches)) {
+            if (\is_numeric($matches[2])) {
                 $maxLength = $matches[2];
             }
-            if (is_numeric($matches[3])) {
+            if (\is_numeric($matches[3])) {
                 $scale = $matches[3];
             }
             /** Match max length E.g CHAR(4) */
-        } elseif (preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)) {
-            if (is_numeric($matches[2])) {
+        } elseif (\preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)) {
+            if (\is_numeric($matches[2])) {
                 $maxLength = $matches[2];
             }
             /**
              * Match List type E.g. SET('A', 'B', 'CDE)
              * In this case the length will be the string length of the longest element
              */
-        } elseif (preg_match("/^(enum|set)\((.*)\)$/i", strtolower($mySqlType), $matches)) {
+        } elseif (\preg_match("/^(enum|set)\((.*)\)$/i", \strtolower($mySqlType), $matches)) {
             if ($matches[2]) {
-                $pieces = explode(",", $matches[2]);
+                $pieces = \explode(",", $matches[2]);
                 /** The array values contain 2 quotes, so we have to subtract 2 from the strlen */
-                $maxLength = max(array_map("strlen", $pieces)) - 2;
+                $maxLength = \max(\array_map("strlen", $pieces)) - 2;
                 if ($maxLength <= 0) {
                     $maxLength = 1;
                 }
@@ -1294,14 +1294,14 @@ class Database implements DatabaseInterface
         /** Date types, which may have a maximum length */
         $dateTypes = ['YEAR'];
 
-        $assignedType = strtoupper($assignedType);
+        $assignedType = \strtoupper($assignedType);
         if (
             (
-            in_array($assignedType, $integerTypes) ||
-                in_array($assignedType, $fixedPointTypes) ||
-                in_array($assignedType, $floatingPointTypes) ||
-                in_array($assignedType, $textTypes) ||
-                in_array($assignedType, $dateTypes)
+            \in_array($assignedType, $integerTypes) ||
+                \in_array($assignedType, $fixedPointTypes) ||
+                \in_array($assignedType, $floatingPointTypes) ||
+                \in_array($assignedType, $textTypes) ||
+                \in_array($assignedType, $dateTypes)
             ) && -1 == $maxLength
         ) {
             /**
@@ -1321,13 +1321,13 @@ class Database implements DatabaseInterface
      */
     protected function getFirstCommandInStatement($query)
     {
-        $singleLineQuery = str_replace(["\r", "\n"], ' ', $query);
+        $singleLineQuery = \str_replace(["\r", "\n"], ' ', $query);
         $sqlComments = '@(([\'"]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms';
-        $uncommentedQuery = preg_replace($sqlComments, '$1', $singleLineQuery);
+        $uncommentedQuery = \preg_replace($sqlComments, '$1', $singleLineQuery);
 
-        $command = strtoupper(
-            trim(
-                explode(' ', trim($uncommentedQuery))[0]
+        $command = \strtoupper(
+            \trim(
+                \explode(' ', \trim($uncommentedQuery))[0]
             )
         );
 

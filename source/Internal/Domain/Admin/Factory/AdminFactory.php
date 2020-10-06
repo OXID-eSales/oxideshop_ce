@@ -86,7 +86,7 @@ class AdminFactory implements AdminFactoryInterface
     {
         if (
             $rights != Admin::MALL_ADMIN &&
-            !is_numeric($rights) &&
+            !\is_numeric($rights) &&
             !$this->shopAdapter->validateShopId((int) $rights)
         ) {
             throw new InvalidRightsException($rights);

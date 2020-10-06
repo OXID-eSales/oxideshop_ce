@@ -47,7 +47,7 @@ class View extends Core
      */
     public function setTemplateFileName($templateFileName)
     {
-        if (!file_exists($this->getPathToTemplateFileName($templateFileName))) {
+        if (!\file_exists($this->getPathToTemplateFileName($templateFileName))) {
             throw new TemplateNotFoundException($templateFileName);
         }
 
@@ -59,10 +59,10 @@ class View extends Core
      */
     public function display()
     {
-        ob_start();
+        \ob_start();
         $templateFilePath = $this->getPathToActiveTemplateFileName();
         include $templateFilePath;
-        ob_end_flush();
+        \ob_end_flush();
     }
 
     /**
@@ -80,7 +80,7 @@ class View extends Core
      */
     private function getPathToTemplateFileName($templateFileName)
     {
-        return implode(DIRECTORY_SEPARATOR, [__DIR__, "tpl", $templateFileName]);
+        return \implode(DIRECTORY_SEPARATOR, [__DIR__, "tpl", $templateFileName]);
     }
 
     /**
@@ -285,6 +285,6 @@ class View extends Core
      */
     public function sendHeaders()
     {
-        header('Content-Type: text/html; charset=utf-8');
+        \header('Content-Type: text/html; charset=utf-8');
     }
 }

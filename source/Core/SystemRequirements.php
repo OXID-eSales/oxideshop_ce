@@ -162,17 +162,17 @@ class SystemRequirements
      */
     public function __call($sMethod, $aArgs)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
+        if (\defined('OXID_PHP_UNIT')) {
+            if (\substr($sMethod, 0, 4) == "UNIT") {
+                $sMethod = \str_replace("UNIT", "_", $sMethod);
             }
-            if (method_exists($this, $sMethod)) {
-                return call_user_func_array([& $this, $sMethod], $aArgs);
+            if (\method_exists($this, $sMethod)) {
+                return \call_user_func_array([& $this, $sMethod], $aArgs);
             }
         }
 
         throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException(
-            "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
+            "Function '$sMethod' does not exist or is not accessible! (" . \get_class($this) . ")" . PHP_EOL
         );
     }
 
@@ -223,9 +223,9 @@ class SystemRequirements
                 'server_permissions'
             ];
 
-            $this->_aRequiredModules = array_fill_keys($aRequiredServerConfigs, 'server_config') +
-                                       array_fill_keys($aRequiredPHPConfigs, 'php_config') +
-                                       array_fill_keys($aRequiredPHPExtensions, 'php_extennsions')
+            $this->_aRequiredModules = \array_fill_keys($aRequiredServerConfigs, 'server_config') +
+                                       \array_fill_keys($aRequiredPHPConfigs, 'php_config') +
+                                       \array_fill_keys($aRequiredPHPExtensions, 'php_extennsions')
                                        ;
         }
 
@@ -239,7 +239,7 @@ class SystemRequirements
      */
     public function checkCurl()
     {
-        return extension_loaded('curl') ? 2 : 1;
+        return \extension_loaded('curl') ? 2 : 1;
     }
 
     /**
@@ -249,7 +249,7 @@ class SystemRequirements
      */
     public function checkMbString()
     {
-        return extension_loaded('mbstring') ? 2 : 1;
+        return \extension_loaded('mbstring') ? 2 : 1;
     }
 
     /**
@@ -262,21 +262,21 @@ class SystemRequirements
      */
     public function checkServerPermissions($path = null, $minPerm = 777)
     {
-        clearstatcache();
+        \clearstatcache();
         $path = $path ? $path : getShopBasePath();
         // special config file check
         $configFilePath = $path . "config.inc.php";
         if (
-            !is_readable($configFilePath) ||
-            ($this->isAdmin() && is_writable($configFilePath)) ||
-            (!$this->isAdmin() && !is_writable($configFilePath))
+            !\is_readable($configFilePath) ||
+            ($this->isAdmin() && \is_writable($configFilePath)) ||
+            (!$this->isAdmin() && !\is_writable($configFilePath))
         ) {
             return 0;
         }
 
         $modStat = 2;
         $permissionIssues = $this->getPermissionIssuesList($path, $minPerm);
-        if (count($permissionIssues['missing']) + count($permissionIssues['not_writable'])) {
+        if (\count($permissionIssues['missing']) + \count($permissionIssues['not_writable'])) {
             $modStat = 0;
         }
 
@@ -293,7 +293,7 @@ class SystemRequirements
      */
     public function getPermissionIssuesList($shopPath = null, $minPerm = 777)
     {
-        clearstatcache();
+        \clearstatcache();
         $shopPath = $shopPath ? $shopPath : getShopBasePath();
         $pathCheckResults = [
             'missing' => [],
@@ -303,7 +303,7 @@ class SystemRequirements
         $tmpPath = "$shopPath/tmp/";
         $config = new \OxidEsales\Eshop\Core\ConfigFile(getShopBasePath() . "/config.inc.php");
         $configTmpPath = $config->getVar('sCompileDir');
-        if ($configTmpPath && strpos($configTmpPath, '<sCompileDir') === false) {
+        if ($configTmpPath && \strpos($configTmpPath, '<sCompileDir') === false) {
             $tmpPath = $configTmpPath;
         }
 
@@ -318,17 +318,17 @@ class SystemRequirements
             $tmpPath
         ];
 
-        $onePathToCheck = reset($pathsToCheck);
+        $onePathToCheck = \reset($pathsToCheck);
         while ($onePathToCheck) {
             // missing file/folder?
-            if (!file_exists($onePathToCheck)) {
-                $pathCheckResults['missing'][] = str_replace($shopPath, '', $onePathToCheck);
+            if (!\file_exists($onePathToCheck)) {
+                $pathCheckResults['missing'][] = \str_replace($shopPath, '', $onePathToCheck);
             }
 
-            if (is_dir($onePathToCheck)) {
+            if (\is_dir($onePathToCheck)) {
                 // adding subfolders
-                $subDirectories = glob($onePathToCheck . '*', GLOB_ONLYDIR);
-                if (is_array($subDirectories)) {
+                $subDirectories = \glob($onePathToCheck . '*', GLOB_ONLYDIR);
+                if (\is_array($subDirectories)) {
                     foreach ($subDirectories as $oneSubDirectory) {
                         $pathsToCheck[] = $oneSubDirectory . '/';
                     }
@@ -336,11 +336,11 @@ class SystemRequirements
             }
 
             // testing if file permissions >= $iMinPerm
-            if (!is_readable($onePathToCheck) || !is_writable($onePathToCheck)) {
-                $pathCheckResults['not_writable'][] = str_replace($shopPath, '', $onePathToCheck);
+            if (!\is_readable($onePathToCheck) || !\is_writable($onePathToCheck)) {
+                $pathCheckResults['not_writable'][] = \str_replace($shopPath, '', $onePathToCheck);
             }
 
-            $onePathToCheck = next($pathsToCheck);
+            $onePathToCheck = \next($pathsToCheck);
         }
 
         return $pathCheckResults;
@@ -356,14 +356,14 @@ class SystemRequirements
     protected function _getShopHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sShopURL = Registry::getConfig()->getConfigParam('sShopURL');
-        if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
+        if (\preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sShopURL, $m)) {
             $sHost = $m[2];
             $iPort = (int) $m[4];
-            $blSsl = (strtolower($m[1]) == 'https://');
+            $blSsl = (\strtolower($m[1]) == 'https://');
             if (!$iPort) {
                 $iPort = $blSsl ? 443 : 80;
             }
-            $sScript = rtrim($m[5], '/') . '/';
+            $sScript = \rtrim($m[5], '/') . '/';
 
             return [
                 'host' => $sHost,
@@ -386,14 +386,14 @@ class SystemRequirements
     protected function _getShopSSLHostInfoFromConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSSLShopURL = Registry::getConfig()->getConfigParam('sSSLShopURL');
-        if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
+        if (\preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sSSLShopURL, $m)) {
             $sHost = $m[2];
             $iPort = (int) $m[4];
-            $blSsl = (strtolower($m[1]) == 'https://');
+            $blSsl = (\strtolower($m[1]) == 'https://');
             if (!$iPort) {
                 $iPort = $blSsl ? 443 : 80;
             }
-            $sScript = rtrim($m[5], '/') . '/';
+            $sScript = \rtrim($m[5], '/') . '/';
 
             return [
                 'host' => $sHost,
@@ -422,7 +422,7 @@ class SystemRequirements
         if (!$iPort) {
             $iPort = $blSsl ? 443 : 80;
         }
-        $sScript = rtrim(dirname(dirname($sScript)), '/') . '/';
+        $sScript = \rtrim(\dirname(\dirname($sScript)), '/') . '/';
 
         return [
             'host' => $_SERVER['HTTP_HOST'],
@@ -487,7 +487,7 @@ class SystemRequirements
                 return 1;
             }
 
-            return min($iModStat, $iSSLModStat);
+            return \min($iModStat, $iSSLModStat);
         }
 
         return $iModStat;
@@ -505,7 +505,7 @@ class SystemRequirements
     protected function _checkModRewrite($aHostInfo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sHostname = ($aHostInfo['ssl'] ? 'ssl://' : '') . $aHostInfo['host'];
-        if ($rFp = @fsockopen($sHostname, $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {
+        if ($rFp = @\fsockopen($sHostname, $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {
             $sReq = "POST {$aHostInfo['dir']}oxseo.php?mod_rewrite_module_is=off HTTP/1.1\r\n";
             $sReq .= "Host: {$aHostInfo['host']}\r\n";
             $sReq .= "User-Agent: OXID eShop setup\r\n";
@@ -514,17 +514,17 @@ class SystemRequirements
             $sReq .= "Connection: close\r\n\r\n";
 
             $sOut = '';
-            fwrite($rFp, $sReq);
-            while (!feof($rFp)) {
-                $sOut .= fgets($rFp, 100);
+            \fwrite($rFp, $sReq);
+            while (!\feof($rFp)) {
+                $sOut .= \fgets($rFp, 100);
             }
-            fclose($rFp);
+            \fclose($rFp);
 
-            $iModStat = (strpos($sOut, 'mod_rewrite_on') !== false) ? 2 : 0;
+            $iModStat = (\strpos($sOut, 'mod_rewrite_on') !== false) ? 2 : 0;
         } else {
-            if (function_exists('apache_get_modules')) {
+            if (\function_exists('apache_get_modules')) {
                 // it does not assure that mod_rewrite is enabled on current host, so setting 1
-                $iModStat = in_array('mod_rewrite', apache_get_modules()) ? 1 : 0;
+                $iModStat = \in_array('mod_rewrite', apache_get_modules()) ? 1 : 0;
             } else {
                 $iModStat = -1;
             }
@@ -540,8 +540,8 @@ class SystemRequirements
      */
     public function checkAllowUrlFopen()
     {
-        $resultAllowUrlFopen = @ini_get('allow_url_fopen');
-        $resultAllowUrlFopen = strcasecmp('1', $resultAllowUrlFopen);
+        $resultAllowUrlFopen = @\ini_get('allow_url_fopen');
+        $resultAllowUrlFopen = \strcasecmp('1', $resultAllowUrlFopen);
 
         if (0 === $resultAllowUrlFopen && 2 === $this->checkFsockopen()) {
             return 2;
@@ -559,9 +559,9 @@ class SystemRequirements
         $result = 1;
         $iErrNo = 0;
         $sErrStr = '';
-        if ($oRes = @fsockopen('olc.oxid-esales.com', 80, $iErrNo, $sErrStr, 10)) {
+        if ($oRes = @\fsockopen('olc.oxid-esales.com', 80, $iErrNo, $sErrStr, 10)) {
             $result = 2;
-            fclose($oRes);
+            \fclose($oRes);
         }
         return $result;
     }
@@ -593,7 +593,7 @@ class SystemRequirements
      */
     public function checkPhpXml()
     {
-        return extension_loaded('dom') ? 2 : 0;
+        return \extension_loaded('dom') ? 2 : 0;
     }
 
     /**
@@ -603,7 +603,7 @@ class SystemRequirements
      */
     public function checkJSon()
     {
-        return extension_loaded('json') ? 2 : 0;
+        return \extension_loaded('json') ? 2 : 0;
     }
 
     /**
@@ -613,7 +613,7 @@ class SystemRequirements
      */
     public function checkIConv()
     {
-        return extension_loaded('iconv') ? 2 : 0;
+        return \extension_loaded('iconv') ? 2 : 0;
     }
 
     /**
@@ -623,7 +623,7 @@ class SystemRequirements
      */
     public function checkTokenizer()
     {
-        return extension_loaded('tokenizer') ? 2 : 0;
+        return \extension_loaded('tokenizer') ? 2 : 0;
     }
 
     /**
@@ -633,7 +633,7 @@ class SystemRequirements
      */
     public function checkBcMath()
     {
-        return extension_loaded('bcmath') ? 2 : 1;
+        return \extension_loaded('bcmath') ? 2 : 1;
     }
 
     /**
@@ -643,7 +643,7 @@ class SystemRequirements
      */
     public function checkOpenSsl()
     {
-        return extension_loaded('openssl') ? 2 : 1;
+        return \extension_loaded('openssl') ? 2 : 1;
     }
 
     /**
@@ -653,7 +653,7 @@ class SystemRequirements
      */
     public function checkSoap()
     {
-        return extension_loaded('soap') ? 2 : 1;
+        return \extension_loaded('soap') ? 2 : 1;
     }
 
     /**
@@ -663,7 +663,7 @@ class SystemRequirements
      */
     public function checkMysqlConnect()
     {
-        $iModStat = extension_loaded('pdo_mysql') ? 2 : 0;
+        $iModStat = \extension_loaded('pdo_mysql') ? 2 : 0;
         return $iModStat;
     }
 
@@ -674,11 +674,11 @@ class SystemRequirements
      */
     public function checkGdInfo()
     {
-        $iModStat = extension_loaded('gd') ? 1 : 0;
-        $iModStat = function_exists('imagecreatetruecolor') ? 2 : $iModStat;
-        $iModStat = function_exists('imagecreatefromgif') ? $iModStat : 0;
-        $iModStat = function_exists('imagecreatefromjpeg') ? $iModStat : 0;
-        $iModStat = function_exists('imagecreatefrompng') ? $iModStat : 0;
+        $iModStat = \extension_loaded('gd') ? 1 : 0;
+        $iModStat = \function_exists('imagecreatetruecolor') ? 2 : $iModStat;
+        $iModStat = \function_exists('imagecreatefromgif') ? $iModStat : 0;
+        $iModStat = \function_exists('imagecreatefromjpeg') ? $iModStat : 0;
+        $iModStat = \function_exists('imagecreatefrompng') ? $iModStat : 0;
 
         return $iModStat;
     }
@@ -690,7 +690,7 @@ class SystemRequirements
      */
     public function checkIniSet()
     {
-        return (@ini_set('memory_limit', @ini_get('memory_limit')) !== false) ? 2 : 0;
+        return (@\ini_set('memory_limit', @\ini_get('memory_limit')) !== false) ? 2 : 0;
     }
 
     /**
@@ -703,7 +703,7 @@ class SystemRequirements
     public function checkMemoryLimit($sMemLimit = null)
     {
         if ($sMemLimit === null) {
-            $sMemLimit = @ini_get('memory_limit');
+            $sMemLimit = @\ini_get('memory_limit');
         }
 
         if ($sMemLimit) {
@@ -755,7 +755,7 @@ class SystemRequirements
         $sCollation = '';
         $sSelect = 'select TABLE_NAME, COLUMN_NAME, COLLATION_NAME from INFORMATION_SCHEMA.columns
                     where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
-                    and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
+                    and COLUMN_NAME in ("' . \implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
                    'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
         $aRez = DatabaseConnectionProvider::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
@@ -771,7 +771,7 @@ class SystemRequirements
         if ($this->_blSysReqStatus === null) {
             $this->_blSysReqStatus = true;
         }
-        if (count($aCollations) > 0) {
+        if (\count($aCollations) > 0) {
             $this->_blSysReqStatus = false;
         }
 
@@ -795,7 +795,7 @@ class SystemRequirements
      */
     public function checkUnicodeSupport()
     {
-        return (@preg_match('/\pL/u', 'a') == 1) ? 2 : 1;
+        return (@\preg_match('/\pL/u', 'a') == 1) ? 2 : 1;
     }
 
     /**
@@ -806,9 +806,9 @@ class SystemRequirements
     public function checkFileUploads()
     {
         $dUploadFile = -1;
-        $sFileUploads = @ini_get('file_uploads');
+        $sFileUploads = @\ini_get('file_uploads');
         if ($sFileUploads !== false) {
-            if ($sFileUploads && ($sFileUploads == '1' || strtolower($sFileUploads) == 'on')) {
+            if ($sFileUploads && ($sFileUploads == '1' || \strtolower($sFileUploads) == 'on')) {
                 $dUploadFile = 2;
             } else {
                 $dUploadFile = 1;
@@ -859,7 +859,7 @@ class SystemRequirements
             }
             $iModuleState = $this->getModuleInfo($sModule);
             $aSysInfo[$sGroup][$sModule] = $iModuleState;
-            $this->_blSysReqStatus = $this->_blSysReqStatus && (bool) abs($iModuleState);
+            $this->_blSysReqStatus = $this->_blSysReqStatus && (bool) \abs($iModuleState);
         }
 
         return $aSysInfo;
@@ -897,7 +897,7 @@ class SystemRequirements
     {
         if ($sModule) {
             $iModStat = null;
-            $sCheckFunction = "check" . str_replace(" ", "", ucwords(str_replace("_", " ", $sModule)));
+            $sCheckFunction = "check" . \str_replace(" ", "", \ucwords(\str_replace("_", " ", $sModule)));
             $iModStat = $this->$sCheckFunction();
 
             return $iModStat;
@@ -972,8 +972,8 @@ class SystemRequirements
      */
     protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sBytes = trim($sBytes);
-        $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
+        $sBytes = \trim($sBytes);
+        $sLast = \strtolower($sBytes[\strlen($sBytes) - 1]);
         switch ($sLast) {
             // The 'G' modifier is available since PHP 5.1.0
             // gigabytes
@@ -1016,9 +1016,9 @@ class SystemRequirements
         }
 
         $sFile = $templateLoader->getContext($sTemplate);
-        $sBlockNameQuoted = preg_quote($sBlockName, '/');
+        $sBlockNameQuoted = \preg_quote($sBlockName, '/');
 
-        return (bool) preg_match('/\[\{\s*block\s+name\s*=\s*([\'"])' . $sBlockNameQuoted . '\1\s*\}\]/is', $sFile);
+        return (bool) \preg_match('/\[\{\s*block\s+name\s*=\s*([\'"])' . $sBlockNameQuoted . '\1\s*\}\]/is', $sFile);
     }
 
     /**
@@ -1092,9 +1092,9 @@ class SystemRequirements
      */
     public function checkSessionAutostart()
     {
-        $sStatus = (strtolower((string) @ini_get('session.auto_start')));
+        $sStatus = (\strtolower((string) @\ini_get('session.auto_start')));
 
-        return in_array($sStatus, ['on', '1']) ? 0 : 2;
+        return \in_array($sStatus, ['on', '1']) ? 0 : 2;
     }
 
     /**

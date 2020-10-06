@@ -108,7 +108,7 @@ class Diagnostics
     public function getShopDetails()
     {
         $aShopDetails = [
-            'Date'                => date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat'), time()),
+            'Date'                => \date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat'), \time()),
             'URL'                 => $this->getShopLink(),
             'Edition'             => $this->getEdition(),
             'Version'             => $this->getVersion(),
@@ -169,7 +169,7 @@ class Diagnostics
         $aPhpIniConf = [];
 
         foreach ($aPhpIniParams as $sParam) {
-            $sValue = ini_get($sParam);
+            $sValue = \ini_get($sParam);
             $aPhpIniConf[$sParam] = $sValue;
         }
 
@@ -186,11 +186,11 @@ class Diagnostics
     {
         $sReturn = 'Zend ';
 
-        if (function_exists('zend_optimizer_version')) {
+        if (\function_exists('zend_optimizer_version')) {
             $sReturn .= 'Optimizer';
         }
 
-        if (function_exists('zend_loader_enabled')) {
+        if (\function_exists('zend_loader_enabled')) {
             $sReturn .= 'Guard Loader';
         }
 
@@ -227,7 +227,7 @@ class Diagnostics
         }
 
         $aServerInfo = [
-            'Server OS'     => @php_uname('s'),
+            'Server OS'     => @\php_uname('s'),
             'VM'            => $this->_getVirtualizationSystem(),
             'PHP'           => $this->_getPhpVersion(),
             'MySQL'         => $this->_getMySqlServerInfo(),
@@ -238,7 +238,7 @@ class Diagnostics
             'Memory free'   => $iMemFree,
             'CPU Model'     => $sCpuModel,
             'CPU frequency' => $sCpuFreq,
-            'CPU cores'     => round($iCpuCores, 0),
+            'CPU cores'     => \round($iCpuCores, 0),
         ];
 
         return $aServerInfo;
@@ -252,7 +252,7 @@ class Diagnostics
      */
     protected function _getApacheVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (function_exists('apache_get_version')) {
+        if (\function_exists('apache_get_version')) {
             $sReturn = apache_get_version();
         } else {
             $sReturn = $_SERVER['SERVER_SOFTWARE'];
@@ -297,7 +297,7 @@ class Diagnostics
      */
     public function isExecAllowed()
     {
-        return function_exists('exec');
+        return \function_exists('exec');
     }
 
     /**
@@ -310,7 +310,7 @@ class Diagnostics
      */
     protected function _getDeviceList($sSystemType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return exec('lspci | grep -i ' . $sSystemType);
+        return \exec('lspci | grep -i ' . $sSystemType);
     }
 
     /**
@@ -322,7 +322,7 @@ class Diagnostics
     protected function _getCpuAmount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // cat /proc/cpuinfo | grep "processor" | sort -u | cut -d: -f2');
-        return exec('cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l');
+        return \exec('cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l');
     }
 
     /**
@@ -333,7 +333,7 @@ class Diagnostics
      */
     protected function _getCpuMhz() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return round(exec('cat /proc/cpuinfo | grep "MHz" | sort -u | cut -d: -f2'), 0);
+        return \round(\exec('cat /proc/cpuinfo | grep "MHz" | sort -u | cut -d: -f2'), 0);
     }
 
     /**
@@ -344,7 +344,7 @@ class Diagnostics
      */
     protected function _getBogoMips() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return exec('cat /proc/cpuinfo | grep "bogomips" | sort -u | cut -d: -f2');
+        return \exec('cat /proc/cpuinfo | grep "bogomips" | sort -u | cut -d: -f2');
     }
 
     /**
@@ -355,7 +355,7 @@ class Diagnostics
      */
     protected function _getMemoryTotal() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return exec('cat /proc/meminfo | grep "MemTotal" | sort -u | cut -d: -f2');
+        return \exec('cat /proc/meminfo | grep "MemTotal" | sort -u | cut -d: -f2');
     }
 
     /**
@@ -366,7 +366,7 @@ class Diagnostics
      */
     protected function _getMemoryFree() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return exec('cat /proc/meminfo | grep "MemFree" | sort -u | cut -d: -f2');
+        return \exec('cat /proc/meminfo | grep "MemFree" | sort -u | cut -d: -f2');
     }
 
     /**
@@ -377,7 +377,7 @@ class Diagnostics
      */
     protected function _getCpuModel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return exec('cat /proc/cpuinfo | grep "model name" | sort -u | cut -d: -f2');
+        return \exec('cat /proc/cpuinfo | grep "model name" | sort -u | cut -d: -f2');
     }
 
     /**
@@ -388,7 +388,7 @@ class Diagnostics
      */
     protected function _getDiskTotalSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return round(disk_total_space('/') / 1024 / 1024, 0) . ' GiB';
+        return \round(\disk_total_space('/') / 1024 / 1024, 0) . ' GiB';
     }
 
     /**
@@ -399,7 +399,7 @@ class Diagnostics
      */
     protected function _getDiskFreeSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return round(disk_free_space('/') / 1024 / 1024, 0) . ' GiB';
+        return \round(\disk_free_space('/') / 1024 / 1024, 0) . ' GiB';
     }
 
     /**
@@ -410,7 +410,7 @@ class Diagnostics
      */
     protected function _getPhpVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return phpversion();
+        return \phpversion();
     }
 
     /**

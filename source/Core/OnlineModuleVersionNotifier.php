@@ -137,7 +137,7 @@ class OnlineModuleVersionNotifier
             $modules[$moduleConfiguration->getId()] = $module;
         }
 
-        ksort($modules);
+        \ksort($modules);
 
         return $modules;
     }

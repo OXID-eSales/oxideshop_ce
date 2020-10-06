@@ -77,8 +77,8 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function setHomeCountry($sHomeCountry)
     {
-        if (is_array($sHomeCountry)) {
-            $this->_sHomeCountry = current($sHomeCountry);
+        if (\is_array($sHomeCountry)) {
+            $this->_sHomeCountry = \current($sHomeCountry);
         } else {
             $this->_sHomeCountry = $sHomeCountry;
         }
@@ -162,7 +162,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $aIds = [];
-        if (count($aGroupIds)) {
+        if (\count($aGroupIds)) {
             foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
             }
@@ -174,7 +174,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
         $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
-        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ") )" : '0';
+        $sGroupSql = \count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in (" . \implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ") )" : '0';
 
         $sQ .= " order by $sTable.oxsort asc ) as $sTable where (
             select
@@ -240,7 +240,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             foreach ($aDeliveries as $sDeliveryId => $oDelivery) {
                 // skipping that was checked and didn't fit before
-                if (in_array($sDeliveryId, $aSkipDeliveries)) {
+                if (\in_array($sDeliveryId, $aSkipDeliveries)) {
                     continue;
                 }
 
@@ -252,7 +252,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
                     $blDelFound = true;
 
                     // removing from unfitting list
-                    array_pop($aSkipDeliveries);
+                    \array_pop($aSkipDeliveries);
 
                     // maybe checked "Stop processing after first match" ?
                     if ($oDelivery->oxdelivery__oxfinalize->value) {
@@ -276,7 +276,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         //return deliveries sets if found
-        if ($this->_blCollectFittingDeliveriesSets && count($aFittingDelSets)) {
+        if ($this->_blCollectFittingDeliveriesSets && \count($aFittingDelSets)) {
             //resetting getting delivery sets list instead of deliveries before return
             $this->_blCollectFittingDeliveriesSets = false;
 

@@ -66,19 +66,19 @@ class ModuleAutoload
          * Classes from unified namespace canot be loaded by this auto loader.
          * Do not try to load them in order to avoid strange errors in edge cases.
          */
-        if (false !== strpos($class, 'OxidEsales\Eshop\\')) {
+        if (false !== \strpos($class, 'OxidEsales\Eshop\\')) {
             return false;
         }
         $instance = static::getInstance();
 
-        $class = strtolower(basename($class));
+        $class = \strtolower(\basename($class));
 
         if ($classPath = $instance->getFilePath($class)) {
             include $classPath;
         } else {
-            $class = preg_replace('/_parent$/i', '', $class);
+            $class = \preg_replace('/_parent$/i', '', $class);
 
-            if (!in_array($class, $instance->triedClasses)) {
+            if (!\in_array($class, $instance->triedClasses)) {
                 $instance->triedClasses[] = $class;
                 $instance->createExtensionClassChain($class);
             }
@@ -111,12 +111,12 @@ class ModuleAutoload
         $filePath = '';
 
         $moduleFiles = Registry::getUtilsObject()->getModuleVar('aModuleFiles');
-        if (is_array($moduleFiles)) {
+        if (\is_array($moduleFiles)) {
             $basePath = getShopBasePath();
             foreach ($moduleFiles as $moduleId => $classPaths) {
-                if (array_key_exists($class, $classPaths)) {
+                if (\array_key_exists($class, $classPaths)) {
                     $moduleFilePath = $basePath . 'modules/' . $classPaths[$class];
-                    if (file_exists($moduleFilePath)) {
+                    if (\file_exists($moduleFilePath)) {
                         $filePath = $moduleFilePath;
                     }
                 }
@@ -137,11 +137,11 @@ class ModuleAutoload
         $utilsObject = Registry::getUtilsObject();
 
         $extensions = $utilsObject->getModuleVar('aModules');
-        if (is_array($extensions)) {
-            $class = preg_quote($class, '/');
+        if (\is_array($extensions)) {
+            $class = \preg_quote($class, '/');
 
             foreach ($extensions as $parentClass => $extensionPath) {
-                if (preg_match('/\b' . $class . '($|\&)/i', $extensionPath)) {
+                if (\preg_match('/\b' . $class . '($|\&)/i', $extensionPath)) {
                     $utilsObject->getClassName($parentClass);
                     break;
                 }

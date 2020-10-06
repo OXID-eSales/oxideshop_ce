@@ -209,7 +209,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $sid = null;
 
         $forceSidParam = null;
-        if (!in_array($myConfig->getRequestParameter('cl'), $this->orderControllers)) {
+        if (!\in_array($myConfig->getRequestParameter('cl'), $this->orderControllers)) {
             $forceSidParam = $myConfig->getRequestParameter($this->getForcedName());
         }
         $sidParam = $myConfig->getRequestParameter($this->getName());
@@ -251,8 +251,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
             }
 
             //special handling for new ZP cluster session, as in that case session_start() regenerates id
-            if ($this->getId() !== session_id()) {
-                $this->setId(session_id());
+            if ($this->getId() !== \session_id()) {
+                $this->setId(\session_id());
             }
 
             //checking for swapped client
@@ -278,7 +278,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function getRequestChallengeToken()
     {
-        return preg_replace('/[^a-z0-9]/i', '', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('stoken'));
+        return \preg_replace('/[^a-z0-9]/i', '', \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('stoken'));
     }
 
     /**
@@ -288,7 +288,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function getSessionChallengeToken()
     {
-        $sRet = preg_replace('/[^a-z0-9]/i', '', $this->getVariable('sess_stoken'));
+        $sRet = \preg_replace('/[^a-z0-9]/i', '', $this->getVariable('sess_stoken'));
         if (!$sRet) {
             $this->_initNewSessionChallenge();
             $sRet = $this->getVariable('sess_stoken');
@@ -316,7 +316,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _initNewSessionChallenge() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->setVariable('sess_stoken', sprintf('%X', crc32(Registry::getUtilsObject()->generateUID())));
+        $this->setVariable('sess_stoken', \sprintf('%X', \crc32(Registry::getUtilsObject()->generateUID())));
     }
 
     /**
@@ -329,12 +329,12 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->needToSetHeaders()) {
             //enforcing no caching when session is started
-            session_cache_limiter('nocache');
+            \session_cache_limiter('nocache');
         } else {
-            session_cache_limiter('');
+            \session_cache_limiter('');
         }
 
-        $this->_blStarted = session_start();
+        $this->_blStarted = \session_start();
         if (!$this->getSessionChallengeToken()) {
             $this->_initNewSessionChallenge();
         }
@@ -404,13 +404,13 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getNewSessionId($blUnset = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        session_regenerate_id(true);
+        \session_regenerate_id(true);
 
         if ($blUnset) {
-            session_unset();
+            \session_unset();
         }
 
-        return session_id();
+        return \session_id();
     }
 
     /**
@@ -419,9 +419,9 @@ class Session extends \OxidEsales\Eshop\Core\Base
     public function freeze()
     {
         // storing basket ..
-        $this->setVariable($this->_getBasketName(), serialize($this->getBasket()));
+        $this->setVariable($this->_getBasketName(), \serialize($this->getBasket()));
 
-        session_write_close();
+        \session_write_close();
     }
 
     /**
@@ -430,7 +430,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     public function destroy()
     {
         unset($_SESSION);
-        session_destroy();
+        \session_destroy();
     }
 
     /**
@@ -495,7 +495,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $sRet = '';
 
         $blDisableSid = Registry::getUtils()->isSearchEngine()
-                        && is_array($myConfig->getConfigParam('aCacheViews'))
+                        && \is_array($myConfig->getConfigParam('aCacheViews'))
                         && !$this->isAdmin();
 
         //no cookie?
@@ -551,7 +551,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
             $basket =
                 $this->isSerializedBasketValid($serializedBasket) &&
-                ($unserializedBasket = unserialize($serializedBasket)) &&
+                ($unserializedBasket = \unserialize($serializedBasket)) &&
                 $this->isUnserializedBasketValid($unserializedBasket, $emptyBasket) ?
                     $unserializedBasket : $emptyBasket;
 
@@ -570,11 +570,11 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function isSerializedBasketValid($serializedBasket)
     {
-        $basketClass = get_class(oxNew(Basket::class));
-        $basketItemClass = get_class(oxNew(BasketItem::class));
-        $priceClass = get_class(oxNew(\OxidEsales\Eshop\Core\Price::class));
-        $priceListClass = get_class(oxNew(\OxidEsales\Eshop\Core\PriceList::class));
-        $userClass = get_class(oxNew(User::class));
+        $basketClass = \get_class(oxNew(Basket::class));
+        $basketItemClass = \get_class(oxNew(BasketItem::class));
+        $priceClass = \get_class(oxNew(\OxidEsales\Eshop\Core\Price::class));
+        $priceListClass = \get_class(oxNew(\OxidEsales\Eshop\Core\PriceList::class));
+        $userClass = \get_class(oxNew(User::class));
 
         return $serializedBasket &&
             $this->isClassInSerializedObject($serializedBasket, $basketClass) &&
@@ -594,9 +594,9 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function isClassInSerializedObject($serializedObject, $className)
     {
-        $quotedClassName = sprintf('"%s"', $className);
+        $quotedClassName = \sprintf('"%s"', $className);
 
-        return strpos($serializedObject, $quotedClassName) !== false;
+        return \strpos($serializedObject, $quotedClassName) !== false;
     }
 
     /**
@@ -610,8 +610,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function isClassOrNullInSerializedObjectAfterField($serializedObject, $fieldName, $className)
     {
-        $fieldAndClassPattern = '/' . preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
-        $matchFound = preg_match($fieldAndClassPattern, $serializedObject, $matches) === 1;
+        $fieldAndClassPattern = '/' . \preg_quote($fieldName, '/') . '";((?P<null>N);|O:\d+:"(?P<class>[\w\\\\]+)":)/';
+        $matchFound = \preg_match($fieldAndClassPattern, $serializedObject, $matches) === 1;
 
         return $matchFound &&
             (
@@ -632,7 +632,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function isUnserializedBasketValid($basket, $emptyBasket)
     {
-        return $basket && (get_class($basket) === get_class($emptyBasket));
+        return $basket && (\get_class($basket) === \get_class($emptyBasket));
     }
 
     /**
@@ -734,7 +734,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
                     // no cookie, so must check session
                     if ($blSidNeeded = $this->getVariable('blSidNeeded')) {
                         $this->_blSidNeeded = true;
-                    } elseif ($this->_isSessionRequiredAction() && !count($_COOKIE)) {
+                    } elseif ($this->_isSessionRequiredAction() && !\count($_COOKIE)) {
                         $this->_blSidNeeded = true;
 
                         // storing to session, performance..
@@ -778,14 +778,14 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 $this->sidToUrlEvent();
 
                 $oStr = Str::getStr();
-                $aUrlParts = explode('#', $sUrl);
+                $aUrlParts = \explode('#', $sUrl);
                 if (!$oStr->preg_match('/(\?|&(amp;)?)sid=/i', $aUrlParts[0]) && (false === $oStr->strpos($aUrlParts[0], $sSid))) {
                     if (!$oStr->preg_match('/(\?|&(amp;)?)$/', $sUrl)) {
                         $aUrlParts[0] .= ($oStr->strstr($aUrlParts[0], '?') !== false ? '&amp;' : '?');
                     }
                     $aUrlParts[0] .= $sSid . '&amp;';
                 }
-                $sUrl = join('#', $aUrlParts);
+                $sUrl = \join('#', $aUrlParts);
             }
         }
 
@@ -805,8 +805,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         $sToken = $this->getVariable('_rtoken');
         if (!$sToken && $blGenerateNew) {
-            $sToken = md5(rand() . $this->getId());
-            $sToken = substr($sToken, 0, 8);
+            $sToken = \md5(\rand() . $this->getId());
+            $sToken = \substr($sToken, 0, 8);
             $this->setVariable('_rtoken', $sToken);
         }
 
@@ -934,7 +934,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $sCurrUrl = $myConfig->isSsl() ? $myConfig->getSslShopUrl() : $myConfig->getShopUrl();
 
         $blSessCookieSetOnce = false;
-        if (is_array($aSessCookieSetOnce) && isset($aSessCookieSetOnce[$sCurrUrl])) {
+        if (\is_array($aSessCookieSetOnce) && isset($aSessCookieSetOnce[$sCurrUrl])) {
             $blSessCookieSetOnce = $aSessCookieSetOnce[$sCurrUrl];
         }
 
@@ -951,7 +951,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         //if we detect the cookie then set session var for possible later use
         if ($sCookieSid == "oxid" && !$blSessCookieSetOnce) {
-            if (!is_array($aSessCookieSetOnce)) {
+            if (!\is_array($aSessCookieSetOnce)) {
                 $aSessCookieSetOnce = [];
             }
 
@@ -978,11 +978,11 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function _setSessionId($sSessId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //marking this session as new one, as it might be not writen to db yet
-        if ($sSessId && session_id() != $sSessId) {
+        if ($sSessId && \session_id() != $sSessId) {
             $this->_blNewSession = true;
         }
 
-        session_id($sSessId);
+        \session_id($sSessId);
 
         $this->setId($sSessId);
         $this->setSessionCookie($sSessId);
@@ -1025,15 +1025,15 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function _getRequireSessionWithParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aCfgArray = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aRequireSessionWithParams');
-        if (is_array($aCfgArray)) {
+        if (\is_array($aCfgArray)) {
             $aDefault = $this->_aRequireSessionWithParams;
             foreach ($aCfgArray as $key => $val) {
-                if (!is_array($val) && $val) {
+                if (!\is_array($val) && $val) {
                     unset($aDefault[$key]);
                 }
             }
 
-            return array_merge_recursive($aCfgArray, $aDefault);
+            return \array_merge_recursive($aCfgArray, $aDefault);
         }
 
         return $this->_aRequireSessionWithParams;
@@ -1050,7 +1050,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         foreach ($this->_getRequireSessionWithParams() as $sParam => $aValues) {
             $sValue = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter($sParam);
             if (isset($sValue)) {
-                if (is_array($aValues)) {
+                if (\is_array($aValues)) {
                     if (isset($aValues[$sValue]) && $aValues[$sValue]) {
                         return true;
                     }
@@ -1109,7 +1109,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function isHeaderSent()
     {
-        return headers_sent();
+        return \headers_sent();
     }
 
     /**
@@ -1119,7 +1119,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     public function isSessionStarted()
     {
-        return session_status() === PHP_SESSION_ACTIVE;
+        return \session_status() === PHP_SESSION_ACTIVE;
     }
 
     /**

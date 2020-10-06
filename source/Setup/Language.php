@@ -44,8 +44,8 @@ class Language extends Core
             }
         } elseif ($oSession->getSessionParam('setup_lang') === null) {
             $aLangs = ['en', 'de'];
-            $sBrowserLang = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
-            $sBrowserLang = (in_array($sBrowserLang, $aLangs)) ? $sBrowserLang : $aLangs[0];
+            $sBrowserLang = \strtolower(\substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+            $sBrowserLang = (\in_array($sBrowserLang, $aLangs)) ? $sBrowserLang : $aLangs[0];
             $oSession->setSessionParam('setup_lang', $sBrowserLang);
         }
 
@@ -63,11 +63,11 @@ class Language extends Core
     {
         if ($this->_aLangData === null) {
             $this->_aLangData = [];
-            $sLangFilePath = getShopBasePath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
-            if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
+            $sLangFilePath = getShopBasePath() . EditionPathProvider::SETUP_DIRECTORY . '/' . \ucfirst($this->getLanguage()) . '/lang.php';
+            if (\file_exists($sLangFilePath) && \is_readable($sLangFilePath)) {
                 $aLang = [];
                 include $sLangFilePath;
-                $this->_aLangData = array_merge($aLang, $this->getAdditionalMessages());
+                $this->_aLangData = \array_merge($aLang, $this->getAdditionalMessages());
             }
         }
 
@@ -83,7 +83,7 @@ class Language extends Core
      */
     public function getModuleName($sModuleName)
     {
-        return $this->getText('MOD_' . strtoupper($sModuleName));
+        return $this->getText('MOD_' . \strtoupper($sModuleName));
     }
 
     /**

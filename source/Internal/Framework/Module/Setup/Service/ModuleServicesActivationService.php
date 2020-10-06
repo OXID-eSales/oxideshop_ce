@@ -172,7 +172,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      */
     private function getModuleConfig(string $moduleConfigFile): DIConfigWrapper
     {
-        if (!file_exists($moduleConfigFile)) {
+        if (!\file_exists($moduleConfigFile)) {
             throw new NoServiceYamlException();
         }
 

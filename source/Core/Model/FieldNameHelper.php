@@ -26,14 +26,14 @@ class FieldNameHelper
     public function getFullFieldNames($tableName, $fieldNames)
     {
         $combinedFields = [];
-        $tablePrefix = strtolower($tableName) . '__';
+        $tablePrefix = \strtolower($tableName) . '__';
         foreach ($fieldNames as $fieldName) {
-            $fieldName = strtolower($fieldName);
+            $fieldName = \strtolower($fieldName);
 
-            $fieldNameWithoutTableName = str_replace($tablePrefix, '', $fieldName);
+            $fieldNameWithoutTableName = \str_replace($tablePrefix, '', $fieldName);
             $combinedFields[] = $fieldNameWithoutTableName;
 
-            if (strpos($fieldName, $tablePrefix) !== 0) {
+            if (\strpos($fieldName, $tablePrefix) !== 0) {
                 $fieldName = $tablePrefix . $fieldName;
             }
 

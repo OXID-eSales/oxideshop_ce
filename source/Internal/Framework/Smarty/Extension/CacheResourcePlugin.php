@@ -66,7 +66,7 @@ class CacheResourcePlugin
      */
     public static function getTimestamp($templateName, &$templateTimestamp, $smarty)
     {
-        $templateTimestamp = isset($smarty->oxidtimecache->value) ? $smarty->oxidtimecache->value : time();
+        $templateTimestamp = isset($smarty->oxidtimecache->value) ? $smarty->oxidtimecache->value : \time();
 
         return true;
     }

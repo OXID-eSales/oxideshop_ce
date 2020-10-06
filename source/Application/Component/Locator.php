@@ -56,7 +56,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     {
         // setting locator type
         if ($sType) {
-            $this->_sType = trim($sType);
+            $this->_sType = \trim($sType);
         }
     }
 
@@ -71,7 +71,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
         $sLocfnc = "_set{$this->_sType}LocatorData";
 
         try {
-            call_user_func([$this, $sLocfnc], $oLocatorTarget, $oCurrArticle);
+            \call_user_func([$this, $sLocfnc], $oLocatorTarget, $oCurrArticle);
         } catch (\Exception $e) {
             $this->_sType = '';
             getLogger()->warning('Locator Type is wrong ' . $this->_sType);
@@ -238,16 +238,16 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             // #1834/1184M - specialchar search
             $sSearchParam = Registry::getConfig()->getRequestParameter('searchparam', true);
             $sSearchFormParam = Registry::getConfig()->getRequestParameter('searchparam');
-            $sSearchLinkParam = rawurlencode($sSearchParam);
+            $sSearchLinkParam = \rawurlencode($sSearchParam);
 
             $sSearchCat = Registry::getConfig()->getRequestParameter('searchcnid');
-            $sSearchCat = $sSearchCat ? rawurldecode($sSearchCat) : $sSearchCat;
+            $sSearchCat = $sSearchCat ? \rawurldecode($sSearchCat) : $sSearchCat;
 
             $sSearchVendor = Registry::getConfig()->getRequestParameter('searchvendor');
-            $sSearchVendor = $sSearchVendor ? rawurldecode($sSearchVendor) : $sSearchVendor;
+            $sSearchVendor = $sSearchVendor ? \rawurldecode($sSearchVendor) : $sSearchVendor;
 
             $sSearchManufacturer = Registry::getConfig()->getRequestParameter('searchmanufacturer');
-            $sSearchManufacturer = $sSearchManufacturer ? rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
+            $sSearchManufacturer = $sSearchManufacturer ? \rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
 
             // loading data for article navigation
             $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -285,7 +285,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $oSearchCat->prevProductLink = $oBackProd ? $this->_makeLink($oBackProd->getLink(), $sAddSearch) : null;
 
             $sFormat = Registry::getLang()->translateString('SEARCH_RESULT');
-            $oLocatorTarget->setSearchTitle(sprintf($sFormat, $sSearchFormParam));
+            $oLocatorTarget->setSearchTitle(\sprintf($sFormat, $sSearchFormParam));
             $oLocatorTarget->setActiveCategory($oSearchCat);
         }
     }
@@ -315,7 +315,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             if ($sSearchRecomm !== null) {
                 $sSearchFormRecomm = Registry::getConfig()->getRequestParameter('searchrecomm');
-                $sSearchLinkRecomm = rawurlencode($sSearchRecomm);
+                $sSearchLinkRecomm = \rawurlencode($sSearchRecomm);
                 $sAddSearch = 'searchrecomm=' . $sSearchLinkRecomm;
             }
 
@@ -398,7 +398,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     protected function _makeLink($sLink, $sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParams) {
-            $sLink .= ((strpos($sLink, '?') !== false) ? '&amp;' : '?') . $sParams;
+            $sLink .= ((\strpos($sLink, '?') !== false) ? '&amp;' : '?') . $sParams;
         }
 
         return $sLink;
@@ -427,7 +427,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $sParentIdField = 'oxarticles__oxparentid';
             $sArticleId = $oArticle->$sParentIdField->value ? $oArticle->$sParentIdField->value : $oArticle->getId();
             $iPos = Registry::getUtils()->arrayStringSearch($sArticleId, $oIdList->arrayKeys());
-            $iPageNr = floor($iPos / $iNrofCatArticles);
+            $iPageNr = \floor($iPos / $iNrofCatArticles);
         }
 
         return $iPageNr;
@@ -469,7 +469,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $aIds = $oIdList->arrayKeys();
             $iPos = Registry::getUtils()->arrayStringSearch($sOxid, $aIds);
 
-            if (array_key_exists($iPos - 1, $aIds)) {
+            if (\array_key_exists($iPos - 1, $aIds)) {
                 $oBackProduct = oxNew(Article::class);
                 $oBackProduct->modifyCacheKey('_locator');
                 $oBackProduct->setNoVariantLoading(true);
@@ -479,7 +479,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
                 }
             }
 
-            if (array_key_exists($iPos + 1, $aIds)) {
+            if (\array_key_exists($iPos + 1, $aIds)) {
                 $oNextProduct = oxNew(Article::class);
                 $oNextProduct->modifyCacheKey('_locator');
                 $oNextProduct->setNoVariantLoading(true);

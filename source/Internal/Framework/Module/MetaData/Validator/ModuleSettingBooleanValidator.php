@@ -48,8 +48,8 @@ class ModuleSettingBooleanValidator implements MetaDataValidatorInterface
     private function validateSetting(array $metaData, array $setting): void
     {
         if (isset($setting['type']) && $setting['type'] === 'bool') {
-            $value = is_string($setting['value']) ? strtolower($setting['value']) : $setting['value'];
-            if (!in_array($value, self::ALLOWED_VALUES, true)) {
+            $value = \is_string($setting['value']) ? \strtolower($setting['value']) : $setting['value'];
+            if (!\in_array($value, self::ALLOWED_VALUES, true)) {
                 throw new SettingNotValidException(
                     'Invalid boolean value- "' . $setting['value'] . '" was used for module setting. '
                     . 'Please update setting value in module "' . $metaData[MetaDataProvider::METADATA_ID] . '".'

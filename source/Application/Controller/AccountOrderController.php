@@ -91,7 +91,7 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
                 $this->_iAllArtCnt = $oUser->getOrderCount();
                 if ($this->_iAllArtCnt && $this->_iAllArtCnt > 0) {
                     $this->_aOrderList = $oUser->getOrders($iNrofCatArticles, $this->getActPage());
-                    $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
+                    $this->_iCntPages = \ceil($this->_iAllArtCnt / $iNrofCatArticles);
                 }
             }
         }

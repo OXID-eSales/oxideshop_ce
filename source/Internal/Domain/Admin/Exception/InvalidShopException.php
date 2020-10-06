@@ -15,6 +15,6 @@ class InvalidShopException extends \Exception
 {
     public function __construct(int $id)
     {
-        parent::__construct(sprintf('Provided shopId %d is not a valid shop id.', $id));
+        parent::__construct(\sprintf('Provided shopId %d is not a valid shop id.', $id));
     }
 }

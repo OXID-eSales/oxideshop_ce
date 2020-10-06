@@ -91,7 +91,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // set oxcreate
-        $this->oxreviews__oxcreate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+        $this->oxreviews__oxcreate = new \OxidEsales\Eshop\Core\Field(\date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
 
         return parent::_insert();
     }
@@ -113,12 +113,12 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $params = [
             ':oxtype' => $sType,
-            ':oxlang' => is_null($iLoadInLang) ? (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang
+            ':oxlang' => \is_null($iLoadInLang) ? (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang
         ];
 
-        if (is_array($aIds) && count($aIds)) {
-            $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . " )";
-        } elseif (is_string($aIds) && $aIds) {
+        if (\is_array($aIds) && \count($aIds)) {
+            $sObjectIdWhere = "oxreviews.oxobjectid in ( " . \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . " )";
+        } elseif (\is_string($aIds) && $aIds) {
             $sObjectIdWhere = "oxreviews.oxobjectid = :oxobjectid";
             $params[':oxobjectid'] = $aIds;
         } else {
@@ -162,7 +162,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getObjectType()
     {
-        return is_object($this->oxreviews__oxtype) ? $this->oxreviews__oxtype->value : $this->oxreviews__oxtype;
+        return \is_object($this->oxreviews__oxtype) ? $this->oxreviews__oxtype->value : $this->oxreviews__oxtype;
     }
 
     /**
@@ -172,7 +172,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getObjectId()
     {
-        return is_object($this->oxreviews__oxobjectid) ? $this->oxreviews__oxobjectid->value : $this->oxreviews__oxobjectid;
+        return \is_object($this->oxreviews__oxobjectid) ? $this->oxreviews__oxobjectid->value : $this->oxreviews__oxobjectid;
     }
 
     /**

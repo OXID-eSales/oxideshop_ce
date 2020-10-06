@@ -170,7 +170,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         if ($this->_aLastProducts === null) {
             $this->_aLastProducts = false;
             // 5th order step
-            $aBasketContents = array_values($this->getBasket()->getContents());
+            $aBasketContents = \array_values($this->getBasket()->getContents());
             if ($oBasketItem = $aBasketContents[0]) {
                 if ($oProduct = $oBasketItem->getArticle(false)) {
                     $this->_aLastProducts = $oProduct->getCustomerAlsoBoughtThisProducts();

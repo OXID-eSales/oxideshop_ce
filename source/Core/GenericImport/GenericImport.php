@@ -167,16 +167,16 @@ class GenericImport
             return $this->returnMessage = 'ERPGENIMPORT_ERROR_USER_NO_RIGHTS';
         }
 
-        $file = @fopen($this->importFilePath, 'r');
+        $file = @\fopen($this->importFilePath, 'r');
 
         if (isset($file) && $file) {
             $data = [];
-            while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
+            while (($row = \fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
                 $data[] = $this->csvTextConvert($row, false);
             }
 
             if ($this->csvContainsHeader) {
-                array_shift($data);
+                \array_shift($data);
             }
 
             try {
@@ -189,7 +189,7 @@ class GenericImport
             $this->returnMessage = 'ERPGENIMPORT_ERROR_WRONG_FILE';
         }
 
-        @fclose($file);
+        @\fclose($file);
 
         return $this->returnMessage;
     }
@@ -235,7 +235,7 @@ class GenericImport
      */
     public function getImportedRowCount()
     {
-        return count($this->importedIds);
+        return \count($this->importedIds);
     }
 
     /**
@@ -301,7 +301,7 @@ class GenericImport
             }
         }
 
-        if (!empty($dataForRetry) && (!$this->retried || count($dataForRetry) != count($data))) {
+        if (!empty($dataForRetry) && (!$this->retried || \count($dataForRetry) != \count($data))) {
             $this->retried = true;
             $this->returnMessage = '';
             $this->importData($dataForRetry);
@@ -319,7 +319,7 @@ class GenericImport
     {
         $type = $this->importType;
 
-        if (strlen($type) != 1 || !array_key_exists($type, $this->objects)) {
+        if (\strlen($type) != 1 || !\array_key_exists($type, $this->objects)) {
             throw new Exception('Error unknown command: ' . $type);
         } else {
             return $this->objects[$type];
@@ -332,7 +332,7 @@ class GenericImport
      */
     protected function addImportedId($id)
     {
-        if (!array_key_exists($id, $this->importedIds)) {
+        if (!\array_key_exists($id, $this->importedIds)) {
             $this->importedIds[$id] = true;
         }
     }
@@ -351,7 +351,7 @@ class GenericImport
 
         foreach ($this->csvFileFieldsOrder as $value) {
             if (!empty($value)) {
-                if (strtolower($data[$index]) == 'null') {
+                if (\strtolower($data[$index]) == 'null') {
                     $result[$value] = null;
                 } else {
                     $result[$value] = $data[$index];
@@ -373,13 +373,13 @@ class GenericImport
      */
     protected function csvTextConvert($text, $mode)
     {
-        $search = [chr(13), chr(10), '\'', '"'];
+        $search = [\chr(13), \chr(10), '\'', '"'];
         $replace = ['&#13;', '&#10;', '&#39;', '&#34;'];
 
         if ($mode) {
-            $text = str_replace($search, $replace, $text);
+            $text = \str_replace($search, $replace, $text);
         } else {
-            $text = str_replace($replace, $search, $text);
+            $text = \str_replace($replace, $search, $text);
         }
 
         return $text;

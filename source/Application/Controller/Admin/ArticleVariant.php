@@ -65,7 +65,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oOtherLang = $oArticle->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oArticle->loadInLang(key($oOtherLang), $soxId);
+                $oArticle->loadInLang(\key($oOtherLang), $soxId);
             }
 
             foreach ($oOtherLang as $id => $language) {
@@ -84,8 +84,8 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
             $this->_aViewData["editlanguage"] = $this->_iEditLang;
 
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
@@ -130,7 +130,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         // checkbox handling
-        if (is_array($aParams) && !isset($aParams['oxarticles__oxactive'])) {
+        if (\is_array($aParams) && !isset($aParams['oxarticles__oxactive'])) {
             $aParams['oxarticles__oxactive'] = 0;
         }
 
@@ -168,7 +168,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     protected function _isAnythingChanged($oProduct, $aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_array($aData)) {
+        if (!\is_array($aData)) {
             return true;
         }
         foreach ($aData as $sKey => $sValue) {
@@ -210,7 +210,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function savevariants()
     {
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
-        if (is_array($aParams)) {
+        if (\is_array($aParams)) {
             foreach ($aParams as $soxId => $aVarParams) {
                 $this->savevariant($soxId, $aVarParams);
             }

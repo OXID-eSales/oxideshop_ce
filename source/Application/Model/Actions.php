@@ -118,7 +118,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getTimeLeft()
     {
         $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-        $iFrom = strtotime($this->oxactions__oxactiveto->value);
+        $iFrom = \strtotime($this->oxactions__oxactiveto->value);
 
         return $iFrom - $iNow;
     }
@@ -131,7 +131,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getTimeUntilStart()
     {
         $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-        $iFrom = strtotime($this->oxactions__oxactivefrom->value);
+        $iFrom = \strtotime($this->oxactions__oxactivefrom->value);
 
         return $iFrom - $iNow;
     }
@@ -141,10 +141,10 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function start()
     {
-        $this->oxactions__oxactivefrom = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+        $this->oxactions__oxactivefrom = new \OxidEsales\Eshop\Core\Field(\date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         if ($this->oxactions__oxactiveto->value && ($this->oxactions__oxactiveto->value != '0000-00-00 00:00:00')) {
             $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-            $iTo = strtotime($this->oxactions__oxactiveto->value);
+            $iTo = \strtotime($this->oxactions__oxactiveto->value);
             if ($iNow > $iTo) {
                 $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field('0000-00-00 00:00:00');
             }
@@ -157,7 +157,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function stop()
     {
-        $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+        $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field(\date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $this->save();
     }
 
@@ -178,13 +178,13 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
         $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
-        $iFrom = strtotime($this->oxactions__oxactivefrom->value);
+        $iFrom = \strtotime($this->oxactions__oxactivefrom->value);
         if ($iNow < $iFrom) {
             return false;
         }
 
         if ($this->oxactions__oxactiveto->value != '0000-00-00 00:00:00') {
-            $iTo = strtotime($this->oxactions__oxactiveto->value);
+            $iTo = \strtotime($this->oxactions__oxactiveto->value);
             if ($iNow > $iTo) {
                 return false;
             }

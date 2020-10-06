@@ -74,7 +74,7 @@ class TemplateLoader implements TemplateLoaderInterface
     {
         $path = $this->findTemplate($name);
 
-        return file_get_contents($path);
+        return \file_get_contents($path);
     }
 
     /**
@@ -104,7 +104,7 @@ class TemplateLoader implements TemplateLoaderInterface
         $file = $this->fileLocator->locate($templateName);
 
         if (false === $file || null === $file || '' === $file) {
-            throw new TemplateFileNotFoundException(sprintf('Template "%s" not found', $name));
+            throw new TemplateFileNotFoundException(\sprintf('Template "%s" not found', $name));
         }
         return $file;
     }

@@ -46,7 +46,7 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oOtherLang = $oDelivery->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oDelivery->loadInLang(key($oOtherLang), $soxId);
+                $oDelivery->loadInLang(\key($oOtherLang), $soxId);
             }
 
             $this->_aViewData["edit"] = $oDelivery;
@@ -57,8 +57,8 @@ class DeliveryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
 
             // remove already created languages
-            $aLang = array_diff($oLang->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff($oLang->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 

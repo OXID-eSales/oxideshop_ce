@@ -55,7 +55,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             // load object in other languages
             $otherLang = $article->getAvailableInLangs();
             if (!isset($otherLang[$this->_iEditLang])) {
-                $article->loadInLang(key($otherLang), $oxId);
+                $article->loadInLang(\key($otherLang), $oxId);
             }
 
             foreach ($otherLang as $id => $language) {
@@ -106,7 +106,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $aMyFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("myfile");
         $aMediaFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("mediaFile");
-        if (is_array($aMyFile['name']) && reset($aMyFile['name']) || $aMediaFile['name']) {
+        if (\is_array($aMyFile['name']) && \reset($aMyFile['name']) || $aMediaFile['name']) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             if ($myConfig->isDemoShop()) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
@@ -220,7 +220,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     public function updateMedia()
     {
         $aMediaUrls = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aMediaUrls');
-        if (is_array($aMediaUrls)) {
+        if (\is_array($aMediaUrls)) {
             foreach ($aMediaUrls as $sMediaId => $aMediaParams) {
                 $oMedia = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
                 if ($oMedia->load($sMediaId)) {

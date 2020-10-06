@@ -170,7 +170,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         return !(
             $this->isEnabledPrivateSales() &&
-            !$this->getUser() && !in_array($sContentIdent, $this->_aPsAllowedContents)
+            !$this->getUser() && !\in_array($sContentIdent, $this->_aPsAllowedContents)
         );
     }
 
@@ -341,7 +341,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         if ($sTplName) {
             // security fix so that you cant access files from outside template dir
-            $sTplName = basename($sTplName);
+            $sTplName = \basename($sTplName);
 
             //checking if it is template name, not content id
             if (!Str::getStr()->preg_match("/\.tpl$/", $sTplName)) {
@@ -526,8 +526,8 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $iFrom = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = [];
-        $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
-        $oPriceValidity['validthrough'] = date('Y-m-d\TH:i:s', $iThrough) . "Z";
+        $oPriceValidity['validfrom'] = \date('Y-m-d\TH:i:s', $iFrom) . "Z";
+        $oPriceValidity['validthrough'] = \date('Y-m-d\TH:i:s', $iThrough) . "Z";
 
         return $oPriceValidity;
     }

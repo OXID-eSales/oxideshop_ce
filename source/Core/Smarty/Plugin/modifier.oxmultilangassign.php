@@ -42,10 +42,10 @@ function smarty_modifier_oxmultilangassign($sIdent, $args = null)
 
     if (!$blTranslationNotFound) {
         if ($args) {
-            if (is_array($args)) {
-                $sTranslation = vsprintf($sTranslation, $args);
+            if (\is_array($args)) {
+                $sTranslation = \vsprintf($sTranslation, $args);
             } else {
-                $sTranslation = sprintf($sTranslation, $args);
+                $sTranslation = \sprintf($sTranslation, $args);
             }
         }
     } elseif ($blShowError) {

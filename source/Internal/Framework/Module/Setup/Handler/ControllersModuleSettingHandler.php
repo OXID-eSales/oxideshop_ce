@@ -36,10 +36,10 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
         if ($configuration->hasControllers()) {
             $shopControllers = $this->getShopConfigurationSetting($shopId);
 
-            $shopSettingValue = array_merge(
+            $shopSettingValue = \array_merge(
                 $shopControllers->getValue(),
                 [
-                    strtolower($configuration->getId()) => $this->controllerKeysToLowercase(
+                    \strtolower($configuration->getId()) => $this->controllerKeysToLowercase(
                         $configuration->getControllers()
                     ),
                 ]
@@ -60,7 +60,7 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
         $shopControllers = $this->getShopConfigurationSetting($shopId);
 
         $shopSettingValue = $shopControllers->getValue();
-        unset($shopSettingValue[strtolower($configuration->getId())]);
+        unset($shopSettingValue[\strtolower($configuration->getId())]);
 
         $shopControllers->setValue($shopSettingValue);
 
@@ -76,7 +76,7 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
         $result = [];
 
         foreach ($controllers as $controller) {
-            $result[strtolower($controller->getId())] = $controller->getControllerClassNameSpace();
+            $result[\strtolower($controller->getId())] = $controller->getControllerClassNameSpace();
         }
 
         return $result;

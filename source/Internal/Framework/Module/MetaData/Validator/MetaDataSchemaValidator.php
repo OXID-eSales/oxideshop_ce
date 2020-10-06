@@ -71,7 +71,7 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
             $this->currentValidationMetaDataVersion
         );
         foreach ($metaData as $metaDataKey => $value) {
-            if (is_scalar($value)) {
+            if (\is_scalar($value)) {
                 $this->validateMetaDataKey($supportedMetaDataKeys, (string) $metaDataKey);
             } elseif (true === \is_array($value)) {
                 $this->validateMetaDataSection($supportedMetaDataKeys, $metaDataKey, $value);
@@ -92,7 +92,7 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
      */
     private function validateMetaDataKey(array $supportedMetaDataKeys, string $metaDataKey): void
     {
-        if (false === array_key_exists($metaDataKey, $supportedMetaDataKeys)) {
+        if (false === \array_key_exists($metaDataKey, $supportedMetaDataKeys)) {
             throw new UnsupportedMetaDataKeyException(
                 'The metadata key "' . $metaDataKey . '" is not supported in metadata version "'
                 . $this->currentValidationMetaDataVersion . '".'
@@ -113,7 +113,7 @@ class MetaDataSchemaValidator implements MetaDataSchemaValidatorInterface
     {
         foreach ($sectionData as $sectionItem) {
             if (\is_array($sectionItem)) {
-                $metaDataKeys = array_keys($sectionItem);
+                $metaDataKeys = \array_keys($sectionItem);
                 foreach ($metaDataKeys as $metaDataKey) {
                     $this->validateMetaDataKey($supportedMetaDataKeys[$sectionName], $metaDataKey);
                 }

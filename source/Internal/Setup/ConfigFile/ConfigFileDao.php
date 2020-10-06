@@ -38,9 +38,9 @@ class ConfigFileDao implements ConfigFileDaoInterface
         $placeholder = $this->getPlaceholder($placeholderName);
         $originalContents = $this->getConfigFileContent();
         $this->checkPlaceholderPresent($placeholder, $originalContents);
-        $replacedContents = str_replace($placeholder, $value, $originalContents);
+        $replacedContents = \str_replace($placeholder, $value, $originalContents);
 
-        file_put_contents($this->context->getConfigFilePath(), $replacedContents);
+        \file_put_contents($this->context->getConfigFilePath(), $replacedContents);
     }
 
     /** @inheritDoc */
@@ -58,11 +58,11 @@ class ConfigFileDao implements ConfigFileDaoInterface
      */
     private function getConfigFileContent(): string
     {
-        if (!file_exists($this->context->getConfigFilePath())) {
+        if (!\file_exists($this->context->getConfigFilePath())) {
             throw new ConfigFileNotFoundException('File not found ' . $this->context->getConfigFilePath());
         }
 
-        return file_get_contents($this->context->getConfigFilePath());
+        return \file_get_contents($this->context->getConfigFilePath());
     }
 
     /**
@@ -81,7 +81,7 @@ class ConfigFileDao implements ConfigFileDaoInterface
      */
     private function checkPlaceholderPresent(string $placeholder, string $fileContents): void
     {
-        if (strpos($fileContents, $placeholder) === false) {
+        if (\strpos($fileContents, $placeholder) === false) {
             throw new FileNotEditableException("Configuration file is not editable - value for $placeholder can not be set.");
         }
     }

@@ -94,7 +94,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function getProduct()
     {
-        if (is_null($this->_oArticle)) {
+        if (\is_null($this->_oArticle)) {
             if ($this->getViewParameter('_object')) {
                 $oArticle = $this->getViewParameter('_object');
             } else {
@@ -214,7 +214,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     public function getRSSLinks()
     {
         $aRSS = $this->getViewParameter('rsslinks');
-        if (!is_array($aRSS)) {
+        if (!\is_array($aRSS)) {
             $aRSS = null;
         }
 

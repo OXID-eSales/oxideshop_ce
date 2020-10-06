@@ -217,7 +217,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $iLangId = $oLang->getTplLanguage();
         $sLangCode = $aLanguages[$iLangId]->abbr;
 
-        if (!array_key_exists($sLangCode, $aLinks)) {
+        if (!\array_key_exists($sLangCode, $aLinks)) {
             $sLangCode = "de";
         }
 

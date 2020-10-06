@@ -138,8 +138,8 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     public function getFirstMdSubvariant()
     {
         $aMdSubvariants = $this->getMdSubvariants();
-        if (count($aMdSubvariants)) {
-            return reset($aMdSubvariants);
+        if (\count($aMdSubvariants)) {
+            return \reset($aMdSubvariants);
         }
 
         return null;
@@ -156,14 +156,14 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     {
         $aSubvariants = $this->getMdSubvariants();
         foreach ($aSubvariants as $oMdSubvariant) {
-            if (strcasecmp($oMdSubvariant->getName(), $sName) == 0) {
+            if (\strcasecmp($oMdSubvariant->getName(), $sName) == 0) {
                 return $oMdSubvariant;
             }
         }
 
         $oNewSubvariant = oxNew(\OxidEsales\Eshop\Application\Model\MdVariant::class);
         $oNewSubvariant->setName($sName);
-        $oNewSubvariant->setId(md5($sName . $this->getId()));
+        $oNewSubvariant->setId(\md5($sName . $this->getId()));
         $oNewSubvariant->setParentId($this->getId());
         $this->_addMdSubvariant($oNewSubvariant);
 
@@ -226,10 +226,10 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
         $aVariants = $this->getMdSubvariants();
         foreach ($aVariants as $oVariant) {
             $dMinVariantPrice = $oVariant->getMinDPrice();
-            if (is_null($dMinPrice)) {
+            if (\is_null($dMinPrice)) {
                 $dMinPrice = $dMinVariantPrice;
             }
-            if (!is_null($dMinVariantPrice) && $dMinVariantPrice < $dMinPrice) {
+            if (!\is_null($dMinVariantPrice) && $dMinVariantPrice < $dMinPrice) {
                 $dMinPrice = $dMinVariantPrice;
             }
         }
@@ -246,7 +246,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     {
         $aSubvariants = $this->getMdSubvariants();
 
-        if (!count($aSubvariants)) {
+        if (!\count($aSubvariants)) {
             return 0;
         }
 
@@ -301,8 +301,8 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      */
     public function addNames($sArtId, $aNames, $dPrice, $sUrl)
     {
-        $iCount = count($aNames);
-        $sName = array_shift($aNames);
+        $iCount = \count($aNames);
+        $sName = \array_shift($aNames);
 
         if ($iCount) {
             //get required subvariant
@@ -379,10 +379,10 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
         $aVariants = $this->getMdSubvariants();
         foreach ($aVariants as $oVariant) {
             $dVariantPrice = $oVariant->getDPrice();
-            if (is_null($dPrice)) {
+            if (\is_null($dPrice)) {
                 $dPrice = $dVariantPrice;
             }
-            if (!is_null($dVariantPrice) && $dVariantPrice != $dPrice) {
+            if (!\is_null($dVariantPrice) && $dVariantPrice != $dPrice) {
                 return false;
             }
             if (!$oVariant->_isFixedPrice()) {

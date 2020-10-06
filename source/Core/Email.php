@@ -314,16 +314,16 @@ class Email extends PHPMailer
      */
     public function __call($method, $args)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($method, 0, 4) == "UNIT") {
-                $method = str_replace("UNIT", "_", $method);
+        if (\defined('OXID_PHP_UNIT')) {
+            if (\substr($method, 0, 4) == "UNIT") {
+                $method = \str_replace("UNIT", "_", $method);
             }
-            if (method_exists($this, $method)) {
-                return call_user_func_array([&$this, $method], $args);
+            if (\method_exists($this, $method)) {
+                return \call_user_func_array([&$this, $method], $args);
             }
         }
 
-        throw new SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new SystemComponentException("Function '$method' does not exist or is not accessible! (" . \get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -375,7 +375,7 @@ class Email extends PHPMailer
     public function send()
     {
         // if no recipients found, skipping sending
-        if (count($this->getRecipient()) < 1) {
+        if (\count($this->getRecipient()) < 1) {
             return false;
         }
 
@@ -438,7 +438,7 @@ class Email extends PHPMailer
         if (Str::getStr()->preg_match('@^([0-9a-z]+://)?(.*)$@i', $url, $match)) {
             if ($match[1]) {
                 if (($match[1] == 'ssl://') || ($match[1] == 'tls://')) {
-                    $this->set("SMTPSecure", substr($match[1], 0, 3));
+                    $this->set("SMTPSecure", \substr($match[1], 0, 3));
                 } else {
                     $protocol = $match[1];
                 }
@@ -503,9 +503,9 @@ class Email extends PHPMailer
                     $smtpPort = (int) $match[3];
                 }
             }
-            if ($isSmtp = (bool) ($rHandle = @fsockopen($smtpHost, $smtpPort, $errNo, $errStr, 30))) {
+            if ($isSmtp = (bool) ($rHandle = @\fsockopen($smtpHost, $smtpPort, $errNo, $errStr, 30))) {
                 // closing connection ..
-                fclose($rHandle);
+                \fclose($rHandle);
             }
         }
 
@@ -812,7 +812,7 @@ class Email extends PHPMailer
 
         // create messages
         $renderer = $this->getRenderer();
-        $confirmCode = md5($user->oxuser__oxusername->value . $user->oxuser__oxpasssalt->value);
+        $confirmCode = \md5($user->oxuser__oxusername->value . $user->oxuser__oxpasssalt->value);
         $this->setViewData("subscribeLink", $this->_getNewsSubsLink($user->oxuser__oxid->value, $confirmCode));
         $this->setUser($user);
 
@@ -925,12 +925,12 @@ class Email extends PHPMailer
             $homeUrl .= "su=" . $activeUser->getId();
         }
 
-        if (is_array($user->rec_email) && count($user->rec_email) > 0) {
+        if (\is_array($user->rec_email) && \count($user->rec_email) > 0) {
             foreach ($user->rec_email as $email) {
                 if (!empty($email)) {
                     $registerUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendParamSeparator($homeUrl);
                     //setting recipient user email
-                    $registerUrl .= "re=" . md5($email);
+                    $registerUrl .= "re=" . \md5($email);
                     $this->setViewData("sHomeUrl", $registerUrl);
 
                     // Process view data array through oxoutput processor
@@ -1111,7 +1111,7 @@ class Email extends PHPMailer
         $attPath = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($attPath);
         foreach ($attFiles as $num => $attFile) {
             $fullPath = $attPath . $attFile;
-            if (@is_readable($fullPath) && @is_file($fullPath)) {
+            if (@\is_readable($fullPath) && @\is_file($fullPath)) {
                 $attashSucc = $this->addAttachment($fullPath, $attFile);
             } else {
                 $attashSucc = false;
@@ -1148,7 +1148,7 @@ class Email extends PHPMailer
         //set mail params (from, fromName, smtp)
         $this->_setMailParams();
 
-        if (is_array($to)) {
+        if (\is_array($to)) {
             foreach ($to as $address) {
                 $this->setRecipient($address, "");
                 $this->setReplyTo($address, "");
@@ -1353,7 +1353,7 @@ class Email extends PHPMailer
     protected function _includeImages($imageDir = null, $imageDirNoSSL = null, $dynImageDir = null, $absImageDir = null, $absDynImageDir = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $body = $this->getBody();
-        if (preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $body, $matches, PREG_SET_ORDER)) {
+        if (\preg_match_all('/<\s*img\s+[^>]*?src[\s]*=[\s]*[\'"]?([^[\'">]]+|.*?)?[\'">]/i', $body, $matches, PREG_SET_ORDER)) {
             $fileUtils = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
             $reSetBody = false;
 
@@ -1362,7 +1362,7 @@ class Email extends PHPMailer
             $imageDir = $fileUtils->normalizeDir($imageDir);
             $imageDirNoSSL = $fileUtils->normalizeDir($imageDirNoSSL);
 
-            if (is_array($matches) && count($matches)) {
+            if (\is_array($matches) && \count($matches)) {
                 $imageCache = [];
                 $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
                 $myUtilsObject = $this->getUtilsObjectInstance();
@@ -1371,15 +1371,15 @@ class Email extends PHPMailer
                 foreach ($matches as $image) {
                     $imageName = $image[1];
                     $fileName = '';
-                    if (strpos($imageName, $dynImageDir) === 0) {
-                        $fileName = $fileUtils->normalizeDir($absDynImageDir) . str_replace($dynImageDir, '', $imageName);
-                    } elseif (strpos($imageName, $imageDir) === 0) {
-                        $fileName = $fileUtils->normalizeDir($absImageDir) . str_replace($imageDir, '', $imageName);
-                    } elseif (strpos($imageName, $imageDirNoSSL) === 0) {
-                        $fileName = $fileUtils->normalizeDir($absImageDir) . str_replace($imageDirNoSSL, '', $imageName);
+                    if (\strpos($imageName, $dynImageDir) === 0) {
+                        $fileName = $fileUtils->normalizeDir($absDynImageDir) . \str_replace($dynImageDir, '', $imageName);
+                    } elseif (\strpos($imageName, $imageDir) === 0) {
+                        $fileName = $fileUtils->normalizeDir($absImageDir) . \str_replace($imageDir, '', $imageName);
+                    } elseif (\strpos($imageName, $imageDirNoSSL) === 0) {
+                        $fileName = $fileUtils->normalizeDir($absImageDir) . \str_replace($imageDirNoSSL, '', $imageName);
                     }
 
-                    if ($fileName && !@is_readable($fileName)) {
+                    if ($fileName && !@\is_readable($fileName)) {
                         $fileName = $imgGenerator->getImagePath($fileName);
                     }
 
@@ -1398,8 +1398,8 @@ class Email extends PHPMailer
                             }
                         }
                         if ($cId && $cId == $imageCache[$fileName]) {
-                            if ($replTag = str_replace($imageName, 'cid:' . $cId, $image[0])) {
-                                $body = str_replace($image[0], $replTag, $body);
+                            if ($replTag = \str_replace($imageName, 'cid:' . $cId, $image[0])) {
+                                $body = \str_replace($image[0], $replTag, $body);
                                 $reSetBody = true;
                             }
                         }
@@ -1421,7 +1421,7 @@ class Email extends PHPMailer
     public function setSubject($subject = null)
     {
         // A. HTML entities in subjects must be replaced
-        $subject = str_replace(['&amp;', '&quot;', '&#039;', '&lt;', '&gt;'], ['&', '"', "'", '<', '>'], $subject);
+        $subject = \str_replace(['&amp;', '&quot;', '&#039;', '&lt;', '&gt;'], ['&', '"', "'", '<', '>'], $subject);
 
         $this->set("Subject", $subject);
     }
@@ -1476,7 +1476,7 @@ class Email extends PHPMailer
         }
 
         // A. alt body is used for plain text emails so we should eliminate HTML entities
-        $altBody = str_replace(['&amp;', '&quot;', '&#039;', '&lt;', '&gt;'], ['&', '"', "'", '<', '>'], $altBody);
+        $altBody = \str_replace(['&amp;', '&quot;', '&#039;', '&lt;', '&gt;'], ['&', '"', "'", '<', '>'], $altBody);
 
         $this->set("AltBody", $altBody);
     }
@@ -1585,8 +1585,8 @@ class Email extends PHPMailer
      */
     public function setFrom($address, $name = null, $auto = true)
     {
-        $address = substr($address, 0, 150);
-        $name = substr($name, 0, 150);
+        $address = \substr($address, 0, 150);
+        $name = \substr($name, 0, 150);
 
         $success = false;
         try {
@@ -1741,7 +1741,7 @@ class Email extends PHPMailer
     ) {
         $this->_aAttachments[] = [
             $path,
-            basename($path),
+            \basename($path),
             $name,
             $encoding,
             $type,
@@ -1783,7 +1783,7 @@ class Email extends PHPMailer
      */
     public function headerLine($name, $value)
     {
-        if (stripos($name, 'X-') !== false) {
+        if (\stripos($name, 'X-') !== false) {
             return null;
         }
 
@@ -1824,7 +1824,7 @@ class Email extends PHPMailer
         // shop info
         $shop = $this->_getShop();
 
-        return @mail($shop->oxshops__oxorderemail->value, "eMail problem in shop!", $ownerMessage);
+        return @\mail($shop->oxshops__oxorderemail->value, "eMail problem in shop!", $ownerMessage);
     }
 
     /**
@@ -2025,7 +2025,7 @@ class Email extends PHPMailer
         // processing assigned smarty variables
         $newArray = $outputProcessor->processViewArray($this->_aViewData, "oxemail");
 
-        $this->_aViewData = array_merge($this->_aViewData, $newArray);
+        $this->_aViewData = \array_merge($this->_aViewData, $newArray);
     }
 
     /**
@@ -2161,7 +2161,7 @@ class Email extends PHPMailer
         $orderFileList = oxNew(OrderFileList::class);
         $orderFileList->loadOrderFiles($orderId);
 
-        if (count($orderFileList) > 0) {
+        if (\count($orderFileList) > 0) {
             return $orderFileList;
         }
 
@@ -2248,14 +2248,14 @@ class Email extends PHPMailer
      */
     private function idnToAscii($idn)
     {
-        if (function_exists('idn_to_ascii')) {
+        if (\function_exists('idn_to_ascii')) {
             // for old PHP versions support
             // remove it after the PHP 7.1 support is dropped
-            if (defined('INTL_IDNA_VARIANT_UTS46')) {
-                return idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
+            if (\defined('INTL_IDNA_VARIANT_UTS46')) {
+                return \idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
             }
 
-            return idn_to_ascii($idn);
+            return \idn_to_ascii($idn);
         }
 
         return $idn;

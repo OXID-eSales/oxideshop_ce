@@ -99,7 +99,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
             $sOrderTitleField = 'oxorderfiles__oxarticletitle';
             $sOrderArticleId = $oOrderFile->$sOrderArticleIdField->value;
             $oOrderArticles[$sOrderArticleId]['oxordernr'] = $oOrderFile->$sOrderNumberField->value;
-            $oOrderArticles[$sOrderArticleId]['oxorderdate'] = substr($oOrderFile->$sOrderDateField->value, 0, 16);
+            $oOrderArticles[$sOrderArticleId]['oxorderdate'] = \substr($oOrderFile->$sOrderDateField->value, 0, 16);
             $oOrderArticles[$sOrderArticleId]['oxarticletitle'] = $oOrderFile->$sOrderTitleField->value;
             $oOrderArticles[$sOrderArticleId]['oxorderfiles'][] = $oOrderFile;
         }

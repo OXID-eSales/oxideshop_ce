@@ -34,11 +34,11 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
         if ($blisMallAdmin && !$myConfig->isDemoShop()) {
-            $aClassVars = get_object_vars($myConfig);
+            $aClassVars = \get_object_vars($myConfig);
             $aSystemInfo = [];
             $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
             foreach ($aClassVars as $name => $value) {
-                if (gettype($value) == "object") {
+                if (\gettype($value) == "object") {
                     continue;
                 }
 
@@ -46,8 +46,8 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
                     continue;
                 }
 
-                $value = var_export($value, true);
-                $value = str_replace("\n", "<br>", $value);
+                $value = \var_export($value, true);
+                $value = \str_replace("\n", "<br>", $value);
                 $aSystemInfo[$name] = $value;
                 //echo( "$name = $value <br>");
             }
@@ -59,12 +59,12 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
                 "aSystemInfo" => $aSystemInfo
             ];
 
-            ob_start();
+            \ob_start();
             echo $this->getRenderer()->renderTemplate("systeminfo.tpl", $context);
             echo("<br><br>");
 
-            phpinfo();
-            $sMessage = ob_get_clean();
+            \phpinfo();
+            $sMessage = \ob_get_clean();
 
             \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($sMessage);
         } else {
@@ -92,7 +92,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected function isClassVariableVisible($varName)
     {
-        return !in_array($varName, [
+        return !\in_array($varName, [
             'oDB',
             'dbUser',
             'dbPwd',

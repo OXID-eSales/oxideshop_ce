@@ -20,13 +20,13 @@ class IncludeWidgetLogic
     {
         $class = '';
         if (isset($params['cl'])) {
-            $class = strtolower($params['cl']);
+            $class = \strtolower($params['cl']);
             unset($params['cl']);
         }
 
         $parentViews = null;
         if (!empty($params["_parent"])) {
-            $parentViews = explode("|", $params["_parent"]);
+            $parentViews = \explode("|", $params["_parent"]);
             unset($params["_parent"]);
         }
 

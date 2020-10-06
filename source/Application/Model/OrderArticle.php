@@ -92,11 +92,11 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function copyThis($oProduct)
     {
-        $aObjectVars = get_object_vars($oProduct);
+        $aObjectVars = \get_object_vars($oProduct);
 
         foreach ($aObjectVars as $sName => $sValue) {
             if (isset($oProduct->$sName->value)) {
-                $sFieldName = preg_replace('/oxarticles__/', 'oxorderarticles__', $sName);
+                $sFieldName = \preg_replace('/oxarticles__/', 'oxorderarticles__', $sName);
                 if ($sFieldName != "oxorderarticles__oxtimestamp") {
                     $this->$sFieldName = $oProduct->$sName;
                 }
@@ -197,7 +197,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         }
 
         if ($this->oxorderarticles__oxpersparam->value) {
-            $this->_aPersParam = unserialize($this->oxorderarticles__oxpersparam->value);
+            $this->_aPersParam = \unserialize($this->oxorderarticles__oxpersparam->value);
         }
 
         return $this->_aPersParam;
@@ -213,7 +213,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         $this->_aPersParam = $aParams;
 
         // serializing persisten info stored while ordering
-        $this->oxorderarticles__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($aParams), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxorderarticles__oxpersparam = new \OxidEsales\Eshop\Core\Field(\serialize($aParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -228,7 +228,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sFieldName = strtolower($sFieldName);
+        $sFieldName = \strtolower($sFieldName);
         switch ($sFieldName) {
             case 'oxpersparam':
             case 'oxorderarticles__oxpersparam':
@@ -398,24 +398,24 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
         if ($this->_aOrderArticleSelList === null) {
             $sOrderArtSelList = $sOrderArtSelList ? $sOrderArtSelList : $this->oxorderarticles__oxselvariant->value;
 
-            $sOrderArtSelList = explode(' || ', $sOrderArtSelList)[0];
+            $sOrderArtSelList = \explode(' || ', $sOrderArtSelList)[0];
 
             $aRet = [];
 
             if ($oArticle = $this->_getOrderArticle($sArtId)) {
-                $aList = explode(", ", $sOrderArtSelList);
+                $aList = \explode(", ", $sOrderArtSelList);
                 $oStr = Str::getStr();
 
                 $aArticleSelList = $oArticle->getSelectLists();
 
                 //formatting temporary list array from string
-                if (count($aArticleSelList) > 0) {
+                if (\count($aArticleSelList) > 0) {
                     foreach ($aList as $sList) {
                         if ($sList) {
-                            $aVal = explode(":", $sList);
+                            $aVal = \explode(":", $sList);
                             if (isset($aVal[0]) && isset($aVal[1])) {
-                                $sOrderArtListTitle = $oStr->strtolower(trim($aVal[0]));
-                                $sOrderArtSelValue = $oStr->strtolower(trim($aVal[1]));
+                                $sOrderArtListTitle = $oStr->strtolower(\trim($aVal[0]));
+                                $sOrderArtSelValue = $oStr->strtolower(\trim($aVal[1]));
 
                                 //checking article list for matches with article list stored in oxOrderItem
                                 $iSelListNum = 0;
@@ -768,8 +768,8 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $iInsertTime = time();
-        $now = date('Y-m-d H:i:s', $iInsertTime);
+        $iInsertTime = \time();
+        $now = \date('Y-m-d H:i:s', $iInsertTime);
         $this->oxorderarticles__oxtimestamp = new \OxidEsales\Eshop\Core\Field($now);
 
         return parent::_insert();

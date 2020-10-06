@@ -60,9 +60,9 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
         $oMdVariants->setParentId($sParentId);
         $oMdVariants->setName("_parent_product_");
         foreach ($oVariants as $sKey => $oVariant) {
-            $aNames = explode(trim($this->_sMdSeparator), $oVariant->oxarticles__oxvarselect->value);
+            $aNames = \explode(\trim($this->_sMdSeparator), $oVariant->oxarticles__oxvarselect->value);
             foreach ($aNames as $sNameKey => $sName) {
-                $aNames[$sNameKey] = trim($sName);
+                $aNames[$sNameKey] = \trim($sName);
             }
             $oMdVariants->addNames(
                 $sKey,
@@ -136,7 +136,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
         $iCounter = 0;
         $aVarselect = []; //multilanguage names of existing variants
         //iterating through all select list values (eg. $oValue->name = S, M, X, XL)
-        for ($i = 0; $i < count($aValues); $i++) {
+        for ($i = 0; $i < \count($aValues); $i++) {
             $oValue = $aValues[$i][0];
             $dPriceMod = $this->_getValuePrice($oValue, $oArticle->oxarticles__oxprice->value);
             if ($oVariants->count() > 0) {
@@ -224,7 +224,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
             if ($oValue->priceUnit == 'abs') {
                 $dPriceMod = $oValue->price;
             } elseif ($oValue->priceUnit == '%') {
-                $dPriceModPerc = abs($oValue->price) * $dParentPrice / 100.0;
+                $dPriceModPerc = \abs($oValue->price) * $dParentPrice / 100.0;
                 if (($oValue->price) >= 0.0) {
                     $dPriceMod = $dPriceModPerc;
                 } else {
@@ -289,7 +289,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     public function isMdVariant($oArticle)
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseMultidimensionVariants')) {
-            if (strpos($oArticle->oxarticles__oxvarselect->value, trim($this->_sMdSeparator)) !== false) {
+            if (\strpos($oArticle->oxarticles__oxvarselect->value, \trim($this->_sMdSeparator)) !== false) {
                 return true;
             }
         }
@@ -317,9 +317,9 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
             $aNames = $this->_getSelections($oVariant->oxarticles__oxvarselect->getRawValue());
             $blActive = ($sActVariantId === $oVariant->getId()) ? true : false;
             for ($i = 0; $i < $iVarSelCnt; $i++) {
-                $sName = isset($aNames[$i]) ? trim($aNames[$i]) : false;
+                $sName = isset($aNames[$i]) ? \trim($aNames[$i]) : false;
                 if ($sName !== '' && $sName !== false) {
-                    $sHash = md5($sName);
+                    $sHash = \md5($sName);
 
                     // filling up filter
                     if ($blActive) {
@@ -345,7 +345,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     protected function _cleanFilter($aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aCleanFilter = false;
-        if (is_array($aFilter) && count($aFilter)) {
+        if (\is_array($aFilter) && \count($aFilter)) {
             foreach ($aFilter as $iKey => $sFilter) {
                 if ($sFilter) {
                     $aCleanFilter[$iKey] = $sFilter;
@@ -372,12 +372,12 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
         $blPerfectFit = false;
         // applying filters, disabling/activating items
         if (($aFilter = $this->_cleanFilter($aFilter))) {
-            $aFilterKeys = array_keys($aFilter);
-            $iFilterKeysCount = count($aFilter);
+            $aFilterKeys = \array_keys($aFilter);
+            $iFilterKeysCount = \count($aFilter);
             foreach ($aSelections as $sVariantId => &$aLineSelections) {
                 $iActive = 0;
                 foreach ($aFilter as $iKey => $sVal) {
-                    if (strcmp($aLineSelections[$iKey]['hash'], $sVal) === 0) {
+                    if (\strcmp($aLineSelections[$iKey]['hash'], $sVal) === 0) {
                         $aLineSelections[$iKey]['active'] = true;
                         $iActive++;
                     } else {
@@ -389,12 +389,12 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
                     }
                 }
                 foreach ($aLineSelections as $iOtherKey => &$aLineOtherVariant) {
-                    if (!in_array($iOtherKey, $aFilterKeys)) {
+                    if (!\in_array($iOtherKey, $aFilterKeys)) {
                         $aLineOtherVariant['disabled'] = !($iFilterKeysCount == $iActive);
                     }
                 }
 
-                $blFitsAll = $iActive && (count($aLineSelections) == $iActive) && ($iFilterKeysCount == $iActive);
+                $blFitsAll = $iActive && (\count($aLineSelections) == $iActive) && ($iFilterKeysCount == $iActive);
                 if (($iActive > $iMaxActiveCount) || (!$blPerfectFit && $blFitsAll)) {
                     $blPerfectFit = $blFitsAll;
                     $sMostSuitableVariantId = $sVariantId;
@@ -446,7 +446,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     protected function _getSelections($sTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseMultidimensionVariants')) {
-            $aSelections = explode($this->_sMdSeparator, $sTitle);
+            $aSelections = \explode($this->_sMdSeparator, $sTitle);
         } else {
             $aSelections = [$sTitle];
         }
@@ -471,9 +471,9 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
         $aVarSelects = $this->_getSelections($sVarName);
 
         if ($iLimit) {
-            $aVarSelects = array_slice($aVarSelects, 0, $iLimit);
+            $aVarSelects = \array_slice($aVarSelects, 0, $iLimit);
         }
-        if (($iVarSelCnt = count($aVarSelects))) {
+        if (($iVarSelCnt = \count($aVarSelects))) {
             // filling selections
             $aRawVariantSelections = $this->_fillVariantSelections($oVariantList, $iVarSelCnt, $aFilter, $sActVariantId);
 

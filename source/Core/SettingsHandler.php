@@ -47,7 +47,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     {
         $moduleSettings = $module->getInfo('settings');
         $isTheme = $this->isTheme($module->getId());
-        if (!$isTheme || ($isTheme && is_array($moduleSettings))) {
+        if (!$isTheme || ($isTheme && \is_array($moduleSettings))) {
             $this->addModuleSettings($moduleSettings, $module->getId());
         }
     }
@@ -66,7 +66,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
         $moduleConfigs = $this->getModuleConfigs($moduleId);
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        if (is_array($moduleSettings)) {
+        if (\is_array($moduleSettings)) {
             foreach ($moduleSettings as $setting) {
                 $oxid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId();
 
@@ -75,9 +75,9 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
                 $type = $setting["type"];
 
                 if ($this->isTheme($moduleId)) {
-                    $value = array_key_exists($name, $moduleConfigs) ? $moduleConfigs[$name] : $setting["value"];
+                    $value = \array_key_exists($name, $moduleConfigs) ? $moduleConfigs[$name] : $setting["value"];
                 } else {
-                    $value = is_null($config->getConfigParam($name)) ? $setting["value"] : $config->getConfigParam($name);
+                    $value = \is_null($config->getConfigParam($name)) ? $setting["value"] : $config->getConfigParam($name);
                 }
 
                 $group = $setting["group"];
@@ -126,7 +126,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     {
         $moduleConfigId = $this->getModuleConfigId($moduleId);
         $themeTypeCondition = "@^" . Config::OXMODULE_THEME_PREFIX . "@i";
-        return (bool)preg_match($themeTypeCondition, $moduleConfigId);
+        return (bool)\preg_match($themeTypeCondition, $moduleConfigId);
     }
 
     /**
@@ -137,10 +137,10 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function removeNotUsedSettings($moduleSettings, $moduleId)
     {
-        $moduleConfigs = array_keys($this->getModuleConfigs($moduleId));
+        $moduleConfigs = \array_keys($this->getModuleConfigs($moduleId));
         $moduleSettings = $this->parseModuleSettings($moduleSettings);
 
-        $configsToRemove = array_diff($moduleConfigs, $moduleSettings);
+        $configsToRemove = \array_diff($moduleConfigs, $moduleSettings);
         if (!empty($configsToRemove)) {
             $this->removeModuleConfigs($moduleId, $configsToRemove);
         }
@@ -185,7 +185,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     {
         $settings = [];
 
-        if (is_array($moduleSettings)) {
+        if (\is_array($moduleSettings)) {
             foreach ($moduleSettings as $setting) {
                 $settings[] = $setting['name'];
             }
@@ -204,12 +204,12 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $quotedConfigsToRemove = array_map([$db, 'quote'], $configsToRemove);
+        $quotedConfigsToRemove = \array_map([$db, 'quote'], $configsToRemove);
         $deleteSql = "DELETE
                        FROM `oxconfig`
                        WHERE oxmodule = :oxmodule AND
                              oxshopid = :oxshopid AND
-                             oxvarname IN (" . implode(", ", $quotedConfigsToRemove) . ")";
+                             oxvarname IN (" . \implode(", ", $quotedConfigsToRemove) . ")";
 
         $db->execute($deleteSql, [
             ':oxmodule' => $this->getModuleConfigId($moduleId),

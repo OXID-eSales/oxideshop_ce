@@ -20,7 +20,7 @@
 function smarty_function_oxeval($aParams, &$oSmarty)
 {
     if ($aParams['var'] && ($aParams['var'] instanceof \OxidEsales\Eshop\Core\Field)) {
-        $aParams['var'] = trim($aParams['var']->getRawValue());
+        $aParams['var'] = \trim($aParams['var']->getRawValue());
     }
 
     // processign only if enabled

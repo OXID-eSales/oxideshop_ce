@@ -115,9 +115,9 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     public function buildModuleChains($aModuleArray)
     {
         $aModules = [];
-        if (is_array($aModuleArray)) {
+        if (\is_array($aModuleArray)) {
             foreach ($aModuleArray as $sClass => $aModuleChain) {
-                $aModules[$sClass] = implode('&', $aModuleChain);
+                $aModules[$sClass] = \implode('&', $aModuleChain);
             }
         }
 
@@ -135,22 +135,22 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     public function diffModuleArrays($aAllModuleArray, $aRemModuleArray)
     {
-        if (is_array($aAllModuleArray) && is_array($aRemModuleArray)) {
+        if (\is_array($aAllModuleArray) && \is_array($aRemModuleArray)) {
             foreach ($aAllModuleArray as $sClass => $aModuleChain) {
-                if (!is_array($aModuleChain)) {
+                if (!\is_array($aModuleChain)) {
                     $aModuleChain = [$aModuleChain];
                 }
                 if (isset($aRemModuleArray[$sClass])) {
-                    if (!is_array($aRemModuleArray[$sClass])) {
+                    if (!\is_array($aRemModuleArray[$sClass])) {
                         $aRemModuleArray[$sClass] = [$aRemModuleArray[$sClass]];
                     }
                     $aAllModuleArray[$sClass] = [];
                     foreach ($aModuleChain as $sModule) {
-                        if (!in_array($sModule, $aRemModuleArray[$sClass])) {
+                        if (!\in_array($sModule, $aRemModuleArray[$sClass])) {
                             $aAllModuleArray[$sClass][] = $sModule;
                         }
                     }
-                    if (!count($aAllModuleArray[$sClass])) {
+                    if (!\count($aAllModuleArray[$sClass])) {
                         unset($aAllModuleArray[$sClass]);
                     }
                 } else {

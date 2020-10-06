@@ -90,9 +90,9 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         // #251A passing country list
         $countryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
         $countryList->loadActiveCountries(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage());
-        if (isset($confVars['arr']["aHomeCountry"]) && count($confVars['arr']["aHomeCountry"]) && count($countryList)) {
+        if (isset($confVars['arr']["aHomeCountry"]) && \count($confVars['arr']["aHomeCountry"]) && \count($countryList)) {
             foreach ($countryList as $sCountryId => $oCountry) {
-                if (in_array($oCountry->oxcountry__oxid->value, $confVars['arr']["aHomeCountry"])) {
+                if (\in_array($oCountry->oxcountry__oxid->value, $confVars['arr']["aHomeCountry"])) {
                     $countryList[$sCountryId]->selected = "1";
                 }
             }
@@ -101,7 +101,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $this->_aViewData["countrylist"] = $countryList;
 
         // checking if cUrl is enabled
-        $this->_aViewData["blCurlIsActive"] = (!function_exists('curl_init')) ? false : true;
+        $this->_aViewData["blCurlIsActive"] = (!\function_exists('curl_init')) ? false : true;
 
         /** @var ContactFormBridgeInterface $contactFormBridge */
         $contactFormBridge = $this->getContainer()->get(ContactFormBridgeInterface::class);
@@ -143,14 +143,14 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         foreach ($this->_aConfParams as $existingConfigType => $existingConfigName) {
             $requestValue = \OxidEsales\Eshop\Core\Registry::getConfig()
                 ->getRequestParameter($existingConfigName, true);
-            if (is_array($requestValue)) {
+            if (\is_array($requestValue)) {
                 foreach ($requestValue as $configName => $newConfigValue) {
                     $oldValue = $config->getConfigParam($configName);
                     if ($newConfigValue !== $oldValue) {
-                        $sValueToValidate = is_array($newConfigValue) ? join(', ', $newConfigValue) : $newConfigValue;
+                        $sValueToValidate = \is_array($newConfigValue) ? \join(', ', $newConfigValue) : $newConfigValue;
                         if (!$configValidator->isValid($sValueToValidate)) {
                             $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
-                            $error->setFormatParameters(htmlspecialchars($sValueToValidate));
+                            $error->setFormatParameters(\htmlspecialchars($sValueToValidate));
                             $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
                             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
                             continue;
@@ -274,7 +274,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         switch ($type) {
             case "select":
-                return array_map('trim', explode('|', $constraint));
+                return \array_map('trim', \explode('|', $constraint));
                 break;
         }
         return null;
@@ -293,7 +293,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         switch ($type) {
             case "select":
-                return implode('|', array_map('trim', $constraint));
+                return \implode('|', \array_map('trim', $constraint));
                 break;
         }
         return '';
@@ -324,24 +324,24 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
             case "num":
             case "int":
                 $data = $str->htmlentities($value);
-                if (in_array($name, $this->_aParseFloat)) {
-                    $data = str_replace(',', '.', $data);
+                if (\in_array($name, $this->_aParseFloat)) {
+                    $data = \str_replace(',', '.', $data);
                 }
                 break;
 
             case "arr":
-                if (in_array($name, $this->_aSkipMultiline)) {
-                    $data = unserialize($value);
+                if (\in_array($name, $this->_aSkipMultiline)) {
+                    $data = \unserialize($value);
                 } else {
-                    $data = $str->htmlentities($this->_arrayToMultiline(unserialize($value)));
+                    $data = $str->htmlentities($this->_arrayToMultiline(\unserialize($value)));
                 }
                 break;
 
             case "aarr":
-                if (in_array($name, $this->_aSkipMultiline)) {
-                    $data = unserialize($value);
+                if (\in_array($name, $this->_aSkipMultiline)) {
+                    $data = \unserialize($value);
                 } else {
-                    $data = $str->htmlentities($this->_aarrayToMultiline(unserialize($value)));
+                    $data = $str->htmlentities($this->_aarrayToMultiline(\unserialize($value)));
                 }
                 break;
         }
@@ -371,13 +371,13 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
             case "str":
             case "select":
             case "int":
-                if (in_array($name, $this->_aParseFloat)) {
-                    $data = str_replace(',', '.', $data);
+                if (\in_array($name, $this->_aParseFloat)) {
+                    $data = \str_replace(',', '.', $data);
                 }
                 break;
 
             case "arr":
-                if (!is_array($value)) {
+                if (!\is_array($value)) {
                     $data = $this->_multilineToArray($value);
                 }
                 break;
@@ -400,7 +400,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function _arrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return implode("\n", (array) $input);
+        return \implode("\n", (array) $input);
     }
 
     /**
@@ -413,10 +413,10 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function _multilineToArray($multiline) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $array = explode("\n", $multiline);
-        if (is_array($array)) {
+        $array = \explode("\n", $multiline);
+        if (\is_array($array)) {
             foreach ($array as $key => $value) {
-                $array[$key] = trim($value);
+                $array[$key] = \trim($value);
                 if ($array[$key] == "") {
                     unset($array[$key]);
                 }
@@ -436,7 +436,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function _aarrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($input)) {
+        if (\is_array($input)) {
             $multiline = '';
             foreach ($input as $key => $value) {
                 if ($multiline) {
@@ -461,12 +461,12 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
     {
         $string = Str::getStr();
         $array = [];
-        $lines = explode("\n", $multiline);
+        $lines = \explode("\n", $multiline);
         foreach ($lines as $line) {
-            $line = trim($line);
+            $line = \trim($line);
             if ($line != "" && $string->preg_match("/(.+)=>(.+)/", $line, $regs)) {
-                $key = trim($regs[1]);
-                $value = trim($regs[2]);
+                $key = \trim($regs[1]);
+                $value = \trim($regs[2]);
                 if ($key != "" && $value != "") {
                     $array[$key] = $value;
                 }
@@ -502,8 +502,8 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $module = $this->_getModuleForConfigVars();
         $config = $this->getConfig();
         $preparedConfigValue = $this->_serializeConfVar($existingConfigType, $configName, $configValue);
-        if (strpos($module, 'module:') !== false) {
-            $moduleId = explode(':', $module)[1];
+        if (\strpos($module, 'module:') !== false) {
+            $moduleId = \explode(':', $module)[1];
             $moduleSettingBridge = ContainerFactory::getInstance()
                 ->getContainer()
                 ->get(ModuleSettingBridgeInterface::class);

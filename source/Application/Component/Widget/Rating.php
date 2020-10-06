@@ -67,7 +67,7 @@ class Rating extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
             $this->_dRatingValue = (double) 0;
             $dValue = $this->getViewParameter("dRatingValue");
             if ($dValue) {
-                $this->_dRatingValue = round($dValue, 1);
+                $this->_dRatingValue = \round($dValue, 1);
             }
         }
 

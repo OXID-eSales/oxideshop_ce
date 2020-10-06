@@ -39,7 +39,7 @@ class QueryFilter implements QueryFilterInterface
      */
     public function shouldLogQuery(string $query, array $skipLogTags): bool
     {
-        return (bool) preg_match($this->getSearchPattern($skipLogTags), $query);
+        return (bool) \preg_match($this->getSearchPattern($skipLogTags), $query);
     }
 
     /**
@@ -51,11 +51,11 @@ class QueryFilter implements QueryFilterInterface
      */
     private function getSearchPattern(array $skipLogTags): string
     {
-        $pattern = '/(.?)(' . implode('|', $this->logThese) . ')(?!.*' .
-                   implode(')(?!.*', $this->skipThese) . ')';
+        $pattern = '/(.?)(' . \implode('|', $this->logThese) . ')(?!.*' .
+                   \implode(')(?!.*', $this->skipThese) . ')';
 
         if (!empty($skipLogTags)) {
-            $pattern .= '(?!.*' . implode(')(?!.*', $skipLogTags) . ')';
+            $pattern .= '(?!.*' . \implode(')(?!.*', $skipLogTags) . ')';
         }
         $pattern .= '/i';
 

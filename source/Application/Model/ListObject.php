@@ -38,11 +38,11 @@ class ListObject
      */
     public function assign($aData)
     {
-        if (!is_array($aData)) {
+        if (!\is_array($aData)) {
             return;
         }
         foreach ($aData as $sKey => $sValue) {
-            $sFieldName = strtolower($this->_sTableName . '__' . $sKey);
+            $sFieldName = \strtolower($this->_sTableName . '__' . $sKey);
             $this->$sFieldName = new \OxidEsales\Eshop\Core\Field($sValue);
         }
     }
@@ -54,7 +54,7 @@ class ListObject
      */
     public function getId()
     {
-        $sFieldName = strtolower($this->_sTableName . '__oxid');
+        $sFieldName = \strtolower($this->_sTableName . '__oxid');
         return $this->$sFieldName->value;
     }
 }

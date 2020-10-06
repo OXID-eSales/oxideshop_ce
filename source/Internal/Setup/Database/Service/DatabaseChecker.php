@@ -58,7 +58,7 @@ class DatabaseChecker implements DatabaseCheckerInterface
     private function getDatabaseConnection(string $host, int $port, string $user, string $password): PDO
     {
         return new \PDO(
-            sprintf('mysql:host=%s;port=%s', $host, $port),
+            \sprintf('mysql:host=%s;port=%s', $host, $port),
             $user,
             $password,
             [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]

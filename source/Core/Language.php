@@ -161,14 +161,14 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 $this->_iBaseLanguageId = $iSeLang;
             }
 
-            if (is_null($this->_iBaseLanguageId)) {
+            if (\is_null($this->_iBaseLanguageId)) {
                 $this->_iBaseLanguageId = Registry::getConfig()->getRequestParameter('lang');
             }
 
             //or determining by domain
             $aLanguageUrls = $myConfig->getConfigParam('aLanguageURLs');
 
-            if (!$blAdmin && is_array($aLanguageUrls)) {
+            if (!$blAdmin && \is_array($aLanguageUrls)) {
                 foreach ($aLanguageUrls as $iId => $sUrl) {
                     if ($sUrl && $myConfig->isCurrentUrl($sUrl)) {
                         $this->_iBaseLanguageId = $iId;
@@ -177,7 +177,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 }
             }
 
-            if (is_null($this->_iBaseLanguageId)) {
+            if (\is_null($this->_iBaseLanguageId)) {
                 $this->_iBaseLanguageId = Registry::getConfig()->getRequestParameter('language');
                 if (!isset($this->_iBaseLanguageId)) {
                     $this->_iBaseLanguageId = Registry::getSession()->getVariable('language');
@@ -186,17 +186,17 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
             // if language still not set and not search engine browsing,
             // getting language from browser
-            if (is_null($this->_iBaseLanguageId) && !$blAdmin && !Registry::getUtils()->isSearchEngine()) {
+            if (\is_null($this->_iBaseLanguageId) && !$blAdmin && !Registry::getUtils()->isSearchEngine()) {
                 // getting from cookie
                 $this->_iBaseLanguageId = Registry::getUtilsServer()->getOxCookie('language');
 
                 // getting from browser
-                if (is_null($this->_iBaseLanguageId)) {
+                if (\is_null($this->_iBaseLanguageId)) {
                     $this->_iBaseLanguageId = $this->detectLanguageByBrowser();
                 }
             }
 
-            if (is_null($this->_iBaseLanguageId)) {
+            if (\is_null($this->_iBaseLanguageId)) {
                 $this->_iBaseLanguageId = $myConfig->getConfigParam('sDefaultLang');
             }
 
@@ -227,7 +227,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
                     !isset($aLanguages[$this->_iObjectTplLanguageId]) ||
                     $aLanguages[$this->_iObjectTplLanguageId]->active == 0
                 ) {
-                    $this->_iObjectTplLanguageId = key($aLanguages);
+                    $this->_iObjectTplLanguageId = \key($aLanguages);
                 }
             }
         }
@@ -297,7 +297,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         $myConfig = Registry::getConfig();
 
-        if (is_null($iLanguage)) {
+        if (\is_null($iLanguage)) {
             $iLanguage = $this->_iBaseLanguageId;
         }
 
@@ -305,11 +305,11 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aConfLanguages = $myConfig->getConfigParam('aLanguages');
         $aLangParams = $myConfig->getConfigParam('aLanguageParams');
 
-        if (is_array($aConfLanguages)) {
+        if (\is_array($aConfLanguages)) {
             $i = 0;
-            reset($aConfLanguages);
+            \reset($aConfLanguages);
             foreach ($aConfLanguages as $key => $val) {
-                if ($blOnlyActive && is_array($aLangParams)) {
+                if ($blOnlyActive && \is_array($aLangParams)) {
                     //skipping non active languages
                     if (!$aLangParams[$key]['active']) {
                         $i++;
@@ -324,7 +324,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
                     $oLang->abbr = $key;
                     $oLang->name = $val;
 
-                    if (is_array($aLangParams)) {
+                    if (\is_array($aLangParams)) {
                         $oLang->active = $aLangParams[$key]['active'];
                         $oLang->sort = $aLangParams[$key]['sort'];
                     }
@@ -336,8 +336,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        if ($blSort && is_array($aLangParams)) {
-            uasort($aLanguages, [$this, '_sortLanguagesCallback']);
+        if ($blSort && \is_array($aLangParams)) {
+            \uasort($aLanguages, [$this, '_sortLanguagesCallback']);
         }
 
         return $aLanguages;
@@ -366,14 +366,14 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
             foreach ($langArray as $langKey => $language) {
                 $filePath = $sourceDirectory . $language->abbr . DIRECTORY_SEPARATOR . 'lang.php';
-                if (file_exists($filePath) && is_readable($filePath)) {
+                if (\file_exists($filePath) && \is_readable($filePath)) {
                     $this->_aAdminTplLanguageArray[$langKey] = $language;
                 }
             }
         }
 
         // moving pointer to beginning
-        reset($this->_aAdminTplLanguageArray);
+        \reset($this->_aAdminTplLanguageArray);
 
         return $this->_aAdminTplLanguageArray;
     }
@@ -443,7 +443,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
 
         // checking if in theme options exist
-        if (count($this->_aAdditionalLangFiles)) {
+        if (\count($this->_aAdditionalLangFiles)) {
             $aLang = $this->_getLangTranslationArray($iLang, $blAdminMode, $this->_aAdditionalLangFiles);
             if (isset($aLang[$sStringToTranslate])) {
                 return $aLang[$sStringToTranslate];
@@ -455,7 +455,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         if (!$this->isTranslated()) {
             Registry::getLogger()->warning(
                 "translation for $sStringToTranslate not found",
-                compact('iLang', 'blAdminMode')
+                \compact('iLang', 'blAdminMode')
             );
         }
 
@@ -476,7 +476,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _collectSimilar($aData, $sKey, $aCollection = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aData as $sValKey => $sValue) {
-            if (strpos($sValKey, $sKey) === 0) {
+            if (\strpos($sValKey, $sKey) === 0) {
                 $aCollection[$sValKey] = $sValue;
             }
         }
@@ -510,7 +510,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aSimilarConst = $this->_collectSimilar($aMap, $sKey, $aSimilarConst);
 
         // checking if in theme options exist
-        if (count($this->_aAdditionalLangFiles)) {
+        if (\count($this->_aAdditionalLangFiles)) {
             $aLang = $this->_getLangTranslationArray($iLang, $blAdmin, $this->_aAdditionalLangFiles);
             $aSimilarConst = $this->_collectSimilar($aLang, $sKey, $aSimilarConst);
         }
@@ -535,7 +535,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
         $sValue = Registry::getUtils()->fRound($dValue, $oActCur);
 
-        return number_format((double) $sValue, $oActCur->decimal, $oActCur->dec, $oActCur->thousand);
+        return \number_format((double) $sValue, $oActCur->decimal, $oActCur->dec, $oActCur->thousand);
     }
 
     /**
@@ -558,7 +558,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $oActCur = $oActCur ? $oActCur : Registry::getConfig()->getActShopCurrencyObject();
         $iDecPos = ($iDecPos < $oActCur->decimal) ? $iDecPos : $oActCur->decimal;
 
-        return number_format((double) $dValue, $iDecPos, $oActCur->dec, $oActCur->thousand);
+        return \number_format((double) $dValue, $iDecPos, $oActCur->dec, $oActCur->thousand);
     }
 
     /**
@@ -590,8 +590,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         // checking if this language is valid
         $aLanguages = $this->getLanguageArray(null, !$this->isAdmin());
-        if (!isset($aLanguages[$iLang]) && is_array($aLanguages)) {
-            $oLang = current($aLanguages);
+        if (!isset($aLanguages[$iLang]) && \is_array($aLanguages)) {
+            $oLang = \current($aLanguages);
             if (isset($oLang->id)) {
                 $iLang = $oLang->id;
             }
@@ -607,7 +607,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     public function setBaseLanguage($iLang = null)
     {
-        if (is_null($iLang)) {
+        if (\is_null($iLang)) {
             $iLang = $this->getBaseLanguage();
         } else {
             $this->_iBaseLanguageId = (int) $iLang;
@@ -629,7 +629,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         if ($this->isAdmin()) {
             $aLanguages = $this->getAdminTplLanguageArray();
             if (!isset($aLanguages[$this->_iTplLanguageId])) {
-                $this->_iTplLanguageId = key($aLanguages);
+                $this->_iTplLanguageId = \key($aLanguages);
             }
         }
 
@@ -677,7 +677,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _recodeLangArrayValues(&$aLangArray, $sCharset, $newEncoding) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aLangArray as $sItemKey => &$sValue) {
-            $sValue = iconv($sCharset, $newEncoding, $sValue);
+            $sValue = \iconv($sCharset, $newEncoding, $sValue);
         }
     }
 
@@ -696,8 +696,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         $aLangs = [];
         foreach ($aLangArray as $sItemKey => $sValue) {
-            $sItemKey = iconv($sCharset, $newEncoding, $sItemKey);
-            $aLangs[$sItemKey] = iconv($sCharset, $newEncoding, $sValue);
+            $sItemKey = \iconv($sCharset, $newEncoding, $sItemKey);
+            $aLangs[$sItemKey] = \iconv($sCharset, $newEncoding, $sValue);
         }
 
         return $aLangs;
@@ -735,16 +735,16 @@ class Language extends \OxidEsales\Eshop\Core\Base
         //get generic lang files
         $sGenericPath = $sAppDir . 'translations/' . $sLang;
         if ($sGenericPath) {
-            $aLangFiles = array_merge($aLangFiles, $this->getAbbreviationDirectoryLanguageFiles($sGenericPath));
+            $aLangFiles = \array_merge($aLangFiles, $this->getAbbreviationDirectoryLanguageFiles($sGenericPath));
         }
 
         //get theme lang files
         if ($sTheme) {
             $sThemePath = $sAppDir . 'views/' . $sTheme . '/';
-            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($sThemePath, $sLang));
+            $aLangFiles = \array_merge($aLangFiles, $this->getThemeLanguageFiles($sThemePath, $sLang));
         }
 
-        $aLangFiles = array_merge($aLangFiles, $this->getCustomThemeLanguageFiles($iLang));
+        $aLangFiles = \array_merge($aLangFiles, $this->getCustomThemeLanguageFiles($iLang));
 
         // modules language files
         $aLangFiles = $this->_appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang);
@@ -752,7 +752,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         // custom language files
         $aLangFiles = $this->_appendCustomLangFiles($aLangFiles, $sLang);
 
-        return count($aLangFiles) ? $aLangFiles : false;
+        return \count($aLangFiles) ? $aLangFiles : false;
     }
 
     /**
@@ -766,7 +766,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $themePath . 'translations/' . $languageAbbreviation
         );
 
-        $files = array_merge($files, $this->getAbbreviationDirectoryLanguageFiles(
+        $files = \array_merge($files, $this->getAbbreviationDirectoryLanguageFiles(
             $themePath . $languageAbbreviation
         ));
 
@@ -805,7 +805,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         if ($sCustomTheme) {
             $customThemePath = $sAppDir . 'views/' . $sCustomTheme;
-            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
+            $aLangFiles = \array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
         }
 
         return $aLangFiles;
@@ -828,8 +828,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
 
         $modulePaths = [];
-        $modulePaths = array_merge($modulePaths, $this->_getActiveModuleInfo());
-        $modulePaths = array_merge($modulePaths, $this->_getDisabledModuleInfo());
+        $modulePaths = \array_merge($modulePaths, $this->_getActiveModuleInfo());
+        $modulePaths = \array_merge($modulePaths, $this->_getDisabledModuleInfo());
 
         // admin lang files
         $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
@@ -858,7 +858,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         // custom language files
         $langFiles = $this->_appendCustomLangFiles($langFiles, $language, true);
 
-        return count($langFiles) ? $langFiles : false;
+        return \count($langFiles) ? $langFiles : false;
     }
 
     /**
@@ -873,10 +873,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _appendLangFile($aLangFiles, $sFullPath, $sFilePattern = "lang") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aFiles = glob($sFullPath . "/*_{$sFilePattern}.php");
-        if (is_array($aFiles) && count($aFiles)) {
+        $aFiles = \glob($sFullPath . "/*_{$sFilePattern}.php");
+        if (\is_array($aFiles) && \count($aFiles)) {
             foreach ($aFiles as $sFile) {
-                if (!strpos($sFile, 'cust_lang.php')) {
+                if (!\strpos($sFile, 'cust_lang.php')) {
                     $aLangFiles[] = $sFile;
                 }
             }
@@ -942,7 +942,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($aModulePaths)) {
+        if (\is_array($aModulePaths)) {
             foreach ($aModulePaths as $sPath) {
                 $moduleTranslationPathFinder = $this->getModuleTranslationPathFinder();
                 $sFullPath = $moduleTranslationPathFinder->findTranslationPath($sLang, $blForAdmin, $sPath);
@@ -972,8 +972,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         $myConfig = Registry::getConfig();
         $sLangFilesIdent = '_default';
-        if (is_array($aLangFiles) && $aLangFiles) {
-            $sLangFilesIdent = '_' . md5(implode('+', $aLangFiles));
+        if (\is_array($aLangFiles) && $aLangFiles) {
+            $sLangFilesIdent = '_' . \md5(\implode('+', $aLangFiles));
         }
 
         return "langcache_" . ((int) $blAdmin) . "_{$iLang}_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . $sLangFilesIdent;
@@ -1008,18 +1008,18 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $aLang = [];
             $aLangSeoReplaceChars = [];
             foreach ($aLangFiles as $sLangFile) {
-                if (file_exists($sLangFile) && is_readable($sLangFile)) {
+                if (\file_exists($sLangFile) && \is_readable($sLangFile)) {
                     //$aSeoReplaceChars null indicates that there is no setting made
                     $aSeoReplaceChars = null;
                     include $sLangFile;
 
-                    $aLang = array_merge(['charset' => 'UTF-8'], $aLang);
+                    $aLang = \array_merge(['charset' => 'UTF-8'], $aLang);
 
-                    if (isset($aSeoReplaceChars) && is_array($aSeoReplaceChars)) {
-                        $aLangSeoReplaceChars = array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
+                    if (isset($aSeoReplaceChars) && \is_array($aSeoReplaceChars)) {
+                        $aLangSeoReplaceChars = \array_merge($aLangSeoReplaceChars, $aSeoReplaceChars);
                     }
 
-                    $aLangCache = array_merge($aLangCache, $aLang);
+                    $aLangCache = \array_merge($aLangCache, $aLang);
                 }
             }
 
@@ -1059,9 +1059,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $parentMapFile = $this->getLanguageMappingFilePath($language, $parentThemeDirectory);
             $customThemeMapFile = $this->getLanguageMappingFilePath($language, $customThemeDirectory);
 
-            if (file_exists($customThemeMapFile) && is_readable($customThemeMapFile)) {
+            if (\file_exists($customThemeMapFile) && \is_readable($customThemeMapFile)) {
                 $mapFile = $customThemeMapFile;
-            } elseif (file_exists($parentMapFile) && is_readable($parentMapFile)) {
+            } elseif (\file_exists($parentMapFile) && \is_readable($parentMapFile)) {
                 $mapFile = $parentMapFile;
             }
 
@@ -1258,7 +1258,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         $sBrowserLanguage = $this->_getBrowserLanguage();
 
-        if (!is_null($sBrowserLanguage)) {
+        if (!\is_null($sBrowserLanguage)) {
             $aLanguages = $this->getLanguageArray(null, true);
             foreach ($aLanguages as $oLang) {
                 if ($oLang->abbr == $sBrowserLanguage) {
@@ -1312,7 +1312,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         // get language replace chars
         $aSeoReplaceChars = $this->translateString('_aSeoReplaceChars', $iLang);
-        if (!is_array($aSeoReplaceChars)) {
+        if (!\is_array($aSeoReplaceChars)) {
             $aSeoReplaceChars = [];
         }
 
@@ -1360,7 +1360,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && $_SERVER['HTTP_ACCEPT_LANGUAGE']) {
-            return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+            return \strtolower(\substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
         }
     }
 
@@ -1403,7 +1403,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         //if exists language parameters array, extract lang id's from there
         $aLangParams = $oConfig->getConfigParam('aLanguageParams');
-        if (is_array($aLangParams)) {
+        if (\is_array($aLangParams)) {
             $aIds = $this->_getLanguageIdsFromLanguageParamsArray($aLangParams);
         } else {
             $aIds = $this->_getLanguageIdsFromLanguagesArray($oConfig->getConfigParam('aLanguages'));
@@ -1440,7 +1440,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aConfigValues = $this->_selectLanguageParamValues($sLanguageParameterName, $iShopId);
 
         foreach ($aConfigValues as $sConfigValue) {
-            $aConfigLanguages = unserialize($sConfigValue['oxvarvalue']);
+            $aConfigLanguages = \unserialize($sConfigValue['oxvarvalue']);
 
             $aLanguages = [];
             if ($sLanguageParameterName == 'aLanguageParams') {
@@ -1449,7 +1449,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 $aLanguages = $this->_getLanguageIdsFromLanguagesArray($aConfigLanguages);
             }
 
-            $aConfigDecodedValues = array_unique(array_merge($aConfigDecodedValues, $aLanguages));
+            $aConfigDecodedValues = \array_unique(\array_merge($aConfigDecodedValues, $aLanguages));
         }
 
         return $aConfigDecodedValues;
@@ -1513,7 +1513,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getLanguageIdsFromLanguagesArray($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return array_keys($aLanguages);
+        return \array_keys($aLanguages);
     }
 
     /**
@@ -1523,7 +1523,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function getModuleTranslationPathFinder()
     {
-        if (is_null($this->moduleTranslationPathFinder)) {
+        if (\is_null($this->moduleTranslationPathFinder)) {
             $this->moduleTranslationPathFinder = oxNew(\OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder::class);
         }
 

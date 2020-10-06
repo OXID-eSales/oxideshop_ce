@@ -22,7 +22,7 @@ class Header
      */
     public function setHeader($header)
     {
-        $header = str_replace(["\n", "\r"], '', $header);
+        $header = \str_replace(["\n", "\r"], '', $header);
         $this->_aHeader[] = (string) $header . "\r\n";
     }
 
@@ -43,7 +43,7 @@ class Header
     {
         foreach ($this->_aHeader as $header) {
             if (isset($header)) {
-                header($header);
+                \header($header);
             }
         }
     }

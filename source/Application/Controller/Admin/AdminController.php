@@ -189,7 +189,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         $oViewConf = $this->getViewConfig();
         $oViewConf->setViewConfigParam('selflink', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'index.php?editlanguage=' . $this->_iEditLang, false));
-        $oViewConf->setViewConfigParam('ajaxlink', str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
+        $oViewConf->setViewConfigParam('ajaxlink', \str_replace('&amp;', '&', \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($sURL . 'oxajax.php?editlanguage=' . $this->_iEditLang, false)));
 
         // set language of admin backend
         $this->_aViewData['adminlang'] = $oLang->getTplLanguage();
@@ -264,16 +264,16 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
         // store navigation history
-        $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
-        if (!is_array($aHistory)) {
+        $aHistory = \explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
+        if (!\is_array($aHistory)) {
             $aHistory = [];
         }
 
-        if (!in_array($sNode, $aHistory)) {
+        if (!\in_array($sNode, $aHistory)) {
             $aHistory[] = $sNode;
         }
 
-        $myUtilsServer->setOxCookie('oxidadminhistory', implode('|', $aHistory));
+        $myUtilsServer->setOxCookie('oxidadminhistory', \implode('|', $aHistory));
     }
 
     /**
@@ -314,7 +314,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $this->_aViewData['languages'] = $oLang->getLanguageArray($iLanguage);
 
         // setting maximum upload size
-        list($this->_aViewData['iMaxUploadFileSize'], $this->_aViewData['sMaxFormattedFileSize']) = $this->_getMaxUploadFileInfo(@ini_get("upload_max_filesize"));
+        list($this->_aViewData['iMaxUploadFileSize'], $this->_aViewData['sMaxFormattedFileSize']) = $this->_getMaxUploadFileInfo(@\ini_get("upload_max_filesize"));
 
         // "save-on-tab"
         if (!isset($this->_aViewData['updatelist'])) {
@@ -338,8 +338,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $iMaxFileSize = $iMaxFileSize ? $iMaxFileSize : '2M';
 
         // processing config
-        $iMaxFileSize = trim($iMaxFileSize);
-        $sParam = strtolower($iMaxFileSize[strlen($iMaxFileSize) - 1]);
+        $iMaxFileSize = \trim($iMaxFileSize);
+        $sParam = \strtolower($iMaxFileSize[\strlen($iMaxFileSize) - 1]);
         switch ($sParam) {
             case 'g':
                 $iMaxFileSize *= 1024;
@@ -355,11 +355,11 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $aMarkers = ['KB', 'MB', 'GB'];
         $sFormattedMaxSize = '';
 
-        $iSize = floor($iMaxFileSize / 1024);
-        while ($iSize && current($aMarkers)) {
-            $sFormattedMaxSize = $iSize . " " . current($aMarkers);
-            $iSize = floor($iSize / 1024);
-            next($aMarkers);
+        $iSize = \floor($iMaxFileSize / 1024);
+        while ($iSize && \current($aMarkers)) {
+            $sFormattedMaxSize = $iSize . " " . \current($aMarkers);
+            $iSize = \floor($iSize / 1024);
+            \next($aMarkers);
         }
 
         return [$iMaxFileSize, $sFormattedMaxSize];
@@ -454,7 +454,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         if (!empty($sCountryCode)) {
             $aLangIds = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageIds();
-            $iEnglishId = array_search("en", $aLangIds);
+            $iEnglishId = \array_search("en", $aLangIds);
             if (false !== $iEnglishId) {
                 $sViewName = getViewName("oxcountry", $iEnglishId);
                 $sQ = "select oxtitle from {$sViewName} where oxisoalpha2 = :oxisoalpha2";
@@ -476,7 +476,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             }
         }
 
-        return strtolower($sCountry);
+        return \strtolower($sCountry);
     }
 
     /**
@@ -490,7 +490,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         return (bool) (
             $session->checkSessionChallenge()
-            && count(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie())
+            && \count(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie())
             && \OxidEsales\Eshop\Core\Registry::getUtils()->checkAccessRights()
         );
     }
@@ -516,7 +516,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     public function getViewId()
     {
-        $viewId = is_null($this->viewId) ? strtolower($this->getControllerKey()) : $this->viewId;
+        $viewId = \is_null($this->viewId) ? \strtolower($this->getControllerKey()) : $this->viewId;
         return $this->getNavigation()->getClassId($viewId);
     }
 
@@ -598,9 +598,9 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function getControllerKey()
     {
-        $actualClass = get_class($this);
+        $actualClass = \get_class($this);
         $controllerKey = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getIdByClassName($actualClass);
-        if (is_null($controllerKey)) {
+        if (\is_null($controllerKey)) {
             //we might not have found a class key because class is a module chain extended class
             $controllerKey = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getIdByClassName($this->getShopParentClass());
         }
@@ -614,9 +614,9 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected function getShopParentClass()
     {
-        $className = get_class($this); //actual class, might be shop class chain extended by module
+        $className = \get_class($this); //actual class, might be shop class chain extended by module
         while ($className && !\OxidEsales\Eshop\Core\NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($className)) {
-            $className = get_parent_class($className);
+            $className = \get_parent_class($className);
         }
         return $className;
     }

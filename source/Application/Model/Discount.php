@@ -102,14 +102,14 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         // Auto assign oxsort, if it is null
         $oxsort = $this->oxdiscount__oxsort->value;
-        if (is_null($oxsort)) {
+        if (\is_null($oxsort)) {
             $shopId = $this->oxdiscount__oxshopid->value;
             $newSort = $this->getNextOxsort($shopId);
             $this->oxdiscount__oxsort = new \oxField($newSort, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         // Validate oxsort before saving
-        if (!is_numeric($this->oxdiscount__oxsort->value)) {
+        if (!\is_numeric($this->oxdiscount__oxsort->value)) {
             /** @var InputException $exception */
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
             $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_A_NUMBER');
@@ -120,7 +120,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         try {
             $saveStatus = parent::save();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-            if ($exception->getCode() == \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE && false !== strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
+            if ($exception->getCode() == \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE && false !== \strpos($exception->getMessage(), 'UNIQ_OXSORT')) {
                 $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
                 $exception->setMessage('DISCOUNT_ERROR_OXSORT_NOT_UNIQUE');
             }
@@ -137,7 +137,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function isGlobalDiscount()
     {
-        if (is_null($this->_blIsForArticleOrForCategory)) {
+        if (\is_null($this->_blIsForArticleOrForCategory)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $sQuery = "select 1
@@ -446,7 +446,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // Multiplying bundled articles count, if allowed
         if ($this->oxdiscount__oxitmmultiple->value && $this->oxdiscount__oxamount->value > 0) {
-            $dItemAmount = floor($dAmount / $this->oxdiscount__oxamount->value) * $this->oxdiscount__oxitmamount->value;
+            $dItemAmount = \floor($dAmount / $this->oxdiscount__oxamount->value) * $this->oxdiscount__oxitmamount->value;
         }
 
         return $dItemAmount;
@@ -530,12 +530,12 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         // check if article is in some assigned category
         $aCatIds = $oArticle->getCategoryIds();
-        if (!$aCatIds || !count($aCatIds)) {
+        if (!$aCatIds || !\count($aCatIds)) {
             // no categories are set for article, so no discounts from categories..
             return false;
         }
 
-        $sCatIds = "(" . implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCatIds)) . ")";
+        $sCatIds = "(" . \implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCatIds)) . ")";
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         // getOne appends limit 1, so this one should be fast enough
@@ -613,7 +613,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sCategoryIds = "(" . implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCategoryIds)) . ")";
+        $sCategoryIds = "(" . \implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aCategoryIds)) . ")";
         $sQ = "select 1
                 from oxobject2discount
                 where oxdiscountid = :oxdiscountid and oxobjectid in {$sCategoryIds} and oxtype = :oxtype";

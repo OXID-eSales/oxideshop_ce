@@ -124,7 +124,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $sTplName = Registry::getConfig()->getTopActiveView()->getViewConfig()->getViewConfigParam('oxloadid');
         }
 
-        return $sTplName ? basename($sTplName) : null;
+        return $sTplName ? \basename($sTplName) : null;
     }
 
     /**
@@ -179,7 +179,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
                // END deprecated
                . ($sListType ? "&amp;listtype={$sListType}" : '')
                . "&amp;fnc=logout"
-               . ($sTplName ? "&amp;tpl=" . basename($sTplName) : '')
+               . ($sTplName ? "&amp;tpl=" . \basename($sTplName) : '')
                . ($sContentLoadId ? "&amp;oxloadid=" . $sContentLoadId : '')
                . "&amp;redirect=1";
     }
@@ -194,7 +194,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         $sClass = $this->getActiveClassName();
 
-        return ['oxhelp' . strtolower($sClass), 'oxhelpdefault'];
+        return ['oxhelp' . \strtolower($sClass), 'oxhelpdefault'];
     }
 
     /**
@@ -739,7 +739,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getPopupIdent()
     {
         if (($sValue = $this->getViewConfigParam('popupident')) === null) {
-            $sValue = md5(Registry::getConfig()->getShopUrl());
+            $sValue = \md5(Registry::getConfig()->getShopUrl());
             $this->setViewConfigParam('popupident', $sValue);
         }
 
@@ -754,7 +754,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getPopupIdentRand()
     {
         if (($sValue = $this->getViewConfigParam('popupidentrand')) === null) {
-            $sValue = md5(time());
+            $sValue = \md5(\time());
             $this->setViewConfigParam('popupidentrand', $sValue);
         }
 
@@ -805,7 +805,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         $sListType = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ldtype');
 
-        if (is_null($sListType)) {
+        if (\is_null($sListType)) {
             $sListType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
@@ -952,7 +952,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
                     if ($sParams) {
                         $sParams .= '&amp;';
                     }
-                    $sParams .= "{$sName}=" . rawurlencode($sValue);
+                    $sParams .= "{$sName}=" . \rawurlencode($sValue);
                 }
             }
             if ($sParams) {
@@ -1164,7 +1164,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
         $sModulePath = $oModule->getModulePath($sModule);
         $sFile = Registry::getConfig()->getModulesDir() . $sModulePath . $sFile;
-        if (file_exists($sFile) || is_dir($sFile)) {
+        if (\file_exists($sFile) || \is_dir($sFile)) {
             return $sFile;
         } else {
             /**
@@ -1206,7 +1206,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
                 if ($shopUrl) {
                     // but we don't need the admin directory
                     $adminDir = '/' . $c->getConfigParam('sAdminDir');
-                    $shopUrl = substr($shopUrl, 0, -strlen($adminDir));
+                    $shopUrl = \substr($shopUrl, 0, -\strlen($adminDir));
                 } else {
                     // if no sAdminSSLURL directive were defined we use sSSLShopURL config directive instead
                     $shopUrl = $c->getConfigParam('sSSLShopURL');
@@ -1221,10 +1221,10 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         if (!$shopUrl) {
             $shopUrl = $c->getCurrentShopUrl();
         }
-        $shopUrl = rtrim($shopUrl, '/');
+        $shopUrl = \rtrim($shopUrl, '/');
 
-        $sUrl = str_replace(
-            rtrim($c->getConfigParam('sShopDir'), '/'),
+        $sUrl = \str_replace(
+            \rtrim($c->getConfigParam('sShopDir'), '/'),
             $shopUrl,
             $this->getModulePath($sModule, $sFile)
         );
@@ -1249,7 +1249,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         // use aModuleVersions instead of aModules, because aModules gives only modules which extend oxid classes
         $aModuleVersions = Registry::getConfig()->getConfigParam('aModuleVersions');
 
-        if (is_array($aModuleVersions)) {
+        if (\is_array($aModuleVersions)) {
             $blModuleIsActive = $this->_moduleExists($sModuleId, $aModuleVersions);
 
             if ($blModuleIsActive) {
@@ -1345,11 +1345,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopLogo()
     {
-        if (is_null($this->_sShopLogo)) {
+        if (\is_null($this->_sShopLogo)) {
             $sLogoImage = Registry::getConfig()->getConfigParam('sShopLogo');
             if (empty($sLogoImage)) {
                 $editionSelector = new EditionSelector();
-                $sLogoImage = "logo_" . strtolower($editionSelector->getEdition()) . ".png";
+                $sLogoImage = "logo_" . \strtolower($editionSelector->getEdition()) . ".png";
             }
 
             $this->setShopLogo($sLogoImage);
@@ -1396,7 +1396,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     private function _moduleExists($sModuleId, $aModuleVersions) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (in_array($sModuleId, array_keys($aModuleVersions)));
+        return (\in_array($sModuleId, \array_keys($aModuleVersions)));
     }
 
     /**
@@ -1433,11 +1433,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
         $aModuleVersions = Registry::getConfig()->getConfigParam('aModuleVersions');
 
-        if ($sVersionFrom && !version_compare($aModuleVersions[$sModuleId], $sVersionFrom, '>=')) {
+        if ($sVersionFrom && !\version_compare($aModuleVersions[$sModuleId], $sVersionFrom, '>=')) {
             $blModuleIsActive = false;
         }
 
-        if ($blModuleIsActive && $sVersionTo && !version_compare($aModuleVersions[$sModuleId], $sVersionTo, '<')) {
+        if ($blModuleIsActive && $sVersionTo && !\version_compare($aModuleVersions[$sModuleId], $sVersionTo, '<')) {
             $blModuleIsActive = false;
         }
 

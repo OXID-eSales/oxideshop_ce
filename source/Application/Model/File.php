@@ -176,15 +176,15 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function isUnderDownloadFolder()
     {
-        $storageLocation = realpath($this->getStoreLocation());
+        $storageLocation = \realpath($this->getStoreLocation());
 
         if ($storageLocation === false) {
             return false;
         }
 
-        $downloadFolder = realpath($this->_getBaseDownloadDirPath());
+        $downloadFolder = \realpath($this->_getBaseDownloadDirPath());
 
-        return strpos($storageLocation, $downloadFolder) !== false;
+        return \strpos($storageLocation, $downloadFolder) !== false;
     }
 
     /**
@@ -201,7 +201,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         //security check for demo shops
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            $sFileName = basename($sFileName);
+            $sFileName = \basename($sFileName);
         }
 
         if ($this->isUploaded()) {
@@ -226,11 +226,11 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getHashedFileDir($sFileHash) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sDir = substr($sFileHash, 0, 2);
+        $sDir = \substr($sFileHash, 0, 2);
         $sAbsDir = $this->_getBaseDownloadDirPath() . DIRECTORY_SEPARATOR . $sDir;
 
-        if (!is_dir($sAbsDir)) {
-            mkdir($sAbsDir, 0755);
+        if (!\is_dir($sAbsDir)) {
+            \mkdir($sAbsDir, 0755);
         }
 
         return $sDir;
@@ -247,7 +247,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getFileHash($sFileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return md5_file($sFileName);
+        return \md5_file($sFileName);
     }
 
     /**
@@ -262,10 +262,10 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _uploadFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $blDone = move_uploaded_file($sSource, $sTarget);
+        $blDone = \move_uploaded_file($sSource, $sTarget);
 
         if ($blDone) {
-            $blDone = @chmod($sTarget, 0644);
+            $blDone = @\chmod($sTarget, 0644);
         }
 
         return $blDone;
@@ -330,7 +330,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         );
         if (!$iCount) {
             $sPath = $this->getStoreLocation();
-            unlink($sPath);
+            \unlink($sPath);
         }
     }
 
@@ -343,7 +343,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getFilenameForUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return rawurlencode($this->oxfiles__oxfilename->value);
+        return \rawurlencode($this->oxfiles__oxfilename->value);
     }
 
     /**
@@ -367,7 +367,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($iFileSize = $this->getSize()) {
             $oUtils->setHeader("Content-Length: " . $iFileSize);
         }
-        readfile($sFileLocations);
+        \readfile($sFileLocations);
         $oUtils->showMessageAndExit(null);
     }
 
@@ -378,7 +378,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function exist()
     {
-        return file_exists($this->getStoreLocation());
+        return \file_exists($this->getStoreLocation());
     }
 
     /**
@@ -405,7 +405,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
                         AND `oxorderarticles`.`oxstorno` = 0";
             $params = [
                 ':oxfileid' => $this->getId(),
-                ':oxvaliduntil' => date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime())
+                ':oxvaliduntil' => \date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime())
             ];
 
             if ($oDb->getOne($sSql, $params)) {
@@ -489,7 +489,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $iSize = 0;
         if ($this->exist()) {
-            $iSize = filesize($this->getStoreLocation());
+            $iSize = \filesize($this->getStoreLocation());
         }
 
         return $iSize;

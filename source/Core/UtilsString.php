@@ -32,7 +32,7 @@ class UtilsString
     {
         $oStr = Str::getStr();
         if ($oStr->strstr($sInField, '"')) {
-            return '"' . str_replace('"', '""', $sInField) . '"';
+            return '"' . \str_replace('"', '""', $sInField) . '"';
         } elseif ($oStr->strstr($sInField, ';')) {
             return '"' . $sInField . '"';
         }
@@ -53,7 +53,7 @@ class UtilsString
     public function minimizeTruncateString($sString, $iLength)
     {
         //leading and ending whitespaces
-        $sString = trim($sString);
+        $sString = \trim($sString);
         $oStr = Str::getStr();
 
         //multiple whitespaces

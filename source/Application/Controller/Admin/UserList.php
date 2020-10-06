@@ -105,7 +105,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
         $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
 
         if ($nameWhere) {
-            $values = explode(' ', $name);
+            $values = \explode(' ', $name);
             $query .= ' and (';
             $queryBoolAction = '';
             $utilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();

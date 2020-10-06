@@ -170,7 +170,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         // user exists ?
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($oUser->load(Registry::getConfig()->getRequestParameter('uid'))) {
-            $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
+            $sConfirmCode = \md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
             if (Registry::getConfig()->getRequestParameter('confirm') == $sConfirmCode) {
                 $oUser->getNewsSubscription()->setOptInStatus(1);
@@ -254,8 +254,8 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         if ($this->_sHomeCountryId === null) {
             $this->_sHomeCountryId = false;
             $aHomeCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry');
-            if (is_array($aHomeCountry)) {
-                $this->_sHomeCountryId = current($aHomeCountry);
+            if (\is_array($aHomeCountry)) {
+                $this->_sHomeCountryId = \current($aHomeCountry);
             }
         }
 

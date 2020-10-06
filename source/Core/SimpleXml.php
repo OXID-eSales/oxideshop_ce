@@ -57,7 +57,7 @@ class SimpleXml
      */
     public function xmlToObject($sXml)
     {
-        return simplexml_load_string($sXml);
+        return \simplexml_load_string($sXml);
     }
 
     /**
@@ -72,7 +72,7 @@ class SimpleXml
      */
     protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aElements = is_object($oInput) ? get_object_vars($oInput) : (array) $oInput;
+        $aElements = \is_object($oInput) ? \get_object_vars($oInput) : (array) $oInput;
 
         foreach ($aElements as $sKey => $mElement) {
             $oXml = $this->_addChildNode($oXml, $sKey, $mElement, $sPreferredKey);
@@ -95,13 +95,13 @@ class SimpleXml
     protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
-        if (is_array($mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
+        if (\is_array($mElement) && \array_key_exists('attributes', $mElement) && \is_array($mElement['attributes'])) {
             $aAttributes = $mElement['attributes'];
             $mElement = $mElement['value'];
         }
 
-        if (is_object($mElement) || is_array($mElement)) {
-            if (is_int(key($mElement))) {
+        if (\is_object($mElement) || \is_array($mElement)) {
+            if (\is_int(\key($mElement))) {
                 $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
             } else {
                 $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey);

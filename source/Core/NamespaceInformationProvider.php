@@ -74,7 +74,7 @@ class NamespaceInformationProvider
      */
     public static function isNamespacedClass($className)
     {
-        return strpos($className, '\\') !== false;
+        return \strpos($className, '\\') !== false;
     }
 
     /**
@@ -98,9 +98,9 @@ class NamespaceInformationProvider
      */
     public static function classBelongsToShopUnifiedNamespace($className)
     {
-        $lcClassName = strtolower(ltrim($className, '\\'));
+        $lcClassName = \strtolower(\ltrim($className, '\\'));
         $unifiedNamespace = static::getUnifiedNamespace();
-        $belongsToUnifiedNamespace = (false !== strpos($lcClassName, strtolower($unifiedNamespace)));
+        $belongsToUnifiedNamespace = (false !== \strpos($lcClassName, \strtolower($unifiedNamespace)));
 
         return $belongsToUnifiedNamespace;
     }
@@ -116,11 +116,11 @@ class NamespaceInformationProvider
     private static function classBelongsToNamespace($className, $namespaces)
     {
         $belongsToNamespace = false;
-        $check = array_values($namespaces);
-        $lcClassName = strtolower(ltrim($className, '\\'));
+        $check = \array_values($namespaces);
+        $lcClassName = \strtolower(\ltrim($className, '\\'));
 
         foreach ($check as $namespace) {
-            if (false !== strpos($lcClassName, strtolower($namespace))) {
+            if (false !== \strpos($lcClassName, \strtolower($namespace))) {
                 $belongsToNamespace = true;
                 continue;
             }

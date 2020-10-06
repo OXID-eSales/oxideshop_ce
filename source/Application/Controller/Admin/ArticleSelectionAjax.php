@@ -86,8 +86,8 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2selectlist.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
+        } elseif (\is_array($aChosenArt)) {
+            $sChosenArticles = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2selectlist " .
                   "where oxobject2selectlist.oxid in (" . $sChosenArticles . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
@@ -113,7 +113,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $aAddSel = $this->_getAll($this->_addFilter("select $sSLViewName.oxid " . $this->_getQuery()));
         }
 
-        if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
+        if ($soxId && $soxId != "-1" && \is_array($aAddSel)) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
             foreach ($aAddSel as $sAdd) {

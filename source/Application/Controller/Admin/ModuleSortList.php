@@ -42,7 +42,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $sanitizedExtendClass = [];
         foreach ($classExtensionsChain as $extendedClass => $classChain) {
-            $sanitizedKey = str_replace("\\", self::BACKSLASH_REPLACEMENT, $extendedClass);
+            $sanitizedKey = \str_replace("\\", self::BACKSLASH_REPLACEMENT, $extendedClass);
             $sanitizedExtendClass[$sanitizedKey] = $classChain;
         }
 
@@ -66,7 +66,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function save()
     {
-        $classExtensionsChainFromRequest = json_decode(
+        $classExtensionsChainFromRequest = \json_decode(
             Registry::getRequest()->getRequestEscapedParameter('aModules'),
             true
         );
@@ -116,7 +116,7 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $sanitizedClassExtensionsChain = [];
 
         foreach ($chain as $key => $value) {
-            $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
+            $sanitizedKey = \str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
             $sanitizedClassExtensionsChain[$sanitizedKey] = $value;
         }
 

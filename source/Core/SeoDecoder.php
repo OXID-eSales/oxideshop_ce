@@ -28,8 +28,8 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $aRet = [];
         $sUrl = $oStr->html_entity_decode($sUrl);
 
-        if (($iPos = strpos($sUrl, '?')) !== false) {
-            parse_str($oStr->substr($sUrl, $iPos + 1), $aRet);
+        if (($iPos = \strpos($sUrl, '?')) !== false) {
+            \parse_str($oStr->substr($sUrl, $iPos + 1), $aRet);
         }
 
         return $aRet;
@@ -46,7 +46,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getIdent($sSeoUrl, $blIgnore = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return md5(strtolower($sSeoUrl));
+        return \md5(\strtolower($sSeoUrl));
     }
 
     /**
@@ -64,7 +64,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
         }
-        $seoUrl = rawurldecode($seoUrl);
+        $seoUrl = \rawurldecode($seoUrl);
 
         //extract page number from seo url
         list($seoUrl, $pageNumber) = $this->extractPageNumberFromSeoUrl($seoUrl);
@@ -83,7 +83,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             $urlParameters = $this->parseStdUrl($resultSet->fields['oxstdurl']);
             $urlParameters['lang'] = $resultSet->fields['oxlang'];
         }
-        if (is_array($urlParameters) && !is_null($pageNumber) && ($pageNumber > 0)) {
+        if (\is_array($urlParameters) && !\is_null($pageNumber) && ($pageNumber > 0)) {
             $urlParameters['pgNr'] = $pageNumber;
         }
 
@@ -109,7 +109,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
         }
         $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-        $seoUrl = rawurldecode($seoUrl);
+        $seoUrl = \rawurldecode($seoUrl);
 
         //extract page number from seo url
         list($seoUrl, $pageNumber) = $this->extractPageNumberFromSeoUrl($seoUrl);
@@ -137,7 +137,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             // appending with $_SERVER["QUERY_STRING"]
             $url = $this->_addQueryString($url);
         }
-        if ($url && !is_null($pageNumber)) {
+        if ($url && !\is_null($pageNumber)) {
             $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl($url, ['pgNr' => $pageNumber]);
         }
 
@@ -155,10 +155,10 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     protected function _addQueryString($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($sQ = $_SERVER["QUERY_STRING"])) {
-            $sUrl = rtrim($sUrl, "&?");
-            $sQ = ltrim($sQ, "&?");
+            $sUrl = \rtrim($sUrl, "&?");
+            $sQ = \ltrim($sQ, "&?");
 
-            $sUrl .= (strpos($sUrl, '?') === false) ? "?" : "&";
+            $sUrl .= (\strpos($sUrl, '?') === false) ? "?" : "&";
             $sUrl .= $sQ;
         }
 
@@ -225,11 +225,11 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $sPath = $sPath ? $sPath : str_replace('oxseo.php', '', $_SERVER['SCRIPT_NAME']);
+        $sPath = $sPath ? $sPath : \str_replace('oxseo.php', '', $_SERVER['SCRIPT_NAME']);
         if (($sParams = $this->_getParams($sRequest, $sPath))) {
             // in case SEO url is actual
-            if (is_array($aGet = $this->decodeUrl($sParams))) {
-                $_GET = array_merge($aGet, $_GET);
+            if (\is_array($aGet = $this->decodeUrl($sParams))) {
+                $_GET = \array_merge($aGet, $_GET);
                 \OxidEsales\Eshop\Core\Registry::getLang()->resetBaseLanguage();
             } elseif (($sRedirectUrl = $this->_decodeOldUrl($sParams))) {
                 // in case SEO url was changed - redirecting to new location
@@ -256,7 +256,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     protected function _decodeSimpleUrl($sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sLastParam = trim($sParams, '/');
+        $sLastParam = \trim($sParams, '/');
 
         // active object id
         $sUrl = null;
@@ -265,7 +265,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             $iLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
             // article ?
-            if (strpos($sLastParam, '.htm') !== false) {
+            if (\strpos($sLastParam, '.htm') !== false) {
                 $sUrl = $this->_getObjectUrl($sLastParam, 'oxarticles', $iLanguage, 'oxarticle');
             } else {
                 // category ?
@@ -329,7 +329,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $oStr = Str::getStr();
 
         $sParams = $oStr->preg_replace('/\?.*/', '', $sRequest);
-        $sPath = preg_quote($sPath, '/');
+        $sPath = \preg_quote($sPath, '/');
         $sParams = $oStr->preg_replace("/^$sPath/", '', $sParams);
 
         // this should not happen on most cases, because this redirect is handled by .htaccess
@@ -352,7 +352,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     private function extractPageNumberFromSeoUrl($seoUrl)
     {
         $pageNumber = null;
-        if (1 === preg_match('/(.*?)\/(\d+)\/(.*)/', $seoUrl, $matches)) {
+        if (1 === \preg_match('/(.*?)\/(\d+)\/(.*)/', $seoUrl, $matches)) {
             $seoUrl = $matches[1] . '/' . $matches[3];
             $pageNumber = $this->convertSeoPageStringToActualPageNumber($matches[2]);
         }
@@ -368,8 +368,8 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     private function convertSeoPageStringToActualPageNumber($seoPageNumber)
     {
-        if (!is_null($seoPageNumber)) {
-            $seoPageNumber = max(0, (int) $seoPageNumber - 1);
+        if (!\is_null($seoPageNumber)) {
+            $seoPageNumber = \max(0, (int) $seoPageNumber - 1);
         }
         return $seoPageNumber;
     }

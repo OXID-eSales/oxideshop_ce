@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-require_once dirname(__FILE__) . "/bootstrap.php";
+require_once \dirname(__FILE__) . "/bootstrap.php";
 
 /**
  * Redirect to Setup, if shop is not configured

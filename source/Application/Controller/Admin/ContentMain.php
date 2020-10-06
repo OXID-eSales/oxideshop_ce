@@ -46,12 +46,12 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oOtherLang = $oContent->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oContent->loadInLang(key($oOtherLang), $soxId);
+                $oContent->loadInLang(\key($oOtherLang), $soxId);
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
             foreach ($oOtherLang as $id => $language) {
@@ -223,7 +223,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $blAllow = false;
 
         // null not allowed
-        if (!strlen($sIdent)) {
+        if (!\strlen($sIdent)) {
             $blAllow = true;
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         } elseif (

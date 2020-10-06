@@ -44,10 +44,10 @@ class TranslateFunctionLogic
         }
         if (!$translationNotFound) {
             if ($args !== false) {
-                if (is_array($args)) {
-                    $translation = vsprintf($translation, $args);
+                if (\is_array($args)) {
+                    $translation = \vsprintf($translation, $args);
                 } else {
-                    $translation = sprintf($translation, $args);
+                    $translation = \sprintf($translation, $args);
                 }
             }
             if ('NO_SUFFIX' != $suffix) {

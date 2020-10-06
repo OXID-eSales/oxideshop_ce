@@ -59,7 +59,7 @@ class ContainerFactory
     {
         $cacheFilePath = $this::getCacheFilePath();
 
-        if (file_exists($cacheFilePath)) {
+        if (\file_exists($cacheFilePath)) {
             $this->loadContainerFromCache($cacheFilePath);
         } else {
             $this->getCompiledSymfonyContainer();
@@ -94,7 +94,7 @@ class ContainerFactory
     private function saveContainerToCache($cachefile)
     {
         $dumper = new PhpDumper($this->symfonyContainer);
-        file_put_contents($cachefile, $dumper->dump());
+        \file_put_contents($cachefile, $dumper->dump());
     }
 
     /**
@@ -121,8 +121,8 @@ class ContainerFactory
      */
     public static function resetContainer()
     {
-        if (file_exists(self::getCacheFilePath())) {
-            unlink(self::getCacheFilePath());
+        if (\file_exists(self::getCacheFilePath())) {
+            \unlink(self::getCacheFilePath());
         }
         self::$instance = null;
     }

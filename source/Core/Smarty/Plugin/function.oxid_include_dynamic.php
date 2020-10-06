@@ -20,7 +20,7 @@
  */
 function smarty_function_oxid_include_dynamic($params, &$smarty)
 {
-    $params = array_change_key_case($params, CASE_LOWER);
+    $params = \array_change_key_case($params, CASE_LOWER);
 
     if (!isset($params['file'])) {
         $smarty->trigger_error("oxid_include_dynamic: missing 'file' parameter");
@@ -30,13 +30,13 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
     if (!empty($smarty->_tpl_vars["_render4cache"])) {
         $sContent = "<oxid_dynamic>";
         foreach ($params as $key => $val) {
-            $sContent .= " $key='" . base64_encode($val) . "'";
+            $sContent .= " $key='" . \base64_encode($val) . "'";
         }
         $sContent .= "</oxid_dynamic>";
         return $sContent;
     } else {
         $sPrefix = "_";
-        if (array_key_exists('type', $params)) {
+        if (\array_key_exists('type', $params)) {
             $sPrefix .= $params['type'] . "_";
         }
 

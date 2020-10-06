@@ -93,7 +93,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function buildVendorTree($sLinkTarget, $sActCat, $sShopHomeUrl)
     {
-        $sActCat = str_replace('v_', '', $sActCat);
+        $sActCat = \str_replace('v_', '', $sActCat);
 
         //Load vendor list
         $this->loadVendorList();

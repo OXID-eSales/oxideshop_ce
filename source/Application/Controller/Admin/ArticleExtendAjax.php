@@ -80,11 +80,11 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
     protected function _getDataFields($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dataFields = parent::_getDataFields($sQ);
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid') && is_array($dataFields) && count($dataFields)) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid') && \is_array($dataFields) && \count($dataFields)) {
             // looking for smallest time value to mark record as main category ..
             $minimalPosition = null;
             $minimalValue = null;
-            reset($dataFields);
+            \reset($dataFields);
             foreach ($dataFields as $position => $fields) {
                 // already set ?
                 if ($fields['_3'] == '0') {
@@ -126,10 +126,10 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         }
 
         // removing all
-        if (is_array($categoriesToRemove) && count($categoriesToRemove)) {
+        if (\is_array($categoriesToRemove) && \count($categoriesToRemove)) {
             $query = "delete from oxobject2category where oxobject2category.oxobjectid = :oxobjectid and ";
             $query = $this->updateQueryForRemovingArticleFromCategory($query);
-            $query .= " oxcatnid in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($categoriesToRemove)) . ')';
+            $query .= " oxcatnid in (" . \implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($categoriesToRemove)) . ')';
             $dataBase->Execute($query, [
                 ':oxobjectid' => $oxId
             ]);
@@ -163,7 +163,7 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $categoriesToAdd = $this->_getAll($this->_addFilter("select $categoriesTable.oxid " . $this->_getQuery()));
         }
 
-        if (isset($categoriesToAdd) && is_array($categoriesToAdd)) {
+        if (isset($categoriesToAdd) && \is_array($categoriesToAdd)) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
@@ -178,10 +178,10 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                     continue;
                 }
 
-                $objectToCategory->setId(md5($oxId . $sAdd . $shopId));
+                $objectToCategory->setId(\md5($oxId . $sAdd . $shopId));
                 $objectToCategory->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($oxId);
                 $objectToCategory->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sAdd);
-                $objectToCategory->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(time());
+                $objectToCategory->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(\time());
 
                 $objectToCategory->save();
             }

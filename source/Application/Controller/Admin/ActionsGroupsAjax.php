@@ -78,8 +78,8 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2action.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
+        } elseif ($aRemoveGroups && \is_array($aRemoveGroups)) {
+            $sRemoveGroups = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
             $sQ = "delete from oxobject2action where oxobject2action.oxid in (" . $sRemoveGroups . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
@@ -101,7 +101,7 @@ class ActionsGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         }
 
         $promotionAdded = false;
-        if ($soxId && $soxId != "-1" && is_array($aChosenGroup)) {
+        if ($soxId && $soxId != "-1" && \is_array($aChosenGroup)) {
             foreach ($aChosenGroup as $sChosenGroup) {
                 $oObject2Promotion = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Promotion->init('oxobject2action');

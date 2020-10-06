@@ -16,7 +16,7 @@ use OxidEsales\Eshop\Core\UtilsObject;
  */
 function isAdmin()
 {
-    return defined('OX_IS_ADMIN') ? OX_IS_ADMIN : false;
+    return \defined('OX_IS_ADMIN') ? OX_IS_ADMIN : false;
 }
 
 /**
@@ -44,13 +44,13 @@ function dumpVar($mVar, $blToFile = false)
 {
     $myConfig = Registry::getConfig();
     if ($blToFile) {
-        $out = var_export($mVar, true);
-        $f = fopen($myConfig->getConfigParam('sCompileDir') . "/vardump.txt", "a");
-        fwrite($f, $out);
-        fclose($f);
+        $out = \var_export($mVar, true);
+        $f = \fopen($myConfig->getConfigParam('sCompileDir') . "/vardump.txt", "a");
+        \fwrite($f, $out);
+        \fclose($f);
     } else {
         echo '<pre>';
-        var_export($mVar);
+        \var_export($mVar);
         echo '</pre>';
     }
 }
@@ -62,10 +62,10 @@ function dumpVar($mVar, $blToFile = false)
  */
 function debug($mVar)
 {
-    $f = fopen('out.txt', 'a');
-    $sString = var_export($mVar, true);
-    fputs($f, $sString . "\n---------------------------------------------\n");
-    fclose($f);
+    $f = \fopen('out.txt', 'a');
+    $sString = \var_export($mVar, true);
+    \fputs($f, $sString . "\n---------------------------------------------\n");
+    \fclose($f);
 }
 
 /**
@@ -100,7 +100,7 @@ function cmpart($a, $b)
 function oxNew($className, ...$args)
 {
     startProfile('oxNew');
-    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], array_merge([$className], $args));
+    $object = \call_user_func_array([UtilsObject::getInstance(), "oxNew"], \array_merge([$className], $args));
     stopProfile('oxNew');
 
     return $object;
@@ -171,7 +171,7 @@ function ox_get_template($sTplName, &$sTplSource, $oSmarty)
  */
 function ox_get_timestamp($sTplName, &$iTplTimestamp, $oSmarty)
 {
-    $iTplTimestamp = isset($oSmarty->oxidtimecache->value) ? $oSmarty->oxidtimecache->value : time();
+    $iTplTimestamp = isset($oSmarty->oxidtimecache->value) ? $oSmarty->oxidtimecache->value : \time();
 
     return true;
 }

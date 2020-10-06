@@ -65,7 +65,7 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
                           "on {$sCatTable}.oxid=oxobject2delivery.oxobjectid " .
                           " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchDelId) .
                           " and oxobject2delivery.oxtype = 'oxcategories' ";
-            if (stristr($sQAdd, 'where') === false) {
+            if (\stristr($sQAdd, 'where') === false) {
                 $sQAdd .= ' where ';
             } else {
                 $sQAdd .= ' and ';
@@ -87,8 +87,8 @@ class DeliveryCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenCat)) {
-            $sChosenCategoriess = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
+        } elseif (\is_array($aChosenCat)) {
+            $sChosenCategoriess = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . $sChosenCategoriess . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }

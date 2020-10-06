@@ -48,12 +48,12 @@ class ExceptionHandler
      */
     public function __call($sMethod, $aArgs)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
+        if (\defined('OXID_PHP_UNIT')) {
+            if (\substr($sMethod, 0, 4) == "UNIT") {
+                $sMethod = \str_replace("UNIT", "_", $sMethod);
             }
-            if (method_exists($this, $sMethod)) {
-                return call_user_func_array([& $this, $sMethod], $aArgs);
+            if (\method_exists($this, $sMethod)) {
+                return \call_user_func_array([& $this, $sMethod], $aArgs);
             }
         }
 
@@ -86,7 +86,7 @@ class ExceptionHandler
             $logger->error($exception);
         }
 
-        if ($this->_iDebug || defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {
+        if ($this->_iDebug || \defined('OXID_PHP_UNIT') || \php_sapi_name() === 'cli') {
             throw $exception;
         } else {
             \oxTriggerOfflinePageDisplay();

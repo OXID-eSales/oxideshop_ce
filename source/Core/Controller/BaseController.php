@@ -177,7 +177,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     public function init()
     {
         // setting current view class name
-        $this->_sThisAction = strtolower(get_class($this));
+        $this->_sThisAction = \strtolower(\get_class($this));
 
         if (!$this->_blIsComponent) {
             // assume that cached components does not affect this method ...
@@ -532,7 +532,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     {
         // execute
         if ($sFunction && !self::$_blExecuted) {
-            if (method_exists($this, $sFunction)) {
+            if (\method_exists($this, $sFunction)) {
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
                 $this->dispatchEvent(new AfterRequestProcessedEvent());
@@ -569,18 +569,18 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // page parameters is the part which goes after '?'
-            $params = explode('?', $sNewAction);
+            $params = \explode('?', $sNewAction);
 
             // action parameters is the part before '?'
             $pageParams = isset($params[1]) ? $params[1] : null;
 
             // looking for function name
-            $params = explode('/', $params[0]);
+            $params = \explode('/', $params[0]);
             $className = $params[0];
             $resolvedClassName = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getClassNameById($className);
             $realClassName = $resolvedClassName ? \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($resolvedClassName) : \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($className);
 
-            if (false === class_exists($realClassName)) {
+            if (false === \class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.
                 //we'll be redirected to start page directly.
                 $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
@@ -719,7 +719,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isBetaVersion()
     {
-        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'beta') !== false);
+        return (\stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'beta') !== false);
     }
 
     /**
@@ -729,7 +729,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isRCVersion()
     {
-        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'rc') !== false);
+        return (\stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'rc') !== false);
     }
 
     /**

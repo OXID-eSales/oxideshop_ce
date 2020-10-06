@@ -32,7 +32,7 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
         //add all exceptions to display
         $aErrors = $this->_getErrors();
 
-        if (is_array($aErrors) && count($aErrors)) {
+        if (\is_array($aErrors) && \count($aErrors)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $aErrors);
         }
 

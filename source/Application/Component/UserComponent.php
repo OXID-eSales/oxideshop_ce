@@ -21,9 +21,9 @@ use OxidEsales\Eshop\Application\Model\User\UserShippingAddressUpdatableFields;
 use OxidEsales\EshopCommunity\Application\Model\User;
 
 // defining login/logout states
-define('USER_LOGIN_SUCCESS', 1);
-define('USER_LOGIN_FAIL', 2);
-define('USER_LOGOUT', 3);
+\define('USER_LOGIN_SUCCESS', 1);
+\define('USER_LOGIN_FAIL', 2);
+\define('USER_LOGOUT', 3);
 
 /**
  * User object manager.
@@ -136,11 +136,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $sClass = $this->getParent()->getClassName();
 
             // no session user
-            if (!$oUser && !in_array($sClass, $this->_aAllowedClasses)) {
+            if (!$oUser && !\in_array($sClass, $this->_aAllowedClasses)) {
                 Registry::getUtils()->redirect($oConfig->getShopHomeUrl() . 'cl=account', false, 302);
             }
 
-            if ($oUser && !$oUser->isTermsAccepted() && !in_array($sClass, $this->_aAllowedClasses)) {
+            if ($oUser && !$oUser->isTermsAccepted() && !\in_array($sClass, $this->_aAllowedClasses)) {
                 Registry::getUtils()->redirect($oConfig->getShopHomeUrl() . 'cl=account&term=1', false, 302);
             }
         }
@@ -777,12 +777,12 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $aDeladr = ($blShowShipAddressParameter || $blShowShipAddressVariable) ? $sDeliveryAddressParameter : [];
         $aDelAdress = $aDeladr;
 
-        if (is_array($aDeladr)) {
+        if (\is_array($aDeladr)) {
             // checking if data is filled
             if (isset($aDeladr['oxaddress__oxsal'])) {
                 unset($aDeladr['oxaddress__oxsal']);
             }
-            if (!count($aDeladr) || implode('', $aDeladr) == '') {
+            if (!\count($aDeladr) || \implode('', $aDeladr) == '') {
                 // resetting to avoid empty records
                 $aDelAdress = [];
             }
@@ -881,7 +881,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     private function cleanAddress($address, $updatableFields)
     {
-        if (is_array($address)) {
+        if (\is_array($address)) {
             /** @var UpdatableFieldsConstructor $updatableFieldsConstructor */
             $updatableFieldsConstructor = oxNew(UpdatableFieldsConstructor::class);
             $cleaner = $updatableFieldsConstructor->getAllowedFieldsCleaner($updatableFields);
@@ -900,7 +900,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     private function trimAddress($address)
     {
-        if (is_array($address)) {
+        if (\is_array($address)) {
             $fields  = oxNew(FormFields::class, $address);
             $trimmer = oxNew(FormFieldsTrimmer::class);
 

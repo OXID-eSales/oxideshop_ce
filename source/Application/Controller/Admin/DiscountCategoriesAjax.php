@@ -71,7 +71,7 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
                           "where {$sCategoryTable}.oxid=oxobject2discount.oxobjectid " .
                           " and oxobject2discount.oxdiscountid = " . $oDb->quote($sSynchId) .
                           " and oxobject2discount.oxtype = 'oxcategories' ";
-            if (stristr($sQAdd, 'where') === false) {
+            if (\stristr($sQAdd, 'where') === false) {
                 $sQAdd .= ' where ';
             } else {
                 $sQAdd .= ' and ';
@@ -93,8 +93,8 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         if ($config->getRequestParameter('all')) {
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
-        } elseif (is_array($categoryIds)) {
-            $chosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($categoryIds));
+        } elseif (\is_array($categoryIds)) {
+            $chosenCategories = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($categoryIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $chosenCategories . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         }
@@ -113,7 +113,7 @@ class DiscountCategoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
             $categoryTable = $this->_getViewName('oxcategories');
             $categoryIds = $this->_getAll($this->_addFilter("select $categoryTable.oxid " . $this->_getQuery()));
         }
-        if ($discountId && $discountId != self::NEW_DISCOUNT_ID && is_array($categoryIds)) {
+        if ($discountId && $discountId != self::NEW_DISCOUNT_ID && \is_array($categoryIds)) {
             foreach ($categoryIds as $categoryId) {
                 $this->addCategoryToDiscount($discountId, $categoryId);
             }

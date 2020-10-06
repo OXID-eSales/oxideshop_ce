@@ -89,7 +89,7 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         $oCatTree->assign($aNewList);
         $aFilter = $this->getListFilter();
-        if (is_array($aFilter) && isset($aFilter["oxcategories"]["oxparentid"])) {
+        if (\is_array($aFilter) && isset($aFilter["oxcategories"]["oxparentid"])) {
             foreach ($oCatTree as $oCategory) {
                 if ($oCategory->oxcategories__oxid->value == $aFilter["oxcategories"]["oxparentid"]) {
                     $oCategory->selected = 1;

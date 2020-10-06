@@ -34,7 +34,7 @@ function smarty_function_oxstyle($params, &$smarty)
         'if' => null,
         'include' => null,
     ];
-    $params = array_merge($defaults, $params);
+    $params = \array_merge($defaults, $params);
 
     $widget = $params['widget'];
     $forceRender = $params['inWidget'];

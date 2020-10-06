@@ -57,7 +57,7 @@ class ModuleVariablesLocator
         //first try to get it from cache
         $value = $cache->getFromCache($name);
 
-        if (is_null($value)) {
+        if (\is_null($value)) {
             $value = $this->getModuleVarFromDB($name);
             $cache->setToCache($name, $value);
         }
@@ -75,7 +75,7 @@ class ModuleVariablesLocator
      */
     public function setModuleVariable($name, $value)
     {
-        if (is_null($value)) {
+        if (\is_null($value)) {
             self::$moduleVariables = null;
         } else {
             self::$moduleVariables[$name] = $value;
@@ -115,7 +115,7 @@ class ModuleVariablesLocator
             ':oxshopid'  => $shopId
         ]);
 
-        return unserialize($value);
+        return \unserialize($value);
     }
 
     /**

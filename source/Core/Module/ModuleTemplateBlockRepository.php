@@ -26,7 +26,7 @@ class ModuleTemplateBlockRepository
     public function getBlocksCount($modulesId, $shopId)
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $modulesIdQuery = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($modulesId));
+        $modulesIdQuery = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($modulesId));
         $sql = "select COUNT(*)
                             from oxtplblocks
                             where oxactive = :oxactive
@@ -51,7 +51,7 @@ class ModuleTemplateBlockRepository
      */
     public function getBlocks($shopTemplateName, $activeModulesId, $shopId, $themesId = [])
     {
-        $modulesId = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeModulesId));
+        $modulesId = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeModulesId));
 
         $activeThemesIdQuery = $this->formActiveThemesIdQuery($themesId);
         $sql = "select *
@@ -80,8 +80,8 @@ class ModuleTemplateBlockRepository
     private function formActiveThemesIdQuery($activeThemeIds = [])
     {
         $defaultThemeIndicator = '';
-        array_unshift($activeThemeIds, $defaultThemeIndicator);
+        \array_unshift($activeThemeIds, $defaultThemeIndicator);
 
-        return implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeThemeIds));
+        return \implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($activeThemeIds));
     }
 }

@@ -159,7 +159,7 @@ class Context extends BasicContext implements ContextInterface
      */
     private function getFactsConfigFile(): FactsConfigFile
     {
-        if (!is_a($this->factsConfigFile, FactsConfigFile::class)) {
+        if (!\is_a($this->factsConfigFile, FactsConfigFile::class)) {
             $this->factsConfigFile = new FactsConfigFile();
         }
 

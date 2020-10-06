@@ -130,11 +130,11 @@ class Curl
      */
     public function getQuery()
     {
-        if (is_null($this->_sQuery)) {
+        if (\is_null($this->_sQuery)) {
             $query = "";
             if ($params = $this->getParameters()) {
                 $params = $this->_prepareQueryParameters($params);
-                $query = http_build_query($params, "", "&");
+                $query = \http_build_query($params, "", "&");
             }
             $this->setQuery($query);
         }
@@ -190,7 +190,7 @@ class Curl
      */
     public function setHeader($header = null)
     {
-        if (is_null($header) && $this->getMethod() == "POST") {
+        if (\is_null($header) && $this->getMethod() == "POST") {
             $host = $this->getHost();
 
             $header = [];
@@ -211,7 +211,7 @@ class Curl
      */
     public function getHeader()
     {
-        if (is_null($this->_aHeader)) {
+        if (\is_null($this->_aHeader)) {
             $this->setHeader();
         }
 
@@ -225,7 +225,7 @@ class Curl
      */
     public function setMethod($method)
     {
-        $this->_sMethod = strtoupper($method);
+        $this->_sMethod = \strtoupper($method);
     }
 
     /**
@@ -248,10 +248,10 @@ class Curl
      */
     public function setOption($name, $value)
     {
-        if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant  = strtoupper($name))) {
+        if (\strpos($name, 'CURLOPT_') !== 0 || !\defined($constant  = \strtoupper($name))) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-            $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
+            $exception->setMessage(\sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
             throw $exception;
         }
 
@@ -289,7 +289,7 @@ class Curl
         if ($curlErrorNumber) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-            $exception->setMessage(sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
+            $exception->setMessage(\sprintf($lang->translateString('EXCEPTION_CURL_ERROR', $lang->getTplLanguage()), $curlErrorNumber));
             throw $exception;
         }
 
@@ -345,8 +345,8 @@ class Curl
      */
     protected function _getResource() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($this->_rCurl)) {
-            $this->_setResource(curl_init());
+        if (\is_null($this->_rCurl)) {
+            $this->_setResource(\curl_init());
         }
 
         return $this->_rCurl;
@@ -358,7 +358,7 @@ class Curl
      */
     protected function _setOptions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_null($this->getHeader())) {
+        if (!\is_null($this->getHeader())) {
             $this->_setOpt(CURLOPT_HTTPHEADER, $this->getHeader());
         }
         $this->_setOpt(CURLOPT_URL, $this->getUrl());
@@ -369,9 +369,9 @@ class Curl
         }
 
         $options = $this->getOptions();
-        if (count($options)) {
+        if (\count($options)) {
             foreach ($options as $name => $mValue) {
-                $this->_setOpt(constant($name), $mValue);
+                $this->_setOpt(\constant($name), $mValue);
             }
         }
     }
@@ -384,7 +384,7 @@ class Curl
      */
     protected function _execute() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return curl_exec($this->_getResource());
+        return \curl_exec($this->_getResource());
     }
 
     /**
@@ -393,7 +393,7 @@ class Curl
      */
     protected function _close() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        curl_close($this->_getResource());
+        \curl_close($this->_getResource());
         $this->_setResource(null);
     }
 
@@ -406,7 +406,7 @@ class Curl
      */
     protected function _setOpt($name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        curl_setopt($this->_getResource(), $name, $value);
+        \curl_setopt($this->_getResource(), $name, $value);
     }
 
     /**
@@ -417,7 +417,7 @@ class Curl
      */
     protected function _getErrorNumber() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return curl_errno($this->_getResource());
+        return \curl_errno($this->_getResource());
     }
 
     /**
@@ -426,7 +426,7 @@ class Curl
      */
     protected function _saveStatusCode() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->_sStatusCode = curl_getinfo($this->_getResource(), CURLINFO_HTTP_CODE);
+        $this->_sStatusCode = \curl_getinfo($this->_getResource(), CURLINFO_HTTP_CODE);
     }
 
     /**
@@ -439,7 +439,7 @@ class Curl
      */
     protected function _prepareQueryParameters($params) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return array_map([$this, '_htmlDecode'], array_filter($params));
+        return \array_map([$this, '_htmlDecode'], \array_filter($params));
     }
 
     /**
@@ -452,10 +452,10 @@ class Curl
      */
     protected function _htmlDecode($mParam) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($mParam)) {
+        if (\is_array($mParam)) {
             $mParam = $this->_prepareQueryParameters($mParam);
         } else {
-            $mParam = html_entity_decode(stripslashes($mParam), ENT_QUOTES, $this->getConnectionCharset());
+            $mParam = \html_entity_decode(\stripslashes($mParam), ENT_QUOTES, $this->getConnectionCharset());
         }
 
         return $mParam;

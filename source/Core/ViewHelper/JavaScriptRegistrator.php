@@ -29,8 +29,8 @@ class JavaScriptRegistrator
         $suffix = $isDynamic ? '_dynamic' : '';
         $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
         $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
-        $script = trim($script);
-        if (!in_array($script, $scripts)) {
+        $script = \trim($script);
+        if (!\in_array($script, $scripts)) {
             $scripts[] = $script;
         }
         $config->setGlobalParameter($scriptsParameterName, $scripts);
@@ -50,13 +50,13 @@ class JavaScriptRegistrator
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
         $includes = (array) $config->getGlobalParameter($filesParameterName);
 
-        if (!preg_match('#^https?://#', $file)) {
+        if (!\preg_match('#^https?://#', $file)) {
             $file = $this->formLocalFileUrl($file);
         }
 
         if ($file) {
             $includes[$priority][] = $file;
-            $includes[$priority] = array_unique($includes[$priority]);
+            $includes[$priority] = \array_unique($includes[$priority]);
             $config->setGlobalParameter($filesParameterName, $includes);
         }
     }
@@ -71,18 +71,18 @@ class JavaScriptRegistrator
     protected function formLocalFileUrl($file)
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $parts = explode('?', $file);
+        $parts = \explode('?', $file);
         $url = $config->getResourceUrl($parts[0], $config->isAdmin());
         if (isset($parts[1])) {
             $parameters = $parts[1];
         } else {
             $path = $config->getResourcePath($file, $config->isAdmin());
-            $parameters = filemtime($path);
+            $parameters = \filemtime($path);
         }
 
         if (empty($url) && $config->getConfigParam('iDebug') != 0) {
             $error = "{oxscript} resource not found: " . Str::getStr()->htmlspecialchars($file);
-            trigger_error($error, E_USER_WARNING);
+            \trigger_error($error, E_USER_WARNING);
         }
 
         return $url ? "$url?$parameters" : '';

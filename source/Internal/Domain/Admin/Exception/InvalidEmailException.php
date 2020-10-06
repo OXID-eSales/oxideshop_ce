@@ -15,6 +15,6 @@ class InvalidEmailException extends \Exception
 {
     public function __construct(string $email)
     {
-        parent::__construct(sprintf('Provided email string %s is not a valid email.', $email));
+        parent::__construct(\sprintf('Provided email string %s is not a valid email.', $email));
     }
 }

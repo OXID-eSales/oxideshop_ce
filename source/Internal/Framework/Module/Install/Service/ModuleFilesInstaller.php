@@ -110,7 +110,7 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
      */
     private function checkTwoStars(string $filter): void
     {
-        if (strpos($filter, '**') !== false) {
+        if (\strpos($filter, '**') !== false) {
             throw new TwoStarsWithinBlacklistFilterException(
                 "Invalid 'blacklist-filter' value in composer.json. "
                 . "Glob patterns (**) are not allowed here: $filter"

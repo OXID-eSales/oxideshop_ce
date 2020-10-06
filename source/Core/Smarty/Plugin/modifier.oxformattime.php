@@ -19,11 +19,11 @@
  */
 function smarty_modifier_oxformattime($iSeconds)
 {
-    $iHours = floor($iSeconds / 3600);
-    $iMins  = floor($iSeconds % 3600 / 60);
+    $iHours = \floor($iSeconds / 3600);
+    $iMins  = \floor($iSeconds % 3600 / 60);
     $iSecs  = $iSeconds % 60;
 
-    return sprintf("%02d:%02d:%02d", $iHours, $iMins, $iSecs);
+    return \sprintf("%02d:%02d:%02d", $iHours, $iMins, $iSecs);
 }
 
 /* vim: set expandtab: */

@@ -69,7 +69,7 @@ class FileCollector
             throw new Exception('Base directory is not set, please use setter setBaseDirectory!');
         }
 
-        if (is_file($this->_sBaseDirectory . $sFile)) {
+        if (\is_file($this->_sBaseDirectory . $sFile)) {
             $this->_aFiles[] = $sFile;
 
             return true;
@@ -101,27 +101,27 @@ class FileCollector
 
         $aCurrentList = [];
 
-        if (!is_dir($this->_sBaseDirectory . $sFolder)) {
+        if (!\is_dir($this->_sBaseDirectory . $sFolder)) {
             return;
         }
 
-        $handle = opendir($this->_sBaseDirectory . $sFolder);
+        $handle = \opendir($this->_sBaseDirectory . $sFolder);
 
-        while ($sFile = readdir($handle)) {
+        while ($sFile = \readdir($handle)) {
             if ($sFile != "." && $sFile != "..") {
-                if (is_dir($this->_sBaseDirectory . $sFolder . $sFile)) {
+                if (\is_dir($this->_sBaseDirectory . $sFolder . $sFile)) {
                     if ($blRecursive) {
                         $aResultList = $this->addDirectoryFiles($sFolder . $sFile . '/', $aExtensions, $blRecursive);
 
-                        if (is_array($aResultList)) {
-                            $aCurrentList = array_merge($aCurrentList, $aResultList);
+                        if (\is_array($aResultList)) {
+                            $aCurrentList = \array_merge($aCurrentList, $aResultList);
                         }
                     }
                 } else {
-                    $sExt = substr(strrchr($sFile, '.'), 1);
+                    $sExt = \substr(\strrchr($sFile, '.'), 1);
 
                     if (
-                        (!empty($aExtensions) && is_array($aExtensions) && in_array($sExt, $aExtensions)) ||
+                        (!empty($aExtensions) && \is_array($aExtensions) && \in_array($sExt, $aExtensions)) ||
                         (empty($aExtensions))
                     ) {
                         $this->addFile($sFolder . $sFile);
@@ -129,6 +129,6 @@ class FileCollector
                 }
             }
         }
-        closedir($handle);
+        \closedir($handle);
     }
 }

@@ -66,7 +66,7 @@ class JavaScriptRenderer
      */
     protected function isAjaxRequest()
     {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && \strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
     }
 
     /**
@@ -105,24 +105,24 @@ class JavaScriptRenderer
      */
     protected function formFilesOutput($includes, $widget)
     {
-        if (!count($includes)) {
+        if (!\count($includes)) {
             return '';
         }
 
-        ksort($includes); // Sort by priority.
+        \ksort($includes); // Sort by priority.
         $usedSources = [];
         $widgets = [];
         $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
         $scriptTemplate = '<script type="text/javascript" src="%s"></script>';
         foreach ($includes as $priority) {
             foreach ($priority as $source) {
-                if (!in_array($source, $usedSources)) {
-                    $widgets[] = sprintf(($widget ? $widgetTemplate : $scriptTemplate), $source, $widget);
+                if (!\in_array($source, $usedSources)) {
+                    $widgets[] = \sprintf(($widget ? $widgetTemplate : $scriptTemplate), $source, $widget);
                     $usedSources[] = $source;
                 }
             }
         }
-        $output = implode(PHP_EOL, $widgets);
+        $output = \implode(PHP_EOL, $widgets);
         if ($widget && !empty($output)) {
             $output = <<<JS
 <script type='text/javascript'>
@@ -157,7 +157,7 @@ JS;
             $preparedScripts[] = $script;
         }
 
-        return implode(PHP_EOL, $preparedScripts);
+        return \implode(PHP_EOL, $preparedScripts);
     }
 
     /**
@@ -169,7 +169,7 @@ JS;
      */
     protected function sanitize($scripts)
     {
-        return strtr($scripts, ['\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n']);
+        return \strtr($scripts, ['\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n']);
     }
 
     /**

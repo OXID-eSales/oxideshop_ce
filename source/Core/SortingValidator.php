@@ -23,8 +23,8 @@ class SortingValidator
         if (
             $sortBy
             && $sortOrder
-            && in_array(strtolower($sortOrder), $this->getSortingOrders())
-            && in_array($sortBy, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'))
+            && \in_array(\strtolower($sortOrder), $this->getSortingOrders())
+            && \in_array($sortBy, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'))
         ) {
             $isValid = true;
         }

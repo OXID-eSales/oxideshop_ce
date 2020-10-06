@@ -79,7 +79,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
                 $events[$event->getAction()] = $event->getMethod();
             }
 
-            if (\is_array($events) && array_key_exists($eventName, $events)) {
+            if (\is_array($events) && \array_key_exists($eventName, $events)) {
                 \call_user_func($events[$eventName]);
             }
         }

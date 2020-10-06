@@ -82,7 +82,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
             $oDelivery = new stdClass();
             $oDelivery->name = $sName;
             $oDelivery->type = $iType;
-            $oDelivery->checked = in_array($sName, $aAssignedRDFaDeliveries);
+            $oDelivery->checked = \in_array($sName, $aAssignedRDFaDeliveries);
             $aRDFaDeliveries[] = $oDelivery;
         }
 

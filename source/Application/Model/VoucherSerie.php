@@ -179,7 +179,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         //If nothing pass, use current server time
         if ($sNow == null) {
-            $sNow = date('Y-m-d H:i:s', $oUtilsDate->getTime());
+            $sNow = \date('Y-m-d H:i:s', $oUtilsDate->getTime());
         }
 
         //Check for active status.

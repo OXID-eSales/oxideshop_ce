@@ -204,7 +204,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_iCompItemsCnt === null) {
             $this->_iCompItemsCnt = 0;
             if ($aItems = $this->getCompareItems()) {
-                $this->_iCompItemsCnt = count($aItems);
+                $this->_iCompItemsCnt = \count($aItems);
             }
         }
 
@@ -220,7 +220,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         if ($this->_aCompItems === null) {
             $aItems = Registry::getSession()->getVariable('aFiltcompproducts');
-            if (is_array($aItems) && count($aItems)) {
+            if (\is_array($aItems) && \count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
         }
@@ -271,11 +271,11 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
             if (($aItems = $this->getCompareItems())) {
                 // counts how many pages
                 $oList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-                $oList->loadIds(array_keys($aItems));
+                $oList->loadIds(\array_keys($aItems));
 
                 // cut page articles
                 if ($this->_iArticlesPerPage > 0) {
-                    $this->_iCntPages = ceil($oList->count() / $this->_iArticlesPerPage);
+                    $this->_iCntPages = \ceil($oList->count() / $this->_iArticlesPerPage);
                     $aItems = $this->_removeArticlesFromPage($aItems, $oList);
                 }
 
@@ -296,7 +296,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_oAttributeList === null) {
             $this->_oAttributeList = false;
             if ($oArtList = $this->getCompArtList()) {
-                $aProductIds = array_keys($oArtList);
+                $aProductIds = \array_keys($oArtList);
                 foreach ($oArtList as $oArticle) {
                     if ($oArticle->getParentId()) {
                         $aProductIds[] = $oArticle->getParentId();
@@ -323,7 +323,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $this->_aSimilarRecommListIds = false;
 
             if ($oArtList = $this->getCompArtList()) {
-                $this->_aSimilarRecommListIds = array_keys($oArtList);
+                $this->_aSimilarRecommListIds = \array_keys($oArtList);
             }
         }
 
@@ -359,8 +359,8 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         //#1106S $aItems changed to $oList.
         //2006-08-10 Alfonsas, compare arrows fixed, array position is very important here, preserve it.
         $aListKeys = $oList->arrayKeys();
-        $aItemKeys = array_keys($aItems);
-        $aKeys = array_intersect($aItemKeys, $aListKeys);
+        $aItemKeys = \array_keys($aItems);
+        $aKeys = \array_intersect($aItemKeys, $aListKeys);
         $aNewItems = [];
         $iActPage = $this->getActPage();
         $maxPageIndex = $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage;
@@ -406,7 +406,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             // hide arrow if article is last in the list
             $oNewList[$sOxid]->hideNext = false;
-            if (($iActPage + 1) == $this->_iCntPages && $iCnt == count($aItems)) {
+            if (($iActPage + 1) == $this->_iCntPages && $iCnt == \count($aItems)) {
                 $oNewList[$sOxid]->hideNext = true;
             }
         }

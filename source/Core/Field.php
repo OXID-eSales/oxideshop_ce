@@ -94,7 +94,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
                 return $this->value;
                 break;
             case 'value':
-                if (is_string($this->rawValue)) {
+                if (\is_string($this->rawValue)) {
                     $this->value = Str::getStr()->htmlspecialchars($this->rawValue);
                 } else {
                     // TODO: call htmlentities for each value (recursively?)
@@ -134,7 +134,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      */
     public function convertToPseudoHtml()
     {
-        $this->setValue(str_replace("\r", '', nl2br(Str::getStr()->htmlspecialchars($this->rawValue))), self::T_RAW);
+        $this->setValue(\str_replace("\r", '', \nl2br(Str::getStr()->htmlspecialchars($this->rawValue))), self::T_RAW);
     }
 
     /**

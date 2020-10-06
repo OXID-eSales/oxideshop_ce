@@ -31,7 +31,7 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
      */
     public function validate(\OxidEsales\Eshop\Core\Module\Module $module)
     {
-        return file_exists($module->getMetadataPath());
+        return \file_exists($module->getMetadataPath());
     }
 
     /**
@@ -70,7 +70,7 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
                 NamespaceInformationProvider::isNamespacedClass($classToBePatched)
                  && (
                      NamespaceInformationProvider::classBelongsToShopEditionNamespace($classToBePatched)
-                      || (NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($classToBePatched) && !class_exists($classToBePatched))
+                      || (NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($classToBePatched) && !\class_exists($classToBePatched))
                     )
             ) {
                 $incorrect[$classToBePatched] = $moduleClass;
@@ -91,8 +91,8 @@ class ModuleMetadataValidator implements \OxidEsales\Eshop\Core\Contract\IModule
         foreach ($incorrect as $patchee => $patch) {
             $additionalInformation .= $patchee . ' => ' . $patch . ', ';
         }
-        $additionalInformation = rtrim($additionalInformation, ', ');
-        $message = sprintf(Registry::getLang()->translateString($languageConstant, null, true), $additionalInformation);
+        $additionalInformation = \rtrim($additionalInformation, ', ');
+        $message = \sprintf(Registry::getLang()->translateString($languageConstant, null, true), $additionalInformation);
 
         return $message;
     }

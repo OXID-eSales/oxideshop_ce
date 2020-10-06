@@ -207,12 +207,12 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
             ($sourceClass = Registry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
-            $redirectUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
+            $redirectUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=' . \rawurlencode($sourceClass);
 
             // building redirect link
             foreach ($this->getNavigationParams() as $key => $value) {
                 if ($value && $key != "sourcecl") {
-                    $redirectUrl .= '&' . rawurlencode($key) . "=" . rawurlencode($value);
+                    $redirectUrl .= '&' . \rawurlencode($key) . "=" . \rawurlencode($value);
                 }
             }
 
@@ -283,7 +283,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParam = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
+                $this->_sSearchParam = \rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
             }
         }
 

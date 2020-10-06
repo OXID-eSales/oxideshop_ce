@@ -105,7 +105,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
                 // prepare oCat title part
                 $sTitle = $this->_prepareTitle($oCat->oxcategories__oxtitle->value, false, $oCat->getLanguage());
 
-                foreach (array_keys($aCacheMap) as $id) {
+                foreach (\array_keys($aCacheMap) as $id) {
                     $aCacheMap[$id] = $sTitle . '/' . $aCacheMap[$id];
                 }
 

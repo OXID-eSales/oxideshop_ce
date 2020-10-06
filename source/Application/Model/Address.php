@@ -39,7 +39,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($this->_oStateObject)) {
+        if (\is_null($this->_oStateObject)) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
         }
 
@@ -85,7 +85,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
         $sAddress .= "$sStreet $sStreetNr, $sCity";
 
-        return trim($sAddress);
+        return \trim($sAddress);
     }
 
     /**
@@ -95,7 +95,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getEncodedDeliveryAddress()
     {
-        return md5($this->_getMergedAddressFields());
+        return \md5($this->_getMergedAddressFields());
     }
 
     /**
@@ -120,7 +120,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oState = $this->_getStateObject();
 
-        if (is_null($sId)) {
+        if (\is_null($sId)) {
             $sId = $this->getStateId();
         }
 

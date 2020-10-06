@@ -10,11 +10,11 @@ namespace OxidEsales\EshopCommunity\Core\Model;
 /**
  * Defining triggered action type.
  */
-DEFINE('ACTION_NA', 0);
-DEFINE('ACTION_DELETE', 1);
-DEFINE('ACTION_INSERT', 2);
-DEFINE('ACTION_UPDATE', 3);
-DEFINE('ACTION_UPDATE_STOCK', 4);
+\DEFINE('ACTION_NA', 0);
+\DEFINE('ACTION_DELETE', 1);
+\DEFINE('ACTION_INSERT', 2);
+\DEFINE('ACTION_UPDATE', 3);
+\DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseException;
@@ -239,14 +239,14 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function __set($fieldName, $fieldValue)
     {
         $this->$fieldName = $fieldValue;
-        if ($this->_blUseLazyLoading && strpos($fieldName, $this->_sCoreTable . '__') === 0) {
-            $preparedFieldName = str_replace($this->_sCoreTable . '__', '', $fieldName);
+        if ($this->_blUseLazyLoading && \strpos($fieldName, $this->_sCoreTable . '__') === 0) {
+            $preparedFieldName = \str_replace($this->_sCoreTable . '__', '', $fieldName);
             if (
                 $preparedFieldName !== 'oxnid'
                 && (!isset($this->_aFieldNames[$preparedFieldName]) || !$this->_aFieldNames[$preparedFieldName])
             ) {
                 $allFieldsList = $this->_getAllFields(true);
-                if (isset($allFieldsList[strtolower($preparedFieldName)])) {
+                if (isset($allFieldsList[\strtolower($preparedFieldName)])) {
                     $fieldStatus = $this->_getFieldStatus($preparedFieldName);
                     $this->_addField($preparedFieldName, $fieldStatus);
                 }
@@ -278,11 +278,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         // implementing lazy loading fields
         // This part of the code is slow and normally is called before field cache is built.
         // Make sure it is not called after first page is loaded and cache data is fully built.
-        if ($this->_blUseLazyLoading && stripos($variableName, $this->_sCoreTable . "__") === 0) {
+        if ($this->_blUseLazyLoading && \stripos($variableName, $this->_sCoreTable . "__") === 0) {
             if ($this->getId()) {
                 //lazy load it
-                $fieldName = str_replace($this->_sCoreTable . '__', '', $variableName);
-                $cacheFieldName = strtoupper($fieldName);
+                $fieldName = \str_replace($this->_sCoreTable . '__', '', $variableName);
+                $cacheFieldName = \strtoupper($fieldName);
 
                 $fieldStatus = $this->_getFieldStatus($fieldName);
 
@@ -297,8 +297,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                             ':oxid' => $id
                         ]);
                         if ($queryResult && $queryResult->count()) {
-                            $this->_aInnerLazyCache = array_change_key_case($queryResult->fields, CASE_UPPER);
-                            if (array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
+                            $this->_aInnerLazyCache = \array_change_key_case($queryResult->fields, CASE_UPPER);
+                            if (\array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
                                 $fieldValue = $this->_aInnerLazyCache[$cacheFieldName];
                             } else {
                                 return null;
@@ -306,7 +306,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                         } else {
                             return null;
                         }
-                    } elseif (array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
+                    } elseif (\array_key_exists($cacheFieldName, $this->_aInnerLazyCache)) {
                         $fieldValue = $this->_aInnerLazyCache[$cacheFieldName];
                     } else {
                         return null;
@@ -329,10 +329,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
                 //do not use field cache for this page
                 //as if we use it for lists then objects are loaded empty instead of lazy loading.
-                self::$_blDisableFieldCaching[get_class($this)] = true;
+                self::$_blDisableFieldCaching[\get_class($this)] = true;
             }
 
-            \OxidEsales\Eshop\Core\Registry::getUtilsObject()->resetInstanceCache(get_class($this));
+            \OxidEsales\Eshop\Core\Registry::getUtilsObject()->resetInstanceCache(\get_class($this));
         }
 
         //returns stdClass implementing __toString() method due to uknown scenario where this var should be used.
@@ -373,7 +373,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         if (!$this->_blIsSimplyClonable) {
             foreach ($this->_aFieldNames as $fieldName => $fieldValue) {
                 $fieldLongName = $this->_getFieldLongName($fieldName);
-                if (is_object($this->$fieldLongName)) {
+                if (\is_object($this->$fieldLongName)) {
                     $this->$fieldLongName = clone $this->$fieldLongName;
                 }
             }
@@ -387,9 +387,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function oxClone($object)
     {
-        $classVariables = get_object_vars($object);
+        $classVariables = \get_object_vars($object);
         foreach ($classVariables as $name => $value) {
-            if (is_object($object->$name)) {
+            if (\is_object($object->$name)) {
                 $this->$name = clone $object->$name;
             } else {
                 $this->$name = $object->$name;
@@ -427,7 +427,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function _setUpdateSeoOnFieldChange($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->getId() && in_array($fieldName, $this->getFieldNames())) {
+        if ($this->getId() && \in_array($fieldName, $this->getFieldNames())) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $tableName = $this->getCoreTableName();
             $title = $database->getOne("select `{$fieldName}` from `{$tableName}` where `oxid` = :oxid", [
@@ -457,7 +457,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         // reset view table
         $this->_sViewTable = false;
 
-        if (count($this->_aFieldNames) <= 1) {
+        if (\count($this->_aFieldNames) <= 1) {
             $this->_initDataStructure($forceAllFields);
         }
     }
@@ -471,7 +471,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function assign($dbRecord)
     {
-        if (!is_array($dbRecord)) {
+        if (!\is_array($dbRecord)) {
             return;
         }
 
@@ -531,7 +531,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                 $objectId = $this->oxobject2category__oxobjectid;
                 $categoryId = $this->oxobject2category__oxcatnid;
                 $shopId = $this->oxobject2category__oxshopid;
-                $this->_sOXID = md5($objectId . $categoryId . $shopId);
+                $this->_sOXID = \md5($objectId . $categoryId . $shopId);
             } else {
                 $this->_sOXID = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
             }
@@ -705,7 +705,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $query = "select $get from " . $this->getViewName() . ' where 1 ';
 
         if ($whereCondition) {
-            reset($whereCondition);
+            \reset($whereCondition);
             foreach ($whereCondition as $name => $value) {
                 $query .= ' and ' . $name . ' = ' . $database->quote($value);
             }
@@ -780,7 +780,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return implode(', ', $selectFields);
+        return \implode(', ', $selectFields);
     }
 
     /**
@@ -833,7 +833,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function save()
     {
-        if (!is_array($this->_aFieldNames)) {
+        if (!\is_array($this->_aFieldNames)) {
             return false;
         }
 
@@ -1041,9 +1041,9 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         //returning simple array
         $result = [];
-        if (is_array($metaFields)) {
+        if (\is_array($metaFields)) {
             foreach ($metaFields as $valueObject) {
-                $result[strtolower($valueObject->name)] = 0;
+                $result[\strtolower($valueObject->name)] = 0;
             }
         }
 
@@ -1188,7 +1188,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     protected function _addField($fieldName, $fieldStatus, $type = null, $length = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //preparation
-        $fieldName = strtolower($fieldName);
+        $fieldName = \strtolower($fieldName);
 
         //adding field names element
         $this->_aFieldNames[$fieldName] = $fieldStatus;
@@ -1233,11 +1233,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     {
         //trying to avoid strpos call as often as possible
         $coreTableName = $this->getCoreTableName();
-        if ($fieldName[2] == $coreTableName[2] && strpos($fieldName, $coreTableName . '__') === 0) {
+        if ($fieldName[2] == $coreTableName[2] && \strpos($fieldName, $coreTableName . '__') === 0) {
             return $fieldName;
         }
 
-        return $coreTableName . '__' . strtolower($fieldName);
+        return $coreTableName . '__' . \strtolower($fieldName);
     }
 
     /**
@@ -1265,7 +1265,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             && !$this->isPropertyLoaded($longFieldName)
         ) {
             $fieldsList = $this->_getAllFields(true);
-            if (isset($fieldsList[strtolower($fieldName)])) {
+            if (isset($fieldsList[\strtolower($fieldName)])) {
                 $this->_addField($fieldName, $this->_getFieldStatus($fieldName));
             }
         }
@@ -1276,13 +1276,13 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             && isset($this->$longFieldName->fldtype)
             && $this->$longFieldName->fldtype == 'double'
         ) {
-            $fieldValue = str_replace(',', '.', $fieldValue);
+            $fieldValue = \str_replace(',', '.', $fieldValue);
         }
 
         // isset is REQUIRED here not to use getter
         if (
             $isPropertyLoaded
-            && is_object($this->$longFieldName)
+            && \is_object($this->$longFieldName)
         ) {
             $this->$longFieldName->setValue($fieldValue, $dataType);
         } else {
@@ -1302,7 +1302,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     {
         $metaData = $this->_getAllFields();
         foreach ($metaData as $metaInfo) {
-            if (strcasecmp($metaInfo->name, $fieldName) == 0) {
+            if (\strcasecmp($metaInfo->name, $fieldName) == 0) {
                 return !$metaInfo->not_null;
             }
         }
@@ -1322,8 +1322,8 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     {
         $metaData = $this->_getAllFields();
         foreach ($metaData as $metaInfo) {
-            if (strcasecmp($metaInfo->name, $fieldName) == 0) {
-                return property_exists($metaInfo, 'default_value') ? $metaInfo->default_value : null;
+            if (\strcasecmp($metaInfo->name, $fieldName) == 0) {
+                return \property_exists($metaInfo, 'default_value') ? $metaInfo->default_value : null;
             }
         }
 
@@ -1375,7 +1375,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $query = '';
         $separator = '';
 
-        foreach (array_keys($this->_aFieldNames) as $oneFieldName) {
+        foreach (\array_keys($this->_aFieldNames) as $oneFieldName) {
             $longName = $this->_getFieldLongName($oneFieldName);
             $field = $this->$longName;
 
@@ -1383,7 +1383,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
                 continue;
             }
 
-            if (!$useSkipSaveFields || ($useSkipSaveFields && !in_array(strtolower($oneFieldName), $this->_aSkipSaveFields))) {
+            if (!$useSkipSaveFields || ($useSkipSaveFields && !\in_array(\strtolower($oneFieldName), $this->_aSkipSaveFields))) {
                 $query .= $separator . $oneFieldName . ' = ' . $this->_getUpdateFieldValue($oneFieldName, $field);
                 $separator = ',';
             }
@@ -1506,7 +1506,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isDisabledFieldCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $class = get_class($this);
+        $class = \get_class($this);
         if (isset(self::$_blDisableFieldCaching[$class]) && self::$_blDisableFieldCaching[$class]) {
             return true;
         }
@@ -1578,7 +1578,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             $fieldNames = $this->_getNonCachedFieldNames(true);
         }
 
-        return array_keys($fieldNames);
+        return \array_keys($fieldNames);
     }
 
     /**
@@ -1589,7 +1589,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     public function addFieldName($name)
     {
         //preparation
-        $name = strtolower($name);
+        $name = \strtolower($name);
         $this->_aFieldNames[$name] = 0;
     }
 
@@ -1612,7 +1612,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     public function isPropertyLoaded($name)
     {
-        return property_exists($this, $name) && $this->$name !== null;
+        return \property_exists($this, $name) && $this->$name !== null;
     }
 
     /**

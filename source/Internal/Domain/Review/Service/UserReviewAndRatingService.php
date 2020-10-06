@@ -103,7 +103,7 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
     {
         $reviewAndRatingListArray = $reviewAndRatingList->toArray();
 
-        usort($reviewAndRatingListArray, function (ReviewAndRating $first, ReviewAndRating $second) {
+        \usort($reviewAndRatingListArray, function (ReviewAndRating $first, ReviewAndRating $second) {
             return $first->getCreatedAt() < $second->getCreatedAt() ? 1 : -1;
         });
 

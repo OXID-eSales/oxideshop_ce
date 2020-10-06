@@ -87,7 +87,7 @@ class UserReviewAndRatingBridge implements UserReviewAndRatingBridgeInterface
      */
     private function formatReviewText(ReviewAndRating $reviewAndRating)
     {
-        $preparedText = htmlspecialchars($reviewAndRating->getReviewText());
+        $preparedText = \htmlspecialchars($reviewAndRating->getReviewText());
 
         $reviewAndRating->setReviewText($preparedText);
     }

@@ -176,7 +176,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                 // load only lists which we show on screen
                 $iNrofCatArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
                 $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
-                $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
+                $this->_iCntPages = \ceil($this->_iAllArtCnt / $iNrofCatArticles);
             }
             // END deprecated
         }
@@ -221,7 +221,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                     }
                 }
 
-                if (($sReviewText = trim((string) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+                if (($sReviewText = \trim((string) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                     $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                     $oReview->oxreviews__oxobjectid = new Field($oActObject->getId());
                     $oReview->oxreviews__oxtype = new Field($sType);

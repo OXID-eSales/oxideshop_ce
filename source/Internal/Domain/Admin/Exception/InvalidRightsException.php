@@ -15,6 +15,6 @@ class InvalidRightsException extends \Exception
 {
     public function __construct(string $right)
     {
-        parent::__construct(sprintf('Provided right %s is not a valid shop right.', $right));
+        parent::__construct(\sprintf('Provided right %s is not a valid shop right.', $right));
     }
 }

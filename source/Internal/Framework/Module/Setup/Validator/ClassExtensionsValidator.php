@@ -58,7 +58,7 @@ class ClassExtensionsValidator implements ModuleConfigurationValidatorInterface
             );
         }
 
-        if ($this->shopAdapter->isShopUnifiedNamespace($namespace) && !class_exists($namespace)) {
+        if ($this->shopAdapter->isShopUnifiedNamespace($namespace) && !\class_exists($namespace)) {
             throw new InvalidClassExtensionNamespaceException(
                 'Module tries to extend non existent shop class: ' . $namespace
             );

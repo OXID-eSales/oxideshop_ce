@@ -31,7 +31,7 @@ class CommandExecutionFailedException extends \Exception
     {
         $this->command = $message;
 
-        $message = sprintf("There was an error while executing '%s'.", $message);
+        $message = \sprintf("There was an error while executing '%s'.", $message);
         parent::__construct($message, $code, $previous);
     }
 
@@ -82,6 +82,6 @@ class CommandExecutionFailedException extends \Exception
      */
     public function getCommandOutput()
     {
-        return $this->commandOutput ? implode("\n", $this->commandOutput) : null;
+        return $this->commandOutput ? \implode("\n", $this->commandOutput) : null;
     }
 }

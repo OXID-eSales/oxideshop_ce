@@ -36,7 +36,7 @@ class StyleLogic
             'if'       => null,
             'include'  => null,
         ];
-        $params = array_merge($defaults, $params);
+        $params = \array_merge($defaults, $params);
 
         return $params;
     }

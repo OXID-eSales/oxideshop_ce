@@ -43,7 +43,7 @@ class RequiredAddressFields
         $this->setRequiredFields($this->_aDefaultRequiredFields);
 
         $aRequiredFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMustFillFields');
-        if (is_array($aRequiredFields)) {
+        if (\is_array($aRequiredFields)) {
             $this->setRequiredFields($aRequiredFields);
         }
     }
@@ -105,7 +105,7 @@ class RequiredAddressFields
     {
         $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {
-            if (strpos($sValue, $sPrefix) === 0) {
+            if (\strpos($sValue, $sPrefix) === 0) {
                 $aAllowed[] = $aFields[$sKey];
             }
         }

@@ -131,7 +131,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         }
 
         if (isset($moduleData[MetaDataProvider::METADATA_FILES])) {
-            if (count($moduleData[MetaDataProvider::METADATA_FILES]) === 0) {
+            if (\count($moduleData[MetaDataProvider::METADATA_FILES]) === 0) {
                 $moduleConfiguration->addClassWithoutNamespace(
                     new ClassWithoutNamespace(
                         '',

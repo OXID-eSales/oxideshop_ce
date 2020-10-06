@@ -338,7 +338,7 @@ class Emos
      */
     public function addRegister($sUserId, $sResult)
     {
-        $this->_registerUser = md5($sUserId);
+        $this->_registerUser = \md5($sUserId);
         $this->_registerResult = $sResult;
     }
 
@@ -351,7 +351,7 @@ class Emos
      */
     public function addLogin($sUserId, $sResult)
     {
-        $this->_loginUser = md5($sUserId);
+        $this->_loginUser = \md5($sUserId);
         $this->_loginResult = $sResult;
     }
 
@@ -384,7 +384,7 @@ class Emos
      */
     public function addEmosBasketPageArray($aBasket)
     {
-        if (!is_array($aBasket)) {
+        if (!\is_array($aBasket)) {
             return;
         }
 
@@ -459,7 +459,7 @@ class Emos
     {
         /******************* prepare data *************************************/
         /* md5 the customer id to fullfill requirements of german datenschutzgeesetz */
-        $sCustomerNumber = md5($sCustomerNumber);
+        $sCustomerNumber = \md5($sCustomerNumber);
 
         $sCountry = $this->_emos_DataFormat($sCountry);
         $sCip = $this->_emos_DataFormat($sCip) ;
@@ -534,36 +534,36 @@ class Emos
     protected function _emos_DataFormat($sStr) //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         //null check
-        if (is_null($sStr)) {
+        if (\is_null($sStr)) {
             return null;
         }
 
         //$sStr = urldecode($sStr);
-        $sStr = htmlspecialchars_decode($sStr, ENT_QUOTES);
+        $sStr = \htmlspecialchars_decode($sStr, ENT_QUOTES);
         $sStr = Str::getStr()->html_entity_decode($sStr);
-        $sStr = strip_tags($sStr);
-        $sStr = trim($sStr);
+        $sStr = \strip_tags($sStr);
+        $sStr = \trim($sStr);
 
         //2007-05-10 replace translated &nbsp; with spaces
-        $nbsp = chr(0xa0);
-        $sStr = str_replace($nbsp, " ", $sStr);
-        $sStr = str_replace("\"", "", $sStr);
-        $sStr = str_replace("'", "", $sStr);
-        $sStr = str_replace("%", "", $sStr);
-        $sStr = str_replace(",", "", $sStr);
-        $sStr = str_replace(";", "", $sStr);
+        $nbsp = \chr(0xa0);
+        $sStr = \str_replace($nbsp, " ", $sStr);
+        $sStr = \str_replace("\"", "", $sStr);
+        $sStr = \str_replace("'", "", $sStr);
+        $sStr = \str_replace("%", "", $sStr);
+        $sStr = \str_replace(",", "", $sStr);
+        $sStr = \str_replace(";", "", $sStr);
         /* remove unnecessary white spaces*/
         while (true) {
             $sStr_temp = $sStr;
-            $sStr = str_replace("  ", " ", $sStr);
+            $sStr = \str_replace("  ", " ", $sStr);
 
             if ($sStr == $sStr_temp) {
                 break;
             }
         }
-        $sStr = str_replace(" / ", "/", $sStr);
-        $sStr = str_replace(" /", "/", $sStr);
-        $sStr = str_replace("/ ", "/", $sStr);
+        $sStr = \str_replace(" / ", "/", $sStr);
+        $sStr = \str_replace(" /", "/", $sStr);
+        $sStr = \str_replace("/ ", "/", $sStr);
 
         $sStr = Str::getStr()->substr($sStr, 0, 254);
         //$sStr = rawurlencode( $sStr );
@@ -618,11 +618,11 @@ class Emos
     {
         //get the first non array $mContents element
         $mVal = $mContents;
-        while (is_array($mVal)) {
+        while (\is_array($mVal)) {
             $mVal = $mVal[0];
         }
 
-        if (is_null($mVal)) {
+        if (\is_null($mVal)) {
             return;
         }
 
@@ -641,6 +641,6 @@ class Emos
      */
     protected function _jsEncode($mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return json_encode($mContents);
+        return \json_encode($mContents);
     }
 }

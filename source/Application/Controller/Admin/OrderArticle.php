@@ -260,7 +260,7 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $aOrderArticles = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aOrderArticles');
 
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
-        if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
+        if (\is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $oOrderArticles = $oOrder->getOrderArticles(true);
 

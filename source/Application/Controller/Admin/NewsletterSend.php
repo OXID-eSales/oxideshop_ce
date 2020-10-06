@@ -127,7 +127,7 @@ class NewsletterSend extends \OxidEsales\Eshop\Application\Controller\Admin\News
             }
         }
 
-        $iSend = $iSendCnt + (ceil($iStart / $iMaxCnt) - 1) * $iMaxCnt;
+        $iSend = $iSendCnt + (\ceil($iStart / $iMaxCnt) - 1) * $iMaxCnt;
         $iSend = $iSend > $iUserCount ? $iUserCount : $iSend;
 
         $this->_aViewData["iStart"] = $iStart;

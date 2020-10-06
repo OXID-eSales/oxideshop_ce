@@ -293,7 +293,7 @@ class DatabaseProvider
          * @var string $databaseDriverOptions The options to pass to the database driver.
          */
         $databaseDriverOptions = $this->getConfigParam('dbDriverOptions');
-        if (!is_array($databaseDriverOptions)) {
+        if (!\is_array($databaseDriverOptions)) {
             $databaseDriverOptions = array();
         }
         /**
@@ -323,7 +323,7 @@ class DatabaseProvider
             $charset = 'utf8';
         }
         
-        $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
+        $connectionParameters['default'] = \array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
 
         return $connectionParameters;
     }
@@ -352,7 +352,7 @@ class DatabaseProvider
         $isValid = true;
 
         // If the shop has not been configured yet the hostname has the format '<dbHost>'
-        if (false  !== strpos($config->getVar('dbHost'), '<')) {
+        if (false  !== \strpos($config->getVar('dbHost'), '<')) {
             $isValid = false;
         }
 

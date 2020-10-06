@@ -44,6 +44,6 @@ class ModuleSmartyPluginDirectoryValidator
      */
     private function doesDirectoryExist($directory)
     {
-        return is_dir($directory);
+        return \is_dir($directory);
     }
 }

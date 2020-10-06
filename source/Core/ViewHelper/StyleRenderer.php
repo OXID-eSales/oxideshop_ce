@@ -58,10 +58,10 @@ class StyleRenderer
         $preparedStyles = [];
         $template = '<link rel="stylesheet" type="text/css" href="%s" />';
         foreach ($styles as $style) {
-            $preparedStyles[] = sprintf($template, $style);
+            $preparedStyles[] = \sprintf($template, $style);
         }
 
-        return implode(PHP_EOL, $preparedStyles);
+        return \implode(PHP_EOL, $preparedStyles);
     }
 
     /**
@@ -74,9 +74,9 @@ class StyleRenderer
         $preparedStyles = [];
         $template = '<!--[if %s]><link rel="stylesheet" type="text/css" href="%s"><![endif]-->';
         foreach ($styles as $style => $condition) {
-            $preparedStyles[] = sprintf($template, $condition, $style);
+            $preparedStyles[] = \sprintf($template, $condition, $style);
         }
 
-        return implode(PHP_EOL, $preparedStyles);
+        return \implode(PHP_EOL, $preparedStyles);
     }
 }

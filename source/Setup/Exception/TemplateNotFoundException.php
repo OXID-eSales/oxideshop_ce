@@ -23,7 +23,7 @@ class TemplateNotFoundException extends \Exception
      */
     public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
-        $message = sprintf("Template named '%s' was not found.", $message);
+        $message = \sprintf("Template named '%s' was not found.", $message);
 
         parent::__construct($message, $code, $previous);
     }

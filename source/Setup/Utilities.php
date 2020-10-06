@@ -67,7 +67,7 @@ class Utilities extends Core
      */
     public function generateUID()
     {
-        return md5(uniqid(rand(), true));
+        return \md5(\uniqid(\rand(), true));
     }
 
     /**
@@ -83,22 +83,22 @@ class Utilities extends Core
      */
     public function removeDir($sPath, $blDeleteSuccess, $iMode = 0, $aSkipFiles = [], $aSkipFolders = [])
     {
-        if (is_file($sPath) || is_dir($sPath)) {
+        if (\is_file($sPath) || \is_dir($sPath)) {
             // setting path to remove
-            $d = dir($sPath);
+            $d = \dir($sPath);
             $d->handle;
             while (false !== ($sEntry = $d->read())) {
                 if ($sEntry != "." && $sEntry != "..") {
                     $sFilePath = $sPath . "/" . $sEntry;
-                    if (is_file($sFilePath)) {
-                        if (!in_array(basename($sFilePath), $aSkipFiles)) {
-                            $blDeleteSuccess = $blDeleteSuccess * @unlink($sFilePath);
+                    if (\is_file($sFilePath)) {
+                        if (!\in_array(\basename($sFilePath), $aSkipFiles)) {
+                            $blDeleteSuccess = $blDeleteSuccess * @\unlink($sFilePath);
                         }
-                    } elseif (is_dir($sFilePath)) {
+                    } elseif (\is_dir($sFilePath)) {
                         // removing direcotry contents
                         $this->removeDir($sFilePath, $blDeleteSuccess, $iMode, $aSkipFiles, $aSkipFolders);
-                        if ($iMode === 0 && !in_array(basename($sFilePath), $aSkipFolders)) {
-                            $blDeleteSuccess = $blDeleteSuccess * @rmdir($sFilePath);
+                        if ($iMode === 0 && !\in_array(\basename($sFilePath), $aSkipFolders)) {
+                            $blDeleteSuccess = $blDeleteSuccess * @\rmdir($sFilePath);
                         }
                     } else {
                         // there are some other objects ?
@@ -126,12 +126,12 @@ class Utilities extends Core
     {
         $sExtPath = '';
         $blBuildPath = false;
-        for ($i = count($aPath); $i > 0; $i--) {
+        for ($i = \count($aPath); $i > 0; $i--) {
             $sDir = $aPath[$i - 1];
             if ($blBuildPath) {
                 $sExtPath = $sDir . '/' . $sExtPath;
             }
-            if (stristr($sDir, EditionPathProvider::SETUP_DIRECTORY)) {
+            if (\stristr($sDir, EditionPathProvider::SETUP_DIRECTORY)) {
                 $blBuildPath = true;
             }
         }
@@ -157,7 +157,7 @@ class Utilities extends Core
             $sFilepath = $_SERVER['SCRIPT_FILENAME'];
         }
 
-        $aParams['sShopDir'] = str_replace("\\", "/", $this->_extractPath(preg_split("/\\\|\//", $sFilepath)));
+        $aParams['sShopDir'] = \str_replace("\\", "/", $this->_extractPath(\preg_split("/\\\|\//", $sFilepath)));
         $aParams['sCompileDir'] = $aParams['sShopDir'] . "tmp/";
 
         // try referer
@@ -165,7 +165,7 @@ class Utilities extends Core
         if (!isset($sFilepath) || !$sFilepath) {
             $sFilepath = "http://" . @$_SERVER['HTTP_HOST'] . @$_SERVER['SCRIPT_NAME'];
         }
-        $aParams['sShopURL'] = ltrim($this->_extractPath(explode("/", $sFilepath)), "/");
+        $aParams['sShopURL'] = \ltrim($this->_extractPath(\explode("/", $sFilepath)), "/");
 
         return $aParams;
     }
@@ -187,26 +187,26 @@ class Utilities extends Core
         }
         $this->handleMissingConfigFileException($configFile);
 
-        clearstatcache();
+        \clearstatcache();
         // Make config file writable, as it may be write protected
-        @chmod($configFile, getDefaultFileMode());
-        if (!$configFileContent = file_get_contents($configFile)) {
-            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $configFile));
+        @\chmod($configFile, getDefaultFileMode());
+        if (!$configFileContent = \file_get_contents($configFile)) {
+            throw new Exception(\sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $configFile));
         }
 
         // overwriting settings
         foreach ($parameters as $configOption => $value) {
             $search = ["\'", "'" ];
             $replace = ["\\\'", "\'"];
-            $escapedValue = str_replace($search, $replace, $value);
-            $configFileContent = str_replace("<{$configOption}>", $escapedValue, $configFileContent);
+            $escapedValue = \str_replace($search, $replace, $value);
+            $configFileContent = \str_replace("<{$configOption}>", $escapedValue, $configFileContent);
         }
 
-        if (!file_put_contents($configFile, $configFileContent)) {
-            throw new Exception(sprintf($language->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $configFile));
+        if (!\file_put_contents($configFile, $configFileContent)) {
+            throw new Exception(\sprintf($language->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $configFile));
         }
         // Make config file read-only, this is our recomnedation for config.inc.php
-        @chmod($configFile, getDefaultConfigFileMode());
+        @\chmod($configFile, getDefaultConfigFileMode());
     }
 
     /**
@@ -221,10 +221,10 @@ class Utilities extends Core
      */
     private function handleMissingConfigFileException($pathToConfigFile)
     {
-        if (!file_exists($pathToConfigFile)) {
+        if (!\file_exists($pathToConfigFile)) {
             $language = $this->getLanguageInstance();
 
-            throw new Exception(sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $pathToConfigFile));
+            throw new Exception(\sprintf($language->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $pathToConfigFile));
         }
     }
 
@@ -250,32 +250,32 @@ class Utilities extends Core
             $sSubFolder = $this->preparePath("/" . $sSubFolder);
         }
 
-        $aParams["sBaseUrlPath"] = trim($aParams["sBaseUrlPath"] . $sSubFolder, "/");
+        $aParams["sBaseUrlPath"] = \trim($aParams["sBaseUrlPath"] . $sSubFolder, "/");
         $aParams["sBaseUrlPath"] = "/" . $aParams["sBaseUrlPath"];
 
         $sHtaccessPath = $this->preparePath($aParams["sShopDir"]) . $sSubFolder . "/.htaccess";
 
-        clearstatcache();
-        if (!file_exists($sHtaccessPath)) {
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_FIND_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_FIND_FILE);
+        \clearstatcache();
+        if (!\file_exists($sHtaccessPath)) {
+            throw new Exception(\sprintf($oLang->getText('ERROR_COULD_NOT_FIND_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_FIND_FILE);
         }
 
-        @chmod($sHtaccessPath, getDefaultFileMode());
-        if (is_readable($sHtaccessPath) && ($fp = fopen($sHtaccessPath, "r"))) {
-            $sHtaccessFile = fread($fp, filesize($sHtaccessPath));
-            fclose($fp);
+        @\chmod($sHtaccessPath, getDefaultFileMode());
+        if (\is_readable($sHtaccessPath) && ($fp = \fopen($sHtaccessPath, "r"))) {
+            $sHtaccessFile = \fread($fp, \filesize($sHtaccessPath));
+            \fclose($fp);
         } else {
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_READ_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_READ_FILE);
+            throw new Exception(\sprintf($oLang->getText('ERROR_COULD_NOT_READ_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_READ_FILE);
         }
 
         // overwriting settings
-        $sHtaccessFile = preg_replace("/RewriteBase.*/", "RewriteBase " . $aParams["sBaseUrlPath"], $sHtaccessFile);
-        if (is_writable($sHtaccessPath) && ($fp = fopen($sHtaccessPath, "w"))) {
-            fwrite($fp, $sHtaccessFile);
-            fclose($fp);
+        $sHtaccessFile = \preg_replace("/RewriteBase.*/", "RewriteBase " . $aParams["sBaseUrlPath"], $sHtaccessFile);
+        if (\is_writable($sHtaccessPath) && ($fp = \fopen($sHtaccessPath, "w"))) {
+            \fwrite($fp, $sHtaccessFile);
+            \fclose($fp);
         } else {
             // error ? strange !?
-            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_WRITE_TO_FILE);
+            throw new Exception(\sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), Utilities::ERROR_COULD_NOT_WRITE_TO_FILE);
         }
     }
 
@@ -309,7 +309,7 @@ class Utilities extends Core
      */
     public function getEnvVar($sVarName)
     {
-        if (($sVarVal = getenv($sVarName)) !== false) {
+        if (($sVarVal = \getenv($sVarName)) !== false) {
             return $sVarVal;
         }
     }
@@ -369,7 +369,7 @@ class Utilities extends Core
      */
     public function setCookie($sName, $sValue, $iExpireDate, $sPath)
     {
-        setcookie($sName, $sValue, $iExpireDate, $sPath);
+        \setcookie($sName, $sValue, $iExpireDate, $sPath);
     }
 
     /**
@@ -382,8 +382,8 @@ class Utilities extends Core
     public function getFileContents($sFile)
     {
         $sContents = null;
-        if (file_exists($sFile) && is_readable($sFile)) {
-            $sContents = file_get_contents($sFile);
+        if (\file_exists($sFile) && \is_readable($sFile)) {
+            $sContents = \file_get_contents($sFile);
         }
 
         return $sContents;
@@ -398,7 +398,7 @@ class Utilities extends Core
      */
     public function preparePath($sPath)
     {
-        return rtrim(str_replace("\\", "/", $sPath), "/");
+        return \rtrim(\str_replace("\\", "/", $sPath), "/");
     }
 
     /**
@@ -411,7 +411,7 @@ class Utilities extends Core
     public function extractRewriteBase($sUrl)
     {
         $sPath = "/";
-        if (($aPathInfo = @parse_url($sUrl)) !== false) {
+        if (($aPathInfo = @\parse_url($sUrl)) !== false) {
             if (isset($aPathInfo["path"])) {
                 $sPath = $this->preparePath($aPathInfo["path"]);
             }
@@ -430,7 +430,7 @@ class Utilities extends Core
      */
     public function isValidEmail($sEmail)
     {
-        return preg_match($this->_sEmailTpl, $sEmail) != 0;
+        return \preg_match($this->_sEmailTpl, $sEmail) != 0;
     }
 
     /**
@@ -551,7 +551,7 @@ class Utilities extends Core
     public function isDemodataPrepared()
     {
         $demodataSqlFile = $this->getActiveEditionDemodataPackageSqlFilePath();
-        return file_exists($demodataSqlFile) ? true : false;
+        return \file_exists($demodataSqlFile) ? true : false;
     }
 
     /**
@@ -561,7 +561,7 @@ class Utilities extends Core
      */
     public function getActiveEditionDemodataPackageSqlFilePath()
     {
-        return implode(
+        return \implode(
             DIRECTORY_SEPARATOR,
             [
                 $this->getActiveEditionDemodataPackagePath(),
@@ -583,7 +583,7 @@ class Utilities extends Core
         return $this->getVendorDirectory()
             . EditionRootPathProvider::EDITIONS_DIRECTORY
             . DIRECTORY_SEPARATOR
-            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($facts->getEdition()));
+            . \sprintf(self::DEMODATA_PACKAGE_NAME, \strtolower($facts->getEdition()));
     }
 
     /**
@@ -606,7 +606,7 @@ class Utilities extends Core
      */
     public static function stripAnsiControlCodes($outputWithAnsiControlCodes)
     {
-        return preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
+        return \preg_replace('/\x1b(\[|\(|\))[;?0-9]*[0-9A-Za-z]/', "", $outputWithAnsiControlCodes);
     }
 
     /**

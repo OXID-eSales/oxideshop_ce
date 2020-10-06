@@ -35,7 +35,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         // generate help link
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sDir = $myConfig->getConfigParam('sShopDir') . '/documentation/admin';
-        if (is_dir($sDir)) {
+        if (\is_dir($sDir)) {
             $sDir = $myConfig->getConfigParam('sShopURL') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
@@ -102,7 +102,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         // descriptions, which are filled dynamically
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
             $aReplace = ['[{$shop->currenthomedir}]', '[{$oViewConf->getCurrentHomeDir()}]'];
-            $sValue = str_replace($aReplace, \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopURL(false), $sValue);
+            $sValue = \str_replace($aReplace, \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopURL(false), $sValue);
         }
 
         return $sValue;
@@ -231,7 +231,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         $oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oRoot->oxcategories__oxtitle = new Field('--');
 
-        $oCatTree->assign(array_merge(['' => $oRoot], $oCatTree->getArray()));
+        $oCatTree->assign(\array_merge(['' => $oRoot], $oCatTree->getArray()));
 
         // passing to view
         $this->_aViewData[$sTplVarName] = $oCatTree;
@@ -265,7 +265,7 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         if ($sSelectedCatId) {
             // fixed parent category in select list
             foreach ($oCatTree as $oCategory) {
-                if (strcmp($oCategory->getId(), $sSelectedCatId) == 0) {
+                if (\strcmp($oCategory->getId(), $sSelectedCatId) == 0) {
                     $oCategory->selected = 1;
                     break;
                 }

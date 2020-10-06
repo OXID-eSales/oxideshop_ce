@@ -109,7 +109,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function offsetUnset($offset)
     {
-        if (strcmp($offset, $this->key()) === 0) {
+        if (\strcmp($offset, $this->key()) === 0) {
             // #0002184: active element removed, next element will be prev / first
             $this->_blRemovedActive = true;
         }
@@ -124,7 +124,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function arrayKeys()
     {
-        return array_keys($this->_aArray);
+        return \array_keys($this->_aArray);
     }
 
     /**
@@ -133,7 +133,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     public function rewind()
     {
         $this->_blRemovedActive = false;
-        $this->_blValid = (false !== reset($this->_aArray));
+        $this->_blValid = (false !== \reset($this->_aArray));
     }
 
     /**
@@ -143,7 +143,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function current()
     {
-        return current($this->_aArray);
+        return \current($this->_aArray);
     }
 
     /**
@@ -153,7 +153,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function key()
     {
-        return key($this->_aArray);
+        return \key($this->_aArray);
     }
 
     /**
@@ -163,10 +163,10 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function prev()
     {
-        $oVar = prev($this->_aArray);
+        $oVar = \prev($this->_aArray);
         if ($oVar === false) {
             // the first element, reset pointer
-            $oVar = reset($this->_aArray);
+            $oVar = \reset($this->_aArray);
         }
         $this->_blRemovedActive = false;
 
@@ -178,10 +178,10 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function next()
     {
-        if ($this->_blRemovedActive === true && current($this->_aArray)) {
+        if ($this->_blRemovedActive === true && \current($this->_aArray)) {
             $oVar = $this->prev();
         } else {
-            $oVar = next($this->_aArray);
+            $oVar = \next($this->_aArray);
         }
 
         $this->_blValid = (false !== $oVar);
@@ -204,7 +204,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function count()
     {
-        return count($this->_aArray);
+        return \count($this->_aArray);
     }
 
     /**
@@ -237,7 +237,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function reverse()
     {
-        return array_reverse($this->_aArray);
+        return \array_reverse($this->_aArray);
     }
 
     /**
@@ -368,7 +368,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         if ($this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
-            $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], max(0, $this->_aSqlLimit[0]), $parameters);
+            $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], \max(0, $this->_aSqlLimit[0]), $parameters);
         } else {
             $rs = $oDb->select($sql, $parameters);
         }
@@ -410,7 +410,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     public function assignArray($aData)
     {
         $this->clear();
-        if (count($aData)) {
+        if (\count($aData)) {
             $oSaved = clone $this->getBaseObject();
 
             foreach ($aData as $aItem) {

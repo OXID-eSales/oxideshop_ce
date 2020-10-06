@@ -81,7 +81,7 @@ class ModuleActivateCommand extends Command
         if ($this->isInstalled($moduleId)) {
             $this->activateModule($output, $moduleId);
         } else {
-            $output->writeLn('<error>' . sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
+            $output->writeLn('<error>' . \sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
         }
 
         return 0;
@@ -95,10 +95,10 @@ class ModuleActivateCommand extends Command
     {
         try {
             $this->moduleActivationService->activate($moduleId, $this->context->getCurrentShopId());
-            $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId) . '</info>');
+            $output->writeLn('<info>' . \sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId) . '</info>');
         } catch (ModuleSetupException $exception) {
             $output->writeLn(
-                '<info>' . sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId) . '</info>'
+                '<info>' . \sprintf(static::MESSAGE_MODULE_ALREADY_ACTIVE, $moduleId) . '</info>'
             );
         }
     }

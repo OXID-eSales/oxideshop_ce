@@ -59,7 +59,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         //$aParams = ( isset($aParams) ) ? $aParams : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter( 'oxwparams' );
 
         if (!isset($viewsChain) && \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent')) {
-            $viewsChain = explode("|", \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent'));
+            $viewsChain = \explode("|", \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxwparent'));
         }
 
         parent::start($class, $function, $parameters, $viewsChain);
@@ -107,19 +107,19 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $activeViewsIds = $config->getActiveViewsIds();
-        $activeViewsIds = array_map("strtolower", $activeViewsIds);
+        $activeViewsIds = \array_map("strtolower", $activeViewsIds);
         $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
-        $classKey = !is_null($classKey) ? $classKey : $class; //fallback
+        $classKey = !\is_null($classKey) ? $classKey : $class; //fallback
 
         // if exists views chain, initializing these view at first
-        if (is_array($viewsChain) && !empty($viewsChain)) {
+        if (\is_array($viewsChain) && !empty($viewsChain)) {
             foreach ($viewsChain as $parentClassKey) {
                 $parentClass = Registry::getControllerClassNameResolver()->getClassNameById($parentClassKey);
 
-                if ($parentClassKey != $classKey && !in_array(strtolower($parentClassKey), $activeViewsIds) && $parentClass) {
+                if ($parentClassKey != $classKey && !\in_array(\strtolower($parentClassKey), $activeViewsIds) && $parentClass) {
                     // creating parent view object
                     $viewObject = oxNew($parentClass);
-                    if ('oxubase' != strtolower($parentClassKey)) {
+                    if ('oxubase' != \strtolower($parentClassKey)) {
                         $viewObject->setClassKey($parentClassKey);
                     }
                     $config->setActiveView($viewObject);
@@ -130,9 +130,9 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 
         $widgetViewObject = parent::_initializeViewObject($class, $function, $parameters, null);
 
-        if (!is_a($widgetViewObject, WidgetController::class)) {
+        if (!\is_a($widgetViewObject, WidgetController::class)) {
             /** @var ObjectException $exception */
-            $exception = oxNew(ObjectException::class, get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
+            $exception = oxNew(ObjectException::class, \get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
             throw $exception;
         }
 

@@ -23,12 +23,12 @@ class FileSystem
      */
     public function combinePaths()
     {
-        $pathElements = func_get_args();
+        $pathElements = \func_get_args();
         foreach ($pathElements as $key => $pathElement) {
-            $pathElements[$key] = rtrim($pathElement, DIRECTORY_SEPARATOR);
+            $pathElements[$key] = \rtrim($pathElement, DIRECTORY_SEPARATOR);
         }
 
-        return implode(DIRECTORY_SEPARATOR, $pathElements);
+        return \implode(DIRECTORY_SEPARATOR, $pathElements);
     }
 
     /**
@@ -40,6 +40,6 @@ class FileSystem
      */
     public function isReadable($filePath)
     {
-        return (is_file($filePath) && is_readable($filePath));
+        return (\is_file($filePath) && \is_readable($filePath));
     }
 }

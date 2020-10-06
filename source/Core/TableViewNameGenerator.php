@@ -54,7 +54,7 @@ class TableViewNameGenerator
             $language = $this->getLanguage();
             $languageId = $languageId !== null ? $languageId : $language->getBaseLanguage();
             $shopId = $shopId !== null ? $shopId : $config->getShopId();
-            $isMultiLang = in_array($table, $language->getMultiLangTables());
+            $isMultiLang = \in_array($table, $language->getMultiLangTables());
             $viewSuffix = $this->getViewSuffix($table, $languageId, $shopId, $isMultiLang);
 
             if ($viewSuffix || (($languageId == -1 || $shopId == -1) && $isMultiLang)) {

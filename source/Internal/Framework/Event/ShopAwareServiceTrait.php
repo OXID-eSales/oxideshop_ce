@@ -56,6 +56,6 @@ trait ShopAwareServiceTrait
      */
     public function isActive()
     {
-        return in_array(strval($this->context->getCurrentShopId()), $this->activeShops);
+        return \in_array(\strval($this->context->getCurrentShopId()), $this->activeShops);
     }
 }

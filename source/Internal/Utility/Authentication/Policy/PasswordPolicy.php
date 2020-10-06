@@ -45,6 +45,6 @@ class PasswordPolicy implements PasswordPolicyInterface
          * preg_match will return false on a invalid subject
          * Not perfect, but good enough.
          */
-        return false !== preg_match('//u', $password);
+        return false !== \preg_match('//u', $password);
     }
 }

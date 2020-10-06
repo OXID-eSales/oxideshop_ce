@@ -170,7 +170,7 @@ class DIConfigWrapper
      */
     private function getImports(): array
     {
-        if (!array_key_exists(static::IMPORTS_SECTION, $this->configArray)) {
+        if (!\array_key_exists(static::IMPORTS_SECTION, $this->configArray)) {
             return [];
         }
 
@@ -182,7 +182,7 @@ class DIConfigWrapper
      */
     public function getServices(): array
     {
-        if (!array_key_exists(static::SERVICE_SECTION, $this->configArray)) {
+        if (!\array_key_exists(static::SERVICE_SECTION, $this->configArray)) {
             return [];
         }
         $services = [];
@@ -210,8 +210,8 @@ class DIConfigWrapper
         $sections = [static::IMPORTS_SECTION, static::SERVICE_SECTION];
         foreach ($sections as $section) {
             if (
-                array_key_exists($section, $this->configArray) &&
-                (!$this->configArray[$section] || !count($this->configArray[$section]))
+                \array_key_exists($section, $this->configArray) &&
+                (!$this->configArray[$section] || !\count($this->configArray[$section]))
             ) {
                 unset($this->configArray[$section]);
             }
@@ -241,8 +241,8 @@ class DIConfigWrapper
      */
     private function addSectionIfMissing($section)
     {
-        if (!array_key_exists($section, $this->configArray)) {
-            if (array_key_exists($section, $this->sectionDefaults)) {
+        if (!\array_key_exists($section, $this->configArray)) {
+            if (\array_key_exists($section, $this->sectionDefaults)) {
                 $this->configArray[$section] = $this->sectionDefaults[$section];
             } else {
                 $this->configArray[$section] = [];

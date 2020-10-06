@@ -62,7 +62,7 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oLetter = new stdClass();
             $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
             if (isset($aParams['oxpricealarm__oxlongdesc']) && $aParams['oxpricealarm__oxlongdesc']) {
-                $oLetter->oxpricealarm__oxlongdesc = new \OxidEsales\Eshop\Core\Field(stripslashes($aParams['oxpricealarm__oxlongdesc']), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oLetter->oxpricealarm__oxlongdesc = new \OxidEsales\Eshop\Core\Field(\stripslashes($aParams['oxpricealarm__oxlongdesc']), \OxidEsales\Eshop\Core\Field::T_RAW);
             } else {
                 $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $sDesc = $oEmail->sendPricealarmToCustomer($oPricealarm->oxpricealarm__oxemail->value, $oPricealarm, null, true);
@@ -96,7 +96,7 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oPricealarm->load($sOxid);
 
             $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
-            $sMailBody = isset($aParams['oxpricealarm__oxlongdesc']) ? stripslashes($aParams['oxpricealarm__oxlongdesc']) : '';
+            $sMailBody = isset($aParams['oxpricealarm__oxlongdesc']) ? \stripslashes($aParams['oxpricealarm__oxlongdesc']) : '';
             if ($sMailBody) {
                 $sMailBody = \OxidEsales\Eshop\Core\Registry::getUtilsView()->parseThroughSmarty($sMailBody, $oPricealarm->getId());
             }
@@ -108,7 +108,7 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
             // setting result message
             if ($blSuccess) {
-                $oPricealarm->oxpricealarm__oxsended->setValue(date("Y-m-d H:i:s"));
+                $oPricealarm->oxpricealarm__oxsended->setValue(\date("Y-m-d H:i:s"));
                 $oPricealarm->save();
                 $blError = false;
             }

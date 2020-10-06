@@ -40,6 +40,6 @@ class PasswordVerificationService implements PasswordVerificationServiceInterfac
     {
         $this->passwordPolicy->enforcePasswordPolicy($password);
 
-        return password_verify($password, $passwordHash);
+        return \password_verify($password, $passwordHash);
     }
 }

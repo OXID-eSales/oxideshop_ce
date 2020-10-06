@@ -149,17 +149,17 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         // #1184M - special char search
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $sSearchParamForQuery = trim($oConfig->getRequestParameter('searchparam', true));
+        $sSearchParamForQuery = \trim($oConfig->getRequestParameter('searchparam', true));
 
         // searching in category ?
-        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode($oConfig->getRequestParameter('searchcnid'));
+        $sInitialSearchCat = $this->_sSearchCatId = \rawurldecode($oConfig->getRequestParameter('searchcnid'));
 
         // searching in vendor #671
-        $sInitialSearchVendor = rawurldecode($oConfig->getRequestParameter('searchvendor'));
+        $sInitialSearchVendor = \rawurldecode($oConfig->getRequestParameter('searchvendor'));
 
         // searching in Manufacturer #671
         $sManufacturerParameter = $oConfig->getRequestParameter('searchmanufacturer');
-        $sInitialSearchManufacturer = $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
+        $sInitialSearchManufacturer = $this->_sSearchManufacturer = \rawurldecode($sManufacturerParameter);
 
         $this->_blEmptySearch = false;
         if (!$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer) {
@@ -202,7 +202,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         $iNrofCatArticles = (int) $myConfig->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
-        $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
+        $this->_iCntPages = \ceil($this->_iAllArtCnt / $iNrofCatArticles);
     }
 
     /**
@@ -266,18 +266,18 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($sParam = $oConfig->getRequestParameter('searchparam', true)) {
-            $sAddParams .= "&amp;searchparam=" . rawurlencode($sParam);
+            $sAddParams .= "&amp;searchparam=" . \rawurlencode($sParam);
         }
 
         if ($sParam = $oConfig->getRequestParameter('searchcnid')) {
             $sAddParams .= "&amp;searchcnid=$sParam";
         }
 
-        if ($sParam = rawurldecode($oConfig->getRequestParameter('searchvendor'))) {
+        if ($sParam = \rawurldecode($oConfig->getRequestParameter('searchvendor'))) {
             $sAddParams .= "&amp;searchvendor=$sParam";
         }
 
-        if ($sParam = rawurldecode($oConfig->getRequestParameter('searchmanufacturer'))) {
+        if ($sParam = \rawurldecode($oConfig->getRequestParameter('searchmanufacturer'))) {
             $sAddParams .= "&amp;searchmanufacturer=$sParam";
         }
 
@@ -294,7 +294,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
-            if ('search' == strtolower(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId())) {
+            if ('search' == \strtolower(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId())) {
                 $this->_blSearchClass = true;
             }
         }
@@ -370,7 +370,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchParam = rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true));
+                $this->_sSearchParam = \rawurlencode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true));
             }
         }
 
@@ -387,7 +387,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
         if ($this->_sSearchCatId === null) {
             $this->_sSearchCatId = false;
             if ($this->_isSearchClass()) {
-                $this->_sSearchCatId = rawurldecode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid'));
+                $this->_sSearchCatId = \rawurldecode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchcnid'));
             }
         }
 
@@ -405,7 +405,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
             $this->_sSearchVendor = false;
             if ($this->_isSearchClass()) {
                 // searching in vendor #671
-                $this->_sSearchVendor = rawurldecode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchvendor'));
+                $this->_sSearchVendor = \rawurldecode(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchvendor'));
             }
         }
 
@@ -424,7 +424,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
             if ($this->_isSearchClass()) {
                 // searching in Manufacturer #671
                 $sManufacturerParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchmanufacturer');
-                $this->_sSearchManufacturer = rawurldecode($sManufacturerParameter);
+                $this->_sSearchManufacturer = \rawurldecode($sManufacturerParameter);
             }
         }
 

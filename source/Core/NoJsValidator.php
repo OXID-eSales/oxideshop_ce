@@ -21,6 +21,6 @@ class NoJsValidator
      */
     public function isValid($configValue)
     {
-        return preg_match('/<script.*>/', $configValue) === 0;
+        return \preg_match('/<script.*>/', $configValue) === 0;
     }
 }

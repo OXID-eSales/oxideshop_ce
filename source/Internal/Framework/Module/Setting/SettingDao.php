@@ -118,7 +118,7 @@ class SettingDao implements SettingDaoInterface
          * The same entity was splitted between two tables.
          * Till we can't refactor tables we have to get data from both.
          */
-        $settingsData = array_merge(
+        $settingsData = \array_merge(
             $this->getDataFromOxConfigTable($name, $moduleId, $shopId),
             $this->getDataFromOxConfigDisplayTable($name, $moduleId)
         );
@@ -131,11 +131,11 @@ class SettingDao implements SettingDaoInterface
 
         if (
             isset($settingsData['oxvarconstraint'])
-            && is_string($settingsData['oxvarconstraint'])
+            && \is_string($settingsData['oxvarconstraint'])
             && $settingsData['oxvarconstraint'] !== ''
         ) {
             $setting->setConstraints(
-                explode('|', $settingsData['oxvarconstraint'])
+                \explode('|', $settingsData['oxvarconstraint'])
             );
         }
 
@@ -208,7 +208,7 @@ class SettingDao implements SettingDaoInterface
                 'name'          => $shopModuleSetting->getName(),
                 'groupName'     => $shopModuleSetting->getGroupName(),
                 'position'      => $shopModuleSetting->getPositionInGroup(),
-                'constraints'   => implode('|', $shopModuleSetting->getConstraints()),
+                'constraints'   => \implode('|', $shopModuleSetting->getConstraints()),
             ]);
 
         $queryBuilder->execute();

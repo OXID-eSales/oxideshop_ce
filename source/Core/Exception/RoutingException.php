@@ -29,7 +29,7 @@ class RoutingException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
      */
     public function __construct($controllerId)
     {
-        $message = sprintf('No controller defined for id %s', $controllerId);
+        $message = \sprintf('No controller defined for id %s', $controllerId);
         parent::__construct($message);
     }
 }

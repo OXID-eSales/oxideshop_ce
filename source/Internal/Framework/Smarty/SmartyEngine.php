@@ -128,7 +128,7 @@ class SmartyEngine implements TemplateEngineInterface
      */
     public function __set($name, $value)
     {
-        if (property_exists($this->engine, $name)) {
+        if (\property_exists($this->engine, $name)) {
             $this->engine->$name = $value;
         }
     }

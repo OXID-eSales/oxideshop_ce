@@ -37,8 +37,8 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function setHomeCountry($sHomeCountry)
     {
-        if (is_array($sHomeCountry)) {
-            $this->_sHomeCountry = current($sHomeCountry);
+        if (\is_array($sHomeCountry)) {
+            $this->_sHomeCountry = \current($sHomeCountry);
         } else {
             $this->_sHomeCountry = $sHomeCountry;
         }

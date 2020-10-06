@@ -56,14 +56,14 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $this->_saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
 
-        if (defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {
+        if (\defined('OXID_PHP_UNIT') || \php_sapi_name() === 'cli') {
             // do NOT set cookies in php unit or in cli because it would issue warnings
             return;
         }
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         //if shop runs in https only mode we can set secure flag to all cookies
         $blSecure = $blSecure || ($config->isSsl() && $config->getSslShopUrl() == $config->getShopUrl());
-        return setcookie(
+        return \setcookie(
             $sName,
             $sValue,
             $iExpire,
@@ -91,8 +91,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             if ($sSslUrl = $myConfig->getSslShopUrl()) {
                 $sUrl = $myConfig->getShopUrl();
 
-                $sHost = parse_url($sUrl, PHP_URL_HOST);
-                $sSslHost = parse_url($sSslUrl, PHP_URL_HOST);
+                $sHost = \parse_url($sUrl, PHP_URL_HOST);
+                $sSslHost = \parse_url($sSslUrl, PHP_URL_HOST);
 
                 // testing if domains matches..
                 if ($sHost != $sSslHost) {
@@ -250,7 +250,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     {
         if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
             $sIP = $_SERVER["HTTP_X_FORWARDED_FOR"];
-            $sIP = preg_replace('/,.*$/', '', $sIP);
+            $sIP = \preg_replace('/,.*$/', '', $sIP);
         } elseif (isset($_SERVER["HTTP_CLIENT_IP"])) {
             $sIP = $_SERVER["HTTP_CLIENT_IP"];
         } else {
@@ -295,13 +295,13 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $shopId ?? $myConfig->getShopId();
         $sSslUrl = $myConfig->getSslShopUrl();
-        if (stripos($sSslUrl, 'https') === 0) {
+        if (\stripos($sSslUrl, 'https') === 0) {
             $blSsl = true;
         } else {
             $blSsl = false;
         }
 
-        $this->_aUserCookie[$shopId] = $userName . '@@@' . crypt($passwordHash, $salt);
+        $this->_aUserCookie[$shopId] = $userName . '@@@' . \crypt($passwordHash, $salt);
         $this->setOxCookie('oxid_' . $shopId, $this->_aUserCookie[$shopId], \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, $blSsl);
         $this->setOxCookie('oxid_' . $shopId . '_autologin', '1', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, false);
     }
@@ -316,7 +316,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sShopId = (!$sShopId) ? \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() : $sShopId;
         $sSslUrl = $myConfig->getSslShopUrl();
-        if (stripos($sSslUrl, 'https') === 0) {
+        if (\stripos($sSslUrl, 'https') === 0) {
             $blSsl = true;
         } else {
             $blSsl = false;
@@ -340,13 +340,13 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $sShopId = (!$sShopId) ? $myConfig->getShopId() : $sShopId;
         // check for SSL connection
         if (!$myConfig->isSsl() && $this->getOxCookie('oxid_' . $sShopId . '_autologin') == '1') {
-            $sSslUrl = rtrim($myConfig->getSslShopUrl(), '/') . $_SERVER['REQUEST_URI'];
-            if (stripos($sSslUrl, 'https') === 0) {
+            $sSslUrl = \rtrim($myConfig->getSslShopUrl(), '/') . $_SERVER['REQUEST_URI'];
+            if (\stripos($sSslUrl, 'https') === 0) {
                 \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($sSslUrl, true, 302);
             }
         }
 
-        if (array_key_exists($sShopId, $this->_aUserCookie) && $this->_aUserCookie[$sShopId] !== null) {
+        if (\array_key_exists($sShopId, $this->_aUserCookie) && $this->_aUserCookie[$sShopId] !== null) {
             return $this->_aUserCookie[$sShopId] ? $this->_aUserCookie[$sShopId] : null;
         }
 
@@ -363,8 +363,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     {
         $blTrusted = false;
         $aTrustedIPs = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aTrustedIPs");
-        if (count($aTrustedIPs)) {
-            $blTrusted = in_array($this->getRemoteAddress(), $aTrustedIPs);
+        if (\count($aTrustedIPs)) {
+            $blTrusted = \in_array($this->getRemoteAddress(), $aTrustedIPs);
         }
 
         return $blTrusted;
@@ -396,7 +396,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isCurrentUrl($sURL)
     {
         // Missing protocol, cannot proceed, assuming true.
-        if (!$sURL || (strpos($sURL, "http") !== 0)) {
+        if (!$sURL || (\strpos($sURL, "http") !== 0)) {
             return true;
         }
 
@@ -427,22 +427,22 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function _isCurrentUrl($sURL, $sServerHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #4010: force_sid added in https to every link
-        preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);
+        \preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);
         $sUrlHost = isset($matches[3]) ? $matches[3] : null;
 
-        preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
+        \preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
         $sRealHost =  isset($matches[3]) ? $matches[3] : null;
 
 
         //fetch the path from SCRIPT_NAME and ad it to the $sServerHost
         $sScriptName = $this->getServerVar('SCRIPT_NAME');
-        $sCurrentHost = preg_replace('/\/(modules\/[\w\/]*)?\w*\.php.*/', '', $sServerHost . $sScriptName);
+        $sCurrentHost = \preg_replace('/\/(modules\/[\w\/]*)?\w*\.php.*/', '', $sServerHost . $sScriptName);
 
         //remove double slashes all the way
-        $sCurrentHost = str_replace('/', '', $sCurrentHost);
-        $sURL = str_replace('/', '', $sURL);
+        $sCurrentHost = \str_replace('/', '', $sCurrentHost);
+        $sURL = \str_replace('/', '', $sURL);
 
-        if ($sURL && $sCurrentHost && strpos($sURL, $sCurrentHost) !== false) {
+        if ($sURL && $sCurrentHost && \strpos($sURL, $sCurrentHost) !== false) {
             //bug fix #0002991
             if ($sUrlHost == $sRealHost) {
                 return true;
@@ -459,7 +459,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      */
     public function getServerNodeId()
     {
-        return md5($this->getServerName() . $this->getServerIp());
+        return \md5($this->getServerName() . $this->getServerIp());
     }
 
     /**
@@ -479,6 +479,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      */
     private function getServerName()
     {
-        return php_uname();
+        return \php_uname();
     }
 }

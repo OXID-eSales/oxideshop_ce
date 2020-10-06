@@ -66,7 +66,7 @@ class Registry
     {
         $key = self::getStorageKey($className);
 
-        if (is_null($instance)) {
+        if (\is_null($instance)) {
             unset(self::$instances[$key]);
 
             return;
@@ -338,7 +338,7 @@ class Registry
      */
     public static function getKeys()
     {
-        return array_keys(self::$instances);
+        return \array_keys(self::$instances);
     }
 
     /**
@@ -362,7 +362,7 @@ class Registry
      */
     public static function getBackwardsCompatibilityClassMap()
     {
-        if (is_null(self::$backwardsCompatibilityClassMap)) {
+        if (\is_null(self::$backwardsCompatibilityClassMap)) {
             $classMap = (new BackwardsCompatibilityClassMapProvider())->getMap();
             self::$backwardsCompatibilityClassMap = $classMap;
         }
@@ -384,7 +384,7 @@ class Registry
 
         if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
             $bcMap = self::getBackwardsCompatibilityClassMap();
-            $key = isset($bcMap[strtolower($key)]) ? $bcMap[strtolower($key)] : strtolower($key);
+            $key = isset($bcMap[\strtolower($key)]) ? $bcMap[\strtolower($key)] : \strtolower($key);
         }
 
         return $key;
@@ -403,7 +403,7 @@ class Registry
      */
     protected static function createObject($className)
     {
-        if (('oxutilsobject' === strtolower($className)) || \OxidEsales\Eshop\Core\UtilsObject::class === $className) {
+        if (('oxutilsobject' === \strtolower($className)) || \OxidEsales\Eshop\Core\UtilsObject::class === $className) {
             $object = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
         } else {
             $object = \oxNew($className);

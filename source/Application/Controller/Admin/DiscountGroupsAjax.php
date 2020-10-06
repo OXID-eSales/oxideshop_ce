@@ -82,8 +82,8 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         if ($config->getRequestParameter('all')) {
             $query = $this->_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
-        } elseif ($groupIds && is_array($groupIds)) {
-            $groupIdsQuoted = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($groupIds));
+        } elseif ($groupIds && \is_array($groupIds)) {
+            $groupIdsQuoted = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($groupIds));
             $query = "delete from oxobject2discount where oxobject2discount.oxid in (" . $groupIdsQuoted . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($query);
         }
@@ -102,7 +102,7 @@ class DiscountGroupsAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             $groupTable = $this->_getViewName('oxgroups');
             $groupIds = $this->_getAll($this->_addFilter("select $groupTable.oxid " . $this->_getQuery()));
         }
-        if ($discountId && $discountId != self::NEW_DISCOUNT_ID && is_array($groupIds)) {
+        if ($discountId && $discountId != self::NEW_DISCOUNT_ID && \is_array($groupIds)) {
             foreach ($groupIds as $groupId) {
                 $object2Discount = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $object2Discount->init('oxobject2discount');

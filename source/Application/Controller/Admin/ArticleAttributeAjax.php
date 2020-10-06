@@ -73,8 +73,8 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $sO2AViewName = $this->_getViewName('oxobject2attribute');
             $sQ = $this->_addFilter("delete $sO2AViewName.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
+        } elseif (\is_array($aChosenArt)) {
+            $sChosenArticles = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in ({$sChosenArticles}) ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
@@ -95,7 +95,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $aAddCat = $this->_getAll($this->_addFilter("select $sAttrViewName.oxid " . $this->_getQuery()));
         }
 
-        if ($soxId && $soxId != "-1" && is_array($aAddCat)) {
+        if ($soxId && $soxId != "-1" && \is_array($aAddCat)) {
             foreach ($aAddCat as $sAdd) {
                 $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNew->init("oxobject2attribute");

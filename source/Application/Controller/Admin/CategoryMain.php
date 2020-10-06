@@ -63,12 +63,12 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oOtherLang = $oCategory->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oCategory->loadInLang(key($oOtherLang), $categoryId);
+                $oCategory->loadInLang(\key($oOtherLang), $categoryId);
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
@@ -124,9 +124,9 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         ];
         /** @var \OxidEsales\Eshop\Core\DbMetaDataHandler $oDbHandler */
         $oDbHandler = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
-        $aFields = array_merge($oDbHandler->getMultilangFields('oxarticles'), array_keys($oDbHandler->getSinglelangFields('oxarticles', 0)));
-        $aFields = array_diff($aFields, $aSkipFields);
-        $aFields = array_unique($aFields);
+        $aFields = \array_merge($oDbHandler->getMultilangFields('oxarticles'), \array_keys($oDbHandler->getSinglelangFields('oxarticles', 0)));
+        $aFields = \array_diff($aFields, $aSkipFields);
+        $aFields = \array_unique($aFields);
 
         return $aFields;
     }
@@ -179,7 +179,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     protected function _processLongDesc($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // workaround for firefox showing &lang= as &9001;= entity, mantis#0001272
-        return str_replace('&lang=', '&amp;lang=', $sValue);
+        return \str_replace('&lang=', '&amp;lang=', $sValue);
     }
 
     /**

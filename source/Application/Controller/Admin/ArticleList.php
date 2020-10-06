@@ -54,11 +54,11 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      */
     private function isArticleActive($sDateTime, $blUseTimeCheck, $oArticle)
     {
-        if (!is_bool($sDateTime) && isset($oArticle->oxarticles__oxactive) && $oArticle->oxarticles__oxactive->value === '1') {
+        if (!\is_bool($sDateTime) && isset($oArticle->oxarticles__oxactive) && $oArticle->oxarticles__oxactive->value === '1') {
             return true;
         } else {
             if (
-                !is_bool($sDateTime) && isset($oArticle->oxarticles__oxactivefrom) &&
+                !\is_bool($sDateTime) && isset($oArticle->oxarticles__oxactivefrom) &&
                 isset($oArticle->oxarticles__oxactiveto) && $blUseTimeCheck &&
                 $oArticle->oxarticles__oxactivefrom->value <= $sDateTime &&
                 $oArticle->oxarticles__oxactiveto->value >= $sDateTime
@@ -80,7 +80,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sPwrSearchFld = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("pwrsearchfld");
-        $sPwrSearchFld = $sPwrSearchFld ? strtolower($sPwrSearchFld) : "oxtitle";
+        $sPwrSearchFld = $sPwrSearchFld ? \strtolower($sPwrSearchFld) : "oxtitle";
 
         $sDateTime = $this->getServerDateTime();
         $blUseTimeCheck = $this->getConfig()->getConfigParam('blUseTimeCheck');
@@ -114,7 +114,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
             $oArticle = $oList->getBaseObject();
         }
         $this->_aViewData["pwrsearchfields"] = $oArticle ? $this->getSearchFields() : null;
-        $this->_aViewData["pwrsearchfld"] = strtoupper($sPwrSearchFld);
+        $this->_aViewData["pwrsearchfld"] = \strtoupper($sPwrSearchFld);
 
         $aFilter = $this->getListFilter();
         if (isset($aFilter["oxarticles"][$sPwrSearchFld])) {
@@ -125,8 +125,8 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         $sValue = '';
 
         $sArtCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("art_category");
-        if ($sArtCat && strstr($sArtCat, "@@") !== false) {
-            list($sType, $sValue) = explode("@@", $sArtCat);
+        if ($sArtCat && \strstr($sArtCat, "@@") !== false) {
+            list($sType, $sValue) = \explode("@@", $sArtCat);
         }
         $this->_aViewData["art_category"] = $sArtCat;
 
@@ -159,7 +159,7 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
         ];
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
-        return array_diff($oArticle->getFieldNames(), $aSkipFields);
+        return \array_diff($oArticle->getFieldNames(), $aSkipFields);
     }
 
     /**
@@ -252,8 +252,8 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
 
             $sType = false;
             $sArtCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("art_category");
-            if ($sArtCat && strstr($sArtCat, "@@") !== false) {
-                list($sType, $sValue) = explode("@@", $sArtCat);
+            if ($sArtCat && \strstr($sArtCat, "@@") !== false) {
+                list($sType, $sValue) = \explode("@@", $sArtCat);
             }
 
             switch ($sType) {

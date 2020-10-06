@@ -107,10 +107,10 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
             $aLanguages[$sKey]->sort = $aLangParams[$sOxId]["sort"];
         }
 
-        if (is_array($aLangParams)) {
+        if (\is_array($aLangParams)) {
             $aSorting = $this->getListSorting();
 
-            if (is_array($aSorting)) {
+            if (\is_array($aSorting)) {
                 foreach ($aSorting as $aFieldSorting) {
                     foreach ($aFieldSorting as $sField => $sDir) {
                         $this->_sDefSortField = $sField;
@@ -125,7 +125,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
                 }
             }
 
-            uasort($aLanguages, [$this, '_sortLanguagesCallback']);
+            \uasort($aLanguages, [$this, '_sortLanguagesCallback']);
         }
 
         return $aLanguages;
@@ -144,8 +144,8 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
     protected function _sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSortParam = $this->_sDefSortField;
-        $sVal1 = is_string($oLang1->$sSortParam) ? strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
-        $sVal2 = is_string($oLang2->$sSortParam) ? strtolower($oLang2->$sSortParam) : $oLang2->$sSortParam;
+        $sVal1 = \is_string($oLang1->$sSortParam) ? \strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
+        $sVal2 = \is_string($oLang2->$sSortParam) ? \strtolower($oLang2->$sSortParam) : $oLang2->$sSortParam;
 
         if ($this->_sDefSortOrder == 'asc') {
             return ($sVal1 < $sVal2) ? -1 : 1;

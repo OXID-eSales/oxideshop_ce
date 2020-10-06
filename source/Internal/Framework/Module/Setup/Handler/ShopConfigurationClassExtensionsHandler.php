@@ -42,7 +42,7 @@ class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHand
             $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
 
             $shopConfigurationSettingValue = $shopConfigurationSetting->getValue();
-            $shopConfigurationSettingValue[$configuration->getId()] = array_values($classExtensions);
+            $shopConfigurationSettingValue[$configuration->getId()] = \array_values($classExtensions);
 
             $shopConfigurationSetting->setValue($shopConfigurationSettingValue);
 

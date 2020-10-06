@@ -45,9 +45,9 @@ class PsrLoggerConfigurationValidator implements LoggerConfigurationValidatorInt
     {
         $logLevel = $configuration->getLogLevel();
 
-        if (!in_array($logLevel, $this->validLogLevels, true)) {
+        if (!\in_array($logLevel, $this->validLogLevels, true)) {
             throw new \InvalidArgumentException(
-                'Log level "' . var_export($logLevel, true) . '" is not a PSR-3 compliant log level'
+                'Log level "' . \var_export($logLevel, true) . '" is not a PSR-3 compliant log level'
             );
         }
     }

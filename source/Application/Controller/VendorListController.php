@@ -150,7 +150,7 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
         $this->_iAllArtCnt = $oArtList->loadVendorArticles($sVendorId, $oVendor);
 
         // counting pages
-        $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrOfCatArticles);
+        $this->_iCntPages = \ceil($this->_iAllArtCnt / $iNrOfCatArticles);
 
         return [$oArtList, $this->_iAllArtCnt];
     }

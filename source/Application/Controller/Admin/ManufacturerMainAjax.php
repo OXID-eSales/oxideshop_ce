@@ -119,7 +119,7 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $articleIds = $this->_getAll($this->_addFilter("select $articleViewTable.oxid " . $this->_getQuery()));
         }
 
-        if (is_array($articleIds) && !empty($articleIds)) {
+        if (\is_array($articleIds) && !empty($articleIds)) {
             $query = $this->formManufacturerRemovalQuery($articleIds);
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($query);
 
@@ -139,7 +139,7 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         return "
           UPDATE oxarticles
           SET oxmanufacturerid = null
-          WHERE oxid IN ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articlesToRemove)) . ") ";
+          WHERE oxid IN ( " . \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articlesToRemove)) . ") ";
     }
 
     /**
@@ -157,7 +157,7 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $articleIds = $this->_getAll($this->_addFilter("select $articleViewName.oxid " . $this->_getQuery()));
         }
 
-        if ($manufacturerId && $manufacturerId != "-1" && is_array($articleIds)) {
+        if ($manufacturerId && $manufacturerId != "-1" && \is_array($articleIds)) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
             $query = $this->formArticleToManufacturerAdditionQuery($manufacturerId, $articleIds);
@@ -181,6 +181,6 @@ class ManufacturerMainAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         return "
             UPDATE oxarticles
             SET oxmanufacturerid = " . $database->quote($manufacturerId) . "
-            WHERE oxid IN ( " . implode(", ", $database->quoteArray($articlesToAdd)) . " )";
+            WHERE oxid IN ( " . \implode(", ", $database->quoteArray($articlesToAdd)) . " )";
     }
 }

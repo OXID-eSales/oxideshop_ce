@@ -37,7 +37,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        ini_set("session.gc_maxlifetime", 36000);
+        \ini_set("session.gc_maxlifetime", 36000);
 
         $start = (int) $config->getRequestParameter("iStart");
         $limit = $config->getConfigParam('iCntofMails');
@@ -164,7 +164,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $language->setTplLanguage($oldLanguageId);
 
         if ($success) {
-            $alarm->oxpricealarm__oxsended = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s"));
+            $alarm->oxpricealarm__oxsended = new \OxidEsales\Eshop\Core\Field(\date("Y-m-d H:i:s"));
             $alarm->save();
         }
     }

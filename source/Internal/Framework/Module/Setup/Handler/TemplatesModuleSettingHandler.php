@@ -42,7 +42,7 @@ class TemplatesModuleSettingHandler implements ModuleConfigurationHandlerInterfa
 
             $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
 
-            $shopSettingValue = array_merge(
+            $shopSettingValue = \array_merge(
                 $shopConfigurationSetting->getValue(),
                 [
                     $configuration->getId() => $templates,

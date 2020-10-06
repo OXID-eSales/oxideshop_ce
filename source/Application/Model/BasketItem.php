@@ -496,7 +496,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
                 /** @var \OxidEsales\Eshop\Core\Exception\NoArticleException $oEx */
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\NoArticleException::class);
                 $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-                $oEx->setMessage(sprintf($oLang->translateString('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage()), $sProductId));
+                $oEx->setMessage(\sprintf($oLang->translateString('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage()), $sProductId));
                 $oEx->setArticleNr($sProductId);
                 $oEx->setProductId($sProductId);
                 throw $oEx;
@@ -507,7 +507,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
                 /** @var \OxidEsales\Eshop\Core\Exception\NoArticleException $oEx */
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\NoArticleException::class);
                 $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-                $oEx->setMessage(sprintf($oLang->translateString('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage()), $this->_oArticle->oxarticles__oxartnum->value));
+                $oEx->setMessage(\sprintf($oLang->translateString('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage()), $this->_oArticle->oxarticles__oxartnum->value));
                 $oEx->setArticleNr($sProductId);
                 $oEx->setProductId($sProductId);
                 throw $oEx;
@@ -695,7 +695,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     public function __sleep()
     {
         $aRet = [];
-        foreach (get_object_vars($this) as $sKey => $sVar) {
+        foreach (\get_object_vars($this) as $sKey => $sVar) {
             if ($sKey != '_oArticle') {
                 $aRet[] = $sKey;
             }
@@ -785,16 +785,16 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     {
         // checking for default select list
         $aSelectLists = $this->getArticle()->getSelectLists();
-        if (!$aSelList || is_array($aSelList) && count($aSelList) == 0) {
-            if ($iSelCnt = count($aSelectLists)) {
-                $aSelList = array_fill(0, $iSelCnt, '0');
+        if (!$aSelList || \is_array($aSelList) && \count($aSelList) == 0) {
+            if ($iSelCnt = \count($aSelectLists)) {
+                $aSelList = \array_fill(0, $iSelCnt, '0');
             }
         }
 
         $this->_aSelList = $aSelList;
 
         //
-        if (is_array($this->_aSelList) && count($this->_aSelList)) {
+        if (\is_array($this->_aSelList) && \count($this->_aSelList)) {
             foreach ($this->_aSelList as $conkey => $iSel) {
                 $this->_aChosenSelectlist[$conkey] = new stdClass();
                 $this->_aChosenSelectlist[$conkey]->name = $aSelectLists[$conkey]['name'];

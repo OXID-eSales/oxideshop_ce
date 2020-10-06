@@ -169,7 +169,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     {
         $aVisibleNames = $this->_getVisibleColNames();
         $iCol = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
-        $iCol = $iCol ? ((int) str_replace('_', '', $iCol)) : 0;
+        $iCol = $iCol ? ((int) \str_replace('_', '', $iCol)) : 0;
         $iCol = (!isset($aVisibleNames[$iCol])) ? 0 : $iCol;
 
         return $iCol;
@@ -232,9 +232,9 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $aVisibleCols = [];
 
         // user defined some cols to load ?
-        if (is_array($aUserCols)) {
+        if (\is_array($aUserCols)) {
             foreach ($aUserCols as $iKey => $sCol) {
-                $iCol = (int) str_replace('_', '', $sCol);
+                $iCol = (int) \str_replace('_', '', $sCol);
                 if (isset($aColNames[$iCol]) && !$aColNames[$iCol][4]) {
                     $aVisibleCols[$iCol] = $aColNames[$iCol];
                 }
@@ -242,7 +242,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         }
 
         // no user defined valid cols ? setting defauls ..
-        if (!count($aVisibleCols)) {
+        if (!\count($aVisibleCols)) {
             foreach ($aColNames as $sName => $aCol) {
                 // visible ?
                 if ($aCol[1] && !$aColNames[$sName][4]) {
@@ -372,7 +372,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $sQ = '';
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aFilter = $oConfig->getRequestParameter('aFilter');
-        if (is_array($aFilter) && count($aFilter)) {
+        if (\is_array($aFilter) && \count($aFilter)) {
             $aCols = $this->_getVisibleColNames();
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $oStr = Str::getStr();
@@ -383,14 +383,14 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
                     continue;
                 }
 
-                $iCol = (int) str_replace('_', '', $sCol);
+                $iCol = (int) \str_replace('_', '', $sCol);
                 if (isset($aCols[$iCol])) {
                     if ($sQ) {
                         $sQ .= ' and ';
                     }
 
                     // escaping special characters
-                    $sValue = str_replace(['%', '_'], ['\%', '\_'], $sValue);
+                    $sValue = \str_replace(['%', '_'], ['\%', '\_'], $sValue);
 
                     // possibility to search in the middle ..
                     $sValue = $oStr->preg_replace('/^\*/', '%', $sValue);
@@ -415,7 +415,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sQ && ($sFilter = $this->_getFilter())) {
-            $sQ .= ((stristr($sQ, 'where') === false) ? 'where' : ' and ') . $sFilter;
+            $sQ .= ((\stristr($sQ, 'where') === false) ? 'where' : ' and ') . $sFilter;
         }
 
         return $sQ;
@@ -452,7 +452,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function _getSortDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('dir');
-        if (!in_array($sDir, $this->_aPosDir)) {
+        if (!\in_array($sDir, $this->_aPosDir)) {
             $sDir = $this->_aPosDir[0];
         }
 
@@ -512,7 +512,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function _outputResponse($aData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->_output(json_encode($aData));
+        $this->_output(\json_encode($aData));
     }
 
     /**
@@ -595,7 +595,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
             return;
         }
 
-        if (!is_array($aArtIds)) {
+        if (!\is_array($aArtIds)) {
             $aArtIds = [$aArtIds];
         }
 

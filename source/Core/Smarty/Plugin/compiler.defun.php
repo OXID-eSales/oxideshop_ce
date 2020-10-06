@@ -27,8 +27,8 @@ $this->register_compiler_function('fun', 'smarty_compiler_fun');
 function smarty_compiler_defun($tag_args, &$compiler)
 {
     $attrs = $compiler->_parse_attrs($tag_args);
-    $func_key = '"' . md5('php-5') . '[[' . md5(uniqid('sucks')) . '";';
-    array_push($compiler->_tag_stack, ['defun', $attrs, $tag_args, $func_key]);
+    $func_key = '"' . \md5('php-5') . '[[' . \md5(\uniqid('sucks')) . '";';
+    \array_push($compiler->_tag_stack, ['defun', $attrs, $tag_args, $func_key]);
     if (!isset($attrs['name'])) {
         $compiler->_syntax_error("defun: missing name parameter");
     }
@@ -42,7 +42,7 @@ function smarty_compiler_defun($tag_args, &$compiler)
 /* create code for closing a function definition and calling said function */
 function smarty_compiler_defun_close($tag_args, &$compiler)
 {
-    list($name, $attrs, $open_tag_args, $func_key) = array_pop($compiler->_tag_stack);
+    list($name, $attrs, $open_tag_args, $func_key) = \array_pop($compiler->_tag_stack);
     if ($name != 'defun') {
         $compiler->_syntax_error("unexpected {/defun}");
     }
@@ -54,13 +54,13 @@ $this->register_compiler_function('/defun', 'smarty_compiler_defun_close');
 /* callback to replace all $this with $smarty */
 function smarty_replace_fun($match)
 {
-    $tokens = token_get_all('<?php ' . $match[2]);
+    $tokens = \token_get_all('<?php ' . $match[2]);
 
     /* remove trailing <?php */
     $open_tag = '';
     while ($tokens) {
-        $token = array_shift($tokens);
-        if (is_array($token)) {
+        $token = \array_shift($tokens);
+        if (\is_array($token)) {
             $open_tag .= $token[1];
         } else {
             $open_tag .= $token;
@@ -71,8 +71,8 @@ function smarty_replace_fun($match)
     }
 
     /* replace */
-    for ($i = 0, $count = count($tokens); $i < $count; $i++) {
-        if (is_array($tokens[$i])) {
+    for ($i = 0, $count = \count($tokens); $i < $count; $i++) {
+        if (\is_array($tokens[$i])) {
             if ($tokens[$i][0] == T_VARIABLE && $tokens[$i][1] == '$this') {
                 $tokens[$i] = '$smarty';
             } else {
@@ -80,27 +80,27 @@ function smarty_replace_fun($match)
             }
         }
     }
-    return implode('', $tokens);
+    return \implode('', $tokens);
 }
 
 
 /* postfilter to squeeze the code to make php5 happy */
 function smarty_postfilter_defun($source, &$compiler)
 {
-    $search = '("' . md5('php-5') . '\[\[[0-9a-f]{32}";)';
-    if ((double)phpversion() >= 5.0) {
+    $search = '("' . \md5('php-5') . '\[\[[0-9a-f]{32}";)';
+    if ((double)\phpversion() >= 5.0) {
         /* filter sourcecode. look for func_keys and replace all $this
            in-between with $smarty */
         while (1) {
-            $new_source = preg_replace_callback('/' . $search . '(.*)\\1/Us', 'smarty_replace_fun', $source);
-            if (strcmp($new_source, $source) == 0) {
+            $new_source = \preg_replace_callback('/' . $search . '(.*)\\1/Us', 'smarty_replace_fun', $source);
+            if (\strcmp($new_source, $source) == 0) {
                 break;
             }
             $source = $new_source;
         }
     } else {
         /* remove func_keys */
-        $source = preg_replace('/' . $search . '/', '', $source);
+        $source = \preg_replace('/' . $search . '/', '', $source);
     }
     return $source;
 }

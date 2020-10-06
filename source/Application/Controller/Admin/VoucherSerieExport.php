@@ -88,7 +88,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
         $sSessionFileName = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("sExportFileName");
         if (!$sSessionFileName) {
             $session = \OxidEsales\Eshop\Core\Registry::getSession();
-            $sSessionFileName = md5($session->getId() . \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId());
+            $sSessionFileName = \md5($session->getId() . \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUId());
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportFileName", $sSessionFileName);
         }
 
@@ -118,8 +118,8 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
         $oUtils->setHeader("Content-Disposition: attachment; filename=vouchers.csv");
         $oUtils->setHeader("Content-Type: application/csv");
         $sFile = $this->_getExportFilePath();
-        if (file_exists($sFile) && is_readable($sFile)) {
-            readfile($sFile);
+        if (\file_exists($sFile) && \is_readable($sFile)) {
+            \readfile($sFile);
         }
         $oUtils->showMessageAndExit("");
     }
@@ -131,7 +131,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         $blContinue = true;
 
-        $this->fpFile = @fopen($this->_sFilePath, "a");
+        $this->fpFile = @\fopen($this->_sFilePath, "a");
         if (!isset($this->fpFile) || !$this->fpFile) {
             // we do have an error !
             $this->stop(ERR_FILEIO);
@@ -139,7 +139,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
             // file is open
             $iStart = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("iStart");
             if (!$iStart) {
-                ftruncate($this->fpFile, 0);
+                \ftruncate($this->fpFile, 0);
             }
 
             if (($iExportedItems = $this->exportVouchers($iStart)) === false) {
@@ -154,7 +154,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
                 $this->_aViewData['iStart'] = $iStart + $iExportedItems;
                 $this->_aViewData['iExpItems'] = $iStart + $iExportedItems;
             }
-            fclose($this->fpFile);
+            \fclose($this->fpFile);
         }
     }
 
@@ -188,7 +188,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
 
             // writing vouchers..
             while (!$rs->EOF) {
-                $this->write(current($rs->fields));
+                $this->write(\current($rs->fields));
                 $iExported++;
                 $rs->fetchRow();
             }
@@ -205,7 +205,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     public function write($sLine)
     {
         if ($sLine) {
-            fwrite($this->fpFile, $sLine . "\n");
+            \fwrite($this->fpFile, $sLine . "\n");
         }
     }
 }

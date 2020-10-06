@@ -57,7 +57,7 @@ class ShopStateService implements ShopStateServiceInterface
      */
     private function areUnifiedNamespacesGenerated(): bool
     {
-        return class_exists($this->anyUnifiedNamespace);
+        return \class_exists($this->anyUnifiedNamespace);
     }
 
     /**
@@ -65,7 +65,7 @@ class ShopStateService implements ShopStateServiceInterface
      */
     private function doesConfigFileExist(): bool
     {
-        return file_exists($this->basicContext->getConfigFilePath());
+        return \file_exists($this->basicContext->getConfigFilePath());
     }
 
     /**
@@ -92,7 +92,7 @@ class ShopStateService implements ShopStateServiceInterface
     {
         include $this->basicContext->getConfigFilePath();
 
-        $dsn = sprintf('mysql:host=%s;port=%s', $this->dbHost, $this->dbPort);
+        $dsn = \sprintf('mysql:host=%s;port=%s', $this->dbHost, $this->dbPort);
 
         $connection = new \PDO(
             $dsn,

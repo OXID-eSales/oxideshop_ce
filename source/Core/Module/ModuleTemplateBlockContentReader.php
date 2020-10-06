@@ -30,21 +30,21 @@ class ModuleTemplateBlockContentReader
     {
         if (!$pathFormatter instanceof \OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter) {
             $exceptionMessage = 'Provided object is not an instance of class %s or does not have method getPath().';
-            throw oxNew(\oxException::class, sprintf($exceptionMessage, \OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter::class));
+            throw oxNew(\oxException::class, \sprintf($exceptionMessage, \OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter::class));
         }
 
         $filePath = $pathFormatter->getPath();
 
-        if (!file_exists($filePath)) {
+        if (!\file_exists($filePath)) {
             $exceptionMessage = "Template block file (%s) was not found for module '%s'.";
-            throw oxNew(\oxException::class, sprintf($exceptionMessage, $filePath, $pathFormatter->getModuleId()));
+            throw oxNew(\oxException::class, \sprintf($exceptionMessage, $filePath, $pathFormatter->getModuleId()));
         }
 
-        if (!is_readable($filePath)) {
+        if (!\is_readable($filePath)) {
             $exceptionMessage = "Template block file (%s) is not readable for module '%s'.";
-            throw oxNew(\oxException::class, sprintf($exceptionMessage, $filePath, $pathFormatter->getModuleId()));
+            throw oxNew(\oxException::class, \sprintf($exceptionMessage, $filePath, $pathFormatter->getModuleId()));
         }
 
-        return file_get_contents($filePath);
+        return \file_get_contents($filePath);
     }
 }

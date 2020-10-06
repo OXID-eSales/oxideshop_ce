@@ -41,7 +41,7 @@ class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurati
                 $smartyPluginsDirectory[] = $directory->getDirectory();
             }
 
-            $shopSettingValue = array_merge(
+            $shopSettingValue = \array_merge(
                 $shopConfigurationSetting->getValue(),
                 [
                     $configuration->getId() => $smartyPluginsDirectory,

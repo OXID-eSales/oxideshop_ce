@@ -144,7 +144,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getArticles()
     {
-        if (is_null($this->_aArtIds)) {
+        if (\is_null($this->_aArtIds)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = "select oxobjectid from oxobject2delivery 
                 where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
@@ -165,7 +165,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getCategories()
     {
-        if (is_null($this->_aCatIds)) {
+        if (\is_null($this->_aCatIds)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = "select oxobjectid from oxobject2delivery 
                 where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
@@ -186,7 +186,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function hasArticles()
     {
-        return (bool) count($this->getArticles());
+        return (bool) \count($this->getArticles());
     }
 
     /**
@@ -196,7 +196,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function hasCategories()
     {
-        return (bool) count($this->getCategories());
+        return (bool) \count($this->getCategories());
     }
 
     /**
@@ -348,7 +348,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 $sProductId = $oArticle->getProductId();
                 $sParentId = $oArticle->getParentId();
 
-                if ($blHasArticles && (in_array($sProductId, $aDeliveryArticles) || ($sParentId && in_array($sParentId, $aDeliveryArticles)))) {
+                if ($blHasArticles && (\in_array($sProductId, $aDeliveryArticles) || ($sParentId && \in_array($sParentId, $aDeliveryArticles)))) {
                     $blUse = true;
                     $artAmount = $this->getDeliveryAmount($oContent);
                     if ($this->isDeliveryRuleFitByArticle($artAmount)) {

@@ -92,7 +92,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = $myConfig->getRequestParameter($sParam);
-            if (is_array($aConfVars)) {
+            if (\is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $myConfig->saveShopConfVar(
                         $sType,

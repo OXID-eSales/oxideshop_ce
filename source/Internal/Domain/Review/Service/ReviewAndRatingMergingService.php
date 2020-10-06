@@ -26,7 +26,7 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
      */
     public function mergeReviewAndRating(ArrayCollection $reviews, ArrayCollection $ratings)
     {
-        $ratingAndReviewList = array_merge(
+        $ratingAndReviewList = \array_merge(
             $this->getReviewDataWithRating($reviews, $ratings),
             $this->getRatingWithoutReviewData($reviews, $ratings)
         );

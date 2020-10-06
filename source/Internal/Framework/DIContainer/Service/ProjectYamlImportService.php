@@ -42,7 +42,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
      */
     public function addImport(string $serviceDir)
     {
-        if (!realpath($serviceDir)) {
+        if (!\realpath($serviceDir)) {
             throw new NoServiceYamlException();
         }
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
@@ -72,7 +72,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
         $configChanged = false;
         foreach ($projectConfig->getImportFileNames() as $fileName) {
-            if (file_exists($this->getAbsolutePath($fileName))) {
+            if (\file_exists($this->getAbsolutePath($fileName))) {
                 continue;
             }
             $projectConfig->removeImport($fileName);

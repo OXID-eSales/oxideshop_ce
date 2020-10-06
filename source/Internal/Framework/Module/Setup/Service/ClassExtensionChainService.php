@@ -62,7 +62,7 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
         $classExtensions = [];
 
         foreach ($chain as $shopClass => $moduleExtensionClasses) {
-            $classExtensions[$shopClass] = implode('&', $moduleExtensionClasses);
+            $classExtensions[$shopClass] = \implode('&', $moduleExtensionClasses);
         }
 
         return $classExtensions;

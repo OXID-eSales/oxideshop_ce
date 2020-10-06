@@ -55,7 +55,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (!$myConfig->getConfigParam('bl_perfLoadCurrency')) {
             //#861C -  show first currency
             $aCurrencies = $myConfig->getCurrencyArray();
-            $this->_oActCur = current($aCurrencies);
+            $this->_oActCur = \current($aCurrencies);
 
             return;
         }
@@ -109,7 +109,7 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $oUrlUtils = \OxidEsales\Eshop\Core\Registry::getUtilsUrl();
             $sUrl = $oUrlUtils->cleanUrl(\OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getLink(), ["cur"]);
 
-            reset($this->aCurrencies);
+            \reset($this->aCurrencies);
             foreach ($this->aCurrencies as $oItem) {
                 $oItem->link = $oUrlUtils->processUrl($sUrl, true, ["cur" => $oItem->id]);
             }

@@ -42,7 +42,7 @@ class ProjectConfiguration
      */
     public function getShopConfigurationIds(): array
     {
-        return array_keys($this->projectConfiguration);
+        return \array_keys($this->projectConfiguration);
     }
 
     /**

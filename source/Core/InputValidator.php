@@ -69,9 +69,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function validateBasketAmount($amount)
     {
-        $amount = str_replace(',', '.', $amount);
+        $amount = \str_replace(',', '.', $amount);
 
-        if (!is_numeric($amount) || $amount < 0) {
+        if (!\is_numeric($amount) || $amount < 0) {
             /**
              * @var \OxidEsales\Eshop\Core\Exception\ArticleInputException $exception
              */
@@ -81,7 +81,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowUnevenAmounts')) {
-            $amount = round((string) $amount);
+            $amount = \round((string) $amount);
         }
 
         //negative amounts are not allowed
@@ -133,7 +133,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         if ($user->checkIfEmailExists($login)) {
             //if exists then we do not allow to do that
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
-            $exception->setMessage(sprintf(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_USER_USEREXISTS'), $login));
+            $exception->setMessage(\sprintf(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_USER_USEREXISTS'), $login));
 
             return $this->addValidationError("oxuser__oxusername", $exception);
         }
@@ -245,7 +245,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
             $deliveryAddress = $this->_setFields(oxNew(\OxidEsales\Eshop\Application\Model\Address::class), $deliveryAddress);
             $fieldsValidator->setRequiredFields($requiredAddressFields->getDeliveryFields());
             $fieldsValidator->validateFields($deliveryAddress);
-            $invalidFields = array_merge($invalidFields, $fieldsValidator->getInvalidFields());
+            $invalidFields = \array_merge($invalidFields, $fieldsValidator->getInvalidFields());
         }
 
         foreach ($invalidFields as $sField) {
@@ -267,7 +267,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     private function _setFields($object, $fields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $fields = is_array($fields) ? $fields : [];
+        $fields = \is_array($fields) ? $fields : [];
         foreach ($fields as $sKey => $sValue) {
             $object->$sKey = oxNew('oxField', $sValue);
         }
@@ -385,9 +385,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function getFirstValidationError()
     {
-        $aErr = reset($this->_aInputValidationErrors);
-        if (is_array($aErr)) {
-            return reset($aErr);
+        $aErr = \reset($this->_aInputValidationErrors);
+        if (\is_array($aErr)) {
+            return \reset($aErr);
         }
     }
 
@@ -498,7 +498,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         $oStr = Str::getStr();
 
         if ($oStr->strlen($debitInfo['lsktonr']) < 10) {
-            $sNewNum = str_repeat(
+            $sNewNum = \str_repeat(
                 '0',
                 10 - $oStr->strlen($debitInfo['lsktonr'])
             ) . $debitInfo['lsktonr'];
@@ -521,7 +521,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     {
         $isSet = true;
         foreach ($requiredFields as $fieldName) {
-            if (!isset($bankInformation[$fieldName]) || !trim($bankInformation[$fieldName])) {
+            if (!isset($bankInformation[$fieldName]) || !\trim($bankInformation[$fieldName])) {
                 $isSet = false;
                 break;
             }
@@ -540,8 +540,8 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     protected function _cleanDebitInformation($debitInformation) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $debitInformation['lsblz'] = str_replace(' ', '', $debitInformation['lsblz']);
-        $debitInformation['lsktonr'] = str_replace(' ', '', $debitInformation['lsktonr']);
+        $debitInformation['lsblz'] = \str_replace(' ', '', $debitInformation['lsblz']);
+        $debitInformation['lsktonr'] = \str_replace(' ', '', $debitInformation['lsktonr']);
 
         return $debitInformation;
     }
@@ -578,7 +578,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function getCompanyVatInValidator($country)
     {
-        if (is_null($this->_oCompanyVatInValidator)) {
+        if (\is_null($this->_oCompanyVatInValidator)) {
             /** @var \OxidEsales\Eshop\Core\CompanyVatInValidator $vatInValidator */
             $vatInValidator = oxNew('oxCompanyVatInValidator', $country);
 

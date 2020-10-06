@@ -45,7 +45,7 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
      */
     public function getMetaDataSchemaForVersion(string $metaDataVersion): array
     {
-        if (false === array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
+        if (false === \array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
             throw new UnsupportedMetaDataVersionException("Metadata version $metaDataVersion is not supported");
         }
 
@@ -61,7 +61,7 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
      */
     public function getFlippedMetaDataSchemaForVersion(string $metaDataVersion): array
     {
-        if (false === array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
+        if (false === \array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
             throw new UnsupportedMetaDataVersionException("Metadata version $metaDataVersion is not supported");
         }
 
@@ -80,7 +80,7 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
         $transposedArray = [];
 
         foreach ($metaDataVersion as $key => $item) {
-            if (is_numeric($key) && \is_string($item)) {
+            if (\is_numeric($key) && \is_string($item)) {
                 $transposedArray[$item] = $key;
             } elseif (\is_string($key) && \is_array($item)) {
                 $transposedArray[$key] = $this->arrayFlipRecursive($item);

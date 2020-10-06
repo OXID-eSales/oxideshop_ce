@@ -133,12 +133,12 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _getSqlSelectFieldsForTree($sTable, $aColumns = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($aColumns && count($aColumns)) {
+        if ($aColumns && \count($aColumns)) {
             foreach ($aColumns as $key => $val) {
                 $aColumns[$key] .= ' as ' . $val;
             }
 
-            return "$sTable." . implode(", $sTable.", $aColumns);
+            return "$sTable." . \implode(", $sTable.", $aColumns);
         }
 
         $sFieldList = "$sTable.oxid as oxid, $sTable.oxactive as oxactive,"
@@ -391,8 +391,8 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getClickCat()
     {
-        if (count($this->_aPath)) {
-            return end($this->_aPath);
+        if (\count($this->_aPath)) {
+            return \end($this->_aPath);
         }
     }
 
@@ -403,8 +403,8 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getClickRoot()
     {
-        if (count($this->_aPath)) {
-            return [reset($this->_aPath)];
+        if (\count($this->_aPath)) {
+            return [\reset($this->_aPath)];
         }
     }
 
@@ -432,7 +432,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         foreach ($this->_aArray as $sId => $oCat) {
             if (
                 isset($aRemoveList[$oCat->oxcategories__oxrootid->value]) &&
-                is_array($aRemoveList[$oCat->oxcategories__oxrootid->value])
+                \is_array($aRemoveList[$oCat->oxcategories__oxrootid->value])
             ) {
                 foreach ($aRemoveList[$oCat->oxcategories__oxrootid->value] as $iLeft => $iRight) {
                     if (
@@ -456,7 +456,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _ppAddPathInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($this->_sActCat)) {
+        if (\is_null($this->_sActCat)) {
             return;
         }
 
@@ -470,7 +470,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sCurrentCat = $oCat->oxcategories__oxparentid->value;
         }
 
-        $this->_aPath = array_reverse($aPath);
+        $this->_aPath = \array_reverse($aPath);
     }
 
     /**
@@ -484,7 +484,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oContentList->loadCatMenues();
 
         foreach ($oContentList as $sCatId => $aContent) {
-            if (array_key_exists($sCatId, $this->_aArray)) {
+            if (\array_key_exists($sCatId, $this->_aArray)) {
                 $this[$sCatId]->setContentCats($aContent);
             }
         }
@@ -522,7 +522,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         foreach ($this->_aArray as $oCat) {
             $aTree[$oCat->getId()] = $oCat;
             $aSubCats = $oCat->getSubCats();
-            if (count($aSubCats) > 0) {
+            if (\count($aSubCats) > 0) {
                 foreach ($aSubCats as $oSubCat) {
                     $aTree = $this->_addDepthInfo($aTree, $oSubCat);
                 }
@@ -547,7 +547,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oCat->oxcategories__oxtitle->setValue($sDepth . ' ' . $oCat->oxcategories__oxtitle->value);
         $aTree[$oCat->getId()] = $oCat;
         $aSubCats = $oCat->getSubCats();
-        if (count($aSubCats) > 0) {
+        if (\count($aSubCats) > 0) {
             foreach ($aSubCats as $oSubCat) {
                 $aTree = $this->_addDepthInfo($aTree, $oSubCat, $sDepth);
             }
@@ -580,7 +580,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
                 while (!$rs->EOF) {
                     $this->_aUpdateInfo[] = "<b>Processing : " . $rs->fields[1] . "</b>(" . $rs->fields[0] . ")<br>";
                     if ($blVerbose) {
-                        echo next($this->_aUpdateInfo);
+                        echo \next($this->_aUpdateInfo);
                     }
                     $oxRootId = $rs->fields[0];
 

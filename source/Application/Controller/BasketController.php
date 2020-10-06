@@ -145,7 +145,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             $this->_oFirstBasketProduct = false;
 
             $aBasketArticles = $this->getBasketArticles();
-            if (is_array($aBasketArticles) && $oProduct = reset($aBasketArticles)) {
+            if (\is_array($aBasketArticles) && $oProduct = \reset($aBasketArticles)) {
                 $this->_oFirstBasketProduct = $oProduct;
             }
         }
@@ -408,7 +408,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($aWrapping) && count($aWrapping)) {
+        if (\is_array($aWrapping) && \count($aWrapping)) {
             foreach ($oBasket->getContents() as $sKey => $oBasketItem) {
                 if (isset($aWrapping[$sKey])) {
                     $oBasketItem->setWrapping($aWrapping[$sKey]);

@@ -75,8 +75,8 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxdel2delset.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxdel2delset where oxdel2delset.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+        } elseif ($aRemoveGroups && \is_array($aRemoveGroups)) {
+            $sQ = "delete from oxdel2delset where oxdel2delset.oxid in (" . \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
@@ -96,7 +96,7 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
             $sDeliveryViewName = $this->_getViewName('oxdelivery');
             $aChosenSets = $this->_getAll($this->_addFilter("select $sDeliveryViewName.oxid " . $this->_getQuery()));
         }
-        if ($soxId && $soxId != "-1" && is_array($aChosenSets)) {
+        if ($soxId && $soxId != "-1" && \is_array($aChosenSets)) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
             foreach ($aChosenSets as $sChosenSet) {

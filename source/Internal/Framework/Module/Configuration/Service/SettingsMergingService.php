@@ -78,7 +78,7 @@ class SettingsMergingService implements SettingsMergingServiceInterface
             && !empty($settingToMerge->getConstraints())
             && ($settingToMerge->getType() === 'select')
         ) {
-            $resultPosition = array_search($existingSetting->getValue(), $settingToMerge->getConstraints(), true);
+            $resultPosition = \array_search($existingSetting->getValue(), $settingToMerge->getConstraints(), true);
             $shouldMerge = $resultPosition !== false;
         }
 

@@ -133,7 +133,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                 $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
             }
 
-            if (is_array($aArticles)) {
+            if (\is_array($aArticles)) {
                 $sO2CView = $this->_getViewName('oxobject2category');
 
                 $oNew = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
@@ -147,10 +147,10 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                         continue;
                     }
 
-                    $oNew->oxobject2category__oxid = new \OxidEsales\Eshop\Core\Field($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
+                    $oNew->oxobject2category__oxid = new \OxidEsales\Eshop\Core\Field($oNew->setId(\md5($sAdd . $sCategoryID . $sShopID)));
                     $oNew->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
                     $oNew->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sCategoryID);
-                    $oNew->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(time());
+                    $oNew->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(\time());
 
                     $oNew->save();
 
@@ -236,7 +236,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         }
 
         // adding
-        if (is_array($aArticles) && count($aArticles)) {
+        if (\is_array($aArticles) && \count($aArticles)) {
             $this->removeCategoryArticles($aArticles, $sCategoryID);
         }
 
@@ -258,7 +258,7 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     protected function removeCategoryArticles($articles, $categoryID)
     {
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $prodIds = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articles));
+        $prodIds = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articles));
 
         $delete = "delete from oxobject2category ";
         $where = $this->getRemoveCategoryArticlesQueryFilter($categoryID, $prodIds);

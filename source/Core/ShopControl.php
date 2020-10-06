@@ -133,8 +133,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         try {
             $this->_runOnce();
 
-            $function = !is_null($function) ? $function : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
-            $controllerKey = !is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
+            $function = !\is_null($function) ? $function : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
+            $controllerKey = !\is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
 
             $this->_process($controllerClass, $function, $parameters, $viewsChain);
@@ -380,7 +380,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
-        $classKey = !is_null($classKey) ? $classKey : $class; //fallback
+        $classKey = !\is_null($classKey) ? $classKey : $class; //fallback
 
         /** @var FrontendController $view */
         $view = oxNew($class);
@@ -419,7 +419,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _canExecuteFunction($view, $function) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $canExecute = true;
-        if (method_exists($view, $function)) {
+        if (\method_exists($view, $function)) {
             $reflectionMethod = new ReflectionMethod($view, $function);
             if (!$reflectionMethod->isPublic()) {
                 $canExecute = false;
@@ -441,10 +441,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $errors = $this->_getErrors($controllerName);
         $formattedErrors = [];
-        if (is_array($errors) && count($errors)) {
+        if (\is_array($errors) && \count($errors)) {
             foreach ($errors as $location => $ex2) {
                 foreach ($ex2 as $key => $er) {
-                    $error = unserialize($er);
+                    $error = \unserialize($er);
                     $formattedErrors[$location][$key] = $error->getOxMessage();
                 }
             }
@@ -495,7 +495,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         //add all exceptions to display
         $errors = $this->_getErrors($view->getClassName());
-        if (is_array($errors) && count($errors)) {
+        if (\is_array($errors) && \count($errors)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
 
@@ -558,7 +558,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $this->_aAllErrors = $this->_aErrors;
         }
         // resetting errors of current controller or widget from session
-        if (is_array($this->_aControllerErrors) && !empty($this->_aControllerErrors)) {
+        if (\is_array($this->_aControllerErrors) && !empty($this->_aControllerErrors)) {
             foreach ($this->_aControllerErrors as $errorName => $controllerName) {
                 if ($controllerName == $currentControllerName) {
                     unset($this->_aAllErrors[$errorName]);
@@ -587,12 +587,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         //session is started, a possible SeoUrl is decoded, globals and environment variables are set.
         $config->init();
 
-        error_reporting($this->_getErrorReportingLevel());
+        \error_reporting($this->_getErrorReportingLevel());
 
         $runOnceExecuted = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blRunOnceExecuted');
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
-            if (file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
+            if (\file_exists($config->getConfigParam('sShopDir') . '/Setup/index.php')) {
                 $tpl = 'message/err_setup.tpl';
                 $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
                 $context = [
@@ -619,11 +619,11 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $errorReporting = E_ALL ^ E_NOTICE;
         // some 3rd party libraries still use deprecated functions
-        if (defined('E_DEPRECATED')) {
+        if (\defined('E_DEPRECATED')) {
             $errorReporting = $errorReporting ^ E_DEPRECATED;
         }
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isProductiveMode() && !ini_get('log_errors')) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isProductiveMode() && !\ini_get('log_errors')) {
             $errorReporting = 0;
         }
 
@@ -649,7 +649,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function _startMonitor() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_isDebugMode()) {
-            $this->_dTimeStart = microtime(true);
+            $this->_dTimeStart = \microtime(true);
         }
     }
 
@@ -666,7 +666,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = [], $view = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($view)) {
+        if (\is_null($view)) {
             $controllerKey = $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
             $view = oxNew($controllerClass);
@@ -685,7 +685,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $debugLevel = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-            $logId = md5(time() . rand() . rand());
+            $logId = \md5(\time() . \rand() . \rand());
             $header = $debugInfo->formatGeneralInfo();
             $display = ($debugLevel == -1) ? 'none' : 'block';
             $monitorMessage = $this->formMonitorMessage($view);
@@ -731,7 +731,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         // Output timing
-        $this->_dTimeEnd = microtime(true);
+        $this->_dTimeEnd = \microtime(true);
 
         $message .= $debugInfo->formatMemoryUsage();
         $message .= $debugInfo->formatTimeStamp();
@@ -874,7 +874,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         $result = $this->sendOfflineWarning($exception);
         if ($result) {
-            file_put_contents($this->offlineWarningTimestampFile, time());
+            \file_put_contents($this->offlineWarningTimestampFile, \time());
         }
     }
 
@@ -891,9 +891,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         /** @var int $threshold Threshold in seconds */
         $threshold = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('offlineWarningInterval');
-        if (file_exists($this->offlineWarningTimestampFile)) {
-            $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
-            $lastSentBefore = time() - $lastSentTimestamp;
+        if (\file_exists($this->offlineWarningTimestampFile)) {
+            $lastSentTimestamp = (int) \file_get_contents($this->offlineWarningTimestampFile);
+            $lastSentBefore = \time() - $lastSentTimestamp;
             if ($lastSentBefore < $threshold) {
                 $wasSentWithinThreshold = true;
             }
@@ -920,9 +920,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         if ($emailAddress) {
             /** As we are inside the exception handling process, any further exceptions must be caught */
-            $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
+            $failedShop = isset($_REQUEST['shp']) ? \addslashes($_REQUEST['shp']) : 'Base shop';
 
-            $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
+            $date = \date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
             $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
             $referrer = $_SERVER['HTTP_REFERER'];
 

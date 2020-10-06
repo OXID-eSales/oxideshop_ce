@@ -19,6 +19,6 @@ class OpenSSLFunctionalityChecker
      */
     public function isOpenSslRandomBytesGeneratorAvailable()
     {
-        return function_exists('openssl_random_pseudo_bytes');
+        return \function_exists('openssl_random_pseudo_bytes');
     }
 }

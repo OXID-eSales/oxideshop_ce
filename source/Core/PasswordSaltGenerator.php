@@ -42,7 +42,7 @@ class PasswordSaltGenerator
     public function generate()
     {
         if ($this->_getOpenSSLFunctionalityChecker()->isOpenSslRandomBytesGeneratorAvailable()) {
-            $sSalt = bin2hex(openssl_random_pseudo_bytes(16));
+            $sSalt = \bin2hex(\openssl_random_pseudo_bytes(16));
         } else {
             $sSalt = $this->_customSaltGenerator();
         }
@@ -72,8 +72,8 @@ class PasswordSaltGenerator
         $sHash = '';
         $sSalt = '';
         for ($i = 0; $i < 32; $i++) {
-            $sHash = hash('sha256', $sHash . mt_rand());
-            $iPosition = mt_rand(0, 62);
+            $sHash = \hash('sha256', $sHash . \mt_rand());
+            $iPosition = \mt_rand(0, 62);
             $sSalt .= $sHash[$iPosition];
         }
 

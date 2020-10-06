@@ -206,10 +206,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $aModules = $this->getModulesWithExtendedClass();
         $aModulePaths = [];
 
-        if (is_array($aModules) && count($aModules) > 0) {
+        if (\is_array($aModules) && \count($aModules) > 0) {
             foreach ($aModules as $aModuleClasses) {
                 foreach ($aModuleClasses as $sModule) {
-                    $sModuleId = substr($sModule, 0, strpos($sModule, "/"));
+                    $sModuleId = \substr($sModule, 0, \strpos($sModule, "/"));
                     $aModulePaths[$sModuleId] = $sModuleId;
                 }
             }
@@ -269,7 +269,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     {
         $deletedModules = $this->getDeletedExtensions();
 
-        $deletedModuleIds = array_keys($deletedModules);
+        $deletedModuleIds = \array_keys($deletedModules);
 
         $moduleActivationBridge = ContainerFactory::getInstance()
             ->getContainer()
@@ -321,22 +321,22 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function diffModuleArrays($aAllModuleArray, $aRemModuleArray)
     {
-        if (is_array($aAllModuleArray) && is_array($aRemModuleArray)) {
+        if (\is_array($aAllModuleArray) && \is_array($aRemModuleArray)) {
             foreach ($aAllModuleArray as $sClass => $aModuleChain) {
-                if (!is_array($aModuleChain)) {
+                if (!\is_array($aModuleChain)) {
                     $aModuleChain = [$aModuleChain];
                 }
                 if (isset($aRemModuleArray[$sClass])) {
-                    if (!is_array($aRemModuleArray[$sClass])) {
+                    if (!\is_array($aRemModuleArray[$sClass])) {
                         $aRemModuleArray[$sClass] = [$aRemModuleArray[$sClass]];
                     }
                     $aAllModuleArray[$sClass] = [];
                     foreach ($aModuleChain as $sModule) {
-                        if (!in_array($sModule, $aRemModuleArray[$sClass])) {
+                        if (!\in_array($sModule, $aRemModuleArray[$sClass])) {
                             $aAllModuleArray[$sClass][] = $sModule;
                         }
                     }
-                    if (!count($aAllModuleArray[$sClass])) {
+                    if (!\count($aAllModuleArray[$sClass])) {
                         unset($aAllModuleArray[$sClass]);
                     }
                 } else {
@@ -358,9 +358,9 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function buildModuleChains($aModuleArray)
     {
         $aModules = [];
-        if (is_array($aModuleArray)) {
+        if (\is_array($aModuleArray)) {
             foreach ($aModuleArray as $sClass => $aModuleChain) {
-                $aModules[$sClass] = implode('&', $aModuleChain);
+                $aModules[$sClass] = \implode('&', $aModuleChain);
             }
         }
 
@@ -388,10 +388,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     {
         $moduleArray = [];
 
-        if (is_array($modules)) {
+        if (\is_array($modules)) {
             foreach ($modules as $class => $moduleChain) {
-                if (strstr($moduleChain, '&')) {
-                    $moduleChain = explode('&', $moduleChain);
+                if (\strstr($moduleChain, '&')) {
+                    $moduleChain = \explode('&', $moduleChain);
                 } else {
                     $moduleChain = [$moduleChain];
                 }
@@ -429,18 +429,18 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     {
         $sModulesDir = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->normalizeDir($sModulesDir);
 
-        foreach (glob($sModulesDir . '*') as $sModuleDirPath) {
-            $sModuleDirPath .= (is_dir($sModuleDirPath)) ? '/' : '';
-            $sModuleDirName = basename($sModuleDirPath);
+        foreach (\glob($sModulesDir . '*') as $sModuleDirPath) {
+            $sModuleDirPath .= (\is_dir($sModuleDirPath)) ? '/' : '';
+            $sModuleDirName = \basename($sModuleDirPath);
 
             // skipping some file
-            if (in_array($sModuleDirName, $this->_aSkipFiles) || (!is_dir($sModuleDirPath) && substr($sModuleDirName, -4) != ".php")) {
+            if (\in_array($sModuleDirName, $this->_aSkipFiles) || (!\is_dir($sModuleDirPath) && \substr($sModuleDirName, -4) != ".php")) {
                 continue;
             }
 
             if ($this->_isVendorDir($sModuleDirPath)) {
                 // scanning modules vendor directory
-                $this->getModulesFromDir($sModuleDirPath, basename($sModuleDirPath));
+                $this->getModulesFromDir($sModuleDirPath, \basename($sModuleDirPath));
             } else {
                 // loading module info
                 $oModule = $this->getModule();
@@ -453,7 +453,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         }
         // sorting by name
         if ($this->_aModules !== null) {
-            uasort($this->_aModules, [$this, '_sortModules']);
+            \uasort($this->_aModules, [$this, '_sortModules']);
         }
 
         return $this->_aModules;
@@ -521,7 +521,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     protected function _sortModules($oModule1, $oModule2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return strcasecmp($oModule1->getTitle(), $oModule2->getTitle());
+        return \strcasecmp($oModule1->getTitle(), $oModule2->getTitle());
     }
 
     /**
@@ -534,14 +534,14 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isVendorDir($sModuleDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_dir($sModuleDir)) {
+        if (!\is_dir($sModuleDir)) {
             return false;
         }
 
-        $currentDirectoryContents = scandir($sModuleDir);
-        $currentDirectoryContents = array_diff($currentDirectoryContents, ['.', '..']);
+        $currentDirectoryContents = \scandir($sModuleDir);
+        $currentDirectoryContents = \array_diff($currentDirectoryContents, ['.', '..']);
         foreach ($currentDirectoryContents as $entry) {
-            if (is_dir("$sModuleDir/$entry") && file_exists("$sModuleDir/$entry/metadata.php")) {
+            if (\is_dir("$sModuleDir/$entry") && \file_exists("$sModuleDir/$entry/metadata.php")) {
                 return true;
             }
         }
@@ -591,7 +591,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass)
     {
         $moduleClassFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $moduleClass . '.php';
-        if (!is_readable($moduleClassFile)) {
+        if (!\is_readable($moduleClassFile)) {
             $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
         }
     }

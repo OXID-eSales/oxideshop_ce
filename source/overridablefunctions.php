@@ -8,11 +8,11 @@
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 
-if (!defined('ESHOP_CONFIG_FILE')) {
-    define('ESHOP_CONFIG_FILE', 'config.inc.php');
+if (!\defined('ESHOP_CONFIG_FILE')) {
+    \define('ESHOP_CONFIG_FILE', 'config.inc.php');
 }
 
-if (!function_exists('redirectIfShopNotConfigured')) {
+if (!\function_exists('redirectIfShopNotConfigured')) {
     /**
      * @return null
      */
@@ -20,25 +20,25 @@ if (!function_exists('redirectIfShopNotConfigured')) {
     {
         $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
 
-        if (file_exists($configFileName) && strpos(file_get_contents($configFileName), '<dbHost') === false) {
+        if (\file_exists($configFileName) && \strpos(\file_get_contents($configFileName), '<dbHost') === false) {
             return;
         }
 
-        $message = sprintf(
+        $message = \sprintf(
             "Config file '%s' is not updated! Please navigate to '/Setup' or update '%s' manually.",
             ESHOP_CONFIG_FILE,
             ESHOP_CONFIG_FILE
         );
 
-        header("HTTP/1.1 302 Found");
-        header("Location: Setup/index.php");
-        header("Connection: close");
+        \header("HTTP/1.1 302 Found");
+        \header("Location: Setup/index.php");
+        \header("Connection: close");
 
         die($message);
     }
 }
 
-if (!function_exists('getShopBasePath')) {
+if (!\function_exists('getShopBasePath')) {
     /**
      * Returns framework base path.
      *
@@ -50,7 +50,7 @@ if (!function_exists('getShopBasePath')) {
     }
 }
 
-if (!function_exists('error_404_handler')) {
+if (!\function_exists('error_404_handler')) {
     /**
      * error_404_handler handler for 404 (page not found) error
      *
@@ -62,7 +62,7 @@ if (!function_exists('error_404_handler')) {
     }
 }
 
-if (!function_exists('isSearchEngineUrl')) {
+if (!\function_exists('isSearchEngineUrl')) {
 
     /**
      * Returns search engine url status
@@ -75,7 +75,7 @@ if (!function_exists('isSearchEngineUrl')) {
     }
 }
 
-if (!function_exists('startProfile')) {
+if (!\function_exists('startProfile')) {
     /**
      * Start profiling
      *
@@ -92,11 +92,11 @@ if (!function_exists('startProfile')) {
             $aStartTimes[$sProfileName] = 0;
         }
         $executionCounts[$sProfileName]++;
-        $aStartTimes[$sProfileName] = microtime(true);
+        $aStartTimes[$sProfileName] = \microtime(true);
     }
 }
 
-if (!function_exists('stopProfile')) {
+if (!\function_exists('stopProfile')) {
     /**
      * Stop profiling
      *
@@ -109,11 +109,11 @@ if (!function_exists('stopProfile')) {
         if (!isset($aProfileTimes[$sProfileName])) {
             $aProfileTimes[$sProfileName] = 0;
         }
-        $aProfileTimes[$sProfileName] += microtime(true) - $aStartTimes[$sProfileName];
+        $aProfileTimes[$sProfileName] += \microtime(true) - $aStartTimes[$sProfileName];
     }
 }
 
-if (!function_exists('getLangTableIdx')) {
+if (!\function_exists('getLangTableIdx')) {
 
     /**
      * Returns language table index
@@ -134,7 +134,7 @@ if (!function_exists('getLangTableIdx')) {
     }
 }
 
-if (!function_exists('getLangTableName')) {
+if (!\function_exists('getLangTableName')) {
 
     /**
      * Returns language table name
@@ -147,7 +147,7 @@ if (!function_exists('getLangTableName')) {
     function getLangTableName($sTable, $iLangId)
     {
         $iTableIdx = getLangTableIdx($iLangId);
-        if ($iTableIdx && in_array($sTable, Registry::getLang()->getMultiLangTables())) {
+        if ($iTableIdx && \in_array($sTable, Registry::getLang()->getMultiLangTables())) {
             $sLangTableSuffix = Registry::getConfig()->getConfigParam("sLangTableSuffix");
             $sLangTableSuffix = $sLangTableSuffix ? $sLangTableSuffix : "_set";
 
@@ -158,7 +158,7 @@ if (!function_exists('getLangTableName')) {
     }
 }
 
-if (!function_exists('getViewName')) {
+if (!\function_exists('getViewName')) {
 
     /**
      * Return the view name of the given table if a view exists, otherwise the table name itself
@@ -179,7 +179,7 @@ if (!function_exists('getViewName')) {
     }
 }
 
-if (!function_exists('getRequestUrl')) {
+if (!\function_exists('getRequestUrl')) {
     /**
      * Returns request url, which was executed to render current page view
      *
@@ -196,7 +196,7 @@ if (!function_exists('getRequestUrl')) {
     }
 }
 
-if (!function_exists('getLogger')) {
+if (!\function_exists('getLogger')) {
     /**
      * Returns the Logger
      *

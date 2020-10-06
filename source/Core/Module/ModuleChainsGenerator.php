@@ -86,14 +86,14 @@ class ModuleChainsGenerator
     public function getFullChain($className, $classAlias)
     {
         $fullChain = [];
-        $lowerCaseClassAlias = strtolower($classAlias);
-        $lowerCaseClassName = strtolower($className);
+        $lowerCaseClassAlias = \strtolower($classAlias);
+        $lowerCaseClassName = \strtolower($className);
 
         $variablesLocator = $this->getModuleVariablesLocator();
         $modules = $this->getClassExtensionChain($variablesLocator);
-        $modules = array_change_key_case($modules);
-        $allExtendedClasses = array_keys($modules);
-        $currentExtendedClasses = array_intersect($allExtendedClasses, [$lowerCaseClassName, $lowerCaseClassAlias]);
+        $modules = \array_change_key_case($modules);
+        $allExtendedClasses = \array_keys($modules);
+        $currentExtendedClasses = \array_intersect($allExtendedClasses, [$lowerCaseClassName, $lowerCaseClassAlias]);
         if (!empty($currentExtendedClasses)) {
             /*
              * there may be 2 class chains, matching the same class:
@@ -103,28 +103,28 @@ class ModuleChainsGenerator
              */
             $classChains = [];
             /* Get the position of the class name */
-            if (false !== $position = array_search($lowerCaseClassName, $allExtendedClasses)) {
-                $classChains[$position] = explode("&", $modules[$lowerCaseClassName]);
+            if (false !== $position = \array_search($lowerCaseClassName, $allExtendedClasses)) {
+                $classChains[$position] = \explode("&", $modules[$lowerCaseClassName]);
             }
             /* Get the position of the alias class name */
-            if (false !== $position = array_search($lowerCaseClassAlias, $allExtendedClasses)) {
-                $classChains[$position] = explode("&", $modules[$lowerCaseClassAlias]);
+            if (false !== $position = \array_search($lowerCaseClassAlias, $allExtendedClasses)) {
+                $classChains[$position] = \explode("&", $modules[$lowerCaseClassAlias]);
             }
 
             /* Notice that the array keys will be ordered, but do not necessarily start at 0 */
-            ksort($classChains);
+            \ksort($classChains);
             $fullChain = [];
-            if (1 === count($classChains)) {
+            if (1 === \count($classChains)) {
                 /**
                  * @var array $fullChain uses the one and only element of the array
                  */
-                $fullChain = reset($classChains);
+                $fullChain = \reset($classChains);
             }
-            if (2 === count($classChains)) {
+            if (2 === \count($classChains)) {
                 /**
                  * @var array $fullChain merges the first and then the second array from the $classChains
                  */
-                $fullChain = array_merge(reset($classChains), next($classChains));
+                $fullChain = \array_merge(\reset($classChains), \next($classChains));
             }
         }
 
@@ -170,7 +170,7 @@ class ModuleChainsGenerator
 
         $toBeRemovedFromChain = [];
         if (isset($registeredExtensions[$moduleId])) {
-            $toBeRemovedFromChain = array_combine($registeredExtensions[$moduleId], $registeredExtensions[$moduleId]);
+            $toBeRemovedFromChain = \array_combine($registeredExtensions[$moduleId], $registeredExtensions[$moduleId]);
         }
 
         foreach ($classChain as $key => $moduleClass) {
@@ -242,19 +242,19 @@ class ModuleChainsGenerator
     protected function createClassExtensions($classChain, $baseClass)
     {
         //security: just preventing string termination
-        $lastClass = str_replace(chr(0), '', $baseClass);
+        $lastClass = \str_replace(\chr(0), '', $baseClass);
         $parentClass = $lastClass;
 
         foreach ($classChain as $extensionPath) {
-            $extensionPath = str_replace(chr(0), '', $extensionPath);
+            $extensionPath = \str_replace(\chr(0), '', $extensionPath);
 
             if ($this->createClassExtension($parentClass, $extensionPath)) {
                 if (\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($extensionPath)) {
                     $parentClass = $extensionPath;
                     $lastClass = $extensionPath;
                 } else {
-                    $parentClass = basename($extensionPath);
-                    $lastClass = basename($extensionPath);
+                    $parentClass = \basename($extensionPath);
+                    $lastClass = \basename($extensionPath);
                 }
             }
         }
@@ -293,7 +293,7 @@ class ModuleChainsGenerator
         $composerClassLoader = include VENDOR_PATH . 'autoload.php';
         if (
             !$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
-            !strpos($moduleClass, '_parent') &&
+            !\strpos($moduleClass, '_parent') &&
             !$composerClassLoader->findFile($moduleClass)
         ) {
             $this->handleSpecialCases($parentClass);
@@ -303,8 +303,8 @@ class ModuleChainsGenerator
         }
 
         $moduleClassParentAlias = $moduleClass . "_parent";
-        if (!class_exists($moduleClassParentAlias, false)) {
-            class_alias($parentClass, $moduleClassParentAlias);
+        if (!\class_exists($moduleClassParentAlias, false)) {
+            \class_alias($parentClass, $moduleClassParentAlias);
         }
 
         return true;
@@ -323,7 +323,7 @@ class ModuleChainsGenerator
      */
     private function backwardsCompatibleCreateClassExtension($parentClass, $moduleClassPath)
     {
-        $moduleClass = basename($moduleClassPath);
+        $moduleClass = \basename($moduleClassPath);
         /**
          * Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
          * So do not try to get "sShopDir" like this:
@@ -338,7 +338,7 @@ class ModuleChainsGenerator
          */
         if (
             !$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
-            !is_readable($moduleClassFile)
+            !\is_readable($moduleClassFile)
         ) {
             $this->handleSpecialCases($parentClass);
             $this->onModuleExtensionCreationError($moduleClass);
@@ -346,19 +346,19 @@ class ModuleChainsGenerator
             return false;
         }
 
-        if (!class_exists($moduleClass, false)) {
+        if (!\class_exists($moduleClass, false)) {
             /**
              * Create parent alias before trying to load the module class as the class extends this alias
              */
-            if (!class_exists($moduleClassParentAlias, false)) {
-                class_alias($parentClass, $moduleClassParentAlias);
+            if (!\class_exists($moduleClassParentAlias, false)) {
+                \class_alias($parentClass, $moduleClassParentAlias);
             }
             include_once $moduleClassFile;
 
             /**
              * Test if the class could be loaded
              */
-            if (!class_exists($moduleClass, false)) {
+            if (!\class_exists($moduleClass, false)) {
                 $this->handleSpecialCases($parentClass);
                 $this->onModuleExtensionCreationError($moduleClassPath);
 
@@ -395,7 +395,7 @@ class ModuleChainsGenerator
 
             // We can be sure that the parent class of the current class is actually defined due to the way
             // the extension chain is traversed.
-        } while ($currentClass = get_parent_class($currentClass));
+        } while ($currentClass = \get_parent_class($currentClass));
 
         if ($isConfigClass) {
             $config = new \OxidEsales\Eshop\Core\Config();
@@ -411,11 +411,11 @@ class ModuleChainsGenerator
     protected function onModuleExtensionCreationError($moduleClass)
     {
         $moduleId = "(module id not availible)";
-        if (class_exists("\OxidEsales\Eshop\Core\Module\Module", false)) {
+        if (\class_exists("\OxidEsales\Eshop\Core\Module\Module", false)) {
             $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
             $moduleId = $module->getIdByPath($moduleClass);
         }
-        $message = sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);
+        $message = \sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);
         $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
         \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
@@ -484,7 +484,7 @@ class ModuleChainsGenerator
      */
     protected function isUnitTest()
     {
-        return defined('OXID_PHP_UNIT');
+        return \defined('OXID_PHP_UNIT');
     }
 
     /**

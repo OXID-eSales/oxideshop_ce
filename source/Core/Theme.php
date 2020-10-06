@@ -39,7 +39,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     public function load($sOXID)
     {
         $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir() . $sOXID . "/theme.php";
-        if (file_exists($sFilePath) && is_readable($sFilePath)) {
+        if (\file_exists($sFilePath) && \is_readable($sFilePath)) {
             $aTheme = [];
             include $sFilePath;
             $this->_aTheme = $aTheme;
@@ -84,9 +84,9 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     {
         $this->_aThemeList = [];
         $sOutDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir();
-        foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
+        foreach (\glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
             $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-            if ($oTheme->load(basename($sDir))) {
+            if ($oTheme->load(\basename($sDir))) {
                 $this->_aThemeList[$sDir] = $oTheme;
             }
         }
@@ -186,10 +186,10 @@ class Theme extends \OxidEsales\Eshop\Core\Base
                 return 'EXCEPTION_PARENT_VERSION_UNSPECIFIED';
             }
             $aMyParentVersions = $this->getInfo('parentVersions');
-            if (!$aMyParentVersions || !is_array($aMyParentVersions)) {
+            if (!$aMyParentVersions || !\is_array($aMyParentVersions)) {
                 return 'EXCEPTION_UNSPECIFIED_PARENT_VERSIONS';
             }
-            if (!in_array($sParentVersion, $aMyParentVersions)) {
+            if (!\in_array($sParentVersion, $aMyParentVersions)) {
                 return 'EXCEPTION_PARENT_VERSION_MISMATCH';
             }
         } elseif ($this->getInfo('parentTheme')) {

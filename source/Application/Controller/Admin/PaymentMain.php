@@ -46,13 +46,13 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oOtherLang = $oPayment->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oPayment->loadInLang(key($oOtherLang), $soxId);
+                $oPayment->loadInLang(\key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oPayment;
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
@@ -114,11 +114,11 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if (empty($aRules)) {
             $this->_aViewData["noticeoxaddsumrules"] = 1;
         }
-        $oPayment->oxpayments__oxaddsumrules = new \OxidEsales\Eshop\Core\Field(array_sum($aRules));
+        $oPayment->oxpayments__oxaddsumrules = new \OxidEsales\Eshop\Core\Field(\array_sum($aRules));
 
 
         //#708
-        if (!is_array($this->_aFieldArray)) {
+        if (!\is_array($this->_aFieldArray)) {
             $this->_aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value);
         }
 
@@ -174,7 +174,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $aDelFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aFields");
             $this->_aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oPayment->oxpayments__oxvaldesc->value);
 
-            if (is_array($aDelFields) && count($aDelFields)) {
+            if (\is_array($aDelFields) && \count($aDelFields)) {
                 foreach ($aDelFields as $sDelField) {
                     foreach ($this->_aFieldArray as $sKey => $oField) {
                         if ($oField->name == $sDelField) {

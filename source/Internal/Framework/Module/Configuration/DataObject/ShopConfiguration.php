@@ -83,7 +83,7 @@ class ShopConfiguration
      */
     public function getModuleIdsOfModuleConfigurations(): array
     {
-        return array_keys($this->moduleConfigurations);
+        return \array_keys($this->moduleConfigurations);
     }
 
     /**

@@ -11,14 +11,14 @@ use oxRegistry;
 use oxField;
 use stdClass;
 
-if (!defined('ERR_SUCCESS')) {
-    DEFINE("ERR_SUCCESS", 1);
+if (!\defined('ERR_SUCCESS')) {
+    \DEFINE("ERR_SUCCESS", 1);
 }
-if (!defined('ERR_REQUIREDMISSING')) {
-    DEFINE("ERR_REQUIREDMISSING", -1);
+if (!\defined('ERR_REQUIREDMISSING')) {
+    \DEFINE("ERR_REQUIREDMISSING", -1);
 }
-if (!defined('ERR_POSOUTOFBOUNDS')) {
-    DEFINE("ERR_POSOUTOFBOUNDS", -2);
+if (!\defined('ERR_POSOUTOFBOUNDS')) {
+    \DEFINE("ERR_POSOUTOFBOUNDS", -2);
 }
 
 /**
@@ -59,7 +59,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oAttr->loadInLang($this->_iEditLang, $sOxId);
 
             $aFieldList = $oAttr->getFieldList();
-            if (is_array($aFieldList)) {
+            if (\is_array($aFieldList)) {
                 foreach ($aFieldList as $key => $oField) {
                     if ($oField->priceUnit == '%') {
                         $oField->price = $oField->fprice;
@@ -70,7 +70,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oOtherLang = $oAttr->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oAttr->loadInLang(key($oOtherLang), $sOxId);
+                $oAttr->loadInLang(\key($oOtherLang), $sOxId);
             }
             $this->_aViewData["edit"] = $oAttr;
 
@@ -80,8 +80,8 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
@@ -141,7 +141,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $oAttr->assign($aParams);
 
         //#708
-        if (!is_array($this->aFieldArray)) {
+        if (!\is_array($this->aFieldArray)) {
             $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oAttr->oxselectlist__oxvaldesc->getRawValue());
         }
         // build value
@@ -149,7 +149,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         foreach ($this->aFieldArray as $oField) {
             $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . $oField->name, \OxidEsales\Eshop\Core\Field::T_RAW);
             if (isset($oField->price) && $oField->price) {
-                $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "!P!" . trim(str_replace(",", ".", $oField->price)), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . "!P!" . \trim(\str_replace(",", ".", $oField->price)), \OxidEsales\Eshop\Core\Field::T_RAW);
                 if ($oField->priceUnit == '%') {
                     $oAttr->oxselectlist__oxvaldesc->setValue($oAttr->oxselectlist__oxvaldesc->getRawValue() . '%', \OxidEsales\Eshop\Core\Field::T_RAW);
                 }
@@ -218,7 +218,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $aDelFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aFields");
             $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
 
-            if (is_array($aDelFields) && count($aDelFields)) {
+            if (\is_array($aDelFields) && \count($aDelFields)) {
                 foreach ($aDelFields as $sDelField) {
                     $sDel = $this->parseFieldName($sDelField);
                     foreach ($this->aFieldArray as $sKey => $oField) {
@@ -287,7 +287,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         $aChangeFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aFields");
-        if (is_array($aChangeFields) && count($aChangeFields)) {
+        if (\is_array($aChangeFields) && \count($aChangeFields)) {
             $oSelectlist = oxNew(\OxidEsales\Eshop\Application\Model\SelectList::class);
             if ($oSelectlist->loadInLang($this->_iEditLang, $this->getEditObjectId())) {
                 $this->aFieldArray = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($oSelectlist->oxselectlist__oxvaldesc->getRawValue());
@@ -323,11 +323,11 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     protected function _rearrangeFields($oField, $iPos) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!isset($this->aFieldArray) || !is_array($this->aFieldArray)) {
+        if (!isset($this->aFieldArray) || !\is_array($this->aFieldArray)) {
             return true;
         }
 
-        $iFieldCount = count($this->aFieldArray);
+        $iFieldCount = \count($this->aFieldArray);
         if ($iPos < 0 || $iPos >= $iFieldCount) {
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("iErrorCode", ERR_POSOUTOFBOUNDS);
 
@@ -378,7 +378,7 @@ class SelectListMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     public function parseFieldName($sInput)
     {
-        $aInput = explode('__@@', $sInput, 3);
+        $aInput = \explode('__@@', $sInput, 3);
 
         return $aInput[1];
     }

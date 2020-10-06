@@ -64,7 +64,7 @@ class ConfigFile
      */
     public function getVars()
     {
-        return get_object_vars($this);
+        return \get_object_vars($this);
     }
 
     /**
@@ -74,7 +74,7 @@ class ConfigFile
      */
     public function setFile($fileName)
     {
-        if (is_readable($fileName)) {
+        if (\is_readable($fileName)) {
             $this->_loadVars($fileName);
         }
     }

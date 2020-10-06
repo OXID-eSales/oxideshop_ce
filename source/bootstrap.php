@@ -5,14 +5,14 @@
  * See LICENSE file for license details.
  */
 
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-ini_set('display_errors', '0');
+\error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+\ini_set('display_errors', '0');
 
-define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
-define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
-define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'oxideshop.log');
-define('OX_OFFLINE_FILE', OX_BASE_PATH . 'offline.html');
-define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
+\define('INSTALLATION_ROOT_PATH', \dirname(__DIR__));
+\define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
+\define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'oxideshop.log');
+\define('OX_OFFLINE_FILE', OX_BASE_PATH . 'offline.html');
+\define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 
 /**
  * Provide a handler for catchable fatal errors, like failed requirement of files.
@@ -22,17 +22,17 @@ define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . 
  *
  * As this is the last resort no further errors must happen.
  */
-register_shutdown_function(
+\register_shutdown_function(
     function () {
         $handledErrorTypes = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR, E_USER_ERROR];
         $sessionResetErrorTypes = [E_ERROR];
 
-        $error = error_get_last();
-        if ($error !== null && in_array($error['type'], $handledErrorTypes)) {
-            $errorType = array_flip(array_slice(get_defined_constants(true)['Core'], 0, 16, true))[$error['type']];
+        $error = \error_get_last();
+        if ($error !== null && \in_array($error['type'], $handledErrorTypes)) {
+            $errorType = \array_flip(\array_slice(\get_defined_constants(true)['Core'], 0, 16, true))[$error['type']];
 
             $errorMessage = $error['message'];
-            $unifiedNamespaceClassNotFound = preg_match(
+            $unifiedNamespaceClassNotFound = \preg_match(
                 '/^Class \'OxidEsales\\\\Eshop\\\\.*\' not found/',
                 $errorMessage,
                 $matches
@@ -47,12 +47,12 @@ register_shutdown_function(
                           " [message {$errorMessage}]";
 
             /** write to log */
-            $time = microtime(true);
-            $micro = sprintf("%06d", ($time - floor($time)) * 1000000);
-            $date = new \DateTime(date('Y-m-d H:i:s.' . $micro, $time));
+            $time = \microtime(true);
+            $micro = \sprintf("%06d", ($time - \floor($time)) * 1000000);
+            $date = new \DateTime(\date('Y-m-d H:i:s.' . $micro, $time));
             $timestamp = $date->format('d M H:i:s.u Y');
             $message = "[$timestamp] " . $logMessage . PHP_EOL;
-            file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
+            \file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
 
 
             $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
@@ -60,9 +60,9 @@ register_shutdown_function(
                 \oxTriggerOfflinePageDisplay();
             }
 
-            if (in_array($error['type'], $sessionResetErrorTypes)) {
-                setcookie('sid', null, null, '/');
-                setcookie('admin_sid', null, null, '/');
+            if (\in_array($error['type'], $sessionResetErrorTypes)) {
+                \setcookie('sid', null, null, '/');
+                \setcookie('admin_sid', null, null, '/');
             }
         }
     }
@@ -97,10 +97,10 @@ class BootstrapConfigFileReader
 /**
  * Ensure shop config and autoload files are available.
  */
-$configMissing = !is_readable(OX_BASE_PATH . "config.inc.php");
-if ($configMissing || !is_readable(VENDOR_PATH . 'autoload.php')) {
+$configMissing = !\is_readable(OX_BASE_PATH . "config.inc.php");
+if ($configMissing || !\is_readable(VENDOR_PATH . 'autoload.php')) {
     if ($configMissing) {
-        $message = sprintf(
+        $message = \sprintf(
             "Error: Config file '%s' could not be found! Please use '%s.dist' to make a copy.",
             OX_BASE_PATH . "config.inc.php",
             OX_BASE_PATH . "config.inc.php"
@@ -109,7 +109,7 @@ if ($configMissing || !is_readable(VENDOR_PATH . 'autoload.php')) {
         $message = "Error: Autoload file missing. Make sure you have ran the 'composer install' command.";
     }
 
-    trigger_error($message, E_USER_ERROR);
+    \trigger_error($message, E_USER_ERROR);
 }
 unset($configMissing);
 
@@ -118,8 +118,8 @@ unset($configMissing);
  */
 $bootstrapConfigFileReader = new \BootstrapConfigFileReader();
 if ($bootstrapConfigFileReader->isDebugMode()) {
-    ini_set('display_errors', '1');
-    error_reporting(E_ALL & ~E_DEPRECATED);
+    \ini_set('display_errors', '1');
+    \error_reporting(E_ALL & ~E_DEPRECATED);
 }
 unset($bootstrapConfigFileReader);
 
@@ -140,13 +140,13 @@ require_once VENDOR_PATH . 'autoload.php';
  * compilation, the directory 'Core', where the auto load classes are located, does not reside inside OX_BASE_PATH,
  * but inside VENDOR_PATH.
  */
-if (!is_dir(OX_BASE_PATH . 'Core')) {
-    define('CORE_AUTOLOADER_PATH', (new \OxidEsales\Facts\Facts())->getCommunityEditionSourcePath() .
+if (!\is_dir(OX_BASE_PATH . 'Core')) {
+    \define('CORE_AUTOLOADER_PATH', (new \OxidEsales\Facts\Facts())->getCommunityEditionSourcePath() .
             DIRECTORY_SEPARATOR .
             'Core' . DIRECTORY_SEPARATOR .
             'Autoload' . DIRECTORY_SEPARATOR);
 } else {
-    define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
+    \define('CORE_AUTOLOADER_PATH', OX_BASE_PATH . 'Core' . DIRECTORY_SEPARATOR . 'Autoload' . DIRECTORY_SEPARATOR);
 }
 
 /*
@@ -154,7 +154,7 @@ if (!is_dir(OX_BASE_PATH . 'Core')) {
  * This autoloader will load classes for reasons of backwards compatibility like 'oxArticle'.
  */
 require_once CORE_AUTOLOADER_PATH . 'BackwardsCompatibilityAutoload.php';
-spl_autoload_register([OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload::class, 'autoload']);
+\spl_autoload_register([OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload::class, 'autoload']);
 
 /**
  * Register the module autoloader.
@@ -162,7 +162,7 @@ spl_autoload_register([OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatib
  * When this autoloader is called a database connection will be triggered
  */
 require_once CORE_AUTOLOADER_PATH . 'ModuleAutoload.php';
-spl_autoload_register([\OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class, 'autoload']);
+\spl_autoload_register([\OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class, 'autoload']);
 
 
 /**
@@ -177,7 +177,7 @@ unset($configFile);
  * Set exception handler before including modules/functions.php so it can be overwritten easiliy by shop operators.
  */
 $debugMode = (bool) \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
-set_exception_handler(
+\set_exception_handler(
     [
         new \OxidEsales\Eshop\Core\Exception\ExceptionHandler($debugMode),
         'handleUncaughtException'
@@ -194,7 +194,7 @@ require_once OX_BASE_PATH . 'oxfunctions.php';
 /**
  * Custom bootstrap functionality.
  */
-if (@is_readable(OX_BASE_PATH . 'modules/functions.php')) {
+if (@\is_readable(OX_BASE_PATH . 'modules/functions.php')) {
     include OX_BASE_PATH . 'modules/functions.php';
 }
 
@@ -205,29 +205,29 @@ if (@is_readable(OX_BASE_PATH . 'modules/functions.php')) {
 require_once OX_BASE_PATH . 'overridablefunctions.php';
 
 //sets default PHP ini params
-ini_set('session.name', 'sid');
-ini_set('session.use_cookies', 0);
-ini_set('session.use_trans_sid', 0);
-ini_set('url_rewriter.tags', '');
+\ini_set('session.name', 'sid');
+\ini_set('session.use_cookies', 0);
+\ini_set('session.use_trans_sid', 0);
+\ini_set('url_rewriter.tags', '');
 
-if (!function_exists('oxTriggerOfflinePageDisplay')) {
+if (!\function_exists('oxTriggerOfflinePageDisplay')) {
     /**
      * Bulletproof offline page loader
      */
     function oxTriggerOfflinePageDisplay()
     {
         // Do not display the offline page, if this running in CLI mode
-        if ('cli' !== strtolower(php_sapi_name())) {
-            header("HTTP/1.1 500 Internal Server Error");
-            header("Connection: close");
+        if ('cli' !== \strtolower(\php_sapi_name())) {
+            \header("HTTP/1.1 500 Internal Server Error");
+            \header("Connection: close");
 
             /**
              * Render an error message.
              * If offline.php exists its content is displayed.
              * Like this the error message is overridable within that file.
              */
-            if (is_readable(OX_OFFLINE_FILE)) {
-                echo file_get_contents(OX_OFFLINE_FILE);
+            if (\is_readable(OX_OFFLINE_FILE)) {
+                echo \file_get_contents(OX_OFFLINE_FILE);
             };
         }
     }

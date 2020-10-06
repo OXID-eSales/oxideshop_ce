@@ -255,10 +255,10 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getRecommListsByIds($aArticleIds)
     {
-        if (is_array($aArticleIds) && count($aArticleIds)) {
+        if (\is_array($aArticleIds) && \count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
-            $sIds = implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));
+            $sIds = \implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));
 
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
@@ -307,13 +307,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
-        $sIds = implode(", ", $aIds);
+        $sIds = \implode(", ", $aIds);
 
         $aPrevIds = [];
         $sArtView = getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
-            if (count($aPrevIds)) {
-                $sNegateSql = " AND $sArtView.oxid not in ( '" . implode("','", $aPrevIds) . "' ) ";
+            if (\count($aPrevIds)) {
+                $sNegateSql = " AND $sArtView.oxid not in ( '" . \implode("','", $aPrevIds) . "' ) ";
             } else {
                 $sNegateSql = '';
             }
@@ -323,13 +323,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $oArtList->setSqlLimit(0, 1);
             $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);
 
-            if (count($oArtList) == 1) {
+            if (\count($oArtList) == 1) {
                 $oArtList->rewind();
                 $oArticle = $oArtList->current();
                 $sId = $oArticle->getId();
                 $aPrevIds[$sId] = $sId;
                 unset($aIds[$sId]);
-                $sIds = implode(", ", $aIds);
+                $sIds = \implode(", ", $aIds);
             } else {
                 unset($oRecommList[$key]);
             }
@@ -376,7 +376,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         $iCnt = 0;
         $sSelect = $this->_getSearchSelect($sSearchStr);
         if ($sSelect) {
-            $sPartial = substr($sSelect, strpos($sSelect, ' from '));
+            $sPartial = \substr($sSelect, \strpos($sSelect, ' from '));
             $sSelect = "select count( distinct rl.oxid ) $sPartial ";
             $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
         }

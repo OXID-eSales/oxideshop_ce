@@ -35,7 +35,7 @@ function smarty_modifier_oxtruncate($sString, $iLength = 80, $sSufix = '...', $b
     } elseif ($iLength > 0 && Str::getStr()->strlen($sString) > $iLength) {
         $iLength -= Str::getStr()->strlen($sSufix);
 
-        $sString = str_replace(['&#039;', '&quot;'], [ "'",'"' ], $sString);
+        $sString = \str_replace(['&#039;', '&quot;'], [ "'",'"' ], $sString);
 
         if (!$blBreakWords) {
             $sString = Str::getStr()->preg_replace('/\s+?(\S+)?$/', '', Str::getStr()->substr($sString, 0, $iLength + 1));
@@ -43,7 +43,7 @@ function smarty_modifier_oxtruncate($sString, $iLength = 80, $sSufix = '...', $b
 
         $sString = Str::getStr()->substr($sString, 0, $iLength) . $sSufix;
 
-        return str_replace([ "'",'"' ], ['&#039;', '&quot;'], $sString);
+        return \str_replace([ "'",'"' ], ['&#039;', '&quot;'], $sString);
     }
 
     return $sString;

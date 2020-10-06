@@ -115,7 +115,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
             $aRemoveArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if (is_array($aRemoveArt)) {
+        if (\is_array($aRemoveArt)) {
             $sSelect = "update oxarticles set oxvendorid = null where "
                 . $this->onVendorActionArticleUpdateConditions($aRemoveArt);
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sSelect);
@@ -141,7 +141,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
             $aAddArticle = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
+        if ($soxId && $soxId != "-1" && \is_array($aAddArticle)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sSelect = "update oxarticles set oxvendorid = " . $oDb->quote($soxId) . " where "
                 . $this->onVendorActionArticleUpdateConditions($aAddArticle);
@@ -162,7 +162,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      */
     protected function onVendorActionArticleUpdateConditions($articleIds)
     {
-        return 'oxid in (' . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articleIds)) . ')';
+        return 'oxid in (' . \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articleIds)) . ')';
     }
 
     /**

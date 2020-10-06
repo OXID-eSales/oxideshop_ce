@@ -50,7 +50,7 @@ class BasketContentMarkGenerator
      */
     public function getMark($sMarkIdentification)
     {
-        if (is_null($this->_aMarks)) {
+        if (\is_null($this->_aMarks)) {
             $sCurrentMark = self::DEFAULT_EXPLANATION_MARK;
             $aMarks = $this->_formMarks($sCurrentMark);
             $this->_aMarks = $aMarks;

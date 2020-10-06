@@ -95,7 +95,7 @@ class ModuleTranslationPathFinder
      */
     protected function directoryExists($path)
     {
-        return file_exists($path);
+        return \file_exists($path);
     }
 
     /**

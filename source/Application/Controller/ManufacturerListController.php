@@ -153,7 +153,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
         $this->_iAllArtCnt = $oArtList->loadManufacturerArticles($sManufacturerId, $oManufacturer);
 
         // counting pages
-        $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
+        $this->_iCntPages = \ceil($this->_iAllArtCnt / $iNrofCatArticles);
 
         return [$oArtList, $this->_iAllArtCnt];
     }

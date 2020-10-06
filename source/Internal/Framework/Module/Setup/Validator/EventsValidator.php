@@ -49,7 +49,7 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
                 $events[$event->getAction()] = $event->getMethod();
             }
             foreach ($this->validEvents as $validEventName) {
-                if (is_array($events) && \array_key_exists($validEventName, $events)) {
+                if (\is_array($events) && \array_key_exists($validEventName, $events)) {
                     $this->checkIfMethodIsCallable($events[$validEventName]);
                 }
             }
@@ -78,7 +78,7 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
      */
     private function isNamespacedClass(string $method): bool
     {
-        $className = explode('::', $method)[0];
+        $className = \explode('::', $method)[0];
         if ($this->shopAdapter->isNamespace($className)) {
             return true;
         }

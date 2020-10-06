@@ -6,7 +6,7 @@
  */
 
 // checks if GD library version getter does not exist
-if (!function_exists("getGdVersion")) {
+if (!\function_exists("getGdVersion")) {
     /**
      * Returns GD library version
      *
@@ -19,7 +19,7 @@ if (!function_exists("getGdVersion")) {
 }
 
 // checks if image creation function does not exist
-if (!function_exists("copyAlteredImage")) {
+if (!\function_exists("copyAlteredImage")) {
     /**
      * Creates and copies the resized image
      *
@@ -35,12 +35,12 @@ if (!function_exists("copyAlteredImage")) {
      */
     function copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)
     {
-        return imagecopyresampled($sDestinationImage, $sSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1]);
+        return \imagecopyresampled($sDestinationImage, $sSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1]);
     }
 }
 
 // checks if image size calculator does nor exist
-if (!function_exists("calcImageSize")) {
+if (!\function_exists("calcImageSize")) {
     /**
      * Calculates proportional new image size
      *
@@ -56,11 +56,11 @@ if (!function_exists("calcImageSize")) {
         // #1837/1177M - do not resize smaller pictures
         if ($iDesiredWidth < $iPrefWidth || $iDesiredHeight < $iPrefHeight) {
             if ($iPrefWidth >= $iPrefHeight * ((float) ($iDesiredWidth / $iDesiredHeight))) {
-                $iNewHeight = round(($iPrefHeight * (float) ($iDesiredWidth / $iPrefWidth)), 0);
+                $iNewHeight = \round(($iPrefHeight * (float) ($iDesiredWidth / $iPrefWidth)), 0);
                 $iNewWidth = $iDesiredWidth;
             } else {
                 $iNewHeight = $iDesiredHeight;
-                $iNewWidth = round(($iPrefWidth * (float) ($iDesiredHeight / $iPrefHeight)), 0);
+                $iNewWidth = \round(($iPrefWidth * (float) ($iDesiredHeight / $iPrefHeight)), 0);
             }
         } else {
             $iNewWidth = $iPrefWidth;
@@ -72,7 +72,7 @@ if (!function_exists("calcImageSize")) {
 }
 
 // sets 0755 permissions for given file
-if (!function_exists("makeReadable")) {
+if (!\function_exists("makeReadable")) {
     /**
      * Sets 0755 permissions for given file and returns name of affected file
      *
@@ -83,10 +83,10 @@ if (!function_exists("makeReadable")) {
     function makeReadable($sTarget)
     {
         $blChmodState = false;
-        if (file_exists($sTarget) && is_readable($sTarget)) {
-            $blChmodState = @chmod($sTarget, 0755);
-            if (defined('OXID_PHP_UNIT')) {
-                @chmod($sTarget, 0777);
+        if (\file_exists($sTarget) && \is_readable($sTarget)) {
+            $blChmodState = @\chmod($sTarget, 0755);
+            if (\defined('OXID_PHP_UNIT')) {
+                @\chmod($sTarget, 0777);
             }
         }
 
@@ -94,7 +94,7 @@ if (!function_exists("makeReadable")) {
     }
 }
 
-if (!function_exists("checkSizeAndCopy")) {
+if (!\function_exists("checkSizeAndCopy")) {
     /**
      * Checks if preferred image dimensions size matches defined in config;
      * in case it matches - copies original image to new location, returns
@@ -114,7 +114,7 @@ if (!function_exists("checkSizeAndCopy")) {
     {
         list($iNewWidth, $iNewHeight) = calcImageSize($iWidth, $iHeight, $iOrigWidth, $iOrigHeight);
         if ($iNewWidth == $iOrigWidth && $iNewHeight == $iOrigHeight) {
-            return copy($sSrc, $sTarget);
+            return \copy($sSrc, $sTarget);
         } else {
             return [$iNewWidth, $iNewHeight];
         }
@@ -122,7 +122,7 @@ if (!function_exists("checkSizeAndCopy")) {
 }
 
 // checks if GIF resizer does not exist
-if (!function_exists("resizeGif")) {
+if (!\function_exists("resizeGif")) {
     /**
      * Creates resized GIF image. Returns path of new file if creation
      * succeed. On error returns FALSE
@@ -140,20 +140,20 @@ if (!function_exists("resizeGif")) {
     function resizeGif($sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeight, $iGDVer)
     {
         $aResult = checkSizeAndCopy($sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeight);
-        if (is_array($aResult)) {
+        if (\is_array($aResult)) {
             list($iNewWidth, $iNewHeight) = $aResult;
-            $hDestinationImage = imagecreatetruecolor($iNewWidth, $iNewHeight);
-            $hSourceImage = imagecreatefromgif($sSrc);
+            $hDestinationImage = \imagecreatetruecolor($iNewWidth, $iNewHeight);
+            $hSourceImage = \imagecreatefromgif($sSrc);
 
-            $iFillColor = imagecolorresolve($hDestinationImage, 255, 255, 255);
-            imagefill($hDestinationImage, 0, 0, $iFillColor);
-            imagecolortransparent($hDestinationImage, $iFillColor);
+            $iFillColor = \imagecolorresolve($hDestinationImage, 255, 255, 255);
+            \imagefill($hDestinationImage, 0, 0, $iFillColor);
+            \imagecolortransparent($hDestinationImage, $iFillColor);
 
-            imagecopyresampled($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
+            \imagecopyresampled($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
 
-            imagegif($hDestinationImage, $sTarget);
-            imagedestroy($hDestinationImage);
-            imagedestroy($hSourceImage);
+            \imagegif($hDestinationImage, $sTarget);
+            \imagedestroy($hDestinationImage);
+            \imagedestroy($hSourceImage);
         }
 
         return makeReadable($sTarget);
@@ -161,7 +161,7 @@ if (!function_exists("resizeGif")) {
 }
 
 // checks if PNG resizer does not exist
-if (!function_exists("resizePng")) {
+if (!\function_exists("resizePng")) {
     /**
      * Creates resized PNG image. Returns path of new file if creation
      * succeded. On error returns FALSE
@@ -179,27 +179,27 @@ if (!function_exists("resizePng")) {
     function resizePng($sSrc, $sTarget, $iWidth, $iHeight, $aImageInfo, $iGdVer, $hDestinationImage)
     {
         $aResult = checkSizeAndCopy($sSrc, $sTarget, $iWidth, $iHeight, $aImageInfo[0], $aImageInfo[1]);
-        if (is_array($aResult)) {
+        if (\is_array($aResult)) {
             list($iNewWidth, $iNewHeight) = $aResult;
             if ($hDestinationImage === null) {
-                $hDestinationImage = imagecreatetruecolor($iNewWidth, $iNewHeight);
+                $hDestinationImage = \imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
-            $hSourceImage = imagecreatefrompng($sSrc);
-            if (!imageistruecolor($hSourceImage)) {
-                $hDestinationImage = imagecreate($iNewWidth, $iNewHeight);
+            $hSourceImage = \imagecreatefrompng($sSrc);
+            if (!\imageistruecolor($hSourceImage)) {
+                $hDestinationImage = \imagecreate($iNewWidth, $iNewHeight);
                 // fix for transparent images sets image to transparent
-                $imgWhite = imagecolorallocate($hDestinationImage, 255, 255, 255);
-                imagefill($hDestinationImage, 0, 0, $imgWhite);
-                imagecolortransparent($hDestinationImage, $imgWhite);
+                $imgWhite = \imagecolorallocate($hDestinationImage, 255, 255, 255);
+                \imagefill($hDestinationImage, 0, 0, $imgWhite);
+                \imagecolortransparent($hDestinationImage, $imgWhite);
             //end of fix
             } else {
-                imagealphablending($hDestinationImage, false);
-                imagesavealpha($hDestinationImage, true);
+                \imagealphablending($hDestinationImage, false);
+                \imagesavealpha($hDestinationImage, true);
             }
             if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {
-                imagepng($hDestinationImage, $sTarget);
-                imagedestroy($hDestinationImage);
-                imagedestroy($hSourceImage);
+                \imagepng($hDestinationImage, $sTarget);
+                \imagedestroy($hDestinationImage);
+                \imagedestroy($hSourceImage);
             }
         }
 
@@ -208,7 +208,7 @@ if (!function_exists("resizePng")) {
 }
 
 // checks if JPG resizer does not exist
-if (!function_exists("resizeJpeg")) {
+if (!\function_exists("resizeJpeg")) {
     /**
      * Creates resized JPG image. Returns path of new file if creation
      * succeed. On error returns FALSE
@@ -227,16 +227,16 @@ if (!function_exists("resizeJpeg")) {
     function resizeJpeg($sSrc, $sTarget, $iWidth, $iHeight, $aImageInfo, $iGdVer, $hDestinationImage, $iDefQuality)
     {
         $aResult = checkSizeAndCopy($sSrc, $sTarget, $iWidth, $iHeight, $aImageInfo[0], $aImageInfo[1]);
-        if (is_array($aResult)) {
+        if (\is_array($aResult)) {
             list($iNewWidth, $iNewHeight) = $aResult;
             if ($hDestinationImage === null) {
-                $hDestinationImage = imagecreatetruecolor($iNewWidth, $iNewHeight);
+                $hDestinationImage = \imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
-            $hSourceImage = imagecreatefromstring(file_get_contents($sSrc));
+            $hSourceImage = \imagecreatefromstring(\file_get_contents($sSrc));
             if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {
-                imagejpeg($hDestinationImage, $sTarget, $iDefQuality);
-                imagedestroy($hDestinationImage);
-                imagedestroy($hSourceImage);
+                \imagejpeg($hDestinationImage, $sTarget, $iDefQuality);
+                \imagedestroy($hDestinationImage);
+                \imagedestroy($hSourceImage);
             }
         }
 

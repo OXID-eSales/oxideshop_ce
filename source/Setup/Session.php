@@ -45,7 +45,7 @@ class Session extends Core
      */
     public function __construct()
     {
-        ini_set('session.use_cookies', 0);
+        \ini_set('session.use_cookies', 0);
 
         // initialize session
         $this->_startSession();
@@ -58,7 +58,7 @@ class Session extends Core
      */
     protected function _startSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        session_name($this->_sSessionName);
+        \session_name($this->_sSessionName);
 
         /** @var Utilities $oUtils */
         $oUtils = $this->getInstance("Utilities");
@@ -69,10 +69,10 @@ class Session extends Core
         }
 
         if (!empty($sSid)) {
-            session_id($sSid);
+            \session_id($sSid);
         }
 
-        session_start();
+        \session_start();
         $sSid = $this->_validateSession();
         $this->setSid($sSid);
     }
@@ -89,14 +89,14 @@ class Session extends Core
             $this->setSessionParam('setup_session', true);
         } elseif ($this->getSessionParam('setup_session') !== true) {
             $sNewSid = $this->_getNewSessionID();
-            session_write_close();
+            \session_write_close();
 
-            session_id($sNewSid);
-            session_start();
+            \session_id($sNewSid);
+            \session_start();
             $this->setSessionParam('setup_session', true);
         }
 
-        return session_id();
+        return \session_id();
     }
 
     /**
@@ -107,10 +107,10 @@ class Session extends Core
      */
     protected function _getNewSessionID() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        session_regenerate_id(false);
+        \session_regenerate_id(false);
         $this->setIsNewSession(true);
 
-        return session_id();
+        return \session_id();
     }
 
     /**

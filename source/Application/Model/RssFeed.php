@@ -61,7 +61,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         $sFileCacheName = $aOxActionToCacheIds[$sOxActionId];
 
-        if (is_null($sFileCacheName)) {
+        if (\is_null($sFileCacheName)) {
             $sFileCacheName = '';
         }
 
@@ -122,7 +122,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
 
         $editionSelector = new EditionSelector();
         $this->_aChannel['image']['url'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getImageUrl()
-            . 'logo_' . strtolower($editionSelector->getEdition()) . '.png';
+            . 'logo_' . \strtolower($editionSelector->getEdition()) . '.png';
 
         $this->_aChannel['image']['title'] = $this->_aChannel['title'];
         $this->_aChannel['image']['link'] = $this->_aChannel['link'];
@@ -156,7 +156,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
     protected function _loadFromCache($name) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($aRes = Registry::getUtils()->fromFileCache($this->_getCacheId($name))) {
-            if ($aRes['timestamp'] > time() - self::CACHE_TTL) {
+            if ($aRes['timestamp'] > \time() - self::CACHE_TTL) {
                 return $aRes['content'];
             }
         }
@@ -182,12 +182,12 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             $sLastBuildDate = $aData2['content']['lastBuildDate'];
             $aData2['content']['lastBuildDate'] = '';
             $aData['lastBuildDate'] = '';
-            if (!strcmp(serialize($aData), serialize($aData2['content']))) {
+            if (!\strcmp(\serialize($aData), \serialize($aData2['content']))) {
                 return $sLastBuildDate;
             }
         }
 
-        return date('D, d M Y H:i:s O');
+        return \date('D, d M Y H:i:s O');
     }
 
     /**
@@ -205,7 +205,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _saveToCache($name, $aContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aData = ['timestamp' => time(), 'content' => $aContent];
+        $aData = ['timestamp' => \time(), 'content' => $aContent];
 
         return Registry::getUtils()->toFileCache($this->_getCacheId($name), $aData);
     }
@@ -244,7 +244,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
                 $sPrice .= ' ' . $sFrom . $oLang->formatCurrency($oPrice->getBruttoPrice(), $oActCur) . ' ' . $oActCur->sign;
             }
 
-            $oItem->title = strip_tags($oArticle->oxarticles__oxtitle->value . $sPrice);
+            $oItem->title = \strip_tags($oArticle->oxarticles__oxtitle->value . $sPrice);
             $oItem->guid = $oItem->link = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());
             $oItem->isGuidPermalink = true;
             // $oItem->description             = $oArticle->getLongDescription()->value; //oxarticles__oxshortdesc->value;
@@ -255,23 +255,23 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
                 $oItem->description = $oArticle->getLongDescription()->value;
             }
 
-            if (trim(str_replace('&nbsp;', '', (strip_tags($oItem->description)))) == '') {
+            if (\trim(\str_replace('&nbsp;', '', (\strip_tags($oItem->description)))) == '') {
                 $oItem->description = $oArticle->oxarticles__oxshortdesc->value;
             }
 
-            $oItem->description = trim($oItem->description);
+            $oItem->description = \trim($oItem->description);
             if ($sThumb = $oArticle->getThumbnailUrl()) {
                 $oItem->description = "<img src='$sThumb' border=0 align='left' hspace=5>" . $oItem->description;
             }
             $oItem->description = $oStr->htmlspecialchars($oItem->description);
 
             if ($oArticle->oxarticles__oxtimestamp->value) {
-                list($date, $time) = explode(' ', $oArticle->oxarticles__oxtimestamp->value);
-                $date = explode('-', $date);
-                $time = explode(':', $time);
-                $oItem->date = date('D, d M Y H:i:s O', mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]));
+                list($date, $time) = \explode(' ', $oArticle->oxarticles__oxtimestamp->value);
+                $date = \explode('-', $date);
+                $time = \explode(':', $time);
+                $oItem->date = \date('D, d M Y H:i:s O', \mktime($time[0], $time[1], $time[2], $date[1], $date[2], $date[0]));
             } else {
-                $oItem->date = date('D, d M Y H:i:s O', time());
+                $oItem->date = \date('D, d M Y H:i:s O', \time());
             }
 
             $aItems[] = $oItem;
@@ -376,7 +376,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
             $this->_aChannel['lastBuildDate'] = $this->_getLastBuildDate($sTag, $this->_aChannel);
             $this->_saveToCache($sTag, $this->_aChannel);
         } else {
-            $this->_aChannel['lastBuildDate'] = date('D, d M Y H:i:s O', Registry::getUtilsDate()->getTime());
+            $this->_aChannel['lastBuildDate'] = \date('D, d M Y H:i:s O', Registry::getUtilsDate()->getTime());
         }
     }
 
@@ -542,8 +542,8 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $oLang = Registry::getLang();
 
         return $this->_prepareUrl(
-            "cl=rss&amp;fnc=catarts&amp;cat=" . urlencode($oCat->getId()),
-            sprintf($oLang->translateString('CATEGORY_PRODUCTS_S', $oLang->getBaseLanguage()), $oCat->oxcategories__oxtitle->value)
+            "cl=rss&amp;fnc=catarts&amp;cat=" . \urlencode($oCat->getId()),
+            \sprintf($oLang->translateString('CATEGORY_PRODUCTS_S', $oLang->getBaseLanguage()), $oCat->oxcategories__oxtitle->value)
         );
     }
 
@@ -571,7 +571,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_loadData(
             self::RSS_CATARTS . $sId,
             $this->getCategoryArticlesTitle($oCat),
-            sprintf($oLang->translateString('S_CATEGORY_PRODUCTS', $oLang->getBaseLanguage()), $oCat->oxcategories__oxtitle->value),
+            \sprintf($oLang->translateString('S_CATEGORY_PRODUCTS', $oLang->getBaseLanguage()), $oCat->oxcategories__oxtitle->value),
             $this->_getArticleItems($oArtList),
             $this->getCategoryArticlesUrl($oCat),
             $oCat->getLink()
@@ -611,17 +611,17 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sParams = "searchparam=" . urlencode($sSearch);
+        $sParams = "searchparam=" . \urlencode($sSearch);
         if ($sCatId) {
-            $sParams .= "&amp;searchcnid=" . urlencode($sCatId);
+            $sParams .= "&amp;searchcnid=" . \urlencode($sCatId);
         }
 
         if ($sVendorId) {
-            $sParams .= "&amp;searchvendor=" . urlencode($sVendorId);
+            $sParams .= "&amp;searchvendor=" . \urlencode($sVendorId);
         }
 
         if ($sManufacturerId) {
-            $sParams .= "&amp;searchmanufacturer=" . urlencode($sManufacturerId);
+            $sParams .= "&amp;searchmanufacturer=" . \urlencode($sManufacturerId);
         }
 
         return $sParams;
@@ -670,22 +670,22 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $oLang = Registry::getLang();
         $sCatTitle = '';
         if ($sTitle = $this->_getObjectField($sCatId, 'oxcategory', 'oxcategories__oxtitle')) {
-            $sCatTitle = sprintf($oLang->translateString('CATEGORY_S', $oLang->getBaseLanguage()), $sTitle);
+            $sCatTitle = \sprintf($oLang->translateString('CATEGORY_S', $oLang->getBaseLanguage()), $sTitle);
         }
         $sVendorTitle = '';
         if ($sTitle = $this->_getObjectField($sVendorId, 'oxvendor', 'oxvendor__oxtitle')) {
-            $sVendorTitle = sprintf($oLang->translateString('VENDOR_S', $oLang->getBaseLanguage()), $sTitle);
+            $sVendorTitle = \sprintf($oLang->translateString('VENDOR_S', $oLang->getBaseLanguage()), $sTitle);
         }
         $sManufacturerTitle = '';
         if ($sTitle = $this->_getObjectField($sManufacturerId, 'oxmanufacturer', 'oxmanufacturers__oxtitle')) {
-            $sManufacturerTitle = sprintf($oLang->translateString('MANUFACTURER_S', $oLang->getBaseLanguage()), $sTitle);
+            $sManufacturerTitle = \sprintf($oLang->translateString('MANUFACTURER_S', $oLang->getBaseLanguage()), $sTitle);
         }
 
-        $sRet = sprintf($oLang->translateString($sSearch, $oLang->getBaseLanguage()), $sId);
+        $sRet = \sprintf($oLang->translateString($sSearch, $oLang->getBaseLanguage()), $sId);
 
-        $sRet = str_replace('<TAG_CATEGORY>', $sCatTitle, $sRet);
-        $sRet = str_replace('<TAG_VENDOR>', $sVendorTitle, $sRet);
-        $sRet = str_replace('<TAG_MANUFACTURER>', $sManufacturerTitle, $sRet);
+        $sRet = \str_replace('<TAG_CATEGORY>', $sCatTitle, $sRet);
+        $sRet = \str_replace('<TAG_VENDOR>', $sVendorTitle, $sRet);
+        $sRet = \str_replace('<TAG_MANUFACTURER>', $sManufacturerTitle, $sRet);
 
         return $sRet;
     }
@@ -708,7 +708,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $sUrl = $this->_prepareUrl("cl=rss&amp;fnc=searcharts", $oLang->translateString('SEARCH', $oLang->getBaseLanguage()));
 
         $sJoin = '?';
-        if (strpos($sUrl, '?') !== false) {
+        if (\strpos($sUrl, '?') !== false) {
             $sJoin = '&amp;';
         }
 
@@ -763,7 +763,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $oLang = Registry::getLang();
         $iLang = $oLang->getBaseLanguage();
 
-        return $this->_prepareFeedName(sprintf($oLang->translateString('LISTMANIA_LIST_FOR', $iLang), $oArticle->oxarticles__oxtitle->value));
+        return $this->_prepareFeedName(\sprintf($oLang->translateString('LISTMANIA_LIST_FOR', $iLang), $oArticle->oxarticles__oxtitle->value));
     }
 
     /**
@@ -839,7 +839,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_loadData(
             self::RSS_ARTRECOMMLISTS . $oArticle->getId(),
             $this->getRecommListsTitle($oArticle),
-            sprintf($oLang->translateString('LISTMANIA_LIST_FOR', $oLang->getBaseLanguage()), $oArticle->oxarticles__oxtitle->value),
+            \sprintf($oLang->translateString('LISTMANIA_LIST_FOR', $oLang->getBaseLanguage()), $oArticle->oxarticles__oxtitle->value),
             $this->_getRecommListItems($oList),
             $this->getRecommListsUrl($oArticle),
             $oArticle->getLink()
@@ -860,7 +860,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $oLang = Registry::getLang();
         $iLang = $oLang->getBaseLanguage();
 
-        return $this->_prepareFeedName(sprintf($oLang->translateString('LISTMANIA_LIST_PRODUCTS', $iLang), $oRecommList->oxrecommlists__oxtitle->value));
+        return $this->_prepareFeedName(\sprintf($oLang->translateString('LISTMANIA_LIST_PRODUCTS', $iLang), $oRecommList->oxrecommlists__oxtitle->value));
     }
 
     /**
@@ -905,7 +905,7 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         $this->_loadData(
             self::RSS_RECOMMLISTARTS . $oRecommList->getId(),
             $this->getRecommListArticlesTitle($oRecommList),
-            sprintf($oLang->translateString('LISTMANIA_LIST_PRODUCTS', $oLang->getBaseLanguage()), $oRecommList->oxrecommlists__oxtitle->value),
+            \sprintf($oLang->translateString('LISTMANIA_LIST_PRODUCTS', $oLang->getBaseLanguage()), $oRecommList->oxrecommlists__oxtitle->value),
             $this->_getArticleItems($oList),
             $this->getRecommListArticlesUrl($oRecommList),
             $oRecommList->getLink()
@@ -985,6 +985,6 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deleteFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return @unlink($sFilePath);
+        return @\unlink($sFilePath);
     }
 }

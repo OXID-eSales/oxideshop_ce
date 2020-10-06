@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-require_once dirname(__FILE__) . "/../bootstrap.php";
+require_once \dirname(__FILE__) . "/../bootstrap.php";
 
 // initializes singleton config class
 $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();

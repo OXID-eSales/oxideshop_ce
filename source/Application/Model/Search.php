@@ -92,7 +92,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $iCnt = 0;
         $sSelect = $this->_getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, false);
         if ($sSelect) {
-            $sPartial = substr($sSelect, strpos($sSelect, ' from '));
+            $sPartial = \substr($sSelect, \strpos($sSelect, ' from '));
             $sSelect = "select count( " . getViewName('oxarticles', $this->_iLanguage) . ".oxid ) $sPartial ";
 
             $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
@@ -249,17 +249,17 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $sArticleTable = getViewName('oxarticles', $this->_iLanguage);
 
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
-        if (!(is_array($aSearchCols) && count($aSearchCols))) {
+        if (!(\is_array($aSearchCols) && \count($aSearchCols))) {
             return '';
         }
 
         $sSearchSep = $myConfig->getConfigParam('blSearchUseAND') ? 'and ' : 'or ';
-        $aSearch = explode(' ', $sSearchString);
+        $aSearch = \explode(' ', $sSearchString);
         $sSearch = ' and ( ';
         $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
 
         foreach ($aSearch as $sSearchString) {
-            if (!strlen($sSearchString)) {
+            if (!\strlen($sSearchString)) {
                 continue;
             }
 
@@ -309,7 +309,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $descriptionJoin = '';
         $searchColumns = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSearchCols');
 
-        if (is_array($searchColumns) && in_array('oxlongdesc', $searchColumns)) {
+        if (\is_array($searchColumns) && \in_array('oxlongdesc', $searchColumns)) {
             $viewName = getViewName('oxartextends', $this->_iLanguage);
             $descriptionJoin = " LEFT JOIN {$viewName } ON {$table}.oxid={$viewName }.oxid ";
         }

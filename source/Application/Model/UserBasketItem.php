@@ -103,7 +103,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
 
             $aSelList = $this->getSelList();
-            if (($aSelectlist = $this->_oArticle->getSelectLists()) && is_array($aSelList)) {
+            if (($aSelectlist = $this->_oArticle->getSelectLists()) && \is_array($aSelList)) {
                 foreach ($aSelList as $iKey => $iSel) {
                     if (isset($aSelectlist[$iKey][$iSel])) {
                         // cloning select list information
@@ -129,7 +129,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __sleep()
     {
         $aRet = [];
-        foreach (get_object_vars($this) as $sKey => $sVar) {
+        foreach (\get_object_vars($this) as $sKey => $sVar) {
             if ($sKey != '_oArticle') {
                 $aRet[] = $sKey;
             }
@@ -146,7 +146,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getSelList()
     {
         if ($this->_aSelList == null && $this->oxuserbasketitems__oxsellist->value) {
-            $this->_aSelList = unserialize($this->oxuserbasketitems__oxsellist->value);
+            $this->_aSelList = \unserialize($this->oxuserbasketitems__oxsellist->value);
         }
 
         return $this->_aSelList;
@@ -159,7 +159,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setSelList($aSelList)
     {
-        $this->oxuserbasketitems__oxsellist = new \OxidEsales\Eshop\Core\Field(serialize($aSelList), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuserbasketitems__oxsellist = new \OxidEsales\Eshop\Core\Field(\serialize($aSelList), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -170,7 +170,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getPersParams()
     {
         if ($this->_aPersParam == null && $this->oxuserbasketitems__oxpersparam->value) {
-            $this->_aPersParam = unserialize($this->oxuserbasketitems__oxpersparam->value);
+            $this->_aPersParam = \unserialize($this->oxuserbasketitems__oxpersparam->value);
         }
 
         return $this->_aPersParam;
@@ -183,7 +183,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setPersParams($sPersParams)
     {
-        $this->oxuserbasketitems__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxuserbasketitems__oxpersparam = new \OxidEsales\Eshop\Core\Field(\serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -199,8 +199,8 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
-            'oxsellist' === strtolower($sFieldName) || 'oxuserbasketitems__oxsellist' === strtolower($sFieldName)
-            || 'oxpersparam' === strtolower($sFieldName) || 'oxuserbasketitems__oxpersparam' === strtolower($sFieldName)
+            'oxsellist' === \strtolower($sFieldName) || 'oxuserbasketitems__oxsellist' === \strtolower($sFieldName)
+            || 'oxpersparam' === \strtolower($sFieldName) || 'oxuserbasketitems__oxpersparam' === \strtolower($sFieldName)
         ) {
             $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }

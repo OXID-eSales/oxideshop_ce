@@ -40,7 +40,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         // automatically redirect to SSL login
-        if (!$myConfig->isSsl() && strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0) {
+        if (!$myConfig->isSsl() && \strpos($myConfig->getConfigParam('sAdminSSLURL'), 'https://') === 0) {
             \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($myConfig->getConfigParam('sAdminSSLURL'), false, 302);
         }
 
@@ -149,22 +149,22 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $aProfiles = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("aAdminProfiles");
             if ($aProfiles && isset($aProfiles[$sProfile])) {
                 // setting cookie to store last locally used profile
-                $myUtilsServer->setOxCookie("oxidadminprofile", $sProfile . "@" . implode("@", $aProfiles[$sProfile]), time() + 31536000, "/");
+                $myUtilsServer->setOxCookie("oxidadminprofile", $sProfile . "@" . \implode("@", $aProfiles[$sProfile]), \time() + 31536000, "/");
                 \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("profile", $aProfiles[$sProfile]);
             }
         } else {
             //deleting cookie info, as setting profile to default
-            $myUtilsServer->setOxCookie("oxidadminprofile", "", time() - 3600, "/");
+            $myUtilsServer->setOxCookie("oxidadminprofile", "", \time() - 3600, "/");
         }
 
         // languages
         $iLang = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("chlanguage");
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getAdminTplLanguageArray();
         if (!isset($aLanguages[$iLang])) {
-            $iLang = key($aLanguages);
+            $iLang = \key($aLanguages);
         }
 
-        $myUtilsServer->setOxCookie("oxidadminlanguage", $aLanguages[$iLang]->abbr, time() + 31536000, "/");
+        $myUtilsServer->setOxCookie("oxidadminlanguage", $aLanguages[$iLang]->abbr, \time() + 31536000, "/");
 
         //P
         //\OxidEsales\Eshop\Core\Registry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
@@ -222,6 +222,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function _getBrowserLanguage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+        return \strtolower(\substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }
 }

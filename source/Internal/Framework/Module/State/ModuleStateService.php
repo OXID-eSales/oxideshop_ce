@@ -42,7 +42,7 @@ class ModuleStateService implements ModuleStateServiceInterface
     {
         $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
 
-        return in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
+        return \in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
     }
 
     /**
@@ -86,7 +86,7 @@ class ModuleStateService implements ModuleStateServiceInterface
 
         $activeModuleIds = $activeModuleIdsSetting->getValue();
 
-        $activeModuleIds = array_diff($activeModuleIds, [$moduleId]);
+        $activeModuleIds = \array_diff($activeModuleIds, [$moduleId]);
         $activeModuleIdsSetting->setValue($activeModuleIds);
 
         $this->shopConfigurationSettingDao->save($activeModuleIdsSetting);

@@ -212,7 +212,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if (!$myConfig->isUtf()) {
-            $sContent = iconv(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset'), 'UTF-8', $sContent);
+            $sContent = \iconv(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset'), 'UTF-8', $sContent);
         }
 
         return $sContent;
@@ -291,13 +291,13 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     {
         $oActView = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView();
         // showLogin function is deprecated, but just in case if it is called
-        if (strcasecmp('showLogin', (string)$oActView->getFncName()) == 0) {
+        if (\strcasecmp('showLogin', (string)$oActView->getFncName()) == 0) {
             $sCl = 'account';
         } else {
             $sCl = $oActView->getClassName();
         }
 
-        return $sCl ? strtolower($sCl) : 'start';
+        return $sCl ? \strtolower($sCl) : 'start';
     }
 
     /**
@@ -316,7 +316,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                     $aCatTitle[] = $aCatPathParts['title'];
                 }
             }
-            $this->_sEmosCatPath = (count($aCatTitle) ? strip_tags(implode('/', $aCatTitle)) : 'NULL');
+            $this->_sEmosCatPath = (\count($aCatTitle) ? \strip_tags(\implode('/', $aCatTitle)) : 'NULL');
         }
 
         return $this->_sEmosCatPath;
@@ -352,7 +352,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                     if ($sCatPath) {
                         $sCatPath .= '/';
                     }
-                    $sCatPath .= strip_tags($oRs->fields['oxtitle']);
+                    $sCatPath .= \strip_tags($oRs->fields['oxtitle']);
                     $oRs->fetchRow();
                 }
             }
@@ -378,7 +378,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
             \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('anid') .
             \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
 
-        return md5($sPageId);
+        return \md5($sPageId);
     }
 
     /**
@@ -389,7 +389,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!($sCurrTpl = basename((string)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl')))) {
+        if (!($sCurrTpl = \basename((string)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('tpl')))) {
             // in case template was not defined in request
             $sCurrTpl = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getTemplateName();
         }
@@ -452,11 +452,11 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 $sOption = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('option');
                 $sOption = (isset($sOption)) ? $sOption : $session->getVariable('option');
 
-                if (isset($sOption) && array_key_exists('user_' . $sOption, $aContent)) {
+                if (isset($sOption) && \array_key_exists('user_' . $sOption, $aContent)) {
                     $aContent['user'] = $aContent['user_' . $sOption];
                 }
 
-                if (isset($sOption) && array_key_exists('user_' . $sOption, $aOrderSteps)) {
+                if (isset($sOption) && \array_key_exists('user_' . $sOption, $aOrderSteps)) {
                     $aOrderSteps['user'] = $aOrderSteps['user_' . $sOption];
                 }
                 break;
@@ -473,7 +473,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 if ($oProduct) {
                     $sPath = $this->_getBasketProductCatPath($oProduct);
                     $sTitle = $this->_prepareProductTitle($oProduct);
-                    $aContent['oxwarticledetails'] = "Shop/{$sPath}/" . strip_tags($sTitle);
+                    $aContent['oxwarticledetails'] = "Shop/{$sPath}/" . \strip_tags($sTitle);
                     $oEmos->addDetailView($this->_convProd2EmosItem($oProduct, $sPath, 1));
                 }
                 break;
@@ -504,7 +504,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 $aContent['newsletter'] = $oCurrentView->getNewsletterStatus() ? $aContent['newsletter_success'] : $aContent['newsletter_failure'];
                 break;
             case 'info':
-                if (array_key_exists('info_' . $sTplName, $aContent)) {
+                if (\array_key_exists('info_' . $sTplName, $aContent)) {
                     $aContent['info'] = $aContent['info_' . $sTplName];
                 } else {
                     $aContent['info'] = 'Content/' . $oStr->preg_replace('/\.tpl$/', '', $sTplName);
@@ -515,7 +515,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 $oContent = ($oCurrentView instanceof \OxidEsales\Eshop\Application\Controller\ContentController) ? $oCurrentView->getContent() : null;
                 $sContentId = $oContent ? $oContent->oxcontents__oxloadid->value : null;
 
-                if (array_key_exists('content_' . $sContentId, $aContent)) {
+                if (\array_key_exists('content_' . $sContentId, $aContent)) {
                     $aContent['content'] = $aContent['content_' . $sContentId];
                 } else {
                     $aContent['content'] = 'Content/' . $this->_getEmosPageTitle($aParams);
@@ -526,13 +526,13 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
                 break;
         }
 
-        if (is_string($sControllerName) && array_key_exists($sControllerName, $aContent)) {
+        if (\is_string($sControllerName) && \array_key_exists($sControllerName, $aContent)) {
             $oEmos->addContent($aContent[$sControllerName]);
         } else {
             $oEmos->addContent('Content/' . $oStr->preg_replace('/\.tpl$/', '', $sTplName));
         }
 
-        if (is_string($sControllerName) && array_key_exists($sControllerName, $aOrderSteps)) {
+        if (\is_string($sControllerName) && \array_key_exists($sControllerName, $aOrderSteps)) {
             $oEmos->addOrderProcess($aOrderSteps[$sControllerName]);
         }
 
@@ -619,7 +619,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         $iSuccess = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('success');
 
         if ($iError && $iError < 0) {
-            $oEmos->addRegister($oUser ? $oUser->getId() : 'NULL', abs($iError));
+            $oEmos->addRegister($oUser ? $oUser->getId() : 'NULL', \abs($iError));
         }
 
         if ($iSuccess && $iSuccess > 0 && $oUser) {
@@ -641,9 +641,9 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         }
 
         // ADD To Basket and Remove from Basket
-        if (is_array($aLastCall) && count($aLastCall)) {
-            $sCallAction = key($aLastCall);
-            $aCallData = current($aLastCall);
+        if (\is_array($aLastCall) && \count($aLastCall)) {
+            $sCallAction = \key($aLastCall);
+            $aCallData = \current($aLastCall);
 
             switch ($sCallAction) {
                 case 'changebasket':

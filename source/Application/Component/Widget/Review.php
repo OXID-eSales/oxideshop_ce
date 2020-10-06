@@ -48,7 +48,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      */
     public function getReviewType()
     {
-        return strtolower($this->getViewParameter('type'));
+        return \strtolower($this->getViewParameter('type'));
     }
 
     /**

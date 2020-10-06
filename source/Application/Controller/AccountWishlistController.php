@@ -189,7 +189,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
             $this->_aSimilarRecommListIds = false;
 
             $aWishProdList = $this->getWishProductList();
-            if (is_array($aWishProdList) && ($oSimilarProd = current($aWishProdList))) {
+            if (\is_array($aWishProdList) && ($oSimilarProd = \current($aWishProdList))) {
                 $this->_aSimilarRecommListIds = [$oSimilarProd->getId()];
             }
         }
@@ -209,7 +209,7 @@ class AccountWishlistController extends \OxidEsales\Eshop\Application\Controller
         }
 
         $aParams = Registry::getConfig()->getRequestParameter('editval', true);
-        if (is_array($aParams)) {
+        if (\is_array($aParams)) {
             $oUtilsView = Registry::getUtilsView();
             $oParams = (object) $aParams;
             $this->setEnteredData((object) Registry::getConfig()->getRequestParameter('editval'));

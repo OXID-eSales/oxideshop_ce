@@ -44,7 +44,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
 
         if (!$blCacheReset) {
             if (
-                array_key_exists($cacheId, self::$_aUserVatCache) &&
+                \array_key_exists($cacheId, self::$_aUserVatCache) &&
                 self::$_aUserVatCache[$cacheId] !== null
             ) {
                 return self::$_aUserVatCache[$cacheId];

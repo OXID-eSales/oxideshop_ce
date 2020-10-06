@@ -90,7 +90,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function getArrFldName($sName)
     {
-        return str_replace(".", "__", $sName);
+        return \str_replace(".", "__", $sName);
     }
 
     /**
@@ -104,10 +104,10 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function assignValuesFromText($sIn, $dVat = null)
     {
         $aRet = [];
-        $aPieces = explode('@@', $sIn);
+        $aPieces = \explode('@@', $sIn);
         foreach ($aPieces as $sVal) {
             if ($sVal) {
-                $aName = explode('__', $sVal);
+                $aName = \explode('__', $sVal);
                 if (isset($aName[0]) && isset($aName[1])) {
                     $aRet[] = $this->_fillExplodeArray($aName, $dVat);
                 }
@@ -127,7 +127,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function assignValuesToText($aIn)
     {
         $sRet = "";
-        reset($aIn);
+        \reset($aIn);
         foreach ($aIn as $sKey => $sVal) {
             $sRet .= $sKey;
             $sRet .= "__";
@@ -148,15 +148,15 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function currency2Float($sValue)
     {
         $fRet = $sValue;
-        $iPos = strrpos($sValue, ".");
-        if ($iPos && ((strlen($sValue) - 1 - $iPos) < 2 + 1)) {
+        $iPos = \strrpos($sValue, ".");
+        if ($iPos && ((\strlen($sValue) - 1 - $iPos) < 2 + 1)) {
             // replace decimal with ","
-            $fRet = substr_replace($fRet, ",", $iPos, 1);
+            $fRet = \substr_replace($fRet, ",", $iPos, 1);
         }
         // remove thousands
-        $fRet = str_replace([" ", "."], "", $fRet);
+        $fRet = \str_replace([" ", "."], "", $fRet);
 
-        return (float) str_replace(",", ".", $fRet);
+        return (float) \str_replace(",", ".", $fRet);
     }
 
     /**
@@ -168,24 +168,24 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function string2Float($sValue)
     {
-        $fRet = str_replace(" ", "", $sValue);
-        $iCommaPos = strpos($fRet, ",");
-        $iDotPos = strpos($fRet, ".");
+        $fRet = \str_replace(" ", "", $sValue);
+        $iCommaPos = \strpos($fRet, ",");
+        $iDotPos = \strpos($fRet, ".");
         if (!$iDotPos xor !$iCommaPos) {
-            if (substr_count($fRet, ",") > 1 || substr_count($fRet, ".") > 1) {
-                $fRet = str_replace([",", "."], "", $fRet);
+            if (\substr_count($fRet, ",") > 1 || \substr_count($fRet, ".") > 1) {
+                $fRet = \str_replace([",", "."], "", $fRet);
             } else {
-                $fRet = str_replace(",", ".", $fRet);
+                $fRet = \str_replace(",", ".", $fRet);
             }
         } else {
             if ($iDotPos < $iCommaPos) {
-                $fRet = str_replace(".", "", $fRet);
-                $fRet = str_replace(",", ".", $fRet);
+                $fRet = \str_replace(".", "", $fRet);
+                $fRet = \str_replace(",", ".", $fRet);
             }
         }
 
         // remove thousands
-        return (float) str_replace([" ", ","], "", $fRet);
+        return (float) \str_replace([" ", ","], "", $fRet);
     }
 
     /**
@@ -197,7 +197,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function isSearchEngine($sClient = null)
     {
-        if (is_null($this->_blIsSe)) {
+        if (\is_null($this->_blIsSe)) {
             $this->setSearchEngine(null, $sClient);
         }
 
@@ -226,16 +226,16 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         if (!($myConfig->getConfigParam('iDebug') && $this->isAdmin())) {
             $aRobots = $myConfig->getConfigParam('aRobots');
-            $aRobots = is_array($aRobots) ? $aRobots : [];
+            $aRobots = \is_array($aRobots) ? $aRobots : [];
 
             $aRobotsExcept = $myConfig->getConfigParam('aRobotsExcept');
-            $aRobotsExcept = is_array($aRobotsExcept) ? $aRobotsExcept : [];
+            $aRobotsExcept = \is_array($aRobotsExcept) ? $aRobotsExcept : [];
 
-            $sClient = $sClient ? $sClient : strtolower(getenv('HTTP_USER_AGENT'));
+            $sClient = $sClient ? $sClient : \strtolower(\getenv('HTTP_USER_AGENT'));
             $blIsSe = false;
-            $aRobots = array_merge($aRobots, $aRobotsExcept);
+            $aRobots = \array_merge($aRobots, $aRobotsExcept);
             foreach ($aRobots as $sRobot) {
-                if (strpos($sClient, $sRobot) !== false) {
+                if (\strpos($sClient, $sRobot) !== false) {
                     $blIsSe = true;
                     break;
                 }
@@ -258,11 +258,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         // improved #533
         // checking for available profiles list
-        if (is_array($aInterfaceProfiles)) {
+        if (\is_array($aInterfaceProfiles)) {
             //checking for previous profiles
             $sPrevProfile = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminprofile');
             if (isset($sPrevProfile)) {
-                $aPrevProfile = @explode("@", trim($sPrevProfile));
+                $aPrevProfile = @\explode("@", \trim($sPrevProfile));
             }
 
             //array to store profiles
@@ -299,7 +299,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         //cached currency precision, this saves about 1% of execution time
         $iCurPrecision = $this->_iCurPrecision;
 
-        if (is_null($iCurPrecision)) {
+        if (\is_null($iCurPrecision)) {
             if (!$oCur) {
                 $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             }
@@ -311,17 +311,17 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         // if < 5.3.x this is a workaround for #36008 bug in php - incorrect round() & number_format() result (R)
         static $dprez = null;
         if (!$dprez) {
-            $prez = @ini_get("precision");
+            $prez = @\ini_get("precision");
             if (!$prez || $prez > 12) {
                 $prez = 12;
             }
-            $dprez = pow(10, -$prez);
+            $dprez = \pow(10, -$prez);
         }
         stopProfile('fround');
 
         $sVal = (float) $sVal;
 
-        return round($sVal + $dprez * ($sVal >= 0 ? 1 : -1), $iCurPrecision);
+        return \round($sVal + $dprez * ($sVal >= 0 ? 1 : -1), $iCurPrecision);
     }
 
     /**
@@ -340,8 +340,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function arrayStringSearch($needle, $haystack)
     {
-        $result = array_search((string) $needle, $haystack);
-        $second = array_search((string) $needle, $haystack, true);
+        $result = \array_search((string) $needle, $haystack);
+        $second = \array_search((string) $needle, $haystack, true);
 
         //got a different result when using strict and not strict?
         //do a detail check
@@ -350,7 +350,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             foreach ($haystack as $value) {
                 $stringstack[] = (string) $value;
             }
-            $result = array_search((string) $needle, $stringstack, true);
+            $result = \array_search((string) $needle, $stringstack, true);
         }
 
         return $result;
@@ -411,7 +411,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     public function toPhpFileCache($sKey, $mContents)
     {
         //only simple arrays are supported
-        if (is_array($mContents) && ($sCachePath = $this->getCacheFilePath($sKey, false, 'php'))) {
+        if (\is_array($mContents) && ($sCachePath = $this->getCacheFilePath($sKey, false, 'php'))) {
             // setting meta
             $this->setCacheMeta($sKey, ["serialize" => false, "cachepath" => $sCachePath]);
 
@@ -494,12 +494,12 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function fromFileCache($sKey)
     {
-        if (!array_key_exists($sKey, $this->_aFileCacheContents)) {
+        if (!\array_key_exists($sKey, $this->_aFileCacheContents)) {
             $aMeta = $this->getCacheMeta($sKey);
             $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
 
-            clearstatcache();
-            if (is_readable($sCachePath)) {
+            \clearstatcache();
+            if (\is_readable($sCachePath)) {
                 $this->_lockFile($sCachePath, $sKey, LOCK_SH);
 
                 $blInclude = isset($aMeta["include"]) ? $aMeta["include"] : false;
@@ -534,9 +534,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function _readFile($sFilePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sRes = file_get_contents($sFilePath);
+        $sRes = \file_get_contents($sFilePath);
 
-        return $sRes ? unserialize($sRes) : null;
+        return $sRes ? \unserialize($sRes) : null;
     }
 
     /**
@@ -571,9 +571,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $blSerialize = isset($aCacheMeta["serialize"]) ? $aCacheMeta["serialize"] : true;
 
         if ($blSerialize) {
-            $mContents = serialize($mContents);
+            $mContents = \serialize($mContents);
         } else {
-            $mContents = "<?php\n//automatically generated file\n//" . date("Y-m-d H:i:s") . "\n\n\$_aCacheContents = " . var_export($mContents, true) . "\n?>";
+            $mContents = "<?php\n//automatically generated file\n//" . \date("Y-m-d H:i:s") . "\n\n\$_aCacheContents = " . \var_export($mContents, true) . "\n?>";
         }
 
         return $mContents;
@@ -590,10 +590,10 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             foreach ($this->_aLockedFileHandles[LOCK_EX] as $sKey => $rHandle) {
                 if ($rHandle !== false && isset($this->_aFileCacheContents[$sKey])) {
                     // #0002931A truncate file once more before writing
-                    ftruncate($rHandle, 0);
+                    \ftruncate($rHandle, 0);
 
                     // writing cache
-                    fwrite($rHandle, $this->_processCache($sKey, $this->_aFileCacheContents[$sKey]));
+                    \fwrite($rHandle, $this->_processCache($sKey, $this->_aFileCacheContents[$sKey]));
 
                     // releasing locks
                     $this->_releaseFile($sKey);
@@ -622,22 +622,22 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $rHandle = isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
         if ($rHandle === null) {
             $blLocked = false;
-            $rHandle = @fopen($sFilePath, "a+");
+            $rHandle = @\fopen($sFilePath, "a+");
 
             if ($rHandle !== false) {
-                if (flock($rHandle, $iLockMode | LOCK_NB)) {
+                if (\flock($rHandle, $iLockMode | LOCK_NB)) {
                     if ($iLockMode === LOCK_EX) {
                         // truncate file
-                        $blLocked = ftruncate($rHandle, 0);
+                        $blLocked = \ftruncate($rHandle, 0);
                     } else {
                         // move to a start position
-                        $blLocked = fseek($rHandle, 0) === 0;
+                        $blLocked = \fseek($rHandle, 0) === 0;
                     }
                 }
 
                 // on failure - closing and setting false..
                 if (!$blLocked) {
-                    fclose($rHandle);
+                    \fclose($rHandle);
                     $rHandle = false;
                 }
             }
@@ -645,13 +645,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             // in case system does not support file locking
             if (!$blLocked && $iLockMode === LOCK_EX) {
                 // clearing on first call
-                if (count($this->_aLockedFileHandles) == 0) {
-                    clearstatcache();
+                if (\count($this->_aLockedFileHandles) == 0) {
+                    \clearstatcache();
                 }
 
                 // start a blank file to inform other processes we are dealing with it.
-                if (!(file_exists($sFilePath) && !filesize($sFilePath) && abs(time() - filectime($sFilePath) < 40))) {
-                    $rHandle = @fopen($sFilePath, "w");
+                if (!(\file_exists($sFilePath) && !\filesize($sFilePath) && \abs(\time() - \filectime($sFilePath) < 40))) {
+                    $rHandle = @\fopen($sFilePath, "w");
                 }
             }
 
@@ -678,8 +678,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $this->_aLockedFileHandles[$iLockMode][$sIdent] !== false
         ) {
             // release the lock and close file
-            $blSuccess = flock($this->_aLockedFileHandles[$iLockMode][$sIdent], LOCK_UN) &&
-                         fclose($this->_aLockedFileHandles[$iLockMode][$sIdent]);
+            $blSuccess = \flock($this->_aLockedFileHandles[$iLockMode][$sIdent], LOCK_UN) &&
+                         \fclose($this->_aLockedFileHandles[$iLockMode][$sIdent]);
             unset($this->_aLockedFileHandles[$iLockMode][$sIdent]);
         }
 
@@ -693,12 +693,12 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function oxResetFileCache()
     {
-        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
-        if (is_array($aFiles)) {
+        $aFiles = \glob($this->getCacheFilePath(null, true) . '*');
+        if (\is_array($aFiles)) {
             // delete all the files, except cached tables field names
-            $aFiles = preg_grep($this->_sPermanentCachePattern, $aFiles, PREG_GREP_INVERT);
+            $aFiles = \preg_grep($this->_sPermanentCachePattern, $aFiles, PREG_GREP_INVERT);
             foreach ($aFiles as $sFile) {
-                @unlink($sFile);
+                @\unlink($sFile);
             }
         }
     }
@@ -712,20 +712,20 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $sSmartyDir = \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmartyDir();
         //$aFiles = glob( $this->getCacheFilePath( null, true ) . '*' );
-        $aFiles = glob($sSmartyDir . '*');
+        $aFiles = \glob($sSmartyDir . '*');
 
-        if (is_array($aFiles) && is_array($aTemplates) && count($aTemplates)) {
+        if (\is_array($aFiles) && \is_array($aTemplates) && \count($aTemplates)) {
             // delete all template cache files
             foreach ($aTemplates as &$sTemplate) {
-                $sTemplate = preg_quote(basename(strtolower($sTemplate), '.tpl'));
+                $sTemplate = \preg_quote(\basename(\strtolower($sTemplate), '.tpl'));
             }
 
-            $sPattern = sprintf("/%%(%s)\.tpl\.php$/i", implode('|', $aTemplates));
-            $aFiles = preg_grep($sPattern, $aFiles);
+            $sPattern = \sprintf("/%%(%s)\.tpl\.php$/i", \implode('|', $aTemplates));
+            $aFiles = \preg_grep($sPattern, $aFiles);
 
-            if (is_array($aFiles)) {
+            if (\is_array($aFiles)) {
                 foreach ($aFiles as $sFile) {
-                    @unlink($sFile);
+                    @\unlink($sFile);
                 }
             }
         }
@@ -736,13 +736,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function resetLanguageCache()
     {
-        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
-        if (is_array($aFiles)) {
+        $aFiles = \glob($this->getCacheFilePath(null, true) . '*');
+        if (\is_array($aFiles)) {
             // delete all language cache files
             $sPattern = $this->_sLanguageCachePattern;
-            $aFiles = preg_grep($sPattern, $aFiles);
+            $aFiles = \preg_grep($sPattern, $aFiles);
             foreach ($aFiles as $sFile) {
-                @unlink($sFile);
+                @\unlink($sFile);
             }
         }
     }
@@ -752,13 +752,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function resetMenuCache()
     {
-        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
-        if (is_array($aFiles)) {
+        $aFiles = \glob($this->getCacheFilePath(null, true) . '*');
+        if (\is_array($aFiles)) {
             // delete all menu cache files
             $sPattern = $this->_sMenuCachePattern;
-            $aFiles = preg_grep($sPattern, $aFiles);
+            $aFiles = \preg_grep($sPattern, $aFiles);
             foreach ($aFiles as $sFile) {
-                @unlink($sFile);
+                @\unlink($sFile);
             }
         }
     }
@@ -774,20 +774,20 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function getRemoteCachePath($sRemote, $sLocal)
     {
-        clearstatcache();
-        if (file_exists($sLocal) && filemtime($sLocal) && filemtime($sLocal) > time() - 86400) {
+        \clearstatcache();
+        if (\file_exists($sLocal) && \filemtime($sLocal) && \filemtime($sLocal) > \time() - 86400) {
             return $sLocal;
         }
-        $hRemote = @fopen($sRemote, "rb");
+        $hRemote = @\fopen($sRemote, "rb");
         $blSuccess = false;
-        if (is_resource($hRemote) && $hLocal = @fopen($sLocal, "wb")) {
-            stream_copy_to_stream($hRemote, $hLocal);
-            fclose($hRemote);
-            fclose($hLocal);
+        if (\is_resource($hRemote) && $hLocal = @\fopen($sLocal, "wb")) {
+            \stream_copy_to_stream($hRemote, $hLocal);
+            \fclose($hRemote);
+            \fclose($hLocal);
             $blSuccess = true;
         } else {
             // try via fsockopen
-            $aUrl = @parse_url($sRemote);
+            $aUrl = @\parse_url($sRemote);
             if (!empty($aUrl["host"])) {
                 $sPath = $aUrl["path"];
                 if (empty($sPath)) {
@@ -795,23 +795,23 @@ class Utils extends \OxidEsales\Eshop\Core\Base
                 }
                 $sHost = $aUrl["host"];
 
-                $hSocket = @fsockopen($sHost, 80, $iErrorNumber, $iErrStr, 5);
+                $hSocket = @\fsockopen($sHost, 80, $iErrorNumber, $iErrStr, 5);
                 if ($hSocket) {
-                    fputs($hSocket, "GET " . $sPath . " HTTP/1.0\r\nHost: $sHost\r\n\r\n");
-                    $headers = stream_get_line($hSocket, 4096, "\r\n\r\n");
-                    if (($hLocal = @fopen($sLocal, "wb")) !== false) {
-                        rewind($hLocal);
+                    \fputs($hSocket, "GET " . $sPath . " HTTP/1.0\r\nHost: $sHost\r\n\r\n");
+                    $headers = \stream_get_line($hSocket, 4096, "\r\n\r\n");
+                    if (($hLocal = @\fopen($sLocal, "wb")) !== false) {
+                        \rewind($hLocal);
                         // does not copy all the data
                         // stream_copy_to_stream($hSocket, $hLocal);
-                        fwrite($hLocal, stream_get_contents($hSocket));
-                        fclose($hLocal);
-                        fclose($hSocket);
+                        \fwrite($hLocal, \stream_get_contents($hSocket));
+                        \fclose($hLocal);
+                        \fclose($hSocket);
                         $blSuccess = true;
                     }
                 }
             }
         }
-        if ($blSuccess || file_exists($sLocal)) {
+        if ($blSuccess || \file_exists($sLocal)) {
             return $sLocal;
         }
 
@@ -850,7 +850,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $sAdminSid = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('admin_sid');
         if (($oUser = $this->getUser())) {
-            return md5($sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value);
+            return \md5($sAdminSid . $oUser->getId() . $oUser->oxuser__oxpassword->value . $oUser->oxuser__oxrights->value);
         }
     }
 
@@ -974,7 +974,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function seoIsActive($blReset = false, $sShopId = null, $iActLang = null)
     {
-        if (!is_null($this->_blSeoIsActive) && !$blReset) {
+        if (!\is_null($this->_blSeoIsActive) && !$blReset) {
             return $this->_blSeoIsActive;
         }
 
@@ -988,7 +988,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $iActLang = $iActLang ? $iActLang : (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
             // checking special config param for active shop and language
-            if (is_array($aSeoModes) && isset($aSeoModes[$sActShopId]) && isset($aSeoModes[$sActShopId][$iActLang])) {
+            if (\is_array($aSeoModes) && isset($aSeoModes[$sActShopId]) && isset($aSeoModes[$sActShopId][$iActLang])) {
                 $this->_blSeoIsActive = (bool) $aSeoModes[$sActShopId][$iActLang];
             }
         }
@@ -1067,7 +1067,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $sUrl = $this->_addUrlParameters($sUrl, ['redirected' => 1]);
         }
 
-        $sUrl = str_ireplace("&amp;", "&", $sUrl);
+        $sUrl = \str_ireplace("&amp;", "&", $sUrl);
 
         switch ($iHeaderCode) {
             case 301:
@@ -1134,7 +1134,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function setHeader($sHeader)
     {
-        header($sHeader);
+        \header($sHeader);
     }
 
     /**
@@ -1173,7 +1173,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oObject = new stdClass();
-        $aPrice = explode('!P!', $aName[0]);
+        $aPrice = \explode('!P!', $aName[0]);
 
         if (($myConfig->getConfigParam('bl_perfLoadSelectLists') && $myConfig->getConfigParam('bl_perfUseSelectlistPrice') && isset($aPrice[0]) && isset($aPrice[1])) || $this->isAdmin()) {
             // yes, price is there
@@ -1184,10 +1184,10 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             if ($iPercPos !== false) {
                 $oObject->priceUnit = '%';
                 $oObject->fprice = $oObject->price;
-                $oObject->price = substr($oObject->price, 0, $iPercPos);
+                $oObject->price = \substr($oObject->price, 0, $iPercPos);
             } else {
                 $oCur = $myConfig->getActShopCurrencyObject();
-                $oObject->price = str_replace(',', '.', $oObject->price);
+                $oObject->price = \str_replace(',', '.', $oObject->price);
                 $oObject->fprice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($oObject->price * $oCur->rate, $oCur);
                 $oObject->priceUnit = 'abs';
             }
@@ -1241,9 +1241,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         $blEnterNetPrice = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnterNetPrice');
         if ($blCalculationModeNetto && !$blEnterNetPrice) {
-            $dPrice = round(\OxidEsales\Eshop\Core\Price::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
+            $dPrice = \round(\OxidEsales\Eshop\Core\Price::brutto2Netto($dPrice, $dVat), $oCurrency->decimal);
         } elseif (!$blCalculationModeNetto && $blEnterNetPrice) {
-            $dPrice = round(\OxidEsales\Eshop\Core\Price::netto2Brutto($dPrice, $dVat), $oCurrency->decimal);
+            $dPrice = \round(\OxidEsales\Eshop\Core\Price::netto2Brutto($dPrice, $dVat), $oCurrency->decimal);
         }
 
         return $dPrice;
@@ -1290,11 +1290,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function oxMimeContentType($sFileName)
     {
-        $sFileName = strtolower($sFileName);
-        $iLastDot = strrpos($sFileName, '.');
+        $sFileName = \strtolower($sFileName);
+        $iLastDot = \strrpos($sFileName, '.');
 
         if ($iLastDot !== false) {
-            $sType = substr($sFileName, $iLastDot + 1);
+            $sType = \substr($sFileName, $iLastDot + 1);
             switch ($sType) {
                 case 'gif':
                     $sType = 'image/gif';
@@ -1328,8 +1328,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($myConfig->getConfigParam('iDebug') == -2) {
-            if (gettype($sText) != 'string') {
-                $sText = var_export($sText, true);
+            if (\gettype($sText) != 'string') {
+                $sText = \var_export($sText, true);
             }
             $logMessage = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
             $logger = Registry::getLogger();
@@ -1352,7 +1352,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $versionPrefix = $this->getEditionCacheFilePrefix();
 
-        $sPath = realpath(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir'));
+        $sPath = \realpath(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir'));
 
         if (!$sPath) {
             return false;
@@ -1381,7 +1381,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $aLangCache = null;
         $sFilePath = $this->getCacheFilePath($sCacheName);
-        if (file_exists($sFilePath) && is_readable($sFilePath)) {
+        if (\file_exists($sFilePath) && \is_readable($sFilePath)) {
             include $sFilePath;
         }
 
@@ -1398,14 +1398,14 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function setLangCache($sCacheName, $aLangCache)
     {
-        $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
+        $sCache = "<?php\n\$aLangCache = " . \var_export($aLangCache, true) . ";\n?>";
         $sFileName = $this->getCacheFilePath($sCacheName);
         $cacheDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCompileDir');
 
-        $tmpFile = $cacheDirectory . basename($sFileName) . uniqid('.temp', true) . '.txt';
-        $blRes = file_put_contents($tmpFile, $sCache, LOCK_EX);
+        $tmpFile = $cacheDirectory . \basename($sFileName) . \uniqid('.temp', true) . '.txt';
+        $blRes = \file_put_contents($tmpFile, $sCache, LOCK_EX);
 
-        rename($tmpFile, $sFileName);
+        \rename($tmpFile, $sFileName);
 
         return $blRes;
     }
@@ -1460,11 +1460,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $oStr = Str::getStr();
         if (
             !$oStr->preg_match('/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/', $sHost) &&
-            ($iLastDot = strrpos($sHost, '.')) !== false
+            ($iLastDot = \strrpos($sHost, '.')) !== false
         ) {
             $iLen = $oStr->strlen($sHost);
-            if (($iNextDot = strrpos($sHost, '.', ($iLen - $iLastDot + 1) * -1)) !== false) {
-                $sHost = trim($oStr->substr($sHost, $iNextDot), '.');
+            if (($iNextDot = \strrpos($sHost, '.', ($iLen - $iLastDot + 1) * -1)) !== false) {
+                $sHost = \trim($oStr->substr($sHost, $iNextDot), '.');
             }
         }
 

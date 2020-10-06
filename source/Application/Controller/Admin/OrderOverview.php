@@ -99,10 +99,10 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function makeValidFileName($sFilename)
     {
-        $sFilename = preg_replace('/[\s]+/', '_', $sFilename);
-        $sFilename = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $sFilename);
+        $sFilename = \preg_replace('/[\s]+/', '_', $sFilename);
+        $sFilename = \preg_replace('/[^a-zA-Z0-9_\.-]/', '', $sFilename);
 
-        return str_replace(' ', '_', $sFilename);
+        return \str_replace(' ', '_', $sFilename);
     }
 
     /**
@@ -112,7 +112,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
-            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(\date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
             $oOrder->save();
 
             // #1071C

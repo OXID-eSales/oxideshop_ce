@@ -42,7 +42,7 @@ class ServiceMenu extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
         $aCompareItems = $oCompare->getCompareItems();
 
         if ($blJson) {
-            $aCompareItems = json_encode($aCompareItems);
+            $aCompareItems = \json_encode($aCompareItems);
         }
 
         return $aCompareItems;

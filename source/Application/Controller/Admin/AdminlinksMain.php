@@ -36,7 +36,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oOtherLang = $oLinks->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oLinks->loadInLang(key($oOtherLang), $soxId);
+                $oLinks->loadInLang(\key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oLinks;
 
@@ -46,7 +46,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
 
             // remove already created languages
-            $this->_aViewData["posslang"] = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $this->_aViewData["posslang"] = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
             foreach ($oOtherLang as $id => $language) {
                 $oLang = new stdClass();
@@ -84,16 +84,16 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         // adds space to the end of URL description to keep new added links visible
         // if URL description left empty
-        if (isset($aParams['oxlinks__oxurldesc']) && strlen($aParams['oxlinks__oxurldesc']) == 0) {
+        if (isset($aParams['oxlinks__oxurldesc']) && \strlen($aParams['oxlinks__oxurldesc']) == 0) {
             $aParams['oxlinks__oxurldesc'] .= " ";
         }
 
         if (!$aParams['oxlinks__oxinsert']) {
             // sets default (?) date format to output
             // else if possible - changes date format to system compatible
-            $sDate = date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString("simpleDateFormat"));
+            $sDate = \date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString("simpleDateFormat"));
             if ($sDate == "simpleDateFormat") {
-                $aParams['oxlinks__oxinsert'] = date("Y-m-d");
+                $aParams['oxlinks__oxinsert'] = \date("Y-m-d");
             } else {
                 $aParams['oxlinks__oxinsert'] = $sDate;
             }

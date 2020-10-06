@@ -92,7 +92,7 @@ class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $sSubSelect = " select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
             $sSubSelect .= " and oxobject2discount.oxdiscountid = " . $oDb->quote($sSynchOxid) . " and oxobject2discount.oxtype = 'oxarticles' ";
 
-            if (stristr($sQAdd, 'where') === false) {
+            if (\stristr($sQAdd, 'where') === false) {
                 $sQAdd .= ' where ';
             } else {
                 $sQAdd .= ' and ';
@@ -113,8 +113,8 @@ class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = parent::_addFilter("delete oxobject2discount.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
-        } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
+        } elseif (\is_array($aChosenArt)) {
+            $sQ = "delete from oxobject2discount where oxobject2discount.oxid in (" . \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ);
         }
     }
@@ -133,7 +133,7 @@ class DiscountArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $articleTable = $this->_getViewName('oxarticles');
             $articleIds = $this->_getAll(parent::_addFilter("select $articleTable.oxid " . $this->_getQuery()));
         }
-        if ($discountListId && $discountListId != self::NEW_DISCOUNT_LIST_ID && is_array($articleIds)) {
+        if ($discountListId && $discountListId != self::NEW_DISCOUNT_LIST_ID && \is_array($articleIds)) {
             foreach ($articleIds as $articleId) {
                 $this->addArticleToDiscount($discountListId, $articleId);
             }

@@ -36,7 +36,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $oOtherLang = $oVendor->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oVendor->loadInLang(key($oOtherLang), $soxId);
+                $oVendor->loadInLang(\key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oVendor;
 
@@ -49,8 +49,8 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 

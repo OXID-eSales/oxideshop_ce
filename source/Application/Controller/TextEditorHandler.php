@@ -56,10 +56,10 @@ class TextEditorHandler
      */
     public function renderPlainTextEditor($width, $height, $objectValue, $fieldName)
     {
-        if (strpos($width, '%') === false) {
+        if (\strpos($width, '%') === false) {
             $width .= 'px';
         }
-        if (strpos($height, '%') === false) {
+        if (\strpos($height, '%') === false) {
             $height .= 'px';
         }
 

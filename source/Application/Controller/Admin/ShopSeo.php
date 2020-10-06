@@ -67,7 +67,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $sActObject = null;
         if ($this->_sActSeoObject) {
             $sActObject = $this->_sActSeoObject;
-        } elseif (is_array($aStatUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
+        } elseif (\is_array($aStatUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
             $sActObject = $aStatUrl['oxseo__oxobjectid'];
         }
 
@@ -107,7 +107,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
             $oShop->save();
 
             // saving static url changes
-            if (is_array($aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
+            if (\is_array($aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
                 $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->encodeStaticUrls($this->_processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
             }
         }
@@ -127,7 +127,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
             $aUrls['oxseo__oxstdurl'] = $this->_cleanupUrl($aUrls['oxseo__oxstdurl']);
         }
 
-        if (isset($aUrls['oxseo__oxseourl']) && is_array($aUrls['oxseo__oxseourl'])) {
+        if (isset($aUrls['oxseo__oxseourl']) && \is_array($aUrls['oxseo__oxseourl'])) {
             foreach ($aUrls['oxseo__oxseourl'] as $iPos => $sUrl) {
                 $aUrls['oxseo__oxseourl'][$iPos] = $this->_cleanupUrl($sUrl);
             }
@@ -147,13 +147,13 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
     protected function _cleanupUrl($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // replacing &amp; to & or removing double &&
-        while ((stripos($sUrl, '&amp;') !== false) || (stripos($sUrl, '&&') !== false)) {
-            $sUrl = str_replace('&amp;', '&', $sUrl);
-            $sUrl = str_replace('&&', '&', $sUrl);
+        while ((\stripos($sUrl, '&amp;') !== false) || (\stripos($sUrl, '&&') !== false)) {
+            $sUrl = \str_replace('&amp;', '&', $sUrl);
+            $sUrl = \str_replace('&&', '&', $sUrl);
         }
 
         // converting & to &amp;
-        return str_replace('&', '&amp;', $sUrl);
+        return \str_replace('&', '&amp;', $sUrl);
     }
 
     /**
@@ -170,7 +170,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
     public function deleteStaticUrl()
     {
         $aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl');
-        if (is_array($aStaticUrl)) {
+        if (\is_array($aStaticUrl)) {
             $sObjectid = $aStaticUrl['oxseo__oxobjectid'];
             if ($sObjectid && $sObjectid != '-1') {
                 $this->deleteStaticUrlFromDb($sObjectid);

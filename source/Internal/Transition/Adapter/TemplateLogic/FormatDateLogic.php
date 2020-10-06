@@ -20,7 +20,7 @@ class FormatDateLogic
     public function formdate($oConvObject, string $sFieldType = null, bool $blPassedValue = false): ?string
     {
         // creating fake bject
-        if ($blPassedValue || is_string($oConvObject)) {
+        if ($blPassedValue || \is_string($oConvObject)) {
             $sValue = $oConvObject;
             $oConvObject = new \OxidEsales\Eshop\Core\Field();
             $oConvObject->fldmax_length = "0";

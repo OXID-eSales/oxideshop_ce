@@ -55,7 +55,7 @@ class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChec
     {
         $result = false;
         $country = $this->getCountry();
-        if (!is_null($country)) {
+        if (!\is_null($country)) {
             $result = ($country->getVATIdentificationNumberPrefix() === $vatIn->getCountryCode());
             if (!$result) {
                 $this->setError(self::ERROR_ID_NOT_VALID);

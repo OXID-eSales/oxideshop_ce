@@ -24,12 +24,12 @@ class Decryptor
     {
         $key = $this->_formKey($key, $string);
 
-        $string = substr($string, 3);
-        $string = str_replace('!', '=', $string);
-        $string = base64_decode($string);
+        $string = \substr($string, 3);
+        $string = \str_replace('!', '=', $string);
+        $string = \base64_decode($string);
         $string = $string ^ $key;
 
-        return substr($string, 2, -2);
+        return \substr($string, 2, -2);
     }
 
     /**
@@ -44,8 +44,8 @@ class Decryptor
     protected function _formKey($key, $string) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $key = '_' . $key;
-        $keyLength = (strlen($string) / strlen($key)) + 5;
+        $keyLength = (\strlen($string) / \strlen($key)) + 5;
 
-        return str_repeat($key, $keyLength);
+        return \str_repeat($key, $keyLength);
     }
 }

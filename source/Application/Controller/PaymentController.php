@@ -384,7 +384,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $this->_iAllSetsCnt = 0;
 
             if ($this->getPaymentList()) {
-                $this->_iAllSetsCnt = count($this->_aAllSets);
+                $this->_iAllSetsCnt = \count($this->_aAllSets);
             }
         }
 
@@ -400,7 +400,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function _setValues(&$aPaymentList, $oBasket = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($aPaymentList)) {
+        if (\is_array($aPaymentList)) {
             foreach ($aPaymentList as $oPayment) {
                 $oPayment->calculate($oBasket);
                 $oPayment->aDynValues = $oPayment->getDynValues();
@@ -539,8 +539,8 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             // #646
             $oPaymentList = $this->getPaymentList();
             if (isset($oPaymentList) && $oPaymentList && !isset($oPaymentList[$sCheckedId])) {
-                end($oPaymentList);
-                $sCheckedId = key($oPaymentList);
+                \end($oPaymentList);
+                $sCheckedId = \key($oPaymentList);
             }
             $this->_sCheckedPaymentId = $sCheckedId;
         }
@@ -559,7 +559,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             $this->_iPaymentCnt = false;
 
             if ($oPaymentList = $this->getPaymentList()) {
-                $this->_iPaymentCnt = count($oPaymentList);
+                $this->_iPaymentCnt = \count($oPaymentList);
             }
         }
 
@@ -577,7 +577,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     protected function _checkArrValuesEmpty($aData, $aKeys) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_array($aKeys) || count($aKeys) < 1) {
+        if (!\is_array($aKeys) || \count($aKeys) < 1) {
             return false;
         }
 

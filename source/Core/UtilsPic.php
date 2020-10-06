@@ -36,7 +36,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      */
     public function resizeImage($sSrc, $sTarget, $iDesiredWidth, $iDesiredHeight)
     {
-        if (file_exists($sSrc) && ($aImageInfo = @getimagesize($sSrc))) {
+        if (\file_exists($sSrc) && ($aImageInfo = @\getimagesize($sSrc))) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             list($iWidth, $iHeight) = calcImageSize($iDesiredWidth, $iDesiredHeight, $aImageInfo[0], $aImageInfo[1]);
 
@@ -81,22 +81,22 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (
-            !$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
-                                         strpos($sPicName, 'nopic_ico.jpg') === false)
+            !$myConfig->isDemoShop() && (\strpos($sPicName, 'nopic.jpg') === false ||
+                                         \strpos($sPicName, 'nopic_ico.jpg') === false)
         ) {
             $sFile = "$sAbsDynImageDir/$sPicName";
 
-            if (file_exists($sFile) && is_file($sFile)) {
-                $blDeleted = unlink($sFile);
+            if (\file_exists($sFile) && \is_file($sFile)) {
+                $blDeleted = \unlink($sFile);
             }
 
             if (!$myConfig->getConfigParam('sAltImageUrl')) {
                 // deleting various size generated images
-                $sGenPath = str_replace('/master/', '/generated/', $sAbsDynImageDir);
-                $aFiles = glob("{$sGenPath}*/{$sPicName}");
-                if (is_array($aFiles)) {
+                $sGenPath = \str_replace('/master/', '/generated/', $sAbsDynImageDir);
+                $aFiles = \glob("{$sGenPath}*/{$sPicName}");
+                if (\is_array($aFiles)) {
                     foreach ($aFiles as $sFile) {
-                        $blDeleted = unlink($sFile);
+                        $blDeleted = \unlink($sFile);
                     }
                 }
             }
@@ -119,7 +119,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      */
     protected function _isPicDeletable($sPicName, $sTable, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!$sPicName || strpos($sPicName, 'nopic.jpg') !== false || strpos($sPicName, 'nopic_ico.jpg') !== false) {
+        if (!$sPicName || \strpos($sPicName, 'nopic.jpg') !== false || \strpos($sPicName, 'nopic_ico.jpg') !== false) {
             return false;
         }
 
@@ -220,7 +220,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         switch ($aImageInfo[2]) { //Image type
             case ($this->_aImageTypes["GIF"]):
                 //php does not process gifs until 7th July 2004 (see lzh licensing)
-                if (function_exists("imagegif")) {
+                if (\function_exists("imagegif")) {
                     $blSuccess = resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1], $iGdVer);
                 }
                 break;
@@ -234,7 +234,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($blSuccess && !$blDisableTouch) {
-            @touch($sTarget);
+            @\touch($sTarget);
         }
 
         stopProfile("PICTURE_RESIZE");
@@ -261,7 +261,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     {
         $blSuccess = copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer);
         if (!$blDisableTouch && $blSuccess) {
-            @touch($sTarget);
+            @\touch($sTarget);
         }
 
         return $blSuccess;

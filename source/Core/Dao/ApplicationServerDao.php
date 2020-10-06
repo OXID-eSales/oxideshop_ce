@@ -101,7 +101,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
             $serverData = $this->selectDataById($id);
 
             if ($serverData != false) {
-                $appServerProperties = (array)unserialize($serverData);
+                $appServerProperties = (array)\unserialize($serverData);
             } else {
                 return null;
             }
@@ -242,8 +242,8 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function getServerIdFromConfig($varName)
     {
-        $constNameLength = strlen(self::CONFIG_NAME_FOR_SERVER_INFO);
-        $id = substr($varName, $constNameLength);
+        $constNameLength = \strlen(self::CONFIG_NAME_FOR_SERVER_INFO);
+        $id = \substr($varName, $constNameLength);
         return $id;
     }
 
@@ -256,7 +256,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function getValueFromConfig($varValue)
     {
-        return (array) unserialize($varValue);
+        return (array) \unserialize($varValue);
     }
 
     /**
@@ -290,7 +290,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function getServerParameter($data, $name)
     {
-        return array_key_exists($name, $data) ? $data[$name] : null;
+        return \array_key_exists($name, $data) ? $data[$name] : null;
     }
 
     /**
@@ -310,6 +310,6 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
             'lastAdminUsage'    => $appServer->getLastAdminUsage()
         ];
 
-        return serialize($serverData);
+        return \serialize($serverData);
     }
 }

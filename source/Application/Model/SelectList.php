@@ -166,7 +166,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
         if ($this->_oActiveSelection === null) {
             if (($aSelections = $this->getSelections())) {
                 // first is allways active
-                $this->_oActiveSelection = reset($aSelections);
+                $this->_oActiveSelection = \reset($aSelections);
             }
         }
 

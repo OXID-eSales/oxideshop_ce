@@ -57,7 +57,7 @@ class ShopIdCalculator
 
         //get from file cache
         $aMap = $this->getVariablesCache()->getFromCache("urlMap");
-        if (!is_null($aMap)) {
+        if (!\is_null($aMap)) {
             self::$urlMap = $aMap;
 
             return $aMap;
@@ -81,11 +81,11 @@ class ShopIdCalculator
                 $sURL = $oRs->fields[2];
 
                 if ($sVar == 'aLanguageURLs') {
-                    $aUrls = unserialize($sURL);
-                    if (is_array($aUrls) && count($aUrls)) {
-                        $aUrls = array_filter($aUrls);
-                        $aUrls = array_fill_keys($aUrls, $iShp);
-                        $aMap = array_merge($aMap, $aUrls);
+                    $aUrls = \unserialize($sURL);
+                    if (\is_array($aUrls) && \count($aUrls)) {
+                        $aUrls = \array_filter($aUrls);
+                        $aUrls = \array_fill_keys($aUrls, $iShp);
+                        $aMap = \array_merge($aMap, $aUrls);
                     }
                 } elseif ($sURL) {
                     $aMap[$sURL] = $iShp;

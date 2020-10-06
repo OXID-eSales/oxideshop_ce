@@ -52,15 +52,15 @@ $facts = new \OxidEsales\Facts\Facts();
     </script>
     <style type="text/css">
         <?php
-            $cssPath = str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/../out/src/');
-            $imgPath = str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/../out/src/img/');
-            $imgLogo = 'data:image/svg+xml;base64,' . base64_encode(file_get_contents($imgPath . 'logo_dark.svg'));
-            $cssData = file_get_contents($cssPath . 'main.css');
-            preg_match_all("/url\('img\/([^']+)'\);/", $cssData, $matches);
-            $images = array_unique($matches[1]);
+            $cssPath = \str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/../out/src/');
+            $imgPath = \str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/../out/src/img/');
+            $imgLogo = 'data:image/svg+xml;base64,' . \base64_encode(\file_get_contents($imgPath . 'logo_dark.svg'));
+            $cssData = \file_get_contents($cssPath . 'main.css');
+            \preg_match_all("/url\('img\/([^']+)'\);/", $cssData, $matches);
+            $images = \array_unique($matches[1]);
         foreach ($images as $image) {
-            $imgData = 'data:image/png;base64,' . base64_encode(file_get_contents($imgPath . $image));
-            $cssData = str_replace('img/' . $image, $imgData, $cssData);
+            $imgData = 'data:image/png;base64,' . \base64_encode(\file_get_contents($imgPath . $image));
+            $cssData = \str_replace('img/' . $image, $imgData, $cssData);
         }
             echo $cssData;
         ?>
@@ -99,12 +99,12 @@ $facts = new \OxidEsales\Facts\Facts();
         $iCntr = 0;
         foreach ($this->getSetupSteps() as $iTab) :
             // only "real" steps
-            if (fmod($iTab, 100)) {
+            if (\fmod($iTab, 100)) {
                 continue;
             }
 
-            $blAct = (floor($this->getCurrentSetupStep() / 100) == ($iTab / 100));
-            $iStepId = floor($iTab / 100) - 1;
+            $blAct = (\floor($this->getCurrentSetupStep() / 100) == ($iTab / 100));
+            $iStepId = \floor($iTab / 100) - 1;
             $iCntr++;
 
             $sTabClass = $sTabLinkOpen = $sTabLinkClose = '';
@@ -129,7 +129,7 @@ $facts = new \OxidEsales\Facts\Facts();
     foreach ($this->getMessages() as $sMessage) {
         ?><br><b><?php echo $sMessage; ?></b><?php
     }
-    if (count($aMessages)) {
+    if (\count($aMessages)) {
         ?><br><br><?php
     }
 

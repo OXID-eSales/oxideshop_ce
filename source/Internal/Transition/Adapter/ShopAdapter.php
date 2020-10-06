@@ -48,7 +48,7 @@ class ShopAdapter implements ShopAdapterInterface
 
         ModuleVariablesLocator::resetModuleVariables();
 
-        if (extension_loaded('apc') && ini_get('apc.enabled')) {
+        if (\extension_loaded('apc') && \ini_get('apc.enabled')) {
             apc_clear_cache();
         }
     }

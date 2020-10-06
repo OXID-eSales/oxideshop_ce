@@ -79,7 +79,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             $this->_aViewData["aVouchers"] = $oOrder->getVoucherNrList();
         }
 
-        $this->_aViewData["sNowValue"] = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+        $this->_aViewData["sNowValue"] = \date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
         return "order_main.tpl";
     }
@@ -102,11 +102,11 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         }
 
         $needOrderRecalculate = false;
-        if (is_array($aParams)) {
+        if (\is_array($aParams)) {
             foreach ($aParams as $parameter => $value) {
                 //parameter changes for not whitelisted parameters trigger order recalculation
                 $orderField = $oOrder->$parameter;
-                if (($value != $orderField->value) && !in_array($parameter, $this->fieldsTriggerNoOrderRecalculation)) {
+                if (($value != $orderField->value) && !\in_array($parameter, $this->fieldsTriggerNoOrderRecalculation)) {
                     $needOrderRecalculate = true;
                     continue;
                 }
@@ -163,7 +163,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($oOrder->load($soxId)) {
             // #632A
-            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(\date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
             $oOrder->save();
 
             // #1071C

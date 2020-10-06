@@ -35,7 +35,7 @@ function smarty_function_oxvariantselect($params, &$smarty)
     //real variants to MD variants
     $aRealVariants = [];
 
-    if (count($oMdVariants->getMdSubvariants())) {
+    if (\count($oMdVariants->getMdSubvariants())) {
         $sOutput = oxvariantselect_addSubvariants($oMdVariants->getMdSubvariants(), 0, $aSelectBoxes, $aRealVariants, $sSeparator, $sCallMethod, $sArtId);
         $sOutput .= oxvariantselect_formatJsSelecBoxesArray($aSelectBoxes);
         $sOutput .= oxvariantselect_formatJsRealVariantArray($aRealVariants);
@@ -61,7 +61,7 @@ function oxvariantselect_addSubvariants($oMdVariants, $iLevel, &$aSelectBoxes, &
 {
     $sRes = '';
     $aOptions = [];
-    if (count($oMdVariants)) {
+    if (\count($oMdVariants)) {
         $blVisible = false;
         $sSelectedVariant = null;
         foreach ($oMdVariants as $sKey => $oVariant) {
@@ -85,7 +85,7 @@ function oxvariantselect_addSubvariants($oMdVariants, $iLevel, &$aSelectBoxes, &
             $sRes .= oxvariantselect_addSubvariants($oVariant->getMdSubvariants(), $iLevel + 1, $aSelectBoxes, $aRealVariants, $sSeparator, $sCallMethod, $sArtId);
 
             //no more subvariants? Mseans we are the last level select box, good enought to register a real variant now
-            if (!count($oVariant->getMdSubvariants())) {
+            if (!\count($oVariant->getMdSubvariants())) {
                 $aRealVariants[$oVariant->getId()]['id'] = $oVariant->getArticleId();
                 $aRealVariants[$oVariant->getId()]['link'] = $oVariant->getlink();
             }
@@ -129,10 +129,10 @@ function oxvariantselect_formatSelectBox($sId, $aOptions, $iLevel, $blVisible, $
 function oxvariantselect_formatJsSelecBoxesArray($aSelectBoxes)
 {
     $sRes = "<script language=JavaScript><!--\n";
-    $iLevelCount = count($aSelectBoxes);
+    $iLevelCount = \count($aSelectBoxes);
     $sRes .= "mdVariantSelectIds = Array($iLevelCount);\n";
     foreach ($aSelectBoxes as $iLevel => $aSelects) {
-        $sSelectCount = count($aSelects);
+        $sSelectCount = \count($aSelects);
         $sRes .= " mdVariantSelectIds[$iLevel] = Array($sSelectCount);\n";
         foreach ($aSelects as $iSelect => $sSelect) {
             $sRes .= " mdVariantSelectIds[$iLevel][$iSelect] = '$sSelect';\n";
@@ -154,12 +154,12 @@ function oxvariantselect_formatJsSelecBoxesArray($aSelectBoxes)
 function oxvariantselect_formatJsRealVariantArray($aRealVariants)
 {
     $sRes = "<script language=JavaScript><!--\n";
-    $iCount = count($aRealVariants);
+    $iCount = \count($aRealVariants);
     $sRes .= "mdRealVariants = Array($iCount);\n";
     $sRes .= "mdRealVariantsLinks = Array($iCount);\n";
     foreach ($aRealVariants as $sMdVarian => $sRealVariant) {
         $sRes .= " mdRealVariants['$sMdVarian'] = '" . $sRealVariant['id'] . "';\n";
-        $sRes .= " mdRealVariantsLinks['$sMdVarian'] = '" . str_replace('&amp;', '&', $sRealVariant['link']) . "';\n";
+        $sRes .= " mdRealVariantsLinks['$sMdVarian'] = '" . \str_replace('&amp;', '&', $sRealVariant['link']) . "';\n";
     }
 
     $sRes .= "--></script>";

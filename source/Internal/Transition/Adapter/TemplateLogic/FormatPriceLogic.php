@@ -21,7 +21,7 @@ class FormatPriceLogic
     {
         $output = '';
         $inputPrice = $params['price'];
-        if (!is_null($inputPrice)) {
+        if (!\is_null($inputPrice)) {
             $output = $this->calculatePrice($inputPrice, $params);
         }
 
@@ -41,7 +41,7 @@ class FormatPriceLogic
         $currency = isset($params['currency']) ? (object) $params['currency'] : $config->getActShopCurrencyObject();
         $output = '';
 
-        if (is_numeric($price)) {
+        if (\is_numeric($price)) {
             $output = $this->getFormattedPrice($currency, $price);
         }
 
@@ -64,13 +64,13 @@ class FormatPriceLogic
         $decimals = isset($currency->decimal) ? (int) $currency->decimal : 2;
 
         if ((float) $price > 0 || $currencySymbol) {
-            $price = number_format($price, $decimals, $decimalSeparator, $thousandsSeparator);
+            $price = \number_format($price, $decimals, $decimalSeparator, $thousandsSeparator);
             $output = (isset($currencySymbolLocation) && $currencySymbolLocation == 'Front')
                 ? $currencySymbol . $price
                 : $price . ' ' . $currencySymbol;
         }
 
-        $output = trim($output);
+        $output = \trim($output);
 
         return $output;
     }

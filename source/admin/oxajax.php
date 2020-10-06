@@ -10,27 +10,27 @@ use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 
-if (!defined('OX_IS_ADMIN')) {
-    define('OX_IS_ADMIN', true);
+if (!\defined('OX_IS_ADMIN')) {
+    \define('OX_IS_ADMIN', true);
 }
 
-if (!defined('OX_ADMIN_DIR')) {
-    define('OX_ADMIN_DIR', dirname(__FILE__));
+if (!\defined('OX_ADMIN_DIR')) {
+    \define('OX_ADMIN_DIR', \dirname(__FILE__));
 }
 
-require_once dirname(__FILE__) . "/../bootstrap.php";
+require_once \dirname(__FILE__) . "/../bootstrap.php";
 
 // processing ..
 $blAjaxCall = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 if ($blAjaxCall) {
     // Setting error reporting mode
-    error_reporting(E_ALL ^ E_NOTICE);
+    \error_reporting(E_ALL ^ E_NOTICE);
 
     $myConfig = Registry::getConfig();
 
     // Includes Utility module.
     $sUtilModule = $myConfig->getConfigParam('sUtilModule');
-    if ($sUtilModule && file_exists(getShopBasePath() . "modules/" . $sUtilModule)) {
+    if ($sUtilModule && \file_exists(getShopBasePath() . "modules/" . $sUtilModule)) {
         include_once getShopBasePath() . "modules/" . $sUtilModule;
     }
 
@@ -40,16 +40,16 @@ if ($blAjaxCall) {
     if (
         !(
         Registry::getSession()->checkSessionChallenge()
-        && count(Registry::getUtilsServer()->getOxCookie())
+        && \count(Registry::getUtilsServer()->getOxCookie())
         && Registry::getUtils()->checkAccessRights()
         )
     ) {
-        header("location:index.php");
+        \header("location:index.php");
         Registry::getUtils()->showMessageAndExit("");
     }
 
     if ($sContainer = Registry::get(Request::class)->getRequestParameter('container')) {
-        $sContainer = trim(strtolower(basename($sContainer)));
+        $sContainer = \trim(\strtolower(\basename($sContainer)));
 
         try {
             // Controller name for ajax class is automatically done from the request.
@@ -59,7 +59,7 @@ if ($blAjaxCall) {
             $containerClass = Registry::getControllerClassNameResolver()->getClassNameById($ajaxContainerClassName);
 
             // Fallback in case controller could not be resolved (modules using metadata version 1).
-            if (!class_exists($containerClass)) {
+            if (!\class_exists($containerClass)) {
                 $containerClass = $ajaxContainerClassName;
             }
             $oAjaxComponent = oxNew($containerClass);

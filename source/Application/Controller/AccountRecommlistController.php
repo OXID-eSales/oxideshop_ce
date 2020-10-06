@@ -97,7 +97,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             $this->_iAllArtCnt = $oUser->getRecommListsCount();
             $iNrofCatArticles = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
-            $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
+            $this->_iCntPages = \ceil($this->_iAllArtCnt / $iNrofCatArticles);
         }
 
         return $this->_sThisTemplate;
@@ -232,9 +232,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle = trim((string) Registry::getConfig()->getRequestParameter('recomm_title', true));
-            $sAuthor = trim((string) Registry::getConfig()->getRequestParameter('recomm_author', true));
-            $sText = trim((string) Registry::getConfig()->getRequestParameter('recomm_desc', true));
+            $sTitle = \trim((string) Registry::getConfig()->getRequestParameter('recomm_title', true));
+            $sAuthor = \trim((string) Registry::getConfig()->getRequestParameter('recomm_author', true));
+            $sText = \trim((string) Registry::getConfig()->getRequestParameter('recomm_desc', true));
 
             $oRecommList->oxrecommlists__oxtitle = new Field($sTitle);
             $oRecommList->oxrecommlists__oxauthor = new Field($sAuthor);

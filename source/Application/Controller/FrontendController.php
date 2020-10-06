@@ -31,9 +31,9 @@ use oxViewConfig;
 use stdClass;
 
 // view indexing state for search engines:
-define('VIEW_INDEXSTATE_INDEX', 0); //  index without limitations
-define('VIEW_INDEXSTATE_NOINDEXNOFOLLOW', 1); //  no index / no follow
-define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
+\define('VIEW_INDEXSTATE_INDEX', 0); //  index without limitations
+\define('VIEW_INDEXSTATE_NOINDEXNOFOLLOW', 1); //  no index / no follow
+\define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
 
 /**
  * Base view class.
@@ -456,10 +456,10 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function _getComponentNames() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (self::$_aCollectedComponentNames === null) {
-            self::$_aCollectedComponentNames = array_merge($this->_aComponentNames, $this->_aUserComponentNames);
+            self::$_aCollectedComponentNames = \array_merge($this->_aComponentNames, $this->_aUserComponentNames);
 
             if (($userComponentNames = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aUserComponentNames'))) {
-                self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $userComponentNames);
+                self::$_aCollectedComponentNames = \array_merge(self::$_aCollectedComponentNames, $userComponentNames);
             }
 
             if (Registry::getConfig()->getRequestParameter('_force_no_basket_cmp')) {
@@ -468,7 +468,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         // resetting array pointer
-        reset(self::$_aCollectedComponentNames);
+        \reset(self::$_aCollectedComponentNames);
 
         return self::$_aCollectedComponentNames;
     }
@@ -496,7 +496,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSeoLogging')) {
                     $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
                     $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-                    $id = md5(strtolower($requestUrl) . $shopId . $languageId);
+                    $id = \md5(\strtolower($requestUrl) . $shopId . $languageId);
 
                     // logging "not found" url
                     $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -537,7 +537,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                     $this->_oaComponents[$componentName]->init();
 
                     // executing only is view does not have action method
-                    if (!method_exists($this, $this->getFncName())) {
+                    if (!\method_exists($this, $this->getFncName())) {
                         $this->_oaComponents[$componentName]->executeFunction($this->getFncName());
                     }
                 }
@@ -590,11 +590,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         // #0002866: external global viewID addition
-        if (function_exists('customGetViewId')) {
+        if (\function_exists('customGetViewId')) {
             $externalViewId = customGetViewId();
 
             if ($externalViewId !== null) {
-                $viewId .= '|' . md5(serialize($externalViewId));
+                $viewId .= '|' . \md5(\serialize($externalViewId));
             }
         }
 
@@ -731,7 +731,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 $this->_sListDisplayType = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
             }
 
-            $this->_sListDisplayType = in_array((string) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
+            $this->_sListDisplayType = \in_array((string) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
                 $this->_sListDisplayType : 'infogrid';
 
             // writing to session
@@ -857,7 +857,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function addRssFeed($title, $url, $key = null)
     {
-        if (!is_array($this->_aRssLinks)) {
+        if (!\is_array($this->_aRssLinks)) {
             $this->_aRssLinks = [];
         }
 
@@ -970,9 +970,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getListOrderBy()
     {
         //if column is with table name split it
-        $columns = explode('.', $this->_sListOrderBy);
+        $columns = \explode('.', $this->_sListOrderBy);
 
-        if (is_array($columns) && count($columns) > 1) {
+        if (\is_array($columns) && \count($columns) > 1) {
             return $columns[1];
         }
 
@@ -1131,7 +1131,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         if ($this->_iCompItemsCnt === null) {
             $items = Registry::getSession()->getVariable('aFiltcompproducts');
-            $this->_iCompItemsCnt = is_array($items) ? count($items) : 0;
+            $this->_iCompItemsCnt = \is_array($items) ? \count($items) : 0;
         }
 
         return $this->_iCompItemsCnt;
@@ -1216,7 +1216,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 $numbersOfCategoryArticles = $config->getConfigParam('aNrofCatArticles');
         }
 
-        if (!is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {
+        if (!\is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {
             $numbersOfCategoryArticles = [$numberOfCategoryArticles];
             $config->setConfigParam('aNrofCatArticles', $numbersOfCategoryArticles);
         } else {
@@ -1228,14 +1228,14 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $session = Registry::getSession();
         if (($articlesPerPage = (int) Registry::getConfig()->getRequestParameter('_artperpage'))) {
             // M45 Possibility to push any "Show articles per page" number parameter
-            $numberOfCategoryArticles = (in_array($articlesPerPage, $numbersOfCategoryArticles))
+            $numberOfCategoryArticles = (\in_array($articlesPerPage, $numbersOfCategoryArticles))
                 ? $articlesPerPage
                 : $numberOfCategoryArticles;
             $viewConfig->setViewConfigParam('iartPerPage', $numberOfCategoryArticles);
             $session->setVariable('_artperpage', $numberOfCategoryArticles);
-        } elseif (($sessArtPerPage = $session->getVariable('_artperpage')) && is_numeric($sessArtPerPage)) {
+        } elseif (($sessArtPerPage = $session->getVariable('_artperpage')) && \is_numeric($sessArtPerPage)) {
             // M45 Possibility to push any "Show articles per page" number parameter
-            $numberOfCategoryArticles = (in_array($sessArtPerPage, $numbersOfCategoryArticles))
+            $numberOfCategoryArticles = (\in_array($sessArtPerPage, $numbersOfCategoryArticles))
                 ? $sessArtPerPage
                 : $numberOfCategoryArticles;
             $viewConfig->setViewConfigParam('iartPerPage', $numberOfCategoryArticles);
@@ -1294,13 +1294,13 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             }
 
             // some special cases
-            $meta = str_replace(' ,', ',', $meta);
+            $meta = \str_replace(' ,', ',', $meta);
             $pattern = ["/,[\s\+\-\*]*,/", "/\s+,/"];
             $meta = $stringModifier->preg_replace($pattern, ',', $meta);
             $meta = Registry::getUtilsString()->minimizeTruncateString($meta, $length);
             $meta = $stringModifier->htmlspecialchars($meta);
 
-            return trim($meta);
+            return \trim($meta);
         }
     }
 
@@ -1321,7 +1321,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $string = $this->_removeDuplicatedWords($string, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSkipTags'));
         }
 
-        return trim($string);
+        return \trim($string);
     }
 
     /**
@@ -1336,32 +1336,32 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function _removeDuplicatedWords($input, $skipTags = []) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $stringModifier = Str::getStr();
-        if (is_array($input)) {
-            $input = implode(" ", $input);
+        if (\is_array($input)) {
+            $input = \implode(" ", $input);
         }
 
         // removing some usually met characters..
-        $input = $stringModifier->preg_replace("/[" . preg_quote($this->_sRemoveMetaChars, "/") . "]/", " ", $input);
+        $input = $stringModifier->preg_replace("/[" . \preg_quote($this->_sRemoveMetaChars, "/") . "]/", " ", $input);
 
         // splitting by word
         $strings = $stringModifier->preg_split("/[\s,]+/", $input);
 
-        if ($count = count($skipTags)) {
+        if ($count = \count($skipTags)) {
             for ($num = 0; $num < $count; $num++) {
                 $skipTags[$num] = $stringModifier->strtolower($skipTags[$num]);
             }
         }
-        $count = count($strings);
+        $count = \count($strings);
         for ($num = 0; $num < $count; $num++) {
             $strings[$num] = $stringModifier->strtolower($strings[$num]);
             // removing in admin defined strings
-            if (!$strings[$num] || in_array($strings[$num], $skipTags)) {
+            if (!$strings[$num] || \in_array($strings[$num], $skipTags)) {
                 unset($strings[$num]);
             }
         }
 
         // duplicates
-        return implode(', ', array_unique($strings));
+        return \implode(', ', \array_unique($strings));
     }
 
     /**
@@ -1392,7 +1392,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $params['searchcnid'] = $config->getRequestParameter('searchcnid');
         $params['searchmanufacturer'] = $config->getRequestParameter('searchmanufacturer');
 
-        $params = array_merge($params, $this->getViewConfig()->getAdditionalNavigationParameters());
+        $params = \array_merge($params, $this->getViewConfig()->getAdditionalNavigationParameters());
 
         return $params;
     }
@@ -1448,11 +1448,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getSortingSql($ident)
     {
         $sorting = $this->getSorting($ident);
-        if (is_array($sorting)) {
+        if (\is_array($sorting)) {
             $sortDir = isset($sorting['sortdir']) ? $sorting['sortdir'] : '';
             if ($this->isAllowedSortingOrder($sortDir)) {
                 $sortBy = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteIdentifier($sorting['sortby']);
-                return trim($sortBy . ' ' . $sortDir);
+                return \trim($sortBy . ' ' . $sortDir);
             }
         }
     }
@@ -1498,9 +1498,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $titleParts[] = $this->getTitleSuffix();
         $titleParts[] = $this->getTitlePageSuffix();
 
-        $titleParts = array_filter($titleParts);
+        $titleParts = \array_filter($titleParts);
 
-        return implode(' | ', $titleParts);
+        return \implode(' | ', $titleParts);
     }
 
 
@@ -1535,18 +1535,18 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
                 break;
             case 'search':
                 $result .= "&amp;listtype={$listType}";
-                if ($searchParamForLink = rawurlencode($config->getRequestParameter('searchparam', true))) {
+                if ($searchParamForLink = \rawurlencode($config->getRequestParameter('searchparam', true))) {
                     $result .= "&amp;searchparam={$searchParamForLink}";
                 }
 
                 if (($var = $config->getRequestParameter('searchcnid', true))) {
-                    $result .= '&amp;searchcnid=' . rawurlencode(rawurldecode($var));
+                    $result .= '&amp;searchcnid=' . \rawurlencode(\rawurldecode($var));
                 }
                 if (($var = $config->getRequestParameter('searchvendor', true))) {
-                    $result .= '&amp;searchvendor=' . rawurlencode(rawurldecode($var));
+                    $result .= '&amp;searchvendor=' . \rawurlencode(\rawurldecode($var));
                 }
                 if (($var = $config->getRequestParameter('searchmanufacturer', true))) {
-                    $result .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($var));
+                    $result .= '&amp;searchmanufacturer=' . \rawurlencode(\rawurldecode($var));
                 }
                 break;
         }
@@ -1650,7 +1650,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             'deleteReviewAndRating',
         ];
 
-        if (in_array($function, $forbiddenFunctions)) {
+        if (\in_array($function, $forbiddenFunctions)) {
             $function = '';
         }
 
@@ -1669,11 +1669,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $url .= "&amp;anid={$value}";
         }
 
-        if ($value = basename(Registry::getConfig()->getRequestParameter('page'))) {
+        if ($value = \basename(Registry::getConfig()->getRequestParameter('page'))) {
             $url .= "&amp;page={$value}";
         }
 
-        if ($value = basename(Registry::getConfig()->getRequestParameter('tpl'))) {
+        if ($value = \basename(Registry::getConfig()->getRequestParameter('tpl'))) {
             $url .= "&amp;tpl={$value}";
         }
 
@@ -1689,7 +1689,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
 
         // #1184M - specialchar search
-        if ($value = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true))) {
+        if ($value = \rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true))) {
             $url .= "&amp;searchparam={$value}";
         }
 
@@ -1733,7 +1733,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
         // #921 S
         $forbiddenFunctions = ['tobasket', 'login_noredirect', 'addVoucher'];
-        if (in_array($function, $forbiddenFunctions)) {
+        if (\in_array($function, $forbiddenFunctions)) {
             $function = '';
         }
 
@@ -1742,11 +1742,11 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
-        if ($value = basename(Registry::getConfig()->getRequestParameter('page'))) {
+        if ($value = \basename(Registry::getConfig()->getRequestParameter('page'))) {
             $url .= "&amp;page={$value}";
         }
 
-        if ($value = basename(Registry::getConfig()->getRequestParameter('tpl'))) {
+        if ($value = \basename(Registry::getConfig()->getRequestParameter('tpl'))) {
             $url .= "&amp;tpl={$value}";
         }
 
@@ -1886,7 +1886,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getTitle()
     {
         $language = \OxidEsales\Eshop\Core\Registry::getLang();
-        $translationName = 'PAGE_TITLE_' . strtoupper(\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName());
+        $translationName = 'PAGE_TITLE_' . \strtoupper(\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName());
         $translated = $language->translateString($translationName, \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
 
         return $translationName == $translated ? null : $translated;
@@ -1950,24 +1950,24 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $this->_sAdditionalParams .= 'cl=' . \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getClassName();
 
             // #1834M - special char search
-            $searchParamForLink = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
+            $searchParamForLink = \rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
             if (isset($searchParamForLink)) {
                 $this->_sAdditionalParams .= "&amp;searchparam={$searchParamForLink}";
             }
             if (($value = Registry::getConfig()->getRequestParameter('searchcnid'))) {
-                $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($value));
+                $this->_sAdditionalParams .= '&amp;searchcnid=' . \rawurlencode(\rawurldecode($value));
             }
             if (($value = Registry::getConfig()->getRequestParameter('searchvendor'))) {
-                $this->_sAdditionalParams .= '&amp;searchvendor=' . rawurlencode(rawurldecode($value));
+                $this->_sAdditionalParams .= '&amp;searchvendor=' . \rawurlencode(\rawurldecode($value));
             }
             if (($value = Registry::getConfig()->getRequestParameter('searchmanufacturer'))) {
-                $this->_sAdditionalParams .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($value));
+                $this->_sAdditionalParams .= '&amp;searchmanufacturer=' . \rawurlencode(\rawurldecode($value));
             }
             if (($value = Registry::getConfig()->getRequestParameter('cnid'))) {
-                $this->_sAdditionalParams .= '&amp;cnid=' . rawurlencode(rawurldecode($value));
+                $this->_sAdditionalParams .= '&amp;cnid=' . \rawurlencode(\rawurldecode($value));
             }
             if (($value = Registry::getConfig()->getRequestParameter('mnid'))) {
-                $this->_sAdditionalParams .= '&amp;mnid=' . rawurlencode(rawurldecode($value));
+                $this->_sAdditionalParams .= '&amp;mnid=' . \rawurlencode(\rawurldecode($value));
             }
 
             $this->_sAdditionalParams .= $this->getViewConfig()->getAdditionalParameters();
@@ -1999,16 +1999,16 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function _addPageNrParam($url, $page, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($page) {
-            if ((strpos($url, 'pgNr='))) {
-                $url = preg_replace('/pgNr=[0-9]*/', 'pgNr=' . $page, $url);
+            if ((\strpos($url, 'pgNr='))) {
+                $url = \preg_replace('/pgNr=[0-9]*/', 'pgNr=' . $page, $url);
             } else {
-                $url .= ((strpos($url, '?') === false) ? '?' : '&amp;') . 'pgNr=' . $page;
+                $url .= ((\strpos($url, '?') === false) ? '?' : '&amp;') . 'pgNr=' . $page;
             }
         } else {
-            $url = preg_replace('/pgNr=[0-9]*/', '', $url);
-            $url = preg_replace('/\&amp\;\&amp\;/', '&amp;', $url);
-            $url = preg_replace('/\?\&amp\;/', '?', $url);
-            $url = preg_replace('/\&amp\;$/', '', $url);
+            $url = \preg_replace('/pgNr=[0-9]*/', '', $url);
+            $url = \preg_replace('/\&amp\;\&amp\;/', '&amp;', $url);
+            $url = \preg_replace('/\?\&amp\;/', '?', $url);
+            $url = \preg_replace('/\&amp\;$/', '', $url);
         }
 
         return $url;
@@ -2068,7 +2068,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
             $finishNo = $pageNavigation->NrOfPages;
         } else {
             $tmpVal = $positionCount - 3;
-            $tmpVal2 = floor(($positionCount - 4) / 2);
+            $tmpVal2 = \floor(($positionCount - 4) / 2);
 
             // actual page is at the start
             if ($pageNavigation->actPage <= $tmpVal) {
@@ -2121,7 +2121,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     public function render()
     {
-        foreach (array_keys($this->_oaComponents) as $componentName) {
+        foreach (\array_keys($this->_oaComponents) as $componentName) {
             $this->_aViewData[$componentName] = $this->_oaComponents[$componentName]->render();
         }
 
@@ -2198,7 +2198,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_oActVendor === null) {
             $this->_oActVendor = false;
             $vendorId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('cnid');
-            $vendorId = $vendorId ? str_replace('v_', '', $vendorId) : $vendorId;
+            $vendorId = $vendorId ? \str_replace('v_', '', $vendorId) : $vendorId;
             $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             if ($vendor->load($vendorId)) {
                 $this->_oActVendor = $vendor;
@@ -2589,8 +2589,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
             // passing must-be-filled-fields info
             $mustFillFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMustFillFields');
-            if (is_array($mustFillFields)) {
-                $this->_aMustFillFields = array_flip($mustFillFields);
+            if (\is_array($mustFillFields)) {
+                $this->_aMustFillFields = \array_flip($mustFillFields);
             }
         }
 
@@ -2709,8 +2709,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         }
         $this->_blShowPromotions = false;
         if (oxNew(\OxidEsales\Eshop\Application\Model\ActionList::class)->areAnyActivePromotions()) {
-            $this->_blShowPromotions = (count($this->getPromoFinishedList()) + count($this->getPromoCurrentList()) +
-                                        count($this->getPromoFutureList())) > 0;
+            $this->_blShowPromotions = (\count($this->getPromoFinishedList()) + \count($this->getPromoCurrentList()) +
+                                        \count($this->getPromoFutureList())) > 0;
         }
 
         return $this->_blShowPromotions;
@@ -3041,7 +3041,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     private function isAllowedSortingOrder($sortOrder)
     {
-        $allowedSortOrders = array_merge((new SortingValidator())->getSortingOrders(), ['']);
-        return in_array(strtolower($sortOrder), $allowedSortOrders);
+        $allowedSortOrders = \array_merge((new SortingValidator())->getSortingOrders(), ['']);
+        return \in_array(\strtolower($sortOrder), $allowedSortOrders);
     }
 }

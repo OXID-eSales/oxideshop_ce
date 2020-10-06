@@ -31,7 +31,7 @@ class SepaIBANValidator
     public function isValid($sIBAN)
     {
         $blValid = false;
-        $sIBAN = strtoupper(trim($sIBAN));
+        $sIBAN = \strtoupper(\trim($sIBAN));
 
         if ($this->_isLengthValid($sIBAN)) {
             $blValid = $this->_isAlgorithmValid($sIBAN);
@@ -100,7 +100,7 @@ class SepaIBANValidator
 
         $iCorrectLength = $this->_getLengthForCountry($sIBAN);
 
-        return !is_null($iCorrectLength) && $iActualLength === $iCorrectLength;
+        return !\is_null($iCorrectLength) && $iActualLength === $iCorrectLength;
     }
 
 
@@ -197,8 +197,8 @@ class SepaIBANValidator
             'Z' => 35
         ];
 
-        return str_replace(
-            array_keys($aReplaceArray),
+        return \str_replace(
+            \array_keys($aReplaceArray),
             $aReplaceArray,
             $sIBAN
         );
@@ -214,7 +214,7 @@ class SepaIBANValidator
      */
     protected function _isIBANChecksumValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (int) bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE) === 1;
+        return (int) \bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE) === 1;
     }
 
     /**
@@ -227,7 +227,7 @@ class SepaIBANValidator
      */
     protected function _isNotEmptyArray($aCodeLengths) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return is_array($aCodeLengths) && !empty($aCodeLengths);
+        return \is_array($aCodeLengths) && !empty($aCodeLengths);
     }
 
     /**
@@ -265,7 +265,7 @@ class SepaIBANValidator
      */
     protected function _isCodeLengthKeyValid($sCountryAbbr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (int) preg_match("/^[A-Z]{2}$/", $sCountryAbbr) !== 0;
+        return (int) \preg_match("/^[A-Z]{2}$/", $sCountryAbbr) !== 0;
     }
 
     /**
@@ -278,6 +278,6 @@ class SepaIBANValidator
      */
     protected function _isCodeLengthValueValid($iLength) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return is_numeric($iLength) && (int) preg_match("/\./", $iLength) !== 1;
+        return \is_numeric($iLength) && (int) \preg_match("/\./", $iLength) !== 1;
     }
 }

@@ -122,7 +122,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $aRes = [];
         $aItems = $this->getItems();
-        if (is_array($aItems)) {
+        if (\is_array($aItems)) {
             foreach ($aItems as $sId => $oItem) {
                 $oArticle = $oItem->getArticle($sId);
                 $aRes[$this->_getItemKey($oArticle->getId(), $oItem->getSelList(), $oItem->getPersParams())] = $oArticle;
@@ -192,7 +192,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oNewItem = oxNew(\OxidEsales\Eshop\Application\Model\UserBasketItem::class);
         $oNewItem->oxuserbasketitems__oxartid = new \OxidEsales\Eshop\Core\Field($sProductId, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oNewItem->oxuserbasketitems__oxbasketid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-        if ($aPersParams && count($aPersParams)) {
+        if ($aPersParams && \count($aPersParams)) {
             $oNewItem->setPersParams($aPersParams);
         }
 
@@ -200,8 +200,8 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             $oArticle->load($sProductId);
             $aSelectLists = $oArticle->getSelectLists();
-            if (($iSelCnt = count($aSelectLists))) {
-                $aSelList = array_fill(0, $iSelCnt, '0');
+            if (($iSelCnt = \count($aSelectLists))) {
+                $aSelList = \array_fill(0, $iSelCnt, '0');
             }
         }
 
@@ -253,7 +253,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $aSel = ($aSel != null) ? $aSel : [0 => '0'];
 
-        return md5($sProductId . '|' . serialize($aSel) . '|' . serialize($aPersParam));
+        return \md5($sProductId . '|' . \serialize($aSel) . '|' . \serialize($aPersParam));
     }
 
     /**
@@ -265,7 +265,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getItemCount($blReload = false)
     {
-        return count($this->getItems($blReload));
+        return \count($this->getItems($blReload));
     }
 
     /**

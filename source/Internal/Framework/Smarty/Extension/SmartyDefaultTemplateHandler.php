@@ -45,12 +45,12 @@ class SmartyDefaultTemplateHandler
     public function handleTemplate($resourceType, $resourceName, &$resourceContent, &$resourceTimestamp, $smarty)
     {
         $loader = self::$loader;
-        if ($resourceType === 'file' && !is_readable($resourceName)) {
+        if ($resourceType === 'file' && !\is_readable($resourceName)) {
             $resourceName = $loader->getPath($resourceName);
-            $fileLoaded = is_file($resourceName) && is_readable($resourceName);
+            $fileLoaded = \is_file($resourceName) && \is_readable($resourceName);
             if ($fileLoaded) {
                 $resourceContent = $smarty->_read_file($resourceName);
-                $resourceTimestamp = filemtime($resourceName);
+                $resourceTimestamp = \filemtime($resourceName);
             }
 
             return $fileLoaded;

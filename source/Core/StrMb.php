@@ -49,7 +49,7 @@ class StrMb
      */
     public function strlen($sStr)
     {
-        return mb_strlen($sStr, $this->_sEncoding);
+        return \mb_strlen($sStr, $this->_sEncoding);
     }
 
     /**
@@ -63,9 +63,9 @@ class StrMb
      */
     public function substr($sStr, $iStart, $iLength = null)
     {
-        $iLength = is_null($iLength) ? $this->strlen($sStr) : $iLength;
+        $iLength = \is_null($iLength) ? $this->strlen($sStr) : $iLength;
 
-        return mb_substr($sStr, $iStart, $iLength, $this->_sEncoding);
+        return \mb_substr($sStr, $iStart, $iLength, $this->_sEncoding);
     }
 
     /**
@@ -81,8 +81,8 @@ class StrMb
     {
         $iPos = false;
         if ($sHaystack && $sNeedle) {
-            $iOffset = is_null($iOffset) ? 0 : $iOffset;
-            $iPos = mb_strpos($sHaystack, $sNeedle, $iOffset, $this->_sEncoding);
+            $iOffset = \is_null($iOffset) ? 0 : $iOffset;
+            $iPos = \mb_strpos($sHaystack, $sNeedle, $iOffset, $this->_sEncoding);
         }
 
         return $iPos;
@@ -103,7 +103,7 @@ class StrMb
             return false;
         }
 
-        return mb_strstr($sHaystack, $sNeedle, false, $this->_sEncoding);
+        return \mb_strstr($sHaystack, $sNeedle, false, $this->_sEncoding);
     }
 
     /**
@@ -115,7 +115,7 @@ class StrMb
      */
     public function strtolower($sString)
     {
-        return mb_strtolower($sString, $this->_sEncoding);
+        return \mb_strtolower($sString, $this->_sEncoding);
     }
 
     /**
@@ -127,7 +127,7 @@ class StrMb
      */
     public function strtoupper($sString)
     {
-        return mb_strtoupper($sString, $this->_sEncoding);
+        return \mb_strtoupper($sString, $this->_sEncoding);
     }
 
     /**
@@ -140,7 +140,7 @@ class StrMb
      */
     public function htmlspecialchars($sString, $iQuotStyle = ENT_QUOTES)
     {
-        return htmlspecialchars($sString, $iQuotStyle, $this->_sEncoding);
+        return \htmlspecialchars($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
@@ -153,7 +153,7 @@ class StrMb
      */
     public function htmlentities($sString, $iQuotStyle = ENT_QUOTES)
     {
-        return htmlentities($sString, $iQuotStyle, $this->_sEncoding);
+        return \htmlentities($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     // @codingStandardsIgnoreStart
@@ -167,7 +167,7 @@ class StrMb
      */
     public function html_entity_decode($sString, $iQuotStyle = ENT_QUOTES)
     {
-        return html_entity_decode($sString, $iQuotStyle, $this->_sEncoding);
+        return \html_entity_decode($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
@@ -182,7 +182,7 @@ class StrMb
      */
     public function preg_split($sPattern, $sString, $iLimit = -1, $iFlag = 0)
     {
-        return preg_split($sPattern . 'u', $sString, $iLimit, $iFlag);
+        return \preg_split($sPattern . 'u', $sString, $iLimit, $iFlag);
     }
 
     /**
@@ -198,7 +198,7 @@ class StrMb
      */
     public function preg_replace($aPattern, $sString, $sSubject, $iLimit = -1, $iCount = null)
     {
-        if (is_array($aPattern)) {
+        if (\is_array($aPattern)) {
             foreach ($aPattern as &$sPattern) {
                 $sPattern = $sPattern . 'u';
             }
@@ -206,7 +206,7 @@ class StrMb
             $aPattern = $aPattern . 'u';
         }
 
-        return preg_replace($aPattern, $sString, $sSubject, $iLimit, $iCount);
+        return \preg_replace($aPattern, $sString, $sSubject, $iLimit, $iCount);
     }
 
     /**
@@ -222,7 +222,7 @@ class StrMb
      */
     public function preg_replace_callback($pattern, $callback, $subject, $limit = -1, &$count = null)
     {
-        if (is_array($pattern)) {
+        if (\is_array($pattern)) {
             foreach ($pattern as &$item) {
                 $item = $item . 'u';
             }
@@ -230,7 +230,7 @@ class StrMb
             $pattern = $pattern . 'u';
         }
 
-        return preg_replace_callback($pattern, $callback, $subject, $limit, $count);
+        return \preg_replace_callback($pattern, $callback, $subject, $limit, $count);
     }
 
     /**
@@ -246,7 +246,7 @@ class StrMb
      */
     public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        return preg_match($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
+        return \preg_match($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
     /**
@@ -262,7 +262,7 @@ class StrMb
      */
     public function preg_match_all($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        return preg_match_all($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
+        return \preg_match_all($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }
     // @codingStandardsIgnoreEnd
 
@@ -298,26 +298,26 @@ class StrMb
             $sRegexp = "/^([^\s]{{$iLength}}|.{1,{$iLength}}\s)/u";
         }
 
-        $iStrLen = mb_strlen($sString, $this->_sEncoding);
-        $iWraps = floor($iStrLen / $iLength);
+        $iStrLen = \mb_strlen($sString, $this->_sEncoding);
+        $iWraps = \floor($iStrLen / $iLength);
 
         $i = $iWraps;
         $sReturn = '';
         $aMatches = [];
         while ($i > 0) {
-            $iWraps = floor(mb_strlen($sString, $this->_sEncoding) / $iLength);
+            $iWraps = \floor(\mb_strlen($sString, $this->_sEncoding) / $iLength);
 
             $i = $iWraps;
-            if (preg_match($sRegexp, $sString, $aMatches)) {
+            if (\preg_match($sRegexp, $sString, $aMatches)) {
                 $sStr = $aMatches[0];
-                $sReturn .= preg_replace('/\s$/s', '', $sStr) . $sBreak;
-                $sString = $this->substr($sString, mb_strlen($sStr, $this->_sEncoding));
+                $sReturn .= \preg_replace('/\s$/s', '', $sStr) . $sBreak;
+                $sString = $this->substr($sString, \mb_strlen($sStr, $this->_sEncoding));
             } else {
                 break;
             }
             $i--;
         }
-        $sReturn = preg_replace("/$sBreak$/", '', $sReturn);
+        $sReturn = \preg_replace("/$sBreak$/", '', $sReturn);
         if ($sString) {
             $sReturn .= $sBreak . $sString;
         }
@@ -339,10 +339,10 @@ class StrMb
      */
     public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = [], $aUmlEntities = [])
     {
-        $aUmls = (count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
-        $aUmlEntities = (count($aUmlEntities) > 0) ? array_merge($this->_aUmlEntities, $aUmlEntities) : $this->_aUmlEntities;
+        $aUmls = (\count($aUmls) > 0) ? \array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
+        $aUmlEntities = (\count($aUmlEntities) > 0) ? \array_merge($this->_aUmlEntities, $aUmlEntities) : $this->_aUmlEntities;
 
-        return $blToHtmlEntities ? str_replace($aUmls, $aUmlEntities, $sInput) : str_replace($aUmlEntities, $aUmls, $sInput);
+        return $blToHtmlEntities ? \str_replace($aUmls, $aUmlEntities, $sInput) : \str_replace($aUmlEntities, $aUmls, $sInput);
     }
 
     /**
@@ -354,7 +354,7 @@ class StrMb
      */
     public function hasSpecialChars($sStr)
     {
-        return $this->preg_match("/(" . implode("|", $this->_aUmls) . "|(&amp;))/", $sStr);
+        return $this->preg_match("/(" . \implode("|", $this->_aUmls) . "|(&amp;))/", $sStr);
     }
 
     /**
@@ -380,7 +380,7 @@ class StrMb
      */
     public function jsonEncode($data)
     {
-        return json_encode($data);
+        return \json_encode($data);
     }
 
     // @codingStandardsIgnoreStart
@@ -394,12 +394,12 @@ class StrMb
      */
     public function strip_tags($sString, $sAllowableTags = '')
     {
-        if (stripos($sAllowableTags, '<style>') === false) {
+        if (\stripos($sAllowableTags, '<style>') === false) {
             // strip style tags with definitions within
             $sString = $this->preg_replace("'<style[^>]*>.*</style>'siU", '', $sString);
         }
 
-        return strip_tags($sString, $sAllowableTags);
+        return \strip_tags($sString, $sAllowableTags);
     }
     // @codingStandardsIgnoreEnd
 
@@ -414,6 +414,6 @@ class StrMb
      */
     public function strrcmp($sStr1, $sStr2)
     {
-        return -strcmp($sStr1, $sStr2);
+        return -\strcmp($sStr1, $sStr2);
     }
 }

@@ -73,7 +73,7 @@ class Controller extends Core
 
         //setting admin area default language
         $adminLanguage = $session->getSessionParam('setup_lang');
-        $this->getUtilitiesInstance()->setCookie("oxidadminlanguage", $adminLanguage, time() + 31536000, "/");
+        $this->getUtilitiesInstance()->setCookie("oxidadminlanguage", $adminLanguage, \time() + 31536000, "/");
 
         $this->setViewOptions(
             'welcome.php',
@@ -380,7 +380,7 @@ class Controller extends Core
         }
 
         // check if passwords match
-        if (strlen($adminData['sPassword']) < 6) {
+        if (\strlen($adminData['sPassword']) < 6) {
             $setup->setNextStep($setup->getStep('STEP_DIRS_INFO'));
             $view->setMessage($language->getText('ERROR_PASSWORD_TOO_SHORT'));
 
@@ -405,7 +405,7 @@ class Controller extends Core
 
         // write it now
         try {
-            $parameters = array_merge((array)$session->getSessionParam('aDB'), $pathCollection);
+            $parameters = \array_merge((array)$session->getSessionParam('aDB'), $pathCollection);
 
             // updating config file
             $utils->updateConfigFile($parameters);
@@ -466,7 +466,7 @@ class Controller extends Core
                 "aPath" => $pathCollection,
                 "aSetupConfig" => $aSetupConfig,
                 "aDB" => $aDB,
-                "blWritableConfig" => is_writable($pathCollection['sShopDir'] . "/config.inc.php")
+                "blWritableConfig" => \is_writable($pathCollection['sShopDir'] . "/config.inc.php")
             ]
         );
     }
@@ -516,7 +516,7 @@ class Controller extends Core
      */
     private function formMessageIfDBCanBeOverwritten($databaseName, $view, $language)
     {
-        $view->setMessage(sprintf($language->getText('ERROR_DB_ALREADY_EXISTS'), $databaseName));
+        $view->setMessage(\sprintf($language->getText('ERROR_DB_ALREADY_EXISTS'), $databaseName));
     }
 
     /**
@@ -549,7 +549,7 @@ class Controller extends Core
             if ($demoDataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
                 $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
 
-                exec(
+                \exec(
                     (new Facts())->getCommunityEditionRootPath() .
                     '/bin/oe-console oe:setup:demodata'
                 );
@@ -692,15 +692,15 @@ class Controller extends Core
         $commandOutput = $exception->getCommandOutput();
         $htmlCommandOutput = $this->convertCommandOutputToHtmlOutput($commandOutput);
 
-        $errorLines[] = sprintf(
+        $errorLines[] = \sprintf(
             $language->getText('EXTERNAL_COMMAND_ERROR_1'),
             $exception->getCommand(),
             $exception->getReturnCode()
         );
         $errorLines[] = $language->getText('EXTERNAL_COMMAND_ERROR_2');
 
-        $errorHeader = implode("<br />", $errorLines);
-        $errorMessage = implode("<br /><br />", [$errorHeader, $htmlCommandOutput]);
+        $errorHeader = \implode("<br />", $errorLines);
+        $errorMessage = \implode("<br /><br />", [$errorHeader, $htmlCommandOutput]);
 
         $view->setMessage($errorMessage);
     }
@@ -713,8 +713,8 @@ class Controller extends Core
     private function convertCommandOutputToHtmlOutput($commandOutput)
     {
         $commandOutput = Utilities::stripAnsiControlCodes($commandOutput);
-        $commandOutput = htmlspecialchars($commandOutput);
-        $commandOutput = str_replace("\n", "<br />", $commandOutput);
+        $commandOutput = \htmlspecialchars($commandOutput);
+        $commandOutput = \str_replace("\n", "<br />", $commandOutput);
         $commandOutput = "<span style=\"font-family: courier,serif\">$commandOutput</span>";
 
         return $commandOutput;

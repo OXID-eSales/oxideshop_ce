@@ -32,7 +32,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
             if ($oObject->load($this->getEditObjectId())) {
                 $oOtherLang = $oObject->getAvailableInLangs();
                 if (!isset($oOtherLang[$iLang])) {
-                    $oObject->loadInLang(key($oOtherLang), $this->getEditObjectId());
+                    $oObject->loadInLang(\key($oOtherLang), $this->getEditObjectId());
                 }
                 $this->_aViewData['edit'] = $oObject;
             }
@@ -85,8 +85,8 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                 $aSeoData['oxseourl'],
                 $this->_getSeoEntryType(),
                 $aSeoData['oxfixed'],
-                trim($aSeoData['oxkeywords']),
-                trim($aSeoData['oxdescription']),
+                \trim($aSeoData['oxkeywords']),
+                \trim($aSeoData['oxdescription']),
                 $this->processParam($aSeoData['oxparams']),
                 true,
                 $this->_getAltSeoEntryId()
@@ -106,7 +106,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     {
         $sParams = null;
         if (isset($aSeoData['oxparams'])) {
-            if (preg_match('/([a-z]*#)?(?<objectseo>[a-z0-9]+)(#[0-9])?/i', $aSeoData['oxparams'], $aMatches)) {
+            if (\preg_match('/([a-z]*#)?(?<objectseo>[a-z0-9]+)(#[0-9])?/i', $aSeoData['oxparams'], $aMatches)) {
                 $sQuotedObjectSeoId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($aMatches['objectseo']);
                 $sParams = "oxparams = {$sQuotedObjectSeoId}";
             }

@@ -154,7 +154,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
         if ($navigationStep == 1) {
             $this->_aViewData['aImportTables'] = $genericImport->getImportObjectsList();
-            asort($this->_aViewData['aImportTables']);
+            \asort($this->_aViewData['aImportTables']);
             $this->_resetUploadedCsvData();
         }
 
@@ -170,8 +170,8 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     protected function _deleteCsvFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPath = $this->_getUploadedCsvFilePath();
-        if (is_file($sPath)) {
-            @unlink($sPath);
+        if (\is_file($sPath)) {
+            @\unlink($sPath);
         }
     }
 
@@ -218,9 +218,9 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $iMaxLineLength = 8192;
 
         //getting first row
-        if (($rFile = @fopen($sPath, "r")) !== false) {
-            $aRow = fgetcsv($rFile, $iMaxLineLength, $this->_getCsvFieldsTerminator(), $this->_getCsvFieldsEncolser());
-            fclose($rFile);
+        if (($rFile = @\fopen($sPath, "r")) !== false) {
+            $aRow = \fgetcsv($rFile, $iMaxLineLength, $this->_getCsvFieldsTerminator(), $this->_getCsvFieldsEncolser());
+            \fclose($rFile);
         }
 
         return $aRow;
@@ -299,8 +299,8 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aFile = $oConfig->getUploadedFile('csvfile');
         if (isset($aFile['name']) && $aFile['name']) {
-            $this->_sCsvFilePath = $oConfig->getConfigParam('sCompileDir') . basename($aFile['tmp_name']);
-            move_uploaded_file($aFile['tmp_name'], $this->_sCsvFilePath);
+            $this->_sCsvFilePath = $oConfig->getConfigParam('sCompileDir') . \basename($aFile['tmp_name']);
+            \move_uploaded_file($aFile['tmp_name'], $this->_sCsvFilePath);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('sCsvFilePath', $this->_sCsvFilePath);
 
             return $this->_sCsvFilePath;
@@ -366,7 +366,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
     private function setErrorToView($invalidData)
     {
         $error = oxNew(\OxidEsales\Eshop\Core\DisplayError::class);
-        $error->setFormatParameters(htmlspecialchars($invalidData));
+        $error->setFormatParameters(\htmlspecialchars($invalidData));
         $error->setMessage("SHOP_CONFIG_ERROR_INVALID_VALUE");
         \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($error);
     }

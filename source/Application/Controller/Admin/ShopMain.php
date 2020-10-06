@@ -111,7 +111,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         }
 
         if ($parameters['oxshops__oxsmtp']) {
-            $parameters['oxshops__oxsmtp'] = trim($parameters['oxshops__oxsmtp']);
+            $parameters['oxshops__oxsmtp'] = \trim($parameters['oxshops__oxsmtp']);
         }
 
         $shop->setLanguage(0);
@@ -171,7 +171,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         //adding non copable multishop field options
         $multiShopTables = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMultiShopTables');
         foreach ($multiShopTables as $multishopTable) {
-            $nonCopyVars[] = 'blMallInherit_' . strtolower($multishopTable);
+            $nonCopyVars[] = 'blMallInherit_' . \strtolower($multishopTable);
         }
 
         return $nonCopyVars;
@@ -198,7 +198,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         if ($shopConfiguration != false && $shopConfiguration->count() > 0) {
             while (!$shopConfiguration->EOF) {
                 $configName = $shopConfiguration->fields[0];
-                if (!in_array($configName, $nonCopyVars)) {
+                if (!\in_array($configName, $nonCopyVars)) {
                     $newId = $utilsObject->generateUID();
                     $insertNewConfigQuery =
                         "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule)
@@ -219,7 +219,7 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $inheritAll = $shop->oxshops__oxisinherited->value ? "true" : "false";
         $multiShopTables = $config->getConfigParam('aMultiShopTables');
         foreach ($multiShopTables as $multishopTable) {
-            $config->saveShopConfVar("bool", 'blMallInherit_' . strtolower($multishopTable), $inheritAll, $shop->oxshops__oxid->value);
+            $config->saveShopConfVar("bool", 'blMallInherit_' . \strtolower($multishopTable), $inheritAll, $shop->oxshops__oxid->value);
         }
     }
 

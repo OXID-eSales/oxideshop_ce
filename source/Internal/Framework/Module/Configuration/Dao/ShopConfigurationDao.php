@@ -155,7 +155,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     {
         $shopIds = [];
 
-        if (file_exists($this->getShopsConfigurationDirectory())) {
+        if (\file_exists($this->getShopsConfigurationDirectory())) {
             $dir = new \DirectoryIterator($this->getShopsConfigurationDirectory());
 
             foreach ($dir as $fileInfo) {
@@ -219,7 +219,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         array $shopConfigurationData,
         array $environmentShopConfigurationData
     ): array {
-        return array_replace_recursive($shopConfigurationData, $environmentShopConfigurationData);
+        return \array_replace_recursive($shopConfigurationData, $environmentShopConfigurationData);
     }
 
     /**
@@ -229,7 +229,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     private function isShopIdExists(int $shopId): bool
     {
-        return in_array($shopId, $this->getShopIds(), true);
+        return \in_array($shopId, $this->getShopIds(), true);
     }
 
     /**

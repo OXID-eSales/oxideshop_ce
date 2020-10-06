@@ -33,14 +33,14 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadAttributesByIds($aIds)
     {
-        if (!count($aIds)) {
+        if (!\count($aIds)) {
             return;
         }
 
         $sAttrViewName = getViewName('oxattribute');
         $sViewName = getViewName('oxobject2attribute');
 
-        $oxObjectIdsSql = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
+        $oxObjectIdsSql = \implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sAttrViewName.oxid, $sAttrViewName.oxtitle, {$sViewName}.oxvalue, {$sViewName}.oxobjectid ";
         $sSelect .= "from {$sViewName} left join $sAttrViewName on $sAttrViewName.oxid = {$sViewName}.oxattrid ";
@@ -164,10 +164,10 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oArtList->loadCategoryIDs($sCategoryId, $aSessionFilter);
 
         // Only if we have articles
-        if (count($oArtList) > 0) {
+        if (\count($oArtList) > 0) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sArtIds = '';
-            foreach (array_keys($oArtList->getArray()) as $sId) {
+            foreach (\array_keys($oArtList->getArray()) as $sId) {
                 if ($sArtIds) {
                     $sArtIds .= ',';
                 }
@@ -222,14 +222,14 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (count($aParentAttributes)) {
+        if (\count($aParentAttributes)) {
             $aAttrIds = [];
             foreach ($aAttributes as $aAttribute) {
                 $aAttrIds[] = $aAttribute['OXID'];
             }
 
             foreach ($aParentAttributes as $aAttribute) {
-                if (!in_array($aAttribute['OXID'], $aAttrIds)) {
+                if (!\in_array($aAttribute['OXID'], $aAttrIds)) {
                     $aAttributes[] = $aAttribute;
                 }
             }

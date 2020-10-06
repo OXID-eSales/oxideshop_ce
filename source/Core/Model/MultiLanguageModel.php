@@ -93,7 +93,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
             // reset
             $this->_sViewTable = false;
-            if (count($this->_aFieldNames) > 1) {
+            if (\count($this->_aFieldNames) > 1) {
                 $this->_initDataStructure();
             }
         }
@@ -109,7 +109,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function isMultilingualField($fieldName)
     {
-        $fieldName = strtolower($fieldName);
+        $fieldName = \strtolower($fieldName);
         if (isset($this->_aFieldNames[$fieldName])) {
             return (bool) $this->_aFieldNames[$fieldName];
         }
@@ -190,7 +190,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         //selecting all object multilang fields
         foreach ($objFields as $key => $value) {
             //skipping oxactive field
-            if (preg_match('/^oxactive(_(\d{1,2}))?$/', $key)) {
+            if (\preg_match('/^oxactive(_(\d{1,2}))?$/', $key)) {
                 continue;
             }
 
@@ -198,13 +198,13 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
             //checking, if field is multilanguage
             if ($this->isMultilingualField($key) || $fieldLang > 0) {
-                $newKey = preg_replace('/_(\d{1,2})$/', '', $key);
+                $newKey = \preg_replace('/_(\d{1,2})$/', '', $key);
                 $multiLangFields[$newKey][] = (int) $fieldLang;
             }
         }
 
         // if no multilanguage fields, return default languages array
-        if (count($multiLangFields) < 1) {
+        if (\count($multiLangFields) < 1) {
             return $languages;
         }
 
@@ -219,11 +219,11 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // checks if object field data is not empty in all available languages
         // and formats not available in languages array
-        if (isset($rs[0]) && is_array($rs[0]) && count($rs[0])) {
+        if (isset($rs[0]) && \is_array($rs[0]) && \count($rs[0])) {
             foreach ($multiLangFields as $fieldId => $multiLangIds) {
                 foreach ($multiLangIds as $multiLangId) {
                     $fieldName = ($multiLangId == 0) ? $fieldId : $fieldId . '_' . $multiLangId;
-                    if ($rs[0][strtoupper($fieldName)]) {
+                    if ($rs[0][\strtoupper($fieldName)]) {
                         unset($notInLang[$multiLangId]);
                         continue;
                     }
@@ -231,7 +231,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
         }
 
-        return array_diff($languages, $notInLang);
+        return \array_diff($languages, $notInLang);
     }
 
     /**
@@ -246,7 +246,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _getFieldStatus($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $allField = $this->_getAllFields(true);
-        if (isset($allField[strtolower($fieldName) . "_1"])) {
+        if (isset($allField[\strtolower($fieldName) . "_1"])) {
             return 1;
         }
 
@@ -306,10 +306,10 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getFieldLang($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (false === strpos($fieldName, '_')) {
+        if (false === \strpos($fieldName, '_')) {
             return 0;
         }
-        if (preg_match('/_(\d{1,2})$/', $fieldName, $regs)) {
+        if (\preg_match('/_(\d{1,2})$/', $fieldName, $regs)) {
             return $regs[1];
         } else {
             return 0;
@@ -375,8 +375,8 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $sql = '';
         $sep = false;
-        foreach (array_keys($this->_aFieldNames) as $key) {
-            $keyLowercase = strtolower($key);
+        foreach (\array_keys($this->_aFieldNames) as $key) {
+            $keyLowercase = \strtolower($key);
             if ($keyLowercase != 'oxid') {
                 if ($this->_blEmployMultilanguage) {
                     if ($skipMultilingual && $this->isMultilingualField($key)) {
@@ -405,7 +405,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             $longName = $this->_getFieldLongName($key);
             $field = $this->$longName;
 
-            if (!$useSkipSaveFields || ($useSkipSaveFields && !in_array($keyLowercase, $this->_aSkipSaveFields))) {
+            if (!$useSkipSaveFields || ($useSkipSaveFields && !\in_array($keyLowercase, $this->_aSkipSaveFields))) {
                 $key = $this->getUpdateSqlFieldName($key);
                 $sql .= (($sep) ? ',' : '') . $key . " = " . $this->_getUpdateFieldValue($key, $field);
                 $sep = true;
@@ -592,7 +592,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _canFieldBeNull($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $fieldName = preg_replace('/_\d{1,2}$/', '', $fieldName);
+        $fieldName = \preg_replace('/_\d{1,2}$/', '', $fieldName);
 
         return parent::_canFieldBeNull($fieldName);
     }

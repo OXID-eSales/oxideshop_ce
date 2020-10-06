@@ -91,8 +91,8 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenCat)) {
-            $sChosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
+        } elseif (\is_array($aChosenCat)) {
+            $sChosenCategories = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . $sChosenCategories . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
@@ -117,7 +117,7 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
             $aAddCategory = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }
 
-        if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
+        if ($oAttribute->load($soxId) && \is_array($aAddCategory)) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
             foreach ($aAddCategory as $sAdd) {

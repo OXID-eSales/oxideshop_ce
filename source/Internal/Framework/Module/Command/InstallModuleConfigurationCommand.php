@@ -154,7 +154,7 @@ class InstallModuleConfigurationCommand extends Command
      */
     private function validatePath(string $path)
     {
-        if (!file_exists($path) || !is_dir($path)) {
+        if (!\file_exists($path) || !\is_dir($path)) {
             throw PathNotFoundException::byPath($path);
         }
     }
@@ -166,7 +166,7 @@ class InstallModuleConfigurationCommand extends Command
     private function getAbsolutePath(string $path): string
     {
         return Path::isRelative($path)
-            ? Path::makeAbsolute($path, getcwd())
+            ? Path::makeAbsolute($path, \getcwd())
             : $path;
     }
 }

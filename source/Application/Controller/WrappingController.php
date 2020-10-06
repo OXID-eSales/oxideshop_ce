@@ -118,7 +118,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
             $session = \OxidEsales\Eshop\Core\Registry::getSession();
             $oBasket = $session->getBasket();
             // setting wrapping info
-            if (is_array($aWrapping) && count($aWrapping)) {
+            if (\is_array($aWrapping) && \count($aWrapping)) {
                 foreach ($oBasket->getContents() as $sKey => $oBasketItem) {
                     // wrapping ?
                     if (isset($aWrapping[$sKey])) {

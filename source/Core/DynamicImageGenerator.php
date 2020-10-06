@@ -8,7 +8,7 @@
 namespace {
 
     /** Checks if instance name getter does not exist */
-    if (!function_exists("getGeneratorInstanceName")) {
+    if (!\function_exists("getGeneratorInstanceName")) {
         /**
          * Returns image generator instance name
          *
@@ -21,7 +21,7 @@ namespace {
     }
 
     /** Checks if GD library version getter does not exist */
-    if (!function_exists("getGdVersion")) {
+    if (!\function_exists("getGdVersion")) {
         /**
          * Returns GD library version
          *
@@ -33,11 +33,11 @@ namespace {
 
             if ($version === null) {
                 $version = false;
-                if (function_exists("gd_info")) {
+                if (\function_exists("gd_info")) {
                     // extracting GD version from php
-                    $info = gd_info();
+                    $info = \gd_info();
                     if (isset($info["GD Version"])) {
-                        $version = version_compare(preg_replace("/[^0-9\.]/", "", $info["GD Version"]), 1, '>') ? 2 : 1;
+                        $version = \version_compare(\preg_replace("/[^0-9\.]/", "", $info["GD Version"]), 1, '>') ? 2 : 1;
                     }
                 }
             }
@@ -47,7 +47,7 @@ namespace {
     }
 
     /** Checks if image utils file loader does not exist */
-    if (!function_exists("includeImageUtils")) {
+    if (!\function_exists("includeImageUtils")) {
         /**
          * Includes image utils
          */
@@ -155,16 +155,16 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         public function __call($method, $args)
         {
-            if (defined('OXID_PHP_UNIT')) {
-                if (substr($method, 0, 4) == "UNIT") {
-                    $method = str_replace("UNIT", "_", $method);
+            if (\defined('OXID_PHP_UNIT')) {
+                if (\substr($method, 0, 4) == "UNIT") {
+                    $method = \str_replace("UNIT", "_", $method);
                 }
-                if (method_exists($this, $method)) {
-                    return call_user_func_array([& $this, $method], $args);
+                if (\method_exists($this, $method)) {
+                    return \call_user_func_array([& $this, $method], $args);
                 }
             }
 
-            throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+            throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . \get_class($this) . ")" . PHP_EOL);
         }
 
         /**
@@ -190,13 +190,13 @@ namespace OxidEsales\EshopCommunity\Core {
                 $this->_sImageUri = "";
                 $reqPath = 'out/pictures/generated';
 
-                $reqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
-                $reqImg = str_replace('//', '/', $reqImg);
-                if (($pos = strpos($reqImg, $reqPath)) !== false) {
-                    $this->_sImageUri = substr($reqImg, $pos);
+                $reqImg = isset($_SERVER["REQUEST_URI"]) ? \urldecode($_SERVER["REQUEST_URI"]) : "";
+                $reqImg = \str_replace('//', '/', $reqImg);
+                if (($pos = \strpos($reqImg, $reqPath)) !== false) {
+                    $this->_sImageUri = \substr($reqImg, $pos);
                 }
 
-                $this->_sImageUri = trim($this->_sImageUri, "/");
+                $this->_sImageUri = \trim($this->_sImageUri, "/");
             }
 
             return $this->_sImageUri;
@@ -210,7 +210,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function _getImageName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
-            return basename($this->_getImageUri());
+            return \basename($this->_getImageUri());
         }
 
         /**
@@ -224,8 +224,8 @@ namespace OxidEsales\EshopCommunity\Core {
             $uri = $this->_getImageUri();
             $path = false;
 
-            if ($uri && ($path = dirname(dirname($uri)))) {
-                $path = preg_replace("/\/([^\/]*)\/([^\/]*)\/([^\/]*)$/", "/master/\\2/\\3/", $path);
+            if ($uri && ($path = \dirname(\dirname($uri)))) {
+                $path = \preg_replace("/\/([^\/]*)\/([^\/]*)\/([^\/]*)$/", "/master/\\2/\\3/", $path);
             }
 
             return $path;
@@ -241,7 +241,7 @@ namespace OxidEsales\EshopCommunity\Core {
         {
             $info = [];
             if (($uri = $this->_getImageUri())) {
-                $info = explode($this->_sImageInfoSep, basename(dirname($uri)));
+                $info = \explode($this->_sImageInfoSep, \basename(\dirname($uri)));
             }
 
             return $info;
@@ -268,7 +268,7 @@ namespace OxidEsales\EshopCommunity\Core {
         {
             $path = $this->_getShopBasePath() . $this->_getImageUri();
 
-            return str_replace($this->_getImageName(), "nopic.jpg", $path);
+            return \str_replace($this->_getImageName(), "nopic.jpg", $path);
         }
 
         /**
@@ -279,7 +279,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function _getImageType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
-            $fileExtension = strtolower(pathinfo($this->_getImageName(), PATHINFO_EXTENSION));
+            $fileExtension = \strtolower(\pathinfo($this->_getImageName(), PATHINFO_EXTENSION));
             if (!$this->validateImageFileExtension($fileExtension)) {
                 return false;
             }
@@ -306,7 +306,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function _generatePng($source, $target, $width, $height) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
-            return resizePng($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null);
+            return resizePng($source, $target, $width, $height, @\getimagesize($source), getGdVersion(), null);
         }
 
         /**
@@ -323,7 +323,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function _generateJpg($source, $target, $width, $height, $quality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
-            return resizeJpeg($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null, $quality);
+            return resizeJpeg($source, $target, $width, $height, @\getimagesize($source), getGdVersion(), null, $quality);
         }
 
         /**
@@ -339,7 +339,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function _generateGif($source, $target, $width, $height) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
-            $imageInfo = @getimagesize($source);
+            $imageInfo = @\getimagesize($source);
 
             return resizeGif($source, $target, $width, $height, $imageInfo[0], $imageInfo[1], $this->validateGdVersion());
         }
@@ -356,10 +356,10 @@ namespace OxidEsales\EshopCommunity\Core {
         protected function _isTargetPathValid($path) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $valid = true;
-            $dir = dirname(trim($path));
+            $dir = \dirname(\trim($path));
 
             // first time folder access?
-            if (!is_dir($dir) && ($valid = $this->_isValidPath($dir))) {
+            if (!\is_dir($dir) && ($valid = $this->_isValidPath($dir))) {
                 // creating missing folders
                 $valid = $this->_createFolders($dir);
             }
@@ -378,18 +378,18 @@ namespace OxidEsales\EshopCommunity\Core {
         protected function _createFolders($dir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
             $config = Registry::getConfig();
-            $picFolderPath = dirname($config->getMasterPictureDir());
+            $picFolderPath = \dirname($config->getMasterPictureDir());
 
             $done = false;
-            if ($picFolderPath && is_dir($picFolderPath)) {
+            if ($picFolderPath && \is_dir($picFolderPath)) {
                 // if its in main path..
-                if (strcmp($picFolderPath, substr($dir, 0, strlen($picFolderPath))) == 0) {
+                if (\strcmp($picFolderPath, \substr($dir, 0, \strlen($picFolderPath))) == 0) {
                     // folder does not exist yet?
-                    if (!($done = file_exists($dir))) {
-                        clearstatcache();
+                    if (!($done = \file_exists($dir))) {
+                        \clearstatcache();
                         // in case creation did not succeed, maybe another process allready created folder?
                         $mode = 0755;
-                        $done = mkdir($dir, $mode, true) || file_exists($dir);
+                        $done = \mkdir($dir, $mode, true) || \file_exists($dir);
                     }
                 }
             }
@@ -417,14 +417,14 @@ namespace OxidEsales\EshopCommunity\Core {
                 // parameter names
                 $names = [];
                 foreach ($this->_aConfParamToPath as $paramName => $pathReg) {
-                    if (preg_match($pathReg, $path)) {
+                    if (\preg_match($pathReg, $path)) {
                         $names[] = $db->quote($paramName);
                         if ($paramName == "sManufacturerIconsize" || $paramName == "sCatIconsize") {
                             $names[] = $db->quote("sIconsize");
                         }
                     }
                 }
-                $names = implode(', ', $names);
+                $names = \implode(', ', $names);
 
                 // any name matching path?
                 if ($names) {
@@ -440,7 +440,7 @@ namespace OxidEsales\EshopCommunity\Core {
 
                     // building query:
                     // shop id
-                    $shopIds = implode(', ', array_map(function ($shopId) use ($db) {
+                    $shopIds = \implode(', ', \array_map(function ($shopId) use ($db) {
                         // probably here we can resolve and check shop id to shorten check?
                         return $db->quote($shopId['oxshopid']);
                     }, $shopIdsArray));
@@ -458,7 +458,7 @@ namespace OxidEsales\EshopCommunity\Core {
                         foreach ($values as $value) {
                             $confValues = (array) $config->decodeValue($value["oxvartype"], $value["oxvarvalue"]);
                             foreach ($confValues as $confValue) {
-                                if (strcmp($checkSize, $confValue) == 0) {
+                                if (\strcmp($checkSize, $confValue) == 0) {
                                     $valid = true;
                                     break;
                                 }
@@ -487,8 +487,8 @@ namespace OxidEsales\EshopCommunity\Core {
             $generatedImagePath = false;
             list($targetWidth, $targetHeight, $targetQuality) = $this->_getImageInfo();
 
-            $fileExtensionSource = strtolower(pathinfo($imageSource, PATHINFO_EXTENSION));
-            $fileExtensionTarget = strtolower(pathinfo($imageTarget, PATHINFO_EXTENSION));
+            $fileExtensionSource = \strtolower(\pathinfo($imageSource, PATHINFO_EXTENSION));
+            $fileExtensionTarget = \strtolower(\pathinfo($imageTarget, PATHINFO_EXTENSION));
 
             // Do some validation and return false on failure
             if (
@@ -567,11 +567,11 @@ namespace OxidEsales\EshopCommunity\Core {
             $lockName = $this->_getLockName($source);
 
             // creating lock file
-            $this->_hLockHandle = @fopen($lockName, "w");
-            if (is_resource($this->_hLockHandle)) {
-                if (!($locked = flock($this->_hLockHandle, LOCK_EX))) {
+            $this->_hLockHandle = @\fopen($lockName, "w");
+            if (\is_resource($this->_hLockHandle)) {
+                if (!($locked = \flock($this->_hLockHandle, LOCK_EX))) {
                     // on failure - closing
-                    fclose($this->_hLockHandle);
+                    \fclose($this->_hLockHandle);
                     $this->_hLockHandle = null;
                 }
             }
@@ -579,8 +579,8 @@ namespace OxidEsales\EshopCommunity\Core {
             // in case system does not support file lockings
             if (!$locked) {
                 // start a blank file to inform other processes we are dealing with it.
-                if (!(file_exists($lockName) && abs(time() - filectime($lockName) < 40))) {
-                    if ($this->_hLockHandle = @fopen($lockName, "w")) {
+                if (!(\file_exists($lockName) && \abs(\time() - \filectime($lockName) < 40))) {
+                    if ($this->_hLockHandle = @\fopen($lockName, "w")) {
                         $locked = true;
                     }
                 }
@@ -597,11 +597,11 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function _unlock($source) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
-            if (is_resource($this->_hLockHandle)) {
-                flock($this->_hLockHandle, LOCK_UN);
-                fclose($this->_hLockHandle);
+            if (\is_resource($this->_hLockHandle)) {
+                \flock($this->_hLockHandle, LOCK_UN);
+                \fclose($this->_hLockHandle);
                 $this->_hLockHandle = null;
-                unlink($this->_getLockName($source));
+                \unlink($this->_getLockName($source));
             }
         }
 
@@ -620,7 +620,7 @@ namespace OxidEsales\EshopCommunity\Core {
         public function getImagePath($absPath = false)
         {
             if ($absPath) {
-                $this->_sImageUri = str_replace($this->_getShopBasePath(), "", $absPath);
+                $this->_sImageUri = \str_replace($this->_getShopBasePath(), "", $absPath);
             }
 
             $imagePath = false;
@@ -629,11 +629,11 @@ namespace OxidEsales\EshopCommunity\Core {
             // building base path + extracting image name + extracting master image path
             $masterImagePath = $this->_getShopBasePath() . $masterPath . $this->_getImageName();
 
-            if (file_exists($masterImagePath)) {
+            if (\file_exists($masterImagePath)) {
                 $genImagePath = $this->_getImageTarget();
             } else {
                 // nopic master path
-                $masterImagePath = $this->_getShopBasePath() . dirname(dirname($masterPath)) . "/nopic.jpg";
+                $masterImagePath = $this->_getShopBasePath() . \dirname(\dirname($masterPath)) . "/nopic.jpg";
                 $genImagePath = $this->_getNopicImageTarget();
 
                 // 404 header for nopic
@@ -641,16 +641,16 @@ namespace OxidEsales\EshopCommunity\Core {
             }
 
             // checking if master image is accessible
-            if (file_exists($genImagePath)) {
+            if (\file_exists($genImagePath)) {
                 $imagePath = $genImagePath;
-            } elseif (file_exists($masterImagePath)) {
+            } elseif (\file_exists($masterImagePath)) {
                 // generating image
                 $imagePath = $this->_generateImage($masterImagePath, $genImagePath);
             }
 
             if ($this->validateFileExist($imagePath)) {
                 // image Content-Type
-                $contentType = mime_content_type($imagePath);
+                $contentType = \mime_content_type($imagePath);
                 $this->_setHeader("Content-Type: $contentType;");
             } else {
                 // unable to output any file
@@ -671,7 +671,7 @@ namespace OxidEsales\EshopCommunity\Core {
 
             // starting output buffering
             if ($buffer) {
-                ob_start();
+                \ob_start();
             }
 
             //
@@ -679,24 +679,24 @@ namespace OxidEsales\EshopCommunity\Core {
 
             // cleaning extra output
             if ($buffer) {
-                ob_clean();
+                \ob_clean();
             }
 
             // outputting headers
             $headers = $this->_getHeaders();
             foreach ($headers as $header) {
-                header($header);
+                \header($header);
             }
 
             // sending headers
             if ($buffer) {
-                ob_end_flush();
+                \ob_end_flush();
             }
 
             // file is generated?
             if ($imgPath) {
                 // outputting file
-                @readfile($imgPath);
+                @\readfile($imgPath);
             }
         }
 
@@ -707,7 +707,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function validateImageFileExtension($fileExtension)
         {
-            return in_array(strtolower($fileExtension), $this->_aAllowedImgTypes);
+            return \in_array(\strtolower($fileExtension), $this->_aAllowedImgTypes);
         }
 
         /**
@@ -751,7 +751,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function validateFileExist($filePath)
         {
-            return file_exists($filePath);
+            return \file_exists($filePath);
         }
 
         /**
@@ -765,7 +765,7 @@ namespace OxidEsales\EshopCommunity\Core {
         protected function getImageDimensions($imageFilePath)
         {
             try {
-                list($width, $height) = getimagesize($imageFilePath);
+                list($width, $height) = \getimagesize($imageFilePath);
                 $imageDimensions = [$width, $height];
             } catch (\Exception $exception) {
                 $imageDimensions = [0,0];

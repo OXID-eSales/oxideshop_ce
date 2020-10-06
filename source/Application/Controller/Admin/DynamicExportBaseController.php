@@ -15,9 +15,9 @@ use OxidEsales\Eshop\Core\Str;
 /**
  * Error constants
  */
-DEFINE("ERR_SUCCESS", -2);
-DEFINE("ERR_GENERAL", -1);
-DEFINE("ERR_FILEIO", 1);
+\DEFINE("ERR_SUCCESS", -2);
+\DEFINE("ERR_GENERAL", -1);
+\DEFINE("ERR_FILEIO", 1);
 
 /**
  * DynExportBase framework class encapsulating a method for defining implementation class.
@@ -134,7 +134,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         parent::render();
 
         // assign all member variables to template
-        $aClassVars = get_object_vars($this);
+        $aClassVars = \get_object_vars($this);
         foreach ($aClassVars as $name => $value) {
             $this->_aViewData[$name] = $value;
         }
@@ -168,14 +168,14 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     public function start()
     {
         // delete file, if its already there
-        $this->fpFile = @fopen($this->_sFilePath, "w");
+        $this->fpFile = @\fopen($this->_sFilePath, "w");
         if (!isset($this->fpFile) || !$this->fpFile) {
             // we do have an error !
             $this->stop(ERR_FILEIO);
         } else {
             $this->_aViewData['refresh'] = 0;
             $this->_aViewData['iStart'] = 0;
-            fclose($this->fpFile);
+            \fclose($this->fpFile);
 
             // prepare it
             $iEnd = $this->prepareExport();
@@ -219,8 +219,8 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     public function write($sLine)
     {
         $sLine = $this->removeSID($sLine);
-        $sLine = str_replace(["\r\n", "\n"], "", $sLine);
-        fwrite($this->fpFile, $sLine . "\r\n");
+        $sLine = \str_replace(["\r\n", "\n"], "", $sLine);
+        \fwrite($this->fpFile, $sLine . "\r\n");
     }
 
     /**
@@ -231,7 +231,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         $blContinue = true;
         $iExportedItems = 0;
 
-        $this->fpFile = @fopen($this->_sFilePath, "a");
+        $this->fpFile = @\fopen($this->_sFilePath, "a");
         if (!isset($this->fpFile) || !$this->fpFile) {
             // we do have an error !
             $this->stop(ERR_FILEIO);
@@ -255,7 +255,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
                 $this->_aViewData['iStart'] = $i;
                 $this->_aViewData['iExpItems'] = $iExportedItems;
             }
-            fclose($this->fpFile);
+            \fclose($this->fpFile);
         }
     }
 
@@ -299,11 +299,11 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         $sSid = $session->getId();
 
         // remove sid from link
-        $sOutput = str_replace("sid={$sSid}/", "", $sInput);
-        $sOutput = str_replace("sid/{$sSid}/", "", $sOutput);
-        $sOutput = str_replace("sid={$sSid}&amp;", "", $sOutput);
-        $sOutput = str_replace("sid={$sSid}&", "", $sOutput);
-        $sOutput = str_replace("sid={$sSid}", "", $sOutput);
+        $sOutput = \str_replace("sid={$sSid}/", "", $sInput);
+        $sOutput = \str_replace("sid/{$sSid}/", "", $sOutput);
+        $sOutput = \str_replace("sid={$sSid}&amp;", "", $sOutput);
+        $sOutput = \str_replace("sid={$sSid}&", "", $sOutput);
+        $sOutput = \str_replace("sid={$sSid}", "", $sOutput);
 
         return $sOutput;
     }
@@ -320,14 +320,14 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     public function shrink($sInput, $iMaxSize, $blRemoveNewline = true)
     {
         if ($blRemoveNewline) {
-            $sInput = str_replace("\r\n", " ", $sInput);
-            $sInput = str_replace("\n", " ", $sInput);
+            $sInput = \str_replace("\r\n", " ", $sInput);
+            $sInput = \str_replace("\n", " ", $sInput);
         }
 
-        $sInput = str_replace("\t", "    ", $sInput);
+        $sInput = \str_replace("\t", "    ", $sInput);
 
         // remove html entities, remove html tags
-        $sInput = $this->_unHTMLEntities(strip_tags($sInput));
+        $sInput = $this->_unHTMLEntities(\strip_tags($sInput));
 
         $oStr = Str::getStr();
         if ($oStr->strlen($sInput) > $iMaxSize - 3) {
@@ -422,7 +422,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     {
         $sInput = \OxidEsales\Eshop\Core\Registry::getUtilsString()->prepareCSVField($sInput);
 
-        return str_replace(["&nbsp;", "&euro;", "|"], [" ", "", ""], $sInput);
+        return \str_replace(["&nbsp;", "&euro;", "|"], [" ", "", ""], $sInput);
     }
 
     /**
@@ -434,11 +434,11 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      */
     public function prepareXML($sInput)
     {
-        $sOutput = str_replace("&", "&amp;", $sInput);
-        $sOutput = str_replace("\"", "&quot;", $sOutput);
-        $sOutput = str_replace(">", "&gt;", $sOutput);
-        $sOutput = str_replace("<", "&lt;", $sOutput);
-        $sOutput = str_replace("'", "&apos;", $sOutput);
+        $sOutput = \str_replace("&", "&amp;", $sInput);
+        $sOutput = \str_replace("\"", "&quot;", $sOutput);
+        $sOutput = \str_replace(">", "&gt;", $sOutput);
+        $sOutput = \str_replace("<", "&lt;", $sOutput);
+        $sOutput = \str_replace("'", "&apos;", $sOutput);
 
         return $sOutput;
     }
@@ -549,9 +549,9 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      */
     protected function _unHtmlEntities($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aTransTbl = array_flip(get_html_translation_table(HTML_ENTITIES));
+        $aTransTbl = \array_flip(\get_html_translation_table(HTML_ENTITIES));
 
-        return strtr($sInput, $aTransTbl);
+        return \strtr($sInput, $aTransTbl);
     }
 
     /**
@@ -564,7 +564,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     {
         // table name must not start with any digit
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        return "tmp_" . str_replace("0", "", md5($session->getId()));
+        return "tmp_" . \str_replace("0", "", \md5($session->getId()));
     }
 
     /**
@@ -580,7 +580,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         $sTableCharset = "";
 
         //if MySQL >= 4.1.0 set charsets and collations
-        if (version_compare($sMysqlVersion, '4.1.0', '>=') > 0) {
+        if (\version_compare($sMysqlVersion, '4.1.0', '>=') > 0) {
             $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
             $oRs = $oDB->select("SHOW FULL COLUMNS FROM `oxarticles` WHERE field like 'OXID'");
             if (isset($oRs->fields['Collation']) && ($sMysqlCollation = $oRs->fields['Collation'])) {
@@ -627,7 +627,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
     protected function _getCatAdd($aChosenCat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sCatAdd = null;
-        if (is_array($aChosenCat) && count($aChosenCat)) {
+        if (\is_array($aChosenCat) && \count($aChosenCat)) {
             $oDB = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sCatAdd = " and ( ";
             $blSep = false;
@@ -690,7 +690,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // add minimum stock value
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseStock') && ($dMinStock = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportMinStock"))) {
-            $dMinStock = str_replace([";", " ", "/", "'"], "", $dMinStock);
+            $dMinStock = \str_replace([";", " ", "/", "'"], "", $dMinStock);
             $insertQuery .= " and {$sArticleTable}.oxstock >= " . $oDB->quote($dMinStock);
         }
 
@@ -743,16 +743,16 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportDelCost");
         $dDelCost = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportDelCost");
         if (isset($dDelCost)) {
-            $dDelCost = str_replace([";", " ", "/", "'"], "", $dDelCost);
-            $dDelCost = str_replace(",", ".", $dDelCost);
+            $dDelCost = \str_replace([";", " ", "/", "'"], "", $dDelCost);
+            $dDelCost = \str_replace(",", ".", $dDelCost);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportDelCost", $dDelCost);
         }
 
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportMinPrice");
         $dMinPrice = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportMinPrice");
         if (isset($dMinPrice)) {
-            $dMinPrice = str_replace([";", " ", "/", "'"], "", $dMinPrice);
-            $dMinPrice = str_replace(",", ".", $dMinPrice);
+            $dMinPrice = \str_replace([";", " ", "/", "'"], "", $dMinPrice);
+            $dMinPrice = \str_replace(",", ".", $dMinPrice);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportMinPrice", $dMinPrice);
         }
 
@@ -760,7 +760,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("sExportCampaign");
         $sCampaign = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sExportCampaign");
         if (isset($sCampaign)) {
-            $sCampaign = str_replace([";", " ", "/", "'"], "", $sCampaign);
+            $sCampaign = \str_replace([";", " ", "/", "'"], "", $sCampaign);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("sExportCampaign", $sCampaign);
         }
 
@@ -844,7 +844,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // find deepest
         $aIds = $oArticle->getCategoryIds();
-        if (is_array($aIds) && count($aIds)) {
+        if (\is_array($aIds) && \count($aIds)) {
             if ($aCatLvlCache = $this->_loadRootCats()) {
                 $sIdMax = null;
                 $dMaxLvl = 0;

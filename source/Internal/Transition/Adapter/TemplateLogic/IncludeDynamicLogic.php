@@ -19,7 +19,7 @@ class IncludeDynamicLogic
         $content = "<oxid_dynamic>";
 
         foreach ($parameters as $key => $value) {
-            $content .= " $key='" . base64_encode($value) . "'";
+            $content .= " $key='" . \base64_encode($value) . "'";
         }
 
         $content .= "</oxid_dynamic>";
@@ -35,7 +35,7 @@ class IncludeDynamicLogic
     public function includeDynamicPrefix(array $parameters): array
     {
         $prefix = "_";
-        if (array_key_exists('type', $parameters)) {
+        if (\array_key_exists('type', $parameters)) {
             $prefix .= $parameters['type'] . "_";
         }
         foreach ($parameters as $key => $value) {

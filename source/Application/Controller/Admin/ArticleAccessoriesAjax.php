@@ -139,8 +139,8 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
             $sQ = $this->_addFilter("delete oxaccessoire2article.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
+        } elseif (\is_array($aChosenArt)) {
+            $sChosenArticles = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
             $sQ = "delete from oxaccessoire2article where oxaccessoire2article.oxid in ({$sChosenArticles}) ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
@@ -161,7 +161,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
             $aChosenArt = $this->_getAll(parent::_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
+        if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && \is_array($aChosenArt)) {
             foreach ($aChosenArt as $sChosenArt) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init("oxaccessoire2article");
@@ -204,13 +204,13 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
 
         $rebuildList = $this->rebuildAccessoriesSortIndexes($accessoriesList);
 
-        if (($selectedPosition = array_search($selectedIdForSort, $rebuildList)) !== false) {
+        if (($selectedPosition = \array_search($selectedIdForSort, $rebuildList)) !== false) {
             $selectedSortRecord = $accessoriesList->offsetGet($rebuildList[$selectedPosition]);
             $currentPosition = $selectedSortRecord->oxaccessoire2article__oxsort->value;
 
             // get current selected row sort position
 
-            if (($sortDirection == 'up' && $currentPosition > 0) || ($sortDirection == 'down' && $currentPosition < count($rebuildList) - 1)) {
+            if (($sortDirection == 'up' && $currentPosition > 0) || ($sortDirection == 'down' && $currentPosition < \count($rebuildList) - 1)) {
                 $newPosition = ($sortDirection == 'up') ? ($currentPosition - 1) : ($currentPosition + 1);
 
                 // exchanging indexes

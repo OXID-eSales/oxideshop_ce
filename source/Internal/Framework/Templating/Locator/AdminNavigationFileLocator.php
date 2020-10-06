@@ -43,6 +43,6 @@ class AdminNavigationFileLocator implements NavigationFileLocatorInterface
         foreach ($this->menuFileLocators as $locator) {
             $menuFilePaths[] = $locator->locate();
         }
-        return array_merge([], ...$menuFilePaths);
+        return \array_merge([], ...$menuFilePaths);
     }
 }

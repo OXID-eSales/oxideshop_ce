@@ -33,12 +33,12 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         $myUtilsServer = Registry::getUtilsServer();
 
         $sItem = Registry::getConfig()->getRequestParameter("item");
-        $sItem = $sItem ? basename($sItem) : false;
+        $sItem = $sItem ? \basename($sItem) : false;
         if (!$sItem) {
             $sItem = "nav_frame.tpl";
             $aFavorites = Registry::getConfig()->getRequestParameter("favorites");
-            if (is_array($aFavorites)) {
-                $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
+            if (\is_array($aFavorites)) {
+                $myUtilsServer->setOxCookie('oxidadminfavorites', \implode('|', $aFavorites));
             }
         } else {
             $oNavTree = $this->getNavigation();
@@ -61,16 +61,16 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             }
 
             // favorite navigation
-            $aFavorites = explode('|', $myUtilsServer->getOxCookie('oxidadminfavorites'));
+            $aFavorites = \explode('|', $myUtilsServer->getOxCookie('oxidadminfavorites'));
 
-            if (is_array($aFavorites) && count($aFavorites)) {
+            if (\is_array($aFavorites) && \count($aFavorites)) {
                 $this->_aViewData["menufavorites"] = $oNavTree->getListNodes($aFavorites);
                 $this->_aViewData["aFavorites"] = $aFavorites;
             }
 
             // history navigation
-            $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
-            if (is_array($aHistory) && count($aHistory)) {
+            $aHistory = \explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
+            if (\is_array($aHistory) && \count($aHistory)) {
                 $this->_aViewData["menuhistory"] = $oNavTree->getListNodes($aHistory);
             }
 
@@ -179,13 +179,13 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
 
 
         // check if setup dir is deleted
-        if (file_exists(Registry::getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
+        if (\file_exists(Registry::getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
             $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
         // check if config file is writable
         $sConfPath = Registry::getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
-        if (!is_readable($sConfPath) || is_writable($sConfPath)) {
+        if (!\is_readable($sConfPath) || \is_writable($sConfPath)) {
             $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }
 
@@ -205,8 +205,8 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         $latestVersion = Registry::getUtilsFile()->readRemoteFileAsString($query);
         if ($latestVersion) {
             $currentVersion = Registry::getConfig()->getVersion();
-            if (version_compare($currentVersion, $latestVersion, '<')) {
-                return sprintf(
+            if (\version_compare($currentVersion, $latestVersion, '<')) {
+                return \sprintf(
                     Registry::getLang()->translateString('NAVIGATION_NEW_VERSION_AVAILABLE'),
                     $currentVersion,
                     $latestVersion

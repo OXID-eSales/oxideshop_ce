@@ -107,16 +107,16 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
     protected function _isServiceAvailable() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_blServiceIsOn === null) {
-            $this->_blServiceIsOn = class_exists('SoapClient') ? true : false;
+            $this->_blServiceIsOn = \class_exists('SoapClient') ? true : false;
             if ($this->_blServiceIsOn) {
-                $rFp = @fopen($this->getWsdlUrl(), 'r');
+                $rFp = @\fopen($this->getWsdlUrl(), 'r');
                 $this->_blServiceIsOn = $rFp !== false;
                 if ($this->_blServiceIsOn) {
                     $sWsdl = '';
-                    while (!feof($rFp)) {
-                        $sWsdl .= fread($rFp, 8192);
+                    while (!\feof($rFp)) {
+                        $sWsdl .= \fread($rFp, 8192);
                     }
-                    fclose($rFp);
+                    \fclose($rFp);
 
                     // validating wsdl file
                     try {
@@ -149,10 +149,10 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 
             //T2009-07-02
             //how long socket should wait for server RESPONSE
-            ini_set('default_socket_timeout', 5);
+            \ini_set('default_socket_timeout', 5);
 
             // setting local error handler to catch possible soap errors
-            set_error_handler([$this, 'catchWarning'], E_WARNING);
+            \set_error_handler([$this, 'catchWarning'], E_WARNING);
 
             do {
                 try {
@@ -164,7 +164,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
                 } catch (SoapFault $e) {
                     $this->setError($e->faultstring);
                     if ($this->getError() == "SERVER_BUSY") {
-                        usleep(self::BUSY_RETRY_WAITUSEC);
+                        \usleep(self::BUSY_RETRY_WAITUSEC);
                     } else {
                         $iTryMoreCnt = 0;
                     }
@@ -172,7 +172,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
             } while (0 < $iTryMoreCnt--);
 
             // restoring previous error handler
-            restore_error_handler();
+            \restore_error_handler();
 
             return (bool) $oRes->valid;
         } else {

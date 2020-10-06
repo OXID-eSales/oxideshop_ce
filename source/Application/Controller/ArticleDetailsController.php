@@ -273,7 +273,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         }
 
         if (($templateName = Registry::getConfig()->getRequestParameter('tpl'))) {
-            $this->_sThisTemplate = 'custom/' . basename($templateName);
+            $this->_sThisTemplate = 'custom/' . \basename($templateName);
         }
 
         parent::render();
@@ -352,16 +352,16 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     {
         if (!$keywords) {
             $article = $this->getProduct();
-            $keywords = trim($this->getTitle());
+            $keywords = \trim($this->getTitle());
 
             if ($categoryTree = $this->getCategoryTree()) {
                 foreach ($categoryTree->getPath() as $category) {
-                    $keywords .= ", " . trim($category->oxcategories__oxtitle->value);
+                    $keywords .= ", " . \trim($category->oxcategories__oxtitle->value);
                 }
             }
 
             // Adding search keys info
-            if ($searchKeys = trim($article->oxarticles__oxsearchkeys->value)) {
+            if ($searchKeys = \trim($article->oxarticles__oxsearchkeys->value)) {
                 $keywords .= ", " . $searchKeys;
             }
 
@@ -404,7 +404,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 }
             }
 
-            if (($reviewText = trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+            if (($reviewText = \trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                 $review = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                 $review->oxreviews__oxobjectid = new Field($article->getId());
                 $review->oxreviews__oxtype = new Field('oxarticle');
@@ -434,7 +434,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             return;
         }
 
-        $recommendationText = trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_txt'));
+        $recommendationText = \trim((string) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm_txt'));
         $recommendationListId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recomm');
         $articleId = $this->getProduct()->getId();
 
@@ -1021,7 +1021,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $normalizedRating = [];
             $value = ((4 * ($article->oxarticles__oxrating->value - $minRating) / ($maxRating - $minRating))) + 1;
             $normalizedRating["count"] = $count;
-            $normalizedRating["value"] = round($value, 2);
+            $normalizedRating["value"] = \round($value, 2);
 
             return $normalizedRating;
         }
@@ -1044,8 +1044,8 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             $from = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
 
             $through = $from + ($days * 24 * 60 * 60);
-            $validity["from"] = date('Y-m-d\TH:i:s', $from) . "Z";
-            $validity["through"] = date('Y-m-d\TH:i:s', $through) . "Z";
+            $validity["from"] = \date('Y-m-d\TH:i:s', $from) . "Z";
+            $validity["through"] = \date('Y-m-d\TH:i:s', $through) . "Z";
 
             return $validity;
         }
@@ -1240,11 +1240,11 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     public function getSortingParameters()
     {
         $sorting = $this->getSorting($this->getSortIdent());
-        if (!is_array($sorting)) {
+        if (!\is_array($sorting)) {
             return null;
         }
 
-        return implode('|', $sorting);
+        return \implode('|', $sorting);
     }
 
     /**
@@ -1309,7 +1309,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         $selfLink = $this->getViewConfig()->getSelfLink();
         $sessionToken = Registry::getSession()->getVariable('sess_stoken');
 
-        $searchPath['title'] = sprintf($translatedString, $this->getSearchParamForHtml());
+        $searchPath['title'] = \sprintf($translatedString, $this->getSearchParamForHtml());
         $searchPath['link'] = $selfLink . 'stoken=' . $sessionToken . "&amp;cl=search&amp;" .
             "searchparam=" . $this->getSearchParamForHtml();
 

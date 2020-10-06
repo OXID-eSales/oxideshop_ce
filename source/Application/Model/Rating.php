@@ -53,7 +53,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if ($iRatingLogsTimeout = $myConfig->getConfigParam('iRatingLogsTimeout')) {
-            $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
+            $sExpDate = \date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
             $oDb->execute("delete from oxratings where oxtimestamp < :expDate", [
                 ':expDate' => $sExpDate
             ]);
@@ -88,8 +88,8 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getRatingAverage($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
         $sQuerySnipet = " AND `oxobjectid` = :oxobjectid";
-        if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
-            $sQuerySnipet = " AND ( `oxobjectid` = :oxobjectid OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
+        if (\is_array($aIncludedObjectsIds) && \count($aIncludedObjectsIds) > 0) {
+            $sQuerySnipet = " AND ( `oxobjectid` = :oxobjectid OR `oxobjectid` in ('" . \implode("', '", $aIncludedObjectsIds) . "') )";
         }
 
         $sSelect = "
@@ -108,7 +108,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         if ($fRating = $database->getOne($sSelect, $params)) {
-            $fRating = round($fRating, 1);
+            $fRating = \round($fRating, 1);
         }
 
         return $fRating;
@@ -126,8 +126,8 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getRatingCount($sObjectId, $sType, $aIncludedObjectsIds = null)
     {
         $sQuerySnipet = " AND `oxobjectid` = :oxobjectid";
-        if (is_array($aIncludedObjectsIds) && count($aIncludedObjectsIds) > 0) {
-            $sQuerySnipet = " AND ( `oxobjectid` = :oxobjectid OR `oxobjectid` in ('" . implode("', '", $aIncludedObjectsIds) . "') )";
+        if (\is_array($aIncludedObjectsIds) && \count($aIncludedObjectsIds) > 0) {
+            $sQuerySnipet = " AND ( `oxobjectid` = :oxobjectid OR `oxobjectid` in ('" . \implode("', '", $aIncludedObjectsIds) . "') )";
         }
 
         $sSelect = "

@@ -99,7 +99,7 @@ abstract class ImportObject
         }
 
         foreach ($this->fieldList as $field) {
-            $accessRightFields[] = strtolower($this->tableName . '__' . $field);
+            $accessRightFields[] = \strtolower($this->tableName . '__' . $field);
         }
 
         return $accessRightFields;
@@ -127,9 +127,9 @@ abstract class ImportObject
         }
 
         $viewName = $shopObject->getViewName();
-        $fields = str_ireplace('`' . $viewName . "`.", "", strtoupper($shopObject->getSelectFields()));
-        $fields = str_ireplace([" ", "`"], ["", ""], $fields);
-        $this->fieldList = explode(",", $fields);
+        $fields = \str_ireplace('`' . $viewName . "`.", "", \strtoupper($shopObject->getSelectFields()));
+        $fields = \str_ireplace([" ", "`"], ["", ""], $fields);
+        $this->fieldList = \explode(",", $fields);
 
         return $this->fieldList;
     }
@@ -187,7 +187,7 @@ abstract class ImportObject
 
         // null values support
         foreach ($data as $key => $val) {
-            if (!strlen((string) $val)) {
+            if (!\strlen((string) $val)) {
                 // oxBase will quote it as string if db does not support null for this field
                 $data[$key] = null;
             }
@@ -224,14 +224,14 @@ abstract class ImportObject
 
         foreach ($data as $key => $value) {
             // change case to UPPER
-            $uppercaseKey = strtoupper($key);
+            $uppercaseKey = \strtoupper($key);
             if (!isset($data[$uppercaseKey])) {
                 unset($data[$key]);
                 $data[$uppercaseKey] = $value;
             }
         }
 
-        if (method_exists($shopObject, 'setForceCoreTableUsage')) {
+        if (\method_exists($shopObject, 'setForceCoreTableUsage')) {
             $shopObject->setForceCoreTableUsage(true);
         }
 
@@ -287,7 +287,7 @@ abstract class ImportObject
      */
     protected function getOxidFromKeyFields($data)
     {
-        if (!is_array($this->getKeyFields())) {
+        if (!\is_array($this->getKeyFields())) {
             return null;
         }
 
@@ -296,7 +296,7 @@ abstract class ImportObject
         $queryWherePart = [];
         $allKeysExists = true;
         foreach ($this->getKeyFields() as $key) {
-            if (array_key_exists($key, $data)) {
+            if (\array_key_exists($key, $data)) {
                 $queryWherePart[] = $key . '=' . $database->quote($data[$key]);
             } else {
                 $allKeysExists = false;
@@ -304,7 +304,7 @@ abstract class ImportObject
         }
 
         if ($allKeysExists) {
-            $query = 'SELECT OXID FROM ' . $this->getTableName() . ' WHERE ' . implode(' AND ', $queryWherePart);
+            $query = 'SELECT OXID FROM ' . $this->getTableName() . ' WHERE ' . \implode(' AND ', $queryWherePart);
 
             return $database->getOne($query);
         }
@@ -342,7 +342,7 @@ abstract class ImportObject
     {
         if (!isset($id) || !$id) {
             throw new Exception("ERROR: Articlenumber/ID missing!");
-        } elseif (strlen($id) > 32) {
+        } elseif (\strlen($id) > 32) {
             throw new Exception("ERROR: Articlenumber/ID longer then allowed (32 chars max.)!");
         }
     }

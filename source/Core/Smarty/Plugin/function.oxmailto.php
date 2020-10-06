@@ -26,29 +26,29 @@ function smarty_function_oxmailto($aParams, &$oSmarty)
                 case 'bcc':
                 case 'followupto':
                     if ($sValue) {
-                        $aMailParms[] = $sVarName . '=' . str_replace([ '%40', '%2C' ], [ '@', ',' ], rawurlencode($sValue));
+                        $aMailParms[] = $sVarName . '=' . \str_replace([ '%40', '%2C' ], [ '@', ',' ], \rawurlencode($sValue));
                     }
                     break;
                 case 'subject':
                 case 'newsgroups':
-                    $aMailParms[] = $sVarName . '=' . rawurlencode($sValue);
+                    $aMailParms[] = $sVarName . '=' . \rawurlencode($sValue);
                     break;
                 case 'extra':
                 case 'text':
-                    $sName  = "s" . ucfirst($sVarName);
+                    $sName  = "s" . \ucfirst($sVarName);
                     $$sName = $sValue;
                     // no break
                 default:
             }
         }
 
-        for ($iCtr = 0; $iCtr < count($aMailParms); $iCtr++) {
+        for ($iCtr = 0; $iCtr < \count($aMailParms); $iCtr++) {
             $sAddress .= ($iCtr == 0) ? '?' : '&';
             $sAddress .= $aMailParms[$iCtr];
         }
 
         $sString = 'document.write(\'<a href="mailto:' . $sAddress . '" ' . $sExtra . '>' . $sText . '</a>\');';
-        $sEncodedString = "%" . wordwrap(current(unpack("H*", $sString)), 2, "%", true);
+        $sEncodedString = "%" . \wordwrap(\current(\unpack("H*", $sString)), 2, "%", true);
         return '<script type="text/javascript">eval(decodeURIComponent(\'' . $sEncodedString . '\'))</script>';
     } else {
         include_once $oSmarty->_get_plugin_filepath('function', 'mailto');

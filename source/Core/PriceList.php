@@ -136,11 +136,11 @@ class PriceList
     public function getMostUsedVatPercent()
     {
         $aPrices = $this->getPriceInfo();
-        if (count($aPrices) == 0) {
+        if (\count($aPrices) == 0) {
             return;
         }
 
-        return max(array_keys($aPrices, max($aPrices)));
+        return \max(\array_keys($aPrices, \max($aPrices)));
     }
 
     /**
@@ -185,7 +185,7 @@ class PriceList
      */
     public function calculateToPrice()
     {
-        if (count($this->_aList) == 0) {
+        if (\count($this->_aList) == 0) {
             return;
         }
 
@@ -217,6 +217,6 @@ class PriceList
      */
     public function getCount()
     {
-        return count($this->_aList);
+        return \count($this->_aList);
     }
 }

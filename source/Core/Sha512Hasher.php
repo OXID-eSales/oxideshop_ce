@@ -30,6 +30,6 @@ class Sha512Hasher extends \OxidEsales\Eshop\Core\Hasher
      */
     public function hash($string)
     {
-        return hash(self::HASHING_ALGORITHM_SHA512, $string);
+        return \hash(self::HASHING_ALGORITHM_SHA512, $string);
     }
 }

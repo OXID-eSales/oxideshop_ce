@@ -50,7 +50,7 @@ require "_header.php"; ?>
         print '<li class="group">' . $sGroupName . '<ul>';
         foreach ($aGroupInfo as $aModuleInfo) {
             print '<li id="' . $aModuleInfo['module'] . '" class="' . $aModuleInfo['class'] . '">';
-            if (in_array($aModuleInfo['class'], ['fail', 'pmin', 'null'])) {
+            if (\in_array($aModuleInfo['class'], ['fail', 'pmin', 'null'])) {
                 print "<a href='" . $this->getReqInfoUrl($aModuleInfo['module'], false) . "' target='_blank'>"
                     . $aModuleInfo['modulename']
                     . '</a>';
@@ -60,18 +60,18 @@ require "_header.php"; ?>
             print '</li>';
 
             if ($aModuleInfo['module'] === 'server_permissions') {
-                if (count($permissionIssues['missing']) > 0) {
+                if (\count($permissionIssues['missing']) > 0) {
                     echo '<li><b>'
                         . $this->getText('MOD_SERVER_PERMISSIONS_MISSING', false)
                         . '</b></li><li>&nbsp;'
-                        . implode('</li><li>&nbsp;', $permissionIssues['missing'])
+                        . \implode('</li><li>&nbsp;', $permissionIssues['missing'])
                         . '</li>';
                 }
-                if (count($permissionIssues['not_writable']) > 0) {
+                if (\count($permissionIssues['not_writable']) > 0) {
                     echo '<li><b>'
                         . $this->getText('MOD_SERVER_PERMISSIONS_NOTWRITABLE', false)
                         . '</b></li><li>&nbsp;'
-                        . implode('</li><li>&nbsp;', $permissionIssues['not_writable'])
+                        . \implode('</li><li>&nbsp;', $permissionIssues['not_writable'])
                         . '</li>';
                 }
             }

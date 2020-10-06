@@ -8,10 +8,10 @@
 require "_header.php";
 
 // caching output
-ob_flush();
+\ob_flush();
 require "_footer.php";
-$sFooter = ob_get_contents();
-ob_clean();
+$sFooter = \ob_get_contents();
+\ob_clean();
 
 $this->getText('STEP_6_DESC');
 $aPath = $this->getViewParam("aPath");
@@ -45,5 +45,5 @@ if (!$blRemoved) {
 if ($blWritableConfig) {
     ?><strong class="attention-item"><?php $this->getText('SETUP_CONFIG_PERMISSIONS'); ?></strong><br><?php
 }
-ob_flush();
+\ob_flush();
 echo $sFooter;

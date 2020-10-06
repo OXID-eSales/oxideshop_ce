@@ -46,14 +46,14 @@ class ClearCookiesController extends \OxidEsales\Eshop\Application\Controller\Fr
     {
         $oUtilsServer = Registry::getUtilsServer();
         if (isset($_SERVER['HTTP_COOKIE'])) {
-            $aCookies = explode(';', $_SERVER['HTTP_COOKIE']);
+            $aCookies = \explode(';', $_SERVER['HTTP_COOKIE']);
             foreach ($aCookies as $sCookie) {
-                $sRawCookie = explode('=', $sCookie);
-                $oUtilsServer->setOxCookie(trim($sRawCookie[0]), '', time() - 10000, '/');
+                $sRawCookie = \explode('=', $sCookie);
+                $oUtilsServer->setOxCookie(\trim($sRawCookie[0]), '', \time() - 10000, '/');
             }
         }
-        $oUtilsServer->setOxCookie('language', '', time() - 10000, '/');
-        $oUtilsServer->setOxCookie('displayedCookiesNotification', '', time() - 10000, '/');
+        $oUtilsServer->setOxCookie('language', '', \time() - 10000, '/');
+        $oUtilsServer->setOxCookie('displayedCookiesNotification', '', \time() - 10000, '/');
 
         $this->dispatchEvent(new AllCookiesRemovedEvent());
     }

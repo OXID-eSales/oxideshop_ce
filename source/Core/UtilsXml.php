@@ -29,11 +29,11 @@ class UtilsXml extends \OxidEsales\Eshop\Core\Base
             $oDomDocument = new DOMDocument('1.0', 'utf-8');
         }
 
-        libxml_use_internal_errors(true);
+        \libxml_use_internal_errors(true);
         $oDomDocument->loadXML($sXml);
-        $errors = libxml_get_errors();
+        $errors = \libxml_get_errors();
         $blLoaded = empty($errors);
-        libxml_clear_errors();
+        \libxml_clear_errors();
 
         if ($blLoaded) {
             return $oDomDocument;

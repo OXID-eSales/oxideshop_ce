@@ -93,7 +93,7 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     public function getData(string $filePath): array
     {
-        if (!is_readable($filePath) || is_dir($filePath)) {
+        if (!\is_readable($filePath) || \is_dir($filePath)) {
             throw new \InvalidArgumentException('File ' . $filePath . ' is not readable or not even a file.');
         }
         $this->filePath = $filePath;
@@ -153,7 +153,7 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private function validateMetaDataFileVariables($metaDataVersion, $moduleData): void
     {
-        if ($metaDataVersion === null || !is_scalar($metaDataVersion)) {
+        if ($metaDataVersion === null || !\is_scalar($metaDataVersion)) {
             throw new InvalidMetaDataException(
                 'The variable $sMetadataVersion must be present in '
                 . $this->filePath . ' and it must be a scalar.'
@@ -178,7 +178,7 @@ class MetaDataProvider implements MetaDataProviderInterface
         $extendedClasses = $normalizedMetaData[static::METADATA_EXTEND] ?? [];
         foreach ($extendedClasses as $shopClass => $moduleClass) {
             if ($this->isBackwardsCompatibleClass($shopClass)) {
-                $sanitizedShopClass = $this->getBackwardsCompatibilityClassMap()[strtolower($shopClass)];
+                $sanitizedShopClass = $this->getBackwardsCompatibilityClassMap()[\strtolower($shopClass)];
             } else {
                 $sanitizedShopClass = $shopClass;
             }
@@ -195,7 +195,7 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private function isBackwardsCompatibleClass(string $className): bool
     {
-        return \array_key_exists(strtolower($className), $this->getBackwardsCompatibilityClassMap());
+        return \array_key_exists(\strtolower($className), $this->getBackwardsCompatibilityClassMap());
     }
 
     /**

@@ -180,7 +180,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
             $this->_blNewsSubscribed = $isSubscribedToNews;
         }
 
-        if (is_null($this->_blNewsSubscribed)) {
+        if (\is_null($this->_blNewsSubscribed)) {
             $this->_blNewsSubscribed = false;
         }
 

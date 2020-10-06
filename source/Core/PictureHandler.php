@@ -31,7 +31,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
         $blGeneratedImagesOnly = !$blDeleteMasterPicture;
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
-        $sMasterImage = basename($oObject->{"oxarticles__oxpic" . $iIndex}->value);
+        $sMasterImage = \basename($oObject->{"oxarticles__oxpic" . $iIndex}->value);
         if (!$sMasterImage || $sMasterImage == "nopic.jpg") {
             return;
         }
@@ -48,7 +48,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
             if ($iIndex == 1) {
                 // deleting generated main icon picture if custom main icon
                 // file name not equal with generated from master picture
-                if ($this->getMainIconName($sMasterImage) != basename($oObject->oxarticles__oxicon->value)) {
+                if ($this->getMainIconName($sMasterImage) != \basename($oObject->oxarticles__oxicon->value)) {
                     $aDelPics[] = ["sField"    => "oxpic1",
                                         "sDir"      => $oUtilsFile->getImageDirByType("ICO", $blGeneratedImagesOnly),
                                         "sFileName" => $this->getMainIconName($sMasterImage)];
@@ -56,7 +56,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
 
                 // deleting generated thumbnail picture if custom thumbnail
                 // file name not equal with generated from master picture
-                if ($this->getThumbName($sMasterImage) != basename($oObject->oxarticles__oxthumb->value)) {
+                if ($this->getThumbName($sMasterImage) != \basename($oObject->oxarticles__oxthumb->value)) {
                     $aDelPics[] = ["sField"    => "oxpic1",
                                         "sDir"      => $oUtilsFile->getImageDirByType("TH", $blGeneratedImagesOnly),
                                         "sFileName" => $this->getThumbName($sMasterImage)];
@@ -70,7 +70,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
 
         //deleting custom zoom pic (compatibility mode)
         if ($oObject->{"oxarticles__oxzoom" . $iIndex}->value) {
-            if (basename($oObject->{"oxarticles__oxzoom" . $iIndex}->value) !== "nopic.jpg") {
+            if (\basename($oObject->{"oxarticles__oxzoom" . $iIndex}->value) !== "nopic.jpg") {
                 // deleting old zoom picture
                 $this->deleteZoomPicture($oObject, $iIndex);
             }
@@ -125,7 +125,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
                 return;
             }
         } else {
-            $sZoomPicName = basename($oObject->{"oxarticles__oxzoom" . $iIndex}->value);
+            $sZoomPicName = \basename($oObject->{"oxarticles__oxzoom" . $iIndex}->value);
             $sFieldToCheck = "oxzoom" . $iIndex;
         }
 
@@ -169,7 +169,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getThumbName($sMasterImageFile)
     {
-        return basename($sMasterImageFile);
+        return \basename($sMasterImageFile);
     }
 
     /**
@@ -182,7 +182,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getZoomName($sMasterImageFile, $iIndex)
     {
-        return basename($sMasterImageFile);
+        return \basename($sMasterImageFile);
     }
 
     /**
@@ -195,7 +195,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getBaseMasterImageFileName($sMasterImageFile) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return basename($sMasterImageFile);
+        return \basename($sMasterImageFile);
     }
 
     /**
@@ -209,12 +209,12 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
     public function getImageSize($aImgSizes, $sIndex = null)
     {
         $aSize = [];
-        if (isset($sIndex) && is_array($aImgSizes) && isset($aImgSizes[$sIndex])) {
-            $aSize = explode('*', $aImgSizes[$sIndex]);
-        } elseif (is_string($aImgSizes)) {
-            $aSize = explode('*', $aImgSizes);
+        if (isset($sIndex) && \is_array($aImgSizes) && isset($aImgSizes[$sIndex])) {
+            $aSize = \explode('*', $aImgSizes[$sIndex]);
+        } elseif (\is_string($aImgSizes)) {
+            $aSize = \explode('*', $aImgSizes);
         }
-        if (is_array($aSize) && 2 == count($aSize)) {
+        if (\is_array($aSize) && 2 == \count($aSize)) {
             $x = (int) $aSize[0];
             $y = (int) $aSize[1];
             if ($x && $y) {
@@ -254,7 +254,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
         $sDirPrefix = $oConfig->getOutDir();
         $sUrlPrefix = $oConfig->getOutUrl($blSSL, $blAdmin, $oConfig->getConfigParam('blNativeImages'));
 
-        return ['path' => $sPath, 'url' => str_replace($sDirPrefix, $sUrlPrefix, $sPath)];
+        return ['path' => $sPath, 'url' => \str_replace($sDirPrefix, $sUrlPrefix, $sPath)];
     }
 
     /**
@@ -276,7 +276,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($sAltUrl) {
-            if ((is_null($blSSL) && $oConfig->isSsl()) || $blSSL) {
+            if ((\is_null($blSSL) && $oConfig->isSsl()) || $blSSL) {
                 $sSslAltUrl = $oConfig->getConfigParam('sSSLAltImageUrl');
                 if (!$sSslAltUrl) {
                     $sSslAltUrl = $oConfig->getConfigParam('sSSLAltImageDir');
@@ -287,7 +287,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
                 }
             }
 
-            if (!is_null($sFile)) {
+            if (!\is_null($sFile)) {
                 $sAltUrl = Registry::getUtils()->checkUrlEndingSlash($sAltUrl) . $sFilePath . $sFile;
             }
         }
@@ -314,7 +314,7 @@ class PictureHandler extends \OxidEsales\Eshop\Core\Base
             $aPicInfo = $this->_getPictureInfo("master/" . ($sAltPath ? $sAltPath : $sPath), $sFile, $this->isAdmin(), $bSsl);
             if ($aPicInfo['url'] && $aSize[0] && $aSize[1]) {
                 $sDirName = "{$aSize[0]}_{$aSize[1]}_" . \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultImageQuality');
-                $sUrl = str_replace("/master/" . ($sAltPath ? $sAltPath : $sPath), "/generated/{$sPath}{$sDirName}/", $aPicInfo['url']);
+                $sUrl = \str_replace("/master/" . ($sAltPath ? $sAltPath : $sPath), "/generated/{$sPath}{$sDirName}/", $aPicInfo['url']);
             }
         }
 

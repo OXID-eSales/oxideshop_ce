@@ -600,10 +600,10 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _convertVat($sVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (strpos($sVat, '.') < strpos($sVat, ',')) {
-            $sVat = str_replace(['.', ','], ['', '.'], $sVat);
+        if (\strpos($sVat, '.') < \strpos($sVat, ',')) {
+            $sVat = \str_replace(['.', ','], ['', '.'], $sVat);
         } else {
-            $sVat = str_replace(',', '', $sVat);
+            $sVat = \str_replace(',', '', $sVat);
         }
 
         return (float) $sVat;
@@ -689,7 +689,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_blReloadDiscount) {
             $dDiscount = 0;
             $aDiscounts = $oBasket->getDiscounts();
-            if (is_array($aDiscounts) && count($aDiscounts) > 0) {
+            if (\is_array($aDiscounts) && \count($aDiscounts) > 0) {
                 foreach ($aDiscounts as $oDiscount) {
                     $dDiscount += $oDiscount->dDiscount;
                 }
@@ -834,7 +834,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
                 // set chosen select list
                 $sSelList = '';
-                if (count($aChosenSelList = $oContent->getChosenSelList())) {
+                if (\count($aChosenSelList = $oContent->getChosenSelList())) {
                     foreach ($aChosenSelList as $oItem) {
                         if ($sSelList) {
                             $sSelList .= ", ";
@@ -852,17 +852,17 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $oOrderArticle->setId();
 
                 $oOrderArticle->oxorderarticles__oxartnum = clone $oProduct->oxarticles__oxartnum;
-                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(trim($sSelList . ' ' . $oContent->getVarSelect()), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oOrderArticle->oxorderarticles__oxselvariant = new \OxidEsales\Eshop\Core\Field(\trim($sSelList . ' ' . $oContent->getVarSelect()), \OxidEsales\Eshop\Core\Field::T_RAW);
                 $oOrderArticle->oxorderarticles__oxshortdesc = new \OxidEsales\Eshop\Core\Field($oProduct->oxarticles__oxshortdesc->getRawValue(), \OxidEsales\Eshop\Core\Field::T_RAW);
                 // #M974: duplicated entries for the name of variants in orders
-                $oOrderArticle->oxorderarticles__oxtitle = new \OxidEsales\Eshop\Core\Field(trim($oProduct->oxarticles__oxtitle->getRawValue()), \OxidEsales\Eshop\Core\Field::T_RAW);
+                $oOrderArticle->oxorderarticles__oxtitle = new \OxidEsales\Eshop\Core\Field(\trim($oProduct->oxarticles__oxtitle->getRawValue()), \OxidEsales\Eshop\Core\Field::T_RAW);
 
                 // copying persistent parameters ...
-                if (!is_array($aPersParams = $oProduct->getPersParams())) {
+                if (!\is_array($aPersParams = $oProduct->getPersParams())) {
                     $aPersParams = $oContent->getPersParams();
                 }
-                if (is_array($aPersParams) && count($aPersParams)) {
-                    $oOrderArticle->oxorderarticles__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($aPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
+                if (\is_array($aPersParams) && \count($aPersParams)) {
+                    $oOrderArticle->oxorderarticles__oxpersparam = new \OxidEsales\Eshop\Core\Field(\serialize($aPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
                 }
             }
 
@@ -924,14 +924,14 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->delete();
 
             // checking for error messages
-            if (method_exists($oPayTransaction, 'getLastError')) {
+            if (\method_exists($oPayTransaction, 'getLastError')) {
                 if (($sLastError = $oPayTransaction->getLastError())) {
                     return $sLastError;
                 }
             }
 
             // checking for error codes
-            if (method_exists($oPayTransaction, 'getLastErrorNo')) {
+            if (\method_exists($oPayTransaction, 'getLastErrorNo')) {
                 if (($iLastErrorNo = $oPayTransaction->getLastErrorNo())) {
                     return $iLastErrorNo;
                 }
@@ -978,7 +978,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         // collecting dynamic values
         $aDynVal = [];
 
-        if (is_array($aPaymentDynValues = $oPayment->getDynValues())) {
+        if (\is_array($aPaymentDynValues = $oPayment->getDynValues())) {
             foreach ($aPaymentDynValues as $key => $oVal) {
                 if (isset($aDynvalue[$oVal->name])) {
                     $oVal->value = $aDynvalue[$oVal->name];
@@ -1017,7 +1017,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _setFolder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $this->oxorder__oxfolder = new \OxidEsales\Eshop\Core\Field(key($myConfig->getShopConfVar('aOrderfolder', $myConfig->getShopId())), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $this->oxorder__oxfolder = new \OxidEsales\Eshop\Core\Field(\key($myConfig->getShopConfVar('aOrderfolder', $myConfig->getShopId())), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
@@ -1105,7 +1105,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _updateOrderDate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+        $sDate = \date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
         $sQ = 'update oxorder set oxorderdate = :oxorderdate where oxid = :oxid';
         $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field($sDate, \OxidEsales\Eshop\Core\Field::T_RAW);
         $oDb->execute($sQ, [
@@ -1126,7 +1126,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $this->_aVoucherList = $oBasket->getVouchers();
 
-        if (is_array($this->_aVoucherList)) {
+        if (\is_array($this->_aVoucherList)) {
             foreach ($this->_aVoucherList as $sVoucherId => $oSimpleVoucher) {
                 $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
                 $oVoucher->load($sVoucherId);
@@ -1147,7 +1147,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (($blSave = parent::save())) {
             // saving order articles
             $oOrderArticles = $this->getOrderArticles();
-            if ($oOrderArticles && count($oOrderArticles) > 0) {
+            if ($oOrderArticles && \count($oOrderArticles) > 0) {
                 foreach ($oOrderArticles as $oOrderArticle) {
                     $oOrderArticle->save();
                 }
@@ -1218,7 +1218,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $oEx->setProductId($oProd->getId());
                 $oEx->setBasketIndex($key);
 
-                if (!is_numeric($iOnStock)) {
+                if (!\is_numeric($iOnStock)) {
                     $iOnStock = 0;
                 }
                 $oEx->setRemainingAmount($iOnStock);
@@ -1240,7 +1240,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         //V #M525 orderdate must be the same as it was
         if (!$this->oxorder__oxorderdate || !$this->oxorder__oxorderdate->value) {
-            $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', $oUtilsDate->getTime()), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field(\date('Y-m-d H:i:s', $oUtilsDate->getTime()), \OxidEsales\Eshop\Core\Field::T_RAW);
         } else {
             $this->oxorder__oxorderdate = new \OxidEsales\Eshop\Core\Field(
                 $oUtilsDate->formatDBDate(
@@ -1657,7 +1657,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sSelect .= 'oxshopid = :oxshopid and oxorder.oxstorno != "1" ';
 
         if ($blToday) {
-            $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
+            $sSelect .= 'and oxorderdate like "' . \date('Y-m-d') . '%" ';
         }
 
         $params = [
@@ -1681,7 +1681,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sSelect .= 'oxshopid = :oxshopid  and oxorder.oxstorno != "1" ';
 
         if ($blToday) {
-            $sSelect .= 'and oxorderdate like "' . date('Y-m-d') . '%" ';
+            $sSelect .= 'and oxorderdate like "' . \date('Y-m-d') . '%" ';
         }
 
         $params = [
@@ -1875,7 +1875,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _addOrderArticlesToBasket($oBasket, $aOrderArticles) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // if no order articles, return empty basket
-        if (count($aOrderArticles) > 0) {
+        if (\count($aOrderArticles) > 0) {
             //adding order articles to basket
             foreach ($aOrderArticles as $oOrderArticle) {
                 $oBasket->addOrderArticleToBasket($oOrderArticle);
@@ -1893,7 +1893,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _addArticlesToBasket($oBasket, $aArticles) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // if no order articles
-        if (count($aArticles) > 0) {
+        if (\count($aArticles) > 0) {
             //adding order articles to basket
             foreach ($aArticles as $oArticle) {
                 $aSel = isset($oArticle->oxorderarticles__oxselvariant) ? $oArticle->oxorderarticles__oxselvariant->value : null;
@@ -1917,7 +1917,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
-        return number_format((double) $this->oxorder__oxtotalordersum->value, $oCur->decimal, '.', '');
+        return \number_format((double) $this->oxorder__oxtotalordersum->value, $oCur->decimal, '.', '');
     }
 
     /**
@@ -2021,7 +2021,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->_oOrderCurrency === null) {
             // setting default in case unrecognized currency was set during order
             $aCurrencies = \OxidEsales\Eshop\Core\Registry::getConfig()->getCurrencyArray();
-            $this->_oOrderCurrency = current($aCurrencies);
+            $this->_oOrderCurrency = \current($aCurrencies);
 
             foreach ($aCurrencies as $oCurr) {
                 if ($oCurr->name == $this->oxorder__oxcurrency->value) {
@@ -2298,7 +2298,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sParcelService = $oConfig->getConfigParam('sParcelService');
             $sTrackingCode = $this->getTrackCode();
             if ($sParcelService && $sTrackingCode) {
-                $this->_sShipTrackUrl = str_replace("##ID##", $sTrackingCode, $sParcelService);
+                $this->_sShipTrackUrl = \str_replace("##ID##", $sTrackingCode, $sParcelService);
             }
         }
 
@@ -2392,7 +2392,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         $dynamicValues = null;
         $dynamicValuesList = $this->getPaymentType()->getDynValues();
 
-        if (is_array($dynamicValuesList)) {
+        if (\is_array($dynamicValuesList)) {
             foreach ($dynamicValuesList as $value) {
                 $dynamicValues[$value->name] = $value->value;
             }

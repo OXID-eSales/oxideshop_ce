@@ -22,10 +22,10 @@ class RequiredFieldValidator
     public function validateFieldValue($sFieldValue)
     {
         $blValid = true;
-        if (is_array($sFieldValue)) {
+        if (\is_array($sFieldValue)) {
             $blValid = $this->_validateFieldValueArray($sFieldValue);
         } else {
-            if (!trim($sFieldValue)) {
+            if (!\trim($sFieldValue)) {
                 $blValid = false;
             }
         }
@@ -45,7 +45,7 @@ class RequiredFieldValidator
     {
         $blValid = true;
         foreach ($aFieldValues as $sValue) {
-            if (!trim($sValue)) {
+            if (!\trim($sValue)) {
                 $blValid = false;
                 break;
             }

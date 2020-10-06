@@ -68,7 +68,7 @@ class ClassProviderStorage implements ClassProviderStorageInterface
     public function remove($moduleId)
     {
         $controllerMap = $this->get();
-        unset($controllerMap[strtolower($moduleId)]);
+        unset($controllerMap[\strtolower($moduleId)]);
 
         $this->set($controllerMap);
     }
@@ -84,9 +84,9 @@ class ClassProviderStorage implements ClassProviderStorageInterface
     {
         $result = [];
 
-        if (!is_null($modulesControllers)) {
+        if (!\is_null($modulesControllers)) {
             foreach ($modulesControllers as $moduleId => $controllers) {
-                $result[strtolower($moduleId)] = $this->controllerKeysToLowercase($controllers);
+                $result[\strtolower($moduleId)] = $this->controllerKeysToLowercase($controllers);
             }
         }
 
@@ -105,7 +105,7 @@ class ClassProviderStorage implements ClassProviderStorageInterface
         $result = [];
 
         foreach ($controllers as $controllerKey => $controllerClass) {
-            $result[strtolower($controllerKey)] = $controllerClass;
+            $result[\strtolower($controllerKey)] = $controllerClass;
         }
 
         return $result;

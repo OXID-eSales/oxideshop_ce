@@ -37,7 +37,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $sUrl = $this->oxmediaurls__oxurl->value;
         //youtube link
-        if (strpos($sUrl, 'youtube.com') || strpos($sUrl, 'youtu.be')) {
+        if (\strpos($sUrl, 'youtube.com') || \strpos($sUrl, 'youtu.be')) {
             return $this->_getYoutubeHtml();
         }
 
@@ -73,7 +73,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if ($this->oxmediaurls__oxisuploaded->value) {
             $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl() ? \OxidEsales\Eshop\Core\Registry::getConfig()->getSslShopUrl() : \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
             $sUrl .= 'out/media/';
-            $sUrl .= basename($this->oxmediaurls__oxurl->value);
+            $sUrl .= \basename($this->oxmediaurls__oxurl->value);
         } else {
             $sUrl = $this->oxmediaurls__oxurl->value;
         }
@@ -101,11 +101,11 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function delete($sOXID = null)
     {
         $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/out/media/" .
-                     basename($this->oxmediaurls__oxurl->value);
+                     \basename($this->oxmediaurls__oxurl->value);
 
         if ($this->oxmediaurls__oxisuploaded->value) {
-            if (file_exists($sFilePath)) {
-                unlink($sFilePath);
+            if (\file_exists($sFilePath)) {
+                \unlink($sFilePath);
             }
         }
 
@@ -123,16 +123,16 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sUrl = $this->oxmediaurls__oxurl->value;
         $sDesc = $this->oxmediaurls__oxdesc->value;
 
-        if (strpos($sUrl, 'youtube.com')) {
-            $sYoutubeUrl = str_replace("www.youtube.com/watch?v=", "www.youtube.com/embed/", $sUrl);
-            $sYoutubeUrl = preg_replace('/&amp;/', '?', $sYoutubeUrl, 1);
+        if (\strpos($sUrl, 'youtube.com')) {
+            $sYoutubeUrl = \str_replace("www.youtube.com/watch?v=", "www.youtube.com/embed/", $sUrl);
+            $sYoutubeUrl = \preg_replace('/&amp;/', '?', $sYoutubeUrl, 1);
         }
-        if (strpos($sUrl, 'youtu.be')) {
-            $sYoutubeUrl = str_replace("youtu.be/", "www.youtube.com/embed/", $sUrl);
+        if (\strpos($sUrl, 'youtu.be')) {
+            $sYoutubeUrl = \str_replace("youtu.be/", "www.youtube.com/embed/", $sUrl);
         }
 
         $sYoutubeTemplate = '%s<br><iframe width="425" height="344" src="%s" frameborder="0" allowfullscreen></iframe>';
-        $sYoutubeHtml = sprintf($sYoutubeTemplate, $sDesc, $sYoutubeUrl, $sYoutubeUrl);
+        $sYoutubeHtml = \sprintf($sYoutubeTemplate, $sDesc, $sYoutubeUrl, $sYoutubeUrl);
 
         return $sYoutubeHtml;
     }

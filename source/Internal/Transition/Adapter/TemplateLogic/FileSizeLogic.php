@@ -24,17 +24,17 @@ class FileSizeLogic
         $size = $size / 1024;
 
         if ($size < 1024) {
-            return sprintf("%.1f KB", $size);
+            return \sprintf("%.1f KB", $size);
         }
 
         $size = $size / 1024;
 
         if ($size < 1024) {
-            return sprintf("%.1f MB", $size);
+            return \sprintf("%.1f MB", $size);
         }
 
         $size = $size / 1024;
 
-        return sprintf("%.1f GB", $size);
+        return \sprintf("%.1f GB", $size);
     }
 }

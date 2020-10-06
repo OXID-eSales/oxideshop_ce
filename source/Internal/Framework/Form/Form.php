@@ -80,7 +80,7 @@ class Form implements FormInterface
             if ($validator->isValid($this) !== true) {
                 $isValid = false;
 
-                $this->errors = array_merge(
+                $this->errors = \array_merge(
                     $this->errors,
                     $validator->getErrors()
                 );

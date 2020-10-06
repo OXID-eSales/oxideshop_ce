@@ -30,13 +30,13 @@ class FileCache
     {
         $fileName = $this->getCacheFilePath($key);
         $value = null;
-        if (is_readable($fileName)) {
-            $value = file_get_contents($fileName);
-            if ($value == serialize(false)) {
+        if (\is_readable($fileName)) {
+            $value = \file_get_contents($fileName);
+            if ($value == \serialize(false)) {
                 return false;
             }
 
-            $value = unserialize($value);
+            $value = \unserialize($value);
             if ($value === false) {
                 $value = null;
             }
@@ -56,10 +56,10 @@ class FileCache
         $fileName = $this->getCacheFilePath($key);
         $cacheDirectory = $this->getCacheDir();
 
-        $tmpFile = $cacheDirectory . "/" . basename($fileName) . uniqid('.temp', true) . '.txt';
-        file_put_contents($tmpFile, serialize($value), LOCK_EX);
+        $tmpFile = $cacheDirectory . "/" . \basename($fileName) . \uniqid('.temp', true) . '.txt';
+        \file_put_contents($tmpFile, \serialize($value), LOCK_EX);
 
-        rename($tmpFile, $fileName);
+        \rename($tmpFile, $fileName);
     }
 
     /**
@@ -69,11 +69,11 @@ class FileCache
     {
         $tempDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sCompileDir");
         $mask = $tempDirectory . "/" . self::CACHE_FILE_PREFIX . ".*.txt";
-        $files = glob($mask);
-        if (is_array($files)) {
+        $files = \glob($mask);
+        if (\is_array($files)) {
             foreach ($files as $file) {
-                if (is_file($file)) {
-                    @unlink($file);
+                if (\is_file($file)) {
+                    @\unlink($file);
                 }
             }
         }
@@ -110,7 +110,7 @@ class FileCache
      */
     protected function getCacheFileName($key)
     {
-        $name = strtolower(basename($key));
+        $name = \strtolower(\basename($key));
 
         return self::CACHE_FILE_PREFIX . ".all.$name.txt";
     }

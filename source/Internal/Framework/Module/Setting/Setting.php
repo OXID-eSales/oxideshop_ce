@@ -65,7 +65,7 @@ class Setting
     public function getType(): string
     {
         if ($this->type === null) {
-            return gettype($this->value);
+            return \gettype($this->value);
         }
 
         return $this->type;

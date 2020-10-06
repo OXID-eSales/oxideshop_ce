@@ -49,11 +49,11 @@ class SmartyBuilder implements SmartyBuilderInterface
     public function setSecuritySettings(array $settings)
     {
         foreach ($settings as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 foreach ($value as $subKey => $subValue) {
-                    if (is_array($subValue)) {
+                    if (\is_array($subValue)) {
                         $originalSettings = $this->smarty->{$key}[$subKey];
-                        $this->smarty->{$key}[$subKey] = array_merge($originalSettings, $subValue);
+                        $this->smarty->{$key}[$subKey] = \array_merge($originalSettings, $subValue);
                     } else {
                         $this->smarty->{$key}[$subKey] = $subValue;
                     }
@@ -90,7 +90,7 @@ class SmartyBuilder implements SmartyBuilderInterface
     public function registerPrefilters(array $prefilters)
     {
         foreach ($prefilters as $prefilter => $path) {
-            if (file_exists($path)) {
+            if (\file_exists($path)) {
                 include_once $path;
                 $this->smarty->register_prefilter($prefilter);
             }
@@ -107,8 +107,8 @@ class SmartyBuilder implements SmartyBuilderInterface
      */
     public function registerPlugins(array $plugins)
     {
-        if (is_array($plugins)) {
-            $this->smarty->plugins_dir = array_merge(
+        if (\is_array($plugins)) {
+            $this->smarty->plugins_dir = \array_merge(
                 $plugins,
                 $this->smarty->plugins_dir
             );

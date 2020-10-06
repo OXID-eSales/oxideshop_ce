@@ -83,7 +83,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         if ($aArticlesIds = $session->getVariable('aHistoryArticles')) {
             return $aArticlesIds;
         } elseif ($sArticlesIds = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('aHistoryArticles')) {
-            return explode('|', $sArticlesIds);
+            return \explode('|', $sArticlesIds);
         }
     }
 
@@ -100,7 +100,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             // clean cookie, if session started
             \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', '');
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
+            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', \implode('|', $aArticlesIds));
         }
     }
 
@@ -117,20 +117,20 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $aHistoryArticles[] = $sArtId;
 
         // removing duplicates
-        $aHistoryArticles = array_unique($aHistoryArticles);
-        if (count($aHistoryArticles) > ($iCnt + 1)) {
-            array_shift($aHistoryArticles);
+        $aHistoryArticles = \array_unique($aHistoryArticles);
+        if (\count($aHistoryArticles) > ($iCnt + 1)) {
+            \array_shift($aHistoryArticles);
         }
 
         $this->setHistoryArticles($aHistoryArticles);
 
         //remove current article and return array
         //asignment =, not ==
-        if (($iCurrentArt = array_search($sArtId, $aHistoryArticles)) !== false) {
+        if (($iCurrentArt = \array_search($sArtId, $aHistoryArticles)) !== false) {
             unset($aHistoryArticles[$iCurrentArt]);
         }
 
-        $aHistoryArticles = array_values($aHistoryArticles);
+        $aHistoryArticles = \array_values($aHistoryArticles);
         $this->loadIds($aHistoryArticles);
         $this->sortByIds($aHistoryArticles);
     }
@@ -142,8 +142,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function sortByIds($aIds)
     {
-        $this->_aOrderMap = array_flip($aIds);
-        uksort($this->_aArray, [$this, '_sortByOrderMapCallback']);
+        $this->_aOrderMap = \array_flip($aIds);
+        \uksort($this->_aArray, [$this, '_sortByOrderMapCallback']);
     }
 
     /**
@@ -273,12 +273,12 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadActionArticles($sActionID, $iLimit = null)
     {
         // Performance
-        if (!trim($sActionID)) {
+        if (!\trim($sActionID)) {
             return;
         }
 
         $sShopID = Registry::getConfig()->getShopId();
-        $sActionID = strtolower($sActionID);
+        $sActionID = \strtolower($sActionID);
 
         //echo $sSelect;
         $oBaseObject = $this->getBaseObject();
@@ -468,7 +468,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect = $this->_getArticleSelect($sRecommId, $sArticlesFilter);
 
         $sArtView = getViewName('oxarticles');
-        $sPartial = substr($sSelect, strpos($sSelect, ' from '));
+        $sPartial = \substr($sSelect, \strpos($sSelect, ' from '));
         $sSelect = "select distinct $sArtView.oxid $sPartial ";
 
         $this->_createIdListFromSql($sSelect);
@@ -653,7 +653,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadIds($aIds)
     {
-        if (!count($aIds)) {
+        if (!\count($aIds)) {
             $this->clear();
 
             return;
@@ -663,7 +663,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
 
-        $oxIdsSql = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
+        $oxIdsSql = \implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sArticleFields from $sArticleTable ";
         $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";
@@ -681,7 +681,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadOrderArticles($aOrders)
     {
-        if (!count($aOrders)) {
+        if (!\count($aOrders)) {
             $this->clear();
 
             return;
@@ -694,17 +694,17 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
-        $sArticleFields = str_replace("`$sArticleTable`.`oxid`", "`oxorderarticles`.`oxartid` AS `oxid`", $sArticleFields);
+        $sArticleFields = \str_replace("`$sArticleTable`.`oxid`", "`oxorderarticles`.`oxartid` AS `oxid`", $sArticleFields);
 
         $sSelect = "SELECT $sArticleFields FROM oxorderarticles ";
         $sSelect .= "left join $sArticleTable on oxorderarticles.oxartid = $sArticleTable.oxid ";
-        $sSelect .= "WHERE oxorderarticles.oxorderid IN ( '" . implode("','", $aOrdersIds) . "' ) ";
+        $sSelect .= "WHERE oxorderarticles.oxorderid IN ( '" . \implode("','", $aOrdersIds) . "' ) ";
         $sSelect .= "order by $sArticleTable.oxid ";
 
         $this->selectString($sSelect);
 
         // not active or not available products must not have button "tobasket"
-        $sNow = date('Y-m-d H:i:s');
+        $sNow = \date('Y-m-d H:i:s');
         foreach ($this as $oArticle) {
             if (
                 !$oArticle->oxarticles__oxactive->value &&
@@ -725,7 +725,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadStockRemindProducts($aBasketContents)
     {
-        if (is_array($aBasketContents) && count($aBasketContents)) {
+        if (\is_array($aBasketContents) && \count($aBasketContents)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             foreach ($aBasketContents as $oBasketItem) {
                 $aArtIds[] = $oDb->quote($oBasketItem->getProductId());
@@ -737,13 +737,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sTable = $oBaseObject->getViewName();
 
             // fetching actual db stock state and reminder status
-            $sQ = "select {$sFieldNames} from {$sTable} where {$sTable}.oxid in ( " . implode(",", $aArtIds) . " ) and
+            $sQ = "select {$sFieldNames} from {$sTable} where {$sTable}.oxid in ( " . \implode(",", $aArtIds) . " ) and
                           oxremindactive = '1' and oxstock <= oxremindamount";
             $this->selectString($sQ);
 
             // updating stock reminder state
             if ($this->count()) {
-                $sQ = "update {$sTable} set oxremindactive = '2' where :tableName in ( " . implode(",", $aArtIds) . " ) and
+                $sQ = "update {$sTable} set oxremindactive = '2' where :tableName in ( " . \implode(",", $aArtIds) . " ) and
                               oxremindactive = '1' and oxstock <= oxremindamount";
                 $oDb->execute($sQ, [':tableName' => $sTable . '.oxid']);
             }
@@ -793,7 +793,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             $database->startTransaction();
             try {
-                $sCurrUpdateTime = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+                $sCurrUpdateTime = \date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
                 // Collect article id's for later recalculation.
                 $sQ = "SELECT `oxid` FROM `oxarticles`
@@ -818,7 +818,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             }
 
             // recalculate oxvarminprice and oxvarmaxprice for parent
-            if (is_array($aUpdatedArticleIds)) {
+            if (\is_array($aUpdatedArticleIds)) {
                 foreach ($aUpdatedArticleIds as $sArticleId) {
                     $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     $oArticle->load($sArticleId);
@@ -843,7 +843,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($sSql);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
-                $rs->fields = array_change_key_case($rs->fields, CASE_LOWER);
+                $rs->fields = \array_change_key_case($rs->fields, CASE_LOWER);
                 $this[$rs->fields['oxid']] = $rs->fields['oxid']; //only the oxid
                 $rs->fetchRow();
             }
@@ -911,14 +911,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 if ($sIds) {
                     $sIds .= ', ';
                 }
-                $sIds .= \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote(current($aArt));
+                $sIds .= \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote(\current($aArt));
             }
 
             if ($sIds) {
                 $sFilterSql = " and $sArticleTable.oxid in ( $sIds ) ";
             }
             // bug fix #0001695: if no articles found return false
-        } elseif (!(current($aFilter) == '' && count(array_unique($aFilter)) == 1)) {
+        } elseif (!(\current($aFilter) == '' && \count(\array_unique($aFilter)) == 1)) {
             $sFilterSql = " and false ";
         }
 
@@ -1009,7 +1009,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function _getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // check if it has string at all
-        if (!$sSearchString || !str_replace(' ', '', $sSearchString)) {
+        if (!$sSearchString || !\str_replace(' ', '', $sSearchString)) {
             return '';
         }
 
@@ -1017,7 +1017,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sArticleTable = $this->getBaseObject()->getViewName();
 
-        $aSearch = explode(' ', $sSearchString);
+        $aSearch = \explode(' ', $sSearchString);
 
         $sSearch = ' and ( ';
         $blSep = false;
@@ -1032,7 +1032,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
         $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
         foreach ($aSearch as $sSearchString) {
-            if (!strlen($sSearchString)) {
+            if (!\strlen($sSearchString)) {
                 continue;
             }
 
@@ -1179,7 +1179,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();
 
-        $iTimeToUpdate = $database->getOne(sprintf($sQ, "`oxarticles`"));
+        $iTimeToUpdate = $database->getOne(\sprintf($sQ, "`oxarticles`"));
 
         return $iTimeToUpdate;
     }
@@ -1205,7 +1205,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function updateOxArticles($sCurrUpdateTime, $oDb)
     {
         $sQ = $this->getQueryToUpdateOxArticle($sCurrUpdateTime);
-        $blUpdated = $oDb->execute(sprintf($sQ, "`oxarticles`"));
+        $blUpdated = $oDb->execute(\sprintf($sQ, "`oxarticles`"));
 
         return $blUpdated;
     }
@@ -1255,7 +1255,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $descriptionJoin = '';
         $searchColumns = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSearchCols');
 
-        if (is_array($searchColumns) && in_array('oxlongdesc', $searchColumns)) {
+        if (\is_array($searchColumns) && \in_array('oxlongdesc', $searchColumns)) {
             $viewName = getViewName('oxartextends');
             $descriptionJoin = " LEFT JOIN $viewName ON {$viewName}.oxid={$table}.oxid ";
         }

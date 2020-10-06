@@ -38,15 +38,15 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             $oOtherLang = $oAction->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                $oAction->loadInLang(key($oOtherLang), $soxId);
+                $oAction->loadInLang(\key($oOtherLang), $soxId);
             }
 
             $this->_aViewData["edit"] = $oAction;
 
             // remove already created languages
-            $aLang = array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = \array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
 
-            if (count($aLang)) {
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 

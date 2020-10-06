@@ -64,7 +64,7 @@ class Argon2IPasswordHashService implements PasswordHashServiceInterface
     {
         $this->passwordPolicy->enforcePasswordPolicy($password);
 
-        $hash = password_hash(
+        $hash = \password_hash(
             $password,
             PASSWORD_ARGON2I,
             $this->getOptions()
@@ -86,7 +86,7 @@ class Argon2IPasswordHashService implements PasswordHashServiceInterface
      */
     public function passwordNeedsRehash(string $passwordHash): bool
     {
-        return password_needs_rehash($passwordHash, PASSWORD_ARGON2I, $this->getOptions());
+        return \password_needs_rehash($passwordHash, PASSWORD_ARGON2I, $this->getOptions());
     }
 
     /**

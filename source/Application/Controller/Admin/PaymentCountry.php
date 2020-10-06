@@ -41,13 +41,13 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             $oOtherLang = $oPayment->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oPayment->loadInLang(key($oOtherLang), $soxId);
+                $oPayment->loadInLang(\key($oOtherLang), $soxId);
             }
             $this->_aViewData["edit"] = $oPayment;
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
@@ -76,7 +76,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         $sOxId = $this->getEditObjectId();
         $aChosenCntr = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("allcountries");
-        if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
+        if (isset($sOxId) && $sOxId != "-1" && \is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
                 $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
@@ -95,7 +95,7 @@ class PaymentCountry extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         $sOxId = $this->getEditObjectId();
         $aChosenCntr = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("countries");
-        if (isset($sOxId) && $sOxId != "-1" && is_array($aChosenCntr)) {
+        if (isset($sOxId) && $sOxId != "-1" && \is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
                 $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');

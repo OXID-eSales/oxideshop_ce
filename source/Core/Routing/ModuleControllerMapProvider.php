@@ -33,7 +33,7 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
         $controllerMap = [];
         $moduleControllersByModuleId = Registry::getUtilsObject()->getModuleVar(ClassProviderStorage::STORAGE_KEY);
 
-        if (is_array($moduleControllersByModuleId)) {
+        if (\is_array($moduleControllersByModuleId)) {
             $controllerMap = $this->flattenControllersMap($moduleControllersByModuleId);
         }
 
@@ -49,7 +49,7 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
     {
         $moduleControllersFlat = [];
         foreach ($moduleControllersByModuleId as $moduleControllersOfOneModule) {
-            $moduleControllersFlat = array_merge($moduleControllersFlat, $moduleControllersOfOneModule);
+            $moduleControllersFlat = \array_merge($moduleControllersFlat, $moduleControllersOfOneModule);
         }
         return $moduleControllersFlat;
     }

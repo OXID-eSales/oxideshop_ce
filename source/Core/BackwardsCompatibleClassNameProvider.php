@@ -37,7 +37,7 @@ class BackwardsCompatibleClassNameProvider
     public function getClassName($classAlias)
     {
         $className = $classAlias;
-        if (array_key_exists($classAlias, $this->classMap)) {
+        if (\array_key_exists($classAlias, $this->classMap)) {
             $className = $this->classMap[$classAlias];
         }
 
@@ -56,8 +56,8 @@ class BackwardsCompatibleClassNameProvider
         /*
          * Sanitize input: class names in namespaces should not, but may include a leading backslash
          */
-        $className = ltrim($className, '\\');
-        $classAlias = array_search($className, $this->classMap);
+        $className = \ltrim($className, '\\');
+        $classAlias = \array_search($className, $this->classMap);
 
         if ($classAlias === false) {
             $classAlias = null;

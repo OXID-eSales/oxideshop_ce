@@ -41,13 +41,13 @@ class ModuleTemplatePathCalculator
      */
     public function __construct($moduleList = null, $theme = null, $fileSystem = null)
     {
-        if (is_null($moduleList)) {
+        if (\is_null($moduleList)) {
             $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         }
-        if (is_null($theme)) {
+        if (\is_null($theme)) {
             $theme = oxNew(Theme::class);
         }
-        if (is_null($fileSystem)) {
+        if (\is_null($fileSystem)) {
             $fileSystem = oxNew(FileSystem::class);
         }
 
@@ -89,7 +89,7 @@ class ModuleTemplatePathCalculator
 
         $finalTemplatePath = '';
 
-        if (is_array($moduleTemplates) && is_array($activeModules)) {
+        if (\is_array($moduleTemplates) && \is_array($activeModules)) {
             foreach ($moduleTemplates as $sModuleId => $aTemplates) {
                 // check if module is active
                 if (isset($activeModules[$sModuleId])) {
@@ -113,7 +113,7 @@ class ModuleTemplatePathCalculator
                             $finalTemplatePath = $foundTemplate;
                             break;
                         } else {
-                            throw oxNew(\oxException::class, sprintf('Cannot find template file "%s".', $foundTemplate));
+                            throw oxNew(\oxException::class, \sprintf('Cannot find template file "%s".', $foundTemplate));
                         }
                     }
                 }
@@ -121,7 +121,7 @@ class ModuleTemplatePathCalculator
         }
 
         if (!$finalTemplatePath) {
-            throw oxNew(\oxException::class, sprintf('Cannot find template "%s" in modules configuration.', $templateName));
+            throw oxNew(\oxException::class, \sprintf('Cannot find template "%s" in modules configuration.', $templateName));
         }
 
         return $finalTemplatePath;

@@ -43,7 +43,7 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oOtherLang = $oArticle->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oArticle->loadInLang(key($oOtherLang), $soxId);
+                $oArticle->loadInLang(\key($oOtherLang), $soxId);
             }
 
             foreach ($oOtherLang as $id => $language) {
@@ -138,17 +138,17 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
 
-        if (!is_array($aParams)) {
+        if (!\is_array($aParams)) {
             return;
         }
 
-        if (isset($aUpdateParams) && is_array($aUpdateParams)) {
-            $aParams = array_merge($aParams, $aUpdateParams);
+        if (isset($aUpdateParams) && \is_array($aUpdateParams)) {
+            $aParams = \array_merge($aParams, $aUpdateParams);
         }
 
         //replacing commas
         foreach ($aParams as $key => $sParam) {
-            $aParams[$key] = str_replace(",", ".", $sParam);
+            $aParams[$key] = \str_replace(",", ".", $sParam);
         }
 
         $aParams['oxprice2article__oxshopid'] = $myConfig->getShopID();
@@ -163,8 +163,8 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         if (!$myConfig->getConfigParam('blAllowUnevenAmounts')) {
-            $aParams['oxprice2article__oxamount'] = round((string) $aParams['oxprice2article__oxamount']);
-            $aParams['oxprice2article__oxamountto'] = round((string) $aParams['oxprice2article__oxamountto']);
+            $aParams['oxprice2article__oxamount'] = \round((string) $aParams['oxprice2article__oxamount']);
+            $aParams['oxprice2article__oxamountto'] = \round((string) $aParams['oxprice2article__oxamountto']);
         }
 
         $dPrice = $aParams['price'];
@@ -181,9 +181,9 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $oArticlePrice->$sType->value &&
             $oArticlePrice->oxprice2article__oxamount->value &&
             $oArticlePrice->oxprice2article__oxamountto->value &&
-            is_numeric($oArticlePrice->$sType->value) &&
-            is_numeric($oArticlePrice->oxprice2article__oxamount->value) &&
-            is_numeric($oArticlePrice->oxprice2article__oxamountto->value) &&
+            \is_numeric($oArticlePrice->$sType->value) &&
+            \is_numeric($oArticlePrice->oxprice2article__oxamount->value) &&
+            \is_numeric($oArticlePrice->oxprice2article__oxamountto->value) &&
             $oArticlePrice->oxprice2article__oxamount->value <= $oArticlePrice->oxprice2article__oxamountto->value
         ) {
             $oArticlePrice->save();
@@ -197,7 +197,7 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             ($aParams['price'] >= $oArticle->$sPriceField->value) &&
             ($aParams['pricetype'] == 'oxprice2article__oxaddabs')
         ) {
-            if (is_null($sOXID)) {
+            if (\is_null($sOXID)) {
                 $sOXID = $oArticlePrice->getId();
             }
             $this->_aViewData["errorscaleprice"][] = $sOXID;
@@ -210,7 +210,7 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     public function updateprices()
     {
         $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("updateval");
-        if (is_array($aParams)) {
+        if (\is_array($aParams)) {
             foreach ($aParams as $soxId => $aStockParams) {
                 $this->addprice($soxId, $aStockParams);
             }

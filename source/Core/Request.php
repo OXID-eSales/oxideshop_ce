@@ -75,7 +75,7 @@ class Request
             }
 
             // trying to resolve controller file name
-            if ($rawRequestUrl && ($iPos = stripos($rawRequestUrl, '?')) !== false) {
+            if ($rawRequestUrl && ($iPos = \stripos($rawRequestUrl, '?')) !== false) {
                 $string = Str::getStr();
                 // formatting request url
                 $requestUrl = 'index.php' . $string->substr($rawRequestUrl, $iPos);
@@ -84,7 +84,7 @@ class Request
                 $requestUrl = $string->preg_replace('/(&|\?)(force_)?(admin_)?sid=[^&]*&?/', '$1', $requestUrl);
                 $requestUrl = $string->preg_replace('/(&|\?)stoken=[^&]*&?/', '$1', $requestUrl);
                 $requestUrl = $string->preg_replace('/&$/', '', $requestUrl);
-                $requestUrl = str_replace('&', '&amp;', $requestUrl);
+                $requestUrl = \str_replace('&', '&amp;', $requestUrl);
             }
         }
 
@@ -102,15 +102,15 @@ class Request
      */
     public function checkParamSpecialChars(&$sValue, $aRaw = null)
     {
-        if (is_object($sValue)) {
+        if (\is_object($sValue)) {
             return $sValue;
         }
 
-        if (is_array($sValue)) {
+        if (\is_array($sValue)) {
             $newValue = [];
             foreach ($sValue as $sKey => $sVal) {
                 $sValidKey = $sKey;
-                if (!$aRaw || !in_array($sKey, $aRaw)) {
+                if (!$aRaw || !\in_array($sKey, $aRaw)) {
                     $this->checkParamSpecialChars($sValidKey);
                     $this->checkParamSpecialChars($sVal);
                     if ($sValidKey != $sKey) {
@@ -120,9 +120,9 @@ class Request
                 $newValue[$sValidKey] = $sVal;
             }
             $sValue = $newValue;
-        } elseif (is_string($sValue)) {
-            $sValue = str_replace(
-                ['&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"],
+        } elseif (\is_string($sValue)) {
+            $sValue = \str_replace(
+                ['&', '<', '>', '"', "'", \chr(0), '\\', "\n", "\r"],
                 ['&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'],
                 $sValue
             );

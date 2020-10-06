@@ -157,7 +157,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function normalizeDir($sDir)
     {
-        if (isset($sDir) && $sDir != "" && substr($sDir, -1) !== '/') {
+        if (isset($sDir) && $sDir != "" && \substr($sDir, -1) !== '/') {
             $sDir .= "/";
         }
 
@@ -173,15 +173,15 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     public function copyDir($sSourceDir, $sTargetDir)
     {
         $oStr = Str::getStr();
-        $handle = opendir($sSourceDir);
-        while (false !== ($file = readdir($handle))) {
+        $handle = \opendir($sSourceDir);
+        while (false !== ($file = \readdir($handle))) {
             if ($file != '.' && $file != '..') {
-                if (is_dir($sSourceDir . '/' . $file)) {
+                if (\is_dir($sSourceDir . '/' . $file)) {
                     // recursive
                     $sNewSourceDir = $sSourceDir . '/' . $file;
                     $sNewTargetDir = $sTargetDir . '/' . $file;
-                    if (strcasecmp($file, 'CVS') && strcasecmp($file, '.svn')) {
-                        @mkdir($sNewTargetDir, 0777);
+                    if (\strcasecmp($file, 'CVS') && \strcasecmp($file, '.svn')) {
+                        @\mkdir($sNewTargetDir, 0777);
                         $this->copyDir($sNewSourceDir, $sNewTargetDir);
                     }
                 } else {
@@ -190,12 +190,12 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
                     //do not copy files within dyn_images
                     if (!$oStr->strstr($sSourceDir, 'dyn_images') || $file == 'nopic.jpg' || $file == 'nopic_ico.jpg') {
-                        @copy($sSourceFile, $sTargetFile);
+                        @\copy($sSourceFile, $sTargetFile);
                     }
                 }
             }
         }
-        closedir($handle);
+        \closedir($handle);
     }
 
     /**
@@ -207,8 +207,8 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function deleteDir($sSourceDir)
     {
-        if (is_dir($sSourceDir)) {
-            if ($oDir = dir($sSourceDir)) {
+        if (\is_dir($sSourceDir)) {
+            if ($oDir = \dir($sSourceDir)) {
                 while (false !== $sFile = $oDir->read()) {
                     if ($sFile == '.' || $sFile == '..') {
                         continue;
@@ -223,10 +223,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
                 $oDir->close();
 
-                return rmdir($sSourceDir);
+                return \rmdir($sSourceDir);
             }
-        } elseif (file_exists($sSourceDir)) {
-            return unlink($sSourceDir);
+        } elseif (\file_exists($sSourceDir)) {
+            return \unlink($sSourceDir);
         }
     }
 
@@ -240,14 +240,14 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     public function readRemoteFileAsString($sPath)
     {
         $sRet = '';
-        $hFile = @fopen($sPath, 'r');
+        $hFile = @\fopen($sPath, 'r');
         if ($hFile) {
-            socket_set_timeout($hFile, 2);
-            while (!feof($hFile)) {
-                $sLine = fgets($hFile, 4096);
+            \socket_set_timeout($hFile, 2);
+            while (!\feof($hFile)) {
+                $sLine = \fgets($hFile, 4096);
                 $sRet .= $sLine;
             }
-            fclose($hFile);
+            \fclose($hFile);
         }
 
         return $sRet;
@@ -269,24 +269,24 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         if ($sValue) {
             // add type to name
-            $aFilename = explode(".", $sValue);
+            $aFilename = \explode(".", $sValue);
 
-            $sFileType = trim($aFilename[count($aFilename) - 1]);
+            $sFileType = \trim($aFilename[\count($aFilename) - 1]);
 
             if (isset($sFileType)) {
                 // unallowed files ?
-                if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
+                if (\in_array($sFileType, $this->_aBadFiles) || ($blDemo && !\in_array($sFileType, $this->_aAllowedFiles))) {
                     \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 // removing file type
-                if (count($aFilename) > 0) {
-                    unset($aFilename[count($aFilename) - 1]);
+                if (\count($aFilename) > 0) {
+                    unset($aFilename[\count($aFilename) - 1]);
                 }
 
                 $sFName = '';
                 if (isset($aFilename[0])) {
-                    $sFName = Str::getStr()->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', implode('.', $aFilename));
+                    $sFName = Str::getStr()->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', \implode('.', $aFilename));
                 }
 
                 $sValue = $this->_getUniqueFileName($sImagePath, "{$sFName}", $sFileType, "", $blUnique);
@@ -306,7 +306,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
+        $sFolder = \array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
         return $this->normalizeDir(\OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false)) . "{$sFolder}/";
     }
@@ -339,7 +339,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 break;
         }
         if ($sSize) {
-            return explode('*', $sSize);
+            return \explode('*', $sSize);
         }
     }
 
@@ -354,17 +354,17 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected function _copyFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_dir(dirname($sTarget))) {
-            mkdir(dirname($sTarget), 0744, true);
+        if (!\is_dir(\dirname($sTarget))) {
+            \mkdir(\dirname($sTarget), 0744, true);
         }
 
         $blDone = true;
         if ($sSource !== $sTarget) {
-            $blDone = copy($sSource, $sTarget);
+            $blDone = \copy($sSource, $sTarget);
         }
 
         if ($blDone) {
-            $blDone = @chmod($sTarget, 0644);
+            $blDone = @\chmod($sTarget, 0644);
         }
 
         return $blDone;
@@ -381,17 +381,17 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected function _moveImage($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_dir(dirname($sTarget))) {
-            mkdir(dirname($sTarget), 0744, true);
+        if (!\is_dir(\dirname($sTarget))) {
+            \mkdir(\dirname($sTarget), 0744, true);
         }
 
         $blDone = true;
         if ($sSource !== $sTarget) {
-            $blDone = move_uploaded_file($sSource, $sTarget);
+            $blDone = \move_uploaded_file($sSource, $sTarget);
         }
 
         if ($blDone) {
-            $blDone = @chmod($sTarget, 0644);
+            $blDone = @\chmod($sTarget, 0644);
         }
 
         return $blDone;
@@ -429,11 +429,11 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             foreach ($aFiles['myfile']['name'] as $sKey => $sValue) {
                 $sSource = $aSource[$sKey];
                 $iError = $aError[$sKey];
-                $aFiletype = explode("@", $sKey);
+                $aFiletype = \explode("@", $sKey);
                 $sKey = $aFiletype[1];
                 $sType = $aFiletype[0];
 
-                $sValue = strtolower($sValue);
+                $sValue = \strtolower($sValue);
                 $sImagePath = $this->_getImagePath($sType);
 
                 // Should translate error to user if file was uploaded
@@ -447,7 +447,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 if ($sSource && ($sValue = $this->_prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique))) {
                     // moving to tmp folder for processing as safe mode or spec. open_basedir setup
                     // usually does not allow file modification in php's temp folder
-                    $sProcessPath = $sTmpFolder . basename($sSource);
+                    $sProcessPath = $sTmpFolder . \basename($sSource);
 
                     if ($sProcessPath) {
                         if ($blUseMasterImage) {
@@ -492,7 +492,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
 
         $blRet = true;
-        if (!is_readable($sFile)) {
+        if (!\is_readable($sFile)) {
             $blRet = $this->urlValidate($sFile);
         }
 
@@ -546,15 +546,15 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
 
-        $aPathInfo = pathinfo($aFileInfo['name']);
+        $aPathInfo = \pathinfo($aFileInfo['name']);
 
         $sExt = $aPathInfo['extension'];
         $sFileName = $aPathInfo['filename'];
 
         $aAllowedUploadTypes = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aAllowedUploadTypes');
-        $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
+        $aAllowedUploadTypes = \array_map("strtolower", $aAllowedUploadTypes);
 
-        if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {
+        if (!\in_array(\strtolower($sExt), $aAllowedUploadTypes)) {
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 
@@ -588,7 +588,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $oStr = Str::getStr();
 
         //file exists ?
-        while ($blUnique && file_exists($sFilePath . "/" . $sFileName . $sSufix . "." . $sFileExt)) {
+        while ($blUnique && \file_exists($sFilePath . "/" . $sFileName . $sSufix . "." . $sFileExt)) {
             $iFileCounter++;
 
             //removing "(any digit)" from file name end
@@ -610,11 +610,11 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function getImageDirByType($sType, $blGenerated = false)
     {
-        $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
+        $sFolder = \array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
         $sDir = $this->normalizeDir($sFolder);
 
         if ($blGenerated === true) {
-            $sDir = str_replace('master/', 'generated/', $sDir);
+            $sDir = \str_replace('master/', 'generated/', $sDir);
         }
 
         return $sDir;
@@ -644,7 +644,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     private function isUrlSchemaValid(string $url): bool
     {
-        return filter_var($url, FILTER_VALIDATE_URL) === false ? false : true;
+        return \filter_var($url, FILTER_VALIDATE_URL) === false ? false : true;
     }
 
     /**
@@ -653,14 +653,14 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     private function isUrlAccessible(string $url): bool
     {
-        $curl = curl_init($url);
+        $curl = \curl_init($url);
 
-        curl_setopt($curl, CURLOPT_NOBODY, true);
+        \curl_setopt($curl, CURLOPT_NOBODY, true);
 
-        $result = curl_exec($curl);
+        $result = \curl_exec($curl);
 
         if ($result !== false) {
-            $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            $statusCode = \curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
             if ($statusCode === 200) {
                 return true;

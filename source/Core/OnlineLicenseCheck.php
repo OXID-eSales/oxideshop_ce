@@ -274,7 +274,7 @@ class OnlineLicenseCheck
 
         $request->productSpecificInformation = new stdClass();
 
-        if (!is_null($this->getAppServerExporter())) {
+        if (!\is_null($this->getAppServerExporter())) {
             $servers = $this->getAppServerExporter()->exportAppServerList();
             $request->productSpecificInformation->servers = ['server' => $servers];
         }
@@ -298,7 +298,7 @@ class OnlineLicenseCheck
 
         $counters = [];
 
-        if (!is_null($this->getUserCounter())) {
+        if (!\is_null($this->getUserCounter())) {
             $counters[] = [
                 'name' => 'admin users',
                 'value' => $userCounter->getAdminCount(),

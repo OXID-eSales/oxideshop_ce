@@ -37,15 +37,15 @@ class UserGroupMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $oOtherLang = $oGroup->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oGroup->loadInLang(key($oOtherLang), $soxId);
+                $oGroup->loadInLang(\key($oOtherLang), $soxId);
             }
 
             $this->_aViewData["edit"] = $oGroup;
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
 
-            if (count($aLang)) {
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 

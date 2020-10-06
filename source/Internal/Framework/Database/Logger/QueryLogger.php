@@ -87,8 +87,8 @@ class QueryLogger implements SQLLogger
 
         foreach ((new \Exception())->getTrace() as $item) {
             if (
-                (false === stripos($item['class'], get_class($this))) &&
-                (false === stripos($item['class'], 'Doctrine'))
+                (false === \stripos($item['class'], \get_class($this))) &&
+                (false === \stripos($item['class'], 'Doctrine'))
             ) {
                 $queryTraceItem = $item;
                 break;
@@ -117,7 +117,7 @@ class QueryLogger implements SQLLogger
             'file'        => $backTraceInfo['file'] ?? '',
             'line'        => $backTraceInfo['line'] ?? '',
             'query'       => $query,
-            'params'      => serialize($params)
+            'params'      => \serialize($params)
         ];
 
         return $queryData;

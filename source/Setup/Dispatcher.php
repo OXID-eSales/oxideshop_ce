@@ -52,8 +52,8 @@ class Dispatcher extends Core
         $sName = null;
         foreach ($oSetup->getSteps() as $sStepName => $sStepId) {
             if ($sStepId == $iCurrStep) {
-                $sActionName = str_ireplace("step_", "", $sStepName);
-                $sName = str_replace("_", "", $sActionName);
+                $sActionName = \str_ireplace("step_", "", $sStepName);
+                $sName = \str_replace("_", "", $sActionName);
                 break;
             }
         }

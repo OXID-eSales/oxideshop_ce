@@ -72,7 +72,7 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
                 }
 
                 $aViewProds = $oParentView->getViewProductList();
-                if (is_array($aViewProds) && count($aViewProds)) {
+                if (\is_array($aViewProds) && \count($aViewProds)) {
                     foreach ($aViewProds as $oProduct) {
                         if (isset($aItems[$oProduct->getId()])) {
                             $oProduct->setOnComparisonList(true);
@@ -145,13 +145,13 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $aSel = $aSel ? $aSel : Registry::getConfig()->getRequestParameter('sel');
 
             // processing amounts
-            $dAmount = str_replace(',', '.', $dAmount);
+            $dAmount = \str_replace(',', '.', $dAmount);
             if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowUnevenAmounts')) {
-                $dAmount = round((string) $dAmount);
+                $dAmount = \round((string) $dAmount);
             }
 
             $oBasket = $oUser->getBasket($sListType);
-            $oBasket->addItemToBasket($sProductId, abs($dAmount), $aSel, ($dAmount == 0));
+            $oBasket->addItemToBasket($sProductId, \abs($dAmount), $aSel, ($dAmount == 0));
 
             // recalculate basket count
             $oBasket->getItemCount(true);

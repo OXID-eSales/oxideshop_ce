@@ -152,7 +152,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $listDisplayType = $this->_getListDisplayType();
         $parentViewId = parent::generateViewId();
 
-        return md5(
+        return \md5(
             $parentViewId . '|' . $categoryId . '|' . $activePage . '|' . $articlesPerPage . '|' . $listDisplayType
         );
     }
@@ -395,7 +395,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             $this->_iAllArtCnt = $articleList->loadCategoryArticles($activeCategoryId, $sessionFilter);
         }
 
-        $this->_iCntPages = ceil($this->_iAllArtCnt / $numberOfCategoryArticles);
+        $this->_iCntPages = \ceil($this->_iAllArtCnt / $numberOfCategoryArticles);
 
         return $articleList;
     }
@@ -439,7 +439,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $listDisplayType = Registry::getSession()->getVariable('ldtype');
 
-        if (is_null($listDisplayType)) {
+        if (\is_null($listDisplayType)) {
             $listDisplayType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
@@ -472,7 +472,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             $this->_sCatPathString = false;
 
             //fetching category path
-            if (is_array($categoryTreePath = $this->getCatTreePath())) {
+            if (\is_array($categoryTreePath = $this->getCatTreePath())) {
                 $stringModifier = Str::getStr();
                 $this->_sCatPathString = '';
                 foreach ($categoryTreePath as $category) {
@@ -523,7 +523,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $description = $str->cleanStr($description);
         $description = $str->htmlspecialchars($description);
 
-        return trim($description);
+        return \trim($description);
     }
 
     /**
@@ -563,10 +563,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         //formatting description tag
         $category = $this->getActiveCategory();
 
-        $additionalText = (($category instanceof Category)) ? trim($category->getLongDesc()) : '';
+        $additionalText = (($category instanceof Category)) ? \trim($category->getLongDesc()) : '';
 
         $articleList = $this->getArticleList();
-        if (!$additionalText && count($articleList)) {
+        if (!$additionalText && \count($articleList)) {
             foreach ($articleList as $article) {
                 if ($additionalText) {
                     $additionalText .= ', ';
@@ -576,7 +576,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         }
 
         if (!$meta) {
-            $meta = trim($this->_getCatPathString());
+            $meta = \trim($this->_getCatPathString());
         }
 
         if ($meta) {
@@ -605,25 +605,25 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
             if ($categoryTree = $this->getCategoryTree()) {
                 foreach ($categoryTree->getPath() as $category) {
-                    $keywordsList[] = trim($category->oxcategories__oxtitle->value);
+                    $keywordsList[] = \trim($category->oxcategories__oxtitle->value);
                 }
             }
 
             $subCategories = $activeCategory->getSubCats();
-            if (is_array($subCategories)) {
+            if (\is_array($subCategories)) {
                 foreach ($subCategories as $subCategory) {
                     $keywordsList[] = $subCategory->oxcategories__oxtitle->value;
                 }
             }
 
-            if (count($keywordsList) > 0) {
-                $keywords = implode(", ", $keywordsList);
+            if (\count($keywordsList) > 0) {
+                $keywords = \implode(", ", $keywordsList);
             }
         }
 
         $keywords = parent::_prepareMetaDescription($keywords, -1, $removeDuplicatedWords);
 
-        return trim($keywords);
+        return \trim($keywords);
     }
 
     /**
@@ -640,12 +640,12 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $maxTextLength = 60;
         $text = '';
 
-        if (count($articleList = $this->getArticleList())) {
+        if (\count($articleList = $this->getArticleList())) {
             $stringModifier = Str::getStr();
             foreach ($articleList as $article) {
                 /** @var \OxidEsales\Eshop\Application\Model\Article $article */
                 $description = $stringModifier->strip_tags(
-                    trim($stringModifier->strtolower($article->getLongDescription()->value))
+                    \trim($stringModifier->strtolower($article->getLongDescription()->value))
                 );
 
                 //removing dots from string (they are not cleaned up during general string cleanup)
@@ -656,7 +656,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
                     $description = $stringModifier->substr(
                         $midText,
                         0,
-                        ($stringModifier->strlen($midText) - $stringModifier->strpos(strrev($midText), ' '))
+                        ($stringModifier->strlen($midText) - $stringModifier->strpos(\strrev($midText), ' '))
                     );
                 }
                 if ($text) {
@@ -687,7 +687,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getTemplateName()
     {
         // assign template name
-        if (($templateName = basename(Registry::getConfig()->getRequestParameter('tpl')))) {
+        if (($templateName = \basename(Registry::getConfig()->getRequestParameter('tpl')))) {
             $this->_sThisTemplate = 'custom/' . $templateName;
         } elseif (($category = $this->getActiveCategory()) && $category->oxcategories__oxtemplate->value) {
             $this->_sThisTemplate = $category->oxcategories__oxtemplate->value;
@@ -818,7 +818,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         if (($category = $this->getActiveCategory())) {
             $attributes = $category->getAttributes();
-            if (count($attributes)) {
+            if (\count($attributes)) {
                 $this->_aAttributes = $attributes;
             }
         }
@@ -836,7 +836,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         if ($this->_aArticleList === null) {
             if ($category = $this->getActiveCategory()) {
                 $articleList = $this->_loadArticles($category);
-                if (count($articleList)) {
+                if (\count($articleList)) {
                     $this->_aArticleList = $articleList;
                 }
             }

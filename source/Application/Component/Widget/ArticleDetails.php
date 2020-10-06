@@ -311,7 +311,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             //making a new array for backward compatibility
             $this->_aAttributes = false;
 
-            if (count($aArtAttributes)) {
+            if (\count($aArtAttributes)) {
                 foreach ($aArtAttributes as $sKey => $oAttribute) {
                     $this->_aAttributes[$sKey] = new stdClass();
                     $this->_aAttributes[$sKey]->title = $oAttribute->oxattribute__oxtitle->value;
@@ -362,7 +362,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     public function getVariantListExceptCurrent()
     {
         $oList = $this->getVariantList();
-        if (is_object($oList)) {
+        if (\is_object($oList)) {
             $oList = clone $oList;
         }
 
@@ -393,11 +393,11 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
                 $this->_aVariantList = $oParent->getFullVariants(false);
 
                 //lets additionally add parent article if it is sellable
-                if (count($this->_aVariantList) && $myConfig->getConfigParam('blVariantParentBuyable')) {
+                if (\count($this->_aVariantList) && $myConfig->getConfigParam('blVariantParentBuyable')) {
                     //#1104S if parent is buyable load select lists too
                     $oParent->enablePriceLoad();
                     $oParent->aSelectlist = $oParent->getSelectLists();
-                    $this->_aVariantList = array_merge([$oParent], $this->_aVariantList->getArray());
+                    $this->_aVariantList = \array_merge([$oParent], $this->_aVariantList->getArray());
                 }
             } else {
                 //loading full list of variants
@@ -432,7 +432,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         if ($this->_aMediaFiles === null) {
             $aMediaFiles = $this->getProduct()->getMediaUrls();
-            $this->_aMediaFiles = count($aMediaFiles) ? $aMediaFiles : false;
+            $this->_aMediaFiles = \count($aMediaFiles) ? $aMediaFiles : false;
         }
 
         return $this->_aMediaFiles;
@@ -760,7 +760,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
             $this->_dRatingValue = (double) 0;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
                 $blShowVariantsReviews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVariantReviews');
-                $this->_dRatingValue = round($oDetailsProduct->getArticleRatingAverage($blShowVariantsReviews), 1);
+                $this->_dRatingValue = \round($oDetailsProduct->getArticleRatingAverage($blShowVariantsReviews), 1);
             }
         }
 
@@ -908,7 +908,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     {
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
-            list($sortBy, $sortOrder) = explode('|', $sSortingParameters);
+            list($sortBy, $sortOrder) = \explode('|', $sSortingParameters);
             if ((new SortingValidator())->isValid($sortBy, $sortOrder)) {
                 $this->setItemSorting($this->getSortIdent(), $sortBy, $sortOrder);
             }

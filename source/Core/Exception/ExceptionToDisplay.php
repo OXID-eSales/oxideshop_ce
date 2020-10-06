@@ -157,7 +157,7 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
      */
     public function setMessageArgs()
     {
-        $this->_aMessageArgs = func_get_args();
+        $this->_aMessageArgs = \func_get_args();
     }
 
     /**
@@ -173,7 +173,7 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
             $sString = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->_sMessage);
 
             if (!empty($this->_aMessageArgs)) {
-                $sString = vsprintf($sString, $this->_aMessageArgs);
+                $sString = \vsprintf($sString, $this->_aMessageArgs);
             }
 
             return $sString;
@@ -187,7 +187,7 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
      */
     public function __toString()
     {
-        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
+        $sRes = $this->getErrorClassType() . " (time: " . \date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
         foreach ($this->_aValues as $key => $value) {
             $sRes .= $key . " => " . $value . "\n";
         }

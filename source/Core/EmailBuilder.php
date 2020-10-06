@@ -117,7 +117,7 @@ abstract class EmailBuilder
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();
         $shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL');
 
-        return "<br>" . sprintf(
+        return "<br>" . \sprintf(
             $lang->translateString(
                 'SHOP_EMAIL_ORIGIN_MESSAGE',
                 null,

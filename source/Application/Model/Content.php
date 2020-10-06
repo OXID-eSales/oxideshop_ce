@@ -143,16 +143,16 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             // building subquery
             $sPattern = "IF ( %s != '', %s, %s ) ";
-            $iCount = count($aCols) - 1;
+            $iCount = \count($aCols) - 1;
 
             $sContQ = "SELECT {$sPattern}";
             foreach ($aCols as $iKey => $aCol) {
-                $sContQ = sprintf($sContQ, $aCol[0], $aCol[0], $iCount != $iKey ? $sPattern : "''");
+                $sContQ = \sprintf($sContQ, $aCol[0], $aCol[0], $iCount != $iKey ? $sPattern : "''");
             }
             $sContQ .= " FROM oxcontents WHERE oxloadid = '{$sLoadId}' AND oxshopid = '{$sShopId}'";
 
             $sSelect = $this->buildSelectString($aParams);
-            $sSelect = str_replace("`{$sTable}`.`oxcontent`", "( $sContQ ) as oxcontent", $sSelect);
+            $sSelect = \str_replace("`{$sTable}`.`oxcontent`", "( $sContQ ) as oxcontent", $sSelect);
         }
 
         $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow($sSelect);
@@ -185,7 +185,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         $filteredContent = $this->filterInactive($fetchedContent, $onlyActive);
 
-        if (!is_null($filteredContent)) {
+        if (!\is_null($filteredContent)) {
             $this->assign($filteredContent);
             return true;
         }
@@ -237,7 +237,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // workaround for firefox showing &lang= as &9001;= entity, mantis#0001272
 
         if ($this->oxcontents__oxcontent) {
-            $this->oxcontents__oxcontent->setValue(str_replace('&lang=', '&amp;lang=', $this->oxcontents__oxcontent->value), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxcontents__oxcontent->setValue(\str_replace('&lang=', '&amp;lang=', $this->oxcontents__oxcontent->value), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
     }
 
@@ -355,7 +355,7 @@ class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sLoweredFieldName = strtolower($sFieldName);
+        $sLoweredFieldName = \strtolower($sFieldName);
         if ('oxcontent' === $sLoweredFieldName || 'oxcontents__oxcontent' === $sLoweredFieldName) {
             $iDataType = \OxidEsales\Eshop\Core\Field::T_RAW;
         }

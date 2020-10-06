@@ -133,8 +133,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $sModuleId = null;
         $aModulePaths = $this->getModulePaths();
 
-        if (is_array($aModulePaths)) {
-            $sModuleId = array_search($sModuleDir, $aModulePaths);
+        if (\is_array($aModulePaths)) {
+            $sModuleId = \array_search($sModuleDir, $aModulePaths);
         }
 
         // if no module id defined, using module dir as id
@@ -209,11 +209,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getControllers()
     {
-        if (isset($this->_aModule['controllers']) && ! is_array($this->_aModule['controllers'])) {
+        if (isset($this->_aModule['controllers']) && ! \is_array($this->_aModule['controllers'])) {
             throw new \InvalidArgumentException('Value for metadata key "controllers" must be an array');
         }
 
-        return isset($this->_aModule['controllers']) ? array_change_key_case($this->_aModule['controllers']) : [];
+        return isset($this->_aModule['controllers']) ? \array_change_key_case($this->_aModule['controllers']) : [];
     }
 
     /**
@@ -221,7 +221,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getSmartyPluginDirectories()
     {
-        if (isset($this->_aModule['smartyPluginDirectories']) && !is_array($this->_aModule['smartyPluginDirectories'])) {
+        if (isset($this->_aModule['smartyPluginDirectories']) && !\is_array($this->_aModule['smartyPluginDirectories'])) {
             throw new \InvalidArgumentException('Value for metadata key "smartyPluginDirectories" must be an array');
         }
 
@@ -253,16 +253,16 @@ class Module extends \OxidEsales\Eshop\Core\Base
         if (!$moduleId) {
             $modulePaths = $this->getModulePaths();
 
-            if (is_array($modulePaths)) {
+            if (\is_array($modulePaths)) {
                 foreach ($modulePaths as $id => $path) {
-                    if (strpos($moduleFile, $path . "/") === 0) {
+                    if (\strpos($moduleFile, $path . "/") === 0) {
                         $moduleId = $id;
                     }
                 }
             }
         }
         if (!$moduleId) {
-            $moduleId = substr($moduleFile, 0, strpos($moduleFile, "/"));
+            $moduleId = \substr($moduleFile, 0, \strpos($moduleFile, "/"));
         }
         if (!$moduleId) {
             $moduleId = $moduleFile;
@@ -317,7 +317,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     public function getInfo($sName, $iLang = null)
     {
         if (isset($this->_aModule[$sName])) {
-            if ($iLang !== null && is_array($this->_aModule[$sName])) {
+            if ($iLang !== null && \is_array($this->_aModule[$sName])) {
                 $sValue = null;
 
                 $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($iLang);
@@ -330,7 +330,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
                         $sValue = $this->_aModule[$sName][$this->_aModule['lang']];
                     } else {
                         // returning first array value
-                        $sValue = reset($this->_aModule[$sName]);
+                        $sValue = \reset($this->_aModule[$sName]);
                     }
 
                     return $sValue;
@@ -400,7 +400,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     public function getMetadataPath()
     {
         $sModulePath = $this->getModuleFullPath();
-        if (substr($sModulePath, -1) != DIRECTORY_SEPARATOR) {
+        if (\substr($sModulePath, -1) != DIRECTORY_SEPARATOR) {
             $sModulePath .= DIRECTORY_SEPARATOR;
         }
 
@@ -436,7 +436,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $sModulePath = (isset($aModulePaths[$sModuleId])) ? $aModulePaths[$sModuleId] : '';
 
         // if still no module dir, try using module ID as dir name
-        if (!$sModulePath && is_dir(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $sModuleId)) {
+        if (!$sModulePath && \is_dir(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $sModuleId)) {
             $sModulePath = $sModuleId;
         }
 
@@ -490,7 +490,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplates($sModuleId = null)
     {
-        if (is_null($sModuleId)) {
+        if (\is_null($sModuleId)) {
             $sModuleId = $this->getId();
         }
 

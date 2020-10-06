@@ -90,7 +90,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
      */
     private function validateProductId($productId)
     {
-        if (empty($productId) || !is_string($productId)) {
+        if (empty($productId) || !\is_string($productId)) {
             throw new InvalidObjectIdDaoException();
         }
     }

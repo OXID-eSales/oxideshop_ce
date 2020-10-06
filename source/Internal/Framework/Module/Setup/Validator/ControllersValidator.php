@@ -88,8 +88,8 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
 
     private function controllerAlreadyExistsInMap(Controller $controller, array $controllerClassMap): bool
     {
-        return array_key_exists(strtolower($controller->getId()), $controllerClassMap)
-            && $controllerClassMap[strtolower($controller->getId())] === $controller->getControllerClassNameSpace();
+        return \array_key_exists(\strtolower($controller->getId()), $controllerClassMap)
+            && $controllerClassMap[\strtolower($controller->getId())] === $controller->getControllerClassNameSpace();
     }
 
     /**
@@ -105,9 +105,9 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
                 ->shopConfigurationSettingDao
                 ->get(ShopConfigurationSetting::MODULE_CONTROLLERS, $shopId);
 
-            if (is_array($controllersGroupedByModule->getValue())) {
+            if (\is_array($controllersGroupedByModule->getValue())) {
                 foreach ($controllersGroupedByModule->getValue() as $moduleControllers) {
-                    $moduleControllersClassMap = array_merge($moduleControllersClassMap, $moduleControllers);
+                    $moduleControllersClassMap = \array_merge($moduleControllersClassMap, $moduleControllers);
                 }
             }
         } catch (EntryDoesNotExistDaoException $exception) {
@@ -123,7 +123,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
      */
     private function validateKeyDuplication(Controller $controller, array $controllerClassMap): void
     {
-        if (array_key_exists(strtolower($controller->getId()), $controllerClassMap)) {
+        if (\array_key_exists(\strtolower($controller->getId()), $controllerClassMap)) {
             throw new ControllersDuplicationModuleConfigurationException(
                 'Controller key duplication: ' . $controller->getId()
             );
@@ -137,7 +137,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
      */
     private function validateNamespaceDuplication(Controller $controller, array $controllerClassMap): void
     {
-        if (in_array($controller->getControllerClassNameSpace(), $controllerClassMap, true)) {
+        if (\in_array($controller->getControllerClassNameSpace(), $controllerClassMap, true)) {
             throw new ControllersDuplicationModuleConfigurationException(
                 'Controller namespace duplication: ' . $controller->getControllerClassNameSpace()
             );
@@ -150,7 +150,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
      */
     private function getControllersClassMap(int $shopId): array
     {
-        return array_merge(
+        return \array_merge(
             $this->shopAdapter->getShopControllerClassMap(),
             $this->getModulesControllerClassMap($shopId)
         );

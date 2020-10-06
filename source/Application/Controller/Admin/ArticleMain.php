@@ -61,7 +61,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oOtherLang = $oArticle->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oArticle->loadInLang(key($oOtherLang), $sOxId);
+                $oArticle->loadInLang(\key($oOtherLang), $sOxId);
             }
 
             // variant handling
@@ -79,8 +79,8 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             //hook for modules
             $oArticle = $this->customizeArticleInformation($oArticle);
 
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
+            $aLang = \array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            if (\count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
@@ -172,7 +172,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         //article number handling, warns for artnum duplicates
         if (
-            isset($aParams['oxarticles__oxartnum']) && strlen($aParams['oxarticles__oxartnum']) > 0 &&
+            isset($aParams['oxarticles__oxartnum']) && \strlen($aParams['oxarticles__oxartnum']) > 0 &&
             $oConfig->getConfigParam('blWarnOnSameArtNums') &&
             $oArticle->oxarticles__oxartnum->value != $aParams['oxarticles__oxartnum']
         ) {
@@ -187,7 +187,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oArticle->setLanguage(0);
         //triming spaces from article title (M:876)
         if (isset($aParams['oxarticles__oxtitle'])) {
-            $aParams['oxarticles__oxtitle'] = trim($aParams['oxarticles__oxtitle']);
+            $aParams['oxarticles__oxtitle'] = \trim($aParams['oxarticles__oxtitle']);
         }
 
         $oArticle->assign($aParams);
@@ -221,12 +221,12 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         // TODO: the code below is redundant, optimize it, assignments should go smooth without conversions
         // hack, if editor screws up text, htmledit tends to do so
-        $sValue = str_replace('&amp;nbsp;', '&nbsp;', $sValue);
-        $sValue = str_replace('&amp;', '&', $sValue);
-        $sValue = str_replace('&quot;', '"', $sValue);
-        $sValue = str_replace('&lang=', '&amp;lang=', $sValue);
-        $sValue = str_replace('<p>&nbsp;</p>', '', $sValue);
-        $sValue = str_replace('<p>&nbsp; </p>', '', $sValue);
+        $sValue = \str_replace('&amp;nbsp;', '&nbsp;', $sValue);
+        $sValue = \str_replace('&amp;', '&', $sValue);
+        $sValue = \str_replace('&quot;', '"', $sValue);
+        $sValue = \str_replace('&lang=', '&amp;lang=', $sValue);
+        $sValue = \str_replace('<p>&nbsp;</p>', '', $sValue);
+        $sValue = \str_replace('<p>&nbsp; </p>', '', $sValue);
 
         return $sValue;
     }
@@ -300,7 +300,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
 
             // setting oxinsert/oxtimestamp
-            $iNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+            $iNow = \date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
             $oArticle->oxarticles__oxinsert = new \OxidEsales\Eshop\Core\Field($iNow);
 
             // mantis#0001590: OXRATING and OXRATINGCNT not set to 0 when copying article
@@ -663,7 +663,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                 }
             }
         }
-        if (count($aJumpList) > 1) {
+        if (\count($aJumpList) > 1) {
             $this->_aViewData["thisvariantlist"] = $aJumpList;
         }
     }
@@ -679,7 +679,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     protected function _getTitle($oObj) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sTitle = $oObj->oxarticles__oxtitle->value;
-        if (!strlen($sTitle)) {
+        if (!\strlen($sTitle)) {
             $sTitle = $oObj->oxarticles__oxvarselect->value;
         }
 

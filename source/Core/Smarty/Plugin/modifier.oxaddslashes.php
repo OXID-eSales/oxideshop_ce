@@ -18,5 +18,5 @@
  */
 function smarty_modifier_oxaddslashes($string)
 {
-    return addslashes($string);
+    return \addslashes($string);
 }

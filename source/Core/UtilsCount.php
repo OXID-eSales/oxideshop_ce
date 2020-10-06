@@ -243,12 +243,12 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $result = [];
 
         foreach ($rows as $row) {
-            $firstColumn = array_keys($row)[0];
+            $firstColumn = \array_keys($row)[0];
             $key = $row[$firstColumn];
 
-            $values = array_values($row);
+            $values = \array_values($row);
 
-            if (2 <= count($values)) {
+            if (2 <= \count($values)) {
                 $result[$key] = $values[1];
             }
         }
@@ -511,7 +511,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         // loading R&R data from session
         $userSessionGroups = $this->getCurrentUserSessionGroups();
-        $this->_sUserViewId = md5(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopID() . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
+        $this->_sUserViewId = \md5(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopID() . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag() . \serialize($userSessionGroups) . (int) $this->isAdmin());
 
         return $this->_sUserViewId;
     }

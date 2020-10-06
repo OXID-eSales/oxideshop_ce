@@ -38,10 +38,10 @@ class ModuleExtensionsCleaner
 
         $installedModuleExtensions = $this->filterExtensionsByModuleId($installedExtensions, $module->getId());
 
-        if (count($installedModuleExtensions)) {
+        if (\count($installedModuleExtensions)) {
             $garbage = $this->getModuleExtensionsGarbage($moduleExtensions, $installedModuleExtensions);
 
-            if (count($garbage)) {
+            if (\count($garbage)) {
                 $installedExtensions = $this->removeGarbage($installedExtensions, $garbage);
             }
         }
@@ -71,7 +71,7 @@ class ModuleExtensionsCleaner
 
         foreach ($installedExtensions as $class => $extend) {
             foreach ($extend as $extendPath) {
-                if (strpos($extendPath, $moduleConfiguration->getPath()) === 0) {
+                if (\strpos($extendPath, $moduleConfiguration->getPath()) === 0) {
                     $filteredExtensions[$class][] = $extendPath;
                 }
             }
@@ -96,17 +96,17 @@ class ModuleExtensionsCleaner
             if (isset($moduleMetaDataExtensions[$installedClassName])) {
                 // In case more than one extension is specified per module.
                 $metaDataExtensionPaths = $moduleMetaDataExtensions[$installedClassName];
-                if (!is_array($metaDataExtensionPaths)) {
+                if (!\is_array($metaDataExtensionPaths)) {
                     $metaDataExtensionPaths = [$metaDataExtensionPaths];
                 }
 
                 foreach ($installedClassPaths as $index => $installedClassPath) {
-                    if (in_array($installedClassPath, $metaDataExtensionPaths)) {
+                    if (\in_array($installedClassPath, $metaDataExtensionPaths)) {
                         unset($garbage[$installedClassName][$index]);
                     }
                 }
 
-                if (count($garbage[$installedClassName]) == 0) {
+                if (\count($garbage[$installedClassName]) == 0) {
                     unset($garbage[$installedClassName]);
                 }
             }
@@ -128,8 +128,8 @@ class ModuleExtensionsCleaner
         foreach ($garbage as $className => $classPaths) {
             foreach ($classPaths as $sClassPath) {
                 if (isset($installedExtensions[$className])) {
-                    unset($installedExtensions[$className][array_search($sClassPath, $installedExtensions[$className])]);
-                    if (count($installedExtensions[$className]) == 0) {
+                    unset($installedExtensions[$className][\array_search($sClassPath, $installedExtensions[$className])]);
+                    if (\count($installedExtensions[$className]) == 0) {
                         unset($installedExtensions[$className]);
                     }
                 }

@@ -80,7 +80,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oPayment = new stdClass();
             $oPayment->name = $sName;
             $oPayment->type = $iType;
-            $oPayment->checked = in_array($sName, $aAssignedRDFaPayments);
+            $oPayment->checked = \in_array($sName, $aAssignedRDFaPayments);
             $aRDFaPayments[] = $oPayment;
         }
 

@@ -524,14 +524,14 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
                 break;
             case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS):
                 break; // reload blocker activ
-            case (is_numeric($iSuccess) && $iSuccess > 3):
+            case (\is_numeric($iSuccess) && $iSuccess > 3):
                 Registry::getSession()->setVariable('payerror', $iSuccess);
                 $sNextStep = 'payment?payerror=' . $iSuccess;
                 break;
-            case (!is_numeric($iSuccess) && $iSuccess):
+            case (!\is_numeric($iSuccess) && $iSuccess):
                 //instead of error code getting error text and setting payerror to -1
                 Registry::getSession()->setVariable('payerror', -1);
-                $iSuccess = urlencode($iSuccess);
+                $iSuccess = \urlencode($iSuccess);
                 $sNextStep = 'payment?payerror=-1&payerrortext=' . $iSuccess;
                 break;
             default:

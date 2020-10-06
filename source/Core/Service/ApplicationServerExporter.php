@@ -42,7 +42,7 @@ class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\Applic
         $activeServerCollection = [];
 
         $activeServers = $this->appServerService->loadActiveAppServerList();
-        if (is_array($activeServers) && !empty($activeServers)) {
+        if (\is_array($activeServers) && !empty($activeServers)) {
             foreach ($activeServers as $server) {
                 $activeServerCollection[] = $this->convertToArray($server);
             }

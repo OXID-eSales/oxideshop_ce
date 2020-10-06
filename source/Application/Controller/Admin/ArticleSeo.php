@@ -45,8 +45,8 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
             $iEndPos = $oStr->strpos($aData["oxparams"], "#");
             $sType = $oStr->substr($aData["oxparams"], 0, $iEndPos);
         } elseif ($aList = $this->getSelectionList()) {
-            reset($aList);
-            $sType = key($aList);
+            \reset($aList);
+            $sType = \key($aList);
         }
 
         return $sType;
@@ -71,8 +71,8 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
             $iEndPos = $oStr->strpos($aData["oxparams"], "#", $iStartPos + 1);
             $iLang = $oStr->substr($aData["oxparams"], $iEndPos + 1);
         } elseif ($aList = $this->getSelectionList()) {
-            $aList = reset($aList);
-            $iLang = key($aList);
+            $aList = \reset($aList);
+            $iLang = \key($aList);
         }
 
         return (int) $iLang;
@@ -95,7 +95,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
 
             $sId = $oStr->substr($aData["oxparams"], $iStartPos + 1, $iEndPos - $iLen);
         } elseif ($aList = $this->getSelectionList()) {
-            $oItem = reset($aList[$this->getActCatType()][$this->getActCatLang()]);
+            $oItem = \reset($aList[$this->getActCatType()][$this->getActCatLang()]);
 
             $sId = $oItem->getId();
         }
@@ -163,7 +163,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         if ($oRs != false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
                 $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-                if ($oCat->loadInLang($iLang, current($oRs->fields))) {
+                if ($oCat->loadInLang($iLang, \current($oRs->fields))) {
                     if ($sMainCatId == $oCat->getId()) {
                         $sSuffix = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('(main category)', $this->getEditLang());
                         $sTitleField = 'oxcategories__oxtitle';

@@ -95,7 +95,7 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
      */
     private function executeSqlQueryFromFile(string $sqlFilePath): void
     {
-        $queries = file_get_contents($sqlFilePath);
+        $queries = \file_get_contents($sqlFilePath);
         if (!$queries) {
             throw new InitiateDatabaseException(InitiateDatabaseException::READ_SQL_FILE_PROBLEM);
         }
@@ -111,7 +111,7 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
         string $name
     ): PDO {
         $dbConnection = new PDO(
-            sprintf('mysql:host=%s;port=%s;dbname=%s', $host, $port, $name),
+            \sprintf('mysql:host=%s;port=%s;dbname=%s', $host, $port, $name),
             $username,
             $password,
             [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']

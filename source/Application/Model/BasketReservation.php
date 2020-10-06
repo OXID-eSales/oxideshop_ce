@@ -251,7 +251,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     public function discardReservations()
     {
-        foreach (array_keys($this->_getReservedItems()) as $sArticleId) {
+        foreach (\array_keys($this->_getReservedItems()) as $sArticleId) {
             $this->discardArticleReservation($sArticleId);
         }
         if ($this->_oReservations) {
@@ -297,7 +297,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
         $database->startTransaction();
         try {
-            $finished = implode(',', $finished);
+            $finished = \implode(',', $finished);
 
             $reservation = $database->select(
                 'select oxartid, oxamount from oxuserbasketitems where oxbasketid in (' . $finished . ')',

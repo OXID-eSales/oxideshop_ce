@@ -62,9 +62,9 @@ class UninstallModuleConfigurationCommand extends Command
         try {
             $moduleId = $input->getArgument('module-id');
             $this->moduleConfigurationInstaller->uninstallById($moduleId);
-            $output->writeln('<info>' . sprintf(self::MESSAGE_REMOVE_WAS_SUCCESSFULL, $moduleId) . '</info>');
+            $output->writeln('<info>' . \sprintf(self::MESSAGE_REMOVE_WAS_SUCCESSFULL, $moduleId) . '</info>');
         } catch (\Throwable $throwable) {
-            $output->writeln('<error>' . sprintf(self::MESSAGE_REMOVE_FAILED, $moduleId) . '</error>');
+            $output->writeln('<error>' . \sprintf(self::MESSAGE_REMOVE_FAILED, $moduleId) . '</error>');
 
             throw $throwable;
         }

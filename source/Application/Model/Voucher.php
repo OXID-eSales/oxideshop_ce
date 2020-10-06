@@ -63,7 +63,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
                         {$sSeriesViewName}.oxid = {$sViewName}.oxvoucherserieid and
                         {$sViewName}.oxvouchernr = " . $oDb->quote($sVoucherNr) . " and ";
 
-            if (is_array($aVouchers)) {
+            if (\is_array($aVouchers)) {
                 foreach ($aVouchers as $sVoucherId => $sSkipVoucherNr) {
                     $sQ .= "{$sViewName}.oxid != " . $oDb->quote($sVoucherId) . " and ";
                 }
@@ -73,7 +73,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
 
             //voucher timeout for 3 hours
             if ($blCheckavalability) {
-                $iTime = time() - $this->_getVoucherTimeout();
+                $iTime = \time() - $this->_getVoucherTimeout();
                 $sQ .= " and {$sViewName}.oxreserved < '{$iTime}' ";
             }
 
@@ -104,7 +104,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->oxvouchers__oxorderid->setValue($sOrderId);
             $this->oxvouchers__oxuserid->setValue($sUserId);
             $this->oxvouchers__oxdiscount->setValue($dDiscount);
-            $this->oxvouchers__oxdateused->setValue(date("Y-m-d", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+            $this->oxvouchers__oxdateused->setValue(\date("Y-m-d", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
             $this->save();
         }
     }
@@ -121,7 +121,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
             $sQ = "update oxvouchers set oxreserved = :oxreserved where oxid = :oxid";
             $oDb->execute($sQ, [
-                ':oxreserved' => time(),
+                ':oxreserved' => \time(),
                 ':oxid' => $sVoucherID
             ]);
         }
@@ -245,7 +245,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _isAvailableWithSameSeries($aVouchers) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($aVouchers)) {
+        if (\is_array($aVouchers)) {
             $sId = $this->getId();
             if (isset($aVouchers[$sId])) {
                 unset($aVouchers[$sId]);
@@ -281,9 +281,9 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _isAvailableWithOtherSeries($aVouchers) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($aVouchers) && count($aVouchers)) {
+        if (\is_array($aVouchers) && \count($aVouchers)) {
             $oSeries = $this->getSerie();
-            $sIds = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray(array_keys($aVouchers)));
+            $sIds = \implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray(\array_keys($aVouchers)));
             $blAvailable = true;
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             if (!$oSeries->oxvoucherseries__oxallowotherseries->value) {
@@ -324,19 +324,19 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected function _isValidDate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oSeries = $this->getSerie();
-        $iTime = time();
+        $iTime = \time();
 
         // If date is not set will add day before and day after to check if voucher valid today.
-        $iTomorrow = mktime(0, 0, 0, date("m"), date("d") + 1, date("Y"));
-        $iYesterday = mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"));
+        $iTomorrow = \mktime(0, 0, 0, \date("m"), \date("d") + 1, \date("Y"));
+        $iYesterday = \mktime(0, 0, 0, \date("m"), \date("d") - 1, \date("Y"));
 
         // Checks if beginning date is set, if not set $iFrom to yesterday so it will be valid.
         $iFrom = ((int) $oSeries->oxvoucherseries__oxbegindate->value) ?
-            strtotime($oSeries->oxvoucherseries__oxbegindate->value) : $iYesterday;
+            \strtotime($oSeries->oxvoucherseries__oxbegindate->value) : $iYesterday;
 
         // Checks if end date is set, if no set $iTo to tomorrow so it will be valid.
         $iTo = ((int) $oSeries->oxvoucherseries__oxenddate->value) ?
-            strtotime($oSeries->oxvoucherseries__oxenddate->value) : $iTomorrow;
+            \strtotime($oSeries->oxvoucherseries__oxenddate->value) : $iTomorrow;
 
         if ($iFrom < $iTime && $iTo > $iTime) {
             return true;
@@ -361,7 +361,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _isNotReserved() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->oxvouchers__oxreserved->value < time() - $this->_getVoucherTimeout()) {
+        if ($this->oxvouchers__oxreserved->value < \time() - $this->_getVoucherTimeout()) {
             return true;
         }
 
@@ -599,7 +599,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getOrderBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($oDiscount)) {
+        if (\is_null($oDiscount)) {
             $oDiscount = $this->_getSerieDiscount();
         }
 
@@ -634,7 +634,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _getSessionBasketItems($oDiscount = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($oDiscount)) {
+        if (\is_null($oDiscount)) {
             $oDiscount = $this->_getSerieDiscount();
         }
 
@@ -759,7 +759,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $aBasketItems = $this->_getBasketItems($oDiscount);
 
         // Basket Item Count and isAdmin check (unble to access property $oOrder->_getOrderBasket()->_blSkipVouchersAvailabilityChecking)
-        if (!count($aBasketItems) && !$this->isAdmin()) {
+        if (!\count($aBasketItems) && !$this->isAdmin()) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
             $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
             $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
@@ -841,7 +841,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $aBasketItems = $this->_getBasketItems($oDiscount);
 
         // Basket Item Count and isAdmin check (unable to access property $oOrder->_getOrderBasket()->_blSkipVouchersAvailabilityChecking)
-        if (!count($aBasketItems) && !$this->isAdmin()) {
+        if (!\count($aBasketItems) && !$this->isAdmin()) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
             $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
             $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);

@@ -219,7 +219,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function _setUser($sUserid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_string($sUserid)) {
+        if (\is_string($sUserid)) {
             $oUser = oxNew(User::class);
             if ($oUser->load($sUserid)) {
                 $this->_oUser = $oUser;

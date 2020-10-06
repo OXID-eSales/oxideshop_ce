@@ -207,7 +207,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
      */
     private function getPagesCount()
     {
-        return ceil($this->getReviewAndRatingItemsCount() / $this->getItemsPerPage());
+        return \ceil($this->getReviewAndRatingItemsCount() / $this->getItemsPerPage());
     }
 
     /**
@@ -254,7 +254,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
         $itemsCount,
         $offset
     ) {
-        return array_slice(
+        return \array_slice(
             $reviewAndRatingList,
             $offset,
             $itemsCount,

@@ -45,16 +45,16 @@ class Base
      */
     public function __call($method, $arguments)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($method, 0, 4) === 'UNIT') {
-                $method = str_replace('UNIT', '_', $method);
+        if (\defined('OXID_PHP_UNIT')) {
+            if (\substr($method, 0, 4) === 'UNIT') {
+                $method = \str_replace('UNIT', '_', $method);
             }
-            if (method_exists($this, $method)) {
-                return call_user_func_array([& $this, $method], $arguments);
+            if (\method_exists($this, $method)) {
+                return \call_user_func_array([& $this, $method], $arguments);
             }
         }
 
-        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . \get_class($this) . ")" . PHP_EOL);
     }
 
     /**

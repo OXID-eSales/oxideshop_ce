@@ -133,8 +133,8 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
             $sQ = parent::_addFilter("delete $sO2AttributeView.* " . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenCat)) {
-            $sChosenCategories = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
+        } elseif (\is_array($aChosenCat)) {
+            $sChosenCategories = \implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCat));
             $sQ = "delete from oxobject2attribute where oxobject2attribute.oxid in (" . $sChosenCategories . ") ";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
@@ -156,7 +156,7 @@ class AttributeMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
 
-        if ($oAttribute->load($soxId) && is_array($aAddArticle)) {
+        if ($oAttribute->load($soxId) && \is_array($aAddArticle)) {
             foreach ($aAddArticle as $sAdd) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init("oxobject2attribute");

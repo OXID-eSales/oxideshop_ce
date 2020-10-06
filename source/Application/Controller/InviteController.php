@@ -109,7 +109,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\AccountC
 
         $aParams = Registry::getConfig()->getRequestParameter('editval', true);
         $oUser = $this->getUser();
-        if (!is_array($aParams) || !$oUser) {
+        if (!\is_array($aParams) || !$oUser) {
             return;
         }
 
@@ -131,7 +131,7 @@ class InviteController extends \OxidEsales\Eshop\Application\Controller\AccountC
                 }
 
                 //counting entered eMails
-                if (count($aParams[$sFieldName]) < 1) {
+                if (\count($aParams[$sFieldName]) < 1) {
                     $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
 
                     return;

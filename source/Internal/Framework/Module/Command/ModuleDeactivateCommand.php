@@ -82,7 +82,7 @@ class ModuleDeactivateCommand extends Command
         if ($this->isInstalled($moduleId)) {
             $this->deactivateModule($output, $moduleId);
         } else {
-            $output->writeLn('<error>' . sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
+            $output->writeLn('<error>' . \sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
         }
 
         return 0;
@@ -97,11 +97,11 @@ class ModuleDeactivateCommand extends Command
         try {
             $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
             $output->writeLn(
-                '<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
+                '<info>' . \sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
             );
         } catch (ModuleSetupException $exception) {
             $output->writeLn(
-                '<info>' . sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>'
+                '<info>' . \sprintf(static::MESSAGE_NOT_POSSIBLE_TO_DEACTIVATE, $moduleId) . '</info>'
             );
         }
     }

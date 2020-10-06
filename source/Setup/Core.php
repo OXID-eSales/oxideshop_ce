@@ -32,7 +32,7 @@ class Core
      */
     public function getInstance($sInstanceName)
     {
-        if (strpos($sInstanceName, '\\') === false) {
+        if (\strpos($sInstanceName, '\\') === false) {
             $sInstanceName = $this->getClass($sInstanceName);
         }
         if (!isset(Core::$_aInstances[$sInstanceName])) {
@@ -55,16 +55,16 @@ class Core
      */
     public function __call($sMethod, $aArgs)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
+        if (\defined('OXID_PHP_UNIT')) {
+            if (\substr($sMethod, 0, 4) == "UNIT") {
+                $sMethod = \str_replace("UNIT", "_", $sMethod);
             }
-            if (method_exists($this, $sMethod)) {
-                return call_user_func_array([& $this, $sMethod], $aArgs);
+            if (\method_exists($this, $sMethod)) {
+                return \call_user_func_array([& $this, $sMethod], $aArgs);
             }
         }
 
-        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . \get_class($this) . ")" . PHP_EOL);
     }
 
     /**
@@ -161,7 +161,7 @@ class Core
     private function classExists($className)
     {
         try {
-            $classExists = class_exists($className);
+            $classExists = \class_exists($className);
         } catch (\Exception $e) {
             return false;
         }

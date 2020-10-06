@@ -56,10 +56,10 @@ function smarty_function_oxmultilang($params, &$smarty)
 
     if (!$blTranslationNotFound) {
         if ($aArgs !== false) {
-            if (is_array($aArgs)) {
-                $sTranslation = vsprintf($sTranslation, $aArgs);
+            if (\is_array($aArgs)) {
+                $sTranslation = \vsprintf($sTranslation, $aArgs);
             } else {
-                $sTranslation = sprintf($sTranslation, $aArgs);
+                $sTranslation = \sprintf($sTranslation, $aArgs);
             }
         }
 

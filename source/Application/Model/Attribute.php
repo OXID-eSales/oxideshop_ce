@@ -103,9 +103,9 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $sAttrId = $this->_createAttribute($aSelTitle);
         }
         foreach ($aMDVariants as $sVarId => $oValue) {
-            if (strpos($sVarId, "mdvar_") === 0) {
+            if (\strpos($sVarId, "mdvar_") === 0) {
                 foreach ($oValue as $sId) {
-                    $sVarId = substr($sVarId, 6);
+                    $sVarId = \substr($sVarId, 6);
                     $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                     $oNewAssign->init("oxobject2attribute");
                     $sNewId = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();

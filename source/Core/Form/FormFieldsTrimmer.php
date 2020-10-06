@@ -26,7 +26,7 @@ class FormFieldsTrimmer implements EshopFormFieldsTrimmerInterface
     {
         $updatableFields = $fields->getUpdatableFields()->getArrayCopy();
 
-        array_walk_recursive($updatableFields, function (&$value) {
+        \array_walk_recursive($updatableFields, function (&$value) {
             $value = $this->isTrimmableField($value) ? $this->trimField($value) : $value;
         });
 
@@ -40,7 +40,7 @@ class FormFieldsTrimmer implements EshopFormFieldsTrimmerInterface
      */
     private function isTrimmableField($value)
     {
-        return is_string($value);
+        return \is_string($value);
     }
 
     /**
@@ -52,6 +52,6 @@ class FormFieldsTrimmer implements EshopFormFieldsTrimmerInterface
      */
     private function trimField($field)
     {
-        return trim($field);
+        return \trim($field);
     }
 }

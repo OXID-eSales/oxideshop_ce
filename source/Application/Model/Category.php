@@ -589,7 +589,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         $sQ = parent::getSqlActiveSnippet($blForceCoreTable);
 
         $sTable = $this->getViewName($blForceCoreTable);
-        $sQ .= (strlen($sQ) ? ' and ' : '') . " $sTable.oxhidden = '0' ";
+        $sQ .= (\strlen($sQ) ? ' and ' : '') . " $sTable.oxhidden = '0' ";
         $sQ .= $this->getAdditionalSqlFilter($blForceCoreTable);
 
         return "( $sQ ) ";
@@ -729,7 +729,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         $sActCat = $this->getId();
 
-        $sKey = md5($sActCat . serialize(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('session_attrfilter')));
+        $sKey = \md5($sActCat . \serialize(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('session_attrfilter')));
         if (!isset(self::$_aCatAttributes[$sKey])) {
             $oAttrList = oxNew(\OxidEsales\Eshop\Application\Model\AttributeList::class);
             $oAttrList->getCategoryAttributes($sActCat, $this->getLanguage());
@@ -1031,7 +1031,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         //preliminary quick check saves 3% of execution time in category lists by avoiding redundant strtolower() call
         $fieldNameIndex2 = $fieldName[2];
         if ($fieldNameIndex2 === 'l' || $fieldNameIndex2 === 'L' || (isset($fieldName[16]) && ($fieldName[16] == 'l' || $fieldName[16] == 'L'))) {
-            $loweredFieldName = strtolower($fieldName);
+            $loweredFieldName = \strtolower($fieldName);
             if ('oxlongdesc' === $loweredFieldName || 'oxcategories__oxlongdesc' === $loweredFieldName) {
                 $dataType = \OxidEsales\Eshop\Core\Field::T_RAW;
             }

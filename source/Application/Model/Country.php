@@ -44,7 +44,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function isForeignCountry()
     {
-        return !in_array($this->getId(), \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry'));
+        return !\in_array($this->getId(), \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry'));
     }
 
     /**
@@ -64,7 +64,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getStates()
     {
-        if (!is_null($this->_aStates)) {
+        if (!\is_null($this->_aStates)) {
             return $this->_aStates;
         }
 

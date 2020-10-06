@@ -284,7 +284,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         // special treatment
         // search param
-        $sParam = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
+        $sParam = \rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));
         $sPosition .= $sParam ? 'searchparam=' . $sParam . '&' : '';
 
         // current page number
@@ -313,10 +313,10 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function getPersistedParameters($persistedParameters = null)
     {
         $persistedParameters = ($persistedParameters ?: Registry::getConfig()->getRequestParameter('persparam'));
-        if (!is_array($persistedParameters)) {
+        if (!\is_array($persistedParameters)) {
             return null;
         }
-        return array_filter($persistedParameters) ?: null;
+        return \array_filter($persistedParameters) ?: null;
     }
 
     /**
@@ -366,7 +366,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             ];
         }
 
-        if (is_array($aProducts) && count($aProducts)) {
+        if (\is_array($aProducts) && \count($aProducts)) {
             if (Registry::getConfig()->getRequestParameter('removeBtn') !== null) {
                 //setting amount to 0 if removing article from basket
                 foreach ($aProducts as $sProductId => $aProduct) {

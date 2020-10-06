@@ -65,12 +65,12 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         foreach ($aData as $sName => $sValue) {
             // if field type matches..
-            if (strpos($sName, $sTypeToProcess) !== false) {
+            if (\strpos($sName, $sTypeToProcess) !== false) {
                 // storing which fields must be unset..
                 $aFields[] = $sName;
 
                 // ignoring whats need to be ignored and testing values
-                if (!in_array($sName, $aIgnore) && $sValue) {
+                if (!\in_array($sName, $aIgnore) && $sValue) {
                     // something was found - means leaving as is..
                     $blEmpty = false;
                     break;

@@ -61,7 +61,7 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     public function get(): array
     {
-        $fileContent = file_get_contents($this->getLocatedFilePath());
+        $fileContent = \file_get_contents($this->getLocatedFilePath());
 
         $yaml = Yaml::parse(
             $fileContent
@@ -79,7 +79,7 @@ class YamlFileStorage implements ArrayStorageInterface
 
         if ($lock->acquire(true)) {
             try {
-                file_put_contents(
+                \file_put_contents(
                     $this->getLocatedFilePath(),
                     Yaml::dump($data, 10, 2)
                 );
@@ -128,6 +128,6 @@ class YamlFileStorage implements ArrayStorageInterface
      */
     private function getLockId(): string
     {
-        return md5($this->filePath);
+        return \md5($this->filePath);
     }
 }

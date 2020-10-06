@@ -33,7 +33,7 @@ function smarty_insert_oxid_nocache($params, &$smarty)
 
     $sSearchCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("searchcnid");
     if ($sSearchCat) {
-        $smarty->assign_by_ref("searchcnid", \rawurldecode($sSearchCat));
+        $smarty->assign_by_ref("searchcnid", rawurldecode($sSearchCat));
     }
 
     foreach (\array_keys($params) as $key) {

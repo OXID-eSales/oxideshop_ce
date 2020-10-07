@@ -78,20 +78,6 @@ class TemplateLoader implements TemplateLoaderInterface
     }
 
     /**
-     * Returns the path to the template.
-     *
-     * @param string $name A template name
-     *
-     * @return string
-     *
-     * @throws TemplateFileNotFoundException
-     */
-    public function getPath($name): string
-    {
-        return $this->findTemplate($name);
-    }
-
-    /**
      * @param string $name A template name
      *
      * @return string

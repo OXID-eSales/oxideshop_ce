@@ -55,33 +55,6 @@ class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($context, $loader->getContext($template));
     }
 
-    public function testGetPath(): void
-    {
-        $name = 'testSmartyTemplate.tpl';
-        $context = "The new contents of the file";
-        $templateDir = vfsStream::setup('testTemplateDir');
-        $template = vfsStream::newFile($name)
-            ->at($templateDir)
-            ->setContent($context)
-            ->url();
-
-        $locator = $this->getFileLocatorMock($template);
-        $nameResolver = $this->getTemplateNameResolverMock($name);
-        $loader = new TemplateLoader($locator, $nameResolver);
-
-        $this->assertSame($template, $loader->getPath($template));
-    }
-
-    public function testGetPathIfTemplateDoNotExits(): void
-    {
-        $this->expectException(TemplateFileNotFoundException::class);
-        $name = 'not_existing_template.tpl';
-        $locator = $this->getFileLocatorMock('');
-        $nameResolver = $this->getTemplateNameResolverMock($name);
-        $loader = new TemplateLoader($locator, $nameResolver);
-        $loader->getPath($name);
-    }
-
     /**
      * @param $path
      *

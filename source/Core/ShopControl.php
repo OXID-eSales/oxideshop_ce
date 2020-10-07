@@ -425,12 +425,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         // render it
         $templateName = $view->render();
 
-        // check if template exists
-        /** @var \OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface */
+        /** @var TemplateLoaderInterface $templateLoader */
         $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
-        if ($this->isAdmin()) {
-            $templateLoader = $this->getContainer()->get('oxid_esales.templating.admin.template.loader');
-        }
 
         if (!$templateLoader->exists($templateName)) {
             $ex = oxNew(\OxidEsales\Eshop\Core\Exception\SystemComponentException::class);

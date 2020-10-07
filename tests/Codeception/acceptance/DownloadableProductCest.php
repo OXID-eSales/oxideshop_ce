@@ -25,9 +25,30 @@ final class DownloadableProductCest
     /** @param AcceptanceTester $I */
     public function _before(AcceptanceTester $I)
     {
+        $I->updateConfigInDatabase('blEnableDownloads', true, 'bool');
         $I->updateConfigInDatabase('iMaxDownloadsCount', "2", 'str');
         $I->updateConfigInDatabase('iLinkExpirationTime', "240", 'str');
+        $I->updateConfigInDatabase('blEnableIntangibleProdAgreement', true, 'bool');
+
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1002-1']);
+        $I->haveInDatabase(
+            'oxcontents',
+            [
+                'OXID' => 'testdownloadProductCest',
+                'OXLOADID' => 'oxdownloadableproductsagreement',
+                'OXSHOPID' => 1,
+                'OXSNIPPET' => 2,
+                'OXTYPE' => 0,
+                'OXACTIVE' => 1,
+                'OXACTIVE_1' => 1,
+                'OXTITLE' => 'Für digitale Inhalte',
+                'OXCONTENT' => 'Ja, ich möchte sofort Zugang zu dem digitalen Inhalt und weiß, dass mein Widerrufsrecht mit dem Zugang erlischt.',
+                'OXTITLE_1' => 'For the supply of digital content',
+                'OXCONTENT_1' => 'I want immediate access to the digital content and I acknowledge that thereby I lose my right to cancel once the service has begun.',
+                'OXCATID' => '30e44ab83fdee7564.23264141',
+                'OXFOLDER' => 'CMSFOLDER_USERINFO',
+                'OXTERMVERSION' => '',
+            ]);
     }
 
     /** @param AcceptanceTester $I */
@@ -35,6 +56,7 @@ final class DownloadableProductCest
     {
         $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
         $I->updateConfigInDatabase('iLinkExpirationTime', "168", 'str');
+        $I->updateConfigInDatabase('blEnableIntangibleProdAgreement', false, 'bool');
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 0], ['oxartnum' => '1002-1']);
         $I->deleteFromDatabase('oxorder', ['OXID' => $this->orderId]);
         $I->deleteFromDatabase('oxorderarticles', ['OXORDERID' => $this->orderId]);

@@ -16,10 +16,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\FixtureLoader;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\Traits\CachingTrait;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\Traits\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Utils\Database\FixtureLoader;
+use OxidEsales\EshopCommunity\Tests\Utils\Database\TestDatabaseHandler;
+use OxidEsales\EshopCommunity\Tests\Utils\Traits\CachingTrait;
+use OxidEsales\EshopCommunity\Tests\Utils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
@@ -35,7 +35,7 @@ class IntegrationTestCase extends TestCase
     public function setUp(): void
     {
         if (!self::$initialized) {
-            \OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler::init();
+            \OxidEsales\EshopCommunity\Tests\Utils\Database\TestDatabaseHandler::init();
             // Do something once here for _all_ test subclasses.
             self::$initialized = true;
         }

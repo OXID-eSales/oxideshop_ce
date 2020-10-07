@@ -168,6 +168,8 @@ final class ProductDetailsPageCest
     public function detailsPageInformation(AcceptanceTester $I)
     {
         $I->wantToTest('product information in details page');
+        $I->updateConfigInDatabase('blStockOffDefaultMessage', true, 'bool');
+        $I->updateConfigInDatabase('bl_perfLoadSelectLists', true, 'bool');
 
         $productNavigation = new ProductNavigation($I);
         $productData = [
@@ -176,9 +178,18 @@ final class ProductDetailsPageCest
             'description' => 'Test product 1 short desc [EN] šÄßüл',
             'price' => '100,00 € *'
         ];
-
         $data = [
-            'OXID' => 'testattributes1',
+             'OXID' => 'testsellist',
+             'OXSHOPID' => 1,
+             'OXTITLE' => 'test selection list [DE] šÄßüл',
+             'OXIDENT' => 'test sellist šÄßüл',
+             'OXVALDESC' => 'selvar1 [DE]!P!1__@@selvar2 [DE]__@@selvar3 [DE]!P!-2__@@selvar4 [DE]!P!2%__@@',
+             'OXTITLE_1' => 'test selection list [EN] šÄßüл',
+             'OXVALDESC_1' => 'selvar1 [EN] šÄßüл!P!1__@@selvar2 [EN] šÄßüл__@@selvar3 [EN] šÄßüл!P!-2__@@selvar4 [EN] šÄßüл!P!2%__@@',
+        ];
+        $I->haveInDatabase('oxselectlist', $data);
+        $data = [
+            'OXID' => 'testsellist.1001',
             'OXOBJECTID' => '1001',
             'OXSELNID' => 'testsellist',
             'OXSORT' => 0,
@@ -760,12 +771,6 @@ final class ProductDetailsPageCest
      */
     private function preparePriceGroupDataForUser(AcceptanceTester $I, $userId, $priceGroupId)
     {
-        $data = [
-            'OXID' => $priceGroupId,
-            'OXACTIVE' => 1,
-            'OXTITLE' => $priceGroupId,
-        ];
-        $I->haveInDatabase('oxgroups', $data);
         $data = [
             'OXID' => 'obj2group' . $priceGroupId,
             'OXOBJECTID' => $userId,

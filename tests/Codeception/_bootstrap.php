@@ -6,3 +6,4 @@
  */
 
 #require_once \Webmozart\PathUtil\Path::join(__DIR__, '..', 'bootstrap.php');
+

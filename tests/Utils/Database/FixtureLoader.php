@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Utils\Database;
+namespace OxidEsales\EshopCommunity\Tests\Utils\Database;
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\Registry;

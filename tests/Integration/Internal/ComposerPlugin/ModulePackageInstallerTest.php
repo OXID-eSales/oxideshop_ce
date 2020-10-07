@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\Traits\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Utils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 class ModulePackageInstallerTest extends TestCase

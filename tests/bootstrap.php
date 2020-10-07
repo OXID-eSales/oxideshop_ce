@@ -13,6 +13,8 @@ define('INSTALLATION_ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR . '..');
 define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
 require VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
 
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Eshop\Core\Registry;
 use \Webmozart\PathUtil\Path;
 
 # Yes, adding a directory separator is stupid, but that's how the code expects it
@@ -27,4 +29,6 @@ ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
-\OxidEsales\EshopCommunity\Tests\Integration\Utils\Database\TestDatabaseHandler::configureTestConfig();
+// Configure Registry
+$configFile = new ConfigFile(Path::join(OX_BASE_PATH, 'config.inc.php'));
+Registry::set(ConfigFile::class, $configFile);

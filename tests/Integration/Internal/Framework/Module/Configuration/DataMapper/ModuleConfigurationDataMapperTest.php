@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\TemplatesDataMapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\Traits\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Utils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 /**

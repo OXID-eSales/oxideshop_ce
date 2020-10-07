@@ -7,19 +7,35 @@ declare(strict_types=1);
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Utils\Database;
+namespace OxidEsales\EshopCommunity\Tests\Utils\Database;
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider;
+use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
 
 class TestDatabaseHandler
 {
     /** @var Connection $connection */
     private static $connection = null;
+
+    public static function createDatabase()
+    {
+        $facts = new Facts();
+        exec(
+            $facts->getCommunityEditionRootPath() .
+            '/bin/oe-console oe:database:reset' .
+            ' --db-host=' . $facts->getDatabaseHost() .
+            ' --db-port=' . $facts->getDatabasePort() .
+            ' --db-name=' . $facts->getDatabaseName() .
+            ' --db-user=' . $facts->getDatabaseUserName() .
+            ' --db-password=' . $facts->getDatabasePassword() .
+            ' --force'
+        );
+    }
 
     public static function init()
     {
@@ -48,21 +64,33 @@ class TestDatabaseHandler
         return self::$connection;
     }
 
+    public static function createDump($pathData, $pathDump)
+    {
+        $facts = new Facts();
+            $mysql_config = self::getMysqlConfigPath();
+           // exec('mysql --defaults-file='.$mysql_config.' --default-character-set=utf8 '.$facts->getDatabaseName().' < '.$pathData);
+            exec('mysqldump --defaults-file='.$mysql_config.' --default-character-set=utf8 '.$facts->getDatabaseName().' > '.$pathDump);
+
+    }
+/*
     public static function reset()
     {
         $fixtureLoader = FixtureLoader::getInstance();
         $fixtureLoader->reset();
     }
-
-    public static function configureTestConfig()
-    {
-        // Reconfigure Registry
-        $configFile = new ConfigFile(self::getConfigFile());
-        Registry::set(ConfigFile::class, $configFile);
-    }
-
+*/
     private static function getConfigFile(): string
     {
         return Path::join(OX_BASE_PATH, 'config.inc.php');
+    }
+
+    private static function getMysqlConfigPath()
+    {
+        $facts = new Facts();
+        $configFile = new ConfigFile(self::getConfigFile());
+
+        $generator = new \OxidEsales\EshopCommunity\Tests\Utils\Database\DatabaseDefaultsFileGenerator($configFile);
+
+        return $generator->generate();
     }
 }

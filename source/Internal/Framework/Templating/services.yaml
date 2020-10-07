@@ -27,6 +27,13 @@ services:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
   oxid_esales.templating.template.loader:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderDelegator
+    public: true
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      - '@oxid_esales.templating.admin.template.loader'
+      - '@oxid_esales.templating.frontend.template.loader'
+  oxid_esales.templating.frontend.template.loader:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoader
     public: true
     arguments:

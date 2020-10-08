@@ -1999,8 +1999,13 @@ class BasketTest extends \OxidTestCase
         $oBasket->addToBasket($this->oArticle->getId(), 10);
         $oBasket->addToBasket($this->oVariant->getId(), 10);
         $oBasket->calculateBasket(false);
-        $oBasket->addVoucher('_xxx');
-        $this->assertEquals(0, count($oBasket->getVouchers()));
+        try {
+            $oBasket->addVoucher('_xxx');
+        } catch (\OxidEsales\EshopCommunity\Core\Exception\VoucherException $oEx) {
+
+        } finally {
+            $this->assertEquals(0, count($oBasket->getVouchers()));
+        }
     }
 
     /**

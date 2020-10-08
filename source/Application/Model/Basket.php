@@ -1573,6 +1573,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * (oxvoucher::MarkAsReserved())
      *
      * @param string $sVoucherId voucher ID
+     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      */
     public function addVoucher($sVoucherId)
     {
@@ -1583,43 +1584,40 @@ class Basket extends \OxidEsales\Eshop\Core\Base
             $dPrice = $this->_oDiscountProductsPriceList->getSum($this->isCalculationModeNetto());
         }
 
-        try { // trying to load voucher and apply it
-            $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
+        // trying to load voucher and apply it
+        $oVoucher = oxNew(\OxidEsales\Eshop\Application\Model\Voucher::class);
 
-            if (!$this->_blSkipVouchersAvailabilityChecking) {
-                $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
+        if (!$this->_blSkipVouchersAvailabilityChecking) {
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
 
-                $oDb->startTransaction();
+            $oDb->startTransaction();
 
-                try {
-                    $oVoucher->getVoucherByNr($sVoucherId, $this->_aVouchers, true);
-                    $oVoucher->checkVoucherAvailability($this->_aVouchers, $dPrice);
-                    $oVoucher->checkUserAvailability($this->getBasketUser());
-                    $oVoucher->markAsReserved();
-                } catch (\Exception $exception) {
-                    $oDb->rollbackTransaction();
+            try {
+                $oVoucher->getVoucherByNr($sVoucherId, $this->_aVouchers, true);
+                $oVoucher->checkVoucherAvailability($this->_aVouchers, $dPrice);
+                $oVoucher->checkUserAvailability($this->getBasketUser());
+                $oVoucher->markAsReserved();
+            } catch (\Exception $exception) {
+                $oDb->rollbackTransaction();
 
-                    if ($exception instanceof \OxidEsales\Eshop\Core\Exception\VoucherException) {
-                        throw $exception;
-                    } else {
-                        $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
-                        $oEx->setMessage('Something went wrong, please try again');
-                        $oEx->setVoucherNr($oVoucher->oxvouchers__oxvouchernr->value);
-                        throw $oEx;
-                    }
+                if ($exception instanceof \OxidEsales\Eshop\Core\Exception\VoucherException) {
+                    throw $exception;
+                } else {
+                    $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\VoucherException::class);
+                    $oEx->setMessage('Something went wrong, please try again');
+                    $oEx->setVoucherNr($oVoucher->oxvouchers__oxvouchernr->value);
+                    throw $oEx;
                 }
-
-                $oDb->commitTransaction();
-            } else {
-                $oVoucher->load($sVoucherId);
             }
 
-            // saving voucher info
-            $this->_aVouchers[$oVoucher->oxvouchers__oxid->value] = $oVoucher->getSimpleVoucher();
-        } catch (\OxidEsales\Eshop\Core\Exception\VoucherException $oEx) {
-            // problems adding voucher
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
+            $oDb->commitTransaction();
+        } else {
+            $oVoucher->load($sVoucherId);
         }
+
+        // saving voucher info
+        $this->_aVouchers[$oVoucher->oxvouchers__oxid->value] = $oVoucher->getSimpleVoucher();
+
 
         $this->onUpdate();
     }

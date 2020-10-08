@@ -1570,8 +1570,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks and sets voucher information. Checks it's availability according
      * to few conditions: oxvoucher::checkVoucherAvailability(),
-     * oxvoucher::checkUserAvailability(). Errors are stored in
-     * \OxidEsales\Eshop\Application\Model\Basket::voucherErrors array. After all voucher is marked as reserved
+     * oxvoucher::checkUserAvailability(). After all voucher is marked as reserved
      * (oxvoucher::MarkAsReserved())
      *
      * @param string $sVoucherId voucher ID

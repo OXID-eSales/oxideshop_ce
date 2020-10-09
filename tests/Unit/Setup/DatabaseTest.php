@@ -13,6 +13,7 @@ use oxDb;
 use OxidEsales\EshopCommunity\Setup\Database;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use PDO;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
 use StdClass;
 
@@ -33,7 +34,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::execSql()
      */
-    public function testExecSqlBadConnection()
+    public function testExecSqlBadConnection(): void
     {
         /** @var Database|Mock $databaseMock */
         $databaseMock = $this->getMock(Database::class, ['getConnection']);
@@ -45,22 +46,9 @@ final class DatabaseTest extends \OxidTestCase
     }
 
     /**
-     * Testing SetupDb::execSql()
-     */
-    public function testExecSql()
-    {
-        /** @var Database|Mock $database */
-        $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
-        $database->expects($this->once())->method("getConnection")->will($this->returnValue($this->createConnection()));
-
-        $result = $database->execSql("select 1 + 1")->fetch();
-        $this->assertSame('2', $result[0]);
-    }
-
-    /**
      * Testing SetupDb::queryFile()
      */
-    public function testQueryFileNotExistingFile()
+    public function testQueryFileNotExistingFile(): void
     {
         $setup = $this->getMock("Setup", array("getStep", "setNextStep"));
         $setup->expects($this->once())->method("getStep")->with($this->equalTo("STEP_DB_INFO"));
@@ -83,7 +71,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::queryFile()
      */
-    public function testQueryFile()
+    public function testQueryFile(): void
     {
         /** @var Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getDatabaseVersion", "parseQuery", "execSql"));
@@ -102,7 +90,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::getDatabaseVersion()
      */
-    public function testGetDatabaseVersion()
+    public function testGetDatabaseVersion(): void
     {
         $versionInfo = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("SHOW VARIABLES LIKE 'version'");
         $version = $versionInfo[0]["Value"];
@@ -116,7 +104,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::getConnection()
      */
-    public function testGetConnection()
+    public function testGetConnection(): void
     {
         /** @var Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("openDatabase"));
@@ -129,7 +117,7 @@ final class DatabaseTest extends \OxidTestCase
      * Testing SetupDb::openDatabase().
      * Connection should not be established due to wrong access info.
      */
-    public function testOpenDatabaseConnectionImpossible()
+    public function testOpenDatabaseConnectionImpossible(): void
     {
         $parameters['dbHost'] = $this->getConfig()->getConfigParam('dbHost');
         $parameters['dbUser'] = $parameters['dbPwd'] = "wrong_password";
@@ -148,7 +136,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::openDatabase()
      */
-    public function testOpenDatabaseImpossibleToSelectGivenDatabase()
+    public function testOpenDatabaseImpossibleToSelectGivenDatabase(): void
     {
         $parameters = $this->getConnectionParameters();
         $parameters['dbName'] = "wrong_database_name";
@@ -173,7 +161,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::createDb()
      */
-    public function testCreateDb()
+    public function testCreateDb(): void
     {
         $oSetup = $this->getMock("Setup", array("setNextStep", "getStep"));
         $oSetup->expects($this->once())->method("setNextStep");
@@ -196,7 +184,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::saveShopSettings()
      */
-    public function testSaveShopSettings()
+    public function testSaveShopSettings(): void
     {
         $utils = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Utilities', array("generateUid"));
         $utils->method("generateUid")->will($this->returnValue("testid"));
@@ -276,7 +264,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * Testing SetupDb::writeAdminLoginData()
      */
-    public function testWriteAdminLoginData()
+    public function testWriteAdminLoginData(): void
     {
         $loginName = 'testLoginName';
         $password = 'testPassword';
@@ -299,8 +287,19 @@ final class DatabaseTest extends \OxidTestCase
 
         $passSalt = hash('sha512', $password . $uniqueId);
         $query = "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
-                             values('$uniqueId', '$loginName', '$passSalt', '$uniqueId', 'malladmin', '$baseShopId')";
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo($query));
+                             values(':oxid', ':oxusername', ':oxpassword', ':oxpasssalt', 'malladmin', ':oxshopid')";
+
+        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo
+        (
+            $query,
+            [
+                "oxid"       => $uniqueId,
+                "oxusername" => $loginName,
+                "oxpassword" => $password,
+                "oxpasssalt" => $passSalt,
+                "oxshopid"   => $baseShopId
+            ]
+        ));
 
         $database->writeAdminLoginData($loginName, $password);
     }
@@ -318,7 +317,7 @@ final class DatabaseTest extends \OxidTestCase
     /**
      * @return PDO
      */
-    protected function createConnection()
+    protected function createConnection(): PDO
     {
         $config = $this->getConfig();
         $dsn = sprintf('mysql:dbname=%s;host=%s;port=%s', $config->getConfigParam('dbName'), $config->getConfigParam('dbHost'), $config->getConfigParam('dbPort'));
@@ -336,7 +335,7 @@ final class DatabaseTest extends \OxidTestCase
      *
      * @return PDO
      */
-    protected function createConnectionMock()
+    protected function createConnectionMock(): PDO
     {
         $config = $this->getConfig();
         $dsn = sprintf('mysql:host=%s;port=%s', $config->getConfigParam('dbHost'), $config->getConfigParam('dbPort'));

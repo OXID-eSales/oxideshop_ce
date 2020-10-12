@@ -212,11 +212,6 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      */
     public function clear()
     {
-        /*
-        foreach ( $this->_aArray as $key => $sValue) {
-            unset( $this->_aArray[$key]);
-        }
-        reset( $this->_aArray);*/
         $this->_aArray = [];
     }
 

@@ -1145,10 +1145,6 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         //case 2. (just get all fields)
         if ($forceFullStructure || !$this->_blUseLazyLoading) {
             $metaFields = $this->_getAllFields(true);
-            /*
-            foreach ( $aMetaFields as $sFieldName => $sVal) {
-                $this->_addField( $sFieldName, $this->_getFieldStatus($sFieldName));
-            }*/
             stopProfile('!__CACHABLE__!');
 
             return $metaFields;

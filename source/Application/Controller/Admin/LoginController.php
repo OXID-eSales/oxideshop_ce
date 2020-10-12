@@ -166,8 +166,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         $myUtilsServer->setOxCookie("oxidadminlanguage", $aLanguages[$iLang]->abbr, time() + 31536000, "/");
 
-        //P
-        //\OxidEsales\Eshop\Core\Registry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
         \OxidEsales\Eshop\Core\Registry::getLang()->setTplLanguage($iLang);
 
         return "admin_start";

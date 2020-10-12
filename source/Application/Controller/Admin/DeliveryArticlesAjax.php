@@ -93,23 +93,6 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     }
 
     /**
-     * Adds filter SQL to current query
-     *
-     * @param string $sQ query to add filter condition
-     *
-     * @return string
-     */
-    /*protected function _addFilter( $sQ ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter( $sQ );
-
-        // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam( 'blVariantsSelection' ) ? ' group by '.$sArtTable.'.oxid ' : '';
-        return $sQ;
-    }*/
-
-    /**
      * Removes article from delivery configuration
      */
     public function removeArtFromDel()

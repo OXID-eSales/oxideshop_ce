@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
 interface ActiveModulesDataProviderInterface
 {

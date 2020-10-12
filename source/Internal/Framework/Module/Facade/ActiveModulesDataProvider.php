@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;

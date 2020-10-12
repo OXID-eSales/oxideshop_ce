@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace Integration\Internal\Framework\Module\Configuration\Service;
+namespace Integration\Internal\Framework\Module\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ActiveModulesDataProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\ActiveModulesDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;

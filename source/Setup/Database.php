@@ -342,7 +342,7 @@ class Database extends Core
 
         $this->execSql(
             "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
-                             values(':oxid', ':oxusername', ':oxpassword', ':oxpasssalt', 'malladmin', ':oxshopid')",
+                             values(:oxid, :oxusername, :oxpassword, :oxpasssalt, 'malladmin', :oxshopid)",
             [
                 "oxid"       => $uniqueId,
                 "oxusername" => $loginName,

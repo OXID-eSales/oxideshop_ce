@@ -287,7 +287,7 @@ final class DatabaseTest extends \OxidTestCase
 
         $passSalt = hash('sha512', $password . $uniqueId);
         $query = "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
-                             values(':oxid', ':oxusername', ':oxpassword', ':oxpasssalt', 'malladmin', ':oxshopid')";
+                             values(:oxid, :oxusername, :oxpassword, :oxpasssalt, 'malladmin', :oxshopid)";
 
         $database->expects($this->at($at++))->method("execSql")->with($this->equalTo
         (

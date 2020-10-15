@@ -44,7 +44,8 @@ class TestDatabaseHandler
         }
         $connectionProvider = new ConnectionProvider();
         self::$connection = $connectionProvider->get();
-
+        FixtureLoader::init(self::$connection);
+/*
         FixtureLoader::init(self::$connection);
         $fixtureLoader = FixtureLoader::getInstance();
         $fixtureLoader->loadFixtures([Path::join(__DIR__, 'basic_fixtures.yaml')]);
@@ -53,7 +54,7 @@ class TestDatabaseHandler
             self::$connection->executeQuery("SELECT 1 FROM oxv_oxarticles");
         } catch (\Exception $e) {
             (new ViewsGenerator())->generate();
-        }
+        }*/
     }
 
     public static function get(): Connection
@@ -67,29 +68,15 @@ class TestDatabaseHandler
     public static function createDump($pathData, $pathDump)
     {
         $facts = new Facts();
-            $mysql_config = self::getMysqlConfigPath();
-           // exec('mysql --defaults-file='.$mysql_config.' --default-character-set=utf8 '.$facts->getDatabaseName().' < '.$pathData);
-            exec('mysqldump --defaults-file='.$mysql_config.' --default-character-set=utf8 '.$facts->getDatabaseName().' > '.$pathDump);
-
-    }
-/*
-    public static function reset()
-    {
-        $fixtureLoader = FixtureLoader::getInstance();
-        $fixtureLoader->reset();
-    }
-*/
-    private static function getConfigFile(): string
-    {
-        return Path::join(OX_BASE_PATH, 'config.inc.php');
+        $mysql_config = self::getMysqlConfigPath();
+        exec('mysqldump --defaults-file='.$mysql_config.' --default-character-set=utf8 '.$facts->getDatabaseName().' > '.$pathDump);
     }
 
     private static function getMysqlConfigPath()
     {
-        $facts = new Facts();
-        $configFile = new ConfigFile(self::getConfigFile());
+        $configFile = new \OxidEsales\Facts\Config\ConfigFile();
 
-        $generator = new \OxidEsales\EshopCommunity\Tests\Utils\Database\DatabaseDefaultsFileGenerator($configFile);
+        $generator = new DatabaseDefaultsFileGenerator($configFile);
 
         return $generator->generate();
     }

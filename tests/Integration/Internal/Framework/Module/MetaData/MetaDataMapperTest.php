@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Modul
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\Utils\TestContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface;
 use Webmozart\PathUtil\Path;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

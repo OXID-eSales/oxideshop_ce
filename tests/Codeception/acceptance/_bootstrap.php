@@ -13,6 +13,7 @@ $path1 = Path::join(dirname(__DIR__, 1), '_data', 'dump-2.sql');
 $path2 = Path::join(dirname(__DIR__, 1), '_data', 'dump-3.sql');
 \OxidEsales\EshopCommunity\Tests\Utils\Database\TestDatabaseHandler::createDatabase();
 \OxidEsales\EshopCommunity\Tests\Utils\Database\TestDatabaseHandler::init();
+FixtureLoader::getInstance()->loadBasicFixtures();
 
 
 

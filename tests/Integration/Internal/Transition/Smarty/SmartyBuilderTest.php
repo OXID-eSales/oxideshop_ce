@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\Utils\TestContainerFactory;
 
 class SmartyBuilderTest extends IntegrationTestCase
 {

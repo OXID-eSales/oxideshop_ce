@@ -13,8 +13,8 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Service\MetaDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Utils\Database\FixtureLoader;
 use OxidEsales\EshopCommunity\Tests\Utils\Database\TestDatabaseHandler;
@@ -32,10 +32,11 @@ class IntegrationTestCase extends TestCase
     const TESTVENDOR = 'oeTest';
 
     protected static $initialized = false;
+
     public function setUp(): void
     {
         if (!self::$initialized) {
-            \OxidEsales\EshopCommunity\Tests\Utils\Database\TestDatabaseHandler::init();
+            TestDatabaseHandler::init();
             // Do something once here for _all_ test subclasses.
             self::$initialized = true;
         }

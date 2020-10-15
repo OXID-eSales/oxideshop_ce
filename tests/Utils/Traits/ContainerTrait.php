@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Utils\Traits;
 
-use OxidEsales\EshopCommunity\Tests\Integration\Utils\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\Utils\TestContainerFactory;
 
 /**
  * Trait ContainerTrait

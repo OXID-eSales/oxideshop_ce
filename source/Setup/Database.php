@@ -12,7 +12,6 @@ use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\Facts\Facts;
 use PDO;
 use PDOException;
-use PDOStatement;
 
 class Database extends Core
 {
@@ -26,28 +25,18 @@ class Database extends Core
     protected $_oConn = null;
 
     /**
-     * Executes sql query. Returns query execution resource object
-     *
-     * @param string $sQ query to execute
-     *
-     * @return PDOStatement|int
-     * @throws Exception exception is thrown if error occured during sql execution
+     * @param string $query
+     * @param array  $values
      */
-    public function execSql($sQ)
+    public function execSql(string $query, array $values = []): void
     {
         try {
             $pdo = $this->getConnection();
-            list($sStatement) = explode(' ', ltrim($sQ));
-            if (in_array(strtoupper($sStatement), ['SELECT', 'SHOW'])) {
-                $oStatement = $pdo->query($sQ);
-            } else {
-                return $pdo->exec($sQ);
-            }
-
-            return $oStatement;
+            $queryResult = $pdo->prepare($query);
+            $queryResult->execute($values);
         } catch (PDOException $e) {
-            throw new Exception(
-                $this->translate('ERROR_BAD_SQL') . "( $sQ ): {$e->getMessage()}\n"
+            throw new \RuntimeException(
+                $this->translate('ERROR_BAD_SQL') . "( $query ): {$e->getMessage()}\n"
             );
         }
     }
@@ -128,8 +117,8 @@ class Database extends Core
      */
     public function getDatabaseVersion()
     {
-        $oStatement = $this->execSql("SHOW VARIABLES LIKE 'version'");
-        return $oStatement->fetchColumn(1);
+        $statement = $this->getConnection()->query("SHOW VARIABLES LIKE 'version'");
+        return $statement->fetchColumn(1);
     }
 
     /**
@@ -162,19 +151,26 @@ class Database extends Core
     /**
      * Creates database
      *
-     * @param string $sDbName database name
+     * @param $dbname
      *
      * @throws Exception exception is thrown if database creation failed
      */
-    public function createDb($sDbName)
+    public function createDb($dbname): void
     {
         try {
-            $this->execSql("CREATE DATABASE `$sDbName` CHARACTER SET utf8 COLLATE utf8_general_ci;");
-            $this->executeUseStatement($sDbName);
+            $this->execSql(
+                "CREATE DATABASE :dbname CHARACTER SET utf8 COLLATE utf8_general_ci;",
+                ["dbname" => $dbname]
+            );
+            $this->executeUseStatement($dbname);
         } catch (Exception $e) {
             $oSetup = $this->getInstance("Setup");
             $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
-            throw new Exception(sprintf($this->translate('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . $e->getMessage(), $e->getCode(), $e);
+            throw new \RuntimeException(
+                sprintf($this->translate('ERROR_COULD_NOT_CREATE_DB'), $dbname) . " - " . $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 
@@ -249,13 +245,13 @@ class Database extends Core
         //set only one active language
         $oStatement = $oPdo->query("select oxvarname, oxvartype, oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
         if ($oStatement && false !== ($aRow = $oStatement->fetch())) {
-            if (!is_array(unserialize($aRow['oxvarvalue']))) {
+            if (!is_array(unserialize($aRow['oxvarvalue'], ['allowed_classes' => false]))) {
                 throw new LanguageParamsException("aLanguageParams can not be type of 
                 " . gettype($aRow['oxvarvalue']) . ", aLanguageParams must be type of array");
             }
 
             if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
-                $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
+                $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue'], ['allowed_classes' => false]);
             }
             $aLanguageParams = $aRow['oxvarvalue'];
             foreach ($aLanguageParams as $sKey => $aLang) {
@@ -346,7 +342,14 @@ class Database extends Core
 
         $this->execSql(
             "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
-                             values('$uniqueId', '$loginName', '$password', '$uniqueId', 'malladmin', '$baseShopId')"
+                             values(:oxid, :oxusername, :oxpassword, :oxpasssalt, 'malladmin', :oxshopid)",
+            [
+                "oxid"       => $uniqueId,
+                "oxusername" => $loginName,
+                "oxpassword" => $password,
+                "oxpasssalt" => $uniqueId,
+                "oxshopid"   => $baseShopId,
+            ]
         );
     }
 
@@ -366,7 +369,12 @@ class Database extends Core
         $this->execSql("delete from oxconfig where oxvarname = 'blSendShopDataToOxid'");
         $this->execSql(
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                             values('$sID', '$baseShopId', 'blSendShopDataToOxid', 'bool', '$blSendShopDataToOxid')"
+                             values(':oxid', ':oxshopid', 'blSendShopDataToOxid', 'bool', ':oxvarvalue')",
+            [
+                "oxid" => $sID,
+                "oxshopid" => $baseShopId,
+                "oxvarvalue" => $blSendShopDataToOxid
+            ]
         );
     }
 
@@ -424,16 +432,15 @@ class Database extends Core
 
     /**
      * @param string $name
-     * @throws Exception
      */
     private function executeUseStatement(string $name): void
     {
         try {
-            $this->_oConn->exec("USE `$name`");
+            $this->execSql("USE `$name`");
         } catch (Exception $e) {
-            throw new Exception(
+            throw new \RuntimeException(
                 $this->translate('ERROR_COULD_NOT_CREATE_DB') . ' - ' . $e->getMessage(),
-                Database::ERROR_COULD_NOT_CREATE_DB,
+                self::ERROR_COULD_NOT_CREATE_DB,
                 $e
             );
         }

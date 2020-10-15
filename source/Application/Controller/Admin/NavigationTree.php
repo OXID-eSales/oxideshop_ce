@@ -7,20 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use DOMXPath;
 use DOMDocument;
 use DOMElement;
-use stdClass;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use DOMXPath;
+use OxidEsales\Eshop\Core\Base;
 use OxidEsales\Eshop\Core\Str;
+use stdClass;
 
-/**
- * Navigation tree control class
- */
-class NavigationTree extends \OxidEsales\Eshop\Core\Base
+class NavigationTree extends Base
 {
     /**
      * stores DOM object for all navigation tree
@@ -400,28 +394,9 @@ class NavigationTree extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getMenuFiles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $adminNavigationFileLocator = $this->getContainer()->get('oxid_esales.templating.admin.navigation.file.locator');
-        $filesToLoad = $adminNavigationFileLocator->locate();
-
-        // including module menu files
-        $path = getShopBasePath();
-        $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-        $activeModuleInfo = $moduleList->getActiveModuleInfo();
-        if (is_array($activeModuleInfo)) {
-            foreach ($activeModuleInfo as $modulePath) {
-                $fullPath = $path . "modules/" . $modulePath;
-                // missing file/folder?
-                if (is_dir($fullPath)) {
-                    // including menu file
-                    $menuFile = $fullPath . "/menu.xml";
-                    if (file_exists($menuFile) && is_readable($menuFile)) {
-                        $filesToLoad[] = $menuFile;
-                    }
-                }
-            }
-        }
-
-        return $filesToLoad;
+        return $this->getContainer()
+            ->get('oxid_esales.templating.admin.navigation.file.locator')
+            ->locate();
     }
 
     /**

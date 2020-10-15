@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class BasicContextTest extends TestCase
+final class BasicContextTest extends TestCase
 {
     use ContainerTrait;
 
@@ -23,7 +23,7 @@ class BasicContextTest extends TestCase
      */
     private $basicContext;
 
-    public function setup(): void
+    protected function setup(): void
     {
         $this->basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 

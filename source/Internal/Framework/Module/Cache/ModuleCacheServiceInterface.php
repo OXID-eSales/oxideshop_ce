@@ -17,5 +17,28 @@ interface ModuleCacheServiceInterface
      * @param string $moduleId
      * @param int    $shopId
      */
-    public function invalidateModuleCache(string $moduleId, int $shopId);
+    public function invalidate(string $moduleId, int $shopId): void;
+
+    /**
+     * @param string $key
+     * @param int    $shopId
+     * @param array  $data
+     */
+    public function put(string $key, int $shopId, array $data): void;
+
+    /**
+     * @param string $key
+     * @param int    $shopId
+     *
+     * @return array
+     */
+    public function get(string $key, int $shopId): array;
+
+    /**
+     * @param string $key
+     * @param int    $shopId
+     *
+     * @return bool
+     */
+    public function exists(string $key, int $shopId): bool;
 }

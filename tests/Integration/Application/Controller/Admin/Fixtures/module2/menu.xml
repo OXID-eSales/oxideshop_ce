@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OX>
+    <OXMENU id="NAVIGATION_ESHOPADMIN">
+        <MAINMENU id="mxmainmenu">
+            <SUBMENU id="TEST-MODULE-2-SOME-SUBMENU-NODE" />
+        </MAINMENU>
+    </OXMENU>
+</OX>

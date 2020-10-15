@@ -120,4 +120,9 @@ interface BasicContextInterface
      * @return Facts
      */
     public function getFacts(): Facts;
+
+    /**
+     * @return string
+     */
+    public function getCacheDirectory(): string;
 }

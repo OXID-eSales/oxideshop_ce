@@ -35,6 +35,7 @@ class BasicContextStub implements BasicContextInterface
     private $outPath;
     private $vendorPath;
     private $composerVendorName;
+    private $cacheDirectory;
 
     public function __construct()
     {
@@ -57,6 +58,7 @@ class BasicContextStub implements BasicContextInterface
         $this->outPath = $basicContext->getOutPath();
         $this->vendorPath = $basicContext->getVendorPath();
         $this->composerVendorName = $basicContext->getComposerVendorName();
+        $this->cacheDirectory = $basicContext->getCacheDirectory();
     }
 
     /**
@@ -297,5 +299,20 @@ class BasicContextStub implements BasicContextInterface
     public function getComposerVendorName(): string
     {
         return $this->composerVendorName;
+    }
+
+    /**
+     * @param int $shopId
+     *
+     * @return string
+     */
+    public function getModulePathCacheFilePath(int $shopId): string
+    {
+        return $this->cacheDirectory;
+    }
+
+    public function getCacheDirectory(): string
+    {
+        return $this->cacheDirectory;
     }
 }

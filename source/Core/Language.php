@@ -1062,9 +1062,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 $this->getThemeLanguageFileMapLocations($theme, $languageAbbr)
             );
 
-            foreach ($possibleMapFileLocations as $tmpMapFile) {
-                if (file_exists($tmpMapFile) && is_readable($tmpMapFile)) {
-                    $mapFile = $tmpMapFile;
+            foreach ($possibleMapFileLocations as $tmpMapFileLocation) {
+                $possibleMapFile = $tmpMapFileLocation . DIRECTORY_SEPARATOR . 'map.php';
+                if (file_exists($possibleMapFile) && is_readable($possibleMapFile)) {
+                    $mapFile = $possibleMapFile;
                     break;
                 }
             }

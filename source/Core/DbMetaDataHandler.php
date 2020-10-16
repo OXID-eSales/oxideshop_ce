@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
+
 /**
  * Class for handling database related operations
  */
@@ -219,12 +221,15 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     {
         $tableSet = getLangTableName($table, $lang);
 
-        $res = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getAll("show create table {$table}");
+        $tableStatus = DatabaseProvider::getDb()->getRow(
+            "SHOW TABLE STATUS LIKE  '{$table}';"
+        );
 
         return "CREATE TABLE `{$tableSet}` (" .
-                "`OXID` char(32) NOT NULL, " .
-                "PRIMARY KEY (`OXID`)" .
-                ") " . strstr($res[0][1], 'ENGINE=');
+               "`OXID` char(32) NOT NULL, " .
+               "PRIMARY KEY (`OXID`)) " .
+               "DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci ENGINE= " . $tableStatus[1] . " " .
+               "COMMENT='" . $tableStatus[17] . "'";
     }
 
     /**

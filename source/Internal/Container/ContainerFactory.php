@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Container;
 
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCache;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\FilesystemContainerCache;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
 class ContainerFactory
 {
@@ -23,12 +24,12 @@ class ContainerFactory
     /**
      * @var ContainerInterface
      */
-    private static $bootstrapContainer;
+    private $symfonyContainer = null;
 
     /**
-     * @var ContainerInterface
+     * @var ContainerCache
      */
-    private $symfonyContainer = null;
+    private $cache;
 
     /**
      * ContainerFactory constructor.
@@ -37,6 +38,7 @@ class ContainerFactory
      */
     private function __construct()
     {
+        $this->cache = new FilesystemContainerCache(new BasicContext());
     }
 
     /**
@@ -57,52 +59,19 @@ class ContainerFactory
      */
     private function initializeContainer()
     {
-        $cacheFilePath = $this::getCacheFilePath();
-
-        if (file_exists($cacheFilePath)) {
-            $this->loadContainerFromCache($cacheFilePath);
+        if ($this->cache->exists()) {
+            $this->symfonyContainer = $this->cache->get();
         } else {
             $this->getCompiledSymfonyContainer();
-            $this->saveContainerToCache($cacheFilePath);
+            $this->cache->put($this->symfonyContainer);
         }
     }
 
-    /**
-     * @param string $cachefile
-     */
-    private function loadContainerFromCache($cachefile)
-    {
-        include_once $cachefile;
-        $this->symfonyContainer = new \ProjectServiceContainer();
-    }
-
-    /**
-     * Returns compiled Container
-     */
     private function getCompiledSymfonyContainer()
     {
         $containerBuilder = (new ContainerBuilderFactory())->create();
         $this->symfonyContainer = $containerBuilder->getContainer();
         $this->symfonyContainer->compile();
-    }
-
-    /**
-     * Dumps the compiled container to the cachefile.
-     *
-     * @param string $cachefile
-     */
-    private function saveContainerToCache($cachefile)
-    {
-        $dumper = new PhpDumper($this->symfonyContainer);
-        file_put_contents($cachefile, $dumper->dump());
-    }
-
-    /**
-     * @return string
-     */
-    private static function getCacheFilePath()
-    {
-        return (new BasicContext())->getContainerCacheFilePath();
     }
 
     /**
@@ -121,9 +90,7 @@ class ContainerFactory
      */
     public static function resetContainer()
     {
-        if (file_exists(self::getCacheFilePath())) {
-            unlink(self::getCacheFilePath());
-        }
+        self::getInstance()->cache->invalidate();
         self::$instance = null;
     }
 }

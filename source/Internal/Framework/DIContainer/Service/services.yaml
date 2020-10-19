@@ -12,3 +12,6 @@ services:
       $anyUnifiedNamespace: '\OxidEsales\Eshop\Core\Registry'
       $basicContext: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCache:
+    class: OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\FilesystemContainerCache

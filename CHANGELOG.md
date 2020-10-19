@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Language Constants:
     - `NAVIGATION_NEWVERSIONAVAILABLE`
     - `UPDATEAPP_DIRNOTDELETED_WARNING`
+    
+### Fixed
+- Impossible save module settings from the admin area if module has services.yaml [#0007180](https://bugs.oxid-esales.com/view.php?id=7180)
 
 ## [6.5.6] - 2020-07-16
 

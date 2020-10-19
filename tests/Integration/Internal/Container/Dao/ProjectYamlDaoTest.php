@@ -140,6 +140,7 @@ EOT;
 
         $this->assertFileNotExists($context->getContainerCacheFilePath());
 
+        ContainerFactory::resetContainer();
         ContainerFactory::getInstance()->getContainer();
         // Verify container has been rebuild be checking that a cachefile exists
         $this->assertFileExists($context->getContainerCacheFilePath());

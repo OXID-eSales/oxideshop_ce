@@ -9,9 +9,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Adm
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration as ModuleConfigurationController;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -21,9 +22,15 @@ class ModuleConfigurationTest extends UnitTestCase
 {
     private $testModuleId = 'testModuleId';
 
-    public function testRender()
+    protected function tearDown(): void
     {
-        $this->prepareTestModuleConfiguration();
+        $this->uninstallTestModule();
+        parent::tearDown();
+    }
+
+    public function testRender(): void
+    {
+        $this->installTestModule();
 
         $_POST['oxid'] = $this->testModuleId;
 
@@ -39,9 +46,9 @@ class ModuleConfigurationTest extends UnitTestCase
         );
     }
 
-    public function testSaveConfVars()
+    public function testSaveConfVarsForInactiveModule(): void
     {
-        $this->prepareTestModuleConfiguration();
+        $this->installTestModule();
 
         $_POST['oxid'] = $this->testModuleId;
         $_POST['confstrs'] = ['stringSetting' => 'newValue'];
@@ -58,25 +65,50 @@ class ModuleConfigurationTest extends UnitTestCase
         );
     }
 
-    private function prepareTestModuleConfiguration()
+    public function testSaveConfVarsForActiveModule(): void
     {
-        $setting = new Setting();
-        $setting
-            ->setName('stringSetting')
-            ->setValue('row')
-            ->setType('str');
+        $this->installTestModule();
+        $this->activateTestModule();
 
-        $moduleConfiguration = new ModuleConfiguration();
-        $moduleConfiguration->setId($this->testModuleId);
-        $moduleConfiguration->setPath('testModule');
-        $moduleConfiguration->addModuleSetting($setting);
+        $_POST['oxid'] = $this->testModuleId;
+        $_POST['confstrs'] = ['stringSetting' => 'newValue'];
 
+        $moduleConfigurationController = oxNew(ModuleConfigurationController::class);
+        $moduleConfigurationController->saveConfVars();
+
+        $moduleConfiguration = $this->getModuleConfiguration();
+
+        $this->assertSame(
+            'newValue',
+            $moduleConfiguration->getModuleSettings()[0]->getValue()
+        );
+    }
+
+    private function installTestModule(): void
+    {
         $container = ContainerFactory::getInstance()->getContainer();
-        $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);
+        $container->get(ModuleInstallerInterface::class)->install(
+            new OxidEshopPackage('testModule', __DIR__ . '/Fixtures/testModule/')
+        );
+    }
 
-        $shopConfiguration = $shopConfigurationDao->get();
-        $shopConfiguration->addModuleConfiguration($moduleConfiguration);
+    private function uninstallTestModule(): void
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $container->get(ModuleInstallerInterface::class)->uninstall(
+            new OxidEshopPackage('testModule', __DIR__ . '/Fixtures/testModule/')
+        );
+    }
 
-        $shopConfigurationDao->save($shopConfiguration);
+    private function activateTestModule(): void
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        $container->get(ModuleActivationBridgeInterface::class)->activate($this->testModuleId, 1);
+    }
+
+    private function getModuleConfiguration(): ModuleConfiguration
+    {
+        $container = ContainerFactory::getInstance()->getContainer();
+        return $container->get(ModuleConfigurationDaoBridgeInterface::class)->get($this->testModuleId);
     }
 }

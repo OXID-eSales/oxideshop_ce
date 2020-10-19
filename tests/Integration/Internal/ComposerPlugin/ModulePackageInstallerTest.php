@@ -59,7 +59,7 @@ class ModulePackageInstallerTest extends TestCase
         );
     }
 
-    public function testModuleIsInstalledAfterUninstallProcess(): void
+    public function testModuleUninstall(): void
     {
         $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->packageName);
         $package->setTargetDirectory('oeTest/' . $this->moduleId);

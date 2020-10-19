@@ -1,7 +1,10 @@
 OXID eShop
 ==========
 
-[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg?branch=master)](https://travis-ci.org/OXID-eSales/oxideshop_ce)
+[![Build Status](https://travis-ci.org/OXID-eSales/oxideshop_ce.svg?branch=master)](https://travis-ci.org/OXID-eSales/oxideshop_ce) 
+[![Crowdin](https://badges.crowdin.net/oxid-core/localized.svg)](https://crowdin.com/project/oxid-core)
+
+
 
 This repository contains the sources of OXID eShop Community Edition Core Component.
 
@@ -35,10 +38,5 @@ You can easily enable code completion in your IDE by installing [this script](ht
 * Vendor home page - https://www.oxid-esales.com
 * Bug tracker - https://bugs.oxid-esales.com
 * VM and SDK - https://github.com/OXID-eSales/oxvm_eshop
-
-
-### Contact us
-
- * [Open a new issue on our bug tracker](https://bugs.oxid-esales.com)
- * [Join our community forum or Slack channel](https://oxidforge.org/en/community-en)
- * [Use the contact form](https://www.oxid-esales.com/en/contact/contact-us.html)
+* [Join our community forum or Slack channel](https://oxidforge.org/en/community-en)
+* [Help translating OXID eShop](https://translate.oxidforge.org)

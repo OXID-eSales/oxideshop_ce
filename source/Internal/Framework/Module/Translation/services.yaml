@@ -1,0 +1,3 @@
+imports:
+  - { resource: Bridge/services.yaml }
+  - { resource: Locator/services.yaml }

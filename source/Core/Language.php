@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
@@ -81,22 +83,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected $_aLangMap = [];
 
     /**
-     * Active module Ids and paths array
-     *
-     * @var array
-     * @deprecated 6.6.0
-     */
-    protected $_aActiveModuleInfo = null;
-
-    /**
-     * Disabled module Ids and paths array
-     *
-     * @var array
-     * @deprecated 6.6.0
-     */
-    protected $_aDisabledModuleInfo = null;
-
-    /**
      * State is string translated or not
      *
      * @var bool
@@ -109,14 +95,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @var int
      */
     protected $_iObjectTplLanguageId = null;
-
-    /**
-     * The module translation path finder.
-     *
-     * @var \OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder
-     * @deprecated 6.6.0
-     */
-    protected $moduleTranslationPathFinder = null;
 
     /**
      * Set translation state
@@ -733,7 +711,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $sAppDir = $oConfig->getAppDir();
         $sLang = Registry::getLang()->getLanguageAbbr($iLang);
         $sTheme = $oConfig->getConfigParam("sTheme");
-        $aModulePaths = $this->_getActiveModuleInfo();
 
         //get generic lang files
         $sGenericPath = $sAppDir . 'translations/' . $sLang;
@@ -750,7 +727,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aLangFiles = array_merge($aLangFiles, $this->getCustomThemeLanguageFiles($iLang));
 
         // modules language files
-        $aLangFiles = $this->_appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang);
+        $aLangFiles = $this->appendModuleLangFilesForFrontend($aLangFiles, $sLang);
 
         // custom language files
         $aLangFiles = $this->_appendCustomLangFiles($aLangFiles, $sLang);
@@ -830,10 +807,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $appDirectory = $config->getAppDir();
         $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
 
-        $modulePaths = [];
-        $modulePaths = array_merge($modulePaths, $this->_getActiveModuleInfo());
-        $modulePaths = array_merge($modulePaths, $this->_getDisabledModuleInfo());
-
         // admin lang files
         $adminThemeName = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         $adminPath = $appDirectory .
@@ -856,7 +829,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $langFiles = $this->_appendLangFile($langFiles, $themePath, "options");
 
         // module language files
-        $langFiles = $this->_appendModuleLangFiles($langFiles, $modulePaths, $language, true);
+        $langFiles = $this->appendModuleLangFilesForAdminArea($langFiles, $language);
+
 
         // custom language files
         $langFiles = $this->_appendCustomLangFiles($langFiles, $language, true);
@@ -933,32 +907,33 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Appends module lang or options files if exists
-     *
-     * @param array  $aLangFiles   existing language files
-     * @param array  $aModulePaths module language file paths
-     * @param string $sLang        language abbreviation
-     * @param bool   $blForAdmin   add files for admin
+     * @param array  $langFiles
+     * @param string $lang
      *
      * @return array
-     * @deprecated 6.6.0
      */
-    protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function appendModuleLangFilesForAdminArea(array $langFiles, string $lang): array
     {
-        if (is_array($aModulePaths)) {
-            foreach ($aModulePaths as $sPath) {
-                $moduleTranslationPathFinder = $this->getModuleTranslationPathFinder();
-                $sFullPath = $moduleTranslationPathFinder->findTranslationPath($sLang, $blForAdmin, $sPath);
+        $moduleLangFiles = $this->getContainer()
+            ->get(AdminAreaModuleTranslationFileLocatorBridgeInterface::class)
+            ->locate($lang);
 
-                $aLangFiles = $this->_appendLangFile($aLangFiles, $sFullPath);
-                //load admin modules options lang files
-                if ($blForAdmin) {
-                    $aLangFiles[] = $sFullPath . '/module_options.php';
-                }
-            }
-        }
+        return array_merge($langFiles, $moduleLangFiles);
+    }
 
-        return $aLangFiles;
+    /**
+     * @param array  $langFiles
+     * @param string $lang
+     *
+     * @return array
+     */
+    private function appendModuleLangFilesForFrontend(array $langFiles, string $lang): array
+    {
+        $moduleLangFiles = $this->getContainer()
+            ->get(FrontendModuleTranslationFileLocatorBridgeInterface::class)
+            ->locate($lang);
+
+        return array_merge($langFiles, $moduleLangFiles);
     }
 
     /**
@@ -1334,38 +1309,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns active module Ids with paths
-     *
-     * @return array
-     * @deprecated 6.6.0
-     */
-    protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        if ($this->_aActiveModuleInfo === null) {
-            $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-            $this->_aActiveModuleInfo = $oModuleList->getActiveModuleInfo();
-        }
-
-        return $this->_aActiveModuleInfo;
-    }
-
-    /**
-     * Returns active module Ids with paths
-     *
-     * @return array
-     * @deprecated 6.6.0
-     */
-    protected function _getDisabledModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        if ($this->_aDisabledModuleInfo === null) {
-            $oModuleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-            $this->_aDisabledModuleInfo = $oModuleList->getDisabledModuleInfo();
-        }
-
-        return $this->_aDisabledModuleInfo;
-    }
-
-    /**
      * Gets browser language.
      *
      * @return string
@@ -1528,20 +1471,5 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function _getLanguageIdsFromLanguagesArray($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return array_keys($aLanguages);
-    }
-
-    /**
-     * Getter for the module translation path finder.
-     *
-     * @return \OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder The module translation finder.
-     * @deprecated 6.6.0
-     */
-    protected function getModuleTranslationPathFinder()
-    {
-        if (is_null($this->moduleTranslationPathFinder)) {
-            $this->moduleTranslationPathFinder = oxNew(\OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder::class);
-        }
-
-        return $this->moduleTranslationPathFinder;
     }
 }

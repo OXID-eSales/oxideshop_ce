@@ -12,6 +12,8 @@ use oxBase;
 use oxBasket;
 use oxField;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopEnterprise\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationGeneratorBridgeInterface;
 use oxRegistry;
 use oxUser;
 
@@ -596,6 +598,11 @@ class BasketConstruct
             $shop = oxNew("oxShop");
             $shop->assign($parameters);
             $shop->save();
+
+            /** @var ShopConfigurationGeneratorBridgeInterface $environmentConfigurationBridge */
+            $cf = ContainerFactory::getInstance()->getContainer();
+            $environmentConfigurationBridge = $cf->get(ShopConfigurationGeneratorBridgeInterface::class);
+            $environmentConfigurationBridge->generateForShop($shop->getId());
 
             $config = oxNew('oxConfig');
             $config->setShopId($shop->getId());

@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProvider
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProvider

@@ -180,7 +180,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber::invalidateModuleCache`
   - Constant:
     -  `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES`
-
+- `OxidEsales\EshopCommunity\Core\Module\ModuleTranslationPathFinder`
+- `OxidEsales\EshopCommunity\Core\Language`:
+    - Property: 
+        - `$_aActiveModuleInfo`
+        - `$_aDisabledModuleInfo`
+        - `$moduleTranslationPathFinder`
+    - Method:
+        - `_appendModuleLangFiles()`
+        - `_getActiveModuleInfo()`
+        - `_getDisabledModuleInfo()`
+        - `getModuleTranslationPathFinder()`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

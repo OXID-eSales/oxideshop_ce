@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\AdminAreaModuleTranslationFileLocatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\AdminAreaModuleTranslationFileLocator
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProviderInterface'
+      - '@oxid_esales.symfony.file_system'
+      - '%oxid_esales.theme.admin.name%'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\FrontendModuleTranslationFileLocatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator\FrontendModuleTranslationFileLocator
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface'
+      - '@oxid_esales.symfony.file_system'
+    public: true

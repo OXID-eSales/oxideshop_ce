@@ -145,123 +145,28 @@ class LangTest extends \OxidTestCase
         }
     }
 
-    public function testGetLangFilesPathForModules()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/translations/de/';
-
-        if (!is_dir($sFilePath)) {
-            mkdir($sFilePath, 0755, true);
-        }
-
-        file_put_contents($sFilePath . "/test_lang.php", 'langfile');
-
-        $sPath = $this->getConfig()->getAppDir();
-        $sShopPath = $this->getConfig()->getConfigParam('sShopDir');
-        $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/translations/de/lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
-        );
-
-        $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
-
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("_getActiveModuleInfo"));
-        $oLang->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
-
-        $this->assertEquals($aPathArray, $oLang->UNITgetLangFilesPathArray(0));
-
-        unlink($sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php");
-        rmdir($sShopPath . "modules/oxlangTestModule/translations/de/");
-        rmdir($sShopPath . "modules/oxlangTestModule/translations/");
-        rmdir($sShopPath . "modules/oxlangTestModule/");
-    }
-
-    public function testGetLangFilesPathForModulesWithApplicationFolder()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/Application/translations/de/';
-
-        if (!is_dir($sFilePath)) {
-            mkdir($sFilePath, 0755, true);
-        }
-
-        file_put_contents($sFilePath . "/test_lang.php", 'langfile');
-
-        $sPath = $this->getConfig()->getAppDir();
-        $sShopPath = $this->getConfig()->getConfigParam('sShopDir');
-        $aPathArray = array(
-            $sPath . "translations/de/lang.php",
-            $sPath . "translations/de/translit_lang.php",
-            $sPath . "views/azure/translations/de/lang.php",
-            $sPath . "views/azure/de/lang.php",
-            $sShopPath . "modules/oxlangTestModule/Application/translations/de/test_lang.php",
-            $sPath . "views/azure/de/cust_lang.php"
-        );
-
-        $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
-
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("_getActiveModuleInfo"));
-        $oLang->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
-
-        $this->assertEquals($aPathArray, $oLang->UNITgetLangFilesPathArray(0));
-
-        unlink($sShopPath . "modules/oxlangTestModule/Application/translations/de/test_lang.php");
-        rmdir($sShopPath . "modules/oxlangTestModule/Application/translations/de/");
-        rmdir($sShopPath . "modules/oxlangTestModule/Application/translations/");
-        rmdir($sShopPath . "modules/oxlangTestModule/Application/");
-    }
-
-
     public function testGetLangFilesPathForAdmin()
     {
         if ($this->getTestConfig()->getShopEdition() == 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
-        $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . 'modules/oxlangTestModule/views/admin/de/';
-
-        if (!is_dir($sFilePath)) {
-            mkdir($sFilePath, 0755, true);
-        }
-
-        file_put_contents($sFilePath . "/test1_lang.php", 'langfile');
-        file_put_contents($sFilePath . "/module_options.php", 'langfile');
 
         $sPath = $this->getConfig()->getAppDir();
-        $sShopPath = $this->getConfig()->getConfigParam('sShopDir');
         $aPathArray = array(
             $sPath . "views/admin/de/lang.php",
             $sPath . "translations/de/translit_lang.php",
             $sPath . "views/admin/de/help_lang.php",
             $sPath . "views/azure/de/theme_options.php",
-            $sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php",
-            $sShopPath . "modules/oxlangTestModule/views/admin/de/module_options.php",
             $sPath . "views/admin/de/cust_lang.php"
         );
-        $aInfo = array('oxlangTestModule' => 'oxlangTestModule');
 
-        $oLang = $this->getMock(\OxidEsales\Eshop\Core\Language::class, array("_getActiveModuleInfo"));
-        $oLang->expects($this->any())->method('_getActiveModuleInfo')->will($this->returnValue($aInfo));
+        $language = oxNew(\OxidEsales\Eshop\Core\Language::class);
 
-        $aResult = $oLang->UNITgetAdminLangFilesPathArray(0);
+        $aResult = $language->UNITgetAdminLangFilesPathArray(0);
 
         foreach ($aPathArray as $sPath) {
             $this->assertTrue(array_search($sPath, $aResult) !== false, "Language file '$sPath' was not found as registered");
         }
-
-        unlink($sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php");
-        unlink($sShopPath . "modules/oxlangTestModule/views/admin/de/module_options.php");
-        rmdir($sShopPath . "modules/oxlangTestModule/views/admin/de/");
-        rmdir($sShopPath . "modules/oxlangTestModule/views/admin/");
-        rmdir($sShopPath . "modules/oxlangTestModule/views/");
-        rmdir($sShopPath . "modules/oxlangTestModule/");
     }
 
     public function testGetLangFileCacheName()
@@ -1636,14 +1541,6 @@ class LangTest extends \OxidTestCase
         $aReplaceData = $oLang->getSeoReplaceChars(1);
 
         $this->assertEquals($aExpResult, $aReplaceData);
-    }
-
-    public function testGetActiveModuleInfo()
-    {
-        oxTestModules::addFunction('oxModulelist', 'getActiveModuleInfo', '{ return true; }');
-        $oUV = $this->getProxyClass('oxlang');
-
-        $this->assertTrue($oUV->UNITgetActiveModuleInfo());
     }
 
     /**

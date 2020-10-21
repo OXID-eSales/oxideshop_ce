@@ -1917,7 +1917,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         switch ($type) {
             case 'arr':
             case 'aarr':
-                $value = unserialize($mOrigValue);
+                $value = unserialize($mOrigValue, ['allowed_classes' => false]);
                 break;
             case 'bool':
                 $value = ($mOrigValue == 'true' || $mOrigValue == '1');

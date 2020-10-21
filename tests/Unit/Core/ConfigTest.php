@@ -1,25 +1,26 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use oxConfig;
+use oxDb;
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
-use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
-use OxidEsales\Facts\Facts;
-
-use \oxConfig;
-use \stdClass;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
-
 use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\EshopCommunity\Core\Registry;
+use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\Facts\Facts;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 class modForTestGetBaseTplDirExpectsDefault extends oxConfig
 {
@@ -2243,6 +2244,16 @@ class ConfigTest extends \OxidTestCase
         $this->assertEquals(true, $oConfig->decodeValue("bool", $blBool));
         $this->assertEquals($aArray, $oConfig->decodeValue("arr", serialize($aArray)));
         $this->assertEquals($aAssocArray, $oConfig->decodeValue("aarr", serialize($aAssocArray)));
+    }
+
+    public function testDecodeValueWithSerializedObjectWillNotInstantiateIt(): void
+    {
+        $someObject = oxNew(Article::class);
+        $serialized = serialize($someObject);
+
+        $decoded = oxNew(Config::class)->decodeValue('arr', $serialized);
+
+        $this->assertInstanceOf(\__PHP_Incomplete_Class::class, $decoded);
     }
 
     /**

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Streamlined lang files for work with translation platforms [PR-833](https://github.com/OXID-eSales/oxideshop_ce/pull/833)
+- Improve English translations [PR-843](https://github.com/OXID-eSales/oxideshop_ce/pull/843)
 
 ### Deprecated
 - Use of two stars (**) for filter strings in modules composer blacklist-filter.

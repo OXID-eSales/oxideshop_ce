@@ -19,6 +19,7 @@ use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use PDO;
@@ -602,7 +603,7 @@ class Database implements DatabaseInterface
              * This is especially important in master-slave Connection
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
-            $statement = $this->getConnection()->executeQuery($query, $parameters);
+            $statement = $this->getConnection()->executeQuery($this->checkForMultipleQueries($query, $parameters), $parameters);
 
             $result = new \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet($statement);
         } catch (DBALException $exception) {
@@ -616,6 +617,18 @@ class Database implements DatabaseInterface
         return $result;
     }
 
+    private function checkForMultipleQueries($query, $parameters): string
+    {
+        if ($parameters !== [] || strrpos($query, ';', -1) === false) {
+            return $query;
+        }
+        $queries = preg_split('~(\"[^\\\\"]*\"|' . "\'[^\\\\']*\'|`[^\\`]*`)(*SKIP)(*F)|(?<=;)(?![ ]*$)~", $query);
+        if (count($queries) > 1) {
+            Registry::getLogger()->error('More than one query within one statement', [$query]);
+        }
+        
+        return $queries[0];
+    }
 
     /**
      * Return the results of a given sql SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.

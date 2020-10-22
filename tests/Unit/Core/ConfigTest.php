@@ -2246,18 +2246,6 @@ class ConfigTest extends \OxidTestCase
         $this->assertInstanceOf(\__PHP_Incomplete_Class::class, $decoded);
     }
 
-    /**
-     * Test case for oxConfig::getDecodeValueQuery()
-     *
-     * @return null
-     */
-    public function testGetDecodeValueQuery()
-    {
-        $oConfig = oxNew('oxConfig');
-        $sQ = " DECODE( oxvarvalue, '" . $oConfig->getConfigParam('sConfigKey') . "') ";
-        $this->assertEquals($sQ, $oConfig->getDecodeValueQuery());
-    }
-
     public function testGetShopMainUrl()
     {
         $oConfig = oxNew('oxConfig');

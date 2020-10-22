@@ -21,7 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ModulePackageInstallerTest extends TestCase
+final class ModulePackageInstallerTest extends TestCase
 {
     use ContainerTrait;
 
@@ -62,7 +62,7 @@ class ModulePackageInstallerTest extends TestCase
         );
     }
 
-    public function testModuleIsInstalledAfterUninstallProcess(): void
+    public function testModuleUninstall(): void
     {
         $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->packageName);
         $package->setTargetDirectory('oeTest/' . $this->moduleId);

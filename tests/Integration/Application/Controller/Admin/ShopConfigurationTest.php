@@ -12,18 +12,23 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Adm
 use OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
  * @covers \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
  */
-class ShopConfigurationTest extends UnitTestCase
+final class ShopConfigurationTest extends UnitTestCase
 {
     private $testModuleId = 'testModuleId';
 
     public function testSaveConfVars(): void
     {
+        $this->prepareTestModuleConfiguration();
+
         $_POST['confstrs'] = ['stringSetting' => 'newValue'];
 
         $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
@@ -44,6 +49,8 @@ class ShopConfigurationTest extends UnitTestCase
 
     public function testSaveWhenSettingIsMissingInMetadata(): void
     {
+        $this->prepareTestModuleConfiguration();
+
         $_POST['confstrs'] = ['nonExisting' => 'newValue'];
 
         $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
@@ -60,5 +67,27 @@ class ShopConfigurationTest extends UnitTestCase
             'newValue',
             $valueFromDatabase->getValue()
         );
+    }
+
+    private function prepareTestModuleConfiguration(): void
+    {
+        $setting = new Setting();
+        $setting
+            ->setName('stringSetting')
+            ->setValue('row')
+            ->setType('str');
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->setId($this->testModuleId);
+        $moduleConfiguration->setPath('testModule');
+        $moduleConfiguration->addModuleSetting($setting);
+
+        $container = ContainerFactory::getInstance()->getContainer();
+        $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);
+
+        $shopConfiguration = $shopConfigurationDao->get();
+        $shopConfiguration->addModuleConfiguration($moduleConfiguration);
+
+        $shopConfigurationDao->save($shopConfiguration);
     }
 }

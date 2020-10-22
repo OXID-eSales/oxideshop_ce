@@ -21,7 +21,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
 
-class ProjectYamlDaoTest extends TestCase
+final class ProjectYamlDaoTest extends TestCase
 {
     use ContainerTrait;
 
@@ -140,6 +140,7 @@ EOT;
 
         $this->assertFileDoesNotExist($context->getContainerCacheFilePath());
 
+        ContainerFactory::resetContainer();
         ContainerFactory::getInstance()->getContainer();
         // Verify container has been rebuild be checking that a cachefile exists
         $this->assertFileExists($context->getContainerCacheFilePath());

@@ -44,18 +44,19 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      *
      * @var array
      */
-    public $aRedirectParams = ['cnid', // category id
-                                    'mnid', // manufacturer id
-                                    'anid', // active article id
-                                    'tpl', // spec. template
-                                    'listtype', // list type
-                                    'searchcnid', // search category
-                                    'searchvendor', // search vendor
-                                    'searchmanufacturer', // search manufacturer
-                                    // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-                                    'searchrecomm', // search recomendation
-                                    'recommid' // recomm. list id
-                                    // END deprecated
+    public $aRedirectParams = [
+        'cnid', // category id
+        'mnid', // manufacturer id
+        'anid', // active article id
+        'tpl', // spec. template
+        'listtype', // list type
+        'searchcnid', // search category
+        'searchvendor', // search vendor
+        'searchmanufacturer', // search manufacturer
+        // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
+        'searchrecomm', // search recomendation
+        'recommid' // recomm. list id
+        // END deprecated
     ];
 
     /**
@@ -358,11 +359,12 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             $sBasketItemId = Registry::getConfig()->getRequestParameter('bindex');
 
-            $aProducts[$sProductId] = ['am'           => $dAmount,
-                                            'sel'          => $aSel,
-                                            'persparam'    => $aPersParam,
-                                            'override'     => $blOverride,
-                                            'basketitemid' => $sBasketItemId
+            $aProducts[$sProductId] = [
+                'am'           => $dAmount,
+                'sel'          => $aSel,
+                'persparam'    => $aPersParam,
+                'override'     => $blOverride,
+                'basketitemid' => $sBasketItemId
             ];
         }
 

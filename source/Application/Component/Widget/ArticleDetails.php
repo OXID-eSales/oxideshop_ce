@@ -846,7 +846,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     /**
      * Returns pictures product object.
      *
-     * @return ArticleList
+     * @return Article
      */
     public function getPicturesProduct()
     {

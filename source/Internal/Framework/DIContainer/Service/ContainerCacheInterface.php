@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-interface ContainerCache
+interface ContainerCacheInterface
 {
     public function put(ContainerBuilder $container): void;
 

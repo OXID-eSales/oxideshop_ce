@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
-class FilesystemContainerCache implements ContainerCache
+class FilesystemContainerCache implements ContainerCacheInterface
 {
     /**
      * @var BasicContextInterface

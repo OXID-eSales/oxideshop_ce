@@ -21,7 +21,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
 
-class ProjectYamlDaoTest extends TestCase
+final class ProjectYamlDaoTest extends TestCase
 {
     use ContainerTrait;
 

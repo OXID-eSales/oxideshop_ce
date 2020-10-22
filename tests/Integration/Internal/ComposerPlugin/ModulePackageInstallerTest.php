@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ComposerPlugin;
 
@@ -18,7 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class ModulePackageInstallerTest extends TestCase
+final class ModulePackageInstallerTest extends TestCase
 {
     use ContainerTrait;
 

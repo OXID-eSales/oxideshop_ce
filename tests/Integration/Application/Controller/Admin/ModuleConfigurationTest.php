@@ -1,8 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
@@ -18,7 +21,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 /**
  * @internal
  */
-class ModuleConfigurationTest extends UnitTestCase
+final class ModuleConfigurationTest extends UnitTestCase
 {
     private $testModuleId = 'testModuleId';
 
@@ -80,7 +83,8 @@ class ModuleConfigurationTest extends UnitTestCase
 
         $this->assertSame(
             'newValue',
-            $moduleConfiguration->getModuleSettings()[0]->getValue()
+            $moduleConfiguration->getModuleSettings()[0]->getValue(),
+            'This test is expected to pass only if run from console (headers already sent issue)'
         );
     }
 

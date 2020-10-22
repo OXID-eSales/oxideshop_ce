@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Integration\Internal\Container\Service;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCache;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -18,9 +18,15 @@ final class FilesystemContainerCacheTest extends TestCase
 {
     use ContainerTrait;
 
+    protected function setUp()
+    {
+        $this->get(ContainerCacheInterface::class)->invalidate();
+        parent::setUp();
+    }
+
     public function testExists(): void
     {
-        $cache = $this->get(ContainerCache::class);
+        $cache = $this->get(ContainerCacheInterface::class);
         $cache->put($this->getContainer());
 
         $this->assertTrue(
@@ -30,7 +36,7 @@ final class FilesystemContainerCacheTest extends TestCase
 
     public function testGet(): void
     {
-        $cache = $this->get(ContainerCache::class);
+        $cache = $this->get(ContainerCacheInterface::class);
         $cache->put($this->getContainer());
 
         $this->assertInstanceOf(
@@ -41,7 +47,7 @@ final class FilesystemContainerCacheTest extends TestCase
 
     public function testInvalidate(): void
     {
-        $cache = $this->get(ContainerCache::class);
+        $cache = $this->get(ContainerCacheInterface::class);
         $cache->put($this->getContainer());
 
         $cache->invalidate();

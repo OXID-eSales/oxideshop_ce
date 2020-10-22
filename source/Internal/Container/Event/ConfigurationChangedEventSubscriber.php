@@ -10,17 +10,17 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Container\Event;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Event\ProjectYamlChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCache;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ConfigurationChangedEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ContainerCache
+     * @var ContainerCacheInterface
      */
     private $containerCache;
 
-    public function __construct(ContainerCache $containerCache)
+    public function __construct(ContainerCacheInterface $containerCache)
     {
         $this->containerCache = $containerCache;
     }

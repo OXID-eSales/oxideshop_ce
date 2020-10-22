@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Container;
 
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCache;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\FilesystemContainerCache;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use Psr\Container\ContainerInterface;
@@ -27,7 +27,7 @@ class ContainerFactory
     private $symfonyContainer = null;
 
     /**
-     * @var ContainerCache
+     * @var ContainerCacheInterface
      */
     private $cache;
 

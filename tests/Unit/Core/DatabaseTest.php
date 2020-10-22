@@ -13,6 +13,8 @@ use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\TestingLibrary\UnitTestCase;
+use Psr\Log\NullLogger;
+use Psr\Log\Test\TestLogger;
 use ReflectionClass;
 
 /**
@@ -34,6 +36,8 @@ class DatabaseTest extends UnitTestCase
 
         $this->cleanUpTable('oxarticles');
 
+        Registry::set('logger', getLogger());
+
         parent::tearDown();
     }
 
@@ -47,7 +51,7 @@ class DatabaseTest extends UnitTestCase
      *
      * @return mixed
      */
-    protected function callProtectedClassMethod($classInstance, $methodName, array $params = array())
+    protected function callProtectedClassMethod($classInstance, $methodName, array $params = [])
     {
         $className = get_class($classInstance);
 
@@ -125,6 +129,101 @@ class DatabaseTest extends UnitTestCase
         $database = oxDb::getDb();
 
         $this->assertInstanceOf(Database::class, $database);
+    }
+
+    public function provideQueriesToBeChecked()
+    {
+        return [
+            [
+                "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE '%&nbsp;%';",
+            ],
+            [
+                "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE '\';';",
+            ],
+            [
+                'SELECT * FROM oxid.oxcontents where OXCONTENT LIKE "%&nbsp;%";',
+            ],
+            [
+                'SELECT * FROM oxid.oxcontents where OXCONTENT LIKE "\";";',
+            ],
+            [
+                'SELECT * FROM `oxid`.`oxshops;`;',
+            ],
+            [
+                "SELECT 
+                oxv_oxarticles_1_de.oxid, oxv_oxarticles_1_de.oxtimestamp
+            FROM
+                oxv_oxarticles_1_de
+            WHERE
+                (oxv_oxarticles_1_de.oxactive = 1
+                    AND oxv_oxarticles_1_de.oxhidden = 0
+                    AND (oxv_oxarticles_1_de.oxstockflag != 2
+                    OR (oxv_oxarticles_1_de.oxstock + oxv_oxarticles_1_de.oxvarstock) > 0)
+                    AND IF(oxv_oxarticles_1_de.oxvarcount = 0,
+                    1,
+                    (SELECT 
+                            1
+                        FROM
+                            oxv_oxarticles_1_de AS art
+                        WHERE
+                            art.oxparentid = oxv_oxarticles_1_de.oxid
+                                AND art.oxactive = 1
+                                AND (art.oxstockflag != 2 OR art.oxstock > 0)
+                        LIMIT 1)))
+                    AND oxv_oxarticles_1_de.oxparentid = ''
+                    AND oxv_oxarticles_1_de.oxissearch = 1
+                    AND ((oxv_oxarticles_1_de.oxtitle LIKE '%ledergürtel%'
+                    OR oxv_oxarticles_1_de.oxtitle LIKE '%lederg&uuml;rtel%'
+                    OR oxv_oxarticles_1_de.oxshortdesc LIKE '%ledergürtel%'
+                    OR oxv_oxarticles_1_de.oxshortdesc LIKE '%lederg&uuml;rtel%'
+                    OR oxv_oxarticles_1_de.oxsearchkeys LIKE '%ledergürtel%'
+                    OR oxv_oxarticles_1_de.oxsearchkeys LIKE '%lederg&uuml;rtel%'
+                    OR oxv_oxarticles_1_de.oxartnum LIKE '%ledergürtel%'
+                    OR oxv_oxarticles_1_de.oxartnum LIKE '%lederg&uuml;rtel%'))"
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider provideQueriesToBeChecked
+     */
+    public function testCheckForMultipleQueriesWontSplit($queryToSplit)
+    {
+        $database = oxDb::getDb();
+
+        $logger = new TestLogger();
+        Registry::set('logger', $logger);
+
+        $this->assertEquals(
+            $queryToSplit,
+            $this->callProtectedClassMethod(
+                $database,
+                'checkForMultipleQueries',
+                [$queryToSplit, []]
+            )
+        );
+
+        $this->assertFalse($logger->hasErrorRecords());
+    }
+
+    public function testCheckForMultipleQueriesRealSplit()
+    {
+        $queryWhichNeedsSplit = "SELECT 1 as 'id'; UPDATE oxuser SET oxusername = 'myUser' WHERE oxusername = 'myUser';";
+        $database = oxDb::getDb();
+
+        $logger = new TestLogger();
+        Registry::set('logger', $logger);
+
+        $this->assertEquals(
+            "SELECT 1 as 'id';",
+            $this->callProtectedClassMethod(
+                $database,
+                'checkForMultipleQueries',
+                [$queryWhichNeedsSplit, []]
+            )
+        );
+
+        $this->assertTrue($logger->hasErrorRecords());
     }
 
     /**

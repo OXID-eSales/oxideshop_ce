@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 
@@ -31,7 +32,7 @@ class FilesystemContainerCache implements ContainerCacheInterface
         file_put_contents($this->context->getContainerCacheFilePath(), $dumper->dump());
     }
 
-    public function get(): \ProjectServiceContainer
+    public function get(): ContainerInterface
     {
         include_once $this->context->getContainerCacheFilePath();
         return new \ProjectServiceContainer();

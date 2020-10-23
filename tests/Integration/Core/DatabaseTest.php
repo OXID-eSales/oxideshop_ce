@@ -6,6 +6,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
+use Exception;
+use InvalidArgumentException;
 use oxDb;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\DatabaseProvider;
@@ -248,5 +250,21 @@ class DatabaseTest extends UnitTestCase
         }
 
         return $dbMock;
+    }
+
+    public function testUpdateWithSelect(): void
+    {
+        $db = DatabaseProvider::getDb();
+
+        $exception = null;
+        try {
+            $db->select('update oxactions set oxtitle = "testValue" where oxid = "oxcatoffer"');
+        } catch (\Exception $exception) {}
+
+        $this->assertInstanceOf(\InvalidArgumentException::class, $exception);
+        $this->assertNotEquals(
+            ["testValue"],
+            $db->select('select oxtitle from oxactions where oxid = "oxcatoffer"')->fetchAll()[0]
+        );
     }
 }

@@ -596,14 +596,20 @@ class Database implements DatabaseInterface
         // END deprecated
 
         $result = null;
-
+        $check = ltrim($query, " \t\n\r\0\x0B(");
+        if (!(stripos($check, 'select') === 0 || stripos($check, 'show') === 0)) {
+            throw new \InvalidArgumentException('Function select is only for read operations select or show');
+        }
         try {
             /**
              * Be aware that Connection::executeQuery is a method specifically for READ operations only.
              * This is especially important in master-slave Connection
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
-            $statement = $this->getConnection()->executeQuery($this->checkForMultipleQueries($query, $parameters), $parameters);
+            $statement = $this->getConnection()->executeQuery(
+                $this->checkForMultipleQueries($query, $parameters),
+                $parameters
+            );
 
             $result = new \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet($statement);
         } catch (DBALException $exception) {

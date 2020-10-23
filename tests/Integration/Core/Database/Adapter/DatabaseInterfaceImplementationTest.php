@@ -287,9 +287,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
 
     public function testSelectWithNonReadStatementThrowsException()
     {
-        $expectedExceptionClass = $this->getDatabaseExceptionClassName();
-
-        $this->expectException($expectedExceptionClass);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->database->select('INSERT INTO ' . self::TABLE_NAME . ' VALUES (\'a\',\'b\')');
     }
@@ -1016,6 +1014,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
          * An exception will be logged as part of the BC layer, when calling the getRow with a wrong SQL statement
          * The exception log will be cleared at the end of this test
          */
+        $this->expectException(\InvalidArgumentException::class);
         $result = $this->database->getRow('INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')");
 
         $this->assertInternalType('array', $result);

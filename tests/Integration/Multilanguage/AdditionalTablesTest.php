@@ -53,9 +53,24 @@ class AdditionalTablesTest extends MultilanguageTestCase
         //add nine more languages
         $this->prepare(9);
 
-        $sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_NAME LIKE 'addtest_set1'";
-        $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne($sql);
-        $this->assertEquals('addtest_set1', $result);
+        $tableSchemaQuery = "SELECT TABLE_NAME, TABLE_COLLATION  FROM INFORMATION_SCHEMA.TABLES  WHERE TABLE_NAME LIKE 'addtest_set1'";
+        $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow($tableSchemaQuery);
+
+        self::assertEquals(
+            [
+                'TABLE_NAME'      => "addtest_set1",
+                'TABLE_COLLATION' => "latin1_general_ci"
+            ],
+            $result
+        );
+
+        $charset_query = "SELECT character_set_name FROM information_schema.`COLUMNS` 
+                            WHERE table_name = 'addtest_set1'
+                              AND column_name = 'TITLE_8';";
+
+        $result = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne($charset_query);
+
+        self::assertEquals('latin1', $result);
     }
 
     /**

@@ -232,7 +232,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testGetCreateTableSetSql()
     {
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) NOT NULL, PRIMARY KEY (`OXID`)) DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci ENGINE= InnoDB COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass("oxDbMetaDataHandler");
 
@@ -380,7 +380,7 @@ class DbMetaDataHandlerTest extends \OxidTestCase
      */
     public function testAddNewMultilangFieldCreateTable()
     {
-        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Countries list'";
+        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) NOT NULL, PRIMARY KEY (`OXID`)) DEFAULT CHARACTER SET latin1 COLLATE latin1_general_ci ENGINE= InnoDB COMMENT='Countries list'";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXTITLE_8` varchar(128) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` varchar(255) NOT NULL DEFAULT '' ";
         $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` varchar(255) NOT NULL DEFAULT '' ";

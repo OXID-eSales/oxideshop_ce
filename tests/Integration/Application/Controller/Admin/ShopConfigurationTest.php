@@ -80,6 +80,7 @@ final class ShopConfigurationTest extends UnitTestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration->setPath('testModule');
+        $moduleConfiguration->setModuleSource('testModule');
         $moduleConfiguration->addModuleSetting($setting);
 
         $container = ContainerFactory::getInstance()->getContainer();

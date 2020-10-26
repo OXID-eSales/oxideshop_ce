@@ -625,7 +625,7 @@ class Database implements DatabaseInterface
         if (count($queries) > 1) {
             Registry::getLogger()->error('More than one query within one statement', [$query]);
         }
-        
+
         return $queries[0];
     }
 
@@ -671,7 +671,7 @@ class Database implements DatabaseInterface
         if (!is_numeric($rowCount) || !is_numeric($offset)) {
             trigger_error(
                 'Parameters rowCount and offset have to be numeric in DatabaseInterface::selectLimit(). ' .
-                'Please fix your code as this error may trigger an exception in future versions of OXID eShop.',
+                    'Please fix your code as this error may trigger an exception in future versions of OXID eShop.',
                 E_USER_DEPRECATED
             );
         }
@@ -1309,13 +1309,11 @@ class Database implements DatabaseInterface
 
         $assignedType = strtoupper($assignedType);
         if (
-            (
-            in_array($assignedType, $integerTypes) ||
+            (in_array($assignedType, $integerTypes) ||
                 in_array($assignedType, $fixedPointTypes) ||
                 in_array($assignedType, $floatingPointTypes) ||
                 in_array($assignedType, $textTypes) ||
-                in_array($assignedType, $dateTypes)
-            ) && -1 == $maxLength
+                in_array($assignedType, $dateTypes)) && -1 == $maxLength
         ) {
             /**
              * @todo: If the assigned type is one of the following and maxLength is -1, then, if applicable the default max length ot that type should be assigned.

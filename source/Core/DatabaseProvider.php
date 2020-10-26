@@ -322,7 +322,7 @@ class DatabaseProvider
         if (null == $charset) {
             $charset = 'utf8';
         }
-        
+
         $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
 
         return $connectionParameters;

@@ -106,7 +106,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         // delete it from the session
         $oBasket->deleteBasket();
         Registry::getSession()->deleteVariable('sess_challenge');
-        
+
         // if not in order-context, redirect to start
         $order = $this->getOrder();
         if (!$order || !$order->getFieldData('oxordernr')) {

@@ -68,7 +68,7 @@ class ClassExtensionsChain implements \IteratorAggregate
     {
         $extended = $classExtension->getShopClassName();
         $extension = $classExtension->getModuleExtensionClassName();
-        
+
         if (
             false === \array_key_exists($extended, $this->chain) ||
             false === \array_search($extension, $this->chain[$extended], true)

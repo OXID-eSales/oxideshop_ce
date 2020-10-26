@@ -119,15 +119,21 @@ final class AdminDownloadableProductCest
     private function makeOrderComplete(AcceptanceAdminTester $I, AdminPanel $adminPanel): void
     {
         $orders = $adminPanel->openOrders();
-        $orders->find("where[oxorder][oxordernr]", "1");
-        $orders->openDownloadsTab();
-        $firstDownloadableProductLocator = "//tr[@id='file.1']";
-        $I->assertEquals("1208", $I->grabTextFrom("{$firstDownloadableProductLocator}/td[1]"));
-        $I->assertEquals("Kite CORE GTS", $I->grabTextFrom("$firstDownloadableProductLocator/td[2]"));
-        $I->assertEquals("testFile3", $I->grabTextFrom("$firstDownloadableProductLocator/td[3]"));
-        $I->assertEquals("0000-00-00 00:00:00", $I->grabTextFrom("$firstDownloadableProductLocator/td[4]"));
-        $I->assertEquals("0000-00-00 00:00:00", $I->grabTextFrom("$firstDownloadableProductLocator/td[5]"));
-        $I->assertEquals("0", $I->grabTextFrom("$firstDownloadableProductLocator/td[6]"));
-        $I->assertEquals("2", $I->grabTextFrom("$firstDownloadableProductLocator/td[7]"));
+        $order = $orders->find("where[oxorder][oxordernr]", "1");
+        $orderDownloadsTab = $order->openDownloadsTab();
+
+        $I->assertEquals("1208", $I->grabTextFrom($orderDownloadsTab->productNumberInDownloadsTab));
+        $I->assertEquals("Kite CORE GTS", $I->grabTextFrom($orderDownloadsTab->titleInDownloadsTab));
+        $I->assertEquals("testFile3", $I->grabTextFrom($orderDownloadsTab->downloadableFileInDownloadsTab));
+        $I->assertEquals(
+            "0000-00-00 00:00:00",
+            $I->grabTextFrom($orderDownloadsTab->firstDownloadInDownloadsTab)
+        );
+        $I->assertEquals(
+            "0000-00-00 00:00:00",
+            $I->grabTextFrom($orderDownloadsTab->lastDownloadInDownloadsTab)
+        );
+        $I->assertEquals("0", $I->grabTextFrom($orderDownloadsTab->countInDownloadsTab));
+        $I->assertEquals("2", $I->grabTextFrom($orderDownloadsTab->maxCountInDownloadsTab));
     }
 }

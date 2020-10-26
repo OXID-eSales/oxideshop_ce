@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use Exception;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
-use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplatePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
@@ -1515,26 +1515,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $finalTemplatePath = $this->getDir($templateName, $this->_sTemplateDir, $isAdmin);
 
         if (!$finalTemplatePath) {
-            $templatePathCalculator = $this->getModuleTemplatePathCalculator();
-            $templatePathCalculator->setModulesPath($this->getModulesDir());
             try {
-                $finalTemplatePath = $templatePathCalculator->calculateModuleTemplatePath($templateName);
+                $finalTemplatePath = $this
+                    ->getContainer()
+                    ->get(ModuleTemplatePathResolverInterface::class)
+                    ->resolve($templateName);
             } catch (Exception $e) {
                 $finalTemplatePath = '';
             }
         }
 
         return $finalTemplatePath;
-    }
-
-    /**
-     * Get module template calculator object
-     *
-     * @return ModuleTemplatePathCalculator
-     */
-    protected function getModuleTemplatePathCalculator()
-    {
-        return oxNew(ModuleTemplatePathCalculator::class);
     }
 
     /**

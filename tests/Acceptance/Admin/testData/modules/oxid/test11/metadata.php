@@ -26,6 +26,6 @@ $aModule = [
         'test_11_ajax_controller_ajax' => \OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\test11\Application\Controller\Test11AjaxControllerAjax::class,
         'test_11_ajax_controller' => \OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\oxid\test11\Application\Controller\Test11AjaxController::class
     ],
-    'templates'   =>  ['test_11_ajax_controller.tpl' => 'oxid/test11/Application/Views/tpl/test_11_ajax_controller.tpl',
-                       'test_11_popup.tpl' => 'oxid/test11/Application/Views/tpl/test_11_popup.tpl']
+    'templates'   =>  ['test_11_ajax_controller.tpl' => 'Application/Views/tpl/test_11_ajax_controller.tpl',
+                       'test_11_popup.tpl' => 'Application/Views/tpl/test_11_popup.tpl']
 ];

@@ -83,7 +83,7 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
 
     private function getCacheFileContent(string $modulePathCacheFilePath): array
     {
-        return unserialize(file_get_contents($modulePathCacheFilePath), ['allowed_classes' => false]);
+        return unserialize(file_get_contents($modulePathCacheFilePath), ['allowed_classes' => true]);
     }
 
     private function getModulePathCacheFilePath(string $key, int $shopId): string

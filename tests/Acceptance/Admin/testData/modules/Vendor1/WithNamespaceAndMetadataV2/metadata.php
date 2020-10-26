@@ -27,6 +27,6 @@ $aModule = [
         'vendor1_metadatav2demo_mymodulecontroller' => \OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\Vendor1\WithNamespaceAndMetadataV2\Application\Controller\MyModuleController::class
     ],
     'templates' => [
-        'vendor1_controller_routing.tpl' => 'Vendor1/WithNamespaceAndMetadataV2/views/tpl/vendor1_controller_routing.tpl'
+        'vendor1_controller_routing.tpl' => 'views/tpl/vendor1_controller_routing.tpl'
     ]
 ];

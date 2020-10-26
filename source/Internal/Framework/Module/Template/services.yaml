@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplatePathResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplatePathResolver
+    arguments:
+      $filesystem: '@oxid_esales.symfony.file_system'
+    public: true

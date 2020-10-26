@@ -64,7 +64,7 @@ final class ActiveModulesDataProviderTest extends TestCase
     {
         $this->assertEquals(
             [
-                Path::join($this->context->getShopRootPath(), $this->activeModuleSource)
+                $this->activeModuleId => Path::join($this->context->getShopRootPath(), $this->activeModuleSource)
             ],
             $this->get(ActiveModulesDataProviderInterface::class)->getModulePaths()
         );
@@ -73,12 +73,12 @@ final class ActiveModulesDataProviderTest extends TestCase
     public function testGetModulePathsUsesCacheIfItExists(): void
     {
         $cache = $this->getDummyCache();
-        $cache->put('absolute_module_paths', 1, ['somePath']);
+        $cache->put('absolute_module_paths', 1, ['moduleId' => 'somePath']);
 
         $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
 
         $this->assertEquals(
-            ['somePath'],
+            ['moduleId' => 'somePath'],
             $activeModulesDataProvider->getModulePaths()
         );
     }
@@ -89,9 +89,49 @@ final class ActiveModulesDataProviderTest extends TestCase
 
         $this->assertEquals(
             [
-                Path::join($this->context->getShopRootPath(), $this->activeModuleSource)
+                $this->activeModuleId => Path::join($this->context->getShopRootPath(), $this->activeModuleSource)
             ],
             $activeModulesDataProvider->getModulePaths()
+        );
+    }
+
+    public function testGetTemplates(): void
+    {
+        $this->assertEquals(
+            [
+                $this->activeModuleId => [
+                    new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'),
+                ]
+            ],
+            $this->get(ActiveModulesDataProviderInterface::class)->getTemplates()
+        );
+    }
+
+    public function testGetTemplatesUsesCacheIfItExists(): void
+    {
+        $cachedData = [new ModuleConfiguration\Template('key', 'path')];
+        $cache = $this->getDummyCache();
+        $cache->put('templates', 1, $cachedData);
+
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
+
+        $this->assertEquals(
+            $cachedData,
+            $activeModulesDataProvider->getTemplates()
+        );
+    }
+
+    public function testGetTemplatesUsesCacheIfItDoesNotExist(): void
+    {
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($this->getDummyCache());
+
+        $this->assertEquals(
+            [
+                $this->activeModuleId => [
+                    new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'),
+                ]
+            ],
+            $activeModulesDataProvider->getTemplates()
         );
     }
 
@@ -101,13 +141,15 @@ final class ActiveModulesDataProviderTest extends TestCase
         $activeModule
             ->setId($this->activeModuleId)
             ->setPath($this->activeModulePath)
-            ->setModuleSource($this->activeModuleSource);
+            ->setModuleSource($this->activeModuleSource)
+            ->addTemplate(new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'));
 
         $inactiveModule = new ModuleConfiguration();
         $inactiveModule
             ->setId($this->inactiveModuleId)
             ->setPath($this->inactiveModulePath)
-            ->setModuleSource($this->inactiveModuleSource);
+            ->setModuleSource($this->inactiveModuleSource)
+            ->addTemplate(new ModuleConfiguration\Template('inactiveTemplate', 'inactiveTemplatePath'));
 
         /** @var ShopConfigurationDaoInterface $dao */
         $dao = $this->get(ShopConfigurationDaoInterface::class);

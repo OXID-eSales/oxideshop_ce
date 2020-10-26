@@ -25,7 +25,7 @@ $aModule = array(
         'test_module_controller_routing_MyOtherModuleController' => 'test_module_controller_routing/test_module_controller_routing_MyOtherModuleController.php',
     ],
     'templates' => [
-        'test_module_controller_routing.tpl' => 'test_module_controller_routing/test_module_controller_routing.tpl',
-        'test_module_controller_routing_other.tpl' => 'test_module_controller_routing/test_module_controller_routing_other.tpl'
+        'test_module_controller_routing.tpl' => 'test_module_controller_routing.tpl',
+        'test_module_controller_routing_other.tpl' => 'test_module_controller_routing_other.tpl'
     ]
 );

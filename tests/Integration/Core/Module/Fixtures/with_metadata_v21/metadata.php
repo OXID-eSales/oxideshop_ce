@@ -23,5 +23,8 @@ $aModule = array(
     'smartyPluginDirectories'  => [
         'Smarty/PluginDirectory1WithMetadataVersion21',
         'Smarty/PluginDirectory2WithMetadataVersion21'
-    ]
+    ],
+    'templates' => [
+        'test_template.tpl' => 'test_template.tpl',
+    ],
 );

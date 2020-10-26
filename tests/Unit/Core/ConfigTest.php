@@ -14,7 +14,6 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
-use OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\Facts\Facts;
@@ -1212,48 +1211,6 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
         $sDir = $this->_getViewsPath($oConfig, 'admin') . 'tpl/start.tpl';
         $this->assertEquals($sDir, $oConfig->getTemplatePath('start.tpl', true));
-    }
-
-    /**
-     * Test if correct template path is returned if template found in module template configurations
-     */
-    public function testGetModuleTemplatePath()
-    {
-        $expected = 'moduleTemplatePath';
-
-        // tell module template calculator to give good result
-        $moduleTemplateCalculatorStub = $this->getMock(ModuleTemplatePathCalculator::class, ['calculateModuleTemplatePath']);
-        $moduleTemplateCalculatorStub->method('calculateModuleTemplatePath')->willReturn($expected);
-
-        // imitate config with empty getDir response
-        $configStub = $this->getMock(oxConfig::class, ['getDir', 'getModuleTemplatePathCalculator']);
-        $configStub->method('getModuleTemplatePathCalculator')->willReturn($moduleTemplateCalculatorStub);
-
-        // test if returns correct template
-        $actual = $configStub->getTemplatePath('someTemplateName.tpl', true);
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * Test if correct template path is returned if template is Not found in module template configurations
-     */
-    public function testGetModuleTemplatePathCalculatorException()
-    {
-        $expected = '';
-
-        // tell module template calculator to give good result
-        $moduleTemplateCalculatorStub = $this->getMock(ModuleTemplatePathCalculator::class, ['calculateModuleTemplatePath']);
-        $moduleTemplateCalculatorStub->method('calculateModuleTemplatePath')->willThrowException(oxNew('oxException', 'Some calculator exception'));
-
-        // imitate config with empty getDir response
-        $configStub = $this->getMock(oxConfig::class, ['getDir', 'getModuleTemplatePathCalculator']);
-        $configStub->method('getModuleTemplatePathCalculator')->willReturn($moduleTemplateCalculatorStub);
-
-        // test if returns correct template
-        $actual = $configStub->getTemplatePath('someTemplateName.tpl', true);
-
-        $this->assertEquals($expected, $actual);
     }
 
     /**

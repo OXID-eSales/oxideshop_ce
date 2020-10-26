@@ -63,13 +63,32 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
             $modulePaths = [];
             foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
-                $modulePaths[] = $this->modulePathResolver->getFullModulePathFromConfiguration(
-                    $moduleConfiguration->getId(),
-                    $this->context->getCurrentShopId()
-                );
+                $modulePaths[$moduleConfiguration->getId()] = $this
+                    ->modulePathResolver
+                    ->getFullModulePathFromConfiguration(
+                        $moduleConfiguration->getId(),
+                        $this->context->getCurrentShopId()
+                    );
             }
 
             $this->moduleCacheService->put($cacheKey, $shopId, $modulePaths);
+        }
+
+        return $this->moduleCacheService->get($cacheKey, $shopId);
+    }
+
+    public function getTemplates(): array
+    {
+        $shopId = $this->context->getCurrentShopId();
+        $cacheKey = 'templates';
+
+        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
+            $templates = [];
+            foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
+                $templates[$moduleConfiguration->getId()] = $moduleConfiguration->getTemplates();
+            }
+
+            $this->moduleCacheService->put($cacheKey, $shopId, $templates);
         }
 
         return $this->moduleCacheService->get($cacheKey, $shopId);

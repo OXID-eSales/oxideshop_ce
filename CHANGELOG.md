@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Move hash service from `\OxidEsales\EshopCommunity\Internal\Authentication\` to `\OxidEsales\EshopCommunity\Internal\Utility\Hash`
 - Email validation service moved to Utility `OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidationService`
 - Shop-setup command does not add admin user
+- Module template file path should be registered in metadata.php as a relative path to the module root directory 
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`
@@ -113,6 +114,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\SystemRequirements::getConfig`
 - `\OxidEsales\EshopCommunity\Core\Module::getConfigBlDoNotDisableModuleOnError`
 - `\OxidEsales\EshopCommunity\Application\Model\OrderArticle::$_aOrderCache`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator`
+- `\OxidEsales\EshopCommunity\Core\Config::getModuleTemplatePathCalculator()`
 - Removed deprecated getSession and setSession usages around the code
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`

@@ -9,4 +9,5 @@ imports:
    - { resource: Install/services.yaml }
    - { resource: Command/services.yaml }
    - { resource: Path/services.yaml }
+   - { resource: Template/services.yaml }
    - { resource: Translation/services.yaml }

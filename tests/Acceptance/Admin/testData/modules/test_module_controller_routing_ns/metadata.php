@@ -25,7 +25,7 @@ $aModule = array(
         'test_module_controller_routing_ns_MyOtherModuleController' => OxidEsales\EshopCommunity\Tests\Acceptance\Admin\testData\modules\test_module_controller_routing_ns\MyOtherModuleController::class,
     ],
     'templates' => [
-        'test_module_controller_routing_ns.tpl' => 'test_module_controller_routing_ns/test_module_controller_routing_ns.tpl',
-        'test_module_controller_routing_ns_other.tpl' => 'test_module_controller_routing_ns/test_module_controller_routing_ns_other.tpl'
+        'test_module_controller_routing_ns.tpl' => 'test_module_controller_routing_ns.tpl',
+        'test_module_controller_routing_ns_other.tpl' => 'test_module_controller_routing_ns_other.tpl'
     ]
 );

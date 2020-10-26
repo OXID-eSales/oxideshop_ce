@@ -2866,12 +2866,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator'                  => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Module\ModuleValidatorFactory'                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,
         'isAbstract'       => false,

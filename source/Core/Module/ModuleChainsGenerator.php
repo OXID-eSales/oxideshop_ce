@@ -194,8 +194,8 @@ class ModuleChainsGenerator
     {
         $moduleStateService = $this->getModuleStateService();
         $moduleConfigurations = $this->getShopConfigurationDaoBridge()
-                                     ->get()
-                                     ->getModuleConfigurations();
+            ->get()
+            ->getModuleConfigurations();
 
         $disabledModuleIds = [];
 
@@ -379,7 +379,7 @@ class ModuleChainsGenerator
     {
         // We do actually have to check the whole inheritance chain in case two OXID modules each have an extension
         // on oxconfig. Checking for $requestedClass only would cover only one inheritance step.
-        
+
         $isConfigClass = false;
         $currentClass = $requestedClass;
         $safetyCount = 0;
@@ -493,7 +493,7 @@ class ModuleChainsGenerator
     private function getModuleActivationBridge(): ModuleActivationBridgeInterface
     {
         return $this->getContainer()
-                    ->get(ModuleActivationBridgeInterface::class);
+            ->get(ModuleActivationBridgeInterface::class);
     }
 
     /**
@@ -502,7 +502,7 @@ class ModuleChainsGenerator
     private function getModuleConfigurationDaoBridge(): ModuleConfigurationDaoBridgeInterface
     {
         return $this->getContainer()
-                    ->get(ModuleConfigurationDaoBridgeInterface::class);
+            ->get(ModuleConfigurationDaoBridgeInterface::class);
     }
 
     /**
@@ -511,7 +511,7 @@ class ModuleChainsGenerator
     private function getShopConfigurationDaoBridge(): ShopConfigurationDaoBridgeInterface
     {
         return $this->getContainer()
-                    ->get(ShopConfigurationDaoBridgeInterface::class);
+            ->get(ShopConfigurationDaoBridgeInterface::class);
     }
 
     /**

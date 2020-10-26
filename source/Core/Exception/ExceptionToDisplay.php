@@ -120,7 +120,7 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     {
         return $this->_aValues[$sName];
     }
-    
+
     /**
      * Returns all exception stored values
      *
@@ -130,7 +130,7 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     {
         return $this->_aValues;
     }
-    
+
     /**
      * Exception debug mode setter
      *

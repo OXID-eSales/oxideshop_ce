@@ -37,7 +37,7 @@ function smarty_compiler_defun($tag_args, &$compiler)
     $func = 'smarty_fun_' . $func_name;
     return $func_key . "if (!function_exists('$func')) { function $func(&\$this, \$params) { \$_fun_tpl_vars = \$this->_tpl_vars; \$this->assign(\$params); ";
 }
-    
+
 
 /* create code for closing a function definition and calling said function */
 function smarty_compiler_defun_close($tag_args, &$compiler)
@@ -88,7 +88,7 @@ function smarty_replace_fun($match)
 function smarty_postfilter_defun($source, &$compiler)
 {
     $search = '("' . md5('php-5') . '\[\[[0-9a-f]{32}";)';
-    if ((double)phpversion() >= 5.0) {
+    if ((float)phpversion() >= 5.0) {
         /* filter sourcecode. look for func_keys and replace all $this
            in-between with $smarty */
         while (1) {

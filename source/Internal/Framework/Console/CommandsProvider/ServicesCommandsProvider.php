@@ -40,7 +40,7 @@ class ServicesCommandsProvider implements CommandsProviderInterface
     {
         $this->addLazyLoadedCommands();
         $this->addIdCommands();
-        
+
         return $this->commands;
     }
 

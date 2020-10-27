@@ -2996,7 +2996,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTranslationPathFinder::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleValidatorFactory'                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,

@@ -40,6 +40,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber\DispatchLegacyEventsSubscriber::invalidateModuleCache`
   - Constant:
     -  `OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_CLASSES_WITHOUT_NAMESPACES`
+- `OxidEsales\EshopCommunity\Core\Module\ModuleTranslationPathFinder`
+- `OxidEsales\EshopCommunity\Core\Language`:
+    - Property: 
+        - `$_aActiveModuleInfo`
+        - `$_aDisabledModuleInfo`
+        - `$moduleTranslationPathFinder`
+    - Method:
+        - `_appendModuleLangFiles()`
+        - `_getActiveModuleInfo()`
+        - `_getDisabledModuleInfo()`
+        - `getModuleTranslationPathFinder()`
     
 ### Fixed
 - Impossible save module settings from the admin area if module has services.yaml [#0007180](https://bugs.oxid-esales.com/view.php?id=7180)

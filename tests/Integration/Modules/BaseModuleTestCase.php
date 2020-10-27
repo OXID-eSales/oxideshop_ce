@@ -118,10 +118,6 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
             );
         }
 
-        if (isset($expectedResult['templates'])) {
-            $this->assertTrue($validator->checkTemplates($expectedResult['templates']), 'Templates do not match expectations');
-        }
-
         if (isset($expectedResult['settings_values'])) {
             $this->assertTrue(
                 $validator->checkConfigValues($expectedResult['settings_values']),

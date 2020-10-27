@@ -159,7 +159,6 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             'aModulePaths',
             'aModuleEvents',
             'aModuleVersions',
-            'aModuleTemplates',
             'aModules',
             'aDisabledModules',
             'aModuleExtensions',

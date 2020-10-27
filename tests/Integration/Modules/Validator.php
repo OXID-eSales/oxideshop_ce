@@ -40,21 +40,6 @@ class Validator
     }
 
     /**
-     * Asserts that module templates match expected templates
-     *
-     * @param array $aExpectedTemplates
-     *
-     * @return bool
-     */
-    public function checkTemplates($aExpectedTemplates)
-    {
-        $aTemplatesToCheck = $this->getConfig()->getConfigParam('aModuleTemplates');
-        $aTemplatesToCheck = is_null($aTemplatesToCheck) ? array() : $aTemplatesToCheck;
-
-        return ($aExpectedTemplates == $aTemplatesToCheck);
-    }
-
-    /**
      * Asserts that module blocks match expected blocks
      *
      * @param array $aExpectedBlocks

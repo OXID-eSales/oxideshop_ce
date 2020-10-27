@@ -23,7 +23,6 @@ services:
     calls:
       - [addHandler, ['@oxid_esales.module.setup.path_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.version_module_setting_handler']]
-      - [addHandler, ['@oxid_esales.module.setup.templates_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.controllers_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.smarty_plugin_directories_module_setting_handler']]
       - [addHandler, ['@oxid_esales.module.setup.shop_configuration_class_extension_handler']]
@@ -41,11 +40,6 @@ services:
 
   oxid_esales.module.setup.path_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ModulePathHandler
-
-  oxid_esales.module.setup.templates_module_setting_handler:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\TemplatesModuleSettingHandler
-    arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface'
 
   oxid_esales.module.setup.controllers_module_setting_handler:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\ControllersModuleSettingHandler

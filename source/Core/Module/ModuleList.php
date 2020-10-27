@@ -218,16 +218,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get all modules templates paths
-     *
-     * @return array
-     */
-    public function getModuleTemplates()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleTemplates');
-    }
-
-    /**
      * Returns disabled module classes with path using config aModules
      * and aModulePaths.
      * aModules has all extended classes

@@ -123,7 +123,7 @@ class Environment
     {
         $config = Registry::getConfig();
         $config->setConfigParam('aModules', null);
-        $config->setConfigParam('aModuleTemplates', null);
+
         $config->setConfigParam('aDisabledModules', array());
         $config->setConfigParam('aModulePaths', array());
         $config->setConfigParam('aModuleVersions', null);
@@ -228,7 +228,7 @@ class Environment
     protected function loadShopParameters()
     {
         $aParameters = array(
-            'aModules', 'aModuleEvents', 'aModuleVersions', 'aDisabledModules', 'aModuleTemplates', 'aModuleControllers'
+            'aModules', 'aModuleEvents', 'aModuleVersions', 'aDisabledModules', 'aModuleControllers'
         );
         foreach ($aParameters as $sParameter) {
             Registry::getConfig()->setConfigParam($sParameter, $this->_getConfigValueFromDB($sParameter));

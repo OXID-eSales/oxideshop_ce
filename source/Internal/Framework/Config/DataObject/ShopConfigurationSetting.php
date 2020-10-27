@@ -16,7 +16,6 @@ class ShopConfigurationSetting
     public const MODULE_CONTROLLERS = 'aModuleControllers';
     public const MODULE_VERSIONS = 'aModuleVersions';
     public const MODULE_PATHS = 'aModulePaths';
-    public const MODULE_TEMPLATES = 'aModuleTemplates';
     public const MODULE_SMARTY_PLUGIN_DIRECTORIES = 'moduleSmartyPluginDirectories';
     public const MODULE_EVENTS = 'aModuleEvents';
     public const ACTIVE_MODULES = 'activeModules';

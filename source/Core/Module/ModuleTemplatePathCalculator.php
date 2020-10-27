@@ -15,6 +15,8 @@ use OxidEsales\Eshop\Core\Theme;
 /**
  * Forms path to module template.
  *
+ * @deprecated since v6.6.0. Functionality moved to Internal\Framework\Module package.
+ *
  * @internal Do not make a module extension for this class.
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */

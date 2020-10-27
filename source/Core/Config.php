@@ -1540,6 +1540,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Get module template calculator object
      *
+     * @deprecated since v6.6.0. ModuleTemplatePathCalculator will be completely removed in the next major.
+     *
      * @return ModuleTemplatePathCalculator
      */
     protected function getModuleTemplatePathCalculator()

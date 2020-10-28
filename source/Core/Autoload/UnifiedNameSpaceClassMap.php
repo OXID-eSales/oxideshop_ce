@@ -2990,7 +2990,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder'                   => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTranslationPathFinder::class,

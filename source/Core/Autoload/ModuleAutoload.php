@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Core\Autoload;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
+ * @deprecated 6.6 Will be removed completely
+ *
  * Autoloader for module classes and extensions.
  *
  * @internal Do not make a module extension for this class.

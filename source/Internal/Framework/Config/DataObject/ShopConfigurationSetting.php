@@ -19,6 +19,9 @@ class ShopConfigurationSetting
     public const MODULE_TEMPLATES = 'aModuleTemplates';
     public const MODULE_SMARTY_PLUGIN_DIRECTORIES = 'moduleSmartyPluginDirectories';
     public const MODULE_EVENTS = 'aModuleEvents';
+    /**
+     * @deprecated 6.6 Will be removed completely
+     */
     public const MODULE_CLASSES_WITHOUT_NAMESPACES = 'aModuleFiles';
     public const ACTIVE_MODULES = 'activeModules';
 

@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
+/**
+ * @deprecated 6.6 Will be removed completely
+ */
 class ClassWithoutNamespace
 {
     /**

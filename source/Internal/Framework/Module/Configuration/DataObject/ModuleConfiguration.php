@@ -541,6 +541,8 @@ class ModuleConfiguration
     }
 
     /**
+     * @deprecated 6.6 Will be removed completely
+     *
      * @param ClassWithoutNamespace $class
      *
      * @return $this
@@ -553,6 +555,8 @@ class ModuleConfiguration
     }
 
     /**
+     * @deprecated 6.6 Will be removed completely
+     *
      * @return ClassWithoutNamespace[]
      */
     public function getClassesWithoutNamespace(): array
@@ -561,6 +565,8 @@ class ModuleConfiguration
     }
 
     /**
+     * @deprecated 6.6 Will be removed completely
+     *
      * @return bool
      */
     public function hasClassWithoutNamespaces(): bool

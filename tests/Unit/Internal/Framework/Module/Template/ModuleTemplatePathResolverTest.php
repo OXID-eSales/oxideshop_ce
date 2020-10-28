@@ -11,8 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Templat
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplateKeyNotFound;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplateNotFound;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplateKeyNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplateNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplatePathResolver;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -50,7 +50,7 @@ final class ModuleTemplatePathResolverTest extends TestCase
             $filesystem->reveal()
         );
 
-        $this->expectException(ModuleTemplateNotFound::class);
+        $this->expectException(ModuleTemplateNotFoundException::class);
 
         $resolver->resolve('module1key2');
 
@@ -64,7 +64,7 @@ final class ModuleTemplatePathResolverTest extends TestCase
             $this->prophesize(Filesystem::class)->reveal()
         );
 
-        $this->expectException(ModuleTemplateKeyNotFound::class);
+        $this->expectException(ModuleTemplateKeyNotFoundException::class);
 
         $resolver->resolve('nonExistentKey');
     }

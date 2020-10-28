@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Template;
 
-class ModuleTemplateKeyNotFound extends \Exception
+class ModuleTemplateNotFoundException extends \Exception
 {
 
 }

@@ -44,7 +44,7 @@ class ModuleTemplatePathResolver implements ModuleTemplatePathResolverInterface
             }
         }
 
-        throw new ModuleTemplateKeyNotFound(
+        throw new ModuleTemplateKeyNotFoundException(
             "Module template with key $templateKey not found."
         );
     }
@@ -57,7 +57,7 @@ class ModuleTemplatePathResolver implements ModuleTemplatePathResolverInterface
     private function validateTemplatePath(string $fullTemplatePath): void
     {
         if (!$this->filesystem->exists($fullTemplatePath)) {
-            throw new ModuleTemplateNotFound("Module template $fullTemplatePath not found.");
+            throw new ModuleTemplateNotFoundException("Module template $fullTemplatePath not found.");
         }
     }
 }

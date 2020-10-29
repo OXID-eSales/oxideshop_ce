@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Add remove module configuration command
 - Support symfony's optional class for named services
+- Add index to oxuser:oxrights to fix performance issue for oxuser table
 
 ### Changed
 - Streamlined lang files for work with translation platforms [PR-833](https://github.com/OXID-eSales/oxideshop_ce/pull/833)

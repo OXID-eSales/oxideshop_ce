@@ -200,9 +200,9 @@ class SystemEventHandler
     protected function sendShopInformation()
     {
         if ($this->needToSendShopInformation()) {
+            $this->updateNextCheckTime();
             $onlineLicenseCheck = $this->getOnlineLicenseCheck();
             $onlineLicenseCheck->validateShopSerials();
-            $this->updateNextCheckTime();
         }
     }
 

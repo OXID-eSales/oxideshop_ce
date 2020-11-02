@@ -84,6 +84,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Active module Ids and paths array
      *
      * @var array
+     * @deprecated 6.6.0
      */
     protected $_aActiveModuleInfo = null;
 
@@ -91,6 +92,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Disabled module Ids and paths array
      *
      * @var array
+     * @deprecated 6.6.0
      */
     protected $_aDisabledModuleInfo = null;
 
@@ -112,6 +114,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * The module translation path finder.
      *
      * @var \OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder
+     * @deprecated 6.6.0
      */
     protected $moduleTranslationPathFinder = null;
 
@@ -938,7 +941,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blForAdmin   add files for admin
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "appendModuleLangFiles" in next major
+     * @deprecated 6.6.0
      */
     protected function _appendModuleLangFiles($aLangFiles, $aModulePaths, $sLang, $blForAdmin = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1334,7 +1337,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Returns active module Ids with paths
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveModuleInfo" in next major
+     * @deprecated 6.6.0
      */
     protected function _getActiveModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1350,7 +1353,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Returns active module Ids with paths
      *
      * @return array
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDisabledModuleInfo" in next major
+     * @deprecated 6.6.0
      */
     protected function _getDisabledModuleInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -1531,6 +1534,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Getter for the module translation path finder.
      *
      * @return \OxidEsales\Eshop\Core\Module\ModuleTranslationPathFinder The module translation finder.
+     * @deprecated 6.6.0
      */
     protected function getModuleTranslationPathFinder()
     {

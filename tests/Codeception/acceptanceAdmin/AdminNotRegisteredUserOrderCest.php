@@ -39,6 +39,8 @@ final class AdminNotRegisteredUserOrderCest
 
         $productsTab = $orders->openProductsTab();
         $productsTab = $productsTab->addANewProductToTheOrder("1002-1");
+
+        $I->waitForElement($productsTab->secondProductInProductTab);
         $I->see("1002-1", $productsTab->secondProductInProductTab);
     }
 

@@ -31,7 +31,8 @@
         "symfony/finder": "^5.0.4",
         "symfony/filesystem": "^5.0.4",
         "codeception/module-webdriver": "^1.0",
-        "codeception/module-db": "^1.0"
+        "codeception/module-db": "^1.0",
+        "symplify/easy-coding-standard-prefixed": "^8.3"
     },
     "require-dev": {
         "oxid-esales/flow-theme": "dev-master",

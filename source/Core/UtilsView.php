@@ -11,12 +11,11 @@ use oxException;
 use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader;
-use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter;
 use OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryRepository;
 use OxidEsales\Eshop\Core\ShopIdCalculator as EshopShopIdCalculator;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
@@ -503,31 +502,6 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Retrieve module block contents from active module block file.
-     *
-     * @param string $moduleId active module id.
-     * @param string $fileName module block file name.
-     *
-     * @deprecated since v6.0.0 (2016-04-13); Use ModuleTemplateBlockContentReader::getContent().
-     *
-     * @see getTemplateBlocks
-     * @throws oxException if block is not found
-     *
-     * @return string
-     */
-    protected function _getTemplateBlock($moduleId, $fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $pathFormatter = oxNew(ModuleTemplateBlockPathFormatter::class);
-        $pathFormatter->setModulesPath(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir());
-        $pathFormatter->setModuleId($moduleId);
-        $pathFormatter->setFileName($fileName);
-
-        $blockContentReader = oxNew(ModuleTemplateBlockContentReader::class);
-
-        return $blockContentReader->getContent($pathFormatter);
-    }
-
-    /**
      * Template blocks getter: retrieve sorted blocks for overriding in templates
      *
      * @param string $templateFileName filename of rendered template
@@ -802,7 +776,13 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
                 if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
                     $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = [];
                 }
-                $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);
+                $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this
+                    ->getContainer()
+                    ->get(TemplateBlockLoaderBridgeInterface::class)
+                    ->getContent(
+                        $activeBlockTemplate['OXFILE'],
+                        $activeBlockTemplate['OXMODULE']
+                    );
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
                 \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
             }

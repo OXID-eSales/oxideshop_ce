@@ -2848,18 +2848,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockContentReader'              => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockPathFormatter'              => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository'                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository::class,
         'isAbstract'       => false,

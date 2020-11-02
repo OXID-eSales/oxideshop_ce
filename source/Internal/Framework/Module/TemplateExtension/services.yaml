@@ -5,3 +5,12 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDao
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderBridge
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoaderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockLoader
+    arguments:
+      $filesystem: '@oxid_esales.symfony.file_system'

@@ -8,8 +8,13 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use oxDb;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxUtilsView;
+use Webmozart\PathUtil\Path;
 
 /**
  * @group module
@@ -18,7 +23,7 @@ use oxUtilsView;
 class ModuleTemplateBlocksTest extends UnitTestCase
 {
     private $shopTemplateName = 'filename.tpl';
-    private $activeShopId = '15';
+    private $activeShopId = '1';
     private $activeModuleId = 'module1';
 
     /**
@@ -105,6 +110,7 @@ class ModuleTemplateBlocksTest extends UnitTestCase
     {
         $this->setAdminMode($isAdminMode);
 
+        $this->prepareTestModuleConfiguration();
         $this->insertTemplateBlocks();
 
         $blocksGetter = $this->getUtilsView($themeId, $customThemeId);
@@ -143,7 +149,7 @@ class ModuleTemplateBlocksTest extends UnitTestCase
     {
         $shopPath = implode(DIRECTORY_SEPARATOR, [__DIR__, 'TestData', 'shop']) . DIRECTORY_SEPARATOR;
 
-        $this->setShopId(15);
+        $this->setShopId(1);
         $this->setConfigParam('sShopDir', $shopPath);
         $this->setConfigParam('sTheme', $themeId);
         $this->setConfigParam('sCustomTheme', $customThemeId);
@@ -217,5 +223,26 @@ class ModuleTemplateBlocksTest extends UnitTestCase
             OXMODULE = '{$this->activeModuleId}',
             OXTIMESTAMP = '2016-04-14 08:09:00'
         ");
+    }
+
+    private function prepareTestModuleConfiguration(): void
+    {
+        $fullModulePath = __DIR__ . '/TestData/shop/modules/oe/testTemplateBlockModuleId/';
+
+        $relativeModulePath = Path::makeRelative(
+            $fullModulePath,
+            (new Facts())->getShopRootPath()
+        );
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration
+            ->setId($this->activeModuleId)
+            ->setPath('somePath')
+            ->setModuleSource($relativeModulePath);
+
+        ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleConfigurationDaoBridgeInterface::class)
+            ->save($moduleConfiguration);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,7 +14,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * - missing class
  * - missing function
  * - missing template
- * - missing field in object
+ * - missing field in object.
  */
 class SystemComponentException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
@@ -35,13 +37,13 @@ class SystemComponentException extends \OxidEsales\Eshop\Core\Exception\Standard
      *
      * @param string $sComponent name of component
      */
-    public function setComponent($sComponent)
+    public function setComponent($sComponent): void
     {
         $this->_sComponent = $sComponent;
     }
 
     /**
-     * Name of the component that caused the exception
+     * Name of the component that caused the exception.
      *
      * @return string
      */
@@ -52,13 +54,13 @@ class SystemComponentException extends \OxidEsales\Eshop\Core\Exception\Standard
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */
     public function getString()
     {
-        return __CLASS__ . '-' . parent::getString() . " Faulty component --> " . $this->_sComponent;
+        return __CLASS__ . '-' . parent::getString() . ' Faulty component --> ' . $this->_sComponent;
     }
 
     /**

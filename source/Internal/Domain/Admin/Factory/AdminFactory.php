@@ -13,8 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidRightsException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidShopException;
-use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
 
 class AdminFactory implements AdminFactoryInterface
@@ -45,11 +45,6 @@ class AdminFactory implements AdminFactoryInterface
     }
 
     /**
-     * @param string $email
-     * @param string $password
-     * @param string $rights
-     * @param int $shopId
-     * @return Admin
      * @throws InvalidEmailException
      * @throws InvalidRightsException
      * @throws InvalidShopException
@@ -85,9 +80,9 @@ class AdminFactory implements AdminFactoryInterface
     private function checkRights(string $rights): void
     {
         if (
-            $rights != Admin::MALL_ADMIN &&
+            Admin::MALL_ADMIN !== $rights &&
             !is_numeric($rights) &&
-            !$this->shopAdapter->validateShopId((int) $rights)
+            !$this->shopAdapter->validateShopId((int)$rights)
         ) {
             throw new InvalidRightsException($rights);
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,24 +19,26 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sThisTemplate = "category_update.tpl";
+    protected $_sThisTemplate = 'category_update.tpl';
 
     /**
-     * Category list object
+     * Category list object.
      *
      * @var \OxidEsales\Eshop\Application\Model\CategoryList
      */
     protected $_oCatList = null;
 
     /**
-     * Returns category list object
+     * Returns category list object.
      *
      * @return \OxidEsales\Eshop\Application\Model\CategoryList
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryList" in next major
      */
-    protected function _getCategoryList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getCategoryList()
     {
-        if ($this->_oCatList == null) {
+        if (null === $this->_oCatList) {
             $this->_oCatList = oxNew(\OxidEsales\Eshop\Application\Model\CategoryList::class);
             $this->_oCatList->updateCategoryTree(false);
         }
@@ -43,7 +47,7 @@ class CategoryUpdate extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     }
 
     /**
-     * Returns category list object
+     * Returns category list object.
      *
      * @return array
      */

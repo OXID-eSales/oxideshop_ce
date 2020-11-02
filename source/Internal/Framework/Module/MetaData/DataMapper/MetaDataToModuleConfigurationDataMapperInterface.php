@@ -13,10 +13,5 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface MetaDataToModuleConfigurationDataMapperInterface
 {
-    /**
-     * @param array $metaData
-     *
-     * @return ModuleConfiguration
-     */
     public function fromData(array $metaData): ModuleConfiguration;
 }

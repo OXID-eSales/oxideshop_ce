@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
@@ -51,13 +51,6 @@ class ModuleActivationService implements ModuleActivationServiceInterface
 
     /**
      * ModuleActivationService constructor.
-     *
-     * @param ModuleConfigurationDaoInterface             $moduleConfigurationDao
-     * @param EventDispatcherInterface                    $eventDispatcher
-     * @param ModuleConfigurationHandlingServiceInterface $moduleSettingsHandlingService
-     * @param ModuleStateServiceInterface                 $stateService
-     * @param ExtensionChainServiceInterface              $classExtensionChainService
-     * @param ModuleServicesActivationServiceInterface    $moduleServicesActivationService
      */
     public function __construct(
         ModuleConfigurationDaoInterface $moduleConfigurationDao,
@@ -75,17 +68,13 @@ class ModuleActivationService implements ModuleActivationServiceInterface
         $this->moduleServicesActivationService = $moduleServicesActivationService;
     }
 
-
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
      * @throws ModuleSetupException
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
      */
-    public function activate(string $moduleId, int $shopId)
+    public function activate(string $moduleId, int $shopId): void
     {
-        if ($this->stateService->isActive($moduleId, $shopId) === true) {
+        if (true === $this->stateService->isActive($moduleId, $shopId)) {
             throw new ModuleSetupException('Module with id "' . $moduleId . '" is already active.');
         }
 
@@ -109,15 +98,12 @@ class ModuleActivationService implements ModuleActivationServiceInterface
     }
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
      * @throws ModuleSetupException
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
      */
-    public function deactivate(string $moduleId, int $shopId)
+    public function deactivate(string $moduleId, int $shopId): void
     {
-        if ($this->stateService->isActive($moduleId, $shopId) === false) {
+        if (false === $this->stateService->isActive($moduleId, $shopId)) {
             throw new ModuleSetupException('Module with id "' . $moduleId . '" is not active.');
         }
 

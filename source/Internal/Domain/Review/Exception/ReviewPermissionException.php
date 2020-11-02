@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Exception;
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class ReviewPermissionException extends \Exception

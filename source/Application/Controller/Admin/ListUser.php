@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,12 +17,14 @@ use oxAdminList;
 class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
 {
     /**
-     * Viewable list size getter
+     * Viewable list size getter.
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getViewListSize" in next major
      */
-    protected function _getViewListSize() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getViewListSize()
     {
         return $this->_getUserDefListSize();
     }
@@ -29,7 +33,7 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
      * Sets SQL query parameters (such as sorting),
      * executes parent method parent::Init().
      */
-    public function init()
+    public function init(): void
     {
         oxAdminList::init();
     }
@@ -43,8 +47,8 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
     public function render()
     {
         parent::render();
-        $this->_aViewData["menustructure"] = $this->getNavigation()->getDomXml()->documentElement->childNodes;
+        $this->_aViewData['menustructure'] = $this->getNavigation()->getDomXml()->documentElement->childNodes;
 
-        return "list_user.tpl";
+        return 'list_user.tpl';
     }
 }

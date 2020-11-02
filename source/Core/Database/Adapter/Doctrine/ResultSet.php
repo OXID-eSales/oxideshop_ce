@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,14 +15,12 @@ use OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface;
 /**
  * The doctrine statement wrapper, to support the old adodblite interface.
  *
- * @package OxidEsales\EshopCommunity\Core\Database\Adapter
- *
  * @deprecated since v6.5.0 (2019-09-24); Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
  */
 class ResultSet implements \IteratorAggregate, ResultSetInterface
 {
     /**
-     * @var array Holds the retrieved fields of the resultSet row on the current cursor position.
+     * @var array holds the retrieved fields of the resultSet row on the current cursor position
      */
     public $fields;
 
@@ -30,19 +30,19 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     public $EOF;
 
     /**
-     * @var Statement The doctrine adapted statement.
+     * @var Statement the doctrine adapted statement
      */
     protected $statement;
 
     /**
-     * @var int The current cursor position.
+     * @var int the current cursor position
      */
     private $currentRow = 0;
 
     /**
      * DoctrineResultSet constructor.
      *
-     * @param Statement $statement The statement we want to wrap in this class.
+     * @param Statement $statement the statement we want to wrap in this class
      */
     public function __construct(Statement $statement)
     {
@@ -51,7 +51,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
         $this->EOF = false;
         $this->currentRow = 0;
 
-        if ($this->count() == 0) {
+        if (0 === $this->count()) {
             $this->setToEmptyState();
         }
 
@@ -59,9 +59,9 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function close()
+    public function close(): void
     {
         $this->getStatement()->closeCursor();
         $this->fields = [];
@@ -85,7 +85,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     }
 
     /**
-     * Returns an array containing all of the result set rows
+     * Returns an array containing all of the result set rows.
      *
      * @return array
      */
@@ -100,7 +100,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * Returns the number of columns in the result set.
      *
-     * @return int The number of columns.
+     * @return int the number of columns
      */
     public function fieldCount()
     {
@@ -121,7 +121,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     }
 
     /**
-     * Returns fields array
+     * Returns fields array.
      *
      * @return array containing the retrieved fields of the resultSet row
      */
@@ -133,7 +133,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * Getter for the adapted statement.
      *
-     * @return Statement The adapted statement.
+     * @return Statement the adapted statement
      */
     protected function getStatement()
     {
@@ -143,9 +143,9 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * Setter for the adapted statement.
      *
-     * @param Statement $statement The adapted statement.
+     * @param Statement $statement the adapted statement
      */
-    protected function setStatement(Statement $statement)
+    protected function setStatement(Statement $statement): void
     {
         $this->statement = $statement;
     }
@@ -153,9 +153,9 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
     /**
      * Set the state of this wrapper to 'empty'.
      */
-    protected function setToEmptyState()
+    protected function setToEmptyState(): void
     {
-        /** The following properties change the value for an  empty result set */
+        /* The following properties change the value for an  empty result set */
         $this->EOF = true;
     }
 
@@ -163,7 +163,7 @@ class ResultSet implements \IteratorAggregate, ResultSetInterface
      * Count elements of an object
      * This method is executed when using the count() function on an object implementing Countable.
      *
-     *  @return int The number of rows retrieved by the current statement.
+     *  @return int the number of rows retrieved by the current statement
      */
     public function count()
     {

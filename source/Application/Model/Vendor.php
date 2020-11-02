@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,11 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-
 /**
- * Vendor manager
+ * Vendor manager.
  */
 class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
@@ -23,42 +22,42 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     protected $_sClassName = 'oxvendor';
 
     /**
-     * Marker to load vendor article count info
+     * Marker to load vendor article count info.
      *
      * @var bool
      */
     protected $_blShowArticleCnt = false;
 
     /**
-     * Vendor article count (default is -1, which means not calculated)
+     * Vendor article count (default is -1, which means not calculated).
      *
      * @var int
      */
     protected $_iNrOfArticles = -1;
 
     /**
-     * Marks that current object is managed by SEO
+     * Marks that current object is managed by SEO.
      *
      * @var bool
      */
     protected $_blIsSeoObject = true;
 
     /**
-     * Visibility of a vendor
+     * Visibility of a vendor.
      *
      * @var int
      */
     protected $_blIsVisible;
 
     /**
-     * has visible endors state of a category
+     * has visible endors state of a category.
      *
      * @var int
      */
     protected $_blHasVisibleSubCats;
 
     /**
-     * Seo article urls for languages
+     * Seo article urls for languages.
      *
      * @var array
      */
@@ -75,11 +74,11 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * Marker to load vendor article count info setter
+     * Marker to load vendor article count info setter.
      *
      * @param bool $blShowArticleCount Marker to load vendor article count
      */
-    public function setShowArticleCnt($blShowArticleCount = false)
+    public function setShowArticleCnt($blShowArticleCount = false): void
     {
         $this->_blShowArticleCnt = $blShowArticleCount;
     }
@@ -89,7 +88,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      *
      * @param array $dbRecord parameters/values
      */
-    public function assign($dbRecord)
+    public function assign($dbRecord): void
     {
         parent::assign($dbRecord);
 
@@ -111,7 +110,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      */
     public function load($sOxid)
     {
-        if ($sOxid == 'root') {
+        if ('root' === $sOxid) {
             return $this->_setRootObjectData();
         }
 
@@ -119,9 +118,10 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * Sets root vendor data. Returns true
+     * Sets root vendor data. Returns true.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setRootObjectData" in next major
      */
     protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -135,7 +135,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * Returns raw content seo url
+     * Returns raw content seo url.
      *
      * @param int $iLang language id
      * @param int $iPage page number [optional]
@@ -153,7 +153,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * Returns vendor link Url
+     * Returns vendor link Url.
      *
      * @param int $iLang language id [optional]
      *
@@ -165,7 +165,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
             return $this->getStdLink($iLang);
         }
 
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = $this->getLanguage();
         }
 
@@ -177,7 +177,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * Returns base dynamic url: shopurl/index.php?cl=details
+     * Returns base dynamic url: shopurl/index.php?cl=details.
      *
      * @param int  $iLang   language id
      * @param bool $blAddId add current object id to url or not
@@ -193,11 +193,11 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
             $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
-        return $sUrl . "index.php?cl=vendorlist" . ($blAddId ? "&amp;cnid=v_" . $this->getId() : "");
+        return $sUrl . 'index.php?cl=vendorlist' . ($blAddId ? '&amp;cnid=v_' . $this->getId() : '');
     }
 
     /**
-     * Returns standard URL to vendor
+     * Returns standard URL to vendor.
      *
      * @param int   $iLang   language
      * @param array $aParams additional params to use [optional]
@@ -206,7 +206,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
      */
     public function getStdLink($iLang = null, $aParams = [])
     {
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = $this->getLanguage();
         }
 
@@ -214,9 +214,9 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * returns number or articles of this vendor
+     * returns number or articles of this vendor.
      *
-     * @return integer
+     * @return int
      */
     public function getNrOfArticles()
     {
@@ -228,14 +228,14 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * returns the sub category array
+     * returns the sub category array.
      */
-    public function getSubCats()
+    public function getSubCats(): void
     {
     }
 
     /**
-     * returns the visibility of a vendor
+     * returns the visibility of a vendor.
      *
      * @return bool
      */
@@ -245,17 +245,17 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * sets the visibilty of a category
+     * sets the visibilty of a category.
      *
      * @param bool $blVisible vendors visibility status setter
      */
-    public function setIsVisible($blVisible)
+    public function setIsVisible($blVisible): void
     {
         $this->_blIsVisible = $blVisible;
     }
 
     /**
-     * returns if a vendor has visible sub categories
+     * returns if a vendor has visible sub categories.
      *
      * @return bool
      */
@@ -269,19 +269,19 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * sets the state of has visible sub vendors
+     * sets the state of has visible sub vendors.
      *
      * @param bool $blHasVisibleSubcats marker if vendor has visible subcategories
      */
-    public function setHasVisibleSubCats($blHasVisibleSubcats)
+    public function setHasVisibleSubCats($blHasVisibleSubcats): void
     {
         $this->_blHasVisibleSubCats = $blHasVisibleSubcats;
     }
 
     /**
-     * Empty method, called in templates when vendor is used in same code like category
+     * Empty method, called in templates when vendor is used in same code like category.
      */
-    public function getContentCats()
+    public function getContentCats(): void
     {
     }
 
@@ -303,9 +303,8 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
         return false;
     }
 
-
     /**
-     * Returns article picture
+     * Returns article picture.
      *
      * @return string
      */
@@ -318,12 +317,12 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("vendor/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl('vendor/icon/', $sIcon, $sSize);
         }
     }
 
     /**
-     * Returns category thumbnail picture url if exist, false - if not
+     * Returns category thumbnail picture url if exist, false - if not.
      *
      * @return mixed
      */
@@ -333,7 +332,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * Returns vendor title
+     * Returns vendor title.
      *
      * @return string
      */
@@ -343,7 +342,7 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
     /**
-     * Returns short description
+     * Returns short description.
      *
      * @return string
      */

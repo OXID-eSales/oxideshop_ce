@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
 
@@ -23,12 +24,12 @@ function isAdmin()
  * Displays 'nice' HTML formatted user error.
  * Later this method is hooked as error handler by calling set_error_handler('warningHandler', E_USER_WARNING);
  * #T2008-07-22
- * Not used yet
+ * Not used yet.
  *
  * @param int    $iErrorNr   error number
  * @param string $sErrorText error message
  */
-function warningHandler($iErrorNr, $sErrorText)
+function warningHandler($iErrorNr, $sErrorText): void
 {
     echo "<div class='error_box'>" . Registry::getLang()->translateString('userError') . "<code>[$iErrorNr] " .
          "$sErrorText</code></div>";
@@ -40,12 +41,12 @@ function warningHandler($iErrorNr, $sErrorText)
  * @param mixed $mVar     variable
  * @param bool  $blToFile marker to write log info to file (must be true to log)
  */
-function dumpVar($mVar, $blToFile = false)
+function dumpVar($mVar, $blToFile = false): void
 {
     $myConfig = Registry::getConfig();
     if ($blToFile) {
         $out = var_export($mVar, true);
-        $f = fopen($myConfig->getConfigParam('sCompileDir') . "/vardump.txt", "a");
+        $f = fopen($myConfig->getConfigParam('sCompileDir') . '/vardump.txt', 'a');
         fwrite($f, $out);
         fclose($f);
     } else {
@@ -56,31 +57,31 @@ function dumpVar($mVar, $blToFile = false)
 }
 
 /**
- * prints anything given into a file, for debugging
+ * prints anything given into a file, for debugging.
  *
  * @param mixed $mVar variable to debug
  */
-function debug($mVar)
+function debug($mVar): void
 {
     $f = fopen('out.txt', 'a');
     $sString = var_export($mVar, true);
-    fputs($f, $sString . "\n---------------------------------------------\n");
+    fwrite($f, $sString . "\n---------------------------------------------\n");
     fclose($f);
 }
 
 /**
- * Sorting for crossselling
+ * Sorting for crossselling.
  *
  * @param object $a first compare item
  * @param object $b second compre item
  *
  * @deprecated since v6.0.0 (2016-05-16); Moved as anonymous function to Article class.
  *
- * @return integer
+ * @return int
  */
 function cmpart($a, $b)
 {
-    if ($a->cnt == $b->cnt) {
+    if ($a->cnt === $b->cnt) {
         return 0;
     }
 
@@ -92,22 +93,23 @@ function cmpart($a, $b)
  * error message.
  *
  * @template T
+ *
  * @param class-string<T> $className
- * param mixed  ...$args   constructor arguments
+ *                                   param mixed  ...$args   constructor arguments
  *
  * @return T
  */
 function oxNew($className, ...$args)
 {
     startProfile('oxNew');
-    $object = call_user_func_array([UtilsObject::getInstance(), "oxNew"], array_merge([$className], $args));
+    $object = call_user_func_array([UtilsObject::getInstance(), 'oxNew'], array_merge([$className], $args));
     stopProfile('oxNew');
 
     return $object;
 }
 
 /**
- * Returns current DB handler
+ * Returns current DB handler.
  *
  * @param bool $blAssoc data fetch mode
  *
@@ -121,7 +123,7 @@ function getDb($blAssoc = true)
 }
 
 /**
- * Returns string handler
+ * Returns string handler.
  *
  * @deprecated since v6.0.0 (2016-05-16); Use \OxidEsales\Eshop\Core\Str::getStr().
  *
@@ -136,7 +138,6 @@ function getStr()
  * Sets template content from cache. In demoshop enables security mode.
  *
  * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
- *
  * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName    name of template
@@ -160,7 +161,6 @@ function ox_get_template($sTplName, &$sTplSource, $oSmarty)
  * Otherwise templates will always be compiled.
  *
  * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
- *
  * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName       name of template
@@ -180,7 +180,6 @@ function ox_get_timestamp($sTplName, &$iTplTimestamp, $oSmarty)
  * Dummy function, required for smarty plugin registration.
  *
  * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
- *
  * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName not used here
@@ -197,12 +196,11 @@ function ox_get_secure($sTplName, $oSmarty)
  * Dummy function, required for smarty plugin registration.
  *
  * @deprecated since v6.4 (2019-10-10); Use TemplateRendererBridgeInterface
- *
  * @see http://www.smarty.net/docsv2/en/template.resources.tpl
  *
  * @param string $sTplName not used here
  * @param object $oSmarty  not used here
  */
-function ox_get_trusted($sTplName, $oSmarty)
+function ox_get_trusted($sTplName, $oSmarty): void
 {
 }

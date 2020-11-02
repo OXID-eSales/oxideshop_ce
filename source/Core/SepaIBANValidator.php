@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,16 +12,16 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Str;
 
 /**
- * SEPA (Single Euro Payments Area) validation class
+ * SEPA (Single Euro Payments Area) validation class.
  */
 class SepaIBANValidator
 {
-    const IBAN_ALGORITHM_MOD_VALUE = 97;
+    public const IBAN_ALGORITHM_MOD_VALUE = 97;
 
     protected $_aCodeLengths = [];
 
     /**
-     * International bank account number validation
+     * International bank account number validation.
      *
      * An IBAN is validated by converting it into an integer and performing a basic mod-97 operation (as described in ISO 7064) on it.
      * If the IBAN is valid, the remainder equals 1.
@@ -41,7 +43,7 @@ class SepaIBANValidator
     }
 
     /**
-     * Validation of IBAN registry
+     * Validation of IBAN registry.
      *
      * @param array $aCodeLengths
      *
@@ -58,7 +60,7 @@ class SepaIBANValidator
     }
 
     /**
-     * Set IBAN Registry
+     * Set IBAN Registry.
      *
      * @param array $aCodeLengths
      *
@@ -76,7 +78,7 @@ class SepaIBANValidator
     }
 
     /**
-     * Get IBAN length by country data
+     * Get IBAN length by country data.
      *
      * @return array
      */
@@ -85,13 +87,13 @@ class SepaIBANValidator
         return $this->_aCodeLengths;
     }
 
-
     /**
      * Check if the total IBAN length is correct as per country. If not, the IBAN is invalid.
      *
      * @param string $sIBAN IBAN
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isLengthValid" in next major
      */
     protected function _isLengthValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -100,16 +102,14 @@ class SepaIBANValidator
 
         $iCorrectLength = $this->_getLengthForCountry($sIBAN);
 
-        return !is_null($iCorrectLength) && $iActualLength === $iCorrectLength;
+        return null !== $iCorrectLength && $iActualLength === $iCorrectLength;
     }
-
 
     /**
      * Gets length for country.
      *
      * @param string $sIBAN IBAN
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "getLengthForCountry" in next major
      */
     protected function _getLengthForCountry($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -118,17 +118,16 @@ class SepaIBANValidator
 
         $sCountryCode = Str::getStr()->substr($sIBAN, 0, 2);
 
-        $iCorrectLength = (isset($aIBANRegistry[$sCountryCode])) ? $aIBANRegistry[$sCountryCode] : null;
-
-        return $iCorrectLength;
+        return (isset($aIBANRegistry[$sCountryCode])) ? $aIBANRegistry[$sCountryCode] : null;
     }
 
     /**
-     * Checks if IBAN is valid according to checksum algorithm
+     * Checks if IBAN is valid according to checksum algorithm.
      *
      * @param string $sIBAN IBAN
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isAlgorithmValid" in next major
      */
     protected function _isAlgorithmValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -146,6 +145,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "moveInitialCharactersToEnd" in next major
      */
     protected function _moveInitialCharactersToEnd($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -164,6 +164,7 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "replaceLettersToNumbers" in next major
      */
     protected function _replaceLettersToNumbers($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -194,7 +195,7 @@ class SepaIBANValidator
             'W' => 32,
             'X' => 33,
             'Y' => 34,
-            'Z' => 35
+            'Z' => 35,
         ];
 
         return str_replace(
@@ -210,24 +211,26 @@ class SepaIBANValidator
      * @param string $sIBAN IBAN
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isIBANChecksumValid" in next major
      */
     protected function _isIBANChecksumValid($sIBAN) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (int) bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE) === 1;
+        return 1 === (int)bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE);
     }
 
     /**
-     * Checks if Code length is non empty array
+     * Checks if Code length is non empty array.
      *
      * @param array $aCodeLengths Code lengths
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isNotEmptyArray" in next major
      */
     protected function _isNotEmptyArray($aCodeLengths) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return is_array($aCodeLengths) && !empty($aCodeLengths);
+        return \is_array($aCodeLengths) && !empty($aCodeLengths);
     }
 
     /**
@@ -236,6 +239,7 @@ class SepaIBANValidator
      * @param array $aCodeLengths Code lengths
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isEachCodeLengthValid" in next major
      */
     protected function _isEachCodeLengthValid($aCodeLengths) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -256,28 +260,30 @@ class SepaIBANValidator
     }
 
     /**
-     * Checks if country code is valid
+     * Checks if country code is valid.
      *
      * @param string $sCountryAbbr Country abbreviation
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isCodeLengthKeyValid" in next major
      */
     protected function _isCodeLengthKeyValid($sCountryAbbr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (int) preg_match("/^[A-Z]{2}$/", $sCountryAbbr) !== 0;
+        return 0 !== (int)preg_match('/^[A-Z]{2}$/', $sCountryAbbr);
     }
 
     /**
-     * Checks if value is numeric and does not contain whitespaces
+     * Checks if value is numeric and does not contain whitespaces.
      *
-     * @param integer $iLength Length
+     * @param int $iLength Length
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isCodeLengthValueValid" in next major
      */
     protected function _isCodeLengthValueValid($iLength) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return is_numeric($iLength) && (int) preg_match("/\./", $iLength) !== 1;
+        return is_numeric($iLength) && 1 !== (int)preg_match("/\./", $iLength);
     }
 }

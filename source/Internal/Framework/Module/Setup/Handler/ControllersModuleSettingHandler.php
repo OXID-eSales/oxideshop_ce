@@ -12,26 +12,23 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
+    /**
+     * @var ShopConfigurationSettingDaoInterface
+     */
     private $shopConfigurationSettingDao;
 
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasControllers()) {
             $shopControllers = $this->getShopConfigurationSetting($shopId);
@@ -51,11 +48,7 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         $shopControllers = $this->getShopConfigurationSetting($shopId);
 
@@ -67,10 +60,6 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
         $this->shopConfigurationSettingDao->save($shopControllers);
     }
 
-    /**
-     * @param array $controllers
-     * @return array
-     */
     private function controllerKeysToLowercase(array $controllers): array
     {
         $result = [];
@@ -82,10 +71,6 @@ class ControllersModuleSettingHandler implements ModuleConfigurationHandlerInter
         return $result;
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
     private function getShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {

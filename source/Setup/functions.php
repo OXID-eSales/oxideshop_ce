@@ -1,28 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
-use OxidEsales\Facts\Facts;
 use OxidEsales\EshopProfessional\Core\Serial;
+use OxidEsales\Facts\Facts;
 
 if (!function_exists('getInstallPath')) {
     /**
-     * Returns shop installation directory
+     * Returns shop installation directory.
      *
      * @return string
      */
     function getInstallPath()
     {
-        return "../";
+        return '../';
     }
 }
 
 if (!function_exists('getSystemReqCheck')) {
     /**
-     * Returns class responsible for system requirements check
+     * Returns class responsible for system requirements check.
      *
      * @return \OxidEsales\EshopEnterprise\Core\SystemRequirements|\OxidEsales\EshopProfessional\Core\SystemRequirements|\OxidEsales\EshopCommunity\Core\SystemRequirements
      */
@@ -43,9 +45,7 @@ if (!function_exists('getSystemReqCheck')) {
 
 if (!function_exists('getCountryList')) {
     /**
-     * Includes country list for setup
-     *
-     * @return null
+     * Includes country list for setup.
      */
     function getCountryList()
     {
@@ -61,9 +61,7 @@ if (!function_exists('getCountryList')) {
 
 if (!function_exists('getLocation')) {
     /**
-     * Includes country list for setup
-     *
-     * @return null
+     * Includes country list for setup.
      */
     function getLocation()
     {
@@ -79,9 +77,7 @@ if (!function_exists('getLocation')) {
 
 if (!function_exists('getLanguages')) {
     /**
-     * Includes country list for setup
-     *
-     * @return null
+     * Includes country list for setup.
      */
     function getLanguages()
     {
@@ -97,7 +93,7 @@ if (!function_exists('getLanguages')) {
 
 if (!function_exists('getDefaultFileMode')) {
     /**
-     * Returns mode which must be set for files or folders
+     * Returns mode which must be set for files or folders.
      *
      * @return int
      */
@@ -109,7 +105,7 @@ if (!function_exists('getDefaultFileMode')) {
 
 if (!function_exists('getDefaultConfigFileMode')) {
     /**
-     * Returns mode which must be set for config file
+     * Returns mode which must be set for config file.
      *
      * @return int
      */
@@ -121,7 +117,7 @@ if (!function_exists('getDefaultConfigFileMode')) {
 
 if (!function_exists('getSerial') && class_exists(Serial::class)) {
     /**
-     * Creates and returns oxSerial object
+     * Creates and returns oxSerial object.
      *
      * @return Serial
      */
@@ -133,7 +129,7 @@ if (!function_exists('getSerial') && class_exists(Serial::class)) {
 
 if (!function_exists('getVendorDirectory')) {
     /**
-     * Returns vendors directory
+     * Returns vendors directory.
      *
      * @return string
      */

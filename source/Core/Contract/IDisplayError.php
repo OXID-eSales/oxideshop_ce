@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,13 +10,12 @@
 namespace OxidEsales\EshopCommunity\Core\Contract;
 
 /**
- * DisplayError interface
+ * DisplayError interface.
  */
 interface IDisplayError
 {
-
     /**
-     * This method should return a localized message for displaying
+     * This method should return a localized message for displaying.
      *
      * @return string A string to display to the user
      */
@@ -22,14 +23,14 @@ interface IDisplayError
 
     /**
      * Returns a type of the error, e.g. the class of the exception or whatever class
-     * implemented this interface
+     * implemented this interface.
      *
      * @return string The error type
      */
     public function getErrorClassType();
 
     /**
-     * Possibility to access additional values
+     * Possibility to access additional values.
      *
      * @param string $sName Value name
      *

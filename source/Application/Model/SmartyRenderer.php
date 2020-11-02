@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,10 +21,10 @@ use Psr\Container\ContainerInterface;
 class SmartyRenderer
 {
     /**
-     * Template renderer
+     * Template renderer.
      *
-     * @param string $sTemplateName Template name.
-     * @param array  $aViewData     Array of view data (optional).
+     * @param string $sTemplateName template name
+     * @param array  $aViewData     array of view data (optional)
      *
      * @return string
      */
@@ -31,6 +33,7 @@ class SmartyRenderer
         $renderer = $this->getContainer()
             ->get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();
+
         return $renderer->renderTemplate($sTemplateName, $aViewData);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,6 +14,8 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
  */
 class Article2Action extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
-    /** @var string Database table name. */
+    /**
+     * @var string database table name
+     */
     protected $tableName = 'oxactions2article';
 }

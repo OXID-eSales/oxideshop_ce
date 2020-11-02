@@ -15,8 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Class EditionUserFileLocator
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
+ * Class EditionUserFileLocator.
  */
 class EditionUserFileLocator implements NavigationFileLocatorInterface
 {
@@ -42,10 +41,6 @@ class EditionUserFileLocator implements NavigationFileLocatorInterface
 
     /**
      * EditionUserFileLocator constructor.
-     *
-     * @param AdminThemeBridgeInterface $adminThemeBridge
-     * @param BasicContextInterface     $context
-     * @param Filesystem                $fileSystem
      */
     public function __construct(
         AdminThemeBridgeInterface $adminThemeBridge,
@@ -66,51 +61,44 @@ class EditionUserFileLocator implements NavigationFileLocatorInterface
      */
     public function locate(): array
     {
-        $filePath = $this->getMenuFileDirectory() . DIRECTORY_SEPARATOR . $this->fileName;
+        $filePath = $this->getMenuFileDirectory() . \DIRECTORY_SEPARATOR . $this->fileName;
+
         return $this->validateFile($filePath);
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
     private function getMenuFileDirectory(): string
     {
-        return $this->getEditionsRootPaths() . DIRECTORY_SEPARATOR .
-            'Application' . DIRECTORY_SEPARATOR .
-            'views' . DIRECTORY_SEPARATOR .
+        return $this->getEditionsRootPaths() . \DIRECTORY_SEPARATOR .
+            'Application' . \DIRECTORY_SEPARATOR .
+            'views' . \DIRECTORY_SEPARATOR .
             $this->themeName;
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
     private function getEditionsRootPaths(): string
     {
         $editionPath = $this->context->getCommunityEditionSourcePath();
-        if ($this->context->getEdition() === BasicContext::PROFESSIONAL_EDITION) {
+        if (BasicContext::PROFESSIONAL_EDITION === $this->context->getEdition()) {
             $editionPath = $this->context->getProfessionalEditionRootPath();
-        } elseif ($this->context->getEdition() === BasicContext::ENTERPRISE_EDITION) {
+        } elseif (BasicContext::ENTERPRISE_EDITION === $this->context->getEdition()) {
             $editionPath = $this->context->getEnterpriseEditionRootPath();
         }
 
         return $editionPath;
     }
 
-    /**
-     * @param string $file
-     *
-     * @return array
-     */
     private function validateFile(string $file): array
     {
         $existingFiles = [];
         if ($this->fileSystem->exists($file)) {
             $existingFiles[] = $file;
         }
+
         return $existingFiles;
     }
 }

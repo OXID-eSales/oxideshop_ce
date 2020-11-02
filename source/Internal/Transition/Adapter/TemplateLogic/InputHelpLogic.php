@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 class InputHelpLogic
 {
     /**
      * @param array $params
-     *
-     * @return null
      */
     public function getIdent($params)
     {
-        return isset($params['ident']) ? $params['ident'] : null;
+        return $params['ident'] ?? null;
     }
 
     /**

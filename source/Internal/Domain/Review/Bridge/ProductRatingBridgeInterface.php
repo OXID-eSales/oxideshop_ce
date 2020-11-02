@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge;
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface ProductRatingBridgeInterface

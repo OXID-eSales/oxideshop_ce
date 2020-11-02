@@ -9,27 +9,24 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 
 class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var SettingDaoInterface */
+    /**
+     * @var SettingDaoInterface
+     */
     private $settingDao;
 
     /**
      * SettingModuleSettingHandler constructor.
-     * @param SettingDaoInterface $shopModuleSettingDao
      */
     public function __construct(SettingDaoInterface $shopModuleSettingDao)
     {
         $this->settingDao = $shopModuleSettingDao;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         foreach ($configuration->getModuleSettings() as $setting) {
@@ -37,10 +34,6 @@ class SettingModuleSettingHandler implements ModuleConfigurationHandlerInterface
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         foreach ($configuration->getModuleSettings() as $setting) {

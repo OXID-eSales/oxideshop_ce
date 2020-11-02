@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,10 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-
 /**
- * Simple list object
+ * Simple list object.
  */
 class ListObject
 {
@@ -20,7 +20,7 @@ class ListObject
     private $_sTableName = '';
 
     /**
-     * Class constructor
+     * Class constructor.
      *
      * @param string $sTableName Table name
      */
@@ -30,15 +30,13 @@ class ListObject
     }
 
     /**
-     * Assigns database record to object
+     * Assigns database record to object.
      *
      * @param object $aData Database record
-     *
-     * @return null
      */
-    public function assign($aData)
+    public function assign($aData): void
     {
-        if (!is_array($aData)) {
+        if (!\is_array($aData)) {
             return;
         }
         foreach ($aData as $sKey => $sValue) {
@@ -48,13 +46,14 @@ class ListObject
     }
 
     /**
-     * Returns object id
+     * Returns object id.
      *
      * @return int
      */
     public function getId()
     {
         $sFieldName = strtolower($this->_sTableName . '__oxid');
+
         return $this->$sFieldName->value;
     }
 }

@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\EventSubscriber;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\BeforeModuleDeactivationEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\FinalizingModuleActivationEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
@@ -26,10 +26,6 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
      */
     private $shopAdapter;
 
-    /**
-     * @param ModuleConfigurationDaoInterface $ModuleConfigurationDao
-     * @param ShopAdapterInterface            $shopAdapter
-     */
     public function __construct(
         ModuleConfigurationDaoInterface $ModuleConfigurationDao,
         ShopAdapterInterface $shopAdapter
@@ -38,10 +34,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
         $this->shopAdapter = $shopAdapter;
     }
 
-    /**
-     * @param FinalizingModuleActivationEvent $event
-     */
-    public function executeMetadataOnActivationEvent(FinalizingModuleActivationEvent $event)
+    public function executeMetadataOnActivationEvent(FinalizingModuleActivationEvent $event): void
     {
         $this->executeMetadataEvent(
             'onActivate',
@@ -50,10 +43,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * @param BeforeModuleDeactivationEvent $event
-     */
-    public function executeMetadataOnDeactivationEvent(BeforeModuleDeactivationEvent $event)
+    public function executeMetadataOnDeactivationEvent(BeforeModuleDeactivationEvent $event): void
     {
         $this->executeMetadataEvent(
             'onDeactivate',
@@ -62,12 +52,7 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * @param string $eventName
-     * @param string $moduleId
-     * @param int    $shopId
-     */
-    private function executeMetadataEvent(string $eventName, string $moduleId, int $shopId)
+    private function executeMetadataEvent(string $eventName, string $moduleId, int $shopId): void
     {
         $moduleConfiguration = $this->moduleConfigurationDao->get($moduleId, $shopId);
 
@@ -78,20 +63,17 @@ class DispatchLegacyEventsSubscriber implements EventSubscriberInterface
                 $events[$event->getAction()] = $event->getMethod();
             }
 
-            if (\is_array($events) && array_key_exists($eventName, $events)) {
+            if (\is_array($events) && \array_key_exists($eventName, $events)) {
                 \call_user_func($events[$eventName]);
             }
         }
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
-            FinalizingModuleActivationEvent::NAME   => 'executeMetadataOnActivationEvent',
-            BeforeModuleDeactivationEvent::NAME     => 'executeMetadataOnDeactivationEvent',
+            FinalizingModuleActivationEvent::NAME => 'executeMetadataOnActivationEvent',
+            BeforeModuleDeactivationEvent::NAME => 'executeMetadataOnDeactivationEvent',
         ];
     }
 }

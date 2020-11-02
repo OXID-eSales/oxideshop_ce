@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Newsletter preview manager.
@@ -28,22 +28,22 @@ class NewsletterPreview extends \OxidEsales\Eshop\Application\Controller\Admin\A
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ($soxId != "-1" && isset($soxId)) {
+        if ('-1' !== $soxId && isset($soxId)) {
             // load object
             $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             $oNewsletter->load($soxId);
-            $this->_aViewData["edit"] = $oNewsletter;
+            $this->_aViewData['edit'] = $oNewsletter;
 
             // user
-            $sUserID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("auth");
+            $sUserID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('auth');
 
             // assign values to the newsletter and show it
             $oNewsletter->prepare($sUserID, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion'));
 
-            $this->_aViewData["previewhtml"] = $oNewsletter->getHtmlText();
-            $this->_aViewData["previewtext"] = $oNewsletter->getPlainText();
+            $this->_aViewData['previewhtml'] = $oNewsletter->getHtmlText();
+            $this->_aViewData['previewtext'] = $oNewsletter->getPlainText();
         }
 
-        return "newsletter_preview.tpl";
+        return 'newsletter_preview.tpl';
     }
 }

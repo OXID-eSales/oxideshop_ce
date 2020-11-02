@@ -10,8 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Utility\Email;
 
 /**
- * Class EmailValidatorServiceBridge
- * @package OxidEsales\EshopCommunity\Internal\Utility\Email
+ * Class EmailValidatorServiceBridge.
  */
 class EmailValidatorServiceBridge implements EmailValidatorServiceBridgeInterface
 {
@@ -22,7 +21,6 @@ class EmailValidatorServiceBridge implements EmailValidatorServiceBridgeInterfac
 
     /**
      * EmailValidatorServiceBridge constructor.
-     * @param EmailValidatorServiceInterface $emailValidatorService
      */
     public function __construct(EmailValidatorServiceInterface $emailValidatorService)
     {
@@ -31,8 +29,6 @@ class EmailValidatorServiceBridge implements EmailValidatorServiceBridgeInterfac
 
     /**
      * @param mixed $email
-     *
-     * @return bool
      */
     public function isEmailValid($email): bool
     {

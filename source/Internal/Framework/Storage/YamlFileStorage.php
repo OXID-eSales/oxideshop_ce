@@ -39,10 +39,6 @@ class YamlFileStorage implements ArrayStorageInterface
 
     /**
      * YamlFileStorage constructor.
-     * @param FileLocatorInterface $fileLocator
-     * @param string               $filePath
-     * @param LockFactory          $lockFactory
-     * @param Filesystem           $filesystemService
      */
     public function __construct(
         FileLocatorInterface $fileLocator,
@@ -56,9 +52,6 @@ class YamlFileStorage implements ArrayStorageInterface
         $this->filesystemService = $filesystemService;
     }
 
-    /**
-     * @return array
-     */
     public function get(): array
     {
         $fileContent = file_get_contents($this->getLocatedFilePath());
@@ -70,9 +63,6 @@ class YamlFileStorage implements ArrayStorageInterface
         return $yaml ?? [];
     }
 
-    /**
-     * @param array $data
-     */
     public function save(array $data): void
     {
         $lock = $this->lockFactory->createLock($this->getLockId());
@@ -89,9 +79,6 @@ class YamlFileStorage implements ArrayStorageInterface
         }
     }
 
-    /**
-     * @return string
-     */
     private function getLocatedFilePath(): string
     {
         try {
@@ -123,9 +110,6 @@ class YamlFileStorage implements ArrayStorageInterface
         $this->filesystemService->touch($this->filePath);
     }
 
-    /**
-     * @return string
-     */
     private function getLockId(): string
     {
         return md5($this->filePath);

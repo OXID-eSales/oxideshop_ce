@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,57 +11,57 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
  * simplified Exception classes for simply displaying errors
- * saves resources when exception functionality is not needed
+ * saves resources when exception functionality is not needed.
  */
 class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayError
 {
     /**
-     * Language const of a Message
+     * Language const of a Message.
      *
      * @var string
      */
     private $_sMessage;
 
     /**
-     * Shop debug
+     * Shop debug.
      *
-     * @var integer
+     * @var int
      */
     protected $_blDebug = false;
 
     /**
-     * Stack trace as a string
+     * Stack trace as a string.
      *
      * @var string
      */
     private $_sStackTrace;
 
     /**
-     * Additional values
+     * Additional values.
      *
      * @var string
      */
     private $_aValues;
 
     /**
-     * Typeof the exception (old class name)
+     * Typeof the exception (old class name).
      *
      * @var string
      */
     private $_sType;
 
     /**
-     * Stack trace setter
+     * Stack trace setter.
      *
      * @param string $sStackTrace stack trace
      */
-    public function setStackTrace($sStackTrace)
+    public function setStackTrace($sStackTrace): void
     {
         $this->_sStackTrace = $sStackTrace;
     }
 
     /**
-     * Returns stack trace
+     * Returns stack trace.
      *
      * @return string
      */
@@ -69,38 +71,38 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     }
 
     /**
-     * Sets \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::_aValues value
+     * Sets \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::_aValues value.
      *
      * @param array $aValues exception values to store
      */
-    public function setValues($aValues)
+    public function setValues($aValues): void
     {
         $this->_aValues = $aValues;
     }
 
     /**
-     * Stores into exception storage message or other value
+     * Stores into exception storage message or other value.
      *
      * @param string $sName  storage name
      * @param mixed  $sValue value to store
      */
-    public function addValue($sName, $sValue)
+    public function addValue($sName, $sValue): void
     {
         $this->_aValues[$sName] = $sValue;
     }
 
     /**
-     * Exception type setter
+     * Exception type setter.
      *
      * @param string $sType exception type
      */
-    public function setExceptionType($sType)
+    public function setExceptionType($sType): void
     {
         $this->_sType = $sType;
     }
 
     /**
-     * Returns error class type
+     * Returns error class type.
      *
      * @return string
      */
@@ -110,11 +112,11 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     }
 
     /**
-     * Returns exception stored (by name) value
+     * Returns exception stored (by name) value.
      *
      * @param string $sName storage name
      *
-     * @return  mixed
+     * @return mixed
      */
     public function getValue($sName)
     {
@@ -122,9 +124,9 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     }
 
     /**
-     * Returns all exception stored values
+     * Returns all exception stored values.
      *
-     * @return  array
+     * @return array
      */
     public function getValues()
     {
@@ -132,21 +134,21 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     }
 
     /**
-     * Exception debug mode setter
+     * Exception debug mode setter.
      *
      * @param bool $bl if TRUE debug mode on
      */
-    public function setDebug($bl)
+    public function setDebug($bl): void
     {
         $this->_blDebug = $bl;
     }
 
     /**
-     * Exception message setter
+     * Exception message setter.
      *
      * @param string $sMessage exception message
      */
-    public function setMessage($sMessage)
+    public function setMessage($sMessage): void
     {
         $this->_sMessage = $sMessage;
     }
@@ -155,13 +157,13 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
      * Sets the exception message arguments used when
      * outputing message using sprintf().
      */
-    public function setMessageArgs()
+    public function setMessageArgs(): void
     {
-        $this->_aMessageArgs = func_get_args();
+        $this->_aMessageArgs = \func_get_args();
     }
 
     /**
-     * Returns translated exception message
+     * Returns translated exception message.
      *
      * @return string
      */
@@ -181,15 +183,15 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
     }
 
     /**
-     * When exception is converted as string, this magic method return exception message
+     * When exception is converted as string, this magic method return exception message.
      *
      * @return string
      */
     public function __toString()
     {
-        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
+        $sRes = $this->getErrorClassType() . ' (time: ' . date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) . '): ' . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
         foreach ($this->_aValues as $key => $value) {
-            $sRes .= $key . " => " . $value . "\n";
+            $sRes .= $key . ' => ' . $value . "\n";
         }
 
         return $sRes;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,9 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxTheme;
-use oxException;
 
 /**
  * Admin article main deliveryset manager.
@@ -37,7 +36,7 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         }
 
         if ($oTheme->load($soxId)) {
-            $this->_aViewData["oTheme"] = $oTheme;
+            $this->_aViewData['oTheme'] = $oTheme;
         } else {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
         }
@@ -61,16 +60,13 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $blThemeSet = isset(\OxidEsales\Eshop\Core\Registry::getConfig()->sTheme);
         $blCustomThemeSet = isset(\OxidEsales\Eshop\Core\Registry::getConfig()->sCustomTheme);
 
-        return ($blThemeSet || $blCustomThemeSet);
+        return $blThemeSet || $blCustomThemeSet;
     }
 
-
     /**
-     * Set theme
-     *
-     * @return null
+     * Set theme.
      */
-    public function setTheme()
+    public function setTheme(): void
     {
         $sTheme = $this->getEditObjectId();
         /** @var \OxidEsales\Eshop\Core\Theme $oTheme */

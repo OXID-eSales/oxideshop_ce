@@ -46,129 +46,87 @@ class TemplateBlockExtension
      */
     private $themeId = '';
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return TemplateBlockExtension
-     */
-    public function setName(string $name): TemplateBlockExtension
+    public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFilePath(): string
     {
         return $this->filePath;
     }
 
-    /**
-     * @param string $filePath
-     * @return TemplateBlockExtension
-     */
-    public function setFilePath(string $filePath): TemplateBlockExtension
+    public function setFilePath(string $filePath): self
     {
         $this->filePath = $filePath;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getExtendedBlockTemplatePath(): string
     {
         return $this->extendedBlockTemplatePath;
     }
 
-    /**
-     * @param string $extendedBlockTemplatePath
-     * @return TemplateBlockExtension
-     */
-    public function setExtendedBlockTemplatePath(string $extendedBlockTemplatePath): TemplateBlockExtension
+    public function setExtendedBlockTemplatePath(string $extendedBlockTemplatePath): self
     {
         $this->extendedBlockTemplatePath = $extendedBlockTemplatePath;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getPosition(): int
     {
         return $this->position;
     }
 
-    /**
-     * @param int $position
-     * @return TemplateBlockExtension
-     */
-    public function setPosition(int $position): TemplateBlockExtension
+    public function setPosition(int $position): self
     {
         $this->position = $position;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getModuleId(): string
     {
         return $this->moduleId;
     }
 
-    /**
-     * @param string $moduleId
-     * @return TemplateBlockExtension
-     */
-    public function setModuleId(string $moduleId): TemplateBlockExtension
+    public function setModuleId(string $moduleId): self
     {
         $this->moduleId = $moduleId;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getShopId(): int
     {
         return $this->shopId;
     }
 
-    /**
-     * @param int $shopId
-     * @return TemplateBlockExtension
-     */
-    public function setShopId(int $shopId): TemplateBlockExtension
+    public function setShopId(int $shopId): self
     {
         $this->shopId = $shopId;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getThemeId(): string
     {
         return $this->themeId;
     }
 
-    /**
-     * @param string $themeId
-     * @return TemplateBlockExtension
-     */
-    public function setThemeId(string $themeId): TemplateBlockExtension
+    public function setThemeId(string $themeId): self
     {
         $this->themeId = $themeId;
+
         return $this;
     }
 }

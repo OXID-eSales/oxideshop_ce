@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,16 +10,15 @@
 namespace OxidEsales\EshopCommunity\Application\Model\Contract;
 
 /**
- * Article interface
+ * Article interface.
  */
 interface ArticleInterface
 {
-
     /**
-     * Checks if stock configuration allows to buy user chosen amount $dAmount
+     * Checks if stock configuration allows to buy user chosen amount $dAmount.
      *
-     * @param double $dAmount         buyable amount
-     * @param double $dArtStockAmount stock amount
+     * @param float $dAmount         buyable amount
+     * @param float $dArtStockAmount stock amount
      *
      * @return mixed
      */
@@ -35,7 +36,7 @@ interface ArticleInterface
     /**
      * Creates, calculates and returns oxprice object for basket product.
      *
-     * @param double $dAmount  Amount
+     * @param float  $dAmount  Amount
      * @param string $aSelList Selection list
      * @param object $oBasket  User shopping basket object
      *
@@ -51,7 +52,7 @@ interface ArticleInterface
     public function skipDiscounts();
 
     /**
-     * Returns ID's of categories. where this article is assigned
+     * Returns ID's of categories. where this article is assigned.
      *
      * @param bool $blActCats   select categories if all parents are active
      * @param bool $blSkipCache Whether to skip cache
@@ -68,23 +69,23 @@ interface ArticleInterface
     public function getPrice();
 
     /**
-     * Returns product id (oxid)
+     * Returns product id (oxid).
      *
      * @return string
      */
     public function getProductId();
 
     /**
-     * Returns base article price from database
+     * Returns base article price from database.
      *
-     * @param double $dAmount article amount. Default is 1
+     * @param float $dAmount article amount. Default is 1
      *
-     * @return double
+     * @return float
      */
     public function getBasePrice($dAmount = 1);
 
     /**
-     * Returns true if object is derived from oxorderarticle class
+     * Returns true if object is derived from oxorderarticle class.
      *
      * @return bool
      */

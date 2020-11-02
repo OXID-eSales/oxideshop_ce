@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,10 +11,9 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
-use oxRegistry;
 
 /**
- * CMS - loads pages and displays it
+ * CMS - loads pages and displays it.
  */
 class ContentController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -24,68 +25,68 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_sContentId = null;
 
     /**
-     * Content object
+     * Content object.
      *
      * @var object
      */
     protected $_oContent = null;
 
     /**
-     * Current view template
+     * Current view template.
      *
      * @var string
      */
     protected $_sThisTemplate = 'page/info/content.tpl';
 
     /**
-     * Current view plain template
+     * Current view plain template.
      *
      * @var string
      */
     protected $_sThisPlainTemplate = 'page/info/content_plain.tpl';
 
     /**
-     * Current view content category (if available)
+     * Current view content category (if available).
      */
     protected $_oContentCat = null;
 
     /**
-     * Ids of contents which can be accessed without any restrictions when private sales is ON
+     * Ids of contents which can be accessed without any restrictions when private sales is ON.
      *
      * @var array
      */
-    protected $_aPsAllowedContents = ["oxagb", "oxrightofwithdrawal", "oximpressum"];
+    protected $_aPsAllowedContents = ['oxagb', 'oxrightofwithdrawal', 'oximpressum'];
 
     /**
-     * Current view content title
+     * Current view content title.
      *
      * @var string
      */
     protected $_sContentTitle = null;
 
     /**
-     * Sign if to load and show bargain action
+     * Sign if to load and show bargain action.
      *
      * @var bool
      */
     protected $_blBargainAction = true;
 
     /**
-     * Business entity data template
+     * Business entity data template.
      *
      * @var string
      */
     protected $_sBusinessTemplate = 'rdfa/content/inc/business_entity.tpl';
 
     /**
-     * Delivery charge data template
+     * Delivery charge data template.
      *
      * @var string
      */
     protected $_sDeliveryTemplate = 'rdfa/content/inc/delivery_charge.tpl';
 
     /**
-     * Payment charge data template
+     * Payment charge data template.
      *
      * @var string
      */
@@ -93,22 +94,22 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * An array including all ShopConfVars which are used to extend business
-     * entity data
+     * entity data.
      *
      * @var array
      */
-    protected $_aBusinessEntityExtends = ["sRDFaLogoUrl",
-                                               "sRDFaLongitude",
-                                               "sRDFaLatitude",
-                                               "sRDFaGLN",
-                                               "sRDFaNAICS",
-                                               "sRDFaISIC",
-                                               "sRDFaDUNS"];
+    protected $_aBusinessEntityExtends = ['sRDFaLogoUrl',
+        'sRDFaLongitude',
+        'sRDFaLatitude',
+        'sRDFaGLN',
+        'sRDFaNAICS',
+        'sRDFaISIC',
+        'sRDFaDUNS', ];
 
     /**
      * Returns prefix ID used by template engine.
      *
-     * @return string    $this->_sViewId
+     * @return string $this->_sViewId
      */
     public function getViewId()
     {
@@ -122,9 +123,9 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Executes parent::render(), passes template variables to
      * template engine and generates content. Returns the name
-     * of template to render content::_sThisTemplate
+     * of template to render content::_sThisTemplate.
      *
-     * @return  string  $this->_sThisTemplate   current template file name
+     * @return string $this->_sThisTemplate   current template file name
      */
     public function render()
     {
@@ -159,30 +160,32 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Checks if content can be shown
+     * Checks if content can be shown.
      *
      * @param string $sContentIdent ident of content to display
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "canShowContent" in next major
      */
     protected function _canShowContent($sContentIdent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return !(
             $this->isEnabledPrivateSales() &&
-            !$this->getUser() && !in_array($sContentIdent, $this->_aPsAllowedContents)
+            !$this->getUser() && !\in_array($sContentIdent, $this->_aPsAllowedContents, true)
         );
     }
 
     /**
      * Returns current view meta data
-     * If $sMeta parameter comes empty, sets to it current content title
+     * If $sMeta parameter comes empty, sets to it current content title.
      *
      * @param string $sMeta     category path
      * @param int    $iLength   max length of result, -1 for no truncation
      * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -196,12 +199,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * Returns current view keywords seperated by comma
-     * If $sKeywords parameter comes empty, sets to it current content title
+     * If $sKeywords parameter comes empty, sets to it current content title.
      *
      * @param string $sKeywords               data to use as keywords
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -214,16 +218,16 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * If current content is assigned to category returns its object
+     * If current content is assigned to category returns its object.
      *
      * @return \OxidEsales\Eshop\Application\Model\Content
      */
     public function getContentCategory()
     {
-        if ($this->_oContentCat === null) {
+        if (null === $this->_oContentCat) {
             // setting default status ..
             $this->_oContentCat = false;
-            if (($oContent = $this->getContent()) && $oContent->oxcontents__oxtype->value == 2) {
+            if (($oContent = $this->getContent()) && 2 === $oContent->oxcontents__oxtype->value) {
                 $this->_oContentCat = $oContent;
             }
         }
@@ -233,14 +237,14 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * Returns true if user forces to display plain template or
-     * if private sales switched ON and user is not logged in
+     * if private sales switched ON and user is not logged in.
      *
      * @return bool
      */
     public function showPlainTemplate()
     {
-        $blPlain = (bool) Registry::getConfig()->getRequestParameter('plain');
-        if ($blPlain === false) {
+        $blPlain = (bool)Registry::getConfig()->getRequestParameter('plain');
+        if (false === $blPlain) {
             $oUser = $this->getUser();
             if (
                 $this->isEnabledPrivateSales() &&
@@ -250,13 +254,14 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             }
         }
 
-        return (bool) $blPlain;
+        return (bool)$blPlain;
     }
 
     /**
-     * Returns active content id to load its seo meta info
+     * Returns active content id to load its seo meta info.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -266,13 +271,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * Template variable getter. Returns active content id.
-     * If no content id specified, uses "impressum" content id
+     * If no content id specified, uses "impressum" content id.
      *
      * @return object
      */
     public function getContentId()
     {
-        if ($this->_sContentId === null) {
+        if (null === $this->_sContentId) {
             $sContentId = Registry::getConfig()->getRequestParameter('oxcid');
             $sLoadId = Registry::getConfig()->getRequestParameter('oxloadid');
 
@@ -298,13 +303,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns active content
+     * Template variable getter. Returns active content.
      *
      * @return object
      */
     public function getContent()
     {
-        if ($this->_oContent === null) {
+        if (null === $this->_oContent) {
             $this->_oContent = false;
             if ($this->getContentId()) {
                 return $this->_oContent;
@@ -316,11 +321,12 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * returns object, assosiated with current view.
-     * (the object that is shown in frontend)
+     * (the object that is shown in frontend).
      *
      * @param int $iLang language id
      *
      * @return object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
     protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -329,9 +335,10 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Returns name of template
+     * Returns name of template.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getTplName" in next major
      */
     protected function _getTplName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -374,13 +381,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns tag title
+     * Template variable getter. Returns tag title.
      *
      * @return string
      */
     public function getTitle()
     {
-        if ($this->_sContentTitle === null) {
+        if (null === $this->_sContentTitle) {
             $oContent = $this->getContent();
             $this->_sContentTitle = $oContent->oxcontents__oxtitle->value;
         }
@@ -389,7 +396,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Returns if page has rdfa
+     * Returns if page has rdfa.
      *
      * @return bool
      */
@@ -400,7 +407,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
     /**
      * Returns template name wich content page to specify:
-     * business entity data, payment charge specifications or delivery charge
+     * business entity data, payment charge specifications or delivery charge.
      *
      * @return array
      */
@@ -409,13 +416,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aTemplate = [];
         $sContentId = $this->getContent()->oxcontents__oxloadid->value;
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        if ($sContentId == $myConfig->getConfigParam('sRDFaBusinessEntityLoc')) {
+        if ($sContentId === $myConfig->getConfigParam('sRDFaBusinessEntityLoc')) {
             $aTemplate[] = $this->_sBusinessTemplate;
         }
-        if ($sContentId == $myConfig->getConfigParam('sRDFaDeliveryChargeSpecLoc')) {
+        if ($sContentId === $myConfig->getConfigParam('sRDFaDeliveryChargeSpecLoc')) {
             $aTemplate[] = $this->_sDeliveryTemplate;
         }
-        if ($sContentId == $myConfig->getConfigParam('sRDFaPaymentChargeSpecLoc')) {
+        if ($sContentId === $myConfig->getConfigParam('sRDFaPaymentChargeSpecLoc')) {
             $aTemplate[] = $this->_sPaymentTemplate;
         }
 
@@ -423,7 +430,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Gets extended business entity data
+     * Gets extended business entity data.
      *
      * @return object
      */
@@ -479,7 +486,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aDeliveryChargeSpecs = [];
         $oDeliveryChargeSpecs = $this->getDeliveryList();
         foreach ($oDeliveryChargeSpecs as $oDeliveryChargeSpec) {
-            if ($oDeliveryChargeSpec->oxdelivery__oxaddsumtype->value == "abs") {
+            if ('abs' === $oDeliveryChargeSpec->oxdelivery__oxaddsumtype->value) {
                 $oDelSets = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySetList::class);
                 $oDelSets->loadRDFaDeliverySetList($oDeliveryChargeSpec->getId());
                 $oDeliveryChargeSpec->deliverysetmethods = $oDelSets;
@@ -491,13 +498,13 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns delivery list
+     * Template variable getter. Returns delivery list.
      *
      * @return object
      */
     public function getDeliveryList()
     {
-        if ($this->_oDelList === null) {
+        if (null === $this->_oDelList) {
             $this->_oDelList = oxNew(\OxidEsales\Eshop\Application\Model\DeliveryList::class);
             $this->_oDelList->getList();
         }
@@ -506,7 +513,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Returns rdfa VAT
+     * Returns rdfa VAT.
      *
      * @return bool
      */
@@ -516,7 +523,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Returns rdfa VAT
+     * Returns rdfa VAT.
      *
      * @return bool
      */
@@ -526,14 +533,14 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $iFrom = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = [];
-        $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
-        $oPriceValidity['validthrough'] = date('Y-m-d\TH:i:s', $iThrough) . "Z";
+        $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . 'Z';
+        $oPriceValidity['validthrough'] = date('Y-m-d\TH:i:s', $iThrough) . 'Z';
 
         return $oPriceValidity;
     }
 
     /**
-     * Returns content parsed through smarty
+     * Returns content parsed through smarty.
      *
      * @return string
      */
@@ -541,6 +548,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
         $oUtilsView = Registry::getUtilsView();
+
         return $oUtilsView->parseThroughSmarty(
             $this->getContent()->oxcontents__oxcontent->value,
             $this->getContent()->getId(),
@@ -550,7 +558,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Returns view canonical url
+     * Returns view canonical url.
      *
      * @return string
      */

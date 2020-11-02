@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
- * Exception to be thrown when the database has not been configured in the configuration file config.inc.php
+ * Exception to be thrown when the database has not been configured in the configuration file config.inc.php.
  */
 class DatabaseNotConfiguredException extends \OxidEsales\Eshop\Core\Exception\DatabaseException
 {

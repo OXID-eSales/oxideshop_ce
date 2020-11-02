@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,42 +9,43 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
-
 /**
- * Class manages payment countries
+ * Class manages payment countries.
  */
 class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxtitle', 'oxcountry', 1, 1, 0],
-        ['oxisoalpha2', 'oxcountry', 1, 0, 0],
-        ['oxisoalpha3', 'oxcountry', 0, 0, 0],
-        ['oxunnum3', 'oxcountry', 0, 0, 0],
-        ['oxid', 'oxcountry', 0, 0, 1]
-    ],
-                                 'container2' => [
-                                     ['oxtitle', 'oxcountry', 1, 1, 0],
-                                     ['oxisoalpha2', 'oxcountry', 1, 0, 0],
-                                     ['oxisoalpha3', 'oxcountry', 0, 0, 0],
-                                     ['oxunnum3', 'oxcountry', 0, 0, 0],
-                                     ['oxid', 'oxobject2payment', 0, 0, 1]
-                                 ]
+    protected $_aColumns = [
+        // field , table,         visible, multilanguage, ident
+        'container1' => [
+            ['oxtitle', 'oxcountry', 1, 1, 0],
+            ['oxisoalpha2', 'oxcountry', 1, 0, 0],
+            ['oxisoalpha3', 'oxcountry', 0, 0, 0],
+            ['oxunnum3', 'oxcountry', 0, 0, 0],
+            ['oxid', 'oxcountry', 0, 0, 1],
+        ],
+        'container2' => [
+            ['oxtitle', 'oxcountry', 1, 1, 0],
+            ['oxisoalpha2', 'oxcountry', 1, 0, 0],
+            ['oxisoalpha3', 'oxcountry', 0, 0, 0],
+            ['oxunnum3', 'oxcountry', 0, 0, 0],
+            ['oxid', 'oxobject2payment', 0, 0, 1],
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         // looking for table/view
         $sCountryTable = $this->_getViewName('oxcountry');
@@ -59,19 +62,19 @@ class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             $sQAdd .= "where $sCountryTable.oxactive = '1' and oxobject2payment.oxpaymentid = " . $oDb->quote($sCountryId) . " and oxobject2payment.oxtype = 'oxcountry' ";
         }
 
-        if ($sSynchCountryId && $sSynchCountryId != $sCountryId) {
+        if ($sSynchCountryId && $sSynchCountryId !== $sCountryId) {
             $sQAdd .= "and $sCountryTable.oxid not in ( ";
             $sQAdd .= "select $sCountryTable.oxid from oxobject2payment left join $sCountryTable on $sCountryTable.oxid=oxobject2payment.oxobjectid ";
-            $sQAdd .= "where oxobject2payment.oxpaymentid = " . $oDb->quote($sSynchCountryId) . " and oxobject2payment.oxtype = 'oxcountry' ) ";
+            $sQAdd .= 'where oxobject2payment.oxpaymentid = ' . $oDb->quote($sSynchCountryId) . " and oxobject2payment.oxtype = 'oxcountry' ) ";
         }
 
         return $sQAdd;
     }
 
     /**
-     * Adds chosen user group (groups) to delivery list
+     * Adds chosen user group (groups) to delivery list.
      */
-    public function addPayCountry()
+    public function addPayCountry(): void
     {
         $aChosenCntr = $this->_getActionIds('oxcountry.oxid');
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -80,29 +83,29 @@ class PaymentCountryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             $sCountryTable = $this->_getViewName('oxcountry');
             $aChosenCntr = $this->_getAll($this->_addFilter("select $sCountryTable.oxid " . $this->_getQuery()));
         }
-        if ($soxId && $soxId != "-1" && is_array($aChosenCntr)) {
+        if ($soxId && '-1' !== $soxId && \is_array($aChosenCntr)) {
             foreach ($aChosenCntr as $sChosenCntr) {
                 $oObject2Payment = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Payment->init('oxobject2payment');
                 $oObject2Payment->oxobject2payment__oxpaymentid = new \OxidEsales\Eshop\Core\Field($soxId);
                 $oObject2Payment->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenCntr);
-                $oObject2Payment->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field("oxcountry");
+                $oObject2Payment->oxobject2payment__oxtype = new \OxidEsales\Eshop\Core\Field('oxcountry');
                 $oObject2Payment->save();
             }
         }
     }
 
     /**
-     * Removes chosen user group (groups) from delivery list
+     * Removes chosen user group (groups) from delivery list.
      */
-    public function removePayCountry()
+    public function removePayCountry(): void
     {
         $aChosenCntr = $this->_getActionIds('oxobject2payment.oxid');
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2payment.* " . $this->_getQuery());
+            $sQ = $this->_addFilter('delete oxobject2payment.* ' . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenCntr)) {
-            $sQ = "delete from oxobject2payment where oxobject2payment.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ") ";
+        } elseif (\is_array($aChosenCntr)) {
+            $sQ = 'delete from oxobject2payment where oxobject2payment.oxid in (' . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenCntr)) . ') ';
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }

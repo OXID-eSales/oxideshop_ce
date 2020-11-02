@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\SettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\SettingNotValidException;
 
 class ModuleSettingBooleanValidator implements MetaDataValidatorInterface
 {
@@ -26,8 +26,6 @@ class ModuleSettingBooleanValidator implements MetaDataValidatorInterface
     ];
 
     /**
-     * @param array $metaData
-     *
      * @throws SettingNotValidException
      */
     public function validate(array $metaData): void
@@ -41,19 +39,14 @@ class ModuleSettingBooleanValidator implements MetaDataValidatorInterface
     }
 
     /**
-     * @param array $metaData
-     * @param array $setting
      * @throws SettingNotValidException
      */
     private function validateSetting(array $metaData, array $setting): void
     {
-        if (isset($setting['type']) && $setting['type'] === 'bool') {
-            $value = is_string($setting['value']) ? strtolower($setting['value']) : $setting['value'];
-            if (!in_array($value, self::ALLOWED_VALUES, true)) {
-                throw new SettingNotValidException(
-                    'Invalid boolean value- "' . $setting['value'] . '" was used for module setting. '
-                    . 'Please update setting value in module "' . $metaData[MetaDataProvider::METADATA_ID] . '".'
-                );
+        if (isset($setting['type']) && 'bool' === $setting['type']) {
+            $value = \is_string($setting['value']) ? strtolower($setting['value']) : $setting['value'];
+            if (!\in_array($value, self::ALLOWED_VALUES, true)) {
+                throw new SettingNotValidException('Invalid boolean value- "' . $setting['value'] . '" was used for module setting. ' . 'Please update setting value in module "' . $metaData[MetaDataProvider::METADATA_ID] . '".');
             }
         }
     }

@@ -27,10 +27,8 @@ trait ShopAwareServiceTrait
      * This method is used by the DI container
      * to set an array of shop ids for which
      * this event subscriber should be executed.
-     *
-     * @param array $activeShops
      */
-    public function setActiveShops(array $activeShops)
+    public function setActiveShops(array $activeShops): void
     {
         $this->activeShops = $activeShops;
     }
@@ -39,10 +37,8 @@ trait ShopAwareServiceTrait
      * This is set by the DI container to provide
      * access to the current shop ID to determine
      * if the event should be executed or not.
-     *
-     * @param ContextInterface $context
      */
-    public function setContext(ContextInterface $context)
+    public function setContext(ContextInterface $context): void
     {
         $this->context = $context;
     }
@@ -56,6 +52,6 @@ trait ShopAwareServiceTrait
      */
     public function isActive()
     {
-        return in_array(strval($this->context->getCurrentShopId()), $this->activeShops);
+        return \in_array((string)($this->context->getCurrentShopId()), $this->activeShops, true);
     }
 }

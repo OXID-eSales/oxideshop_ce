@@ -10,8 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
 /**
- * Interface FileLocatorInterface
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
+ * Interface FileLocatorInterface.
  */
 interface FileLocatorInterface
 {

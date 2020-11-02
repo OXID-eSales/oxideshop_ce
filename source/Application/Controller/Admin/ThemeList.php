@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -16,7 +18,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
     /**
-     * Calls parent::render() and returns name of template to render
+     * Calls parent::render() and returns name of template to render.
      *
      * @return string
      */

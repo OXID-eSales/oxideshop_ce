@@ -13,15 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ShopConfigurationDataMapperInterface
 {
-    /**
-     * @param ShopConfiguration $configuration
-     * @return array
-     */
     public function toData(ShopConfiguration $configuration): array;
 
-    /**
-     * @param array $data
-     * @return ShopConfiguration
-     */
     public function fromData(array $data): ShopConfiguration;
 }

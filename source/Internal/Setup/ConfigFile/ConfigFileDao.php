@@ -24,7 +24,9 @@ class ConfigFileDao implements ConfigFileDaoInterface
         'sCompileDir',
     ];
 
-    /** @var BasicContextInterface */
+    /**
+     * @var BasicContextInterface
+     */
     private $context;
 
     public function __construct(BasicContextInterface $context)
@@ -32,7 +34,9 @@ class ConfigFileDao implements ConfigFileDaoInterface
         $this->context = $context;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function replacePlaceholder(string $placeholderName, string $value): void
     {
         $placeholder = $this->getPlaceholder($placeholderName);
@@ -43,7 +47,9 @@ class ConfigFileDao implements ConfigFileDaoInterface
         file_put_contents($this->context->getConfigFilePath(), $replacedContents);
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function checkIsEditable(): void
     {
         $fileContents = $this->getConfigFileContent();
@@ -53,7 +59,6 @@ class ConfigFileDao implements ConfigFileDaoInterface
     }
 
     /**
-     * @return string
      * @throws ConfigFileNotFoundException
      */
     private function getConfigFileContent(): string
@@ -65,23 +70,17 @@ class ConfigFileDao implements ConfigFileDaoInterface
         return file_get_contents($this->context->getConfigFilePath());
     }
 
-    /**
-     * @param string $placeholderName
-     * @return string
-     */
     private function getPlaceholder(string $placeholderName): string
     {
         return "<{$placeholderName}>";
     }
 
     /**
-     * @param string $placeholder
-     * @param string $fileContents
      * @throws FileNotEditableException
      */
     private function checkPlaceholderPresent(string $placeholder, string $fileContents): void
     {
-        if (strpos($fileContents, $placeholder) === false) {
+        if (false === strpos($fileContents, $placeholder)) {
             throw new FileNotEditableException("Configuration file is not editable - value for $placeholder can not be set.");
         }
     }

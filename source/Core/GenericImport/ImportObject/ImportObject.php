@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,20 +17,28 @@ use OxidEsales\Eshop\Core\GenericImport\GenericImport;
  */
 abstract class ImportObject
 {
-    /** @var string Database table name. */
+    /**
+     * @var string database table name
+     */
     protected $tableName = null;
 
-    /** @var array List of database fields, to which data should be imported. */
+    /**
+     * @var array list of database fields, to which data should be imported
+     */
     protected $fieldList = null;
 
-    /** @var array List of database key fields (i.e. oxid). */
+    /**
+     * @var array List of database key fields (i.e. oxid).
+     */
     protected $keyFieldList = null;
 
-    /** @var string Shop object name. */
+    /**
+     * @var string shop object name
+     */
     protected $shopObjectName = null;
 
     /**
-     * Getter for _sTableName
+     * Getter for _sTableName.
      *
      * @return string
      */
@@ -38,11 +48,11 @@ abstract class ImportObject
     }
 
     /**
-     * setter for field list
+     * setter for field list.
      *
      * @param array $aFieldList fields to set
      */
-    public function setFieldList($aFieldList)
+    public function setFieldList($aFieldList): void
     {
         $this->fieldList = $aFieldList;
     }
@@ -51,12 +61,12 @@ abstract class ImportObject
      * Basic access check for writing data, checks for same shopId, should be overridden if field oxshopid does not
      * exist.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Loaded shop object.
-     * @param array                                  $data       Fields to be written, null for default.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject loaded shop object
+     * @param array                                  $data       fields to be written, null for default
      *
      * @throws Exception on now access
      */
-    public function checkWriteAccess($shopObject, $data = null)
+    public function checkWriteAccess($shopObject, $data = null): void
     {
         if ($shopObject->isDerived()) {
             throw new Exception(GenericImport::ERROR_USER_NO_RIGHTS);
@@ -64,13 +74,13 @@ abstract class ImportObject
     }
 
     /**
-     * Basic access check for creating new objects
+     * Basic access check for creating new objects.
      *
      * @param array $data fields to be written
      *
      * @throws Exception on now access
      */
-    public function checkCreateAccess($data)
+    public function checkCreateAccess($data): void
     {
     }
 
@@ -127,9 +137,9 @@ abstract class ImportObject
         }
 
         $viewName = $shopObject->getViewName();
-        $fields = str_ireplace('`' . $viewName . "`.", "", strtoupper($shopObject->getSelectFields()));
-        $fields = str_ireplace([" ", "`"], ["", ""], $fields);
-        $this->fieldList = explode(",", $fields);
+        $fields = str_ireplace('`' . $viewName . '`.', '', strtoupper($shopObject->getSelectFields()));
+        $fields = str_ireplace([' ', '`'], ['', ''], $fields);
+        $this->fieldList = explode(',', $fields);
 
         return $this->fieldList;
     }
@@ -187,7 +197,7 @@ abstract class ImportObject
 
         // null values support
         foreach ($data as $key => $val) {
-            if (!strlen((string) $val)) {
+            if (!\strlen((string)$val)) {
                 // oxBase will quote it as string if db does not support null for this field
                 $data[$key] = null;
             }
@@ -200,10 +210,10 @@ abstract class ImportObject
      * Prepares object for saving in shop.
      * Returns true if save can proceed further.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
-     * @param array                                  $data       Data for importing.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject shop object
+     * @param array                                  $data       data for importing
      *
-     * @return boolean
+     * @return bool
      */
     protected function preSaveObject($shopObject, $data)
     {
@@ -267,8 +277,8 @@ abstract class ImportObject
     /**
      * Post saving hook. can finish transactions if needed or adjust related data.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject Shop object.
-     * @param array                                  $data       Data to save.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject shop object
+     * @param array                                  $data       data to save
      *
      * @return mixed data to return
      */
@@ -281,13 +291,13 @@ abstract class ImportObject
     /**
      * Returns oxid of this data type from key fields.
      *
-     * @param array $data Data for object.
+     * @param array $data data for object
      *
      * @return string
      */
     protected function getOxidFromKeyFields($data)
     {
-        if (!is_array($this->getKeyFields())) {
+        if (!\is_array($this->getKeyFields())) {
             return null;
         }
 
@@ -296,7 +306,7 @@ abstract class ImportObject
         $queryWherePart = [];
         $allKeysExists = true;
         foreach ($this->getKeyFields() as $key) {
-            if (array_key_exists($key, $data)) {
+            if (\array_key_exists($key, $data)) {
                 $queryWherePart[] = $key . '=' . $database->quote($data[$key]);
             } else {
                 $allKeysExists = false;
@@ -324,7 +334,7 @@ abstract class ImportObject
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->loadAdminUser();
 
-        if ($user->oxuser__oxrights->value == "malladmin" || $user->oxuser__oxrights->value == (int) $shopId) {
+        if ('malladmin' === $user->oxuser__oxrights->value || $user->oxuser__oxrights->value === (int)$shopId) {
             return true;
         }
 
@@ -338,12 +348,12 @@ abstract class ImportObject
      *
      * @throws Exception
      */
-    protected function checkIdField($id)
+    protected function checkIdField($id): void
     {
         if (!isset($id) || !$id) {
-            throw new Exception("ERROR: Articlenumber/ID missing!");
-        } elseif (strlen($id) > 32) {
-            throw new Exception("ERROR: Articlenumber/ID longer then allowed (32 chars max.)!");
+            throw new Exception('ERROR: Articlenumber/ID missing!');
+        } elseif (\strlen($id) > 32) {
+            throw new Exception('ERROR: Articlenumber/ID longer then allowed (32 chars max.)!');
         }
     }
 

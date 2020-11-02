@@ -16,8 +16,5 @@ use Doctrine\DBAL\Logging\SQLLogger;
  */
 interface DatabaseLoggerFactoryInterface
 {
-    /**
-     * @return SQLLogger
-     */
     public function getDatabaseLogger(): SQLLogger;
 }

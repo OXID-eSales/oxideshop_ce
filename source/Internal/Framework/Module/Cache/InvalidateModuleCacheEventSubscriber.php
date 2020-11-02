@@ -23,28 +23,21 @@ class InvalidateModuleCacheEventSubscriber implements EventSubscriberInterface
 
     /**
      * InvalidateModuleCacheEventSubscriber constructor.
-     * @param ModuleCacheServiceInterface $moduleCacheService
      */
     public function __construct(ModuleCacheServiceInterface $moduleCacheService)
     {
         $this->moduleCacheService = $moduleCacheService;
     }
 
-    /**
-     * @param ModuleSetupEvent $event
-     */
-    public function invalidateModuleCache(ModuleSetupEvent $event)
+    public function invalidateModuleCache(ModuleSetupEvent $event): void
     {
         $this->moduleCacheService->invalidate($event->getModuleId(), $event->getShopId());
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
         return [
-            FinalizingModuleActivationEvent::NAME   => 'invalidateModuleCache',
+            FinalizingModuleActivationEvent::NAME => 'invalidateModuleCache',
             FinalizingModuleDeactivationEvent::NAME => 'invalidateModuleCache',
         ];
     }

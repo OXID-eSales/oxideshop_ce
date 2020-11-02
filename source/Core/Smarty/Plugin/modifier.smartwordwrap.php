@@ -1,30 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * Smarty plugin
- * @package Smarty
- * @subpackage plugins
+ * Smarty plugin.
  */
 
 /**
- * Smarty smartwordwrap modifier plugin
+ * Smarty smartwordwrap modifier plugin.
  *
  * Type:     modifier<br>
  * Name:     smartwordwrap<br>
  * Purpose:  wrap a string of text at a given length and row count
  *
- * @param string
- * @param integer
- * @param string
- * @param integer
- * @return integer
+ * @param $string
+ * @param int    $length
+ * @param string $break
+ * @param int    $cutrows
+ *
+ * @return int
  */
 function smarty_modifier_smartwordwrap($string, $length = 80, $break = "\n", $cutrows = 0, $tollerance = 0, $etc = '...')
 {
-    $wraptag = "<wrap>";
-    $wrapchars = ["-"];
-    $afterwrapchars = ["-" . $wraptag];
-
+    $wraptag = '<wrap>';
+    $wrapchars = ['-'];
+    $afterwrapchars = ['-' . $wraptag];
 
     $string = trim($string);
 
@@ -33,10 +33,10 @@ function smarty_modifier_smartwordwrap($string, $length = 80, $break = "\n", $cu
     }
 
     //trying to wrap without cut
-    $str  = wordwrap($string, $length, $wraptag, false);
-    $arr  = explode($wraptag, $str);
+    $str = wordwrap($string, $length, $wraptag, false);
+    $arr = explode($wraptag, $str);
 
-    $alt  = [];
+    $alt = [];
 
     $ok = true;
     foreach ($arr as $row) {
@@ -60,8 +60,8 @@ function smarty_modifier_smartwordwrap($string, $length = 80, $break = "\n", $cu
 
     if (!$ok) {
         //trying to wrap with cut
-        $str  = wordwrap($string, $length, $wraptag, true);
-        $arr  = explode($wraptag, $str);
+        $str = wordwrap($string, $length, $wraptag, true);
+        $arr = explode($wraptag, $str);
     }
 
     if ($cutrows && count($arr) > $cutrows) {

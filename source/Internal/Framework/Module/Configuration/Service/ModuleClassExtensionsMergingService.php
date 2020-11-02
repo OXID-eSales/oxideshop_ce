@@ -9,20 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 
 class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergingServiceInterface
 {
     /**
-     * @param ShopConfiguration   $shopConfiguration
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return ClassExtensionsChain
      * @throws ExtensionNotInChainException
      * @throws ModuleConfigurationNotFoundException
      */
@@ -30,7 +26,6 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
         ShopConfiguration $shopConfiguration,
         ModuleConfiguration $moduleConfiguration
     ): ClassExtensionsChain {
-
         $chain = $shopConfiguration->getClassExtensionsChain();
 
         if (!$shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {
@@ -45,11 +40,6 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
     }
 
     /**
-     * @param ModuleConfiguration  $moduleConfiguration
-     * @param ShopConfiguration    $shopConfiguration
-     * @param ClassExtensionsChain $classExtensionChain
-     *
-     * @return ClassExtensionsChain
      * @throws ModuleConfigurationNotFoundException
      * @throws ExtensionNotInChainException
      */
@@ -72,11 +62,6 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
     }
 
     /**
-     * @param ModuleConfiguration  $moduleConfiguration
-     * @param ShopConfiguration    $shopConfiguration
-     * @param ClassExtensionsChain $chain
-     *
-     * @return ClassExtensionsChain
      * @throws ModuleConfigurationNotFoundException
      */
     private function replaceExistingModuleExtensionsInChain(
@@ -100,11 +85,6 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
     }
 
     /**
-     * @param ModuleConfiguration  $moduleConfiguration
-     * @param ShopConfiguration    $shopConfiguration
-     * @param ClassExtensionsChain $chain
-     *
-     * @return ClassExtensionsChain
      * @throws ModuleConfigurationNotFoundException
      */
     private function addNewModuleExtensionsToChain(
@@ -126,10 +106,7 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
     }
 
     /**
-     * @param ClassExtension $existingClassExtension
-     * @param ClassExtension[]          $newClassExtensions
-     *
-     * @return bool
+     * @param ClassExtension[] $newClassExtensions
      */
     private function isExtendingShopClass(ClassExtension $existingClassExtension, array $newClassExtensions): bool
     {
@@ -142,12 +119,6 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
         return false;
     }
 
-    /**
-     * @param ClassExtension $existingExtension
-     * @param ClassExtension $newExtension
-     *
-     * @return bool
-     */
     private function areExtensionsEqual(ClassExtension $existingExtension, ClassExtension $newExtension): bool
     {
         return $existingExtension->getShopClassName() === $newExtension->getShopClassName()
@@ -158,10 +129,6 @@ class ModuleClassExtensionsMergingService implements ModuleClassExtensionsMergin
     /**
      * Converts e.g. the chain [Class1, ClassOld, Class3] to [Class1, ClassNew, Class3]. Keeping the order is important
      * as the order can be changed in OXID eShop admin.
-     *
-     * @param ClassExtensionsChain $chain
-     * @param ClassExtension       $existingExtension
-     * @param ClassExtension       $newExtension
      */
     private function replaceExistingExtension(
         ClassExtensionsChain $chain,

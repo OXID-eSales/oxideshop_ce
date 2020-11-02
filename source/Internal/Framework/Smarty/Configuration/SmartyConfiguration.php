@@ -38,8 +38,6 @@ class SmartyConfiguration implements SmartyConfigurationInterface
 
     /**
      * Return global smarty settings.
-     *
-     * @return array
      */
     public function getSettings(): array
     {
@@ -48,18 +46,14 @@ class SmartyConfiguration implements SmartyConfigurationInterface
 
     /**
      * Set global smarty settings.
-     *
-     * @param array $settings
      */
-    public function setSettings(array $settings)
+    public function setSettings(array $settings): void
     {
         $this->settings = $settings;
     }
 
     /**
      * Return smarty security settings.
-     *
-     * @return array
      */
     public function getSecuritySettings(): array
     {
@@ -68,18 +62,14 @@ class SmartyConfiguration implements SmartyConfigurationInterface
 
     /**
      * Set smarty security settings.
-     *
-     * @param array $settings
      */
-    public function setSecuritySettings(array $settings)
+    public function setSecuritySettings(array $settings): void
     {
         $this->securitySettings = $settings;
     }
 
     /**
      * Return smarty plugins.
-     *
-     * @return array
      */
     public function getPlugins(): array
     {
@@ -88,18 +78,14 @@ class SmartyConfiguration implements SmartyConfigurationInterface
 
     /**
      * Set smarty plugins.
-     *
-     * @param array $plugins
      */
-    public function setPlugins(array $plugins)
+    public function setPlugins(array $plugins): void
     {
         $this->plugins = $plugins;
     }
 
     /**
      * Return smarty resources.
-     *
-     * @return array
      */
     public function getResources(): array
     {
@@ -108,18 +94,14 @@ class SmartyConfiguration implements SmartyConfigurationInterface
 
     /**
      * Set smarty resources.
-     *
-     * @param array $resources
      */
-    public function setResources(array $resources)
+    public function setResources(array $resources): void
     {
         $this->resources = $resources;
     }
 
     /**
      * Return smarty prefilters.
-     *
-     * @return array
      */
     public function getPrefilters(): array
     {
@@ -128,10 +110,8 @@ class SmartyConfiguration implements SmartyConfigurationInterface
 
     /**
      * Set smarty prefilters.
-     *
-     * @param array $prefilters
      */
-    public function setPrefilters(array $prefilters)
+    public function setPrefilters(array $prefilters): void
     {
         $this->prefilters = $prefilters;
     }

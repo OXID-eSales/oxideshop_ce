@@ -20,8 +20,6 @@ class PasswordVerificationService implements PasswordVerificationServiceInterfac
 
     /**
      * PasswordVerificationService constructor.
-     *
-     * @param PasswordPolicyInterface $passwordPolicy
      */
     public function __construct(PasswordPolicyInterface $passwordPolicy)
     {
@@ -29,12 +27,7 @@ class PasswordVerificationService implements PasswordVerificationServiceInterfac
     }
 
     /**
-     * Verify that a given password matches a given hash
-     *
-     * @param string $password
-     * @param string $passwordHash
-     *
-     * @return bool
+     * Verify that a given password matches a given hash.
      */
     public function verifyPassword(string $password, string $passwordHash): bool
     {

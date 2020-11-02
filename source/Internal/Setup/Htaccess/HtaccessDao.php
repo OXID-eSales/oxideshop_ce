@@ -12,18 +12,20 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Htaccess;
 class HtaccessDao implements HtaccessDaoInterface
 {
     private const DIRECTIVE_REWRITE_BASE = 'RewriteBase';
-    /** @var string */
+    /**
+     * @var string
+     */
     private $filePath;
-    /** @var string */
+    /**
+     * @var string
+     */
     private $contents;
 
-    /** @param string $path */
     public function __construct(string $path)
     {
         $this->filePath = $path;
     }
 
-    /** @param string $rewriteBase */
     public function setRewriteBase(string $rewriteBase): void
     {
         $this->readFile();
@@ -37,10 +39,6 @@ class HtaccessDao implements HtaccessDaoInterface
         $this->contents = file_get_contents($this->filePath);
     }
 
-    /**
-     * @param string $key
-     * @param string $value
-     */
     private function updateDirective(string $key, string $value): void
     {
         $this->contents = preg_replace("/$key.*/", "$key $value", $this->contents);
@@ -51,7 +49,9 @@ class HtaccessDao implements HtaccessDaoInterface
         file_put_contents($this->filePath, $this->contents);
     }
 
-    /** @throws HtaccessAccessException */
+    /**
+     * @throws HtaccessAccessException
+     */
     private function checkFileAccess(): void
     {
         clearstatcache();

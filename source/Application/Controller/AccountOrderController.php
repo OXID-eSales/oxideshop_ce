@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Current user order history review.
@@ -23,14 +24,14 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     /**
      * Count of all articles in list.
      *
-     * @var integer
+     * @var int
      */
     protected $_iAllArtCnt = 0;
 
     /**
      * Number of possible pages.
      *
-     * @var integer
+     * @var int
      */
     protected $_iCntPages = null;
 
@@ -42,14 +43,14 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     protected $_sThisTemplate = 'page/account/order.tpl';
 
     /**
-     * collecting orders
+     * collecting orders.
      *
      * @var array
      */
     protected $_aOrderList = null;
 
     /**
-     * collecting article which ordered
+     * collecting article which ordered.
      *
      * @var array
      */
@@ -57,9 +58,9 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
 
     /**
      * If user is not logged in - returns name of template AccountOrderController::_sThisLoginTemplate, or if user is
-     * already logged in - returns name of template AccountOrderController::_sThisTemplate
+     * already logged in - returns name of template AccountOrderController::_sThisTemplate.
      *
-     * @return string $_sThisTemplate current template file name
+     * @return string current template file name
      */
     public function render()
     {
@@ -75,19 +76,19 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     }
 
     /**
-     * Template variable getter. Returns orders
+     * Template variable getter. Returns orders.
      *
      * @return array
      */
     public function getOrderList()
     {
-        if ($this->_aOrderList === null) {
+        if (null === $this->_aOrderList) {
             $this->_aOrderList = [];
 
             // Load user Orderlist
             if ($oUser = $this->getUser()) {
-                $iNrofCatArticles = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
-                $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
+                $iNrofCatArticles = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
+                $iNrofCatArticles = $iNrofCatArticles ?: 1;
                 $this->_iAllArtCnt = $oUser->getOrderCount();
                 if ($this->_iAllArtCnt && $this->_iAllArtCnt > 0) {
                     $this->_aOrderList = $oUser->getOrders($iNrofCatArticles, $this->getActPage());
@@ -100,13 +101,13 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     }
 
     /**
-     * Template variable getter. Returns ordered articles
+     * Template variable getter. Returns ordered articles.
      *
      * @return \OxidEsales\Eshop\Application\Model\ArticleList|false
      */
     public function getOrderArticleList()
     {
-        if ($this->_aArticlesList === null) {
+        if (null === $this->_aArticlesList) {
             // marking as set
             $this->_aArticlesList = false;
             $oOrdersList = $this->getOrderList();
@@ -120,13 +121,13 @@ class AccountOrderController extends \OxidEsales\Eshop\Application\Controller\Ac
     }
 
     /**
-     * Template variable getter. Returns page navigation
+     * Template variable getter. Returns page navigation.
      *
      * @return object
      */
     public function getPageNavigation()
     {
-        if ($this->_oPageNavigation === null) {
+        if (null === $this->_oPageNavigation) {
             $this->_oPageNavigation = $this->generatePageNavigation();
         }
 

@@ -13,17 +13,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface ShopConfigurationDaoBridgeInterface
 {
-    /**
-     * @return ShopConfiguration
-     */
     public function get(): ShopConfiguration;
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     */
     public function save(ShopConfiguration $shopConfiguration);
 }

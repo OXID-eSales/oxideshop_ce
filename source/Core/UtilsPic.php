@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,21 +10,26 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Including pictures generator functions file
+ * Including pictures generator functions file.
  */
-require_once __DIR__ . "/utils/oxpicgenerator.php";
+require_once __DIR__ . '/utils/oxpicgenerator.php';
 
 /**
- * Image manipulation class
+ * Image manipulation class.
  */
 class UtilsPic extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Image types 'enum'
+     * Image types 'enum'.
      *
      * @var array
      */
-    protected $_aImageTypes = ["GIF" => IMAGETYPE_GIF, "JPG" => IMAGETYPE_JPEG, "PNG" => IMAGETYPE_PNG, "JPEG" => IMAGETYPE_JPEG];
+    protected $_aImageTypes = [
+        'GIF' => IMAGETYPE_GIF,
+        'JPG' => IMAGETYPE_JPEG,
+        'PNG' => IMAGETYPE_PNG,
+        'JPEG' => IMAGETYPE_JPEG,
+    ];
 
     /**
      * Resizes image to desired width and height, returns true on success.
@@ -47,7 +54,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * deletes the given picutre and checks before if the picture is deletable
+     * deletes the given picutre and checks before if the picture is deletable.
      *
      * @param string $sPicName        Name of picture file
      * @param string $sAbsDynImageDir the absolute image diectory, where to delete the given image ($myConfig->getPictureDir(false))
@@ -72,7 +79,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param string $sPicName        name of picture
      * @param string $sAbsDynImageDir the absolute image diectory, where to delete the given image ($myConfig->getPictureDir(false))
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "deletePicture" in next major
      */
     protected function _deletePicture($sPicName, $sAbsDynImageDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -81,8 +87,8 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (
-            !$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
-                                         strpos($sPicName, 'nopic_ico.jpg') === false)
+            !$myConfig->isDemoShop() && (false === strpos($sPicName, 'nopic.jpg') ||
+                                         false === strpos($sPicName, 'nopic_ico.jpg'))
         ) {
             $sFile = "$sAbsDynImageDir/$sPicName";
 
@@ -94,7 +100,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
                 // deleting various size generated images
                 $sGenPath = str_replace('/master/', '/generated/', $sAbsDynImageDir);
                 $aFiles = glob("{$sGenPath}*/{$sPicName}");
-                if (is_array($aFiles)) {
+                if (\is_array($aFiles)) {
                     foreach ($aFiles as $sFile) {
                         $blDeleted = unlink($sFile);
                     }
@@ -105,7 +111,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         return $blDeleted;
     }
 
-
     /**
      * Checks if current picture file is used in more than one table entry, returns
      * true if one, false if more than one.
@@ -115,11 +120,12 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param string $sField   table field value
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isPicDeletable" in next major
      */
     protected function _isPicDeletable($sPicName, $sTable, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!$sPicName || strpos($sPicName, 'nopic.jpg') !== false || strpos($sPicName, 'nopic_ico.jpg') !== false) {
+        if (!$sPicName || false !== strpos($sPicName, 'nopic.jpg') || false !== strpos($sPicName, 'nopic_ico.jpg')) {
             return false;
         }
 
@@ -131,9 +137,9 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     /**
      * Fetch the information, if the given image is deletable from the database.
      *
-     * @param string $sPicName Name of image file.
-     * @param string $sTable   The table in which we search for the image.
-     * @param string $sField   The value of the table field.
+     * @param string $sPicName name of image file
+     * @param string $sTable   the table in which we search for the image
+     * @param string $sField   the value of the table field
      *
      * @return mixed
      */
@@ -145,12 +151,12 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         $query = "SELECT count(*) FROM $sTable WHERE $sField = :picturename group by $sField ";
 
         return $masterDb->getOne($query, [
-            ':picturename' => (string) $sPicName
+            ':picturename' => (string)$sPicName,
         ]);
     }
 
     /**
-     * Deletes picture if new is uploaded or changed
+     * Deletes picture if new is uploaded or changed.
      *
      * @param object $oObject         in whitch obejct search for old values
      * @param string $sPicTable       pictures table
@@ -159,17 +165,16 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param string $sPicDir         directory of pic
      * @param array  $aParams         new input text array
      * @param string $sAbsDynImageDir the absolute image diectory, where to delete the given image ($myConfig->getPictureDir(false))
-     *
-     * @return null
      */
     public function overwritePic($oObject, $sPicTable, $sPicField, $sPicType, $sPicDir, $aParams, $sAbsDynImageDir)
     {
         $sPic = $sPicTable . '__' . $sPicField;
         if (
             isset($oObject->{$sPic}) &&
-            ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
+            ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] !== $oObject->{$sPic}->value)
         ) {
             $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType($sPicType);
+
             return $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
         }
 
@@ -189,6 +194,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blDisableTouch  false if "touch()" should be called
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "resizeGif" in next major
      */
     protected function _resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -197,7 +203,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * type dependant image resizing
+     * type dependant image resizing.
      *
      * @param array  $aImageInfo        Contains information on image's type / width / height
      * @param string $sSrc              source image
@@ -210,25 +216,26 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param string $iDefQuality       quality for "imagejpeg" function
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "resize" in next major
      */
     protected function _resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        startProfile("PICTURE_RESIZE");
+        startProfile('PICTURE_RESIZE');
 
         $blSuccess = false;
         switch ($aImageInfo[2]) { //Image type
-            case ($this->_aImageTypes["GIF"]):
+            case $this->_aImageTypes['GIF']:
                 //php does not process gifs until 7th July 2004 (see lzh licensing)
-                if (function_exists("imagegif")) {
+                if (\function_exists('imagegif')) {
                     $blSuccess = resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1], $iGdVer);
                 }
                 break;
-            case ($this->_aImageTypes["JPEG"]):
-            case ($this->_aImageTypes["JPG"]):
+            case $this->_aImageTypes['JPEG']:
+            case $this->_aImageTypes['JPG']:
                 $blSuccess = resizeJpeg($sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo, $iGdVer, $hDestinationImage, $iDefQuality);
                 break;
-            case ($this->_aImageTypes["PNG"]):
+            case $this->_aImageTypes['PNG']:
                 $blSuccess = resizePng($sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo, $iGdVer, $hDestinationImage);
                 break;
         }
@@ -237,13 +244,13 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
             @touch($sTarget);
         }
 
-        stopProfile("PICTURE_RESIZE");
+        stopProfile('PICTURE_RESIZE');
 
         return $blSuccess;
     }
 
     /**
-     * create and copy the resized image
+     * create and copy the resized image.
      *
      * @param string $sDestinationImage file + path of destination
      * @param string $sSourceImage      file + path of source
@@ -254,7 +261,6 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      * @param int    $iGdVer            used gd version @deprecated
      * @param bool   $blDisableTouch    wether Touch() should be called or not
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "copyAlteredImage" in next major
      */
     protected function _copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

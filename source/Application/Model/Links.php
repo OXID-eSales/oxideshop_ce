@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxField;
 
 /**
  * Links manager.
@@ -16,7 +16,7 @@ use oxField;
 class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
@@ -32,13 +32,12 @@ class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Sets data field value
+     * Sets data field value.
      *
      * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
      * @param string $sValue     value of data field
      * @param int    $iDataType  field type
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

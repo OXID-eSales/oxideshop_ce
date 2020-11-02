@@ -13,12 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 
 class RatingDataMapper implements RatingDataMapperInterface
 {
-    /**
-     * @param Rating $rating
-     * @param array  $data
-     *
-     * @return Rating
-     */
     public function map(Rating $rating, array $data): Rating
     {
         $rating
@@ -32,28 +26,18 @@ class RatingDataMapper implements RatingDataMapperInterface
         return $rating;
     }
 
-    /**
-     * @param Rating $rating
-     *
-     * @return array
-     */
     public function getData(Rating $rating): array
     {
         return [
-            'OXID'        => $rating->getId(),
-            'OXRATING'    => $rating->getRating(),
-            'OXOBJECTID'  => $rating->getObjectId(),
-            'OXUSERID'    => $rating->getUserId(),
-            'OXTYPE'      => $rating->getType(),
+            'OXID' => $rating->getId(),
+            'OXRATING' => $rating->getRating(),
+            'OXOBJECTID' => $rating->getObjectId(),
+            'OXUSERID' => $rating->getUserId(),
+            'OXTYPE' => $rating->getType(),
             'OXTIMESTAMP' => $rating->getCreatedAt(),
         ];
     }
 
-    /**
-     * @param Rating $object
-     *
-     * @return array
-     */
     public function getPrimaryKey(Rating $object): array
     {
         return [

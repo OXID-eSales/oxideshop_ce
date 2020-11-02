@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -33,10 +35,10 @@ use SimpleXMLElement;
 class SimpleXml
 {
     /**
-     * Parses object structure to XML string
+     * Parses object structure to XML string.
      *
      * @param object $oInput    Input object
-     * @param string $sDocument Document name.
+     * @param string $sDocument document name
      *
      * @return string
      */
@@ -49,7 +51,7 @@ class SimpleXml
     }
 
     /**
-     * Parses XML string into object structure
+     * Parses XML string into object structure.
      *
      * @param string $sXml XML Input
      *
@@ -61,18 +63,19 @@ class SimpleXml
     }
 
     /**
-     * Recursively adds $oInput object data to SimpleXMLElement structure
+     * Recursively adds $oInput object data to SimpleXMLElement structure.
      *
      * @param SimpleXMLElement    $oXml          Xml handler
      * @param string|array|object $oInput        Input object
-     * @param string              $sPreferredKey Key to use instead of node's key.
+     * @param string              $sPreferredKey key to use instead of node's key
      *
      * @return SimpleXMLElement
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addSimpleXmlElement" in next major
      */
     protected function _addSimpleXmlElement($oXml, $oInput, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aElements = is_object($oInput) ? get_object_vars($oInput) : (array) $oInput;
+        $aElements = \is_object($oInput) ? get_object_vars($oInput) : (array)$oInput;
 
         foreach ($aElements as $sKey => $mElement) {
             $oXml = $this->_addChildNode($oXml, $sKey, $mElement, $sPreferredKey);
@@ -90,18 +93,19 @@ class SimpleXml
      * @param string              $sPreferredKey
      *
      * @return SimpleXMLElement
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addChildNode" in next major
      */
     protected function _addChildNode($oXml, $sKey, $mElement, $sPreferredKey = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
-        if (is_array($mElement) && array_key_exists('attributes', $mElement) && is_array($mElement['attributes'])) {
+        if (\is_array($mElement) && \array_key_exists('attributes', $mElement) && \is_array($mElement['attributes'])) {
             $aAttributes = $mElement['attributes'];
             $mElement = $mElement['value'];
         }
 
-        if (is_object($mElement) || is_array($mElement)) {
-            if (is_int(key($mElement))) {
+        if (\is_object($mElement) || \is_array($mElement)) {
+            if (\is_int(key($mElement))) {
                 $this->_addSimpleXmlElement($oXml, $mElement, $sKey);
             } else {
                 $oChildNode = $oXml->addChild($sPreferredKey ? $sPreferredKey : $sKey);
@@ -124,11 +128,12 @@ class SimpleXml
      * @param array            $aAttributes
      *
      * @return SimpleXMLElement
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addNodeAttributes" in next major
      */
     protected function _addNodeAttributes($oNode, $aAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $aAttributes = (array) $aAttributes;
+        $aAttributes = (array)$aAttributes;
         foreach ($aAttributes as $sKey => $sValue) {
             $oNode->addAttribute($sKey, $sValue);
         }

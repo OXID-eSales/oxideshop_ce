@@ -13,12 +13,10 @@ use Doctrine\DBAL\Query\QueryBuilder;
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface QueryBuilderFactoryInterface
 {
-    /**
-     * @return QueryBuilder
-     */
     public function create(): QueryBuilder;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -20,7 +22,9 @@ class ManufacturerList extends \OxidEsales\Eshop\Application\Component\Widget\Wi
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_categories' => 1];
+    protected $_aComponentNames = [
+        'oxcmp_categories' => 1,
+    ];
 
     /**
      * Current class template name.

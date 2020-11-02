@@ -20,32 +20,23 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
 
     /**
      * MetaDataDefinition constructor.
-     *
-     * @param array $metaDataSchemata
      */
     public function __construct(array $metaDataSchemata)
     {
         $this->metaDataSchemata = $metaDataSchemata;
     }
 
-    /**
-     * @return array
-     */
     public function getMetaDataSchemata(): array
     {
         return $this->metaDataSchemata;
     }
 
     /**
-     * @param string $metaDataVersion
-     *
      * @throws UnsupportedMetaDataVersionException
-     *
-     * @return array
      */
     public function getMetaDataSchemaForVersion(string $metaDataVersion): array
     {
-        if (false === array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
+        if (false === \array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
             throw new UnsupportedMetaDataVersionException("Metadata version $metaDataVersion is not supported");
         }
 
@@ -53,15 +44,11 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
     }
 
     /**
-     * @param string $metaDataVersion
-     *
      * @throws UnsupportedMetaDataVersionException
-     *
-     * @return array
      */
     public function getFlippedMetaDataSchemaForVersion(string $metaDataVersion): array
     {
-        if (false === array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
+        if (false === \array_key_exists($metaDataVersion, $this->metaDataSchemata)) {
             throw new UnsupportedMetaDataVersionException("Metadata version $metaDataVersion is not supported");
         }
 
@@ -69,11 +56,7 @@ class MetaDataSchemataProvider implements MetaDataSchemataProviderInterface
     }
 
     /**
-     * Recursively exchange keys and values for a given array
-     *
-     * @param array $metaDataVersion
-     *
-     * @return array
+     * Recursively exchange keys and values for a given array.
      */
     private function arrayFlipRecursive(array $metaDataVersion): array
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -29,7 +31,7 @@
  */
 function smarty_function_oxscript($params, &$smarty)
 {
-    $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? (bool)$smarty->_tpl_vars["__oxid_include_dynamic"] : false;
+    $isDynamic = isset($smarty->_tpl_vars['__oxid_include_dynamic']) ? (bool)$smarty->_tpl_vars['__oxid_include_dynamic'] : false;
     $priority = !empty($params['priority']) ? $params['priority'] : 3;
     $widget = !empty($params['widget']) ? $params['widget'] : '';
     $isInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;
@@ -38,6 +40,7 @@ function smarty_function_oxscript($params, &$smarty)
     if (isset($params['add'])) {
         if (empty($params['add'])) {
             $smarty->trigger_error("{oxscript} parameter 'add' can not be empty!");
+
             return '';
         }
 
@@ -46,6 +49,7 @@ function smarty_function_oxscript($params, &$smarty)
     } elseif (isset($params['include'])) {
         if (empty($params['include'])) {
             $smarty->trigger_error("{oxscript} parameter 'include' can not be empty!");
+
             return '';
         }
 

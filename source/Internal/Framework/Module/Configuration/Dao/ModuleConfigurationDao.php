@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 
 class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 {
@@ -21,7 +21,6 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 
     /**
      * ModuleConfigurationDao constructor.
-     * @param ShopConfigurationDaoInterface $shopConfigurationDao
      */
     public function __construct(ShopConfigurationDaoInterface $shopConfigurationDao)
     {
@@ -29,10 +28,6 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
     }
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
-     * @return ModuleConfiguration
      * @throws ModuleConfigurationNotFoundException
      */
     public function get(string $moduleId, int $shopId): ModuleConfiguration
@@ -43,11 +38,7 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
             ->getModuleConfiguration($moduleId);
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param int                 $shopId
-     */
-    public function save(ModuleConfiguration $moduleConfiguration, int $shopId)
+    public function save(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
         $shopConfiguration = $this
             ->shopConfigurationDao

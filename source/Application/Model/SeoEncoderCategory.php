@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,20 +9,21 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
- * Seo encoder category
+ * Seo encoder category.
  */
 class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 {
-    /** @var array _aCatCache cache for categories. */
+    /**
+     * @var array _aCatCache cache for categories
+     */
     protected $_aCatCache = [];
 
     /**
-     * Returns target "extension" (/)
+     * Returns target "extension" (/).
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
     protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -30,14 +33,13 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 
     /**
      * _categoryUrlLoader loads category from db
-     * returns false if cat needs to be encoded (load failed)
+     * returns false if cat needs to be encoded (load failed).
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $oCat  category object
      * @param int                                          $iLang active language id
      *
-     * @access protected
+     * @return bool
      *
-     * @return boolean
      * @deprecated underscore prefix violates PSR12, will be renamed to "categoryUrlLoader" in next major
      */
     protected function _categoryUrlLoader($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -54,23 +56,22 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * _getCatecgoryCacheId return string for isntance cache id
+     * _getCatecgoryCacheId return string for isntance cache id.
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $oCat  category object
      * @param int                                          $iLang active language
      *
-     * @access private
-     *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryCacheId" in next major
      */
     private function _getCategoryCacheId($oCat, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $oCat->getId() . '_' . ((int) $iLang);
+        return $oCat->getId() . '_' . ((int)$iLang);
     }
 
     /**
-     * Returns SEO uri for passed category
+     * Returns SEO uri for passed category.
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $oCat         category object
      * @param int                                          $iLang        language
@@ -96,7 +97,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
             $aStdLinks = [];
 
             while ($oCat && !($sSeoUrl = $this->_categoryUrlLoader($oCat, $iLang))) {
-                if ($iLang != $oCat->getLanguage()) {
+                if ($iLang !== $oCat->getLanguage()) {
                     $sId = $oCat->getId();
                     $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                     $oCat->loadInLang($iLang, $sId);
@@ -130,12 +131,12 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * Returns category SEO url for specified page
+     * Returns category SEO url for specified page.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Category $category   Category object.
-     * @param int                                          $pageNumber Number of the page which should be prepared.
-     * @param int                                          $languageId Language id.
-     * @param bool                                         $isFixed    Fixed url marker (default is null).
+     * @param \OxidEsales\Eshop\Application\Model\Category $category   category object
+     * @param int                                          $pageNumber number of the page which should be prepared
+     * @param int                                          $languageId language id
+     * @param bool                                         $isFixed    fixed url marker (default is null)
      *
      * @return string
      */
@@ -150,7 +151,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         $stdUrl = $this->_trimUrl($stdUrl, $languageId);
         $seoUrl = $this->getCategoryUri($category, $languageId);
 
-        if ($isFixed === null) {
+        if (null === $isFixed) {
             $isFixed = $this->_isFixed('oxcategory', $category->getId(), $languageId);
         }
 
@@ -183,19 +184,19 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * Marks related to category objects as expired
+     * Marks related to category objects as expired.
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $oCategory Category object
      */
-    public function markRelatedAsExpired($oCategory)
+    public function markRelatedAsExpired($oCategory): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         // select it from table instead of using object carrying value
         // this is because this method is usually called inside update,
         // where object may already be carrying changed id
-        $aCatInfo = $oDb->getAll("select oxrootid, oxleft, oxright from oxcategories where oxid = :oxid limit 1", [
-            ':oxid' => $oCategory->getId()
+        $aCatInfo = $oDb->getAll('select oxrootid, oxleft, oxright from oxcategories where oxid = :oxid limit 1', [
+            ':oxid' => $oCategory->getId(),
         ]);
 
         // update sub cats
@@ -206,57 +207,58 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
                 set seo1.oxexpired = '1' where seo1.oxtype = 'oxcategory' and seo1.oxobjectid = seo2.oxid";
         $oDb->execute($sQ, [
             ':oxrootid' => $aCatInfo[0][0],
-            ':oxleft' => (int) $aCatInfo[0][1],
-            ':oxright' => (int) $aCatInfo[0][2]
+            ':oxleft' => (int)$aCatInfo[0][1],
+            ':oxright' => (int)$aCatInfo[0][2],
         ]);
 
         // update subarticles
-        $sQ = "update oxseo as seo1, (select distinct o2c.oxobjectid as id from oxcategories as cat left join oxobject2category "
-              . "as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid = :oxrootid and cat.oxleft >= :oxleft "
-              . "and cat.oxright <= :oxright) as seo2 "
+        $sQ = 'update oxseo as seo1, (select distinct o2c.oxobjectid as id from oxcategories as cat left join oxobject2category '
+              . 'as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid = :oxrootid and cat.oxleft >= :oxleft '
+              . 'and cat.oxright <= :oxright) as seo2 '
               . "set seo1.oxexpired = '1' where seo1.oxtype = 'oxarticle' and seo1.oxobjectid = seo2.id "
-              . "and seo1.oxfixed = 0";
+              . 'and seo1.oxfixed = 0';
         $oDb->execute($sQ, [
             ':oxrootid' => $aCatInfo[0][0],
-            ':oxleft' => (int) $aCatInfo[0][1],
-            ':oxright' => (int) $aCatInfo[0][2]
+            ':oxleft' => (int)$aCatInfo[0][1],
+            ':oxright' => (int)$aCatInfo[0][2],
         ]);
     }
 
     /**
-     * deletes Category seo entries
+     * deletes Category seo entries.
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $oCategory Category object
      */
-    public function onDeleteCategory($oCategory)
+    public function onDeleteCategory($oCategory): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $params = [
-            ':oxobjectid' => $oCategory->getId()
+            ':oxobjectid' => $oCategory->getId(),
         ];
 
         $oDb->execute("update oxseo, (select oxseourl from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory') as test set oxseo.oxexpired=1 where oxseo.oxseourl like concat(test.oxseourl, '%') and (oxtype = 'oxcategory' or oxtype = 'oxarticle')", $params);
         $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = :oxparams", [
-            ':oxparams' => $oCategory->getId()
+            ':oxparams' => $oCategory->getId(),
         ]);
         $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'", [
-            ':oxobjectid' => $oCategory->getId()
+            ':oxobjectid' => $oCategory->getId(),
         ]);
-        $oDb->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $oCategory->getId()
+        $oDb->execute('delete from oxobject2seodata where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $oCategory->getId(),
         ]);
-        $oDb->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $oCategory->getId()
+        $oDb->execute('delete from oxseohistory where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $oCategory->getId(),
         ]);
     }
 
     /**
-     * Returns alternative uri used while updating seo
+     * Returns alternative uri used while updating seo.
      *
      * @param string $sObjectId object id
      * @param int    $iLang     language id
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
     protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

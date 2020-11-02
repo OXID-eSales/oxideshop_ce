@@ -14,15 +14,13 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Exception\Password
 class PasswordPolicy implements PasswordPolicyInterface
 {
     /**
-     * Enforces password policy
-     *
-     * @param string $password
+     * Enforces password policy.
      *
      * @throws PasswordPolicyException
      */
-    public function enforcePasswordPolicy(string $password)
+    public function enforcePasswordPolicy(string $password): void
     {
-        /**
+        /*
          * A password policy should at least ensure, that the same character encoding is used for hashing and
          * verification. As there is no real way to ensure, that a byte stream is encoded in a certain character
          * set, at least is should ensured that the password is valid UTF-8.
@@ -32,14 +30,9 @@ class PasswordPolicy implements PasswordPolicyInterface
         }
     }
 
-    /**
-     * @param string $password
-     *
-     * @return bool
-     */
     private function isValidUtf8(string $password): bool
     {
-        /**
+        /*
          * Use the PCRE_UTF8 pattern modifier to test, if the given string this is a valid UTF-8 string.
          * See http://php.net/manual/de/reference.pcre.pattern.modifiers.php
          * preg_match will return false on a invalid subject

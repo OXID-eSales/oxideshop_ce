@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
 
 /**
- * @inheritdoc
+ * {@inheritdoc}
  */
 class UserShippingAddressUpdatableFields extends AbstractUpdatableFields
 {
@@ -46,7 +48,7 @@ class UserShippingAddressUpdatableFields extends AbstractUpdatableFields
             'OXFON',
             'OXFAX',
             'OXSAL',
-            'OXTIMESTAMP'
+            'OXTIMESTAMP',
         ];
     }
 }

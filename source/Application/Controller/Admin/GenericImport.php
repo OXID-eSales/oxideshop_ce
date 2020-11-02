@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,5 +19,5 @@ class GenericImport extends \OxidEsales\Eshop\Application\Controller\Admin\Gener
      *
      * @var string
      */
-    protected $_sThisTemplate = "genimport_main.tpl";
+    protected $_sThisTemplate = 'genimport_main.tpl';
 }

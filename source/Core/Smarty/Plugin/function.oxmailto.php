@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 /**
- * Smarty {mailto} function plugin extension, fixes character encoding problem
+ * Smarty {mailto} function plugin extension, fixes character encoding problem.
  *
  * @param array  $aParams  parameters
  * @param Smarty &$oSmarty smarty object
@@ -15,8 +17,8 @@
  */
 function smarty_function_oxmailto($aParams, &$oSmarty)
 {
-    if (isset($aParams['encode']) && $aParams['encode'] == 'javascript') {
-        $sAddress = isset($aParams['address']) ? $aParams['address'] : '';
+    if (isset($aParams['encode']) && 'javascript' === $aParams['encode']) {
+        $sAddress = $aParams['address'] ?? '';
         $sText = $sAddress;
 
         $aMailParms = [];
@@ -26,7 +28,7 @@ function smarty_function_oxmailto($aParams, &$oSmarty)
                 case 'bcc':
                 case 'followupto':
                     if ($sValue) {
-                        $aMailParms[] = $sVarName . '=' . str_replace([ '%40', '%2C' ], [ '@', ',' ], rawurlencode($sValue));
+                        $aMailParms[] = $sVarName . '=' . str_replace(['%40', '%2C'], ['@', ','], rawurlencode($sValue));
                     }
                     break;
                 case 'subject':
@@ -35,23 +37,25 @@ function smarty_function_oxmailto($aParams, &$oSmarty)
                     break;
                 case 'extra':
                 case 'text':
-                    $sName  = "s" . ucfirst($sVarName);
+                    $sName = 's' . ucfirst($sVarName);
                     $$sName = $sValue;
                     // no break
                 default:
             }
         }
 
-        for ($iCtr = 0; $iCtr < count($aMailParms); $iCtr++) {
-            $sAddress .= ($iCtr == 0) ? '?' : '&';
+        for ($iCtr = 0; $iCtr < count($aMailParms); ++$iCtr) {
+            $sAddress .= (0 === $iCtr) ? '?' : '&';
             $sAddress .= $aMailParms[$iCtr];
         }
 
         $sString = 'document.write(\'<a href="mailto:' . $sAddress . '" ' . $sExtra . '>' . $sText . '</a>\');';
-        $sEncodedString = "%" . wordwrap(current(unpack("H*", $sString)), 2, "%", true);
+        $sEncodedString = '%' . wordwrap(current(unpack('H*', $sString)), 2, '%', true);
+
         return '<script type="text/javascript">eval(decodeURIComponent(\'' . $sEncodedString . '\'))</script>';
     } else {
         include_once $oSmarty->_get_plugin_filepath('function', 'mailto');
+
         return smarty_function_mailto($aParams, $oSmarty);
     }
 }

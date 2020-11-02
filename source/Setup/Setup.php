@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,48 +15,59 @@ namespace OxidEsales\EshopCommunity\Setup;
 class Setup extends Core
 {
     /**
-     * Current setup step title
+     * Current setup step title.
      *
      * @var string
      */
     protected $_sTitle = null;
 
     /**
-     * Installation process status message
+     * Installation process status message.
      *
      * @var string
      */
     protected $_sMessage = null;
 
     /**
-     * Current setup step index
+     * Current setup step index.
      *
      * @var int
      */
     protected $_iCurrStep = null;
 
-    /** @var int Next step index */
+    /**
+     * @var int Next step index
+     */
     protected $_iNextStep = null;
 
     /**
-     * Setup steps index array
+     * Setup steps index array.
      *
      * @var array
      */
     protected $_aSetupSteps = [
-        'STEP_SYSTEMREQ'   => 100, // 0
-        'STEP_WELCOME'     => 200, // 1
-        'STEP_LICENSE'     => 300, // 2
-        'STEP_DB_INFO'     => 400, // 3
-        'STEP_DB_CONNECT'  => 410, // 31
-        'STEP_DIRS_INFO'   => 500, // 4
-        'STEP_DIRS_WRITE'  => 510, // 41
-        'STEP_DB_CREATE'   => 520, // 42
-        'STEP_FINISH'      => 700, // 6
+        'STEP_SYSTEMREQ' => 100,
+        // 0
+        'STEP_WELCOME' => 200,
+        // 1
+        'STEP_LICENSE' => 300,
+        // 2
+        'STEP_DB_INFO' => 400,
+        // 3
+        'STEP_DB_CONNECT' => 410,
+        // 31
+        'STEP_DIRS_INFO' => 500,
+        // 4
+        'STEP_DIRS_WRITE' => 510,
+        // 41
+        'STEP_DB_CREATE' => 520,
+        // 42
+        'STEP_FINISH' => 700,
+        // 6
     ];
 
     /**
-     * Returns current setup step title
+     * Returns current setup step title.
      *
      * @return string
      */
@@ -64,17 +77,17 @@ class Setup extends Core
     }
 
     /**
-     * Current setup step title setter
+     * Current setup step title setter.
      *
      * @param string $sTitle title
      */
-    public function setTitle($sTitle)
+    public function setTitle($sTitle): void
     {
         $this->_sTitle = $sTitle;
     }
 
     /**
-     * Returns installation process status message
+     * Returns installation process status message.
      *
      * @return string
      */
@@ -84,34 +97,34 @@ class Setup extends Core
     }
 
     /**
-     * Sets installation process status message
+     * Sets installation process status message.
      *
      * @param string $sMsg status message
      */
-    public function setMessage($sMsg)
+    public function setMessage($sMsg): void
     {
         $this->_sMessage = $sMsg;
     }
 
     /**
-     * Returns current setup step index
+     * Returns current setup step index.
      *
      * @return int
      */
     public function getCurrentStep()
     {
-        if ($this->_iCurrStep === null) {
-            if (($this->_iCurrStep = $this->getInstance("Utilities")->getRequestVar("istep")) === null) {
+        if (null === $this->_iCurrStep) {
+            if (null === ($this->_iCurrStep = $this->getInstance('Utilities')->getRequestVar('istep'))) {
                 $this->_iCurrStep = $this->getStep('STEP_SYSTEMREQ');
             }
-            $this->_iCurrStep = (int) $this->_iCurrStep;
+            $this->_iCurrStep = (int)$this->_iCurrStep;
         }
 
         return $this->_iCurrStep;
     }
 
     /**
-     * Returns next setup step ident
+     * Returns next setup step ident.
      *
      * @return int
      */
@@ -121,25 +134,25 @@ class Setup extends Core
     }
 
     /**
-     * Current setup step setter
+     * Current setup step setter.
      *
      * @param int $iStep current setup step index
      */
-    public function setNextStep($iStep)
+    public function setNextStep($iStep): void
     {
         $this->_iNextStep = $iStep;
     }
 
     /**
-     * Checks if config file is alleady filled with data
+     * Checks if config file is alleady filled with data.
      *
      * @return bool
      */
     public function alreadySetUp()
     {
         $blSetUp = false;
-        $sConfig = join("", file(getShopBasePath() . "config.inc.php"));
-        if (strpos($sConfig, "<dbHost>") === false) {
+        $sConfig = implode('', file(getShopBasePath() . 'config.inc.php'));
+        if (false === strpos($sConfig, '<dbHost>')) {
             $blSetUp = true;
         }
 
@@ -155,8 +168,8 @@ class Setup extends Core
     {
         $blDeleteSetupDirectory = true;
 
-        $sConfig = join("", file(getShopBasePath() . "config.inc.php"));
-        if (strpos($sConfig, "this->blDelSetupDir = false;") !== false) {
+        $sConfig = implode('', file(getShopBasePath() . 'config.inc.php'));
+        if (false !== strpos($sConfig, 'this->blDelSetupDir = false;')) {
             $blDeleteSetupDirectory = false;
         }
 
@@ -164,7 +177,7 @@ class Setup extends Core
     }
 
     /**
-     * Returns default shop id
+     * Returns default shop id.
      *
      * @return mixed
      */
@@ -174,7 +187,7 @@ class Setup extends Core
     }
 
     /**
-     * Returns setup steps index array
+     * Returns setup steps index array.
      *
      * @return array
      */
@@ -184,7 +197,7 @@ class Setup extends Core
     }
 
     /**
-     * Returns setup step index
+     * Returns setup step index.
      *
      * @param string $sStepId setup step identifier
      *
@@ -193,7 +206,8 @@ class Setup extends Core
     public function getStep($sStepId)
     {
         $steps = $this->getSteps();
-        return isset($steps[$sStepId]) ? $steps[$sStepId] : null;
+
+        return $steps[$sStepId] ?? null;
     }
 
     /**
@@ -201,7 +215,7 @@ class Setup extends Core
      * -1 - unable to datect, should not block
      *  0 - missing, blocks setup
      *  1 - fits min requirements
-     *  2 - exists required or better
+     *  2 - exists required or better.
      *
      * @param int $iModuleState module state
      *
@@ -223,6 +237,7 @@ class Setup extends Core
                 $sClass = 'fail';
                 break;
         }
+
         return $sClass;
     }
 }

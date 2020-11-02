@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -23,7 +25,7 @@ class UserCounter
 
         $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user'";
 
-        return (int) $oDb->getOne($sQuery);
+        return (int)$oDb->getOne($sQuery);
     }
 
     /**
@@ -37,6 +39,6 @@ class UserCounter
 
         $sQuery = "SELECT COUNT(1) FROM oxuser WHERE oxrights != 'user' AND oxactive = 1 ";
 
-        return (int) $oDb->getOne($sQuery);
+        return (int)$oDb->getOne($sQuery);
     }
 }

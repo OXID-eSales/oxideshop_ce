@@ -14,19 +14,15 @@ use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
- * Class MigrationExecutor
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Migration
+ * Class MigrationExecutor.
  */
 class MigrationExecutor implements MigrationExecutorInterface
 {
-
-    /** @var ContextInterface */
+    /**
+     * @var ContextInterface
+     */
     protected $context;
 
-    /**
-     * @param ContextInterface $context
-     */
     public function __construct(ContextInterface $context)
     {
         $this->context = $context;
@@ -38,9 +34,6 @@ class MigrationExecutor implements MigrationExecutorInterface
         $migrations->execute(Migrations::MIGRATE_COMMAND);
     }
 
-    /**
-     * @return Migrations
-     */
     private function createMigrations(): Migrations
     {
         $migrationsBuilder = new MigrationsBuilder();

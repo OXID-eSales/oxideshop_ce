@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,7 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
 use stdClass;
 
 /**
@@ -28,8 +29,8 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     {
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
@@ -39,7 +40,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oWrapping->loadInLang(key($oOtherLang), $soxId);
             }
-            $this->_aViewData["edit"] = $oWrapping;
+            $this->_aViewData['edit'] = $oWrapping;
 
             //Disable editing for derived articles
             if ($oWrapping->isDerived()) {
@@ -48,32 +49,30 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
             // remove already created languages
             $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
-                $this->_aViewData["posslang"] = $aLang;
+            if (\count($aLang)) {
+                $this->_aViewData['posslang'] = $aLang;
             }
 
             foreach ($oOtherLang as $id => $language) {
                 $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
-                $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] = clone $oLang;
+                $oLang->selected = ($id === $this->_iEditLang);
+                $this->_aViewData['otherlang'][$id] = clone $oLang;
             }
         }
 
-        return "wrapping_main.tpl";
+        return 'wrapping_main.tpl';
     }
 
     /**
      * Saves main wrapping parameters.
-     *
-     * @return null
      */
-    public function save()
+    public function save(): void
     {
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
 
         // checkbox handling
         if (!isset($aParams['oxwrapping__oxactive'])) {
@@ -82,7 +81,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
 
-        if ($soxId != "-1") {
+        if ('-1' !== $soxId) {
             $oWrapping->loadInLang($this->_iEditLang, $soxId);
             // #1173M - not all pic are deleted, after article is removed
             \OxidEsales\Eshop\Core\Registry::getUtilsPic()->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false));
@@ -109,13 +108,11 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
     /**
      * Saves main wrapping parameters.
-     *
-     * @return null
      */
-    public function saveinnlang()
+    public function saveinnlang(): void
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
 
         // checkbox handling
         if (!isset($aParams['oxwrapping__oxactive'])) {
@@ -124,7 +121,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         $oWrapping = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
 
-        if ($soxId != "-1") {
+        if ('-1' !== $soxId) {
             $oWrapping->load($soxId);
         } else {
             $aParams['oxwrapping__oxid'] = null;

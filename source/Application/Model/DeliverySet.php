@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,15 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
  * Order delivery set manager.
  */
 class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
-     * Current object class name
+     * Current object class name.
      *
      * @var string
      */
@@ -49,20 +49,20 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $oDb->execute('delete from oxobject2payment where oxobjectid = :oxid', [
-            ':oxid' => $sOxId
+            ':oxid' => $sOxId,
         ]);
         $oDb->execute('delete from oxobject2delivery where oxdeliveryid = :oxid', [
-            ':oxid' => $sOxId
+            ':oxid' => $sOxId,
         ]);
         $oDb->execute('delete from oxdel2delset where oxdelsetid = :oxid', [
-            ':oxid' => $sOxId
+            ':oxid' => $sOxId,
         ]);
 
         return parent::delete($sOxId);
     }
 
     /**
-     * returns delivery set id
+     * returns delivery set id.
      *
      * @param string $sTitle delivery name
      *
@@ -71,12 +71,11 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getIdByName($sTitle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "SELECT `oxid` FROM `" . getViewName('oxdeliveryset') . "` 
-            WHERE  `oxtitle` = :oxtitle";
-        $sId = $oDb->getOne($sQ, [
-            ':oxtitle' => $sTitle
-        ]);
+        $sQ = 'SELECT `oxid` FROM `' . getViewName('oxdeliveryset') . '` 
+            WHERE  `oxtitle` = :oxtitle';
 
-        return $sId;
+        return $oDb->getOne($sQ, [
+            ':oxtitle' => $sTitle,
+        ]);
     }
 }

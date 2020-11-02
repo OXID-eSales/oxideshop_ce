@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxRegistry;
 
 /**
  * Defines and returns delivery and billing required fields.
@@ -25,7 +25,7 @@ class RequiredAddressFields
         'oxuser__oxstreetnr',
         'oxuser__oxstreet',
         'oxuser__oxzip',
-        'oxuser__oxcity'
+        'oxuser__oxcity',
     ];
 
     /**
@@ -43,7 +43,7 @@ class RequiredAddressFields
         $this->setRequiredFields($this->_aDefaultRequiredFields);
 
         $aRequiredFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aMustFillFields');
-        if (is_array($aRequiredFields)) {
+        if (\is_array($aRequiredFields)) {
             $this->setRequiredFields($aRequiredFields);
         }
     }
@@ -53,7 +53,7 @@ class RequiredAddressFields
      *
      * @param array $aRequiredFields
      */
-    public function setRequiredFields($aRequiredFields)
+    public function setRequiredFields($aRequiredFields): void
     {
         $this->_aRequiredFields = $aRequiredFields;
     }
@@ -99,13 +99,14 @@ class RequiredAddressFields
      * @param string $sPrefix
      *
      * @return mixed
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "filterFields" in next major
      */
     private function _filterFields($aFields, $sPrefix) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAllowed = [];
         foreach ($aFields as $sKey => $sValue) {
-            if (strpos($sValue, $sPrefix) === 0) {
+            if (0 === strpos($sValue, $sPrefix)) {
                 $aAllowed[] = $aFields[$sKey];
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,44 +9,45 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-
 /**
- * Class controls article assignment to attributes
+ * Class controls article assignment to attributes.
  */
 class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * If true extended column selection will be build
+     * If true extended column selection will be build.
      *
      * @var bool
      */
     protected $_blAllowExtColumns = true;
 
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxartnum', 'oxarticles', 1, 0, 0],
-        ['oxtitle', 'oxarticles', 1, 1, 0],
-        ['oxean', 'oxarticles', 1, 0, 0],
-        ['oxmpn', 'oxarticles', 0, 0, 0],
-        ['oxprice', 'oxarticles', 0, 0, 0],
-        ['oxstock', 'oxarticles', 0, 0, 0],
-        ['oxid', 'oxarticles', 0, 0, 1]
-    ]
+    protected $_aColumns = [
+        // field , table,         visible, multilanguage, ident
+        'container1' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1],
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -68,27 +71,29 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                 $sVariantsSqlSnippet = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
 
                 $sQAdd = " from {$sView} as oxobject2category left join {$sArticleTable} on {$sVariantsSqlSnippet}" .
-                         " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
+                         ' where oxobject2category.oxcatnid = ' . $oDb->quote($sSelId) . ' ';
             }
         }
         // #1513C/#1826C - skip references, to not existing articles
         $sQAdd .= " and $sArticleTable.oxid IS NOT NULL ";
 
         // skipping self from list
-        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote($sSynchSelId) . " ";
+        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote($sSynchSelId) . ' ';
 
         return $sQAdd;
     }
 
     /**
-     * Adds filter SQL to current query
+     * Adds filter SQL to current query.
      *
      * @param string $sQ query to add filter condition
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
-    protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
         $sQ = parent::_addFilter($sQ);
@@ -100,33 +105,35 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
     }
 
     /**
-     * Removing article from corssselling list
+     * Removing article from corssselling list.
      */
-    public function removeArticleBundle()
+    public function removeArticleBundle(): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid = :oxid ";
         $oDb->Execute(
             $sQ,
-            [':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid')]
+            [
+                ':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'),
+            ]
         );
     }
 
     /**
-     * Adding article to corssselling list
+     * Adding article to corssselling list.
      */
-    public function addArticleBundle()
+    public function addArticleBundle(): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid = :oxbundleid " .
-              "where oxarticles.oxid  = :oxid ";
+        $sQ = 'update oxarticles set oxarticles.oxbundleid = :oxbundleid ' .
+              'where oxarticles.oxid  = :oxid ';
         $oDb->Execute(
             $sQ,
             [
                 ':oxbundleid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxbundleid'),
-                ':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid')
+                ':oxid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'),
             ]
         );
     }

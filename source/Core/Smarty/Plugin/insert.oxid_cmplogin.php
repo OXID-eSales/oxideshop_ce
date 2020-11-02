@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,7 +14,7 @@
  * Type: string, html
  * Name: oxid_cmplogin
  * Purpose: Inserts OXID eShop Login without caching
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param array  $params  params
  * @param Smarty &$smarty clever simulation of a method

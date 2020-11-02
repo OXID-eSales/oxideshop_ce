@@ -14,9 +14,9 @@ final class Version20191007144155 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $query = "ALTER TABLE oxseo 
+        $query = 'ALTER TABLE oxseo 
             DROP INDEX `OXOBJECTID`, 
-            ADD INDEX `OXOBJECTID` (`OXOBJECTID`,`OXSHOPID`,`OXLANG`)";
+            ADD INDEX `OXOBJECTID` (`OXOBJECTID`,`OXSHOPID`,`OXLANG`)';
 
         $this->addSql($query);
     }

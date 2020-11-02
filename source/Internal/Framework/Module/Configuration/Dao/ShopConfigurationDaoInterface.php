@@ -13,18 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ShopConfigurationDaoInterface
 {
-
-    /**
-     * @param int $shopId
-     *
-     * @return ShopConfiguration
-     */
     public function get(int $shopId): ShopConfiguration;
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     * @param int               $shopId
-     */
     public function save(ShopConfiguration $shopConfiguration, int $shopId): void;
 
     /**
@@ -33,7 +23,7 @@ interface ShopConfigurationDaoInterface
     public function getAll(): array;
 
     /**
-     * delete all shop configurations
+     * delete all shop configurations.
      */
     public function deleteAll(): void;
 }

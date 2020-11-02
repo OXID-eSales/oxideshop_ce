@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,7 +15,7 @@
  * Name: oxid_tracker
  * Purpose: Output etracker code or Econda Code
  * add [{insert name="oxid_tracker" title="..."}] after Body Tag in Templates
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param array  $params  params
  * @param Smarty &$smarty clever simulation of a method

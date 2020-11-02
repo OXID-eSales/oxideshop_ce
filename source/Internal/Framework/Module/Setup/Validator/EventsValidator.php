@@ -13,20 +13,17 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
-use function is_array;
-
 class EventsValidator implements ModuleConfigurationValidatorInterface
 {
-    /** @var array $validEvents */
+    /**
+     * @var array
+     */
     private $validEvents = ['onActivate', 'onDeactivate'];
     /**
      * @var ShopAdapterInterface
      */
     private $shopAdapter;
 
-    /**
-     * @param ShopAdapterInterface $shopAdapter
-     */
     public function __construct(ShopAdapterInterface $shopAdapter)
     {
         $this->shopAdapter = $shopAdapter;
@@ -35,12 +32,9 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
     /**
      * There is another service for syntax validation and we won't validate syntax in this method.
      *
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     *
      * @throws ModuleSettingNotValidException
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasEvents()) {
             $events = [];
@@ -49,7 +43,7 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
                 $events[$event->getAction()] = $event->getMethod();
             }
             foreach ($this->validEvents as $validEventName) {
-                if (is_array($events) && \array_key_exists($validEventName, $events)) {
+                if (\is_array($events) && \array_key_exists($validEventName, $events)) {
                     $this->checkIfMethodIsCallable($events[$validEventName]);
                 }
             }
@@ -57,11 +51,9 @@ class EventsValidator implements ModuleConfigurationValidatorInterface
     }
 
     /**
-     * @param string $method
-     *
      * @throws ModuleSettingNotValidException
      */
-    private function checkIfMethodIsCallable(string $method)
+    private function checkIfMethodIsCallable(string $method): void
     {
         if (!\is_callable($method)) {
             throw new ModuleSettingNotValidException('The method ' . $method . ' is not callable.');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -27,11 +29,11 @@ class CategoryPictures extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $this->_aViewData['edit'] = $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
 
         $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != '-1') {
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oCategory->load($soxId);
         }
 
-        return "category_pictures.tpl";
+        return 'category_pictures.tpl';
     }
 }

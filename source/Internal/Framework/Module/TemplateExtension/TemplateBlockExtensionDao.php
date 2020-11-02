@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
 class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
 {
@@ -26,8 +26,6 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
 
     /**
      * TemplateBlockExtensionDao constructor.
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ShopAdapterInterface         $shopAdapter
      */
     public function __construct(QueryBuilderFactoryInterface $queryBuilderFactory, ShopAdapterInterface $shopAdapter)
     {
@@ -35,44 +33,36 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         $this->shopAdapter = $shopAdapter;
     }
 
-    /**
-     * @param TemplateBlockExtension $templateBlockExtension
-     */
-    public function add(TemplateBlockExtension $templateBlockExtension)
+    public function add(TemplateBlockExtension $templateBlockExtension): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->insert('oxtplblocks')
             ->values([
-                'oxid'          => ':id',
-                'oxshopid'      => ':shopId',
-                'oxmodule'      => ':moduleId',
-                'oxtheme'       => ':themeId',
-                'oxblockname'   => ':name',
-                'oxfile'        => ':filePath',
-                'oxtemplate'    => ':templatePath',
-                'oxpos'         => ':priority',
-                'oxactive'      => '1',
+                'oxid' => ':id',
+                'oxshopid' => ':shopId',
+                'oxmodule' => ':moduleId',
+                'oxtheme' => ':themeId',
+                'oxblockname' => ':name',
+                'oxfile' => ':filePath',
+                'oxtemplate' => ':templatePath',
+                'oxpos' => ':priority',
+                'oxactive' => '1',
             ])
             ->setParameters([
-                'id'            => $this->shopAdapter->generateUniqueId(),
-                'shopId'        => $templateBlockExtension->getShopId(),
-                'moduleId'      => $templateBlockExtension->getModuleId(),
-                'themeId'       => $templateBlockExtension->getThemeId(),
-                'name'          => $templateBlockExtension->getName(),
-                'filePath'      => $templateBlockExtension->getFilePath(),
-                'templatePath'  => $templateBlockExtension->getExtendedBlockTemplatePath(),
-                'priority'      => $templateBlockExtension->getPosition(),
+                'id' => $this->shopAdapter->generateUniqueId(),
+                'shopId' => $templateBlockExtension->getShopId(),
+                'moduleId' => $templateBlockExtension->getModuleId(),
+                'themeId' => $templateBlockExtension->getThemeId(),
+                'name' => $templateBlockExtension->getName(),
+                'filePath' => $templateBlockExtension->getFilePath(),
+                'templatePath' => $templateBlockExtension->getExtendedBlockTemplatePath(),
+                'priority' => $templateBlockExtension->getPosition(),
             ]);
 
         $queryBuilder->execute();
     }
 
-    /**
-     * @param string $name
-     * @param int    $shopId
-     * @return array
-     */
     public function getExtensions(string $name, int $shopId): array
     {
         $queryBuilder = $this->queryBuilderFactory->create();
@@ -83,8 +73,8 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
             ->andWhere('oxblockname = :name')
             ->andWhere('oxmodule != \'\'')
             ->setParameters([
-                'shopId'    => $shopId,
-                'name'      => $name,
+                'shopId' => $shopId,
+                'name' => $name,
             ]);
 
         $blocksData = $queryBuilder->execute()->fetchAll();
@@ -92,11 +82,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
         return $this->mapDataToObjects($blocksData);
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
-    public function deleteExtensions(string $moduleId, int $shopId)
+    public function deleteExtensions(string $moduleId, int $shopId): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -104,17 +90,13 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
             ->where('oxshopid = :shopId')
             ->andWhere('oxmodule = :moduleId')
             ->setParameters([
-                'shopId'    => $shopId,
-                'moduleId'  => $moduleId,
+                'shopId' => $shopId,
+                'moduleId' => $moduleId,
             ]);
 
         $queryBuilder->execute();
     }
 
-    /**
-     * @param array $blocksData
-     * @return array
-     */
     private function mapDataToObjects(array $blocksData): array
     {
         $templateBlockExtensions = [];
@@ -123,7 +105,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
             $templateBlock = new TemplateBlockExtension();
             $templateBlock
                 ->setShopId(
-                    (int) $blockData['OXSHOPID']
+                    (int)$blockData['OXSHOPID']
                 )
                 ->setModuleId(
                     $blockData['OXMODULE']
@@ -141,7 +123,7 @@ class TemplateBlockExtensionDao implements TemplateBlockExtensionDaoInterface
                     $blockData['OXTEMPLATE']
                 )
                 ->setPosition(
-                    (int) $blockData['OXPOS']
+                    (int)$blockData['OXPOS']
                 );
 
             $templateBlockExtensions[] = $templateBlock;

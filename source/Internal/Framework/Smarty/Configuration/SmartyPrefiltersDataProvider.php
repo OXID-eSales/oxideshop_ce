@@ -20,17 +20,12 @@ class SmartyPrefiltersDataProvider implements SmartyPrefiltersDataProviderInterf
 
     /**
      * SmartyPrefiltersDataProvider constructor.
-     *
-     * @param SmartyContextInterface $context
      */
     public function __construct(SmartyContextInterface $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * @return array
-     */
     public function getPrefilterPlugins(): array
     {
         $prefilterPath = $this->getPrefilterPath();
@@ -42,9 +37,6 @@ class SmartyPrefiltersDataProvider implements SmartyPrefiltersDataProviderInterf
         return $prefilter;
     }
 
-    /**
-     * @return string
-     */
     private function getPrefilterPath(): string
     {
         return $this->context->getSourcePath() . '/Core/Smarty/Plugin';

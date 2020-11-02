@@ -17,20 +17,17 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ModuleVersionHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
+    /**
+     * @var ShopConfigurationSettingDaoInterface
+     */
     private $shopConfigurationSettingDao;
 
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
     {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         $versionsSetting = $this->getShopConfigurationSetting($shopId);
         $versions = $versionsSetting->getValue();
@@ -41,11 +38,7 @@ class ModuleVersionHandler implements ModuleConfigurationHandlerInterface
         $this->shopConfigurationSettingDao->save($versionsSetting);
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         $versionsSetting = $this->getShopConfigurationSetting($shopId);
         $versions = $versionsSetting->getValue();
@@ -56,10 +49,6 @@ class ModuleVersionHandler implements ModuleConfigurationHandlerInterface
         $this->shopConfigurationSettingDao->save($versionsSetting);
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
     private function getShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {

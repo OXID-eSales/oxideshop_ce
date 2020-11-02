@@ -29,7 +29,7 @@ abstract class ModuleTranslationFileLocatorAbstract
     {
         $files = glob(Path::join($moduleLangPath, '*_lang.php'));
 
-        if (\is_array($files) && count($files)) {
+        if (\is_array($files) && \count($files)) {
             foreach ($files as $file) {
                 if (!strpos($file, 'cust_lang.php')) {
                     $langFiles[] = $file;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,10 +9,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxException;
-use oxExceptionToDisplay;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Article file download page.
@@ -19,9 +18,9 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
 {
     /**
      * Prevents from loading any component as this controller
-     * only returns file content if token is valid
+     * only returns file content if token is valid.
      */
-    public function init()
+    public function init(): void
     {
         // empty for performance reasons
     }
@@ -32,7 +31,7 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
      *
      * If token is not valid, redirects to start page.
      */
-    public function render()
+    public function render(): void
     {
         $sFileOrderId = Registry::getConfig()->getRequestParameter('sorderfileid');
 
@@ -47,14 +46,14 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
                     if ($sFileId && $blLoadedAndExists && $oOrderFile->processOrderFile()) {
                         $oArticleFile->download();
                     } else {
-                        $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";
+                        $sError = 'ERROR_MESSAGE_FILE_DOESNOT_EXIST';
                     }
                 }
             } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                $sError = "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED";
+                $sError = 'ERROR_MESSAGE_FILE_DOWNLOAD_FAILED';
             }
         } else {
-            $sError = "ERROR_MESSAGE_WRONG_DOWNLOAD_LINK";
+            $sError = 'ERROR_MESSAGE_WRONG_DOWNLOAD_LINK';
         }
         if ($sError) {
             $oEx = new \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay();

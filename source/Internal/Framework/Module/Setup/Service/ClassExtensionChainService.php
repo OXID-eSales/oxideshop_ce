@@ -27,10 +27,6 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
      */
     private $activeClassExtensionChainResolver;
 
-    /**
-     * @param ShopConfigurationSettingDaoInterface       $shopConfigurationSettingDao
-     * @param ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver
-     */
     public function __construct(
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
         ActiveClassExtensionChainResolverInterface $activeClassExtensionChainResolver
@@ -39,10 +35,7 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
         $this->activeClassExtensionChainResolver = $activeClassExtensionChainResolver;
     }
 
-    /**
-     * @param int $shopId
-     */
-    public function updateChain(int $shopId)
+    public function updateChain(int $shopId): void
     {
         $activeClassExtensionChain = $this->activeClassExtensionChainResolver->getActiveExtensionChain($shopId);
         $formattedClassExtensions = $this->formatClassExtensionChain($activeClassExtensionChain);
@@ -53,10 +46,6 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
         $this->shopConfigurationSettingDao->save($shopConfigurationSetting);
     }
 
-    /**
-     * @param ClassExtensionsChain $chain
-     * @return array
-     */
     private function formatClassExtensionChain(ClassExtensionsChain $chain): array
     {
         $classExtensions = [];
@@ -68,10 +57,6 @@ class ClassExtensionChainService implements ExtensionChainServiceInterface
         return $classExtensions;
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
     private function getClassExtensionChainShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {

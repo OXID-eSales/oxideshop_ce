@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -25,14 +27,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Count of all articles in list.
      *
-     * @var integer
+     * @var int
      */
     protected $_iAllArtCnt = 0;
 
     /**
      * Number of possible pages.
      *
-     * @var integer
+     * @var int
      */
     protected $_iCntPages = 0;
 
@@ -44,21 +46,21 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     protected $_sThisTemplate = 'page/list/list.tpl';
 
     /**
-     * New layout list template
+     * New layout list template.
      *
      * @var string
      */
     protected $_sThisMoreTemplate = 'page/list/morecategories.tpl';
 
     /**
-     * Category path string
+     * Category path string.
      *
      * @var string
      */
     protected $_sCatPathString = null;
 
     /**
-     * Marked which defines if current view is sortable or not
+     * Marked which defines if current view is sortable or not.
      *
      * @var bool
      */
@@ -72,28 +74,28 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     protected $_aAttributes = null;
 
     /**
-     * Category article list
+     * Category article list.
      *
      * @var array
      */
     protected $_aCatArtList = null;
 
     /**
-     * If category has subcategories
+     * If category has subcategories.
      *
      * @var bool
      */
     protected $_blHasVisibleSubCats = null;
 
     /**
-     * List of category's subcategories
+     * List of category's subcategories.
      *
      * @var array
      */
     protected $_aSubCatList = null;
 
     /**
-     * Page navigation
+     * Page navigation.
      *
      * @var object
      */
@@ -107,7 +109,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     protected $_blIsCat = null;
 
     /**
-     * Recomendation list
+     * Recomendation list.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -116,14 +118,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     protected $_oRecommList = null;
 
     /**
-     * Category title
+     * Category title.
      *
      * @var string
      */
     protected $_sCatTitle = null;
 
     /**
-     * Sign if to load and show bargain action
+     * Sign if to load and show bargain action.
      *
      * @var bool
      */
@@ -142,7 +144,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Generates (if not generated yet) and returns view ID (for
      * template engine caching).
      *
-     * @return string   $this->_sViewId view id
+     * @return string $this->_sViewId view id
      */
     protected function generateViewId()
     {
@@ -167,7 +169,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * name of template to render. Also checks if actual pages count does not exceed real
      * articles page count. If yes - calls error_404_handler().
      *
-     * @return  string  $this->_sThisTemplate   current template file name
+     * @return string $this->_sThisTemplate   current template file name
      */
     public function render()
     {
@@ -175,7 +177,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         $category = $this->getCategoryToRender();
 
-        $isCategoryActive = $category && (bool) $category->oxcategories__oxactive->value;
+        $isCategoryActive = $category && (bool)$category->oxcategories__oxactive->value;
         if (!$isCategoryActive) {
             Registry::getUtils()->redirect($config->getShopURL() . 'index.php', true, 302);
         }
@@ -219,7 +221,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
-        if ('oxmore' == $config->getRequestParameter('cnid')) {
+        if ('oxmore' === $config->getRequestParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
             $category = oxNew(Category::class);
@@ -237,10 +239,11 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Checks if requested page is valid and:
      * - redirecting to first page in case requested page does not exist
      * or
-     * - displays 404 error if category has no products
+     * - displays 404 error if category has no products.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "checkRequestedPage" in next major
      */
-    protected function _checkRequestedPage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _checkRequestedPage(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $pageCount = $this->getPageCount();
         $currentPageNumber = $this->getActPage();
@@ -257,10 +260,11 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
     /**
      * Iterates through list articles and performs list view specific tasks:
-     *  - sets type of link which needs to be generated (Manufacturer link)
+     *  - sets type of link which needs to be generated (Manufacturer link).
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "processListArticles" in next major
      */
-    protected function _processListArticles() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _processListArticles(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($articleList = $this->getArticleList()) {
             $linkType = $this->_getProductLinkType();
@@ -283,7 +287,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns additional URL parameters which must be added to list products dynamic urls
+     * Returns additional URL parameters which must be added to list products dynamic urls.
      *
      * @return string
      */
@@ -291,7 +295,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $dynamicParameters = parent::getAddUrlParams();
         if (!Registry::getUtils()->seoIsActive()) {
-            $pageNumber = (int) Registry::getConfig()->getRequestParameter('pgNr');
+            $pageNumber = (int)Registry::getConfig()->getRequestParameter('pgNr');
             if ($pageNumber > 0) {
                 $dynamicParameters .= ($dynamicParameters ? '&amp;' : '') . "pgNr={$pageNumber}";
             }
@@ -301,7 +305,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns additional URL parameters which must be added to list products seo urls
+     * Returns additional URL parameters which must be added to list products seo urls.
      *
      * @return string
      */
@@ -313,9 +317,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Returns product link type:
      *  - OXARTICLE_LINKTYPE_PRICECATEGORY - when active category is price category
-     *  - OXARTICLE_LINKTYPE_CATEGORY - when active category is regular category
+     *  - OXARTICLE_LINKTYPE_CATEGORY - when active category is regular category.
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getProductLinkType" in next major
      */
     protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -334,7 +339,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * Session variables:
      * <b>session_attrfilter</b>
      */
-    public function executefilter()
+    public function executefilter(): void
     {
         $baseLanguageId = Registry::getLang()->getBaseLanguage();
         // store this into session
@@ -354,7 +359,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Reset filter.
      */
-    public function resetFilter()
+    public function resetFilter(): void
     {
         $activeCategory = Registry::getConfig()->getRequestParameter('cnid');
         $sessionFilter = Registry::getSession()->getVariable('session_attrfilter');
@@ -369,13 +374,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param Category $category category object
      *
      * @return \OxidEsales\Eshop\Application\Model\ArticleList
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadArticles" in next major
      */
     protected function _loadArticles($category) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $numberOfCategoryArticles = (int) $config->getConfigParam('iNrofCatArticles');
+        $numberOfCategoryArticles = (int)$config->getConfigParam('iNrofCatArticles');
         $numberOfCategoryArticles = $numberOfCategoryArticles ? $numberOfCategoryArticles : 1;
 
         // load only articles which we show on screen
@@ -408,7 +414,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getActPage()
     {
         //Fake oxmore category has no subpages so we can set the page number to zero
-        if ('oxmore' == Registry::get(Request::class)->getRequestParameter('cnid')) {
+        if ('oxmore' === Registry::get(Request::class)->getRequestParameter('cnid')) {
             return 0;
         }
 
@@ -416,12 +422,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Calls parent::getActPage();
+     * Calls parent::getActPage();.
      *
      * @todo this function is a temporary solution and should be rmeoved as
      * soon product list loading is refactored
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getRequestPageNr" in next major
      */
     protected function _getRequestPageNr() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -430,16 +437,17 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Get list display type
+     * Get list display type.
      *
-     * @return null|string
+     * @return string|null
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getListDisplayType" in next major
      */
     protected function _getListDisplayType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $listDisplayType = Registry::getSession()->getVariable('ldtype');
 
-        if (is_null($listDisplayType)) {
+        if (null === $listDisplayType) {
             $listDisplayType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
@@ -447,9 +455,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns active product id to load its seo meta info
+     * Returns active product id to load its seo meta info.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -460,19 +469,20 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns string built from category titles
+     * Returns string built from category titles.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCatPathString" in next major
      */
     protected function _getCatPathString() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_sCatPathString === null) {
+        if (null === $this->_sCatPathString) {
             // marking as already set
             $this->_sCatPathString = false;
 
             //fetching category path
-            if (is_array($categoryTreePath = $this->getCatTreePath())) {
+            if (\is_array($categoryTreePath = $this->getCatTreePath())) {
                 $stringModifier = Str::getStr();
                 $this->_sCatPathString = '';
                 foreach ($categoryTreePath as $category) {
@@ -490,11 +500,12 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * Returns current view meta description data.
      *
-     * @param string $meta           Category path.
-     * @param int    $length         Max length of result, -1 for no truncation.
-     * @param bool   $descriptionTag If true - performs additional duplicate cleaning.
+     * @param string $meta           category path
+     * @param int    $length         max length of result, -1 for no truncation
+     * @param bool   $descriptionTag if true - performs additional duplicate cleaning
      *
-     * @return  string
+     * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -527,7 +538,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Template variable getter. Returns meta description
+     * Template variable getter. Returns meta description.
      *
      * @return string
      */
@@ -537,7 +548,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         if ($titlePageSuffix = $this->getTitlePageSuffix()) {
             if ($meta) {
-                $meta .= ", ";
+                $meta .= ', ';
             }
             $meta .= $titlePageSuffix;
         }
@@ -555,7 +566,8 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * @param int    $length         Max length of result, -1 for no truncation
      * @param bool   $descriptionTag If true - performs additional duplicate cleaning
      *
-     * @return  string
+     * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "collectMetaDescription" in next major
      */
     protected function _collectMetaDescription($meta, $length = 1024, $descriptionTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -566,7 +578,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $additionalText = (($category instanceof Category)) ? trim($category->getLongDesc()) : '';
 
         $articleList = $this->getArticleList();
-        if (!$additionalText && count($articleList)) {
+        if (!$additionalText && \count($articleList)) {
             foreach ($articleList as $article) {
                 if ($additionalText) {
                     $additionalText .= ', ';
@@ -589,12 +601,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns current view keywords separated by comma
+     * Returns current view keywords separated by comma.
      *
      * @param string $keywords              Data to use as keywords
      * @param bool   $removeDuplicatedWords Remove duplicated words
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($keywords, $removeDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -610,14 +623,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             }
 
             $subCategories = $activeCategory->getSubCats();
-            if (is_array($subCategories)) {
+            if (\is_array($subCategories)) {
                 foreach ($subCategories as $subCategory) {
                     $keywordsList[] = $subCategory->oxcategories__oxtitle->value;
                 }
             }
 
-            if (count($keywordsList) > 0) {
-                $keywords = implode(", ", $keywordsList);
+            if (\count($keywordsList) > 0) {
+                $keywords = implode(', ', $keywordsList);
             }
         }
 
@@ -628,11 +641,12 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
     /**
      * Creates a string of keyword filtered by the function prepareMetaDescription and without any duplicates
-     * additional the admin defined strings are removed
+     * additional the admin defined strings are removed.
      *
      * @param string $keywords category path
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "collectMetaKeyword" in next major
      */
     protected function _collectMetaKeyword($keywords) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -640,7 +654,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $maxTextLength = 60;
         $text = '';
 
-        if (count($articleList = $this->getArticleList())) {
+        if (\count($articleList = $this->getArticleList())) {
             $stringModifier = Str::getStr();
             foreach ($articleList as $article) {
                 /** @var \OxidEsales\Eshop\Application\Model\Article $article */
@@ -649,7 +663,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
                 );
 
                 //removing dots from string (they are not cleaned up during general string cleanup)
-                $description = $stringModifier->preg_replace("/\./", " ", $description);
+                $description = $stringModifier->preg_replace("/\./", ' ', $description);
 
                 if ($stringModifier->strlen($description) > $maxTextLength) {
                     $midText = $stringModifier->substr($description, 0, $maxTextLength);
@@ -697,13 +711,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Adds page number parameter to current Url and returns formatted url
+     * Adds page number parameter to current Url and returns formatted url.
      *
      * @param string $url         Url to append page numbers
      * @param int    $currentPage Current page number
      * @param int    $languageId  Requested language
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
     protected function _addPageNrParam($url, $currentPage, $languageId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -721,9 +736,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns true if we have category
+     * Returns true if we have category.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isActCategory" in next major
      */
     protected function _isActCategory() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -732,7 +748,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Generates Url for page navigation
+     * Generates Url for page navigation.
      *
      * @return string
      */
@@ -746,7 +762,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns default category sorting for selected category
+     * Returns default category sorting for selected category.
      *
      * @return array
      */
@@ -759,17 +775,19 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             if ($defaultSorting = $category->getDefaultSorting()) {
                 $articleViewName = getViewName('oxarticles');
                 $sortBy = $articleViewName . '.' . $defaultSorting;
-                $sortDirection = ($category->getDefaultSortingMode()) ? "desc" : "asc";
-                $sorting = ['sortby' => $sortBy, 'sortdir' => $sortDirection];
+                $sortDirection = ($category->getDefaultSortingMode()) ? 'desc' : 'asc';
+                $sorting = [
+                    'sortby' => $sortBy,
+                    'sortdir' => $sortDirection,
+                ];
             }
         }
 
         return $sorting;
     }
 
-
     /**
-     * Returns title suffix used in template
+     * Returns title suffix used in template.
      *
      * @return string
      */
@@ -781,24 +799,25 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns title page suffix used in template
+     * Returns title page suffix used in template.
      *
      * @return string
      */
     public function getTitlePageSuffix()
     {
         if (($activePage = $this->getActPage())) {
-            return Registry::getLang()->translateString('PAGE') . " " . ($activePage + 1);
+            return Registry::getLang()->translateString('PAGE') . ' ' . ($activePage + 1);
         }
     }
 
     /**
      * Returns object, associated with current view.
-     * (the object that is shown in frontend)
+     * (the object that is shown in frontend).
      *
      * @param int $languageId Language id
      *
      * @return object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
     protected function _getSubject($languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -808,7 +827,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
     /**
      * Template variable getter. Returns array of attribute values
-     * we do have here in this category
+     * we do have here in this category.
      *
      * @return array
      */
@@ -818,7 +837,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         if (($category = $this->getActiveCategory())) {
             $attributes = $category->getAttributes();
-            if (count($attributes)) {
+            if (\count($attributes)) {
                 $this->_aAttributes = $attributes;
             }
         }
@@ -827,16 +846,16 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Template variable getter. Returns category's article list
+     * Template variable getter. Returns category's article list.
      *
      * @return \OxidEsales\Eshop\Application\Model\ArticleList|null
      */
     public function getArticleList()
     {
-        if ($this->_aArticleList === null) {
+        if (null === $this->_aArticleList) {
             if ($category = $this->getActiveCategory()) {
                 $articleList = $this->_loadArticles($category);
-                if (count($articleList)) {
+                if (\count($articleList)) {
                     $this->_aArticleList = $articleList;
                 }
             }
@@ -846,7 +865,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Article count getter
+     * Article count getter.
      *
      * @return int
      */
@@ -864,7 +883,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function getSimilarRecommListIds()
     {
-        if ($this->_aSimilarRecommListIds === null) {
+        if (null === $this->_aSimilarRecommListIds) {
             $this->_aSimilarRecommListIds = false;
 
             if ($categoryArticlesList = $this->getArticleList()) {
@@ -876,13 +895,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Template variable getter. Returns category path
+     * Template variable getter. Returns category path.
      *
      * @return array
      */
     public function getCatTreePath()
     {
-        if ($this->_sCatTreePath === null) {
+        if (null === $this->_sCatTreePath) {
             $this->_sCatTreePath = false;
             // category path
             if ($categoryTree = $this->getCategoryTree()) {
@@ -894,7 +913,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Template variable getter. Returns category path array
+     * Template variable getter. Returns category path array.
      *
      * @return array
      */
@@ -914,7 +933,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $paths = [];
 
-        if ('oxmore' == Registry::getConfig()->getRequestParameter('cnid')) {
+        if ('oxmore' === Registry::getConfig()->getRequestParameter('cnid')) {
             $path = [];
             $path['title'] = Registry::getLang()->translateString(
                 'CATEGORY_OVERVIEW',
@@ -951,7 +970,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function hasVisibleSubCats()
     {
-        if ($this->_blHasVisibleSubCats === null) {
+        if (null === $this->_blHasVisibleSubCats) {
             $this->_blHasVisibleSubCats = false;
             if ($activeCategory = $this->getActiveCategory()) {
                 $this->_blHasVisibleSubCats = $activeCategory->getHasVisibleSubCats();
@@ -968,7 +987,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function getSubCatList()
     {
-        if ($this->_aSubCatList === null) {
+        if (null === $this->_aSubCatList) {
             $this->_aSubCatList = [];
             if ($activeCategory = $this->getActiveCategory()) {
                 $this->_aSubCatList = $activeCategory->getSubCats();
@@ -979,13 +998,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Template variable getter. Returns page navigation
+     * Template variable getter. Returns page navigation.
      *
      * @return object
      */
     public function getPageNavigation()
     {
-        if ($this->_oPageNavigation === null) {
+        if (null === $this->_oPageNavigation) {
             $this->_oPageNavigation = $this->generatePageNavigation();
         }
 
@@ -999,9 +1018,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function getTitle()
     {
-        if ($this->_sCatTitle === null) {
+        if (null === $this->_sCatTitle) {
             $this->_sCatTitle = false;
-            if ($this->getCategoryId() == 'oxmore') {
+            if ('oxmore' === $this->getCategoryId()) {
                 $language = Registry::getLang();
                 $baseLanguageId = $language->getBaseLanguage();
 
@@ -1015,13 +1034,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Template variable getter. Returns bargain article list
+     * Template variable getter. Returns bargain article list.
      *
      * @return array
      */
     public function getBargainArticleList()
     {
-        if ($this->_aBargainArticleList === null) {
+        if (null === $this->_aBargainArticleList) {
             $this->_aBargainArticleList = [];
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion') && $this->_isActCategory()) {
                 $articleList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -1036,13 +1055,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Template variable getter. Returns active search
+     * Template variable getter. Returns active search.
      *
      * @return Category
      */
     public function getActiveCategory()
     {
-        if ($this->_oActCategory === null) {
+        if (null === $this->_oActCategory) {
             $this->_oActCategory = false;
             $category = oxNew(Category::class);
             if ($category->load($this->getCategoryId())) {
@@ -1054,7 +1073,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns view canonical url
+     * Returns view canonical url.
      *
      * @return string
      */
@@ -1077,9 +1096,9 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns config parameters blShowListDisplayType value
+     * Returns config parameters blShowListDisplayType value.
      *
-     * @return boolean
+     * @return bool
      */
     public function canSelectDisplayType()
     {
@@ -1087,7 +1106,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Get list articles pages count
+     * Get list articles pages count.
      *
      * @return int
      */

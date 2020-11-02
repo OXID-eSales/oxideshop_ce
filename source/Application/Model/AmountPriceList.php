@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,29 +9,27 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
- * Article amount price list
+ * Article amount price list.
  */
 class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * List Object class name
+     * List Object class name.
      *
      * @var string
      */
     protected $_sObjectsInListName = 'oxprice2article';
 
     /**
-     * oxArticle object
+     * oxArticle object.
      *
      * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oArticle = null;
 
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct()
     {
@@ -38,9 +38,9 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     *  Article getter
+     *  Article getter.
      *
-     * @return \OxidEsales\Eshop\Application\Model\Article $_oArticle
+     * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getArticle()
     {
@@ -48,21 +48,21 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Article setter
+     * Article setter.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Article
      */
-    public function setArticle($oArticle)
+    public function setArticle($oArticle): void
     {
         $this->_oArticle = $oArticle;
     }
 
     /**
-     * Load category list data
+     * Load category list data.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $article Article
      */
-    public function load($article)
+    public function load($article): void
     {
         $this->setArticle($article);
 
@@ -72,9 +72,10 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Get data from db
+     * Get data from db.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -87,13 +88,13 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $params = [
-            ':oxartid' => $sArticleId
+            ':oxartid' => $sArticleId,
         ];
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blMallInterchangeArticles')) {
             $sShopSelect = '1';
         } else {
-            $sShopSelect = " `oxshopid` = :oxshopid ";
+            $sShopSelect = ' `oxshopid` = :oxshopid ';
             $params[':oxshopid'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         }
 

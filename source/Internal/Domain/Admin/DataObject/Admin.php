@@ -48,8 +48,8 @@ class Admin
         $this->id = $id;
         $this->email = $email;
         $this->passwordHash = $passwordHash;
-        $this->rights   = $rights;
-        $this->shopId   = $shopId;
+        $this->rights = $rights;
+        $this->shopId = $shopId;
     }
 
     public function getId(): string

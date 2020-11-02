@@ -12,11 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao;
 interface MetaDataNormalizerInterface
 {
     /**
-     * Normalize the array aModule in metadata.php
-     *
-     * @param array $data
-     *
-     * @return array
+     * Normalize the array aModule in metadata.php.
      */
     public function normalizeData(array $data): array;
 }

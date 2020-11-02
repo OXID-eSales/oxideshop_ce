@@ -12,22 +12,17 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating;
 interface TemplateEngineInterface
 {
     /**
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function addGlobal(string $name, $value);
 
     /**
      * Returns assigned globals.
-     *
-     * @return array
      */
     public function getGlobals(): array;
 
     /**
      * Returns the template file extension.
-     *
-     * @return string
      */
     public function getDefaultFileExtension(): string;
 
@@ -47,8 +42,6 @@ interface TemplateEngineInterface
      * @param string $fragment   The template fragment to render
      * @param string $fragmentId The Id of the fragment
      * @param array  $context    An array of parameters to pass to the template
-     *
-     * @return string
      */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string;
 

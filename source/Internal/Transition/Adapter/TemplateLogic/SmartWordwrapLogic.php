@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -21,15 +23,13 @@ class SmartWordwrapLogic
      */
     public function wrapWords($string, $length, $break, $cutRows, $tolerance, $etc)
     {
-
-        $wrapTag = "<wrap>";
-        $wrapChars = ["-"];
-        $afterWrapChars = ["-" . $wrapTag];
-
+        $wrapTag = '<wrap>';
+        $wrapChars = ['-'];
+        $afterWrapChars = ['-' . $wrapTag];
 
         $string = trim($string);
 
-        if (strlen($string) <= $length) {
+        if (\strlen($string) <= $length) {
             return $string;
         }
 
@@ -41,14 +41,14 @@ class SmartWordwrapLogic
 
         $ok = true;
         foreach ($arr as $row) {
-            if (strlen($row) > ($length + $tolerance)) {
+            if (\strlen($row) > ($length + $tolerance)) {
                 $tmpstr = str_replace($wrapChars, $afterWrapChars, $row);
                 $tmparr = explode($wrapTag, $tmpstr);
 
                 foreach ($tmparr as $altrow) {
                     array_push($alt, $altrow);
 
-                    if (strlen($altrow) > ($length + $tolerance)) {
+                    if (\strlen($altrow) > ($length + $tolerance)) {
                         $ok = false;
                     }
                 }
@@ -65,11 +65,11 @@ class SmartWordwrapLogic
             $arr = explode($wrapTag, $str);
         }
 
-        if ($cutRows && count($arr) > $cutRows) {
+        if ($cutRows && \count($arr) > $cutRows) {
             $arr = array_splice($arr, 0, $cutRows);
 
-            if (strlen($arr[$cutRows - 1] . $etc) > $length + $tolerance) {
-                $arr[$cutRows - 1] = substr($arr[$cutRows - 1], 0, $length - strlen($etc));
+            if (\strlen($arr[$cutRows - 1] . $etc) > $length + $tolerance) {
+                $arr[$cutRows - 1] = substr($arr[$cutRows - 1], 0, $length - \strlen($etc));
             }
 
             $arr[$cutRows - 1] = $arr[$cutRows - 1] . $etc;

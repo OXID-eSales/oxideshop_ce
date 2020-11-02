@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,8 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Module\Module as EshopModule;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
@@ -16,7 +18,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
  * Modules installer class.
  *
  * @deprecated since v6.4.0 (2019-02-14); Use service "OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface".
- * @internal Do not make a module extension for this class.
+ *
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
@@ -42,7 +46,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Module\ModuleCache $oModuleCache
      */
-    public function setModuleCache($oModuleCache)
+    public function setModuleCache($oModuleCache): void
     {
         $this->_oModuleCache = $oModuleCache;
     }
@@ -58,9 +62,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Activate extension by merging module class inheritance information with shop module array
-     *
-     * @param EshopModule $module
+     * Activate extension by merging module class inheritance information with shop module array.
      *
      * @return bool
      */
@@ -77,9 +79,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Deactivate extension by adding disable module class information to disabled module array
-     *
-     * @param EshopModule $module
+     * Deactivate extension by adding disable module class information to disabled module array.
      *
      * @return bool
      */
@@ -96,7 +96,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get parsed modules
+     * Get parsed modules.
      *
      * @return array
      */
@@ -106,7 +106,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Build module chains from nested array
+     * Build module chains from nested array.
      *
      * @param array $aModuleArray Module array (nested format)
      *
@@ -115,7 +115,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
     public function buildModuleChains($aModuleArray)
     {
         $aModules = [];
-        if (is_array($aModuleArray)) {
+        if (\is_array($aModuleArray)) {
             foreach ($aModuleArray as $sClass => $aModuleChain) {
                 $aModules[$sClass] = implode('&', $aModuleChain);
             }
@@ -126,7 +126,7 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Diff two nested module arrays together so that the values of
-     * $aRmModuleArray are removed from $aAllModuleArray
+     * $aRmModuleArray are removed from $aAllModuleArray.
      *
      * @param array $aAllModuleArray All Module array (nested format)
      * @param array $aRemModuleArray Remove Module array (nested format)
@@ -135,22 +135,22 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
      */
     public function diffModuleArrays($aAllModuleArray, $aRemModuleArray)
     {
-        if (is_array($aAllModuleArray) && is_array($aRemModuleArray)) {
+        if (\is_array($aAllModuleArray) && \is_array($aRemModuleArray)) {
             foreach ($aAllModuleArray as $sClass => $aModuleChain) {
-                if (!is_array($aModuleChain)) {
+                if (!\is_array($aModuleChain)) {
                     $aModuleChain = [$aModuleChain];
                 }
                 if (isset($aRemModuleArray[$sClass])) {
-                    if (!is_array($aRemModuleArray[$sClass])) {
+                    if (!\is_array($aRemModuleArray[$sClass])) {
                         $aRemModuleArray[$sClass] = [$aRemModuleArray[$sClass]];
                     }
                     $aAllModuleArray[$sClass] = [];
                     foreach ($aModuleChain as $sModule) {
-                        if (!in_array($sModule, $aRemModuleArray[$sClass])) {
+                        if (!\in_array($sModule, $aRemModuleArray[$sClass], true)) {
                             $aAllModuleArray[$sClass][] = $sModule;
                         }
                     }
-                    if (!count($aAllModuleArray[$sClass])) {
+                    if (!\count($aAllModuleArray[$sClass])) {
                         unset($aAllModuleArray[$sClass]);
                     }
                 } else {
@@ -162,9 +162,6 @@ class ModuleInstaller extends \OxidEsales\Eshop\Core\Base
         return $aAllModuleArray;
     }
 
-    /**
-     * @return ModuleActivationBridgeInterface
-     */
     private function getModuleActivationBridge(): ModuleActivationBridgeInterface
     {
         return ContainerFactory::getInstance()

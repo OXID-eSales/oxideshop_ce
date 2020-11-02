@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,19 +10,19 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Counting utility class
+ * Counting utility class.
  */
 class UtilsCount extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Users view id, used to identify current state cache
+     * Users view id, used to identify current state cache.
      *
      * @var string
      */
     protected $_sUserViewId = null;
 
     /**
-     * Returns category article count
+     * Returns category article count.
      *
      * @param string $sCatId Category Id
      *
@@ -44,11 +46,11 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns category article count price
+     * Returns category article count price.
      *
      * @param string $sCatId     Category Id
-     * @param double $dPriceFrom from price
-     * @param double $dPriceTo   to price
+     * @param float  $dPriceFrom from price
+     * @param float  $dPriceTo   to price
      *
      * @return int
      */
@@ -70,7 +72,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns vendor article count
+     * Returns vendor article count.
      *
      * @param string $sVendorId Vendor category Id
      *
@@ -94,7 +96,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns Manufacturer article count
+     * Returns Manufacturer article count.
      *
      * @param string $sManufacturerId Manufacturer category Id
      *
@@ -117,7 +119,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Saves and returns category article count into cache
+     * Saves and returns category article count into cache.
      *
      * @param array  $aCache    Category cache data
      * @param string $sCatId    Unique category identifier
@@ -139,7 +141,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
                WHERE $sO2CView.`oxcatnid` = :oxcatnid AND " . $oArticle->getSqlActiveSnippet();
 
         $aCache[$sCatId][$sActIdent] = $oDb->getOne($sQ, [
-            ':oxcatnid' => $sCatId
+            ':oxcatnid' => $sCatId,
         ]);
 
         $this->_setCatCache($aCache);
@@ -148,15 +150,13 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Saves (if needed) and returns price category article count into cache
+     * Saves (if needed) and returns price category article count into cache.
      *
      * @param array  $aCache     Category cache data
      * @param string $sCatId     Unique category ident
      * @param string $sActIdent  Category ID
      * @param int    $dPriceFrom Price from
      * @param int    $dPriceTo   Price to
-     *
-     * @return null
      */
     public function setPriceCatArticleCount($aCache, $sCatId, $sActIdent, $dPriceFrom, $dPriceTo)
     {
@@ -166,16 +166,16 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $params = [];
         $sSelect = "SELECT count({$sTable}.oxid) FROM {$sTable} WHERE oxvarminprice >= 0";
         if ($dPriceTo) {
-            $sSelect .= " AND oxvarminprice <= :oxvarpriceto";
-            $params[':oxvarpriceto'] = (double) $dPriceTo;
+            $sSelect .= ' AND oxvarminprice <= :oxvarpriceto';
+            $params[':oxvarpriceto'] = (float)$dPriceTo;
         }
 
         if ($dPriceFrom) {
-            $sSelect .= " AND oxvarminprice  >= :oxvarpricefrom";
-            $params[':oxvarpricefrom'] = (double) $dPriceFrom;
+            $sSelect .= ' AND oxvarminprice  >= :oxvarpricefrom';
+            $params[':oxvarpricefrom'] = (float)$dPriceFrom;
         }
 
-        $sSelect .=  " AND {$sTable}.oxissearch = 1 AND " . $oArticle->getSqlActiveSnippet();
+        $sSelect .= " AND {$sTable}.oxissearch = 1 AND " . $oArticle->getSqlActiveSnippet();
 
         $aCache[$sCatId][$sActIdent] = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect, $params);
 
@@ -185,7 +185,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Saves and returns vendors category article count into cache
+     * Saves and returns vendors category article count into cache.
      *
      * @param array  $aCache    Category cache data
      * @param string $sCatId    Unique vendor category ident
@@ -196,7 +196,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function setVendorArticleCount($aCache, $sCatId, $sActIdent)
     {
         // if vendor/category name is 'root', skip counting
-        if ($sCatId == 'root') {
+        if ('root' === $sCatId) {
             return 0;
         }
 
@@ -214,7 +214,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
         $this->_setVendorCache($aCache);
 
-        return isset($aCache[$sCatId][$sActIdent]) ? $aCache[$sCatId][$sActIdent] : 0;
+        return $aCache[$sCatId][$sActIdent] ?? 0;
     }
 
     /**
@@ -248,7 +248,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
             $values = array_values($row);
 
-            if (2 <= count($values)) {
+            if (2 <= \count($values)) {
                 $result[$key] = $values[1];
             }
         }
@@ -257,7 +257,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Saves and returns Manufacturers category article count into cache
+     * Saves and returns Manufacturers category article count into cache.
      *
      * @param array  $aCache    Category cache data
      * @param string $sMnfId    Unique Manufacturer ident
@@ -268,7 +268,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     public function setManufacturerArticleCount($aCache, $sMnfId, $sActIdent)
     {
         // if Manufacturer/category name is 'root', skip counting
-        if ($sMnfId == 'root') {
+        if ('root' === $sMnfId) {
             return 0;
         }
 
@@ -279,10 +279,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         //#3485
         $sQ = "SELECT count($sArtTable.oxid) FROM $sArtTable WHERE $sArtTable.oxparentid = '' AND oxmanufacturerid = :manufacturerId AND " . $oArticle->getSqlActiveSnippet();
         $iValue = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
-            ':manufacturerId' => $sMnfId
+            ':manufacturerId' => $sMnfId,
         ]);
 
-        $aCache[$sMnfId][$sActIdent] = (int) $iValue;
+        $aCache[$sMnfId][$sActIdent] = (int)$iValue;
 
         $this->_setManufacturerCache($aCache);
 
@@ -290,11 +290,11 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Resets category (all categories) article count
+     * Resets category (all categories) article count.
      *
      * @param string $sCatId Category/vendor/manufacturer ID
      */
-    public function resetCatArticleCount($sCatId = null)
+    public function resetCatArticleCount($sCatId = null): void
     {
         if (!$sCatId) {
             \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalCatCache', null);
@@ -310,11 +310,11 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Resets price categories article count
+     * Resets price categories article count.
      *
      * @param int $iPrice article price
      */
-    public function resetPriceCatArticleCount($iPrice)
+    public function resetPriceCatArticleCount($iPrice): void
     {
         // loading from cache
         if ($aCatData = $this->_getCatCache()) {
@@ -323,10 +323,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->select($sSelect, [
-                ':oxpricefrom' => (double) $iPrice,
-                ':oxpriceto' => (double) $iPrice
+                ':oxpricefrom' => (float)$iPrice,
+                ':oxpriceto' => (float)$iPrice,
             ]);
-            if ($rs != false && $rs->count() > 0) {
+            if (false !== $rs && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     if (isset($aCatData[$rs->fields[0]])) {
                         unset($aCatData[$rs->fields[0]]);
@@ -341,11 +341,11 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Resets vendor (all vendors) article count
+     * Resets vendor (all vendors) article count.
      *
      * @param string $sVendorId Category/vendor ID
      */
-    public function resetVendorArticleCount($sVendorId = null)
+    public function resetVendorArticleCount($sVendorId = null): void
     {
         if (!$sVendorId) {
             \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalVendorCache', null);
@@ -361,11 +361,11 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Resets Manufacturer (all Manufacturers) article count
+     * Resets Manufacturer (all Manufacturers) article count.
      *
      * @param string $sManufacturerId Category/Manufacturer ID
      */
-    public function resetManufacturerArticleCount($sManufacturerId = null)
+    public function resetManufacturerArticleCount($sManufacturerId = null): void
     {
         if (!$sManufacturerId) {
             \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalManufacturerCache', null);
@@ -381,9 +381,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Loads and returns category cache data array
+     * Loads and returns category cache data array.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCatCache" in next major
      */
     protected function _getCatCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -408,45 +409,49 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Writes category data into cache
+     * Writes category data into cache.
      *
      * @param array $aCache A cacheable data
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setCatCache" in next major
      */
-    protected function _setCatCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setCatCache($aCache): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalCatCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalCatCache', $aCache);
     }
 
     /**
-     * Writes vendor data into cache
+     * Writes vendor data into cache.
      *
      * @param array $aCache A cacheable data
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setVendorCache" in next major
      */
-    protected function _setVendorCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setVendorCache($aCache): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalVendorCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalVendorCache', $aCache);
     }
 
     /**
-     * Writes Manufacturer data into cache
+     * Writes Manufacturer data into cache.
      *
      * @param array $aCache A cacheable data
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setManufacturerCache" in next major
      */
-    protected function _setManufacturerCache($aCache) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setManufacturerCache($aCache): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->setGlobalParameter('aLocalManufacturerCache', $aCache);
         \OxidEsales\Eshop\Core\Registry::getUtils()->toFileCache('aLocalManufacturerCache', $aCache);
     }
 
     /**
-     * Loads and returns category/vendor cache data array
+     * Loads and returns category/vendor cache data array.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorCache" in next major
      */
     protected function _getVendorCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -470,9 +475,10 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Loads and returns category/Manufacturer cache data array
+     * Loads and returns category/Manufacturer cache data array.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturerCache" in next major
      */
     protected function _getManufacturerCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -496,28 +502,29 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns user view id (Shop, language, RR group index...)
+     * Returns user view id (Shop, language, RR group index...).
      *
      * @param bool $blReset optional, default = false
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUserViewId" in next major
      */
     protected function _getUserViewId($blReset = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_sUserViewId != null && !$blReset) {
+        if (null !== $this->_sUserViewId && !$blReset) {
             return $this->_sUserViewId;
         }
 
         // loading R&R data from session
         $userSessionGroups = $this->getCurrentUserSessionGroups();
-        $this->_sUserViewId = md5(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopID() . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int) $this->isAdmin());
+        $this->_sUserViewId = md5(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopID() . \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag() . serialize($userSessionGroups) . (int)$this->isAdmin());
 
         return $this->_sUserViewId;
     }
 
     /**
-     * Get current user groups
+     * Get current user groups.
      *
      * @return array|null
      */

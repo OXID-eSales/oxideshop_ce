@@ -101,7 +101,7 @@ class ShopSetupCommand extends Command
         $this->basicContext = $basicContext;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(self::DB_HOST, null, InputOption::VALUE_REQUIRED)
@@ -117,8 +117,6 @@ class ShopSetupCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -145,9 +143,6 @@ class ShopSetupCommand extends Command
         return 0;
     }
 
-    /**
-     * @param InputInterface $input
-     */
     private function runPreSetupChecks(InputInterface $input): void
     {
         $this->checkShopIsNotLaunched();
@@ -156,7 +151,9 @@ class ShopSetupCommand extends Command
         $this->checkDirectories($input);
     }
 
-    /** @throws ShopIsLaunchedException */
+    /**
+     * @throws ShopIsLaunchedException
+     */
     private function checkShopIsNotLaunched(): void
     {
         if ($this->shopStateService->isLaunched()) {
@@ -164,7 +161,6 @@ class ShopSetupCommand extends Command
         }
     }
 
-    /** @param InputInterface $input */
     private function checkCanCreateDatabase(InputInterface $input): void
     {
         $this->databaseChecker->canCreateDatabase(
@@ -176,7 +172,6 @@ class ShopSetupCommand extends Command
         );
     }
 
-    /** @param InputInterface $input */
     private function checkDirectories(InputInterface $input): void
     {
         $this->directoriesValidator->checkPathIsAbsolute(
@@ -192,7 +187,6 @@ class ShopSetupCommand extends Command
         $this->getLanguage($input);
     }
 
-    /** @param InputInterface $input */
     private function updateConfigFile(InputInterface $input): void
     {
         $this->configFileDao->replacePlaceholder('sShopURL', $input->getOption(self::SHOP_URL));
@@ -200,22 +194,17 @@ class ShopSetupCommand extends Command
         $this->configFileDao->replacePlaceholder('sCompileDir', $input->getOption(self::COMPILE_DIRECTORY));
     }
 
-    /** @param InputInterface $input */
     private function installDatabase(InputInterface $input): void
     {
         $this->databaseInstaller->install(
             $input->getOption(self::DB_HOST),
-            (int) $input->getOption(self::DB_PORT),
+            (int)$input->getOption(self::DB_PORT),
             $input->getOption(self::DB_USER),
             $input->getOption(self::DB_PASSWORD),
             $input->getOption(self::DB_NAME)
         );
     }
 
-    /**
-     * @param InputInterface $input
-     * @return DefaultLanguage
-     */
     private function getLanguage(InputInterface $input): DefaultLanguage
     {
         return new DefaultLanguage($input->getOption(self::LANGUAGE));

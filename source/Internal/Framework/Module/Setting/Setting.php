@@ -41,43 +41,31 @@ class Setting
      */
     private $positionInGroup = 0;
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return Setting
-     */
-    public function setName(string $name): Setting
+    public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
-        if ($this->type === null) {
-            return gettype($this->value);
+        if (null === $this->type) {
+            return \gettype($this->value);
         }
 
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     * @return Setting
-     */
-    public function setType(string $type): Setting
+    public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -91,65 +79,47 @@ class Setting
 
     /**
      * @param mixed $value
-     * @return Setting
      */
-    public function setValue($value): Setting
+    public function setValue($value): self
     {
         $this->value = $value;
+
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getConstraints(): array
     {
         return $this->constraints;
     }
 
-    /**
-     * @param array $constraints
-     * @return Setting
-     */
-    public function setConstraints(array $constraints): Setting
+    public function setConstraints(array $constraints): self
     {
         $this->constraints = $constraints;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getGroupName(): string
     {
         return $this->groupName;
     }
 
-    /**
-     * @param string $groupName
-     * @return Setting
-     */
-    public function setGroupName(string $groupName): Setting
+    public function setGroupName(string $groupName): self
     {
         $this->groupName = $groupName;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getPositionInGroup(): int
     {
         return $this->positionInGroup;
     }
 
-    /**
-     * @param int $positionInGroup
-     * @return Setting
-     */
-    public function setPositionInGroup(int $positionInGroup): Setting
+    public function setPositionInGroup(int $positionInGroup): self
     {
         $this->positionInGroup = $positionInGroup;
+
         return $this;
     }
 }

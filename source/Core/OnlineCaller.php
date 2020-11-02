@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,26 +9,31 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 use Exception;
+use OxidEsales\EshopCommunity\Core\Exception\StandardException;
 
 /**
  * Class oxOnlineCaller makes call to given URL which is taken from child classes and sends request parameter.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
 abstract class OnlineCaller
 {
-    const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
+    public const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
 
-    /** Amount of seconds for curl execution timeout. */
-    const CURL_EXECUTION_TIMEOUT = 5;
+    /**
+     * Amount of seconds for curl execution timeout.
+     */
+    public const CURL_EXECUTION_TIMEOUT = 5;
 
-    /** Amount of seconds for curl connect timeout. */
-    const CURL_CONNECT_TIMEOUT = 3;
+    /**
+     * Amount of seconds for curl connect timeout.
+     */
+    public const CURL_CONNECT_TIMEOUT = 3;
 
     /**
      * @var \OxidEsales\Eshop\Core\Curl
@@ -46,24 +53,31 @@ abstract class OnlineCaller
     /**
      * Gets XML document name.
      *
-     * @return string XML document tag name.
+     * @return string XML document tag name
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getXMLDocumentName" in next major
      */
-    abstract protected function _getXMLDocumentName(); // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    abstract protected function _getXMLDocumentName();
+
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+
     /**
      * Gets service url.
      *
-     * @return string Web service url.
+     * @return string web service url
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getServiceUrl" in next major
      */
-    abstract protected function _getServiceUrl(); // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    abstract protected function _getServiceUrl();
+
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
 
     /**
      * Sets dependencies.
      *
-     * @param \OxidEsales\Eshop\Core\Curl                     $oCurl         Sends request to OXID servers.
-     * @param \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oEmailBuilder Forms email when OXID servers are unreachable.
-     * @param \OxidEsales\Eshop\Core\SimpleXml                $oSimpleXml    Forms XML from Request for sending to OXID servers.
+     * @param \OxidEsales\Eshop\Core\Curl                     $oCurl         sends request to OXID servers
+     * @param \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oEmailBuilder forms email when OXID servers are unreachable
+     * @param \OxidEsales\Eshop\Core\SimpleXml                $oSimpleXml    forms XML from Request for sending to OXID servers
      */
     public function __construct(\OxidEsales\Eshop\Core\Curl $oCurl, \OxidEsales\Eshop\Core\OnlineServerEmailBuilder $oEmailBuilder, \OxidEsales\Eshop\Core\SimpleXml $oSimpleXml)
     {
@@ -75,9 +89,9 @@ abstract class OnlineCaller
     /**
      * Makes curl call with given parameters to given url.
      *
-     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Information set in Request object will be sent to OXID servers.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest information set in Request object will be sent to OXID servers
      *
-     * @return null|string In XML format.
+     * @return string|null in XML format
      */
     public function call(\OxidEsales\Eshop\Core\OnlineRequest $oRequest)
     {
@@ -87,7 +101,7 @@ abstract class OnlineCaller
             $sXml = $this->_formXMLRequest($oRequest);
             $sOutputXml = $this->_executeCurlCall($this->_getServiceUrl(), $sXml);
             $statusCode = $this->_getCurl()->getStatusCode();
-            if ($statusCode != 200) {
+            if (200 !== $statusCode) {
                 /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
                 $oException = new StandardException('cUrl call to ' . $this->_getCurl()->getUrl() . ' failed with HTTP status ' . $statusCode);
                 throw $oException;
@@ -111,9 +125,10 @@ abstract class OnlineCaller
     /**
      * Forms email.
      *
-     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which email should be formed.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest request object from which email should be formed
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "formEmail" in next major
      */
     protected function _formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -124,9 +139,10 @@ abstract class OnlineCaller
     /**
      * Forms XML request.
      *
-     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest Request object from which server request should be formed.
+     * @param \OxidEsales\Eshop\Core\OnlineRequest $oRequest request object from which server request should be formed
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "formXMLRequest" in next major
      */
     protected function _formXMLRequest($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -138,6 +154,7 @@ abstract class OnlineCaller
      * Gets simple XML.
      *
      * @return \OxidEsales\Eshop\Core\SimpleXml
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSimpleXml" in next major
      */
     protected function _getSimpleXml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -149,6 +166,7 @@ abstract class OnlineCaller
      * Gets curl.
      *
      * @return \OxidEsales\Eshop\Core\Curl
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCurl" in next major
      */
     protected function _getCurl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -160,6 +178,7 @@ abstract class OnlineCaller
      * Gets email builder.
      *
      * @return \OxidEsales\Eshop\Core\OnlineServerEmailBuilder
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEmailBuilder" in next major
      */
     protected function _getEmailBuilder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -170,10 +189,11 @@ abstract class OnlineCaller
     /**
      * Executes CURL call with given parameters.
      *
-     * @param string $sUrl Server address to call to.
+     * @param string $sUrl server address to call to
      * @param string $sXml Data to send. Currently OXID servers only accept XML formatted data.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "executeCurlCall" in next major
      */
     private function _executeCurlCall($sUrl, $sXml) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -181,7 +201,9 @@ abstract class OnlineCaller
         $oCurl = $this->_getCurl();
         $oCurl->setMethod('POST');
         $oCurl->setUrl($sUrl);
-        $oCurl->setParameters(['xmlRequest' => $sXml]);
+        $oCurl->setParameters([
+            'xmlRequest' => $sXml,
+        ]);
         $oCurl->setOption(
             \OxidEsales\Eshop\Core\Curl::EXECUTION_TIMEOUT_OPTION,
             static::CURL_EXECUTION_TIMEOUT
@@ -193,10 +215,11 @@ abstract class OnlineCaller
     /**
      * Sends an email with server information.
      *
-     * @param string $sBody Mail content.
+     * @param string $sBody mail content
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "sendEmail" in next major
      */
-    private function _sendEmail($sBody) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function _sendEmail($sBody): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oEmail = $this->_getEmailBuilder()->build($sBody);
         $oEmail->send();
@@ -205,10 +228,11 @@ abstract class OnlineCaller
     /**
      * Resets config parameter iFailedOnlineCallsCount if it's bigger than 0.
      *
-     * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
+     * @param int $iFailedOnlineCallsCount amount of calls which previously failed
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "resetFailedCallsCount" in next major
      */
-    private function _resetFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function _resetFailedCallsCount($iFailedOnlineCallsCount): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($iFailedOnlineCallsCount > 0) {
             \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
@@ -218,10 +242,11 @@ abstract class OnlineCaller
     /**
      * increases failed calls count.
      *
-     * @param int $iFailedOnlineCallsCount Amount of calls which previously failed.
+     * @param int $iFailedOnlineCallsCount amount of calls which previously failed
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "increaseFailedCallsCount" in next major
      */
-    private function _increaseFailedCallsCount($iFailedOnlineCallsCount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function _increaseFailedCallsCount($iFailedOnlineCallsCount): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
     }

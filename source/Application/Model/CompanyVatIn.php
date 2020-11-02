@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,24 +9,22 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxStr;
-
 /**
- * Company VAT identification number (VATIN)
+ * Company VAT identification number (VATIN).
  */
 class CompanyVatIn
 {
     /**
-     * VAT identification number
+     * VAT identification number.
      *
      * @var string
      */
     private $_sCompanyVatNumber;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param string $sCompanyVatNumber - company vat identification number.
+     * @param string $sCompanyVatNumber - company vat identification number
      */
     public function __construct($sCompanyVatNumber)
     {
@@ -38,7 +38,7 @@ class CompanyVatIn
      */
     public function getCountryCode()
     {
-        return (string) \OxidEsales\Eshop\Core\Str::getStr()->strtoupper(\OxidEsales\Eshop\Core\Str::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 0, 2));
+        return (string)\OxidEsales\Eshop\Core\Str::getStr()->strtoupper(\OxidEsales\Eshop\Core\Str::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 0, 2));
     }
 
     /**
@@ -48,25 +48,25 @@ class CompanyVatIn
      */
     public function getNumbers()
     {
-        return (string) \OxidEsales\Eshop\Core\Str::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 2);
+        return (string)\OxidEsales\Eshop\Core\Str::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 2);
     }
 
     /**
-     * Removes spaces and symbols: '-',',','.' from string
+     * Removes spaces and symbols: '-',',','.' from string.
      *
-     * @param string $sValue Value.
+     * @param string $sValue value
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "cleanUp" in next major
      */
     protected function _cleanUp($sValue) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (string) \OxidEsales\Eshop\Core\Str::getStr()->preg_replace("/\s|-/", '', $sValue);
+        return (string)\OxidEsales\Eshop\Core\Str::getStr()->preg_replace("/\s|-/", '', $sValue);
     }
 
-
     /**
-     * Cast to string
+     * Cast to string.
      *
      * @return string
      */

@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxRegistry;
-use oxField;
 
 /**
  * Manufacturer list manager.
@@ -31,21 +30,21 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected $_aPath = [];
 
     /**
-     * To show manufacturer article count or not
+     * To show manufacturer article count or not.
      *
      * @var bool
      */
     protected $_blShowManufacturerArticleCnt = false;
 
     /**
-     * Active manufacturer object
+     * Active manufacturer object.
      *
      * @var \OxidEsales\Eshop\Application\Model\Manufacturer
      */
     protected $_oClickedManufacturer = null;
 
     /**
-     * Calls parent constructor and defines if Article vendor count is shown
+     * Calls parent constructor and defines if Article vendor count is shown.
      */
     public function __construct()
     {
@@ -54,19 +53,19 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Enables/disables manufacturer article count calculation
+     * Enables/disables manufacturer article count calculation.
      *
      * @param bool $blShowManufacturerArticleCnt to show article count or not
      */
-    public function setShowManufacturerArticleCnt($blShowManufacturerArticleCnt = false)
+    public function setShowManufacturerArticleCnt($blShowManufacturerArticleCnt = false): void
     {
         $this->_blShowManufacturerArticleCnt = $blShowManufacturerArticleCnt;
     }
 
     /**
-     * Loads simple manufacturer list
+     * Loads simple manufacturer list.
      */
-    public function loadManufacturerList()
+    public function loadManufacturerList(): void
     {
         $oBaseObject = $this->getBaseObject();
 
@@ -86,21 +85,20 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Creates fake root for manufacturer tree, and ads category list fileds for each manufacturer item
+     * Creates fake root for manufacturer tree, and ads category list fileds for each manufacturer item.
      *
      * @param string $sLinkTarget  Name of class, responsible for category rendering
      * @param string $sActCat      Active category
      * @param string $sShopHomeUrl base shop url ($myConfig->getShopHomeUrl())
      */
-    public function buildManufacturerTree($sLinkTarget, $sActCat, $sShopHomeUrl)
+    public function buildManufacturerTree($sLinkTarget, $sActCat, $sShopHomeUrl): void
     {
         //Load manufacturer list
         $this->loadManufacturerList();
 
-
         //Create fake manufacturer root category
         $this->_oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
-        $this->_oRoot->load("root");
+        $this->_oRoot->load('root');
 
         //category fields
         $this->_addCategoryFields($this->_oRoot);
@@ -113,7 +111,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
             }
 
             $this->_addCategoryFields($oManufacturer);
-            if ($sActCat == $oManufacturer->oxmanufacturers__oxid->value) {
+            if ($sActCat === $oManufacturer->oxmanufacturers__oxid->value) {
                 $this->_aPath[] = $oManufacturer;
             }
         }
@@ -122,7 +120,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Root manufacturer list node (which usually is a manually prefilled object) getter
+     * Root manufacturer list node (which usually is a manually prefilled object) getter.
      *
      * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
@@ -132,7 +130,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Returns manufacturer path array
+     * Returns manufacturer path array.
      *
      * @return array
      */
@@ -142,12 +140,13 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Adds category specific fields to manufacturer object
+     * Adds category specific fields to manufacturer object.
      *
      * @param object $oManufacturer manufacturer object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addCategoryFields" in next major
      */
-    protected function _addCategoryFields($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addCategoryFields($oManufacturer): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oManufacturer->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field($oManufacturer->oxmanufacturers__oxid->value);
         $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
@@ -159,17 +158,17 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Sets active (open) manufacturer object
+     * Sets active (open) manufacturer object.
      *
      * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer active manufacturer
      */
-    public function setClickManufacturer($oManufacturer)
+    public function setClickManufacturer($oManufacturer): void
     {
         $this->_oClickedManufacturer = $oManufacturer;
     }
 
     /**
-     * returns active (open) manufacturer object
+     * returns active (open) manufacturer object.
      *
      * @return \OxidEsales\Eshop\Application\Model\Manufacturer
      */
@@ -179,10 +178,11 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Processes manufacturer category URLs
+     * Processes manufacturer category URLs.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "seoSetManufacturerData" in next major
      */
-    protected function _seoSetManufacturerData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _seoSetManufacturerData(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

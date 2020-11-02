@@ -28,8 +28,6 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
 
     /**
      * ModuleActivationBridge constructor.
-     * @param ModuleActivationServiceInterface $moduleActivationService
-     * @param ModuleStateServiceInterface      $moduleStateService
      */
     public function __construct(
         ModuleActivationServiceInterface $moduleActivationService,
@@ -40,34 +38,23 @@ class ModuleActivationBridge implements ModuleActivationBridgeInterface
     }
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
      * @throws ModuleSetupException
      */
-    public function activate(string $moduleId, int $shopId)
+    public function activate(string $moduleId, int $shopId): void
     {
         $this->moduleActivationService->activate($moduleId, $shopId);
         Registry::getConfig()->reinitialize();
     }
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
      * @throws ModuleSetupException
      */
-    public function deactivate(string $moduleId, int $shopId)
+    public function deactivate(string $moduleId, int $shopId): void
     {
         $this->moduleActivationService->deactivate($moduleId, $shopId);
         Registry::getConfig()->reinitialize();
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return bool
-     */
     public function isActive(string $moduleId, int $shopId): bool
     {
         return $this->moduleStateService->isActive($moduleId, $shopId);

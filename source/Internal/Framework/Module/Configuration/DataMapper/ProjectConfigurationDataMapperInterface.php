@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,15 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ProjectConfigurationDataMapperInterface
 {
-    /**
-     * @param ProjectConfiguration $configuration
-     * @return array
-     */
     public function toData(ProjectConfiguration $configuration): array;
 
-    /**
-     * @param array $data
-     * @return ProjectConfiguration
-     */
     public function fromData(array $data): ProjectConfiguration;
 }

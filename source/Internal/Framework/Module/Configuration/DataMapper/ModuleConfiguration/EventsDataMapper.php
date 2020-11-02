@@ -33,13 +33,10 @@ class EventsDataMapper implements ModuleConfigurationDataMapperInterface
         if (isset($data[self::MAPPING_KEY])) {
             $this->setEvents($moduleConfiguration, $data[self::MAPPING_KEY]);
         }
+
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $event
-     */
     private function setEvents(ModuleConfiguration $moduleConfiguration, array $event): void
     {
         foreach ($event as $action => $method) {
@@ -50,11 +47,6 @@ class EventsDataMapper implements ModuleConfigurationDataMapperInterface
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     *
-     * @return array
-     */
     private function getEvents(ModuleConfiguration $configuration): array
     {
         $events = [];

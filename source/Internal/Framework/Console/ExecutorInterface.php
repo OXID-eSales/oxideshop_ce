@@ -17,9 +17,5 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 interface ExecutorInterface
 {
-    /**
-     * @param InputInterface|null  $input
-     * @param OutputInterface|null $output
-     */
     public function execute(InputInterface $input = null, OutputInterface $output = null);
 }

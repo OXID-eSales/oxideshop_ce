@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,11 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsAn
 interface DatabaseCheckerInterface
 {
     /**
-     * @param string $host
-     * @param int $port
-     * @param string $user
-     * @param string $password
-     * @param string $name
      * @throws DatabaseExistsAndNotEmptyException
      */
     public function canCreateDatabase(

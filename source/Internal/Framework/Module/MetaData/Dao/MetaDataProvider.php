@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class MetaDataProvider implements MetaDataProviderInterface
@@ -66,12 +66,6 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private $metaDataConverter;
 
-    /**
-     * @param MetaDataNormalizerInterface $metaDataNormalizer
-     * @param BasicContextInterface       $context
-     * @param MetaDataValidatorInterface  $metaDataValidator
-     * @param MetaDataConverterInterface  $metaDataConverter
-     */
     public function __construct(
         MetaDataNormalizerInterface $metaDataNormalizer,
         BasicContextInterface $context,
@@ -85,9 +79,6 @@ class MetaDataProvider implements MetaDataProviderInterface
     }
 
     /**
-     * @param string $filePath
-     *
-     * @return array
      * @throws InvalidMetaDataException
      */
     public function getData(string $filePath): array
@@ -97,13 +88,11 @@ class MetaDataProvider implements MetaDataProviderInterface
         }
         $this->filePath = $filePath;
         $normalizedMetaData = $this->getNormalizedMetaDataFileContent();
-        $normalizedMetaData = $this->addFilePathToData($normalizedMetaData);
 
-        return $normalizedMetaData;
+        return $this->addFilePathToData($normalizedMetaData);
     }
 
     /**
-     * @return array
      * @throws InvalidMetaDataException
      */
     private function getNormalizedMetaDataFileContent(): array
@@ -128,15 +117,10 @@ class MetaDataProvider implements MetaDataProviderInterface
 
         return [
             static::METADATA_METADATA_VERSION => $metadataVersion,
-            static::METADATA_MODULE_DATA      => $normalizedMetaData
+            static::METADATA_MODULE_DATA => $normalizedMetaData,
         ];
     }
 
-    /**
-     * @param array $normalizedMetaData
-     *
-     * @return array
-     */
     private function addFilePathToData(array $normalizedMetaData): array
     {
         $normalizedMetaData[static::METADATA_FILEPATH] = $this->filePath;
@@ -152,25 +136,14 @@ class MetaDataProvider implements MetaDataProviderInterface
      */
     private function validateMetaDataFileVariables($metaDataVersion, $moduleData): void
     {
-        if ($metaDataVersion === null || !is_scalar($metaDataVersion)) {
-            throw new InvalidMetaDataException(
-                'The variable $sMetadataVersion must be present in '
-                . $this->filePath . ' and it must be a scalar.'
-            );
+        if (null === $metaDataVersion || !is_scalar($metaDataVersion)) {
+            throw new InvalidMetaDataException('The variable $sMetadataVersion must be present in ' . $this->filePath . ' and it must be a scalar.');
         }
-        if ($moduleData === null || !\is_array($moduleData)) {
-            throw new InvalidMetaDataException(
-                'The variable $aModule must be present in '
-                . $this->filePath . ' and it must be an array'
-            );
+        if (null === $moduleData || !\is_array($moduleData)) {
+            throw new InvalidMetaDataException('The variable $aModule must be present in ' . $this->filePath . ' and it must be an array');
         }
     }
 
-    /**
-     * @param array $normalizedMetaData
-     *
-     * @return array
-     */
     private function sanitizeExtendedClasses(array $normalizedMetaData): array
     {
         $sanitizedExtendedClasses = [];
@@ -187,19 +160,11 @@ class MetaDataProvider implements MetaDataProviderInterface
         return $sanitizedExtendedClasses;
     }
 
-    /**
-     * @param string $className
-     *
-     * @return bool
-     */
     private function isBackwardsCompatibleClass(string $className): bool
     {
         return \array_key_exists(strtolower($className), $this->getBackwardsCompatibilityClassMap());
     }
 
-    /**
-     * @return array
-     */
     private function getBackwardsCompatibilityClassMap(): array
     {
         return $this->context->getBackwardsCompatibilityClassMap();

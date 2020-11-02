@@ -9,19 +9,24 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locator;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\{
-    Locator\ModuleTranslationFileLocatorAbstract as LocatorAbstract,
-    Locator\FrontendModuleTranslationFileLocatorInterface as LocatorInterface};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\{
+    Locator\FrontendModuleTranslationFileLocatorInterface as LocatorInterface,
+    Locator\ModuleTranslationFileLocatorAbstract as LocatorAbstract
+};
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 class FrontendModuleTranslationFileLocator extends LocatorAbstract implements LocatorInterface
 {
-    /** @var ActiveModulesDataProviderInterface */
+    /**
+     * @var ActiveModulesDataProviderInterface
+     */
     private $activeModulesDataProvider;
 
-    /** @var Filesystem */
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
 
     public function __construct(
@@ -32,11 +37,6 @@ class FrontendModuleTranslationFileLocator extends LocatorAbstract implements Lo
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @param string $lang
-     *
-     * @return array
-     */
     public function locate(string $lang): array
     {
         $langFiles = [];

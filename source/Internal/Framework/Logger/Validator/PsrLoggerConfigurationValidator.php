@@ -28,27 +28,20 @@ class PsrLoggerConfigurationValidator implements LoggerConfigurationValidatorInt
         LogLevel::EMERGENCY,
     ];
 
-    /**
-     * @param PsrLoggerConfigurationInterface $configuration
-     */
-    public function validate(PsrLoggerConfigurationInterface $configuration)
+    public function validate(PsrLoggerConfigurationInterface $configuration): void
     {
         $this->validateLogLevel($configuration);
     }
 
     /**
-     * @param PsrLoggerConfigurationInterface $configuration
-     *
      * @throws \InvalidArgumentException if log level is not valid
      */
-    private function validateLogLevel(PsrLoggerConfigurationInterface $configuration)
+    private function validateLogLevel(PsrLoggerConfigurationInterface $configuration): void
     {
         $logLevel = $configuration->getLogLevel();
 
-        if (!in_array($logLevel, $this->validLogLevels, true)) {
-            throw new \InvalidArgumentException(
-                'Log level "' . var_export($logLevel, true) . '" is not a PSR-3 compliant log level'
-            );
+        if (!\in_array($logLevel, $this->validLogLevels, true)) {
+            throw new \InvalidArgumentException('Log level "' . var_export($logLevel, true) . '" is not a PSR-3 compliant log level');
         }
     }
 }

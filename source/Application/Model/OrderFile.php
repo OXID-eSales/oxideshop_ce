@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,31 +9,27 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-
 /**
  * Article file link manager.
  */
 class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Object core table name
+     * Object core table name.
      *
      * @var string
      */
     protected $_sCoreTable = 'oxorderfiles';
 
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxorderfile';
 
-
     /**
-     * Initialises the instance
+     * Initialises the instance.
      */
     public function __construct()
     {
@@ -40,9 +38,9 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * reset order files downloadcount and / or expration times
+     * reset order files downloadcount and / or expration times.
      */
-    public function reset()
+    public function reset(): void
     {
         $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
         $oArticleFile->load($this->oxorderfiles__oxfileid->value);
@@ -59,37 +57,37 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * set order id
+     * set order id.
      *
      * @param string $sOrderId - order id
      */
-    public function setOrderId($sOrderId)
+    public function setOrderId($sOrderId): void
     {
         $this->oxorderfiles__oxorderid = new \OxidEsales\Eshop\Core\Field($sOrderId);
     }
 
     /**
-     * set order article id
+     * set order article id.
      *
      * @param string $sOrderArticleId - order article id
      */
-    public function setOrderArticleId($sOrderArticleId)
+    public function setOrderArticleId($sOrderArticleId): void
     {
         $this->oxorderfiles__oxorderarticleid = new \OxidEsales\Eshop\Core\Field($sOrderArticleId);
     }
 
     /**
-     * set shop id
+     * set shop id.
      *
      * @param string $sShopId - shop id
      */
-    public function setShopId($sShopId)
+    public function setShopId($sShopId): void
     {
         $this->oxorderfiles__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopId);
     }
 
     /**
-     * Set file and download options
+     * Set file and download options.
      *
      * @param string $sFileName               file name
      * @param string $sFileId                 file id
@@ -97,7 +95,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param int    $iExpirationTime         main download time after order in times
      * @param int    $iExpirationDownloadTime download time after first download in hours
      */
-    public function setFile($sFileName, $sFileId, $iMaxDownloadCounts, $iExpirationTime, $iExpirationDownloadTime)
+    public function setFile($sFileName, $sFileId, $iMaxDownloadCounts, $iExpirationTime, $iExpirationDownloadTime): void
     {
         $sNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $sDate = date('Y-m-d G:i', $sNow + $iExpirationTime * 3600);
@@ -124,11 +122,12 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * returns long name
+     * returns long name.
      *
      * @param string $sFieldName - field name
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldLongName" in next major
      */
     protected function _getFieldLongName($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -139,10 +138,10 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
             'oxorderfiles__oxordernr',
             'oxorderfiles__oxorderdate',
             'oxorderfiles__oxispaid',
-            'oxorderfiles__oxpurchasedonly'
+            'oxorderfiles__oxpurchasedonly',
         ];
 
-        if (in_array($sFieldName, $aFieldNames)) {
+        if (\in_array($sFieldName, $aFieldNames, true)) {
             return $sFieldName;
         }
 
@@ -150,7 +149,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Checks if order file is still available to download
+     * Checks if order file is still available to download.
      *
      * @return bool
      */
@@ -172,7 +171,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * returns state payed or not the order
+     * returns state payed or not the order.
      *
      * @return bool
      */
@@ -182,7 +181,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * returns date ant time
+     * returns date ant time.
      *
      * @return bool
      */
@@ -192,7 +191,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * returns date ant time
+     * returns date ant time.
      *
      * @return bool
      */
@@ -207,7 +206,7 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Checks if download link is valid, changes count, if first download changes valid until
+     * Checks if download link is valid, changes count, if first download changes valid until.
      *
      * @return bool
      */

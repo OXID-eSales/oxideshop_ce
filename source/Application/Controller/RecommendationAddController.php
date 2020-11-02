@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,21 +21,21 @@ use oxUBase;
 class RecommendationAddController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
     /**
-     * Template name
+     * Template name.
      *
      * @var string
      */
     protected $_sThisTemplate = 'page/account/recommendationadd.tpl';
 
     /**
-     * User recommendation lists
+     * User recommendation lists.
      *
      * @var array
      */
     protected $_aUserRecommList = null;
 
     /**
-     * Renders the view
+     * Renders the view.
      *
      * @return string
      */
@@ -45,13 +47,13 @@ class RecommendationAddController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Returns user recommlists
+     * Returns user recommlists.
      *
      * @return array
      */
     public function getRecommLists()
     {
-        if ($this->_aUserRecommList === null) {
+        if (null === $this->_aUserRecommList) {
             $oUser = $this->getUser();
             if ($oUser) {
                 $this->_aUserRecommList = $oUser->getUserRecommLists();

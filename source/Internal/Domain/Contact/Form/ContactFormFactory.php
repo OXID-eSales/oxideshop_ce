@@ -37,9 +37,6 @@ class ContactFormFactory implements FormFactoryInterface
 
     /**
      * ContactFormFactory constructor.
-     * @param FormConfigurationInterface $contactFormConfiguration
-     * @param FormValidatorInterface     $contactFormEmailValidator
-     * @param FormValidatorInterface     $requiredFieldsValidator
      */
     public function __construct(
         FormConfigurationInterface $contactFormConfiguration,
@@ -50,7 +47,6 @@ class ContactFormFactory implements FormFactoryInterface
         $this->contactFormEmailValidator = $contactFormEmailValidator;
         $this->requiredFieldsValidator = $requiredFieldsValidator;
     }
-
 
     /**
      * @return FormInterface
@@ -71,7 +67,6 @@ class ContactFormFactory implements FormFactoryInterface
     }
 
     /**
-     * @param FieldConfigurationInterface $fieldConfiguration
      * @return FormFieldInterface
      */
     private function getFormField(FieldConfigurationInterface $fieldConfiguration)

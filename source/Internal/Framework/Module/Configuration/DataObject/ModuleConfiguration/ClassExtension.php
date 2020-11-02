@@ -23,9 +23,6 @@ class ClassExtension
 
     /**
      * ClassExtension constructor.
-     *
-     * @param string $ShopClassName
-     * @param string $moduleExtensionClassName
      */
     public function __construct(string $ShopClassName, string $moduleExtensionClassName)
     {
@@ -33,17 +30,11 @@ class ClassExtension
         $this->moduleExtensionClassName = $moduleExtensionClassName;
     }
 
-    /**
-     * @return string
-     */
     public function getShopClassName(): string
     {
         return $this->ShopClassName;
     }
 
-    /**
-     * @return string
-     */
     public function getModuleExtensionClassName(): string
     {
         return $this->moduleExtensionClassName;

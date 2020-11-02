@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,7 +16,7 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
     /**
-     * Current class template name
+     * Current class template name.
      *
      * @var string
      */
@@ -38,7 +40,7 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
     }
 
     /**
-     * Get services content list
+     * Get services content list.
      *
      * @return \OxidEsales\Eshop\Application\Model\ContentList
      */
@@ -54,9 +56,11 @@ class Information extends \OxidEsales\Eshop\Application\Component\Widget\WidgetC
      * Returns content list object.
      *
      * @return \OxidEsales\Eshop\Application\Model\ContentList
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getContentList" in next major
      */
-    protected function _getContentList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getContentList()
     {
         if (!$this->_oContentList) {
             $this->_oContentList = oxNew(\OxidEsales\Eshop\Application\Model\ContentList::class);

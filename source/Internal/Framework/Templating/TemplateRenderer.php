@@ -16,9 +16,6 @@ class TemplateRenderer implements TemplateRendererInterface
      */
     private $templateEngine;
 
-    /**
-     * @param TemplateEngineInterface $templateEngine
-     */
     public function __construct(TemplateEngineInterface $templateEngine)
     {
         $this->templateEngine = $templateEngine;
@@ -27,8 +24,6 @@ class TemplateRenderer implements TemplateRendererInterface
     /**
      * @param string $template The template name
      * @param array  $context  An array of parameters to pass to the template
-     *
-     * @return string
      */
     public function renderTemplate(string $template, array $context = []): string
     {
@@ -38,11 +33,9 @@ class TemplateRenderer implements TemplateRendererInterface
     /**
      * Renders a fragment of the template.
      *
-     * @param string $fragment The template fragment to render
+     * @param string $fragment   The template fragment to render
      * @param string $fragmentId The id of the fragment
      * @param array  $context    An array of parameters to pass to the template
-     *
-     * @return string
      */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
     {
@@ -51,8 +44,6 @@ class TemplateRenderer implements TemplateRendererInterface
 
     /**
      * Return fallback engine.
-     *
-     * @return TemplateEngineInterface
      */
     public function getTemplateEngine(): TemplateEngineInterface
     {

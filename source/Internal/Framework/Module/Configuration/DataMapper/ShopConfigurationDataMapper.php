@@ -22,17 +22,12 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
 
     /**
      * ProjectConfigurationDataMapper constructor.
-     * @param ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper
      */
     public function __construct(ModuleConfigurationDataMapperInterface $moduleConfigurationDataMapper)
     {
         $this->moduleConfigurationDataMapper = $moduleConfigurationDataMapper;
     }
 
-    /**
-     * @param ShopConfiguration $configuration
-     * @return array
-     */
     public function toData(ShopConfiguration $configuration): array
     {
         $data = [];
@@ -43,10 +38,6 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         return $data;
     }
 
-    /**
-     * @param array $data
-     * @return ShopConfiguration
-     */
     public function fromData(array $data): ShopConfiguration
     {
         $shopConfiguration = new ShopConfiguration();
@@ -62,10 +53,6 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         return $shopConfiguration;
     }
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     * @param array             $modulesData
-     */
     private function setModulesConfiguration(ShopConfiguration $shopConfiguration, array $modulesData): void
     {
         foreach ($modulesData as $moduleId => $moduleData) {
@@ -77,10 +64,6 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         }
     }
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     * @return array
-     */
     private function getModulesConfigurationData(ShopConfiguration $shopConfiguration): array
     {
         $data = [];
@@ -92,10 +75,6 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         return $data;
     }
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     * @param array             $chainsData
-     */
     private function setModuleChains(ShopConfiguration $shopConfiguration, array $chainsData): void
     {
         if (isset($chainsData[ClassExtensionsChain::NAME])) {
@@ -106,16 +85,12 @@ class ShopConfigurationDataMapper implements ShopConfigurationDataMapperInterfac
         }
     }
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     * @return array
-     */
     private function getModuleChainData(ShopConfiguration $shopConfiguration): array
     {
         $chain = $shopConfiguration->getClassExtensionsChain();
 
         return [
-            $chain->getName() => $chain->getChain()
+            $chain->getName() => $chain->getChain(),
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,9 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxUBase;
-use oxList;
 
 /**
  * The wishlist of someone else is displayed.
@@ -25,48 +24,48 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     protected $_sThisTemplate = 'page/wishlist/wishlist.tpl';
 
     /**
-     * user object list
+     * user object list.
      *
      * @return object
      */
     protected $_oWishUser = null;
 
     /**
-     * wishlist object list
+     * wishlist object list.
      *
      * @return object
      */
     protected $_oWishList = null;
 
     /**
-     * Wishlist search param
+     * Wishlist search param.
      *
      * @var string
      */
     protected $_sSearchParam = null;
 
     /**
-     * List of users which were found according to search condition
+     * List of users which were found according to search condition.
      *
      * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oWishListUsers = false;
 
     /**
-     * Sign if to load and show bargain action
+     * Sign if to load and show bargain action.
      *
      * @var bool
      */
     protected $_blBargainAction = true;
 
     /**
-     * return the user which is owner of the wish list
+     * return the user which is owner of the wish list.
      *
      * @return object|bool
      */
     public function getWishUser()
     {
-        if ($this->_oWishUser === null) {
+        if (null === $this->_oWishUser) {
             $this->_oWishUser = false;
 
             $sWishIdParameter = Registry::getConfig()->getRequestParameter('wishid');
@@ -87,13 +86,13 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * return the articles which are in the wish list
+     * return the articles which are in the wish list.
      *
      * @return object|bool
      */
     public function getWishList()
     {
-        if ($this->_oWishList === null) {
+        if (null === $this->_oWishList) {
             $this->_oWishList = false;
 
             // passing wishlist information
@@ -117,7 +116,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
      * Template variables:
      * <b>wish_result</b>, <b>search</b>
      */
-    public function searchForWishList()
+    public function searchForWishList(): void
     {
         if ($sSearch = Registry::getConfig()->getRequestParameter('search')) {
             // search for baskets
@@ -132,7 +131,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
     /**
      * Returns a list of users which were found according to search condition.
-     * If no users were found - false is returned
+     * If no users were found - false is returned.
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel|bool
      */
@@ -142,7 +141,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Returns wish list search parameter
+     * Returns wish list search parameter.
      *
      * @return string
      */
@@ -170,7 +169,7 @@ class WishListController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Page title
+     * Page title.
      *
      * @return string
      */

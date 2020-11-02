@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
- * Class for validating address
+ * Class for validating address.
  */
 class RequiredFieldsValidator
 {
@@ -40,7 +42,7 @@ class RequiredFieldsValidator
      */
     public function __construct($oFieldValidator = null)
     {
-        if (is_null($oFieldValidator)) {
+        if (null === $oFieldValidator) {
             $oFieldValidator = oxNew(\OxidEsales\Eshop\Application\Model\RequiredFieldValidator::class);
         }
         $this->setFieldValidator($oFieldValidator);
@@ -57,11 +59,11 @@ class RequiredFieldsValidator
     }
 
     /**
-     * Sets required fields array
+     * Sets required fields array.
      *
      * @param array $aFields Fields
      */
-    public function setRequiredFields($aFields)
+    public function setRequiredFields($aFields): void
     {
         $this->_aRequiredFields = $aFields;
     }
@@ -77,11 +79,11 @@ class RequiredFieldsValidator
     }
 
     /**
-     * Sets required fields array
+     * Sets required fields array.
      *
      * @param \OxidEsales\Eshop\Application\Model\RequiredFieldValidator $oFieldValidator
      */
-    public function setFieldValidator($oFieldValidator)
+    public function setFieldValidator($oFieldValidator): void
     {
         $this->_oFieldValidator = $oFieldValidator;
     }
@@ -100,9 +102,9 @@ class RequiredFieldsValidator
      * Checks if all required fields are filled.
      * Returns array of invalid fields or empty array if all fields are fine.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject Address fields with values.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $oObject address fields with values
      *
-     * @return bool If any invalid field exist.
+     * @return bool if any invalid field exist
      */
     public function validateFields($oObject)
     {
@@ -123,10 +125,11 @@ class RequiredFieldsValidator
     /**
      * Add fields to invalid fields array.
      *
-     * @param array $aFields Invalid field name.
+     * @param array $aFields invalid field name
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setInvalidFields" in next major
      */
-    private function _setInvalidFields($aFields) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function _setInvalidFields($aFields): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aInvalidFields = $aFields;
     }

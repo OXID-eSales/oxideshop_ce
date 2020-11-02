@@ -12,9 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 interface SmartySettingsDataProviderInterface
 {
     /**
-     * Return basic smarty settings
-     *
-     * @return array
+     * Return basic smarty settings.
      */
     public function getSettings(): array;
 }

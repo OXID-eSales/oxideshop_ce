@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,9 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
-use oxField;
 use OxidEsales\Eshop\Core\Str;
 
 /**
@@ -19,28 +18,28 @@ use OxidEsales\Eshop\Core\Str;
 class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxattribute';
 
     /**
-     * Selected attribute value
+     * Selected attribute value.
      *
      * @var string
      */
     protected $_sActiveValue = null;
 
     /**
-     * Attribute title
+     * Attribute title.
      *
      * @var string
      */
     protected $_sTitle = null;
 
     /**
-     * Attribute values
+     * Attribute values.
      *
      * @var array
      */
@@ -74,27 +73,27 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // remove attributes from articles also
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = "delete from oxobject2attribute where oxattrid = :oxattrid";
+        $sDelete = 'delete from oxobject2attribute where oxattrid = :oxattrid';
         $oDb->execute($sDelete, [
-            ':oxattrid' => $sOXID
+            ':oxattrid' => $sOXID,
         ]);
 
         // #657 ADDITIONAL removes attribute connection to category
-        $sDelete = "delete from oxcategory2attribute where oxattrid = :oxattrid";
+        $sDelete = 'delete from oxcategory2attribute where oxattrid = :oxattrid';
         $oDb->execute($sDelete, [
-            ':oxattrid' => $sOXID
+            ':oxattrid' => $sOXID,
         ]);
 
         return parent::delete($sOXID);
     }
 
     /**
-     * Assigns attribute to variant
+     * Assigns attribute to variant.
      *
      * @param array $aMDVariants article ids with selectionlist values
      * @param array $aSelTitle   selection list titles
      */
-    public function assignVarToAttribute($aMDVariants, $aSelTitle)
+    public function assignVarToAttribute($aMDVariants, $aSelTitle): void
     {
         $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
         $aConfLanguages = $myLang->getLanguageIds();
@@ -103,11 +102,11 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $sAttrId = $this->_createAttribute($aSelTitle);
         }
         foreach ($aMDVariants as $sVarId => $oValue) {
-            if (strpos($sVarId, "mdvar_") === 0) {
+            if (0 === strpos($sVarId, 'mdvar_')) {
                 foreach ($oValue as $sId) {
                     $sVarId = substr($sVarId, 6);
                     $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                    $oNewAssign->init("oxobject2attribute");
+                    $oNewAssign->init('oxobject2attribute');
                     $sNewId = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
                     if ($oNewAssign->load($sId)) {
                         $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
@@ -118,7 +117,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             } else {
                 $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $oNewAssign->setEnableMultilang(false);
-                $oNewAssign->init("oxobject2attribute");
+                $oNewAssign->init('oxobject2attribute');
                 $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
                 $oNewAssign->oxobject2attribute__oxattrid = new \OxidEsales\Eshop\Core\Field($sAttrId);
                 foreach ($aConfLanguages as $sKey => $sLang) {
@@ -131,11 +130,12 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Searches for attribute by oxtitle. If exists returns attribute id
+     * Searches for attribute by oxtitle. If exists returns attribute id.
      *
      * @param string $sSelTitle selection list title
      *
      * @return mixed attribute id or false
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAttrId" in next major
      */
     protected function _getAttrId($sSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -144,16 +144,17 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sAttViewName = getViewName('oxattribute');
 
         return $oDb->getOne("select oxid from $sAttViewName where LOWER(oxtitle) = :oxtitle ", [
-            ':oxtitle' => Str::getStr()->strtolower($sSelTitle)
+            ':oxtitle' => Str::getStr()->strtolower($sSelTitle),
         ]);
     }
 
     /**
-     * Checks if attribute exists
+     * Checks if attribute exists.
      *
      * @param array $aSelTitle selection list title
      *
      * @return string attribute id
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "createAttribute" in next major
      */
     protected function _createAttribute($aSelTitle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -173,25 +174,23 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns all oxobject2attribute Ids of article
+     * Returns all oxobject2attribute Ids of article.
      *
      * @param string $sArtId article ids
-     *
-     * @return null
      */
     public function getAttributeAssigns($sArtId)
     {
         if ($sArtId) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-            $sSelect = "select o2a.oxid from oxobject2attribute as o2a ";
-            $sSelect .= "where o2a.oxobjectid = :oxobjectid order by o2a.oxpos";
+            $sSelect = 'select o2a.oxid from oxobject2attribute as o2a ';
+            $sSelect .= 'where o2a.oxobjectid = :oxobjectid order by o2a.oxpos';
 
             $aIds = [];
             $rs = $oDb->select($sSelect, [
-                ':oxobjectid' => $sArtId
+                ':oxobjectid' => $sArtId,
             ]);
-            if ($rs != false && $rs->count() > 0) {
+            if (false !== $rs && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $aIds[] = $rs->fields[0];
                     $rs->fetchRow();
@@ -202,21 +201,20 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
     }
 
-
     /**
-     * Set attribute title
+     * Set attribute title.
      *
      * @param string $sTitle - attribute title
      */
-    public function setTitle($sTitle)
+    public function setTitle($sTitle): void
     {
         $this->_sTitle = Str::getStr()->htmlspecialchars($sTitle);
     }
 
     /**
-     * Get attribute Title
+     * Get attribute Title.
      *
-     * @return String
+     * @return string
      */
     public function getTitle()
     {
@@ -224,29 +222,29 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Add attribute value
+     * Add attribute value.
      *
      * @param string $sValue - attribute value
      */
-    public function addValue($sValue)
+    public function addValue($sValue): void
     {
         $this->_aValues[] = Str::getStr()->htmlspecialchars($sValue);
     }
 
     /**
-     * Set attribute selected value
+     * Set attribute selected value.
      *
      * @param string $sValue - attribute value
      */
-    public function setActiveValue($sValue)
+    public function setActiveValue($sValue): void
     {
         $this->_sActiveValue = Str::getStr()->htmlspecialchars($sValue);
     }
 
     /**
-     * Get attribute Selected value
+     * Get attribute Selected value.
      *
-     * @return String
+     * @return string
      */
     public function getActiveValue()
     {
@@ -254,9 +252,9 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Get attribute values
+     * Get attribute values.
      *
-     * @return Array
+     * @return array
      */
     public function getValues()
     {

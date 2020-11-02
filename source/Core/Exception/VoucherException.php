@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
- * exception class covering voucher exceptions
+ * exception class covering voucher exceptions.
  */
 class VoucherException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
@@ -20,24 +22,24 @@ class VoucherException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
     protected $type = 'oxVoucherException';
 
     /**
-     * Voucher nr. involved in this exception
+     * Voucher nr. involved in this exception.
      *
      * @var string
      */
     private $_sVoucherNr;
 
     /**
-     * Sets the voucher number as a string
+     * Sets the voucher number as a string.
      *
      * @param string $sVoucherNr voucher number
      */
-    public function setVoucherNr($sVoucherNr)
+    public function setVoucherNr($sVoucherNr): void
     {
-        $this->_sVoucherNr = (string) $sVoucherNr;
+        $this->_sVoucherNr = (string)$sVoucherNr;
     }
 
     /**
-     * get voucher nr. involved
+     * get voucher nr. involved.
      *
      * @return string
      */
@@ -48,13 +50,13 @@ class VoucherException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */
     public function getString()
     {
-        return __CLASS__ . '-' . parent::getString() . " Faulty Voucher Nr --> " . $this->_sVoucherNr;
+        return __CLASS__ . '-' . parent::getString() . ' Faulty Voucher Nr --> ' . $this->_sVoucherNr;
     }
 
     /**

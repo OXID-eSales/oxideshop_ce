@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,11 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-
 /**
- * Manufacturer manager
+ * Manufacturer manager.
  */
 class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
@@ -23,42 +22,42 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     protected $_sClassName = 'oxmanufacturer';
 
     /**
-     * Marker to load manufacturer article count info
+     * Marker to load manufacturer article count info.
      *
      * @var bool
      */
     protected $_blShowArticleCnt = false;
 
     /**
-     * Manufacturer article count (default is -1, which means not calculated)
+     * Manufacturer article count (default is -1, which means not calculated).
      *
      * @var int
      */
     protected $_iNrOfArticles = -1;
 
     /**
-     * Marks that current object is managed by SEO
+     * Marks that current object is managed by SEO.
      *
      * @var bool
      */
     protected $_blIsSeoObject = true;
 
     /**
-     * Visibility of a manufacturer
+     * Visibility of a manufacturer.
      *
      * @var int
      */
     protected $_blIsVisible;
 
     /**
-     * has visible endors state of a category
+     * has visible endors state of a category.
      *
      * @var int
      */
     protected $_blHasVisibleSubCats;
 
     /**
-     * Seo article urls for languages
+     * Seo article urls for languages.
      *
      * @var array
      */
@@ -75,7 +74,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Extra getter to guarantee compatibility with templates
+     * Extra getter to guarantee compatibility with templates.
      *
      * @param string $sName name of variable to return
      *
@@ -103,15 +102,16 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
                 $sValue = parent::__get($sName);
                 break;
         }
+
         return $sValue;
     }
 
     /**
-     * Marker to load manufacturer article count info setter
+     * Marker to load manufacturer article count info setter.
      *
      * @param bool $blShowArticleCount Marker to load manufacturer article count
      */
-    public function setShowArticleCnt($blShowArticleCount = false)
+    public function setShowArticleCnt($blShowArticleCount = false): void
     {
         $this->_blShowArticleCnt = $blShowArticleCount;
     }
@@ -121,7 +121,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      *
      * @param array $dbRecord parameters/values
      */
-    public function assign($dbRecord)
+    public function assign($dbRecord): void
     {
         parent::assign($dbRecord);
 
@@ -143,7 +143,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      */
     public function load($sOxid)
     {
-        if ($sOxid == 'root') {
+        if ('root' === $sOxid) {
             return $this->_setRootObjectData();
         }
 
@@ -151,9 +151,10 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Sets root manufacturer data. Returns true
+     * Sets root manufacturer data. Returns true.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setRootObjectData" in next major
      */
     protected function _setRootObjectData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -167,7 +168,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns raw manufacturer seo url
+     * Returns raw manufacturer seo url.
      *
      * @param int $iLang language id
      * @param int $iPage page number [optional]
@@ -185,7 +186,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns manufacturer link Url
+     * Returns manufacturer link Url.
      *
      * @param int $iLang language id [optional]
      *
@@ -197,7 +198,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
             return $this->getStdLink($iLang);
         }
 
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = $this->getLanguage();
         }
 
@@ -209,7 +210,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns base dynamic url: shopurl/index.php?cl=details
+     * Returns base dynamic url: shopurl/index.php?cl=details.
      *
      * @param int  $iLang   language id
      * @param bool $blAddId add current object id to url or not
@@ -225,11 +226,11 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
             $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
-        return $sUrl . "index.php?cl=manufacturerlist" . ($blAddId ? "&amp;mnid=" . $this->getId() : "");
+        return $sUrl . 'index.php?cl=manufacturerlist' . ($blAddId ? '&amp;mnid=' . $this->getId() : '');
     }
 
     /**
-     * Returns standard URL to manufacturer
+     * Returns standard URL to manufacturer.
      *
      * @param int   $iLang   language
      * @param array $aParams additional params to use [optional]
@@ -238,7 +239,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
      */
     public function getStdLink($iLang = null, $aParams = [])
     {
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = $this->getLanguage();
         }
 
@@ -246,9 +247,9 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * returns number or articles of this manufacturer
+     * returns number or articles of this manufacturer.
      *
-     * @return integer
+     * @return int
      */
     public function getNrOfArticles()
     {
@@ -260,14 +261,14 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * returns the sub category array
+     * returns the sub category array.
      */
-    public function getSubCats()
+    public function getSubCats(): void
     {
     }
 
     /**
-     * returns the visibility of a manufacturer
+     * returns the visibility of a manufacturer.
      *
      * @return bool
      */
@@ -277,17 +278,17 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * sets the visibilty of a category
+     * sets the visibilty of a category.
      *
      * @param bool $blVisible manufacturers visibility status setter
      */
-    public function setIsVisible($blVisible)
+    public function setIsVisible($blVisible): void
     {
         $this->_blIsVisible = $blVisible;
     }
 
     /**
-     * returns if a manufacturer has visible sub categories
+     * returns if a manufacturer has visible sub categories.
      *
      * @return bool
      */
@@ -301,19 +302,19 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * sets the state of has visible sub manufacturers
+     * sets the state of has visible sub manufacturers.
      *
      * @param bool $blHasVisibleSubcats marker if manufacturer has visible subcategories
      */
-    public function setHasVisibleSubCats($blHasVisibleSubcats)
+    public function setHasVisibleSubCats($blHasVisibleSubcats): void
     {
         $this->_blHasVisibleSubCats = $blHasVisibleSubcats;
     }
 
     /**
-     * Empty method, called in templates when manufacturer is used in same code like category
+     * Empty method, called in templates when manufacturer is used in same code like category.
      */
-    public function getContentCats()
+    public function getContentCats(): void
     {
     }
 
@@ -336,7 +337,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns manufacture icon
+     * Returns manufacture icon.
      *
      * @return string
      */
@@ -349,12 +350,12 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
                 $sSize = $oConfig->getConfigParam('sIconsize');
             }
 
-            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("manufacturer/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl('manufacturer/icon/', $sIcon, $sSize);
         }
     }
 
     /**
-     * Returns false, becouse manufacturer has not thumbnail
+     * Returns false, becouse manufacturer has not thumbnail.
      *
      * @return false
      */
@@ -364,7 +365,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns manufacturer title
+     * Returns manufacturer title.
      *
      * @return string
      */
@@ -374,7 +375,7 @@ class Manufacturer extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel imple
     }
 
     /**
-     * Returns short description
+     * Returns short description.
      *
      * @return string
      */

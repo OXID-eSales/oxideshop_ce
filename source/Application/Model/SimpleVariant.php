@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,78 +9,73 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxPrice;
-
 /**
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.
  */
 class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
     /**
-     * Use lazy loading for this item
+     * Use lazy loading for this item.
      *
      * @var bool
      */
     protected $_blUseLazyLoading = true;
 
     /**
-     * Variant price
+     * Variant price.
      *
      * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oPrice = null;
 
     /**
-     * Parent article
+     * Parent article.
      *
      * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oParent = null;
 
     /**
-     * Stardard/dynamic article urls for languages
+     * Stardard/dynamic article urls for languages.
      *
      * @var array
      */
     protected $_aStdUrls = [];
 
     /**
-     * Stardard/dynamic article urls for languages
+     * Stardard/dynamic article urls for languages.
      *
      * @var array
      */
     protected $_aBaseStdUrls = [];
 
     /**
-     * Seo article urls for languages
+     * Seo article urls for languages.
      *
      * @var array
      */
     protected $_aSeoUrls = [];
 
     /**
-     * user object
+     * user object.
      *
      * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected $_oUser = null;
 
     /**
-     * Initializes instance
+     * Initializes instance.
      */
     public function __construct()
     {
         parent::__construct();
-        $this->_sCacheKey = "simplevariants";
+        $this->_sCacheKey = 'simplevariants';
         $this->init('oxarticles');
     }
 
     /**
      * Implementing (fakeing) performance friendly method from oxArticle
-     * oxbase
-     *
-     * @return null
+     * oxbase.
      */
     public function getSelectLists()
     {
@@ -86,13 +83,13 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Returns article user
+     * Returns article user.
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getArticleUser()
     {
-        if ($this->_oUser === null) {
+        if (null === $this->_oUser) {
             $this->_oUser = $this->getUser();
         }
 
@@ -100,9 +97,10 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * get user Group A, B or C price, returns db price if user is not in groups
+     * get user Group A, B or C price, returns db price if user is not in groups.
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getGroupPrice" in next major
      */
     protected function _getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -119,7 +117,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
         }
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && 0 === (float)$dPrice) {
             $dPrice = $this->oxarticles__oxprice->value;
         }
 
@@ -127,7 +125,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Implementing (faking) performance friendly method from oxArticle
+     * Implementing (faking) performance friendly method from oxArticle.
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
@@ -139,7 +137,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
             return;
         }
 
-        if ($this->_oPrice === null) {
+        if (null === $this->_oPrice) {
             $this->_oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
             if (($dPrice = $this->_getGroupPrice())) {
                 $dPrice = $this->modifyGroupPrice($dPrice);
@@ -161,6 +159,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      * Make changes to price on getting price.
      *
      * @param float $price
+     *
      * @return float
      */
     public function modifyGroupPrice($price)
@@ -169,13 +168,14 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Applies currency factor
+     * Applies currency factor.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param object                       $oCur   Currency object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "applyCurrency" in next major
      */
-    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$oCur) {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
@@ -185,12 +185,13 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Applies discounts which should be applied in general case (for 0 amount)
+     * Applies discounts which should be applied in general case (for 0 amount).
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "applyParentDiscounts" in next major
      */
-    protected function _applyParentDiscounts($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _applyParentDiscounts($oPrice): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oParent = $this->getParent())) {
             $oParent->applyDiscountsForVariant($oPrice);
@@ -198,12 +199,13 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * apply parent article VAT to given price
+     * apply parent article VAT to given price.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "applyParentVat" in next major
      */
-    protected function _applyParentVat($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _applyParentVat($oPrice): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($oParent = $this->getParent()) && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
             $oParent->applyVats($oPrice);
@@ -211,11 +213,11 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Price setter
+     * Price setter.
      *
      * @param object $oPrice price object
      */
-    public function setPrice($oPrice)
+    public function setPrice($oPrice): void
     {
         $this->_oPrice = $oPrice;
     }
@@ -223,7 +225,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     /**
      * Returns formated product price.
      *
-     * @return double
+     * @return float
      */
     public function getFPrice()
     {
@@ -236,11 +238,11 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Sets parent article
+     * Sets parent article.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oParent Parent article
      */
-    public function setParent($oParent)
+    public function setParent($oParent): void
     {
         $this->_oParent = $oParent;
     }
@@ -256,7 +258,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Get link type
+     * Get link type.
      *
      * @return int
      */
@@ -271,7 +273,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Checks if article is assigned to category
+     * Checks if article is assigned to category.
      *
      * @param string $sCatNid category ID
      *
@@ -288,7 +290,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Checks if article is assigned to price category $sCatNID
+     * Checks if article is assigned to price category $sCatNID.
      *
      * @param string $sCatNid Price category ID
      *
@@ -305,7 +307,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Returns base dynamic url: shopurl/index.php?cl=details
+     * Returns base dynamic url: shopurl/index.php?cl=details.
      *
      * @param int  $iLang   language id
      * @param bool $blAddId add current object id to url or not
@@ -326,7 +328,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Gets article link
+     * Gets article link.
      *
      * @param int   $iLang   required language [optional]
      * @param array $aParams additional params to use [optional]
@@ -335,8 +337,8 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      */
     public function getStdLink($iLang = null, $aParams = [])
     {
-        if ($iLang === null) {
-            $iLang = (int) $this->getLanguage();
+        if (null === $iLang) {
+            $iLang = (int)$this->getLanguage();
         }
 
         $iLinkType = $this->getLinkType();
@@ -351,7 +353,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Returns raw recommlist seo url
+     * Returns raw recommlist seo url.
      *
      * @param int $iLang language id
      *
@@ -363,7 +365,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     }
 
     /**
-     * Gets article link
+     * Gets article link.
      *
      * @param int $iLang required language id [optional]
      *
@@ -371,8 +373,8 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      */
     public function getLink($iLang = null)
     {
-        if ($iLang === null) {
-            $iLang = (int) $this->getLanguage();
+        if (null === $iLang) {
+            $iLang = (int)$this->getLanguage();
         }
 
         if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {

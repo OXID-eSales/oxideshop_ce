@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@
  * -------------------------------------------------------------
  * Name:     oxaddslashes<br>
  * Purpose:  Quote string with slashes
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param string $string String to escape
  *

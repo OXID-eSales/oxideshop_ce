@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,37 +11,37 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
  * Diagnostic tool model
- * Stores configuration and public diagnostic methods for shop diagnostics
+ * Stores configuration and public diagnostic methods for shop diagnostics.
  */
 class Diagnostics
 {
     /**
-     * Edition of THIS OXID eShop
+     * Edition of THIS OXID eShop.
      *
      * @var string
      */
-    protected $_sEdition = "";
+    protected $_sEdition = '';
 
     /**
-     * Version of THIS OXID eShop
+     * Version of THIS OXID eShop.
      *
      * @var string
      */
-    protected $_sVersion = "";
+    protected $_sVersion = '';
 
     /**
-     * Revision of THIS OXID eShop
+     * Revision of THIS OXID eShop.
      *
      * @var string
      */
-    protected $_sShopLink = "";
+    protected $_sShopLink = '';
 
     /**
-     * Version setter
+     * Version setter.
      *
-     * @param string $sVersion Version.
+     * @param string $sVersion version
      */
-    public function setVersion($sVersion)
+    public function setVersion($sVersion): void
     {
         if (!empty($sVersion)) {
             $this->_sVersion = $sVersion;
@@ -47,7 +49,7 @@ class Diagnostics
     }
 
     /**
-     * Version getter
+     * Version getter.
      *
      * @return string
      */
@@ -57,11 +59,11 @@ class Diagnostics
     }
 
     /**
-     * Edition setter
+     * Edition setter.
      *
      * @param string $sEdition Edition
      */
-    public function setEdition($sEdition)
+    public function setEdition($sEdition): void
     {
         if (!empty($sEdition)) {
             $this->_sEdition = $sEdition;
@@ -69,7 +71,7 @@ class Diagnostics
     }
 
     /**
-     * Edition getter
+     * Edition getter.
      *
      * @return string
      */
@@ -79,11 +81,11 @@ class Diagnostics
     }
 
     /**
-     * ShopLink setter
+     * ShopLink setter.
      *
-     * @param string $sShopLink Shop link.
+     * @param string $sShopLink shop link
      */
-    public function setShopLink($sShopLink)
+    public function setShopLink($sShopLink): void
     {
         if (!empty($sShopLink)) {
             $this->_sShopLink = $sShopLink;
@@ -91,7 +93,7 @@ class Diagnostics
     }
 
     /**
-     * ShopLink getter
+     * ShopLink getter.
      *
      * @return string
      */
@@ -101,36 +103,35 @@ class Diagnostics
     }
 
     /**
-     * Collects information on the shop, like amount of categories, articles, users
+     * Collects information on the shop, like amount of categories, articles, users.
      *
      * @return array
      */
     public function getShopDetails()
     {
-        $aShopDetails = [
-            'Date'                => date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat'), time()),
-            'URL'                 => $this->getShopLink(),
-            'Edition'             => $this->getEdition(),
-            'Version'             => $this->getVersion(),
-            'Subshops (Total)'    => $this->_countRows('oxshops', true),
-            'Subshops (Active)'   => $this->_countRows('oxshops', false),
-            'Categories (Total)'  => $this->_countRows('oxcategories', true),
+        return [
+            'Date' => date(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('fullDateFormat'), time()),
+            'URL' => $this->getShopLink(),
+            'Edition' => $this->getEdition(),
+            'Version' => $this->getVersion(),
+            'Subshops (Total)' => $this->_countRows('oxshops', true),
+            'Subshops (Active)' => $this->_countRows('oxshops', false),
+            'Categories (Total)' => $this->_countRows('oxcategories', true),
             'Categories (Active)' => $this->_countRows('oxcategories', false),
-            'Articles (Total)'    => $this->_countRows('oxarticles', true),
-            'Articles (Active)'   => $this->_countRows('oxarticles', false),
-            'Users (Total)'       => $this->_countRows('oxuser', true),
+            'Articles (Total)' => $this->_countRows('oxarticles', true),
+            'Articles (Active)' => $this->_countRows('oxarticles', false),
+            'Users (Total)' => $this->_countRows('oxuser', true),
         ];
-
-        return $aShopDetails;
     }
 
     /**
-     * counts result Rows
+     * counts result Rows.
      *
-     * @param string  $sTable table
-     * @param boolean $blMode mode
+     * @param string $sTable table
+     * @param bool   $blMode mode
      *
-     * @return integer
+     * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "countRows" in next major
      */
     protected function _countRows($sTable, $blMode) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -138,15 +139,12 @@ class Diagnostics
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sRequest = 'SELECT COUNT(*) FROM ' . $sTable;
 
-        if ($blMode == false) {
+        if (false === $blMode) {
             $sRequest .= ' WHERE oxactive = 1';
         }
 
-        $aRes = $oDb->select($sRequest)->fields[0];
-
-        return $aRes;
+        return $oDb->select($sRequest)->fields[0];
     }
-
 
     /**
      * Picks some pre-selected PHP configuration settings and returns them.
@@ -176,9 +174,8 @@ class Diagnostics
         return $aPhpIniConf;
     }
 
-
     /**
-     * Returns the installed PHP devoder (like Zend Optimizer, Guard Loader)
+     * Returns the installed PHP devoder (like Zend Optimizer, Guard Loader).
      *
      * @return string
      */
@@ -186,17 +183,16 @@ class Diagnostics
     {
         $sReturn = 'Zend ';
 
-        if (function_exists('zend_optimizer_version')) {
+        if (\function_exists('zend_optimizer_version')) {
             $sReturn .= 'Optimizer';
         }
 
-        if (function_exists('zend_loader_enabled')) {
+        if (\function_exists('zend_loader_enabled')) {
             $sReturn .= 'Guard Loader';
         }
 
         return $sReturn;
     }
-
 
     /**
      * General server information
@@ -226,33 +222,32 @@ class Diagnostics
             }
         }
 
-        $aServerInfo = [
-            'Server OS'     => @php_uname('s'),
-            'VM'            => $this->_getVirtualizationSystem(),
-            'PHP'           => $this->_getPhpVersion(),
-            'MySQL'         => $this->_getMySqlServerInfo(),
-            'Apache'        => $this->_getApacheVersion(),
-            'Disk total'    => $this->_getDiskTotalSpace(),
-            'Disk free'     => $this->_getDiskFreeSpace(),
-            'Memory total'  => $iMemTotal,
-            'Memory free'   => $iMemFree,
-            'CPU Model'     => $sCpuModel,
+        return [
+            'Server OS' => @php_uname('s'),
+            'VM' => $this->_getVirtualizationSystem(),
+            'PHP' => $this->_getPhpVersion(),
+            'MySQL' => $this->_getMySqlServerInfo(),
+            'Apache' => $this->_getApacheVersion(),
+            'Disk total' => $this->_getDiskTotalSpace(),
+            'Disk free' => $this->_getDiskFreeSpace(),
+            'Memory total' => $iMemTotal,
+            'Memory free' => $iMemFree,
+            'CPU Model' => $sCpuModel,
             'CPU frequency' => $sCpuFreq,
-            'CPU cores'     => round($iCpuCores, 0),
+            'CPU cores' => round($iCpuCores, 0),
         ];
-
-        return $aServerInfo;
     }
 
     /**
-     * Returns Apache version
+     * Returns Apache version.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getApacheVersion" in next major
      */
     protected function _getApacheVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (function_exists('apache_get_version')) {
+        if (\function_exists('apache_get_version')) {
             $sReturn = apache_get_version();
         } else {
             $sReturn = $_SERVER['SERVER_SOFTWARE'];
@@ -262,9 +257,10 @@ class Diagnostics
     }
 
     /**
-     * Tries to find out which VM is used
+     * Tries to find out which VM is used.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getVirtualizationSystem" in next major
      */
     protected function _getVirtualizationSystem() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -293,19 +289,20 @@ class Diagnostics
     /**
      * Determines, whether the exec() command is allowed or not.
      *
-     * @return boolean
+     * @return bool
      */
     public function isExecAllowed()
     {
-        return function_exists('exec');
+        return \function_exists('exec');
     }
 
     /**
-     * Finds the list of system devices for given system type
+     * Finds the list of system devices for given system type.
      *
-     * @param string $sSystemType System type.
+     * @param string $sSystemType system type
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getDeviceList" in next major
      */
     protected function _getDeviceList($sSystemType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -317,6 +314,7 @@ class Diagnostics
      * Returns amount of CPU units.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuAmount" in next major
      */
     protected function _getCpuAmount() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -326,9 +324,10 @@ class Diagnostics
     }
 
     /**
-     * Returns CPU speed in Mhz
+     * Returns CPU speed in Mhz.
      *
      * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuMhz" in next major
      */
     protected function _getCpuMhz() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -337,9 +336,10 @@ class Diagnostics
     }
 
     /**
-     * Returns BogoMIPS evaluation of processor
+     * Returns BogoMIPS evaluation of processor.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getBogoMips" in next major
      */
     protected function _getBogoMips() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -348,9 +348,10 @@ class Diagnostics
     }
 
     /**
-     * Returns total amount of memory
+     * Returns total amount of memory.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getMemoryTotal" in next major
      */
     protected function _getMemoryTotal() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -359,9 +360,10 @@ class Diagnostics
     }
 
     /**
-     * Returns amount of free memory
+     * Returns amount of free memory.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getMemoryFree" in next major
      */
     protected function _getMemoryFree() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -370,9 +372,10 @@ class Diagnostics
     }
 
     /**
-     * Returns CPU model information
+     * Returns CPU model information.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCpuModel" in next major
      */
     protected function _getCpuModel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -381,9 +384,10 @@ class Diagnostics
     }
 
     /**
-     * Returns total disk space
+     * Returns total disk space.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getDiskTotalSpace" in next major
      */
     protected function _getDiskTotalSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -392,9 +396,10 @@ class Diagnostics
     }
 
     /**
-     * Returns free disk space
+     * Returns free disk space.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getDiskFreeSpace" in next major
      */
     protected function _getDiskFreeSpace() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -403,20 +408,22 @@ class Diagnostics
     }
 
     /**
-     * Returns PHP version
+     * Returns PHP version.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getPhpVersion" in next major
      */
     protected function _getPhpVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return phpversion();
+        return PHP_VERSION;
     }
 
     /**
-     * Returns MySQL server Information
+     * Returns MySQL server Information.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getMySqlServerInfo" in next major
      */
     protected function _getMySqlServerInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

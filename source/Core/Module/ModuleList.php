@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -18,21 +20,22 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService
  * Modules list class.
  *
  * @deprecated since v6.4.0 (2019-03-22); Use service 'OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
- * @internal Do not make a module extension for this class.
+ *
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleList extends \OxidEsales\Eshop\Core\Base
 {
-    const MODULE_KEY_PATHS = 'Paths';
-    const MODULE_KEY_EVENTS = 'Events';
-    const MODULE_KEY_VERSIONS = 'Versions';
-    const MODULE_KEY_TEMPLATES = 'Templates';
-    const MODULE_KEY_EXTENSIONS = 'Extensions';
-    const MODULE_KEY_CONTROLLERS = 'Controllers';
+    public const MODULE_KEY_PATHS = 'Paths';
+    public const MODULE_KEY_EVENTS = 'Events';
+    public const MODULE_KEY_VERSIONS = 'Versions';
+    public const MODULE_KEY_TEMPLATES = 'Templates';
+    public const MODULE_KEY_EXTENSIONS = 'Extensions';
+    public const MODULE_KEY_CONTROLLERS = 'Controllers';
 
     /**
-     * Modules info array
-     *
+     * Modules info array.
      *
      * @var array<string, array>
      */
@@ -53,7 +56,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     protected $_aSkipFiles = ['functions.php', 'vendormetadata.php'];
 
     /**
-     * Return array of modules
+     * Return array of modules.
      *
      * @return array
      */
@@ -63,7 +66,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get all modules with Extended classes
+     * Get all modules with Extended classes.
      *
      * @return array
      */
@@ -93,7 +96,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get active modules path info
+     * Get active modules path info.
      *
      * @return array
      */
@@ -103,7 +106,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get disabled module paths
+     * Get disabled module paths.
      *
      * @return array
      */
@@ -119,7 +122,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get module id's with versions
+     * Get module id's with versions.
      *
      * @return array
      */
@@ -129,7 +132,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get the list of modules
+     * Get the list of modules.
      *
      * @return array
      */
@@ -155,12 +158,11 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-
         return $extendedClasses;
     }
 
     /**
-     * Get disabled module id's
+     * Get disabled module id's.
      *
      * @return array
      */
@@ -176,7 +178,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get module id's with path
+     * Get module id's with path.
      *
      * @return array
      */
@@ -186,13 +188,13 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get module events
+     * Get module events.
      *
      * @return array
      */
     public function getModuleEvents()
     {
-        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleEvents');
+        return (array)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModuleEvents');
     }
 
     /**
@@ -205,10 +207,10 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $aModules = $this->getModulesWithExtendedClass();
         $aModulePaths = [];
 
-        if (is_array($aModules) && count($aModules) > 0) {
+        if (\is_array($aModules) && \count($aModules) > 0) {
             foreach ($aModules as $aModuleClasses) {
                 foreach ($aModuleClasses as $sModule) {
-                    $sModuleId = substr($sModule, 0, strpos($sModule, "/"));
+                    $sModuleId = substr($sModule, 0, strpos($sModule, '/'));
                     $aModulePaths[$sModuleId] = $sModuleId;
                 }
             }
@@ -218,7 +220,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get all modules templates paths
+     * Get all modules templates paths.
      *
      * @return array
      */
@@ -231,7 +233,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * Returns disabled module classes with path using config aModules
      * and aModulePaths.
      * aModules has all extended classes
-     * aModulePaths has module id to main path array
+     * aModulePaths has module id to main path array.
      *
      * @return array
      */
@@ -254,7 +256,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     /**
      * Removes extension metadata from shop.
      */
-    public function cleanup()
+    public function cleanup(): void
     {
         $deletedModules = $this->getDeletedExtensions();
 
@@ -272,7 +274,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks module list - if there is extensions that are registered, but extension directory is missing
+     * Checks module list - if there is extensions that are registered, but extension directory is missing.
      *
      * @return array
      */
@@ -285,7 +287,9 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $aDeletedExt = [];
 
         foreach ($aModulesIds as $sModuleId) {
-            $oModule->setModuleData(['id' => $sModuleId]);
+            $oModule->setModuleData([
+                'id' => $sModuleId,
+            ]);
             if (!$oModuleMetadataValidator->validate($oModule)) {
                 $aDeletedExt[$sModuleId]['files'] = [$sModuleId . '/metadata.php'];
             } else {
@@ -301,7 +305,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Diff two nested module arrays together so that the values of
-     * $aRmModuleArray are removed from $aAllModuleArray
+     * $aRmModuleArray are removed from $aAllModuleArray.
      *
      * @param array $aAllModuleArray All Module array (nested format)
      * @param array $aRemModuleArray Remove Module array (nested format)
@@ -310,22 +314,22 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function diffModuleArrays($aAllModuleArray, $aRemModuleArray)
     {
-        if (is_array($aAllModuleArray) && is_array($aRemModuleArray)) {
+        if (\is_array($aAllModuleArray) && \is_array($aRemModuleArray)) {
             foreach ($aAllModuleArray as $sClass => $aModuleChain) {
-                if (!is_array($aModuleChain)) {
+                if (!\is_array($aModuleChain)) {
                     $aModuleChain = [$aModuleChain];
                 }
                 if (isset($aRemModuleArray[$sClass])) {
-                    if (!is_array($aRemModuleArray[$sClass])) {
+                    if (!\is_array($aRemModuleArray[$sClass])) {
                         $aRemModuleArray[$sClass] = [$aRemModuleArray[$sClass]];
                     }
                     $aAllModuleArray[$sClass] = [];
                     foreach ($aModuleChain as $sModule) {
-                        if (!in_array($sModule, $aRemModuleArray[$sClass])) {
+                        if (!\in_array($sModule, $aRemModuleArray[$sClass], true)) {
                             $aAllModuleArray[$sClass][] = $sModule;
                         }
                     }
-                    if (!count($aAllModuleArray[$sClass])) {
+                    if (!\count($aAllModuleArray[$sClass])) {
                         unset($aAllModuleArray[$sClass]);
                     }
                 } else {
@@ -338,7 +342,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Build module chains from nested array
+     * Build module chains from nested array.
      *
      * @param array $aModuleArray Module array (nested format)
      *
@@ -347,7 +351,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     public function buildModuleChains($aModuleArray)
     {
         $aModules = [];
-        if (is_array($aModuleArray)) {
+        if (\is_array($aModuleArray)) {
             foreach ($aModuleArray as $sClass => $aModuleChain) {
                 $aModules[$sClass] = implode('&', $aModuleChain);
             }
@@ -367,7 +371,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Parse array of module chains to nested array
+     * Parse array of module chains to nested array.
      *
      * @param array $modules Module array (config format)
      *
@@ -377,7 +381,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     {
         $moduleArray = [];
 
-        if (is_array($modules)) {
+        if (\is_array($modules)) {
             foreach ($modules as $class => $moduleChain) {
                 if (strstr($moduleChain, '&')) {
                     $moduleChain = explode('&', $moduleChain);
@@ -392,7 +396,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Gets Module config parameters by key
+     * Gets Module config parameters by key.
      *
      * e.g. to get 'aModulePaths' call $obj->getModuleConfigParametersByKey(ModuleList::MODULE_KEY_PATHS)
      *
@@ -402,7 +406,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getModuleConfigParametersByKey($key)
     {
-        return (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModule' . $key);
+        return (array)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aModule' . $key);
     }
 
     /**
@@ -423,7 +427,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             $sModuleDirName = basename($sModuleDirPath);
 
             // skipping some file
-            if (in_array($sModuleDirName, $this->_aSkipFiles) || (!is_dir($sModuleDirPath) && substr($sModuleDirName, -4) != ".php")) {
+            if (\in_array($sModuleDirName, $this->_aSkipFiles, true) || (!is_dir($sModuleDirPath) && '.php' !== substr($sModuleDirName, -4))) {
                 continue;
             }
 
@@ -441,7 +445,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
             }
         }
         // sorting by name
-        if ($this->_aModules !== null) {
+        if (null !== $this->_aModules) {
             uasort($this->_aModules, [$this, '_sortModules']);
         }
 
@@ -506,6 +510,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param object $oModule2 module object
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "sortModules" in next major
      */
     protected function _sortModules($oModule1, $oModule2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -519,6 +524,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      * @param string $sModuleDir dir path
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isVendorDir" in next major
      */
     protected function _isVendorDir($sModuleDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -539,11 +545,12 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns shop classes and associated invalid module classes for a given module id
+     * Returns shop classes and associated invalid module classes for a given module id.
      *
      * @param string $moduleId Module id
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getInvalidExtensions" in next major
      */
     private function _getInvalidExtensions($moduleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -560,7 +567,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
                         $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
                     }
                 } else {
-                    /** Note: $aDeletedExt is passed by reference */
+                    /* Note: $aDeletedExt is passed by reference */
                     $this->backwardsCompatibleGetInvalidExtensions($moduleClass, $invalidModuleClasses, $extendedShopClass);
                 }
             }
@@ -570,14 +577,14 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Backwards compatible version of self::_getInvalidExtensions()
+     * Backwards compatible version of self::_getInvalidExtensions().
      *
      * @param string $moduleClass          The module class, which extends a given shop class
      * @param array  $invalidModuleClasses The Collection of module classes , which are marked as deleted
      *                                     Note: This parameter is passed by reference
      * @param string $extendedShopClass    The shop class, which is extended by the module class
      */
-    private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass)
+    private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass): void
     {
         $moduleClassFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $moduleClass . '.php';
         if (!is_readable($moduleClassFile)) {
@@ -638,7 +645,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get activate modules with Extended classes
+     * Get activate modules with Extended classes.
      *
      * @return array
      */

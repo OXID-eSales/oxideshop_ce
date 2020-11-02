@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class ContainerBuilderFactory
 {
-    /**
-     * @return ContainerBuilder
-     */
     public function create(): ContainerBuilder
     {
         $bootstrapContainer = BootstrapContainerFactory::getBootstrapContainer();

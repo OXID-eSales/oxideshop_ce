@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
- * Exception class for a non existing language local
+ * Exception class for a non existing language local.
  *
  * @deprecated since 5.2.8 (2016.02.05); Will be removed as not used in code.
  */
@@ -22,24 +24,24 @@ class LanguageException extends \OxidEsales\Eshop\Core\Exception\StandardExcepti
     protected $type = 'oxLanguageException';
 
     /**
-     * Language constant
+     * Language constant.
      *
      * @var string
      */
-    private $_sLangConstant = "";
+    private $_sLangConstant = '';
 
     /**
-     * sets the language constant which is missing
+     * sets the language constant which is missing.
      *
      * @param string $sLangConstant language constant
      */
-    public function setLangConstant($sLangConstant)
+    public function setLangConstant($sLangConstant): void
     {
         $this->_sLangConstant = $sLangConstant;
     }
 
     /**
-     * Get language constant
+     * Get language constant.
      *
      * @return string
      */
@@ -50,13 +52,13 @@ class LanguageException extends \OxidEsales\Eshop\Core\Exception\StandardExcepti
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */
     public function getString()
     {
-        return __CLASS__ . '-' . parent::getString() . " Faulty Constant --> " . $this->_sLangConstant . "\n";
+        return __CLASS__ . '-' . parent::getString() . ' Faulty Constant --> ' . $this->_sLangConstant . "\n";
     }
 
     /**

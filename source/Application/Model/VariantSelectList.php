@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,40 +12,40 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\Str;
 
 /**
- * Variant selection lists manager class
+ * Variant selection lists manager class.
  */
 class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
 {
     /**
-     * Variant selection list label
+     * Variant selection list label.
      *
      * @var string
      */
     protected $_sLabel = null;
 
     /**
-     * Selection list index
+     * Selection list index.
      *
      * @var int
      */
     protected $_iIndex = 0;
 
     /**
-     * List with selections
+     * List with selections.
      *
      * @var array
      */
     protected $_aList = [];
 
     /**
-     * Active variant selection object
+     * Active variant selection object.
      *
      * @var \OxidEsales\Eshop\Application\Model\Selection
      */
     protected $_oActiveSelection = null;
 
     /**
-     * Builds current selection list
+     * Builds current selection list.
      *
      * @param string $sLabel list label
      * @param int    $iIndex list index
@@ -55,7 +57,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
     }
 
     /**
-     * Returns variant selection list label
+     * Returns variant selection list label.
      *
      * @return string
      */
@@ -65,18 +67,18 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
     }
 
     /**
-     * Adds given variant info to current variant selection list
+     * Adds given variant info to current variant selection list.
      *
      * @param string $sName      selection name
      * @param string $sValue     selection value
      * @param string $blDisabled selection state - disabled/enabled
      * @param string $blActive   selection state - active/inactive
      */
-    public function addVariant($sName, $sValue, $blDisabled, $blActive)
+    public function addVariant($sName, $sValue, $blDisabled, $blActive): void
     {
         $sName = trim($sName);
         //#6053 Allow "0" as a valid value.
-        if (!empty($sName) || $sName === '0') {
+        if (!empty($sName) || '0' === $sName) {
             $sKey = $sValue;
 
             // creating new
@@ -101,7 +103,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
     }
 
     /**
-     * Returns active selection object
+     * Returns active selection object.
      *
      * @return \OxidEsales\Eshop\Application\Model\Selection
      */
@@ -111,7 +113,7 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
     }
 
     /**
-     * Returns array of oxSelection's
+     * Returns array of oxSelection's.
      *
      * @return array
      */

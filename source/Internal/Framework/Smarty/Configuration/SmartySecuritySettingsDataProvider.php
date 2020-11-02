@@ -20,8 +20,6 @@ class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataPr
 
     /**
      * SmartySecuritySettingsDataProvider constructor.
-     *
-     * @param SmartyContextInterface $context
      */
     public function __construct(SmartyContextInterface $context)
     {
@@ -30,8 +28,6 @@ class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataPr
 
     /**
      * Define and return smarty security settings.
-     *
-     * @return array
      */
     public function getSecuritySettings(): array
     {
@@ -43,7 +39,7 @@ class SmartySecuritySettingsDataProvider implements SmartySecuritySettingsDataPr
                 'IF_FUNCS' => ['XML_ELEMENT_NODE', 'is_int'],
                 'MODIFIER_FUNCS' => ['round', 'floor', 'trim', 'implode', 'is_array', 'getimagesize'],
                 'ALLOW_CONSTANTS' => true,
-            ]
+            ],
         ];
     }
 }

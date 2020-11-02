@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,11 +17,11 @@ use OxidEsales\Eshop\Core\Registry;
 class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
     /**
-     * Allowed host url
+     * Allowed host url.
      *
      * @var string
      */
-    protected $_sAllowedHost = "http://admin.oxid-esales.com";
+    protected $_sAllowedHost = 'http://admin.oxid-esales.com';
 
     /**
      * Executes parent method parent::render(), generates menu HTML code,
@@ -32,57 +34,57 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         parent::render();
         $myUtilsServer = Registry::getUtilsServer();
 
-        $sItem = Registry::getConfig()->getRequestParameter("item");
+        $sItem = Registry::getConfig()->getRequestParameter('item');
         $sItem = $sItem ? basename($sItem) : false;
         if (!$sItem) {
-            $sItem = "nav_frame.tpl";
-            $aFavorites = Registry::getConfig()->getRequestParameter("favorites");
-            if (is_array($aFavorites)) {
+            $sItem = 'nav_frame.tpl';
+            $aFavorites = Registry::getConfig()->getRequestParameter('favorites');
+            if (\is_array($aFavorites)) {
                 $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
             }
         } else {
             $oNavTree = $this->getNavigation();
 
             // set menu structure
-            $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
+            $this->_aViewData['menustructure'] = $oNavTree->getDomXml()->documentElement->childNodes;
 
             // version patch string
-            $this->_aViewData["sVersion"] = $this->_sShopVersion;
+            $this->_aViewData['sVersion'] = $this->_sShopVersion;
 
             //checking requirements if this is not nav frame reload
-            if (!Registry::getConfig()->getRequestParameter("navReload")) {
+            if (!Registry::getConfig()->getRequestParameter('navReload')) {
                 // #661 execute stuff we run each time when we start admin once
-                if ('home.tpl' == $sItem) {
+                if ('home.tpl' === $sItem) {
                     $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
                 }
             } else {
                 //removing reload param to force requirements checking next time
-                Registry::getSession()->deleteVariable("navReload");
+                Registry::getSession()->deleteVariable('navReload');
             }
 
             // favorite navigation
             $aFavorites = explode('|', $myUtilsServer->getOxCookie('oxidadminfavorites'));
 
-            if (is_array($aFavorites) && count($aFavorites)) {
-                $this->_aViewData["menufavorites"] = $oNavTree->getListNodes($aFavorites);
-                $this->_aViewData["aFavorites"] = $aFavorites;
+            if (\is_array($aFavorites) && \count($aFavorites)) {
+                $this->_aViewData['menufavorites'] = $oNavTree->getListNodes($aFavorites);
+                $this->_aViewData['aFavorites'] = $aFavorites;
             }
 
             // history navigation
             $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
-            if (is_array($aHistory) && count($aHistory)) {
-                $this->_aViewData["menuhistory"] = $oNavTree->getListNodes($aHistory);
+            if (\is_array($aHistory) && \count($aHistory)) {
+                $this->_aViewData['menuhistory'] = $oNavTree->getListNodes($aHistory);
             }
 
             // open history node ?
-            $this->_aViewData["blOpenHistory"] = Registry::getConfig()->getRequestParameter('openHistory');
+            $this->_aViewData['blOpenHistory'] = Registry::getConfig()->getRequestParameter('openHistory');
         }
 
         $blisMallAdmin = Registry::getSession()->getVariable('malladmin');
         $oShoplist = oxNew(\OxidEsales\Eshop\Application\Model\ShopList::class);
         if (!$blisMallAdmin) {
             // we only allow to see our shop
-            $iShopId = Registry::getSession()->getVariable("actshop");
+            $iShopId = Registry::getSession()->getVariable('actshop');
             $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             $oShop->load($iShopId);
             $oShoplist->add($oShop);
@@ -91,13 +93,14 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         }
 
         $this->_aViewData['shoplist'] = $oShoplist;
+
         return $sItem;
     }
 
     /**
-     * Changing active shop
+     * Changing active shop.
      */
-    public function chshp()
+    public function chshp(): void
     {
         parent::chshp();
 
@@ -109,9 +112,9 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     }
 
     /**
-     * Destroy session, redirects to admin login and clears cache
+     * Destroy session, redirects to admin login and clears cache.
      */
-    public function logout()
+    public function logout(): void
     {
         $session = Registry::getSession();
         $myConfig = Registry::getConfig();
@@ -131,32 +134,34 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     }
 
     /**
-     * Caches external url file locally, adds <base> tag with original url to load images and other links correcly
+     * Caches external url file locally, adds <base> tag with original url to load images and other links correcly.
      */
-    public function exturl()
+    public function exturl(): void
     {
         $myUtils = Registry::getUtils();
-        if ($sUrl = Registry::getConfig()->getRequestParameter("url")) {
+        if ($sUrl = Registry::getConfig()->getRequestParameter('url')) {
             // Caching not allowed, redirecting
             $myUtils->redirect($sUrl, true, 302);
         }
 
-        $myUtils->showMessageAndExit("");
+        $myUtils->showMessageAndExit('');
     }
 
     /**
      * Every Time Admin starts we perform these checks
-     * returns some messages if there is something to display
+     * returns some messages if there is something to display.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "doStartUpChecks" in next major
      */
-    protected function _doStartUpChecks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _doStartUpChecks()
     {
         $messages = [];
         $session = Registry::getSession();
 
-        if (Registry::getConfig()->getConfigParam('blCheckSysReq') !== false) {
+        if (false !== Registry::getConfig()->getConfigParam('blCheckSysReq')) {
             // check if system requirements are ok
             $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
             if (!$oSysReq->getSysReqStatus()) {
@@ -177,28 +182,29 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             }
         }
 
-
         // check if setup dir is deleted
         if (file_exists(Registry::getConfig()->getConfigParam('sShopDir') . '/Setup/index.php')) {
-            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
+            $messages['warning'] .= (!empty($messages['warning']) ? '<br>' : '') . Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
         }
 
         // check if config file is writable
-        $sConfPath = Registry::getConfig()->getConfigParam('sShopDir') . "/config.inc.php";
+        $sConfPath = Registry::getConfig()->getConfigParam('sShopDir') . '/config.inc.php';
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {
-            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
+            $messages['warning'] .= (!empty($messages['warning']) ? '<br>' : '') . Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }
 
         return $messages;
     }
 
     /**
-     * Checks if newer shop version available. If true - returns message
+     * Checks if newer shop version available. If true - returns message.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "checkVersion" in next major
      */
-    protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _checkVersion()
     {
         $edition = Registry::getConfig()->getEdition();
         $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';

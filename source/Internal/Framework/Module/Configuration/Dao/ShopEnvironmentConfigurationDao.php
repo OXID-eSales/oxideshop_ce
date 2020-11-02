@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -37,14 +37,8 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
      */
     private $context;
 
-
     /**
      * ShopConfigurationDao constructor.
-     *
-     * @param FileStorageFactoryInterface $fileStorageFactory
-     * @param Filesystem                  $fileSystem
-     * @param NodeInterface               $node
-     * @param BasicContextInterface       $context
      */
     public function __construct(
         FileStorageFactoryInterface $fileStorageFactory,
@@ -58,11 +52,6 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
         $this->context = $context;
     }
 
-    /**
-     * @param int $shopId
-     *
-     * @return array
-     */
     public function get(int $shopId): array
     {
         $data = [];
@@ -77,11 +66,7 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
             try {
                 $data = $this->node->normalize($storage->get());
             } catch (InvalidConfigurationException $exception) {
-                throw new InvalidConfigurationException(
-                    'File ' .
-                    $this->getEnvironmentConfigurationFilePath($shopId) .
-                    ' is broken: ' . $exception->getMessage()
-                );
+                throw new InvalidConfigurationException('File ' . $this->getEnvironmentConfigurationFilePath($shopId) . ' is broken: ' . $exception->getMessage());
             }
         }
 
@@ -89,9 +74,7 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
     }
 
     /**
-     * backup environment configuration file
-     *
-     * @param int $shopId
+     * backup environment configuration file.
      */
     public function remove(int $shopId): void
     {
@@ -102,11 +85,6 @@ class ShopEnvironmentConfigurationDao implements ShopEnvironmentConfigurationDao
         }
     }
 
-    /**
-     * @param int $shopId
-     *
-     * @return string
-     */
     private function getEnvironmentConfigurationFilePath(int $shopId): string
     {
         return $this->context->getProjectConfigurationDirectory() . 'environment/' . $shopId . '.yaml';

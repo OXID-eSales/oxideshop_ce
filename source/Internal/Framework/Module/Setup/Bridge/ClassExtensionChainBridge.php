@@ -21,17 +21,13 @@ class ClassExtensionChainBridge implements ClassExtensionChainBridgeInterface
 
     /**
      * ClassExtensionChainBridge constructor.
-     * @param ExtensionChainServiceInterface $classExtensionChainService
      */
     public function __construct(ExtensionChainServiceInterface $classExtensionChainService)
     {
         $this->classExtensionChainService = $classExtensionChainService;
     }
 
-    /**
-     * @param int $shopId
-     */
-    public function updateChain(int $shopId)
+    public function updateChain(int $shopId): void
     {
         $this->classExtensionChainService->updateChain($shopId);
         Registry::getConfig()->reinitialize();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,7 +13,7 @@
  * Name:     smarty_modifier_oxformattime<br>
  * Purpose:  Converts integer (seconds) type value to time (hh:mm:ss) format
  * Example:  {$seconds|oxformattime}
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param int $iSeconds timespan in seconds
  *
@@ -20,10 +22,10 @@
 function smarty_modifier_oxformattime($iSeconds)
 {
     $iHours = floor($iSeconds / 3600);
-    $iMins  = floor($iSeconds % 3600 / 60);
-    $iSecs  = $iSeconds % 60;
+    $iMins = floor($iSeconds % 3600 / 60);
+    $iSecs = $iSeconds % 60;
 
-    return sprintf("%02d:%02d:%02d", $iHours, $iMins, $iSecs);
+    return sprintf('%02d:%02d:%02d', $iHours, $iMins, $iSecs);
 }
 
 /* vim: set expandtab: */

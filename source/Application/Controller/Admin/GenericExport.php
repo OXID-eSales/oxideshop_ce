@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,14 +15,14 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 class GenericExport extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
     /**
-     * Export class name
+     * Export class name.
      *
      * @var string
      */
     public $sClassDo = 'genexport_do';
 
     /**
-     * Export ui class name
+     * Export ui class name.
      *
      * @var string
      */
@@ -28,7 +30,7 @@ class GenericExport extends \OxidEsales\Eshop\Application\Controller\Admin\Dynam
 
     /**
      * Current view ID getter helps to identify navigation position.
-     * Bypassing dynexportbase::getViewId
+     * Bypassing dynexportbase::getViewId.
      *
      * @return string
      */

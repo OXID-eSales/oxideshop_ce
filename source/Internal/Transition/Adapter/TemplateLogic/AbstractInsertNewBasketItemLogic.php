@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,12 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 abstract class AbstractInsertNewBasketItemLogic
 {
-
     /**
-     * @param array  $params
      * @param object $templateEngine
-     *
-     * @return string
      */
     public function getNewBasketItemTemplate(array $params, $templateEngine): string
     {
@@ -24,11 +22,16 @@ abstract class AbstractInsertNewBasketItemLogic
         $renderedTemplate = '';
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        $types = ['0' => 'none', '1' => 'message', '2' => 'popup', '3' => 'basket'];
+        $types = [
+            '0' => 'none',
+            '1' => 'message',
+            '2' => 'popup',
+            '3' => 'basket',
+        ];
         $newBasketItemMessage = $config->getConfigParam('iNewBasketItemMessage');
 
         // If correct type of message is expected
-        if ($newBasketItemMessage && $params['type'] && ($params['type'] != $types[$newBasketItemMessage])) {
+        if ($newBasketItemMessage && $params['type'] && ($params['type'] !== $types[$newBasketItemMessage])) {
             $correctMessageType = false;
         } else {
             $correctMessageType = true;
@@ -38,7 +41,7 @@ abstract class AbstractInsertNewBasketItemLogic
         $templateName = $params['tpl'] ? $params['tpl'] : 'inc_newbasketitem.snippet.html.twig';
 
         //always render for ajaxstyle popup
-        $render = $params['ajax'] && ($newBasketItemMessage == 2);
+        $render = $params['ajax'] && (2 === $newBasketItemMessage);
 
         //fetching article data
         $newItem = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_newitem');
@@ -72,7 +75,6 @@ abstract class AbstractInsertNewBasketItemLogic
     abstract protected function loadArticleObject($newItem, $templateEngine);
 
     /**
-     * @param string $templateName
      * @param object $templateEngine
      *
      * @return mixed

@@ -15,13 +15,19 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ModulesDataProvider implements ModulesDataProviderInterface
 {
-    /** @var ShopConfigurationDaoInterface */
+    /**
+     * @var ShopConfigurationDaoInterface
+     */
     private $shopConfigurationDao;
 
-    /** @var ContextInterface */
+    /**
+     * @var ContextInterface
+     */
     private $context;
 
-    /** @var ModulePathResolverInterface */
+    /**
+     * @var ModulePathResolverInterface
+     */
     private $modulePathResolver;
 
     public function __construct(
@@ -34,7 +40,9 @@ class ModulesDataProvider implements ModulesDataProviderInterface
         $this->context = $context;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function getModuleIds(): array
     {
         $moduleIds = [];
@@ -48,7 +56,9 @@ class ModulesDataProvider implements ModulesDataProviderInterface
         return $moduleIds;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function getModulePaths(): array
     {
         $shopId = $this->context->getCurrentShopId();

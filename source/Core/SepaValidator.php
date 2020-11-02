@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * SEPA (Single Euro Payments Area) validation class
+ * SEPA (Single Euro Payments Area) validation class.
  */
 class SepaValidator
 {
@@ -29,9 +31,12 @@ class SepaValidator
         'HR' => 21,
         'CY' => 28,
         'CZ' => 24,
-        'DK' => 18, // Same DENMARK
-        'FO' => 18, // Same DENMARK
-        'GL' => 18, // Same DENMARK
+        'DK' => 18,
+        // Same DENMARK
+        'FO' => 18,
+        // Same DENMARK
+        'GL' => 18,
+        // Same DENMARK
         'DO' => 28,
         'EE' => 20,
         'FI' => 18,
@@ -79,11 +84,11 @@ class SepaValidator
         'TR' => 26,
         'AE' => 23,
         'GB' => 22,
-        'VG' => 24
+        'VG' => 24,
     ];
 
     /**
-     * Business identifier code validation
+     * Business identifier code validation.
      *
      * @param string $sBIC code to check
      *
@@ -97,7 +102,7 @@ class SepaValidator
     }
 
     /**
-     * International bank account number validation
+     * International bank account number validation.
      *
      * @param string $sIBAN code to check
      *
@@ -112,7 +117,7 @@ class SepaValidator
     }
 
     /**
-     * Get IBAN length by country data
+     * Get IBAN length by country data.
      *
      * @return array
      */

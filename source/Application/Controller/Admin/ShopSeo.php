@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
-use oxDb;
 
 /**
  * Admin shop system setting manager.
@@ -18,7 +17,7 @@ use oxDb;
 class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
     /**
-     * Active seo url id
+     * Active seo url id.
      */
     protected $_sActSeoObject = null;
 
@@ -45,7 +44,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init('oxbase', 'oxseo');
         $oList->selectString($sQ, [
-            ':oxshopid' => $oShop->getId()
+            ':oxshopid' => $oShop->getId(),
         ]);
 
         $this->_aViewData['aStaticUrls'] = $oList;
@@ -53,34 +52,36 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         // loading active url info
         $this->_loadActiveUrl($oShop->getId());
 
-        return "shop_seo.tpl";
+        return 'shop_seo.tpl';
     }
 
     /**
-     * Loads and sets active url info to view
+     * Loads and sets active url info to view.
      *
      * @param int $iShopId active shop id
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadActiveUrl" in next major
      */
-    protected function _loadActiveUrl($iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _loadActiveUrl($iShopId): void
     {
         $sActObject = null;
         if ($this->_sActSeoObject) {
             $sActObject = $this->_sActSeoObject;
-        } elseif (is_array($aStatUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
+        } elseif (\is_array($aStatUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
             $sActObject = $aStatUrl['oxseo__oxobjectid'];
         }
 
-        if ($sActObject && $sActObject != '-1') {
+        if ($sActObject && '-1' !== $sActObject) {
             $this->_aViewData['sActSeoObject'] = $sActObject;
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-            $sQ = "select oxseourl, oxlang from oxseo where oxobjectid = :oxobjectid and oxshopid = :oxshopid";
+            $sQ = 'select oxseourl, oxlang from oxseo where oxobjectid = :oxobjectid and oxshopid = :oxshopid';
             $oRs = $oDb->select($sQ, [
                 ':oxobjectid' => $sActObject,
-                ':oxshopid' => $iShopId
+                ':oxshopid' => $iShopId,
             ]);
-            if ($oRs != false && $oRs->count() > 0) {
+            if (false !== $oRs && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $aSeoUrls[$oRs->fields['oxlang']] = [$sActObject, $oRs->fields['oxseourl']];
                     $oRs->fetchRow();
@@ -93,7 +94,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
     /**
      * Saves changed shop configuration parameters.
      */
-    public function save()
+    public function save(): void
     {
         // saving config params
         $this->saveConfVars();
@@ -107,27 +108,29 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
             $oShop->save();
 
             // saving static url changes
-            if (is_array($aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
+            if (\is_array($aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl'))) {
                 $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->encodeStaticUrls($this->_processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
             }
         }
     }
 
     /**
-     * Goes through urls array and prepares them for saving to db
+     * Goes through urls array and prepares them for saving to db.
      *
      * @param array $aUrls urls to process
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "processUrls" in next major
      */
-    protected function _processUrls($aUrls) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _processUrls($aUrls)
     {
         if (isset($aUrls['oxseo__oxstdurl']) && $aUrls['oxseo__oxstdurl']) {
             $aUrls['oxseo__oxstdurl'] = $this->_cleanupUrl($aUrls['oxseo__oxstdurl']);
         }
 
-        if (isset($aUrls['oxseo__oxseourl']) && is_array($aUrls['oxseo__oxseourl'])) {
+        if (isset($aUrls['oxseo__oxseourl']) && \is_array($aUrls['oxseo__oxseourl'])) {
             foreach ($aUrls['oxseo__oxseourl'] as $iPos => $sUrl) {
                 $aUrls['oxseo__oxseourl'][$iPos] = $this->_cleanupUrl($sUrl);
             }
@@ -137,17 +140,19 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
     }
 
     /**
-     * processes urls by fixing "&amp;", "&"
+     * processes urls by fixing "&amp;", "&".
      *
      * @param string $sUrl processable url
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "cleanupUrl" in next major
      */
-    protected function _cleanupUrl($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _cleanupUrl($sUrl)
     {
         // replacing &amp; to & or removing double &&
-        while ((stripos($sUrl, '&amp;') !== false) || (stripos($sUrl, '&&') !== false)) {
+        while (false !== stripos($sUrl, '&amp;') || (false !== stripos($sUrl, '&&'))) {
             $sUrl = str_replace('&amp;', '&', $sUrl);
             $sUrl = str_replace('&&', '&', $sUrl);
         }
@@ -157,9 +162,9 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
     }
 
     /**
-     * Resetting SEO ids
+     * Resetting SEO ids.
      */
-    public function dropSeoIds()
+    public function dropSeoIds(): void
     {
         $this->resetSeoData(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
     }
@@ -167,12 +172,12 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
     /**
      * Deletes static url.
      */
-    public function deleteStaticUrl()
+    public function deleteStaticUrl(): void
     {
         $aStaticUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aStaticUrl');
-        if (is_array($aStaticUrl)) {
+        if (\is_array($aStaticUrl)) {
             $sObjectid = $aStaticUrl['oxseo__oxobjectid'];
-            if ($sObjectid && $sObjectid != '-1') {
+            if ($sObjectid && '-1' !== $sObjectid) {
                 $this->deleteStaticUrlFromDb($sObjectid);
             }
         }
@@ -183,14 +188,14 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      *
      * @param string $staticUrlId
      */
-    protected function deleteStaticUrlFromDb($staticUrlId)
+    protected function deleteStaticUrlFromDb($staticUrlId): void
     {
         // active shop id
         $shopId = $this->getEditObjectId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $db->execute("delete from oxseo where oxtype='static' and oxobjectid = :oxobjectid and oxshopid = :oxshopid", [
             ':oxobjectid' => $staticUrlId,
-            ':oxshopid' => $shopId
+            ':oxshopid' => $shopId,
         ]);
     }
 }

@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
-
 class MonologConfiguration implements MonologConfigurationInterface
 {
     /**
@@ -42,26 +40,16 @@ class MonologConfiguration implements MonologConfigurationInterface
         $this->logLevel = $logLevel;
     }
 
-
-    /**
-     * @return string
-     */
     public function getLoggerName(): string
     {
         return $this->loggerName;
     }
 
-    /**
-     * @return string
-     */
     public function getLogFilePath(): string
     {
         return $this->logFilePath;
     }
 
-    /**
-     * @return string
-     */
     public function getLogLevel(): string
     {
         return $this->logLevel;

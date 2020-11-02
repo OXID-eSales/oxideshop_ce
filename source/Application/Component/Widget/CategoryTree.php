@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,8 +9,8 @@
 
 namespace  OxidEsales\EshopCommunity\Application\Component\Widget;
 
-use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Request;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader\TemplateLoaderInterface;
 
 /**
@@ -24,7 +26,9 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_categories' => 1];
+    protected $_aComponentNames = [
+        'oxcmp_categories' => 1,
+    ];
 
     /**
      * Current class template name.
@@ -34,7 +38,7 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
     protected $_sThisTemplate = 'widget/sidebar/categorytree.tpl';
 
     /**
-     * Executes parent::render(), assigns template name and returns it
+     * Executes parent::render(), assigns template name and returns it.
      *
      * @return string
      */
@@ -42,7 +46,7 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
     {
         parent::render();
 
-        if ($sTpl = $this->getViewParameter("sWidgetType")) {
+        if ($sTpl = $this->getViewParameter('sWidgetType')) {
             $sTemplateName = 'widget/' . basename($sTpl) . '/categorylist.tpl';
             /** @var TemplateLoaderInterface $templateLoader */
             $templateLoader = $this->getContainer()->get('oxid_esales.templating.template.loader');
@@ -55,13 +59,11 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
     }
 
     /**
-     * Returns the deep level of category tree
-     *
-     * @return null
+     * Returns the deep level of category tree.
      */
     public function getDeepLevel()
     {
-        return $this->getViewParameter("deepLevel");
+        return $this->getViewParameter('deepLevel');
     }
 
     /**
@@ -72,6 +74,7 @@ class CategoryTree extends \OxidEsales\Eshop\Application\Component\Widget\Widget
     public function getContentCategory()
     {
         $request = Registry::get(Request::class);
+
         return $request->getRequestParameter('oxcid', false);
     }
 }

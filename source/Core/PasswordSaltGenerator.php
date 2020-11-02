@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Generates Salt for the user password
+ * Generates Salt for the user password.
  *
  * @deprecated since v6.4.0 (2019-03-15); `\OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface`
  *                                        was added as the new default for hashing passwords. Hashing passwords with
@@ -25,8 +27,6 @@ class PasswordSaltGenerator
 
     /**
      * Sets dependencies.
-     *
-     * @param \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLFunctionalityChecker
      */
     public function __construct(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLFunctionalityChecker)
     {
@@ -54,6 +54,7 @@ class PasswordSaltGenerator
      * Gets open SSL functionality checker.
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getOpenSSLFunctionalityChecker" in next major
      */
     protected function _getOpenSSLFunctionalityChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -65,13 +66,14 @@ class PasswordSaltGenerator
      * Generates custom salt.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "customSaltGenerator" in next major
      */
     protected function _customSaltGenerator() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sHash = '';
         $sSalt = '';
-        for ($i = 0; $i < 32; $i++) {
+        for ($i = 0; $i < 32; ++$i) {
             $sHash = hash('sha256', $sHash . mt_rand());
             $iPosition = mt_rand(0, 62);
             $sSalt .= $sHash[$iPosition];

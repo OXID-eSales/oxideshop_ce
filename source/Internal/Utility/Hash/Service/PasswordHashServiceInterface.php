@@ -11,17 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Utility\Hash\Service;
 
 interface PasswordHashServiceInterface
 {
-    /**
-     * @param string $password
-     *
-     * @return string
-     */
     public function hash(string $password): string;
 
-    /**
-     * @param string $passwordHash
-     *
-     * @return bool
-     */
     public function passwordNeedsRehash(string $passwordHash): bool;
 }

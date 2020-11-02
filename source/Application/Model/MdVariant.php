@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,81 +9,79 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-
 /**
  * Defines an element of multidimentional variant name tree structure. Contains article id, variant name, URL, price, price text, and a subset of MD variants.
  */
 class MdVariant extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * MD variant identifier
+     * MD variant identifier.
      *
      * @var string
      */
     protected $_sId;
 
     /**
-     * Parent ID
+     * Parent ID.
      *
      * @var string
      */
     protected $_sParentId;
 
     /**
-     * Corresponding article id
+     * Corresponding article id.
      *
      * @var string
      */
     protected $_sArticleId;
 
     /**
-     * Variant name
+     * Variant name.
      *
      * @var string
      */
     protected $_sName;
 
     /**
-     * Variant URL
+     * Variant URL.
      *
      * @var string
      */
     protected $_sUrl;
 
     /**
-     * Variant price
+     * Variant price.
      *
-     * @var double
+     * @var float
      */
     protected $_dPrice = null;
 
     /**
-     * Variant Price text represenatation. Eg. "10,00 EUR" or "from 8,00 EUR"
+     * Variant Price text represenatation. Eg. "10,00 EUR" or "from 8,00 EUR".
      *
      * @var string
      */
     protected $_sFPrice;
 
     /**
-     * Subvariant array
+     * Subvariant array.
      *
      * @var \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
     protected $_aSubvariants = [];
 
     /**
-     * Sets MD variant identifier
+     * Sets MD variant identifier.
      *
      * @param string $sId New id
      */
-    public function setId($sId)
+    public function setId($sId): void
     {
         $this->_sId = $sId;
     }
 
     /**
-     * Returns MD variant identifier
+     * Returns MD variant identifier.
      *
      * @return string
      */
@@ -91,17 +91,17 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Sets parent id
+     * Sets parent id.
      *
      * @param string $sParentId Parent id
      */
-    public function setParentId($sParentId)
+    public function setParentId($sParentId): void
     {
         $this->_sParentId = $sParentId;
     }
 
     /**
-     * Returns parent id
+     * Returns parent id.
      *
      * @return string
      */
@@ -111,17 +111,17 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Sets MD subvariants
+     * Sets MD subvariants.
      *
      * @param \OxidEsales\Eshop\Application\Model\MdVariant[] $aSubvariants Subvariants
      */
-    public function setMdSubvariants($aSubvariants)
+    public function setMdSubvariants($aSubvariants): void
     {
         $this->_aSubvariants = $aSubvariants;
     }
 
     /**
-     * Returns full array of subvariants
+     * Returns full array of subvariants.
      *
      * @return \OxidEsales\Eshop\Application\Model\MdVariant[]
      */
@@ -138,7 +138,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     public function getFirstMdSubvariant()
     {
         $aMdSubvariants = $this->getMdSubvariants();
-        if (count($aMdSubvariants)) {
+        if (\count($aMdSubvariants)) {
             return reset($aMdSubvariants);
         }
 
@@ -156,7 +156,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     {
         $aSubvariants = $this->getMdSubvariants();
         foreach ($aSubvariants as $oMdSubvariant) {
-            if (strcasecmp($oMdSubvariant->getName(), $sName) == 0) {
+            if (0 === strcasecmp($oMdSubvariant->getName(), $sName)) {
                 return $oMdSubvariant;
             }
         }
@@ -171,7 +171,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns corresponding article URL or recusively first variant URL from subvariant set
+     * Returns corresponding article URL or recusively first variant URL from subvariant set.
      *
      * @return string
      */
@@ -186,17 +186,17 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Name setter
+     * Name setter.
      *
      * @param string $sName New name
      */
-    public function setName($sName)
+    public function setName($sName): void
     {
         $this->_sName = $sName;
     }
 
     /**
-     * Returns MD variant name
+     * Returns MD variant name.
      *
      * @return string
      */
@@ -206,9 +206,9 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns price
+     * Returns price.
      *
-     * @return double
+     * @return float
      */
     public function getDPrice()
     {
@@ -218,7 +218,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns min price recursively selected from full subvariant tree.
      *
-     * @return double
+     * @return float
      */
     public function getMinDPrice()
     {
@@ -226,10 +226,10 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
         $aVariants = $this->getMdSubvariants();
         foreach ($aVariants as $oVariant) {
             $dMinVariantPrice = $oVariant->getMinDPrice();
-            if (is_null($dMinPrice)) {
+            if (null === $dMinPrice) {
                 $dMinPrice = $dMinVariantPrice;
             }
-            if (!is_null($dMinVariantPrice) && $dMinVariantPrice < $dMinPrice) {
+            if (null !== $dMinVariantPrice && $dMinVariantPrice < $dMinPrice) {
                 $dMinPrice = $dMinVariantPrice;
             }
         }
@@ -246,7 +246,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     {
         $aSubvariants = $this->getMdSubvariants();
 
-        if (!count($aSubvariants)) {
+        if (!\count($aSubvariants)) {
             return 0;
         }
 
@@ -295,13 +295,13 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      * Inits MD variant by name. In case $aNames parameter has more than one element addNames recursively adds names for subvariants.
      *
      * @param string $sArtId Article ID
-     * @param array  $aNames Expected array of $sKey=>$sName pairs.
-     * @param double $dPrice Price as double
+     * @param array  $aNames expected array of $sKey=>$sName pairs
+     * @param float  $dPrice Price as double
      * @param string $sUrl   Article URL
      */
-    public function addNames($sArtId, $aNames, $dPrice, $sUrl)
+    public function addNames($sArtId, $aNames, $dPrice, $sUrl): void
     {
-        $iCount = count($aNames);
+        $iCount = \count($aNames);
         $sName = array_shift($aNames);
 
         if ($iCount) {
@@ -318,7 +318,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns corresponding article id or recusively first variant id from subvariant set
+     * Returns corresponding article id or recusively first variant id from subvariant set.
      *
      * @return string
      */
@@ -342,7 +342,7 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
      */
     public function hasArticleId($sArtId)
     {
-        if ($this->getArticleId() == $sArtId) {
+        if ($this->getArticleId() === $sArtId) {
             return true;
         }
 
@@ -357,20 +357,22 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Adds one subvariant to subvariant set
+     * Adds one subvariant to subvariant set.
      *
      * @param \OxidEsales\Eshop\Application\Model\MdVariant $oSubvariant Subvariant
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addMdSubvariant" in next major
      */
-    protected function _addMdSubvariant($oSubvariant) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addMdSubvariant($oSubvariant): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aSubvariants[$oSubvariant->getId()] = $oSubvariant;
     }
 
     /**
-     * Checks if variant price is fixed or not ("from" price)
+     * Checks if variant price is fixed or not ("from" price).
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isFixedPrice" in next major
      */
     protected function _isFixedPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -379,10 +381,10 @@ class MdVariant extends \OxidEsales\Eshop\Core\Base
         $aVariants = $this->getMdSubvariants();
         foreach ($aVariants as $oVariant) {
             $dVariantPrice = $oVariant->getDPrice();
-            if (is_null($dPrice)) {
+            if (null === $dPrice) {
                 $dPrice = $dVariantPrice;
             }
-            if (!is_null($dVariantPrice) && $dVariantPrice != $dPrice) {
+            if (null !== $dVariantPrice && $dVariantPrice !== $dPrice) {
                 return false;
             }
             if (!$oVariant->_isFixedPrice()) {

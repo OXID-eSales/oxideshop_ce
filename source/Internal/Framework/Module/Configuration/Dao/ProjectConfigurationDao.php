@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
@@ -33,9 +33,6 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
 
     /**
      * ProjectConfigurationDao constructor.
-     * @param ShopConfigurationDaoInterface $shopConfigurationDao
-     * @param BasicContextInterface $context
-     * @param Filesystem $fileSystem
      */
     public function __construct(
         ShopConfigurationDaoInterface $shopConfigurationDao,
@@ -48,7 +45,6 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
     }
 
     /**
-     * @return ProjectConfiguration
      * @throws ProjectConfigurationIsEmptyException
      */
     public function getConfiguration(): ProjectConfiguration
@@ -60,10 +56,7 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
         return $this->getConfigurationFromStorage();
     }
 
-    /**
-     * @param ProjectConfiguration $configuration
-     */
-    public function save(ProjectConfiguration $configuration)
+    public function save(ProjectConfiguration $configuration): void
     {
         $this->shopConfigurationDao->deleteAll();
 
@@ -72,17 +65,11 @@ class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isConfigurationEmpty(): bool
     {
-        return $this->projectConfigurationDirectoryExists() === false;
+        return false === $this->projectConfigurationDirectoryExists();
     }
 
-    /**
-     * @return ProjectConfiguration
-     */
     private function getConfigurationFromStorage(): ProjectConfiguration
     {
         $projectConfiguration = new ProjectConfiguration();

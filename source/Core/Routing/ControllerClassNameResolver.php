@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,7 +16,8 @@ use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
  * This class maps controller id to controller class name and vice versa.
  * It looks up map from ShopControllerMapProvider and if no match is found checks ModuleControllerMapProvider.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ControllerClassNameResolver implements ClassNameResolverInterface
@@ -30,8 +33,8 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     private $shopControllerMapProvider = null;
 
     /**
-     * @param \OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider   $shopControllerMapProvider   Shop map.
-     * @param \OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider $moduleControllerMapProvider Module map.
+     * @param \OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider   $shopControllerMapProvider   shop map
+     * @param \OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider $moduleControllerMapProvider module map
      */
     public function __construct(ControllerMapProviderInterface $shopControllerMapProvider = null, ControllerMapProviderInterface $moduleControllerMapProvider = null)
     {
@@ -53,6 +56,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
         if (empty($className)) {
             $className = $this->getClassNameFromModuleMap($classId);
         }
+
         return $className;
     }
 
@@ -70,6 +74,7 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
         if (empty($classId)) {
             $classId = $this->getClassIdFromModuleMap($className);
         }
+
         return $classId;
     }
 
@@ -84,9 +89,8 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     {
         $shopControllerMapProvider = $this->getShopControllerMapProvider();
         $idToNameMap = $shopControllerMapProvider->getControllerMap();
-        $className = $this->arrayLookup($classId, $idToNameMap);
 
-        return $className;
+        return $this->arrayLookup($classId, $idToNameMap);
     }
 
     /**
@@ -100,9 +104,8 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     {
         $moduleControllerMapProvider = $this->getModuleControllerMapProvider();
         $idToNameMap = $moduleControllerMapProvider->getControllerMap();
-        $className = $this->arrayLookup($classId, $idToNameMap);
 
-        return $className;
+        return $this->arrayLookup($classId, $idToNameMap);
     }
 
     /**
@@ -116,9 +119,8 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     {
         $shopControllerMapProvider = $this->getShopControllerMapProvider();
         $idToNameMap = $shopControllerMapProvider->getControllerMap();
-        $classId = $this->arrayLookup($className, array_flip($idToNameMap));
 
-        return $classId;
+        return $this->arrayLookup($className, array_flip($idToNameMap));
     }
 
     /**
@@ -132,9 +134,8 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     {
         $moduleControllerMapProvider = $this->getModuleControllerMapProvider();
         $idToNameMap = $moduleControllerMapProvider->getControllerMap();
-        $classId = $this->arrayLookup($className, array_flip($idToNameMap));
 
-        return $classId;
+        return $this->arrayLookup($className, array_flip($idToNameMap));
     }
 
     /**
@@ -147,19 +148,18 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     {
         $keys2Values = array_change_key_case($keys2Values);
         $key = strtolower($key);
-        $match = array_key_exists($key, $keys2Values) ? $keys2Values[$key] : null;
 
-        return $match;
+        return \array_key_exists($key, $keys2Values) ? $keys2Values[$key] : null;
     }
 
     /**
-     * Getter for ShopControllerMapProvider object
+     * Getter for ShopControllerMapProvider object.
      *
      * @return \OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider
      */
     protected function getShopControllerMapProvider()
     {
-        if (is_null($this->shopControllerMapProvider)) {
+        if (null === $this->shopControllerMapProvider) {
             $this->shopControllerMapProvider = oxNew(\OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider::class);
         }
 
@@ -167,13 +167,13 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
     }
 
     /**
-     * Getter for ModuleControllerMapProvider object
+     * Getter for ModuleControllerMapProvider object.
      *
      * @return \OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider
      */
     protected function getModuleControllerMapProvider()
     {
-        if (is_null($this->moduleControllerMapProvider)) {
+        if (null === $this->moduleControllerMapProvider) {
             $this->moduleControllerMapProvider = oxNew(\OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider::class);
         }
 

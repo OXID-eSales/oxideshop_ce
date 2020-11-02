@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
- * exception class for clients without cookies support
+ * exception class for clients without cookies support.
  */
 class CookieException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
@@ -21,7 +23,7 @@ class CookieException extends \OxidEsales\Eshop\Core\Exception\StandardException
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */

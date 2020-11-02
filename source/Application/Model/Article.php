@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,19 +10,18 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use oxList;
 
 // defining supported link types
-define('OXARTICLE_LINKTYPE_CATEGORY', 0);
-define('OXARTICLE_LINKTYPE_VENDOR', 1);
-define('OXARTICLE_LINKTYPE_MANUFACTURER', 2);
-define('OXARTICLE_LINKTYPE_PRICECATEGORY', 3);
+\define('OXARTICLE_LINKTYPE_CATEGORY', 0);
+\define('OXARTICLE_LINKTYPE_VENDOR', 1);
+\define('OXARTICLE_LINKTYPE_MANUFACTURER', 2);
+\define('OXARTICLE_LINKTYPE_PRICECATEGORY', 3);
 // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-define('OXARTICLE_LINKTYPE_RECOMM', 5);
+\define('OXARTICLE_LINKTYPE_RECOMM', 5);
 // END deprecated
 
 /**
@@ -31,7 +32,7 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
 class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Application\Model\Contract\ArticleInterface, \OxidEsales\Eshop\Core\Contract\IUrl
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
@@ -45,7 +46,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_blUseLazyLoading = true;
 
     /**
-     * item key the usage with oxuserbasketitem
+     * item key the usage with oxuserbasketitem.
      *
      * @var string (md5 hash)
      */
@@ -66,25 +67,24 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected $_oPrice = null;
 
-
     /**
-     * cached article variant min price
+     * cached article variant min price.
      *
-     * @var double|null
+     * @var float|null
      */
     protected $_dVarMinPrice = null;
 
     /**
-     * cached article variant max price
+     * cached article variant max price.
      *
-     * @var double|null
+     * @var float|null
      */
     protected $_dVarMaxPrice = null;
 
     /**
-     * caches article vat
+     * caches article vat.
      *
-     * @var double|null
+     * @var float|null
      */
     protected $_dArticleVat = null;
 
@@ -111,14 +111,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_blLoadVariants = true;
 
     /**
-     * Article variants without empty stock, not orderable flagged variants
+     * Article variants without empty stock, not orderable flagged variants.
      *
      * @var array
      */
     protected $_aVariants = null;
 
     /**
-     * Article variants with empty stock, not orderable flagged variants
+     * Article variants with empty stock, not orderable flagged variants.
      *
      * @var array
      */
@@ -128,12 +128,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * $_blNotBuyableParent is set to true, when article has variants and is not buyable due to:
      *      a) config option
      *      b) it is not active
-     *      c) all variants are not active
+     *      c) all variants are not active.
      *
      * @var bool
      */
     protected $_blNotBuyableParent = false;
-
 
     /**
      * $_blHasVariants is set to true if article has any variants.
@@ -146,14 +145,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_blHasMdVariants = false;
 
     /**
-     * If set true, then this object is on comparison list
+     * If set true, then this object is on comparison list.
      *
      * @var bool
      */
     protected $_blIsOnComparisonList = false;
 
     /**
-     * user object
+     * user object.
      *
      * @var \OxidEsales\Eshop\Application\Model\User
      */
@@ -171,22 +170,22 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * $_fPricePerUnit holds price per unit value in active shop currency.
      * $_fPricePerUnit is calculated from \OxidEsales\Eshop\Application\Model\Article::oxarticles__oxunitquantity->value
      * and from \OxidEsales\Eshop\Application\Model\Article::oxarticles__oxuniname->value. If either one of these values is empty then $_fPricePerUnit is not calculated.
-     * Example: In case when product price is 10 EUR and product quantity is 0.5 (liters) then $_fPricePerUnit would be 20,00
+     * Example: In case when product price is 10 EUR and product quantity is 0.5 (liters) then $_fPricePerUnit would be 20,00.
      */
     protected $_fPricePerUnit = null;
 
     /**
-     * Variable used to force load parent data in export
+     * Variable used to force load parent data in export.
      */
     protected $_blLoadParentData = false;
 
     /**
-     * Variable used to determine if setting parentId to empty value is allowed
+     * Variable used to determine if setting parentId to empty value is allowed.
      */
     protected $_blAllowEmptyParentId = false;
 
     /**
-     * Variable used to force load parent data in export
+     * Variable used to force load parent data in export.
      */
     protected $_blSkipAssign = false;
 
@@ -198,61 +197,63 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_blSkipDiscounts = null;
 
     /**
-     * Object holding the list of attributes and attribute values associated with this article
+     * Object holding the list of attributes and attribute values associated with this article.
+     *
      * @var \OxidEsales\Eshop\Application\Model\AttributeList
      */
     protected $_oAttributeList = null;
 
     /**
-     * Object holding the list of attributes and attribute values associated with this article and displayable in basket
+     * Object holding the list of attributes and attribute values associated with this article and displayable in basket.
+     *
      * @var \OxidEsales\Eshop\Application\Model\AttributeList
      */
     protected $basketAttributeList = null;
 
     /**
-     * Indicates whether the price is "From" price
+     * Indicates whether the price is "From" price.
      *
      * @var bool
      */
     protected $_blIsRangePrice = null;
 
     /**
-     * The list of article media URLs
+     * The list of article media URLs.
      *
      * @var string
      */
     protected $_aMediaUrls = null;
 
     /**
-     * Array containing references to already loaded parent articles, in order for variant to skip parent data loading
+     * Array containing references to already loaded parent articles, in order for variant to skip parent data loading.
      *
      * @var array
      */
     protected static $_aLoadedParents;
 
     /**
-     * Cached select lists array
+     * Cached select lists array.
      *
      * @var array
      */
     protected static $_aSelList;
 
     /**
-     * Select lists for tpl
+     * Select lists for tpl.
      *
      * @var array
      */
     protected $_aDispSelList;
 
     /**
-     * Marks that current object is managed by SEO
+     * Marks that current object is managed by SEO.
      *
      * @var bool
      */
     protected $_blIsSeoObject = true;
 
     /**
-     * loaded amount prices
+     * loaded amount prices.
      *
      * @var \OxidEsales\Eshop\Application\Model\AmountPriceList
      */
@@ -262,56 +263,56 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Article details link type (default is 0):
      *     0 - category link
      *     1 - vendor link
-     *     2 - manufacturer link
+     *     2 - manufacturer link.
      *
      * @var int
      */
     protected $_iLinkType = 0;
 
     /**
-     * Standard/dynamic article urls for languages
+     * Standard/dynamic article urls for languages.
      *
      * @var array
      */
     protected $_aStdUrls = [];
 
     /**
-     * Seo article urls for languages
+     * Seo article urls for languages.
      *
      * @var array
      */
     protected $_aSeoUrls = [];
 
     /**
-     * Additional parameters to seo urls
+     * Additional parameters to seo urls.
      *
      * @var array
      */
     protected $_aSeoAddParams = [];
 
     /**
-     * Additional parameters to std urls
+     * Additional parameters to std urls.
      *
      * @var array
      */
     protected $_aStdAddParams = [];
 
     /**
-     * Image url
+     * Image url.
      *
      * @var string
      */
     protected $_sDynImageDir = null;
 
     /**
-     * More details link
+     * More details link.
      *
      * @var string
      */
     protected $_sMoreDetailLink = null;
 
     /**
-     * To basket link
+     * To basket link.
      *
      * @var string
      */
@@ -332,56 +333,56 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_aSortingFieldsOnLoad = [];
 
     /**
-     * Stock status
+     * Stock status.
      *
-     * @var integer
+     * @var int
      */
     protected $_iStockStatus = null;
 
     /**
-     * T price
+     * T price.
      *
      * @var object
      */
     protected $_oTPrice = null;
 
     /**
-     * Amount price list info
+     * Amount price list info.
      *
      * @var object
      */
     protected $_oAmountPriceInfo = null;
 
     /**
-     * Amount price
+     * Amount price.
      *
-     * @var double
+     * @var float
      */
     protected $_dAmountPrice = null;
 
     /**
-     * Articles manufacturer ids cache
+     * Articles manufacturer ids cache.
      *
      * @var array
      */
     protected static $_aArticleManufacturers = [];
 
     /**
-     * Articles vendor ids cache
+     * Articles vendor ids cache.
      *
      * @var array
      */
     protected static $_aArticleVendors = [];
 
     /**
-     * Articles category ids cache
+     * Articles category ids cache.
      *
      * @var array
      */
     protected static $_aArticleCats = [];
 
     /**
-     * Do not copy certain parent fields to variant
+     * Do not copy certain parent fields to variant.
      *
      * @var array
      */
@@ -390,11 +391,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         'oxarticles__oxtimestamp',
         'oxarticles__oxnid',
         'oxarticles__oxid',
-        'oxarticles__oxparentid'
+        'oxarticles__oxparentid',
     ];
 
     /**
-     * Override certain parent fields to variant
+     * Override certain parent fields to variant.
      *
      * @var array
      */
@@ -402,25 +403,25 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         'oxarticles__oxnonmaterial',
         'oxarticles__oxfreeshipping',
         'oxarticles__oxisdownloadable',
-        'oxarticles__oxshowcustomagreement'
+        'oxarticles__oxshowcustomagreement',
     ];
 
     /**
-     * Multidimensional variant tree structure
+     * Multidimensional variant tree structure.
      *
      * @var \OxidEsales\Eshop\Application\Model\MdVariant
      */
     protected $_oMdVariants = null;
 
     /**
-     * Product long description field
+     * Product long description field.
      *
      * @var \OxidEsales\Eshop\Core\Field
      */
     protected $_oLongDesc = null;
 
     /**
-     * Variant selections array
+     * Variant selections array.
      *
      * @see getVariantSelections()
      *
@@ -429,28 +430,28 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_aVariantSelections = [];
 
     /**
-     * Array of product selections
+     * Array of product selections.
      *
      * @var array
      */
     protected static $_aSelections = [];
 
     /**
-     * Category instance cache
+     * Category instance cache.
      *
      * @var array
      */
     protected static $_aCategoryCache = null;
 
     /**
-     * stores if are stored any amount price
+     * stores if are stored any amount price.
      *
      * @var bool
      */
     protected static $_blHasAmountPrice = null;
 
     /**
-     * stores downloadable file list
+     * stores downloadable file list.
      *
      * @var array|\OxidEsales\Eshop\Core\Model\ListModel
      */
@@ -464,9 +465,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_blCanUpdateAnyField = null;
 
     /**
-     * Triggered action type
+     * Triggered action type.
      *
-     * @var integer
+     * @var int
      */
     protected $actionType = ACTION_NA;
 
@@ -478,7 +479,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function __construct($aParams = null)
     {
-        if ($aParams && is_array($aParams)) {
+        if ($aParams && \is_array($aParams)) {
             foreach ($aParams as $sParam => $mValue) {
                 $this->$sParam = $mValue;
             }
@@ -489,7 +490,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Magic getter, deals with values which are loaded on demand.
-     * Additionally it sets default value for unknown picture fields
+     * Additionally it sets default value for unknown picture fields.
      *
      * @param string $sName Variable name
      *
@@ -509,7 +510,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * @param \OxidEsales\Eshop\Application\Model\AmountPriceList $amountPriceList
      */
-    public function setAmountPriceList($amountPriceList)
+    public function setAmountPriceList($amountPriceList): void
     {
         $this->_oAmountPriceList = $amountPriceList;
     }
@@ -524,7 +525,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Checks whether object is in list or not
-     * It's needed for oxArticle so that it can pass this to widgets
+     * It's needed for oxArticle so that it can pass this to widgets.
      *
      * @return bool
      */
@@ -534,7 +535,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Sets object ID, additionally sets $this->oxarticles__oxnid field value
+     * Sets object ID, additionally sets $this->oxarticles__oxnid field value.
      *
      * @param string $sId New ID
      *
@@ -553,7 +554,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns part of sql query used in active snippet. Query checks
      * if product "oxactive = 1". If config option "blUseTimeCheck" is TRUE
-     * additionally checks if "oxactivefrom < current data < oxactiveto"
+     * additionally checks if "oxactivefrom < current data < oxactiveto".
      *
      * @param bool $blForceCoreTable force core table usage
      *
@@ -583,7 +584,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * is TRUE checks if product has variants, and if has - checks is
      * there at least one variant which is buyable. If config option
      * option "blUseTimeCheck" is TRUE additionally checks if variants
-     * "oxactivefrom < current data < oxactiveto"
+     * "oxactivefrom < current data < oxactiveto".
      *
      * @param bool $blForceCoreTable force core table usage
      *
@@ -594,7 +595,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sTable = $this->getViewName($blForceCoreTable);
 
-        $sQ = "";
+        $sQ = '';
 
         //do not check for variants
         if ($myConfig->getConfigParam('blUseStock')) {
@@ -616,7 +617,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Returns part of query which checks if product is variant of current
      * object. Additionally if config option "blUseStock" is TRUE checks
      * stock state "( oxstock > 0 or ( oxstock <= 0 and ( oxstockflag = 1
-     * or oxstockflag = 4 ) )"
+     * or oxstockflag = 4 ) )".
      *
      * @param bool $blRemoveNotOrderables remove or leave non orderable products
      * @param bool $blForceCoreTable      force core table usage
@@ -634,14 +635,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             if ($blRemoveNotOrderables) {
                 $sQ .= " and $sTable.oxstockflag != 3 ";
             }
-            $sQ .= " ) ) ";
+            $sQ .= ' ) ) ';
         }
 
         return $sQ;
     }
 
     /**
-     * Return unit quantity
+     * Return unit quantity.
      *
      * @return string
      */
@@ -651,9 +652,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return Size of product: length*width*height
+     * Return Size of product: length*width*height.
      *
-     * @return double
+     * @return float
      */
     public function getSize()
     {
@@ -663,9 +664,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return product weight
+     * Return product weight.
      *
-     * @return double
+     * @return float
      */
     public function getWeight()
     {
@@ -673,7 +674,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns SQL select string with checks if items are available
+     * Returns SQL select string with checks if items are available.
      *
      * @param bool $blForceCoreTable forces core table usage (optional)
      *
@@ -685,7 +686,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     *
      * Getter for action type.
      *
      * @return int
@@ -696,11 +696,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns SQL select string with checks if items are available
+     * Returns SQL select string with checks if items are available.
      *
      * @param bool $forceCoreTable forces core table usage (optional)
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "createSqlActiveSnippet" in next major
      */
     protected function _createSqlActiveSnippet($forceCoreTable) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -715,19 +716,19 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Assign condition setter. In case article assignment is skipped ($_blSkipAssign = true), it does not perform additional
+     * Assign condition setter. In case article assignment is skipped ($_blSkipAssign = true), it does not perform additional.
      *
      * @param bool $blSkipAssign Whether to skip assign process for the article
      */
-    public function setSkipAssign($blSkipAssign)
+    public function setSkipAssign($blSkipAssign): void
     {
         $this->_blSkipAssign = $blSkipAssign;
     }
 
     /**
-     * Disables article price loading. Should be called before assign(), or load()
+     * Disables article price loading. Should be called before assign(), or load().
      */
-    public function disablePriceLoad()
+    public function disablePriceLoad(): void
     {
         $this->_blLoadPrice = false;
     }
@@ -735,13 +736,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Enable article price loading, if disabled.
      */
-    public function enablePriceLoad()
+    public function enablePriceLoad(): void
     {
         $this->_blLoadPrice = true;
     }
 
     /**
-     * Returns item key used with oxuserbasket
+     * Returns item key used with oxuserbasket.
      *
      * @return string
      */
@@ -751,21 +752,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Sets item key used with oxuserbasket
+     * Sets item key used with oxuserbasket.
      *
      * @param string $sItemKey Item key
      */
-    public function setItemKey($sItemKey)
+    public function setItemKey($sItemKey): void
     {
         $this->_sItemKey = $sItemKey;
     }
 
     /**
-     * Disables/enables variant loading
+     * Disables/enables variant loading.
      *
      * @param bool $blLoadVariants skip variant loading or not
      */
-    public function setNoVariantLoading($blLoadVariants)
+    public function setNoVariantLoading($blLoadVariants): void
     {
         $this->_blLoadVariants = !$blLoadVariants;
     }
@@ -792,7 +793,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get persistent parameters
+     * Get persistent parameters.
      *
      * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.
      *
@@ -804,7 +805,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Checks whether article is inluded in comparison list
+     * Checks whether article is inluded in comparison list.
      *
      * @return bool
      */
@@ -814,27 +815,27 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Set if article is inluded in comparison list
+     * Set if article is inluded in comparison list.
      *
      * @param bool $blOnList Whether is article on the list
      */
-    public function setOnComparisonList($blOnList)
+    public function setOnComparisonList($blOnList): void
     {
         $this->_blIsOnComparisonList = $blOnList;
     }
 
     /**
-     * A setter for $_blLoadParentData (whether article parent info should be laoded fully) class variable
+     * A setter for $_blLoadParentData (whether article parent info should be laoded fully) class variable.
      *
      * @param bool $blLoadParentData Whether to load parent data
      */
-    public function setLoadParentData($blLoadParentData)
+    public function setLoadParentData($blLoadParentData): void
     {
         $this->_blLoadParentData = $blLoadParentData;
     }
 
     /**
-     * Getter for do we load parent data
+     * Getter for do we load parent data.
      *
      * @return bool
      */
@@ -844,7 +845,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns true if the field is multilanguage
+     * Returns true if the field is multilanguage.
      *
      * @param string $sFieldName Field name
      *
@@ -852,7 +853,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function isMultilingualField($sFieldName)
     {
-        if ('oxlongdesc' == $sFieldName) {
+        if ('oxlongdesc' === $sFieldName) {
             return true;
         }
 
@@ -860,14 +861,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns formatted price per unit
+     * Returns formatted price per unit.
      *
      * @deprecated since v5.1 (2013-09-25); use oxPrice smarty plugin for formatting in templates
+     *
      * @return string
      */
     public function getFUnitPrice()
     {
-        if ($this->_fPricePerUnit == null) {
+        if (null === $this->_fPricePerUnit) {
             if ($oPrice = $this->getUnitPrice()) {
                 if ($dPrice = $this->_getPriceForView($oPrice)) {
                     $this->_fPricePerUnit = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($dPrice);
@@ -879,7 +881,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns price per unit
+     * Returns price per unit.
      *
      * @return \OxidEsales\Eshop\Core\Price|null
      */
@@ -891,16 +893,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         $oPrice = null;
-        if ((double) $this->getUnitQuantity() && $this->oxarticles__oxunitname->value) {
+        if ((float)$this->getUnitQuantity() && $this->oxarticles__oxunitname->value) {
             $oPrice = clone $this->getPrice();
-            $oPrice->divide((double) $this->getUnitQuantity());
+            $oPrice->divide((float)$this->getUnitQuantity());
         }
 
         return $oPrice;
     }
 
     /**
-     * Returns formatted article min price
+     * Returns formatted article min price.
      *
      * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
      *
@@ -918,7 +920,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns formatted min article variant price
+     * Returns formatted min article variant price.
      *
      * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
      *
@@ -936,7 +938,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns article min price of variants
+     * Returns article min price of variants.
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
@@ -960,7 +962,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Calculates lowest price of available article variants.
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "calculateVarMinPrice" in next major
      */
     protected function _calculateVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -971,7 +974,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns article min price in calculation included variants
+     * Returns article min price in calculation included variants.
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
@@ -983,7 +986,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $oPrice = null;
         $dPrice = $this->_getPrice();
-        if ($this->_getVarMinPrice() !== null && $dPrice > $this->_getVarMinPrice()) {
+        if (null !== $this->_getVarMinPrice() && $dPrice > $this->_getVarMinPrice()) {
             $dPrice = $this->_getVarMinPrice();
         }
 
@@ -997,26 +1000,25 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * @param double $dPrice
+     * @param float $dPrice
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareModifiedPrice" in next major
      */
     protected function _prepareModifiedPrice($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $dPrice = $this->_preparePrice($dPrice, $this->getArticleVat());
-
-        return $dPrice;
+        return $this->_preparePrice($dPrice, $this->getArticleVat());
     }
 
     /**
-     * Returns true if article has variant with different price
+     * Returns true if article has variant with different price.
      *
      * @return bool
      */
     public function isRangePrice()
     {
-        if ($this->_blIsRangePrice === null) {
+        if (null === $this->_blIsRangePrice) {
             $this->setRangePrice(false);
 
             if ($this->_hasAnyVariant()) {
@@ -1024,9 +1026,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $dMinPrice = $this->_getVarMinPrice();
                 $dMaxPrice = $this->_getVarMaxPrice();
 
-                if ($dMinPrice != $dMaxPrice) {
+                if ($dMinPrice !== $dMaxPrice) {
                     $this->setRangePrice();
-                } elseif (!$this->isParentNotBuyable() && $dMinPrice != $dPrice) {
+                } elseif (!$this->isParentNotBuyable() && $dMinPrice !== $dPrice) {
                     $this->setRangePrice();
                 }
             }
@@ -1035,13 +1037,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $this->_blIsRangePrice;
     }
 
-
     /**
-     * Setter to set if article has range price
+     * Setter to set if article has range price.
      *
      * @param bool $blIsRangePrice - true if range, else false
-     *
-     * @return null
      */
     public function setRangePrice($blIsRangePrice = true)
     {
@@ -1049,14 +1048,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Checks if article has visible status. Returns TRUE if its visible
+     * Checks if article has visible status. Returns TRUE if its visible.
      *
      * @return bool
      */
     public function isVisible()
     {
         // admin preview mode
-        if (($blCanPreview = \OxidEsales\Eshop\Core\Registry::getUtils()->canPreview()) !== null) {
+        if (null !== ($blCanPreview = \OxidEsales\Eshop\Core\Registry::getUtils()->canPreview())) {
             return $blCanPreview;
         }
 
@@ -1073,7 +1072,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // stock flags
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseStock') && 2 === $this->oxarticles__oxstockflag->value) {
             $iOnStock = $this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -1092,10 +1091,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * detaillink, moredetaillink, etc).
      *
      * @param array $aRecord Array representing current field values
-     *
-     * @return null
      */
-    public function assign($aRecord)
+    public function assign($aRecord): void
     {
         startProfile('articleAssign');
 
@@ -1130,9 +1127,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * @param \OxidEsales\Eshop\Application\Model\Article $article
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setShopValues" in next major
      */
-    protected function _setShopValues($article) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setShopValues($article): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -1174,6 +1172,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $articleId
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadData" in next major
      */
     protected function _loadData($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1189,7 +1188,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function hasSortingFieldsChanged()
     {
         $aSortingFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols');
-        $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : [];
+        $aSortingFields = !empty($aSortingFields) ? (array)$aSortingFields : [];
         $blChanged = false;
         foreach ($aSortingFields as $sField) {
             $sParameterName = 'oxarticles__' . $sField;
@@ -1205,58 +1204,58 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Calculates and saves product rating average
+     * Calculates and saves product rating average.
      *
-     * @param integer $rating new rating value
+     * @param int $rating new rating value
      */
-    public function addToRatingAverage($rating)
+    public function addToRatingAverage($rating): void
     {
         $dOldRating = $this->oxarticles__oxrating->value;
         $dOldCnt = $this->oxarticles__oxratingcnt->value;
         $this->oxarticles__oxrating->setValue(($dOldRating * $dOldCnt + $rating) / ($dOldCnt + 1));
         $this->oxarticles__oxratingcnt->setValue($dOldCnt + 1);
         $dRating = ($dOldRating * $dOldCnt + $rating) / ($dOldCnt + 1);
-        $dRatingCnt = (int) ($dOldCnt + 1);
+        $dRatingCnt = (int)($dOldCnt + 1);
         // oxarticles.oxtimestamp = oxarticles.oxtimestamp to keep old timestamp value
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $query = "update oxarticles
+        $query = 'update oxarticles
                   set oxarticles.oxrating = :oxrating,
                       oxarticles.oxratingcnt = :oxratingcnt,
                       oxarticles.oxtimestamp = oxarticles.oxtimestamp
-                  where oxarticles.oxid = :oxid";
+                  where oxarticles.oxid = :oxid';
         $oDb->execute($query, [
             ':oxrating' => $dRating,
             ':oxratingcnt' => $dRatingCnt,
-            ':oxid' => $this->getId()
+            ':oxid' => $this->getId(),
         ]);
     }
 
     /**
-     * Set product rating average
+     * Set product rating average.
      *
-     * @param integer $iRating new rating value
+     * @param int $iRating new rating value
      */
-    public function setRatingAverage($iRating)
+    public function setRatingAverage($iRating): void
     {
         $this->oxarticles__oxrating = new \OxidEsales\Eshop\Core\Field($iRating);
     }
 
     /**
-     * Set product rating count
+     * Set product rating count.
      *
-     * @param integer $iRatingCnt new rating count
+     * @param int $iRatingCnt new rating count
      */
-    public function setRatingCount($iRatingCnt)
+    public function setRatingCount($iRatingCnt): void
     {
         $this->oxarticles__oxratingcnt = new \OxidEsales\Eshop\Core\Field($iRatingCnt);
     }
 
     /**
-     * Returns product rating average
+     * Returns product rating average.
      *
      * @param bool $blIncludeVariants - include variant ratings
      *
-     * @return double
+     * @return float
      */
     public function getArticleRatingAverage($blIncludeVariants = false)
     {
@@ -1270,7 +1269,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns product rating count
+     * Returns product rating count.
      *
      * @param bool $blIncludeVariants - include variant ratings
      *
@@ -1286,7 +1285,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             return $oRating->getRatingCount($this->getId(), 'oxarticle', $this->getVariantIds());
         }
     }
-
 
     /**
      * Collects user written reviews about an article.
@@ -1304,7 +1302,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // showing variant reviews ..
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVariantReviews')) {
             $aAdd = $this->getVariantIds();
-            if (is_array($aAdd)) {
+            if (\is_array($aAdd)) {
                 $aIds = array_merge($aIds, $aAdd);
             }
         }
@@ -1387,11 +1385,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $aList = $this->_getSimList($sAttribs, $iCnt);
 
-        if (count($aList)) {
+        if (\count($aList)) {
             uasort($aList, function ($a, $b) {
-                if ($a->cnt == $b->cnt) {
+                if ($a->cnt === $b->cnt) {
                     return 0;
                 }
+
                 return ($a->cnt < $b->cnt) ? -1 : 1;
             });
 
@@ -1442,9 +1441,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             return [];
         }
 
-        if ($this->_oAmountPriceInfo === null) {
+        if (null === $this->_oAmountPriceInfo) {
             $this->_oAmountPriceInfo = [];
-            if (count(($aAmPriceList = $this->_getAmountPriceList()->getArray()))) {
+            if (\count(($aAmPriceList = $this->_getAmountPriceList()->getArray()))) {
                 $this->_oAmountPriceInfo = $this->_fillAmountPriceList($aAmPriceList);
             }
         }
@@ -1453,7 +1452,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns all selectlists this article has (used in oxbasket)
+     * Returns all selectlists this article has (used in oxbasket).
      *
      * @param string $sKeyPrefix Optional key prefix
      *
@@ -1478,11 +1477,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             // all selectlists this article has
             $oLists = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oLists->init('oxselectlist');
-            $oLists->selectString($sQ, [':oxobjectid' => $this->getId()]);
+            $oLists->selectString($sQ, [
+                ':oxobjectid' => $this->getId(),
+            ]);
 
             //#1104S if this is variant ant it has no selectlists, trying with parent
-            if ($oLists->count() == 0 && $this->oxarticles__oxparentid->value) {
-                $oLists->selectString($sQ, [':oxobjectid' => $this->oxarticles__oxparentid->value]);
+            if (0 === $oLists->count() && $this->oxarticles__oxparentid->value) {
+                $oLists->selectString($sQ, [
+                    ':oxobjectid' => $this->oxarticles__oxparentid->value,
+                ]);
             }
 
             // We do not need to calculate price here as there are method to get current article vat
@@ -1496,7 +1499,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             foreach ($oLists as $oSelectlist) {
                 self::$_aSelList[$sKey][$iCnt] = $oSelectlist->getFieldList($dVat);
                 self::$_aSelList[$sKey][$iCnt]['name'] = $oSelectlist->oxselectlist__oxtitle->value;
-                $iCnt++;
+                ++$iCnt;
             }
         }
 
@@ -1504,7 +1507,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns amount of variants article has
+     * Returns amount of variants article has.
      *
      * @return mixed
      */
@@ -1514,7 +1517,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Checks if article has multidimensional variants
+     * Checks if article has multidimensional variants.
      *
      * @return bool
      */
@@ -1544,7 +1547,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns variants selections lists array
+     * Returns variants selections lists array.
      *
      * @param array  $aFilterIds    ids of active selections [optional]
      * @param string $sActVariantId active variant id [optional]
@@ -1554,7 +1557,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getVariantSelections($aFilterIds = null, $sActVariantId = null, $iLimit = 0)
     {
-        $iLimit = (int) $iLimit;
+        $iLimit = (int)$iLimit;
         if (!isset($this->_aVariantSelections[$iLimit])) {
             $aVariantSelections = false;
             if ($this->oxarticles__oxvarcount->value) {
@@ -1578,7 +1581,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns product selections lists array (used in azure theme)
+     * Returns product selections lists array (used in azure theme).
      *
      * @param int   $iLimit  if given - will load limited count of selections [optional]
      * @param array $aFilter selection filter [optional]
@@ -1587,21 +1590,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getSelections($iLimit = null, $aFilter = null)
     {
-        $sId = $this->getId() . ((int) $iLimit);
-        if (!array_key_exists($sId, self::$_aSelections)) {
+        $sId = $this->getId() . ((int)$iLimit);
+        if (!\array_key_exists($sId, self::$_aSelections)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sSLViewName = getViewName('oxselectlist');
 
             $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
                    where oxobject2selectlist.oxobjectid = :oxobjectid order by oxobject2selectlist.oxsort";
 
-            if (($iLimit = (int) $iLimit)) {
+            if (($iLimit = (int)$iLimit)) {
                 $sQ .= " limit $iLimit ";
             }
 
             // vat value for price
             $dVat = 0;
-            if (($oPrice = $this->getPrice()) != null) {
+            if (null !== ($oPrice = $this->getPrice())) {
                 $dVat = $oPrice->getVat();
             }
 
@@ -1609,11 +1612,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oList->init('oxselectlist');
             $oList->getBaseObject()->setVat($dVat);
-            $oList->selectString($sQ, [':oxobjectid' => $this->getId()]);
+            $oList->selectString($sQ, [
+                ':oxobjectid' => $this->getId(),
+            ]);
 
             //#1104S if this is variant and it has no selectlists, trying with parent
-            if ($oList->count() == 0 && $this->oxarticles__oxparentid->value) {
-                $oList->selectString($sQ, [':oxobjectid' => $this->oxarticles__oxparentid->value]);
+            if (0 === $oList->count() && $this->oxarticles__oxparentid->value) {
+                $oList->selectString($sQ, [
+                    ':oxobjectid' => $this->oxarticles__oxparentid->value,
+                ]);
             }
 
             self::$_aSelections[$sId] = $oList->count() ? $oList : false;
@@ -1621,14 +1628,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         if (self::$_aSelections[$sId]) {
             // marking active from filter
-            $aFilter = ($aFilter === null) ? \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("sel") : $aFilter;
+            $aFilter = (null === $aFilter) ? \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sel') : $aFilter;
             if ($aFilter) {
                 $iSelIdx = 0;
                 foreach (self::$_aSelections[$sId] as $oSelection) {
                     if (isset($aFilter[$iSelIdx])) {
                         $oSelection->setActiveSelectionByIndex($aFilter[$iSelIdx]);
                     }
-                    $iSelIdx++;
+                    ++$iSelIdx;
                 }
             }
         }
@@ -1637,7 +1644,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns variant list (list contains oxArticle objects)
+     * Returns variant list (list contains oxArticle objects).
      *
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
@@ -1651,7 +1658,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Collects and returns article variants.
-     * Note: Only active variants are returned by this method. If you need full variant list use \OxidEsales\Eshop\Application\Model\Article::getAdminVariants()
+     * Note: Only active variants are returned by this method. If you need full variant list use \OxidEsales\Eshop\Application\Model\Article::getAdminVariants().
      *
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
@@ -1665,8 +1672,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Simple way to get variants without querying oxArticle table first. This is basically used for lists.
-     *
-     * @return null
      */
     public function getSimpleVariants()
     {
@@ -1679,7 +1684,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Loads article variants and returns variants list object. Article language may
      * be set by passing with parameter, or GET/POST/Session variable.
      *
-     * @param string $sLanguage shop language.
+     * @param string $sLanguage shop language
      *
      * @return object
      */
@@ -1689,16 +1694,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if (($sId = $this->getId())) {
             $oBaseObj = $oVariants->getBaseObject();
 
-            if (is_null($sLanguage)) {
+            if (null === $sLanguage) {
                 $oBaseObj->setLanguage(\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage());
             } else {
                 $oBaseObj->setLanguage($sLanguage);
             }
 
-            $sSql = "select * from " . $oBaseObj->getViewName() . "
+            $sSql = 'select * from ' . $oBaseObj->getViewName() . '
                 where oxparentid = :oxparentid
-                order by oxsort ";
-            $oVariants->selectString($sSql, [':oxparentid' => $sId]);
+                order by oxsort ';
+            $oVariants->selectString($sSql, [
+                ':oxparentid' => $sId,
+            ]);
 
             //if we have variants then depending on config option the parent may be non buyable
             if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantParentBuyable') && ($oVariants->count() > 0)) {
@@ -1713,7 +1720,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Loads and returns article category object. First tries to load
      * assigned category and is such category does not exist, tries to
-     * load category by price
+     * load category by price.
      *
      * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
@@ -1738,12 +1745,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $sSelect .= ($oStr->strstr(
                     $sSelect,
                     'where'
-                ) ? ' and ' : ' where ') . $sWhere . " order by oxobject2category.oxtime limit 1";
+                ) ? ' and ' : ' where ') . $sWhere . ' order by oxobject2category.oxtime limit 1';
 
                 // category not found ?
                 if (!$oCategory->assignRecord($sSelect)) {
                     $sSelect = $this->_generateSearchStr($sOXID, true);
-                    $sSelect .= ($oStr->strstr($sSelect, 'where') ? ' and ' : ' where ') . $sWhere . " limit 1";
+                    $sSelect .= ($oStr->strstr($sSelect, 'where') ? ' and ' : ' where ') . $sWhere . ' limit 1';
 
                     // looking for price category
                     if (!$oCategory->assignRecord($sSelect)) {
@@ -1763,7 +1770,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns ID's of categories where this article is assigned
+     * Returns ID's of categories where this article is assigned.
      *
      * @param bool $blActCats   select categories if all parents are active
      * @param bool $blSkipCache Whether to skip cache
@@ -1790,7 +1797,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns current article vendor object. If $blShopCheck = false, then
      * vendor loading will fallback to oxI18n object and blReadOnly parameter
-     * will be set to true if vendor is not assigned to current shop
+     * will be set to true if vendor is not assigned to current shop.
      *
      * @param bool $blShopCheck Set false if shop check is not required (default is true)
      *
@@ -1814,6 +1821,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * @return \OxidEsales\Eshop\Core\Model\MultiLanguageModel
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "createMultilanguageVendorObject" in next major
      */
     protected function _createMultilanguageVendorObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1826,7 +1834,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns article object vendor ID. Result is cached into self::$_aArticleVendors
+     * Returns article object vendor ID. Result is cached into self::$_aArticleVendors.
      *
      * @return string
      */
@@ -1841,7 +1849,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns article object Manufacturer ID. Result is cached into self::$_aArticleManufacturers
+     * Returns article object Manufacturer ID. Result is cached into self::$_aArticleManufacturers.
      *
      * @return string
      */
@@ -1853,7 +1861,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns current article Manufacturer object. If $blShopCheck = false, then
      * Manufacturer blReadOnly parameter will be set to true. If Manufacturer is
-     * not assigned to current shop
+     * not assigned to current shop.
      *
      * @param bool $blShopCheck Set false if shop check is not required (default is true)
      *
@@ -1891,7 +1899,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function inCategory($sCatNid)
     {
-        return in_array($sCatNid, $this->getCategoryIds());
+        return \in_array($sCatNid, $this->getCategoryIds(), true);
     }
 
     /**
@@ -1935,7 +1943,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns T price
+     * Returns T price.
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
@@ -1946,7 +1954,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // return cached result, since oPrice is created ONLY in this function [or function of EQUAL level]
-        if ($this->_oTPrice !== null) {
+        if (null !== $this->_oTPrice) {
             return $this->_oTPrice;
         }
 
@@ -1986,14 +1994,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function skipDiscounts()
     {
         // already loaded skip discounts config
-        if ($this->_blSkipDiscounts !== null) {
+        if (null !== $this->_blSkipDiscounts) {
             return $this->_blSkipDiscounts;
         }
 
         if ($this->oxarticles__oxskipdiscounts->value) {
             return true;
         }
-
 
         $this->_blSkipDiscounts = false;
         if (\OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DiscountList::class)->hasSkipDiscountCategories()) {
@@ -2008,20 +2015,20 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $params = [
                 ':oxobjectid' => $this->getId(),
                 ':oxactive' => 1,
-                ':oxskipdiscounts' => 1
+                ':oxskipdiscounts' => 1,
             ];
-            $this->_blSkipDiscounts = ($oDb->getOne($sSelect, $params) == 1);
+            $this->_blSkipDiscounts = (1 === $oDb->getOne($sSelect, $params));
         }
 
         return $this->_blSkipDiscounts;
     }
 
     /**
-     * Sets the current oxPrice object
+     * Sets the current oxPrice object.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice the new price object
      */
-    public function setPrice(\OxidEsales\Eshop\Core\Price $oPrice)
+    public function setPrice(\OxidEsales\Eshop\Core\Price $oPrice): void
     {
         $this->_oPrice = $oPrice;
     }
@@ -2030,9 +2037,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Returns base article price from database. Price may differ according to users group
      * Override this function if you want e.g. different prices for diff. usergroups.
      *
-     * @param double $dAmount article amount. Default is 1
+     * @param float $dAmount article amount. Default is 1
      *
-     * @return double
+     * @return float
      */
     public function getBasePrice($dAmount = 1)
     {
@@ -2046,9 +2053,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // GroupPrice or DB price ajusted by AmountPrice
-        $dPrice = $this->_getModifiedAmountPrice($dAmount);
-
-        return $dPrice;
+        return $this->_getModifiedAmountPrice($dAmount);
     }
 
     /**
@@ -2056,7 +2061,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param int $amount
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getModifiedAmountPrice" in next major
      */
     protected function _getModifiedAmountPrice($amount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -2067,7 +2073,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Calculates and returns price of article (adds taxes and discounts).
      *
-     * @param float|int $dAmount article amount.
+     * @param float|int $dAmount article amount
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
@@ -2080,7 +2086,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         // return cached result, since oPrice is created ONLY in this function [or function of EQUAL level]
-        if ($dAmount != 1 || $this->_oPrice === null) {
+        if (1 !== $dAmount || null === $this->_oPrice) {
             // module
             $dBasePrice = $this->getBasePrice($dAmount);
             $dBasePrice = $this->_preparePrice($dBasePrice, $this->getArticleVat());
@@ -2090,12 +2096,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $oPrice->setPrice($dBasePrice);
 
             // price handling
-            if (!$this->_blCalcPrice && $dAmount == 1) {
+            if (!$this->_blCalcPrice && 1 === $dAmount) {
                 return $this->_oPrice = $oPrice;
             }
 
             $this->_calculatePrice($oPrice);
-            if ($dAmount != 1) {
+            if (1 !== $dAmount) {
                 return $oPrice;
             }
 
@@ -2106,17 +2112,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * sets article user
+     * sets article user.
      *
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user to set
      */
-    public function setArticleUser($oUser)
+    public function setArticleUser($oUser): void
     {
         $this->_oUser = $oUser;
     }
 
     /**
-     * @return \OxidEsales\Eshop\Application\Model\User article user.
+     * @return \OxidEsales\Eshop\Application\Model\User article user
      */
     public function getArticleUser()
     {
@@ -2209,7 +2215,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Reduce article stock. return the affected amount
+     * Reduce article stock. return the affected amount.
      *
      * @param float $dAmount              amount to reduce
      * @param bool  $blAllowNegativeStock are negative stocks allowed?
@@ -2226,7 +2232,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             from oxarticles
             where oxid = :oxid FOR UPDATE ';
         $actualStock = $database->getOne($query, [
-            ':oxid' => $this->getId()
+            ':oxid' => $this->getId(),
         ]);
 
         $iStockCount = $actualStock - $dAmount;
@@ -2239,7 +2245,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $query = 'update oxarticles set oxarticles.oxstock = :oxstock where oxarticles.oxid = :oxid';
         $database->execute($query, [
             ':oxstock' => $iStockCount,
-            ':oxid' => $this->getId()
+            ':oxid' => $this->getId(),
         ]);
         $this->onChange(ACTION_UPDATE_STOCK);
 
@@ -2263,14 +2269,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // article is not variant - should be updated current amount
         if (!$this->oxarticles__oxparentid->value) {
             //updating by SQL query, due to wrong behaviour if saving article using not admin mode
-            $dAmount = (double) $dAmount;
+            $dAmount = (float)$dAmount;
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $query = "update oxarticles
+            $query = 'update oxarticles
                       set oxarticles.oxsoldamount = (oxarticles.oxsoldamount + :amount)
-                      where oxarticles.oxid = :oxid";
+                      where oxarticles.oxid = :oxid';
             $rs = $oDb->execute($query, [
                 ':oxid' => $this->oxarticles__oxid->value,
-                ':amount' => $dAmount
+                ':amount' => $dAmount,
             ]);
         } elseif ($this->oxarticles__oxparentid->value) {
             // article is variant - should be updated this article parent amount
@@ -2280,20 +2286,22 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
         }
 
-        return (bool) $rs;
+        return (bool)$rs;
     }
 
     /**
-     * Disables reminder functionality for article
+     * Disables reminder functionality for article.
      *
      * @return bool
      */
     public function disableReminder()
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $query = "update oxarticles set oxarticles.oxremindactive = 2 where oxarticles.oxid = :oxid";
+        $query = 'update oxarticles set oxarticles.oxremindactive = 2 where oxarticles.oxid = :oxid';
 
-        return (bool) $oDb->execute($query, [':oxid' => $this->oxarticles__oxid->value]);
+        return (bool)$oDb->execute($query, [
+            ':oxid' => $this->oxarticles__oxid->value,
+        ]);
     }
 
     /**
@@ -2312,9 +2320,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Changes article variant to parent article
+     * Changes article variant to parent article.
      */
-    public function resetParent()
+    public function resetParent(): void
     {
         $sParentId = $this->oxarticles__oxparentid->value;
         $this->oxarticles__oxparentid = new \OxidEsales\Eshop\Core\Field('', \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2322,14 +2330,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->save();
         $this->_blAllowEmptyParentId = false;
 
-        if ($sParentId !== '') {
+        if ('' !== $sParentId) {
             $this->onChange(ACTION_UPDATE, null, $sParentId);
         }
     }
 
     /**
      * collect article pics, icons, zoompic and puts it all in an array
-     * structure of array (ActPicID, ActPic, MorePics, Pics, Icons, ZoomPic)
+     * structure of array (ActPicID, ActPic, MorePics, Pics, Icons, ZoomPic).
      *
      * @return array
      */
@@ -2353,29 +2361,29 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $iPicCount = $myConfig->getConfigParam('iPicCount');
         $blCheckActivePicId = true;
 
-        for ($i = 1; $i <= $iPicCount; $i++) {
+        for ($i = 1; $i <= $iPicCount; ++$i) {
             $sPicVal = $this->getPictureUrl($i);
             $sIcoVal = $this->getIconUrl($i);
             if (
                 !$oStr->strstr($sIcoVal, 'nopic_ico.jpg') && !$oStr->strstr($sIcoVal, 'nopic.jpg') &&
                 !$oStr->strstr($sPicVal, 'nopic_ico.jpg') && !$oStr->strstr($sPicVal, 'nopic.jpg') &&
-                $sPicVal !== null
+                null !== $sPicVal
             ) {
                 if ($iCntr) {
                     $blMorePic = true;
                 }
                 $aArtIcons[$i] = $sIcoVal;
                 $aArtPics[$i] = $sPicVal;
-                $iCntr++;
+                ++$iCntr;
 
-                if ($iActPicId == $i) {
+                if ($iActPicId === $i) {
                     $sActPic = $sPicVal;
                     $blCheckActivePicId = false;
                 }
             } elseif ($blCheckActivePicId && $iActPicId <= $i) {
                 // if picture is empty, setting active pic id to next
                 // picture
-                $iActPicId++;
+                ++$iActPicId;
             }
         }
 
@@ -2383,7 +2391,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $aZoomPics = [];
         $iZoomPicCount = $myConfig->getConfigParam('iPicCount');
 
-        for ($j = 1, $c = 1; $j <= $iZoomPicCount; $j++) {
+        for ($j = 1, $c = 1; $j <= $iZoomPicCount; ++$j) {
             $sVal = $this->getZoomPictureUrl($j);
 
             if ($sVal && !$oStr->strstr($sVal, 'nopic.jpg')) {
@@ -2392,23 +2400,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $aZoomPics[$c]['file'] = $sVal;
                 //anything is better than empty name, because <img src=""> calls shop once more = x2 SLOW.
                 if (!$sVal) {
-                    $aZoomPics[$c]['file'] = "nopic.jpg";
+                    $aZoomPics[$c]['file'] = 'nopic.jpg';
                 }
-                $c++;
+                ++$c;
             }
         }
 
-        $aPicGallery = [
+        return [
             'ActPicID' => $iActPicId,
-            'ActPic'   => $sActPic,
+            'ActPic' => $sActPic,
             'MorePics' => $blMorePic,
-            'Pics'     => $aArtPics,
-            'Icons'    => $aArtIcons,
-            'ZoomPic'  => $blZoomPic,
-            'ZoomPics' => $aZoomPics
+            'Pics' => $aArtPics,
+            'Icons' => $aArtIcons,
+            'ZoomPic' => $blZoomPic,
+            'ZoomPics' => $aZoomPics,
         ];
-
-        return $aPicGallery;
     }
 
     /**
@@ -2416,17 +2422,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Originally we need to update the oxstock for possible article parent in case parent is not buyable
      * Plus you may want to extend this function to update some extended information.
      * Call \OxidEsales\Eshop\Application\Model\Article::onChange($sAction, $sOXID) with ID parameter when changes are executed over SQL.
-     * (or use module class instead of oxArticle if such exists)
+     * (or use module class instead of oxArticle if such exists).
      *
      * @param string $action          Action constant
      * @param string $articleId       Article ID
      * @param string $parentArticleId Parent ID
-     *
-     * @return null
      */
-    public function onChange($action = null, $articleId = null, $parentArticleId = null)
+    public function onChange($action = null, $articleId = null, $parentArticleId = null): void
     {
-        $this->actionType = !is_null($action) ? $action : $this->actionType;
+        $this->actionType = null !== $action ? $action : $this->actionType;
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (!isset($articleId)) {
@@ -2452,7 +2456,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
                 $sQ = 'select oxparentid from oxarticles where oxid = :oxid';
                 $parentArticleId = $oDb->getOne($sQ, [
-                    ':oxid' => $articleId
+                    ':oxid' => $articleId,
                 ]);
             }
             //if we have parent id then update stock
@@ -2473,7 +2477,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // resetting articles count cache if stock has changed and some
         // articles goes offline (M:1448)
-        if ($action === ACTION_UPDATE_STOCK) {
+        if (ACTION_UPDATE_STOCK === $action) {
             $this->_assignStock();
             $this->_onChangeStockResetCount($articleId);
         }
@@ -2483,9 +2487,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Returns custom article VAT value if possible
-     * By default value is taken from oxarticle__oxvat field
+     * By default value is taken from oxarticle__oxvat field.
      *
-     * @return double
+     * @return float
      */
     public function getCustomVAT()
     {
@@ -2495,11 +2499,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Checks if stock configuration allows to buy user chosen amount $dAmount
+     * Checks if stock configuration allows to buy user chosen amount $dAmount.
      *
-     * @param double     $dAmount         buyable amount
-     * @param double|int $dArtStockAmount stock amount
-     * @param bool       $selectForUpdate Set true to select for update
+     * @param float     $dAmount         buyable amount
+     * @param float|int $dArtStockAmount stock amount
+     * @param bool      $selectForUpdate Set true to select for update
      *
      * @return mixed
      */
@@ -2516,11 +2520,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             where oxid = :oxid';
         $sQ .= $selectForUpdate ? ' FOR UPDATE ' : '';
         $rs = $oDb->select($sQ, [
-            ':oxid' => $this->getId()
+            ':oxid' => $this->getId(),
         ]);
 
         $iOnStock = 0;
-        if ($rs !== false && $rs->count() > 0) {
+        if (false !== $rs && $rs->count() > 0) {
             $iOnStock = $rs->fields['oxstock'] - $dArtStockAmount;
             $iStockFlag = $rs->fields['oxstockflag'];
 
@@ -2534,7 +2538,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                      && $myConfig->getConfigParam('blAllowNegativeStock'))
             ) {
                 // foreign stock is also always considered as on stock
-                if ($iStockFlag == 1 || $iStockFlag == 4) {
+                if (1 === $iStockFlag || 4 === $iStockFlag) {
                     return true;
                 }
             }
@@ -2562,13 +2566,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get article long description
+     * Get article long description.
      *
-     * @return object $oField field object
+     * @return object field object
      */
     public function getLongDescription()
     {
-        if ($this->_oLongDesc === null) {
+        if (null === $this->_oLongDesc) {
             // initializing
             $this->_oLongDesc = new \OxidEsales\Eshop\Core\Field();
 
@@ -2578,10 +2582,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sDbValue = $oDb->getOne("select oxlongdesc from {$sViewName} where oxid = :oxid", [
-                ':oxid' => $sOxid
+                ':oxid' => $sOxid,
             ]);
 
-            if ($sDbValue != false) {
+            if (false !== $sDbValue) {
                 $this->_oLongDesc->setValue($sDbValue, \OxidEsales\Eshop\Core\Field::T_RAW);
             } elseif ($this->oxarticles__oxparentid && $this->oxarticles__oxparentid->value) {
                 if (!$this->isAdmin() || $this->_blLoadParentData) {
@@ -2598,7 +2602,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * get long description, parsed through smarty. should only be used by exports or so.
-     * In templates use [{oxeval var=$oProduct->getLongDescription()->getRawValue()}]
+     * In templates use [{oxeval var=$oProduct->getLongDescription()->getRawValue()}].
      *
      * @return string
      */
@@ -2608,11 +2612,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Save article long description to oxartext table
+     * Save article long description to oxartext table.
      *
      * @param string $longDescription description to set
      */
-    public function setArticleLongDesc($longDescription)
+    public function setArticleLongDesc($longDescription): void
     {
         // setting current value
         $this->_oLongDesc = new \OxidEsales\Eshop\Core\Field($longDescription, \OxidEsales\Eshop\Core\Field::T_RAW);
@@ -2621,7 +2625,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * the uninitilized list of attributes
-     * use getAttributes
+     * use getAttributes.
+     *
      * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     protected function newAttributeList()
@@ -2630,13 +2635,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Loads and returns attribute list associated with this article
+     * Loads and returns attribute list associated with this article.
      *
      * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     public function getAttributes()
     {
-        if ($this->_oAttributeList === null) {
+        if (null === $this->_oAttributeList) {
             $this->_oAttributeList = $this->newAttributelist();
             $this->_oAttributeList->loadAttributes($this->getId(), $this->getParentId());
         }
@@ -2645,13 +2650,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Loads and returns attribute list for display in basket
+     * Loads and returns attribute list for display in basket.
      *
      * @return \OxidEsales\Eshop\Application\Model\AttributeList
      */
     public function getAttributesDisplayableInBasket()
     {
-        if ($this->basketAttributeList === null) {
+        if (null === $this->basketAttributeList) {
             $this->basketAttributeList = $this->newAttributelist();
             $this->basketAttributeList->loadAttributesDisplayableInBasket($this->getId(), $this->getParentId());
         }
@@ -2659,27 +2664,26 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $this->basketAttributeList;
     }
 
-
     /**
-     * Appends article seo url with additional request parameters
+     * Appends article seo url with additional request parameters.
      *
      * @param string $sAddParams additional parameters which needs to be added to product url
      * @param int    $iLang      language id
      */
-    public function appendLink($sAddParams, $iLang = null)
+    public function appendLink($sAddParams, $iLang = null): void
     {
         if ($sAddParams) {
-            if ($iLang === null) {
+            if (null === $iLang) {
                 $iLang = $this->getLanguage();
             }
 
-            $this->_aSeoAddParams[$iLang] = isset($this->_aSeoAddParams[$iLang]) ? $this->_aSeoAddParams[$iLang] . "&amp;" : "";
+            $this->_aSeoAddParams[$iLang] = isset($this->_aSeoAddParams[$iLang]) ? $this->_aSeoAddParams[$iLang] . '&amp;' : '';
             $this->_aSeoAddParams[$iLang] .= $sAddParams;
         }
     }
 
     /**
-     * Returns raw article seo url
+     * Returns raw article seo url.
      *
      * @param int  $iLang  language id
      * @param bool $blMain force to return main url [optional]
@@ -2698,7 +2702,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Gets article link
+     * Gets article link.
      *
      * @param int  $iLang  language id [optional]
      * @param bool $blMain force to return main url [optional]
@@ -2711,7 +2715,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             return $this->getStdLink($iLang);
         }
 
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = $this->getLanguage();
         }
 
@@ -2722,7 +2726,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $sUrl = $this->_aSeoUrls[$iLang][$iLinkType];
         if (isset($this->_aSeoAddParams[$iLang])) {
-            $sUrl .= ((strpos($sUrl . $this->_aSeoAddParams[$iLang], '?') === false) ? '?' : '&amp;') . $this->_aSeoAddParams[$iLang];
+            $sUrl .= ((false === strpos($sUrl . $this->_aSeoAddParams[$iLang], '?')) ? '?' : '&amp;') . $this->_aSeoAddParams[$iLang];
         }
 
         return $sUrl;
@@ -2730,7 +2734,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Returns main object URL. If SEO is ON returned link will be in SEO form,
-     * else URL will have dynamic form
+     * else URL will have dynamic form.
      *
      * @param int $iLang language id [optional]
      *
@@ -2742,21 +2746,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Resets details link
+     * Resets details link.
      *
      * @param int $iType type of link to load
      */
-    public function setLinkType($iType)
+    public function setLinkType($iType): void
     {
         // resetting details link, to force new
         $this->_sDetailLink = null;
 
         // setting link type
-        $this->_iLinkType = (int) $iType;
+        $this->_iLinkType = (int)$iType;
     }
 
     /**
-     * Get link type
+     * Get link type.
      *
      * @return int
      */
@@ -2766,25 +2770,25 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Appends article dynamic url with additional request parameters
+     * Appends article dynamic url with additional request parameters.
      *
      * @param string $sAddParams additional parameters which needs to be added to product url
      * @param int    $iLang      language id
      */
-    public function appendStdLink($sAddParams, $iLang = null)
+    public function appendStdLink($sAddParams, $iLang = null): void
     {
         if ($sAddParams) {
-            if ($iLang === null) {
+            if (null === $iLang) {
                 $iLang = $this->getLanguage();
             }
 
-            $this->_aStdAddParams[$iLang] = isset($this->_aStdAddParams[$iLang]) ? $this->_aStdAddParams[$iLang] . "&amp;" : "";
+            $this->_aStdAddParams[$iLang] = isset($this->_aStdAddParams[$iLang]) ? $this->_aStdAddParams[$iLang] . '&amp;' : '';
             $this->_aStdAddParams[$iLang] .= $sAddParams;
         }
     }
 
     /**
-     * Returns base dynamic url: shopurl/index.php?cl=details
+     * Returns base dynamic url: shopurl/index.php?cl=details.
      *
      * @param int  $iLang   language id
      * @param bool $blAddId add current object id to url or not [optional]
@@ -2800,13 +2804,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
-        $sUrl .= "index.php?cl=details" . ($blAddId ? "&amp;anid=" . $this->getId() : "");
+        $sUrl .= 'index.php?cl=details' . ($blAddId ? '&amp;anid=' . $this->getId() : '');
 
-        return $sUrl . (isset($this->_aStdAddParams[$iLang]) ? "&amp;" . $this->_aStdAddParams[$iLang] : "");
+        return $sUrl . (isset($this->_aStdAddParams[$iLang]) ? '&amp;' . $this->_aStdAddParams[$iLang] : '');
     }
 
     /**
-     * Returns standard URL to product
+     * Returns standard URL to product.
      *
      * @param int   $iLang   required language. optional
      * @param array $aParams additional params to use [optional]
@@ -2815,7 +2819,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getStdLink($iLang = null, $aParams = [])
     {
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = $this->getLanguage();
         }
 
@@ -2827,21 +2831,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return article media URL
+     * Return article media URL.
      *
      * @return array
      */
     public function getMediaUrls()
     {
-        if ($this->_aMediaUrls === null) {
+        if (null === $this->_aMediaUrls) {
             $this->_aMediaUrls = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $this->_aMediaUrls->init("oxmediaurl");
+            $this->_aMediaUrls->init('oxmediaurl');
             $this->_aMediaUrls->getBaseObject()->setLanguage($this->getLanguage());
 
-            $sViewName = getViewName("oxmediaurls", $this->getLanguage());
+            $sViewName = getViewName('oxmediaurls', $this->getLanguage());
             $sQ = "select * from {$sViewName} where oxobjectid = :oxobjectid";
             $this->_aMediaUrls->selectString($sQ, [
-                ':oxobjectid' => $this->getId()
+                ':oxobjectid' => $this->getId(),
             ]);
         }
 
@@ -2849,7 +2853,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get image url
+     * Get image url.
      *
      * @return array
      */
@@ -2859,13 +2863,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns select lists to display
+     * Returns select lists to display.
      *
      * @return array
      */
     public function getDispSelList()
     {
-        if ($this->_aDispSelList === null) {
+        if (null === $this->_aDispSelList) {
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadSelectLists') && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadSelectListsInAList')) {
                 $this->_aDispSelList = $this->getSelectLists();
             }
@@ -2875,13 +2879,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get more details link
+     * Get more details link.
      *
      * @return string
      */
     public function getMoreDetailLink()
     {
-        if ($this->_sMoreDetailLink == null) {
+        if (null === $this->_sMoreDetailLink) {
             // and assign special article values
             $this->_sMoreDetailLink = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopHomeUrl() . 'cl=moredetails';
 
@@ -2896,13 +2900,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get to basket link
+     * Get to basket link.
      *
      * @return string
      */
     public function getToBasketLink()
     {
-        if ($this->_sToBasketLink == null) {
+        if (null === $this->_sToBasketLink) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             if (\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
@@ -2913,7 +2917,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
                 // override some classes as these should never showup
                 $actControllerId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId();
-                if ($actControllerId == 'thankyou') {
+                if ('thankyou' === $actControllerId) {
                     $actControllerId = 'basket';
                 }
                 $this->_sToBasketLink .= 'cl=' . $actControllerId;
@@ -2935,9 +2939,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get stock status
+     * Get stock status.
      *
-     * @return integer
+     * @return int
      */
     public function getStockStatus()
     {
@@ -2947,7 +2951,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Get stock status as it was on loading this object.
      *
-     * @return integer
+     * @return int
      */
     public function getStockStatusOnLoad()
     {
@@ -2955,7 +2959,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get stock
+     * Get stock.
      *
      * @return float
      */
@@ -2968,6 +2972,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Returns formatted delivery date. If the date is past or not set ('0000-00-00') returns false.
      *
      * @deprecated since v6.2 (2020-02-26); use getRestockDate();
+     *
      * @return string|bool
      */
     public function getDeliveryDate()
@@ -2995,7 +3000,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @deprecated since v5.1 (2013-10-03); use getTPrice() and oxPrice modifier;
      *
-     * @return double|bool
+     * @return float|bool
      */
     public function getFTPrice()
     {
@@ -3012,7 +3017,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
      *
-     * @return double
+     * @return float
      */
     public function getFPrice()
     {
@@ -3027,10 +3032,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Resets oxremindactive status.
      * If remindActive status is 2, reminder is already sent.
      */
-    public function resetRemindStatus()
+    public function resetRemindStatus(): void
     {
         if (
-            $this->oxarticles__oxremindactive->value == 2 &&
+            2 === $this->oxarticles__oxremindactive->value &&
             $this->oxarticles__oxremindamount->value <= $this->oxarticles__oxstock->value
         ) {
             $this->oxarticles__oxremindactive->value = 1;
@@ -3042,7 +3047,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @deprecated since v5.1 (2013-10-03); use getPrice() and oxPrice modifier;
      *
-     * @return double
+     * @return float
      */
     public function getFNetPrice()
     {
@@ -3052,7 +3057,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns true if parent is not buyable
+     * Returns true if parent is not buyable.
      *
      * @return bool
      */
@@ -3062,7 +3067,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns true if article is not buyable
+     * Returns true if article is not buyable.
      *
      * @return bool
      */
@@ -3072,27 +3077,27 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Sets product state - buyable or not
+     * Sets product state - buyable or not.
      *
      * @param bool $blBuyable state - buyable or not (default false)
      */
-    public function setBuyableState($blBuyable = false)
+    public function setBuyableState($blBuyable = false): void
     {
         $this->_blNotBuyable = !$blBuyable;
     }
 
     /**
-     * Sets selectlists of current product
+     * Sets selectlists of current product.
      *
      * @param array $aSelList selectlist
      */
-    public function setSelectlist($aSelList)
+    public function setSelectlist($aSelList): void
     {
         $this->_aDispSelList = $aSelList;
     }
 
     /**
-     * Returns article picture
+     * Returns article picture.
      *
      * @param int $iIndex picture index
      *
@@ -3102,7 +3107,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     {
         if ($iIndex) {
             $sImgName = false;
-            if (!$this->_isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
+            if (!$this->_isFieldEmpty('oxarticles__oxpic' . $iIndex)) {
                 $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
             }
 
@@ -3124,26 +3129,24 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getIconUrl($iIndex = 0)
     {
         $sImgName = false;
-        $sDirname = "product/1/";
+        $sDirname = 'product/1/';
         if ($iIndex && !$this->_isFieldEmpty("oxarticles__oxpic{$iIndex}")) {
             $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
             $sDirname = "product/{$iIndex}/";
-        } elseif (!$this->_isFieldEmpty("oxarticles__oxicon")) {
+        } elseif (!$this->_isFieldEmpty('oxarticles__oxicon')) {
             $sImgName = basename($this->oxarticles__oxicon->value);
-            $sDirname = "product/icon/";
-        } elseif (!$this->_isFieldEmpty("oxarticles__oxpic1")) {
+            $sDirname = 'product/icon/';
+        } elseif (!$this->_isFieldEmpty('oxarticles__oxpic1')) {
             $sImgName = basename($this->oxarticles__oxpic1->value);
         }
 
         $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sIconsize');
 
-        $sIconUrl = \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getProductPicUrl($sDirname, $sImgName, $sSize, $iIndex);
-
-        return $sIconUrl;
+        return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getProductPicUrl($sDirname, $sImgName, $sSize, $iIndex);
     }
 
     /**
-     * Returns article thumbnail picture url
+     * Returns article thumbnail picture url.
      *
      * @param bool $bSsl to force SSL
      *
@@ -3152,11 +3155,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getThumbnailUrl($bSsl = null)
     {
         $sImgName = false;
-        $sDirname = "product/1/";
-        if (!$this->_isFieldEmpty("oxarticles__oxthumb")) {
+        $sDirname = 'product/1/';
+        if (!$this->_isFieldEmpty('oxarticles__oxthumb')) {
             $sImgName = basename($this->oxarticles__oxthumb->value);
-            $sDirname = "product/thumb/";
-        } elseif (!$this->_isFieldEmpty("oxarticles__oxpic1")) {
+            $sDirname = 'product/thumb/';
+        } elseif (!$this->_isFieldEmpty('oxarticles__oxpic1')) {
             $sImgName = basename($this->oxarticles__oxpic1->value);
         }
 
@@ -3166,7 +3169,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns article zoom picture url
+     * Returns article zoom picture url.
      *
      * @param int $iIndex picture index
      *
@@ -3174,10 +3177,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function getZoomPictureUrl($iIndex = '')
     {
-        $iIndex = (int) $iIndex;
-        if ($iIndex > 0 && !$this->_isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
-            $sImgName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
-            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sZoomImageSize");
+        $iIndex = (int)$iIndex;
+        if ($iIndex > 0 && !$this->_isFieldEmpty('oxarticles__oxpic' . $iIndex)) {
+            $sImgName = basename($this->{'oxarticles__oxpic' . $iIndex}->value);
+            $sSize = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sZoomImageSize');
 
             return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getProductPicUrl(
                 "product/{$iIndex}/",
@@ -3189,21 +3192,21 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * apply article and article use
+     * apply article and article use.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice target price
      */
-    public function applyVats(\OxidEsales\Eshop\Core\Price $oPrice)
+    public function applyVats(\OxidEsales\Eshop\Core\Price $oPrice): void
     {
         $this->_applyVAT($oPrice, $this->getArticleVat());
     }
 
     /**
-     * Applies discounts which should be applied in general case (for 0 amount)
+     * Applies discounts which should be applied in general case (for 0 amount).
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      */
-    public function applyDiscountsForVariant($oPrice)
+    public function applyDiscountsForVariant($oPrice): void
     {
         // apply discounts
         if (!$this->skipDiscounts()) {
@@ -3219,14 +3222,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get parent article
+     * Get parent article.
      *
      * @return Article
      */
     public function getParentArticle()
     {
         if ($this->oxarticles__oxparentid && ($sParentId = $this->oxarticles__oxparentid->value)) {
-            $sIndex = $sParentId . "_" . $this->getLanguage();
+            $sIndex = $sParentId . '_' . $this->getLanguage();
             if (!isset(self::$_aLoadedParents[$sIndex])) {
                 self::$_aLoadedParents[$sIndex] = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 self::$_aLoadedParents[$sIndex]->_blLoadPrice = false;
@@ -3243,28 +3246,28 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Updates article variants oxremindactive field, as variants inherit this setting from parent
+     * Updates article variants oxremindactive field, as variants inherit this setting from parent.
      */
-    public function updateVariantsRemind()
+    public function updateVariantsRemind(): void
     {
         // check if it is parent article
         if (!$this->isVariant() && $this->_hasAnyVariant()) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sUpdate = "update oxarticles
+            $sUpdate = 'update oxarticles
                         set oxremindactive = :oxremindactive
                         where oxparentid = :oxparentid and
-                              oxshopid = :oxshopid";
+                              oxshopid = :oxshopid';
             $oDb->execute($sUpdate, [
                 ':oxremindactive' => $this->oxarticles__oxremindactive->value,
                 ':oxparentid' => $this->getId(),
-                ':oxshopid' => $this->getShopId()
+                ':oxshopid' => $this->getShopId(),
             ]);
         }
     }
 
     /**
      * Returns product id (oxid)
-     * (required for interface oxIArticle)
+     * (required for interface oxIArticle).
      *
      * @return string
      */
@@ -3274,7 +3277,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns product parent id (oxparentid)
+     * Returns product parent id (oxparentid).
      *
      * @return string
      */
@@ -3284,7 +3287,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns false if object is not derived from oxorderarticle class
+     * Returns false if object is not derived from oxorderarticle class.
      *
      * @return bool
      */
@@ -3294,22 +3297,20 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns TRUE if product is variant, and false if not
-     *
-     * @return bool
+     * Returns TRUE if product is variant, and false if not.
      */
     public function isVariant(): bool
     {
         $isVariant = false;
         if (isset($this->oxarticles__oxparentid) && false !== $this->oxarticles__oxparentid) {
-            $isVariant = (bool) $this->oxarticles__oxparentid->value;
+            $isVariant = (bool)$this->oxarticles__oxparentid->value;
         }
 
         return $isVariant;
     }
 
     /**
-     * Returns TRUE if product is multidimensional variant, and false if not
+     * Returns TRUE if product is multidimensional variant, and false if not.
      *
      * @return bool
      */
@@ -3321,7 +3322,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * get Sql for loading price categories which include this article
+     * get Sql for loading price categories which include this article.
      *
      * @param string $sFields fields to load from oxCategories
      *
@@ -3332,7 +3333,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         if (!$sFields) {
             $sFields = 'oxid';
         }
-        $sSelectWhere = "select $sFields from " . $this->_getObjectViewName('oxcategories') . " where";
+        $sSelectWhere = "select $sFields from " . $this->_getObjectViewName('oxcategories') . ' where';
         $sQuotedPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($this->oxarticles__oxprice->value);
 
         return "$sSelectWhere oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice"
@@ -3349,15 +3350,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function inPriceCategory($categoryPriceId)
     {
-        return (bool) $this->fetchFirstInPriceCategory($categoryPriceId);
+        return (bool)$this->fetchFirstInPriceCategory($categoryPriceId);
     }
 
     /**
      * Fetch the article corresponding to this object in the price category with the given id.
      *
-     * @param string $categoryPriceId The id of the category we want to check, if this article is in.
+     * @param string $categoryPriceId the id of the category we want to check, if this article is in
      *
-     * @return string One, if the given article is in the given price category, else empty string.
+     * @return string one, if the given article is in the given price category, else empty string
      */
     protected function fetchFirstInPriceCategory($categoryPriceId)
     {
@@ -3365,17 +3366,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $query = $this->createFetchFirstInPriceCategorySql($categoryPriceId);
 
-        $result = $database->getOne($query);
-
-        return $result;
+        return $database->getOne($query);
     }
 
     /**
      * Create the sql for the fetchFirstInPriceCategory method.
      *
-     * @param string $categoryPriceId The price category id.
+     * @param string $categoryPriceId the price category id
      *
-     * @return string The wished sql.
+     * @return string the wished sql
      */
     protected function createFetchFirstInPriceCategorySql($categoryPriceId)
     {
@@ -3384,13 +3383,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $quotedPrice = $database->quote($this->oxarticles__oxprice->value);
         $quotedCategoryId = $database->quote($categoryPriceId);
 
-        $query = "select 1 from " . $this->_getObjectViewName('oxcategories') . " where oxid=$quotedCategoryId and"
+        return 'select 1 from ' . $this->_getObjectViewName('oxcategories') . " where oxid=$quotedCategoryId and"
                  . "(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $quotedPrice and oxpriceto >= $quotedPrice)"
                  . " or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $quotedPrice)"
                  . " or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $quotedPrice)"
-                 . ")";
-
-        return $query;
+                 . ')';
     }
 
     /**
@@ -3404,7 +3401,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns multidimensional variant structure
+     * Returns multidimensional variant structure.
      *
      * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
@@ -3429,7 +3426,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns first level variants from multidimensional variants list
+     * Returns first level variants from multidimensional variants list.
      *
      * @return \OxidEsales\Eshop\Application\Model\MdVariant
      */
@@ -3439,7 +3436,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return article picture file name
+     * Return article picture file name.
      *
      * @param string $sFieldName article picture field name
      * @param int    $iIndex     article picture index
@@ -3449,14 +3446,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getPictureFieldValue($sFieldName, $iIndex = null)
     {
         if ($sFieldName) {
-            $sFieldName = "oxarticles__" . $sFieldName . $iIndex;
+            $sFieldName = 'oxarticles__' . $sFieldName . $iIndex;
 
             return $this->$sFieldName->value;
         }
     }
 
     /**
-     * Get master zoom picture url
+     * Get master zoom picture url.
      *
      * @param int $iIndex picture index
      *
@@ -3465,11 +3462,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     public function getMasterZoomPictureUrl($iIndex)
     {
         $sPicUrl = false;
-        $sPicName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
+        $sPicName = basename($this->{'oxarticles__oxpic' . $iIndex}->value);
 
-        if ($sPicName && $sPicName != "nopic.jpg") {
-            $sPicUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl("master/product/" . $iIndex . "/" . $sPicName);
-            if (!$sPicUrl || basename($sPicUrl) == "nopic.jpg") {
+        if ($sPicName && 'nopic.jpg' !== $sPicName) {
+            $sPicUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl('master/product/' . $iIndex . '/' . $sPicName);
+            if (!$sPicUrl || 'nopic.jpg' === basename($sPicUrl)) {
                 $sPicUrl = false;
             }
         }
@@ -3478,7 +3475,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns oxarticles__oxunitname value processed by \OxidEsales\Eshop\Core\Language::translateString()
+     * Returns oxarticles__oxunitname value processed by \OxidEsales\Eshop\Core\Language::translateString().
      *
      * @return string
      */
@@ -3490,28 +3487,28 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return article downloadable file list (oxlist of oxfile)
+     * Return article downloadable file list (oxlist of oxfile).
      *
      * @param bool $blAddFromParent - return with parent files if not buyable
      *
-     * @return null|oxList of oxFile
+     * @return oxList|null of oxFile
      */
     public function getArticleFiles($blAddFromParent = false)
     {
-        if ($this->_aArticleFiles === null) {
+        if (null === $this->_aArticleFiles) {
             $this->_aArticleFiles = false;
 
-            $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = :oxartid";
+            $sQ = 'SELECT * FROM `oxfiles` WHERE `oxartid` = :oxartid';
 
             if (!Registry::getConfig()->getConfigParam('blVariantParentBuyable') && $blAddFromParent) {
-                $sQ .= " OR `oxartId` = :oxparentid";
+                $sQ .= ' OR `oxartId` = :oxparentid';
             }
 
             $oArticleFiles = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $oArticleFiles->init("oxfile");
+            $oArticleFiles->init('oxfile');
             $oArticleFiles->selectString($sQ, [
                 ':oxartid' => $this->getId(),
-                ':oxparentid' => $this->oxarticles__oxparentid->value
+                ':oxparentid' => $this->oxarticles__oxparentid->value,
             ]);
             $this->_aArticleFiles = $oArticleFiles;
         }
@@ -3520,7 +3517,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns oxarticles__oxisdownloadable value
+     * Returns oxarticles__oxisdownloadable value.
      *
      * @return bool
      */
@@ -3530,17 +3527,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Checks if articles has amount price
+     * Checks if articles has amount price.
      *
      * @return bool
      */
     public function hasAmountPrice()
     {
-        if (self::$_blHasAmountPrice === null) {
+        if (null === self::$_blHasAmountPrice) {
             self::$_blHasAmountPrice = false;
 
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "SELECT 1 FROM `oxprice2article` LIMIT 1";
+            $sQ = 'SELECT 1 FROM `oxprice2article` LIMIT 1';
 
             if ($oDb->getOne($sQ)) {
                 self::$_blHasAmountPrice = true;
@@ -3558,6 +3555,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param bool|null $forceCoreTableUsage   if true forces core table use, default is false [optional]
      *
      * @return array|\OxidEsales\Eshop\Application\Model\SimpleVariantList|\OxidEsales\Eshop\Application\Model\ArticleList
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadVariantList" in next major
      */
     protected function _loadVariantList($loadSimpleVariants, $blRemoveNotOrderables = true, $forceCoreTableUsage = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -3565,7 +3563,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $variants = [];
         if (($articleId = $this->getId())) {
             //do not load me as a parent later
-            self::$_aLoadedParents[$articleId . "_" . $this->getLanguage()] = $this;
+            self::$_aLoadedParents[$articleId . '_' . $this->getLanguage()] = $this;
 
             $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -3578,7 +3576,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
 
             // cache
-            $cacheKey = $loadSimpleVariants ? "simple" : "full";
+            $cacheKey = $loadSimpleVariants ? 'simple' : 'full';
             if ($blRemoveNotOrderables) {
                 if (isset($this->_aVariants[$cacheKey])) {
                     return $this->_aVariants[$cacheKey];
@@ -3602,8 +3600,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                     $variants->getBaseObject()->modifyCacheKey('_variants');
                 }
 
-                startProfile("selectVariants");
-                $forceCoreTableUsage = (bool) $forceCoreTableUsage;
+                startProfile('selectVariants');
+                $forceCoreTableUsage = (bool)$forceCoreTableUsage;
 
                 $baseObject = $variants->getBaseObject();
                 $this->updateVariantsBaseObject($baseObject, $forceCoreTableUsage);
@@ -3618,7 +3616,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                     $oMdVariants = oxNew(\OxidEsales\Eshop\Application\Model\VariantHandler::class);
                     $this->_blHasMdVariants = $oMdVariants->isMdVariant($variants->current());
                 }
-                stopProfile("selectVariants");
+                stopProfile('selectVariants');
             }
 
             //if we have variants then depending on config option the parent may be non buyable
@@ -3627,7 +3625,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
 
             //if we have variants, but all variants are incative means article may be non buyable (depends on config option)
-            if (!$config->getConfigParam('blVariantParentBuyable') && count($variants) == 0 && $this->_blHasVariants) {
+            if (!$config->getConfigParam('blVariantParentBuyable') && 0 === \count($variants) && $this->_blHasVariants) {
                 $this->_blNotBuyable = true;
             }
         }
@@ -3636,12 +3634,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Selects category IDs from given SQL statement and ID field name
+     * Selects category IDs from given SQL statement and ID field name.
      *
      * @param string $query sql statement
      * @param string $field category ID field name
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "selectCategoryIds" in next major
      */
     protected function _selectCategoryIds($query, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -3660,11 +3659,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Returns query for article categories select
+     * Returns query for article categories select.
      *
      * @param bool $blActCats select categories if all parents are active
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryIdsSelect" in next major
      */
     protected function _getCategoryIdsSelect($blActCats = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -3678,20 +3678,19 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
         $sActiveCategorySql = $blActCats ? $this->_getActiveCategorySelectSnippet() : '';
 
-        $sSelect = "select
+        return "select
                         oxobject2category.oxcatnid as oxcatnid
                      from $sO2CView as oxobject2category
                         left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid
                     where $sArticleIdSql and oxcategories.oxid is not null and oxcategories.oxactive = 1 $sActiveCategorySql
                     order by oxobject2category.oxtime";
-
-        return $sSelect;
     }
 
     /**
-     * Returns active category select snippet
+     * Returns active category select snippet.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveCategorySelectSnippet" in next major
      */
     protected function _getActiveCategorySelectSnippet() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -3705,16 +3704,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Calculates price of article (adds taxes, currency and discounts).
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
-     * @param double                       $dVat   vat value, optional, if passed, bypasses "bl_perfCalcVatOnlyForBasketOrder" config value
+     * @param float                        $dVat   vat value, optional, if passed, bypasses "bl_perfCalcVatOnlyForBasketOrder" config value
      *
      * @return \OxidEsales\Eshop\Core\Price
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "calculatePrice" in next major
      */
     protected function _calculatePrice($oPrice, $dVat = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // apply VAT only if configuration requires it
         if (isset($dVat) || !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
-            $this->_applyVAT($oPrice, isset($dVat) ? $dVat : $this->getArticleVat());
+            $this->_applyVAT($oPrice, $dVat ?? $this->getArticleVat());
         }
 
         // apply currency
@@ -3735,24 +3735,26 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Checks if parent has ANY variant assigned
+     * Checks if parent has ANY variant assigned.
      *
      * @param bool $blForceCoreTable force core table usage
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "hasAnyVariant" in next major
      */
     protected function _hasAnyVariant($blForceCoreTable = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (($sId = $this->getId())) {
-            if ($this->oxarticles__oxshopid->value == \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()) {
-                return (bool) $this->oxarticles__oxvarcount->value;
+            if ($this->oxarticles__oxshopid->value === \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()) {
+                return (bool)$this->oxarticles__oxvarcount->value;
             }
             $sArticleTable = $this->getViewName($blForceCoreTable);
 
             $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+
             return (bool)$db->getOne("select 1 from $sArticleTable where oxparentid = :oxparentid", [
-                ':oxparentid' => $sId
+                ':oxparentid' => $sId,
             ]);
         }
 
@@ -3760,45 +3762,46 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Check if stock status has changed since loading the article
+     * Check if stock status has changed since loading the article.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isStockStatusChanged" in next major
      */
     protected function _isStockStatusChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $this->_iStockStatus != $this->_iStockStatusOnLoad;
+        return $this->_iStockStatus !== $this->_iStockStatusOnLoad;
     }
 
     /**
-     * Check if visibility has changed since loading the article
+     * Check if visibility has changed since loading the article.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isVisibilityChanged" in next major
      */
     protected function _isVisibilityChanged() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $this->_isStockStatusChanged() && ($this->_iStockStatus == -1 || $this->_iStockStatusOnLoad == -1);
+        return $this->_isStockStatusChanged() && (-1 === $this->_iStockStatus || -1 === $this->_iStockStatusOnLoad);
     }
 
     /**
-     * inserts article long description to artextends table
+     * inserts article long description to artextends table.
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "saveArtLongDesc" in next major
      */
-    protected function _saveArtLongDesc() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveArtLongDesc(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (in_array("oxlongdesc", $this->_aSkipSaveFields)) {
+        if (\in_array('oxlongdesc', $this->_aSkipSaveFields, true)) {
             return;
         }
 
         if ($this->_blEmployMultilanguage) {
             $sValue = $this->getLongDescription()->getRawValue();
-            if ($sValue !== null) {
+            if (null !== $sValue) {
                 $oArtExt = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $oArtExt->init('oxartextends');
-                $oArtExt->setLanguage((int) $this->getLanguage());
+                $oArtExt->setLanguage((int)$this->getLanguage());
                 if (!$oArtExt->load($this->getId())) {
                     $oArtExt->setId($this->getId());
                 }
@@ -3822,7 +3825,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                         $sLongDesc = null;
                         if ($this->$sField instanceof \OxidEsales\Eshop\Core\Field) {
                             $sLongDesc = $this->$sField->getRawValue();
-                        } elseif (is_object($this->$sField)) {
+                        } elseif (\is_object($this->$sField)) {
                             $sLongDesc = $this->$sField->value;
                         }
                         if (isset($sLongDesc)) {
@@ -3838,9 +3841,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Removes object data fields (oxarticles__oxtimestamp, oxarticles__oxparentid, oxarticles__oxinsert).
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "skipSaveFields" in next major
      */
-    protected function _skipSaveFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _skipSaveFields(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_aSkipSaveFields = [];
 
@@ -3849,7 +3853,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $this->_aSkipSaveFields[] = 'oxinsert';
         $this->_addSkippedSaveFieldsForMapping();
 
-        if (!$this->_blAllowEmptyParentId && (!isset($this->oxarticles__oxparentid->value) || $this->oxarticles__oxparentid->value == '')) {
+        if (!$this->_blAllowEmptyParentId && (!isset($this->oxarticles__oxparentid->value) || '' === $this->oxarticles__oxparentid->value)) {
             $this->_aSkipSaveFields[] = 'oxparentid';
         }
     }
@@ -3861,14 +3865,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array $aDiscounts     Discount array
      * @param array $aItemDiscounts Discount array
      *
-     * @return array $aDiscounts
+     * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "mergeDiscounts" in next major
      */
     protected function _mergeDiscounts($aDiscounts, $aItemDiscounts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         foreach ($aItemDiscounts as $sKey => $oDiscount) {
             // add prices of the same discounts
-            if (array_key_exists($sKey, $aDiscounts)) {
+            if (\array_key_exists($sKey, $aDiscounts)) {
                 $aDiscounts[$sKey]->dDiscount += $oDiscount->dDiscount;
             } else {
                 $aDiscounts[$sKey] = $oDiscount;
@@ -3879,9 +3884,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * get user Group A, B or C price, returns db price if user is not in groups
+     * get user Group A, B or C price, returns db price if user is not in groups.
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getGroupPrice" in next major
      */
     protected function _getGroupPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -3891,7 +3897,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $dPrice = $this->$sVarName->value;
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && 0 === (float)$dPrice) {
             $dPrice = $this->oxarticles__oxprice->value;
         }
 
@@ -3904,12 +3910,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @param int $amount Basket amount
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAmountPrice" in next major
      */
     protected function _getAmountPrice($amount = 1) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        startProfile("_getAmountPrice");
+        startProfile('_getAmountPrice');
 
         $dPrice = $this->_getGroupPrice();
         $oAmtPrices = $this->_getAmountPriceList();
@@ -3923,18 +3930,19 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
         }
 
-        stopProfile("_getAmountPrice");
+        stopProfile('_getAmountPrice');
 
         return $dPrice;
     }
 
     /**
-     * Modifies article price according to selected select list value
+     * Modifies article price according to selected select list value.
      *
-     * @param double $dPrice      Modifiable price
-     * @param array  $aChosenList Selection list array
+     * @param float $dPrice      Modifiable price
+     * @param array $aChosenList Selection list array
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "modifySelectListPrice" in next major
      */
     protected function _modifySelectListPrice($dPrice, $aChosenList = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -3947,9 +3955,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             foreach ($aSelLists as $key => $aSel) {
                 if (isset($aChosenList[$key]) && isset($aSel[$aChosenList[$key]])) {
                     $oSel = $aSel[$aChosenList[$key]];
-                    if ($oSel->priceUnit == 'abs') {
+                    if ('abs' === $oSel->priceUnit) {
                         $dPrice += $oSel->price;
-                    } elseif ($oSel->priceUnit == '%') {
+                    } elseif ('%' === $oSel->priceUnit) {
                         $dPrice += \OxidEsales\Eshop\Core\Price::percent($dPrice, $oSel->price);
                     }
                 }
@@ -3960,11 +3968,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Fills amount price list object and sets amount price for article object
+     * Fills amount price list object and sets amount price for article object.
      *
      * @param array $aAmPriceList Amount price list
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "fillAmountPriceList" in next major
      */
     protected function _fillAmountPriceList($aAmPriceList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4005,7 +4014,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Collects and returns active/all variant ids of article.
      *
-     * @param bool $blActiveVariants Parameter to load only active variants.
+     * @param bool $blActiveVariants parameter to load only active variants
      *
      * @return array
      */
@@ -4014,17 +4023,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $aSelect = [];
         $sId = $this->getId();
         if ($sId) {
-            $sActiveSqlSnippet = "";
+            $sActiveSqlSnippet = '';
             if ($blActiveVariants) {
-                $sActiveSqlSnippet = " and " . $this->getSqlActiveSnippet(true);
+                $sActiveSqlSnippet = ' and ' . $this->getSqlActiveSnippet(true);
             }
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-            $sQ = "select oxid from " . $this->getViewName(true) . "
-                where oxparentid = :oxparentid" . $sActiveSqlSnippet . " order by oxsort";
+            $sQ = 'select oxid from ' . $this->getViewName(true) . '
+                where oxparentid = :oxparentid' . $sActiveSqlSnippet . ' order by oxsort';
             $oRs = $oDb->select($sQ, [
-                ':oxparentid' => $sId
+                ':oxparentid' => $sId,
             ]);
-            if ($oRs != false && $oRs->count() > 0) {
+            if (false !== $oRs && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
                     $aSelect[] = reset($oRs->fields);
                     $oRs->fetchRow();
@@ -4036,9 +4045,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * retrieve article VAT (cached)
+     * retrieve article VAT (cached).
      *
-     * @return double
+     * @return float
      */
     public function getArticleVat()
     {
@@ -4050,32 +4059,34 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Applies VAT to article
+     * Applies VAT to article.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
-     * @param double                       $dVat   VAT percent
+     * @param float                        $dVat   VAT percent
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "applyVAT" in next major
      */
-    protected function _applyVAT(\OxidEsales\Eshop\Core\Price $oPrice, $dVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _applyVAT(\OxidEsales\Eshop\Core\Price $oPrice, $dVat): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile(__FUNCTION__);
         $oPrice->setVAT($dVat);
         /** @var \OxidEsales\Eshop\Application\Model\VatSelector $oVatSelector */
         $oVatSelector = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\VatSelector::class);
-        if (($dVat = $oVatSelector->getArticleUserVat($this)) !== false) {
+        if (false !== ($dVat = $oVatSelector->getArticleUserVat($this))) {
             $oPrice->setUserVat($dVat);
         }
         stopProfile(__FUNCTION__);
     }
 
     /**
-     * Applies currency factor
+     * Applies currency factor.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice Price object
      * @param object                       $oCur   Currency object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "applyCurrency" in next major
      */
-    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!$oCur) {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
@@ -4085,13 +4096,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * gets attribs string
+     * gets attribs string.
      *
      * @param string $sAttributeSql Attribute selection snippet
      * @param int    $iCnt          The number of selected attributes
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAttribsString" in next major
      */
-    protected function _getAttribsString(&$sAttributeSql, &$iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getAttribsString(&$sAttributeSql, &$iCnt): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // we do not use lists here as we don't need this overhead right now
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -4103,11 +4115,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sAttributeSql = '';
         $aAttributeIds = $oDb->getCol($sSelect, [
             ':oxobjectid' => $this->getId(),
-            ':oxparentid' => $this->getParentId()
+            ':oxparentid' => $this->getParentId(),
         ]);
-        if (is_array($aAttributeIds) && count($aAttributeIds)) {
+        if (\is_array($aAttributeIds) && \count($aAttributeIds)) {
             $aAttributeIds = array_unique($aAttributeIds);
-            $iCnt = count($aAttributeIds);
+            $iCnt = \count($aAttributeIds);
             $sAttributeSql .= 't1.oxattrid IN ( ' . implode(',', $oDb->quoteArray($aAttributeIds)) . ') ';
         }
     }
@@ -4119,6 +4131,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param int    $iCnt          Similar list article count
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSimList" in next major
      */
     protected function _getSimList($sAttributeSql, $iCnt) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4141,11 +4154,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // we do not use lists here as we don't need this overhead right now
         $sSelect = "select oxobjectid from oxobject2attribute as t1 where
                     ( $sAttributeSql )
-                    and t1.oxobjectid NOT IN (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aExcludeIds)) . ")
-                    group by t1.oxobjectid having count(*) >= :minhit LIMIT 0, 20";
+                    and t1.oxobjectid NOT IN (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aExcludeIds)) . ')
+                    group by t1.oxobjectid having count(*) >= :minhit LIMIT 0, 20';
 
         return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol($sSelect, [
-            ':minhit' => $iHitMin
+            ':minhit' => $iHitMin,
         ]);
     }
 
@@ -4156,12 +4169,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param array  $aList         A list of original articles
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "generateSimListSearchStr" in next major
      */
     protected function _generateSimListSearchStr($sArticleTable, $aList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFieldList = $this->getSelectFields();
-        $aList = array_slice($aList, 0, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofSimilarArticles'));
+        $aList = \array_slice($aList, 0, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofSimilarArticles'));
 
         $sSearch = "select $sFieldList from $sArticleTable where " . $this->getSqlActiveSnippet() . "  and $sArticleTable.oxissearch = 1 and $sArticleTable.oxid in ( ";
 
@@ -4174,12 +4188,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Generates SearchString for getCategory()
+     * Generates SearchString for getCategory().
      *
      * @param string $sOXID            Article ID
      * @param bool   $blSearchPriceCat Whether to perform the search within price categories
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "generateSearchStr" in next major
      */
     protected function _generateSearchStr($sOXID, $blSearchPriceCat = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4193,15 +4208,17 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                          {$sCatView}.oxid = oxobject2category.oxcatnid
                          where oxobject2category.oxobjectid=" . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sOXID) . " and {$sCatView}.oxid is not null ";
         }
+
         return "select {$sCatView}.* from {$sCatView} where
                       '{$this->oxarticles__oxprice->value}' >= {$sCatView}.oxpricefrom and
                       '{$this->oxarticles__oxprice->value}' <= {$sCatView}.oxpriceto ";
     }
 
     /**
-     * Generates SQL select string for getCustomerAlsoBoughtThisProduct
+     * Generates SQL select string for getCustomerAlsoBoughtThisProduct.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "generateSearchStrForCustomerBought" in next major
      */
     protected function _generateSearchStrForCustomerBought() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4224,19 +4241,19 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         $params = [
             ':oxparentid' => $sParentIdForVariants,
-            ':oxid' => $this->oxarticles__oxid->value
+            ':oxid' => $this->oxarticles__oxid->value,
         ];
         $oRs = $oDb->select("select oxid from {$sArtTable}
             where oxparentid = :oxparentid
             and oxid != :oxid ", $params);
-        if ($oRs != false && $oRs->count() > 0) {
+        if (false !== $oRs && $oRs->count() > 0) {
             while (!$oRs->EOF) {
-                $sIn .= ", " . $oDb->quote(current($oRs->fields)) . " ";
+                $sIn .= ', ' . $oDb->quote(current($oRs->fields)) . ' ';
                 $oRs->fetchRow();
             }
         }
 
-        $iLimit = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCustomerWhoArticles');
+        $iLimit = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCustomerWhoArticles');
         $iLimit = $iLimit ? ($iLimit * 10) : 50;
 
         // building sql (optimized)
@@ -4259,13 +4276,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Generates select string for isAssignedToCategory()
+     * Generates select string for isAssignedToCategory().
      *
      * @param string $sOXID        Article ID
      * @param string $sCatId       Category ID
      * @param bool   $dPriceFromTo Article price for price categories
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "generateSelectCatStr" in next major
      */
     protected function _generateSelectCatStr($sOXID, $sCatId, $dPriceFromTo = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4281,7 +4299,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sSelect = "select oxobject2category.oxcatnid from $sO2CView as oxobject2category ";
             $sSelect .= "left join $sCategoryView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid ";
             $sSelect .= "where oxobject2category.oxcatnid=$sCatId and oxobject2category.oxobjectid=$sOXID ";
-            $sSelect .= "and oxcategories.oxactive = 1 order by oxobject2category.oxtime ";
+            $sSelect .= 'and oxcategories.oxactive = 1 order by oxobject2category.oxtime ';
         } else {
             $dPriceFromTo = $oDb->quote($dPriceFromTo);
             $sSelect = "select oxcategories.oxid from $sCategoryView as oxcategories where ";
@@ -4293,9 +4311,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Collecting assigned to article amount-price list
+     * Collecting assigned to article amount-price list.
      *
-     * @deprecated on b-dev (2015-04-02); use buildAmountPriceList().
+     * @deprecated on b-dev (2015-04-02); use buildAmountPriceList()
      *
      * @return \OxidEsales\Eshop\Application\Model\AmountPriceList
      */
@@ -4311,7 +4329,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     protected function buildAmountPriceList()
     {
-        if ($this->getAmountPriceList() === null) {
+        if (null === $this->getAmountPriceList()) {
             /** @var \OxidEsales\Eshop\Application\Model\AmountPriceList $oAmPriceList */
             $oAmPriceList = oxNew(\OxidEsales\Eshop\Application\Model\AmountPriceList::class);
             $this->setAmountPriceList($oAmPriceList);
@@ -4344,27 +4362,27 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sFieldName Field name
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isFieldEmpty" in next major
      */
     protected function _isFieldEmpty($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $mValue = $this->$sFieldName->value;
 
-        if (is_null($mValue)) {
+        if (null === $mValue) {
             return true;
         }
 
-        if ($mValue === '') {
+        if ('' === $mValue) {
             return true;
         }
 
         // certain fields with zero value treat as empty
         $aZeroValueFields = ['oxarticles__oxprice', 'oxarticles__oxvat', 'oxarticles__oxunitquantity'];
 
-        if (!$mValue && in_array($sFieldName, $aZeroValueFields)) {
+        if (!$mValue && \in_array($sFieldName, $aZeroValueFields, true)) {
             return true;
         }
-
 
         if (!strcmp($mValue, '0000-00-00 00:00:00') || !strcmp($mValue, '0000-00-00')) {
             return true;
@@ -4373,20 +4391,20 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sFieldName = strtolower($sFieldName);
 
         if (
-            $sFieldName == 'oxarticles__oxicon' && (strpos($mValue, "nopic_ico.jpg") !== false || strpos(
+            'oxarticles__oxicon' === $sFieldName && (false !== strpos($mValue, 'nopic_ico.jpg') || false !== strpos(
                 $mValue,
-                "nopic.jpg"
-            ) !== false)
+                'nopic.jpg'
+            ))
         ) {
             return true;
         }
 
         if (
-            strpos($mValue, "nopic.jpg") !== false && ($sFieldName == 'oxarticles__oxthumb' || substr(
+            false !== strpos($mValue, 'nopic.jpg') && ('oxarticles__oxthumb' === $sFieldName || 'oxarticles__oxpic' === substr(
                 $sFieldName,
                 0,
                 17
-            ) == 'oxarticles__oxpic' || substr($sFieldName, 0, 18) == 'oxarticles__oxzoom')
+            ) || 'oxarticles__oxzoom' === substr($sFieldName, 0, 18))
         ) {
             return true;
         }
@@ -4395,14 +4413,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Assigns parent field values to article
+     * Assigns parent field values to article.
      *
      * @param string $sFieldName field name
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignParentFieldValue" in next major
      */
-    protected function _assignParentFieldValue($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignParentFieldValue($sFieldName): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (!($oParentArticle = $this->getParentArticle())) {
             return;
@@ -4411,14 +4428,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $sCopyFieldName = $this->_getFieldLongName($sFieldName);
 
         // assigning only these which parent article has
-        if ($oParentArticle->$sCopyFieldName != null) {
+        if ($oParentArticle->$sCopyFieldName !== null) {
             // only overwrite database values
-            if (substr($sCopyFieldName, 0, 12) != 'oxarticles__') {
+            if ('oxarticles__' !== substr($sCopyFieldName, 0, 12)) {
                 return;
             }
 
             //do not copy certain fields
-            if (in_array($sCopyFieldName, $this->_aNonCopyParentFields)) {
+            if (\in_array($sCopyFieldName, $this->_aNonCopyParentFields, true)) {
                 return;
             }
 
@@ -4435,26 +4452,28 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Detects if field is an image field by field name
+     * Detects if field is an image field by field name.
      *
      * @param string $sFieldName Field name
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isImageField" in next major
      */
     protected function _isImageField($sFieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr(
+        return stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr(
             $sFieldName,
             '_oxzoom'
-        ) || stristr($sFieldName, '_oxpic'));
+        ) || stristr($sFieldName, '_oxpic');
     }
 
     /**
-     * Assigns parent field values to article
+     * Assigns parent field values to article.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignParentFieldValues" in next major
      */
-    protected function _assignParentFieldValues() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignParentFieldValues(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile('articleAssignParentInternal');
         if ($this->oxarticles__oxparentid->value) {
@@ -4469,10 +4488,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * if we have variants then depending on config option the parent may be non buyable
+     * if we have variants then depending on config option the parent may be non buyable.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignNotBuyableParent" in next major
      */
-    protected function _assignNotBuyableParent() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignNotBuyableParent(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
             !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantParentBuyable') &&
@@ -4483,10 +4503,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Assigns stock status to article
+     * Assigns stock status to article.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignStock" in next major
      */
-    protected function _assignStock() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignStock(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         // -----------------------------------
@@ -4495,7 +4516,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // #1125 A. must round (using floor()) value taken from database and cast to int
         if (!$myConfig->getConfigParam('blAllowUnevenAmounts') && !$this->isAdmin()) {
-            $this->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field((int) floor($this->oxarticles__oxstock->value));
+            $this->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field((int)floor($this->oxarticles__oxstock->value));
         }
         //GREEN light
         $this->_iStockStatus = 0;
@@ -4503,7 +4524,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // if we have flag /*1 or*/ 4 - we show always green light
         if (
             $myConfig->getConfigParam('blUseStock') && /*$this->oxarticles__oxstockflag->value != 1 && */
-            $this->oxarticles__oxstockflag->value != 4
+            4 !== $this->oxarticles__oxstockflag->value
         ) {
             //ORANGE light
             $iStock = $this->oxarticles__oxstock->value;
@@ -4522,9 +4543,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             }
         }
 
-
         // stock
-        if ($myConfig->getConfigParam('blUseStock') && ($this->oxarticles__oxstockflag->value == 3 || $this->oxarticles__oxstockflag->value == 2)) {
+        if ($myConfig->getConfigParam('blUseStock') && (3 === $this->oxarticles__oxstockflag->value || 2 === $this->oxarticles__oxstockflag->value)) {
             $iOnStock = $this->oxarticles__oxstock->value;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
                 $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -4552,7 +4572,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         //setting to non buyable when variant list is empty (for example not loaded or inactive) and $this is non buyable parent
-        if (!$this->_blNotBuyable && $this->_blNotBuyableParent && $this->oxarticles__oxvarcount->value == 0) {
+        if (!$this->_blNotBuyable && $this->_blNotBuyableParent && 0 === $this->oxarticles__oxvarcount->value) {
             $this->setBuyableState(false);
         }
     }
@@ -4562,7 +4582,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      *
      * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.
      */
-    protected function _assignPersistentParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignPersistentParam(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // Persistent Parameter Handling
         $aPersParam = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('persparam');
@@ -4572,10 +4592,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * assigns dynimagedir to article
+     * assigns dynimagedir to article.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignDynImageDir" in next major
      */
-    protected function _assignDynImageDir() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignDynImageDir(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -4589,9 +4610,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Adds a flag if article is on comparisonlist.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignComparisonListFlag" in next major
      */
-    protected function _assignComparisonListFlag() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignComparisonListFlag(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #657 add a flag if article is on comparisonlist
 
@@ -4607,6 +4629,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * parent::_insert() and returns insertion status.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4614,7 +4637,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // set oxinsert
         $sNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
         $this->oxarticles__oxinsert = new \OxidEsales\Eshop\Core\Field($sNow);
-        if (!is_object($this->oxarticles__oxsubclass) || $this->oxarticles__oxsubclass->value == '') {
+        if (!\is_object($this->oxarticles__oxsubclass) || '' === $this->oxarticles__oxsubclass->value) {
             $this->oxarticles__oxsubclass = new \OxidEsales\Eshop\Core\Field('oxarticle');
         }
 
@@ -4622,9 +4645,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Executes \OxidEsales\Eshop\Application\Model\Article::_skipSaveFields() and updates article information
+     * Executes \OxidEsales\Eshop\Application\Model\Article::_skipSaveFields() and updates article information.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4638,11 +4662,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Deletes records in database
+     * Deletes records in database.
      *
      * @param string $articleId Article ID
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "deleteRecords" in next major
      */
     protected function _deleteRecords($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -4652,91 +4677,92 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         //remove other records
         $sDelete = 'delete from oxobject2article where oxarticlenid = :articleId or oxobjectid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxobject2attribute where oxobjectid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxobject2category where oxobjectid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxobject2selectlist where oxobjectid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxprice2article where oxartid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxreviews where oxtype="oxarticle" and oxobjectid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxratings where oxobjectid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxaccessoire2article where oxobjectid = :articleId or oxarticlenid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         //#1508C - deleting oxobject2delivery entries added
         $sDelete = 'delete from oxobject2delivery where oxobjectid = :articleId and oxtype=\'oxarticles\' ';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxartextends where oxid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         //delete the record
-        foreach ($this->_getLanguageSetTables("oxartextends") as $sSetTbl) {
+        foreach ($this->_getLanguageSetTables('oxartextends') as $sSetTbl) {
             $oDb->execute("delete from $sSetTbl where oxid = :articleId", [
-                ':articleId' => $articleId
+                ':articleId' => $articleId,
             ]);
         }
 
         $sDelete = 'delete from oxactions2article where oxartid = :articleId';
         $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
 
         $sDelete = 'delete from oxobject2list where oxobjectid = :articleId';
 
         return $oDb->execute($sDelete, [
-            ':articleId' => $articleId
+            ':articleId' => $articleId,
         ]);
     }
 
     /**
-     * Deletes variant records
+     * Deletes variant records.
      *
      * @param string $sOXID Article ID
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "deleteVariantRecords" in next major
      */
-    protected function _deleteVariantRecords($sOXID) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _deleteVariantRecords($sOXID): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sOXID) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             //collect variants to remove recursively
             $query = 'select oxid from ' . $this->getViewName() . ' where oxparentid = :oxparentid';
             $rs = $database->select($query, [
-                ':oxparentid' => $sOXID
+                ':oxparentid' => $sOXID,
             ]);
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-            if ($rs != false && $rs->count() > 0) {
+            if (false !== $rs && $rs->count() > 0) {
                 while (!$rs->EOF) {
                     $oArticle->setId($rs->fields[0]);
                     $oArticle->delete();
@@ -4747,10 +4773,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Delete pics
+     * Delete pics.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "deletePics" in next major
      */
-    protected function _deletePics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _deletePics(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oPictureHandler = \OxidEsales\Eshop\Core\Registry::getPictureHandler();
@@ -4763,7 +4790,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         // deleting master image and all generated images
         $iPicCount = $myConfig->getConfigParam('iPicCount');
-        for ($i = 1; $i <= $iPicCount; $i++) {
+        for ($i = 1; $i <= $iPicCount; ++$i) {
             $oPictureHandler->deleteArticleMasterPicture($this, $i);
         }
     }
@@ -4774,9 +4801,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * @param string $sOxid           object to reset id ID
      * @param string $sVendorId       Vendor ID
      * @param string $sManufacturerId Manufacturer ID
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeResetCounts" in next major
      */
-    protected function _onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _onChangeResetCounts($sOxid, $sVendorId = null, $sManufacturerId = null): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount();
 
@@ -4799,15 +4827,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Updates article stock. This method is supposed to be called on article change trigger.
      *
      * @param string $parentId product parent id
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeUpdateStock" in next major
      */
-    protected function _onChangeUpdateStock($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _onChangeUpdateStock($parentId): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $query = 'SELECT oxstock, oxvendorid, oxmanufacturerid FROM oxarticles WHERE oxid = :oxid';
             $rs = $database->select($query, [
-                ':oxid' => $parentId
+                ':oxid' => $parentId,
             ]);
             $oldStock = $rs->fields[0];
             $vendorId = $rs->fields[1];
@@ -4817,14 +4846,14 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 WHERE oxparentid = :oxparentid
                 AND ' . $this->getSqlActiveSnippet(true) . '
                 AND oxstock > 0 ';
-            $stock = (float) $database->getOne($query, [
-                ':oxparentid' => $parentId
+            $stock = (float)$database->getOne($query, [
+                ':oxparentid' => $parentId,
             ]);
 
             $query = 'UPDATE oxarticles SET oxvarstock = :oxvarstock WHERE oxid = :oxid';
             $database->execute($query, [
                 ':oxvarstock' => $stock,
-                ':oxid' => $parentId
+                ':oxid' => $parentId,
             ]);
 
             //now lets update category counts
@@ -4835,7 +4864,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             if ($oldStock < 0) {
                 $oldStock = 0;
             }
-            if ($this->oxarticles__oxstockflag->value == 2 && $oldStock xor $stock) {
+            if (2 === $this->oxarticles__oxstockflag->value && $oldStock xor $stock) {
                 //means the stock status could be changed (oxstock turns from 0 to 1 or from 1 to 0)
                 // so far we leave it like this but later we could move all count resets to one or two functions
                 $this->_onChangeResetCounts($parentId, $vendorId, $manufacturerId);
@@ -4847,14 +4876,15 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Resets article count cache when stock value is zero and article goes offline.
      *
      * @param string $sOxid product id
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeStockResetCount" in next major
      */
-    protected function _onChangeStockResetCount($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _onChangeStockResetCount($sOxid): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         if (
-            $myConfig->getConfigParam('blUseStock') && $this->oxarticles__oxstockflag->value == 2 &&
+            $myConfig->getConfigParam('blUseStock') && 2 === $this->oxarticles__oxstockflag->value &&
             ($this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value) <= 0
         ) {
             $this->_onChangeResetCounts(
@@ -4869,22 +4899,23 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Updates variant count. This method is supposed to be called on article change trigger.
      *
      * @param string $parentId Parent ID
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "onChangeUpdateVarCount" in next major
      */
-    protected function _onChangeUpdateVarCount($parentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _onChangeUpdateVarCount($parentId): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($parentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-            $query = "SELECT COUNT(*) AS varcount FROM oxarticles WHERE oxparentid = :oxparentid";
-            $varCount = (int) $database->getOne($query, [
-                ':oxparentid' => $parentId
+            $query = 'SELECT COUNT(*) AS varcount FROM oxarticles WHERE oxparentid = :oxparentid';
+            $varCount = (int)$database->getOne($query, [
+                ':oxparentid' => $parentId,
             ]);
 
-            $query = "UPDATE oxarticles SET oxvarcount = :oxvarcount WHERE oxid = :oxid";
+            $query = 'UPDATE oxarticles SET oxvarcount = :oxvarcount WHERE oxid = :oxid';
             $database->execute($query, [
                 ':oxvarcount' => $varCount,
-                ':oxid' => $parentId
+                ':oxid' => $parentId,
             ]);
         }
     }
@@ -4893,9 +4924,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Updates variant min price. This method is supposed to be called on article change trigger.
      *
      * @param string $sParentId Parent ID
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setVarMinMaxPrice" in next major
      */
-    protected function _setVarMinMaxPrice($sParentId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setVarMinMaxPrice($sParentId): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sParentId) {
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -4908,7 +4940,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 WHERE ' . $this->getSqlActiveSnippet(true) . '
                     AND ( `oxarticles`.`oxparentid` = :oxparentid )';
             $aPrices = $database->getRow($sQ, [
-                ':oxparentid' => $sParentId
+                ':oxparentid' => $sParentId,
             ]);
             if (isset($aPrices['varminprice'], $aPrices['varmaxprice'])) {
                 $sQ = '
@@ -4921,7 +4953,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                 $params = [
                     ':oxvarminprice' => $aPrices['varminprice'],
                     ':oxvarmaxprice' => $aPrices['varmaxprice'],
-                    ':oxid' => $sParentId
+                    ':oxid' => $sParentId,
                 ];
             } else {
                 $sQ = '
@@ -4931,36 +4963,39 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                         `oxvarmaxprice` = `oxprice`
                     WHERE
                         `oxid` = :oxid';
-                $params = [':oxid' => $sParentId];
+                $params = [
+                    ':oxid' => $sParentId,
+                ];
             }
             $database->execute($sQ, $params);
         }
     }
 
     /**
-     * Checks if article has uploaded master image for selected picture
+     * Checks if article has uploaded master image for selected picture.
      *
      * @param int $iIndex master picture index
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "hasMasterImage" in next major
      */
     protected function _hasMasterImage($iIndex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sPicName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
+        $sPicName = basename($this->{'oxarticles__oxpic' . $iIndex}->value);
 
-        if ($sPicName == "nopic.jpg" || $sPicName == "") {
+        if ('nopic.jpg' === $sPicName || '' === $sPicName) {
             return false;
         }
         if (
             $this->isVariant() &&
             $this->getParentArticle() &&
-            $this->getParentArticle()->{"oxarticles__oxpic" . $iIndex}->value == $this->{"oxarticles__oxpic" . $iIndex}->value
+            $this->getParentArticle()->{'oxarticles__oxpic' . $iIndex}->value === $this->{'oxarticles__oxpic' . $iIndex}->value
         ) {
             return false;
         }
 
-        $sMasterPic = 'product/' . $iIndex . "/" . $sPicName;
+        $sMasterPic = 'product/' . $iIndex . '/' . $sPicName;
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getMasterPicturePath($sMasterPic)) {
             return true;
@@ -4969,16 +5004,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return false;
     }
 
-
     /**
-     * Checks and return true if price view mode is netto
+     * Checks and return true if price view mode is netto.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isPriceViewModeNetto" in next major
      */
     protected function _isPriceViewModeNetto() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $blResult = (bool) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
+        $blResult = (bool)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getArticleUser();
         if ($oUser) {
             $blResult = $oUser->isPriceViewModeNetto();
@@ -4987,13 +5022,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $blResult;
     }
 
-
     /**
-     * Depending on view mode prepare oxPrice object
+     * Depending on view mode prepare oxPrice object.
      *
      * @param bool $blCalculationModeNetto - if calculation mode netto - true
      *
      * @return \OxidEsales\Eshop\Core\Price
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceObject" in next major
      */
     protected function _getPriceObject($blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5001,7 +5036,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         /** @var \OxidEsales\Eshop\Core\Price $oPrice */
         $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
 
-        if ($blCalculationModeNetto === null) {
+        if (null === $blCalculationModeNetto) {
             $blCalculationModeNetto = $this->_isPriceViewModeNetto();
         }
 
@@ -5015,11 +5050,12 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Depending on view mode prepare price for viewing
+     * Depending on view mode prepare price for viewing.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice price object
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceForView" in next major
      */
     protected function _getPriceForView($oPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5033,20 +5069,20 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $dPrice;
     }
 
-
     /**
-     * Depending on view mode prepare price before calculation
+     * Depending on view mode prepare price before calculation.
      *
-     * @param double $dPrice                 - price
-     * @param double $dVat                   - VAT
-     * @param bool   $blCalculationModeNetto - if calculation mode netto - true
+     * @param float $dPrice                 - price
+     * @param float $dVat                   - VAT
+     * @param bool  $blCalculationModeNetto - if calculation mode netto - true
      *
-     * @return double
+     * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "preparePrice" in next major
      */
     protected function _preparePrice($dPrice, $dVat, $blCalculationModeNetto = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($blCalculationModeNetto === null) {
+        if (null === $blCalculationModeNetto) {
             $blCalculationModeNetto = $this->_isPriceViewModeNetto();
         }
 
@@ -5062,11 +5098,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $dPrice;
     }
 
-
     /**
-     * Return price suffix
+     * Return price suffix.
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUserPriceSufix" in next major
      */
     protected function _getUserPriceSufix() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5088,19 +5122,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return prepared price
+     * Return prepared price.
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "getPrice" in next major
      */
     protected function _getPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sPriceSuffix = $this->_getUserPriceSufix();
-        if ($sPriceSuffix === '') {
+        if ('' === $sPriceSuffix) {
             $dPrice = $this->oxarticles__oxprice->value;
         } else {
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices')) {
-                $dPrice = ($this->{'oxarticles__oxprice' . $sPriceSuffix}->value != 0) ? $this->{'oxarticles__oxprice' . $sPriceSuffix}->value : $this->oxarticles__oxprice->value;
+                $dPrice = (0 !== $this->{'oxarticles__oxprice' . $sPriceSuffix}->value) ? $this->{'oxarticles__oxprice' . $sPriceSuffix}->value : $this->oxarticles__oxprice->value;
             } else {
                 $dPrice = $this->{'oxarticles__oxprice' . $sPriceSuffix}->value;
             }
@@ -5110,19 +5143,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return variant min price
+     * Return variant min price.
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "getVarMinPrice" in next major
      */
     protected function _getVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_dVarMinPrice === null) {
+        if (null === $this->_dVarMinPrice) {
             $dPrice = $this->_getShopVarMinPrice();
 
-            if (is_null($dPrice)) {
+            if (null === $dPrice) {
                 $sPriceSuffix = $this->_getUserPriceSufix();
-                if ($sPriceSuffix === '') {
+                if ('' === $sPriceSuffix) {
                     $dPrice = $this->oxarticles__oxvarminprice->value;
                 } else {
                     $sSql = 'SELECT ';
@@ -5137,7 +5169,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                         AND ( `oxparentid` = :oxparentid )';
 
                     $dPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSql, [
-                        ':oxparentid' => $this->getId()
+                        ':oxparentid' => $this->getId(),
                     ]);
                 }
             }
@@ -5149,19 +5181,18 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Return variant max price
+     * Return variant max price.
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "getVarMaxPrice" in next major
      */
     protected function _getVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_dVarMaxPrice === null) {
+        if (null === $this->_dVarMaxPrice) {
             $dPrice = $this->_getShopVarMaxPrice();
 
-            if (is_null($dPrice)) {
+            if (null === $dPrice) {
                 $sPriceSuffix = $this->_getUserPriceSufix();
-                if ($sPriceSuffix === '') {
+                if ('' === $sPriceSuffix) {
                     $dPrice = $this->oxarticles__oxvarmaxprice->value;
                 } else {
                     $sSql = 'SELECT ';
@@ -5176,7 +5207,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
                             AND ( `oxparentid` = :oxparentid )';
 
                     $dPrice = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSql, [
-                        ':oxparentid' => $this->getId()
+                        ':oxparentid' => $this->getId(),
                     ]);
                 }
             }
@@ -5191,7 +5222,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Place to hook to return variant min price if it might be different,
      * for example for subshops.
      *
-     * @return double|null
+     * @return float|null
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getShopVarMinPrice" in next major
      */
     protected function _getShopVarMinPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5203,7 +5235,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      * Place to hook to return variant max price if it might be different,
      * for example for subshops.
      *
-     * @return double|null
+     * @return float|null
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getShopVarMaxPrice" in next major
      */
     protected function _getShopVarMaxPrice() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5212,35 +5245,38 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get data from db
+     * Get data from db.
      *
      * @param string $articleId id
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb($articleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sSelect = $this->buildSelectString([$this->getViewName() . ".oxid" => $articleId]);
+        $sSelect = $this->buildSelectString([
+            $this->getViewName() . '.oxid' => $articleId,
+        ]);
 
         return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow($sSelect);
     }
-
 
     /**
      * Place to hook and change amount if it should be calculated by different logic,
      * for example VPE.
      *
-     * @param double $amount Amount
+     * @param float $amount Amount
      */
-    public function checkForVpe($amount)
+    public function checkForVpe($amount): void
     {
     }
 
     /**
-     * Set parent field value to child - variants in DB
+     * Set parent field value to child - variants in DB.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "updateParentDependFields" in next major
      */
     protected function _updateParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5252,17 +5288,20 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
             $sSqlSets[] = '`' . str_replace('oxarticles__', '', $sField) . '` = ' . $oDb->quote($sValue);
         }
 
-        $sSql = "UPDATE `oxarticles` SET ";
+        $sSql = 'UPDATE `oxarticles` SET ';
         $sSql .= implode(', ', $sSqlSets) . '';
-        $sSql .= " WHERE `oxparentid` = :oxparentid";
+        $sSql .= ' WHERE `oxparentid` = :oxparentid';
 
-        return $oDb->execute($sSql, [':oxparentid' => $this->getId()]);
+        return $oDb->execute($sSql, [
+            ':oxparentid' => $this->getId(),
+        ]);
     }
 
     /**
-     * Returns array of fields which should not changed in variants
+     * Returns array of fields which should not changed in variants.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCopyParentFields" in next major
      */
     protected function _getCopyParentFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -5271,10 +5310,11 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Set parent field value to child - variants
+     * Set parent field value to child - variants.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignParentDependFields" in next major
      */
-    protected function _assignParentDependFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignParentDependFields(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sParent = $this->getParentArticle();
         if ($sParent) {
@@ -5286,12 +5326,13 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Saves values of sorting fields on article load.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "saveSortingFieldValuesOnLoad" in next major
      */
-    protected function _saveSortingFieldValuesOnLoad() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveSortingFieldValuesOnLoad(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aSortingFields = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols');
-        $aSortingFields = !empty($aSortingFields) ? (array) $aSortingFields : [];
+        $aSortingFields = !empty($aSortingFields) ? (array)$aSortingFields : [];
 
         foreach ($aSortingFields as $sField) {
             $sFullField = $this->_getFieldLongName($sField);
@@ -5302,16 +5343,16 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Forms query to load variants.
      *
-     * @param bool                      $blRemoveNotOrderables
-     * @param bool                      $forceCoreTableUsage
+     * @param bool                                                                                          $blRemoveNotOrderables
+     * @param bool                                                                                          $forceCoreTableUsage
      * @param \OxidEsales\Eshop\Application\Model\Article|\OxidEsales\Eshop\Application\Model\SimpleVariant $baseObject
-     * @param string                    $sArticleTable
+     * @param string                                                                                        $sArticleTable
      *
      * @return string
      */
     protected function getLoadVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage, $baseObject, $sArticleTable)
     {
-        return "select " . $baseObject->getSelectFields($forceCoreTableUsage) . " from $sArticleTable where " .
+        return 'select ' . $baseObject->getSelectFields($forceCoreTableUsage) . " from $sArticleTable where " .
                  $this->getActiveCheckQuery($forceCoreTableUsage) .
                  $this->getVariantsQuery($blRemoveNotOrderables, $forceCoreTableUsage) .
                  " order by $sArticleTable.oxsort";
@@ -5320,10 +5361,10 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Set needed parameters to article list object like language.
      *
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $baseObject          article list template object.
+     * @param \OxidEsales\Eshop\Core\Model\BaseModel $baseObject          article list template object
      * @param bool|null                              $forceCoreTableUsage if true forces core table use, default is false [optional]
      */
-    protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null)
+    protected function updateVariantsBaseObject($baseObject, $forceCoreTableUsage = null): void
     {
         $baseObject->setLanguage($this->getLanguage());
     }
@@ -5331,7 +5372,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer
      */
-    protected function updateManufacturerBeforeLoading($oManufacturer)
+    protected function updateManufacturerBeforeLoading($oManufacturer): void
     {
         $oManufacturer->setReadOnly(true);
     }

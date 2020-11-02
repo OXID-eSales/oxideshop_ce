@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,8 +14,6 @@ class TranslateFilterLogic
     /**
      * @param string $sIdent
      * @param mixed  $args
-     *
-     * @return string
      */
     public function multiLang($sIdent, $args = []): string
     {
@@ -40,7 +40,7 @@ class TranslateFilterLogic
 
         if (!$blTranslationNotFound) {
             if ($args) {
-                if (is_array($args)) {
+                if (\is_array($args)) {
                     $sTranslation = vsprintf($sTranslation, $args);
                 } else {
                     $sTranslation = sprintf($sTranslation, $args);

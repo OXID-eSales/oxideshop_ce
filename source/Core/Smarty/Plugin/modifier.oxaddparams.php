@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,7 +14,7 @@ use OxidEsales\Eshop\Core\Str;
  * -------------------------------------------------------------
  * Purpose: add additional parameters to SEO url
  * add |oxaddparams:"...." to link
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param string $sUrl       Url
  * @param string $sDynParams Dynamic URL parameters
@@ -23,9 +25,10 @@ function smarty_modifier_oxaddparams($sUrl, $sDynParams)
 {
     $oStr = Str::getStr();
     // removing empty parameters
-    $sDynParams = $sDynParams ? $oStr->preg_replace([ '/^\?/', '/^\&(amp;)?$/' ], '', $sDynParams) : false;
+    $sDynParams = $sDynParams ? $oStr->preg_replace(['/^\?/', '/^\&(amp;)?$/'], '', $sDynParams) : false;
     if ($sDynParams) {
-        $sUrl .= ((strpos($sUrl, '?') !== false) ? "&amp;" : "?") . $sDynParams;
+        $sUrl .= ((false !== strpos($sUrl, '?')) ? '&amp;' : '?') . $sDynParams;
     }
+
     return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processSeoUrl($sUrl);
 }

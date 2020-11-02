@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,11 +10,10 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Class NamespaceInformationProvider
+ * Class NamespaceInformationProvider.
  *
- * @package OxidEsales\EshopCommunity\Core
+ * @internal do not make a module extension for this class
  *
- * @internal Do not make a module extension for this class.
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class NamespaceInformationProvider
@@ -25,7 +26,7 @@ class NamespaceInformationProvider
     protected static $shopEditionNamespaces = [
         'CE' => 'OxidEsales\\EshopCommunity\\',
         'PE' => 'OxidEsales\\EshopProfessional\\',
-        'EE' => 'OxidEsales\\EshopEnterprise\\'
+        'EE' => 'OxidEsales\\EshopEnterprise\\',
     ];
 
     /**
@@ -36,7 +37,7 @@ class NamespaceInformationProvider
     protected static $shopEditionTestNamespaces = [
         'CE' => 'OxidEsales\\EshopCommunity\\Tests\\',
         'PE' => 'OxidEsales\\EshopProfessional\\Tests\\',
-        'EE' => 'OxidEsales\\EshopEnterprise\\Tests\\'
+        'EE' => 'OxidEsales\\EshopEnterprise\\Tests\\',
     ];
 
     /**
@@ -66,7 +67,6 @@ class NamespaceInformationProvider
         return static::$unifiedNamespace;
     }
 
-
     /**
      * @param string $className
      *
@@ -74,7 +74,7 @@ class NamespaceInformationProvider
      */
     public static function isNamespacedClass($className)
     {
-        return strpos($className, '\\') !== false;
+        return false !== strpos($className, '\\');
     }
 
     /**
@@ -125,6 +125,7 @@ class NamespaceInformationProvider
                 continue;
             }
         }
+
         return $belongsToNamespace;
     }
 }

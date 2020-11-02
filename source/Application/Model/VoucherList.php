@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,7 +15,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 class VoucherList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * Calls parent constructor
+     * Calls parent constructor.
      */
     public function __construct()
     {

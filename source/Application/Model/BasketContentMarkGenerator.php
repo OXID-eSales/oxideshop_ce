@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,7 +17,7 @@ class BasketContentMarkGenerator
     /**
      * Default value for explanation mark.
      */
-    const DEFAULT_EXPLANATION_MARK = '**';
+    public const DEFAULT_EXPLANATION_MARK = '**';
 
     /**
      * Marks added to array by article type.
@@ -33,8 +35,6 @@ class BasketContentMarkGenerator
 
     /**
      * Sets basket that is used to get article type(downloadable, intangible etc..).
-     *
-     * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      */
     public function __construct(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
     {
@@ -44,13 +44,13 @@ class BasketContentMarkGenerator
     /**
      * Returns explanation mark by given mark identification (skippedDiscount, downloadable, intangible).
      *
-     * @param string $sMarkIdentification Mark identification.
+     * @param string $sMarkIdentification mark identification
      *
      * @return string
      */
     public function getMark($sMarkIdentification)
     {
-        if (is_null($this->_aMarks)) {
+        if (null === $this->_aMarks) {
             $sCurrentMark = self::DEFAULT_EXPLANATION_MARK;
             $aMarks = $this->_formMarks($sCurrentMark);
             $this->_aMarks = $aMarks;
@@ -63,6 +63,7 @@ class BasketContentMarkGenerator
      * Basket that is used to get article type(downloadable, intangible etc..).
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getBasket" in next major
      */
     private function _getBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -73,9 +74,10 @@ class BasketContentMarkGenerator
     /**
      * Forms marks for articles.
      *
-     * @param string $sCurrentMark Current mark.
+     * @param string $sCurrentMark current mark
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "formMarks" in next major
      */
     private function _formMarks($sCurrentMark) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

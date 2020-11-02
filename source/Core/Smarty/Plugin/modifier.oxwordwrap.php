@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,12 +14,12 @@ use OxidEsales\Eshop\Core\Str;
  * -------------------------------------------------------------
  * Name:     wordwrap<br>
  * Purpose:  wrap a string of text at a given length
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
- * @param string  $sString String to wrap
- * @param integer $iLength To length
- * @param string  $sWraper wrap using
- * @param bool    $blCut   Cut
+ * @param string $sString String to wrap
+ * @param int    $iLength To length
+ * @param string $sWraper wrap using
+ * @param bool   $blCut   Cut
  *
  * @return string
  */

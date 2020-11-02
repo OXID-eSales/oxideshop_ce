@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,54 +9,54 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-use oxField;
-
 /**
- * Class controls article crossselling configuration
+ * Class controls article crossselling configuration.
  */
 class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * If true extended column selection will be build
+     * If true extended column selection will be build.
      *
      * @var bool
      */
     protected $_blAllowExtColumns = true;
 
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxartnum', 'oxarticles', 1, 0, 0],
-        ['oxtitle', 'oxarticles', 1, 1, 0],
-        ['oxean', 'oxarticles', 1, 0, 0],
-        ['oxmpn', 'oxarticles', 0, 0, 0],
-        ['oxprice', 'oxarticles', 0, 0, 0],
-        ['oxstock', 'oxarticles', 0, 0, 0],
-        ['oxid', 'oxarticles', 0, 0, 1]
-    ],
-                                 'container2' => [
-                                     ['oxartnum', 'oxarticles', 1, 0, 0],
-                                     ['oxtitle', 'oxarticles', 1, 1, 0],
-                                     ['oxean', 'oxarticles', 1, 0, 0],
-                                     ['oxmpn', 'oxarticles', 0, 0, 0],
-                                     ['oxprice', 'oxarticles', 0, 0, 0],
-                                     ['oxstock', 'oxarticles', 0, 0, 0],
-                                     ['oxid', 'oxobject2article', 0, 0, 1]
-                                 ]
+    protected $_aColumns = [
+        // field , table,         visible, multilanguage, ident
+        'container1' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1],
+        ],
+        'container2' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxobject2article', 0, 0, 1],
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sArticleTable = $this->_getViewName('oxarticles');
@@ -68,7 +70,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
         if (!$sSelId) {
             $sQAdd = " from {$sArticleTable} where 1 ";
             $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and {$sArticleTable}.oxparentid = '' ";
-        } elseif ($sSynchSelId && $sSelId != $sSynchSelId) {
+        } elseif ($sSynchSelId && $sSelId !== $sSynchSelId) {
             // selected category ?
             $blVariantsSelectionParameter = $myConfig->getConfigParam('blVariantsSelection');
             $sSqlIfTrue = " ({$sArticleTable}.oxid=oxobject2category.oxobjectid " .
@@ -77,31 +79,31 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
             $sVariantsSelectionSnippet = $blVariantsSelectionParameter ? $sSqlIfTrue : $sSqlIfFalse;
 
             $sQAdd = " from {$sView} as oxobject2category left join {$sArticleTable} on {$sVariantsSelectionSnippet}" .
-                     " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
+                     ' where oxobject2category.oxcatnid = ' . $oDb->quote($sSelId) . ' ';
         } elseif ($myConfig->getConfigParam('blBidirectCross')) {
-            $sQAdd = " from oxobject2article " .
+            $sQAdd = ' from oxobject2article ' .
                      " inner join {$sArticleTable} on ( oxobject2article.oxobjectid = {$sArticleTable}.oxid " .
                      " or oxobject2article.oxarticlenid = {$sArticleTable}.oxid ) " .
-                     " where ( oxobject2article.oxarticlenid = " . $oDb->quote($sSelId) .
-                     " or oxobject2article.oxobjectid = " . $oDb->quote($sSelId) . " ) " .
-                     " and {$sArticleTable}.oxid != " . $oDb->quote($sSelId) . " ";
+                     ' where ( oxobject2article.oxarticlenid = ' . $oDb->quote($sSelId) .
+                     ' or oxobject2article.oxobjectid = ' . $oDb->quote($sSelId) . ' ) ' .
+                     " and {$sArticleTable}.oxid != " . $oDb->quote($sSelId) . ' ';
         } else {
             $sQAdd = " from oxobject2article left join {$sArticleTable} " .
                      "on oxobject2article.oxobjectid={$sArticleTable}.oxid " .
-                     " where oxobject2article.oxarticlenid = " . $oDb->quote($sSelId) . " ";
+                     ' where oxobject2article.oxarticlenid = ' . $oDb->quote($sSelId) . ' ';
         }
 
-        if ($sSynchSelId && $sSynchSelId != $sSelId) {
+        if ($sSynchSelId && $sSynchSelId !== $sSelId) {
             if ($myConfig->getConfigParam('blBidirectCross')) {
                 $sSubSelect = "select {$sArticleTable}.oxid from oxobject2article " .
                               "left join {$sArticleTable} on (oxobject2article.oxobjectid={$sArticleTable}.oxid " .
                               "or oxobject2article.oxarticlenid={$sArticleTable}.oxid) " .
-                              "where (oxobject2article.oxarticlenid = " . $oDb->quote($sSynchSelId) .
-                              " or oxobject2article.oxobjectid = " . $oDb->quote($sSynchSelId) . " )";
+                              'where (oxobject2article.oxarticlenid = ' . $oDb->quote($sSynchSelId) .
+                              ' or oxobject2article.oxobjectid = ' . $oDb->quote($sSynchSelId) . ' )';
             } else {
                 $sSubSelect = "select {$sArticleTable}.oxid from oxobject2article " .
                               "left join {$sArticleTable} on oxobject2article.oxobjectid={$sArticleTable}.oxid " .
-                              "where oxobject2article.oxarticlenid = " . $oDb->quote($sSynchSelId) . " ";
+                              'where oxobject2article.oxarticlenid = ' . $oDb->quote($sSynchSelId) . ' ';
             }
 
             $sSubSelect .= " and {$sArticleTable}.oxid IS NOT NULL ";
@@ -112,33 +114,32 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
         $sQAdd .= " and {$sArticleTable}.oxid IS NOT NULL ";
 
         // skipping self from list
-        $sId = ($sSynchSelId) ? $sSynchSelId : $sSelId;
-        $sQAdd .= " and {$sArticleTable}.oxid != " . $oDb->quote($sId) . " ";
+        $sId = $sSynchSelId ?: $sSelId;
 
-        return $sQAdd;
+        return $sQAdd . " and {$sArticleTable}.oxid != " . $oDb->quote($sId) . ' ';
     }
 
     /**
-     * Removing article from corssselling list
+     * Removing article from corssselling list.
      */
-    public function removeArticleCross()
+    public function removeArticleCross(): void
     {
         $aChosenArt = $this->_getActionIds('oxobject2article.oxid');
         // removing all
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2article.* " . $this->_getQuery());
+            $sQ = $this->_addFilter('delete oxobject2article.* ' . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenArt)) {
-            $sChosenArticles = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
-            $sQ = "delete from oxobject2article where oxobject2article.oxid in (" . $sChosenArticles . ") ";
+        } elseif (\is_array($aChosenArt)) {
+            $sChosenArticles = implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt));
+            $sQ = 'delete from oxobject2article where oxobject2article.oxid in (' . $sChosenArticles . ') ';
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
     /**
-     * Adding article to corssselling list
+     * Adding article to corssselling list.
      */
-    public function addArticleCross()
+    public function addArticleCross(): void
     {
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -150,7 +151,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
         }
 
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-        if ($oArticle->load($soxId) && $soxId && $soxId != "-1" && is_array($aChosenArt)) {
+        if ($oArticle->load($soxId) && $soxId && '-1' !== $soxId && \is_array($aChosenArt)) {
             foreach ($aChosenArt as $sAdd) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oNewGroup->init('oxobject2article');
@@ -169,7 +170,7 @@ class ArticleCrosssellingAjax extends \OxidEsales\Eshop\Application\Controller\A
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $article
      */
-    protected function onArticleAddingToCrossSelling($article)
+    protected function onArticleAddingToCrossSelling($article): void
     {
     }
 }

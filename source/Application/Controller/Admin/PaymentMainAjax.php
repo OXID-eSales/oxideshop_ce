@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,16 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
-
 /**
- * Class manages payment user groups
+ * Class manages payment user groups.
  */
 class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
@@ -31,16 +30,18 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             ['oxtitle', 'oxgroups', 1, 0, 0],
             ['oxid', 'oxgroups', 0, 0, 0],
             ['oxid', 'oxobject2group', 0, 0, 1],
-        ]
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         // looking for table/view
         $sGroupTable = $this->_getViewName('oxgroups');
@@ -53,21 +54,21 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             $sQAdd = " from {$sGroupTable} ";
         } else {
             $sQAdd = " from {$sGroupTable}, oxobject2group where ";
-            $sQAdd .= " oxobject2group.oxobjectid = " . $oDb->quote($sGroupId) .
+            $sQAdd .= ' oxobject2group.oxobjectid = ' . $oDb->quote($sGroupId) .
                       " and oxobject2group.oxgroupsid = {$sGroupTable}.oxid ";
         }
 
         if (!$sSynchGroupId) {
             $sSynchGroupId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxajax_synchfid');
         }
-        if ($sSynchGroupId && $sSynchGroupId != $sGroupId) {
+        if ($sSynchGroupId && $sSynchGroupId !== $sGroupId) {
             if (!$sGroupId) {
                 $sQAdd .= 'where ';
             } else {
                 $sQAdd .= 'and ';
             }
             $sQAdd .= " {$sGroupTable}.oxid not in ( select {$sGroupTable}.oxid from {$sGroupTable}, oxobject2group " .
-                      "where  oxobject2group.oxobjectid = " . $oDb->quote($sSynchGroupId) .
+                      'where  oxobject2group.oxobjectid = ' . $oDb->quote($sSynchGroupId) .
                       " and oxobject2group.oxgroupsid = $sGroupTable.oxid ) ";
         }
 
@@ -77,15 +78,15 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
     /**
      * Removes group of users that may pay using selected method(s).
      */
-    public function removePayGroup()
+    public function removePayGroup(): void
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2group.oxid');
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2group.* " . $this->_getQuery());
+            $sQ = $this->_addFilter('delete oxobject2group.* ' . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sRemoveGroups = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
-            $sQ = "delete from oxobject2group where oxobject2group.oxid in (" . $sRemoveGroups . ") ";
+        } elseif ($aRemoveGroups && \is_array($aRemoveGroups)) {
+            $sRemoveGroups = implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups));
+            $sQ = 'delete from oxobject2group where oxobject2group.oxid in (' . $sRemoveGroups . ') ';
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
@@ -93,7 +94,7 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
     /**
      * Adds group of users that may pay using selected method(s).
      */
-    public function addPayGroup()
+    public function addPayGroup(): void
     {
         $aAddGroups = $this->_getActionIds('oxgroups.oxid');
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -102,7 +103,7 @@ class PaymentMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
             $sGroupTable = $this->_getViewName('oxgroups');
             $aAddGroups = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
         }
-        if ($soxId && $soxId != "-1" && is_array($aAddGroups)) {
+        if ($soxId && '-1' !== $soxId && \is_array($aAddGroups)) {
             foreach ($aAddGroups as $sAddgroup) {
                 $oNewGroup = oxNew(\OxidEsales\Eshop\Application\Model\Object2Group::class);
                 $oNewGroup->oxobject2group__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId);

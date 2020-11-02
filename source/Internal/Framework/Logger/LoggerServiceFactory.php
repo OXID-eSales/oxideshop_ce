@@ -12,8 +12,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfigurationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator;
+use OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Psr\Log\LoggerInterface;
 
@@ -26,8 +26,6 @@ class LoggerServiceFactory
 
     /**
      * LoggerServiceFactory constructor.
-     *
-     * @param ContextInterface $context
      */
     public function __construct(ContextInterface $context)
     {

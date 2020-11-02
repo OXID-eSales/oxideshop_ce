@@ -15,11 +15,17 @@ use Webmozart\PathUtil\Path;
 
 class ModulesMenuFileLocator implements NavigationFileLocatorInterface
 {
-    /** @var ActiveModulesDataProviderInterface */
+    /**
+     * @var ActiveModulesDataProviderInterface
+     */
     private $activeModulesDataProvider;
-    /** @var Filesystem */
+    /**
+     * @var Filesystem
+     */
     private $filesystem;
-    /** @var string */
+    /**
+     * @var string
+     */
     private $fileName = 'menu.xml';
 
     public function __construct(
@@ -30,7 +36,9 @@ class ModulesMenuFileLocator implements NavigationFileLocatorInterface
         $this->filesystem = $filesystem;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function locate(): array
     {
         $menuFiles = [];
@@ -40,6 +48,7 @@ class ModulesMenuFileLocator implements NavigationFileLocatorInterface
                 $menuFiles[] = $menuFilePath;
             }
         }
+
         return $menuFiles;
     }
 }

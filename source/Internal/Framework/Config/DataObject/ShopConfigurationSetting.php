@@ -41,57 +41,39 @@ class ShopConfigurationSetting
      */
     private $value;
 
-    /**
-     * @return int
-     */
     public function getShopId(): int
     {
         return $this->shopId;
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
-    public function setShopId(int $shopId): ShopConfigurationSetting
+    public function setShopId(int $shopId): self
     {
         $this->shopId = $shopId;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return ShopConfigurationSetting
-     */
-    public function setName(string $name): ShopConfigurationSetting
+    public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     * @return ShopConfigurationSetting
-     */
-    public function setType(string $type): ShopConfigurationSetting
+    public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -105,11 +87,11 @@ class ShopConfigurationSetting
 
     /**
      * @param mixed $value
-     * @return ShopConfigurationSetting
      */
-    public function setValue($value): ShopConfigurationSetting
+    public function setValue($value): self
     {
         $this->value = $value;
+
         return $this;
     }
 }

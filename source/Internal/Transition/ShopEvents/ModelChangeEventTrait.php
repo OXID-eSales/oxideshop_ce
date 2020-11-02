@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
 /**
- * Model object
+ * Model object.
  *
  * @var \OxidEsales\Eshop\Core\Model\BaseModel
  */
@@ -17,7 +19,7 @@ trait ModelChangeEventTrait
     private $model;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \OxidEsales\Eshop\Core\Model\BaseModel $model Model class object
      */
@@ -28,8 +30,6 @@ trait ModelChangeEventTrait
 
     /**
      * Getter for model class name.
-     *
-     * @return \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getModel(): \OxidEsales\Eshop\Core\Model\BaseModel
     {

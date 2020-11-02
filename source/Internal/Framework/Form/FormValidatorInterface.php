@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Form;
 interface FormValidatorInterface
 {
     /**
-     * @param FormInterface $form
      * @return bool
      */
     public function isValid(FormInterface $form);

@@ -20,24 +20,18 @@ class TemplateNameResolver implements TemplateNameResolverInterface
 
     /**
      * TemplateNameResolver constructor.
-     *
-     * @param TemplateEngineInterface       $templateEngine
      */
     public function __construct(TemplateEngineInterface $templateEngine)
     {
         $this->templateEngine = $templateEngine;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
     public function resolve(string $name): string
     {
-        if ($name !== '') {
+        if ('' !== $name) {
             $name = $name . '.' . $this->templateEngine->getDefaultFileExtension();
         }
+
         return $name;
     }
 }

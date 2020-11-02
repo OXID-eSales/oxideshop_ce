@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,11 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use oxObjectException;
-use oxRegistry;
 
 /**
  * Current user recommlist manager.
@@ -31,42 +30,42 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     protected $_sThisTemplate = 'page/account/recommendationlist.tpl';
 
     /**
-     * Is recomendation list entry was saved this marker gets value TRUE. Default is FALSE
+     * Is recomendation list entry was saved this marker gets value TRUE. Default is FALSE.
      *
      * @var bool
      */
     protected $_blSavedEntry = false;
 
     /**
-     * returns the recomm list articles
+     * returns the recomm list articles.
      *
      * @var object
      */
     protected $_oActRecommListArticles = null;
 
     /**
-     * returns the recomm list article. Whether the variable is empty, it list nothing
+     * returns the recomm list article. Whether the variable is empty, it list nothing.
      *
      * @var array
      */
     protected $_aUserRecommLists = null;
 
     /**
-     * returns the recomm list articles
+     * returns the recomm list articles.
      *
      * @var object
      */
     protected $_oActRecommList = null;
 
     /**
-     * List items count
+     * List items count.
      *
      * @var int
      */
     protected $_iAllArtCnt = 0;
 
     /**
-     * Page navigation
+     * Page navigation.
      *
      * @var object
      */
@@ -76,9 +75,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
      * If user is logged in loads his wishlist articles (articles may be accessed by
      * \OxidEsales\Eshop\Application\Model\User::GetBasket()), loads similar articles (is available) for the last
      * article in list loaded by \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and returns name of
-     * template to render \OxidEsales\Eshop\Application\Controller\AccountWishlistController::_sThisTemplate
+     * template to render \OxidEsales\Eshop\Application\Controller\AccountWishlistController::_sThisTemplate.
      *
-     * @return  string  $_sThisTemplate current template file name
+     * @return string current template file name
      */
     public function render()
     {
@@ -95,8 +94,8 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
         // list of found oxrecommlists
         if (!$oActList && $oLists->count()) {
             $this->_iAllArtCnt = $oUser->getRecommListsCount();
-            $iNrofCatArticles = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
-            $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
+            $iNrofCatArticles = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = $iNrofCatArticles ?: 10;
             $this->_iCntPages = ceil($this->_iAllArtCnt / $iNrofCatArticles);
         }
 
@@ -104,7 +103,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Returns array of params => values which are used in hidden forms and as additional url params
+     * Returns array of params => values which are used in hidden forms and as additional url params.
      *
      * @return array
      */
@@ -121,13 +120,13 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * return recomm list from the user
+     * return recomm list from the user.
      *
      * @return array
      */
     public function getRecommLists()
     {
-        if ($this->_aUserRecommLists === null) {
+        if (null === $this->_aUserRecommLists) {
             $this->_aUserRecommLists = false;
             if (($oUser = $this->getUser())) {
                 // recommendation list
@@ -139,13 +138,11 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * return all articles in the recomm list
-     *
-     * @return null
+     * return all articles in the recomm list.
      */
     public function getArticleList()
     {
-        if ($this->_oActRecommListArticles === null) {
+        if (null === $this->_oActRecommListArticles) {
             $this->_oActRecommListArticles = false;
 
             if (($oRecommList = $this->getActiveRecommList())) {
@@ -170,9 +167,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * return the active entrys
-     *
-     * @return null
+     * return the active entrys.
      */
     public function getActiveRecommList()
     {
@@ -180,7 +175,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             return false;
         }
 
-        if ($this->_oActRecommList === null) {
+        if (null === $this->_oActRecommList) {
             $this->_oActRecommList = false;
 
             if (
@@ -189,7 +184,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
             ) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $sUserIdField = 'oxrecommlists__oxuserid';
-                if (($oRecommList->load($sRecommId)) && $oUser->getId() === $oRecommList->$sUserIdField->value) {
+                if ($oRecommList->load($sRecommId) && $oUser->getId() === $oRecommList->$sUserIdField->value) {
                     $this->_oActRecommList = $oRecommList;
                 }
             }
@@ -199,21 +194,19 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Set active recommlist
+     * Set active recommlist.
      *
      * @param object $oRecommList Recommendation list
      */
-    public function setActiveRecommList($oRecommList)
+    public function setActiveRecommList($oRecommList): void
     {
         $this->_oActRecommList = $oRecommList;
     }
 
     /**
-     * add new recommlist
-     *
-     * @return null
+     * add new recommlist.
      */
-    public function saveRecommList()
+    public function saveRecommList(): void
     {
         if (!Registry::getSession()->checkSessionChallenge()) {
             return;
@@ -232,9 +225,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle = trim((string) Registry::getConfig()->getRequestParameter('recomm_title', true));
-            $sAuthor = trim((string) Registry::getConfig()->getRequestParameter('recomm_author', true));
-            $sText = trim((string) Registry::getConfig()->getRequestParameter('recomm_desc', true));
+            $sTitle = trim((string)Registry::getConfig()->getRequestParameter('recomm_title', true));
+            $sAuthor = trim((string)Registry::getConfig()->getRequestParameter('recomm_author', true));
+            $sText = trim((string)Registry::getConfig()->getRequestParameter('recomm_desc', true));
 
             $oRecommList->oxrecommlists__oxtitle = new Field($sTitle);
             $oRecommList->oxrecommlists__oxauthor = new Field($sAuthor);
@@ -242,7 +235,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
 
             try {
                 // marking entry as saved
-                $this->_blSavedEntry = (bool) $oRecommList->save();
+                $this->_blSavedEntry = (bool)$oRecommList->save();
                 $this->setActiveRecommList($this->_blSavedEntry ? $oRecommList : false);
             } catch (\OxidEsales\Eshop\Core\Exception\ObjectException $oEx) {
                 //add to display at specific position
@@ -252,7 +245,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * List entry saving status getter. Saving status is
+     * List entry saving status getter. Saving status is.
      *
      * @return bool
      */
@@ -262,11 +255,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Delete recommlist
-     *
-     * @return null
+     * Delete recommlist.
      */
-    public function editList()
+    public function editList(): void
     {
         if (!Registry::getSession()->checkSessionChallenge()) {
             return;
@@ -289,11 +280,9 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Delete recommlist
-     *
-     * @return null
+     * Delete recommlist.
      */
-    public function removeArticle()
+    public function removeArticle(): void
     {
         if (!Registry::getSession()->checkSessionChallenge()) {
             return;
@@ -313,13 +302,13 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Template variable getter. Returns page navigation
+     * Template variable getter. Returns page navigation.
      *
      * @return object
      */
     public function getPageNavigation()
     {
-        if ($this->_oPageNavigation === null) {
+        if (null === $this->_oPageNavigation) {
             $this->_oPageNavigation = false;
             if (!$this->getActiveRecommlist()) {
                 $this->_oPageNavigation = $this->generatePageNavigation();
@@ -353,7 +342,7 @@ class AccountRecommlistController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Article count getter
+     * Article count getter.
      *
      * @return int
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -20,9 +22,9 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 {
     /**
      * It is unsave to use a backslash as HTML id in conjunction with UI.sortable, so it will be replaced in the
-     * view and restored in the controller
+     * view and restored in the controller.
      */
-    const BACKSLASH_REPLACEMENT = '---';
+    public const BACKSLASH_REPLACEMENT = '---';
 
     /**
      * Executes parent method parent::render(), loads active and disabled extensions,
@@ -42,19 +44,19 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $sanitizedExtendClass = [];
         foreach ($classExtensionsChain as $extendedClass => $classChain) {
-            $sanitizedKey = str_replace("\\", self::BACKSLASH_REPLACEMENT, $extendedClass);
+            $sanitizedKey = str_replace('\\', self::BACKSLASH_REPLACEMENT, $extendedClass);
             $sanitizedExtendClass[$sanitizedKey] = $classChain;
         }
 
-        $this->_aViewData["aExtClasses"] = $sanitizedExtendClass;
-        $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
+        $this->_aViewData['aExtClasses'] = $sanitizedExtendClass;
+        $this->_aViewData['aDisabledModules'] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
-        if (\OxidEsales\Eshop\Core\Registry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
+        if (false === \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blSkipDeletedExtChecking')) {
             $aDeletedExt = $oModuleList->getDeletedExtensions();
 
             if (!empty($aDeletedExt)) {
-                $this->_aViewData["aDeletedExt"] = $aDeletedExt;
+                $this->_aViewData['aDeletedExt'] = $aDeletedExt;
             }
         }
 
@@ -62,9 +64,9 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     }
 
     /**
-     * Saves updated aModules config var
+     * Saves updated aModules config var.
      */
-    public function save()
+    public function save(): void
     {
         $classExtensionsChainFromRequest = json_decode(
             Registry::getRequest()->getRequestEscapedParameter('aModules'),
@@ -90,15 +92,13 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     }
 
     /**
-     * Removes extension metadata from eShop
-     *
-     * @return null
+     * Removes extension metadata from eShop.
      */
-    public function remove()
+    public function remove(): void
     {
         //if user selected not to update modules, skipping all updates
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("noButton")) {
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blSkipDeletedExtChecking", true);
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('noButton')) {
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blSkipDeletedExtChecking', true);
 
             return;
         }
@@ -107,25 +107,18 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $oModuleList->cleanup();
     }
 
-    /**
-     * @param array $chain
-     * @return array
-     */
     private function sanitizeClassExtensionsChain(array $chain): array
     {
         $sanitizedClassExtensionsChain = [];
 
         foreach ($chain as $key => $value) {
-            $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, "\\", $key);
+            $sanitizedKey = str_replace(self::BACKSLASH_REPLACEMENT, '\\', $key);
             $sanitizedClassExtensionsChain[$sanitizedKey] = $value;
         }
 
         return $sanitizedClassExtensionsChain;
     }
 
-    /**
-     * @return ShopConfiguration
-     */
     private function getShopConfiguration(): ShopConfiguration
     {
         return $this->getContainer()->get(ShopConfigurationDaoBridgeInterface::class)->get();

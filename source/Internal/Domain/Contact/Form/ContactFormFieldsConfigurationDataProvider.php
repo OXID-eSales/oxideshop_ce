@@ -20,27 +20,27 @@ class ContactFormFieldsConfigurationDataProvider implements FormFieldsConfigurat
     {
         return [
             [
-                'name'  => 'email',
+                'name' => 'email',
                 'label' => 'EMAIL',
             ],
             [
-                'name'  => 'firstName',
+                'name' => 'firstName',
                 'label' => 'FIRST_NAME',
             ],
             [
-                'name'  => 'lastName',
+                'name' => 'lastName',
                 'label' => 'LAST_NAME',
             ],
             [
-                'name'  => 'salutation',
+                'name' => 'salutation',
                 'label' => 'TITLE',
             ],
             [
-                'name'  => 'subject',
+                'name' => 'subject',
                 'label' => 'SUBJECT',
             ],
             [
-                'name'  => 'message',
+                'name' => 'message',
                 'label' => 'MESSAGE',
             ],
         ];

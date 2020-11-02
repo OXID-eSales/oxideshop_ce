@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,8 +19,8 @@ class Request
     /**
      * Returns raw value of parameter stored in POST,GET.
      *
-     * @param string $name         Name of parameter.
-     * @param string $defaultValue Default value if no value provided.
+     * @param string $name         name of parameter
+     * @param string $defaultValue default value if no value provided
      *
      * @return mixed
      */
@@ -38,8 +40,8 @@ class Request
     /**
      * Returns escaped value of parameter stored in POST,GET.
      *
-     * @param string $name         Name of parameter.
-     * @param string $defaultValue Default value if no value provided.
+     * @param string $name         name of parameter
+     * @param string $defaultValue default value if no value provided
      *
      * @return mixed
      */
@@ -48,8 +50,8 @@ class Request
         $value = $this->getRequestParameter($name, $defaultValue);
 
         // TODO: remove this after special chars concept implementation
-        $isAdmin = Registry::getConfig()->isAdmin() && Registry::getSession()->getVariable("blIsAdmin");
-        if ($value !== null && !$isAdmin) {
+        $isAdmin = Registry::getConfig()->isAdmin() && Registry::getSession()->getVariable('blIsAdmin');
+        if (null !== $value && !$isAdmin) {
             $this->checkParamSpecialChars($value);
         }
 
@@ -57,7 +59,7 @@ class Request
     }
 
     /**
-     * Returns request url, which was executed to render current page view
+     * Returns request url, which was executed to render current page view.
      *
      * @param string $sParams     Parameters to object
      * @param bool   $blReturnUrl If return url
@@ -67,7 +69,7 @@ class Request
     public function getRequestUrl($sParams = '', $blReturnUrl = false)
     {
         $requestUrl = '';
-        if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        if ('POST' !== $_SERVER['REQUEST_METHOD']) {
             if (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI']) {
                 $rawRequestUrl = $_SERVER['REQUEST_URI'];
             } else {
@@ -75,7 +77,7 @@ class Request
             }
 
             // trying to resolve controller file name
-            if ($rawRequestUrl && ($iPos = stripos($rawRequestUrl, '?')) !== false) {
+            if ($rawRequestUrl && false !== ($iPos = stripos($rawRequestUrl, '?'))) {
                 $string = Str::getStr();
                 // formatting request url
                 $requestUrl = 'index.php' . $string->substr($rawRequestUrl, $iPos);
@@ -102,27 +104,27 @@ class Request
      */
     public function checkParamSpecialChars(&$sValue, $aRaw = null)
     {
-        if (is_object($sValue)) {
+        if (\is_object($sValue)) {
             return $sValue;
         }
 
-        if (is_array($sValue)) {
+        if (\is_array($sValue)) {
             $newValue = [];
             foreach ($sValue as $sKey => $sVal) {
                 $sValidKey = $sKey;
-                if (!$aRaw || !in_array($sKey, $aRaw)) {
+                if (!$aRaw || !\in_array($sKey, $aRaw, true)) {
                     $this->checkParamSpecialChars($sValidKey);
                     $this->checkParamSpecialChars($sVal);
-                    if ($sValidKey != $sKey) {
+                    if ($sValidKey !== $sKey) {
                         unset($sValue[$sKey]);
                     }
                 }
                 $newValue[$sValidKey] = $sVal;
             }
             $sValue = $newValue;
-        } elseif (is_string($sValue)) {
+        } elseif (\is_string($sValue)) {
             $sValue = str_replace(
-                ['&', '<', '>', '"', "'", chr(0), '\\', "\n", "\r"],
+                ['&', '<', '>', '"', "'", \chr(0), '\\', "\n", "\r"],
                 ['&amp;', '&lt;', '&gt;', '&quot;', '&#039;', '', '&#092;', '&#10;', '&#13;'],
                 $sValue
             );

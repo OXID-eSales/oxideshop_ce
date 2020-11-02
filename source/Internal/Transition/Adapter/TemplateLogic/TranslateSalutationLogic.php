@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,8 +13,6 @@ class TranslateSalutationLogic
 {
     /**
      * @param string $sIdent
-     *
-     * @return string
      */
     public function translateSalutation(string $sIdent = null): string
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,11 +12,11 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Str;
 
 /**
- * URL utility class
+ * URL utility class.
  */
 class UtilsUrl extends \OxidEsales\Eshop\Core\Base
 {
-    const PARAMETER_SEPARATOR = '&amp;';
+    public const PARAMETER_SEPARATOR = '&amp;';
 
     /**
      * Additional url parameters which should be appended to seo/std urls.
@@ -47,7 +49,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function getAddUrlParams()
     {
-        if ($this->_aAddUrlParams === null) {
+        if (null === $this->_aAddUrlParams) {
             $this->_aAddUrlParams = $this->getBaseAddUrlParams();
 
             // appending currency
@@ -65,7 +67,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl given url
      *
-     * @access public
      * @return string
      */
     public function prepareUrlForNoSession($sUrl)
@@ -81,7 +82,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($qpos = $oStr->strpos($sUrl, '?')) {
-            if ($qpos == $oStr->strlen($sUrl) - 1) {
+            if ($qpos === $oStr->strlen($sUrl) - 1) {
                 $sSep = '';
             } else {
                 $sSep = '&amp;';
@@ -97,7 +98,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
 
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if (!$oStr->preg_match('/[&?](amp;)?cur=[0-9]+/i', $sUrl)) {
-            $iCur = (int) $oConfig->getShopCurrency();
+            $iCur = (int)$oConfig->getShopCurrency();
             if ($iCur) {
                 $sUrl .= "{$sSep}cur=" . $iCur;
             }
@@ -111,7 +112,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl given url
      *
-     * @access public
      * @return string
      */
     public function prepareCanonicalUrl($sUrl)
@@ -122,14 +122,14 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
         $sUrl = $oStr->preg_replace('/(&amp;|\?)$/', '', $sUrl);
-        $sSep = ($oStr->strpos($sUrl, '?') === false) ? '?' : '&amp;';
+        $sSep = (false === $oStr->strpos($sUrl, '?')) ? '?' : '&amp;';
 
         if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
             // non seo url has no language identifier..
             $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
             if (
                 !$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl) &&
-                $iLang != $oConfig->getConfigParam('sDefaultLang')
+                $iLang !== $oConfig->getConfigParam('sDefaultLang')
             ) {
                 $sUrl .= "{$sSep}lang=" . $iLang;
             }
@@ -144,7 +144,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * @param string $sUrl                    url to append
      * @param array  $parametersToAdd         parameters to append
      * @param bool   $blFinalUrl              final url
-     * @param bool   $allowParameterOverwrite Decides if same parameters should overwrite query parameters.
+     * @param bool   $allowParameterOverwrite decides if same parameters should overwrite query parameters
      *
      * @return string
      */
@@ -153,10 +153,10 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $paramSeparator = self::PARAMETER_SEPARATOR;
         $finalParameters = $this->removeNotSetParameters($parametersToAdd);
 
-        if (is_array($finalParameters) && !empty($finalParameters)) {
+        if (\is_array($finalParameters) && !empty($finalParameters)) {
             $urlWithoutQuery = $sUrl;
             $separatorPlace = strpos($sUrl, '?');
-            if ($separatorPlace !== false) {
+            if (false !== $separatorPlace) {
                 $urlWithoutQuery = substr($sUrl, 0, $separatorPlace);
                 $urlQueryEscaped = substr($sUrl, $separatorPlace + 1);
                 $urlQuery = str_replace($paramSeparator, '&', $urlQueryEscaped);
@@ -178,15 +178,15 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Removes any or specified dynamic parameter from given url.
      *
-     * @param string $sUrl    url to clean.
-     * @param array  $aParams parameters to remove [optional].
+     * @param string $sUrl    url to clean
+     * @param array  $aParams parameters to remove [optional]
      *
      * @return string
      */
     public function cleanUrl($sUrl, $aParams = null)
     {
         $oStr = Str::getStr();
-        if (is_array($aParams)) {
+        if (\is_array($aParams)) {
             foreach ($aParams as $sParam) {
                 $sUrl = $oStr->preg_replace(
                     '/(\?|&(amp;)?)' . preg_quote($sParam) . '=[a-z0-9\.]+&?(amp;)?/i',
@@ -198,9 +198,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $sUrl = $oStr->preg_replace('/(\?|&(amp;)?).+/i', '\1', $sUrl);
         }
 
-        return trim($sUrl, "?");
+        return trim($sUrl, '?');
     }
-
 
     /**
      * Adds shop host if url does not start with it.
@@ -211,7 +210,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     public function addShopHost($sUrl)
     {
-        if (!preg_match("#^https?://#i", $sUrl)) {
+        if (!preg_match('#^https?://#i', $sUrl)) {
             $sShopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getSslShopUrl();
             $sUrl = $sShopUrl . $sUrl;
         }
@@ -222,10 +221,10 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Performs base url processing - adds required parameters to given url.
      *
-     * @param string $sUrl       url to process.
-     * @param bool   $blFinalUrl should url be finalized or should it end with ? or &amp; (default true).
-     * @param array  $aParams    additional parameters (default null).
-     * @param int    $iLang      url target language (default null).
+     * @param string $sUrl       url to process
+     * @param bool   $blFinalUrl should url be finalized or should it end with ? or &amp; (default true)
+     * @param array  $aParams    additional parameters (default null)
+     * @param int    $iLang      url target language (default null)
      *
      * @return string
      */
@@ -243,9 +242,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Adds additional shop url parameters, session id, language id when needed.
      *
-     * @param string $sUrl       url to process.
-     * @param bool   $blFinalUrl should url be finalized or should it end with ? or &amp;.
-     * @param int    $iLang      url target language.
+     * @param string $sUrl       url to process
+     * @param bool   $blFinalUrl should url be finalized or should it end with ? or &amp;
+     * @param int    $iLang      url target language
      *
      * @return string
      */
@@ -291,7 +290,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Method returns shop URL part - path.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getActiveShopUrlPath()
     {
@@ -317,14 +316,14 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl
      *
-     * @return bool true if $sUrl is equal to current page URL.
+     * @return bool true if $sUrl is equal to current page URL
      */
     public function isCurrentShopHost($sUrl)
     {
         $blCurrent = false;
         $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
         // checks if it is relative url.
-        if (is_null($sUrlHost)) {
+        if (null === $sUrlHost) {
             $blCurrent = true;
         } else {
             $aHosts = $this->_getHosts();
@@ -341,7 +340,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Improved url parsing with parse_url as base and scheme checking improvement in url preprocessing
+     * Improved url parsing with parse_url as base and scheme checking improvement in url preprocessing.
      *
      * @param string $url
      * @param string $flag
@@ -361,7 +360,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Seo url processor: adds various needed parameters, like currency, shop id.
      *
-     * @param string $sUrl url to process.
+     * @param string $sUrl url to process
      *
      * @return string
      */
@@ -380,8 +379,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Remove duplicate GET parameters and clean &amp; and duplicate &.
      *
-     * @param string $sUrl       url to process.
-     * @param string $sConnector GET elements connector.
+     * @param string $sUrl       url to process
+     * @param string $sConnector GET elements connector
      *
      * @return string
      */
@@ -390,7 +389,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $aUrlParts = explode('?', $sUrl);
 
         // check for params part
-        if (!is_array($aUrlParts) || count($aUrlParts) != 2) {
+        if (!\is_array($aUrlParts) || 2 !== \count($aUrlParts)) {
             return $sUrl;
         }
 
@@ -409,13 +408,11 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $sUrl .= '?' . http_build_query($aUrlParams, '', $sConnector);
 
         // replace brackets
-        $sUrl = str_replace(
+        return str_replace(
             ['%5B', '%5D'],
             ['[', ']'],
             $sUrl
         );
-
-        return $sUrl;
     }
 
     /**
@@ -439,16 +436,16 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     {
         $oUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
 
-        $aServerParams["HTTPS"] = $oUtilsServer->getServerVar("HTTPS");
-        $aServerParams["HTTP_X_FORWARDED_PROTO"] = $oUtilsServer->getServerVar("HTTP_X_FORWARDED_PROTO");
-        $aServerParams["HTTP_HOST"] = $oUtilsServer->getServerVar("HTTP_HOST");
-        $aServerParams["REQUEST_URI"] = $oUtilsServer->getServerVar("REQUEST_URI");
+        $aServerParams['HTTPS'] = $oUtilsServer->getServerVar('HTTPS');
+        $aServerParams['HTTP_X_FORWARDED_PROTO'] = $oUtilsServer->getServerVar('HTTP_X_FORWARDED_PROTO');
+        $aServerParams['HTTP_HOST'] = $oUtilsServer->getServerVar('HTTP_HOST');
+        $aServerParams['REQUEST_URI'] = $oUtilsServer->getServerVar('REQUEST_URI');
 
-        $sProtocol = "http://";
+        $sProtocol = 'http://';
 
         if (
-            isset($aServerParams['HTTPS']) && (($aServerParams['HTTPS'] == 'on' || $aServerParams['HTTPS'] == 1))
-            || (isset($aServerParams['HTTP_X_FORWARDED_PROTO']) && $aServerParams['HTTP_X_FORWARDED_PROTO'] == 'https')
+            isset($aServerParams['HTTPS']) && (('on' === $aServerParams['HTTPS'] || 1 === $aServerParams['HTTPS']))
+            || (isset($aServerParams['HTTP_X_FORWARDED_PROTO']) && 'https' === $aServerParams['HTTP_X_FORWARDED_PROTO'])
         ) {
             $sProtocol = 'https://';
         }
@@ -469,12 +466,12 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     {
         // url building
         // replace possible ampersands, explode, and filter out empty values
-        $sValue = str_replace("&amp;", "&", $sValue);
-        $aNavParams = explode("&", $sValue);
+        $sValue = str_replace('&amp;', '&', $sValue);
+        $aNavParams = explode('&', $sValue);
         $aNavParams = array_filter($aNavParams);
         $aParams = [];
         foreach ($aNavParams as $sValue) {
-            $exp = explode("=", $sValue);
+            $exp = explode('=', $sValue);
             $aParams[$exp[0]] = $exp[1];
         }
 
@@ -484,26 +481,29 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Return array of language key and language value.
      *
-     * @param integer $languageId
+     * @param int $languageId
      *
      * @return array
      */
     public function getUrlLanguageParameter($languageId)
     {
-        return [\OxidEsales\Eshop\Core\Registry::getLang()->getName() => $languageId];
+        return [
+            \OxidEsales\Eshop\Core\Registry::getLang()->getName() => $languageId,
+        ];
     }
 
     /**
-     * Extracts host from given url and appends $aHosts with it
+     * Extracts host from given url and appends $aHosts with it.
      *
      * @param string $sUrl   url to extract
      * @param array  $aHosts hosts array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addHost" in next major
      */
-    protected function _addHost($sUrl, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addHost($sUrl, &$aHosts): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sUrl && ($sHost = @parse_url($sUrl, PHP_URL_HOST))) {
-            if (!in_array($sHost, $aHosts)) {
+            if (!\in_array($sHost, $aHosts, true)) {
                 $aHosts[] = $sHost;
             }
         }
@@ -514,9 +514,10 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      *
      * @param array $aLanguageUrls array of language urls to extract
      * @param array $aHosts        hosts array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addLanguageHost" in next major
      */
-    protected function _addLanguageHost($aLanguageUrls, &$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addLanguageHost($aLanguageUrls, &$aHosts): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $iLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
@@ -529,11 +530,12 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      * Collects and returns current shop hosts array.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getHosts" in next major
      */
     protected function _getHosts() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_aHosts === null) {
+        if (null === $this->_aHosts) {
             $this->_aHosts = [];
             $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -544,11 +546,11 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $this->_addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
 
             // current url
-            $this->_addHost($oConfig->getConfigParam("sShopURL"), $this->_aHosts);
-            $this->_addHost($oConfig->getConfigParam("sSSLShopURL"), $this->_aHosts);
+            $this->_addHost($oConfig->getConfigParam('sShopURL'), $this->_aHosts);
+            $this->_addHost($oConfig->getConfigParam('sSSLShopURL'), $this->_aHosts);
 
             if ($this->isAdmin()) {
-                $this->_addHost($oConfig->getConfigParam("sAdminSSLURL"), $this->_aHosts);
+                $this->_addHost($oConfig->getConfigParam('sAdminSSLURL'), $this->_aHosts);
             }
         }
 
@@ -556,12 +558,13 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Appends shop mall urls to $aHosts if needed
+     * Appends shop mall urls to $aHosts if needed.
      *
      * @param array $aHosts hosts array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addMallHosts" in next major
      */
-    protected function _addMallHosts(&$aHosts) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addMallHosts(&$aHosts): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
     }
 
@@ -579,7 +582,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $urlSeparator = '&amp;';
         if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $url)) {
             $urlSeparator = '';
-        } elseif ($oStr->strpos($url, '?') === false) {
+        } elseif (false === $oStr->strpos($url, '?')) {
             $urlSeparator = '?';
         }
 
@@ -595,9 +598,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
      */
     private function removeNotSetParameters($parametersToAdd)
     {
-        if (is_array($parametersToAdd) && !empty($parametersToAdd)) {
+        if (\is_array($parametersToAdd) && !empty($parametersToAdd)) {
             foreach ($parametersToAdd as $key => $value) {
-                if (is_null($value)) {
+                if (null === $value) {
                     unset($parametersToAdd[$key]);
                 }
             }

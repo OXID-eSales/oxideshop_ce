@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@
  * -------------------------------------------------------------
  * Name:     oxenclose<br>
  * Purpose:  {$var|oxenclose:"'"}
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param string $sString   string to enclose
  * @param string $sEncloser enclose with

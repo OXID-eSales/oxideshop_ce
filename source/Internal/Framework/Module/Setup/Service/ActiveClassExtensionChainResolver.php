@@ -34,9 +34,6 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
 
     /**
      * ActiveClassExtensionChainResolver constructor.
-     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
-     * @param ModuleStateServiceInterface      $moduleStateService
-     * @param ContextInterface                 $context
      */
     public function __construct(
         ShopConfigurationDaoInterface $shopConfigurationDao,
@@ -48,12 +45,6 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
         $this->context = $context;
     }
 
-
-    /**
-     * @param int $shopId
-     *
-     * @return ClassExtensionsChain
-     */
     public function getActiveExtensionChain(int $shopId): ClassExtensionsChain
     {
         $shopConfiguration = $this->shopConfigurationDao->get($shopId);
@@ -79,12 +70,6 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
         return $activeExtensionChain;
     }
 
-    /**
-     * @param array             $moduleExtensionClasses
-     * @param int               $shopId
-     * @param ShopConfiguration $shopConfiguration
-     * @return array
-     */
     private function getActiveModuleExtensionClasses(
         array $moduleExtensionClasses,
         int $shopId,
@@ -101,13 +86,6 @@ class ActiveClassExtensionChainResolver implements ActiveClassExtensionChainReso
         return $activeClasses;
     }
 
-    /**
-     * @param string            $classExtension
-     * @param int               $shopId
-     * @param ShopConfiguration $shopConfiguration
-     *
-     * @return bool
-     */
     private function isActiveExtension(
         string $classExtension,
         int $shopId,

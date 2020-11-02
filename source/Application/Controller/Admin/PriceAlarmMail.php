@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxDb;
 
 /**
  * Admin article main pricealarm manager.
@@ -37,23 +37,23 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             FROM oxpricealarm
             WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = :oxshopid";
         $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query, [
-            ':oxshopid' => $shopId
+            ':oxshopid' => $shopId,
         ]);
-        if ($result != false && $result->count() > 0) {
+        if (false !== $result && $result->count() > 0) {
             $simpleCache = [];
             while (!$result->EOF) {
                 $price = $result->fields[0];
                 $articleId = $result->fields[1];
                 if (isset($simpleCache[$articleId])) {
                     if ($simpleCache[$articleId] <= $price) {
-                        $this->_aViewData['iAllCnt'] += 1;
+                        ++$this->_aViewData['iAllCnt'];
                     }
                 } else {
                     $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     if ($article->load($articleId)) {
                         $articlePrice = $simpleCache[$articleId] = $article->getPrice()->getBruttoPrice();
                         if ($articlePrice <= $price) {
-                            $this->_aViewData['iAllCnt'] += 1;
+                            ++$this->_aViewData['iAllCnt'];
                         }
                     }
                 }
@@ -61,6 +61,6 @@ class PriceAlarmMail extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             }
         }
 
-        return "pricealarm_mail.tpl";
+        return 'pricealarm_mail.tpl';
     }
 }

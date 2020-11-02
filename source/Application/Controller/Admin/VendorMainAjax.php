@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,50 +9,49 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-
 /**
- * Class manages vendor assignment to articles
+ * Class manages vendor assignment to articles.
  */
 class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * If true extended column selection will be build
+     * If true extended column selection will be build.
      *
      * @var bool
      */
     protected $_blAllowExtColumns = true;
 
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,       visible, multilanguage, ident
-        ['oxartnum', 'oxarticles', 1, 0, 0],
-        ['oxtitle', 'oxarticles', 1, 1, 0],
-        ['oxean', 'oxarticles', 1, 0, 0],
-        ['oxmpn', 'oxarticles', 0, 0, 0],
-        ['oxprice', 'oxarticles', 0, 0, 0],
-        ['oxstock', 'oxarticles', 0, 0, 0],
-        ['oxid', 'oxarticles', 0, 0, 1]
-    ],
-                                 'container2' => [
-                                     ['oxartnum', 'oxarticles', 1, 0, 0],
-                                     ['oxtitle', 'oxarticles', 1, 1, 0],
-                                     ['oxean', 'oxarticles', 1, 0, 0],
-                                     ['oxmpn', 'oxarticles', 0, 0, 0],
-                                     ['oxprice', 'oxarticles', 0, 0, 0],
-                                     ['oxstock', 'oxarticles', 0, 0, 0],
-                                     ['oxid', 'oxarticles', 0, 0, 1]
-                                 ]
+    protected $_aColumns = [
+        'container1' => [ // field , table,       visible, multilanguage, ident
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1],
+        ],
+        'container2' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1],
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
     protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -69,7 +70,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
             $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArtTable.oxparentid = '' and $sArtTable.oxvendorid != " . $oDb->quote($sSynchVendorId);
         } else {
             // selected category ?
-            if ($sSynchVendorId && $sSynchVendorId != $sVendorId) {
+            if ($sSynchVendorId && $sSynchVendorId !== $sVendorId) {
                 $sQAdd = " from $sO2CView left join $sArtTable on ";
                 $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? " ( $sArtTable.oxid = $sO2CView.oxobjectid or $sArtTable.oxparentid = oxobject2category.oxobjectid )" : " $sArtTable.oxid = $sO2CView.oxobjectid ";
                 $sQAdd .= 'where ' . $sArtTable . '.oxshopid="' . $oConfig->getShopId() . '" and ' . $sO2CView . '.oxcatnid = ' . $oDb->quote($sVendorId) . ' and ' . $sArtTable . '.oxvendorid != ' . $oDb->quote($sSynchVendorId);
@@ -84,11 +85,12 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
     }
 
     /**
-     * Adds filter SQL to current query
+     * Adds filter SQL to current query.
      *
      * @param string $sQ query to add filter condition
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addFilter" in next major
      */
     protected function _addFilter($sQ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -103,9 +105,9 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
     }
 
     /**
-     * Removes article from Vendor
+     * Removes article from Vendor.
      */
-    public function removeVendor()
+    public function removeVendor(): void
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $aRemoveArt = $this->_getActionIds('oxarticles.oxid');
@@ -115,21 +117,21 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
             $aRemoveArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if (is_array($aRemoveArt)) {
-            $sSelect = "update oxarticles set oxvendorid = null where "
+        if (\is_array($aRemoveArt)) {
+            $sSelect = 'update oxarticles set oxvendorid = null where '
                 . $this->onVendorActionArticleUpdateConditions($aRemoveArt);
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sSelect);
 
-            $this->resetCounter("vendorArticle", $oConfig->getRequestParameter('oxid'));
+            $this->resetCounter('vendorArticle', $oConfig->getRequestParameter('oxid'));
 
             $this->onVendorAction($oConfig->getRequestParameter('oxid'));
         }
     }
 
     /**
-     * Adds article to Vendor config
+     * Adds article to Vendor config.
      */
-    public function addVendor()
+    public function addVendor(): void
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -141,13 +143,13 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
             $aAddArticle = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if ($soxId && $soxId != "-1" && is_array($aAddArticle)) {
+        if ($soxId && '-1' !== $soxId && \is_array($aAddArticle)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sSelect = "update oxarticles set oxvendorid = " . $oDb->quote($soxId) . " where "
+            $sSelect = 'update oxarticles set oxvendorid = ' . $oDb->quote($soxId) . ' where '
                 . $this->onVendorActionArticleUpdateConditions($aAddArticle);
 
             $oDb->Execute($sSelect);
-            $this->resetCounter("vendorArticle", $soxId);
+            $this->resetCounter('vendorArticle', $soxId);
 
             $this->onVendorAction($soxId);
         }
@@ -162,7 +164,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      */
     protected function onVendorActionArticleUpdateConditions($articleIds)
     {
-        return 'oxid in (' . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articleIds)) . ')';
+        return 'oxid in (' . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($articleIds)) . ')';
     }
 
     /**
@@ -170,7 +172,7 @@ class VendorMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\List
      *
      * @param string $vendorOxid
      */
-    protected function onVendorAction($vendorOxid)
+    protected function onVendorAction($vendorOxid): void
     {
     }
 }

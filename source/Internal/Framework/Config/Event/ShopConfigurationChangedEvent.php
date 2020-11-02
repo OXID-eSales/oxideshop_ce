@@ -13,6 +13,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class ShopConfigurationChangedEvent extends Event
@@ -29,15 +30,15 @@ class ShopConfigurationChangedEvent extends Event
     /**
      * Shopid the configuration was changed for.
      *
-     * @var integer
+     * @var int
      */
     private $shopId;
 
     /**
      * ShopConfigurationChangedEvent constructor.
      *
-     * @param string $configurationVariable Config varname.
-     * @param int    $shopId                Shop id.
+     * @param string $configurationVariable config varname
+     * @param int    $shopId                shop id
      */
     public function __construct(string $configurationVariable, int $shopId)
     {
@@ -47,8 +48,6 @@ class ShopConfigurationChangedEvent extends Event
 
     /**
      * Getter for configuration variable name.
-     *
-     * @return string
      */
     public function getConfigurationVariable(): string
     {
@@ -57,8 +56,6 @@ class ShopConfigurationChangedEvent extends Event
 
     /**
      * Getter for shop id.
-     *
-     * @return integer
      */
     public function getShopId(): int
     {

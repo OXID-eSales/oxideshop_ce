@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
- * exception class for an article which is out of stock
+ * exception class for an article which is out of stock.
  */
 class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleException
 {
@@ -22,12 +24,12 @@ class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleExcept
     /**
      * Maximal possible amount (e.g. 2 if two items of the article are left).
      *
-     * @var integer
+     * @var int
      */
     private $_iRemainingAmount = 0;
 
     /**
-     * Basket index value
+     * Basket index value.
      *
      * @var string
      */
@@ -36,17 +38,17 @@ class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleExcept
     /**
      * Sets the amount of the article remaining in stock.
      *
-     * @param integer $iRemainingAmount Articles remaining in stock
+     * @param int $iRemainingAmount Articles remaining in stock
      */
-    public function setRemainingAmount($iRemainingAmount)
+    public function setRemainingAmount($iRemainingAmount): void
     {
-        $this->_iRemainingAmount = (int) $iRemainingAmount;
+        $this->_iRemainingAmount = (int)$iRemainingAmount;
     }
 
     /**
-     * Amount of articles left
+     * Amount of articles left.
      *
-     * @return integer
+     * @return int
      */
     public function getRemainingAmount()
     {
@@ -54,17 +56,17 @@ class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleExcept
     }
 
     /**
-     * Sets the basket index for the article
+     * Sets the basket index for the article.
      *
      * @param string $sBasketIndex Basket index for the faulty article
      */
-    public function setBasketIndex($sBasketIndex)
+    public function setBasketIndex($sBasketIndex): void
     {
         $this->_sBasketIndex = $sBasketIndex;
     }
 
     /**
-     * The basketindex of the faulty article
+     * The basketindex of the faulty article.
      *
      * @return string
      */
@@ -75,20 +77,20 @@ class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleExcept
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */
     public function getString()
     {
-        return __CLASS__ . '-' . parent::getString() . " Remaining Amount --> " . $this->_iRemainingAmount;
+        return __CLASS__ . '-' . parent::getString() . ' Remaining Amount --> ' . $this->_iRemainingAmount;
     }
 
     /**
      * Creates an array of field name => field value of the object.
      * To make a easy conversion of exceptions to error messages possible.
      * Should be extended when additional fields are used!
-     * Overrides oxException::getValues()
+     * Overrides oxException::getValues().
      *
      * @return array
      */
@@ -104,7 +106,7 @@ class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleExcept
     /**
      * Defines a name of the view variable containing the messages.
      * Currently it checks if destination value is set, and if
-     * not - overrides default error message with:
+     * not - overrides default error message with:.
      *
      *    $this->getMessage(). $this->getRemainingAmount()
      *
@@ -113,13 +115,13 @@ class OutOfStockException extends \OxidEsales\Eshop\Core\Exception\ArticleExcept
      *
      * @param string $sDestination name of the view variable
      */
-    public function setDestination($sDestination)
+    public function setDestination($sDestination): void
     {
         // in case destination not set, overriding default error message
         if (!$sDestination) {
-            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ": " . $this->getRemainingAmount();
+            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ': ' . $this->getRemainingAmount();
         } else {
-            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ": ";
+            $this->message = \OxidEsales\Eshop\Core\Registry::getLang()->translateString($this->getMessage()) . ': ';
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@
  * -------------------------------------------------------------
  * Purpose: Modifies provided language constant with it's translation
  * usage: [{$val|oxmultilangassign}]
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param string $sIdent language constant ident
  * @param mixed  $args   for constants using %s notations

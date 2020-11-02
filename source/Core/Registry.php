@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,21 +12,21 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 
 /**
- * Object registry design pattern implementation. Stores the instances of objects
+ * Object registry design pattern implementation. Stores the instances of objects.
  */
 class Registry
 {
     /**
-     * Instance array
+     * Instance array.
      *
      * @var array
      */
     protected static $instances = [];
 
     /**
-     * Hold BC class to Unified Namespace class map
+     * Hold BC class to Unified Namespace class map.
      *
-     * @var null|array
+     * @var array|null
      */
     protected static $backwardsCompatibilityClassMap = null;
 
@@ -38,8 +40,9 @@ class Registry
      * But be aware, that support for old class names will be dropped in the future.
      *
      * @template T
+     *
      * @param class-string<T> $className The class name from the Unified Namespace.
-     * param mixed  ...$args   constructor arguments
+     *                                   param mixed  ...$args   constructor arguments
      *
      * @static
      *
@@ -53,20 +56,18 @@ class Registry
     }
 
     /**
-     * Instance setter
+     * Instance setter.
      *
      * @param string $className Class name
      * @param object $instance  Object instance
      *
      * @static
-     *
-     * @return null
      */
-    public static function set($className, $instance)
+    public static function set($className, $instance): void
     {
         $key = self::getStorageKey($className);
 
-        if (is_null($instance)) {
+        if (null === $instance) {
             unset(self::$instances[$key]);
 
             return;
@@ -78,7 +79,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\Config
+     * Return an instance of \OxidEsales\Eshop\Core\Config.
      *
      * @static
      *
@@ -90,7 +91,7 @@ class Registry
     }
 
     /**
-     * Returns an instance of \OxidEsales\Eshop\Core\Session
+     * Returns an instance of \OxidEsales\Eshop\Core\Session.
      *
      * @static
      *
@@ -102,7 +103,7 @@ class Registry
     }
 
     /**
-     * Returns an instance of \OxidEsales\Eshop\Core\Language
+     * Returns an instance of \OxidEsales\Eshop\Core\Language.
      *
      * @static
      *
@@ -114,7 +115,7 @@ class Registry
     }
 
     /**
-     * Returns an instance of \OxidEsales\Eshop\Core\Utils
+     * Returns an instance of \OxidEsales\Eshop\Core\Utils.
      *
      * @static
      *
@@ -126,7 +127,7 @@ class Registry
     }
 
     /**
-     * Returns an instance of OxidEsales\Eshop\Core\UtilsObject
+     * Returns an instance of OxidEsales\Eshop\Core\UtilsObject.
      *
      * @static
      *
@@ -138,7 +139,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\InputValidator
+     * Return an instance of \OxidEsales\Eshop\Core\InputValidator.
      *
      * @static
      *
@@ -150,7 +151,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\PictureHandler
+     * Return an instance of \OxidEsales\Eshop\Core\PictureHandler.
      *
      * @static
      *
@@ -162,7 +163,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\Request
+     * Return an instance of \OxidEsales\Eshop\Core\Request.
      *
      * @static
      *
@@ -174,7 +175,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\SeoEncoder
+     * Return an instance of \OxidEsales\Eshop\Core\SeoEncoder.
      *
      * @static
      *
@@ -186,7 +187,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\SeoDecoder
+     * Return an instance of \OxidEsales\Eshop\Core\SeoDecoder.
      *
      * @static
      *
@@ -198,7 +199,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsCount
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsCount.
      *
      * @static
      *
@@ -210,7 +211,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsDate
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsDate.
      *
      * @static
      *
@@ -222,7 +223,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsFile
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsFile.
      *
      * @static
      *
@@ -234,7 +235,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsPic
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsPic.
      *
      * @static
      *
@@ -246,7 +247,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsServer
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsServer.
      *
      * @static
      *
@@ -258,7 +259,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsString
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsString.
      *
      * @static
      *
@@ -270,7 +271,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsUrl
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsUrl.
      *
      * @static
      *
@@ -282,7 +283,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsXml
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsXml.
      *
      * @static
      *
@@ -294,7 +295,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\UtilsView
+     * Return an instance of \OxidEsales\Eshop\Core\UtilsView.
      *
      * @static
      *
@@ -306,7 +307,7 @@ class Registry
     }
 
     /**
-     * Return an instance of \OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver
+     * Return an instance of \OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver.
      *
      * @static
      *
@@ -318,9 +319,10 @@ class Registry
     }
 
     /**
-     * Returns Logger
+     * Returns Logger.
      *
      * @static
+     *
      * @return \Psr\Log\LoggerInterface
      */
     public static function getLogger()
@@ -328,11 +330,12 @@ class Registry
         if (!self::instanceExists('logger')) {
             self::set('logger', getLogger());
         }
+
         return self::get('logger');
     }
 
     /**
-     * Return all class instances, which are currently set in the registry
+     * Return all class instances, which are currently set in the registry.
      *
      * @return array
      */
@@ -342,7 +345,7 @@ class Registry
     }
 
     /**
-     * Check if an instance of a given class is set in the registry
+     * Check if an instance of a given class is set in the registry.
      *
      * @param string $className
      *
@@ -356,13 +359,13 @@ class Registry
     }
 
     /**
-     * Get backwardsCompatibilityClassMap
+     * Get backwardsCompatibilityClassMap.
      *
      * @return array
      */
     public static function getBackwardsCompatibilityClassMap()
     {
-        if (is_null(self::$backwardsCompatibilityClassMap)) {
+        if (null === self::$backwardsCompatibilityClassMap) {
             $classMap = (new BackwardsCompatibilityClassMapProvider())->getMap();
             self::$backwardsCompatibilityClassMap = $classMap;
         }
@@ -374,7 +377,7 @@ class Registry
      * Translate a given old class name like 'oxconfig' into a storage key as known by the Registry.
      * If a new class name is used, the method just returns it as it is.
      *
-     * @param string $className Class name to be converted.
+     * @param string $className class name to be converted
      *
      * @return string
      */
@@ -397,7 +400,7 @@ class Registry
      *            Also Registry::instanceExists will always return false for UtilsObject.
      * This does only affect BC class name and unified namespace class names, not the edition own classes atm.
      *
-     * @param string $className Class name.
+     * @param string $className class name
      *
      * @return object
      */
@@ -406,18 +409,19 @@ class Registry
         if (('oxutilsobject' === strtolower($className)) || \OxidEsales\Eshop\Core\UtilsObject::class === $className) {
             $object = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
         } else {
-            $object = \oxNew($className);
+            $object = oxNew($className);
         }
 
         return $object;
     }
 
     /**
-     * Return a well known object from the registry
+     * Return a well known object from the registry.
      *
      * @template T
+     *
      * @param class-string<T> $className A unified namespace class name
-     * param mixed  ...$args   constructor arguments
+     *                                   param mixed  ...$args   constructor arguments
      *
      * @static
      *

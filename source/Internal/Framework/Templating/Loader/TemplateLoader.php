@@ -14,9 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\FileLocatorI
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver\TemplateNameResolverInterface;
 
 /**
- * Class TemplateLoader
- *
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Loader
+ * Class TemplateLoader.
  */
 class TemplateLoader implements TemplateLoaderInterface
 {
@@ -32,9 +30,6 @@ class TemplateLoader implements TemplateLoaderInterface
 
     /**
      * TemplateLoader constructor.
-     *
-     * @param FileLocatorInterface  $fileLocator
-     * @param TemplateNameResolverInterface $templateNameResolver
      */
     public function __construct(
         FileLocatorInterface $fileLocator,
@@ -48,8 +43,6 @@ class TemplateLoader implements TemplateLoaderInterface
      * Check a template exists.
      *
      * @param string $name The name of the template
-     *
-     * @return bool
      */
     public function exists($name): bool
     {
@@ -58,6 +51,7 @@ class TemplateLoader implements TemplateLoaderInterface
         } catch (TemplateFileNotFoundException $e) {
             return false;
         }
+
         return true;
     }
 
@@ -65,8 +59,6 @@ class TemplateLoader implements TemplateLoaderInterface
      * Returns the content of the given template.
      *
      * @param string $name The name of the template
-     *
-     * @return string
      *
      * @throws TemplateFileNotFoundException
      */
@@ -82,8 +74,6 @@ class TemplateLoader implements TemplateLoaderInterface
      *
      * @param string $name A template name
      *
-     * @return string
-     *
      * @throws TemplateFileNotFoundException
      */
     public function getPath($name): string
@@ -93,8 +83,6 @@ class TemplateLoader implements TemplateLoaderInterface
 
     /**
      * @param string $name A template name
-     *
-     * @return string
      *
      * @throws TemplateFileNotFoundException
      */
@@ -106,6 +94,7 @@ class TemplateLoader implements TemplateLoaderInterface
         if (false === $file || null === $file || '' === $file) {
             throw new TemplateFileNotFoundException(sprintf('Template "%s" not found', $name));
         }
+
         return $file;
     }
 }

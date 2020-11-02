@@ -41,11 +41,13 @@ class FormField implements FormFieldInterface
 
     /**
      * @param string $name
+     *
      * @return FormField
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -59,11 +61,13 @@ class FormField implements FormFieldInterface
 
     /**
      * @param string $value
+     *
      * @return FormField
      */
     public function setValue($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -77,11 +81,13 @@ class FormField implements FormFieldInterface
 
     /**
      * @param string $label
+     *
      * @return FormField
      */
     public function setLabel($label)
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -95,11 +101,13 @@ class FormField implements FormFieldInterface
 
     /**
      * @param bool $isRequired
+     *
      * @return FormField
      */
     public function setIsRequired($isRequired)
     {
         $this->isRequired = $isRequired;
+
         return $this;
     }
 }

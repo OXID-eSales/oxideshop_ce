@@ -20,7 +20,7 @@ class QueryFilter implements QueryFilterInterface
     private $logThese = [
         'insert into',
         'update ',
-        'delete '
+        'delete ',
     ];
 
     /**
@@ -28,26 +28,22 @@ class QueryFilter implements QueryFilterInterface
      */
     private $skipThese = [
         'oxsession',
-        'oxcache'
+        'oxcache',
     ];
 
     /**
      * @param string $query       Query string
      * @param array  $skipLogTags Additional tags to skip
-     *
-     * @return bool
      */
     public function shouldLogQuery(string $query, array $skipLogTags): bool
     {
-        return (bool) preg_match($this->getSearchPattern($skipLogTags), $query);
+        return (bool)preg_match($this->getSearchPattern($skipLogTags), $query);
     }
 
     /**
-     * Assemble search pattern
+     * Assemble search pattern.
      *
-     * @param array  $skipLogTags Additional tags to skip
-     *
-     * @return string
+     * @param array $skipLogTags Additional tags to skip
      */
     private function getSearchPattern(array $skipLogTags): string
     {

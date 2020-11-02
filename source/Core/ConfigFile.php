@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -31,7 +33,7 @@ class ConfigFile
      */
     public function getVar($varName)
     {
-        return isset($this->$varName) ? $this->$varName : null;
+        return $this->$varName ?? null;
     }
 
     /**
@@ -40,13 +42,13 @@ class ConfigFile
      * @param string $varName Variable name
      * @param string $value   Variable value
      */
-    public function setVar($varName, $value)
+    public function setVar($varName, $value): void
     {
         $this->$varName = $value;
     }
 
     /**
-     * Checks by name if variable is set
+     * Checks by name if variable is set.
      *
      * @param string $varName Variable name
      *
@@ -58,7 +60,7 @@ class ConfigFile
     }
 
     /**
-     * Returns all loaded vars as an array
+     * Returns all loaded vars as an array.
      *
      * @return array
      */
@@ -68,16 +70,17 @@ class ConfigFile
     }
 
     /**
-     * Sets custom config file to include
+     * Sets custom config file to include.
      *
      * @param string $fileName custom configuration file name
      */
-    public function setFile($fileName)
+    public function setFile($fileName): void
     {
         if (is_readable($fileName)) {
             $this->_loadVars($fileName);
         }
     }
+
     /**
      * Performs variable loading from configuration file by including the php file.
      * It works with current configuration file format well,
@@ -85,9 +88,10 @@ class ConfigFile
      * this method is a subject to be changed.
      *
      * @param string $fileName Configuration file name
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadVars" in next major
      */
-    private function _loadVars($fileName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function _loadVars($fileName): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         include $fileName;
     }

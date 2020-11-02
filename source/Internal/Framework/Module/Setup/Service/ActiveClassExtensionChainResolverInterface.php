@@ -13,9 +13,5 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ActiveClassExtensionChainResolverInterface
 {
-    /**
-     * @param int $shopId
-     * @return ClassExtensionsChain
-     */
     public function getActiveExtensionChain(int $shopId): ClassExtensionsChain;
 }

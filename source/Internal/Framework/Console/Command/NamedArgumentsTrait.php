@@ -14,20 +14,21 @@ use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Trait NamedArgumentsTrait
- * Turns Symfony command options with VALUE_REQUIRED into "named arguments"
+ * Turns Symfony command options with VALUE_REQUIRED into "named arguments".
+ *
  * @see https://github.com/symfony/symfony/issues/14716
  */
 trait NamedArgumentsTrait
 {
     /**
      * @param InputOption[] $inputOptions
-     * @param InputInterface $input
+     *
      * @throws \InvalidArgumentException
      */
     public function checkRequiredCommandOptions(array $inputOptions, InputInterface $input): void
     {
         foreach ($inputOptions as $option) {
-            $name  = $option->getName();
+            $name = $option->getName();
             $value = $input->getOption($name);
             if (!isset($value) && $option->isValueRequired()) {
                 throw new \InvalidArgumentException("The \"--$name\" option is required.");

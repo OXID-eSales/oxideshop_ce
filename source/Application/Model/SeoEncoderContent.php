@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,18 +9,16 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
-
 /**
- * Seo encoder base
+ * Seo encoder base.
  */
 class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /**
-     * Returns target "extension" (/)
+     * Returns target "extension" (/).
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
     protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -28,7 +28,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
 
     /**
      * Returns SEO uri for content object. Includes parent category path info if
-     * content is assigned to it
+     * content is assigned to it.
      *
      * @param \OxidEsales\Eshop\Application\Model\Content $oCont        content category object
      * @param int                                         $iLang        language
@@ -43,18 +43,18 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
         }
         //load details link from DB
         if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxContent', $oCont->getId(), $iLang))) {
-            if ($iLang != $oCont->getLanguage()) {
+            if ($iLang !== $oCont->getLanguage()) {
                 $sId = $oCont->getId();
                 $oCont = oxNew(\OxidEsales\Eshop\Application\Model\Content::class);
                 $oCont->loadInLang($iLang, $sId);
             }
 
             $sSeoUrl = '';
-            if ($oCont->getCategoryId() && $oCont->getType() === 2) {
+            if ($oCont->getCategoryId() && 2 === $oCont->getType()) {
                 $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                 if ($oCat->loadInLang($iLang, $oCont->oxcontents__oxcatid->value)) {
                     $sParentId = $oCat->oxcategories__oxparentid->value;
-                    if ($sParentId && $sParentId != 'oxrootid') {
+                    if ($sParentId && 'oxrootid' !== $sParentId) {
                         $oParentCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
                         if ($oParentCat->loadInLang($iLang, $oCat->oxcategories__oxparentid->value)) {
                             $sSeoUrl .= \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class)->getCategoryUri($oParentCat);
@@ -73,7 +73,7 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * encodeContentUrl encodes content link
+     * encodeContentUrl encodes content link.
      *
      * @param \OxidEsales\Eshop\Application\Model\Content $oCont category object
      * @param int                                         $iLang language
@@ -90,31 +90,32 @@ class SeoEncoderContent extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * deletes content seo entries
+     * deletes content seo entries.
      *
      * @param string $sId content ids
      */
-    public function onDeleteContent($sId)
+    public function onDeleteContent($sId): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $oDb->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcontent'", [
-            ':oxobjectid' => $sId
+            ':oxobjectid' => $sId,
         ]);
-        $oDb->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $sId
+        $oDb->execute('delete from oxobject2seodata where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $sId,
         ]);
-        $oDb->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $sId
+        $oDb->execute('delete from oxseohistory where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $sId,
         ]);
     }
 
     /**
-     * Returns alternative uri used while updating seo
+     * Returns alternative uri used while updating seo.
      *
      * @param string $sObjectId object id
      * @param int    $iLang     language id
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
     protected function _getAltUri($sObjectId, $iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

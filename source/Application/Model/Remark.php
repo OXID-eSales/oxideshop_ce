@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,23 +9,20 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-
 /**
  * Remark manager.
  */
 class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxremark';
 
     /**
-     * Skip update fields
+     * Skip update fields.
      *
      * @var array
      */
@@ -59,6 +58,7 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data fields in DB. Returns true on success.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

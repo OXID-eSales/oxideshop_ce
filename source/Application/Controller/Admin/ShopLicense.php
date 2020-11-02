@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,8 +12,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Curl;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\OnlineCaller;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin shop license setting manager.
@@ -20,16 +22,22 @@ use OxidEsales\Eshop\Core\OnlineCaller;
  */
 class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-    /** @var string Current class template */
-    protected $_sThisTemplate = "shop_license.tpl";
+    /**
+     * @var string Current class template
+     */
+    protected $_sThisTemplate = 'shop_license.tpl';
 
-    /** @var string Current shop version links for edition. */
+    /**
+     * @var string current shop version links for edition
+     */
     private $versionCheckLink = 'http://admin.oxid-esales.com/CE/onlinecheck.php';
 
     /**
      * Executes parent method parent::render(), creates oxshop object, passes it's
      * data to Smarty engine and returns name of template file "shop_license.tpl".
+     *
      * @return string
+     *
      * @throws SystemComponentException
      */
     public function render()
@@ -37,21 +45,21 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         $myConfig = Registry::getConfig();
         if ($myConfig->isDemoShop()) {
             /** @var SystemComponentException $oSystemComponentException */
-            $oSystemComponentException = oxNew(SystemComponentException::class, "license");
+            $oSystemComponentException = oxNew(SystemComponentException::class, 'license');
             throw $oSystemComponentException;
         }
 
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ($soxId != "-1") {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if ('-1' !== $soxId) {
             // load object
             $oShop = oxNew(Shop::class);
             $oShop->load($soxId);
-            $this->_aViewData["edit"] = $oShop;
+            $this->_aViewData['edit'] = $oShop;
         }
 
-        $this->_aViewData["version"] = $myConfig->getVersion();
+        $this->_aViewData['version'] = $myConfig->getVersion();
 
         $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->versionCheckLink);
 
@@ -66,9 +74,11 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      * Checks if the license key update is allowed.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "canUpdate" in next major
      */
-    protected function _canUpdate() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _canUpdate()
     {
         $myConfig = Registry::getConfig();
 
@@ -84,29 +94,37 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
     }
 
     /**
-     * Fetch current shop version information from url
+     * Fetch current shop version information from url.
+     *
      * @param string $sUrl current version info fetching url by edition
+     *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "fetchCurVersionInfo" in next major
      */
-    protected function _fetchCurVersionInfo($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _fetchCurVersionInfo($sUrl)
     {
         try {
             $response = $this->requestVersionInfo($sUrl);
         } catch (\Throwable $e) {
-            /** Exception is not logged! */
+            /* Exception is not logged! */
             $this->handleConnectionError($e);
+
             return '';
         }
+
         return $this->insertUpdateLinkIntoResponse($response);
     }
 
     private function requestVersionInfo(string $url): string
     {
         $curl = oxNew(Curl::class);
-        $curl->setMethod("POST");
+        $curl->setMethod('POST');
         $curl->setUrl(sprintf('%s/%s', $url, $this->getLanguageAbbreviation()));
-        $curl->setParameters(["myversion" => Registry::getConfig()->getVersion()]);
+        $curl->setParameters([
+            'myversion' => Registry::getConfig()->getVersion(),
+        ]);
         $curl->setOption(
             Curl::CONNECT_TIMEOUT_OPTION,
             OnlineCaller::CURL_CONNECT_TIMEOUT
@@ -115,21 +133,23 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
             Curl::EXECUTION_TIMEOUT_OPTION,
             OnlineCaller::CURL_EXECUTION_TIMEOUT
         );
+
         return $curl->execute();
     }
 
     private function getLanguageAbbreviation(): string
     {
         $language = Registry::getLang();
+
         return $language->getLanguageAbbr($language->getTplLanguage());
     }
 
-    private function handleConnectionError(\Throwable $e)
+    private function handleConnectionError(\Throwable $e): void
     {
         $this->displayErrorMessage($e->getMessage());
     }
 
-    private function displayErrorMessage(string $message)
+    private function displayErrorMessage(string $message): void
     {
         Registry::getUtilsView()->addErrorToDisplay(
             sprintf(
@@ -142,14 +162,15 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
 
     private function insertUpdateLinkIntoResponse(string $response): string
     {
-        $response = strip_tags($response, "<br>, <b>");
-        $result = explode("<br>", $response);
-        if (!isset($result[5]) || !strstr($result[5], "update")) {
+        $response = strip_tags($response, '<br>, <b>');
+        $result = explode('<br>', $response);
+        if (!isset($result[5]) || !strstr($result[5], 'update')) {
             return $response;
         }
         /** URL is set through i18n (lang file) */
-        $sUpdateLink = Registry::getLang()->translateString("VERSION_UPDATE_LINK");
-        $result[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $result[5] . "</a>";
-        return implode("<br>", $result);
+        $sUpdateLink = Registry::getLang()->translateString('VERSION_UPDATE_LINK');
+        $result[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $result[5] . '</a>';
+
+        return implode('<br>', $result);
     }
 }

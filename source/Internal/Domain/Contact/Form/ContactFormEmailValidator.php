@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormFieldInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 
 class ContactFormEmailValidator implements FormValidatorInterface
 {
@@ -28,8 +28,6 @@ class ContactFormEmailValidator implements FormValidatorInterface
 
     /**
      * ContactFormEmailValidator constructor.
-     *
-     * @param EmailValidatorServiceInterface $emailValidatorService
      */
     public function __construct(EmailValidatorServiceInterface $emailValidatorService)
     {
@@ -37,7 +35,6 @@ class ContactFormEmailValidator implements FormValidatorInterface
     }
 
     /**
-     * @param FormInterface $form
      * @return bool
      */
     public function isValid(FormInterface $form)
@@ -50,7 +47,7 @@ class ContactFormEmailValidator implements FormValidatorInterface
                 ->emailValidatorService
                 ->isEmailValid($email->getValue());
 
-            if ($isValid !== true) {
+            if (true !== $isValid) {
                 $this->errors[] = 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL';
             }
         }
@@ -59,7 +56,6 @@ class ContactFormEmailValidator implements FormValidatorInterface
     }
 
     /**
-     * @param FormFieldInterface $email
      * @return bool
      */
     private function isValidationNeeded(FormFieldInterface $email)
@@ -68,12 +64,11 @@ class ContactFormEmailValidator implements FormValidatorInterface
     }
 
     /**
-     * @param FormFieldInterface $email
      * @return bool
      */
     private function isNotEmptyEmail(FormFieldInterface $email)
     {
-        return $email->getValue() !== '';
+        return '' !== $email->getValue();
     }
 
     /**

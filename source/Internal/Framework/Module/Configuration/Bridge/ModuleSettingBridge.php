@@ -50,9 +50,7 @@ class ModuleSettingBridge implements ModuleSettingBridgeInterface
     }
 
     /**
-     * @param string $name
      * @param mixed $value
-     * @param string $moduleId
      */
     public function save(string $name, $value, string $moduleId): void
     {
@@ -73,13 +71,12 @@ class ModuleSettingBridge implements ModuleSettingBridgeInterface
     }
 
     /**
-     * @param string $name
-     * @param string $moduleId
      * @return mixed
      */
     public function get(string $name, string $moduleId)
     {
         $configuration = $this->moduleConfigurationDao->get($moduleId, $this->context->getCurrentShopId());
+
         return $configuration->getModuleSetting($name)->getValue();
     }
 }

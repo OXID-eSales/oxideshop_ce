@@ -14,22 +14,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoExcepti
 
 interface ShopConfigurationSettingDaoInterface
 {
-    /**
-     * @param ShopConfigurationSetting $shopConfigurationSetting
-     */
     public function save(ShopConfigurationSetting $shopConfigurationSetting);
 
     /**
-     * @param string $name
-     * @param int    $shopId
-     * @return ShopConfigurationSetting
-     *
      * @throws EntryDoesNotExistDaoException
      */
     public function get(string $name, int $shopId): ShopConfigurationSetting;
 
-    /**
-     * @param ShopConfigurationSetting $setting
-     */
     public function delete(ShopConfigurationSetting $setting);
 }

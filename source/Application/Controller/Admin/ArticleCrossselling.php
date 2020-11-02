@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin article crosselling/accesories manager.
@@ -31,13 +31,13 @@ class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin
         $this->_aViewData['edit'] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         // crossselling
-        $this->_createCategoryTree("artcattree");
+        $this->_createCategoryTree('artcattree');
 
         // accessoires
-        $this->_createCategoryTree("artcattree2");
+        $this->_createCategoryTree('artcattree2');
 
         $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oArticle->load($soxId);
 
@@ -46,19 +46,19 @@ class ArticleCrossselling extends \OxidEsales\Eshop\Application\Controller\Admin
             }
         }
 
-        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
-        if ($iAoc == 1) {
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aoc');
+        if (1 === $iAoc) {
             $oArticleCrossellingAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleCrosssellingAjax::class);
             $this->_aViewData['oxajax'] = $oArticleCrossellingAjax->getColumns();
 
-            return "popups/article_crossselling.tpl";
-        } elseif ($iAoc == 2) {
+            return 'popups/article_crossselling.tpl';
+        } elseif (2 === $iAoc) {
             $oArticleAccessoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAccessoriesAjax::class);
             $this->_aViewData['oxajax'] = $oArticleAccessoriesAjax->getColumns();
 
-            return "popups/article_accessories.tpl";
+            return 'popups/article_accessories.tpl';
         }
 
-        return "article_crossselling.tpl";
+        return 'article_crossselling.tpl';
     }
 }

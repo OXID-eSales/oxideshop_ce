@@ -35,6 +35,7 @@ class FilesystemContainerCache implements ContainerCacheInterface
     public function get(): ContainerInterface
     {
         include_once $this->context->getContainerCacheFilePath();
+
         return new \ProjectServiceContainer();
     }
 

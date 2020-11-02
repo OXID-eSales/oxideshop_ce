@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,29 +9,34 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\FileCache;
-use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Selects module variables from database or cache.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleVariablesLocator
 {
-    /** @var array Static cache for module information variables. */
+    /**
+     * @var array static cache for module information variables
+     */
     protected static $moduleVariables = [];
 
-    /** @var FileCache */
+    /**
+     * @var FileCache
+     */
     private $fileCache;
 
-    /** @var \OxidEsales\Eshop\Core\ShopIdCalculator */
+    /**
+     * @var \OxidEsales\Eshop\Core\ShopIdCalculator
+     */
     private $shopIdCalculator;
 
     /**
-     * @param FileCache        $fileCache
+     * @param FileCache                               $fileCache
      * @param \OxidEsales\Eshop\Core\ShopIdCalculator $shopIdCalculator
      */
     public function __construct($fileCache, $shopIdCalculator)
@@ -57,7 +64,7 @@ class ModuleVariablesLocator
         //first try to get it from cache
         $value = $cache->getFromCache($name);
 
-        if (is_null($value)) {
+        if (null === $value) {
             $value = $this->getModuleVarFromDB($name);
             $cache->setToCache($name, $value);
         }
@@ -73,9 +80,9 @@ class ModuleVariablesLocator
      * @param string $name  Configuration array name
      * @param array  $value Module name values
      */
-    public function setModuleVariable($name, $value)
+    public function setModuleVariable($name, $value): void
     {
-        if (is_null($value)) {
+        if (null === $value) {
             self::$moduleVariables = null;
         } else {
             self::$moduleVariables[$name] = $value;
@@ -89,7 +96,7 @@ class ModuleVariablesLocator
      *
      * @static
      */
-    public static function resetModuleVariables()
+    public static function resetModuleVariables(): void
     {
         self::$moduleVariables = [];
         FileCache::clearCache();
@@ -109,10 +116,10 @@ class ModuleVariablesLocator
 
         $shopId = $this->getShopIdCalculator()->getShopId();
 
-        $query = "SELECT oxvarvalue FROM oxconfig WHERE oxvarname = :oxvarname AND oxshopid = :oxshopid";
+        $query = 'SELECT oxvarvalue FROM oxconfig WHERE oxvarname = :oxvarname AND oxshopid = :oxshopid';
         $value = $masterDb->getOne($query, [
             ':oxvarname' => $name,
-            ':oxshopid'  => $shopId
+            ':oxshopid' => $shopId,
         ]);
 
         return unserialize($value);

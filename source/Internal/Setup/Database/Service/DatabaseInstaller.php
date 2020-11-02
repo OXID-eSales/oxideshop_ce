@@ -40,10 +40,6 @@ class DatabaseInstaller implements DatabaseInstallerInterface
 
     /**
      * DatabaseInstaller constructor.
-     * @param DatabaseCreatorInterface $creator
-     * @param DatabaseInitiatorInterface $initiator
-     * @param ConfigFileDaoInterface $configFileDao
-     * @param BasicContextInterface $basicContext
      */
     public function __construct(
         DatabaseCreatorInterface $creator,
@@ -57,13 +53,6 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         $this->basicContext = $basicContext;
     }
 
-    /**
-     * @param string $host
-     * @param int $port
-     * @param string $username
-     * @param string $password
-     * @param string $name
-     */
     public function install(string $host, int $port, string $username, string $password, string $name): void
     {
         try {
@@ -71,7 +60,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
         } catch (DatabaseExistsException $exception) {
         }
 
-        $this->addCredentialsToConfigFile($host, (string) $port, $username, $password, $name);
+        $this->addCredentialsToConfigFile($host, (string)$port, $username, $password, $name);
         $this->resetConfigFileOpcache();
         $this->updateConfigFileInRegistry();
 
@@ -96,7 +85,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
 
     private function updateConfigFileInRegistry(): void
     {
-        /**
+        /*
          * @todo We should not use Registry or ConfigFile classes directly in internal namespace, but shop setup is
          *       very special case and we can't avoid it. It should be removed after config refactoring.
          */
@@ -110,7 +99,7 @@ class DatabaseInstaller implements DatabaseInstallerInterface
 
     private function resetConfigFileOpcache(): void
     {
-        if (opcache_get_status() !== false) {
+        if (false !== opcache_get_status()) {
             opcache_invalidate($this->basicContext->getConfigFilePath());
         }
     }

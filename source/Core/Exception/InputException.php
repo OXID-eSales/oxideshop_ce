@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 /**
  * exception class for all kind of exceptions connected to an input done by the user e.g.:
  * - not valid email adress
- * - negative value
+ * - negative value.
  */
 class InputException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
@@ -23,7 +25,7 @@ class InputException extends \OxidEsales\Eshop\Core\Exception\StandardException
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */

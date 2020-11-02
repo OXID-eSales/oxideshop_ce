@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,11 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
-use oxRegistry;
-use oxArticle;
-
 /**
- * Article box widget
+ * Article box widget.
  */
 class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
@@ -22,7 +21,11 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1];
+    protected $_aComponentNames = [
+        'oxcmp_user' => 1,
+        'oxcmp_basket' => 1,
+        'oxcmp_cur' => 1,
+    ];
 
     /**
      * Current class template name.
@@ -32,14 +35,14 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     protected $_sTemplate = 'widget/product/boxproduct.tpl';
 
     /**
-     * Current article
+     * Current article.
      *
      * @var \OxidEsales\Eshop\Application\Model\Article|null
      */
     protected $_oArticle = null;
 
     /**
-     * Returns active category
+     * Returns active category.
      *
      * @return \OxidEsales\Eshop\Application\Model\Category|null
      */
@@ -54,7 +57,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Renders template based on widget type or just use directly passed path of template
+     * Renders template based on widget type or just use directly passed path of template.
      *
      * @return string
      */
@@ -66,7 +69,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
         $sListType = $this->getViewParameter('sListType');
 
         if ($sWidgetType && $sListType) {
-            $this->_sTemplate = "widget/" . $sWidgetType . "/" . $sListType . ".tpl";
+            $this->_sTemplate = 'widget/' . $sWidgetType . '/' . $sListType . '.tpl';
         }
 
         $sForceTemplate = $this->getViewParameter('oxwtemplate');
@@ -78,23 +81,23 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Sets box product
+     * Sets box product.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle Box product
      */
-    public function setProduct($oArticle)
+    public function setProduct($oArticle): void
     {
         $this->_oArticle = $oArticle;
     }
 
     /**
-     * Get product article
+     * Get product article.
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
     public function getProduct()
     {
-        if (is_null($this->_oArticle)) {
+        if (null === $this->_oArticle) {
             if ($this->getViewParameter('_object')) {
                 $oArticle = $this->getViewParameter('_object');
             } else {
@@ -113,7 +116,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * get link of current top view
+     * get link of current top view.
      *
      * @param int $iLang requested language
      *
@@ -125,17 +128,17 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns if VAT is included in price
+     * Returns if VAT is included in price.
      *
      * @return bool
      */
     public function isVatIncluded()
     {
-        return (bool) $this->getViewParameter("isVatIncluded");
+        return (bool)$this->getViewParameter('isVatIncluded');
     }
 
     /**
-     * Returns wish list id
+     * Returns wish list id.
      *
      * @return string
      */
@@ -145,7 +148,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns remove function
+     * Returns remove function.
      *
      * @return string
      */
@@ -155,7 +158,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns toBasket function
+     * Returns toBasket function.
      *
      * @return string
      */
@@ -165,17 +168,17 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns if toCart must be disabled
+     * Returns if toCart must be disabled.
      *
      * @return bool
      */
     public function getDisableToCart()
     {
-        return (bool) $this->getViewParameter('blDisableToCart');
+        return (bool)$this->getViewParameter('blDisableToCart');
     }
 
     /**
-     * Returns list item id with identifier
+     * Returns list item id with identifier.
      *
      * @return string
      */
@@ -185,7 +188,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns recommendation id
+     * Returns recommendation id.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -197,7 +200,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns iteration number
+     * Returns iteration number.
      *
      * @return string
      */
@@ -207,14 +210,14 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns RSS links
+     * Returns RSS links.
      *
      * @return array|null
      */
     public function getRSSLinks()
     {
         $aRSS = $this->getViewParameter('rsslinks');
-        if (!is_array($aRSS)) {
+        if (!\is_array($aRSS)) {
             $aRSS = null;
         }
 
@@ -222,23 +225,23 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
-     * Returns the answer if main link must be showed
+     * Returns the answer if main link must be showed.
      *
      * @return bool
      */
     public function getShowMainLink()
     {
-        return (bool) $this->getViewParameter('showMainLink');
+        return (bool)$this->getViewParameter('showMainLink');
     }
 
     /**
-     * Returns if alternate product exists
+     * Returns if alternate product exists.
      *
      * @return bool
      */
     public function getAltProduct()
     {
-        return (bool) $this->getViewParameter('altproduct');
+        return (bool)$this->getViewParameter('altproduct');
     }
 
     /**
@@ -248,9 +251,11 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle      Article
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addDynParamsToLink" in next major
      */
-    protected function _addDynParamsToLink($sAddDynParams, $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addDynParamsToLink($sAddDynParams, $oArticle)
     {
         $blAddedParams = false;
         if ($sAddDynParams) {
@@ -272,9 +277,11 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      * @param string $sArticleId Article id
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleById" in next major
      */
-    protected function _getArticleById($sArticleId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getArticleById($sArticleId)
     {
         /** @var \OxidEsales\Eshop\Application\Model\Article $oArticle */
         $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

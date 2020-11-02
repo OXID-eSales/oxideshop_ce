@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Str;
 
 /**
- * String manipulation class
+ * String manipulation class.
  */
 class UtilsString
 {
@@ -22,7 +24,7 @@ class UtilsString
     }
 
     /**
-     * Prepares passed string for CSV format
+     * Prepares passed string for CSV format.
      *
      * @param string $sInField String to prepare
      *
@@ -43,7 +45,7 @@ class UtilsString
     /**
      * shortens a string to a size $iLenght, multiple spaces are removed
      * and leading and ending whitespaces are removed. If string ends with "," then
-     * "," is removed from string end
+     * "," is removed from string end.
      *
      * @param string $sString input string
      * @param int    $iLength maximum length of result string , -1 -> no truncation
@@ -57,12 +59,12 @@ class UtilsString
         $oStr = Str::getStr();
 
         //multiple whitespaces
-        $sString = $oStr->preg_replace("/[ \t\n\r]+/", " ", $sString);
-        if ($oStr->strlen($sString) > $iLength && $iLength != -1) {
+        $sString = $oStr->preg_replace("/[ \t\n\r]+/", ' ', $sString);
+        if ($oStr->strlen($sString) > $iLength && -1 !== $iLength) {
             $sString = $oStr->substr($sString, 0, $iLength);
         }
 
-        return $oStr->preg_replace("/,+$/", "", $sString);
+        return $oStr->preg_replace('/,+$/', '', $sString);
     }
 
     /**

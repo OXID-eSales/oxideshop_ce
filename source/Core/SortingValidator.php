@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,13 +10,14 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * @internal Please do not use or extend this class.
+ * @internal please do not use or extend this class
  */
 class SortingValidator
 {
     /**
      * @param string $sortBy
      * @param string $sortOrder
+     *
      * @return bool
      */
     public function isValid($sortBy, $sortOrder)
@@ -23,8 +26,8 @@ class SortingValidator
         if (
             $sortBy
             && $sortOrder
-            && in_array(strtolower($sortOrder), $this->getSortingOrders())
-            && in_array($sortBy, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'))
+            && \in_array(strtolower($sortOrder), $this->getSortingOrders(), true)
+            && \in_array($sortBy, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSortCols'), true)
         ) {
             $isValid = true;
         }

@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterface
@@ -41,17 +41,10 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     private $shopAdapter;
 
     /**
-     * @var EventDispatcherInterface $eventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
-    /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param ContextInterface             $context
-     * @param ShopSettingEncoderInterface  $shopSettingEncoder
-     * @param ShopAdapterInterface         $shopAdapter
-     * @param EventDispatcherInterface     $eventDispatcher
-     */
     public function __construct(
         QueryBuilderFactoryInterface $queryBuilderFactory,
         ContextInterface $context,
@@ -66,10 +59,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param ShopConfigurationSetting $shopConfigurationSetting
-     */
-    public function save(ShopConfigurationSetting $shopConfigurationSetting)
+    public function save(ShopConfigurationSetting $shopConfigurationSetting): void
     {
         $this->delete($shopConfigurationSetting);
 
@@ -77,21 +67,21 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
         $queryBuilder
             ->insert('oxconfig')
             ->values([
-                'oxid'          => ':id',
-                'oxshopid'      => ':shopId',
-                'oxvarname'     => ':name',
-                'oxvartype'     => ':type',
-                'oxvarvalue'    => ':value',
+                'oxid' => ':id',
+                'oxshopid' => ':shopId',
+                'oxvarname' => ':name',
+                'oxvartype' => ':type',
+                'oxvarvalue' => ':value',
             ])
             ->setParameters([
-                'id'        => $this->shopAdapter->generateUniqueId(),
-                'shopId'    => $shopConfigurationSetting->getShopId(),
-                'name'      => $shopConfigurationSetting->getName(),
-                'type'      => $shopConfigurationSetting->getType(),
-                'value'     => $this->shopSettingEncoder->encode(
+                'id' => $this->shopAdapter->generateUniqueId(),
+                'shopId' => $shopConfigurationSetting->getShopId(),
+                'name' => $shopConfigurationSetting->getName(),
+                'type' => $shopConfigurationSetting->getType(),
+                'value' => $this->shopSettingEncoder->encode(
                     $shopConfigurationSetting->getType(),
                     $shopConfigurationSetting->getValue()
-                )
+                ),
             ]);
 
         $queryBuilder->execute();
@@ -106,9 +96,6 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     }
 
     /**
-     * @param string $name
-     * @param int    $shopId
-     * @return ShopConfigurationSetting
      * @throws EntryDoesNotExistDaoException
      */
     public function get(string $name, int $shopId): ShopConfigurationSetting
@@ -121,16 +108,14 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             ->andWhere('oxvarname = :name')
             ->andWhere('oxmodule = ""')
             ->setParameters([
-                'shopId'    => $shopId,
-                'name'      => $name
+                'shopId' => $shopId,
+                'name' => $name,
             ]);
 
         $result = $queryBuilder->execute()->fetch();
 
         if (false === $result) {
-            throw new EntryDoesNotExistDaoException(
-                'Setting ' . $name . ' doesn\'t exist in the shop with id ' . $shopId
-            );
+            throw new EntryDoesNotExistDaoException('Setting ' . $name . ' doesn\'t exist in the shop with id ' . $shopId);
         }
 
         $setting = new ShopConfigurationSetting();
@@ -143,10 +128,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
         return $setting;
     }
 
-    /**
-     * @param ShopConfigurationSetting $setting
-     */
-    public function delete(ShopConfigurationSetting $setting)
+    public function delete(ShopConfigurationSetting $setting): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -155,8 +137,8 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             ->andWhere('oxvarname = :name')
             ->andWhere('oxmodule = ""')
             ->setParameters([
-                'shopId'    => $setting->getShopId(),
-                'name'      => $setting->getName(),
+                'shopId' => $setting->getShopId(),
+                'name' => $setting->getName(),
             ]);
 
         $queryBuilder->execute();

@@ -14,8 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
-use function in_array;
-
 class ModuleStateService implements ModuleStateServiceInterface
 {
     /**
@@ -25,7 +23,6 @@ class ModuleStateService implements ModuleStateServiceInterface
 
     /**
      * ModuleStateService constructor.
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
      */
     public function __construct(
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
@@ -33,30 +30,20 @@ class ModuleStateService implements ModuleStateServiceInterface
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return bool
-     */
     public function isActive(string $moduleId, int $shopId): bool
     {
         $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
 
-        return in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
+        return \in_array($moduleId, $activeModuleIdsSetting->getValue(), true);
     }
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
      * @throws ModuleStateIsAlreadySetException
      */
-    public function setActive(string $moduleId, int $shopId)
+    public function setActive(string $moduleId, int $shopId): void
     {
         if ($this->isActive($moduleId, $shopId)) {
-            throw new ModuleStateIsAlreadySetException(
-                'Active status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.'
-            );
+            throw new ModuleStateIsAlreadySetException('Active status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.');
         }
 
         $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
@@ -69,17 +56,12 @@ class ModuleStateService implements ModuleStateServiceInterface
     }
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
      * @throws ModuleStateIsAlreadySetException
      */
-    public function setDeactivated(string $moduleId, int $shopId)
+    public function setDeactivated(string $moduleId, int $shopId): void
     {
         if (!$this->isActive($moduleId, $shopId)) {
-            throw new ModuleStateIsAlreadySetException(
-                'Deactivated status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.'
-            );
+            throw new ModuleStateIsAlreadySetException('Deactivated status for module "' . $moduleId . '" and shop with id "' . $shopId . '" is already set.');
         }
 
         $activeModuleIdsSetting = $this->getActiveModulesShopConfigurationSetting($shopId);
@@ -92,10 +74,6 @@ class ModuleStateService implements ModuleStateServiceInterface
         $this->shopConfigurationSettingDao->save($activeModuleIdsSetting);
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
     private function getActiveModulesShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {

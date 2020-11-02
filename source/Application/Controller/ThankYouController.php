@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,68 +13,68 @@ use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Thankyou page.
- * Arranges Thankyou page, sets ordering status, other parameters
+ * Arranges Thankyou page, sets ordering status, other parameters.
  */
 class ThankYouController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
-     * User basket object
+     * User basket object.
      *
      * @var object
      */
     protected $_oBasket = null;
 
     /**
-     * List of customer also bought thies products
+     * List of customer also bought thies products.
      *
      * @var object
      */
     protected $_aLastProducts = null;
 
     /**
-     * Currency conversion index value
+     * Currency conversion index value.
      *
-     * @var double
+     * @var float
      */
     protected $_dConvIndex = null;
 
     /**
-     * IPayment basket
+     * IPayment basket.
      *
-     * @var double
+     * @var float
      */
     protected $_dIPaymentBasket = null;
 
     /**
-     * IPayment account
+     * IPayment account.
      *
      * @var string
      */
     protected $_sIPaymentAccount = null;
 
     /**
-     * IPayment user name
+     * IPayment user name.
      *
      * @var string
      */
     protected $_sIPaymentUser = null;
 
     /**
-     * IPayment password
+     * IPayment password.
      *
      * @var string
      */
     protected $_sIPaymentPassword = null;
 
     /**
-     * Mail error
+     * Mail error.
      *
      * @var string
      */
     protected $_sMailError = null;
 
     /**
-     * Sign if to load and show bargain action
+     * Sign if to load and show bargain action.
      *
      * @var bool
      */
@@ -91,7 +93,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
      * it (\OxidEsales\Eshop\Core\Session::delBasket()), unsets user session ID, if
      * this user didn't entered password while ordering.
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -119,7 +121,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
      * redirects to start page. Otherwise - executes parent::render()
      * and returns name of template to render thankyou::_sThisTemplate.
      *
-     * @return  string  current template file name
+     * @return string current template file name
      */
     public function render()
     {
@@ -151,7 +153,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns active basket
+     * Template variable getter. Returns active basket.
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
      */
@@ -161,13 +163,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns list of customer also bought these products
+     * Template variable getter. Returns list of customer also bought these products.
      *
      * @return object
      */
     public function getAlsoBoughtTheseProducts()
     {
-        if ($this->_aLastProducts === null) {
+        if (null === $this->_aLastProducts) {
             $this->_aLastProducts = false;
             // 5th order step
             $aBasketContents = array_values($this->getBasket()->getContents());
@@ -182,13 +184,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns currency conversion index value
+     * Template variable getter. Returns currency conversion index value.
      *
      * @return object
      */
     public function getCurrencyCovIndex()
     {
-        if ($this->_dConvIndex === null) {
+        if (null === $this->_dConvIndex) {
             // currency conversion index value
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $this->_dConvIndex = 1 / $oCur->rate;
@@ -198,13 +200,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns ipayment basket price
+     * Template variable getter. Returns ipayment basket price.
      *
-     * @return double
+     * @return float
      */
     public function getIPaymentBasket()
     {
-        if ($this->_dIPaymentBasket === null) {
+        if (null === $this->_dIPaymentBasket) {
             $this->_dIPaymentBasket = $this->getBasket()->getPrice()->getBruttoPrice() * 100;
         }
 
@@ -212,13 +214,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns ipayment account
+     * Template variable getter. Returns ipayment account.
      *
      * @return string
      */
     public function getIPaymentAccount()
     {
-        if ($this->_sIPaymentAccount === null) {
+        if (null === $this->_sIPaymentAccount) {
             $this->_sIPaymentAccount = false;
             $this->_sIPaymentAccount = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_Account');
         }
@@ -227,13 +229,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns ipayment user name
+     * Template variable getter. Returns ipayment user name.
      *
      * @return string
      */
     public function getIPaymentUser()
     {
-        if ($this->_sIPaymentUser === null) {
+        if (null === $this->_sIPaymentUser) {
             $this->_sIPaymentUser = false;
             $this->_sIPaymentUser = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_User');
         }
@@ -242,13 +244,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns ipayment password
+     * Template variable getter. Returns ipayment password.
      *
      * @return string
      */
     public function getIPaymentPassword()
     {
-        if ($this->_sIPaymentPassword === null) {
+        if (null === $this->_sIPaymentPassword) {
             $this->_sIPaymentPassword = false;
             $this->_sIPaymentPassword = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iShopID_iPayment_Passwort');
         }
@@ -257,13 +259,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns mail error
+     * Template variable getter. Returns mail error.
      *
      * @return string
      */
     public function getMailError()
     {
-        if ($this->_sMailError === null) {
+        if (null === $this->_sMailError) {
             $this->_sMailError = false;
             $this->_sMailError = Registry::getConfig()->getRequestParameter('mailerror');
         }
@@ -272,13 +274,13 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns order
+     * Template variable getter. Returns order.
      *
      * @return \OxidEsales\Eshop\Application\Model\Order
      */
     public function getOrder()
     {
-        if ($this->_oOrder === null) {
+        if (null === $this->_oOrder) {
             $this->_oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             // loading order sometimes needed in template
             if ($sOrderId = $this->getBasket()->getOrderId()) {
@@ -290,7 +292,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Template variable getter. Returns country ISO 3
+     * Template variable getter. Returns country ISO 3.
      *
      * @return string
      */
@@ -307,7 +309,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
     /**
      * Returns name of a view class, which will be active for an action
-     * (given a generic fnc, e.g. logout)
+     * (given a generic fnc, e.g. logout).
      *
      * @return string
      */
@@ -326,10 +328,9 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
         $aPaths = [];
         $aPath = [];
 
-
         $iLang = Registry::getLang()->getBaseLanguage();
         $aPath['title'] = Registry::getLang()->translateString('ORDER_COMPLETED', $iLang, false);
-        $aPath['link']  = $this->getLink();
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

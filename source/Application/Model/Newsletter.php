@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,9 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-use oxDb;
 use OxidEsales\Eshop\Application\Model\User;
 
 /**
@@ -48,7 +47,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_oUser = null;
 
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
@@ -84,10 +83,10 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         if ($blDeleted) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sDelete = "delete from oxobject2group where oxobject2group.oxshopid = :oxshopid and oxobject2group.oxobjectid = :oxobjectid";
+            $sDelete = 'delete from oxobject2group where oxobject2group.oxshopid = :oxshopid and oxobject2group.oxobjectid = :oxobjectid';
             $oDb->execute($sDelete, [
                 ':oxshopid' => $this->getShopId(),
-                ':oxobjectid' => $sOxId
+                ':oxobjectid' => $sOxId,
             ]);
         }
 
@@ -95,9 +94,9 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns assigned user groups list object
+     * Returns assigned user groups list object.
      *
-     * @return object $_oGroups
+     * @return object
      */
     public function getGroups()
     {
@@ -106,22 +105,22 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // usergroups
-        $this->_oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class, "oxgroups");
-        $sViewName = getViewName("oxgroups");
+        $this->_oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class, 'oxgroups');
+        $sViewName = getViewName('oxgroups');
 
         // performance
         $sSelect = "select {$sViewName}.* from {$sViewName}, oxobject2group
                 where oxobject2group.oxobjectid = :oxobjectid
                 and oxobject2group.oxgroupsid={$sViewName}.oxid ";
         $this->_oGroups->selectString($sSelect, [
-            ':oxobjectid' => $this->getId()
+            ':oxobjectid' => $this->getId(),
         ]);
 
         return $this->_oGroups;
     }
 
     /**
-     * Returns assigned HTML text
+     * Returns assigned HTML text.
      *
      * @return string
      */
@@ -131,7 +130,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns assigned plain text
+     * Returns assigned plain text.
      *
      * @return string
      */
@@ -147,7 +146,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string|User $sUserid          User ID or OBJECT
      * @param bool        $blPerfLoadAktion perform option load actions
      */
-    public function prepare($sUserid, $blPerfLoadAktion = false)
+    public function prepare($sUserid, $blPerfLoadAktion = false): void
     {
         // switching off admin
         $blAdmin = $this->isAdmin();
@@ -171,9 +170,8 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function send()
     {
         $oxEMail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-        $blSend = $oxEMail->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
 
-        return $blSend;
+        return $oxEMail->sendNewsletterMail($this, $this->_oUser, $this->oxnewsletter__oxsubject->value);
     }
 
     /**
@@ -182,9 +180,10 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      * this user, generates HTML and plaintext format newsletters.
      *
      * @param bool $blPerfLoadAktion perform option load actions
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setParams" in next major
      */
-    protected function _setParams($blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setParams($blPerfLoadAktion = false): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -212,14 +211,15 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Creates oxuser object (user ID passed to method),
+     * Creates oxuser object (user ID passed to method),.
      *
      * @param string|User $sUserid User ID or OBJECT
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setUser" in next major
      */
-    protected function _setUser($sUserid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setUser($sUserid): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_string($sUserid)) {
+        if (\is_string($sUserid)) {
             $oUser = oxNew(User::class);
             if ($oUser->load($sUserid)) {
                 $this->_oUser = $oUser;
@@ -235,9 +235,10 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param \OxidEsales\Eshop\Core\Controller\BaseController $oView            view object to store view data
      * @param bool                                             $blPerfLoadAktion perform option load actions
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "assignProducts" in next major
      */
-    protected function _assignProducts($oView, $blPerfLoadAktion = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _assignProducts($oView, $blPerfLoadAktion = false): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($blPerfLoadAktion) {
             $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -252,7 +253,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
             // add products which fit to the last order of this user
             $sSelect = "select $sArticleTable.* from oxorder left join oxorderarticles on oxorderarticles.oxorderid = oxorder.oxid";
             $sSelect .= " left join $sArticleTable on oxorderarticles.oxartid = $sArticleTable.oxid";
-            $sSelect .= " where " . $oArticle->getSqlActiveSnippet();
+            $sSelect .= ' where ' . $oArticle->getSqlActiveSnippet();
             $sSelect .= " and oxorder.oxuserid = '" . $this->_oUser->getId() . "' order by oxorder.oxorderdate desc limit 1";
 
             if ($oArticle->assignRecord($sSelect)) {
@@ -262,7 +263,7 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
                     $iCnt = 0;
                     foreach ($oSimList as $oArt) {
                         $oView->addTplParam("simarticle$iCnt", $oArt);
-                        $iCnt++;
+                        ++$iCnt;
                     }
                 }
             }
@@ -270,13 +271,12 @@ class Newsletter extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Sets data field value
+     * Sets data field value.
      *
      * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
      * @param string $sValue     value of data field
      * @param int    $iDataType  field type
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

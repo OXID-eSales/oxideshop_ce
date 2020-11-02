@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,11 +9,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
  * Shop view validator.
- * checks which views are valid / invalid
+ * checks which views are valid / invalid.
  */
 class ShopViewValidator
 {
@@ -36,13 +36,13 @@ class ShopViewValidator
      *
      * @param null $aMultiLangTables
      */
-    public function setMultiLangTables($aMultiLangTables)
+    public function setMultiLangTables($aMultiLangTables): void
     {
         $this->_aMultiLangTables = $aMultiLangTables;
     }
 
     /**
-     * Returns multi lang tables
+     * Returns multi lang tables.
      *
      * @return array
      */
@@ -51,19 +51,18 @@ class ShopViewValidator
         return $this->_aMultiLangTables;
     }
 
-
     /**
      * Sets multi shop tables.
      *
      * @param array $aMultiShopTables
      */
-    public function setMultiShopTables($aMultiShopTables)
+    public function setMultiShopTables($aMultiShopTables): void
     {
         $this->_aMultiShopTables = $aMultiShopTables;
     }
 
     /**
-     * Returns multi shop tables
+     * Returns multi shop tables.
      *
      * @return array
      */
@@ -73,11 +72,11 @@ class ShopViewValidator
     }
 
     /**
-     * Returns list of active languages in shop
+     * Returns list of active languages in shop.
      *
      * @param array $aLanguages
      */
-    public function setLanguages($aLanguages)
+    public function setLanguages($aLanguages): void
     {
         $this->_aLanguages = $aLanguages;
     }
@@ -93,11 +92,11 @@ class ShopViewValidator
     }
 
     /**
-     * Returns list of active languages in shop
+     * Returns list of active languages in shop.
      *
      * @param array $aAllShopLanguages
      */
-    public function setAllShopLanguages($aAllShopLanguages)
+    public function setAllShopLanguages($aAllShopLanguages): void
     {
         $this->_aAllShopLanguages = $aAllShopLanguages;
     }
@@ -112,21 +111,20 @@ class ShopViewValidator
         return $this->_aAllShopLanguages;
     }
 
-
     /**
      * Sets shop id.
      *
-     * @param integer $iShopId
+     * @param int $iShopId
      */
-    public function setShopId($iShopId)
+    public function setShopId($iShopId): void
     {
         $this->_iShopId = $iShopId;
     }
 
     /**
-     * Returns list of available shops
+     * Returns list of available shops.
      *
-     * @return integer
+     * @return int
      */
     public function getShopId()
     {
@@ -134,9 +132,10 @@ class ShopViewValidator
     }
 
     /**
-     * Returns list of all shop views
+     * Returns list of all shop views.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAllViews" in next major
      */
     protected function _getAllViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -149,24 +148,25 @@ class ShopViewValidator
     }
 
     /**
-     * Checks if given view name belongs to current subshop or is general view
+     * Checks if given view name belongs to current subshop or is general view.
      *
      * @param string $sViewName View name
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isCurrentShopView" in next major
      */
     protected function _isCurrentShopView($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = false;
 
-        $blEndsWithShopId = preg_match("/[_]([0-9]+)$/", $sViewName, $aMatchEndsWithShopId);
-        $blContainsShopId = preg_match("/[_]([0-9]+)[_]/", $sViewName, $aMatchContainsShopId);
+        $blEndsWithShopId = preg_match('/[_]([0-9]+)$/', $sViewName, $aMatchEndsWithShopId);
+        $blContainsShopId = preg_match('/[_]([0-9]+)[_]/', $sViewName, $aMatchContainsShopId);
 
         if (
             (!$blEndsWithShopId && !$blContainsShopId) ||
-            ($blEndsWithShopId && $aMatchEndsWithShopId[1] == $this->getShopId()) ||
-            ($blContainsShopId && $aMatchContainsShopId[1] == $this->getShopId())
+            ($blEndsWithShopId && $aMatchEndsWithShopId[1] === $this->getShopId()) ||
+            ($blContainsShopId && $aMatchContainsShopId[1] === $this->getShopId())
         ) {
             $blResult = true;
         }
@@ -174,11 +174,11 @@ class ShopViewValidator
         return $blResult;
     }
 
-
     /**
-     * Returns list of shop specific views currently in database
+     * Returns list of shop specific views currently in database.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getShopViews" in next major
      */
     protected function _getShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -198,9 +198,10 @@ class ShopViewValidator
     }
 
     /**
-     * Returns list of valid shop views
+     * Returns list of valid shop views.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getValidShopViews" in next major
      */
     protected function _getValidShopViews() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -218,15 +219,13 @@ class ShopViewValidator
     }
 
     /**
-     * Get list of shop tables
+     * Get list of shop tables.
      *
      * @return array
      */
     protected function getShopTables()
     {
-        $shopTables = $this->getMultilangTables();
-
-        return $shopTables;
+        return $this->getMultilangTables();
     }
 
     /**
@@ -234,11 +233,11 @@ class ShopViewValidator
      *
      * @param string $tableName
      */
-    protected function prepareShopTableViewNames($tableName)
+    protected function prepareShopTableViewNames($tableName): void
     {
         $this->_aValidShopViews[] = 'oxv_' . $tableName;
 
-        if (in_array($tableName, $this->getMultiLangTables())) {
+        if (\in_array($tableName, $this->getMultiLangTables(), true)) {
             foreach ($this->getAllShopLanguages() as $sLang) {
                 $this->_aValidShopViews[] = 'oxv_' . $tableName . '_' . $sLang;
             }
@@ -246,20 +245,21 @@ class ShopViewValidator
     }
 
     /**
-     * Checks if view name is valid according to current config
+     * Checks if view name is valid according to current config.
      *
      * @param string $sViewName View name
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isViewValid" in next major
      */
     protected function _isViewValid($sViewName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return in_array($sViewName, $this->_getValidShopViews());
+        return \in_array($sViewName, $this->_getValidShopViews(), true);
     }
 
     /**
-     * Returns list of invalid views
+     * Returns list of invalid views.
      *
      * @return array
      */

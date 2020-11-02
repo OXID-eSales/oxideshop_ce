@@ -35,14 +35,16 @@ class ModuleSettingsBooleanConverter implements MetaDataConverterInterface
 
     /**
      * @param $setting
+     *
      * @return mixed
      */
     private function updateValue($setting)
     {
-        if (isset($setting['type']) && $setting['type'] === 'bool') {
-            $value = is_string($setting['value']) ? strtolower($setting['value']) : $setting['value'];
+        if (isset($setting['type']) && 'bool' === $setting['type']) {
+            $value = \is_string($setting['value']) ? strtolower($setting['value']) : $setting['value'];
             $setting['value'] = self::CONVERSION_MAP[$value] ?? $setting['value'];
         }
+
         return $setting;
     }
 }

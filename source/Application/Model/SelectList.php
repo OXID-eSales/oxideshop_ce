@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,52 +9,50 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
 use OxidEsales\Eshop\Core\Str;
 
 /**
- * Select list manager
+ * Select list manager.
  */
 class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\ISelectList
 {
     /**
-     * Select list fields array
+     * Select list fields array.
      *
      * @var array
      */
     protected $_aFieldList = null;
 
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxselectlist';
 
     /**
-     * Selections array
+     * Selections array.
      *
      * @var array
      */
     protected $_aList = null;
 
     /**
-     * Product VAT
+     * Product VAT.
      *
      * @var float
      */
     protected $_dVat = null;
 
     /**
-     * Active selection object
+     * Active selection object.
      *
      * @var \OxidEsales\Eshop\Application\Model\Selection
      */
     protected $_oActiveSelection = null;
 
     /**
-     * Calls parent constructor and initializes selection list
+     * Calls parent constructor and initializes selection list.
      */
     public function __construct()
     {
@@ -63,13 +63,13 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     /**
      * Returns select list value list.
      *
-     * @param double $dVat VAT value
+     * @param float $dVat VAT value
      *
      * @return array
      */
     public function getFieldList($dVat = null)
     {
-        if ($this->_aFieldList == null && $this->oxselectlist__oxvaldesc->value) {
+        if (null === $this->_aFieldList && $this->oxselectlist__oxvaldesc->value) {
             $this->_aFieldList = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->value, $dVat);
             foreach ($this->_aFieldList as $sKey => $oField) {
                 $this->_aFieldList[$sKey]->name = Str::getStr()->strip_tags($this->_aFieldList[$sKey]->name);
@@ -98,8 +98,8 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
         // remove selectlists from articles also
         if ($blRemove = parent::delete($sOXID)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $oDb->execute("delete from oxobject2selectlist where oxselnid = :oxselnid", [
-                ':oxselnid' => $sOXID
+            $oDb->execute('delete from oxobject2selectlist where oxselnid = :oxselnid', [
+                ':oxselnid' => $sOXID,
             ]);
         }
 
@@ -107,17 +107,17 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     }
 
     /**
-     * VAT setter
+     * VAT setter.
      *
      * @param float $dVat product VAT
      */
-    public function setVat($dVat)
+    public function setVat($dVat): void
     {
         $this->_dVat = $dVat;
     }
 
     /**
-     * Returns VAT set by oxSelectList::setVat()
+     * Returns VAT set by oxSelectList::setVat().
      *
      * @return float
      */
@@ -127,7 +127,7 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     }
 
     /**
-     * Returns variant selection list label
+     * Returns variant selection list label.
      *
      * @return string
      */
@@ -137,18 +137,18 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     }
 
     /**
-     * Returns array of oxSelection's
+     * Returns array of oxSelection's.
      *
      * @return array
      */
     public function getSelections()
     {
-        if ($this->_aList === null && $this->oxselectlist__oxvaldesc->value) {
+        if (null === $this->_aList && $this->oxselectlist__oxvaldesc->value) {
             $this->_aList = false;
             $aList = \OxidEsales\Eshop\Core\Registry::getUtils()->assignValuesFromText($this->oxselectlist__oxvaldesc->getRawValue(), $this->getVat());
             foreach ($aList as $sKey => $oField) {
                 if ($oField->name) {
-                    $this->_aList[$sKey] = oxNew(\OxidEsales\Eshop\Application\Model\Selection::class, Str::getStr()->strip_tags($oField->name), $sKey, false, $this->_aList === false ? true : false);
+                    $this->_aList[$sKey] = oxNew(\OxidEsales\Eshop\Application\Model\Selection::class, Str::getStr()->strip_tags($oField->name), $sKey, false, false === $this->_aList ? true : false);
                 }
             }
         }
@@ -157,13 +157,13 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     }
 
     /**
-     * Returns active selection object
+     * Returns active selection object.
      *
      * @return \OxidEsales\Eshop\Application\Model\Selection
      */
     public function getActiveSelection()
     {
-        if ($this->_oActiveSelection === null) {
+        if (null === $this->_oActiveSelection) {
             if (($aSelections = $this->getSelections())) {
                 // first is allways active
                 $this->_oActiveSelection = reset($aSelections);
@@ -174,20 +174,20 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
     }
 
     /**
-     * Activates given by index selection
+     * Activates given by index selection.
      *
      * @param int $iIdx selection index
      */
-    public function setActiveSelectionByIndex($iIdx)
+    public function setActiveSelectionByIndex($iIdx): void
     {
         if (($aSelections = $this->getSelections())) {
             $iSelIdx = 0;
             foreach ($aSelections as $oSelection) {
-                $oSelection->setActiveState($iSelIdx == $iIdx);
-                if ($iSelIdx == $iIdx) {
+                $oSelection->setActiveState($iSelIdx === $iIdx);
+                if ($iSelIdx === $iIdx) {
                     $this->_oActiveSelection = $oSelection;
                 }
-                $iSelIdx++;
+                ++$iSelIdx;
             }
         }
     }

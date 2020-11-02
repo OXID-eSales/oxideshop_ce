@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -18,9 +20,8 @@ class StyleLogic
     public function collectStyleSheets($params, $isDynamic)
     {
         $params = $this->fillDefaultParams($params);
-        $output = $this->getOutput($params, $isDynamic);
 
-        return $output;
+        return $this->getOutput($params, $isDynamic);
     }
 
     /**
@@ -31,14 +32,13 @@ class StyleLogic
     private function fillDefaultParams($params)
     {
         $defaults = [
-            'widget'   => '',
+            'widget' => '',
             'inWidget' => false,
-            'if'       => null,
-            'include'  => null,
+            'if' => null,
+            'include' => null,
         ];
-        $params = array_merge($defaults, $params);
 
-        return $params;
+        return array_merge($defaults, $params);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -18,21 +20,21 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
-     * current rss object
+     * current rss object.
      *
      * @var RssFeed
      */
     protected $_oRss = null;
 
     /**
-     * Current rss channel
+     * Current rss channel.
      *
      * @var object
      */
     protected $_oChannel = null;
 
     /**
-     * Xml start and end definition
+     * Xml start and end definition.
      *
      * @var array
      */
@@ -46,9 +48,10 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     protected $_sThisTemplate = 'widget/rss.tpl';
 
     /**
-     * get RssFeed
+     * get RssFeed.
      *
      * @return RssFeed
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getRssFeed" in next major
      */
     protected function _getRssFeed() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -61,12 +64,12 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * Renders requested RSS feed
+     * Renders requested RSS feed.
      *
      * Template variables:
      * <b>rss</b>
      */
-    public function render()
+    public function render(): void
     {
         parent::render();
 
@@ -80,8 +83,8 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
 
         $this->_aViewData['oxEngineTemplateId'] = $this->getViewId();
         // return rss xml, no further processing
-        $sCharset = \OxidEsales\Eshop\Core\Registry::getLang()->translateString("charset");
-        \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader("Content-Type: text/xml; charset=" . $sCharset);
+        $sCharset = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset');
+        \OxidEsales\Eshop\Core\Registry::getUtils()->setHeader('Content-Type: text/xml; charset=' . $sCharset);
         \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit(
             $this->_processOutput(
                 $renderer->renderTemplate($this->_sThisTemplate, $this->_aViewData)
@@ -102,11 +105,12 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * Processes xml before outputting to user
+     * Processes xml before outputting to user.
      *
      * @param string $sInput input to process
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "processOutput" in next major
      */
     protected function _processOutput($sInput) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -115,11 +119,9 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * getTopShop loads top shop articles to rss
-     *
-     * @access public
+     * getTopShop loads top shop articles to rss.
      */
-    public function topshop()
+    public function topshop(): void
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssTopShop')) {
             $this->_getRssFeed()->loadTopInShop();
@@ -129,11 +131,9 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * loads newest shop articles
-     *
-     * @access public
+     * loads newest shop articles.
      */
-    public function newarts()
+    public function newarts(): void
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssNewest')) {
             $this->_getRssFeed()->loadNewestArticles();
@@ -143,11 +143,9 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * loads category articles
-     *
-     * @access public
+     * loads category articles.
      */
-    public function catarts()
+    public function catarts(): void
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssCategories')) {
             $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
@@ -160,11 +158,9 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * loads search articles
-     *
-     * @access public
+     * loads search articles.
      */
-    public function searcharts()
+    public function searcharts(): void
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssSearch')) {
             $sSearchParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('searchparam', true);
@@ -179,14 +175,11 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * loads recommendation lists
+     * loads recommendation lists.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
-     * @access public
-     * @return void
      */
-    public function recommlists()
+    public function recommlists(): void
     {
         if ($this->getViewConfig()->getShowListmania() && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssRecommLists')) {
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
@@ -200,14 +193,11 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * loads recommendation list articles
+     * loads recommendation list articles.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-     *
-     * @access public
-     * @return void
      */
-    public function recommlistarts()
+    public function recommlistarts(): void
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssRecommListArts')) {
             $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
@@ -221,11 +211,9 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * getBargain loads top shop articles to rss
-     *
-     * @access public
+     * getBargain loads top shop articles to rss.
      */
-    public function bargain()
+    public function bargain(): void
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_rssBargain')) {
             $this->_getRssFeed()->loadBargain();
@@ -235,13 +223,13 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * Template variable getter. Returns rss channel
+     * Template variable getter. Returns rss channel.
      *
      * @return object
      */
     public function getChannel()
     {
-        if ($this->_oChannel === null) {
+        if (null === $this->_oChannel) {
             $this->_oChannel = $this->_getRssFeed()->getChannel();
         }
 
@@ -249,7 +237,7 @@ class RssController extends \OxidEsales\Eshop\Application\Controller\FrontendCon
     }
 
     /**
-     * Returns if view should be cached
+     * Returns if view should be cached.
      *
      * @return bool
      */

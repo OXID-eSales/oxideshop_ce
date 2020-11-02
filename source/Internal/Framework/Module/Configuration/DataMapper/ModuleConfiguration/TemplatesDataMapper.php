@@ -37,10 +37,6 @@ class TemplatesDataMapper implements ModuleConfigurationDataMapperInterface
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array $template
-     */
     private function setTemplates(ModuleConfiguration $moduleConfiguration, array $template): void
     {
         foreach ($template as $templateKey => $templatePath) {
@@ -51,11 +47,6 @@ class TemplatesDataMapper implements ModuleConfigurationDataMapperInterface
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     *
-     * @return array
-     */
     private function getTemplates(ModuleConfiguration $configuration): array
     {
         $templates = [];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,10 +10,10 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
@@ -22,12 +24,15 @@ use Psr\Container\ContainerInterface;
  * IMPORTANT: Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
  *            oxNew will enter in an endless loop, if you try to do that.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleChainsGenerator
 {
-    /** @var \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator */
+    /**
+     * @var \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
+     */
     private $moduleVariablesLocator;
 
     /**
@@ -41,7 +46,7 @@ class ModuleChainsGenerator
     /**
      * Creates given class chains.
      *
-     * @param string $className  Class name.
+     * @param string $className  class name
      * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
      *
      * @return string
@@ -62,7 +67,7 @@ class ModuleChainsGenerator
     /**
      * Assembles class chains.
      *
-     * @param string $className  Class name.
+     * @param string $className  class name
      * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
      *
      * @return array
@@ -72,6 +77,7 @@ class ModuleChainsGenerator
         if (!$classAlias) {
             $classAlias = $className;
         }
+
         return $this->getFullChain($className, $classAlias);
     }
 
@@ -103,27 +109,23 @@ class ModuleChainsGenerator
              */
             $classChains = [];
             /* Get the position of the class name */
-            if (false !== $position = array_search($lowerCaseClassName, $allExtendedClasses)) {
-                $classChains[$position] = explode("&", $modules[$lowerCaseClassName]);
+            if (false !== $position = array_search($lowerCaseClassName, $allExtendedClasses, true)) {
+                $classChains[$position] = explode('&', $modules[$lowerCaseClassName]);
             }
             /* Get the position of the alias class name */
-            if (false !== $position = array_search($lowerCaseClassAlias, $allExtendedClasses)) {
-                $classChains[$position] = explode("&", $modules[$lowerCaseClassAlias]);
+            if (false !== $position = array_search($lowerCaseClassAlias, $allExtendedClasses, true)) {
+                $classChains[$position] = explode('&', $modules[$lowerCaseClassAlias]);
             }
 
             /* Notice that the array keys will be ordered, but do not necessarily start at 0 */
             ksort($classChains);
             $fullChain = [];
-            if (1 === count($classChains)) {
-                /**
-                 * @var array $fullChain uses the one and only element of the array
-                 */
+            if (1 === \count($classChains)) {
+                /** @var array $fullChain uses the one and only element of the array */
                 $fullChain = reset($classChains);
             }
-            if (2 === count($classChains)) {
-                /**
-                 * @var array $fullChain merges the first and then the second array from the $classChains
-                 */
+            if (2 === \count($classChains)) {
+                /** @var array $fullChain merges the first and then the second array from the $classChains */
                 $fullChain = array_merge(reset($classChains), next($classChains));
             }
         }
@@ -159,7 +161,6 @@ class ModuleChainsGenerator
      * @deprecated since v6.4 (2019-05-22); If you want to clean a module from the class chain, deactivate the module.
      *
      * @param string $moduleId
-     * @param array  $classChain
      *
      * @return array
      */
@@ -242,11 +243,11 @@ class ModuleChainsGenerator
     protected function createClassExtensions($classChain, $baseClass)
     {
         //security: just preventing string termination
-        $lastClass = str_replace(chr(0), '', $baseClass);
+        $lastClass = str_replace(\chr(0), '', $baseClass);
         $parentClass = $lastClass;
 
         foreach ($classChain as $extensionPath) {
-            $extensionPath = str_replace(chr(0), '', $extensionPath);
+            $extensionPath = str_replace(\chr(0), '', $extensionPath);
 
             if ($this->createClassExtension($parentClass, $extensionPath)) {
                 if (\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($extensionPath)) {
@@ -287,7 +288,7 @@ class ModuleChainsGenerator
         }
 
         /**
-         * Test if the class file could be loaded
+         * Test if the class file could be loaded.
          */
         /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
         $composerClassLoader = include VENDOR_PATH . 'autoload.php';
@@ -302,7 +303,7 @@ class ModuleChainsGenerator
             return false;
         }
 
-        $moduleClassParentAlias = $moduleClass . "_parent";
+        $moduleClassParentAlias = $moduleClass . '_parent';
         if (!class_exists($moduleClassParentAlias, false)) {
             class_alias($parentClass, $moduleClassParentAlias);
         }
@@ -311,7 +312,7 @@ class ModuleChainsGenerator
     }
 
     /**
-     * Backwards compatible self::createClassExtension
+     * Backwards compatible self::createClassExtension.
      *
      * @param string $parentClass     Name of the parent class
      * @param string $moduleClassPath Path of the module class as it is defined in metadata.php 'extend' section.
@@ -327,13 +328,13 @@ class ModuleChainsGenerator
         /**
          * Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
          * So do not try to get "sShopDir" like this:
-         * $modulesDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sShopDir");
+         * $modulesDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sShopDir");.
          */
-        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sShopDir");
+        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sShopDir');
         $moduleClassFile = "$modulesDirectory/modules/$moduleClassPath.php";
-        $moduleClassParentAlias = $moduleClass . "_parent";
+        $moduleClassParentAlias = $moduleClass . '_parent';
 
-        /**
+        /*
          * Test if the class file could be read
          */
         if (
@@ -347,7 +348,7 @@ class ModuleChainsGenerator
         }
 
         if (!class_exists($moduleClass, false)) {
-            /**
+            /*
              * Create parent alias before trying to load the module class as the class extends this alias
              */
             if (!class_exists($moduleClassParentAlias, false)) {
@@ -355,7 +356,7 @@ class ModuleChainsGenerator
             }
             include_once $moduleClassFile;
 
-            /**
+            /*
              * Test if the class could be loaded
              */
             if (!class_exists($moduleClass, false)) {
@@ -373,9 +374,9 @@ class ModuleChainsGenerator
      * Special case is when oxconfig class is extended: we cant call "_disableModule" as it requires valid config object
      * but we can't create it as module class extending it does not exist. So we will use original oxConfig object instead.
      *
-     * @param string $requestedClass Class, for which extension chain was generated.
+     * @param string $requestedClass class, for which extension chain was generated
      */
-    protected function handleSpecialCases($requestedClass)
+    protected function handleSpecialCases($requestedClass): void
     {
         // We do actually have to check the whole inheritance chain in case two OXID modules each have an extension
         // on oxconfig. Checking for $requestedClass only would cover only one inheritance step.
@@ -384,12 +385,12 @@ class ModuleChainsGenerator
         $currentClass = $requestedClass;
         $safetyCount = 0;
         do {
-            if (($currentClass == "oxconfig") || ($currentClass == \OxidEsales\Eshop\Core\Config::class)) {
+            if (('oxconfig' === $currentClass) || (\OxidEsales\Eshop\Core\Config::class === $currentClass)) {
                 $isConfigClass = true;
                 break;
             }
 
-            if ($safetyCount++ === 200) {
+            if (200 === $safetyCount++) {
                 throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException('Recursion limit reached while traversing class inheritance chain.');
             }
 
@@ -404,13 +405,13 @@ class ModuleChainsGenerator
     }
 
     /**
-     * Writes/logs an error on module extension creation problem
+     * Writes/logs an error on module extension creation problem.
      *
      * @param string $moduleClass
      */
-    protected function onModuleExtensionCreationError($moduleClass)
+    protected function onModuleExtensionCreationError($moduleClass): void
     {
-        $moduleId = "(module id not availible)";
+        $moduleId = '(module id not availible)';
         if (class_exists("\OxidEsales\Eshop\Core\Module\Module", false)) {
             $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
             $moduleId = $module->getIdByPath($moduleClass);
@@ -466,65 +467,46 @@ class ModuleChainsGenerator
     /**
      * Only classes of active modules are considered.
      *
-     * @param \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $variablesLocator
-     *
      * @return array
      */
     protected function getClassExtensionChain(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $variablesLocator)
     {
-        $modules = (array) $variablesLocator->getModuleVariable('aModules');
-
-        return $modules;
+        return (array)$variablesLocator->getModuleVariable('aModules');
     }
 
     /**
-     * Conveniance method for tests
+     * Conveniance method for tests.
      *
      * @return bool
      */
     protected function isUnitTest()
     {
-        return defined('OXID_PHP_UNIT');
+        return \defined('OXID_PHP_UNIT');
     }
 
-    /**
-     * @return ModuleActivationBridgeInterface
-     */
     private function getModuleActivationBridge(): ModuleActivationBridgeInterface
     {
         return $this->getContainer()
             ->get(ModuleActivationBridgeInterface::class);
     }
 
-    /**
-     * @return ModuleConfigurationDaoBridgeInterface
-     */
     private function getModuleConfigurationDaoBridge(): ModuleConfigurationDaoBridgeInterface
     {
         return $this->getContainer()
             ->get(ModuleConfigurationDaoBridgeInterface::class);
     }
 
-    /**
-     * @return ShopConfigurationDaoBridgeInterface
-     */
     private function getShopConfigurationDaoBridge(): ShopConfigurationDaoBridgeInterface
     {
         return $this->getContainer()
             ->get(ShopConfigurationDaoBridgeInterface::class);
     }
 
-    /**
-     * @return ModuleStateServiceInterface
-     */
     private function getModuleStateService(): ModuleStateServiceInterface
     {
         return $this->getContainer()->get(ModuleStateServiceInterface::class);
     }
 
-    /**
-     * @return ContainerInterface
-     */
     private function getContainer(): ContainerInterface
     {
         return ContainerFactory::getInstance()->getContainer();

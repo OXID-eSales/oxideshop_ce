@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
- * Basic exception class
+ * Basic exception class.
  */
 class StandardException extends \Exception
 {
@@ -35,39 +37,39 @@ class StandardException extends \Exception
     protected $_blNotCaught = false;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
      * @param string          $sMessage exception message
-     * @param integer         $iCode    exception code
+     * @param int             $iCode    exception code
      * @param \Exception|null $previous previous exception
      */
-    public function __construct($sMessage = "not set", $iCode = 0, \Exception $previous = null)
+    public function __construct($sMessage = 'not set', $iCode = 0, \Exception $previous = null)
     {
         parent::__construct($sMessage, $iCode, $previous);
     }
 
     /**
-     * Sets the exception message
+     * Sets the exception message.
      *
      *  @deprecated since v6.0 (2017-02-27); This method will be removed. Set message in the constructor.
      *
      * @param string $sMessage exception message
      */
-    public function setMessage($sMessage)
+    public function setMessage($sMessage): void
     {
         $this->message = $sMessage;
     }
 
     /**
-     * To define that the exception was caught in renderer
+     * To define that the exception was caught in renderer.
      */
-    public function setRenderer()
+    public function setRenderer(): void
     {
         $this->_blRenderer = true;
     }
 
     /**
-     * Is the exception caught in a renderer
+     * Is the exception caught in a renderer.
      *
      * @return bool
      */
@@ -77,9 +79,9 @@ class StandardException extends \Exception
     }
 
     /**
-     * To define that the exception was not caught (only in oxexceptionhandler)
+     * To define that the exception was not caught (only in oxexceptionhandler).
      */
-    public function setNotCaught()
+    public function setNotCaught(): void
     {
         $this->_blNotCaught = true;
     }
@@ -96,24 +98,24 @@ class StandardException extends \Exception
 
     /**
      * Get complete string dump, should be overwritten by excptions extending this exceptions
-     * if they introduce new fields
+     * if they introduce new fields.
      *
      * @return string
      */
     public function getString()
     {
-        $sWarning = "";
+        $sWarning = '';
         if ($this->_blNotCaught) {
-            $sWarning .= "--!--NOT CAUGHT--!--";
+            $sWarning .= '--!--NOT CAUGHT--!--';
         }
 
         if ($this->_blRenderer) {
-            $sWarning .= "--!--RENDERER--!--";
+            $sWarning .= '--!--RENDERER--!--';
         }
 
         $currentTime = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
-        return $sWarning . __CLASS__ . " (time: " . $currentTime . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
+        return $sWarning . __CLASS__ . ' (time: ' . $currentTime . "): [{$this->code}]: {$this->message} \n Stack Trace: {$this->getTraceAsString()}\n\n";
     }
 
     /**
@@ -129,11 +131,11 @@ class StandardException extends \Exception
     }
 
     /**
-     * Defines a name of the view variable containing the messages
+     * Defines a name of the view variable containing the messages.
      *
      * @param string $sDestination name of the view variable
      */
-    public function setDestination($sDestination)
+    public function setDestination($sDestination): void
     {
     }
 

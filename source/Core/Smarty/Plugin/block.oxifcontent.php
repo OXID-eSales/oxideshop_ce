@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,7 +17,7 @@ use OxidEsales\Eshop\Core\Str;
  * Name: block_oxifcontent
  * Purpose: Output content snippet if content exists
  * add [{oxifcontent ident="..."}][{/oxifcontent}] where you want to display content
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param array  $params  params
  * @param string $content rendered content
@@ -28,10 +30,10 @@ function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)
 {
     $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-    $sIdent  = isset($params['ident']) ? $params['ident'] : null;
-    $sOxid   = isset($params['oxid']) ? $params['oxid'] : null;
-    $sAssign = isset($params['assign']) ? $params['assign'] : null;
-    $sObject = isset($params['object']) ? $params['object'] : 'oCont';
+    $sIdent = $params['ident'] ?? null;
+    $sOxid = $params['oxid'] ?? null;
+    $sAssign = $params['assign'] ?? null;
+    $sObject = $params['object'] ?? 'oCont';
 
     if ($repeat) {
         if ($sIdent || $sOxid) {
@@ -43,7 +45,7 @@ function smarty_block_oxifcontent($params, $content, &$smarty, &$repeat)
             ) {
                 $oContent = $sOxid ? $aContentCache[$sOxid] : $aContentCache[$sIdent];
             } else {
-                $oContent = oxNew("oxContent");
+                $oContent = oxNew('oxContent');
                 $blLoaded = $sOxid ? $oContent->load($sOxid) : ($oContent->loadbyIdent($sIdent));
                 if ($blLoaded && $oContent->isActive()) {
                     $aContentCache[$oContent->getId()] = $aContentCache[$oContent->getLoadId()] = $oContent;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,19 +10,19 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
- * Address handler
+ * Address handler.
  */
 class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxaddress';
 
     /**
-     * Active address status
+     * Active address status.
      *
      * @var bool
      */
@@ -32,14 +34,15 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_oStateObject = null;
 
     /**
-     * Returns oxState object
+     * Returns oxState object.
      *
      * @return \OxidEsales\Eshop\Application\Model\State
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getStateObject" in next major
      */
     protected function _getStateObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($this->_oStateObject)) {
+        if (null === $this->_oStateObject) {
             $this->_oStateObject = oxNew(\OxidEsales\Eshop\Application\Model\State::class);
         }
 
@@ -47,7 +50,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct()
     {
@@ -56,7 +59,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Magic getter returns address as a single line string
+     * Magic getter returns address as a single line string.
      *
      * @return string
      */
@@ -66,7 +69,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Formats address as a single line string
+     * Formats address as a single line string.
      *
      * @return string
      */
@@ -79,9 +82,9 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sCity = $this->oxaddress__oxcity->value;
 
         //format it
-        $sAddress = "";
+        $sAddress = '';
         if ($sFirstName || $sLastName) {
-            $sAddress = $sFirstName . ($sFirstName ? " " : "") . "$sLastName, ";
+            $sAddress = $sFirstName . ($sFirstName ? ' ' : '') . "$sLastName, ";
         }
         $sAddress .= "$sStreet $sStreetNr, $sCity";
 
@@ -99,7 +102,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Get state id for current address
+     * Get state id for current address.
      *
      * @return mixed
      */
@@ -108,9 +111,8 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
         return $this->oxaddress__oxstateid->value;
     }
 
-
     /**
-     * Get state title
+     * Get state title.
      *
      * @param string $sId state ID
      *
@@ -120,7 +122,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oState = $this->_getStateObject();
 
-        if (is_null($sId)) {
+        if (null === $sId) {
             $sId = $this->getStateId();
         }
 
@@ -128,7 +130,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns TRUE if current address is selected
+     * Returns TRUE if current address is selected.
      *
      * @return bool
      */
@@ -138,9 +140,9 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Sets address state as selected
+     * Sets address state as selected.
      */
-    public function setSelected()
+    public function setSelected(): void
     {
         $this->_blSelected = true;
     }
@@ -149,6 +151,7 @@ class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Returns merged address fields.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getMergedAddressFields" in next major
      */
     protected function _getMergedAddressFields() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

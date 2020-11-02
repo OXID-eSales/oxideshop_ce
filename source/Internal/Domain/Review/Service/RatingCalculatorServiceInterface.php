@@ -14,8 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface RatingCalculatorServiceInterface
 {
     /**
-     * @param ArrayCollection $ratings
-     *
      * @return float
      */
     public function getAverage(ArrayCollection $ratings);

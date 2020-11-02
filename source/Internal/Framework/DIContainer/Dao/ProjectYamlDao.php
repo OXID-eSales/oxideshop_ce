@@ -18,7 +18,7 @@ use Webmozart\PathUtil\Path;
 class ProjectYamlDao implements ProjectYamlDaoInterface
 {
     /**
-     * @var BasicContextInterface $context
+     * @var BasicContextInterface
      */
     private $context;
 
@@ -29,8 +29,6 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
 
     /**
      * ProjectYamlDao constructor.
-     * @param BasicContextInterface $context
-     * @param Filesystem            $filesystem
      */
     public function __construct(BasicContextInterface $context, Filesystem $filesystem)
     {
@@ -38,18 +36,12 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
         $this->filesystem = $filesystem;
     }
 
-    /**
-     * @return DIConfigWrapper
-     */
     public function loadProjectConfigFile(): DIConfigWrapper
     {
         return $this->loadDIConfigFile($this->context->getGeneratedServicesFilePath());
     }
 
-    /**
-     * @param DIConfigWrapper $config
-     */
-    public function saveProjectConfigFile(DIConfigWrapper $config)
+    public function saveProjectConfigFile(DIConfigWrapper $config): void
     {
         $config = $this->convertAbsolutePathsToRelative($config);
 
@@ -63,11 +55,6 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
         );
     }
 
-    /**
-     * @param string $path
-     *
-     * @return DIConfigWrapper
-     */
     public function loadDIConfigFile(string $path): DIConfigWrapper
     {
         $yamlArray = [];
@@ -79,18 +66,11 @@ class ProjectYamlDao implements ProjectYamlDaoInterface
         return new DIConfigWrapper($yamlArray);
     }
 
-    /**
-     * @return string
-     */
     private function getGeneratedServicesFileDirectory(): string
     {
         return \dirname($this->context->getGeneratedServicesFilePath());
     }
 
-    /**
-     * @param DIConfigWrapper $configWrapper
-     * @return DIConfigWrapper
-     */
     private function convertAbsolutePathsToRelative(DIConfigWrapper $configWrapper): DIConfigWrapper
     {
         foreach ($configWrapper->getImportFileNames() as $fileName) {

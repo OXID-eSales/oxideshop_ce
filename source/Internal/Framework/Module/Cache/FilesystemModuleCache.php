@@ -16,13 +16,19 @@ use Webmozart\PathUtil\Path;
 
 class FilesystemModuleCache implements ModuleCacheServiceInterface
 {
-    /** @var ShopAdapterInterface */
+    /**
+     * @var ShopAdapterInterface
+     */
     private $shopAdapter;
 
-    /** @var Filesystem */
+    /**
+     * @var Filesystem
+     */
     private $fileSystem;
 
-    /** @var BasicContextInterface */
+    /**
+     * @var BasicContextInterface
+     */
     private $basicContext;
 
     public function __construct(
@@ -35,30 +41,18 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
         $this->basicContext = $basicContext;
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
     public function invalidate(string $moduleId, int $shopId): void
     {
         $this->shopAdapter->invalidateModuleCache($moduleId);
         $this->fileSystem->remove($this->getModulePathCacheDirectory($shopId));
     }
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     * @param array  $data
-     */
     public function put(string $key, int $shopId, array $data): void
     {
         $this->fileSystem->dumpFile($this->getModulePathCacheFilePath($key, $shopId), serialize($data));
     }
 
     /**
-     * @param string $key
-     * @param int $shopId
-     * @return array
      * @throws CacheNotFoundException
      */
     public function get(string $key, int $shopId): array
@@ -70,12 +64,6 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
         return $this->getCacheFileContent($this->getModulePathCacheFilePath($key, $shopId));
     }
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     *
-     * @return bool
-     */
     public function exists(string $key, int $shopId): bool
     {
         return $this->fileSystem->exists($this->getModulePathCacheFilePath($key, $shopId));
@@ -83,7 +71,9 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
 
     private function getCacheFileContent(string $modulePathCacheFilePath): array
     {
-        return unserialize(file_get_contents($modulePathCacheFilePath), ['allowed_classes' => false]);
+        return unserialize(file_get_contents($modulePathCacheFilePath), [
+            'allowed_classes' => false,
+        ]);
     }
 
     private function getModulePathCacheFilePath(string $key, int $shopId): string
@@ -99,7 +89,7 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
         return Path::join(
             $this->basicContext->getCacheDirectory(),
             'modules',
-            (string) $shopId
+            (string)$shopId
         );
     }
 }

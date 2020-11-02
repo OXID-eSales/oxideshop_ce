@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
 /**
- * Class LegacySmartyEngineFactory
+ * Class LegacySmartyEngineFactory.
+ *
  * @internal
  */
 class LegacySmartyEngineFactory implements TemplateEngineFactoryInterface
@@ -32,9 +33,6 @@ class LegacySmartyEngineFactory implements TemplateEngineFactoryInterface
 
     /**
      * LegacySmartyEngineFactory constructor.
-     *
-     * @param ShopAdapterInterface        $shopAdapter
-     * @param SmartyEngineBridgeInterface $smartyBridge
      */
     public function __construct(ShopAdapterInterface $shopAdapter, SmartyEngineBridgeInterface $smartyBridge)
     {
@@ -42,9 +40,6 @@ class LegacySmartyEngineFactory implements TemplateEngineFactoryInterface
         $this->smartyBridge = $smartyBridge;
     }
 
-    /**
-     * @return TemplateEngineInterface
-     */
     public function getTemplateEngine(): TemplateEngineInterface
     {
         $smarty = $this->shopAdapter->getSmartyInstance();

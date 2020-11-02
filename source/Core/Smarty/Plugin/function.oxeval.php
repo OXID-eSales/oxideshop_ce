@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@
  * -------------------------------------------------------------
  * Purpose: eval given string
  * add [{oxeval var="..."}] where you want to display content
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param array  $aParams  parameters to process
  * @param smarty &$oSmarty smarty object
@@ -26,6 +28,7 @@ function smarty_function_oxeval($aParams, &$oSmarty)
     // processign only if enabled
     if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfParseLongDescinSmarty') || isset($aParams['force'])) {
         include_once $oSmarty->_get_plugin_filepath('function', 'eval');
+
         return smarty_function_eval($aParams, $oSmarty);
     }
 

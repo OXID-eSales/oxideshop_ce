@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,8 +11,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use oxArticleList;
 use OxidEsales\Eshop\Core\Registry;
-use oxOrderFileList;
-use oxRegistry;
 
 /**
  * Account article file download page.
@@ -25,7 +25,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     protected $_sThisTemplate = 'page/account/downloads.tpl';
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
@@ -35,7 +35,6 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
      * @var \OxidEsales\Eshop\Application\Model\OrderFileList
      */
     protected $_oOrderFilesList = null;
-
 
     /**
      * Returns Bread Crumb - you are here page1/page2/page3...
@@ -51,7 +50,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
         /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
         $oSeoEncoder = Registry::getSeoEncoder();
         $aPath['title'] = Registry::getLang()->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
+        $aPath['link'] = $oSeoEncoder->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
         $aPath['title'] = Registry::getLang()->translateString('MY_DOWNLOADS', $iBaseLanguage, false);
@@ -62,13 +61,13 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Returns article list which was ordered and has downloadable files
+     * Returns article list which was ordered and has downloadable files.
      *
-     * @return null|oxArticleList
+     * @return oxArticleList|null
      */
     public function getOrderFilesList()
     {
-        if ($this->_oOrderFilesList !== null) {
+        if (null !== $this->_oOrderFilesList) {
             return $this->_oOrderFilesList;
         }
 
@@ -81,14 +80,16 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Returns prepared orders files list
+     * Returns prepared orders files list.
      *
      * @param \OxidEsales\Eshop\Application\Model\OrderFileList $oOrderFileList - list or orderfiles
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareForTemplate" in next major
      */
-    protected function _prepareForTemplate($oOrderFileList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _prepareForTemplate($oOrderFileList)
     {
         $oOrderArticles = [];
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,10 +17,12 @@ use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
  */
 class GenericImport
 {
-    const ERROR_USER_NO_RIGHTS = 'Not sufficient rights to perform operation!';
-    const ERROR_NO_INIT = 'Init not executed, Access denied!';
+    public const ERROR_USER_NO_RIGHTS = 'Not sufficient rights to perform operation!';
+    public const ERROR_NO_INIT = 'Init not executed, Access denied!';
 
-    /** @var array Import objects types. */
+    /**
+     * @var array import objects types
+     */
     protected $objects = [
         'A' => 'Article',
         'K' => 'Category',
@@ -35,43 +39,69 @@ class GenericImport
         'Y' => 'ArticleExtends',
     ];
 
-    /** @var string Imported data array. */
+    /**
+     * @var string imported data array
+     */
     protected $importType = null;
 
-    /** @var array Imported id array */
+    /**
+     * @var array Imported id array
+     */
     protected $importedIds = [];
 
-    /** @var string Return message after import. */
+    /**
+     * @var string return message after import
+     */
     protected $returnMessage;
 
-    /** @var string Csv file field terminator. */
+    /**
+     * @var string csv file field terminator
+     */
     protected $defaultStringTerminator = ';';
 
-    /** @var string Csv file field encloser. */
+    /**
+     * @var string csv file field encloser
+     */
     protected $defaultStringEncloser = '"';
 
-    /** @var bool CSV file contains header or not. */
+    /**
+     * @var bool CSV file contains header or not
+     */
     protected $csvContainsHeader = null;
 
-    /** @var string Import file location. */
+    /**
+     * @var string import file location
+     */
     protected $importFilePath;
 
-    /** @var bool */
+    /**
+     * @var bool
+     */
     protected $isInitialized = false;
 
-    /** @var int */
+    /**
+     * @var int
+     */
     protected $userId = null;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $statistics = [];
 
-    /** @var bool Whether import was retried. */
+    /**
+     * @var bool whether import was retried
+     */
     protected $retried = false;
 
-    /** @var array CSV file fields array. */
+    /**
+     * @var array CSV file fields array
+     */
     protected $csvFileFieldsOrder = [];
 
-    /** @var int Maximum length of imported line. */
+    /**
+     * @var int maximum length of imported line
+     */
     protected $maxLineLength = 8192;
 
     /**
@@ -80,7 +110,7 @@ class GenericImport
      *
      * @throws Exception
      *
-     * @return boolean
+     * @return bool
      */
     public function init()
     {
@@ -88,7 +118,7 @@ class GenericImport
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $user->loadAdminUser();
 
-        if (($user->oxuser__oxrights->value == 'malladmin' || $user->oxuser__oxrights->value == $config->getShopId())) {
+        if (('malladmin' === $user->oxuser__oxrights->value || $user->oxuser__oxrights->value === $config->getShopId())) {
             $this->isInitialized = true;
             $this->userId = $user->getId();
         } else {
@@ -102,7 +132,7 @@ class GenericImport
     /**
      * Get import object according import type.
      *
-     * @param string $type Import object type.
+     * @param string $type import object type
      *
      * @return ImportObject
      */
@@ -122,9 +152,9 @@ class GenericImport
     /**
      * Set import object type prefix.
      *
-     * @param string $type Import type prefix.
+     * @param string $type import type prefix
      */
-    public function setImportType($type)
+    public function setImportType($type): void
     {
         $this->importType = $type;
     }
@@ -132,9 +162,9 @@ class GenericImport
     /**
      * Set CSV file columns names.
      *
-     * @param array $csvFields CSV fields.
+     * @param array $csvFields CSV fields
      */
-    public function setCsvFileFieldsOrder($csvFields)
+    public function setCsvFileFieldsOrder($csvFields): void
     {
         $this->csvFileFieldsOrder = $csvFields;
     }
@@ -142,16 +172,17 @@ class GenericImport
     /**
      * Set if CSV file contains header row.
      *
-     * @param bool $csvContainsHeader Whether imported file has a header row.
+     * @param bool $csvContainsHeader whether imported file has a header row
      */
-    public function setCsvContainsHeader($csvContainsHeader)
+    public function setCsvContainsHeader($csvContainsHeader): void
     {
         $this->csvContainsHeader = $csvContainsHeader;
     }
+
     /**
      * Main import method, whole import of all types via a given csv file is done here.
      *
-     * @param string $importFilePath Full path of the CSV file.
+     * @param string $importFilePath full path of the CSV file
      *
      * @return string
      */
@@ -171,7 +202,7 @@ class GenericImport
 
         if (isset($file) && $file) {
             $data = [];
-            while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
+            while (false !== ($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser()))) {
                 $data[] = $this->csvTextConvert($row, false);
             }
 
@@ -199,7 +230,7 @@ class GenericImport
      *
      * @param array $data
      */
-    public function importData($data)
+    public function importData($data): void
     {
         foreach ($data as $key => $row) {
             if ($row) {
@@ -211,7 +242,10 @@ class GenericImport
                     $errorMessage = $e->getMessage();
                 }
 
-                $this->statistics[$key] = ['r' => $success, 'm' => $errorMessage];
+                $this->statistics[$key] = [
+                    'r' => $success,
+                    'm' => $errorMessage,
+                ];
             }
         }
 
@@ -231,11 +265,11 @@ class GenericImport
     /**
      * Returns count of imported rows, total, during import.
      *
-     * @return int $_iImportedRowCount
+     * @return int
      */
     public function getImportedRowCount()
     {
-        return count($this->importedIds);
+        return \count($this->importedIds);
     }
 
     /**
@@ -279,7 +313,7 @@ class GenericImport
             $this->addImportedId($id);
         }
 
-        return (bool) $id;
+        return (bool)$id;
     }
 
     /**
@@ -289,19 +323,19 @@ class GenericImport
      *
      * @param array $data
      */
-    protected function afterImport($data)
+    protected function afterImport($data): void
     {
         $statistics = $this->getStatistics();
 
         $dataForRetry = [];
         foreach ($statistics as $key => $value) {
-            if ($value['r'] == false) {
-                $this->returnMessage .= "File[" . $this->importFilePath . "] - dataset number: $key - Error: " . $value['m'] . " ---<br> " . PHP_EOL;
+            if (false === $value['r']) {
+                $this->returnMessage .= 'File[' . $this->importFilePath . "] - dataset number: $key - Error: " . $value['m'] . ' ---<br> ' . PHP_EOL;
                 $dataForRetry[$key] = $data[$key];
             }
         }
 
-        if (!empty($dataForRetry) && (!$this->retried || count($dataForRetry) != count($data))) {
+        if (!empty($dataForRetry) && (!$this->retried || \count($dataForRetry) !== \count($data))) {
             $this->retried = true;
             $this->returnMessage = '';
             $this->importData($dataForRetry);
@@ -319,7 +353,7 @@ class GenericImport
     {
         $type = $this->importType;
 
-        if (strlen($type) != 1 || !array_key_exists($type, $this->objects)) {
+        if (1 !== \strlen($type) || !\array_key_exists($type, $this->objects)) {
             throw new Exception('Error unknown command: ' . $type);
         } else {
             return $this->objects[$type];
@@ -330,15 +364,15 @@ class GenericImport
      *
      * @param mixed $id - given key
      */
-    protected function addImportedId($id)
+    protected function addImportedId($id): void
     {
-        if (!array_key_exists($id, $this->importedIds)) {
+        if (!\array_key_exists($id, $this->importedIds)) {
             $this->importedIds[$id] = true;
         }
     }
 
     /**
-     * Maps numeric array to assoc. Array
+     * Maps numeric array to assoc. Array.
      *
      * @param array $data numeric indices
      *
@@ -351,13 +385,13 @@ class GenericImport
 
         foreach ($this->csvFileFieldsOrder as $value) {
             if (!empty($value)) {
-                if (strtolower($data[$index]) == 'null') {
+                if ('null' === strtolower($data[$index])) {
                     $result[$value] = null;
                 } else {
                     $result[$value] = $data[$index];
                 }
             }
-            $index++;
+            ++$index;
         }
 
         return $result;
@@ -373,7 +407,7 @@ class GenericImport
      */
     protected function csvTextConvert($text, $mode)
     {
-        $search = [chr(13), chr(10), '\'', '"'];
+        $search = [\chr(13), \chr(10), '\'', '"'];
         $replace = ['&#13;', '&#10;', '&#39;', '&#34;'];
 
         if ($mode) {
@@ -426,11 +460,11 @@ class GenericImport
      * Checks if user has sufficient rights.
      *
      * @param ImportObject $importObject  Data type object
-     * @param boolean      $isWriteAction Check for write permissions
+     * @param bool         $isWriteAction Check for write permissions
      *
      * @throws Exception
      */
-    protected function checkAccess($importObject, $isWriteAction)
+    protected function checkAccess($importObject, $isWriteAction): void
     {
         if (!$this->isInitialized) {
             throw new Exception(self::ERROR_NO_INIT);
@@ -440,13 +474,13 @@ class GenericImport
     /**
      * Creates and returns import object.
      *
-     * @param string $type Type name in objects dir.
+     * @param string $type type name in objects dir
      *
      * @return ImportObject
      */
     protected function createImportObject($type)
     {
-        $className = __NAMESPACE__ . "\\ImportObject\\" . $type;
+        $className = __NAMESPACE__ . '\\ImportObject\\' . $type;
 
         return oxNew($className);
     }

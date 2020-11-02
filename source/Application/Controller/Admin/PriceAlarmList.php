@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -33,46 +35,48 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sDefSortField = "oxuserid";
+    protected $_sDefSortField = 'oxuserid';
 
     /**
-     * Modifying SQL query to load additional article and customer data
+     * Modifying SQL query to load additional article and customer data.
      *
      * @param object $oListObject list main object
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
-    protected function _buildSelectString($oListObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _buildSelectString($oListObject = null)
     {
-        $sViewName = getViewName("oxarticles", (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sDefaultLang"));
+        $sViewName = getViewName('oxarticles', (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sDefaultLang'));
         $sSql = "select oxpricealarm.*, {$sViewName}.oxtitle AS articletitle, ";
-        $sSql .= "oxuser.oxlname as userlname, oxuser.oxfname as userfname ";
+        $sSql .= 'oxuser.oxlname as userlname, oxuser.oxfname as userfname ';
         $sSql .= "from oxpricealarm left join {$sViewName} on {$sViewName}.oxid = oxpricealarm.oxartid ";
-        $sSql .= "left join oxuser on oxuser.oxid = oxpricealarm.oxuserid WHERE 1 ";
+        $sSql .= 'left join oxuser on oxuser.oxid = oxpricealarm.oxuserid WHERE 1 ';
 
         return $sSql;
     }
 
     /**
-     * Builds and returns array of SQL WHERE conditions
+     * Builds and returns array of SQL WHERE conditions.
      *
      * @return array
      */
     public function buildWhere()
     {
         $this->_aWhere = parent::buildWhere();
-        $sViewName = getViewName("oxpricealarm");
-        $sArtViewName = getViewName("oxarticles");
+        $sViewName = getViewName('oxpricealarm');
+        $sArtViewName = getViewName('oxarticles');
 
         // updating price fields values for correct search in DB
         if (isset($this->_aWhere[$sViewName . '.oxprice'])) {
-            $sPriceParam = (double) str_replace(['%', ','], ['', '.'], $this->_aWhere[$sViewName . '.oxprice']);
+            $sPriceParam = (float)str_replace(['%', ','], ['', '.'], $this->_aWhere[$sViewName . '.oxprice']);
             $this->_aWhere[$sViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 
         if (isset($this->_aWhere[$sArtViewName . '.oxprice'])) {
-            $sPriceParam = (double) str_replace(['%', ','], ['', '.'], $this->_aWhere[$sArtViewName . '.oxprice']);
+            $sPriceParam = (float)str_replace(['%', ','], ['', '.'], $this->_aWhere[$sArtViewName . '.oxprice']);
             $this->_aWhere[$sArtViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 

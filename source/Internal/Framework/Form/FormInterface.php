@@ -11,9 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Form;
 
 interface FormInterface
 {
-    /**
-     * @param FormFieldInterface $field
-     */
     public function add(FormFieldInterface $field);
 
     /**

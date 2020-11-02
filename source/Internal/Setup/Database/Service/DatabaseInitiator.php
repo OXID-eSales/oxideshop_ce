@@ -15,27 +15,27 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PDO;
 
 /**
- * Class DatabaseInitiator
- *
- * @package OxidEsales\EshopCommunity\Internal\Setup\Database
+ * Class DatabaseInitiator.
  */
 class DatabaseInitiator implements DatabaseInitiatorInterface
 {
-
-    /** @var BasicContextInterface */
+    /**
+     * @var BasicContextInterface
+     */
     private $context;
 
-    /** @var MigrationExecutorInterface */
+    /**
+     * @var MigrationExecutorInterface
+     */
     private $migrationExecutor;
 
-    /** @var PDO */
+    /**
+     * @var PDO
+     */
     private $dbConnection;
 
     /**
      * DatabaseInitiator constructor.
-     *
-     * @param BasicContextInterface       $context
-     * @param MigrationExecutorInterface  $migrationExecutor
      */
     public function __construct(
         BasicContextInterface $context,
@@ -46,11 +46,6 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
     }
 
     /**
-     * @param string $host
-     * @param int $port
-     * @param string $username
-     * @param string $password
-     * @param string $name
      * @throws InitiateDatabaseException
      */
     public function initiateDatabase(string $host, int $port, string $username, string $password, string $name): void
@@ -80,17 +75,11 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
         try {
             $this->migrationExecutor->execute();
         } catch (\Throwable $exception) {
-            throw new InitiateDatabaseException(
-                InitiateDatabaseException::EXECUTE_MIGRATIONS_PROBLEM,
-                $exception->getCode(),
-                $exception
-            );
+            throw new InitiateDatabaseException(InitiateDatabaseException::EXECUTE_MIGRATIONS_PROBLEM, $exception->getCode(), $exception);
         }
     }
 
     /**
-     * @param string $sqlFilePath
-     *
      * @throws InitiateDatabaseException
      */
     private function executeSqlQueryFromFile(string $sqlFilePath): void
@@ -114,7 +103,9 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
             sprintf('mysql:host=%s;port=%s;dbname=%s', $host, $port, $name),
             $username,
             $password,
-            [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+            [
+                PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+            ]
         );
         $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $dbConnection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

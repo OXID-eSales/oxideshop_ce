@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,24 +9,23 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
- * Seo encoder base
+ * Seo encoder base.
  */
 class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
 {
     /**
-     * Root vendor uri cache
+     * Root vendor uri cache.
      *
      * @var string
      */
     protected $_aRootVendorUri = null;
 
     /**
-     * Returns target "extension" (/)
+     * Returns target "extension" (/).
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUrlExtension" in next major
      */
     protected function _getUrlExtension() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -33,7 +34,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * Returns part of SEO url excluding path
+     * Returns part of SEO url excluding path.
      *
      * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor           Vendor object
      * @param int                                        $languageId       Language id
@@ -48,14 +49,14 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
         }
         // load from db
         if ($shouldRegenerate || !($seoUrl = $this->_loadFromDb('oxvendor', $vendor->getId(), $languageId))) {
-            if ($languageId != $vendor->getLanguage()) {
+            if ($languageId !== $vendor->getLanguage()) {
                 $vendorId = $vendor->getId();
                 $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
                 $vendor->loadInLang($languageId, $vendorId);
             }
 
             $seoUrl = '';
-            if ($vendor->getId() != 'root') {
+            if ('root' !== $vendor->getId()) {
                 if (!isset($this->_aRootVendorUri[$languageId])) {
                     $rootVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
                     $rootVendor->loadInLang($languageId, 'root');
@@ -75,12 +76,12 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * Returns vendor SEO url for specified page
+     * Returns vendor SEO url for specified page.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor     Vendor object.
-     * @param int                                        $pageNumber Number of the page which should be prepared.
-     * @param int                                        $languageId Language id.
-     * @param bool                                       $isFixed    Fixed url marker (default is null).
+     * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor     vendor object
+     * @param int                                        $pageNumber number of the page which should be prepared
+     * @param int                                        $languageId language id
+     * @param bool                                       $isFixed    fixed url marker (default is null)
      *
      * @return string
      */
@@ -95,7 +96,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
         $stdUrl = $this->_trimUrl($stdUrl, $languageId);
         $seoUrl = $this->getVendorUri($vendor, $languageId);
 
-        if ($isFixed === null) {
+        if (null === $isFixed) {
             $isFixed = $this->_isFixed('oxvendor', $vendor->getId(), $languageId);
         }
 
@@ -107,8 +108,6 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      *
      * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor     Vendor object
      * @param int                                        $languageId Language id
-     *
-     * @return null
      */
     public function getVendorUrl($vendor, $languageId = null)
     {
@@ -120,22 +119,22 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * Deletes Vendor seo entry
+     * Deletes Vendor seo entry.
      *
      * @param \OxidEsales\Eshop\Application\Model\Vendor $vendor Vendor object
      */
-    public function onDeleteVendor($vendor)
+    public function onDeleteVendor($vendor): void
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $vendorId = $vendor->getId();
         $database->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxvendor'", [
-            ':oxobjectid' => $vendorId
+            ':oxobjectid' => $vendorId,
         ]);
-        $database->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $vendorId
+        $database->execute('delete from oxobject2seodata where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $vendorId,
         ]);
-        $database->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $vendorId
+        $database->execute('delete from oxseohistory where oxobjectid = :oxobjectid', [
+            ':oxobjectid' => $vendorId,
         ]);
     }
 
@@ -146,6 +145,7 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
      * @param int    $languageId Language id
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAltUri" in next major
      */
     protected function _getAltUri($vendorId, $languageId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

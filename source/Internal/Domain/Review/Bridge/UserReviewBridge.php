@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserReviewServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewPermissionException;
 use OxidEsales\Eshop\Application\Model\Review;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\ReviewPermissionException;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserReviewServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
 class UserReviewBridge implements UserReviewBridgeInterface
 {
@@ -23,8 +23,6 @@ class UserReviewBridge implements UserReviewBridgeInterface
 
     /**
      * UserReviewBridge constructor.
-     *
-     * @param UserReviewServiceInterface $userReviewService
      */
     public function __construct(
         UserReviewServiceInterface $userReviewService
@@ -41,7 +39,7 @@ class UserReviewBridge implements UserReviewBridgeInterface
      * @throws ReviewPermissionException
      * @throws EntryDoesNotExistDaoException
      */
-    public function deleteReview($userId, $reviewId)
+    public function deleteReview($userId, $reviewId): void
     {
         $review = $this->getReviewById($reviewId);
 
@@ -51,12 +49,11 @@ class UserReviewBridge implements UserReviewBridgeInterface
     }
 
     /**
-     * @param Review $review
      * @param string $userId
      *
      * @throws ReviewPermissionException
      */
-    private function validateUserPermissionsToManageReview(Review $review, $userId)
+    private function validateUserPermissionsToManageReview(Review $review, $userId): void
     {
         if ($review->oxreviews__oxuserid->value !== $userId) {
             throw new ReviewPermissionException();
@@ -67,6 +64,7 @@ class UserReviewBridge implements UserReviewBridgeInterface
      * @param string $reviewId
      *
      * @return Review
+     *
      * @throws EntryDoesNotExistDaoException
      */
     private function getReviewById($reviewId)

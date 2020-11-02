@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,16 +12,15 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Str;
 
 /**
- * Seo encoder base
+ * Seo encoder base.
  */
 class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * _parseStdUrl parses given url into array of params
+     * _parseStdUrl parses given url into array of params.
      *
      * @param string $sUrl given url
      *
-     * @access protected
      * @return array
      */
     public function parseStdUrl($sUrl)
@@ -28,7 +29,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $aRet = [];
         $sUrl = $oStr->html_entity_decode($sUrl);
 
-        if (($iPos = strpos($sUrl, '?')) !== false) {
+        if (false !== ($iPos = strpos($sUrl, '?'))) {
             parse_str($oStr->substr($sUrl, $iPos + 1), $aRet);
         }
 
@@ -36,12 +37,13 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns ident (md5 of seo url) to fetch seo data from DB
+     * Returns ident (md5 of seo url) to fetch seo data from DB.
      *
      * @param string $sSeoUrl  seo url to calculate ident
      * @param bool   $blIgnore if FALSE - blocks from direct access when default language seo url with language ident executed
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getIdent" in next major
      */
     protected function _getIdent($sSeoUrl, $blIgnore = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -50,18 +52,17 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * decodeUrl decodes given url into oxid eShop required parameters which are returned as array
+     * decodeUrl decodes given url into oxid eShop required parameters which are returned as array.
      *
      * @param string $seoUrl SEO url
      *
-     * @access        public
      * @return array || false
      */
     public function decodeUrl($seoUrl)
     {
         $stringObject = Str::getStr();
         $baseUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL();
-        if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
+        if (0 === $stringObject->strpos($seoUrl, $baseUrl)) {
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
         }
         $seoUrl = rawurldecode($seoUrl);
@@ -74,16 +75,16 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $urlParameters = false;
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $resultSet = $database->select("select oxstdurl, oxlang from oxseo where oxident = :oxident and oxshopid = :oxshopid limit 1", [
+        $resultSet = $database->select('select oxstdurl, oxlang from oxseo where oxident = :oxident and oxshopid = :oxshopid limit 1', [
             ':oxident' => $key,
-            ':oxshopid' => $shopId
+            ':oxshopid' => $shopId,
         ]);
         if (!$resultSet->EOF) {
             // primary seo language changed ?
             $urlParameters = $this->parseStdUrl($resultSet->fields['oxstdurl']);
             $urlParameters['lang'] = $resultSet->fields['oxlang'];
         }
-        if (is_array($urlParameters) && !is_null($pageNumber) && ($pageNumber > 0)) {
+        if (\is_array($urlParameters) && null !== $pageNumber && ($pageNumber > 0)) {
             $urlParameters['pgNr'] = $pageNumber;
         }
 
@@ -92,12 +93,12 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Checks if url is stored in history table and if it was found - tries
-     * to fetch new url from seo table
+     * to fetch new url from seo table.
      *
      * @param string $seoUrl SEO url
      *
-     * @access         public
      * @return string || false
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "decodeOldUrl" in next major
      */
     protected function _decodeOldUrl($seoUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -105,7 +106,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $stringObject = Str::getStr();
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
         $baseUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL();
-        if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
+        if (0 === $stringObject->strpos($seoUrl, $baseUrl)) {
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
         }
         $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
@@ -117,17 +118,17 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $key = $this->_getIdent($seoUrl, true);
 
         $url = false;
-        $resultSet = $database->select("select oxobjectid, oxlang from oxseohistory where oxident = :oxident and oxshopid = :oxshopid limit 1", [
+        $resultSet = $database->select('select oxobjectid, oxlang from oxseohistory where oxident = :oxident and oxshopid = :oxshopid limit 1', [
             ':oxident' => $key,
-            ':oxshopid' => $shopId
+            ':oxshopid' => $shopId,
         ]);
         if (!$resultSet->EOF) {
             // updating hit info (oxtimestamp field will be updated automatically)
             $database->execute(
-                "update oxseohistory set oxhits = oxhits + 1 where oxident = :oxident and oxshopid = :oxshopid limit 1",
+                'update oxseohistory set oxhits = oxhits + 1 where oxident = :oxident and oxshopid = :oxshopid limit 1',
                 [
                     ':oxident' => $key,
-                    ':oxshopid' => $shopId
+                    ':oxshopid' => $shopId,
                 ]
             );
 
@@ -137,28 +138,31 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             // appending with $_SERVER["QUERY_STRING"]
             $url = $this->_addQueryString($url);
         }
-        if ($url && !is_null($pageNumber)) {
-            $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl($url, ['pgNr' => $pageNumber]);
+        if ($url && null !== $pageNumber) {
+            $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl($url, [
+                'pgNr' => $pageNumber,
+            ]);
         }
 
         return $url;
     }
 
     /**
-     * Appends and returns given url with $_SERVER["QUERY_STRING"] value
+     * Appends and returns given url with $_SERVER["QUERY_STRING"] value.
      *
      * @param string $sUrl url to append
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addQueryString" in next major
      */
     protected function _addQueryString($sUrl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (($sQ = $_SERVER["QUERY_STRING"])) {
-            $sUrl = rtrim($sUrl, "&?");
-            $sQ = ltrim($sQ, "&?");
+        if (($sQ = $_SERVER['QUERY_STRING'])) {
+            $sUrl = rtrim($sUrl, '&?');
+            $sQ = ltrim($sQ, '&?');
 
-            $sUrl .= (strpos($sUrl, '?') === false) ? "?" : "&";
+            $sUrl .= (false === strpos($sUrl, '?')) ? '?' : '&';
             $sUrl .= $sQ;
         }
 
@@ -167,30 +171,31 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 
     /**
      * retrieve SEO url by its object id
-     * normally used for getting the redirect url from seo history
+     * normally used for getting the redirect url from seo history.
      *
      * @param string $sObjectId object id
      * @param int    $iLang     language to fetch
      * @param int    $iShopId   shop id
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoUrl" in next major
      */
     protected function _getSeoUrl($sObjectId, $iLang, $iShopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $aInfo = $oDb->getRow("select oxseourl, oxtype from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid order by oxparams limit 1", [
+        $aInfo = $oDb->getRow('select oxseourl, oxtype from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid order by oxparams limit 1', [
             ':oxobjectid' => $sObjectId,
             ':oxlang' => $iLang,
             ':oxshopid' => $iShopId,
         ]);
 
-        if ('oxarticle' == $aInfo['oxtype']) {
-            $sMainCatId = $oDb->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = :oxobjectid order by oxtime", [
-                ':oxobjectid' => $sObjectId
+        if ('oxarticle' === $aInfo['oxtype']) {
+            $sMainCatId = $oDb->getOne('select oxcatnid from ' . getViewName('oxobject2category') . ' where oxobjectid = :oxobjectid order by oxtime', [
+                ':oxobjectid' => $sObjectId,
             ]);
             if ($sMainCatId) {
-                $sUrl = $oDb->getOne("select oxseourl from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid  and oxparams = :oxparams order by oxexpired", [
+                $sUrl = $oDb->getOne('select oxseourl from oxseo where oxobjectid = :oxobjectid and oxlang = :oxlang and oxshopid = :oxshopid  and oxparams = :oxparams order by oxexpired', [
                     ':oxobjectid' => $sObjectId,
                     ':oxlang' => $iLang,
                     ':oxshopid' => $iShopId,
@@ -206,14 +211,12 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * processSeoCall handles Server information and passes it to decoder
+     * processSeoCall handles Server information and passes it to decoder.
      *
      * @param string $sRequest request
      * @param string $sPath    path
-     *
-     * @access public
      */
-    public function processSeoCall($sRequest = null, $sPath = null)
+    public function processSeoCall($sRequest = null, $sPath = null): void
     {
         // first - collect needed parameters
         if (!$sRequest) {
@@ -228,7 +231,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
         $sPath = $sPath ? $sPath : str_replace('oxseo.php', '', $_SERVER['SCRIPT_NAME']);
         if (($sParams = $this->_getParams($sRequest, $sPath))) {
             // in case SEO url is actual
-            if (is_array($aGet = $this->decodeUrl($sParams))) {
+            if (\is_array($aGet = $this->decodeUrl($sParams))) {
                 $_GET = array_merge($aGet, $_GET);
                 \OxidEsales\Eshop\Core\Registry::getLang()->resetBaseLanguage();
             } elseif (($sRedirectUrl = $this->_decodeOldUrl($sParams))) {
@@ -247,11 +250,12 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Tries to fetch SEO url according to type II seo url data. If no
-     * specified data is found NULL will be returned
+     * specified data is found NULL will be returned.
      *
      * @param string $sParams request params (url chunk)
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "decodeSimpleUrl" in next major
      */
     protected function _decodeSimpleUrl($sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -265,7 +269,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             $iLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
 
             // article ?
-            if (strpos($sLastParam, '.htm') !== false) {
+            if (false !== strpos($sLastParam, '.htm')) {
                 $sUrl = $this->_getObjectUrl($sLastParam, 'oxarticles', $iLanguage, 'oxarticle');
             } else {
                 // category ?
@@ -283,7 +287,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Searches and returns (if available) current objects seo url
+     * Searches and returns (if available) current objects seo url.
      *
      * @param string $sSeoId    ident (or last chunk of url)
      * @param string $sTable    name of table to look for data
@@ -291,6 +295,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param string $sType     type of object to search in seo table
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getObjectUrl" in next major
      */
     protected function _getObjectUrl($sSeoId, $sTable, $iLanguage, $sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -303,10 +308,10 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             // if field exists - searching for object id
             if (
                 $sObjectId = $oDb->getOne("select oxid from {$sTable} where oxseoid = :oxseoid", [
-                ':oxseoid' => $sSeoId
+                    ':oxseoid' => $sSeoId,
                 ])
             ) {
-                return $oDb->getOne("select oxseourl from oxseo where oxtype = :oxtype and oxobjectid = :oxobjectid and oxlang = :oxlang", [
+                return $oDb->getOne('select oxseourl from oxseo where oxtype = :oxtype and oxobjectid = :oxobjectid and oxlang = :oxlang', [
                     ':oxtype' => $sType,
                     ':oxobjectid' => $sObjectId,
                     ':oxlang' => $iLanguage,
@@ -316,12 +321,13 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Extracts SEO paramteters and returns as array
+     * Extracts SEO paramteters and returns as array.
      *
      * @param string $sRequest request
      * @param string $sPath    path
      *
-     * @return array $aParams extracted params
+     * @return array extracted params
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getParams" in next major
      */
     protected function _getParams($sRequest, $sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -343,7 +349,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     /**
      * Splits seo url into:
      *     - seo url without page number
-     *     - page number
+     *     - page number.
      *
      * @param string $seoUrl
      *
@@ -356,6 +362,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             $seoUrl = $matches[1] . '/' . $matches[3];
             $pageNumber = $this->convertSeoPageStringToActualPageNumber($matches[2]);
         }
+
         return [$seoUrl, $pageNumber];
     }
 
@@ -368,9 +375,10 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      */
     private function convertSeoPageStringToActualPageNumber($seoPageNumber)
     {
-        if (!is_null($seoPageNumber)) {
-            $seoPageNumber = max(0, (int) $seoPageNumber - 1);
+        if (null !== $seoPageNumber) {
+            $seoPageNumber = max(0, (int)$seoPageNumber - 1);
         }
+
         return $seoPageNumber;
     }
 }

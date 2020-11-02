@@ -18,10 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\Controll
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use Psr\Log\LoggerInterface;
 
-use function is_array;
-use function in_array;
-use function array_key_exists;
-
 class ControllersValidator implements ModuleConfigurationValidatorInterface
 {
     /**
@@ -39,11 +35,6 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
      */
     private $logger;
 
-    /**
-     * @param ShopAdapterInterface $shopAdapter
-     * @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         ShopAdapterInterface $shopAdapter,
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
@@ -55,12 +46,9 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
     }
 
     /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     *
      * @throws ControllersDuplicationModuleConfigurationException
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasControllers()) {
             $controllerClassMap = $this->getControllersClassMap($shopId);
@@ -70,7 +58,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
                     $this->validateKeyDuplication($controller, $controllerClassMap);
                     $this->validateNamespaceDuplication($controller, $controllerClassMap);
                 } else {
-                    /**
+                    /*
                      * @TODO this is a wrong place to check and log database discrepancy, not only controllers should be
                      *       checked. It should be moved to separate module data discrepancy checker outside the module
                      *       validation.
@@ -88,14 +76,10 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
 
     private function controllerAlreadyExistsInMap(Controller $controller, array $controllerClassMap): bool
     {
-        return array_key_exists(strtolower($controller->getId()), $controllerClassMap)
+        return \array_key_exists(strtolower($controller->getId()), $controllerClassMap)
             && $controllerClassMap[strtolower($controller->getId())] === $controller->getControllerClassNameSpace();
     }
 
-    /**
-     * @param int $shopId
-     * @return array
-     */
     private function getModulesControllerClassMap(int $shopId): array
     {
         $moduleControllersClassMap = [];
@@ -105,7 +89,7 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
                 ->shopConfigurationSettingDao
                 ->get(ShopConfigurationSetting::MODULE_CONTROLLERS, $shopId);
 
-            if (is_array($controllersGroupedByModule->getValue())) {
+            if (\is_array($controllersGroupedByModule->getValue())) {
                 foreach ($controllersGroupedByModule->getValue() as $moduleControllers) {
                     $moduleControllersClassMap = array_merge($moduleControllersClassMap, $moduleControllers);
                 }
@@ -117,37 +101,25 @@ class ControllersValidator implements ModuleConfigurationValidatorInterface
     }
 
     /**
-     * @param Controller $controller
-     * @param array $controllerClassMap
      * @throws ControllersDuplicationModuleConfigurationException
      */
     private function validateKeyDuplication(Controller $controller, array $controllerClassMap): void
     {
-        if (array_key_exists(strtolower($controller->getId()), $controllerClassMap)) {
-            throw new ControllersDuplicationModuleConfigurationException(
-                'Controller key duplication: ' . $controller->getId()
-            );
+        if (\array_key_exists(strtolower($controller->getId()), $controllerClassMap)) {
+            throw new ControllersDuplicationModuleConfigurationException('Controller key duplication: ' . $controller->getId());
         }
     }
 
     /**
-     * @param Controller $controller
-     * @param array $controllerClassMap
      * @throws ControllersDuplicationModuleConfigurationException
      */
     private function validateNamespaceDuplication(Controller $controller, array $controllerClassMap): void
     {
-        if (in_array($controller->getControllerClassNameSpace(), $controllerClassMap, true)) {
-            throw new ControllersDuplicationModuleConfigurationException(
-                'Controller namespace duplication: ' . $controller->getControllerClassNameSpace()
-            );
+        if (\in_array($controller->getControllerClassNameSpace(), $controllerClassMap, true)) {
+            throw new ControllersDuplicationModuleConfigurationException('Controller namespace duplication: ' . $controller->getControllerClassNameSpace());
         }
     }
 
-    /**
-     * @param int $shopId
-     * @return array
-     */
     private function getControllersClassMap(int $shopId): array
     {
         return array_merge(

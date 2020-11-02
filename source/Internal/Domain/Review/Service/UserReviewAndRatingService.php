@@ -31,10 +31,6 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
 
     /**
      * UserReviewAndRatingBridge constructor.
-     *
-     * @param UserReviewServiceInterface             $userReviewService
-     * @param UserRatingServiceInterface             $userRatingService
-     * @param ReviewAndRatingMergingServiceInterface $reviewAndRatingMergingService
      */
     public function __construct(
         UserReviewServiceInterface $userReviewService,
@@ -70,9 +66,8 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
     public function getReviewAndRatingList($userId)
     {
         $reviewAndRatingList = $this->getMergedReviewAndRatingList($userId);
-        $reviewAndRatingList = $this->sortReviewAndRatingList($reviewAndRatingList);
 
-        return $reviewAndRatingList;
+        return $this->sortReviewAndRatingList($reviewAndRatingList);
     }
 
     /**
@@ -94,8 +89,6 @@ class UserReviewAndRatingService implements UserReviewAndRatingServiceInterface
 
     /**
      * Sorts ReviewAndRating list.
-     *
-     * @param ArrayCollection $reviewAndRatingList
      *
      * @return ArrayCollection
      */

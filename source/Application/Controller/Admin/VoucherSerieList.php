@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -32,7 +34,7 @@ class VoucherSerieList extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
     /**
      * Deletes selected Voucherserie.
      */
-    public function deleteEntry()
+    public function deleteEntry(): void
     {
         // first we remove vouchers
         $oVoucherSerie = oxNew(\OxidEsales\Eshop\Application\Model\VoucherSerie::class);

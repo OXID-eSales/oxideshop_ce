@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -38,7 +40,7 @@ function smarty_function_oxstyle($params, &$smarty)
 
     $widget = $params['widget'];
     $forceRender = $params['inWidget'];
-    $isDynamic = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? (bool)$smarty->_tpl_vars["__oxid_include_dynamic"] : false;
+    $isDynamic = isset($smarty->_tpl_vars['__oxid_include_dynamic']) ? (bool)$smarty->_tpl_vars['__oxid_include_dynamic'] : false;
 
     $output = '';
     if (!empty($params['include'])) {

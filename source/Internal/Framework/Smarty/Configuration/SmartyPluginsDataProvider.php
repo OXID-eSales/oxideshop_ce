@@ -20,17 +20,12 @@ class SmartyPluginsDataProvider implements SmartyPluginsDataProviderInterface
 
     /**
      * SmartyPluginsDataProvider constructor.
-     *
-     * @param SmartyContextInterface $context
      */
     public function __construct(SmartyContextInterface $context)
     {
         $this->context = $context;
     }
 
-    /**
-     * @return array
-     */
     public function getPlugins(): array
     {
         return $this->context->getSmartyPluginDirectories();

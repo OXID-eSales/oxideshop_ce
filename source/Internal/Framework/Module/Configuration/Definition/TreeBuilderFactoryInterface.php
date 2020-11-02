@@ -13,8 +13,5 @@ use Symfony\Component\Config\Definition\NodeInterface;
 
 interface TreeBuilderFactoryInterface
 {
-    /**
-     * @return NodeInterface
-     */
     public function create(): NodeInterface;
 }

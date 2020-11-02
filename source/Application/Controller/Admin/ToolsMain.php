@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * CVS export manager.
@@ -25,18 +25,18 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function render()
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
+            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit('Access denied !');
         }
 
         parent::render();
 
         $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oAuthUser->loadAdminUser();
-        $this->_aViewData["blIsMallAdmin"] = $oAuthUser->oxuser__oxrights->value == "malladmin";
+        $this->_aViewData['blIsMallAdmin'] = 'malladmin' === $oAuthUser->oxuser__oxrights->value;
 
         $blShowUpdateViews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowUpdateViews');
         $this->_aViewData['showViewUpdate'] = (isset($blShowUpdateViews) && !$blShowUpdateViews) ? false : true;
 
-        return "tools_main.tpl";
+        return 'tools_main.tpl';
     }
 }

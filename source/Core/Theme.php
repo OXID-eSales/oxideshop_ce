@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,27 +12,28 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Themes handler class.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class Theme extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Theme info array
+     * Theme info array.
      *
      * @var array
      */
     protected $_aTheme = [];
 
     /**
-     * Theme info list
+     * Theme info list.
      *
      * @var array
      */
     protected $_aThemeList = [];
 
     /**
-     * Load theme info
+     * Load theme info.
      *
      * @param string $sOXID theme id
      *
@@ -38,13 +41,13 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      */
     public function load($sOXID)
     {
-        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir() . $sOXID . "/theme.php";
+        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir() . $sOXID . '/theme.php';
         if (file_exists($sFilePath) && is_readable($sFilePath)) {
             $aTheme = [];
             include $sFilePath;
             $this->_aTheme = $aTheme;
             $this->_aTheme['id'] = $sOXID;
-            $this->_aTheme['active'] = ($this->getActiveThemeId() == $sOXID);
+            $this->_aTheme['active'] = ($this->getActiveThemeId() === $sOXID);
 
             return true;
         }
@@ -53,9 +56,9 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Set theme as active
+     * Set theme as active.
      */
-    public function activate()
+    public function activate(): void
     {
         $sError = $this->checkForActivationErrors();
         if ($sError) {
@@ -65,18 +68,18 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         }
         $sParent = $this->getInfo('parentTheme');
         if ($sParent) {
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sTheme', $sParent);
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sCustomTheme', $this->getId());
+            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'sTheme', $sParent);
+            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'sCustomTheme', $this->getId());
         } else {
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sTheme', $this->getId());
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sCustomTheme', '');
+            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'sTheme', $this->getId());
+            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('str', 'sCustomTheme', '');
         }
         $settingsHandler = oxNew(\OxidEsales\Eshop\Core\SettingsHandler::class);
         $settingsHandler->setModuleType('theme')->run($this);
     }
 
     /**
-     * Load theme info list
+     * Load theme info list.
      *
      * @return array
      */
@@ -84,7 +87,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     {
         $this->_aThemeList = [];
         $sOutDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir();
-        foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
+        foreach (glob($sOutDir . '*', GLOB_ONLYDIR) as $sDir) {
             $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             if ($oTheme->load(basename($sDir))) {
                 $this->_aThemeList[$sDir] = $oTheme;
@@ -95,7 +98,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return theme information
+     * Return theme information.
      *
      * @param string $sName name of info item to retrieve
      *
@@ -111,7 +114,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return current active theme, or custom theme if specified
+     * Return current active theme, or custom theme if specified.
      *
      * @return string
      */
@@ -129,7 +132,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      * Get active themes list.
      * Examples:
      *      if flow theme is active we will get ['flow']
-     *      if azure is extended by some other we will get ['azure', 'extending_theme']
+     *      if azure is extended by some other we will get ['azure', 'extending_theme'].
      *
      * @return array
      */
@@ -150,7 +153,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return loaded parent
+     * Return loaded parent.
      *
      * @return \OxidEsales\Eshop\Core\Theme
      */
@@ -170,7 +173,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
 
     /**
      * run pre-activation checks and return EXCEPTION_* translation string if error
-     * found or false on success
+     * found or false on success.
      *
      * @return string
      */
@@ -186,10 +189,10 @@ class Theme extends \OxidEsales\Eshop\Core\Base
                 return 'EXCEPTION_PARENT_VERSION_UNSPECIFIED';
             }
             $aMyParentVersions = $this->getInfo('parentVersions');
-            if (!$aMyParentVersions || !is_array($aMyParentVersions)) {
+            if (!$aMyParentVersions || !\is_array($aMyParentVersions)) {
                 return 'EXCEPTION_UNSPECIFIED_PARENT_VERSIONS';
             }
-            if (!in_array($sParentVersion, $aMyParentVersions)) {
+            if (!\in_array($sParentVersion, $aMyParentVersions, true)) {
                 return 'EXCEPTION_PARENT_VERSION_MISMATCH';
             }
         } elseif ($this->getInfo('parentTheme')) {
@@ -200,12 +203,12 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get theme ID
+     * Get theme ID.
      *
      * @return string
      */
     public function getId()
     {
-        return $this->getInfo("id");
+        return $this->getInfo('id');
     }
 }

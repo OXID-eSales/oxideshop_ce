@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,14 +21,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Base
 {
     /**
-     * oxuser object
+     * oxuser object.
      *
      * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected static $_oActUser = null;
 
     /**
-     * Admin mode marker
+     * Admin mode marker.
      *
      * @var bool
      */
@@ -34,7 +36,7 @@ class Base
 
     /**
      * Only used for convenience in UNIT tests by doing so we avoid
-     * writing extended classes for testing protected or private methods
+     * writing extended classes for testing protected or private methods.
      *
      * @param string $method    Methods name
      * @param array  $arguments Argument array
@@ -45,35 +47,33 @@ class Base
      */
     public function __call($method, $arguments)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($method, 0, 4) === 'UNIT') {
+        if (\defined('OXID_PHP_UNIT')) {
+            if ('UNIT' === substr($method, 0, 4)) {
                 $method = str_replace('UNIT', '_', $method);
             }
             if (method_exists($this, $method)) {
-                return call_user_func_array([& $this, $method], $arguments);
+                return \call_user_func_array([&$this, $method], $arguments);
             }
         }
 
-        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$method' does not exist or is not accessible! (" . static::class . ')' . PHP_EOL);
     }
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null
      */
     public function __construct()
     {
     }
 
     /**
-     * Active user getter
+     * Active user getter.
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getUser()
     {
-        if (self::$_oActUser === null) {
+        if (null === self::$_oActUser) {
             self::$_oActUser = false;
             $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             if ($user->loadActiveUser()) {
@@ -85,23 +85,23 @@ class Base
     }
 
     /**
-     * Active oxuser object setter
+     * Active oxuser object setter.
      *
      * @param \OxidEsales\Eshop\Application\Model\User $user user object
      */
-    public function setUser($user)
+    public function setUser($user): void
     {
         self::$_oActUser = $user;
     }
 
     /**
-     * Admin mode status getter
+     * Admin mode status getter.
      *
      * @return bool
      */
     public function isAdmin()
     {
-        if (self::$_blIsAdmin === null) {
+        if (null === self::$_blIsAdmin) {
             self::$_blIsAdmin = isAdmin();
         }
 
@@ -109,11 +109,11 @@ class Base
     }
 
     /**
-     * Admin mode setter
+     * Admin mode setter.
      *
      * @param bool $isAdmin admin mode
      */
-    public function setAdminMode($isAdmin)
+    public function setAdminMode($isAdmin): void
     {
         self::$_blIsAdmin = $isAdmin;
     }
@@ -129,6 +129,7 @@ class Base
     {
         $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
         $dispatcher = $container->get(EventDispatcherInterface::class);
+
         return $dispatcher->dispatch($event, $event::NAME);
     }
 

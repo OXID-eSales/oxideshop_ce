@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,26 +15,28 @@ use OxidEsales\Eshop\Core\Registry;
 /**
  * Class is responsible for returning edition.
  *
- * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @internal do not make a module extension for this class
  *
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  * @deprecated since v6.0.0-rc.2 (2017-08-24); Use \OxidEsales\Facts\Facts instead.
  */
 class EditionSelector
 {
-    const ENTERPRISE = 'EE';
+    public const ENTERPRISE = 'EE';
 
-    const PROFESSIONAL = 'PE';
+    public const PROFESSIONAL = 'PE';
 
-    const COMMUNITY = 'CE';
+    public const COMMUNITY = 'CE';
 
-    /** @var string Edition abbreviation  */
+    /**
+     * @var string Edition abbreviation
+     */
     private $edition = null;
 
     /**
      * EditionSelector constructor.
      *
-     * @param string|null $edition to force edition.
+     * @param string|null $edition to force edition
      */
     public function __construct($edition = null)
     {
@@ -82,9 +86,9 @@ class EditionSelector
     protected function findEdition()
     {
         if (!class_exists('OxidEsales\EshopCommunity\Core\Registry') || !Registry::instanceExists('oxConfigFile')) {
-            $configFile = new ConfigFile(OX_BASE_PATH . DIRECTORY_SEPARATOR . "config.inc.php");
+            $configFile = new ConfigFile(OX_BASE_PATH . \DIRECTORY_SEPARATOR . 'config.inc.php');
         }
-        $configFile = isset($configFile) ? $configFile : Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
+        $configFile = $configFile ?? Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
         $edition = $configFile->getVar('edition') ?: $this->getEditionByExistingClasses();
         $configFile->setVar('edition', $edition);
 

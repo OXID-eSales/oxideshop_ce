@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use stdClass;
-use oxOnlineModulesNotifierRequest;
 
 /**
  * Performs Online Module Version Notifier check.
@@ -21,14 +22,17 @@ use oxOnlineModulesNotifierRequest;
  * Will be used by the upcoming online one click installer.
  * Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
 class OnlineModuleVersionNotifier
 {
-    /** @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller */
+    /**
+     * @var \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
+     */
     private $_oCaller;
 
     /**
@@ -42,11 +46,9 @@ class OnlineModuleVersionNotifier
     }
 
     /**
-     * Perform Online Module version Notification. Returns result
-     *
-     * @return null
+     * Perform Online Module version Notification. Returns result.
      */
-    public function versionNotify()
+    public function versionNotify(): void
     {
         if (true === \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('preventModuleVersionNotify')) {
             return;
@@ -59,7 +61,6 @@ class OnlineModuleVersionNotifier
     /**
      * Collects only required modules information and returns as array.
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareModulesInformation" in next major
      */
     protected function _prepareModulesInformation() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -72,7 +73,6 @@ class OnlineModuleVersionNotifier
 
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
             /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
-
             $preparedModule = new stdClass();
             $preparedModule->id = $moduleConfiguration->getId();
             $preparedModule->version = $moduleConfiguration->getVersion();
@@ -94,6 +94,7 @@ class OnlineModuleVersionNotifier
      * Send request message to Online Module Version Notifier web service.
      *
      * @return \OxidEsales\Eshop\Core\OnlineModulesNotifierRequest
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "formRequest" in next major
      */
     protected function _formRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -110,6 +111,7 @@ class OnlineModuleVersionNotifier
      * Returns caller.
      *
      * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getOnlineModuleNotifierCaller" in next major
      */
     protected function _getOnlineModuleNotifierCaller() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

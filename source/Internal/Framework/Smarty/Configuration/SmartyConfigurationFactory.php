@@ -45,13 +45,6 @@ class SmartyConfigurationFactory implements SmartyConfigurationFactoryInterface
 
     /**
      * SmartyConfigurationFactory constructor.
-     *
-     * @param SmartyContextInterface                      $context
-     * @param SmartySettingsDataProviderInterface         $settingsDataProvider
-     * @param SmartySecuritySettingsDataProviderInterface $securitySettingsDataProvider
-     * @param SmartyResourcesDataProviderInterface        $resourcesDataProvider
-     * @param SmartyPrefiltersDataProviderInterface       $prefiltersDataProvider
-     * @param SmartyPluginsDataProviderInterface          $pluginsDataProvider
      */
     public function __construct(
         SmartyContextInterface $context,
@@ -69,9 +62,6 @@ class SmartyConfigurationFactory implements SmartyConfigurationFactoryInterface
         $this->pluginsDataProvider = $pluginsDataProvider;
     }
 
-    /**
-     * @return SmartyConfigurationInterface
-     */
     public function getConfiguration(): SmartyConfigurationInterface
     {
         $smartyConfiguration = new SmartyConfiguration();

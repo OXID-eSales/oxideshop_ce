@@ -11,17 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
 interface ModuleServicesActivationServiceInterface
 {
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return void
-     */
-    public function activateModuleServices(string $moduleId, int $shopId);
+    public function activateModuleServices(string $moduleId, int $shopId): void;
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return void
-     */
-    public function deactivateModuleServices(string $moduleId, int $shopId);
+    public function deactivateModuleServices(string $moduleId, int $shopId): void;
 }

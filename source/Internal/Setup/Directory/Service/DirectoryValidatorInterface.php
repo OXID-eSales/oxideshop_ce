@@ -16,18 +16,12 @@ use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePath
 interface DirectoryValidatorInterface
 {
     /**
-     * @param string $shopSourcePath
-     * @param string $compileDirectory
-     *
      * @throws NoPermissionDirectoryException
      * @throws NonExistenceDirectoryException
      */
     public function validateDirectory(string $shopSourcePath, string $compileDirectory): void;
 
     /**
-     * @param string $shopSourcePath
-     * @param string $compileDirectory
-     *
      * @throws NotAbsolutePathException
      */
     public function checkPathIsAbsolute(string $shopSourcePath, string $compileDirectory): void;

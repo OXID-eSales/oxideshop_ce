@@ -21,27 +21,17 @@ class Template
      */
     private $templatePath;
 
-    /**
-     * @param string $templateKey
-     * @param string $templatePath
-     */
     public function __construct(string $templateKey, string $templatePath)
     {
         $this->templateKey = $templateKey;
         $this->templatePath = $templatePath;
     }
 
-    /**
-     * @return string
-     */
     public function getTemplateKey(): string
     {
         return $this->templateKey;
     }
 
-    /**
-     * @return string
-     */
     public function getTemplatePath(): string
     {
         return $this->templatePath;

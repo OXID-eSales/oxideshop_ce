@@ -14,12 +14,9 @@ interface SmartyEngineBridgeInterface
     /**
      * Renders a fragment of the template.
      *
-     * @param \Smarty $engine
-     * @param string  $fragment   The template fragment to render
-     * @param string  $fragmentId The Id of the fragment
-     * @param array   $context    An array of parameters to pass to the template
-     *
-     * @return string
+     * @param string $fragment   The template fragment to render
+     * @param string $fragmentId The Id of the fragment
+     * @param array  $context    An array of parameters to pass to the template
      */
     public function renderFragment(\Smarty $engine, string $fragment, string $fragmentId, array $context = []): string;
 }

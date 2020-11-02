@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin article categories order manager.
@@ -33,7 +33,7 @@ class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         $soxId = $this->getEditObjectId();
 
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oCategory->load($soxId);
 
@@ -42,13 +42,13 @@ class CategoryOrder extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
                 $this->_aViewData['readonly'] = true;
             }
         }
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aoc')) {
             $oCategoryOrderAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\CategoryOrderAjax::class);
             $this->_aViewData['oxajax'] = $oCategoryOrderAjax->getColumns();
 
-            return "popups/category_order.tpl";
+            return 'popups/category_order.tpl';
         }
 
-        return "category_order.tpl";
+        return 'category_order.tpl';
     }
 }

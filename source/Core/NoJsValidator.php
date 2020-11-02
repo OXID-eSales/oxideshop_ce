@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -21,6 +23,6 @@ class NoJsValidator
      */
     public function isValid($configValue)
     {
-        return preg_match('/<script.*>/', $configValue) === 0;
+        return 0 === preg_match('/<script.*>/', $configValue);
     }
 }

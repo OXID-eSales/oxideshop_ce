@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
- * Language selection list widget
+ * Language selection list widget.
  */
 class LanguageList extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
@@ -19,7 +21,9 @@ class LanguageList extends \OxidEsales\Eshop\Application\Component\Widget\Widget
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_lang' => 0];
+    protected $_aComponentNames = [
+        'oxcmp_lang' => 0,
+    ];
 
     /**
      * Current class template name.

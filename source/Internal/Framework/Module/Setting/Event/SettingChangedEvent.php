@@ -13,6 +13,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class SettingChangedEvent extends Event

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,18 +9,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
-use oxRegistry;
-
 /**
  * Shop language manager.
  * Performs language manager function: changes template settings, modifies URL's.
- *
- * @subpackage oxcmp
  */
 class LanguageComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 {
     /**
-     * Marking object as component
+     * Marking object as component.
      *
      * @var bool
      */

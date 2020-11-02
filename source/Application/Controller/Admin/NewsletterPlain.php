@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Newsletter plain manager.
@@ -27,31 +27,31 @@ class NewsletterPlain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
             $oNewsletter->load($soxId);
-            $this->_aViewData["edit"] = $oNewsletter;
+            $this->_aViewData['edit'] = $oNewsletter;
         }
 
-        return "newsletter_plain.tpl";
+        return 'newsletter_plain.tpl';
     }
 
     /**
      * Saves newsletter text in plain text format.
      */
-    public function save()
+    public function save(): void
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
 
         // shopid
-        $sShopID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
+        $sShopID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('actshop');
         $aParams['oxnewsletter__oxshopid'] = $sShopID;
 
         $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
-        if ($soxId != "-1") {
+        if ('-1' !== $soxId) {
             $oNewsletter->load($soxId);
         } else {
             $aParams['oxnewsletter__oxid'] = null;

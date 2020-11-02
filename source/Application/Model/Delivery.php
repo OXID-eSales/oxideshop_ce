@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxDb;
 
 /**
  * Order delivery manager.
@@ -16,22 +16,22 @@ use oxDb;
 class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
-     * Calculation rule
+     * Calculation rule.
      */
-    const CALCULATION_RULE_ONCE_PER_CART = 0;
-    const CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT = 1;
-    const CALCULATION_RULE_FOR_EACH_PRODUCT = 2;
+    public const CALCULATION_RULE_ONCE_PER_CART = 0;
+    public const CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT = 1;
+    public const CALCULATION_RULE_FOR_EACH_PRODUCT = 2;
 
     /**
-     * Condition type
+     * Condition type.
      */
-    const CONDITION_TYPE_PRICE = 'p';
-    const CONDITION_TYPE_AMOUNT = 'a';
-    const CONDITION_TYPE_SIZE = 's';
-    const CONDITION_TYPE_WEIGHT = 'w';
+    public const CONDITION_TYPE_PRICE = 'p';
+    public const CONDITION_TYPE_AMOUNT = 'a';
+    public const CONDITION_TYPE_SIZE = 's';
+    public const CONDITION_TYPE_WEIGHT = 'w';
 
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
@@ -39,65 +39,65 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
     /**
      * Total count of product items which are covered by current delivery
-     * (used for caching purposes across several methods)
+     * (used for caching purposes across several methods).
      *
-     * @var double
+     * @var float
      */
     protected $_iItemCnt = 0;
 
     /**
      * Total count of products which are covered by current delivery
-     * (used for caching purposes across several methods)
+     * (used for caching purposes across several methods).
      *
-     * @var double
+     * @var float
      */
     protected $_iProdCnt = 0;
 
     /**
      * Total price of products which are covered by current delivery
-     * (used for caching purposes across several methods)
+     * (used for caching purposes across several methods).
      *
-     * @var double
+     * @var float
      */
     protected $_dPrice = 0;
 
     /**
-     * Current delivery price object which keeps price info
+     * Current delivery price object which keeps price info.
      *
      * @var \OxidEsales\Eshop\Core\Price
      */
     protected $_oPrice = null;
 
     /**
-     * Article Ids which are assigned to current delivery
+     * Article Ids which are assigned to current delivery.
      *
      * @var array
      */
     protected $_aArtIds = null;
 
     /**
-     * Category Ids which are assigned to current delivery
+     * Category Ids which are assigned to current delivery.
      *
      * @var array
      */
     protected $_aCatIds = null;
 
     /**
-     * If article has free shipping
+     * If article has free shipping.
      *
      * @var bool
      */
     protected $_blFreeShipping = true;
 
     /**
-     * Product list storage
+     * Product list storage.
      *
      * @var array
      */
     protected static $_aProductList = [];
 
     /**
-     * Delivery VAT config
+     * Delivery VAT config.
      *
      * @var bool
      */
@@ -128,29 +128,29 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Delivery VAT config setter
+     * Delivery VAT config setter.
      *
      * @param bool $blOnTop delivery vat config
      */
-    public function setDelVatOnTop($blOnTop)
+    public function setDelVatOnTop($blOnTop): void
     {
         $this->_blDelVatOnTop = $blOnTop;
     }
 
     /**
-     * Collects article Ids which are assigned to current delivery
+     * Collects article Ids which are assigned to current delivery.
      *
      * @return array
      */
     public function getArticles()
     {
-        if (is_null($this->_aArtIds)) {
+        if (null === $this->_aArtIds) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "select oxobjectid from oxobject2delivery 
-                where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
+            $sQ = 'select oxobjectid from oxobject2delivery 
+                where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype';
             $aArtIds = $oDb->getCol($sQ, [
                 ':oxdeliveryid' => $this->getId(),
-                ':oxtype' => 'oxarticles'
+                ':oxtype' => 'oxarticles',
             ]);
             $this->_aArtIds = $aArtIds;
         }
@@ -159,19 +159,19 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Collects category Ids which are assigned to current delivery
+     * Collects category Ids which are assigned to current delivery.
      *
      * @return array
      */
     public function getCategories()
     {
-        if (is_null($this->_aCatIds)) {
+        if (null === $this->_aCatIds) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "select oxobjectid from oxobject2delivery 
-                where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
+            $sQ = 'select oxobjectid from oxobject2delivery 
+                where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype';
             $aCatIds = $oDb->getCol($sQ, [
                 ':oxdeliveryid' => $this->getId(),
-                ':oxtype' => 'oxcategories'
+                ':oxtype' => 'oxcategories',
             ]);
             $this->_aCatIds = $aCatIds;
         }
@@ -180,31 +180,31 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Checks if delivery has assigned articles
+     * Checks if delivery has assigned articles.
      *
      * @return bool
      */
     public function hasArticles()
     {
-        return (bool) count($this->getArticles());
+        return (bool)\count($this->getArticles());
     }
 
     /**
-     * Checks if delivery has assigned categories
+     * Checks if delivery has assigned categories.
      *
      * @return bool
      */
     public function hasCategories()
     {
-        return (bool) count($this->getCategories());
+        return (bool)\count($this->getCategories());
     }
 
     /**
-     * Returns amount (total net price/weight/volume/Amount) on which delivery price is applied
+     * Returns amount (total net price/weight/volume/Amount) on which delivery price is applied.
      *
      * @param \OxidEsales\Eshop\Application\Model\BasketItem $oBasketItem basket item object
      *
-     * @return double
+     * @return float
      */
     public function getDeliveryAmount($oBasketItem)
     {
@@ -219,7 +219,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // mark free shipping products
         if ($oProduct->oxarticles__oxfreeshipping->value || ($oProduct->oxarticles__oxnonmaterial->value && $blExclNonMaterial)) {
-            if ($this->_blFreeShipping !== false) {
+            if (false !== $this->_blFreeShipping) {
                 $this->_blFreeShipping = true;
             }
         } else {
@@ -227,14 +227,14 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
             switch ($this->getConditionType()) {
                 case self::CONDITION_TYPE_PRICE: // price
-                    if ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
+                    if (self::CALCULATION_RULE_FOR_EACH_PRODUCT === $this->getCalculationRule()) {
                         $dAmount += $oProduct->getPrice()->getPrice();
                     } else {
                         $dAmount += $oBasketItem->getPrice()->getPrice(); // price// currency conversion must allready be done in price class / $oCur->rate; // $oBasketItem->oPrice->getPrice() / $oCur->rate;
                     }
                     break;
                 case self::CONDITION_TYPE_WEIGHT: // weight
-                    if ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
+                    if (self::CALCULATION_RULE_FOR_EACH_PRODUCT === $this->getCalculationRule()) {
                         $dAmount += $oProduct->getWeight();
                     } else {
                         $dAmount += $oBasketItem->getWeight();
@@ -242,7 +242,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                     break;
                 case self::CONDITION_TYPE_SIZE: // size
                     $dAmount += $oProduct->getSize();
-                    if ($this->getCalculationRule() != self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
+                    if (self::CALCULATION_RULE_FOR_EACH_PRODUCT !== $this->getCalculationRule()) {
                         $dAmount *= $oBasketItem->getAmount();
                     }
                     break;
@@ -260,25 +260,25 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Delivery price setter
+     * Delivery price setter.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice delivery price to set
      */
-    public function setDeliveryPrice($oPrice)
+    public function setDeliveryPrice($oPrice): void
     {
         $this->_oPrice = $oPrice;
     }
 
     /**
-     * Returns oxPrice object for delivery costs
+     * Returns oxPrice object for delivery costs.
      *
-     * @param double $dVat delivery vat
+     * @param float $dVat delivery vat
      *
      * @return \OxidEsales\Eshop\Core\Price
      */
     public function getDeliveryPrice($dVat = null)
     {
-        if ($this->_oPrice === null) {
+        if (null === $this->_oPrice) {
             // loading oxPrice object for final price calculation
             $oPrice = oxNew(\OxidEsales\Eshop\Core\Price::class);
             $oPrice->setNettoMode($this->_blDelVatOnTop);
@@ -311,16 +311,16 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         }
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "delete from `oxobject2delivery` where `oxobject2delivery`.`oxdeliveryid` = :oxdeliveryid";
+        $sQ = 'delete from `oxobject2delivery` where `oxobject2delivery`.`oxdeliveryid` = :oxdeliveryid';
         $oDb->execute($sQ, [
-            ':oxdeliveryid' => $sOxId
+            ':oxdeliveryid' => $sOxId,
         ]);
 
         return parent::delete($sOxId);
     }
 
     /**
-     * Checks if delivery fits for current basket
+     * Checks if delivery fits for current basket.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket shop basket
      *
@@ -348,7 +348,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 $sProductId = $oArticle->getProductId();
                 $sParentId = $oArticle->getParentId();
 
-                if ($blHasArticles && (in_array($sProductId, $aDeliveryArticles) || ($sParentId && in_array($sParentId, $aDeliveryArticles)))) {
+                if ($blHasArticles && (\in_array($sProductId, $aDeliveryArticles, true) || ($sParentId && \in_array($sParentId, $aDeliveryArticles, true)))) {
                     $blUse = true;
                     $artAmount = $this->getDeliveryAmount($oContent);
                     if ($this->isDeliveryRuleFitByArticle($artAmount)) {
@@ -416,13 +416,14 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return $blForBasket;
     }
+
     /**
-     * Checks if delivery fits for one article
+     * Checks if delivery fits for one article.
      *
      * @deprecated in b-dev since (2015-07-27), use isDeliveryRuleFitByArticle instead
      *
-     * @param object  $content   shop basket item
-     * @param integer $artAmount product amount
+     * @param object $content   shop basket item
+     * @param int    $artAmount product amount
      *
      * @return bool
      */
@@ -436,7 +437,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @param \OxidEsales\Eshop\Application\Model\BasketItem $content
      */
-    protected function updateItemCount($content)
+    protected function updateItemCount($content): void
     {
         $this->_iItemCnt += $content->getAmount();
     }
@@ -444,24 +445,25 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Increase count of products which are covered by current delivery.
      */
-    protected function increaseProductCount()
+    protected function increaseProductCount(): void
     {
-        $this->_iProdCnt += 1;
+        ++$this->_iProdCnt;
     }
 
     /**
-     * checks if amount param is ok for this delivery
+     * checks if amount param is ok for this delivery.
      *
-     * @param double $iAmount amount
+     * @param float $iAmount amount
      *
-     * @return boolean
+     * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "checkDeliveryAmount" in next major
      */
     protected function _checkDeliveryAmount($iAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blResult = false;
 
-        if ($this->getConditionType() == self::CONDITION_TYPE_PRICE) {
+        if (self::CONDITION_TYPE_PRICE === $this->getConditionType()) {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $iAmount /= $oCur->rate;
         }
@@ -474,7 +476,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * returns delivery id
+     * returns delivery id.
      *
      * @param string $sTitle delivery name
      *
@@ -483,37 +485,36 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getIdByName($sTitle)
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "SELECT `oxid` FROM `" . getViewName('oxdelivery') . "` 
-            WHERE `oxtitle` = :oxtitle";
-        $sId = $oDb->getOne($sQ, [
-            ':oxtitle' => $sTitle
-        ]);
+        $sQ = 'SELECT `oxid` FROM `' . getViewName('oxdelivery') . '` 
+            WHERE `oxtitle` = :oxtitle';
 
-        return $sId;
+        return $oDb->getOne($sQ, [
+            ':oxtitle' => $sTitle,
+        ]);
     }
 
     /**
-     * Returns array of country ISO's which are assigned to current delivery
+     * Returns array of country ISO's which are assigned to current delivery.
      *
      * @return array
      */
     public function getCountriesISO()
     {
-        if ($this->_aCountriesISO === null) {
+        if (null === $this->_aCountriesISO) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $this->_aCountriesISO = [];
 
-            $sSelect = "
+            $sSelect = '
                 SELECT
                     `oxcountry`.`oxisoalpha2`
                 FROM `oxcountry`
                     LEFT JOIN `oxobject2delivery` ON `oxobject2delivery`.`oxobjectid` = `oxcountry`.`oxid`
                 WHERE `oxobject2delivery`.`oxdeliveryid` = :oxdeliveryid
-                    AND `oxobject2delivery`.`oxtype` = :oxtype";
+                    AND `oxobject2delivery`.`oxtype` = :oxtype';
 
             $rs = $oDb->getCol($sSelect, [
                 ':oxdeliveryid' => $this->getId(),
-                ':oxtype' => 'oxcountry'
+                ':oxtype' => 'oxcountry',
             ]);
             $this->_aCountriesISO = $rs;
         }
@@ -522,7 +523,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns condition type (type >= from <= to) : a - amount, s - size, w -weight, p - price
+     * Returns condition type (type >= from <= to) : a - amount, s - size, w -weight, p - price.
      *
      * @return string
      */
@@ -532,7 +533,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns condition from value (type >= from <= to)
+     * Returns condition from value (type >= from <= to).
      *
      * @return string
      */
@@ -542,7 +543,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns condition to value (type >= from <= to)
+     * Returns condition to value (type >= from <= to).
      *
      * @return string
      */
@@ -552,7 +553,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns calculation rule: 0 - Once per Cart; 1 - Once for each different product 2 - For each product
+     * Returns calculation rule: 0 - Once per Cart; 1 - Once for each different product 2 - For each product.
      *
      * @return int
      */
@@ -562,7 +563,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns amount cost
+     * Returns amount cost.
      *
      * @return float
      */
@@ -572,7 +573,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns type of cost: % - percentage; abs - absolute value
+     * Returns type of cost: % - percentage; abs - absolute value.
      *
      * @return string
      */
@@ -582,20 +583,21 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Calculate multiplier for price calculation
+     * Calculate multiplier for price calculation.
      *
      * @return float|int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getMultiplier" in next major
      */
     protected function _getMultiplier() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $dAmount = 0;
 
-        if ($this->getCalculationRule() == self::CALCULATION_RULE_ONCE_PER_CART) {
+        if (self::CALCULATION_RULE_ONCE_PER_CART === $this->getCalculationRule()) {
             $dAmount = 1;
-        } elseif ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT) {
+        } elseif (self::CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT === $this->getCalculationRule()) {
             $dAmount = $this->_iProdCnt;
-        } elseif ($this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT) {
+        } elseif (self::CALCULATION_RULE_FOR_EACH_PRODUCT === $this->getCalculationRule()) {
             $dAmount = $this->_iItemCnt;
         }
 
@@ -603,14 +605,15 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Calculate cost sum
+     * Calculate cost sum.
      *
      * @return float
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCostSum" in next major
      */
     protected function _getCostSum() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->getAddSumType() == 'abs') {
+        if ('abs' === $this->getAddSumType()) {
             $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
             $dPrice = $this->getAddSum() * $oCur->rate * $this->_getMultiplier();
         } else {
@@ -624,14 +627,14 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Checks if delivery rule applies for basket because of one article's amount.
      * Delivery rules that are to be applied once per cart can be ruled out here.
      *
-     * @param integer $artAmount product amount
+     * @param int $artAmount product amount
      *
      * @return bool
      */
     protected function isDeliveryRuleFitByArticle($artAmount)
     {
         $result = false;
-        if ($this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART) {
+        if (self::CALCULATION_RULE_ONCE_PER_CART !== $this->getCalculationRule()) {
             if (!$this->_blFreeShipping && $this->_checkDeliveryAmount($artAmount)) {
                 $result = true;
             }

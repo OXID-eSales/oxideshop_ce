@@ -21,15 +21,12 @@ use Psr\Log\LoggerInterface;
 class MonologLoggerFactory implements LoggerFactoryInterface
 {
     /**
-     * @var MonologConfigurationInterface $configuration
+     * @var MonologConfigurationInterface
      */
     private $configuration;
 
     /**
      * MonologLoggerFactory constructor.
-     *
-     * @param MonologConfigurationInterface         $configuration
-     * @param LoggerConfigurationValidatorInterface $configurationValidator
      */
     public function __construct(
         MonologConfigurationInterface $configuration,
@@ -39,7 +36,6 @@ class MonologLoggerFactory implements LoggerFactoryInterface
 
         $this->configuration = $configuration;
     }
-
 
     /**
      * @return LoggerInterface

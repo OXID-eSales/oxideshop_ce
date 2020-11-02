@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,15 +11,19 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * CURL request handler.
- * Handles CURL calls
+ * Handles CURL calls.
  */
 class Curl
 {
-    /** Curl option for setting the timeout of whole execution process. */
-    const EXECUTION_TIMEOUT_OPTION = 'CURLOPT_TIMEOUT';
+    /**
+     * Curl option for setting the timeout of whole execution process.
+     */
+    public const EXECUTION_TIMEOUT_OPTION = 'CURLOPT_TIMEOUT';
 
-    /** Curl option for setting the timeout for connect. */
-    const CONNECT_TIMEOUT_OPTION = 'CURLOPT_CONNECTTIMEOUT';
+    /**
+     * Curl option for setting the timeout for connect.
+     */
+    public const CONNECT_TIMEOUT_OPTION = 'CURLOPT_CONNECTTIMEOUT';
 
     /**
      * Curl instance.
@@ -27,28 +33,28 @@ class Curl
     protected $_rCurl = null;
 
     /**
-     * URL to call
+     * URL to call.
      *
      * @var string|null
      */
     protected $_sUrl = null;
 
     /**
-     * Query like "param1=value1&param2=values2.."
+     * Query like "param1=value1&param2=values2..".
      *
      * @return string
      */
     protected $_sQuery = null;
 
     /**
-     * Set CURL method
+     * Set CURL method.
      *
      * @return string
      */
     protected $_sMethod = 'POST';
 
     /**
-     * Parameter to be added to call url
+     * Parameter to be added to call url.
      *
      * @var array|null
      */
@@ -59,7 +65,7 @@ class Curl
      *
      * @var string
      */
-    protected $_sConnectionCharset = "UTF-8";
+    protected $_sConnectionCharset = 'UTF-8';
 
     /**
      * Curl call header.
@@ -76,11 +82,13 @@ class Curl
     protected $_sHost = null;
 
     /**
-     * Curl Options
+     * Curl Options.
      *
      * @var array
      */
-    protected $_aOptions = ['CURLOPT_RETURNTRANSFER' => 1];
+    protected $_aOptions = [
+        'CURLOPT_RETURNTRANSFER' => 1,
+    ];
 
     /**
      * Request HTTP status call code.
@@ -90,51 +98,51 @@ class Curl
     protected $_sStatusCode = null;
 
     /**
-     * Sets url to call
+     * Sets url to call.
      *
-     * @param string $url URL to call.
+     * @param string $url URL to call
      */
-    public function setUrl($url)
+    public function setUrl($url): void
     {
         $this->_sUrl = $url;
     }
 
     /**
-     * Get url
+     * Get url.
      *
      * @return string
      */
     public function getUrl()
     {
-        if ($this->getMethod() == "GET" && $this->getQuery()) {
-            $this->_sUrl = $this->_sUrl . "?" . $this->getQuery();
+        if ('GET' === $this->getMethod() && $this->getQuery()) {
+            $this->_sUrl = $this->_sUrl . '?' . $this->getQuery();
         }
 
         return $this->_sUrl;
     }
 
     /**
-     * Set query like "param1=value1&param2=values2.."
+     * Set query like "param1=value1&param2=values2..".
      *
-     * @param string $query Request query.
+     * @param string $query request query
      */
-    public function setQuery($query)
+    public function setQuery($query): void
     {
         $this->_sQuery = $query;
     }
 
     /**
-     * Builds query like "param1=value1&param2=values2.."
+     * Builds query like "param1=value1&param2=values2..".
      *
      * @return string
      */
     public function getQuery()
     {
-        if (is_null($this->_sQuery)) {
-            $query = "";
+        if (null === $this->_sQuery) {
+            $query = '';
             if ($params = $this->getParameters()) {
                 $params = $this->_prepareQueryParameters($params);
-                $query = http_build_query($params, "", "&");
+                $query = http_build_query($params, '', '&');
             }
             $this->setQuery($query);
         }
@@ -147,7 +155,7 @@ class Curl
      *
      * @param array $parameters parameters
      */
-    public function setParameters($parameters)
+    public function setParameters($parameters): void
     {
         $this->setQuery(null);
         $this->_aParameters = $parameters;
@@ -168,7 +176,7 @@ class Curl
      *
      * @param string $host
      */
-    public function setHost($host)
+    public function setHost($host): void
     {
         $this->_sHost = $host;
     }
@@ -188,9 +196,9 @@ class Curl
      *
      * @param array $header
      */
-    public function setHeader($header = null)
+    public function setHeader($header = null): void
     {
-        if (is_null($header) && $this->getMethod() == "POST") {
+        if (null === $header && 'POST' === $this->getMethod()) {
             $host = $this->getHost();
 
             $header = [];
@@ -211,7 +219,7 @@ class Curl
      */
     public function getHeader()
     {
-        if (is_null($this->_aHeader)) {
+        if (null === $this->_aHeader) {
             $this->setHeader();
         }
 
@@ -219,17 +227,17 @@ class Curl
     }
 
     /**
-     * Set method to send (POST/GET)
+     * Set method to send (POST/GET).
      *
      * @param string $method method to send (POST/GET)
      */
-    public function setMethod($method)
+    public function setMethod($method): void
     {
         $this->_sMethod = strtoupper($method);
     }
 
     /**
-     * Return method to send
+     * Return method to send.
      *
      * @return string
      */
@@ -239,16 +247,16 @@ class Curl
     }
 
     /**
-     * Sets an option for a cURL transfer
+     * Sets an option for a cURL transfer.
      *
-     * @param string $name  curl option name to set value to.
-     * @param string $value curl option value to set.
+     * @param string $name  curl option name to set value to
+     * @param string $value curl option value to set
      *
      * @throws \OxidEsales\Eshop\Core\Exception\StandardException curl errors
      */
-    public function setOption($name, $value)
+    public function setOption($name, $value): void
     {
-        if (strpos($name, 'CURLOPT_') !== 0 || !defined($constant  = strtoupper($name))) {
+        if (0 !== strpos($name, 'CURLOPT_') || !\defined($constant = strtoupper($name))) {
             $exception = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
             $lang = \OxidEsales\Eshop\Core\Registry::getLang();
             $exception->setMessage(sprintf($lang->translateString('EXCEPTION_NOT_VALID_CURL_CONSTANT', $lang->getTplLanguage()), $name));
@@ -259,7 +267,7 @@ class Curl
     }
 
     /**
-     * Gets all options for a cURL transfer
+     * Gets all options for a cURL transfer.
      *
      * @return array
      */
@@ -297,17 +305,17 @@ class Curl
     }
 
     /**
-     * Set connection charset
+     * Set connection charset.
      *
      * @param string $charset charset
      */
-    public function setConnectionCharset($charset)
+    public function setConnectionCharset($charset): void
     {
         $this->_sConnectionCharset = $charset;
     }
 
     /**
-     * Return connection charset
+     * Return connection charset.
      *
      * @return string
      */
@@ -319,7 +327,7 @@ class Curl
     /**
      * Return HTTP status code.
      *
-     * @return int HTTP status code.
+     * @return int HTTP status code
      */
     public function getStatusCode()
     {
@@ -327,25 +335,27 @@ class Curl
     }
 
     /**
-     * Sets resource
+     * Sets resource.
      *
-     * @param resource $rCurl curl.
+     * @param resource $rCurl curl
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setResource" in next major
      */
-    protected function _setResource($rCurl) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setResource($rCurl): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_rCurl = $rCurl;
     }
 
     /**
-     * Returns curl resource
+     * Returns curl resource.
      *
      * @return resource
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getResource" in next major
      */
     protected function _getResource() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($this->_rCurl)) {
+        if (null === $this->_rCurl) {
             $this->_setResource(curl_init());
         }
 
@@ -353,25 +363,26 @@ class Curl
     }
 
     /**
-     * Set Curl Options
+     * Set Curl Options.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setOptions" in next major
      */
-    protected function _setOptions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setOptions(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_null($this->getHeader())) {
+        if (null !== $this->getHeader()) {
             $this->_setOpt(CURLOPT_HTTPHEADER, $this->getHeader());
         }
         $this->_setOpt(CURLOPT_URL, $this->getUrl());
 
-        if ($this->getMethod() == "POST") {
+        if ('POST' === $this->getMethod()) {
             $this->_setOpt(CURLOPT_POST, 1);
             $this->_setOpt(CURLOPT_POSTFIELDS, $this->getQuery());
         }
 
         $options = $this->getOptions();
-        if (count($options)) {
+        if (\count($options)) {
             foreach ($options as $name => $mValue) {
-                $this->_setOpt(constant($name), $mValue);
+                $this->_setOpt(\constant($name), $mValue);
             }
         }
     }
@@ -380,6 +391,7 @@ class Curl
      * Wrapper function to be mocked for testing.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "execute" in next major
      */
     protected function _execute() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -389,9 +401,10 @@ class Curl
 
     /**
      * Wrapper function to be mocked for testing.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "close" in next major
      */
-    protected function _close() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _close(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         curl_close($this->_getResource());
         $this->_setResource(null);
@@ -400,11 +413,12 @@ class Curl
     /**
      * Wrapper function to be mocked for testing.
      *
-     * @param string $name  curl option name to set value to.
-     * @param string $value curl option value to set.
+     * @param string $name  curl option name to set value to
+     * @param string $value curl option value to set
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setOpt" in next major
      */
-    protected function _setOpt($name, $value) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setOpt($name, $value): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         curl_setopt($this->_getResource(), $name, $value);
     }
@@ -413,6 +427,7 @@ class Curl
      * Check if curl has errors. Set error message if has.
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getErrorNumber" in next major
      */
     protected function _getErrorNumber() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -422,9 +437,10 @@ class Curl
 
     /**
      * Sets current request HTTP status code.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "saveStatusCode" in next major
      */
-    protected function _saveStatusCode() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveStatusCode(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_sStatusCode = curl_getinfo($this->_getResource(), CURLINFO_HTTP_CODE);
     }
@@ -432,9 +448,10 @@ class Curl
     /**
      * Decodes html entities.
      *
-     * @param array $params Parameters.
+     * @param array $params parameters
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareQueryParameters" in next major
      */
     protected function _prepareQueryParameters($params) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -448,11 +465,12 @@ class Curl
      * @param mixed $mParam query
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "htmlDecode" in next major
      */
     protected function _htmlDecode($mParam) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($mParam)) {
+        if (\is_array($mParam)) {
             $mParam = $this->_prepareQueryParameters($mParam);
         } else {
             $mParam = html_entity_decode(stripslashes($mParam), ENT_QUOTES, $this->getConnectionCharset());

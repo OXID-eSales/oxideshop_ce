@@ -13,6 +13,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 class ThemeSettingChangedEvent extends Event
@@ -29,12 +30,12 @@ class ThemeSettingChangedEvent extends Event
     /**
      * Shopid the configuration was changed for.
      *
-     * @var integer
+     * @var int
      */
     private $shopId;
 
     /**
-     * Module information as in oxconfig.oxmodule
+     * Module information as in oxconfig.oxmodule.
      *
      * @var string
      */
@@ -43,8 +44,8 @@ class ThemeSettingChangedEvent extends Event
     /**
      * ThemeSettingChangedEvent constructor.
      *
-     * @param string $configurationVariable Config varname.
-     * @param int    $shopId                Shop id.
+     * @param string $configurationVariable config varname
+     * @param int    $shopId                shop id
      * @param string $theme                 Theme information as in oxconfig.oxmodule
      */
     public function __construct(string $configurationVariable, int $shopId, string $theme)
@@ -56,8 +57,6 @@ class ThemeSettingChangedEvent extends Event
 
     /**
      * Getter for configuration variable name.
-     *
-     * @return string
      */
     public function getConfigurationVariable(): string
     {
@@ -66,8 +65,6 @@ class ThemeSettingChangedEvent extends Event
 
     /**
      * Getter for shop id.
-     *
-     * @return integer
      */
     public function getShopId(): int
     {
@@ -76,8 +73,6 @@ class ThemeSettingChangedEvent extends Event
 
     /**
      * Getter for theme information.
-     *
-     * @return string
      */
     public function getTheme(): string
     {

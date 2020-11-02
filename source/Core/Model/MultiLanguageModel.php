@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Core\Model;
 use oxObjectException;
 
 /**
- * Class handling multilanguage data fields
+ * Class handling multilanguage data fields.
  */
 class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
@@ -47,7 +49,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         //lets try to differentiate cache keys for oxI18n and oxBase
         //in order not to load cached structure for the instances of oxbase classe called on same table
         if ($this->_sCacheKey) {
-            $this->_sCacheKey .= "_i18n";
+            $this->_sCacheKey .= '_i18n';
         }
     }
 
@@ -56,21 +58,21 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param string $lang string (default null)
      */
-    public function setLanguage($lang = null)
+    public function setLanguage($lang = null): void
     {
-        $this->_iLanguage = (int) $lang;
+        $this->_iLanguage = (int)$lang;
         // reset
         $this->_sViewTable = false;
     }
 
     /**
-     * Returns object language
+     * Returns object language.
      *
      * @return int
      */
     public function getLanguage()
     {
-        if ($this->_iLanguage === null) {
+        if (null === $this->_iLanguage) {
             $this->_iLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
@@ -79,21 +81,21 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Object multilanguage mode setter (set true to enable multilang mode).
-     * This setter affects init() method so it should be called before init() is executed
+     * This setter affects init() method so it should be called before init() is executed.
      *
      * @param bool $employMultilanguage New $this->_blEmployMultilanguage value
      */
-    public function setEnableMultilang($employMultilanguage)
+    public function setEnableMultilang($employMultilanguage): void
     {
-        if ($this->_blEmployMultilanguage != $employMultilanguage) {
+        if ($this->_blEmployMultilanguage !== $employMultilanguage) {
             $this->_blEmployMultilanguage = $employMultilanguage;
             if (!$employMultilanguage) {
                 //#63T
-                $this->modifyCacheKey("_nonml");
+                $this->modifyCacheKey('_nonml');
             }
             // reset
             $this->_sViewTable = false;
-            if (count($this->_aFieldNames) > 1) {
+            if (\count($this->_aFieldNames) > 1) {
                 $this->_initDataStructure();
             }
         }
@@ -101,7 +103,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Checks if this field is multlingual
-     * (returns false if language = 0)
+     * (returns false if language = 0).
      *
      * @param string $fieldName Field name
      *
@@ -111,16 +113,16 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $fieldName = strtolower($fieldName);
         if (isset($this->_aFieldNames[$fieldName])) {
-            return (bool) $this->_aFieldNames[$fieldName];
+            return (bool)$this->_aFieldNames[$fieldName];
         }
 
         //not inited field yet
         //and note that this is should be called only in first call after tmp dir is empty
         startProfile('!__CACHABLE2__!');
-        $isMultilang = (bool) $this->_getFieldStatus($fieldName);
+        $isMultilang = (bool)$this->_getFieldStatus($fieldName);
         stopProfile('!__CACHABLE2__!');
 
-        return (bool) $isMultilang;
+        return (bool)$isMultilang;
     }
 
     /**
@@ -137,8 +139,8 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Loads object data from DB in passed language, returns true on success.
      *
-     * @param integer $language Load this language compatible data
-     * @param string  $oxid     object ID
+     * @param int    $language Load this language compatible data
+     * @param string $oxid     object ID
      *
      * @return bool
      */
@@ -158,10 +160,10 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $cacheKey kache  key
      * @param bool   $override marker to force override cache key
      */
-    public function modifyCacheKey($cacheKey, $override = false)
+    public function modifyCacheKey($cacheKey, $override = false): void
     {
         if ($override) {
-            $this->_sCacheKey = $cacheKey . "|i18n";
+            $this->_sCacheKey = $cacheKey . '|i18n';
         } else {
             $this->_sCacheKey .= $cacheKey;
         }
@@ -173,7 +175,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 
     /**
      * Returns an array of languages in which object multilanguage
-     * fields are already setted
+     * fields are already setted.
      *
      * @return array
      */
@@ -199,30 +201,30 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             //checking, if field is multilanguage
             if ($this->isMultilingualField($key) || $fieldLang > 0) {
                 $newKey = preg_replace('/_(\d{1,2})$/', '', $key);
-                $multiLangFields[$newKey][] = (int) $fieldLang;
+                $multiLangFields[$newKey][] = (int)$fieldLang;
             }
         }
 
         // if no multilanguage fields, return default languages array
-        if (count($multiLangFields) < 1) {
+        if (\count($multiLangFields) < 1) {
             return $languages;
         }
 
         // select from non-multilanguage core view (all ml tables joined to one)
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $query = "select * from " . getViewName($this->_sCoreTable, -1, -1) . " where oxid = :oxid";
+        $query = 'select * from ' . getViewName($this->_sCoreTable, -1, -1) . ' where oxid = :oxid';
         $rs = $db->getAll($query, [
-            ':oxid' => $this->getId()
+            ':oxid' => $this->getId(),
         ]);
 
         $notInLang = $languages;
 
         // checks if object field data is not empty in all available languages
         // and formats not available in languages array
-        if (isset($rs[0]) && is_array($rs[0]) && count($rs[0])) {
+        if (isset($rs[0]) && \is_array($rs[0]) && \count($rs[0])) {
             foreach ($multiLangFields as $fieldId => $multiLangIds) {
                 foreach ($multiLangIds as $multiLangId) {
-                    $fieldName = ($multiLangId == 0) ? $fieldId : $fieldId . '_' . $multiLangId;
+                    $fieldName = (0 === $multiLangId) ? $fieldId : $fieldId . '_' . $multiLangId;
                     if ($rs[0][strtoupper($fieldName)]) {
                         unset($notInLang[$multiLangId]);
                         continue;
@@ -241,12 +243,13 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $fieldName Field name
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldStatus" in next major
      */
     protected function _getFieldStatus($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $allField = $this->_getAllFields(true);
-        if (isset($allField[strtolower($fieldName) . "_1"])) {
+        if (isset($allField[strtolower($fieldName) . '_1'])) {
             return 1;
         }
 
@@ -263,6 +266,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool $forceFullStructure Whether to force loading of full data structure
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getNonCachedFieldNames" in next major
      */
     protected function _getNonCachedFieldNames($forceFullStructure = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -278,10 +282,10 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         //lets do some pointer manipulation
         if ($fields) {
             //non admin fields
-            $workingFields = & $fields;
+            $workingFields = &$fields;
         } else {
             //most likely admin fields so we remove another language
-            $workingFields = & $this->_aFieldNames;
+            $workingFields = &$this->_aFieldNames;
         }
 
         //we have an array of fields, lets remove multilanguage fields
@@ -302,6 +306,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param string $fieldName Field name
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getFieldLang" in next major
      */
     protected function _getFieldLang($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -327,7 +332,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $lang = $this->getLanguage();
         if ($lang && $this->_blEmployMultilanguage && $this->isMultilingualField($field)) {
-            $field .= "_" . $lang;
+            $field .= '_' . $lang;
         }
 
         return $field;
@@ -340,21 +345,22 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Will try to get multilang table name for relevant field check.
      *
      * @param string $field Field name that will be checked
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setUpdateSeoOnFieldChange" in next major
      */
-    protected function _setUpdateSeoOnFieldChange($field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setUpdateSeoOnFieldChange($field): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         parent::_setUpdateSeoOnFieldChange($this->getUpdateSqlFieldName($field));
     }
 
-
     /**
-     * return update fields SQL part
+     * return update fields SQL part.
      *
      * @param string $table             table name to be updated
      * @param bool   $useSkipSaveFields use skip save fields array?
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUpdateFieldsForTable" in next major
      */
     protected function _getUpdateFieldsForTable($table, $useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -364,11 +370,11 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         $skipMultilingual = false;
         $skipCoreFields = false;
 
-        if ($table != $coreTable) {
+        if ($table !== $coreTable) {
             $skipCoreFields = true;
         }
         if ($this->_blEmployMultilanguage) {
-            if ($table != getLangTableName($coreTable, $this->getLanguage())) {
+            if ($table !== getLangTableName($coreTable, $this->getLanguage())) {
                 $skipMultilingual = true;
             }
         }
@@ -377,7 +383,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sep = false;
         foreach (array_keys($this->_aFieldNames) as $key) {
             $keyLowercase = strtolower($key);
-            if ($keyLowercase != 'oxid') {
+            if ('oxid' !== $keyLowercase) {
                 if ($this->_blEmployMultilanguage) {
                     if ($skipMultilingual && $this->isMultilingualField($key)) {
                         continue;
@@ -389,7 +395,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
                     // need to explicitly check field language
                     $fieldLang = $this->_getFieldLang($key);
                     if ($fieldLang) {
-                        if ($table != getLangTableName($coreTable, $fieldLang)) {
+                        if ($table !== getLangTableName($coreTable, $fieldLang)) {
                             continue;
                         }
                     } elseif ($skipCoreFields) {
@@ -405,9 +411,9 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             $longName = $this->_getFieldLongName($key);
             $field = $this->$longName;
 
-            if (!$useSkipSaveFields || ($useSkipSaveFields && !in_array($keyLowercase, $this->_aSkipSaveFields))) {
+            if (!$useSkipSaveFields || ($useSkipSaveFields && !\in_array($keyLowercase, $this->_aSkipSaveFields, true))) {
                 $key = $this->getUpdateSqlFieldName($key);
-                $sql .= (($sep) ? ',' : '') . $key . " = " . $this->_getUpdateFieldValue($key, $field);
+                $sql .= (($sep) ? ',' : '') . $key . ' = ' . $this->_getUpdateFieldValue($key, $field);
                 $sep = true;
             }
         }
@@ -423,6 +429,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @param bool $useSkipSaveFields forces usage of skip save fields array (default is true)
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUpdateFields" in next major
      */
     protected function _getUpdateFields($useSkipSaveFields = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -439,6 +446,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @throws oxObjectException Throws on failure inserting
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "update" in next major
      */
     protected function _update() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -451,7 +459,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             if ($this->_blEmployMultilanguage) {
                 $coreTable = $this->getCoreTableName();
                 $langTable = getLangTableName($coreTable, $this->getLanguage());
-                if ($coreTable != $langTable) {
+                if ($coreTable !== $langTable) {
                     $updateTables[] = $langTable;
                 }
             } else {
@@ -459,7 +467,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
             foreach ($updateTables as $langTable) {
                 $insertSql = "insert into $langTable set " . $this->_getUpdateFieldsForTable($langTable, $this->getUseSkipSaveFields()) .
-                             " on duplicate key update " . $this->_getUpdateFieldsForTable($langTable);
+                             ' on duplicate key update ' . $this->_getUpdateFieldsForTable($langTable);
 
                 $this->executeDatabaseQuery($insertSql);
             }
@@ -476,11 +484,12 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Return all DB tables for the language sets
+     * Return all DB tables for the language sets.
      *
      * @param string $coreTableName core table name [optional]
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageSetTables" in next major
      */
     protected function _getLanguageSetTables($coreTableName = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -496,6 +505,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * might be loaded through oxlist.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -507,7 +517,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             foreach ($this->_getLanguageSetTables() as $table) {
                 $sql = "insert into $table set " . $this->_getUpdateFieldsForTable($table, $this->getUseSkipSaveFields());
 
-                $result = $result && (bool) $this->executeDatabaseQuery($sql);
+                $result = $result && (bool)$this->executeDatabaseQuery($sql);
             }
         }
 
@@ -515,12 +525,13 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns actual object view or table name
+     * Returns actual object view or table name.
      *
      * @param string $table  Original table name
      * @param int    $shopId Shop ID
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getObjectViewName" in next major
      */
     protected function _getObjectViewName($table, $shopId = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -542,6 +553,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @see \OxidEsales\Eshop\Core\Model\BaseModel::_getTableFields()
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAllFields" in next major
      */
     protected function _getAllFields($returnSimple = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -559,14 +571,13 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Adds additional field to meta structure. Skips language fields
+     * Adds additional field to meta structure. Skips language fields.
      *
      * @param string $name   Field name
      * @param string $status Field status (0-non multilang field, 1-multilang field)
      * @param string $type   Field type
      * @param string $length Field Length
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "addField" in next major
      */
     protected function _addField($name, $status, $type = null, $length = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -583,11 +594,12 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * for multilingual fields it checks only the base fields as they may be
      * coming from outer join views, so oxbase would return that they always
      * support null (while in reality updates to their lang set table with null
-     * would fail)
+     * would fail).
      *
      * @param string $fieldName db field name
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "canFieldBeNull" in next major
      */
     protected function _canFieldBeNull($fieldName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -613,7 +625,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
             //delete the record
             foreach ($this->_getLanguageSetTables() as $setTbl) {
                 $db->execute("delete from {$setTbl} where oxid = :oxid", [
-                    ':oxid' => $oxid
+                    ':oxid' => $oxid,
                 ]);
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,8 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
 use stdClass;
 
 /**
@@ -47,7 +47,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         foreach ($aLangs as $sLangId => $sLanguage) {
             $oLang = new stdClass();
             $oLang->sLangDesc = $sLanguage;
-            $oLang->selected = ($sLangId == $iLang);
+            $oLang->selected = ($sLangId === $iLang);
             $this->_aViewData['otherlang'][$sLangId] = clone $oLang;
         }
 
@@ -57,7 +57,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     /**
      * Saves selection list parameters changes.
      */
-    public function save()
+    public function save(): void
     {
         // saving/updating seo params
         if (($sOxid = $this->_getSaveObjectId())) {
@@ -99,10 +99,12 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
      *
      * @param array $aSeoData Seo data array
      *
-     * @return null|string
+     * @return string|null
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAdditionalParams" in next major
      */
-    protected function _getAdditionalParams($aSeoData) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getAdditionalParams($aSeoData)
     {
         $sParams = null;
         if (isset($aSeoData['oxparams'])) {
@@ -111,22 +113,25 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                 $sParams = "oxparams = {$sQuotedObjectSeoId}";
             }
         }
+
         return $sParams;
     }
 
     /**
-     * Returns id of object which must be saved
+     * Returns id of object which must be saved.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSaveObjectId" in next major
      */
-    protected function _getSaveObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getSaveObjectId()
     {
         return $this->getEditObjectId();
     }
 
     /**
-     * Returns object seo data
+     * Returns object seo data.
      *
      * @param string $sMetaType meta data type (oxkeywords/oxdescription)
      *
@@ -138,13 +143,13 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     }
 
     /**
-     * Returns TRUE if current seo entry has fixed state
+     * Returns TRUE if current seo entry has fixed state.
      *
      * @return bool
      */
     public function isEntryFixed()
     {
-        $iLang = (int) $this->getEditLang();
+        $iLang = (int)$this->getEditLang();
         $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
         $sQ = "select oxfixed from oxseo where
@@ -152,30 +157,34 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                    oxseo.oxshopid = :oxshopid and oxseo.oxlang = :oxlang and oxparams = '' ";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
+        return (bool)\OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
             ':oxobjectid' => $this->getEditObjectId(),
             ':oxshopid' => $iShopId,
-            ':oxlang' => $iLang
+            ':oxlang' => $iLang,
         ]);
     }
 
     /**
-     * Returns url type
+     * Returns url type.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getType(): void
     {
     }
 
     /**
-     * Returns objects std url
+     * Returns objects std url.
      *
      * @param string $sOxid object id
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getStdUrl" in next major
      */
-    protected function _getStdUrl($sOxid) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getStdUrl($sOxid)
     {
         if ($sType = $this->_getType()) {
             $oObject = oxNew($sType);
@@ -186,7 +195,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     }
 
     /**
-     * Returns edit language id
+     * Returns edit language id.
      *
      * @return int
      */
@@ -196,26 +205,30 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     }
 
     /**
-     * Returns alternative seo entry id
+     * Returns alternative seo entry id.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getAltSeoEntryId" in next major
      */
-    protected function _getAltSeoEntryId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getAltSeoEntryId(): void
     {
     }
 
     /**
-     * Returns seo entry type
+     * Returns seo entry type.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoEntryType" in next major
      */
-    protected function _getSeoEntryType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getSeoEntryType()
     {
         return $this->_getType();
     }
 
     /**
-     * Processes parameter before writing to db
+     * Processes parameter before writing to db.
      *
      * @param string $sParam parameter to process
      *
@@ -227,22 +240,24 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     }
 
     /**
-     * Returns current object type seo encoder object
+     * Returns current object type seo encoder object.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getEncoder(): void
     {
     }
 
     /**
-     * Returns seo uri
+     * Returns seo uri.
      */
-    public function getEntryUri()
+    public function getEntryUri(): void
     {
     }
 
     /**
-     * Returns true if SEO object id has suffix enabled. Default is FALSE
+     * Returns true if SEO object id has suffix enabled. Default is FALSE.
      *
      * @return bool
      */
@@ -252,7 +267,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     }
 
     /**
-     * Returns TRUE if seo object supports suffixes. Default is FALSE
+     * Returns TRUE if seo object supports suffixes. Default is FALSE.
      *
      * @return bool
      */
@@ -262,7 +277,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     }
 
     /**
-     * Returns FALSE, as this view does not support category selector
+     * Returns FALSE, as this view does not support category selector.
      *
      * @return bool
      */
@@ -272,7 +287,7 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     }
 
     /**
-     * Returns FALSE, as this view does not support active selection type
+     * Returns FALSE, as this view does not support active selection type.
      *
      * @return bool
      */

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,28 +19,33 @@ use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
  */
 interface DatabaseInterface
 {
-
-    /** @var int code of exception to check against. Use same number as MySQL to avoid duplications. */
-    const DUPLICATE_KEY_ERROR_CODE = 1062;
+    /**
+     * @var int code of exception to check against. Use same number as MySQL to avoid duplications.
+     */
+    public const DUPLICATE_KEY_ERROR_CODE = 1062;
 
     /**
-     * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH
+     * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH.
      *
      * @deprecated since 6.0 (2016-04-19); This constant is confusing as the shop uses a different default fetch mode.
      */
-    const FETCH_MODE_DEFAULT = 0;
+    public const FETCH_MODE_DEFAULT = 0;
 
     /**
      * Fetch the query result into an array with integer keys.
      * This is the default fetch mode as it is set by OXID eShop on opening a database connection.
      */
-    const FETCH_MODE_NUM = 1;
+    public const FETCH_MODE_NUM = 1;
 
-    /** Fetch the query result into an array with string keys */
-    const FETCH_MODE_ASSOC = 2;
+    /**
+     * Fetch the query result into an array with string keys.
+     */
+    public const FETCH_MODE_ASSOC = 2;
 
-    /** Fetch the query result into a mixed array with both integer and string keys */
-    const FETCH_MODE_BOTH = 3;
+    /**
+     * Fetch the query result into a mixed array with both integer and string keys.
+     */
+    public const FETCH_MODE_BOTH = 3;
 
     /**
      * Set the necessary connection parameters to connect to the database.
@@ -53,9 +60,7 @@ interface DatabaseInterface
      *      'databasePassword'  => '', // string
      *      'connectionCharset' => '', // string Optional, defaults to the servers connection character set
      *      ]
-     * ]
-     *
-     * @param array $connectionParameters
+     * ].
      */
     public function setConnectionParameters(array $connectionParameters);
 
@@ -68,8 +73,6 @@ interface DatabaseInterface
 
     /**
      * Force database master connection.
-     *
-     * @return null
      */
     public function forceMasterConnection();
 
@@ -78,15 +81,11 @@ interface DatabaseInterface
      * you know exactly what you are doing. Usage of this function
      * can lead to write access to a MySQL slave and getting replication out
      * of sync.
-     *
-     * @return null
      */
     public function forceSlaveConnection();
 
     /**
-     * Closes an open connection
-     *
-     * @return null
+     * Closes an open connection.
      */
     public function closeConnection();
 
@@ -109,10 +108,10 @@ interface DatabaseInterface
      * NOTE: Although you might pass any SELECT or SHOW statement to this method, try to limit the result of the
      * statement to one single row, as the rest of the rows is simply discarded.
      *
-     * @param string $query      The sql SELECT or SHOW statement.
-     * @param array  $parameters Array of parameters for the given sql statement.
+     * @param string $query      the sql SELECT or SHOW statement
+     * @param array  $parameters array of parameters for the given sql statement
      *
-     * @return string|false      Returns a string for SELECT or SHOW statements and FALSE for any other statement.
+     * @return string|false returns a string for SELECT or SHOW statements and FALSE for any other statement
      */
     public function getOne($query, $parameters = []);
 
@@ -138,10 +137,10 @@ interface DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
-     * @param array  $parameters Array of parameters, for the given sql statement.
+     * @param string $query      the sql select statement to be executed
+     * @param array  $parameters array of parameters, for the given sql statement
      *
-     * @return array The row, we selected with the given sql statement.
+     * @return array the row, we selected with the given sql statement
      */
     public function getRow($query, $parameters = []);
 
@@ -158,12 +157,12 @@ interface DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
-     * @param array  $parameters The parameters array.
+     * @param string $query      the sql select statement to be executed
+     * @param array  $parameters the parameters array
      *
      * @throws DatabaseErrorException
      *
-     * @return array The values of the first column of a corresponding sql query.
+     * @return array the values of the first column of a corresponding sql query
      */
     public function getCol($query, $parameters = []);
 
@@ -185,7 +184,7 @@ interface DatabaseInterface
      * SQL injection vulnerability.
      *
      * @param string $query      If parameters are given, the "?" in the string will be replaced by the values in the array
-     * @param array  $parameters Array of parameters, for the given sql statement.
+     * @param array  $parameters array of parameters, for the given sql statement
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -214,12 +213,12 @@ interface DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
-     * @param array  $parameters The parameters array for the given query.
+     * @param string $query      the sql select statement to be executed
+     * @param array  $parameters the parameters array for the given query
      *
-     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException the exception, that can occur while executing the sql statement
      *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface the result of the given query
      */
     public function select($query, $parameters = []);
 
@@ -242,14 +241,14 @@ interface DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
+     * @param string $query      the sql select statement to be executed
      * @param int    $rowCount   Maximum number of rows to return
      * @param int    $offset     Offset of the first row to return
-     * @param array  $parameters The parameters array.
+     * @param array  $parameters the parameters array
      *
-     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException the exception, that can occur while executing the sql statement
      *
-     * @return ResultSetInterface The result of the given query.
+     * @return ResultSetInterface the result of the given query
      */
     public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = []);
 
@@ -266,12 +265,12 @@ interface DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
-     * @param array  $parameters The parameters array.
+     * @param string $query      the sql select statement to be executed
+     * @param array  $parameters the parameters array
      *
      * @throws DatabaseErrorException
      *
-     * @return integer Number of rows affected by the SQL statement
+     * @return int Number of rows affected by the SQL statement
      */
     public function execute($query, $parameters = []);
 
@@ -292,9 +291,9 @@ interface DatabaseInterface
      *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseProvider::getDb->quote($id1) . ' OR ´id´ = ' . DatabaseProvider::getDb->quote($id1)
      * );
      *
-     * @param mixed $value The string or numeric value to be quoted.
+     * @param mixed $value the string or numeric value to be quoted
      *
-     * @return false|string The given string or numeric value converted to a string surrounded by single quotes or set to false, if the value could not have been quoted.
+     * @return false|string the given string or numeric value converted to a string surrounded by single quotes or set to false, if the value could not have been quoted
      */
     public function quote($value);
 
@@ -307,9 +306,9 @@ interface DatabaseInterface
      * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
      * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
      *
-     * @param array $array The strings to quote as an array.
+     * @param array $array the strings to quote as an array
      *
-     * @return array Array with all string and numeric values quoted with single quotes or set to false, if the value could not have been quoted.
+     * @return array array with all string and numeric values quoted with single quotes or set to false, if the value could not have been quoted
      */
     public function quoteArray($array);
 
@@ -317,7 +316,7 @@ interface DatabaseInterface
      * Quote a string in a way, that it can be used as a identifier (i.e. table name or field name) in a sql statement.
      * You are strongly encouraged to always use quote identifiers.
      *
-     * @param string $string The string to be quoted.
+     * @param string $string the string to be quoted
      *
      * @return string
      */
@@ -327,9 +326,9 @@ interface DatabaseInterface
      * Get the meta information about all the columns of the given table.
      * This is kind of a poor man's schema manager, which only works for MySQL.
      *
-     * @param string $table The name of the table.
+     * @param string $table the name of the table
      *
-     * @return array Array of objects with meta information of each column.
+     * @return array array of objects with meta information of each column
      */
     public function metaColumns($table);
 
@@ -355,14 +354,13 @@ interface DatabaseInterface
     public function rollbackTransaction();
 
     /**
-     * @inheritdoc
-     *
      * Note: This method is MySQL specific, as we use the MySQL syntax for setting the transaction isolation level.
      *
      * @see Doctrine::transactionIsolationLevelMap
      *
-     * @return bool|integer
+     * @return bool|int
      */
+
     /**
      * Set the transaction isolation level.
      * Allowed values 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ' and 'SERIALIZABLE'.
@@ -390,7 +388,7 @@ interface DatabaseInterface
     /**
      * Checks whether a transaction is currently active.
      *
-     * @return boolean TRUE if a transaction is currently active, FALSE otherwise.
+     * @return bool TRUE if a transaction is currently active, FALSE otherwise
      */
     public function isTransactionActive();
 

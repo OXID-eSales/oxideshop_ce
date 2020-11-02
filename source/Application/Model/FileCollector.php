@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,30 +13,30 @@ use Exception;
 
 /**
  * Directory reader.
- * Performs reading of file list of one shop directory
+ * Performs reading of file list of one shop directory.
  */
 class FileCollector
 {
     /**
-     * base directory
+     * base directory.
      *
      * @var string
      */
     protected $_sBaseDirectory;
 
     /**
-     * array of collected files
+     * array of collected files.
      *
      * @var array
      */
     protected $_aFiles;
 
     /**
-     * Setter for working directory
+     * Setter for working directory.
      *
      * @param string $sDir Directory
      */
-    public function setBaseDirectory($sDir)
+    public function setBaseDirectory($sDir): void
     {
         if (!empty($sDir)) {
             $this->_sBaseDirectory = $sDir;
@@ -42,7 +44,7 @@ class FileCollector
     }
 
     /**
-     * get collection files
+     * get collection files.
      *
      * @return mixed
      */
@@ -52,12 +54,11 @@ class FileCollector
     }
 
     /**
-     * Add one file to collection if it exists
+     * Add one file to collection if it exists.
      *
      * @param string $sFile file name to add to collection
      *
      * @throws Exception
-     * @return null
      */
     public function addFile($sFile)
     {
@@ -78,18 +79,16 @@ class FileCollector
         return false;
     }
 
-
     /**
-     * browse all folders and sub-folders after files which have given extensions
+     * browse all folders and sub-folders after files which have given extensions.
      *
-     * @param string  $sFolder     which is explored
-     * @param array   $aExtensions list of extensions to scan - if empty all files are taken
-     * @param boolean $blRecursive should directories be checked in recursive manner
+     * @param string $sFolder     which is explored
+     * @param array  $aExtensions list of extensions to scan - if empty all files are taken
+     * @param bool   $blRecursive should directories be checked in recursive manner
      *
      * @throws exception
-     * @return null
      */
-    public function addDirectoryFiles($sFolder, $aExtensions = [], $blRecursive = false)
+    public function addDirectoryFiles($sFolder, $aExtensions = [], $blRecursive = false): void
     {
         if (empty($sFolder)) {
             throw new Exception('Parameter $sFolder is empty!');
@@ -108,12 +107,12 @@ class FileCollector
         $handle = opendir($this->_sBaseDirectory . $sFolder);
 
         while ($sFile = readdir($handle)) {
-            if ($sFile != "." && $sFile != "..") {
+            if ('.' !== $sFile && '..' !== $sFile) {
                 if (is_dir($this->_sBaseDirectory . $sFolder . $sFile)) {
                     if ($blRecursive) {
                         $aResultList = $this->addDirectoryFiles($sFolder . $sFile . '/', $aExtensions, $blRecursive);
 
-                        if (is_array($aResultList)) {
+                        if (\is_array($aResultList)) {
                             $aCurrentList = array_merge($aCurrentList, $aResultList);
                         }
                     }
@@ -121,7 +120,7 @@ class FileCollector
                     $sExt = substr(strrchr($sFile, '.'), 1);
 
                     if (
-                        (!empty($aExtensions) && is_array($aExtensions) && in_array($sExt, $aExtensions)) ||
+                        (!empty($aExtensions) && \is_array($aExtensions) && \in_array($sExt, $aExtensions, true)) ||
                         (empty($aExtensions))
                     ) {
                         $this->addFile($sFolder . $sFile);

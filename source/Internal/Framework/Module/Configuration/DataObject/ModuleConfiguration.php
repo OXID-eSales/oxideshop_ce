@@ -109,235 +109,144 @@ class ModuleConfiguration
      */
     private $moduleSettings = [];
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return ModuleConfiguration
-     */
-    public function setId(string $id): ModuleConfiguration
+    public function setId(string $id): self
     {
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * @param string $path
-     * @return ModuleConfiguration
-     */
-    public function setPath(string $path): ModuleConfiguration
+    public function setPath(string $path): self
     {
         $this->path = $path;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getModuleSource(): string
     {
         return $this->moduleSource;
     }
 
-    /**
-     * @param string $moduleSource
-     * @return ModuleConfiguration
-     */
-    public function setModuleSource(string $moduleSource): ModuleConfiguration
+    public function setModuleSource(string $moduleSource): self
     {
         $this->moduleSource = $moduleSource;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): string
     {
         return $this->version;
     }
 
-    /**
-     * @param string $version
-     *
-     * @return ModuleConfiguration
-     */
-    public function setVersion(string $version): ModuleConfiguration
+    public function setVersion(string $version): self
     {
         $this->version = $version;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getTitle(): array
     {
         return $this->title;
     }
 
-    /**
-     * @param array $title
-     *
-     * @return ModuleConfiguration
-     */
-    public function setTitle(array $title): ModuleConfiguration
+    public function setTitle(array $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getDescription(): array
     {
         return $this->description;
     }
 
-    /**
-     * @param array $description
-     *
-     * @return ModuleConfiguration
-     */
-    public function setDescription(array $description): ModuleConfiguration
+    public function setDescription(array $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLang(): string
     {
         return $this->lang;
     }
 
-    /**
-     * @param string $lang
-     *
-     * @return ModuleConfiguration
-     */
-    public function setLang(string $lang): ModuleConfiguration
+    public function setLang(string $lang): self
     {
         $this->lang = $lang;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getThumbnail(): string
     {
         return $this->thumbnail;
     }
 
-    /**
-     * @param string $thumbnail
-     *
-     * @return ModuleConfiguration
-     */
-    public function setThumbnail(string $thumbnail): ModuleConfiguration
+    public function setThumbnail(string $thumbnail): self
     {
         $this->thumbnail = $thumbnail;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isConfigured(): bool
     {
         return $this->configured;
     }
 
-    /**
-     * @param bool $configured
-     * @return ModuleConfiguration
-     */
-    public function setConfigured(bool $configured): ModuleConfiguration
+    public function setConfigured(bool $configured): self
     {
         $this->configured = $configured;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getAuthor(): string
     {
         return $this->author;
     }
 
-    /**
-     * @param string $author
-     *
-     * @return ModuleConfiguration
-     */
-    public function setAuthor(string $author): ModuleConfiguration
+    public function setAuthor(string $author): self
     {
         $this->author = $author;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUrl(): string
     {
         return $this->url;
     }
 
-    /**
-     * @param string $url
-     *
-     * @return ModuleConfiguration
-     */
-    public function setUrl(string $url): ModuleConfiguration
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     *
-     * @return ModuleConfiguration
-     */
-    public function setEmail(string $email): ModuleConfiguration
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -353,8 +262,6 @@ class ModuleConfiguration
     }
 
     /**
-     * @param ClassExtension $extension
-     *
      * @return $this
      */
     public function addClassExtension(ClassExtension $extension)
@@ -364,9 +271,6 @@ class ModuleConfiguration
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function hasClassExtensions(): bool
     {
         return !empty($this->classExtensions);
@@ -387,9 +291,6 @@ class ModuleConfiguration
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function hasTemplateBlocks(): bool
     {
         return !empty($this->templateBlocks);
@@ -410,19 +311,11 @@ class ModuleConfiguration
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function hasTemplates(): bool
     {
         return !empty($this->templates);
     }
 
-    /**
-     * @param string $namespace
-     *
-     * @return bool
-     */
     public function hasClassExtension(string $namespace): bool
     {
         foreach ($this->getClassExtensions() as $classExtension) {
@@ -434,11 +327,6 @@ class ModuleConfiguration
         return false;
     }
 
-    /**
-     * @param string $shopClassNamespace
-     *
-     * @return bool
-     */
     public function isExtendingShopClass(string $shopClassNamespace): bool
     {
         foreach ($this->getClassExtensions() as $classExtension) {
@@ -451,8 +339,6 @@ class ModuleConfiguration
     }
 
     /**
-     * @param Controller $controller
-     *
      * @return $this
      */
     public function addController(Controller $controller)
@@ -470,17 +356,12 @@ class ModuleConfiguration
         return $this->controllers;
     }
 
-    /**
-     * @return bool
-     */
     public function hasControllers(): bool
     {
         return !empty($this->controllers);
     }
 
     /**
-     * @param SmartyPluginDirectory $directory
-     *
      * @return $this
      */
     public function addSmartyPluginDirectory(SmartyPluginDirectory $directory)
@@ -498,17 +379,12 @@ class ModuleConfiguration
         return $this->smartyPluginDirectories;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSmartyPluginDirectories(): bool
     {
         return !empty($this->smartyPluginDirectories);
     }
 
     /**
-     * @param Event $event
-     *
      * @return $this
      */
     public function addEvent(Event $event)
@@ -526,9 +402,6 @@ class ModuleConfiguration
         return $this->events;
     }
 
-    /**
-     * @return bool
-     */
     public function hasEvents(): bool
     {
         return !empty($this->events);
@@ -542,11 +415,6 @@ class ModuleConfiguration
         return $this->moduleSettings;
     }
 
-    /**
-     * @param string $settingName
-     *
-     * @return bool
-     */
     public function hasModuleSetting(string $settingName): bool
     {
         foreach ($this->getModuleSettings() as $setting) {
@@ -558,17 +426,12 @@ class ModuleConfiguration
         return false;
     }
 
-    /**
-     * @return bool
-     */
     public function hasModuleSettings(): bool
     {
         return !empty($this->moduleSettings);
     }
 
     /**
-     * @param string $settingName
-     * @return Setting
      * @throws ModuleSettingNotFountException
      */
     public function getModuleSetting(string $settingName): Setting
@@ -581,23 +444,20 @@ class ModuleConfiguration
         throw new ModuleSettingNotFountException("Module setting \"$settingName\" was not found in configuration.");
     }
 
-    /**
-     * @param Setting $moduleSettings
-     * @return ModuleConfiguration
-     */
-    public function addModuleSetting(Setting $moduleSettings): ModuleConfiguration
+    public function addModuleSetting(Setting $moduleSettings): self
     {
         $this->moduleSettings[] = $moduleSettings;
+
         return $this;
     }
 
     /**
      * @param Setting[] $moduleSettings
-     * @return ModuleConfiguration
      */
-    public function setModuleSettings(array $moduleSettings): ModuleConfiguration
+    public function setModuleSettings(array $moduleSettings): self
     {
         $this->moduleSettings = $moduleSettings;
+
         return $this;
     }
 }

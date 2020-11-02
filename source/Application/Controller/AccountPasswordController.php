@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
-
-use oxRegistry;
 
 /**
  * Current user password change form.
@@ -36,9 +36,9 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
     /**
      * If user is not logged in - returns name of template AccountUserController::_sThisLoginTemplate, or if user is
      * already logged in additionally loads user delivery address info and forms country list. Returns name of template
-     * AccountUserController::_sThisTemplate
+     * AccountUserController::_sThisTemplate.
      *
-     * @return string $_sThisTemplate current template file name
+     * @return string current template file name
      */
     public function render()
     {
@@ -54,9 +54,7 @@ class AccountPasswordController extends \OxidEsales\Eshop\Application\Controller
     }
 
     /**
-     * changes current user password
-     *
-     * @return null
+     * changes current user password.
      */
     public function changePassword()
     {

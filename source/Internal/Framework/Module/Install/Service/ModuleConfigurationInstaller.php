@@ -13,13 +13,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Projec
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
+    ModuleConfigurationMergingServiceInterface
+};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Webmozart\PathUtil\Path;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
-    ModuleConfigurationMergingServiceInterface
-};
 
 class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterface
 {
@@ -43,12 +43,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
      */
     private $metadataModuleConfigurationDao;
 
-    /**
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param BasicContextInterface $context
-     * @param ModuleConfigurationMergingServiceInterface $moduleConfigurationMergingService
-     * @param ModuleConfigurationDaoInterface $metadataModuleConfigurationDao
-     */
     public function __construct(
         ProjectConfigurationDaoInterface $projectConfigurationDao,
         BasicContextInterface $context,
@@ -61,10 +55,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $this->metadataModuleConfigurationDao = $metadataModuleConfigurationDao;
     }
 
-    /**
-     * @param string $moduleSourcePath
-     * @param string $moduleTargetPath
-     */
     public function install(string $moduleSourcePath, string $moduleTargetPath): void
     {
         $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleSourcePath);
@@ -78,9 +68,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $this->projectConfigurationDao->save($projectConfiguration);
     }
 
-    /**
-     * @param string $modulePath
-     */
     public function uninstall(string $modulePath): void
     {
         $moduleConfiguration = $this->metadataModuleConfigurationDao->get($modulePath);
@@ -95,9 +82,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $this->projectConfigurationDao->save($projectConfiguration);
     }
 
-    /**
-     * @param string $moduleId
-     */
     public function uninstallById(string $moduleId): void
     {
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
@@ -112,9 +96,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     }
 
     /**
-     * @param string $moduleFullPath
-     *
-     * @return bool
      * @throws InvalidMetaDataException
      */
     public function isInstalled(string $moduleFullPath): bool
@@ -123,7 +104,7 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
 
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
-            /** @var $shopConfiguration ShopConfiguration */
+            /** @var ShopConfiguration $shopConfiguration */
             if ($shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {
                 return true;
             }
@@ -132,17 +113,10 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         return false;
     }
 
-    /**
-     * @param ModuleConfiguration  $moduleConfiguration
-     * @param ProjectConfiguration $projectConfiguration
-     *
-     * @return ProjectConfiguration
-     */
     private function addModuleConfigurationToAllShops(
         ModuleConfiguration $moduleConfiguration,
         ProjectConfiguration $projectConfiguration
     ): ProjectConfiguration {
-
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
             $this->moduleConfigurationMergingService->merge($shopConfiguration, $moduleConfiguration);
         }
@@ -150,10 +124,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
         return $projectConfiguration;
     }
 
-    /**
-     * @param string $moduleTargetPath
-     * @return string
-     */
     private function getModuleRelativePath(string $moduleTargetPath): string
     {
         return Path::isRelative($moduleTargetPath)

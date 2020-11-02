@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,34 +12,31 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use Exception;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxField;
-use oxDb;
-use oxuserbasket;
 
 /**
- * Basket reservations handler class
+ * Basket reservations handler class.
  */
 class BasketReservation extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Reservations list
+     * Reservations list.
      *
      * @var \OxidEsales\Eshop\Application\Model\UserBasket
      */
     protected $_oReservations = null;
 
     /**
-     * Currently reserved products array
+     * Currently reserved products array.
      *
      * @var array
      */
     protected $_aCurrentlyReserved = null;
 
     /**
-     * return the ID of active resevations user basket
+     * return the ID of active resevations user basket.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getReservationsId" in next major
      */
     protected function _getReservationsId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -53,17 +52,21 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * load reservation or create new reservation user basket
+     * load reservation or create new reservation user basket.
      *
      * @param string $sBasketId basket id for this user basket
      *
      * @return \OxidEsales\Eshop\Application\Model\UserBasket
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadReservations" in next major
      */
     protected function _loadReservations($sBasketId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oReservations = oxNew(\OxidEsales\Eshop\Application\Model\UserBasket::class);
-        $aWhere = ['oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations'];
+        $aWhere = [
+            'oxuserbaskets.oxuserid' => $sBasketId,
+            'oxuserbaskets.oxtitle' => 'reservations',
+        ];
 
         // creating if it does not exist
         if (!$oReservations->assignRecord($oReservations->buildSelectString($aWhere))) {
@@ -77,7 +80,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * get reservations collection
+     * get reservations collection.
      *
      * @return \OxidEsales\Eshop\Application\Model\UserBasket
      */
@@ -97,9 +100,10 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * return currently reserved items in an array format array (artId => amount)
+     * return currently reserved items in an array format array (artId => amount).
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getReservedItems" in next major
      */
     protected function _getReservedItems() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -125,11 +129,11 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * return currently reserved amount for an article
+     * return currently reserved amount for an article.
      *
      * @param string $sArticleId article id
      *
-     * @return double
+     * @return float
      */
     public function getReservedAmount($sArticleId)
     {
@@ -142,11 +146,12 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * compute difference of reserved amounts vs basket items
+     * compute difference of reserved amounts vs basket items.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "basketDifference" in next major
      */
     protected function _basketDifference(\OxidEsales\Eshop\Application\Model\Basket $oBasket) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -166,20 +171,20 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * reserve articles given the basket difference array
+     * reserve articles given the basket difference array.
      *
      * @param array $aBasketDiff basket difference array
      *
      * @see oxBasketReservation::_basketDifference
      * @deprecated underscore prefix violates PSR12, will be renamed to "reserveArticles" in next major
      */
-    protected function _reserveArticles($aBasketDiff) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _reserveArticles($aBasketDiff): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $blAllowNegativeStock = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blAllowNegativeStock');
 
         $oReserved = $this->getReservations();
         foreach ($aBasketDiff as $sId => $dAmount) {
-            if ($dAmount != 0) {
+            if (0 !== $dAmount) {
                 $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                 if ($oArticle->load($sId)) {
                     $oArticle->reduceStock(-$dAmount, $blAllowNegativeStock);
@@ -191,11 +196,11 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * reserve given basket items, only when not in admin mode
+     * reserve given basket items, only when not in admin mode.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket basket object
      */
-    public function reserveBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket)
+    public function reserveBasket(\OxidEsales\Eshop\Application\Model\Basket $oBasket): void
     {
         if (!$this->isAdmin()) {
             $this->_reserveArticles($this->_basketDifference($oBasket));
@@ -205,12 +210,12 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     /**
      * commit reservation of given article amount
      * deletes this amount from active reservations userBasket,
-     * update sold amount
+     * update sold amount.
      *
      * @param string $sArticleId article id
-     * @param double $dAmount    amount to use
+     * @param float  $dAmount    amount to use
      */
-    public function commitArticleReservation($sArticleId, $dAmount)
+    public function commitArticleReservation($sArticleId, $dAmount): void
     {
         $dReserved = $this->getReservedAmount($sArticleId);
 
@@ -229,11 +234,11 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
     /**
      * discard one article reservation
-     * return the reserved stock to article
+     * return the reserved stock to article.
      *
      * @param string $sArticleId article id
      */
-    public function discardArticleReservation($sArticleId)
+    public function discardArticleReservation($sArticleId): void
     {
         $dReserved = $this->getReservedAmount($sArticleId);
         if ($dReserved) {
@@ -247,9 +252,9 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * discard all reserved articles
+     * discard all reserved articles.
      */
-    public function discardReservations()
+    public function discardReservations(): void
     {
         foreach (array_keys($this->_getReservedItems()) as $sArticleId) {
             $this->discardArticleReservation($sArticleId);
@@ -263,15 +268,13 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
     /**
      * periodic cleanup: discards timed out reservations even if they are not
-     * for the current user
+     * for the current user.
      *
      * @param int $iLimit limit for discarding (performance related)
      *
      * @throws Exception
-     *
-     * @return null
      */
-    public function discardUnusedReservations($iLimit)
+    public function discardUnusedReservations($iLimit): void
     {
         $database = DatabaseProvider::getMaster(DatabaseProvider::FETCH_MODE_ASSOC);
 
@@ -279,8 +282,8 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
         $startTime = Registry::getUtilsDate()->getTime() - $psBasketReservationTimeout;
 
         $parameters = [
-            ':oxtitle'  => 'reservations',
-            ':oxupdate' => $startTime
+            ':oxtitle' => 'reservations',
+            ':oxupdate' => $startTime,
         ];
 
         $reservation = $database->select("select oxid from oxuserbaskets 
@@ -318,10 +321,10 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
 
             $database->execute('delete from oxuserbasketitems where oxbasketid in (' . $finished . ')');
             $database->execute(
-                "delete from oxuserbasketitems where oxbasketid in (select oxid from oxuserbaskets where 
-                        oxuserid in (select oxid from oxuser where oxshopid= :oxshopid))",
+                'delete from oxuserbasketitems where oxbasketid in (select oxid from oxuserbaskets where 
+                        oxuserid in (select oxid from oxuser where oxshopid= :oxshopid))',
                 [
-                    ':oxshopid' => $shopId
+                    ':oxshopid' => $shopId,
                 ]
             );
 
@@ -332,7 +335,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
                         oxuserbaskets.oxtitle = 'savedbasket' and oxuserbaskets.oxupdate <= :startTime",
                 [
                     ':startTime' => $startTime,
-                    ':oxshopid'  => $shopId
+                    ':oxshopid' => $shopId,
                 ]
             );
 
@@ -347,7 +350,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * return time left (in seconds) for basket before expiration
+     * return time left (in seconds) for basket before expiration.
      *
      * @return int
      */
@@ -357,10 +360,10 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
         if ($iTimeout > 0) {
             $oRev = $this->getReservations();
             if ($oRev && $oRev->getId()) {
-                $iTimeout -= (\OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) $oRev->oxuserbaskets__oxupdate->value);
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("iBasketReservationTimeout", $oRev->oxuserbaskets__oxupdate->value);
-            } elseif (($iSessionTimeout = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("iBasketReservationTimeout"))) {
-                $iTimeout -= (\OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int) $iSessionTimeout);
+                $iTimeout -= (\OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int)$oRev->oxuserbaskets__oxupdate->value);
+                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('iBasketReservationTimeout', $oRev->oxuserbaskets__oxupdate->value);
+            } elseif (($iSessionTimeout = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('iBasketReservationTimeout'))) {
+                $iTimeout -= (\OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - (int)$iSessionTimeout);
             }
 
             return $iTimeout < 0 ? 0 : $iTimeout;
@@ -370,16 +373,16 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * renews expiration timer to maximum value
+     * renews expiration timer to maximum value.
      */
-    public function renewExpiration()
+    public function renewExpiration(): void
     {
         if ($oReserved = $this->getReservations()) {
             $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
             $oReserved->oxuserbaskets__oxupdate = new \OxidEsales\Eshop\Core\Field($iTime);
             $oReserved->save();
 
-            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable("iBasketReservationTimeout");
+            \OxidEsales\Eshop\Core\Registry::getSession()->deleteVariable('iBasketReservationTimeout');
         }
     }
 

@@ -11,18 +11,22 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\TwoStarsWithinBlacklistFilterException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Webmozart\PathUtil\Path;
 
 class ModuleFilesInstaller implements ModuleFilesInstallerInterface
 {
-    /** @var BasicContextInterface $context */
+    /**
+     * @var BasicContextInterface
+     */
     private $context;
 
-    /** @var Filesystem $fileSystemService */
+    /**
+     * @var Filesystem
+     */
     private $fileSystemService;
 
     /**
@@ -32,9 +36,6 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
 
     /**
      * ModuleFilesInstaller constructor.
-     * @param BasicContextInterface  $context
-     * @param Filesystem             $fileSystemService
-     * @param FinderFactoryInterface $finderFactory
      */
     public function __construct(
         BasicContextInterface $context,
@@ -46,9 +47,6 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
         $this->finderFactory = $finderFactory;
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function install(OxidEshopPackage $package): void
     {
         $finder = $this->getFinder($package->getPackageSourcePath(), $package->getBlackListFilters());
@@ -57,32 +55,23 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
             $package->getPackageSourcePath(),
             $this->getTargetPath($package),
             $finder,
-            ['override' => true]
+            [
+                'override' => true,
+            ]
         );
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function uninstall(OxidEshopPackage $package): void
     {
         $this->fileSystemService->remove($this->getTargetPath($package));
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     * @return bool
-     */
     public function isInstalled(OxidEshopPackage $package): bool
     {
         return $this->fileSystemService->exists($this->getTargetPath($package));
     }
 
     /**
-     * @param string $sourceDirectory
-     * @param array  $blackListFilters
-     *
-     * @return Finder
      * @throws TwoStarsWithinBlacklistFilterException
      */
     private function getFinder(string $sourceDirectory, array $blackListFilters): Finder
@@ -104,38 +93,24 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
     }
 
     /**
-     * @param string $filter
-     *
      * @throws TwoStarsWithinBlacklistFilterException
      */
     private function checkTwoStars(string $filter): void
     {
-        if (strpos($filter, '**') !== false) {
-            throw new TwoStarsWithinBlacklistFilterException(
-                "Invalid 'blacklist-filter' value in composer.json. "
-                . "Glob patterns (**) are not allowed here: $filter"
-            );
+        if (false !== strpos($filter, '**')) {
+            throw new TwoStarsWithinBlacklistFilterException("Invalid 'blacklist-filter' value in composer.json. " . "Glob patterns (**) are not allowed here: $filter");
         }
     }
 
-    /**
-     * @param string $filter
-     *
-     * @return bool
-     */
     private function isAFilenameInTheRootOfModule(string $filter): bool
     {
         return Path::hasExtension($filter) && !Path::getDirectory($filter);
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     *
-     * @return string
-     */
     private function getTargetPath(OxidEshopPackage $package): string
     {
         $targetDirectory = $package->getTargetDirectory();
+
         return Path::join($this->context->getModulesPath(), $targetDirectory);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
- * Class for extending
+ * Class for extending.
  */
 class UserOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
@@ -23,13 +25,13 @@ class UserOverview extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
             $oUser->load($soxId);
-            $this->_aViewData["edit"] = $oUser;
+            $this->_aViewData['edit'] = $oUser;
         }
 
-        return "user_overview.tpl";
+        return 'user_overview.tpl';
     }
 }

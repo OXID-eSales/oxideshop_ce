@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,13 +17,13 @@ if (!defined('OX_IS_ADMIN')) {
 }
 
 if (!defined('OX_ADMIN_DIR')) {
-    define('OX_ADMIN_DIR', dirname(__FILE__));
+    define('OX_ADMIN_DIR', __DIR__);
 }
 
-require_once dirname(__FILE__) . "/../bootstrap.php";
+require_once __DIR__ . '/../bootstrap.php';
 
 // processing ..
-$blAjaxCall = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
+$blAjaxCall = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'XMLHttpRequest' === $_SERVER['HTTP_X_REQUESTED_WITH']);
 if ($blAjaxCall) {
     // Setting error reporting mode
     error_reporting(E_ALL ^ E_NOTICE);
@@ -30,8 +32,8 @@ if ($blAjaxCall) {
 
     // Includes Utility module.
     $sUtilModule = $myConfig->getConfigParam('sUtilModule');
-    if ($sUtilModule && file_exists(getShopBasePath() . "modules/" . $sUtilModule)) {
-        include_once getShopBasePath() . "modules/" . $sUtilModule;
+    if ($sUtilModule && file_exists(getShopBasePath() . 'modules/' . $sUtilModule)) {
+        include_once getShopBasePath() . 'modules/' . $sUtilModule;
     }
 
     $myConfig->setConfigParam('blAdmin', true);
@@ -44,8 +46,8 @@ if ($blAjaxCall) {
         && Registry::getUtils()->checkAccessRights()
         )
     ) {
-        header("location:index.php");
-        Registry::getUtils()->showMessageAndExit("");
+        header('location:index.php');
+        Registry::getUtils()->showMessageAndExit('');
     }
 
     if ($sContainer = Registry::get(Request::class)->getRequestParameter('container')) {

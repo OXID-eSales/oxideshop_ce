@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,10 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
-use oxDb;
-use oxRegistry;
 use oxList;
-use oxField;
 
 /**
  * Recommendation list manager class.
@@ -21,28 +20,28 @@ use oxField;
 class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
     /**
-     * Current object class name
+     * Current object class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxRecommList';
 
     /**
-     * Article list
+     * Article list.
      *
      * @var string
      */
     protected $_oArticles = null;
 
     /**
-     * Article list loading filter (appended where statement)
+     * Article list loading filter (appended where statement).
      *
      * @var string
      */
     protected $_sArticlesFilter = '';
 
     /**
-     * Seo article urls for languages
+     * Seo article urls for languages.
      *
      * @var array
      */
@@ -58,24 +57,24 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns list of recommendation list items
+     * Returns list of recommendation list items.
      *
-     * @param integer $iStart        start for sql limit
-     * @param integer $iNrofArticles nr of items per page
-     * @param bool    $blReload      if TRUE forces to reload list
+     * @param int  $iStart        start for sql limit
+     * @param int  $iNrofArticles nr of items per page
+     * @param bool $blReload      if TRUE forces to reload list
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getArticles($iStart = null, $iNrofArticles = null, $blReload = false)
     {
         // cached ?
-        if ($this->_oArticles !== null && !$blReload) {
+        if (null !== $this->_oArticles && !$blReload) {
             return $this->_oArticles;
         }
 
         $this->_oArticles = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
 
-        if ($iStart !== null && $iNrofArticles !== null) {
+        if (null !== $iStart && null !== $iNrofArticles) {
             $this->_oArticles->setSqlLimit($iStart, $iNrofArticles);
         }
 
@@ -86,9 +85,9 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns count of recommendation list items
+     * Returns count of recommendation list items.
      *
-     * @return integer
+     * @return int
      */
     public function getArtCount()
     {
@@ -102,9 +101,10 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns the appropriate SQL select
+     * Returns the appropriate SQL select.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getArticleSelect" in next major
      */
     protected function _getArticleSelect() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -118,7 +118,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * returns first article from this list's article list
+     * returns first article from this list's article list.
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
@@ -133,7 +133,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Removes articles from the recommlist and deletes list
+     * Removes articles from the recommlist and deletes list.
      *
      * @param string $sOXID Object ID(default null)
      *
@@ -151,8 +151,8 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         if (($blDelete = parent::delete($sOXID))) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             // cleaning up related data
-            $oDb->execute("delete from oxobject2list where oxlistid = :oxlistid", [
-                ':oxlistid' => $sOXID
+            $oDb->execute('delete from oxobject2list where oxlistid = :oxlistid', [
+                ':oxlistid' => $sOXID,
             ]);
             $this->onDelete();
         }
@@ -161,7 +161,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns article description for recommendation list
+     * Returns article description for recommendation list.
      *
      * @param string $sOXID Object ID
      *
@@ -179,12 +179,12 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
 
         return $oDb->getOne($sSelect, [
             ':oxlistid' => $this->getId(),
-            ':oxobjectid' => $sOXID
+            ':oxobjectid' => $sOXID,
         ]);
     }
 
     /**
-     * Remove article from recommendation list
+     * Remove article from recommendation list.
      *
      * @param string $sOXID Object ID
      *
@@ -194,17 +194,17 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         if ($sOXID) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-            $sQ = "delete from oxobject2list where oxobjectid = :oxobjectid and oxlistid = :oxlistid";
+            $sQ = 'delete from oxobject2list where oxobjectid = :oxobjectid and oxlistid = :oxlistid';
 
             return $oDb->execute($sQ, [
                 ':oxobjectid' => $sOXID,
-                ':oxlistid' => $this->getId()
+                ':oxlistid' => $this->getId(),
             ]);
         }
     }
 
     /**
-     * Add article to recommendation list
+     * Add article to recommendation list.
      *
      * @param string $sOXID Object ID
      * @param string $sDesc recommended article description
@@ -220,22 +220,22 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-            $sql = "select oxid from oxobject2list 
+            $sql = 'select oxid from oxobject2list 
                 where oxobjectid = :oxobjectid 
-                    and oxlistid = :oxlistid";
+                    and oxlistid = :oxlistid';
             $params = [
                 ':oxobjectid' => $sOXID,
-                ':oxlistid' => $this->getId()
+                ':oxlistid' => $this->getId(),
             ];
 
             if (!$database->getOne($sql, $params)) {
                 $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
-                $sQ = "insert into oxobject2list (oxid, oxobjectid, oxlistid, oxdesc) values (:oxid, :oxobjectid, :oxlistid, :oxdesc)";
+                $sQ = 'insert into oxobject2list (oxid, oxobjectid, oxlistid, oxdesc) values (:oxid, :oxobjectid, :oxlistid, :oxdesc)';
                 $blAdd = $database->execute($sQ, [
                     ':oxid' => $sUid,
                     ':oxobjectid' => $sOXID,
                     ':oxlistid' => $this->getId(),
-                    ':oxdesc' => $sDesc
+                    ':oxdesc' => $sDesc,
                 ]);
             }
         }
@@ -247,7 +247,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * get recommendation lists which include given article ids
      * also sort these lists by these criteria:
      *     1. show lists, that has more requested articles first
-     *     2. show lists, that have more any articles
+     *     2. show lists, that have more any articles.
      *
      * @param array $aArticleIds Object IDs
      *
@@ -255,10 +255,10 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getRecommListsByIds($aArticleIds)
     {
-        if (is_array($aArticleIds) && count($aArticleIds)) {
+        if (\is_array($aArticleIds) && \count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
-            $sIds = implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));
+            $sIds = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));
 
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
@@ -267,17 +267,17 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
 
             $oRecommList->setSqlLimit(0, $iCnt);
 
-            $sSelect = "SELECT distinct lists.* FROM oxobject2list AS o2l_lists";
-            $sSelect .= " LEFT JOIN oxobject2list AS o2l_count ON o2l_lists.oxlistid = o2l_count.oxlistid";
-            $sSelect .= " LEFT JOIN oxrecommlists as lists ON o2l_lists.oxlistid = lists.oxid";
+            $sSelect = 'SELECT distinct lists.* FROM oxobject2list AS o2l_lists';
+            $sSelect .= ' LEFT JOIN oxobject2list AS o2l_count ON o2l_lists.oxlistid = o2l_count.oxlistid';
+            $sSelect .= ' LEFT JOIN oxrecommlists as lists ON o2l_lists.oxlistid = lists.oxid';
             $sSelect .= " WHERE o2l_lists.oxobjectid IN ( $sIds ) and lists.oxshopid = :oxshopid";
-            $sSelect .= " GROUP BY lists.oxid order by (";
-            $sSelect .= " SELECT count( order1.oxobjectid ) FROM oxobject2list AS order1";
+            $sSelect .= ' GROUP BY lists.oxid order by (';
+            $sSelect .= ' SELECT count( order1.oxobjectid ) FROM oxobject2list AS order1';
             $sSelect .= " WHERE order1.oxobjectid IN ( $sIds ) AND o2l_lists.oxlistid = order1.oxlistid";
-            $sSelect .= " ) DESC, count( lists.oxid ) DESC";
+            $sSelect .= ' ) DESC, count( lists.oxid ) DESC';
 
             $oRecommList->selectString($sSelect, [
-                ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+                ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),
             ]);
 
             stopProfile(__FUNCTION__);
@@ -298,21 +298,22 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      * loads first articles to recomm list also ordering them and clearing not usable list objects
      * ordering priorities:
      *     1. first show articles from our search
-     *     2. do not shown articles as 1st, which are shown in other recomm lists as 1st
+     *     2. do not shown articles as 1st, which are shown in other recomm lists as 1st.
      *
      * @param \OxidEsales\Eshop\Core\Model\ListModel $oRecommList recommendation list
      * @param array                                  $aIds        article ids
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadFirstArticles" in next major
      */
-    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
-        $sIds = implode(", ", $aIds);
+        $sIds = implode(', ', $aIds);
 
         $aPrevIds = [];
         $sArtView = getViewName('oxarticles');
         foreach ($oRecommList as $key => $oRecomm) {
-            if (count($aPrevIds)) {
+            if (\count($aPrevIds)) {
                 $sNegateSql = " AND $sArtView.oxid not in ( '" . implode("','", $aPrevIds) . "' ) ";
             } else {
                 $sNegateSql = '';
@@ -323,13 +324,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $oArtList->setSqlLimit(0, 1);
             $oArtList->loadRecommArticles($oRecomm->getId(), $sArticlesFilter);
 
-            if (count($oArtList) == 1) {
+            if (1 === \count($oArtList)) {
                 $oArtList->rewind();
                 $oArticle = $oArtList->current();
                 $sId = $oArticle->getId();
                 $aPrevIds[$sId] = $sId;
                 unset($aIds[$sId]);
-                $sIds = implode(", ", $aIds);
+                $sIds = implode(', ', $aIds);
             } else {
                 unset($oRecommList[$key]);
             }
@@ -337,7 +338,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns user recommendation list objects
+     * Returns user recommendation list objects.
      *
      * @param string $sSearchStr Search string
      *
@@ -347,7 +348,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     {
         if ($sSearchStr) {
             // sets active page
-            $iActPage = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
+            $iActPage = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen
@@ -385,11 +386,12 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns the appropriate SQL select according to search parameters
+     * Returns the appropriate SQL select according to search parameters.
      *
      * @param string $sSearchStr Search string
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major
      */
     protected function _getSearchSelect($sSearchStr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -397,8 +399,8 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
         $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");
 
-        $sSelect = "select distinct rl.* from oxrecommlists as rl";
-        $sSelect .= " inner join oxobject2list as o2l on o2l.oxlistid = rl.oxid";
+        $sSelect = 'select distinct rl.* from oxrecommlists as rl';
+        $sSelect .= ' inner join oxobject2list as o2l on o2l.oxlistid = rl.oxid';
         $sSelect .= " where ( rl.oxtitle like $sSearchStrQuoted or rl.oxdesc like $sSearchStrQuoted";
         $sSelect .= " or o2l.oxdesc like $sSearchStrQuoted ) and rl.oxshopid = '$iShopId'";
 
@@ -406,11 +408,11 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Calculates and saves product rating average
+     * Calculates and saves product rating average.
      *
-     * @param integer $iRating new rating value
+     * @param int $iRating new rating value
      */
-    public function addToRatingAverage($iRating)
+    public function addToRatingAverage($iRating): void
     {
         $dOldRating = $this->oxrecommlists__oxrating->value;
         $dOldCnt = $this->oxrecommlists__oxratingcnt->value;
@@ -437,7 +439,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns raw recommlist seo url
+     * Returns raw recommlist seo url.
      *
      * @param int $iLang language id
      * @param int $iPage page number [optional]
@@ -455,7 +457,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * return url to this recomm list page
+     * return url to this recomm list page.
      *
      * @param int $iLang language id [optional]
      *
@@ -463,7 +465,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getLink($iLang = null)
     {
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
@@ -479,7 +481,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns standard (dynamic) object URL
+     * Returns standard (dynamic) object URL.
      *
      * @param int   $iLang   language id [optional]
      * @param array $aParams additional params to use [optional]
@@ -488,7 +490,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     public function getStdLink($iLang = null, $aParams = [])
     {
-        if ($iLang === null) {
+        if (null === $iLang) {
             $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         }
 
@@ -496,7 +498,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     }
 
     /**
-     * Returns base dynamic recommlist url: shopurl/index.php?cl=recommlist
+     * Returns base dynamic recommlist url: shopurl/index.php?cl=recommlist.
      *
      * @param int  $iLang   language id
      * @param bool $blAddId add current object id to url or not
@@ -512,15 +514,15 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $sUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl($iLang, false);
         }
 
-        return $sUrl . "index.php?cl=recommlist" . ($blAddId ? "&amp;recommid=" . $this->getId() : "");
+        return $sUrl . 'index.php?cl=recommlist' . ($blAddId ? '&amp;recommid=' . $this->getId() : '');
     }
 
     /**
-     * set sql filter for article loading
+     * set sql filter for article loading.
      *
      * @param string $sArticlesFilter article filter
      */
-    public function setArticlesFilter($sArticlesFilter)
+    public function setArticlesFilter($sArticlesFilter): void
     {
         $this->_sArticlesFilter = $sArticlesFilter;
     }
@@ -543,14 +545,14 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     /**
      * Method is used for overriding when deleting recommendation list.
      */
-    protected function onDelete()
+    protected function onDelete(): void
     {
     }
 
     /**
      * Method is used for overriding when saving.
      */
-    protected function onSave()
+    protected function onSave(): void
     {
     }
 }

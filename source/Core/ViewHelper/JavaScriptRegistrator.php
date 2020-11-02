@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,8 +16,8 @@ use OxidEsales\Eshop\Core\Str;
  */
 class JavaScriptRegistrator
 {
-    const SNIPPETS_PARAMETER_NAME = 'scripts';
-    const FILES_PARAMETER_NAME = 'includes';
+    public const SNIPPETS_PARAMETER_NAME = 'scripts';
+    public const FILES_PARAMETER_NAME = 'includes';
 
     /**
      * Register JavaScript code snippet for rendering.
@@ -23,14 +25,14 @@ class JavaScriptRegistrator
      * @param string $script
      * @param bool   $isDynamic
      */
-    public function addSnippet($script, $isDynamic = false)
+    public function addSnippet($script, $isDynamic = false): void
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $scriptsParameterName = static::SNIPPETS_PARAMETER_NAME . $suffix;
-        $scripts = (array) $config->getGlobalParameter($scriptsParameterName);
+        $scripts = (array)$config->getGlobalParameter($scriptsParameterName);
         $script = trim($script);
-        if (!in_array($script, $scripts)) {
+        if (!\in_array($script, $scripts, true)) {
             $scripts[] = $script;
         }
         $config->setGlobalParameter($scriptsParameterName, $scripts);
@@ -43,12 +45,12 @@ class JavaScriptRegistrator
      * @param int    $priority
      * @param bool   $isDynamic
      */
-    public function addFile($file, $priority, $isDynamic = false)
+    public function addFile($file, $priority, $isDynamic = false): void
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
         $filesParameterName = static::FILES_PARAMETER_NAME . $suffix;
-        $includes = (array) $config->getGlobalParameter($filesParameterName);
+        $includes = (array)$config->getGlobalParameter($filesParameterName);
 
         if (!preg_match('#^https?://#', $file)) {
             $file = $this->formLocalFileUrl($file);
@@ -80,8 +82,8 @@ class JavaScriptRegistrator
             $parameters = filemtime($path);
         }
 
-        if (empty($url) && $config->getConfigParam('iDebug') != 0) {
-            $error = "{oxscript} resource not found: " . Str::getStr()->htmlspecialchars($file);
+        if (empty($url) && 0 !== $config->getConfigParam('iDebug')) {
+            $error = '{oxscript} resource not found: ' . Str::getStr()->htmlspecialchars($file);
             trigger_error($error, E_USER_WARNING);
         }
 

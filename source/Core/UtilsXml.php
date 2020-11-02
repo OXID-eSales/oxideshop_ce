@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,13 +12,13 @@ namespace OxidEsales\EshopCommunity\Core;
 use DOMDocument;
 
 /**
- * XML document handler
+ * XML document handler.
  */
 class UtilsXml extends \OxidEsales\Eshop\Core\Base
 {
     /**
      * Takes XML string and makes DOMDocument
-     * Returns DOMDocument or false, if it can't be loaded
+     * Returns DOMDocument or false, if it can't be loaded.
      *
      * @param string      $sXml         XML as a string
      * @param DOMDocument $oDomDocument DOM handler

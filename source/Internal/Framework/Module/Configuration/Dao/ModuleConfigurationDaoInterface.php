@@ -13,16 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ModuleConfigurationDaoInterface
 {
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return ModuleConfiguration
-     */
     public function get(string $moduleId, int $shopId): ModuleConfiguration;
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param int                 $shopId
-     */
     public function save(ModuleConfiguration $moduleConfiguration, int $shopId);
 }

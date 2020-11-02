@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
-use oxUser;
 
 /**
  * Admin user list manager.
@@ -29,7 +28,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @var string
      */
-    protected $_sDefSortField = "oxusername";
+    protected $_sDefSortField = 'oxusername';
 
     /**
      * Type of list.
@@ -46,16 +45,14 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
     protected $_sThisTemplate = 'user_list.tpl';
 
     /**
-     * Executes parent::render(), sets blacklist and preventdelete flag
-     *
-     * @return null
+     * Executes parent::render(), sets blacklist and preventdelete flag.
      */
     public function render()
     {
         foreach ($this->getItemList() as $itemId => $user) {
             /** @var \OxidEsales\Eshop\Application\Model\User $user */
-            if ($user->inGroup("oxidblacklist") || $user->inGroup("oxidblocked")) {
-                $user->blacklist = "1";
+            if ($user->inGroup('oxidblacklist') || $user->inGroup('oxidblocked')) {
+                $user->blacklist = '1';
             }
             $user->blPreventDelete = false;
             if (!$this->_allowAdminEdit($itemId)) {
@@ -67,9 +64,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
     }
 
     /**
-     * Admin user is allowed to be deleted only by mall admin
-     *
-     * @return null
+     * Admin user is allowed to be deleted only by mall admin.
      */
     public function deleteEntry()
     {
@@ -83,12 +78,13 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
     /**
      * Prepares SQL where query according SQL condition array and attaches it to SQL end.
      * For each search value if german umlauts exist, adds them
-     * and replaced by spec. char to query
+     * and replaced by spec. char to query.
      *
      * @param array  $whereQuery SQL condition array
      * @param string $fullQuery  SQL query string
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
     public function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

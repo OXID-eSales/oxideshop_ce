@@ -42,11 +42,6 @@ class ModuleActivateCommand extends Command
      */
     private $moduleActivationService;
 
-    /**
-     * @param ShopConfigurationDaoInterface    $shopConfigurationDao
-     * @param ContextInterface                 $context
-     * @param ModuleActivationServiceInterface $moduleActivationService
-     */
     public function __construct(
         ShopConfigurationDaoInterface $shopConfigurationDao,
         ContextInterface $context,
@@ -59,21 +54,16 @@ class ModuleActivateCommand extends Command
         $this->moduleActivationService = $moduleActivationService;
     }
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Activates a module.')
             ->addArgument('module-id', InputArgument::REQUIRED, 'Module ID')
             ->setHelp('Command activates module by defined module ID.');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $moduleId = $input->getArgument('module-id');
@@ -87,11 +77,7 @@ class ModuleActivateCommand extends Command
         return 0;
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param string          $moduleId
-     */
-    protected function activateModule(OutputInterface $output, string $moduleId)
+    protected function activateModule(OutputInterface $output, string $moduleId): void
     {
         try {
             $this->moduleActivationService->activate($moduleId, $this->context->getCurrentShopId());
@@ -103,10 +89,6 @@ class ModuleActivateCommand extends Command
         }
     }
 
-    /**
-     * @param string $moduleId
-     * @return bool
-     */
     private function isInstalled(string $moduleId): bool
     {
         $shopConfiguration = $this->shopConfigurationDao->get(

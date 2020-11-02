@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,95 +12,96 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Str;
 
 /**
- * File manipulation utility class
+ * File manipulation utility class.
  */
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Promotions images upload dir name
+     * Promotions images upload dir name.
      *
      * @var string
      */
-    const PROMO_PICTURE_DIR = 'promo';
+    public const PROMO_PICTURE_DIR = 'promo';
 
     /**
-     * Max pictures count
+     * Max pictures count.
      *
      * @var int
      */
     protected $_iMaxPicImgCount = 12;
 
     /**
-     * Max zoom pictures count
+     * Max zoom pictures count.
      *
      * @var int
      */
     protected $_iMaxZoomImgCount = 12;
 
     /**
-     * Image type and its folder information array
+     * Image type and its folder information array.
      *
      * @var array
      */
-    protected $_aTypeToPath = ['TC'    => 'master/category/thumb',
-                                    'CICO'  => 'master/category/icon',
-                                    'PICO'  => 'master/category/promo_icon',
-                                    'MICO'  => 'master/manufacturer/icon',
-                                    'VICO'  => 'master/vendor/icon',
-                                    'PROMO' => self::PROMO_PICTURE_DIR,
-                                    'ICO'   => 'master/product/icon',
-                                    'TH'    => 'master/product/thumb',
-                                    'M1'    => 'master/product/1',
-                                    'M2'    => 'master/product/2',
-                                    'M3'    => 'master/product/3',
-                                    'M4'    => 'master/product/4',
-                                    'M5'    => 'master/product/5',
-                                    'M6'    => 'master/product/6',
-                                    'M7'    => 'master/product/7',
-                                    'M8'    => 'master/product/8',
-                                    'M9'    => 'master/product/9',
-                                    'M10'   => 'master/product/10',
-                                    'M11'   => 'master/product/11',
-                                    'M12'   => 'master/product/12',
-        //
-                                    'P1'    => '1',
-                                    'P2'    => '2',
-                                    'P3'    => '3',
-                                    'P4'    => '4',
-                                    'P5'    => '5',
-                                    'P6'    => '6',
-                                    'P7'    => '7',
-                                    'P8'    => '8',
-                                    'P9'    => '9',
-                                    'P10'   => '10',
-                                    'P11'   => '11',
-                                    'P12'   => '12',
-                                    'Z1'    => 'z1',
-                                    'Z2'    => 'z2',
-                                    'Z3'    => 'z3',
-                                    'Z4'    => 'z4',
-                                    'Z5'    => 'z5',
-                                    'Z6'    => 'z6',
-                                    'Z7'    => 'z7',
-                                    'Z8'    => 'z8',
-                                    'Z9'    => 'z9',
-                                    'Z10'   => 'z10',
-                                    'Z11'   => 'z11',
-                                    'Z12'   => 'z12',
-        //
-                                    'WP'    => 'master/wrapping',
-                                    'FL'    => 'media',
+    protected $_aTypeToPath = [
+        'TC' => 'master/category/thumb',
+        'CICO' => 'master/category/icon',
+        'PICO' => 'master/category/promo_icon',
+        'MICO' => 'master/manufacturer/icon',
+        'VICO' => 'master/vendor/icon',
+        'PROMO' => self::PROMO_PICTURE_DIR,
+        'ICO' => 'master/product/icon',
+        'TH' => 'master/product/thumb',
+        'M1' => 'master/product/1',
+        'M2' => 'master/product/2',
+        'M3' => 'master/product/3',
+        'M4' => 'master/product/4',
+        'M5' => 'master/product/5',
+        'M6' => 'master/product/6',
+        'M7' => 'master/product/7',
+        'M8' => 'master/product/8',
+        'M9' => 'master/product/9',
+        'M10' => 'master/product/10',
+        'M11' => 'master/product/11',
+        'M12' => 'master/product/12',
+
+        'P1' => '1',
+        'P2' => '2',
+        'P3' => '3',
+        'P4' => '4',
+        'P5' => '5',
+        'P6' => '6',
+        'P7' => '7',
+        'P8' => '8',
+        'P9' => '9',
+        'P10' => '10',
+        'P11' => '11',
+        'P12' => '12',
+        'Z1' => 'z1',
+        'Z2' => 'z2',
+        'Z3' => 'z3',
+        'Z4' => 'z4',
+        'Z5' => 'z5',
+        'Z6' => 'z6',
+        'Z7' => 'z7',
+        'Z8' => 'z8',
+        'Z9' => 'z9',
+        'Z10' => 'z10',
+        'Z11' => 'z11',
+        'Z12' => 'z12',
+
+        'WP' => 'master/wrapping',
+        'FL' => 'media',
     ];
 
     /**
-     * Denied file types
+     * Denied file types.
      *
      * @var array
      */
     protected $_aBadFiles = ['php', 'php3', 'php4', 'php5', 'phps', 'php6', 'jsp', 'cgi', 'cmf', 'exe', 'phtml', 'pht', 'phar'];
 
     /**
-     * Allowed to upload files in demo mode ( "white list")
+     * Allowed to upload files in demo mode ( "white list").
      *
      * @var array
      */
@@ -107,14 +110,12 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     /**
      * Counts how many new files added.
      *
-     * @var integer
+     * @var int
      */
     protected $_iNewFilesCounter = 0;
 
     /**
-     * Class constructor, initailizes pictures count info (_iMaxPicImgCount/_iMaxZoomImgCount)
-     *
-     * @return null
+     * Class constructor, initailizes pictures count info (_iMaxPicImgCount/_iMaxZoomImgCount).
      */
     public function __construct()
     {
@@ -130,7 +131,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     /**
      * Getter for param _iNewFilesCounter which counts how many new files added.
      *
-     * @return integer
+     * @return int
      */
     public function getNewFilesCounter()
     {
@@ -140,16 +141,17 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     /**
      * Setter for param _iNewFilesCounter which counts how many new files added.
      *
-     * @param integer $iNewFilesCounter New files count.
+     * @param int $iNewFilesCounter new files count
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setNewFilesCounter" in next major
      */
-    protected function _setNewFilesCounter($iNewFilesCounter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setNewFilesCounter($iNewFilesCounter): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->_iNewFilesCounter = (int) $iNewFilesCounter;
+        $this->_iNewFilesCounter = (int)$iNewFilesCounter;
     }
 
     /**
-     * Normalizes dir by adding missing trailing slash
+     * Normalizes dir by adding missing trailing slash.
      *
      * @param string $sDir Directory
      *
@@ -157,8 +159,8 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function normalizeDir($sDir)
     {
-        if (isset($sDir) && $sDir != "" && substr($sDir, -1) !== '/') {
-            $sDir .= "/";
+        if (isset($sDir) && '' !== $sDir && '/' !== substr($sDir, -1)) {
+            $sDir .= '/';
         }
 
         return $sDir;
@@ -170,12 +172,12 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sSourceDir Source directory
      * @param string $sTargetDir Target directory
      */
-    public function copyDir($sSourceDir, $sTargetDir)
+    public function copyDir($sSourceDir, $sTargetDir): void
     {
         $oStr = Str::getStr();
         $handle = opendir($sSourceDir);
         while (false !== ($file = readdir($handle))) {
-            if ($file != '.' && $file != '..') {
+            if ('.' !== $file && '..' !== $file) {
                 if (is_dir($sSourceDir . '/' . $file)) {
                     // recursive
                     $sNewSourceDir = $sSourceDir . '/' . $file;
@@ -189,7 +191,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                     $sTargetFile = $sTargetDir . '/' . $file;
 
                     //do not copy files within dyn_images
-                    if (!$oStr->strstr($sSourceDir, 'dyn_images') || $file == 'nopic.jpg' || $file == 'nopic_ico.jpg') {
+                    if (!$oStr->strstr($sSourceDir, 'dyn_images') || 'nopic.jpg' === $file || 'nopic_ico.jpg' === $file) {
                         @copy($sSourceFile, $sTargetFile);
                     }
                 }
@@ -202,19 +204,17 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * Deletes directory tree.
      *
      * @param string $sSourceDir Path to directory
-     *
-     * @return null
      */
     public function deleteDir($sSourceDir)
     {
         if (is_dir($sSourceDir)) {
             if ($oDir = dir($sSourceDir)) {
                 while (false !== $sFile = $oDir->read()) {
-                    if ($sFile == '.' || $sFile == '..') {
+                    if ('.' === $sFile || '..' === $sFile) {
                         continue;
                     }
 
-                    if (!$this->deleteDir($oDir->path . DIRECTORY_SEPARATOR . $sFile)) {
+                    if (!$this->deleteDir($oDir->path . \DIRECTORY_SEPARATOR . $sFile)) {
                         $oDir->close();
 
                         return false;
@@ -254,7 +254,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Prepares image file name
+     * Prepares image file name.
      *
      * @param object $sValue     uploadable file name
      * @param string $sType      image type
@@ -263,25 +263,26 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blUnique   if TRUE - generates unique file name
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareImageName" in next major
      */
     protected function _prepareImageName($sValue, $sType, $blDemo, $sImagePath, $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($sValue) {
             // add type to name
-            $aFilename = explode(".", $sValue);
+            $aFilename = explode('.', $sValue);
 
-            $sFileType = trim($aFilename[count($aFilename) - 1]);
+            $sFileType = trim($aFilename[\count($aFilename) - 1]);
 
             if (isset($sFileType)) {
                 // unallowed files ?
-                if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
+                if (\in_array($sFileType, $this->_aBadFiles, true) || ($blDemo && !\in_array($sFileType, $this->_aAllowedFiles, true))) {
                     \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 // removing file type
-                if (count($aFilename) > 0) {
-                    unset($aFilename[count($aFilename) - 1]);
+                if (\count($aFilename) > 0) {
+                    unset($aFilename[\count($aFilename) - 1]);
                 }
 
                 $sFName = '';
@@ -289,7 +290,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                     $sFName = Str::getStr()->preg_replace('/[^a-zA-Z0-9()_\.-]/', '', implode('.', $aFilename));
                 }
 
-                $sValue = $this->_getUniqueFileName($sImagePath, "{$sFName}", $sFileType, "", $blUnique);
+                $sValue = $this->_getUniqueFileName($sImagePath, "{$sFName}", $sFileType, '', $blUnique);
             }
         }
 
@@ -297,29 +298,31 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns image storage path
+     * Returns image storage path.
      *
      * @param string $sType image type
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getImagePath" in next major
      */
     protected function _getImagePath($sType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
+        $sFolder = \array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
         return $this->normalizeDir(\OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false)) . "{$sFolder}/";
     }
 
     /**
      * Returns array of sizes which are used to resize images. If size is not
-     * defined - NULL will be returned
+     * defined - NULL will be returned.
      *
      * @param string $sImgType image type (TH, TC, ICO etc), can be useful for modules
      * @param int    $iImgNum  number of image (e.g. numper of ZOOM1 is 1)
      * @param string $sImgConf config parameter name, which keeps size info
      *
      * @return array|null
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getImageSize" in next major
      */
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -344,18 +347,19 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Copy file from source to target location
+     * Copy file from source to target location.
      *
      * @param string $sSource file location
      * @param string $sTarget file location
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "copyFile" in next major
      */
     protected function _copyFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_dir(dirname($sTarget))) {
-            mkdir(dirname($sTarget), 0744, true);
+        if (!is_dir(\dirname($sTarget))) {
+            mkdir(\dirname($sTarget), 0744, true);
         }
 
         $blDone = true;
@@ -371,18 +375,19 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Moves image from source to target location
+     * Moves image from source to target location.
      *
      * @param string $sSource image location
      * @param string $sTarget image copy location
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "moveImage" in next major
      */
     protected function _moveImage($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!is_dir(dirname($sTarget))) {
-            mkdir(dirname($sTarget), 0744, true);
+        if (!is_dir(\dirname($sTarget))) {
+            mkdir(\dirname($sTarget), 0744, true);
         }
 
         $blDone = true;
@@ -415,10 +420,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
             // A. protection for demoshops - strictly defining allowed file extensions
-            $blDemo = (bool) $oConfig->isDemoShop();
+            $blDemo = (bool)$oConfig->isDemoShop();
 
             // folder where images will be processed
-            $sTmpFolder = $oConfig->getConfigParam("sCompileDir");
+            $sTmpFolder = $oConfig->getConfigParam('sCompileDir');
 
             $iNewFilesCounter = 0;
             $aSource = $aFiles['myfile']['tmp_name'];
@@ -429,7 +434,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             foreach ($aFiles['myfile']['name'] as $sKey => $sValue) {
                 $sSource = $aSource[$sKey];
                 $iError = $aError[$sKey];
-                $aFiletype = explode("@", $sKey);
+                $aFiletype = explode('@', $sKey);
                 $sKey = $aFiletype[1];
                 $sType = $aFiletype[0];
 
@@ -459,7 +464,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
                         if ($blMoved) {
                             // New image successfully add.
-                            $iNewFilesCounter++;
+                            ++$iNewFilesCounter;
                             // assign the name
                             if ($oObject && isset($oObject->$sKey)) {
                                 $oObject->{$sKey}->setValue($sValue);
@@ -485,7 +490,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function checkFile($sFile)
     {
-        $aCheckCache = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("checkcache");
+        $aCheckCache = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('checkcache');
 
         if (isset($aCheckCache[$sFile])) {
             return $aCheckCache[$sFile];
@@ -497,17 +502,17 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
 
         $aCheckCache[$sFile] = $blRet;
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("checkcache", $aCheckCache);
+        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('checkcache', $aCheckCache);
 
         return $blRet;
     }
 
     /**
-     * Checks if given URL is accessible (HTTP-Code: 200)
+     * Checks if given URL is accessible (HTTP-Code: 200).
      *
      * @param string $url
      *
-     * @return boolean
+     * @return bool
      */
     public function urlValidate($url)
     {
@@ -516,7 +521,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Process uploaded files. Returns unique file name, on fail false
+     * Process uploaded files. Returns unique file name, on fail false.
      *
      * @param string $sFileName   form file item name
      * @param string $sUploadPath RELATIVE (to config sShopDir parameter) path for uploaded file to be copied
@@ -543,7 +548,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
         // error uploading file ?
         if (isset($aFileInfo['error']) && $aFileInfo['error']) {
-            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
+            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int)$aFileInfo['error']));
         }
 
         $aPathInfo = pathinfo($aFileInfo['name']);
@@ -551,16 +556,16 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $sExt = $aPathInfo['extension'];
         $sFileName = $aPathInfo['filename'];
 
-        $aAllowedUploadTypes = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aAllowedUploadTypes');
-        $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
+        $aAllowedUploadTypes = (array)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aAllowedUploadTypes');
+        $aAllowedUploadTypes = array_map('strtolower', $aAllowedUploadTypes);
 
-        if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {
+        if (!\in_array(strtolower($sExt), $aAllowedUploadTypes, true)) {
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 
         $sFileName = $this->_getUniqueFileName($sBasePath . $sUploadPath, $sFileName, $sExt);
 
-        if ($this->_moveImage($aFileInfo['tmp_name'], $sBasePath . $sUploadPath . "/" . $sFileName)) {
+        if ($this->_moveImage($aFileInfo['tmp_name'], $sBasePath . $sUploadPath . '/' . $sFileName)) {
             return $sFileName;
         }
 
@@ -578,9 +583,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blUnique  TRUE - generates unique file name, FALSE - just glues given parts of file name
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUniqueFileName" in next major
      */
-    protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = "", $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = '', $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sFilePath = $this->normalizeDir($sFilePath);
         $iFileCounter = 0;
@@ -588,32 +594,32 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $oStr = Str::getStr();
 
         //file exists ?
-        while ($blUnique && file_exists($sFilePath . "/" . $sFileName . $sSufix . "." . $sFileExt)) {
-            $iFileCounter++;
+        while ($blUnique && file_exists($sFilePath . '/' . $sFileName . $sSufix . '.' . $sFileExt)) {
+            ++$iFileCounter;
 
             //removing "(any digit)" from file name end
-            $sTempFileName = $oStr->preg_replace("/\(" . $iFileCounter . "\)/", "", $sTempFileName);
+            $sTempFileName = $oStr->preg_replace("/\(" . $iFileCounter . "\)/", '', $sTempFileName);
 
             $sFileName = $sTempFileName . "($iFileCounter)";
         }
 
-        return $sFileName . $sSufix . "." . $sFileExt;
+        return $sFileName . $sSufix . '.' . $sFileExt;
     }
 
     /**
-     * Returns image storage path
+     * Returns image storage path.
      *
      * @param string $sType       image type
-     * @param bool   $blGenerated generated image dir.
+     * @param bool   $blGenerated generated image dir
      *
      * @return string
      */
     public function getImageDirByType($sType, $blGenerated = false)
     {
-        $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
+        $sFolder = \array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
         $sDir = $this->normalizeDir($sFolder);
 
-        if ($blGenerated === true) {
+        if (true === $blGenerated) {
             $sDir = str_replace('master/', 'generated/', $sDir);
         }
 
@@ -623,7 +629,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     /**
      * Translate php file upload errors to user readable format.
      *
-     * @param integer $iError php file upload error number
+     * @param int $iError php file upload error number
      *
      * @return string
      */
@@ -632,25 +638,17 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $message = '';
         // Translate only if translation exist
         if ($iError > 0 && $iError < 9 && 5 !== $iError) {
-            $message = 'EXCEPTION_FILEUPLOADERROR_' . ((int) $iError);
+            $message = 'EXCEPTION_FILEUPLOADERROR_' . ((int)$iError);
         }
 
         return $message;
     }
 
-    /**
-     * @param string $url
-     * @return bool
-     */
     private function isUrlSchemaValid(string $url): bool
     {
-        return filter_var($url, FILTER_VALIDATE_URL) === false ? false : true;
+        return false === filter_var($url, FILTER_VALIDATE_URL) ? false : true;
     }
 
-    /**
-     * @param string $url
-     * @return bool
-     */
     private function isUrlAccessible(string $url): bool
     {
         $curl = curl_init($url);
@@ -659,13 +657,14 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
         $result = curl_exec($curl);
 
-        if ($result !== false) {
+        if (false !== $result) {
             $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-            if ($statusCode === 200) {
+            if (200 === $statusCode) {
                 return true;
             }
         }
+
         return false;
     }
 }

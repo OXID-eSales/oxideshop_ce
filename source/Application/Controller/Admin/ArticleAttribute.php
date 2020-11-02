@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin article attributes/selections lists manager.
@@ -30,28 +30,28 @@ class ArticleAttribute extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $this->_aViewData['edit'] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
         $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oArticle->load($soxId);
 
             if ($oArticle->isDerived()) {
-                $this->_aViewData["readonly"] = true;
+                $this->_aViewData['readonly'] = true;
             }
         }
 
-        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
-        if ($iAoc == 1) {
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aoc');
+        if (1 === $iAoc) {
             $oArticleAttributeAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleAttributeAjax::class);
             $this->_aViewData['oxajax'] = $oArticleAttributeAjax->getColumns();
 
-            return "popups/article_attribute.tpl";
-        } elseif ($iAoc == 2) {
+            return 'popups/article_attribute.tpl';
+        } elseif (2 === $iAoc) {
             $oArticleSelectionAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSelectionAjax::class);
             $this->_aViewData['oxajax'] = $oArticleSelectionAjax->getColumns();
 
-            return "popups/article_selection.tpl";
+            return 'popups/article_selection.tpl';
         }
 
-        return "article_attribute.tpl";
+        return 'article_attribute.tpl';
     }
 }

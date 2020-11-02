@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,7 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
 use stdClass;
 
 /**
@@ -27,16 +28,16 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
             $oCountry->loadInLang($this->_iEditLang, $soxId);
 
             if ($oCountry->isForeignCountry()) {
-                $this->_aViewData["blForeignCountry"] = true;
+                $this->_aViewData['blForeignCountry'] = true;
             } else {
-                $this->_aViewData["blForeignCountry"] = false;
+                $this->_aViewData['blForeignCountry'] = false;
             }
 
             $oOtherLang = $oCountry->getAvailableInLangs();
@@ -44,36 +45,36 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oCountry->loadInLang(key($oOtherLang), $soxId);
             }
-            $this->_aViewData["edit"] = $oCountry;
+            $this->_aViewData['edit'] = $oCountry;
 
             // remove already created languages
             $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
-            if (count($aLang)) {
-                $this->_aViewData["posslang"] = $aLang;
+            if (\count($aLang)) {
+                $this->_aViewData['posslang'] = $aLang;
             }
 
             foreach ($oOtherLang as $id => $language) {
                 $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
-                $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] = clone $oLang;
+                $oLang->selected = ($id === $this->_iEditLang);
+                $this->_aViewData['otherlang'][$id] = clone $oLang;
             }
         } else {
-            $this->_aViewData["blForeignCountry"] = true;
+            $this->_aViewData['blForeignCountry'] = true;
         }
 
-        return "country_main.tpl";
+        return 'country_main.tpl';
     }
 
     /**
      * Saves selection list parameters changes.
      */
-    public function save()
+    public function save(): void
     {
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
 
         if (!isset($aParams['oxcountry__oxactive'])) {
             $aParams['oxcountry__oxactive'] = 0;
@@ -81,7 +82,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
 
-        if ($soxId != "-1") {
+        if ('-1' !== $soxId) {
             $oCountry->loadInLang($this->_iEditLang, $soxId);
         } else {
             $aParams['oxcountry__oxid'] = null;
@@ -101,10 +102,10 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     /**
      * Saves selection list parameters changes in different language (eg. english).
      */
-    public function saveinnlang()
+    public function saveinnlang(): void
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
 
         if (!isset($aParams['oxcountry__oxactive'])) {
             $aParams['oxcountry__oxactive'] = 0;
@@ -112,7 +113,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
         $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
 
-        if ($soxId != "-1") {
+        if ('-1' !== $soxId) {
             $oCountry->loadInLang($this->_iEditLang, $soxId);
         } else {
             $aParams['oxcountry__oxid'] = null;

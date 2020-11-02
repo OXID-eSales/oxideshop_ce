@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin order address manager.
@@ -27,35 +27,35 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     {
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $oOrder->load($soxId);
 
-            $this->_aViewData["edit"] = $oOrder;
+            $this->_aViewData['edit'] = $oOrder;
         }
 
         $oCountryList = oxNew(\OxidEsales\Eshop\Application\Model\CountryList::class);
         $oCountryList->loadActiveCountries(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage());
 
-        $this->_aViewData["countrylist"] = $oCountryList;
+        $this->_aViewData['countrylist'] = $oCountryList;
 
-        return "order_address.tpl";
+        return 'order_address.tpl';
     }
 
     /**
      * Iterates through data array, checks if specified fields are filled
-     * in, cleanups not needed data
+     * in, cleanups not needed data.
      *
      * @param array  $aData          data to process
      * @param string $sTypeToProcess data type to process e.g. "oxorder__oxdel"
      * @param array  $aIgnore        fields which must be ignored while processing
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "processAddress" in next major
      */
-    protected function _processAddress($aData, $sTypeToProcess, $aIgnore) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _processAddress($aData, $sTypeToProcess, $aIgnore)
     {
         // empty address fields?
         $blEmpty = true;
@@ -65,12 +65,12 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
 
         foreach ($aData as $sName => $sValue) {
             // if field type matches..
-            if (strpos($sName, $sTypeToProcess) !== false) {
+            if (false !== strpos($sName, $sTypeToProcess)) {
                 // storing which fields must be unset..
                 $aFields[] = $sName;
 
                 // ignoring whats need to be ignored and testing values
-                if (!in_array($sName, $aIgnore) && $sValue) {
+                if (!\in_array($sName, $aIgnore, true) && $sValue) {
                     // something was found - means leaving as is..
                     $blEmpty = false;
                     break;
@@ -81,7 +81,7 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         // cleanup if empty
         if ($blEmpty) {
             foreach ($aFields as $sName) {
-                $aData[$sName] = "";
+                $aData[$sName] = '';
             }
         }
 
@@ -91,21 +91,21 @@ class OrderAddress extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Saves ordering address information.
      */
-    public function save()
+    public function save(): void
     {
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = (array)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
 
         $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
-        if ($soxId != "-1") {
+        if ('-1' !== $soxId) {
             $oOrder->load($soxId);
         } else {
             $aParams['oxorder__oxid'] = null;
         }
 
-        $aParams = $this->_processAddress($aParams, "oxorder__oxdel", ["oxorder__oxdelsal"]);
+        $aParams = $this->_processAddress($aParams, 'oxorder__oxdel', ['oxorder__oxdelsal']);
         $oOrder->assign($aParams);
         $oOrder->save();
 

@@ -20,7 +20,6 @@ interface ContactFormBridgeInterface
     public function getContactForm();
 
     /**
-     * @param FormInterface $form
      * @return string
      */
     public function getContactFormMessage(FormInterface $form);

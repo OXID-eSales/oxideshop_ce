@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -37,14 +39,14 @@ class AdminlinksList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     protected $_sDefSortField = 'oxinsert';
 
     /**
-     * Returns sorting fields array
+     * Returns sorting fields array.
      *
      * @return array
      */
     public function getListSorting()
     {
         $aSorting = parent::getListSorting();
-        if (isset($aSorting["oxlinks"][$this->_sDefSortField])) {
+        if (isset($aSorting['oxlinks'][$this->_sDefSortField])) {
             $this->_blDesc = true;
         }
 

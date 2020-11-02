@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,8 +16,6 @@ class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
 {
     /**
      * @param Environment $templateEngine
-     *
-     * @return bool
      */
     protected function validateTemplateEngine($templateEngine): bool
     {
@@ -26,7 +26,7 @@ class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
      * @param object      $newItem
      * @param Environment $templateEngine
      */
-    protected function loadArticleObject($newItem, $templateEngine)
+    protected function loadArticleObject($newItem, $templateEngine): void
     {
         // loading article object here because on some system passing article by session causes problems
         $newItem->oArticle = oxNew(Article::class);
@@ -40,16 +40,12 @@ class InsertNewBasketItemLogicTwig extends AbstractInsertNewBasketItemLogic
     }
 
     /**
-     * @param string      $templateName
      * @param Environment $templateEngine
-     *
-     * @return string
      */
     protected function renderTemplate(string $templateName, $templateEngine): string
     {
         $template = $templateEngine->load($templateName);
-        $renderedTemplate = $template->render();
 
-        return $renderedTemplate;
+        return $template->render();
     }
 }

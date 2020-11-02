@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,6 +9,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
+use function getLogger;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
@@ -14,41 +17,39 @@ use OxidEsales\Eshop\Application\Model\SeoEncoderVendor;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
 
-use function getLogger;
-
 /**
  * Locator controller for: category, vendor, manufacturers and search lists.
  */
 class Locator extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Locator type
+     * Locator type.
      */
-    protected $_sType = "list";
+    protected $_sType = 'list';
 
     /**
-     * Next product to currently loaded
+     * Next product to currently loaded.
      */
     protected $_oNextProduct = null;
 
     /**
-     * Previous product to currently loaded
+     * Previous product to currently loaded.
      */
     protected $_oBackProduct = null;
 
     /**
-     * search handle
+     * search handle.
      */
     protected $_sSearchHandle = null;
 
     /**
-     * error message
+     * error message.
      */
     protected $_sErrorMessage = null;
 
     /**
      * Class constructor - sets locator type and parameters posted or loaded
-     * from GET/Session
+     * from GET/Session.
      *
      * @param string $sType locator type
      */
@@ -61,17 +62,17 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Executes locator method according locator type
+     * Executes locator method according locator type.
      *
      * @param Article            $oCurrArticle   current article
      * @param FrontendController $oLocatorTarget FrontendController object
      */
-    public function setLocatorData($oCurrArticle, $oLocatorTarget)
+    public function setLocatorData($oCurrArticle, $oLocatorTarget): void
     {
         $sLocfnc = "_set{$this->_sType}LocatorData";
 
         try {
-            call_user_func([$this, $sLocfnc], $oLocatorTarget, $oCurrArticle);
+            \call_user_func([$this, $sLocfnc], $oLocatorTarget, $oCurrArticle);
         } catch (\Exception $e) {
             $this->_sType = '';
             getLogger()->warning('Locator Type is wrong ' . $this->_sType);
@@ -86,9 +87,11 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget view object
      * @param Article            $oCurrArticle   current article
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setListLocatorData" in next major
      */
-    protected function _setListLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setListLocatorData($oLocatorTarget, $oCurrArticle): void
     {
         // if no active category is loaded - lets check for category passed by post/get
         if (($oCategory = $oLocatorTarget->getActiveCategory())) {
@@ -130,9 +133,11 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setVendorLocatorData" in next major
      */
-    protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle): void
     {
         if (($oVendor = $oLocatorTarget->getActVendor())) {
             $sVendorId = $oVendor->getId();
@@ -175,9 +180,11 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setManufacturerLocatorData" in next major
      */
-    protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle): void
     {
         if (($oManufacturer = $oLocatorTarget->getActManufacturer())) {
             $sManufacturerId = $oManufacturer->getId();
@@ -230,9 +237,11 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $oLocatorTarget FrontendController object
      * @param Article            $oCurrArticle   current article
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setSearchLocatorData" in next major
      */
-    protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle): void
     {
         if (($oSearchCat = $oLocatorTarget->getActSearch())) {
             // #1834/1184M - specialchar search
@@ -260,15 +269,15 @@ class Locator extends \OxidEsales\Eshop\Core\Base
             $sAddSearch = "searchparam={$sSearchLinkParam}";
             $sAddSearch .= '&amp;listtype=search';
 
-            if ($sSearchCat !== null) {
+            if (null !== $sSearchCat) {
                 $sAddSearch .= "&amp;searchcnid={$sSearchCat}";
             }
 
-            if ($sSearchVendor !== null) {
+            if (null !== $sSearchVendor) {
                 $sAddSearch .= "&amp;searchvendor={$sSearchVendor}";
             }
 
-            if ($sSearchManufacturer !== null) {
+            if (null !== $sSearchManufacturer) {
                 $sAddSearch .= "&amp;searchmanufacturer={$sSearchManufacturer}";
             }
 
@@ -301,7 +310,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      */
-    protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle): void
     {
         if (($oRecommList = $oLocatorTarget->getActiveRecommList())) {
             // loading data for article navigation
@@ -313,7 +323,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             $sSearchRecomm = Registry::getConfig()->getRequestParameter('searchrecomm', true);
 
-            if ($sSearchRecomm !== null) {
+            if (null !== $sSearchRecomm) {
                 $sSearchFormRecomm = Registry::getConfig()->getRequestParameter('searchrecomm');
                 $sSearchLinkRecomm = rawurlencode($sSearchRecomm);
                 $sAddSearch = 'searchrecomm=' . $sSearchLinkRecomm;
@@ -345,8 +355,8 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
             $oLang = Registry::getLang();
             $sTitle = $oLang->translateString('RECOMMLIST');
-            if ($sSearchRecomm !== null) {
-                $sTitle .= " / " . $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchFormRecomm . '"';
+            if (null !== $sSearchRecomm) {
+                $sTitle .= ' / ' . $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchFormRecomm . '"';
             }
             $oLocatorTarget->setSearchTitle($sTitle);
             $oLocatorTarget->setActiveCategory($oRecommList);
@@ -354,16 +364,18 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Setting product position in list, amount of articles etc
+     * Setting product position in list, amount of articles etc.
      *
      * @param \OxidEsales\Eshop\Application\Model\Category $oCategory    active category id
      * @param object                                       $oCurrArticle current article
      * @param string                                       $sOrderBy     order by fields
      *
      * @return object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadIdsInList" in next major
      */
-    protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null)
     {
         $oIdList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
         $oIdList->setCustomSorting($sOrderBy);
@@ -387,18 +399,20 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Appends urs with currently passed parameters
+     * Appends urs with currently passed parameters.
      *
      * @param string $sLink   url to add parameters
      * @param string $sParams parameters to add to url
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "makeLink" in next major
      */
-    protected function _makeLink($sLink, $sParams) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _makeLink($sLink, $sParams)
     {
         if ($sParams) {
-            $sLink .= ((strpos($sLink, '?') !== false) ? '&amp;' : '?') . $sParams;
+            $sLink .= (false !== strpos($sLink, '?') ? '&amp;' : '?') . $sParams;
         }
 
         return $sLink;
@@ -406,26 +420,28 @@ class Locator extends \OxidEsales\Eshop\Core\Base
 
     /**
      * If page number is not passed trying to fetch it from list of ids. To search
-     * for position in list, article ids list and current article id must be passed
+     * for position in list, article ids list and current article id must be passed.
      *
      * @param int       $iPageNr  current page number (user defined or passed by request)
      * @param ListModel $oIdList  list of article ids (optional)
      * @param Article   $oArticle active article id (optional)
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "findActPageNumber" in next major
      */
-    protected function _findActPageNumber($iPageNr, $oIdList = null, $oArticle = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _findActPageNumber($iPageNr, $oIdList = null, $oArticle = null)
     {
         //page number
-        $iPageNr = (int) $iPageNr;
+        $iPageNr = (int)$iPageNr;
 
         // maybe there is no page number passed, but we still can find the position in id's list
         if (!$iPageNr && $oIdList && $oArticle) {
-            $iNrofCatArticles = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
-            $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
+            $iNrofCatArticles = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = $iNrofCatArticles ?: 1;
             $sParentIdField = 'oxarticles__oxparentid';
-            $sArticleId = $oArticle->$sParentIdField->value ? $oArticle->$sParentIdField->value : $oArticle->getId();
+            $sArticleId = $oArticle->$sParentIdField->value ?: $oArticle->getId();
             $iPos = Registry::getUtils()->arrayStringSearch($sArticleId, $oIdList->arrayKeys());
             $iPageNr = floor($iPos / $iNrofCatArticles);
         }
@@ -438,38 +454,41 @@ class Locator extends \OxidEsales\Eshop\Core\Base
      *
      * @param int $iPageNr page number
      *
-     * @return string $sPageNum
+     * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getPageNumber" in next major
      */
-    protected function _getPageNumber($iPageNr) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getPageNumber($iPageNr)
     {
         //page number
-        $iPageNr = (int) $iPageNr;
+        $iPageNr = (int)$iPageNr;
 
-        return (($iPageNr > 0) ? "pgNr=$iPageNr" : '');
+        return $iPageNr > 0 ? "pgNr=$iPageNr" : '';
     }
 
     /**
-     * Searches for current article in article list and sets previous/next product ids
+     * Searches for current article in article list and sets previous/next product ids.
      *
      * @param Article            $oArticle       current Article
      * @param object             $oIdList        articles list containing only fake article objects !!!
      * @param FrontendController $oLocatorTarget FrontendController object
      *
-     * @return integer
+     * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getProductPos" in next major
      */
-    protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget)
     {
         // variant handling
         $sOxid = $oArticle->oxarticles__oxparentid->value
-            ? $oArticle->oxarticles__oxparentid->value
-            : $oArticle->getId();
+            ?: $oArticle->getId();
         if ($oIdList->count() && isset($oIdList[$sOxid])) {
             $aIds = $oIdList->arrayKeys();
             $iPos = Registry::getUtils()->arrayStringSearch($sOxid, $aIds);
 
-            if (array_key_exists($iPos - 1, $aIds)) {
+            if (\array_key_exists($iPos - 1, $aIds)) {
                 $oBackProduct = oxNew(Article::class);
                 $oBackProduct->modifyCacheKey('_locator');
                 $oBackProduct->setNoVariantLoading(true);
@@ -479,7 +498,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
                 }
             }
 
-            if (array_key_exists($iPos + 1, $aIds)) {
+            if (\array_key_exists($iPos + 1, $aIds)) {
                 $oNextProduct = oxNew(Article::class);
                 $oNextProduct->modifyCacheKey('_locator');
                 $oNextProduct->setNoVariantLoading(true);
@@ -496,7 +515,7 @@ class Locator extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Template variable getter. Returns error message
+     * Template variable getter. Returns error message.
      *
      * @return string
      */

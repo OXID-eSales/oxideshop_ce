@@ -21,7 +21,6 @@ class UserRatingService implements UserRatingServiceInterface
 
     /**
      * UserRatingService constructor.
-     * @param RatingDaoInterface $ratingDao
      */
     public function __construct(RatingDaoInterface $ratingDao)
     {

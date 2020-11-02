@@ -17,21 +17,18 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class TemplatesModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
+    /**
+     * @var ShopConfigurationSettingDaoInterface
+     */
     private $shopConfigurationSettingDao;
 
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int $shopId
-     */
-    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasTemplates()) {
             $templates = [];
@@ -55,11 +52,7 @@ class TemplatesModuleSettingHandler implements ModuleConfigurationHandlerInterfa
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int $shopId
-     */
-    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasTemplates()) {
             $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
@@ -73,10 +66,6 @@ class TemplatesModuleSettingHandler implements ModuleConfigurationHandlerInterfa
         }
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
     private function getShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {

@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException;
 
 class ClassExtensionsChain implements \IteratorAggregate
 {
@@ -21,36 +21,25 @@ class ClassExtensionsChain implements \IteratorAggregate
      */
     private $chain = [];
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return self::NAME;
     }
 
-    /**
-     * @return array
-     */
     public function getChain(): array
     {
         return $this->chain;
     }
 
-    /**
-     * @param array $chain
-     * @return ClassExtensionsChain
-     */
-    public function setChain(array $chain): ClassExtensionsChain
+    public function setChain(array $chain): self
     {
         $this->chain = $chain;
+
         return $this;
     }
 
     /**
      * @param ClassExtension[] $extensions
-     *
-     * @return void
      */
     public function addExtensions(array $extensions): void
     {
@@ -60,8 +49,6 @@ class ClassExtensionsChain implements \IteratorAggregate
     }
 
     /**
-     * @param ClassExtension $classExtension
-     *
      * @throws ExtensionNotInChainException
      */
     public function removeExtension(ClassExtension $classExtension): void
@@ -71,26 +58,20 @@ class ClassExtensionsChain implements \IteratorAggregate
 
         if (
             false === \array_key_exists($extended, $this->chain) ||
-            false === \array_search($extension, $this->chain[$extended], true)
+            false === array_search($extension, $this->chain[$extended], true)
         ) {
-            throw new ExtensionNotInChainException(
-                'There is no class ' . $extended . ' extended by class ' .
-                $extension . ' in the current chain'
-            );
+            throw new ExtensionNotInChainException('There is no class ' . $extended . ' extended by class ' . $extension . ' in the current chain');
         }
 
-        $resultOffset = \array_search($extension, $this->chain[$extended], true);
+        $resultOffset = array_search($extension, $this->chain[$extended], true);
         unset($this->chain[$extended][$resultOffset]);
-        $this->chain[$extended] = \array_values($this->chain[$extended]);
+        $this->chain[$extended] = array_values($this->chain[$extended]);
 
         if (empty($this->chain[$extended])) {
             unset($this->chain[$extended]);
         }
     }
 
-    /**
-     * @param ClassExtension $extension
-     */
     public function addExtension(ClassExtension $extension): void
     {
         if (\array_key_exists($extension->getShopClassName(), $this->chain)) {
@@ -105,14 +86,9 @@ class ClassExtensionsChain implements \IteratorAggregate
         }
     }
 
-    /**
-     * @param ClassExtension $extension
-     *
-     * @return bool
-     */
     private function isModuleExtensionClassNameInChain(ClassExtension $extension): bool
     {
-        if (\in_array($extension->getModuleExtensionClassName(), $this->chain[$extension->getShopClassName()])) {
+        if (\in_array($extension->getModuleExtensionClassName(), $this->chain[$extension->getShopClassName()], true)) {
             return true;
         }
 

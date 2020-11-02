@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -18,31 +20,29 @@ class CompanyVatInValidator
     private $_oCountry = null;
 
     /**
-     * Array of validators (checkers)
+     * Array of validators (checkers).
      *
      * @var array
      */
     private $_aCheckers = [];
 
     /**
-     * Error message
+     * Error message.
      *
      * @var string
      */
     private $_sError = '';
 
     /**
-     * Country setter
-     *
-     * @param \OxidEsales\Eshop\Application\Model\Country $country
+     * Country setter.
      */
-    public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country)
+    public function setCountry(\OxidEsales\Eshop\Application\Model\Country $country): void
     {
         $this->_oCountry = $country;
     }
 
     /**
-     * Country getter
+     * Country getter.
      *
      * @return \OxidEsales\Eshop\Application\Model\Country
      */
@@ -52,17 +52,17 @@ class CompanyVatInValidator
     }
 
     /**
-     * Error setter
+     * Error setter.
      *
      * @param string $error
      */
-    public function setError($error)
+    public function setError($error): void
     {
         $this->_sError = $error;
     }
 
     /**
-     * Error getter
+     * Error getter.
      *
      * @return string
      */
@@ -72,9 +72,7 @@ class CompanyVatInValidator
     }
 
     /**
-     * Constructor
-     *
-     * @param \OxidEsales\Eshop\Application\Model\Country $country
+     * Constructor.
      */
     public function __construct(\OxidEsales\Eshop\Application\Model\Country $country)
     {
@@ -82,17 +80,15 @@ class CompanyVatInValidator
     }
 
     /**
-     * Adds validator
-     *
-     * @param \OxidEsales\Eshop\Core\CompanyVatInChecker $validator
+     * Adds validator.
      */
-    public function addChecker(\OxidEsales\Eshop\Core\CompanyVatInChecker $validator)
+    public function addChecker(\OxidEsales\Eshop\Core\CompanyVatInChecker $validator): void
     {
         $this->_aCheckers[] = $validator;
     }
 
     /**
-     * Returns added validators
+     * Returns added validators.
      *
      * @return array
      */
@@ -103,8 +99,6 @@ class CompanyVatInValidator
 
     /**
      * Validate company VAT identification number.
-     *
-     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $companyVatNumber
      *
      * @return bool
      */

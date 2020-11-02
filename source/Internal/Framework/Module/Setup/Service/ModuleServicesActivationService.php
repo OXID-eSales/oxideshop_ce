@@ -23,14 +23,13 @@ use Webmozart\PathUtil\Path;
 
 class ModuleServicesActivationService implements ModuleServicesActivationServiceInterface
 {
-
     /**
-     * @var ProjectYamlDaoInterface $dao
+     * @var ProjectYamlDaoInterface
      */
     private $dao;
 
     /**
-     * @var EventDispatcherInterface $eventDispatcher
+     * @var EventDispatcherInterface
      */
     public $eventDispatcher;
 
@@ -51,12 +50,6 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
 
     /**
      * ModuleServicesActivationService constructor.
-     *
-     * @param ProjectYamlDaoInterface     $dao
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param ModulePathResolverInterface $modulePathResolver
-     * @param ModuleStateServiceInterface $moduleStateService
-     * @param ContextInterface            $context
      */
     public function __construct(
         ProjectYamlDaoInterface $dao,
@@ -73,19 +66,16 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
     }
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return void
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingServiceException
      */
-    public function activateModuleServices(string $moduleId, int $shopId)
+    public function activateModuleServices(string $moduleId, int $shopId): void
     {
         $moduleConfigFile = $this->getModuleServicesFilePath($moduleId, $shopId);
         try {
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
         } catch (NoServiceYamlException $e) {
             return;
-        };
+        }
 
         $projectConfig = $this->dao->loadProjectConfigFile();
         $projectConfig->addImport($this->getRelativeModuleConfigFilePath($moduleConfigFile));
@@ -105,14 +95,10 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         $this->dao->saveProjectConfigFile($projectConfig);
     }
 
-
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return void
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingServiceException
      */
-    public function deactivateModuleServices(string $moduleId, int $shopId)
+    public function deactivateModuleServices(string $moduleId, int $shopId): void
     {
         $moduleConfigFile = $this->getModuleServicesFilePath($moduleId, $shopId);
         try {
@@ -146,6 +132,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
                 return false;
             }
         }
+
         return true;
     }
 
@@ -153,7 +140,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         DIConfigWrapper $projectConfig,
         DIConfigWrapper $moduleConfig,
         int $shopId
-    ) {
+    ): void {
         foreach ($moduleConfig->getServices() as $service) {
             if ($service->isShopAware() && $projectConfig->hasService($service->getKey())) {
                 $service = $projectConfig->getService($service->getKey());
@@ -164,9 +151,6 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
     }
 
     /**
-     * @param string $moduleConfigFile
-     *
-     * @return DIConfigWrapper
      * @throws NoServiceYamlException
      * @throws ServicesYamlConfigurationError
      */
@@ -191,22 +175,12 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
         return $moduleConfig;
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
-     * @return string
-     */
     private function getModuleServicesFilePath(string $moduleId, int $shopId): string
     {
         return $this->modulePathResolver->getFullModulePathFromConfiguration($moduleId, $shopId)
-            . DIRECTORY_SEPARATOR . 'services.yaml';
+            . \DIRECTORY_SEPARATOR . 'services.yaml';
     }
 
-    /**
-     * @param string $moduleConfigFile
-     * @return string
-     */
     private function getRelativeModuleConfigFilePath(string $moduleConfigFile): string
     {
         return Path::makeRelative(

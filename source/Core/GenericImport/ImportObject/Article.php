@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,18 +14,22 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
  */
 class Article extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
-    /** @var string Database table name. */
+    /**
+     * @var string database table name
+     */
     protected $tableName = 'oxarticles';
 
-    /** @var string Shop object name. */
+    /**
+     * @var string shop object name
+     */
     protected $shopObjectName = 'oxArticle';
 
     /**
      * Imports article. Returns import status.
      *
-     * @param array $data DB row array.
+     * @param array $data DB row array
      *
-     * @return string $oxid Id on success, bool FALSE on failure.
+     * @return string id on success, bool FALSE on failure
      */
     public function import($data)
     {
@@ -59,8 +65,8 @@ class Article extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportOb
     /**
      * Post saving hook. can finish transactions if needed or ajust related data.
      *
-     * @param \OxidEsales\Eshop\Application\Model\Article $shopObject Shop object.
-     * @param array                                       $data       Data to save.
+     * @param \OxidEsales\Eshop\Application\Model\Article $shopObject shop object
+     * @param array                                       $data       data to save
      *
      * @return mixed data to return
      */

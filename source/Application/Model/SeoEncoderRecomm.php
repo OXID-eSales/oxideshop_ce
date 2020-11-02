@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,10 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-
 /**
- * Seo encoder base
+ * Seo encoder base.
  *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
  */
@@ -48,7 +48,7 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * Returns full url for passed tag
+     * Returns full url for passed tag.
      *
      * @param \OxidEsales\Eshop\Application\Model\RecommendationList $oRecomm recommendation list object
      * @param int                                                    $iLang   language
@@ -65,12 +65,12 @@ class SeoEncoderRecomm extends \OxidEsales\Eshop\Core\SeoEncoder
     }
 
     /**
-     * Returns tag SEO url for specified page
+     * Returns tag SEO url for specified page.
      *
-     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $recomm     Recommendation list object.
-     * @param int                                                    $pageNumber Number of the page which should be prepared.
-     * @param int                                                    $languageId Language id.
-     * @param bool                                                   $isFixed    Fixed url marker (default is null).
+     * @param \OxidEsales\Eshop\Application\Model\RecommendationList $recomm     recommendation list object
+     * @param int                                                    $pageNumber number of the page which should be prepared
+     * @param int                                                    $languageId language id
+     * @param bool                                                   $isFixed    fixed url marker (default is null)
      *
      * @return string
      */

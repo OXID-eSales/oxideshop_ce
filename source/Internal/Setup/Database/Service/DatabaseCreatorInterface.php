@@ -14,12 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnecti
 interface DatabaseCreatorInterface
 {
     /**
-     * @param string $host
-     * @param int    $port
-     * @param string $username
-     * @param string $password
-     * @param string $name
-     *
      * @throws DatabaseConnectionException
      */
     public function createDatabase(string $host, int $port, string $username, string $password, string $name): void;

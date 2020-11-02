@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -20,7 +22,9 @@ class Rating extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_user' => 1];
+    protected $_aComponentNames = [
+        'oxcmp_user' => 1,
+    ];
 
     /**
      * Current class template name.
@@ -30,16 +34,16 @@ class Rating extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     protected $_sThisTemplate = 'widget/reviews/rating.tpl';
 
     /**
-     * Rating value
+     * Rating value.
      *
-     * @var double
+     * @var float
      */
     protected $_dRatingValue = null;
 
     /**
-     * Rating count
+     * Rating count.
      *
-     * @var integer
+     * @var int
      */
     protected $_iRatingCnt = null;
 
@@ -57,55 +61,55 @@ class Rating extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns rating value
+     * Template variable getter. Returns rating value.
      *
-     * @return double
+     * @return float
      */
     public function getRatingValue()
     {
-        if ($this->_dRatingValue === null) {
-            $this->_dRatingValue = (double) 0;
-            $dValue = $this->getViewParameter("dRatingValue");
+        if (null === $this->_dRatingValue) {
+            $this->_dRatingValue = (float)0;
+            $dValue = $this->getViewParameter('dRatingValue');
             if ($dValue) {
                 $this->_dRatingValue = round($dValue, 1);
             }
         }
 
-        return (double) $this->_dRatingValue;
+        return (float)$this->_dRatingValue;
     }
 
     /**
-     * Template variable getter. Returns rating count
+     * Template variable getter. Returns rating count.
      *
-     * @return integer
+     * @return int
      */
     public function getRatingCount()
     {
-        return $dCount = $this->getViewParameter("dRatingCount");
+        return $dCount = $this->getViewParameter('dRatingCount');
     }
 
     /**
-     * Template variable getter. Returns rating url
+     * Template variable getter. Returns rating url.
      *
      * @return string
      */
     public function getRateUrl()
     {
-        return $this->getViewParameter("sRateUrl");
+        return $this->getViewParameter('sRateUrl');
     }
 
     /**
-     * Template variable getter. Returns rating count
+     * Template variable getter. Returns rating count.
      *
-     * @return integer
+     * @return int
      */
     public function canRate()
     {
-        return $this->getViewParameter("blCanRate");
+        return $this->getViewParameter('blCanRate');
     }
 
     /**
-     * Template variable getter. Returns article nid
+     * Template variable getter. Returns article nid.
      *
      * @return string
      */

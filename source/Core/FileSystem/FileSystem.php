@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,8 @@ namespace OxidEsales\EshopCommunity\Core\FileSystem;
 /**
  * Wrapper for actions related to file system.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class FileSystem
@@ -23,16 +26,16 @@ class FileSystem
      */
     public function combinePaths()
     {
-        $pathElements = func_get_args();
+        $pathElements = \func_get_args();
         foreach ($pathElements as $key => $pathElement) {
-            $pathElements[$key] = rtrim($pathElement, DIRECTORY_SEPARATOR);
+            $pathElements[$key] = rtrim($pathElement, \DIRECTORY_SEPARATOR);
         }
 
-        return implode(DIRECTORY_SEPARATOR, $pathElements);
+        return implode(\DIRECTORY_SEPARATOR, $pathElements);
     }
 
     /**
-     * Check if file exists and is readable
+     * Check if file exists and is readable.
      *
      * @param string $filePath
      *
@@ -40,6 +43,6 @@ class FileSystem
      */
     public function isReadable($filePath)
     {
-        return (is_file($filePath) && is_readable($filePath));
+        return is_file($filePath) && is_readable($filePath);
     }
 }

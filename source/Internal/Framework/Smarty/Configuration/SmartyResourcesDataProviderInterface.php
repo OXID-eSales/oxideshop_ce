@@ -13,8 +13,6 @@ interface SmartyResourcesDataProviderInterface
 {
     /**
      * Returns an array of resources.
-     *
-     * @return array
      */
     public function getResources(): array;
 }

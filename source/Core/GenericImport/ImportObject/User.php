@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,10 +16,14 @@ use Exception;
  */
 class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
-    /** @var string Database table name. */
+    /**
+     * @var string database table name
+     */
     protected $tableName = 'oxuser';
 
-    /** @var string Shop object name. */
+    /**
+     * @var string shop object name
+     */
     protected $shopObjectName = 'oxuser';
 
     /**
@@ -25,9 +31,9 @@ class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObjec
      *
      * @param array $data db row array
      *
-     * @throws Exception If user exists with provided OXID, throw an exception.
+     * @throws Exception if user exists with provided OXID, throw an exception
      *
-     * @return string $oxid on success, bool FALSE on failure
+     * @return string on success, bool FALSE on failure
      */
     public function import($data)
     {
@@ -35,10 +41,10 @@ class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObjec
             $id = $data['OXID'];
             $userName = $data['OXUSERNAME'];
 
-            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class, "core");
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class, 'core');
             $user->oxuser__oxusername = new \OxidEsales\Eshop\Core\Field($userName, \OxidEsales\Eshop\Core\Field::T_RAW);
 
-            if ($user->exists($id) && $id != $user->getId()) {
+            if ($user->exists($id) && $id !== $user->getId()) {
                 throw new Exception("USER $userName already exists!");
             }
         }

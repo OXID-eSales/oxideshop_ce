@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -20,21 +22,21 @@ use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridge
 class NewsletterController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
-     * Action articlelist
+     * Action articlelist.
      *
      * @var object
      */
     protected $_oActionArticles = null;
 
     /**
-     * Top start article
+     * Top start article.
      *
      * @var object
      */
     protected $_oTopArticle = null;
 
     /**
-     * Home country id
+     * Home country id.
      *
      * @var string
      */
@@ -43,7 +45,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     /**
      * Newletter status.
      *
-     * @var integer
+     * @var int
      */
     protected $_iNewsletterStatus = null;
 
@@ -62,7 +64,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     protected $_sThisTemplate = 'page/info/newsletter.tpl';
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
@@ -74,10 +76,10 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      * Template variables:
      * <b>aRegParams</b>
      */
-    public function fill()
+    public function fill(): void
     {
         // loads submited values
-        $this->_aRegParams = Registry::getConfig()->getRequestParameter("editval");
+        $this->_aRegParams = Registry::getConfig()->getRequestParameter('editval');
     }
 
     /**
@@ -92,7 +94,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      */
     public function send()
     {
-        $aParams = Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getConfig()->getRequestParameter('editval');
         $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
 
         // loads submited values
@@ -109,7 +111,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             return;
         }
 
-        $blSubscribe = Registry::getConfig()->getRequestParameter("subscribeStatus");
+        $blSubscribe = Registry::getConfig()->getRequestParameter('subscribeStatus');
 
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $oUser->oxuser__oxusername = new Field($aParams['oxuser__oxusername'], Field::T_RAW);
@@ -134,7 +136,6 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         } else {
             $blUserLoaded = $oUser->load($oUser->getId());
         }
-
 
         // if user was added/loaded successfully and subscribe is on - subscribing to newsletter
         if ($blSubscribe && $blUserLoaded) {
@@ -165,14 +166,14 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      * Template variables:
      * <b>success</b>
      */
-    public function addme()
+    public function addme(): void
     {
         // user exists ?
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         if ($oUser->load(Registry::getConfig()->getRequestParameter('uid'))) {
             $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
-            if (Registry::getConfig()->getRequestParameter('confirm') == $sConfirmCode) {
+            if (Registry::getConfig()->getRequestParameter('confirm') === $sConfirmCode) {
                 $oUser->getNewsSubscription()->setOptInStatus(1);
                 $oUser->addToGroup('oxidnewsletter');
                 $this->_iNewsletterStatus = 2;
@@ -183,7 +184,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     /**
      * Loads user and removes him from newsletter group.
      */
-    public function removeme()
+    public function removeme(): void
     {
         // existing user ?
         $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
@@ -198,21 +199,21 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * simlink to function removeme bug fix #0002894
+     * simlink to function removeme bug fix #0002894.
      */
-    public function rmvm()
+    public function rmvm(): void
     {
         $this->removeme();
     }
 
     /**
-     * Template variable getter. Returns action articlelist
+     * Template variable getter. Returns action articlelist.
      *
      * @return object
      */
     public function getTopStartActionArticles()
     {
-        if ($this->_oActionArticles === null) {
+        if (null === $this->_oActionArticles) {
             $this->_oActionArticles = false;
             if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion')) {
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -228,13 +229,13 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Template variable getter. Returns top start article
+     * Template variable getter. Returns top start article.
      *
      * @return object
      */
     public function getTopStartArticle()
     {
-        if ($this->_oTopArticle === null) {
+        if (null === $this->_oTopArticle) {
             $this->_oTopArticle = false;
             if ($this->getTopStartActionArticles()) {
                 return $this->_oTopArticle;
@@ -245,16 +246,16 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Template variable getter. Returns country id
+     * Template variable getter. Returns country id.
      *
      * @return string
      */
     public function getHomeCountryId()
     {
-        if ($this->_sHomeCountryId === null) {
+        if (null === $this->_sHomeCountryId) {
             $this->_sHomeCountryId = false;
             $aHomeCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry');
-            if (is_array($aHomeCountry)) {
+            if (\is_array($aHomeCountry)) {
                 $this->_sHomeCountryId = current($aHomeCountry);
             }
         }
@@ -263,9 +264,9 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Template variable getter. Returns newsletter subscription status
+     * Template variable getter. Returns newsletter subscription status.
      *
-     * @return integer
+     * @return int
      */
     public function getNewsletterStatus()
     {
@@ -273,7 +274,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Template variable getter. Returns user newsletter registration data
+     * Template variable getter. Returns user newsletter registration data.
      *
      * @return array
      */
@@ -301,19 +302,19 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Page title
+     * Page title.
      *
      * @return string
      */
     public function getTitle()
     {
-        if ($this->getNewsletterStatus() == 4 || !$this->getNewsletterStatus()) {
+        if (4 === $this->getNewsletterStatus() || !$this->getNewsletterStatus()) {
             $sConstant = 'STAY_INFORMED';
-        } elseif ($this->getNewsletterStatus() == 1) {
+        } elseif (1 === $this->getNewsletterStatus()) {
             $sConstant = 'MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS';
-        } elseif ($this->getNewsletterStatus() == 2) {
+        } elseif (2 === $this->getNewsletterStatus()) {
             $sConstant = 'MESSAGE_NEWSLETTER_CONGRATULATIONS';
-        } elseif ($this->getNewsletterStatus() == 3) {
+        } elseif (3 === $this->getNewsletterStatus()) {
             $sConstant = 'SUCCESS';
         }
 

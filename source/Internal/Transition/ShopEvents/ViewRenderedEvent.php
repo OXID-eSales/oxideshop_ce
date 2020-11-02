@@ -33,8 +33,6 @@ class ViewRenderedEvent extends Event
 
     /**
      * Getter for ShopControl object.
-     *
-     * @return ShopControl
      */
     public function getShopControl(): ShopControl
     {

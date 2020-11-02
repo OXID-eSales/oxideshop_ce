@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -16,8 +18,8 @@ class JavaScriptRenderer
      * Renders all registered JavaScript snippets and files.
      *
      * @param string $widget      Widget name
-     * @param bool   $forceRender Force rendering of scripts.
-     * @param bool   $isDynamic   Force rendering of scripts.
+     * @param bool   $forceRender force rendering of scripts
+     * @param bool   $isDynamic   force rendering of scripts
      *
      * @return string
      */
@@ -49,7 +51,7 @@ class JavaScriptRenderer
             $scriptOutput = $this->formSnippetsOutput($snippets, $widget, $isAjaxRequest);
             $config->setGlobalParameter($scriptsParameterName, null);
             if ($widget) {
-                $dynamicScripts = (array) $config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic');
+                $dynamicScripts = (array)$config->getGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic');
                 $scriptOutput .= $this->formSnippetsOutput($dynamicScripts, $widget, $isAjaxRequest);
                 $config->setGlobalParameter(\OxidEsales\Eshop\Core\ViewHelper\JavaScriptRegistrator::SNIPPETS_PARAMETER_NAME . '_dynamic', null);
             }
@@ -66,7 +68,7 @@ class JavaScriptRenderer
      */
     protected function isAjaxRequest()
     {
-        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' === strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
     }
 
     /**
@@ -92,20 +94,20 @@ class JavaScriptRenderer
      */
     protected function prepareFilesForRendering($files, $widget)
     {
-        return (array) $files;
+        return (array)$files;
     }
 
     /**
      * Form output for includes.
      *
-     * @param array  $includes String files to include.
-     * @param string $widget   Widget name.
+     * @param array  $includes string files to include
+     * @param string $widget   widget name
      *
      * @return string
      */
     protected function formFilesOutput($includes, $widget)
     {
-        if (!count($includes)) {
+        if (!\count($includes)) {
             return '';
         }
 
@@ -116,7 +118,7 @@ class JavaScriptRenderer
         $scriptTemplate = '<script type="text/javascript" src="%s"></script>';
         foreach ($includes as $priority) {
             foreach ($priority as $source) {
-                if (!in_array($source, $usedSources)) {
+                if (!\in_array($source, $usedSources, true)) {
                     $widgets[] = sprintf(($widget ? $widgetTemplate : $scriptTemplate), $source, $widget);
                     $usedSources[] = $source;
                 }
@@ -125,12 +127,12 @@ class JavaScriptRenderer
         $output = implode(PHP_EOL, $widgets);
         if ($widget && !empty($output)) {
             $output = <<<JS
-<script type='text/javascript'>
-    window.addEventListener('load', function() {
-        $output
-    }, false)
-</script>
-JS;
+                <script type='text/javascript'>
+                    window.addEventListener('load', function() {
+                        $output
+                    }, false)
+                </script>
+                JS;
         }
 
         return $output;
@@ -140,9 +142,9 @@ JS;
      * Forms how javascript should look like when output.
      * If varnish is active, javascript should be passed to WidgetsHandler instead of direct call.
      *
-     * @param array  $scripts     Scripts to execute (from add).
-     * @param string $widgetName  Widget name.
-     * @param bool   $ajaxRequest Is ajax request.
+     * @param array  $scripts     scripts to execute (from add)
+     * @param string $widgetName  widget name
+     * @param bool   $ajaxRequest is ajax request
      *
      * @return string
      */
@@ -169,14 +171,19 @@ JS;
      */
     protected function sanitize($scripts)
     {
-        return strtr($scripts, ['\\' => '\\\\', "'" => "\\'", "\r" => '', "\n" => '\n']);
+        return strtr($scripts, [
+            '\\' => '\\\\',
+            "'" => "\\'",
+            "\r" => '',
+            "\n" => '\n',
+        ]);
     }
 
     /**
      * Enclose with script tag or add in function for wiget.
      *
-     * @param string $scriptsOutput javascript to be enclosed.
-     * @param string $widget        widget name.
+     * @param string $scriptsOutput javascript to be enclosed
+     * @param string $widget        widget name
      * @param bool   $isAjaxRequest is ajax request
      *
      * @return string

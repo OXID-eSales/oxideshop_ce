@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,12 +11,12 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
  * e.g.:
- * - no match for requested controller id
+ * - no match for requested controller id.
  */
 class RoutingException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
     /**
-     * Exception type
+     * Exception type.
      *
      * @var string
      */

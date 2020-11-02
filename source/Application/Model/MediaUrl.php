@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,12 +10,12 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 /**
- * Media URL handler
+ * Media URL handler.
  */
 class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
@@ -29,7 +31,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Return HTML code depending on current URL
+     * Return HTML code depending on current URL.
      *
      * @return string
      */
@@ -46,7 +48,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns simple HTML link
+     * Returns simple HTML link.
      *
      * @param bool $blNewPage Whether to open link in new window (adds target=_blank to link)
      *
@@ -58,13 +60,11 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sDesc = $this->oxmediaurls__oxdesc->value;
         $sUrl = $this->getLink();
 
-        $sHtmlLink = "<a href=\"$sUrl\"{$sForceBlank}>$sDesc</a>";
-
-        return $sHtmlLink;
+        return "<a href=\"$sUrl\"{$sForceBlank}>$sDesc</a>";
     }
 
     /**
-     * Returns  link
+     * Returns  link.
      *
      * @return string
      */
@@ -82,7 +82,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns  object id
+     * Returns  object id.
      *
      * @return string
      */
@@ -92,7 +92,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Deletes record and unlinks the file
+     * Deletes record and unlinks the file.
      *
      * @param string $sOXID Object ID(default null)
      *
@@ -100,7 +100,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function delete($sOXID = null)
     {
-        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . "/out/media/" .
+        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir') . '/out/media/' .
                      basename($this->oxmediaurls__oxurl->value);
 
         if ($this->oxmediaurls__oxisuploaded->value) {
@@ -116,6 +116,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      * Transforms the link to YouTube object, and returns it.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getYoutubeHtml" in next major
      */
     protected function _getYoutubeHtml() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -124,16 +125,15 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sDesc = $this->oxmediaurls__oxdesc->value;
 
         if (strpos($sUrl, 'youtube.com')) {
-            $sYoutubeUrl = str_replace("www.youtube.com/watch?v=", "www.youtube.com/embed/", $sUrl);
+            $sYoutubeUrl = str_replace('www.youtube.com/watch?v=', 'www.youtube.com/embed/', $sUrl);
             $sYoutubeUrl = preg_replace('/&amp;/', '?', $sYoutubeUrl, 1);
         }
         if (strpos($sUrl, 'youtu.be')) {
-            $sYoutubeUrl = str_replace("youtu.be/", "www.youtube.com/embed/", $sUrl);
+            $sYoutubeUrl = str_replace('youtu.be/', 'www.youtube.com/embed/', $sUrl);
         }
 
         $sYoutubeTemplate = '%s<br><iframe width="425" height="344" src="%s" frameborder="0" allowfullscreen></iframe>';
-        $sYoutubeHtml = sprintf($sYoutubeTemplate, $sDesc, $sYoutubeUrl, $sYoutubeUrl);
 
-        return $sYoutubeHtml;
+        return sprintf($sYoutubeTemplate, $sDesc, $sYoutubeUrl, $sYoutubeUrl);
     }
 }

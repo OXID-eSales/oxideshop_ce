@@ -17,20 +17,17 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
+    /**
+     * @var ShopConfigurationSettingDaoInterface
+     */
     private $shopConfigurationSettingDao;
 
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao)
     {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasClassExtensions()) {
             $classExtensions = [];
@@ -50,11 +47,7 @@ class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHand
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasClassExtensions()) {
             $shopConfigurationSetting = $this->getClassExtensionsShopConfigurationSetting($shopId);
@@ -68,10 +61,6 @@ class ShopConfigurationClassExtensionsHandler implements ModuleConfigurationHand
         }
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
     private function getClassExtensionsShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {

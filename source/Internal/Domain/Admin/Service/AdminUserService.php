@@ -33,7 +33,8 @@ class AdminUserService implements AdminUserServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
+     *
      * @throws \InvalidArgumentException
      */
     public function createAdmin(

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,19 +13,16 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Update from v6.0.0-rc.2 to v6.0.0-rc.3
+ * Update from v6.0.0-rc.2 to v6.0.0-rc.3.
  */
 class Version20171018144650 extends AbstractMigration
 {
-    /**
-     * @param Schema $schema
-     */
     public function up(Schema $schema): void
     {
         // All tables should have the same default character set and collation
-        $this->addSql("ALTER table `oxinvitations` COLLATE utf8_general_ci;");
+        $this->addSql('ALTER table `oxinvitations` COLLATE utf8_general_ci;');
 
-        $this->addSql("ALTER table `oxobject2action` COLLATE utf8_general_ci;");
+        $this->addSql('ALTER table `oxobject2action` COLLATE utf8_general_ci;');
 
         // Convert the value from the configuration variable blLoadDynContents to blSendTechnicalInformationToOxid
         $this->addSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`)
@@ -41,9 +40,6 @@ class Version20171018144650 extends AbstractMigration
           );");
     }
 
-    /**
-     * @param Schema $schema
-     */
     public function down(Schema $schema): void
     {
     }

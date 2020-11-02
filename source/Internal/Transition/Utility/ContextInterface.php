@@ -13,49 +13,23 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNot
 
 interface ContextInterface extends BasicContextInterface
 {
-    /**
-     * @return int
-     */
     public function getCurrentShopId(): int;
 
-    /**
-     * @return string
-     */
     public function getLogLevel(): string;
 
-    /**
-     * @return string
-     */
     public function getLogFilePath(): string;
 
-    /**
-     * @return array
-     */
     public function getRequiredContactFormFields(): array;
 
-    /**
-     * @return bool
-     */
     public function isEnabledAdminQueryLog(): bool;
 
-    /**
-     * @return bool
-     */
     public function isAdmin(): bool;
 
-    /**
-     * @return string
-     */
     public function getAdminLogFilePath(): string;
 
-    /**
-     * @return array
-     */
     public function getSkipLogTags(): array;
 
     /**
-     * @return string
-     *
      * @throws AdminUserNotFoundException
      */
     public function getAdminUserId(): string;

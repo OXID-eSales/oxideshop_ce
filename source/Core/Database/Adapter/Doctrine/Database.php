@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -20,35 +22,35 @@ use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface;
 use PDO;
 
 /**
  * The doctrine implementation of our database.
- *
- * @package OxidEsales\Eshop\Core\Database\Adapter\Doctrine;
  *
  * @deprecated since v6.5.0 (2019-09-24);
  *             Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
  */
 class Database implements DatabaseInterface
 {
-    /** @var int code of Mysql duplicated key error. */
-    const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
+    /**
+     * @var int code of Mysql duplicated key error
+     */
+    public const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
 
     /**
-     * Holds the necessary parameters to connect to the database
+     * Holds the necessary parameters to connect to the database.
      */
     protected $connectionParameters = [];
 
     /**
-     * @var DriverConnection The database connection.
+     * @var DriverConnection the database connection
      */
     protected $connection = null;
 
     /**
-     * @var int The current fetch mode.
+     * @var int the current fetch mode
      */
     protected $fetchMode = PDO::FETCH_NUM;
 
@@ -57,9 +59,9 @@ class Database implements DatabaseInterface
      */
     protected $transactionIsolationLevelMap = [
         'READ UNCOMMITTED' => Connection::TRANSACTION_READ_UNCOMMITTED,
-        'READ COMMITTED'   => Connection::TRANSACTION_READ_COMMITTED,
-        'REPEATABLE READ'  => Connection::TRANSACTION_REPEATABLE_READ,
-        'SERIALIZABLE'     => Connection::TRANSACTION_SERIALIZABLE
+        'READ COMMITTED' => Connection::TRANSACTION_READ_COMMITTED,
+        'REPEATABLE READ' => Connection::TRANSACTION_REPEATABLE_READ,
+        'SERIALIZABLE' => Connection::TRANSACTION_SERIALIZABLE,
     ];
 
     /**
@@ -67,9 +69,9 @@ class Database implements DatabaseInterface
      */
     protected $fetchModeMap = [
         DatabaseInterface::FETCH_MODE_DEFAULT => PDO::FETCH_BOTH,
-        DatabaseInterface::FETCH_MODE_NUM     => PDO::FETCH_NUM,
-        DatabaseInterface::FETCH_MODE_ASSOC   => PDO::FETCH_ASSOC,
-        DatabaseInterface::FETCH_MODE_BOTH    => PDO::FETCH_BOTH
+        DatabaseInterface::FETCH_MODE_NUM => PDO::FETCH_NUM,
+        DatabaseInterface::FETCH_MODE_ASSOC => PDO::FETCH_ASSOC,
+        DatabaseInterface::FETCH_MODE_BOTH => PDO::FETCH_BOTH,
     ];
 
     /**
@@ -80,15 +82,15 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * Each database driver needs different parameters. At the moment only the driver 'pdo_mysql' is supported.
      *
      * @param array $connectionParameters The parameters to connect to the database using the doctrine pdo_mysql driver
      */
-    public function setConnectionParameters(array $connectionParameters)
+    public function setConnectionParameters(array $connectionParameters): void
     {
-        if (array_key_exists('default', $connectionParameters)) {
+        if (\array_key_exists('default', $connectionParameters)) {
             $this->connectionParameters = $this->getPdoMysqlConnectionParameters($connectionParameters['default']);
         }
     }
@@ -98,7 +100,7 @@ class Database implements DatabaseInterface
      *
      * @throws DatabaseConnectionException If a connection to the database cannot be established
      */
-    public function connect()
+    public function connect(): void
     {
         $connection = null;
 
@@ -119,46 +121,46 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function forceMasterConnection()
+    public function forceMasterConnection(): void
     {
-        if (is_null($this->connection)) {
+        if (null === $this->connection) {
             $this->connect();
         }
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function forceSlaveConnection()
+    public function forceSlaveConnection(): void
     {
-        if (is_null($this->connection)) {
+        if (null === $this->connection) {
             $this->connect();
         }
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function closeConnection()
+    public function closeConnection(): void
     {
         $this->connection->close();
         gc_collect_cycles();
     }
 
     /**
-     * Set connection
+     * Set connection.
      *
      * @param Connection $connection
      */
-    protected function setConnection($connection)
+    protected function setConnection($connection): void
     {
         $this->connection = $connection;
     }
 
     /**
-     * Get the connection parameters for the doctrine pdo_mysql driver
+     * Get the connection parameters for the doctrine pdo_mysql driver.
      *
      * The pdo_mysql driver accepts an array with the following keys
      *
@@ -179,12 +181,12 @@ class Database implements DatabaseInterface
     protected function getPdoMysqlConnectionParameters(array $connectionParameters)
     {
         $pdoMysqlConnectionParameters = [
-            'driver'        => 'pdo_mysql',
-            'host'          => $connectionParameters['databaseHost'],
-            'dbname'        => $connectionParameters['databaseName'],
-            'user'          => $connectionParameters['databaseUser'],
-            'password'      => $connectionParameters['databasePassword'],
-            'port'          => $connectionParameters['databasePort'],
+            'driver' => 'pdo_mysql',
+            'host' => $connectionParameters['databaseHost'],
+            'dbname' => $connectionParameters['databaseName'],
+            'user' => $connectionParameters['databaseUser'],
+            'password' => $connectionParameters['databasePassword'],
+            'port' => $connectionParameters['databasePort'],
             'driverOptions' => $connectionParameters['databaseDriverOptions'],
         ];
 
@@ -203,22 +205,20 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * Adds default driverOptions values to an existing array of connection parameters
-     *
-     * @param array $existingParameters
+     * Adds default driverOptions values to an existing array of connection parameters.
      */
-    protected function addDriverOptions(array &$existingParameters)
+    protected function addDriverOptions(array &$existingParameters): void
     {
-        $default = array(
+        $default = [
             PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
-        );
+        ];
 
         // options defined in config override the default
         $existingParameters['driverOptions'] += $default;
     }
 
     /**
-     * This function can be extended to add own init command for the database connection
+     * This function can be extended to add own init command for the database connection.
      *
      * @return string
      */
@@ -238,12 +238,11 @@ class Database implements DatabaseInterface
      * Take into account that the character set must be set either on the server level, or within the database
      * connection itself (depending on the driver) for it to affect PDO::quote().
      *
-     * @param array  $existingParameters
      * @param string $connectionCharset
      */
-    protected function addConnectionCharset(array &$existingParameters, $connectionCharset)
+    protected function addConnectionCharset(array &$existingParameters, $connectionCharset): void
     {
-        $sanitizedCharset = trim(strtolower((string) $connectionCharset));
+        $sanitizedCharset = trim(strtolower((string)$connectionCharset));
 
         if (!empty($sanitizedCharset)) {
             $existingParameters['charset'] = $sanitizedCharset;
@@ -255,7 +254,7 @@ class Database implements DatabaseInterface
      *
      * @todo: Map the iDebug config.inc parameter to the doctrine settings.
      *
-     * @return array The connection settings parameters.
+     * @return array the connection settings parameters
      */
     protected function getConnectionParameters()
     {
@@ -263,16 +262,16 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * The given fetch mode as used be the DatabaseInterface Class will be mapped to the Doctrine specific fetch mode.
      *
      * When the connection is opened the fetch mode will be set to a default value as defined in
      * OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::$fetchMode.
      *
-     * @param integer $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
+     * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
      */
-    public function setFetchMode($fetchMode)
+    public function setFetchMode($fetchMode): void
     {
         $this->fetchMode = $this->fetchModeMap[$fetchMode];
 
@@ -294,10 +293,10 @@ class Database implements DatabaseInterface
      * NOTE: Although you might pass any SELECT or SHOW statement to this method, try to limit the result of the
      * statement to one single row, as the rest of the rows is simply discarded.
      *
-     * @param string $query      The sql SELECT or SHOW statement.
-     * @param array  $parameters Array of parameters for the given sql statement.
+     * @param string $query      the sql SELECT or SHOW statement
+     * @param array  $parameters array of parameters for the given sql statement
      *
-     * @return string|false      Returns a string for SELECT or SHOW statements and FALSE for any other statement.
+     * @return string|false returns a string for SELECT or SHOW statements and FALSE for any other statement
      */
     public function getOne($query, $parameters = [])
     {
@@ -344,10 +343,10 @@ class Database implements DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
-     * @param array  $parameters Array of parameters, for the given sql statement.
+     * @param string $query      the sql select statement to be executed
+     * @param array  $parameters array of parameters, for the given sql statement
      *
-     * @return array The row, we selected with the given sql statement.
+     * @return array the row, we selected with the given sql statement
      */
     public function getRow($query, $parameters = [])
     {
@@ -359,7 +358,7 @@ class Database implements DatabaseInterface
             $resultSet = $this->select($query, $parameters);
             $result = $resultSet->fields;
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseErrorException $exception) {
-            /** Only log exception, do not re-throw here, as legacy code expects this behavior */
+            /* Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
             $result = [];
         } catch (PDOException $exception) {
@@ -369,7 +368,7 @@ class Database implements DatabaseInterface
             $result = [];
         }
 
-        if (false == $result) {
+        if (false === $result) {
             $result = [];
         }
 
@@ -380,7 +379,7 @@ class Database implements DatabaseInterface
      * Quote a string in a way, that it can be used as a identifier (i.e. table name or field name) in a sql statement.
      * You are strongly encouraged to always use quote identifiers.
      *
-     * @param string $string The string to be quoted.
+     * @param string $string the string to be quoted
      *
      * @return string
      */
@@ -423,9 +422,9 @@ class Database implements DatabaseInterface
      *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseProvider::getDb->quote($id1) . ' OR ´id´ = ' . DatabaseProvider::getDb->quote($id1)
      * );
      *
-     * @param mixed $value The string or numeric value to be quoted.
+     * @param mixed $value the string or numeric value to be quoted
      *
-     * @return false|string The given string or numeric value converted to a string surrounded by single quotes or set to false, if the value could not have been quoted.
+     * @return false|string the given string or numeric value converted to a string surrounded by single quotes or set to false, if the value could not have been quoted
      */
     public function quote($value)
     {
@@ -451,9 +450,9 @@ class Database implements DatabaseInterface
      * but when the statement is executed and the value could not have been quoted, a DatabaseException is thrown.
      * You are strongly encouraged to always use prepared statements instead of quoting the values on your own.
      *
-     * @param array $array The strings to quote as an array.
+     * @param array $array the strings to quote as an array
      *
-     * @return array Array with all string and numeric values quoted with single quotes or set to false, if the value could not have been quoted.
+     * @return array array with all string and numeric values quoted with single quotes or set to false, if the value could not have been quoted
      */
     public function quoteArray($array)
     {
@@ -467,9 +466,9 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function startTransaction()
+    public function startTransaction(): void
     {
         try {
             $this->getConnection()->beginTransaction();
@@ -483,9 +482,9 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function commitTransaction()
+    public function commitTransaction(): void
     {
         try {
             $this->getConnection()->commit();
@@ -499,9 +498,9 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function rollbackTransaction()
+    public function rollbackTransaction(): void
     {
         try {
             $this->getConnection()->rollBack();
@@ -527,7 +526,7 @@ class Database implements DatabaseInterface
     {
         $level = strtoupper($level);
 
-        if (!array_key_exists($level, $this->transactionIsolationLevelMap)) {
+        if (!\array_key_exists($level, $this->transactionIsolationLevelMap)) {
             throw new \InvalidArgumentException('Transaction isolation level is invalid');
         }
 
@@ -547,12 +546,12 @@ class Database implements DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql statement to execute.
-     * @param array  $parameters The parameters array.
+     * @param string $query      the sql statement to execute
+     * @param array  $parameters the parameters array
      *
      * @throws DatabaseErrorException
      *
-     * @return integer Number of rows affected by the SQL statement
+     * @return int Number of rows affected by the SQL statement
      */
     public function execute($query, $parameters = [])
     {
@@ -581,12 +580,12 @@ class Database implements DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
-     * @param array  $parameters The parameters array for the given query.
+     * @param string $query      the sql select statement to be executed
+     * @param array  $parameters the parameters array for the given query
      *
-     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
+     * @throws DatabaseErrorException the exception, that can occur while executing the sql statement
      *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface the result of the given query
      */
     public function select($query, $parameters = [])
     {
@@ -596,13 +595,13 @@ class Database implements DatabaseInterface
 
         $result = null;
         $check = ltrim($query, " \t\n\r\0\x0B(");
-        if (!(stripos($check, 'select') === 0 || stripos($check, 'show') === 0)) {
+        if (!(0 === stripos($check, 'select') || 0 === stripos($check, 'show'))) {
             throw new \InvalidArgumentException('Function select is only for read operations select or show');
         }
         try {
             /**
              * Be aware that Connection::executeQuery is a method specifically for READ operations only.
-             * This is especially important in master-slave Connection
+             * This is especially important in master-slave Connection.
              */
             /** @var \Doctrine\DBAL\Driver\Statement $statement Statement is prepared and executed by executeQuery() */
             $statement = $this->getConnection()->executeQuery(
@@ -624,11 +623,11 @@ class Database implements DatabaseInterface
 
     private function checkForMultipleQueries($query, $parameters): string
     {
-        if ($parameters !== [] || strrpos($query, ';', -1) === false) {
+        if ([] !== $parameters || false === strrpos($query, ';', -1)) {
             return $query;
         }
         $queries = preg_split('~(\"[^\\\\"]*\"|' . "\'[^\\\\']*\'|`[^\\`]*`)(*SKIP)(*F)|(?<=;)(?![ ]*$)~", $query);
-        if (count($queries) > 1) {
+        if (\count($queries) > 1) {
             Registry::getLogger()->error('More than one query within one statement', [$query]);
         }
 
@@ -657,25 +656,25 @@ class Database implements DatabaseInterface
      * Be aware that only a few database vendors have the LIMIT clause as known from MySQL.
      * The Doctrine Query Builder should be used here.
      *
-     * @param string $query      The sql select statement to be executed.
+     * @param string $query      the sql select statement to be executed
      * @param int    $rowCount   Maximum number of rows to return
      * @param int    $offset     Offset of the first row to return
-     * @param array  $parameters The parameters array.
+     * @param array  $parameters the parameters array
      *
-     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
-     * @throws \InvalidArgumentException The exception for invalid $offset.
+     * @throws DatabaseErrorException    the exception, that can occur while executing the sql statement
+     * @throws \InvalidArgumentException the exception for invalid $offset
      *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
+     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface the result of the given query
      */
     public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = [])
     {
-        /**
+        /*
          * Parameter validation.
          * At the moment there will be no InvalidArgumentException thrown on non numeric values as this may break
          * too many things.
          */
         if (!is_numeric($rowCount) || !is_numeric($offset)) {
-            trigger_error(
+            @trigger_error(
                 'Parameters rowCount and offset have to be numeric in DatabaseInterface::selectLimit(). ' .
                     'Please fix your code as this error may trigger an exception in future versions of OXID eShop.',
                 E_USER_DEPRECATED
@@ -689,8 +688,8 @@ class Database implements DatabaseInterface
         /**
          * Cast the parameters limit and offset to integer in in order to avoid SQL injection.
          */
-        $rowCount = (int) $rowCount;
-        $offset = (int) $offset;
+        $rowCount = (int)$rowCount;
+        $offset = (int)$offset;
         $limitClause = '';
 
         if ($rowCount >= 0 && $offset >= 0) {
@@ -713,12 +712,12 @@ class Database implements DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      The sql select statement to be executed.
-     * @param array  $parameters The parameters array.
+     * @param string $query      the sql select statement to be executed
+     * @param array  $parameters the parameters array
      *
      * @throws DatabaseErrorException
      *
-     * @return array The values of the first column of a corresponding sql query.
+     * @return array the values of the first column of a corresponding sql query
      */
     public function getCol($query, $parameters = [])
     {
@@ -763,13 +762,13 @@ class Database implements DatabaseInterface
      *
      * This method supports PDO binding types as well as DBAL mapping types.
      *
-     * @param string $query      The SQL query.
-     * @param array  $parameters The query parameters.
-     * @param array  $types      The parameter types.
+     * @param string $query      the SQL query
+     * @param array  $parameters the query parameters
+     * @param array  $types      the parameter types
      *
      * @throws DatabaseErrorException
      *
-     * @return integer The number of affected rows.
+     * @return int the number of affected rows
      */
     public function executeUpdate($query, $parameters = [], $types = [])
     {
@@ -795,7 +794,7 @@ class Database implements DatabaseInterface
     /**
      * Get the database connection.
      *
-     * @return DriverConnection $oConnection The database connection we want to use.
+     * @return DriverConnection the database connection we want to use
      */
     protected function getConnection()
     {
@@ -811,23 +810,23 @@ class Database implements DatabaseInterface
      * Anything that evaluates to false will be converted into an empty array.
      * An non empty array will be returned as such.
      *
-     * @param bool|array $parameter The parameter we want to be an array.
+     * @param bool|array $parameter the parameter we want to be an array
      *
      * @throws \InvalidArgumentException
      *
      * @deprecated since v6.0 (2016-04-13); Backward compatibility for v5.3.0.
      *
-     * @return array The original array or an empty array, if false was passed.
+     * @return array the original array or an empty array, if false was passed
      */
     private function assureParameterIsAnArray($parameter)
     {
         /** If $parameter evaluates to true and it is not an array throw an InvalidArgumentException */
-        if ($parameter && !is_array($parameter)) {
+        if ($parameter && !\is_array($parameter)) {
             throw new \InvalidArgumentException();
         }
 
         /** If $parameter evaluates to false and it is not an array convert it into an array */
-        if (!is_array($parameter)) {
+        if (!\is_array($parameter)) {
             $parameter = [];
         }
 
@@ -851,7 +850,7 @@ class Database implements DatabaseInterface
      * The other class does not produce any output like
      * "UPDATE countries SET (`name` = 'United States of America') WHERE iso_code = 'US'"
      *
-     * @param string $query The query we want to check.
+     * @param string $query the query we want to check
      *
      * @return bool Return true, if the given SQL statement is a statement that may produce any output
      */
@@ -874,7 +873,7 @@ class Database implements DatabaseInterface
         ];
         $command = $this->getFirstCommandInStatement($query);
 
-        return in_array($command, $allowedCommands);
+        return \in_array($command, $allowedCommands, true);
     }
 
     /**
@@ -895,15 +894,14 @@ class Database implements DatabaseInterface
             case $exception instanceof Exception\ConnectionException:
                 // ConnectionException will be mapped to DatabaseConnectionException::class
             case $exception instanceof ConnectionException:
-                /**
+                /*
                  * Doctrine does not recognise "SQLSTATE[HY000] [2003] Can't connect to MySQL server on 'mysql.example'"
                  * as a connection error, as the error code 2003 is simply not treated in
                  * Doctrine\DBAL\Driver\AbstractMySQLDriver::convertException.
                  * We fix this here.
                  */
                 // ConnectionException will be mapped to DatabaseConnectionException::class
-                // no break
-            case is_a($exception->getPrevious(), '\Exception') && in_array($exception->getPrevious()->getCode(), ['2003']):
+            case is_a($exception->getPrevious(), '\Exception') && \in_array($exception->getPrevious()->getCode(), ['2003'], true):
                 $exceptionClass = DatabaseConnectionException::class;
                 break;
             case $exception instanceof DBALException:
@@ -913,7 +911,7 @@ class Database implements DatabaseInterface
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
-                /** @var $pdoException PDOException */
+                /** @var PDOException $pdoException */
                 $pdoException = $exception->getPrevious();
 
                 if ($pdoException instanceof PDOException) {
@@ -931,8 +929,8 @@ class Database implements DatabaseInterface
                 $code = $this->convertErrorCode($exception->errorInfo[1]);
                 $message = $exception->errorInfo[2];
 
-                /** In case the original code (int) cannot be recovered, code is set to 0 */
-                if (!is_integer($code)) {
+                /* In case the original code (int) cannot be recovered, code is set to 0 */
+                if (!\is_int($code)) {
                     $code = 0;
                 }
 
@@ -940,22 +938,18 @@ class Database implements DatabaseInterface
         }
 
         /** @var \oxException $convertedException */
-        $convertedException = new $exceptionClass($message, $code, $exception);
-
-        return $convertedException;
+        return new $exceptionClass($message, $code, $exception);
     }
 
     /**
      * Handle a given exception. The standard behavior at the moment is to throw the exception passed in the parameter.
      * A second exception handling including logging will be done by the ShopControl class.
      *
-     * @param StandardException $exception
-     *
      * @throws StandardException
      * @throws DatabaseConnectionException
      * @throws DatabaseErrorException
      */
-    protected function handleException(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
+    protected function handleException(\OxidEsales\Eshop\Core\Exception\StandardException $exception): void
     {
         throw $exception;
     }
@@ -963,10 +957,8 @@ class Database implements DatabaseInterface
     /**
      * Log a given Exception the log file using the standard eShop logging mechanism.
      * Use this function whenever a exception is caught and not re-thrown.
-     *
-     * @param \Exception $exception
      */
-    protected function logException(\Exception $exception)
+    protected function logException(\Exception $exception): void
     {
         /** The exception has to be converted into an instance of oxException in order to be logged like this */
         $exception = $this->convertException($exception);
@@ -991,7 +983,7 @@ class Database implements DatabaseInterface
      * SQL injection vulnerability.
      *
      * @param string $query      If parameters are given, the "?" in the string will be replaced by the values in the array
-     * @param array  $parameters Array of parameters, for the given sql statement.
+     * @param array  $parameters array of parameters, for the given sql statement
      *
      * @see DatabaseInterface::setFetchMode()
      * @see Doctrine::$fetchMode
@@ -1055,9 +1047,9 @@ class Database implements DatabaseInterface
      * Get the meta information about all the columns of the given table.
      * This is kind of a poor man's schema manager, which only works for MySQL.
      *
-     * @param string $table The name of the table.
+     * @param string $table the name of the table
      *
-     * @return array Array of objects with meta information of each column.
+     * @return array array of objects with meta information of each column
      */
     public function metaColumns($table)
     {
@@ -1104,7 +1096,7 @@ class Database implements DatabaseInterface
             $characterSet = $this->getMetaColumnValueByKey($column, 'CharacterSet');
             $collation = $this->getMetaColumnValueByKey($column, 'Collation');
 
-            if ($default !== null) {
+            if (null !== $default) {
                 // MariaDB puts quotes around default values:
                 $default = trim($default, "'");
             }
@@ -1116,49 +1108,49 @@ class Database implements DatabaseInterface
             $item->name = $field;
             $item->type = $typeName;
             $item->not_null = ('no' === strtolower($null));
-            $item->primary_key = (strtolower($key) == 'pri');
-            $item->auto_increment = strtolower($extra) == 'auto_increment';
+            $item->primary_key = ('pri' === strtolower($key));
+            $item->auto_increment = 'auto_increment' === strtolower($extra);
             $item->binary = (false !== strpos(strtolower($type), 'blob'));
             $item->unsigned = (false !== strpos(strtolower($type), 'unsigned'));
-            $item->has_default = ((is_null($default)) || ($default === '')) ? false : true;
+            $item->has_default = ((null === $default) || ('' === $default)) ? false : true;
             if ($item->has_default) {
                 $item->default_value = $default;
             }
 
-            /**
+            /*
              * These variables were set only when there was a value in the previous implementation with ADOdb Lite.
              * We do it the same way here for compatibility.
              */
             list($max_length, $scale) = $this->getColumnMaxLengthAndScale($column, $item->type);
             if (-1 !== $max_length) {
-                $item->max_length = (string) $max_length;
+                $item->max_length = (string)$max_length;
             } else {
                 $item->max_length = $max_length;
             }
             if (-1 !== $scale) {
-                $item->scale = (string) $scale;
+                $item->scale = (string)$scale;
             } else {
                 $item->scale = null;
             }
 
-            /** Unset has_default and default_value for binary types */
+            /* Unset has_default and default_value for binary types */
             if ($item->binary) {
                 unset($item->has_default, $item->default_value);
             }
 
-            /** Additional properties not found in ADODB lite */
+            /* Additional properties not found in ADODB lite */
             $item->comment = $comment;
             $item->characterSet = $characterSet;
             $item->collation = $collation;
 
-            /**
+            /*
              * ADODB lite properties not implemented
              *
              * @todo: implement the enums property for SET and ENUM fields
              */
             // $item->enums
 
-            if (array_key_exists('Field', $column)) {
+            if (\array_key_exists('Field', $column)) {
                 $result[$item->name] = $item;
             } else {
                 $result[] = $item;
@@ -1195,7 +1187,7 @@ class Database implements DatabaseInterface
     /**
      * Checks whether a transaction is currently active.
      *
-     * @return boolean TRUE if a transaction is currently active, FALSE otherwise.
+     * @return bool TRUE if a transaction is currently active, FALSE otherwise
      */
     public function isTransactionActive()
     {
@@ -1215,50 +1207,47 @@ class Database implements DatabaseInterface
     /**
      * Get the value of a meta column key.
      *
-     * @param array  $column The meta column, where the value has to be fetched.
-     * @param string $key    The key to fetch.
+     * @param array  $column the meta column, where the value has to be fetched
+     * @param string $key    the key to fetch
      *
      * @return mixed
      */
     protected function getMetaColumnValueByKey(array $column, $key)
     {
-        if (array_key_exists('Field', $column)) {
+        if (\array_key_exists('Field', $column)) {
             $keyMap = [
-                'Field'        => 'Field',
-                'Type'         => 'Type',
-                'Null'         => 'Null',
-                'Key'          => 'Key',
-                'Default'      => 'Default',
-                'Extra'        => 'Extra',
-                'Comment'      => 'Comment',
+                'Field' => 'Field',
+                'Type' => 'Type',
+                'Null' => 'Null',
+                'Key' => 'Key',
+                'Default' => 'Default',
+                'Extra' => 'Extra',
+                'Comment' => 'Comment',
                 'CharacterSet' => 'CharacterSet',
-                'Collation'    => 'Collation',
+                'Collation' => 'Collation',
             ];
         } else {
             $keyMap = [
-                'Field'        => 0,
-                'Type'         => 1,
-                'Null'         => 2,
-                'Key'          => 3,
-                'Default'      => 4,
-                'Extra'        => 5,
-                'Comment'      => 6,
+                'Field' => 0,
+                'Type' => 1,
+                'Null' => 2,
+                'Key' => 3,
+                'Default' => 4,
+                'Extra' => 5,
+                'Comment' => 6,
                 'CharacterSet' => 7,
-                'Collation'    => 8,
+                'Collation' => 8,
             ];
         }
 
-        $result = $column[$keyMap[$key]];
-
-        return $result;
+        return $column[$keyMap[$key]];
     }
-
 
     /**
      * Get the maximal length of a given column of a given type.
      *
-     * @param array  $column       The meta column for which the may length has to be found.
-     * @param string $assignedType The type of the column.
+     * @param array  $column       the meta column for which the may length has to be found
+     * @param string $assignedType the type of the column
      *
      * @return int[] The maximal length and the scale (in case of DECIMAL type).
      *               Both variables are -1 in case of no value can be found.
@@ -1272,9 +1261,9 @@ class Database implements DatabaseInterface
 
         /** @var string $mySqlType E.g. "CHAR(4)" or "DECIMAL(5,2)" or "tinyint(1) unsigned" */
         $mySqlType = $this->getMetaColumnValueByKey($column, 'Type');
-        /** Get the maximum display width for the type */
+        /* Get the maximum display width for the type */
 
-        /** Match Precision an scale E.g DECIMAL(5,2) */
+        /* Match Precision an scale E.g DECIMAL(5,2) */
         if (preg_match("/^(.+)\((\d+),(\d+)/", $mySqlType, $matches)) {
             if (is_numeric($matches[2])) {
                 $maxLength = $matches[2];
@@ -1282,20 +1271,20 @@ class Database implements DatabaseInterface
             if (is_numeric($matches[3])) {
                 $scale = $matches[3];
             }
-            /** Match max length E.g CHAR(4) */
+            /* Match max length E.g CHAR(4) */
         } elseif (preg_match("/^(.+)\((\d+)/", $mySqlType, $matches)) {
             if (is_numeric($matches[2])) {
                 $maxLength = $matches[2];
             }
-            /**
+            /*
              * Match List type E.g. SET('A', 'B', 'CDE)
              * In this case the length will be the string length of the longest element
              */
         } elseif (preg_match("/^(enum|set)\((.*)\)$/i", strtolower($mySqlType), $matches)) {
             if ($matches[2]) {
-                $pieces = explode(",", $matches[2]);
+                $pieces = explode(',', $matches[2]);
                 /** The array values contain 2 quotes, so we have to subtract 2 from the strlen */
-                $maxLength = max(array_map("strlen", $pieces)) - 2;
+                $maxLength = max(array_map('strlen', $pieces)) - 2;
                 if ($maxLength <= 0) {
                     $maxLength = 1;
                 }
@@ -1315,22 +1304,22 @@ class Database implements DatabaseInterface
 
         $assignedType = strtoupper($assignedType);
         if (
-            (in_array($assignedType, $integerTypes) ||
-                in_array($assignedType, $fixedPointTypes) ||
-                in_array($assignedType, $floatingPointTypes) ||
-                in_array($assignedType, $textTypes) ||
-                in_array($assignedType, $dateTypes)) && -1 == $maxLength
+            (\in_array($assignedType, $integerTypes, true) ||
+                \in_array($assignedType, $fixedPointTypes, true) ||
+                \in_array($assignedType, $floatingPointTypes, true) ||
+                \in_array($assignedType, $textTypes, true) ||
+                \in_array($assignedType, $dateTypes, true)) && -1 === $maxLength
         ) {
-            /**
+            /*
              * @todo: If the assigned type is one of the following and maxLength is -1, then, if applicable the default max length ot that type should be assigned.
              */
         }
 
-        return [(int) $maxLength, (int) $scale];
+        return [(int)$maxLength, (int)$scale];
     }
 
     /**
-     * This method strips SQL comments and whitespaces to find the first effective SQL command in a giver statement
+     * This method strips SQL comments and whitespaces to find the first effective SQL command in a giver statement.
      *
      * @param string $query The query to extract the command from
      *
@@ -1342,23 +1331,21 @@ class Database implements DatabaseInterface
         $sqlComments = '@(([\'"]).*?[^\\\]\2)|((?:\#|--).*?$|/\*(?:[^/*]|/(?!\*)|\*(?!/)|(?R))*\*\/)\s*|(?<=;)\s+@ms';
         $uncommentedQuery = preg_replace($sqlComments, '$1', $singleLineQuery);
 
-        $command = strtoupper(
+        return strtoupper(
             trim(
                 explode(' ', trim($uncommentedQuery))[0]
             )
         );
-
-        return $command;
     }
 
     /**
      * Ensure, that the given connection is established successful.
      *
-     * @param \Doctrine\DBAL\Connection $connection The connection we want to ensure, if it is established.
+     * @param \Doctrine\DBAL\Connection $connection the connection we want to ensure, if it is established
      *
-     * @throws \Exception If we are not connected correctly to the database.
+     * @throws \Exception if we are not connected correctly to the database
      */
-    protected function ensureConnectionIsEstablished($connection)
+    protected function ensureConnectionIsEstablished($connection): void
     {
         if (!$this->isConnectionEstablished($connection)) {
             $message = $this->createConnectionErrorMessage($connection);
@@ -1370,7 +1357,7 @@ class Database implements DatabaseInterface
     /**
      * Determine, if the connection is established successful.
      *
-     * @param \Doctrine\DBAL\Connection $connection The connection we want to know, if it is established.
+     * @param \Doctrine\DBAL\Connection $connection the connection we want to know, if it is established
      *
      * @return bool Is the connection successfully established?
      */
@@ -1384,7 +1371,7 @@ class Database implements DatabaseInterface
      *
      * @throws DBALException
      *
-     * @return Connection The connection to the database.
+     * @return Connection the connection to the database
      */
     protected function getConnectionFromDriverManager()
     {
@@ -1395,13 +1382,14 @@ class Database implements DatabaseInterface
     {
         $configuration = new Configuration();
         $this->configureSqlLogger($configuration);
+
         return $configuration;
     }
 
     private function configureSqlLogger(Configuration $configuration): void
     {
         $container = ContainerFactory::getInstance()->getContainer();
-        /** logger instantiation requires auto-wiring(compiled container) */
+        /* logger instantiation requires auto-wiring(compiled container) */
         if ($container->isCompiled()) {
             $databaseLogger = $container->get(DatabaseLoggerFactoryInterface::class)->getDatabaseLogger();
             $configuration->setSQLLogger($databaseLogger);
@@ -1411,21 +1399,18 @@ class Database implements DatabaseInterface
     /**
      * Create the message we want to throw, if there was a connection error.
      *
-     * @param Connection $connection The connection.
+     * @param Connection $connection the connection
      *
-     * @return string The message we want throw if there was a connection error.
+     * @return string the message we want throw if there was a connection error
      */
     protected function createConnectionErrorMessage($connection)
     {
-        $message =
-            'Not connected to database. dsn: ' .
+        return 'Not connected to database. dsn: ' .
             $connection->getDriver()->getName() .
             '://' .
             '****:****@' .
             $connection->getHost() . ':' . $connection->getPort() .
             '/' . $connection->getDatabase();
-
-        return $message;
     }
 
     /**
@@ -1437,7 +1422,7 @@ class Database implements DatabaseInterface
      */
     private function convertErrorCode($code)
     {
-        if ($code === self::MYSQL_DUPLICATE_KEY_ERROR_CODE) {
+        if (self::MYSQL_DUPLICATE_KEY_ERROR_CODE === $code) {
             $code = self::DUPLICATE_KEY_ERROR_CODE;
         }
 

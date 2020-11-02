@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,9 +13,10 @@ use Exception;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
- * Contains system event handler methods
+ * Contains system event handler methods.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class SystemEventHandler
@@ -29,17 +32,15 @@ class SystemEventHandler
     private $onlineLicenseCheck = null;
 
     /**
-     * OLC dependency setter
-     *
-     * @param \OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck
+     * OLC dependency setter.
      */
-    public function setOnlineLicenseCheck(\OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck)
+    public function setOnlineLicenseCheck(\OxidEsales\Eshop\Core\OnlineLicenseCheck $onlineLicenseCheck): void
     {
         $this->onlineLicenseCheck = $onlineLicenseCheck;
     }
 
     /**
-     * OLC dependency getter
+     * OLC dependency getter.
      *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheck
      */
@@ -76,28 +77,27 @@ class SystemEventHandler
     }
 
     /**
-     * ApplicationServerExporter dependency setter
+     * ApplicationServerExporter dependency setter.
      *
      * @return \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface
      */
     protected function getApplicationServerExporter()
     {
         $appServerService = $this->getAppServerService();
+
         return oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $appServerService);
     }
 
     /**
-     * OnlineModuleVersionNotifier dependency setter
-     *
-     * @param \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $onlineModuleVersionNotifier
+     * OnlineModuleVersionNotifier dependency setter.
      */
-    public function setOnlineModuleVersionNotifier(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $onlineModuleVersionNotifier)
+    public function setOnlineModuleVersionNotifier(\OxidEsales\Eshop\Core\OnlineModuleVersionNotifier $onlineModuleVersionNotifier): void
     {
         $this->onlineModuleVersionNotifier = $onlineModuleVersionNotifier;
     }
 
     /**
-     * OnlineModuleVersionNotifier dependency getter
+     * OnlineModuleVersionNotifier dependency getter.
      *
      * @return \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier
      */
@@ -135,9 +135,9 @@ class SystemEventHandler
     }
 
     /**
-     * onAdminLogin() is called on every successful login to the backend
+     * onAdminLogin() is called on every successful login to the backend.
      */
-    public function onAdminLogin()
+    public function onAdminLogin(): void
     {
         try {
             if ($this->isSendingShopDataEnabled()) {
@@ -150,7 +150,7 @@ class SystemEventHandler
     /**
      * Perform shop startup related actions, like license check.
      */
-    public function onShopStart()
+    public function onShopStart(): void
     {
         $this->validateOffline();
     }
@@ -158,7 +158,7 @@ class SystemEventHandler
     /**
      * Perform shop finishing up related actions, like updating app server data.
      */
-    public function onShopEnd()
+    public function onShopEnd(): void
     {
         $this->validateOnline();
     }
@@ -166,7 +166,7 @@ class SystemEventHandler
     /**
      * Check if shop is valid online.
      */
-    protected function validateOnline()
+    protected function validateOnline(): void
     {
         try {
             $appServerService = $this->getAppServerService();
@@ -191,13 +191,13 @@ class SystemEventHandler
      */
     protected function isSendingShopDataEnabled()
     {
-        return (bool) Registry::getConfig()->getConfigParam('blSendTechnicalInformationToOxid');
+        return (bool)Registry::getConfig()->getConfigParam('blSendTechnicalInformationToOxid');
     }
 
     /**
      * Sends shop information to oxid servers.
      */
-    protected function sendShopInformation()
+    protected function sendShopInformation(): void
     {
         if ($this->needToSendShopInformation()) {
             $this->updateNextCheckTime();
@@ -224,14 +224,14 @@ class SystemEventHandler
      */
     private function getNextCheckTime()
     {
-        return (int) Registry::getConfig()->getSystemConfigParameter('sOnlineLicenseNextCheckTime');
+        return (int)Registry::getConfig()->getSystemConfigParameter('sOnlineLicenseNextCheckTime');
     }
 
     /**
      * Update when shop was checked last time with white noise.
      * White noise is used to separate call time for different shop.
      */
-    private function updateNextCheckTime()
+    private function updateNextCheckTime(): void
     {
         $hourToCheck = $this->getCheckTime();
 
@@ -252,9 +252,9 @@ class SystemEventHandler
     {
         $checkTime = Registry::getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
         if (!$checkTime) {
-            $hourToCheck = rand(8, 23);
-            $minuteToCheck = rand(0, 59);
-            $secondToCheck = rand(0, 59);
+            $hourToCheck = random_int(8, 23);
+            $minuteToCheck = random_int(0, 59);
+            $secondToCheck = random_int(0, 59);
 
             $checkTime = $hourToCheck . ':' . $minuteToCheck . ':' . $secondToCheck;
             Registry::getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseCheckTime', $checkTime);
@@ -279,7 +279,7 @@ class SystemEventHandler
     /**
      * Check if shop valid and do related actions.
      */
-    protected function validateOffline()
+    protected function validateOffline(): void
     {
     }
 
@@ -302,7 +302,7 @@ class SystemEventHandler
      */
     protected function getAppServerService()
     {
-        $appServerService = oxNew(
+        return oxNew(
             \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
             oxNew(
                 \OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class,
@@ -310,9 +310,7 @@ class SystemEventHandler
                 Registry::getConfig()
             ),
             oxNew(\OxidEsales\Eshop\Core\UtilsServer::class),
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
+            \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->getTime()
         );
-
-        return $appServerService;
     }
 }

@@ -13,8 +13,5 @@ use OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\PsrLoggerC
 
 interface LoggerConfigurationValidatorInterface
 {
-    /**
-     * @param PsrLoggerConfigurationInterface $configuration
-     */
     public function validate(PsrLoggerConfigurationInterface $configuration);
 }

@@ -21,17 +21,12 @@ class SmartyTemplateRendererBridge implements TemplateRendererBridgeInterface
 
     /**
      * SmartyTemplateRendererBridge constructor.
-     *
-     * @param TemplateRendererInterface $renderer
      */
     public function __construct(TemplateRendererInterface $renderer)
     {
         $this->renderer = $renderer;
     }
 
-    /**
-     * @return TemplateRendererInterface
-     */
     public function getTemplateRenderer(): TemplateRendererInterface
     {
         return $this->renderer;
@@ -40,7 +35,7 @@ class SmartyTemplateRendererBridge implements TemplateRendererBridgeInterface
     /**
      * @param mixed $engine
      */
-    public function setEngine($engine)
+    public function setEngine($engine): void
     {
         $this->renderer->getTemplateEngine()->setSmarty($engine);
     }

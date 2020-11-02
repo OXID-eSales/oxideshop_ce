@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Current user newsletter manager.
@@ -35,13 +36,13 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
     /**
      * Whether the newsletter option had been changed give some affirmation.
      *
-     * @var integer
+     * @var int
      */
     protected $_iSubscriptionStatus = 0;
 
     /**
      * If user is not logged in - returns name of template AccountNewsletterController::_sThisLoginTemplate, or if user
-     * is already logged in - returns name of template AccountNewsletterController::_sThisTemplate
+     * is already logged in - returns name of template AccountNewsletterController::_sThisTemplate.
      *
      * @return string
      */
@@ -57,7 +58,6 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
 
         return $this->_sThisTemplate;
     }
-
 
     /**
      * Template variable getter. Returns 0 when newsletter had been changed.
@@ -94,7 +94,7 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
 
         $iStatus = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('status');
         if ($oUser->setNewsSubscription($iStatus, \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderOptInEmail'))) {
-            $this->_iSubscriptionStatus = ($iStatus == 0 && $iStatus !== null) ? -1 : 1;
+            $this->_iSubscriptionStatus = 0 === $iStatus && null !== $iStatus ? -1 : 1;
         }
     }
 
@@ -102,7 +102,7 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
      * Template variable getter. Returns 1 when newsletter had been changed to "yes"
      * else return -1 if had been changed to "no".
      *
-     * @return integer
+     * @return int
      */
     public function getSubscriptionStatus()
     {

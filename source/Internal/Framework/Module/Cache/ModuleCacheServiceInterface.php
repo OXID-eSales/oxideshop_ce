@@ -12,33 +12,13 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 interface ModuleCacheServiceInterface
 {
     /**
-     * Invalidate all module related cache items for a given module and a given shop
-     *
-     * @param string $moduleId
-     * @param int    $shopId
+     * Invalidate all module related cache items for a given module and a given shop.
      */
     public function invalidate(string $moduleId, int $shopId): void;
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     * @param array  $data
-     */
     public function put(string $key, int $shopId, array $data): void;
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     *
-     * @return array
-     */
     public function get(string $key, int $shopId): array;
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     *
-     * @return bool
-     */
     public function exists(string $key, int $shopId): bool;
 }

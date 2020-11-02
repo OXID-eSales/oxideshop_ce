@@ -11,17 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
 interface ShopEnvironmentConfigurationDaoInterface
 {
-    /**
-     * @param int $shopId
-     *
-     * @return array
-     */
     public function get(int $shopId): array;
 
-    /**
-     * @param int $shopId
-     *
-     * @return void
-     */
     public function remove(int $shopId): void;
 }

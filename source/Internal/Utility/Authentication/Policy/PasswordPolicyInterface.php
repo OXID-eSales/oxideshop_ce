@@ -11,8 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy;
 
 interface PasswordPolicyInterface
 {
-    /**
-     * @param string $password
-     */
     public function enforcePasswordPolicy(string $password);
 }

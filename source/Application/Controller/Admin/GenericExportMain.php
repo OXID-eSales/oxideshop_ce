@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,29 +15,29 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 class GenericExportMain extends \OxidEsales\Eshop\Application\Controller\Admin\DynamicExportBaseController
 {
     /**
-     * Export class name
+     * Export class name.
      *
      * @var string
      */
-    public $sClassDo = "genExport_do";
+    public $sClassDo = 'genExport_do';
 
     /**
-     * Export ui class name
+     * Export ui class name.
      *
      * @var string
      */
-    public $sClassMain = "genExport_main";
+    public $sClassMain = 'genExport_main';
 
     /**
      * Current class template name.
      *
      * @var string
      */
-    protected $_sThisTemplate = "dyn_exportdefault.tpl";
+    protected $_sThisTemplate = 'dyn_exportdefault.tpl';
 
     /**
      * Creates shop object, passes shop data to Smarty engine and returns name of
-     * template file
+     * template file.
      *
      * @return string
      */
@@ -48,7 +50,7 @@ class GenericExportMain extends \OxidEsales\Eshop\Application\Controller\Admin\D
 
     /**
      * Current view ID getter helps to identify navigation position.
-     * Bypassing dynexportbase::getViewId
+     * Bypassing dynexportbase::getViewId.
      *
      * @return string
      */

@@ -17,8 +17,6 @@ interface ShopAwareInterface
      * This method is used by the DI container
      * to set an array of shop ids for which
      * this event subscriber should be executed.
-     *
-     * @param array $activeShops
      */
     public function setActiveShops(array $activeShops);
 
@@ -26,8 +24,6 @@ interface ShopAwareInterface
      * This is set by the DI container to provide
      * access to the current shop ID to determine
      * if the event should be executed or not.
-     *
-     * @param ContextInterface $context
      */
     public function setContext(ContextInterface $context);
 

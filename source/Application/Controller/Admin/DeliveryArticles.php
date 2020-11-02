@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin article main delivery manager.
@@ -29,13 +29,13 @@ class DeliveryArticles extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
 
         $soxId = $this->getEditObjectId();
 
-        if (isset($soxId) && $soxId != "-1") {
-            $this->_createCategoryTree("artcattree");
+        if (isset($soxId) && '-1' !== $soxId) {
+            $this->_createCategoryTree('artcattree');
 
             // load object
             $oDelivery = oxNew(\OxidEsales\Eshop\Application\Model\Delivery::class);
             $oDelivery->load($soxId);
-            $this->_aViewData["edit"] = $oDelivery;
+            $this->_aViewData['edit'] = $oDelivery;
 
             //Disable editing for derived articles
             if ($oDelivery->isDerived()) {
@@ -43,19 +43,19 @@ class DeliveryArticles extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             }
         }
 
-        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
-        if ($iAoc == 1) {
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aoc');
+        if (1 === $iAoc) {
             $oDeliveryArticlesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryArticlesAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryArticlesAjax->getColumns();
 
-            return "popups/delivery_articles.tpl";
-        } elseif ($iAoc == 2) {
+            return 'popups/delivery_articles.tpl';
+        } elseif (2 === $iAoc) {
             $oDeliveryCategoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliveryCategoriesAjax::class);
             $this->_aViewData['oxajax'] = $oDeliveryCategoriesAjax->getColumns();
 
-            return "popups/delivery_categories.tpl";
+            return 'popups/delivery_categories.tpl';
         }
 
-        return "delivery_articles.tpl";
+        return 'delivery_articles.tpl';
     }
 }

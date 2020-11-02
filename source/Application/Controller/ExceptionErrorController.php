@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 /**
- * Displays exception errors
+ * Displays exception errors.
  */
 class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -19,20 +21,22 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
      */
     protected $_sThisTemplate = 'message/exception.tpl';
 
-    /** @var array Remove loading of components on exception handling. */
+    /**
+     * @var array remove loading of components on exception handling
+     */
     protected $_aComponentNames = [];
 
     /**
-     * Sets exception errros to template
+     * Sets exception errros to template.
      */
-    public function displayExceptionError()
+    public function displayExceptionError(): void
     {
         $aViewData = $this->getViewData();
 
         //add all exceptions to display
         $aErrors = $this->_getErrors();
 
-        if (is_array($aErrors) && count($aErrors)) {
+        if (\is_array($aErrors) && \count($aErrors)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($aViewData, $aErrors);
         }
 
@@ -43,9 +47,10 @@ class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\
     }
 
     /**
-     * return page errors array
+     * return page errors array.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getErrors" in next major
      */
     protected function _getErrors() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

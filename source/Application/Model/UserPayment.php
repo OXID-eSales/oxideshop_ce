@@ -1,15 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxDb;
 
 /**
  * User payment manager.
@@ -19,28 +17,28 @@ use oxDb;
 class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Name of current class
+     * Name of current class.
      *
      * @var string
      */
     protected $_sClassName = 'oxuserpayment';
 
     /**
-     * Payment info object
+     * Payment info object.
      *
      * @var \OxidEsales\Eshop\Application\Model\Payment
      */
     protected $_oPayment = null;
 
     /**
-     * current dyn values
+     * current dyn values.
      *
      * @var array
      */
     protected $_aDynValues = null;
 
     /**
-     * Special getter for oxpayments__oxdesc field
+     * Special getter for oxpayments__oxdesc field.
      *
      * @param string $sName name of field
      *
@@ -49,8 +47,8 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function __get($sName)
     {
         //due to compatibility with templates
-        if ($sName == 'oxpayments__oxdesc') {
-            if ($this->_oPayment === null) {
+        if ('oxpayments__oxdesc' === $sName) {
+            if (null === $this->_oPayment) {
                 $this->_oPayment = oxNew(\OxidEsales\Eshop\Application\Model\Payment::class);
                 $this->_oPayment->load($this->oxuserpayments__oxpaymentsid->value);
             }
@@ -58,8 +56,8 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
             return $this->_oPayment->oxpayments__oxdesc;
         }
 
-        if ($sName == 'aDynValues') {
-            if ($this->_aDynValues === null) {
+        if ('aDynValues' === $sName) {
+            if (null === $this->_aDynValues) {
                 $this->_aDynValues = $this->getDynValues();
             }
 
@@ -70,7 +68,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Class constructor. Sets payment key for encoding sensitive data and
+     * Class constructor. Sets payment key for encoding sensitive data and.
      */
     public function __construct()
     {
@@ -79,7 +77,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Loads user payment object
+     * Loads user payment object.
      *
      * @param string $sOxId oxuserpayment id
      *
@@ -93,22 +91,20 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
         return $this->assignRecord($sSelect);
     }
 
-
     /**
      * Inserts payment information to DB. Returns insert status.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $blRet = parent::_insert();
-
-        return $blRet;
+        return parent::_insert();
     }
 
     /**
-     * Get user payment by payment id
+     * Get user payment by payment id.
      *
      * @param \OxidEsales\Eshop\Application\Model\User $oUser        user object
      * @param string                                   $sPaymentType payment type
@@ -118,13 +114,13 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getPaymentByPaymentType($oUser = null, $sPaymentType = null)
     {
         $blGet = false;
-        if ($oUser && $sPaymentType != null) {
+        if ($oUser && null !== $sPaymentType) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = 'select oxpaymentid from oxorder where oxpaymenttype = :oxpaymenttype and
                     oxuserid = :oxuserid order by oxorderdate desc';
             $params = [
                 ':oxpaymenttype' => $sPaymentType,
-                ':oxuserid' => $oUser->getId()
+                ':oxuserid' => $oUser->getId(),
             ];
 
             if (($sOxId = $oDb->getOne($sQ, $params))) {
@@ -136,7 +132,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns an array of dyn payment values
+     * Returns an array of dyn payment values.
      *
      * @return array
      */
@@ -144,7 +140,7 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if (!$this->_aDynValues) {
             $sRawDynValue = null;
-            if (is_object($this->oxuserpayments__oxvalue)) {
+            if (\is_object($this->oxuserpayments__oxvalue)) {
                 $sRawDynValue = $this->oxuserpayments__oxvalue->getRawValue();
             }
 
@@ -155,11 +151,11 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * sets the dyn values
+     * sets the dyn values.
      *
      * @param array $aDynValues the array of dy values
      */
-    public function setDynValues($aDynValues)
+    public function setDynValues($aDynValues): void
     {
         $this->_aDynValues = $aDynValues;
     }

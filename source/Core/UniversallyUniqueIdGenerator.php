@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -24,7 +26,7 @@ class UniversallyUniqueIdGenerator
      */
     public function __construct(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLChecker = null)
     {
-        if (is_null($openSSLChecker)) {
+        if (null === $openSSLChecker) {
             $openSSLChecker = oxNew(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class);
         }
         $this->_openSSLChecker = $openSSLChecker;
@@ -68,8 +70,8 @@ class UniversallyUniqueIdGenerator
     {
         $sSeed = str_replace(['-', '{', '}'], '', $sSeed);
         $sBinarySeed = '';
-        for ($i = 0; $i < strlen($sSeed); $i += 2) {
-            $sBinarySeed .= chr(hexdec($sSeed[$i] . $sSeed[$i + 1]));
+        for ($i = 0; $i < \strlen($sSeed); $i += 2) {
+            $sBinarySeed .= \chr(hexdec($sSeed[$i] . $sSeed[$i + 1]));
         }
         $sHash = sha1($sBinarySeed . $sSalt);
         $sUUID = sprintf(
@@ -88,6 +90,7 @@ class UniversallyUniqueIdGenerator
      * gets open SSL checker.
      *
      * @return \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getOpenSSLChecker" in next major
      */
     protected function _getOpenSSLChecker() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -99,13 +102,14 @@ class UniversallyUniqueIdGenerator
      * Generates UUID based on OpenSSL's openssl_random_pseudo_bytes.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "generateBasedOnOpenSSL" in next major
      */
     protected function _generateBasedOnOpenSSL() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sRandomData = openssl_random_pseudo_bytes(16);
-        $sRandomData[6] = chr(ord($sRandomData[6]) & 0x0f | 0x40); // set version to 0100
-        $sRandomData[8] = chr(ord($sRandomData[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+        $sRandomData[6] = \chr(\ord($sRandomData[6]) & 0x0f | 0x40); // set version to 0100
+        $sRandomData[8] = \chr(\ord($sRandomData[8]) & 0x3f | 0x80); // set bits 6-7 to 10
 
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($sRandomData), 4));
     }
@@ -114,20 +118,21 @@ class UniversallyUniqueIdGenerator
      * Generates UUID based on mt_rand.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "generateBasedOnMtRand" in next major
      */
     protected function _generateBasedOnMtRand() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0x0fff) | 0x4000,
-            mt_rand(0, 0x3fff) | 0x8000,
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff)
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0x0fff) | 0x4000,
+            random_int(0, 0x3fff) | 0x8000,
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0xffff)
         );
     }
 }

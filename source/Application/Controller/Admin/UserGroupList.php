@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -26,7 +28,7 @@ class UserGroupList extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @var string
      */
-    protected $_sDefSortField = "oxtitle";
+    protected $_sDefSortField = 'oxtitle';
 
     /**
      * Executes parent method parent::render() and returns name of template
@@ -38,6 +40,6 @@ class UserGroupList extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::render();
 
-        return "usergroup_list.tpl";
+        return 'usergroup_list.tpl';
     }
 }

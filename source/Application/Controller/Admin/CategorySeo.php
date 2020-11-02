@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,18 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
-
 /**
- * Category seo config class
+ * Category seo config class.
  */
 class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
     /**
-     * Updating showsuffix field
-     *
-     * @return null
+     * Updating showsuffix field.
      */
     public function save()
     {
@@ -27,7 +24,7 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
         if ($oCategory->load($sOxid)) {
             $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
             $sShowSuffixField = 'oxcategories__oxshowsuffix';
-            $oCategory->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
+            $oCategory->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int)$blShowSuffixParameter);
             $oCategory->save();
 
             $this->_getEncoder()->markRelatedAsExpired($oCategory);
@@ -37,18 +34,20 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
     }
 
     /**
-     * Returns current object type seo encoder object
+     * Returns current object type seo encoder object.
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderCategory
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class);
     }
 
     /**
-     * This SEO object supports suffixes so return TRUE
+     * This SEO object supports suffixes so return TRUE.
      *
      * @return bool
      */
@@ -58,18 +57,20 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
     }
 
     /**
-     * Returns url type
+     * Returns url type.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getType()
     {
         return 'oxcategory';
     }
 
     /**
-     * Returns true if SEO object id has suffix enabled
+     * Returns true if SEO object id has suffix enabled.
      *
      * @return bool
      */
@@ -77,12 +78,12 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
     {
         $oCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         if ($oCategory->load($this->getEditObjectId())) {
-            return (bool) $oCategory->oxcategories__oxshowsuffix->value;
+            return (bool)$oCategory->oxcategories__oxshowsuffix->value;
         }
     }
 
     /**
-     * Returns seo uri
+     * Returns seo uri.
      *
      * @return string
      */

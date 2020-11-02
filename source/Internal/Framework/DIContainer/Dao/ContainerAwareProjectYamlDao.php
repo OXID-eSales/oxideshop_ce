@@ -18,15 +18,12 @@ use Symfony\Component\Filesystem\Filesystem;
 class ContainerAwareProjectYamlDao extends ProjectYamlDao
 {
     /**
-     * @var EventDispatcherInterface $eventDispatcher
+     * @var EventDispatcherInterface
      */
     private $eventDispatcher;
 
     /**
      * ContainerAwareProjectYamlDao constructor.
-     * @param BasicContextInterface    $context
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Filesystem               $filesystem
      */
     public function __construct(
         BasicContextInterface $context,
@@ -37,10 +34,7 @@ class ContainerAwareProjectYamlDao extends ProjectYamlDao
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param DIConfigWrapper $config
-     */
-    public function saveProjectConfigFile(DIConfigWrapper $config)
+    public function saveProjectConfigFile(DIConfigWrapper $config): void
     {
         parent::saveProjectConfigFile($config);
         $this->eventDispatcher->dispatch(

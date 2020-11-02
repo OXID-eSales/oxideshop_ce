@@ -12,8 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 use OxidEsales\Eshop\Core\Config;
 
 /**
- * Class TemplateFileLocator
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
+ * Class TemplateFileLocator.
  */
 class TemplateFileLocator implements FileLocatorInterface
 {
@@ -24,8 +23,6 @@ class TemplateFileLocator implements FileLocatorInterface
 
     /**
      * FileLocator constructor.
-     *
-     * @param Config $context
      */
     public function __construct(Config $context)
     {

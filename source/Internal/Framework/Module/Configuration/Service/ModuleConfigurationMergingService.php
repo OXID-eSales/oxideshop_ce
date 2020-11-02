@@ -26,10 +26,6 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
      */
     private $classExtensionsMergingService;
 
-    /**
-     * @param SettingsMergingServiceInterface $moduleSettingsMergingService
-     * @param ModuleClassExtensionsMergingServiceInterface $classExtensionsMergingService
-     */
     public function __construct(
         SettingsMergingServiceInterface $moduleSettingsMergingService,
         ModuleClassExtensionsMergingServiceInterface $classExtensionsMergingService
@@ -39,7 +35,8 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
+     *
      * @throws ModuleConfigurationNotFoundException
      * @throws ExtensionNotInChainException
      */
@@ -67,10 +64,6 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
         return $shopConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @return ModuleConfiguration
-     */
     private function cloneModuleConfiguration(ModuleConfiguration $moduleConfiguration): ModuleConfiguration
     {
         $moduleSettingClones = [];
@@ -79,12 +72,11 @@ class ModuleConfigurationMergingService implements ModuleConfigurationMergingSer
         }
         $moduleConfigurationClone = clone $moduleConfiguration;
         $moduleConfigurationClone->setModuleSettings($moduleSettingClones);
+
         return $moduleConfigurationClone;
     }
 
     /**
-     * @param ShopConfiguration $shopConfiguration
-     * @param ModuleConfiguration $mergedModuleConfiguration
      * @throws ModuleConfigurationNotFoundException
      */
     private function setConfiguredOptionToMergedConfiguration(

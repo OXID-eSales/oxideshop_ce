@@ -44,9 +44,6 @@ class CreateUserCommand extends Command
 
     /**
      * AdminUserSetupCommand constructor.
-     * @param EmailValidatorServiceInterface $emailValidatorService
-     * @param AdminUserServiceInterface      $adminService
-     * @param BasicContextInterface          $basicContext
      */
     public function __construct(
         EmailValidatorServiceInterface $emailValidatorService,
@@ -63,7 +60,7 @@ class CreateUserCommand extends Command
     /**
      * Configures the current command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption(self::ADMIN_EMAIL, null, InputOption::VALUE_REQUIRED)
@@ -72,8 +69,6 @@ class CreateUserCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -91,7 +86,6 @@ class CreateUserCommand extends Command
     }
 
     /**
-     * @param string $email
      * @throws InvalidEmailException
      */
     private function validateAdminEmail(string $email): void
@@ -101,9 +95,6 @@ class CreateUserCommand extends Command
         }
     }
 
-    /**
-     * @param InputInterface $input
-     */
     private function createAdmin(InputInterface $input): void
     {
         $this->adminService->createAdmin(

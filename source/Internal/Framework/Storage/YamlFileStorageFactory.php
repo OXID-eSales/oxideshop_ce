@@ -32,9 +32,6 @@ class YamlFileStorageFactory implements FileStorageFactoryInterface
 
     /**
      * YamlFileStorageFactory constructor.
-     * @param FileLocatorInterface $fileLocator
-     * @param LockFactory $lockFactory
-     * @param Filesystem $filesystemService
      */
     public function __construct(FileLocatorInterface $fileLocator, LockFactory $lockFactory, Filesystem $filesystemService)
     {
@@ -42,7 +39,6 @@ class YamlFileStorageFactory implements FileStorageFactoryInterface
         $this->lockFactory = $lockFactory;
         $this->filesystemService = $filesystemService;
     }
-
 
     public function create(string $filePath): ArrayStorageInterface
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,8 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
 use Exception;
 
 /**
@@ -31,11 +31,9 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
     protected $_sDefSortOrder = 'asc';
 
     /**
-     * Checks for Malladmin rights
-     *
-     * @return null
+     * Checks for Malladmin rights.
      */
-    public function deleteEntry()
+    public function deleteEntry(): void
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sOxId = $this->getEditObjectId();
@@ -45,10 +43,10 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         $aLangData['urls'] = $myConfig->getConfigParam('aLanguageURLs');
         $aLangData['sslUrls'] = $myConfig->getConfigParam('aLanguageSSLURLs');
 
-        $iBaseId = (int) $aLangData['params'][$sOxId]['baseId'];
+        $iBaseId = (int)$aLangData['params'][$sOxId]['baseId'];
 
         // preventing deleting main language with base id = 0
-        if ($iBaseId == 0) {
+        if (0 === $iBaseId) {
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_DELETINGMAINLANG_WARNING');
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
@@ -69,7 +67,7 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         $myConfig->saveShopConfVar('arr', 'aLanguageSSLURLs', $aLangData['sslUrls']);
 
         //if deleted language was default, setting defalt lang to 0
-        if ($iBaseId == $myConfig->getConfigParam('sDefaultLang')) {
+        if ($iBaseId === $myConfig->getConfigParam('sDefaultLang')) {
             $myConfig->saveShopConfVar('str', 'sDefaultLang', 0);
         }
     }
@@ -85,16 +83,18 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         parent::render();
         $this->_aViewData['mylist'] = $this->_getLanguagesList();
 
-        return "language_list.tpl";
+        return 'language_list.tpl';
     }
 
     /**
      * Collects shop languages list.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguagesList" in next major
      */
-    protected function _getLanguagesList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getLanguagesList()
     {
         $aLangParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageParams');
         $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageArray();
@@ -102,21 +102,21 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         foreach ($aLanguages as $sKey => $sValue) {
             $sOxId = $sValue->oxid;
-            $aLanguages[$sKey]->active = (!isset($aLangParams[$sOxId]["active"])) ? 1 : $aLangParams[$sOxId]["active"];
-            $aLanguages[$sKey]->default = ($aLangParams[$sOxId]["baseId"] == $sDefaultLang) ? true : false;
-            $aLanguages[$sKey]->sort = $aLangParams[$sOxId]["sort"];
+            $aLanguages[$sKey]->active = !isset($aLangParams[$sOxId]['active']) ? 1 : $aLangParams[$sOxId]['active'];
+            $aLanguages[$sKey]->default = $aLangParams[$sOxId]['baseId'] === $sDefaultLang ? true : false;
+            $aLanguages[$sKey]->sort = $aLangParams[$sOxId]['sort'];
         }
 
-        if (is_array($aLangParams)) {
+        if (\is_array($aLangParams)) {
             $aSorting = $this->getListSorting();
 
-            if (is_array($aSorting)) {
+            if (\is_array($aSorting)) {
                 foreach ($aSorting as $aFieldSorting) {
                     foreach ($aFieldSorting as $sField => $sDir) {
                         $this->_sDefSortField = $sField;
                         $this->_sDefSortOrder = $sDir;
 
-                        if ($sField == 'active') {
+                        if ('active' === $sField) {
                             //reverting sort order for field 'active'
                             $this->_sDefSortOrder = 'desc';
                         }
@@ -133,24 +133,26 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
     /**
      * Callback function for sorting languages objects. Sorts array according
-     * 'sort' parameter
+     * 'sort' parameter.
      *
      * @param object $oLang1 language object
      * @param object $oLang2 language object
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "sortLanguagesCallback" in next major
      */
-    protected function _sortLanguagesCallback($oLang1, $oLang2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _sortLanguagesCallback($oLang1, $oLang2)
     {
         $sSortParam = $this->_sDefSortField;
-        $sVal1 = is_string($oLang1->$sSortParam) ? strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
-        $sVal2 = is_string($oLang2->$sSortParam) ? strtolower($oLang2->$sSortParam) : $oLang2->$sSortParam;
+        $sVal1 = \is_string($oLang1->$sSortParam) ? strtolower($oLang1->$sSortParam) : $oLang1->$sSortParam;
+        $sVal2 = \is_string($oLang2->$sSortParam) ? strtolower($oLang2->$sSortParam) : $oLang2->$sSortParam;
 
-        if ($this->_sDefSortOrder == 'asc') {
-            return ($sVal1 < $sVal2) ? -1 : 1;
+        if ('asc' === $this->_sDefSortOrder) {
+            return $sVal1 < $sVal2 ? -1 : 1;
         } else {
-            return ($sVal1 > $sVal2) ? -1 : 1;
+            return $sVal1 > $sVal2 ? -1 : 1;
         }
     }
 
@@ -159,11 +161,13 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      * to default value in all tables.
      *
      * @param string $iLangId language ID
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "resetMultiLangDbFields" in next major
      */
-    protected function _resetMultiLangDbFields($iLangId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _resetMultiLangDbFields($iLangId): void
     {
-        $iLangId = (int) $iLangId;
+        $iLangId = (int)$iLangId;
 
         //skipping reseting language with id = 0
         if ($iLangId) {

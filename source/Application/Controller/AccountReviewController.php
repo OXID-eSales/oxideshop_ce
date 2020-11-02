@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,14 +12,12 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 
 /**
- * Class AccountReviewController
- *
- * @package OxidEsales\EshopCommunity\Application\Controller
+ * Class AccountReviewController.
  */
 class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\AccountController
 {
@@ -28,7 +28,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     /**
      * Redirect to My Account, if validation does not pass.
      */
-    public function init()
+    public function init(): void
     {
         if (!$this->isUserAllowedToManageOwnReviews() || !$this->getUser()) {
             $this->redirectToAccountDashboard();
@@ -38,7 +38,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     }
 
     /**
-     * Returns Review List
+     * Returns Review List.
      *
      * @return array
      */
@@ -63,7 +63,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     /**
      * Delete review and rating, which belongs to the active user.
      */
-    public function deleteReviewAndRating()
+    public function deleteReviewAndRating(): void
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
 
@@ -87,11 +87,11 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
         return [
             [
                 'title' => $this->getTranslatedString('MY_ACCOUNT'),
-                'link'  => $this->getMyAccountPageUrl(),
+                'link' => $this->getMyAccountPageUrl(),
             ],
             [
                 'title' => $this->getTranslatedString('MY_REVIEWS'),
-                'link'  => $this->getLink(),
+                'link' => $this->getLink(),
             ],
         ];
     }
@@ -139,7 +139,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     /**
      * Deletes Review.
      */
-    private function deleteReview()
+    private function deleteReview(): void
     {
         $userId = $this->getUser()->getId();
         $reviewId = $this->getReviewIdFromRequest();
@@ -153,7 +153,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     /**
      * Deletes Rating.
      */
-    private function deleteRating()
+    private function deleteRating(): void
     {
         $userId = $this->getUser()->getId();
         $ratingId = $this->getRatingIdFromRequest();
@@ -165,7 +165,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     }
 
     /**
-     * Retrieve the Review id from the request
+     * Retrieve the Review id from the request.
      *
      * @return string
      */
@@ -177,7 +177,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     }
 
     /**
-     * Retrieve the Rating id from the request
+     * Retrieve the Rating id from the request.
      *
      * @return string
      */
@@ -189,9 +189,9 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
     }
 
     /**
-     * Redirect to My Account dashboard
+     * Redirect to My Account dashboard.
      */
-    private function redirectToAccountDashboard()
+    private function redirectToAccountDashboard(): void
     {
         Registry::getUtils()->redirect(
             $this->getMyAccountPageUrl(),
@@ -254,7 +254,7 @@ class AccountReviewController extends \OxidEsales\Eshop\Application\Controller\A
         $itemsCount,
         $offset
     ) {
-        return array_slice(
+        return \array_slice(
             $reviewAndRatingList,
             $offset,
             $itemsCount,

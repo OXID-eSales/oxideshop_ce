@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin article main newsletter manager.
@@ -27,39 +27,39 @@ class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
         $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
 
-        if (isset($soxId) && $soxId != "-1") {
+        if (isset($soxId) && '-1' !== $soxId) {
             $oNewsletter->load($soxId);
-            $this->_aViewData["edit"] = $oNewsletter;
+            $this->_aViewData['edit'] = $oNewsletter;
         }
 
         // generate editor
-        $this->_aViewData["editor"] = $this->_generateTextEditor(
-            "100%",
+        $this->_aViewData['editor'] = $this->_generateTextEditor(
+            '100%',
             255,
             $oNewsletter,
-            "oxnewsletter__oxtemplate"
+            'oxnewsletter__oxtemplate'
         );
 
-        return "newsletter_main.tpl";
+        return 'newsletter_main.tpl';
     }
 
     /**
      * Saves newsletter HTML format text.
      */
-    public function save()
+    public function save(): void
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
 
         // shopid
-        $sShopID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
+        $sShopID = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('actshop');
         $aParams['oxnewsletter__oxshopid'] = $sShopID;
 
         $oNewsletter = oxNew(\OxidEsales\Eshop\Application\Model\Newsletter::class);
-        if ($soxId != "-1") {
+        if ('-1' !== $soxId) {
             $oNewsletter->load($soxId);
         } else {
             $aParams['oxnewsletter__oxid'] = null;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,15 +17,13 @@ use OxidEsales\Eshop\Core\SystemEventHandler;
 class OxidStartController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
-     * Initializes globals and environment vars
-     *
-     * @return null
+     * Initializes globals and environment vars.
      */
-    public function appInit()
+    public function appInit(): void
     {
         $this->pageStart();
 
-        if ('oxstart' == \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId() || $this->isAdmin()) {
+        if ('oxstart' === \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId() || $this->isAdmin()) {
             return;
         }
 
@@ -32,7 +32,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
     }
 
     /**
-     * Renders error screen
+     * Renders error screen.
      *
      * @return string
      */
@@ -43,7 +43,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
         $errorNumber = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('execerror');
         $templates = $this->getErrorTemplates();
 
-        if (array_key_exists($errorNumber, $templates)) {
+        if (\array_key_exists($errorNumber, $templates)) {
             return $templates[$errorNumber];
         } else {
             return 'message/err_unknown.tpl';
@@ -53,7 +53,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
     /**
      * Creates and starts session object, sets default currency.
      */
-    public function pageStart()
+    public function pageStart(): void
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -64,7 +64,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
     /**
      * Finalizes the script.
      */
-    public function pageClose()
+    public function pageClose(): void
     {
         $systemEventHandler = $this->_getSystemEventHandler();
         $systemEventHandler->onShopEnd();
@@ -79,9 +79,9 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
     }
 
     /**
-     * Return error number
+     * Return error number.
      *
-     * @return integer
+     * @return int
      */
     public function getErrorNumber()
     {
@@ -104,6 +104,7 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
      * Gets system event handler.
      *
      * @return SystemEventHandler
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSystemEventHandler" in next major
      */
     protected function _getSystemEventHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

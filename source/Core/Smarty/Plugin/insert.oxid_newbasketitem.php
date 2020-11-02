@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,7 +14,7 @@
  * Type: string, html
  * Name: newbasketitem
  * Purpose: Used for tracking in econda, etracker etc.
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param array  $params  params
  * @param Smarty &$smarty clever simulation of a method
@@ -21,13 +23,18 @@
  */
 function smarty_insert_oxid_newbasketitem($params, &$smarty)
 {
-    $myConfig  = \OxidEsales\Eshop\Core\Registry::getConfig();
+    $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-    $aTypes = ['0' => 'none','1' => 'message', '2' => 'popup', '3' => 'basket'];
-    $iType  = $myConfig->getConfigParam('iNewBasketItemMessage');
+    $aTypes = [
+        '0' => 'none',
+        '1' => 'message',
+        '2' => 'popup',
+        '3' => 'basket',
+    ];
+    $iType = $myConfig->getConfigParam('iNewBasketItemMessage');
 
     // If corect type of message is expected
-    if ($iType && $params['type'] && ($params['type'] != $aTypes[$iType])) {
+    if ($iType && $params['type'] && ($params['type'] !== $aTypes[$iType])) {
         return '';
     }
 
@@ -35,7 +42,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
     $sTemplate = $params['tpl'] ? $params['tpl'] : 'inc_newbasketitem.snippet.tpl';
 
     //allways render for ajaxstyle popup
-    $blRender = $params['ajax'] && ($iType == 2);
+    $blRender = $params['ajax'] && (2 === $iType);
 
     //fetching article data
     $oNewItem = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_newitem');

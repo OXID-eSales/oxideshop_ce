@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
-
-use oxRegistry;
 
 /**
  * Current user notice list manager.
@@ -40,14 +40,14 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
     protected $_aSimilarProductList = null;
 
     /**
-     * return the recommlist
+     * return the recommlist.
      *
      * @var array
      */
     protected $_aRecommList = null;
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
@@ -66,7 +66,7 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
      * logged in - loads notice list articles (articles may be accessed
      * by \OxidEsales\Eshop\Application\Model\User::getBasket()), loads similar articles (if available) for
      * the last article in list \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts() and returns name of
-     * template to render AccountNoticeListController::_sThisTemplate
+     * template to render AccountNoticeListController::_sThisTemplate.
      *
      * @return string current template file name
      */
@@ -84,13 +84,13 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Template variable getter. Returns an array if there is something in the list
+     * Template variable getter. Returns an array if there is something in the list.
      *
      * @return array
      */
     public function getNoticeProductList()
     {
-        if ($this->_aNoticeProductList === null) {
+        if (null === $this->_aNoticeProductList) {
             if ($oUser = $this->getUser()) {
                 $this->_aNoticeProductList = $oUser->getBasket('noticelist')->getArticles();
             }
@@ -100,14 +100,14 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
     }
 
     /**
-     * Template variable getter. Returns the products which are in the noticelist
+     * Template variable getter. Returns the products which are in the noticelist.
      *
      * @return array
      */
     public function getSimilarProducts()
     {
         // similar products list
-        if ($this->_aSimilarProductList === null && count($this->getNoticeProductList())) {
+        if (null === $this->_aSimilarProductList && \count($this->getNoticeProductList())) {
             // just ensuring that next call will skip this check
             $this->_aSimilarProductList = false;
 
@@ -127,11 +127,11 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
      */
     public function getSimilarRecommListIds()
     {
-        if ($this->_aSimilarRecommListIds === null) {
+        if (null === $this->_aSimilarRecommListIds) {
             $this->_aSimilarRecommListIds = false;
 
             $aNoticeProdList = $this->getNoticeProductList();
-            if (is_array($aNoticeProdList) && count($aNoticeProdList)) {
+            if (\is_array($aNoticeProdList) && \count($aNoticeProdList)) {
                 $this->_aSimilarRecommListIds = array_keys($aNoticeProdList);
             }
         }
@@ -154,7 +154,7 @@ class AccountNoticeListController extends \OxidEsales\Eshop\Application\Controll
 
         $iBaseLanguage = $oLang->getBaseLanguage();
         $aPath['title'] = $oLang->translateString('MY_ACCOUNT', $iBaseLanguage, false);
-        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . "cl=account");
+        $aPath['link'] = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($sSelfLink . 'cl=account');
         $aPaths[] = $aPath;
 
         $aPath['title'] = $oLang->translateString('MY_WISH_LIST', $iBaseLanguage, false);

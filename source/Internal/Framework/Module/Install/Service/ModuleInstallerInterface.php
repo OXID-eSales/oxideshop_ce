@@ -13,19 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 
 interface ModuleInstallerInterface
 {
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function install(OxidEshopPackage $package);
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function uninstall(OxidEshopPackage $package): void;
 
-    /**
-     * @param OxidEshopPackage $package
-     * @return bool
-     */
     public function isInstalled(OxidEshopPackage $package): bool;
 }

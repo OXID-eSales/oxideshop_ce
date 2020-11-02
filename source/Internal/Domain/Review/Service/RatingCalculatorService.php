@@ -15,13 +15,11 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
 class RatingCalculatorService implements RatingCalculatorServiceInterface
 {
     /**
-     * @param ArrayCollection $ratings
-     *
      * @return float
      */
     public function getAverage(ArrayCollection $ratings)
     {
-        if ($ratings->count() === 0) {
+        if (0 === $ratings->count()) {
             $average = 0;
         } else {
             $average = $this->getSum($ratings) / $ratings->count();
@@ -31,8 +29,6 @@ class RatingCalculatorService implements RatingCalculatorServiceInterface
     }
 
     /**
-     * @param ArrayCollection $ratings
-     *
      * @return int
      */
     private function getSum(ArrayCollection $ratings)
@@ -41,6 +37,7 @@ class RatingCalculatorService implements RatingCalculatorServiceInterface
 
         $ratings->forAll(function ($key, Rating $rating) use (&$sum) {
             $sum += $rating->getRating();
+
             return true;
         });
 

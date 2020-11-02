@@ -28,9 +28,6 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
 
     /**
      * SmartyEngineFactory constructor.
-     *
-     * @param SmartyBuilder                $smartyBuilder
-     * @param SmartyConfigurationInterface $smartyConfiguration
      */
     public function __construct(SmartyBuilder $smartyBuilder, SmartyConfigurationInterface $smartyConfiguration)
     {
@@ -38,9 +35,6 @@ class SmartyEngineFactory implements TemplateEngineFactoryInterface
         $this->smartyConfiguration = $smartyConfiguration;
     }
 
-    /**
-     * @return TemplateEngineInterface
-     */
     public function getTemplateEngine(): TemplateEngineInterface
     {
         $smarty = $this->smartyBuilder

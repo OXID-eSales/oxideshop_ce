@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,7 +13,7 @@
  * Name:     smarty_modifier_oxformdate<br>
  * Purpose:  Conterts date/timestamp/datetime type value to user defined format
  * Example:  {$object|oxformdate:"foo"}
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param object $oConvObject   oxField object
  * @param string $sFieldType    additional type if field (this may help to force formatting)
@@ -22,11 +24,11 @@
  */
 function smarty_modifier_oxformdate($oConvObject, $sFieldType = null, $blPassedValue = false)
 {
-   // creating fake object
+    // creating fake object
     if ($blPassedValue || is_string($oConvObject)) {
         $sValue = $oConvObject;
         $oConvObject = new \OxidEsales\Eshop\Core\Field();
-        $oConvObject->fldmax_length = "0";
+        $oConvObject->fldmax_length = '0';
         $oConvObject->fldtype = $sFieldType;
         $oConvObject->setValue($sValue);
     }
@@ -35,11 +37,11 @@ function smarty_modifier_oxformdate($oConvObject, $sFieldType = null, $blPassedV
 
     // if such format applies to this type of field - sets formatted value to passed object
     if (!$myConfig->getConfigParam('blSkipFormatConversion')) {
-        if ($oConvObject->fldtype == "datetime" || $sFieldType == "datetime") {
+        if ('datetime' === $oConvObject->fldtype || 'datetime' === $sFieldType) {
             \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDateTime($oConvObject);
-        } elseif ($oConvObject->fldtype == "timestamp" || $sFieldType == "timestamp") {
+        } elseif ('timestamp' === $oConvObject->fldtype || 'timestamp' === $sFieldType) {
             \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBTimestamp($oConvObject);
-        } elseif ($oConvObject->fldtype == "date" || $sFieldType == "date") {
+        } elseif ('date' === $oConvObject->fldtype || 'date' === $sFieldType) {
             \OxidEsales\Eshop\Core\Registry::getUtilsDate()->convertDBDate($oConvObject);
         }
     }

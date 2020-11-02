@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Contract\AbstractUpdatableFields;
 
 /**
- * @inheritdoc
+ * {@inheritdoc}
  */
 class UserUpdatableFields extends AbstractUpdatableFields
 {
@@ -61,7 +63,7 @@ class UserUpdatableFields extends AbstractUpdatableFields
             'OXURL',
             'OXUPDATEKEY',
             'OXUPDATEEXP',
-            'OXTIMESTAMP'
+            'OXTIMESTAMP',
         ];
     }
 }

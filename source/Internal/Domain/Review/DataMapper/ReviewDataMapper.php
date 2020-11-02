@@ -13,12 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Review;
 
 class ReviewDataMapper implements ReviewDataMapperInterface
 {
-    /**
-     * @param Review $review
-     * @param array  $data
-     *
-     * @return Review
-     */
     public function map(Review $review, array $data): Review
     {
         $review
@@ -33,29 +27,19 @@ class ReviewDataMapper implements ReviewDataMapperInterface
         return $review;
     }
 
-    /**
-     * @param Review $review
-     *
-     * @return array
-     */
     public function getData(Review $review): array
     {
         return [
-            'OXID'        => $review->getId(),
-            'OXRATING'    => $review->getRating(),
-            'OXTEXT'      => $review->getText(),
-            'OXOBJECTID'  => $review->getObjectId(),
-            'OXUSERID'    => $review->getUserId(),
-            'OXTYPE'      => $review->getType(),
+            'OXID' => $review->getId(),
+            'OXRATING' => $review->getRating(),
+            'OXTEXT' => $review->getText(),
+            'OXOBJECTID' => $review->getObjectId(),
+            'OXUSERID' => $review->getUserId(),
+            'OXTYPE' => $review->getType(),
             'OXTIMESTAMP' => $review->getCreatedAt(),
         ];
     }
 
-    /**
-     * @param Review $review
-     *
-     * @return array
-     */
     public function getPrimaryKey(Review $review): array
     {
         return [

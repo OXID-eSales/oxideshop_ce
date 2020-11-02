@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,13 +9,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-
 /**
  * Admin deliveryset payment manager.
  * There is possibility to assign set to payment method
  * and etc.
- * Admin Menu: Shop settings -> Shipping & Handling Set -> Payment
+ * Admin Menu: Shop settings -> Shipping & Handling Set -> Payment.
  */
 class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
@@ -27,8 +27,8 @@ class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $odeliveryset = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
             $odeliveryset->setLanguage($this->_iEditLang);
@@ -42,7 +42,7 @@ class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\
                 $odeliveryset->load($soxId);
             }
 
-            $this->_aViewData["edit"] = $odeliveryset;
+            $this->_aViewData['edit'] = $odeliveryset;
 
             //Disable editing for derived articles
             if ($odeliveryset->isDerived()) {
@@ -50,19 +50,19 @@ class DeliverySetPayment extends \OxidEsales\Eshop\Application\Controller\Admin\
             }
         }
 
-        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
-        if ($iAoc == 1) {
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aoc');
+        if (1 === $iAoc) {
             $oDeliverysetPaymentAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetPaymentAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetPaymentAjax->getColumns();
 
-            return "popups/deliveryset_payment.tpl";
-        } elseif ($iAoc == 2) {
+            return 'popups/deliveryset_payment.tpl';
+        } elseif (2 === $iAoc) {
             $oDeliverysetCountryAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DeliverySetCountryAjax::class);
             $this->_aViewData['oxajax'] = $oDeliverysetCountryAjax->getColumns();
 
-            return "popups/deliveryset_country.tpl";
+            return 'popups/deliveryset_country.tpl';
         }
 
-        return "deliveryset_payment.tpl";
+        return 'deliveryset_payment.tpl';
     }
 }

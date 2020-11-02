@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,15 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-
 /**
  * Manages product assignment to category.
  */
 class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
@@ -31,7 +31,7 @@ class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns assigned product id
+     * Returns assigned product id.
      *
      * @return string
      */
@@ -41,17 +41,17 @@ class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Sets assigned product id
+     * Sets assigned product id.
      *
      * @param string $sId assigned product id
      */
-    public function setProductId($sId)
+    public function setProductId($sId): void
     {
         $this->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sId);
     }
 
     /**
-     * Returns assigned category id
+     * Returns assigned category id.
      *
      * @return string
      */
@@ -61,11 +61,11 @@ class Object2Category extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Sets assigned category id
+     * Sets assigned category id.
      *
      * @param string $sId assigned category id
      */
-    public function setCategoryId($sId)
+    public function setCategoryId($sId): void
     {
         $this->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sId);
     }

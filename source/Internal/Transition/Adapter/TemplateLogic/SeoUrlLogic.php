@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,28 +12,24 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 class SeoUrlLogic
 {
     /**
-     * Output SEO style url
-     *
-     * @param array $params
-     *
-     * @return string
+     * Output SEO style url.
      */
     public function seoUrl(array $params): string
     {
-        $sOxid = isset($params['oxid']) ? $params['oxid'] : null;
-        $sType = isset($params['type']) ? $params['type'] : null;
-        $sUrl = $sIdent = isset($params['ident']) ? $params['ident'] : null;
+        $sOxid = $params['oxid'] ?? null;
+        $sType = $params['type'] ?? null;
+        $sUrl = $sIdent = $params['ident'] ?? null;
 
         // requesting specified object SEO url
         if ($sType) {
             $oObject = oxNew($sType);
 
             // special case for content type object when ident is provided
-            if ($sType == 'oxcontent' && $sIdent && $oObject->loadByIdent($sIdent)) {
+            if ('oxcontent' === $sType && $sIdent && $oObject->loadByIdent($sIdent)) {
                 $sUrl = $oObject->getLink();
             } elseif ($sOxid) {
                 //minimising aricle object loading
-                if (strtolower($sType) == "oxarticle") {
+                if ('oxarticle' === strtolower($sType)) {
                     $oObject->disablePriceLoad();
                     $oObject->setNoVariantLoading(true);
                 }

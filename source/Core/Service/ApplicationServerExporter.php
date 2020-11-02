@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,8 @@ namespace OxidEsales\EshopCommunity\Core\Service;
 /**
  * Prepare application servers information for export.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface
@@ -24,8 +27,6 @@ class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\Applic
 
     /**
      * ApplicationServerExporter constructor.
-     *
-     * @param \OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface $appServerService
      */
     public function __construct(\OxidEsales\Eshop\Core\Service\ApplicationServerServiceInterface $appServerService)
     {
@@ -42,7 +43,7 @@ class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\Applic
         $activeServerCollection = [];
 
         $activeServers = $this->appServerService->loadActiveAppServerList();
-        if (is_array($activeServers) && !empty($activeServers)) {
+        if (\is_array($activeServers) && !empty($activeServers)) {
             foreach ($activeServers as $server) {
                 $activeServerCollection[] = $this->convertToArray($server);
             }
@@ -60,12 +61,11 @@ class ApplicationServerExporter implements \OxidEsales\Eshop\Core\Service\Applic
      */
     private function convertToArray($server)
     {
-        $activeServer = [
+        return [
             'id' => $server->getId(),
             'ip' => $server->getIp(),
             'lastFrontendUsage' => $server->getLastFrontendUsage(),
-            'lastAdminUsage' => $server->getLastAdminUsage()
+            'lastAdminUsage' => $server->getLastAdminUsage(),
         ];
-        return $activeServer;
     }
 }

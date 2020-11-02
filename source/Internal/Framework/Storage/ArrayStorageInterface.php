@@ -11,13 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Storage;
 
 interface ArrayStorageInterface
 {
-    /**
-     * @return array
-     */
     public function get(): array;
 
-    /**
-     * @param array $data
-     */
     public function save(array $data): void;
 }

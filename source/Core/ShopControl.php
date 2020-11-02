@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,20 +12,18 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
-use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
-use oxOutput;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use oxSystemComponentException;
 use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
 
 /**
  * Main shop actions controller. Processes user actions, logs
  * them (if needed), controls output, redirects according to
- * processed methods logic. This class is initialized from index.php
+ * processed methods logic. This class is initialized from index.php.
  */
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
@@ -45,21 +45,21 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected $_blMainTasksExecuted = null;
 
     /**
-     * Profiler start time
+     * Profiler start time.
      *
-     * @var double
+     * @var float
      */
     protected $_dTimeStart = null;
 
     /**
-     * Profiler end time
+     * Profiler end time.
      *
-     * @var double
+     * @var float
      */
     protected $_dTimeEnd = null;
 
     /**
-     * errors to be displayed/returned
+     * errors to be displayed/returned.
      *
      * @see _getErrors
      *
@@ -68,7 +68,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected $_aErrors = null;
 
     /**
-     * same as errors in session
+     * same as errors in session.
      *
      * @see _getErrors
      *
@@ -77,7 +77,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected $_aAllErrors = null;
 
     /**
-     * same as controller errors in session
+     * same as controller errors in session.
      *
      * @see _getErrors
      *
@@ -85,9 +85,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected $_aControllerErrors = null;
 
-
     /**
-     * output handler object
+     * output handler object.
      *
      * @see _getOuput
      *
@@ -96,7 +95,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected $_oOutput = null;
 
     /**
-     * Cache manager instance
+     * Cache manager instance.
      */
     protected $_oCache = null;
 
@@ -128,13 +127,13 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param array  $parameters    Parameters array
      * @param array  $viewsChain    Array of views names that should be initialized also
      */
-    public function start($controllerKey = null, $function = null, $parameters = null, $viewsChain = null)
+    public function start($controllerKey = null, $function = null, $parameters = null, $viewsChain = null): void
     {
         try {
             $this->_runOnce();
 
-            $function = !is_null($function) ? $function : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
-            $controllerKey = !is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
+            $function = null !== $function ? $function : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('fnc');
+            $controllerKey = null !== $controllerKey ? $controllerKey : $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
 
             $this->_process($controllerClass, $function, $parameters, $viewsChain);
@@ -152,7 +151,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns the difference between stored profiler end time and start time. Works only after _stopMonitor() is called, otherwise returns 0.
      *
-     * @return double
+     * @return float
      */
     public function getTotalTime()
     {
@@ -162,7 +161,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         return 0;
     }
-
 
     /**
      * @deprecated since v6.0 (2017-02-03). Use ShopControl::getStartControllerKey() instead.
@@ -203,7 +201,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if (!$controllerKey) {
             $session = \OxidEsales\Eshop\Core\Registry::getSession();
             if ($this->isAdmin()) {
-                $controllerKey = $session->getVariable("auth") ? 'admin_start' : 'login';
+                $controllerKey = $session->getVariable('auth') ? 'admin_start' : 'login';
             } else {
                 $controllerKey = $this->getFrontendStartControllerKey();
             }
@@ -220,6 +218,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param string $controllerKey Controller id
      *
      * @throws RoutingException
+     *
      * @return string
      */
     protected function resolveControllerClass($controllerKey)
@@ -259,9 +258,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param string $function   Name of function
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views names that should be initialized also
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "process" in next major
      */
-    protected function _process($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _process($class, $function, $parameters = null, $viewsChain = null): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         startProfile('process');
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -313,10 +313,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Executes regular maintenance functions..
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "executeMaintenanceTasks" in next major
      */
-    protected function _executeMaintenanceTasks() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _executeMaintenanceTasks(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (isset($this->_blMainTasksExecuted)) {
             return;
@@ -336,7 +335,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @throws \oxSystemComponentException
      */
-    protected function executeAction($view, $functionName)
+    protected function executeAction($view, $functionName): void
     {
         if (!$this->_canExecuteFunction($view, $functionName)) {
             throw oxNew(\oxSystemComponentException::class, 'Non public method cannot be accessed');
@@ -362,7 +361,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $view
      */
-    protected function sendAdditionalHeaders($view)
+    protected function sendAdditionalHeaders($view): void
     {
     }
 
@@ -375,12 +374,13 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param array  $viewsChain Array of views names that should be initialized also
      *
      * @return FrontendController
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "initializeViewObject" in next major
      */
     protected function _initializeViewObject($class, $function, $parameters = null, $viewsChain = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
-        $classKey = !is_null($classKey) ? $classKey : $class; //fallback
+        $classKey = null !== $classKey ? $classKey : $class; //fallback
 
         /** @var FrontendController $view */
         $view = oxNew($class);
@@ -403,17 +403,18 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $view
      */
-    protected function onViewCreation($view)
+    protected function onViewCreation($view): void
     {
     }
 
     /**
      * Check if method can be executed.
      *
-     * @param FrontendController $view     View object to check if its method can be executed.
-     * @param string             $function Method to check if it can be executed.
+     * @param FrontendController $view     view object to check if its method can be executed
+     * @param string             $function method to check if it can be executed
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "canExecuteFunction" in next major
      */
     protected function _canExecuteFunction($view, $function) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -435,13 +436,14 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param string $controllerName a class name
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getFormattedErrors" in next major
      */
     protected function _getFormattedErrors($controllerName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $errors = $this->_getErrors($controllerName);
         $formattedErrors = [];
-        if (is_array($errors) && count($errors)) {
+        if (\is_array($errors) && \count($errors)) {
             foreach ($errors as $location => $ex2) {
                 foreach ($ex2 as $key => $er) {
                     $error = unserialize($er);
@@ -459,6 +461,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $view view object to render
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "render" in next major
      */
     protected function _render($view) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -480,7 +483,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $ex->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' . ' ' . $templateName);
             $ex->setComponent($templateName);
 
-            $templateName = "message/exception.tpl";
+            $templateName = 'message/exception.tpl';
 
             if ($this->_isDebugMode()) {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($ex);
@@ -495,7 +498,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         //add all exceptions to display
         $errors = $this->_getErrors($view->getClassName());
-        if (is_array($errors) && count($errors)) {
+        if (\is_array($errors) && \count($errors)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
 
@@ -528,6 +531,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Return output handler.
      *
      * @return \OxidEsales\Eshop\Core\Output
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getOutputManager" in next major
      */
     protected function _getOutputManager() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -545,6 +549,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param string $currentControllerName Class name
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getErrors" in next major
      */
     protected function _getErrors($currentControllerName) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -558,9 +563,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $this->_aAllErrors = $this->_aErrors;
         }
         // resetting errors of current controller or widget from session
-        if (is_array($this->_aControllerErrors) && !empty($this->_aControllerErrors)) {
+        if (\is_array($this->_aControllerErrors) && !empty($this->_aControllerErrors)) {
             foreach ($this->_aControllerErrors as $errorName => $controllerName) {
-                if ($controllerName == $currentControllerName) {
+                if ($controllerName === $currentControllerName) {
                     unset($this->_aAllErrors[$errorName]);
                     unset($this->_aControllerErrors[$errorName]);
                 }
@@ -577,9 +582,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * This function is only executed one time here we perform checks if we
      * only need once per session.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "runOnce" in next major
      */
-    protected function _runOnce() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _runOnce(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -596,8 +602,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                 $tpl = 'message/err_setup.tpl';
                 $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
                 $context = [
-                    "oViewConf" => $activeView->getViewConfig(),
-                    "oView"     => $activeView
+                    'oViewConf' => $activeView->getViewConfig(),
+                    'oView' => $activeView,
                 ];
                 $renderer = $this->getRenderer();
                 $errorOutput = $renderer->renderTemplate($tpl, $context);
@@ -613,20 +619,20 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Returns disabled error logging if server is misconfigured #2015 E_NONE replaced with 0.
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getErrorReportingLevel" in next major
      */
     protected function _getErrorReportingLevel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $errorReporting = E_ALL ^ E_NOTICE;
         // some 3rd party libraries still use deprecated functions
-        if (defined('E_DEPRECATED')) {
+        if (\defined('E_DEPRECATED')) {
             $errorReporting = $errorReporting ^ E_DEPRECATED;
         }
 
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isProductiveMode() && !ini_get('log_errors')) {
             $errorReporting = 0;
         }
-
 
         return $errorReporting;
     }
@@ -635,18 +641,20 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Checks if shop is in debug mode.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isDebugMode" in next major
      */
     protected function _isDebugMode() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return (bool) Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
+        return (bool)Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('iDebug');
     }
 
     /**
      * Starts resource monitor.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "startMonitor" in next major
      */
-    protected function _startMonitor() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _startMonitor(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_isDebugMode()) {
             $this->_dTimeStart = microtime(true);
@@ -656,7 +664,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Stops resource monitor, summarizes and outputs values.
      *
-     * @deprecated on b-dev (2015-10-01); Use self::stopMonitoring() instead.
+     * @deprecated on b-dev (2015-10-01); Use self::stopMonitoring() instead
      *
      * @param bool               $isCallForCache Is content cache
      * @param bool               $isCached       Is content cached
@@ -664,9 +672,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param array              $viewData       View data
      * @param FrontendController $view           View object
      */
-    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = [], $view = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = [], $view = null): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_null($view)) {
+        if (null === $view) {
             $controllerKey = $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
             $view = oxNew($controllerClass);
@@ -679,15 +687,15 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $view View object
      */
-    protected function stopMonitoring($view)
+    protected function stopMonitoring($view): void
     {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
             $debugLevel = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-            $logId = md5(time() . rand() . rand());
+            $logId = md5(time() . random_int(0, getrandmax()) . random_int(0, getrandmax()));
             $header = $debugInfo->formatGeneralInfo();
-            $display = ($debugLevel == -1) ? 'none' : 'block';
+            $display = (-1 === $debugLevel) ? 'none' : 'block';
             $monitorMessage = $this->formMonitorMessage($view);
 
             $logMessage = "
@@ -726,7 +734,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $message = '';
 
         // Outputting template params
-        if ($debugLevel == 4) {
+        if (4 === $debugLevel) {
             $message .= $debugInfo->formatTemplateData($view->getViewData());
         }
 
@@ -745,9 +753,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * possible reason: class does not exist etc. --> just redirect to start page.
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "handleSystemException" in next major
      */
-    protected function _handleSystemException($exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _handleSystemException($exception): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
 
@@ -764,9 +773,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @param RoutingException $exception
      */
-    protected function handleRoutingException($exception)
+    protected function handleRoutingException($exception): void
     {
-        /**
+        /*
          * @todo after removal of the BC layer this method will retrow the exception
          * throw $exception
          */
@@ -776,9 +785,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Redirect to start page, in debug mode shows error message.
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception Exception
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "handleCookieException" in next major
      */
-    protected function _handleCookieException($exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _handleCookieException($exception): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_isDebugMode()) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($exception);
@@ -789,13 +799,13 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Handle database exceptions
      * There is still space for improving this as a similar exception handling for database exceptions may be done in
-     * \OxidEsales\EshopCommunity\Core\Config::init() and the current method may not be executed
+     * \OxidEsales\EshopCommunity\Core\Config::init() and the current method may not be executed.
      *
      * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception Exception to handle
      */
-    protected function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
+    protected function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception): void
     {
-        /**
+        /*
          * There may be some more exceptions, while trying to retrieve debug mode.
          * As we are already inside the exception handling process, we MUST catch any exception here.
          * The exception newly thrown will not be handled as we might end up in a loop.
@@ -826,9 +836,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Handling other not caught exceptions.
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "handleBaseException" in next major
      */
-    protected function _handleBaseException($exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _handleBaseException($exception): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->logException($exception);
 
@@ -842,10 +853,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Log an exception.
      *
      * This method forms part of the exception handling process. Any further exceptions must be caught.
-     *
-     * @param \Exception $exception
      */
-    protected function logException(\Exception $exception)
+    protected function logException(\Exception $exception): void
     {
         if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
             $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
@@ -859,12 +868,10 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
      * @param DatabaseConnectionException $exception Database connection exception to report
-     *
-     * @return null
      */
-    protected function reportDatabaseConnectionException(DatabaseConnectionException $exception)
+    protected function reportDatabaseConnectionException(DatabaseConnectionException $exception): void
     {
-        /**
+        /*
          * If the shop is not in debug mode, a "shop offline" warning is send to the shop admin.
          * In order not to spam the shop admin, the warning will be sent in a certain interval of time.
          */
@@ -892,7 +899,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         /** @var int $threshold Threshold in seconds */
         $threshold = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('offlineWarningInterval');
         if (file_exists($this->offlineWarningTimestampFile)) {
-            $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
+            $lastSentTimestamp = (int)file_get_contents($this->offlineWarningTimestampFile);
             $lastSentBefore = time() - $lastSentTimestamp;
             if ($lastSentBefore < $threshold) {
                 $wasSentWithinThreshold = true;
@@ -908,14 +915,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
-     * @param StandardException $exception
-     *
-     * @return bool Returns true, if the email was sent.
+     * @return bool returns true, if the email was sent
      */
     protected function sendOfflineWarning(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
     {
         $result = false;
-        /** @var  $emailAddress Email address to sent the message to */
+        /** @var Email $emailAddress address to sent the message to */
         $emailAddress = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sAdminEmail');
 
         if ($emailAddress) {
@@ -933,8 +938,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                 Date: {$date}
                 Shop: {$failedShop}
 
-                mysql error: " . $exception->getMessage() . "
-                mysql error no: " . $exception->getCode() . "
+                mysql error: " . $exception->getMessage() . '
+                mysql error no: ' . $exception->getCode() . "
 
                 Script: {$script}
                 Referrer: {$referrer}";
@@ -946,15 +951,15 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $mailer->addAddress($emailAddress);
             $mailer->Subject = $emailSubject;
             $mailer->Body = $emailBody;
-            /** Set the priority of the message
+            /* Set the priority of the message
              * For most clients expecting the Priority header:
              * 1 = High, 2 = Medium, 3 = Low
              * */
             $mailer->Priority = 1;
-            /** MS Outlook custom header */
-            $mailer->addCustomHeader("X-MSMail-Priority: Urgent");
-            /** Set the Importance header: */
-            $mailer->addCustomHeader("Importance: High");
+            /* MS Outlook custom header */
+            $mailer->addCustomHeader('X-MSMail-Priority: Urgent');
+            /* Set the Importance header: */
+            $mailer->addCustomHeader('Importance: High');
 
             $result = $mailer->send();
         }
@@ -972,7 +977,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function getControllerClass($controllerKey)
     {
-        /** Remove try catch block after routing BC is removed */
+        /* Remove try catch block after routing BC is removed */
         try {
             $controllerClass = $this->resolveControllerClass($controllerKey);
         } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {

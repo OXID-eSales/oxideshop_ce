@@ -32,19 +32,12 @@ class ShopStateService implements ShopStateServiceInterface
     private $dbUser;
     private $dbPwd;
 
-    /**
-     * @param BasicContextInterface $basicContext
-     * @param string                $anyUnifiedNamespace
-     */
     public function __construct(BasicContextInterface $basicContext, string $anyUnifiedNamespace)
     {
         $this->basicContext = $basicContext;
         $this->anyUnifiedNamespace = $anyUnifiedNamespace;
     }
 
-    /**
-     * @return bool
-     */
     public function isLaunched(): bool
     {
         return $this->areUnifiedNamespacesGenerated()
@@ -52,25 +45,16 @@ class ShopStateService implements ShopStateServiceInterface
                && $this->doesConfigTableExist();
     }
 
-    /**
-     * @return bool
-     */
     private function areUnifiedNamespacesGenerated(): bool
     {
         return class_exists($this->anyUnifiedNamespace);
     }
 
-    /**
-     * @return bool
-     */
     private function doesConfigFileExist(): bool
     {
         return file_exists($this->basicContext->getConfigFilePath());
     }
 
-    /**
-     * @return bool
-     */
     private function doesConfigTableExist(): bool
     {
         try {
@@ -85,9 +69,6 @@ class ShopStateService implements ShopStateServiceInterface
         return true;
     }
 
-    /**
-     * @return \PDO
-     */
     private function getConnection(): \PDO
     {
         include $this->basicContext->getConfigFilePath();

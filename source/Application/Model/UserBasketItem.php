@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxField;
 
 /**
  * Shopping basket item manager.
@@ -16,35 +16,35 @@ use oxField;
 class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxuserbasketitem';
 
     /**
-     * Article object assigned to userbasketitem
+     * Article object assigned to userbasketitem.
      *
      * @var \OxidEsales\Eshop\Application\Model\Article
      */
     protected $_oArticle = null;
 
     /**
-     * Variant parent "buyable" status
+     * Variant parent "buyable" status.
      *
      * @var bool
      */
     protected $_blParentBuyable = false;
 
     /**
-     * Basket item selection list
+     * Basket item selection list.
      *
      * @var array
      */
     protected $_aSelList = null;
 
     /**
-     * Basket item persistent parameters
+     * Basket item persistent parameters.
      *
      * @var array
      */
@@ -61,17 +61,17 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Variant parent "buyable" status setter
+     * Variant parent "buyable" status setter.
      *
      * @param bool $blBuyable parent "buyable" status
      */
-    public function setVariantParentBuyable($blBuyable = false)
+    public function setVariantParentBuyable($blBuyable = false): void
     {
         $this->_blParentBuyable = $blBuyable;
     }
 
     /**
-     * Loads and returns the article for that basket item
+     * Loads and returns the article for that basket item.
      *
      * @param string $sItemKey the key that will be given to oxarticle setItemKey
      *
@@ -88,7 +88,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
             throw $oEx;
         }
 
-        if ($this->_oArticle === null) {
+        if (null === $this->_oArticle) {
             $this->_oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
             // performance
@@ -103,7 +103,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
 
             $aSelList = $this->getSelList();
-            if (($aSelectlist = $this->_oArticle->getSelectLists()) && is_array($aSelList)) {
+            if (($aSelectlist = $this->_oArticle->getSelectLists()) && \is_array($aSelList)) {
                 foreach ($aSelList as $iKey => $iSel) {
                     if (isset($aSelectlist[$iKey][$iSel])) {
                         // cloning select list information
@@ -122,7 +122,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Does not return _oArticle var on serialisation
+     * Does not return _oArticle var on serialisation.
      *
      * @return array
      */
@@ -130,7 +130,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $aRet = [];
         foreach (get_object_vars($this) as $sKey => $sVar) {
-            if ($sKey != '_oArticle') {
+            if ('_oArticle' !== $sKey) {
                 $aRet[] = $sKey;
             }
         }
@@ -139,13 +139,13 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Basket item selection list getter
+     * Basket item selection list getter.
      *
      * @return array
      */
     public function getSelList()
     {
-        if ($this->_aSelList == null && $this->oxuserbasketitems__oxsellist->value) {
+        if (null === $this->_aSelList && $this->oxuserbasketitems__oxsellist->value) {
             $this->_aSelList = unserialize($this->oxuserbasketitems__oxsellist->value);
         }
 
@@ -153,23 +153,23 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Basket item selection list setter
+     * Basket item selection list setter.
      *
      * @param array $aSelList selection list
      */
-    public function setSelList($aSelList)
+    public function setSelList($aSelList): void
     {
         $this->oxuserbasketitems__oxsellist = new \OxidEsales\Eshop\Core\Field(serialize($aSelList), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
-     * Basket item persistent parameters getter
+     * Basket item persistent parameters getter.
      *
      * @return array
      */
     public function getPersParams()
     {
-        if ($this->_aPersParam == null && $this->oxuserbasketitems__oxpersparam->value) {
+        if (null === $this->_aPersParam && $this->oxuserbasketitems__oxpersparam->value) {
             $this->_aPersParam = unserialize($this->oxuserbasketitems__oxpersparam->value);
         }
 
@@ -177,23 +177,22 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Basket item persistent parameters setter
+     * Basket item persistent parameters setter.
      *
      * @param string $sPersParams persistent parameters
      */
-    public function setPersParams($sPersParams)
+    public function setPersParams($sPersParams): void
     {
         $this->oxuserbasketitems__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($sPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
     }
 
     /**
-     * Sets data field value
+     * Sets data field value.
      *
      * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
      * @param string $sValue     value of data field
      * @param int    $iDataType  field type
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "setFieldData" in next major
      */
     protected function _setFieldData($sFieldName, $sValue, $iDataType = \OxidEsales\Eshop\Core\Field::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

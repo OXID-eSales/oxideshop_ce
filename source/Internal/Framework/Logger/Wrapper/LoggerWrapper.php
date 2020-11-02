@@ -20,7 +20,6 @@ class LoggerWrapper implements LoggerInterface
 
     /**
      * LoggerWrapper constructor.
-     * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
     {
@@ -31,9 +30,8 @@ class LoggerWrapper implements LoggerInterface
      * System is unusable.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
         $this->logger->emergency($message, $context);
     }
@@ -45,9 +43,8 @@ class LoggerWrapper implements LoggerInterface
      * trigger the SMS alerts and wake you up.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
         $this->logger->alert($message, $context);
     }
@@ -58,9 +55,8 @@ class LoggerWrapper implements LoggerInterface
      * Example: Application component unavailable, unexpected exception.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
         $this->logger->critical($message, $context);
     }
@@ -70,9 +66,8 @@ class LoggerWrapper implements LoggerInterface
      * be logged and monitored.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
         $this->logger->error($message, $context);
     }
@@ -84,9 +79,8 @@ class LoggerWrapper implements LoggerInterface
      * that are not necessarily wrong.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
         $this->logger->warning($message, $context);
     }
@@ -95,9 +89,8 @@ class LoggerWrapper implements LoggerInterface
      * Normal but significant events.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
         $this->logger->notice($message, $context);
     }
@@ -108,9 +101,8 @@ class LoggerWrapper implements LoggerInterface
      * Example: User logs in, SQL logs.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
         $this->logger->info($message, $context);
     }
@@ -119,9 +111,8 @@ class LoggerWrapper implements LoggerInterface
      * Detailed debug information.
      *
      * @param string $message
-     * @param array  $context
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         $this->logger->debug($message, $context);
     }
@@ -131,9 +122,8 @@ class LoggerWrapper implements LoggerInterface
      *
      * @param mixed  $level
      * @param string $message
-     * @param array  $context
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         $this->logger->log($level, $message, $context);
     }

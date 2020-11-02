@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,32 +14,32 @@ use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
 /**
- * Exception handler, deals with all high level exceptions (caught in oxShopControl)
+ * Exception handler, deals with all high level exceptions (caught in oxShopControl).
  */
 class ExceptionHandler
 {
     /**
-     * Shop debug
+     * Shop debug.
      *
      * @deprecated since v6.3 (2018-04-25); This functionality will be removed completely. Use an appropriate Monolog channel in the future.
      *
-     * @var integer
+     * @var int
      */
     protected $_iDebug = 0;
 
     /**
-     * Class constructor
+     * Class constructor.
      *
-     * @param integer $iDebug debug level
+     * @param int $iDebug debug level
      */
     public function __construct($iDebug = 0)
     {
-        $this->_iDebug = (int) $iDebug;
+        $this->_iDebug = (int)$iDebug;
     }
 
     /**
      * Only used for convenience in UNIT tests by doing so we avoid
-     * writing extended classes for testing protected or private methods
+     * writing extended classes for testing protected or private methods.
      *
      * @param string $sMethod Methods name
      * @param array  $aArgs   Argument array
@@ -48,18 +50,16 @@ class ExceptionHandler
      */
     public function __call($sMethod, $aArgs)
     {
-        if (defined('OXID_PHP_UNIT')) {
-            if (substr($sMethod, 0, 4) == "UNIT") {
-                $sMethod = str_replace("UNIT", "_", $sMethod);
+        if (\defined('OXID_PHP_UNIT')) {
+            if ('UNIT' === substr($sMethod, 0, 4)) {
+                $sMethod = str_replace('UNIT', '_', $sMethod);
             }
             if (method_exists($this, $sMethod)) {
-                return call_user_func_array([& $this, $sMethod], $aArgs);
+                return \call_user_func_array([&$this, $sMethod], $aArgs);
             }
         }
 
-        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException(
-            "Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ")" . PHP_EOL
-        );
+        throw new \OxidEsales\Eshop\Core\Exception\SystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . __CLASS__ . ')' . PHP_EOL);
     }
 
     /**
@@ -69,7 +69,7 @@ class ExceptionHandler
      *
      * @throws \Throwable
      **/
-    public function handleUncaughtException(\Throwable $exception)
+    public function handleUncaughtException(\Throwable $exception): void
     {
         try {
             Registry::getLogger()->error(
@@ -86,10 +86,10 @@ class ExceptionHandler
             $logger->error($exception);
         }
 
-        if ($this->_iDebug || defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {
+        if ($this->_iDebug || \defined('OXID_PHP_UNIT') || \PHP_SAPI === 'cli') {
             throw $exception;
         } else {
-            \oxTriggerOfflinePageDisplay();
+            oxTriggerOfflinePageDisplay();
             $this->exitApplication();
         }
     }
@@ -101,16 +101,15 @@ class ExceptionHandler
      *
      * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception Exception to handle
      */
-    public function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
+    public function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception): void
     {
         $this->handleUncaughtException($exception);
     }
 
-
     /**
-     * Exit the application with error status 1
+     * Exit the application with error status 1.
      */
-    protected function exitApplication()
+    protected function exitApplication(): void
     {
         exit(1);
     }

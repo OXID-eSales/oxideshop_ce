@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Extension;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
 
 /**
- * Cache resource
+ * Cache resource.
  */
 class CacheResourcePlugin
 {
@@ -21,9 +21,6 @@ class CacheResourcePlugin
      */
     private static $context;
 
-    /**
-     * @param SmartyContextInterface $context
-     */
     public function __construct(SmartyContextInterface $context)
     {
         self::$context = $context;
@@ -94,7 +91,7 @@ class CacheResourcePlugin
      * @param string $templateName The name of template
      * @param object $smarty       The smarty object
      */
-    public static function getTrusted($templateName, $smarty)
+    public static function getTrusted($templateName, $smarty): void
     {
     }
 }

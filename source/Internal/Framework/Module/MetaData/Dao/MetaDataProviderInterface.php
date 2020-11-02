@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Inval
 interface MetaDataProviderInterface
 {
     /**
-     * @param string $filePath
-     *
-     * @return array
      * @throws InvalidMetaDataException
      */
     public function getData(string $filePath): array;

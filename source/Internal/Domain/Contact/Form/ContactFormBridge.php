@@ -32,9 +32,6 @@ class ContactFormBridge implements ContactFormBridgeInterface
 
     /**
      * ContactFormBridge constructor.
-     * @param FormFactoryInterface               $contactFormFactory
-     * @param ContactFormMessageBuilderInterface $contactFormMessageBuilder
-     * @param FormConfigurationInterface         $contactFormConfiguration
      */
     public function __construct(
         FormFactoryInterface $contactFormFactory,
@@ -55,7 +52,6 @@ class ContactFormBridge implements ContactFormBridgeInterface
     }
 
     /**
-     * @param FormInterface $form
      * @return string
      */
     public function getContactFormMessage(FormInterface $form)

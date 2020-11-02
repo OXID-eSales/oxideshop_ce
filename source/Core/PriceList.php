@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,7 +16,7 @@ namespace OxidEsales\EshopCommunity\Core;
 class PriceList
 {
     /**
-     * Array containing oxPrice objects
+     * Array containing oxPrice objects.
      *
      * @var array
      */
@@ -22,17 +24,15 @@ class PriceList
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null
      */
     public function __construct()
     {
     }
 
     /**
-     * Returns Brutto price sum
+     * Returns Brutto price sum.
      *
-     * @return double
+     * @return float
      */
     public function getBruttoSum()
     {
@@ -45,9 +45,9 @@ class PriceList
     }
 
     /**
-     * Returns the sum of list Netto prices
+     * Returns the sum of list Netto prices.
      *
-     * @return double
+     * @return float
      */
     public function getNettoSum()
     {
@@ -60,11 +60,11 @@ class PriceList
     }
 
     /**
-     * Returns the sum of list Netto prices
+     * Returns the sum of list Netto prices.
      *
      * @param bool $isNettoMode mode in which calculate sum, default netto
      *
-     * @return double
+     * @return float
      */
     public function getSum($isNettoMode = true)
     {
@@ -76,7 +76,7 @@ class PriceList
     }
 
     /**
-     * Returns VAT values sum separated to different array elements depending on VAT
+     * Returns VAT values sum separated to different array elements depending on VAT.
      *
      * @param bool $isNettoMode mode in which calculate sum, default netto
      *
@@ -87,7 +87,7 @@ class PriceList
         $aVatValues = [];
         $aPrices = [];
         foreach ($this->_aList as $oPrice) {
-            $sKey = (string) $oPrice->getVat();
+            $sKey = (string)$oPrice->getVat();
             if (!isset($aPrices[$sKey])) {
                 $aPrices[$sKey]['sum'] = 0;
                 $aPrices[$sKey]['vat'] = $oPrice->getVat();
@@ -107,9 +107,8 @@ class PriceList
         return $aVatValues;
     }
 
-
     /**
-     * Return prices separated to different array elements depending on VAT
+     * Return prices separated to different array elements depending on VAT.
      *
      * @return array
      */
@@ -117,7 +116,7 @@ class PriceList
     {
         $aPrices = [];
         foreach ($this->_aList as $oPrice) {
-            $sVat = (string) $oPrice->getVat();
+            $sVat = (string)$oPrice->getVat();
             if (!isset($aPrices[$sVat])) {
                 $aPrices[$sVat] = 0;
             }
@@ -129,24 +128,24 @@ class PriceList
 
     /**
      * Iterates through applied VATs and fetches VAT for delivery.
-     * If not VAT was applied - default VAT (myConfig->dDefaultVAT) will be used
+     * If not VAT was applied - default VAT (myConfig->dDefaultVAT) will be used.
      *
-     * @return double
+     * @return float
      */
     public function getMostUsedVatPercent()
     {
         $aPrices = $this->getPriceInfo();
-        if (count($aPrices) == 0) {
+        if (0 === \count($aPrices)) {
             return;
         }
 
-        return max(array_keys($aPrices, max($aPrices)));
+        return max(array_keys($aPrices, max($aPrices), true));
     }
 
     /**
-     * Iterates through applied VATs and calculates proportional VAT
+     * Iterates through applied VATs and calculates proportional VAT.
      *
-     * @return double
+     * @return float
      */
     public function getProportionalVatPercent()
     {
@@ -167,25 +166,22 @@ class PriceList
         return $dProportionalVat;
     }
 
-
     /**
-     * Add an oxPrice object to prices array
+     * Add an oxPrice object to prices array.
      *
      * @param \OxidEsales\Eshop\Core\Price $oPrice oxprice object
      */
-    public function addToPriceList($oPrice)
+    public function addToPriceList($oPrice): void
     {
         $this->_aList[] = $oPrice;
     }
 
     /**
-     * Recalculate price list to one price: sum total value of prices, and calculate VAT
-     *
-     * @return null
+     * Recalculate price list to one price: sum total value of prices, and calculate VAT.
      */
     public function calculateToPrice()
     {
-        if (count($this->_aList) == 0) {
+        if (0 === \count($this->_aList)) {
             return;
         }
 
@@ -211,12 +207,12 @@ class PriceList
     }
 
     /**
-     * Return count of added oxPrices
+     * Return count of added oxPrices.
      *
      * @return int
      */
     public function getCount()
     {
-        return count($this->_aList);
+        return \count($this->_aList);
     }
 }

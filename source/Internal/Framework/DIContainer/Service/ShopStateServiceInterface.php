@@ -14,8 +14,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
  */
 interface ShopStateServiceInterface
 {
-    /**
-     * @return bool
-     */
     public function isLaunched(): bool;
 }

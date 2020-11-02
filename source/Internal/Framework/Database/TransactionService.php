@@ -16,25 +16,22 @@ class TransactionService implements TransactionServiceInterface
      */
     private $connectionProvider;
 
-    /**
-     * @param ConnectionProviderInterface $connectionProvider
-     */
     public function __construct(ConnectionProviderInterface $connectionProvider)
     {
         $this->connectionProvider = $connectionProvider;
     }
 
-    public function begin()
+    public function begin(): void
     {
         $this->connectionProvider->get()->beginTransaction();
     }
 
-    public function commit()
+    public function commit(): void
     {
         $this->connectionProvider->get()->commit();
     }
 
-    public function rollback()
+    public function rollback(): void
     {
         $this->connectionProvider->get()->rollBack();
     }

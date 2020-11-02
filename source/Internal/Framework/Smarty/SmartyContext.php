@@ -32,10 +32,6 @@ class SmartyContext implements SmartyContextInterface
 
     /**
      * Context constructor.
-     *
-     * @param BasicContextInterface $basicContext
-     * @param Config                $config
-     * @param UtilsView             $utilsView
      */
     public function __construct(BasicContextInterface $basicContext, Config $config, UtilsView $utilsView)
     {
@@ -44,98 +40,69 @@ class SmartyContext implements SmartyContextInterface
         $this->basicContext = $basicContext;
     }
 
-    /**
-     * @return bool
-     */
     public function getTemplateEngineDebugMode(): bool
     {
         $debugMode = $this->getConfigParameter('iDebug');
-        return ($debugMode === 1 || $debugMode === 3 || $debugMode === 4);
+
+        return 1 === $debugMode || 3 === $debugMode || 4 === $debugMode;
     }
 
-    /**
-     * @return bool
-     */
     public function showTemplateNames(): bool
     {
         $debugMode = $this->getConfigParameter('iDebug');
-        return ($debugMode === 8 && !$this->getBackendMode());
+
+        return 8 === $debugMode && !$this->getBackendMode();
     }
 
-    /**
-     * @return bool
-     */
     public function getTemplateSecurityMode(): bool
     {
         return $this->getDemoShopMode();
     }
 
-    /**
-     * @return string
-     */
     public function getTemplateCompileDirectory(): string
     {
         return $this->utilsView->getSmartyDir();
     }
 
-    /**
-     * @return array
-     */
     public function getTemplateDirectories(): array
     {
         return $this->utilsView->getTemplateDirs();
     }
 
-    /**
-     * @return string
-     */
     public function getTemplateCompileId(): string
     {
         return $this->utilsView->getTemplateCompileId();
     }
 
-    /**
-     * @return bool
-     */
     public function getTemplateCompileCheckMode(): bool
     {
-        $compileCheck = (bool) $this->getConfigParameter('blCheckTemplates');
+        $compileCheck = (bool)$this->getConfigParameter('blCheckTemplates');
         if ($this->config->isProductiveMode()) {
             // override in any case
             $compileCheck = false;
         }
+
         return $compileCheck;
     }
 
-    /**
-     * @return array
-     */
     public function getSmartyPluginDirectories(): array
     {
         return $this->utilsView->getSmartyPluginDirectories();
     }
 
-    /**
-     * @return int
-     */
     public function getTemplatePhpHandlingMode(): int
     {
-        return (int) $this->getConfigParameter('iSmartyPhpHandling');
+        return (int)$this->getConfigParameter('iSmartyPhpHandling');
     }
 
     /**
      * @param string $templateName
-     *
-     * @return string
      */
     public function getTemplatePath($templateName): string
     {
         return $this->config->getTemplatePath($templateName, $this->getBackendMode());
     }
 
-    /**
-     * @return string
-     */
     public function getSourcePath(): string
     {
         return $this->basicContext->getSourcePath();
@@ -151,19 +118,13 @@ class SmartyContext implements SmartyContextInterface
         return $this->config->getConfigParam($name);
     }
 
-    /**
-     * @return bool
-     */
     private function getBackendMode(): bool
     {
         return $this->config->isAdmin();
     }
 
-    /**
-     * @return bool
-     */
     private function getDemoShopMode(): bool
     {
-        return (bool) $this->config->isDemoShop();
+        return (bool)$this->config->isDemoShop();
     }
 }

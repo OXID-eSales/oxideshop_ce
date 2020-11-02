@@ -1,11 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
-
-require "_header.php"; ?>
+require '_header.php'; ?>
 <strong><?php $this->getText('STEP_0_DESC'); ?></strong><br><br>
 
 <table cellpadding="1" cellspacing="0">
@@ -17,12 +16,12 @@ require "_header.php"; ?>
                     onChange="document.getElementById('langSelectionForm').submit();"
                     style="font-size: 11px;">
             <?php
-            $aLanguages = $this->getViewParam("aLanguages");
+            $aLanguages = $this->getViewParam('aLanguages');
             foreach ($aLanguages as $sLangId => $sLangTitle) {
                 ?>
-                <option value="<?php echo $sLangId; ?>" <?php if ($this->getViewParam("sLanguage") == $sLangId) {
+                <option value="<?php echo $sLangId; ?>" <?php if ($this->getViewParam('sLanguage') === $sLangId) {
                     echo 'selected';
-                               } ?>><?php echo $sLangTitle; ?></option>
+                } ?>><?php echo $sLangTitle; ?></option>
                 <?php
             }
             ?>
@@ -43,23 +42,23 @@ require "_header.php"; ?>
 
     <ul class="req">
     <?php
-    $aGroupModuleInfo = $this->getViewParam("aGroupModuleInfo");
+    $aGroupModuleInfo = $this->getViewParam('aGroupModuleInfo');
     $permissionIssues = $this->getViewParam('permissionIssues');
 
     foreach ($aGroupModuleInfo as $sGroupName => $aGroupInfo) {
-        print '<li class="group">' . $sGroupName . '<ul>';
+        echo '<li class="group">' . $sGroupName . '<ul>';
         foreach ($aGroupInfo as $aModuleInfo) {
-            print '<li id="' . $aModuleInfo['module'] . '" class="' . $aModuleInfo['class'] . '">';
-            if (in_array($aModuleInfo['class'], ['fail', 'pmin', 'null'])) {
-                print "<a href='" . $this->getReqInfoUrl($aModuleInfo['module'], false) . "' target='_blank'>"
+            echo '<li id="' . $aModuleInfo['module'] . '" class="' . $aModuleInfo['class'] . '">';
+            if (in_array($aModuleInfo['class'], ['fail', 'pmin', 'null'], true)) {
+                echo "<a href='" . $this->getReqInfoUrl($aModuleInfo['module'], false) . "' target='_blank'>"
                     . $aModuleInfo['modulename']
                     . '</a>';
             } else {
-                print $aModuleInfo['modulename'];
+                echo $aModuleInfo['modulename'];
             }
-            print '</li>';
+            echo '</li>';
 
-            if ($aModuleInfo['module'] === 'server_permissions') {
+            if ('server_permissions' === $aModuleInfo['module']) {
                 if (count($permissionIssues['missing']) > 0) {
                     echo '<li><b>'
                         . $this->getText('MOD_SERVER_PERMISSIONS_MISSING', false)
@@ -76,13 +75,13 @@ require "_header.php"; ?>
                 }
             }
         }
-        print '</ul></li>';
+        echo '</ul></li>';
     }
     ?><li class="clear"></li></ul>
     <?php $this->getText('STEP_0_TEXT'); ?>
     <br><br>
 
-<?php if ($this->getViewParam("blContinue") === true) { ?>
+<?php if (true === $this->getViewParam('blContinue')) { ?>
 <form action="index.php" method="post">
 <input type="hidden" name="sid" value="<?php $this->getSid(); ?>">
 <input type="hidden" name="istep" value="<?php $this->getSetupStep('STEP_WELCOME'); ?>">
@@ -90,7 +89,7 @@ require "_header.php"; ?>
 </form>
     <?php
 } else {
-    ?><b><?php $this->getText('STEP_0_ERROR_TEXT'); ?></b><br>
+        ?><b><?php $this->getText('STEP_0_ERROR_TEXT'); ?></b><br>
     <a target="_blank" href="<?php $this->getText('STEP_0_ERROR_URL'); ?>"><?php $this->getText('STEP_0_ERROR_URL'); ?></a><?php
-}
-require "_footer.php";
+    }
+require '_footer.php';

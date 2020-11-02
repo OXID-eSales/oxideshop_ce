@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -31,7 +33,7 @@ abstract class EmailBuilder
     }
 
     /**
-     * Builds and returns the email object
+     * Builds and returns the email object.
      *
      * @return \OxidEsales\Eshop\Core\Email
      */
@@ -56,7 +58,7 @@ abstract class EmailBuilder
     }
 
     /**
-     * Prepare and get recipient address
+     * Prepare and get recipient address.
      *
      * @return string
      */
@@ -66,7 +68,7 @@ abstract class EmailBuilder
     }
 
     /**
-     * Prepare and get sender address
+     * Prepare and get sender address.
      *
      * @return string
      */
@@ -76,7 +78,7 @@ abstract class EmailBuilder
     }
 
     /**
-     * Prepare and get subject
+     * Prepare and get subject.
      *
      * @return string
      */
@@ -86,7 +88,7 @@ abstract class EmailBuilder
     }
 
     /**
-     * Prepare and get body
+     * Prepare and get body.
      *
      * @return string
      */
@@ -104,6 +106,7 @@ abstract class EmailBuilder
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $activeShop = $config->getActiveShop();
+
         return $activeShop->getFieldData('oxinfoemail');
     }
 
@@ -117,7 +120,7 @@ abstract class EmailBuilder
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();
         $shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopURL');
 
-        return "<br>" . sprintf(
+        return '<br>' . sprintf(
             $lang->translateString(
                 'SHOP_EMAIL_ORIGIN_MESSAGE',
                 null,

@@ -16,8 +16,6 @@ class BootstrapContainerFactory
     /**
      * This is a minimal container that does not need the shop
      * to be installed.
-     *
-     * @return ContainerInterface
      */
     public static function getBootstrapContainer(): ContainerInterface
     {

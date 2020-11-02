@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,8 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
 use stdClass;
 
 /**
@@ -34,18 +34,18 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
     protected $_sListType = 'oxcategorylist';
 
     /**
-     * Returns sorting fields array
+     * Returns sorting fields array.
      *
      * @return array
      */
     public function getListSorting()
     {
         $sSortParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('sort');
-        if ($this->_aCurrSorting === null && !$sSortParameter && ($oBaseObject = $this->getItemListBaseObject())) {
+        if (null === $this->_aCurrSorting && !$sSortParameter && ($oBaseObject = $this->getItemListBaseObject())) {
             $sCatView = $oBaseObject->getCoreTableName();
 
-            $this->_aCurrSorting[$sCatView]["oxrootid"] = "desc";
-            $this->_aCurrSorting[$sCatView]["oxleft"] = "asc";
+            $this->_aCurrSorting[$sCatView]['oxrootid'] = 'desc';
+            $this->_aCurrSorting[$sCatView]['oxleft'] = 'asc';
 
             return $this->_aCurrSorting;
         } else {
@@ -75,12 +75,12 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         $aNewList = [];
         $oRoot = new stdClass();
         $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field(null, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field($oLang->translateString("viewAll", $iLang), \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field($oLang->translateString('viewAll', $iLang), \OxidEsales\Eshop\Core\Field::T_RAW);
         $aNewList[] = $oRoot;
 
         $oRoot = new stdClass();
-        $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("oxrootid", \OxidEsales\Eshop\Core\Field::T_RAW);
-        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field("-- " . $oLang->translateString("mainCategory", $iLang) . " --", \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field('oxrootid', \OxidEsales\Eshop\Core\Field::T_RAW);
+        $oRoot->oxcategories__oxtitle = new \OxidEsales\Eshop\Core\Field('-- ' . $oLang->translateString('mainCategory', $iLang) . ' --', \OxidEsales\Eshop\Core\Field::T_RAW);
         $aNewList[] = $oRoot;
 
         foreach ($oCatTree as $oCategory) {
@@ -89,17 +89,17 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
 
         $oCatTree->assign($aNewList);
         $aFilter = $this->getListFilter();
-        if (is_array($aFilter) && isset($aFilter["oxcategories"]["oxparentid"])) {
+        if (\is_array($aFilter) && isset($aFilter['oxcategories']['oxparentid'])) {
             foreach ($oCatTree as $oCategory) {
-                if ($oCategory->oxcategories__oxid->value == $aFilter["oxcategories"]["oxparentid"]) {
+                if ($oCategory->oxcategories__oxid->value === $aFilter['oxcategories']['oxparentid']) {
                     $oCategory->selected = 1;
                     break;
                 }
             }
         }
 
-        $this->_aViewData["cattree"] = $oCatTree;
+        $this->_aViewData['cattree'] = $oCatTree;
 
-        return "category_list.tpl";
+        return 'category_list.tpl';
     }
 }

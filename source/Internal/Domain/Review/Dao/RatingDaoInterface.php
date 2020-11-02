@@ -32,8 +32,5 @@ interface RatingDaoInterface
      */
     public function getRatingsByProductId($productId);
 
-    /**
-     * @param Rating $rating
-     */
     public function delete(Rating $rating);
 }

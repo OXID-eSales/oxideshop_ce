@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,9 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxManufacturer;
-use oxRegistry;
-use oxUBase;
 
 /**
  * List of articles for a selected Manufacturer.
@@ -21,28 +20,28 @@ use oxUBase;
 class ManufacturerListController extends \OxidEsales\Eshop\Application\Controller\ArticleListController
 {
     /**
-     * List type
+     * List type.
      *
      * @var string
      */
     protected $_sListType = 'manufacturer';
 
     /**
-     * List type
+     * List type.
      *
      * @var string
      */
     protected $_blVisibleSubCats = null;
 
     /**
-     * List type
+     * List type.
      *
      * @var string
      */
     protected $_oSubCatList = null;
 
     /**
-     * Recommlist
+     * Recommlist.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -51,35 +50,35 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     protected $_oRecommList = null;
 
     /**
-     * Template location
+     * Template location.
      *
      * @var string
      */
     protected $_sTplLocation = null;
 
     /**
-     * Template location
+     * Template location.
      *
      * @var string
      */
     protected $_sCatTitle = null;
 
     /**
-     * Page navigation
+     * Page navigation.
      *
      * @var object
      */
     protected $_oPageNavigation = null;
 
     /**
-     * Marked which defines if current view is sortable or not
+     * Marked which defines if current view is sortable or not.
      *
      * @var bool
      */
     protected $_blShowSorting = true;
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
@@ -93,7 +92,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      * metatags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns
      * name of template to render.
      *
-     * @return  string  $this->_sThisTemplate   current template file name
+     * @return string $this->_sThisTemplate   current template file name
      */
     public function render()
     {
@@ -102,7 +101,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
         // load Manufacturer
         if ($this->getManufacturerTree()) {
             if (($oManufacturer = $this->getActManufacturer())) {
-                if ($oManufacturer->getId() != 'root') {
+                if ('root' !== $oManufacturer->getId()) {
                     // load the articles
                     $this->getArticleList();
 
@@ -119,9 +118,10 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Returns product link type (OXARTICLE_LINKTYPE_MANUFACTURER)
+     * Returns product link type (OXARTICLE_LINKTYPE_MANUFACTURER).
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getProductLinkType" in next major
      */
     protected function _getProductLinkType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -135,6 +135,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      * @param \OxidEsales\Eshop\Application\Model\Manufacturer $oManufacturer Manufacturer object
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadArticles" in next major
      */
     protected function _loadArticles($oManufacturer) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -142,7 +143,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
         $sManufacturerId = $oManufacturer->getId();
 
         // load only articles which we show on screen
-        $iNrofCatArticles = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
+        $iNrofCatArticles = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
         $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -159,9 +160,10 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Returns active product id to load its seo meta info
+     * Returns active product id to load its seo meta info.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSeoObjectId" in next major
      */
     protected function _getSeoObjectId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -173,13 +175,14 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
 
     /**
      * Modifies url by adding page parameters. When seo is on, url is additionally
-     * formatted by SEO engine
+     * formatted by SEO engine.
      *
      * @param string $sUrl  current url
      * @param int    $iPage page number
      * @param int    $iLang active language id
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addPageNrParam" in next major
      */
     protected function _addPageNrParam($sUrl, $iPage, $iLang = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -195,7 +198,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Returns current view Url
+     * Returns current view Url.
      *
      * @return string
      */
@@ -209,17 +212,17 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Template variable getter. Returns active object's reviews
+     * Template variable getter. Returns active object's reviews.
      *
      * @return array
      */
     public function hasVisibleSubCats()
     {
-        if ($this->_blVisibleSubCats === null) {
+        if (null === $this->_blVisibleSubCats) {
             $this->_blVisibleSubCats = false;
             if (($oManufacturerTree = $this->getManufacturerTree())) {
                 if (($oManufacturer = $this->getActManufacturer())) {
-                    if ($oManufacturer->getId() == 'root') {
+                    if ('root' === $oManufacturer->getId()) {
                         $this->_blVisibleSubCats = $oManufacturerTree->count();
                         $this->_oSubCatList = $oManufacturerTree;
                     }
@@ -231,13 +234,13 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Template variable getter. Returns active object's reviews
+     * Template variable getter. Returns active object's reviews.
      *
      * @return array
      */
     public function getSubCatList()
     {
-        if ($this->_oSubCatList === null) {
+        if (null === $this->_oSubCatList) {
             $this->_oSubCatList = $this->hasVisibleSubCats() ? $this->_oSubCatList : [];
         }
 
@@ -245,17 +248,17 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Template variable getter. Returns active object's reviews
+     * Template variable getter. Returns active object's reviews.
      *
      * @return array
      */
     public function getArticleList()
     {
-        if ($this->_aArticleList === null) {
+        if (null === $this->_aArticleList) {
             $this->_aArticleList = [];
             if (($oManufacturerTree = $this->getManufacturerTree())) {
                 $oManufacturer = $this->getActManufacturer();
-                if ($oManufacturer && ($oManufacturer->getId() != 'root') && $oManufacturer->getIsVisible()) {
+                if ($oManufacturer && ('root' !== $oManufacturer->getId()) && $oManufacturer->getIsVisible()) {
                     list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oManufacturer);
                     if ($iAllArtCnt) {
                         $this->_aArticleList = $aArticleList;
@@ -268,13 +271,13 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Template variable getter. Returns template location
+     * Template variable getter. Returns template location.
      *
      * @return string
      */
     public function getTitle()
     {
-        if ($this->_sCatTitle === null) {
+        if (null === $this->_sCatTitle) {
             $this->_sCatTitle = '';
             if ($oManufacturerTree = $this->getManufacturerTree()) {
                 if ($oManufacturer = $this->getActManufacturer()) {
@@ -287,7 +290,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Template variable getter. Returns category path array
+     * Template variable getter. Returns category path array.
      *
      * @return array
      */
@@ -299,13 +302,13 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Template variable getter. Returns active Manufacturer
+     * Template variable getter. Returns active Manufacturer.
      *
      * @return object
      */
     public function getActiveCategory()
     {
-        if ($this->_oActCategory === null) {
+        if (null === $this->_oActCategory) {
             $this->_oActCategory = false;
             if (($oManufacturerTree = $this->getManufacturerTree())) {
                 if ($oManufacturer = $this->getActManufacturer()) {
@@ -318,13 +321,13 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Template variable getter. Returns template location
+     * Template variable getter. Returns template location.
      *
      * @return string
      */
     public function getCatTreePath()
     {
-        if ($this->_sCatTreePath === null) {
+        if (null === $this->_sCatTreePath) {
             $this->_sCatTreePath = false;
             if (($oManufacturerTree = $this->getManufacturerTree())) {
                 $this->_sCatTreePath = $oManufacturerTree->getPath();
@@ -335,7 +338,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Returns title suffix used in template
+     * Returns title suffix used in template.
      *
      * @return string
      */
@@ -347,12 +350,13 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Calls and returns result of parent:: _collectMetaKeyword();
+     * Calls and returns result of parent:: _collectMetaKeyword();.
      *
      * @param mixed $aCatPath                category path
      * @param bool  $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaKeyword" in next major
      */
     protected function _prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -370,7 +374,8 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
      * @param int   $iLength   max length of result, -1 for no truncation
      * @param bool  $blDescTag if true - performs additional duplicate cleaning
      *
-     * @return  string  $sString    converted string
+     * @return string converted string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareMetaDescription" in next major
      */
     protected function _prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -380,11 +385,12 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
 
     /**
      * returns object, assosiated with current view.
-     * (the object that is shown in frontend)
+     * (the object that is shown in frontend).
      *
      * @param int $iLang language id
      *
      * @return object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSubject" in next major
      */
     protected function _getSubject($iLang) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -393,7 +399,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
     }
 
     /**
-     * Returns additional URL parameters which must be added to list products dynamic urls
+     * Returns additional URL parameters which must be added to list products dynamic urls.
      *
      * @return string
      */
@@ -402,7 +408,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
         $sAddParams = parent::getAddUrlParams();
         $sAddParams .= ($sAddParams ? '&amp;' : '') . "listtype={$this->_sListType}";
         if ($oManufacturer = $this->getActManufacturer()) {
-            $sAddParams .= "&amp;mnid=" . $oManufacturer->getId();
+            $sAddParams .= '&amp;mnid=' . $oManufacturer->getId();
         }
 
         return $sAddParams;
@@ -434,7 +440,7 @@ class ManufacturerListController extends \OxidEsales\Eshop\Application\Controlle
 
     /**
      * Template variable getter. Returns array of attribute values
-     * we do have here in this category
+     * we do have here in this category.
      *
      * @return array
      */

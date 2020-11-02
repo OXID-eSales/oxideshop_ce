@@ -11,10 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge
 
 interface AdminAreaModuleTranslationFileLocatorBridgeInterface
 {
-    /**
-     * @param string $lang
-     *
-     * @return array
-     */
     public function locate(string $lang): array;
 }

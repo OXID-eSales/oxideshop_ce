@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,18 +15,18 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * List Object class name
+     * List Object class name.
      *
      * @var string
      */
     protected $_sObjectsInListName = 'oxorderfile';
 
     /**
-     * Returns orders
+     * Returns orders.
      *
      * @param string $sUserId - user id
      */
-    public function loadUserFiles($sUserId)
+    public function loadUserFiles($sUserId): void
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
@@ -34,7 +36,7 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oOrderFile->addFieldName('oxorderfiles__oxordernr');
         $oOrderFile->addFieldName('oxorderfiles__oxorderdate');
 
-        $sSql = "SELECT " . $sFields . " ,
+        $sSql = 'SELECT ' . $sFields . " ,
                       `oxorderarticles`.`oxtitle` AS `oxorderfiles__oxarticletitle`,
                       `oxorderarticles`.`oxartnum` AS `oxorderfiles__oxarticleartnum`,
                       `oxfiles`.`oxpurchasedonly` AS `oxorderfiles__oxpurchasedonly`,
@@ -53,16 +55,16 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->selectString($sSql, [
             ':oxuserid' => $sUserId,
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),
         ]);
     }
 
     /**
-     * Returns oxorderfiles list
+     * Returns oxorderfiles list.
      *
      * @param string $sOrderId - order id
      */
-    public function loadOrderFiles($sOrderId)
+    public function loadOrderFiles($sOrderId): void
     {
         $oOrderFile = $this->getBaseObject();
         $sFields = $oOrderFile->getSelectFields();
@@ -70,7 +72,7 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oOrderFile->addFieldName('oxorderfiles__oxarticletitle');
         $oOrderFile->addFieldName('oxorderfiles__oxarticleartnum');
 
-        $sSql = "SELECT " . $sFields . " ,
+        $sSql = 'SELECT ' . $sFields . ' ,
                       `oxorderarticles`.`oxtitle` AS `oxorderfiles__oxarticletitle`,
                       `oxorderarticles`.`oxartnum` AS `oxorderfiles__oxarticleartnum`,
                       `oxfiles`.`oxpurchasedonly` AS `oxorderfiles__oxpurchasedonly`
@@ -78,11 +80,11 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
                         LEFT JOIN `oxorderarticles` ON `oxorderarticles`.`oxid` = `oxorderfiles`.`oxorderarticleid`
                         LEFT JOIN `oxfiles` ON `oxfiles`.`oxid` = `oxorderfiles`.`oxfileid`
                     WHERE `oxorderfiles`.`oxorderid` = :oxorderid AND `oxorderfiles`.`oxshopid` = :oxshopid
-                        AND `oxorderarticles`.`oxstorno` = 0";
+                        AND `oxorderarticles`.`oxstorno` = 0';
 
         $this->selectString($sSql, [
             ':oxorderid' => $sOrderId,
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),
         ]);
     }
 }

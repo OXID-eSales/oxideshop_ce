@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,8 @@ namespace OxidEsales\EshopCommunity\Core\Service;
 /**
  * Manages application servers information.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 interface ApplicationServerServiceInterface
@@ -25,7 +28,7 @@ interface ApplicationServerServiceInterface
     /**
      * Load the application server for given id.
      *
-     * @param string $id The id of the application server to load.
+     * @param string $id the id of the application server to load
      *
      * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */

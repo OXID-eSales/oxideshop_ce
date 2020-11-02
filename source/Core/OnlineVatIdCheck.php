@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,11 +9,11 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use stdClass;
 use DOMDocument;
 use Exception;
 use SoapClient;
 use SoapFault;
+use stdClass;
 
 /**
  * Online VAT id checker class.
@@ -19,31 +21,31 @@ use SoapFault;
 class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 {
     /**
-     * Keeps service check state
+     * Keeps service check state.
      *
      * @var bool
      */
     protected $_blServiceIsOn = null;
 
     /**
-     * VAT check results cache
+     * VAT check results cache.
      *
      * @var array
      */
     protected static $_aVatCheckCache = [];
 
     /**
-     * How many times to retry check if server is busy
+     * How many times to retry check if server is busy.
      */
-    const BUSY_RETRY_CNT = 1;
+    public const BUSY_RETRY_CNT = 1;
 
     /**
-     * How much to wait between retries (in micro seconds)
+     * How much to wait between retries (in micro seconds).
      */
-    const BUSY_RETRY_WAITUSEC = 500000;
+    public const BUSY_RETRY_WAITUSEC = 500000;
 
     /**
-     * Wsdl url
+     * Wsdl url.
      *
      * @var string
      */
@@ -59,7 +61,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
     /**
      * Validates VAT.
      *
-     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn Company VAT identification number object.
+     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn company VAT identification number object
      *
      * @return bool
      */
@@ -79,19 +81,19 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
 
     /**
      * Catches soap warning which is usually thrown due to service problems.
-     * Return true and allows to continue process
+     * Return true and allows to continue process.
      *
      * @param int    $iErrNo   error type number
      * @param string $sErrStr  error message
      * @param string $sErrFile error file
      * @param int    $iErrLine error line
      */
-    public function catchWarning($iErrNo, $sErrStr, $sErrFile, $iErrLine)
+    public function catchWarning($iErrNo, $sErrStr, $sErrFile, $iErrLine): void
     {
         \OxidEsales\Eshop\Core\Registry::getLogger()->warning($sErrStr, [
             'file' => $sErrFile,
             'line' => $iErrLine,
-            'code' => $iErrNo
+            'code' => $iErrNo,
         ]);
     }
 
@@ -102,15 +104,16 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      *  - if output, returned by service, is valid.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isServiceAvailable" in next major
      */
     protected function _isServiceAvailable() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_blServiceIsOn === null) {
+        if (null === $this->_blServiceIsOn) {
             $this->_blServiceIsOn = class_exists('SoapClient') ? true : false;
             if ($this->_blServiceIsOn) {
                 $rFp = @fopen($this->getWsdlUrl(), 'r');
-                $this->_blServiceIsOn = $rFp !== false;
+                $this->_blServiceIsOn = false !== $rFp;
                 if ($this->_blServiceIsOn) {
                     $sWsdl = '';
                     while (!feof($rFp)) {
@@ -140,6 +143,7 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
      * @param object $oCheckVat vat object
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "checkOnline" in next major
      */
     protected function _checkOnline($oCheckVat) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -157,13 +161,15 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
             do {
                 try {
                     //connection_timeout = how long we should wait to CONNECT to wsdl server
-                    $oSoapClient = new SoapClient($this->getWsdlUrl(), ["connection_timeout" => 5]);
+                    $oSoapClient = new SoapClient($this->getWsdlUrl(), [
+                        'connection_timeout' => 5,
+                    ]);
                     $this->setError('');
                     $oRes = $oSoapClient->checkVat($oCheckVat);
                     $iTryMoreCnt = 0;
                 } catch (SoapFault $e) {
                     $this->setError($e->faultstring);
-                    if ($this->getError() == "SERVER_BUSY") {
+                    if ('SERVER_BUSY' === $this->getError()) {
                         usleep(self::BUSY_RETRY_WAITUSEC);
                     } else {
                         $iTryMoreCnt = 0;
@@ -174,23 +180,23 @@ class OnlineVatIdCheck extends \OxidEsales\Eshop\Core\CompanyVatInChecker
             // restoring previous error handler
             restore_error_handler();
 
-            return (bool) $oRes->valid;
+            return (bool)$oRes->valid;
         } else {
-            $this->setError("SERVICE_UNREACHABLE");
+            $this->setError('SERVICE_UNREACHABLE');
 
             return false;
         }
     }
 
     /**
-     * Returns wsdl url
+     * Returns wsdl url.
      *
      * @return string
      */
     public function getWsdlUrl()
     {
         // overriding wsdl url
-        if (($sWsdl = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sVatIdCheckInterfaceWsdl"))) {
+        if (($sWsdl = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sVatIdCheckInterfaceWsdl'))) {
             $this->_sWsdl = $sWsdl;
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,13 +14,7 @@ use OxidEsales\Eshop\Core\Str;
 class TruncateLogic
 {
     /**
-     * @param string  $sString
-     * @param integer $iLength
-     * @param string  $sSufix
-     * @param bool    $blBreakWords
-     * @param bool    $middle
-     *
-     * @return string
+     * @param string $sString
      */
     public function truncate(
         string $sString = null,
@@ -27,7 +23,7 @@ class TruncateLogic
         bool $blBreakWords = false,
         bool $middle = false
     ): string {
-        if ($iLength == 0) {
+        if (0 === $iLength) {
             return '';
         } elseif ($iLength > 0 && Str::getStr()->strlen($sString) > $iLength) {
             $iLength -= Str::getStr()->strlen($sSufix);

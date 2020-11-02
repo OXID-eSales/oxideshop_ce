@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,8 @@ namespace OxidEsales\EshopCommunity\Core\Dao;
 /**
  * Application server data access manager.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServerDaoInterface
@@ -18,7 +21,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     /**
      * The name of config option for saving servers data information.
      */
-    const CONFIG_NAME_FOR_SERVER_INFO = 'aServersData_';
+    public const CONFIG_NAME_FOR_SERVER_INFO = 'aServersData_';
 
     /**
      * @var \OxidEsales\Eshop\Core\DataObject\ApplicationServer[]
@@ -26,7 +29,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     private $appServer = [];
 
     /**
-     * @var \OxidEsales\Eshop\Core\Config Main shop configuration class.
+     * @var \OxidEsales\Eshop\Core\Config main shop configuration class
      */
     private $config;
 
@@ -38,8 +41,8 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     /**
      * ApplicationServerDao constructor.
      *
-     * @param \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface $database Database connection class.
-     * @param \OxidEsales\Eshop\Core\Config                             $config   Main shop configuration class.
+     * @param \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface $database database connection class
+     * @param \OxidEsales\Eshop\Core\Config                             $config   main shop configuration class
      */
     public function __construct($database, $config)
     {
@@ -58,7 +61,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
 
         /** @var \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface $resultList */
         $resultList = $this->selectAllData();
-        if ($resultList != false && $resultList->count() > 0) {
+        if (false !== $resultList && $resultList->count() > 0) {
             $result = $resultList->getFields();
             $serverId = $this->getServerIdFromConfig($result['oxvarname']);
             $information = $this->getValueFromConfig($result['oxvarvalue']);
@@ -69,29 +72,30 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
                 $appServerList[$serverId] = $this->createServer($information);
             }
         }
+
         return $appServerList;
     }
 
     /**
      * Deletes the entity with the given id.
      *
-     * @param string $id An id of the entity to delete.
+     * @param string $id an id of the entity to delete
      */
-    public function delete($id)
+    public function delete($id): void
     {
         unset($this->appServer[$id]);
 
-        $query = "DELETE FROM oxconfig WHERE oxvarname = :oxvarname and oxshopid = :oxshopid";
+        $query = 'DELETE FROM oxconfig WHERE oxvarname = :oxvarname and oxshopid = :oxshopid';
         $this->database->execute($query, [
             ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $id,
-            ':oxshopid' => $this->config->getBaseShopId()
+            ':oxshopid' => $this->config->getBaseShopId(),
         ]);
     }
 
     /**
      * Finds an application server by given id, null if none is found.
      *
-     * @param string $id An id of the entity to find.
+     * @param string $id an id of the entity to find
      *
      * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer|null
      */
@@ -100,7 +104,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
         if (!isset($this->appServer[$id])) {
             $serverData = $this->selectDataById($id);
 
-            if ($serverData != false) {
+            if (false !== $serverData) {
                 $appServerProperties = (array)unserialize($serverData);
             } else {
                 return null;
@@ -108,6 +112,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
 
             $this->appServer[$id] = $this->createServer($appServerProperties);
         }
+
         return $this->appServer[$id];
     }
 
@@ -116,7 +121,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
      */
-    public function save($appServer)
+    public function save($appServer): void
     {
         $id = $appServer->getId();
         if ($this->findAppServer($id)) {
@@ -130,7 +135,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     /**
      * Start a database transaction.
      */
-    public function startTransaction()
+    public function startTransaction(): void
     {
         $this->database->startTransaction();
     }
@@ -138,7 +143,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     /**
      * Commit a database transaction.
      */
-    public function commitTransaction()
+    public function commitTransaction(): void
     {
         $this->database->commitTransaction();
     }
@@ -146,7 +151,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     /**
      * RollBack a database transaction.
      */
-    public function rollbackTransaction()
+    public function rollbackTransaction(): void
     {
         $this->database->rollbackTransaction();
     }
@@ -156,15 +161,15 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
      */
-    protected function update($appServer)
+    protected function update($appServer): void
     {
-        $query = "UPDATE oxconfig SET oxvarvalue = :value
-                  WHERE oxvarname = :oxvarname and oxshopid = :oxshopid";
+        $query = 'UPDATE oxconfig SET oxvarvalue = :value
+                  WHERE oxvarname = :oxvarname and oxshopid = :oxshopid';
 
         $parameter = [
             ':value' => $this->convertAppServerToConfigOption($appServer),
             ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $appServer->getId(),
-            ':oxshopid' => $this->config->getBaseShopId()
+            ':oxshopid' => $this->config->getBaseShopId(),
         ];
 
         $this->database->execute($query, $parameter);
@@ -175,7 +180,7 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      *
      * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer
      */
-    protected function insert($appServer)
+    protected function insert($appServer): void
     {
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                   values (:oxid, :oxshopid, '', :oxvarname, :oxvartype, :value)";
@@ -194,22 +199,23 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     /**
      * Returns all application server entities from database.
      *
-     * @param string $id An id of the entity to find.
+     * @param string $id an id of the entity to find
      *
      * @return string
      */
     private function selectDataById($id)
     {
-        $query = "SELECT oxvarvalue FROM oxconfig 
+        $query = 'SELECT oxvarvalue FROM oxconfig 
             WHERE oxvarname = :oxvarname 
-              AND oxshopid = :oxshopid FOR UPDATE";
+              AND oxshopid = :oxshopid FOR UPDATE';
 
         $parameter = [
-            ":oxvarname" => self::CONFIG_NAME_FOR_SERVER_INFO . $id,
-            ":oxshopid" => $this->config->getBaseShopId()
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . $id,
+            ':oxshopid' => $this->config->getBaseShopId(),
         ];
 
         $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);
+
         return $this->database->getOne($query, $parameter);
     }
 
@@ -220,49 +226,50 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
      */
     private function selectAllData()
     {
-        $query = "SELECT oxvarname, oxvarvalue
+        $query = 'SELECT oxvarname, oxvarvalue
                     FROM oxconfig
-                    WHERE oxvarname like :oxvarname AND oxshopid = :oxshopid";
+                    WHERE oxvarname like :oxvarname AND oxshopid = :oxshopid';
 
         $parameter = [
-            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . "%",
-            ':oxshopid' => $this->config->getBaseShopId()
+            ':oxvarname' => self::CONFIG_NAME_FOR_SERVER_INFO . '%',
+            ':oxshopid' => $this->config->getBaseShopId(),
         ];
 
         $this->database->setFetchMode(\OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface::FETCH_MODE_ASSOC);
+
         return $this->database->select($query, $parameter);
     }
 
     /**
      * Parses config option name to get the server id.
      *
-     * @param string $varName The name of the config option.
+     * @param string $varName the name of the config option
      *
-     * @return string The id of server.
+     * @return string the id of server
      */
     private function getServerIdFromConfig($varName)
     {
-        $constNameLength = strlen(self::CONFIG_NAME_FOR_SERVER_INFO);
-        $id = substr($varName, $constNameLength);
-        return $id;
+        $constNameLength = \strlen(self::CONFIG_NAME_FOR_SERVER_INFO);
+
+        return substr($varName, $constNameLength);
     }
 
     /**
      * Unserializes config option value.
      *
-     * @param string $varValue The serialized value of the config option.
+     * @param string $varValue the serialized value of the config option
      *
-     * @return array The information of server.
+     * @return array the information of server
      */
     private function getValueFromConfig($varValue)
     {
-        return (array) unserialize($varValue);
+        return (array)unserialize($varValue);
     }
 
     /**
      * Creates ApplicationServer from given server id and data.
      *
-     * @param array $data The array of server data.
+     * @param array $data the array of server data
      *
      * @return \OxidEsales\Eshop\Core\DataObject\ApplicationServer
      */
@@ -283,31 +290,31 @@ class ApplicationServerDao implements \OxidEsales\Eshop\Core\Dao\ApplicationServ
     /**
      * Gets server parameter.
      *
-     * @param array  $data The array of server data.
-     * @param string $name The name of searched parameter.
+     * @param array  $data the array of server data
+     * @param string $name the name of searched parameter
      *
      * @return mixed
      */
     private function getServerParameter($data, $name)
     {
-        return array_key_exists($name, $data) ? $data[$name] : null;
+        return \array_key_exists($name, $data) ? $data[$name] : null;
     }
 
     /**
      * Convert ApplicationServer object into simple array for saving into database oxconfig table.
      *
-     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer An application server object.
+     * @param \OxidEsales\Eshop\Core\DataObject\ApplicationServer $appServer an application server object
      *
      * @return array
      */
     private function convertAppServerToConfigOption($appServer)
     {
         $serverData = [
-            'id'                => $appServer->getId(),
-            'timestamp'         => $appServer->getTimestamp(),
-            'ip'                => $appServer->getIp(),
+            'id' => $appServer->getId(),
+            'timestamp' => $appServer->getTimestamp(),
+            'ip' => $appServer->getIp(),
             'lastFrontendUsage' => $appServer->getLastFrontendUsage(),
-            'lastAdminUsage'    => $appServer->getLastAdminUsage()
+            'lastAdminUsage' => $appServer->getLastAdminUsage(),
         ];
 
         return serialize($serverData);

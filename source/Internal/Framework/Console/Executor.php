@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @inheritdoc
+ * {@inheritdoc}
  */
 class Executor implements ExecutorInterface
 {
@@ -32,10 +32,6 @@ class Executor implements ExecutorInterface
      */
     private $servicesCommandsProvider;
 
-    /**
-     * @param Application               $application
-     * @param CommandsProviderInterface $commandsProvider
-     */
     public function __construct(
         Application $application,
         CommandsProviderInterface $commandsProvider
@@ -46,11 +42,8 @@ class Executor implements ExecutorInterface
 
     /**
      * Executes commands.
-     *
-     * @param InputInterface|null  $input
-     * @param OutputInterface|null $output
      */
-    public function execute(InputInterface $input = null, OutputInterface $output = null)
+    public function execute(InputInterface $input = null, OutputInterface $output = null): void
     {
         $this->application->addCommands($this->servicesCommandsProvider->getCommands());
         $this->application->run($input, $output);

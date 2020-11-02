@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,37 +9,39 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-
 /**
- * Content seo config class
+ * Content seo config class.
  */
 class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
     /**
-     * Returns url type
+     * Returns url type.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
-    protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getType()
     {
         return 'oxcontent';
     }
 
     /**
-     * Returns current object type seo encoder object
+     * Returns current object type seo encoder object.
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderContent
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
-    protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getEncoder()
     {
         return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderContent::class);
     }
 
     /**
-     * Returns seo uri
+     * Returns seo uri.
      *
      * @return string
      */

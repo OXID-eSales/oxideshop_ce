@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,12 +10,12 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use stdClass;
-use oxException;
 
 /**
  * Performs Online License Key check.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
@@ -21,14 +23,14 @@ use oxException;
 class OnlineLicenseCheck
 {
     /**
-     * Variable name to be used in oxConfig table
+     * Variable name to be used in oxConfig table.
      */
-    const CONFIG_VAR_NAME = 'iOlcSuccess';
+    public const CONFIG_VAR_NAME = 'iOlcSuccess';
 
     /**
      * Expected valid response code.
      *
-     * @var integer
+     * @var int
      */
     protected $validResponseCode = 0;
 
@@ -54,7 +56,7 @@ class OnlineLicenseCheck
     protected $errorMessage = '';
 
     /**
-     * Indicates exception event
+     * Indicates exception event.
      *
      * @var bool
      */
@@ -80,7 +82,7 @@ class OnlineLicenseCheck
      *
      * @param \OxidEsales\Eshop\Core\Service\ApplicationServerExporterInterface $appServerExporter
      */
-    public function setAppServerExporter($appServerExporter)
+    public function setAppServerExporter($appServerExporter): void
     {
         $this->appServerExporter = $appServerExporter;
     }
@@ -100,7 +102,7 @@ class OnlineLicenseCheck
      *
      * @param \OxidEsales\Eshop\Core\UserCounter $userCounter
      */
-    public function setUserCounter($userCounter)
+    public function setUserCounter($userCounter): void
     {
         $this->userCounter = $userCounter;
     }
@@ -136,7 +138,7 @@ class OnlineLicenseCheck
     }
 
     /**
-     * Indicates whether the exception was thrown
+     * Indicates whether the exception was thrown.
      *
      * @return bool
      */
@@ -150,9 +152,9 @@ class OnlineLicenseCheck
      * In case of invalid license key, eShop is declared as unlicensed.
      * In case of validation exception (eg. service can not be reached) the check is postponed until the next call.
      */
-    public function validateShopSerials()
+    public function validateShopSerials(): void
     {
-        $aSerials = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aSerials");
+        $aSerials = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSerials');
         if (!$this->validate($aSerials) && !$this->isException()) {
             $this->startGracePeriod();
         }
@@ -161,14 +163,19 @@ class OnlineLicenseCheck
     /**
      * The Online shop license check for the new serial is performed. Returns check result.
      *
-     * @param string $serial Serial to check.
+     * @param string $serial serial to check
      *
      * @return bool
      */
     public function validateNewSerial($serial)
     {
-        $serials = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aSerials");
-        $serials[] = ['attributes' => ['state' => 'new'], 'value' => $serial];
+        $serials = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSerials');
+        $serials[] = [
+            'attributes' => [
+                'state' => 'new',
+            ],
+            'value' => $serial,
+        ];
 
         return $this->validate($serials);
     }
@@ -176,7 +183,7 @@ class OnlineLicenseCheck
     /**
      * The Online shop license check is performed. Returns check result.
      *
-     * @param array $serials Serial keys to be checked.
+     * @param array $serials serial keys to be checked
      *
      * @return bool
      */
@@ -210,7 +217,7 @@ class OnlineLicenseCheck
      *
      * @param string $errorMessage Error message
      */
-    protected function setErrorMessage($errorMessage)
+    protected function setErrorMessage($errorMessage): void
     {
         $this->errorMessage = $errorMessage;
     }
@@ -238,8 +245,8 @@ class OnlineLicenseCheck
     {
         if (isset($response->code) && isset($response->message)) {
             if (
-                $response->code == $this->validResponseCode &&
-                $response->message == $this->validResponseMessage
+                $response->code === $this->validResponseCode &&
+                $response->message === $this->validResponseMessage
             ) {
                 // serial keys are valid
                 $valid = true;
@@ -259,7 +266,7 @@ class OnlineLicenseCheck
     /**
      * Builds request object with required parameters.
      *
-     * @param array $serials Array of serials to add to request.
+     * @param array $serials array of serials to add to request
      *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest
      */
@@ -270,18 +277,24 @@ class OnlineLicenseCheck
         /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $request */
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
 
-        $request->keys = ['key' => $serials];
+        $request->keys = [
+            'key' => $serials,
+        ];
 
         $request->productSpecificInformation = new stdClass();
 
-        if (!is_null($this->getAppServerExporter())) {
+        if (null !== $this->getAppServerExporter()) {
             $servers = $this->getAppServerExporter()->exportAppServerList();
-            $request->productSpecificInformation->servers = ['server' => $servers];
+            $request->productSpecificInformation->servers = [
+                'server' => $servers,
+            ];
         }
 
         $counters = $this->formCounters();
         if (!empty($counters)) {
-            $request->productSpecificInformation->counters = ['counter' => $counters];
+            $request->productSpecificInformation->counters = [
+                'counter' => $counters,
+            ];
         }
 
         return $request;
@@ -298,7 +311,7 @@ class OnlineLicenseCheck
 
         $counters = [];
 
-        if (!is_null($this->getUserCounter())) {
+        if (null !== $this->getUserCounter()) {
             $counters[] = [
                 'name' => 'admin users',
                 'value' => $userCounter->getAdminCount(),
@@ -320,12 +333,12 @@ class OnlineLicenseCheck
     /**
      * Registers the latest Successful Online License check.
      */
-    protected function logSuccess()
+    protected function logSuccess(): void
     {
         $time = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
         $baseShop = \OxidEsales\Eshop\Core\Registry::getConfig()->getBaseShopId();
         \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar(
-            "str",
+            'str',
             \OxidEsales\Eshop\Core\OnlineLicenseCheck::CONFIG_VAR_NAME,
             $time,
             $baseShop
@@ -335,9 +348,9 @@ class OnlineLicenseCheck
     /**
      * Sets exception flag.
      *
-     * @param bool $isException Exception flag.
+     * @param bool $isException exception flag
      */
-    protected function setIsException($isException)
+    protected function setIsException($isException): void
     {
         $this->isException = $isException;
     }
@@ -346,7 +359,7 @@ class OnlineLicenseCheck
      * Starts grace period.
      * Sets to config options.
      */
-    protected function startGracePeriod()
+    protected function startGracePeriod(): void
     {
     }
 }

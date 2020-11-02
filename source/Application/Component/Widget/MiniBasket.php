@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
- * Mini basket widget
+ * Mini basket widget.
  */
 class MiniBasket extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
@@ -19,7 +21,11 @@ class MiniBasket extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_cur' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1];
+    protected $_aComponentNames = [
+        'oxcmp_cur' => 1,
+        'oxcmp_basket' => 1,
+        'oxcmp_user' => 1,
+    ];
 
     /**
      * Current class template name.

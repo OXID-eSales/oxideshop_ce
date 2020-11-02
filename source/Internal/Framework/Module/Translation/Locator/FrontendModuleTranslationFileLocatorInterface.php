@@ -11,10 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Locato
 
 interface FrontendModuleTranslationFileLocatorInterface
 {
-    /**
-     * @param string $lang
-     *
-     * @return array
-     */
     public function locate(string $lang): array;
 }

@@ -37,7 +37,7 @@ class OxidEshopPackage
     private $targetDirectory;
 
     /**
-     * Package path is the absolute path to the root directory, e.g. /var/www/oxideshop/vendor/oxid-esales/paypal-module
+     * Package path is the absolute path to the root directory, e.g. /var/www/oxideshop/vendor/oxid-esales/paypal-module.
      *
      * @var string
      */
@@ -48,77 +48,49 @@ class OxidEshopPackage
      */
     private $name;
 
-    /**
-     * @param string $name
-     * @param string $packagePath
-     */
     public function __construct(string $name, string $packagePath)
     {
         $this->name = $name;
         $this->packagePath = $packagePath;
     }
 
-    /**
-     * @return string
-     */
     public function getPackageSourcePath(): string
     {
         return !empty($this->sourceDirectory)
-            ? $this->packagePath . DIRECTORY_SEPARATOR . $this->sourceDirectory
+            ? $this->packagePath . \DIRECTORY_SEPARATOR . $this->sourceDirectory
             : $this->packagePath;
     }
 
-    /**
-     * @return array
-     */
     public function getBlackListFilters(): array
     {
         return $this->blackListFilters;
     }
 
-    /**
-     * @param array $filters
-     */
-    public function setBlackListFilters(array $filters)
+    public function setBlackListFilters(array $filters): void
     {
         $this->blackListFilters = $filters;
     }
 
-    /**
-     * @return string
-     */
     public function getTargetDirectory(): string
     {
         return $this->targetDirectory ?? $this->name;
     }
 
-    /**
-     * @param string $path
-     */
-    public function setTargetDirectory(string $path)
+    public function setTargetDirectory(string $path): void
     {
         $this->targetDirectory = $path;
     }
 
-    /**
-     * @return string
-     */
     public function getSourceDirectory(): string
     {
         return $this->sourceDirectory;
     }
 
-    /**
-     * @param string $sourceDirectory
-     */
-    public function setSourceDirectory(string $sourceDirectory)
+    public function setSourceDirectory(string $sourceDirectory): void
     {
         $this->sourceDirectory = $sourceDirectory;
     }
 
-    /**
-     * @return string
-     */
     public function getPackagePath(): string
     {
         return $this->packagePath;

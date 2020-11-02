@@ -33,6 +33,7 @@ class ClassExtensionsDataMapper implements ModuleConfigurationDataMapperInterfac
         if (isset($data[self::MAPPING_KEY])) {
             $this->setClassExtensions($moduleConfiguration, $data[self::MAPPING_KEY]);
         }
+
         return $moduleConfiguration;
     }
 

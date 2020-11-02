@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,7 +16,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 class CountryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * Call parent class constructor
+     * Call parent class constructor.
      */
     public function __construct()
     {
@@ -22,11 +24,11 @@ class CountryList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Selects and loads all active countries
+     * Selects and loads all active countries.
      *
-     * @param integer $iLang language
+     * @param int $iLang language
      */
-    public function loadActiveCountries($iLang = null)
+    public function loadActiveCountries($iLang = null): void
     {
         $sViewName = getViewName('oxcountry', $iLang);
         $sSelect = "SELECT oxid, oxtitle, oxisoalpha2 FROM {$sViewName} WHERE oxactive = '1' ORDER BY oxorder, oxtitle ";

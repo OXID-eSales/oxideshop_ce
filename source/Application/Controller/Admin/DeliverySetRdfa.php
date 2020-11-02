@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,9 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use oxRegistry;
-use oxDb;
-use oxField;
 use stdClass;
 
 /**
@@ -25,44 +24,44 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
      *
      * @var string
      */
-    protected $_sThisTemplate = "deliveryset_rdfa.tpl";
+    protected $_sThisTemplate = 'deliveryset_rdfa.tpl';
 
     /**
-     * Predefined delivery methods
+     * Predefined delivery methods.
      *
      * @var array
      */
     protected $_aRDFaDeliveries = [
-        "DeliveryModeDirectDownload" => 0,
-        "DeliveryModeFreight"        => 0,
-        "DeliveryModeMail"           => 0,
-        "DeliveryModeOwnFleet"       => 0,
-        "DeliveryModePickUp"         => 0,
-        "DHL"                        => 1,
-        "FederalExpress"             => 1,
-        "UPS"                        => 1
+        'DeliveryModeDirectDownload' => 0,
+        'DeliveryModeFreight' => 0,
+        'DeliveryModeMail' => 0,
+        'DeliveryModeOwnFleet' => 0,
+        'DeliveryModePickUp' => 0,
+        'DHL' => 1,
+        'FederalExpress' => 1,
+        'UPS' => 1,
     ];
 
     /**
-     * Saves changed mapping configurations
+     * Saves changed mapping configurations.
      */
-    public function save()
+    public function save(): void
     {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
-        $aRDFaDeliveries = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("ardfadeliveries");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
+        $aRDFaDeliveries = (array)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('ardfadeliveries');
 
         // Delete old mappings
         $oDb = DatabaseProvider::getDb();
-        $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid");
+        $sOxIdParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $sSql = "DELETE FROM oxobject2delivery WHERE oxdeliveryid = :oxdeliveryid AND OXTYPE = 'rdfadeliveryset'";
         $oDb->execute($sSql, [
-            ':oxdeliveryid' => $sOxIdParameter
+            ':oxdeliveryid' => $sOxIdParameter,
         ]);
 
         // Save new mappings
         foreach ($aRDFaDeliveries as $sDelivery) {
             $oMapping = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-            $oMapping->init("oxobject2delivery");
+            $oMapping->init('oxobject2delivery');
             $oMapping->assign($aParams);
             $oMapping->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sDelivery);
             $oMapping->save();
@@ -82,7 +81,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
             $oDelivery = new stdClass();
             $oDelivery->name = $sName;
             $oDelivery->type = $iType;
-            $oDelivery->checked = in_array($sName, $aAssignedRDFaDeliveries);
+            $oDelivery->checked = \in_array($sName, $aAssignedRDFaDeliveries, true);
             $aRDFaDeliveries[] = $oDelivery;
         }
 
@@ -90,7 +89,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
     }
 
     /**
-     * Returns array of RDFa deliveries which are assigned to current delivery
+     * Returns array of RDFa deliveries which are assigned to current delivery.
      *
      * @return array
      */
@@ -100,7 +99,7 @@ class DeliverySetRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\Pay
         $aRDFaDeliveries = [];
         $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid = :oxdeliveryid and oxtype = "rdfadeliveryset" ';
         $rs = $oDb->select($sSelect, [
-            ':oxdeliveryid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")
+            ':oxdeliveryid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'),
         ]);
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {

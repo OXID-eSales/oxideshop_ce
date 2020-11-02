@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,8 +16,8 @@ use OxidEsales\Eshop\Core\Str;
  */
 class StyleRegistrator
 {
-    const CONDITIONAL_STYLES_PARAMETER_NAME = 'conditional_styles';
-    const STYLES_PARAMETER_NAME = 'styles';
+    public const CONDITIONAL_STYLES_PARAMETER_NAME = 'conditional_styles';
+    public const STYLES_PARAMETER_NAME = 'styles';
 
     /**
      * Separate query part #3305.
@@ -24,7 +26,7 @@ class StyleRegistrator
      * @param string $condition
      * @param bool   $isDynamic
      */
-    public function addFile($style, $condition, $isDynamic)
+    public function addFile($style, $condition, $isDynamic): void
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $suffix = $isDynamic ? '_dynamic' : '';
@@ -36,12 +38,12 @@ class StyleRegistrator
         if ($style) {
             if (!empty($condition)) {
                 $conditionalStylesParameterName = static::CONDITIONAL_STYLES_PARAMETER_NAME . $suffix;
-                $conditionalStyles = (array) $config->getGlobalParameter($conditionalStylesParameterName);
+                $conditionalStyles = (array)$config->getGlobalParameter($conditionalStylesParameterName);
                 $conditionalStyles[$style] = $condition;
                 $config->setGlobalParameter($conditionalStylesParameterName, $conditionalStyles);
             } else {
                 $stylesParameterName = static::STYLES_PARAMETER_NAME . $suffix;
-                $styles = (array) $config->getGlobalParameter($stylesParameterName);
+                $styles = (array)$config->getGlobalParameter($stylesParameterName);
                 $styles[] = $style;
                 $styles = array_unique($styles);
                 $config->setGlobalParameter($stylesParameterName, $styles);
@@ -67,8 +69,8 @@ class StyleRegistrator
             $parameters = filemtime($path);
         }
 
-        if (empty($url) && $config->getConfigParam('iDebug') != 0) {
-            $error = "{oxstyle} resource not found: " . Str::getStr()->htmlspecialchars($file);
+        if (empty($url) && 0 !== $config->getConfigParam('iDebug')) {
+            $error = '{oxstyle} resource not found: ' . Str::getStr()->htmlspecialchars($file);
             trigger_error($error, E_USER_WARNING);
         }
 

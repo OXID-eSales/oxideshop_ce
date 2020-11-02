@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,17 +13,18 @@ namespace OxidEsales\EshopCommunity\Core;
  * Class OnlineServerEmailBuilder is responsible for generation of email with specific message
  * when it's not possible to make OLIS call via CURL.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
 class OnlineServerEmailBuilder extends \OxidEsales\Eshop\Core\EmailBuilder
 {
-    const OLC_EMAIL = 'olc@oxid-esales.com';
+    public const OLC_EMAIL = 'olc@oxid-esales.com';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @return string
      */
@@ -31,7 +34,7 @@ class OnlineServerEmailBuilder extends \OxidEsales\Eshop\Core\EmailBuilder
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @return string
      */
@@ -45,7 +48,7 @@ class OnlineServerEmailBuilder extends \OxidEsales\Eshop\Core\EmailBuilder
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @return string
      */

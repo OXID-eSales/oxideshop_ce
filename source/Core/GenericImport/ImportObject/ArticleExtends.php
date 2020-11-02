@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,17 +9,19 @@
 
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
-use oxI18n;
-
 /**
  * Import object for Article Extends.
  */
 class ArticleExtends extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
-    /** @var string Database table name. */
+    /**
+     * @var string database table name
+     */
     protected $tableName = 'oxartextends';
 
-    /** @var string Shop object name. */
+    /**
+     * @var string shop object name
+     */
     protected $shopObjectName = 'oxI18n';
 
     /**

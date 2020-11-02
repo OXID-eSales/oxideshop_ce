@@ -17,8 +17,6 @@ interface QueryFilterInterface
     /**
      * @param string $query       Query string
      * @param array  $skipLogTags Additional tags to skip
-     *
-     * @return bool
      */
     public function shouldLogQuery(string $query, array $skipLogTags): bool;
 }

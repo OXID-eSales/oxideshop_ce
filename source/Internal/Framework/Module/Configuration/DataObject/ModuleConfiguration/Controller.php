@@ -23,9 +23,6 @@ class Controller
 
     /**
      * ClassExtension constructor.
-     *
-     * @param string $id
-     * @param string $controllerClassNameSpace
      */
     public function __construct(string $id, string $controllerClassNameSpace)
     {
@@ -33,17 +30,11 @@ class Controller
         $this->controllerClassNameSpace = $controllerClassNameSpace;
     }
 
-    /**
-     * @return string
-     */
     public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getControllerClassNameSpace(): string
     {
         return $this->controllerClassNameSpace;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,13 +9,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\DatabaseProvider;
-use oxRegistry;
 use Exception;
-use oxDb;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Article list manager.
@@ -27,14 +25,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected $_sCustomSorting;
 
     /**
-     * List Object class name
+     * List Object class name.
      *
      * @var string
      */
     protected $_sObjectsInListName = 'oxarticle';
 
     /**
-     * Set to true if Select Lists should be laoded
+     * Set to true if Select Lists should be laoded.
      *
      * @var bool
      */
@@ -45,31 +43,31 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sSorting Custom sorting
      */
-    public function setCustomSorting($sSorting)
+    public function setCustomSorting($sSorting): void
     {
         $this->_sCustomSorting = $sSorting;
     }
 
     /**
-     * Call enableSelectLists() for loading select lists in lst articles
+     * Call enableSelectLists() for loading select lists in lst articles.
      */
-    public function enableSelectLists()
+    public function enableSelectLists(): void
     {
         $this->_blLoadSelectLists = true;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      * In addition to the parent method, this method includes profiling.
      *
      * @param string $sql        SQL select statement or prepared statement
      * @param array  $parameters Parameters to be used in a prepared statement
      */
-    public function selectString($sql, array $parameters = [])
+    public function selectString($sql, array $parameters = []): void
     {
-        startProfile("loadinglists");
+        startProfile('loadinglists');
         parent::selectString($sql, $parameters);
-        stopProfile("loadinglists");
+        stopProfile('loadinglists');
     }
 
     /**
@@ -88,11 +86,11 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Set history article id's to session or cookie
+     * Set history article id's to session or cookie.
      *
      * @param array $aArticlesIds array history article ids
      */
-    public function setHistoryArticles($aArticlesIds)
+    public function setHistoryArticles($aArticlesIds): void
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         if ($session->getId()) {
@@ -111,14 +109,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sArtId Article ID
      * @param int    $iCnt   product count
      */
-    public function loadHistoryArticles($sArtId, $iCnt = 4)
+    public function loadHistoryArticles($sArtId, $iCnt = 4): void
     {
         $aHistoryArticles = $this->getHistoryArticles();
         $aHistoryArticles[] = $sArtId;
 
         // removing duplicates
         $aHistoryArticles = array_unique($aHistoryArticles);
-        if (count($aHistoryArticles) > ($iCnt + 1)) {
+        if (\count($aHistoryArticles) > ($iCnt + 1)) {
             array_shift($aHistoryArticles);
         }
 
@@ -126,7 +124,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         //remove current article and return array
         //asignment =, not ==
-        if (($iCurrentArt = array_search($sArtId, $aHistoryArticles)) !== false) {
+        if (false !== ($iCurrentArt = array_search($sArtId, $aHistoryArticles, true))) {
             unset($aHistoryArticles[$iCurrentArt]);
         }
 
@@ -140,14 +138,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param array $aIds ordered ids
      */
-    public function sortByIds($aIds)
+    public function sortByIds($aIds): void
     {
         $this->_aOrderMap = array_flip($aIds);
         uksort($this->_aArray, [$this, '_sortByOrderMapCallback']);
     }
 
     /**
-     * callback function only used from sortByIds
+     * callback function only used from sortByIds.
      *
      * @param string $key1 1st key
      * @param string $key2 2nd key
@@ -155,6 +153,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @see oxArticleList::sortByIds
      *
      * @return int
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "sortByOrderMapCallback" in next major
      */
     protected function _sortByOrderMapCallback($key1, $key2) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -187,7 +186,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param int $iLimit Select limit
      */
-    public function loadNewestArticles($iLimit = null)
+    public function loadNewestArticles($iLimit = null): void
     {
         //has module?
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -214,10 +213,10 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 }
                 $sSelect = "select * from $sArticleTable ";
                 $sSelect .= "where oxparentid = '' and " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxissearch = 1 order by $sType desc ";
-                if (!($iLimit = (int) $iLimit)) {
+                if (!($iLimit = (int)$iLimit)) {
                     $iLimit = $myConfig->getConfigParam('iNrofNewcomerArticles');
                 }
-                $sSelect .= "limit " . $iLimit;
+                $sSelect .= 'limit ' . $iLimit;
 
                 $this->selectString($sSelect);
                 break;
@@ -225,11 +224,11 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Load top 5 articles
+     * Load top 5 articles.
      *
      * @param int $iLimit Select limit
      */
-    public function loadTop5Articles($iLimit = null)
+    public function loadTop5Articles($iLimit = null): void
     {
         //has module?
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -250,10 +249,10 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sArticleTable = getViewName('oxarticles');
 
                 //by default limit 5
-                $sLimit = ($iLimit > 0) ? "limit " . $iLimit : 'limit 5';
+                $sLimit = ($iLimit > 0) ? 'limit ' . $iLimit : 'limit 5';
 
                 $sSelect = "select * from $sArticleTable ";
-                $sSelect .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . " and $sArticleTable.oxissearch = 1 ";
+                $sSelect .= 'where ' . $this->getBaseObject()->getSqlActiveSnippet() . " and $sArticleTable.oxissearch = 1 ";
                 $sSelect .= "and $sArticleTable.oxparentid = '' and $sArticleTable.oxsoldamount>0 ";
                 $sSelect .= "order by $sArticleTable.oxsoldamount desc $sLimit";
 
@@ -267,10 +266,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sActionID Action id
      * @param int    $iLimit    Select limit
-     *
-     * @return null
      */
-    public function loadActionArticles($sActionID, $iLimit = null)
+    public function loadActionArticles($sActionID, $iLimit = null): void
     {
         // Performance
         if (!trim($sActionID)) {
@@ -289,7 +286,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sActiveSql = $oBase->getSqlActiveSnippet();
         $sViewName = $oBase->getViewName();
 
-        $sLimit = ($iLimit > 0) ? "limit " . $iLimit : '';
+        $sLimit = ($iLimit > 0) ? 'limit ' . $iLimit : '';
 
         $sSelect = "select $sArticleFields from oxactions2article
                               left join $sArticleTable on $sArticleTable.oxid = oxactions2article.oxartid
@@ -302,16 +299,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->selectString($sSelect, [
             ':oxshopid' => $sShopID,
-            ':oxactionid' => $sActionID
+            ':oxactionid' => $sActionID,
         ]);
     }
 
     /**
-     * Loads article cross selling
+     * Loads article cross selling.
      *
      * @param string $sArticleId Article id
-     *
-     * @return null
      */
     public function loadArticleCrossSell($sArticleId)
     {
@@ -356,18 +351,16 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $this->setSqlLimit(0, $myConfig->getConfigParam('iNrofCrossellArticles'));
         $this->selectString($sSelect, [
-            ':oxarticlenid' => $sArticleId
+            ':oxarticlenid' => $sArticleId,
         ]);
     }
 
     /**
-     * Loads article accessories
+     * Loads article accessories.
      *
      * @param string $sArticleId Article id
-     *
-     * @return null
      */
-    public function loadArticleAccessoires($sArticleId)
+    public function loadArticleAccessoires($sArticleId): void
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -381,13 +374,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $sSelect = "select $sArticleTable.* from oxaccessoire2article
             left join $sArticleTable on oxaccessoire2article.oxobjectid=$sArticleTable.oxid ";
-        $sSelect .= "where oxaccessoire2article.oxarticlenid = :oxarticlenid ";
+        $sSelect .= 'where oxaccessoire2article.oxarticlenid = :oxarticlenid ';
         $sSelect .= " and $sArticleTable.oxid is not null and " . $oBaseObject->getSqlActiveSnippet();
         //sorting articles
-        $sSelect .= " order by oxaccessoire2article.oxsort";
+        $sSelect .= ' order by oxaccessoire2article.oxsort';
 
         $this->selectString($sSelect, [
-            ':oxarticlenid' => $sArticleId
+            ':oxarticlenid' => $sArticleId,
         ]);
     }
 
@@ -397,7 +390,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sCatId         Category tree ID
      * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
      */
-    public function loadCategoryIds($sCatId, $aSessionFilter)
+    public function loadCategoryIds($sCatId, $aSessionFilter): void
     {
         $sArticleTable = $this->getBaseObject()->getViewName();
         $sSelect = $this->_getCategorySelect($sArticleTable . '.oxid as oxid', $sCatId, $aSessionFilter);
@@ -406,13 +399,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Loads articles for the give Category
+     * Loads articles for the give Category.
      *
      * @param string $sCatId         Category tree ID
      * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
      * @param int    $iLimit         Limit
      *
-     * @return integer total Count of Articles in this Category
+     * @return int total Count of Articles in this Category
      */
     public function loadCategoryArticles($sCatId, $aSessionFilter, $iLimit = null)
     {
@@ -427,13 +420,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             $iArticleCount = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($this->_getCategoryCountSelect($sCatId, $aSessionFilter));
         }
 
-        if ($iLimit = (int) $iLimit) {
+        if ($iLimit = (int)$iLimit) {
             $sSelect .= " LIMIT $iLimit";
         }
 
         $this->selectString($sSelect);
 
-        if ($iArticleCount !== null) {
+        if (null !== $iArticleCount) {
             return $iArticleCount;
         }
 
@@ -442,14 +435,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Loads articles for the recommlist
+     * Loads articles for the recommlist.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
      */
-    public function loadRecommArticles($sRecommId, $sArticlesFilter = null)
+    public function loadRecommArticles($sRecommId, $sArticlesFilter = null): void
     {
         $sSelect = $this->_getArticleSelect($sRecommId, $sArticlesFilter);
         $this->selectString($sSelect);
@@ -463,7 +456,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sRecommId       Recommlist ID
      * @param string $sArticlesFilter Additional filter for recommlist's items
      */
-    public function loadRecommArticleIds($sRecommId, $sArticlesFilter)
+    public function loadRecommArticleIds($sRecommId, $sArticlesFilter): void
     {
         $sSelect = $this->_getArticleSelect($sRecommId, $sArticlesFilter);
 
@@ -475,7 +468,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Returns the appropriate SQL select
+     * Returns the appropriate SQL select.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -504,7 +497,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sSearchVendor       Search within vendor
      * @param string $sSearchManufacturer Search within manufacturer
      */
-    public function loadSearchIds($sSearchStr = '', $sSearchCat = '', $sSearchVendor = '', $sSearchManufacturer = '')
+    public function loadSearchIds($sSearchStr = '', $sSearchCat = '', $sSearchVendor = '', $sSearchManufacturer = ''): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sSearchCat = $sSearchCat ? $sSearchCat : null;
@@ -529,18 +522,18 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         if ($sSearchCat) {
             $sO2CView = getViewName('oxobject2category');
             $sSelect = "select $sArticleTable.oxid from $sO2CView as oxobject2category, $sArticleTable $sDescJoin ";
-            $sSelect .= "where oxobject2category.oxcatnid=" . $oDb->quote($sSearchCat) . " and oxobject2category.oxobjectid=$sArticleTable.oxid and ";
+            $sSelect .= 'where oxobject2category.oxcatnid=' . $oDb->quote($sSearchCat) . " and oxobject2category.oxobjectid=$sArticleTable.oxid and ";
         }
         $sSelect .= $this->getBaseObject()->getSqlActiveSnippet();
         $sSelect .= " and $sArticleTable.oxparentid = '' and $sArticleTable.oxissearch = 1 ";
 
         // #671
         if ($sSearchVendor) {
-            $sSelect .= " and $sArticleTable.oxvendorid = " . $oDb->quote($sSearchVendor) . " ";
+            $sSelect .= " and $sArticleTable.oxvendorid = " . $oDb->quote($sSearchVendor) . ' ';
         }
 
         if ($sSearchManufacturer) {
-            $sSelect .= " and $sArticleTable.oxmanufacturerid = " . $oDb->quote($sSearchManufacturer) . " ";
+            $sSelect .= " and $sArticleTable.oxmanufacturerid = " . $oDb->quote($sSearchManufacturer) . ' ';
         }
         $sSelect .= $sWhere;
 
@@ -552,12 +545,12 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Loads Id list of appropriate price products
+     * Loads Id list of appropriate price products.
      *
      * @param float $dPriceFrom Starting price
      * @param float $dPriceTo   Max price
      */
-    public function loadPriceIds($dPriceFrom, $dPriceTo)
+    public function loadPriceIds($dPriceFrom, $dPriceTo): void
     {
         $sSelect = $this->_getPriceSelect($dPriceFrom, $dPriceTo);
         $this->_createIdListFromSql($sSelect);
@@ -567,19 +560,19 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Loads articles, that price is bigger than passed $dPriceFrom and smaller
      * than passed $dPriceTo. Returns count of selected articles.
      *
-     * @param double $dPriceFrom Price from
-     * @param double $dPriceTo   Price to
+     * @param float  $dPriceFrom Price from
+     * @param float  $dPriceTo   Price to
      * @param object $oCategory  Active category object
      *
-     * @return integer
+     * @return int
      */
     public function loadPriceArticles($dPriceFrom, $dPriceTo, $oCategory = null)
     {
         $sSelect = $this->_getPriceSelect($dPriceFrom, $dPriceTo);
 
-        startProfile("loadPriceArticles");
+        startProfile('loadPriceArticles');
         $this->selectString($sSelect);
-        stopProfile("loadPriceArticles");
+        stopProfile('loadPriceArticles');
 
         if (!$oCategory) {
             return $this->count();
@@ -589,22 +582,22 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Loads Products for specified vendor
+     * Loads Products for specified vendor.
      *
      * @param string $sVendorId Vendor id
      */
-    public function loadVendorIDs($sVendorId)
+    public function loadVendorIDs($sVendorId): void
     {
         $sSelect = $this->_getVendorSelect($sVendorId);
         $this->_createIdListFromSql($sSelect);
     }
 
     /**
-     * Loads Products for specified Manufacturer
+     * Loads Products for specified Manufacturer.
      *
      * @param string $sManufacturerId Manufacturer id
      */
-    public function loadManufacturerIDs($sManufacturerId)
+    public function loadManufacturerIDs($sManufacturerId): void
     {
         $sSelect = $this->_getManufacturerSelect($sManufacturerId);
         $this->_createIdListFromSql($sSelect);
@@ -617,7 +610,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sVendorId Vendor ID
      * @param object $oVendor   Active vendor object
      *
-     * @return integer
+     * @return int
      */
     public function loadVendorArticles($sVendorId, $oVendor = null)
     {
@@ -634,7 +627,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sManufacturerId Manufacturer ID
      * @param object $oManufacturer   Active Manufacturer object
      *
-     * @return integer
+     * @return int
      */
     public function loadManufacturerArticles($sManufacturerId, $oManufacturer = null)
     {
@@ -645,15 +638,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Load the list by article ids
+     * Load the list by article ids.
      *
      * @param array $aIds Article ID array
-     *
-     * @return null
      */
-    public function loadIds($aIds)
+    public function loadIds($aIds): void
     {
-        if (!count($aIds)) {
+        if (!\count($aIds)) {
             $this->clear();
 
             return;
@@ -666,22 +657,20 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oxIdsSql = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sArticleFields from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";
+        $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . ' ) and ';
         $sSelect .= $oBaseObject->getSqlActiveSnippet();
 
         $this->selectString($sSelect);
     }
 
     /**
-     * Loads the article list by orders ids
+     * Loads the article list by orders ids.
      *
      * @param array $aOrders user orders array
-     *
-     * @return null
      */
-    public function loadOrderArticles($aOrders)
+    public function loadOrderArticles($aOrders): void
     {
-        if (!count($aOrders)) {
+        if (!\count($aOrders)) {
             $this->clear();
 
             return;
@@ -694,7 +683,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sArticleFields = $oBaseObject->getSelectFields();
-        $sArticleFields = str_replace("`$sArticleTable`.`oxid`", "`oxorderarticles`.`oxartid` AS `oxid`", $sArticleFields);
+        $sArticleFields = str_replace("`$sArticleTable`.`oxid`", '`oxorderarticles`.`oxartid` AS `oxid`', $sArticleFields);
 
         $sSelect = "SELECT $sArticleFields FROM oxorderarticles ";
         $sSelect .= "left join $sArticleTable on oxorderarticles.oxartid = $sArticleTable.oxid ";
@@ -719,13 +708,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Loads list of low stock state products
+     * Loads list of low stock state products.
      *
      * @param array $aBasketContents product ids array
      */
-    public function loadStockRemindProducts($aBasketContents)
+    public function loadStockRemindProducts($aBasketContents): void
     {
-        if (is_array($aBasketContents) && count($aBasketContents)) {
+        if (\is_array($aBasketContents) && \count($aBasketContents)) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             foreach ($aBasketContents as $oBasketItem) {
                 $aArtIds[] = $oDb->quote($oBasketItem->getProductId());
@@ -737,21 +726,23 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sTable = $oBaseObject->getViewName();
 
             // fetching actual db stock state and reminder status
-            $sQ = "select {$sFieldNames} from {$sTable} where {$sTable}.oxid in ( " . implode(",", $aArtIds) . " ) and
+            $sQ = "select {$sFieldNames} from {$sTable} where {$sTable}.oxid in ( " . implode(',', $aArtIds) . " ) and
                           oxremindactive = '1' and oxstock <= oxremindamount";
             $this->selectString($sQ);
 
             // updating stock reminder state
             if ($this->count()) {
-                $sQ = "update {$sTable} set oxremindactive = '2' where :tableName in ( " . implode(",", $aArtIds) . " ) and
+                $sQ = "update {$sTable} set oxremindactive = '2' where :tableName in ( " . implode(',', $aArtIds) . " ) and
                               oxremindactive = '1' and oxstock <= oxremindamount";
-                $oDb->execute($sQ, [':tableName' => $sTable . '.oxid']);
+                $oDb->execute($sQ, [
+                    ':tableName' => $sTable . '.oxid',
+                ]);
             }
         }
     }
 
     /**
-     * Calculates, updates and returns next price renew time
+     * Calculates, updates and returns next price renew time.
      *
      * @return int
      */
@@ -768,14 +759,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             $iTimeToUpdate = $iNextUpdateTime;
         }
 
-        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("num", "iTimeToUpdatePrices", $iTimeToUpdate);
+        \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('num', 'iTimeToUpdatePrices', $iTimeToUpdate);
 
         return $iTimeToUpdate;
     }
 
     /**
      * Updates prices where new price > 0, update time != '0000-00-00 00:00:00'
-     * and <= CURRENT_TIMESTAMP. Returns update execution state (result of \OxidEsales\Eshop\Core\DatabaseProvider::execute())
+     * and <= CURRENT_TIMESTAMP. Returns update execution state (result of \OxidEsales\Eshop\Core\DatabaseProvider::execute()).
      *
      * @param bool $blForceUpdate if true, forces price update without timeout check, default value is FALSE
      *
@@ -793,14 +784,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             $database->startTransaction();
             try {
-                $sCurrUpdateTime = date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+                $sCurrUpdateTime = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
 
                 // Collect article id's for later recalculation.
-                $sQ = "SELECT `oxid` FROM `oxarticles`
-                   WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= :oxupdatepricetime";
+                $sQ = 'SELECT `oxid` FROM `oxarticles`
+                   WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= :oxupdatepricetime';
 
                 $aUpdatedArticleIds = $database->getCol($sQ, [
-                    ':oxupdatepricetime' => $sCurrUpdateTime
+                    ':oxupdatepricetime' => $sCurrUpdateTime,
                 ]);
 
                 // updating oxarticles
@@ -818,7 +809,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             }
 
             // recalculate oxvarminprice and oxvarmaxprice for parent
-            if (is_array($aUpdatedArticleIds)) {
+            if (\is_array($aUpdatedArticleIds)) {
                 foreach ($aUpdatedArticleIds as $sArticleId) {
                     $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     $oArticle->load($sArticleId);
@@ -833,15 +824,16 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * fills the list simply with keys of the oxid and the position as value for the given sql
+     * fills the list simply with keys of the oxid and the position as value for the given sql.
      *
      * @param string $sSql SQL select
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "createIdListFromSql" in next major
      */
-    protected function _createIdListFromSql($sSql) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _createIdListFromSql($sSql): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->select($sSql);
-        if ($rs != false && $rs->count() > 0) {
+        if (false !== $rs && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $rs->fields = array_change_key_case($rs->fields, CASE_LOWER);
                 $this[$rs->fields['oxid']] = $rs->fields['oxid']; //only the oxid
@@ -851,12 +843,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Returns sql to fetch ids of articles fitting current filter
+     * Returns sql to fetch ids of articles fitting current filter.
      *
      * @param string $sCatId  category id
      * @param array  $aFilter filters for this category
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterIdsSql" in next major
      */
     protected function _getFilterIdsSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -877,14 +870,14 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sAttrId = $oDb->quote($sAttrId);
 
                 $sFilter .= "( oa.oxattrid = {$sAttrId} and oa.oxvalue = {$sValue} )";
-                $iCnt++;
+                ++$iCnt;
             }
         }
         if ($sFilter) {
             $sFilter = "WHERE $sFilter ";
         }
 
-        $sFilterSelect = "select oc.oxobjectid as oxobjectid, count(*) as cnt from ";
+        $sFilterSelect = 'select oc.oxobjectid as oxobjectid, count(*) as cnt from ';
         $sFilterSelect .= "(SELECT * FROM $sO2CView WHERE $sO2CView.oxcatnid = '$sCatId' GROUP BY $sO2CView.oxobjectid, $sO2CView.oxcatnid) as oc ";
         $sFilterSelect .= "INNER JOIN $sO2AView as oa ON ( oa.oxobjectid = oc.oxobjectid ) ";
 
@@ -892,12 +885,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Returns filtered articles sql "oxid in (filtered ids)" part
+     * Returns filtered articles sql "oxid in (filtered ids)" part.
      *
      * @param string $sCatId  category id
      * @param array  $aFilter filters for this category
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterSql" in next major
      */
     protected function _getFilterSql($sCatId, $aFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -918,8 +912,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                 $sFilterSql = " and $sArticleTable.oxid in ( $sIds ) ";
             }
             // bug fix #0001695: if no articles found return false
-        } elseif (!(current($aFilter) == '' && count(array_unique($aFilter)) == 1)) {
-            $sFilterSql = " and false ";
+        } elseif (!('' === current($aFilter) && 1 === \count(array_unique($aFilter)))) {
+            $sFilterSql = ' and false ';
         }
 
         return $sFilterSql;
@@ -933,6 +927,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
      *
      * @return string SQL
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCategorySelect" in next major
      */
     protected function _getCategorySelect($sFields, $sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -957,12 +952,10 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sSelect = "SELECT $sFields, $sArticleTable.oxtimestamp FROM $sO2CView as oc left join $sArticleTable
+        return "SELECT $sFields, $sArticleTable.oxtimestamp FROM $sO2CView as oc left join $sArticleTable
                     ON $sArticleTable.oxid = oc.oxobjectid
                     WHERE " . $this->getBaseObject()->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''
                     and oc.oxcatnid = " . $oDb->quote($sCatId) . " $sFilterSql ORDER BY $sSorting oc.oxpos, oc.oxobjectid ";
-
-        return $sSelect;
     }
 
     /**
@@ -972,13 +965,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param array  $aSessionFilter Like array ( catid => array( attrid => value,...))
      *
      * @return string SQL
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCategoryCountSelect" in next major
      */
     protected function _getCategoryCountSelect($sCatId, $aSessionFilter) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sArticleTable = getViewName('oxarticles');
         $sO2CView = getViewName('oxobject2category');
-
 
         // ----------------------------------
         // filtering ?
@@ -990,12 +983,10 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $sSelect = "SELECT COUNT(*) FROM $sO2CView as oc left join $sArticleTable
+        return "SELECT COUNT(*) FROM $sO2CView as oc left join $sArticleTable
                     ON $sArticleTable.oxid = oc.oxobjectid
                     WHERE " . $this->getBaseObject()->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''
                     and oc.oxcatnid = " . $oDb->quote($sCatId) . " $sFilterSql ";
-
-        return $sSelect;
     }
 
     /**
@@ -1004,6 +995,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string $sSearchString searching string
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major
      */
     protected function _getSearchSelect($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1032,7 +1024,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
         $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
         foreach ($aSearch as $sSearchString) {
-            if (!strlen($sSearchString)) {
+            if (!\strlen($sSearchString)) {
                 continue;
             }
 
@@ -1066,12 +1058,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Builds SQL for selecting articles by price
+     * Builds SQL for selecting articles by price.
      *
-     * @param double $dPriceFrom Starting price
-     * @param double $dPriceTo   Max price
+     * @param float $dPriceFrom Starting price
+     * @param float $dPriceTo   Max price
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getPriceSelect" in next major
      */
     protected function _getPriceSelect($dPriceFrom, $dPriceTo) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1081,10 +1074,10 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelectFields = $oBaseObject->getSelectFields();
 
         $sSelect = "select {$sSelectFields} from {$sArticleTable} where oxvarminprice >= 0 ";
-        $sSelect .= $dPriceTo ? "and oxvarminprice <= " . (double) $dPriceTo . " " : " ";
-        $sSelect .= $dPriceFrom ? "and oxvarminprice  >= " . (double) $dPriceFrom . " " : " ";
+        $sSelect .= $dPriceTo ? 'and oxvarminprice <= ' . (float)$dPriceTo . ' ' : ' ';
+        $sSelect .= $dPriceFrom ? 'and oxvarminprice  >= ' . (float)$dPriceFrom . ' ' : ' ';
 
-        $sSelect .= " and " . $oBaseObject->getSqlActiveSnippet() . " and {$sArticleTable}.oxissearch = 1";
+        $sSelect .= ' and ' . $oBaseObject->getSqlActiveSnippet() . " and {$sArticleTable}.oxissearch = 1";
 
         if (!$this->_sCustomSorting) {
             $sSelect .= " order by {$sArticleTable}.oxvarminprice asc , {$sArticleTable}.oxid";
@@ -1096,11 +1089,12 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Builds vendor select SQL statement
+     * Builds vendor select SQL statement.
      *
      * @param string $sVendorId Vendor ID
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getVendorSelect" in next major
      */
     protected function _getVendorSelect($sVendorId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1109,8 +1103,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sFieldNames = $oBaseObject->getSelectFields();
         $sSelect = "select $sFieldNames from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxvendorid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sVendorId) . " ";
-        $sSelect .= " and " . $oBaseObject->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''  ";
+        $sSelect .= "where $sArticleTable.oxvendorid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sVendorId) . ' ';
+        $sSelect .= ' and ' . $oBaseObject->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''  ";
 
         if ($this->_sCustomSorting) {
             $sSelect .= " ORDER BY {$this->_sCustomSorting} ";
@@ -1120,11 +1114,12 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Builds Manufacturer select SQL statement
+     * Builds Manufacturer select SQL statement.
      *
      * @param string $sManufacturerId Manufacturer ID
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getManufacturerSelect" in next major
      */
     protected function _getManufacturerSelect($sManufacturerId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1133,8 +1128,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oBaseObject = $this->getBaseObject();
         $sFieldNames = $oBaseObject->getSelectFields();
         $sSelect = "select $sFieldNames from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxmanufacturerid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sManufacturerId) . " ";
-        $sSelect .= " and " . $oBaseObject->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''  ";
+        $sSelect .= "where $sArticleTable.oxmanufacturerid = " . \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sManufacturerId) . ' ';
+        $sSelect .= ' and ' . $oBaseObject->getSqlActiveSnippet() . " and $sArticleTable.oxparentid = ''  ";
 
         if ($this->_sCustomSorting) {
             $sSelect .= " ORDER BY {$this->_sCustomSorting} ";
@@ -1144,9 +1139,10 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Checks if price update can be executed - current time > next price update time
+     * Checks if price update can be executed - current time > next price update time.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "canUpdatePrices" in next major
      */
     protected function _canUpdatePrices() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -1155,8 +1151,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $blCan = false;
 
         // crontab is off?
-        if (!$oConfig->getConfigParam("blUseCron")) {
-            $iTimeToUpdate = $oConfig->getConfigParam("iTimeToUpdatePrices");
+        if (!$oConfig->getConfigParam('blUseCron')) {
+            $iTimeToUpdate = $oConfig->getConfigParam('iTimeToUpdatePrices');
             if (!$iTimeToUpdate || $iTimeToUpdate <= \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()) {
                 $blCan = true;
             }
@@ -1179,9 +1175,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         // fetching next update time
         $sQ = $this->getQueryToFetchNextUpdateTime();
 
-        $iTimeToUpdate = $database->getOne(sprintf($sQ, "`oxarticles`"));
-
-        return $iTimeToUpdate;
+        return $database->getOne(sprintf($sQ, '`oxarticles`'));
     }
 
     /**
@@ -1191,7 +1185,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function getQueryToFetchNextUpdateTime()
     {
-        return "select unix_timestamp( oxupdatepricetime ) from %s where oxupdatepricetime > 0 order by oxupdatepricetime asc";
+        return 'select unix_timestamp( oxupdatepricetime ) from %s where oxupdatepricetime > 0 order by oxupdatepricetime asc';
     }
 
     /**
@@ -1205,9 +1199,8 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function updateOxArticles($sCurrUpdateTime, $oDb)
     {
         $sQ = $this->getQueryToUpdateOxArticle($sCurrUpdateTime);
-        $blUpdated = $oDb->execute(sprintf($sQ, "`oxarticles`"));
 
-        return $blUpdated;
+        return $oDb->execute(sprintf($sQ, '`oxarticles`'));
     }
 
     /**
@@ -1219,7 +1212,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function getQueryToUpdateOxArticle($sCurrUpdateTime)
     {
-        $sQ = "UPDATE %s SET
+        return "UPDATE %s SET
                        `oxprice`  = IF( `oxupdateprice` > 0, `oxupdateprice`, `oxprice` ),
                        `oxpricea` = IF( `oxupdatepricea` > 0, `oxupdatepricea`, `oxpricea` ),
                        `oxpriceb` = IF( `oxupdatepriceb` > 0, `oxupdatepriceb`, `oxpriceb` ),
@@ -1232,7 +1225,6 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
                    WHERE
                        `oxupdatepricetime` > 0 AND
                        `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
-        return $sQ;
     }
 
     /**
@@ -1240,7 +1232,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param array $aUpdatedArticleIds
      */
-    protected function updateArticles($aUpdatedArticleIds)
+    protected function updateArticles($aUpdatedArticleIds): void
     {
     }
 
@@ -1255,10 +1247,11 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $descriptionJoin = '';
         $searchColumns = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSearchCols');
 
-        if (is_array($searchColumns) && in_array('oxlongdesc', $searchColumns)) {
+        if (\is_array($searchColumns) && \in_array('oxlongdesc', $searchColumns, true)) {
             $viewName = getViewName('oxartextends');
             $descriptionJoin = " LEFT JOIN $viewName ON {$viewName}.oxid={$table}.oxid ";
         }
+
         return $descriptionJoin;
     }
 
@@ -1267,7 +1260,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      * Needed in case of searching for data in table oxartextends or its views.
      *
      * @param string $table
-     * @param string $field Chose table depending on field.
+     * @param string $field chose table depending on field
      *
      * @return string
      */
@@ -1275,7 +1268,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
     {
         $searchTable = $table;
 
-        if ($field == 'oxlongdesc') {
+        if ('oxlongdesc' === $field) {
             $searchTable = Registry::get(\OxidEsales\Eshop\Core\TableViewNameGenerator::class)->getViewName('oxartextends');
         }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,18 +14,23 @@ use oxException;
 /**
  * Class makes call to given URL address and sends request parameter.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
  */
 class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
 {
-    /** Online License Key Check web service url. */
-    const WEB_SERVICE_URL = 'https://olc.oxid-esales.com/check.php';
+    /**
+     * Online License Key Check web service url.
+     */
+    public const WEB_SERVICE_URL = 'https://olc.oxid-esales.com/check.php';
 
-    /** XML document tag name. */
-    const XML_DOCUMENT_NAME = 'olcRequest';
+    /**
+     * XML document tag name.
+     */
+    public const XML_DOCUMENT_NAME = 'olcRequest';
 
     /**
      * Expected response element in the XML response message fom web service.
@@ -33,11 +40,12 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
     private $_sResponseElement = 'olc';
 
     /**
-     * Performs Web service request
+     * Performs Web service request.
      *
      * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest Object with request parameters
      *
      * @throws oxException
+     *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
      */
     public function doRequest(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest)
@@ -51,6 +59,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "formEmail" in next major
      */
     protected function _formEmail($oRequest) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -68,6 +77,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      * @throws oxException
      *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "formResponse" in next major
      */
     protected function _formResponse($sRawResponse) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -78,7 +88,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
             throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
-        if ($oDomDoc->documentElement->nodeName != $this->_sResponseElement) {
+        if ($oDomDoc->documentElement->nodeName !== $this->_sResponseElement) {
             throw new \OxidEsales\Eshop\Core\Exception\StandardException('OLC_ERROR_RESPONSE_UNEXPECTED');
         }
 
@@ -94,7 +104,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
         $oResponse = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckResponse::class);
 
         // iterate through response node to get response parameters
-        for ($i = 0; $i < $oNodes->length; $i++) {
+        for ($i = 0; $i < $oNodes->length; ++$i) {
             $sNodeName = $oNodes->item($i)->nodeName;
             $sNodeValue = $oNodes->item($i)->nodeValue;
             $oResponse->$sNodeName = $sNodeValue;
@@ -106,7 +116,8 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
     /**
      * Gets XML document name.
      *
-     * @return string XML document tag name.
+     * @return string XML document tag name
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getXMLDocumentName" in next major
      */
     protected function _getXMLDocumentName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -117,7 +128,8 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
     /**
      * Gets service url.
      *
-     * @return string Web service url.
+     * @return string web service url
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getServiceUrl" in next major
      */
     protected function _getServiceUrl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

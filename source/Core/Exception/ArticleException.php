@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
 /**
- * Exception base class for an article
+ * Exception base class for an article.
  */
 class ArticleException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
@@ -20,31 +22,31 @@ class ArticleException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
     protected $type = 'oxArticleException';
 
     /**
-     * Article number who caused this exception
+     * Article number who caused this exception.
      *
      * @var string
      */
     protected $_sArticleNr = null;
 
     /**
-     * Id of product which caused this exception
+     * Id of product which caused this exception.
      *
      * @var string
      */
     protected $_sProductId = null;
 
     /**
-     * Sets the article number of the article which caused the exception
+     * Sets the article number of the article which caused the exception.
      *
      * @param string $sArticleNr Article who causes the exception
      */
-    public function setArticleNr($sArticleNr)
+    public function setArticleNr($sArticleNr): void
     {
         $this->_sArticleNr = $sArticleNr;
     }
 
     /**
-     * The article number of the faulty article
+     * The article number of the faulty article.
      *
      * @return string
      */
@@ -54,17 +56,17 @@ class ArticleException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
     }
 
     /**
-     * Sets the product id of the article which caused the exception
+     * Sets the product id of the article which caused the exception.
      *
      * @param string $sProductId id of product who causes the exception
      */
-    public function setProductId($sProductId)
+    public function setProductId($sProductId): void
     {
         $this->_sProductId = $sProductId;
     }
 
     /**
-     * Faulty product id
+     * Faulty product id.
      *
      * @return string
      */
@@ -75,18 +77,17 @@ class ArticleException extends \OxidEsales\Eshop\Core\Exception\StandardExceptio
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */
     public function getString()
     {
-        return __CLASS__ . '-' . parent::getString() . " Faulty Article --> " . $this->_sArticleNr . "\n";
+        return __CLASS__ . '-' . parent::getString() . ' Faulty Article --> ' . $this->_sArticleNr . "\n";
     }
 
-
     /**
-     * Override of oxException::getValues()
+     * Override of oxException::getValues().
      *
      * @return array
      */

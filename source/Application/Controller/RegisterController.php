@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,9 +9,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxField;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * User registration window.
@@ -25,28 +25,28 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     protected $_sThisTemplate = 'page/account/register.tpl';
 
     /**
-     * Successful registration confirmation template
+     * Successful registration confirmation template.
      *
      * @var string
      */
     protected $_sSuccessTemplate = 'page/account/register_success.tpl';
 
     /**
-     * Successful Confirmation state template name
+     * Successful Confirmation state template name.
      *
      * @var string
      */
     protected $_sConfirmTemplate = 'page/account/register_confirm.tpl';
 
     /**
-     * Order step marker
+     * Order step marker.
      *
      * @var bool
      */
     protected $_blIsOrderStep = false;
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
@@ -56,7 +56,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
      * Executes parent::render(), passes error code to template engine,
      * returns name of template to render register::_sThisTemplate.
      *
-     * @return string   current template file name
+     * @return string current template file name
      */
     public function render()
     {
@@ -75,7 +75,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     }
 
     /**
-     * Returns registration error code (if it was set)
+     * Returns registration error code (if it was set).
      *
      * @return int|null
      */
@@ -85,7 +85,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     }
 
     /**
-     * Return registration status (if it was set)
+     * Return registration status (if it was set).
      *
      * @return int|null
      */
@@ -109,7 +109,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     /**
      * Registration confirmation functionality. If registration
      * succeded - redirects to success page, if not - returns
-     * exception informing about expired confirmation link
+     * exception informing about expired confirmation link.
      *
      * @return mixed
      */
@@ -139,7 +139,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     }
 
     /**
-     * Returns special id used for password update functionality
+     * Returns special id used for password update functionality.
      *
      * @return string
      */
@@ -149,13 +149,13 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
     }
 
     /**
-     * Returns confirmation state: "1" - success, "-1" - error
+     * Returns confirmation state: "1" - success, "-1" - error.
      *
      * @return int
      */
     public function isConfirmed()
     {
-        return (bool) Registry::getConfig()->getRequestParameter("confirmstate");
+        return (bool)Registry::getConfig()->getRequestParameter('confirmstate');
     }
 
     /**
@@ -170,7 +170,7 @@ class RegisterController extends \OxidEsales\Eshop\Application\Controller\UserCo
 
         $iBaseLanguage = Registry::getLang()->getBaseLanguage();
         $aPath['title'] = Registry::getLang()->translateString('REGISTER', $iBaseLanguage, false);
-        $aPath['link']  = $this->getLink();
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

@@ -17,17 +17,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UninstallModuleConfigurationCommand extends Command
 {
-    const MESSAGE_REMOVE_WAS_SUCCESSFULL = 'Module configuration for module %s has been removed.';
-    const MESSAGE_REMOVE_FAILED = 'An error occurred while removing module %s configuration.';
+    public const MESSAGE_REMOVE_WAS_SUCCESSFULL = 'Module configuration for module %s has been removed.';
+    public const MESSAGE_REMOVE_FAILED = 'An error occurred while removing module %s configuration.';
 
     /**
      * @var ModuleConfigurationInstallerInterface
      */
     private $moduleConfigurationInstaller;
 
-    /**
-     * @param ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
-     */
     public function __construct(
         ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
     ) {
@@ -37,7 +34,7 @@ class UninstallModuleConfigurationCommand extends Command
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function configure(): void
     {
@@ -52,9 +49,6 @@ class UninstallModuleConfigurationCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @throws \Throwable
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -68,6 +62,7 @@ class UninstallModuleConfigurationCommand extends Command
 
             throw $throwable;
         }
+
         return 0;
     }
 }

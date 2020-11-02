@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,7 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\FileSystem\FileSystem;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
@@ -15,25 +16,34 @@ use OxidEsales\Eshop\Core\Theme;
 /**
  * Forms path to module template.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplatePathCalculator
 {
-    /** @var string Path to modules directory inside the shop. */
+    /**
+     * @var string path to modules directory inside the shop
+     */
     private $modulesPath = '';
 
-    /** @var Theme */
+    /**
+     * @var Theme
+     */
     private $theme;
 
-    /** @var \OxidEsales\Eshop\Core\Module\ModuleList */
+    /**
+     * @var \OxidEsales\Eshop\Core\Module\ModuleList
+     */
     private $moduleList;
 
-    /** @var FileSystem */
+    /**
+     * @var FileSystem
+     */
     private $fileSystem;
 
     /**
-     * Sets required dependencies
+     * Sets required dependencies.
      *
      * @param \OxidEsales\Eshop\Core\Module\ModuleList $moduleList
      * @param Theme                                    $theme
@@ -41,13 +51,13 @@ class ModuleTemplatePathCalculator
      */
     public function __construct($moduleList = null, $theme = null, $fileSystem = null)
     {
-        if (is_null($moduleList)) {
+        if (null === $moduleList) {
             $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
         }
-        if (is_null($theme)) {
+        if (null === $theme) {
             $theme = oxNew(Theme::class);
         }
-        if (is_null($fileSystem)) {
+        if (null === $fileSystem) {
             $fileSystem = oxNew(FileSystem::class);
         }
 
@@ -59,7 +69,7 @@ class ModuleTemplatePathCalculator
     /**
      * @param string $modulesPath
      */
-    public function setModulesPath($modulesPath)
+    public function setModulesPath($modulesPath): void
     {
         $this->modulesPath = $modulesPath;
     }
@@ -73,7 +83,7 @@ class ModuleTemplatePathCalculator
     }
 
     /**
-     * Finds the template by name in modules
+     * Finds the template by name in modules.
      *
      * @param string $templateName
      *
@@ -85,11 +95,11 @@ class ModuleTemplatePathCalculator
 
         $moduleTemplates = Registry::getConfig()->getConfigParam('aModuleTemplates');
 
-        $activeModules = (array) Registry::getConfig()->getConfigParam('aModulePaths');
+        $activeModules = (array)Registry::getConfig()->getConfigParam('aModulePaths');
 
         $finalTemplatePath = '';
 
-        if (is_array($moduleTemplates) && is_array($activeModules)) {
+        if (\is_array($moduleTemplates) && \is_array($activeModules)) {
             foreach ($moduleTemplates as $sModuleId => $aTemplates) {
                 // check if module is active
                 if (isset($activeModules[$sModuleId])) {
@@ -97,7 +107,7 @@ class ModuleTemplatePathCalculator
                     $fileSystem = $this->fileSystem;
 
                     // check if template for our active themes exists
-                    foreach ((array) $theme->getActiveThemesList() as $oneActiveThemeId) {
+                    foreach ((array)$theme->getActiveThemesList() as $oneActiveThemeId) {
                         if (isset($aTemplates[$oneActiveThemeId], $aTemplates[$oneActiveThemeId][$templateName])) {
                             $foundTemplate = $fileSystem->combinePaths($this->getModulesPath(), $aTemplates[$oneActiveThemeId][$templateName]);
                         }

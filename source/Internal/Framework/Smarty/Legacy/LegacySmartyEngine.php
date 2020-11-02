@@ -13,7 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridg
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
 /**
- * Class SmartyEngine
+ * Class SmartyEngine.
+ *
  * @internal
  */
 class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineInterface
@@ -31,7 +32,7 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     private $bridge;
 
     /**
-     * Array of global parameters
+     * Array of global parameters.
      *
      * @var array
      */
@@ -39,9 +40,6 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
 
     /**
      * Constructor.
-     *
-     * @param \Smarty                     $engine
-     * @param SmartyEngineBridgeInterface $bridge
      */
     public function __construct(\Smarty $engine, SmartyEngineBridgeInterface $bridge)
     {
@@ -65,6 +63,7 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
         if (isset($context['oxEngineTemplateId'])) {
             return $this->engine->fetch($name, $context['oxEngineTemplateId']);
         }
+
         return $this->engine->fetch($name);
     }
 
@@ -74,8 +73,6 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
      * @param string $fragment   The template fragment to render
      * @param string $fragmentId The Id of the fragment
      * @param array  $context    An array of parameters to pass to the template
-     *
-     * @return string
      */
     public function renderFragment(string $fragment, string $fragmentId, array $context = []): string
     {
@@ -95,10 +92,9 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     }
 
     /**
-     * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
      */
-    public function addGlobal(string $name, $value)
+    public function addGlobal(string $name, $value): void
     {
         $this->globals[$name] = $value;
         $this->engine->assign($name, $value);
@@ -106,8 +102,6 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
 
     /**
      * Returns assigned globals.
-     *
-     * @return array
      */
     public function getGlobals(): array
     {
@@ -116,8 +110,6 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
 
     /**
      * Returns the template file extension.
-     *
-     * @return string
      */
     public function getDefaultFileExtension(): string
     {
@@ -127,10 +119,10 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     /**
      * Pass parameters to the Smarty instance.
      *
-     * @param string $name  The name of the parameter.
-     * @param mixed  $value The value of the parameter.
+     * @param string $name  the name of the parameter
+     * @param mixed  $value the value of the parameter
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         if (property_exists($this->engine, $name)) {
             $this->engine->$name = $value;
@@ -140,7 +132,7 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     /**
      * Pass parameters to the Smarty instance.
      *
-     * @param string $name The name of the parameter.
+     * @param string $name the name of the parameter
      *
      * @return mixed
      */
@@ -149,18 +141,12 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
         return $this->engine->$name;
     }
 
-    /**
-     * @return \Smarty
-     */
     public function getSmarty(): \Smarty
     {
         return $this->engine;
     }
 
-    /**
-     * @param \Smarty $smarty
-     */
-    public function setSmarty(\Smarty $smarty)
+    public function setSmarty(\Smarty $smarty): void
     {
         $this->engine = $smarty;
     }

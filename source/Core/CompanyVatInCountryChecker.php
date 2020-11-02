@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,27 +17,27 @@ use OxidEsales\Eshop\Application\Model\Country;
 class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChecker implements \OxidEsales\Eshop\Core\Contract\ICountryAware
 {
     /**
-     * Error string if country mismatch
+     * Error string if country mismatch.
      */
-    const ERROR_ID_NOT_VALID = 'ID_NOT_VALID';
+    public const ERROR_ID_NOT_VALID = 'ID_NOT_VALID';
 
     /**
-     * Country
+     * Country.
      *
      * @var Country
      */
     private $_oCountry = null;
 
     /**
-     * Country setter
+     * Country setter.
      */
-    public function setCountry(Country $country)
+    public function setCountry(Country $country): void
     {
         $this->_oCountry = $country;
     }
 
     /**
-     * Country getter
+     * Country getter.
      *
      * @return Country
      */
@@ -47,15 +49,13 @@ class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChec
     /**
      * Validates.
      *
-     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn
-     *
      * @return bool
      */
     public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn)
     {
         $result = false;
         $country = $this->getCountry();
-        if (!is_null($country)) {
+        if (null !== $country) {
             $result = ($country->getVATIdentificationNumberPrefix() === $vatIn->getCountryCode());
             if (!$result) {
                 $this->setError(self::ERROR_ID_NOT_VALID);

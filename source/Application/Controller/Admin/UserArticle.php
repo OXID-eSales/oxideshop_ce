@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -25,7 +27,7 @@ class UserArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ($soxId && $soxId != '-1') {
+        if ($soxId && '-1' !== $soxId) {
             // load object
             $oArticlelist = oxNew(\OxidEsales\Eshop\Application\Model\OrderArticleList::class);
             $oArticlelist->loadOrderArticlesForUser($soxId);

@@ -9,27 +9,24 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var TemplateBlockExtensionDaoInterface */
+    /**
+     * @var TemplateBlockExtensionDaoInterface
+     */
     private $templateBlockExtensionDao;
 
-    /** @param TemplateBlockExtensionDaoInterface $templateBlockExtensionDao */
     public function __construct(TemplateBlockExtensionDaoInterface $templateBlockExtensionDao)
     {
         $this->templateBlockExtensionDao = $templateBlockExtensionDao;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasTemplateBlocks()) {
             foreach ($configuration->getTemplateBlocks() as $templateBlock) {
@@ -42,21 +39,13 @@ class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInt
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasTemplateBlocks()) {
             $this->templateBlockExtensionDao->deleteExtensions($configuration->getId(), $shopId);
         }
     }
 
-    /**
-     * @param TemplateBlock $templateBlock
-     * @return TemplateBlockExtension
-     */
     private function mapDataToObject(TemplateBlock $templateBlock): TemplateBlockExtension
     {
         $templateBlockExtension = new TemplateBlockExtension();
@@ -65,13 +54,13 @@ class TemplateBlockModuleSettingHandler implements ModuleConfigurationHandlerInt
             ->setFilePath($templateBlock->getModuleTemplatePath())
             ->setExtendedBlockTemplatePath($templateBlock->getShopTemplatePath());
 
-        if ($templateBlock->getPosition() !== 0) {
+        if (0 !== $templateBlock->getPosition()) {
             $templateBlockExtension->setPosition(
                 $templateBlock->getPosition()
             );
         }
 
-        if ($templateBlock->getTheme() !== '') {
+        if ('' !== $templateBlock->getTheme()) {
             $templateBlockExtension->setThemeId(
                 $templateBlock->getTheme()
             );

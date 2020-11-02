@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 /**
- * Smarty colon modifier plugin
+ * Smarty colon modifier plugin.
  *
  * Type:     modifier<br>
  * Name:     colon<br>
@@ -16,7 +18,7 @@
  * Example:  [{assign var="variable" value="TRANSLATION_INDENT"|oxmultilangassign|colon}]
  * TRANSLATION_INDENT = 'translation' COLON = ' :', $variable = 'translation :'
  *
- * @param string $string String to add colon to.
+ * @param string $string string to add colon to
  *
  * @return string
  */

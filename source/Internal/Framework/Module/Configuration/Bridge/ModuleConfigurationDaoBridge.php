@@ -31,11 +31,6 @@ class ModuleConfigurationDaoBridge implements ModuleConfigurationDaoBridgeInterf
      */
     private $shopEnvironmentConfigurationDao;
 
-    /**
-     * @param ContextInterface                         $context
-     * @param ModuleConfigurationDaoInterface          $moduleConfigurationDao
-     * @param ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
-     */
     public function __construct(
         ContextInterface $context,
         ModuleConfigurationDaoInterface $moduleConfigurationDao,
@@ -46,19 +41,12 @@ class ModuleConfigurationDaoBridge implements ModuleConfigurationDaoBridgeInterf
         $this->shopEnvironmentConfigurationDao = $shopEnvironmentConfigurationDao;
     }
 
-    /**
-     * @param string $moduleId
-     * @return ModuleConfiguration
-     */
     public function get(string $moduleId): ModuleConfiguration
     {
         return $this->moduleConfigurationDao->get($moduleId, $this->context->getCurrentShopId());
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     */
-    public function save(ModuleConfiguration $moduleConfiguration)
+    public function save(ModuleConfiguration $moduleConfiguration): void
     {
         $this->moduleConfigurationDao->save($moduleConfiguration, $this->context->getCurrentShopId());
         $this->shopEnvironmentConfigurationDao->remove($this->context->getCurrentShopId());

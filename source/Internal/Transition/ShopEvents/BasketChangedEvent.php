@@ -35,8 +35,6 @@ class BasketChangedEvent extends Event
 
     /**
      * Getter for basket component object.
-     *
-     * @return BasketComponent
      */
     public function getBasket(): BasketComponent
     {

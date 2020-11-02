@@ -11,12 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge;
 
 /**
  * @stable
+ *
  * @see OxidEsales/EshopCommunity/Internal/README.md
  */
 interface ClassExtensionChainBridgeInterface
 {
-    /**
-     * @param int $shopId
-     */
     public function updateChain(int $shopId);
 }

@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+require_once __DIR__ . '/bootstrap.php';
 
-require_once dirname(__FILE__) . "/bootstrap.php";
-
-/**
+/*
  * Redirect to Setup, if shop is not configured
  */
 redirectIfShopNotConfigured();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,29 +16,28 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 class DiagnosticsOutput
 {
     /**
-     * result key
+     * result key.
      *
      * @var string
      */
-    protected $_sOutputKey = "diagnostic_tool_result";
-
+    protected $_sOutputKey = 'diagnostic_tool_result';
 
     /**
-     * Result file path
+     * Result file path.
      *
      * @var string
      */
-    protected $_sOutputFileName = "diagnostic_tool_result.html";
+    protected $_sOutputFileName = 'diagnostic_tool_result.html';
 
     /**
-     * Utils object
+     * Utils object.
      *
      * @var mixed
      */
     protected $_oUtils = null;
 
     /**
-     * Object constructor
+     * Object constructor.
      */
     public function __construct()
     {
@@ -44,11 +45,11 @@ class DiagnosticsOutput
     }
 
     /**
-     * OutputKey setter
+     * OutputKey setter.
      *
-     * @param string $sOutputKey Output key.
+     * @param string $sOutputKey output key
      */
-    public function setOutputKey($sOutputKey)
+    public function setOutputKey($sOutputKey): void
     {
         if (!empty($sOutputKey)) {
             $this->_sOutputKey = $sOutputKey;
@@ -56,7 +57,7 @@ class DiagnosticsOutput
     }
 
     /**
-     * OutputKey getter
+     * OutputKey getter.
      *
      * @return string
      */
@@ -66,11 +67,11 @@ class DiagnosticsOutput
     }
 
     /**
-     * OutputFileName setter
+     * OutputFileName setter.
      *
-     * @param string $sOutputFileName Output file name.
+     * @param string $sOutputFileName output file name
      */
-    public function setOutputFileName($sOutputFileName)
+    public function setOutputFileName($sOutputFileName): void
     {
         if (!empty($sOutputFileName)) {
             $this->_sOutputFileName = $sOutputFileName;
@@ -78,7 +79,7 @@ class DiagnosticsOutput
     }
 
     /**
-     * OutputKey getter
+     * OutputKey getter.
      *
      * @return string
      */
@@ -88,19 +89,19 @@ class DiagnosticsOutput
     }
 
     /**
-     * Stores result file in file cache
+     * Stores result file in file cache.
      *
-     * @param string $sResult Result.
+     * @param string $sResult result
      */
-    public function storeResult($sResult)
+    public function storeResult($sResult): void
     {
         $this->_oUtils->toFileCache($this->_sOutputKey, $sResult);
     }
 
     /**
-     * Reads exported result file contents
+     * Reads exported result file contents.
      *
-     * @param string $sOutputKey Output key.
+     * @param string $sOutputKey output key
      *
      * @return string
      */
@@ -112,24 +113,24 @@ class DiagnosticsOutput
     }
 
     /**
-     * Sends generated file for download
+     * Sends generated file for download.
      *
-     * @param string $sOutputKey Output key.
+     * @param string $sOutputKey output key
      */
-    public function downloadResultFile($sOutputKey = null)
+    public function downloadResultFile($sOutputKey = null): void
     {
         $sCurrentKey = (empty($sOutputKey)) ? $this->_sOutputKey : $sOutputKey;
 
         $this->_oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $iFileSize = filesize($this->_oUtils->getCacheFilePath($sCurrentKey));
 
-        $this->_oUtils->setHeader("Pragma: public");
-        $this->_oUtils->setHeader("Expires: 0");
-        $this->_oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
+        $this->_oUtils->setHeader('Pragma: public');
+        $this->_oUtils->setHeader('Expires: 0');
+        $this->_oUtils->setHeader('Cache-Control: must-revalidate, post-check=0, pre-check=0, private');
         $this->_oUtils->setHeader('Content-Disposition: attachment;filename=' . $this->_sOutputFileName);
-        $this->_oUtils->setHeader("Content-Type:text/html;charset=utf-8");
+        $this->_oUtils->setHeader('Content-Type:text/html;charset=utf-8');
         if ($iFileSize) {
-            $this->_oUtils->setHeader("Content-Length: " . $iFileSize);
+            $this->_oUtils->setHeader('Content-Length: ' . $iFileSize);
         }
         echo $this->_oUtils->fromFileCache($sCurrentKey);
     }

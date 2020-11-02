@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Utility\Hash\Service;
 
-use OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface;
+use OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception\PasswordHashException;
 
 /**
- * Hashes with the ARGON2I algorithm
+ * Hashes with the ARGON2I algorithm.
  */
 class Argon2IPasswordHashService implements PasswordHashServiceInterface
 {
@@ -22,22 +22,21 @@ class Argon2IPasswordHashService implements PasswordHashServiceInterface
      */
     private $passwordPolicy;
 
-    /** @var int $memoryCost */
+    /**
+     * @var int
+     */
     private $memoryCost;
 
-    /** @var int $timeCost */
+    /**
+     * @var int
+     */
     private $timeCost;
 
-    /** @var int $threads */
+    /**
+     * @var int
+     */
     private $threads;
 
-
-    /**
-     * @param PasswordPolicyInterface $passwordPolicy
-     * @param int                     $memoryCost
-     * @param int                     $timeCost
-     * @param int                     $threads
-     */
     public function __construct(
         PasswordPolicyInterface $passwordPolicy,
         int $memoryCost,
@@ -52,13 +51,9 @@ class Argon2IPasswordHashService implements PasswordHashServiceInterface
     }
 
     /**
-     * Creates a password hash
-     *
-     * @param string $password
+     * Creates a password hash.
      *
      * @throws PasswordHashException
-     *
-     * @return string
      */
     public function hash(string $password): string
     {
@@ -70,34 +65,24 @@ class Argon2IPasswordHashService implements PasswordHashServiceInterface
             $this->getOptions()
         );
 
-        if ($hash === false) {
-            throw new PasswordHashException(
-                'The password could not have been hashed.'
-            );
+        if (false === $hash) {
+            throw new PasswordHashException('The password could not have been hashed.');
         }
 
         return $hash;
     }
 
-    /**
-     * @param string $passwordHash
-     *
-     * @return bool
-     */
     public function passwordNeedsRehash(string $passwordHash): bool
     {
         return password_needs_rehash($passwordHash, PASSWORD_ARGON2I, $this->getOptions());
     }
 
-    /**
-     * @return array
-     */
     private function getOptions(): array
     {
         return [
             'memory_cost' => $this->memoryCost,
             'time_cost' => $this->timeCost,
-            'threads' => $this->threads
+            'threads' => $this->threads,
         ];
     }
 }

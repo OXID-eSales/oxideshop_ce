@@ -11,8 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Console\CommandsProvider;
 
 interface CommandsProviderInterface
 {
-    /**
-     * @return array
-     */
     public function getCommands(): array;
 }

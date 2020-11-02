@@ -20,19 +20,15 @@ class ServicesYamlConfigurationErrorEvent extends Event
     public const NAME = self::class;
 
     /**
-     * @var string $errorMessage
+     * @var string
      */
     private $errorMessage;
 
     /**
-     * @var string $configurationFilePath
+     * @var string
      */
     private $configurationFilePath;
 
-    /**
-     * @param string $errorMessage
-     * @param string $configurationFilePath
-     */
     public function __construct(string $errorMessage, string $configurationFilePath)
     {
         $this->errorMessage = $errorMessage;
@@ -40,18 +36,13 @@ class ServicesYamlConfigurationErrorEvent extends Event
     }
 
     /**
-     * Returns the file that is misconfigured
-     *
-     * @return string
+     * Returns the file that is misconfigured.
      */
     public function getConfigurationFilePath(): string
     {
         return $this->configurationFilePath;
     }
 
-    /**
-     * @return string
-     */
     public function getErrorMessage(): string
     {
         return $this->errorMessage;

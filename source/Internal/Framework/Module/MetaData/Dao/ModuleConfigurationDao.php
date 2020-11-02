@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface;
 
 class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 {
@@ -32,9 +31,6 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
 
     /**
      * ModuleConfigurationDao constructor.
-     *
-     * @param MetaDataProviderInterface                        $metadataProvider
-     * @param MetaDataToModuleConfigurationDataMapperInterface $metadataMapper
      */
     public function __construct(
         MetaDataProviderInterface $metadataProvider,
@@ -45,23 +41,17 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
     }
 
     /**
-     * @param string $modulePath
-     *
-     * @return ModuleConfiguration
      * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException
      */
     public function get(string $modulePath): ModuleConfiguration
     {
         $metadata = $this->metadataProvider->getData($this->getMetadataFilePath($modulePath));
+
         return $this->metadataMapper->fromData($metadata);
     }
 
-    /**
-     * @param string $moduleFullPath
-     * @return string
-     */
     private function getMetadataFilePath(string $moduleFullPath): string
     {
-        return $moduleFullPath . DIRECTORY_SEPARATOR . $this->metadataFileName;
+        return $moduleFullPath . \DIRECTORY_SEPARATOR . $this->metadataFileName;
     }
 }

@@ -25,9 +25,6 @@ class BootstrapModuleInstaller implements ModuleInstallerInterface
 
     /**
      * ModuleInstaller constructor.
-     *
-     * @param ModuleFilesInstallerInterface         $moduleFilesInstaller
-     * @param ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
      */
     public function __construct(
         ModuleFilesInstallerInterface $moduleFilesInstaller,
@@ -37,28 +34,18 @@ class BootstrapModuleInstaller implements ModuleInstallerInterface
         $this->moduleConfigurationInstaller = $moduleConfigurationInstaller;
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function install(OxidEshopPackage $package): void
     {
         $this->moduleFilesInstaller->install($package);
         $this->moduleConfigurationInstaller->install($package->getPackageSourcePath(), $package->getTargetDirectory());
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function uninstall(OxidEshopPackage $package): void
     {
         $this->moduleConfigurationInstaller->uninstall($package->getPackageSourcePath());
         $this->moduleFilesInstaller->uninstall($package);
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     * @return bool
-     */
     public function isInstalled(OxidEshopPackage $package): bool
     {
         return $this->moduleFilesInstaller->isInstalled($package)

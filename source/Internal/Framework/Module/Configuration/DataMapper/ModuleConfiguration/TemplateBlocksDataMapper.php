@@ -37,10 +37,6 @@ class TemplateBlocksDataMapper implements ModuleConfigurationDataMapperInterface
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @return array
-     */
     private function getTemplateBlocks(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -51,10 +47,10 @@ class TemplateBlocksDataMapper implements ModuleConfigurationDataMapperInterface
                 TemplateBlocksMappingKeys::BLOCK_NAME => $templateBlock->getBlockName(),
                 TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH => $templateBlock->getModuleTemplatePath(),
             ];
-            if ($templateBlock->getPosition() !== 0) {
+            if (0 !== $templateBlock->getPosition()) {
                 $data[$key][TemplateBlocksMappingKeys::POSITION] = $templateBlock->getPosition();
             }
-            if ($templateBlock->getTheme() !== '') {
+            if ('' !== $templateBlock->getTheme()) {
                 $data[$key][TemplateBlocksMappingKeys::THEME] = $templateBlock->getTheme();
             }
         }
@@ -62,10 +58,6 @@ class TemplateBlocksDataMapper implements ModuleConfigurationDataMapperInterface
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array $templateBlocks
-     */
     private function setTemplateBlocks(ModuleConfiguration $moduleConfiguration, array $templateBlocks): void
     {
         foreach ($templateBlocks as $templateBlockData) {

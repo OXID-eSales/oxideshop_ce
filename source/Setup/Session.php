@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,40 +10,40 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 /**
- * Setup session manager class
+ * Setup session manager class.
  */
 class Session extends Core
 {
     /**
-     * Session data array
+     * Session data array.
      *
      * @var array
      */
     protected $_aSessionData = null;
 
     /**
-     * Session ID
+     * Session ID.
      *
      * @var string
      */
     protected $_sSid = null;
 
     /**
-     * Session name
+     * Session name.
      *
      * @var string
      */
     protected $_sSessionName = 'setup_sid';
 
     /**
-     * Is new session
+     * Is new session.
      *
      * @var bool
      */
     protected $_blNewSession = false;
 
     /**
-     * Initialize session class
+     * Initialize session class.
      */
     public function __construct()
     {
@@ -53,15 +55,16 @@ class Session extends Core
     }
 
     /**
-     * Start session
+     * Start session.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "startSession" in next major
      */
-    protected function _startSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _startSession(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         session_name($this->_sSessionName);
 
         /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
+        $oUtils = $this->getInstance('Utilities');
         $sSid = $oUtils->getRequestVar('sid', 'get');
 
         if (empty($sSid)) {
@@ -81,13 +84,14 @@ class Session extends Core
      * Validate if session is started by setup script, if not, generate new session.
      *
      * @return string Session ID
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "validateSession" in next major
      */
     protected function _validateSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->getIsNewSession() === true) {
+        if (true === $this->getIsNewSession()) {
             $this->setSessionParam('setup_session', true);
-        } elseif ($this->getSessionParam('setup_session') !== true) {
+        } elseif (true !== $this->getSessionParam('setup_session')) {
             $sNewSid = $this->_getNewSessionID();
             session_write_close();
 
@@ -100,9 +104,10 @@ class Session extends Core
     }
 
     /**
-     * Generate new unique session ID
+     * Generate new unique session ID.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getNewSessionID" in next major
      */
     protected function _getNewSessionID() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -115,7 +120,7 @@ class Session extends Core
 
     /**
      * Returns session id, which is used in forms and urls
-     * (actually this id keeps all session data)
+     * (actually this id keeps all session data).
      *
      * @return string
      */
@@ -125,50 +130,51 @@ class Session extends Core
     }
 
     /**
-     * Sets current session ID
+     * Sets current session ID.
      *
      * @param string $sSid session ID
      */
-    public function setSid($sSid)
+    public function setSid($sSid): void
     {
         $this->_sSid = $sSid;
     }
 
     /**
-     * Initializes setup session data array
+     * Initializes setup session data array.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "initSessionData" in next major
      */
-    protected function _initSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _initSessionData(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
+        $oUtils = $this->getInstance('Utilities');
 
         //storing country value settings to session
-        $sCountryLang = $oUtils->getRequestVar("country_lang", "post");
+        $sCountryLang = $oUtils->getRequestVar('country_lang', 'post');
         if (isset($sCountryLang)) {
             $this->setSessionParam('country_lang', $sCountryLang);
         }
 
         //storing shop language value settings to session
-        $sShopLang = $oUtils->getRequestVar("sShopLang", "post");
+        $sShopLang = $oUtils->getRequestVar('sShopLang', 'post');
         if (isset($sShopLang)) {
             $this->setSessionParam('sShopLang', $sShopLang);
         }
 
         //storing if send information to OXID
-        $blSendInformation = $oUtils->getRequestVar("send_technical_information_to_oxid", "post");
+        $blSendInformation = $oUtils->getRequestVar('send_technical_information_to_oxid', 'post');
         if (isset($blSendInformation)) {
             $this->setSessionParam('send_technical_information_to_oxid', $blSendInformation);
         }
 
         //storing check for updates settings to session
-        $blCheckForUpdates = $oUtils->getRequestVar("check_for_updates", "post");
+        $blCheckForUpdates = $oUtils->getRequestVar('check_for_updates', 'post');
         if (isset($blCheckForUpdates)) {
             $this->setSessionParam('check_for_updates', $blCheckForUpdates);
         }
 
         // store eula to session
-        $iEula = $oUtils->getRequestVar("iEula", "post");
+        $iEula = $oUtils->getRequestVar('iEula', 'post');
         if (isset($iEula)) {
             $this->setSessionParam('eula', $iEula);
         }
@@ -178,6 +184,7 @@ class Session extends Core
      * Return session object reference.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSessionData" in next major
      */
     protected function &_getSessionData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -188,7 +195,7 @@ class Session extends Core
     /**
      * @param bool $value
      */
-    public function setIsNewSession($value)
+    public function setIsNewSession($value): void
     {
         $this->_blNewSession = $value;
     }
@@ -202,7 +209,7 @@ class Session extends Core
     }
 
     /**
-     * Returns session parameter value
+     * Returns session parameter value.
      *
      * @param string $sParamName parameter name
      *
@@ -210,21 +217,21 @@ class Session extends Core
      */
     public function getSessionParam($sParamName)
     {
-        $aSessionData = & $this->_getSessionData();
+        $aSessionData = &$this->_getSessionData();
         if (isset($aSessionData[$sParamName])) {
             return $aSessionData[$sParamName];
         }
     }
 
     /**
-     * Sets session parameter value
+     * Sets session parameter value.
      *
      * @param string $sParamName  parameter name
      * @param mixed  $sParamValue parameter value
      */
-    public function setSessionParam($sParamName, $sParamValue)
+    public function setSessionParam($sParamName, $sParamValue): void
     {
-        $aSessionData = & $this->_getSessionData();
+        $aSessionData = &$this->_getSessionData();
         $aSessionData[$sParamName] = $sParamValue;
     }
 }

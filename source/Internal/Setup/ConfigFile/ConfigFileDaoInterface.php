@@ -12,8 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\ConfigFile;
 interface ConfigFileDaoInterface
 {
     /**
-     * @param string $placeholderName
-     * @param string $value
      * @throws ConfigFileNotFoundException
      * @throws FileNotEditableException
      */

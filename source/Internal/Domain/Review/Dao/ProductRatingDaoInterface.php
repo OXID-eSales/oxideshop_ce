@@ -13,9 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 
 interface ProductRatingDaoInterface
 {
-    /**
-     * @param ProductRating $productRating
-     */
     public function update(ProductRating $productRating);
 
     /**

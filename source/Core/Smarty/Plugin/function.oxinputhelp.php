@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@
  * -------------------------------------------------------------
  * Purpose: Output help popup icon and help text
  * add [{oxinputhelp ident="..."}] where you want to display content
- * -------------------------------------------------------------
+ * -------------------------------------------------------------.
  *
  * @param array  $params  params
  * @param Smarty &$smarty clever simulation of a method
@@ -21,7 +23,7 @@ function smarty_function_oxinputhelp($params, &$smarty)
 {
     $sIdent = $params['ident'];
     $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-    $iLang  = $oLang->getTplLanguage();
+    $iLang = $oLang->getTplLanguage();
 
     try {
         $sTranslation = $oLang->translateString($sIdent, $iLang, $blAdmin);
@@ -29,7 +31,7 @@ function smarty_function_oxinputhelp($params, &$smarty)
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 
-    if (!$sTranslation || $sTranslation == $sIdent) {
+    if (!$sTranslation || $sTranslation === $sIdent) {
         //no translation, return empty string
         return '';
     }

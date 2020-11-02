@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,8 +10,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
-
-use function is_string;
 
 /**
  * Database field description object.
@@ -26,17 +26,17 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     /**
      * escaping functionality type: expected value is escaped text.
      */
-    const T_TEXT = 1;
+    public const T_TEXT = 1;
 
     /**
      * escaping functionality type: expected value is not escaped (raw) text.
      */
-    const T_RAW = 2;
+    public const T_RAW = 2;
 
     /**
      * Constructor
      * Initial value assigment is coded here by not calling a function is for performance
-     * because oxField is created MANY times and even a function call matters
+     * because oxField is created MANY times and even a function call matters.
      *
      * if T_RAW is used, then it fills $value, because this is the value, that does
      * not need to be escaped and is by definition equal to $rawValue (which is not set
@@ -55,33 +55,31 @@ class Field // extends \OxidEsales\Eshop\Core\Base
      *
      * @param mixed $value Field value
      * @param int   $type  Value type
-     *
-     * @return null
      */
     public function __construct($value = null, $type = self::T_TEXT)
     {
         // duplicate content here is needed for performance.
         // as this function is called *many* (a lot) times, it is crucial to be fast here!
         $this->rawValue = $value;
-        if ($type == self::T_RAW) {
+        if (self::T_RAW === $type) {
             $this->value = $value;
         }
     }
 
     /**
-     * Checks if $name is set
+     * Checks if $name is set.
      *
      * @param string $name Variable name
      *
-     * @return boolean
+     * @return bool
      */
     public function __isset($name)
     {
-        return $this->{$name} !== null;
+        return null !== $this->{$name};
     }
 
     /**
-     * Magic getter
+     * Magic getter.
      *
      * @param string $name Variable name
      *
@@ -94,15 +92,16 @@ class Field // extends \OxidEsales\Eshop\Core\Base
                 return $this->value;
                 break;
             case 'value':
-                if (is_string($this->rawValue)) {
+                if (\is_string($this->rawValue)) {
                     $this->value = Str::getStr()->htmlspecialchars($this->rawValue);
                 } else {
                     // TODO: call htmlentities for each value (recursively?)
                     $this->value = $this->rawValue;
                 }
-                if ($this->rawValue == $this->value) {
+                if ($this->rawValue === $this->value) {
                     unset($this->rawValue);
                 }
+
                 return $this->value;
                 break;
             default:
@@ -112,41 +111,42 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns actual field value
+     * Returns actual field value.
      *
      * @return string
      */
     public function __toString()
     {
-        return (string) $this->value;
+        return (string)$this->value;
     }
 
     /**
-     * Converts to formatted db date
+     * Converts to formatted db date.
      */
-    public function convertToFormattedDbDate()
+    public function convertToFormattedDbDate(): void
     {
         $this->setValue(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->rawValue), self::T_RAW);
     }
 
     /**
-     * Converts to pseudo html - new lines to <br /> tags
+     * Converts to pseudo html - new lines to <br /> tags.
      */
-    public function convertToPseudoHtml()
+    public function convertToPseudoHtml(): void
     {
         $this->setValue(str_replace("\r", '', nl2br(Str::getStr()->htmlspecialchars($this->rawValue))), self::T_RAW);
     }
 
     /**
-     * Initial field value
+     * Initial field value.
      *
      * @param mixed $value Field value
      * @param int   $type  Value type
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "initValue" in next major
      */
-    protected function _initValue($value = null, $type = self::T_TEXT) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _initValue($value = null, $type = self::T_TEXT): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($type == self::T_TEXT) {
+        if (self::T_TEXT === $type) {
             $this->rawValue = $value;
         } else {
             $this->value = $value;
@@ -154,12 +154,12 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Sets field value and type
+     * Sets field value and type.
      *
      * @param mixed $value Field value
      * @param int   $type  Value type
      */
-    public function setValue($value = null, $type = self::T_TEXT)
+    public function setValue($value = null, $type = self::T_TEXT): void
     {
         unset($this->rawValue);
         unset($this->value);
@@ -167,7 +167,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return raw value
+     * Return raw value.
      *
      * @return string
      */
@@ -175,7 +175,7 @@ class Field // extends \OxidEsales\Eshop\Core\Base
     {
         if (null === $this->rawValue) {
             return $this->value;
-        };
+        }
 
         return $this->rawValue;
     }

@@ -26,16 +26,14 @@ class Form implements FormInterface
      */
     private $validators = [];
 
-    /**
-     * @param FormFieldInterface $field
-     */
-    public function add(FormFieldInterface $field)
+    public function add(FormFieldInterface $field): void
     {
         $this->fields[$field->getName()] = $field;
     }
 
     /**
      * @param string $name
+     *
      * @return FormField
      */
     public function __get($name)
@@ -54,17 +52,14 @@ class Form implements FormInterface
     /**
      * @param array $request
      */
-    public function handleRequest($request)
+    public function handleRequest($request): void
     {
         foreach ($request as $fieldName => $value) {
             $this->$fieldName->setValue($value);
         }
     }
 
-    /**
-     * @param FormValidatorInterface $validator
-     */
-    public function addValidator(FormValidatorInterface $validator)
+    public function addValidator(FormValidatorInterface $validator): void
     {
         $this->validators[] = $validator;
     }
@@ -77,7 +72,7 @@ class Form implements FormInterface
         $isValid = true;
 
         foreach ($this->validators as $validator) {
-            if ($validator->isValid($this) !== true) {
+            if (true !== $validator->isValid($this)) {
                 $isValid = false;
 
                 $this->errors = array_merge(

@@ -14,12 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ModuleConfigurationMergingServiceInterface
 {
-    /**
-     * @param ShopConfiguration   $shopConfiguration
-     * @param ModuleConfiguration $moduleConfigurationToMerge
-     *
-     * @return ShopConfiguration
-     */
     public function merge(
         ShopConfiguration $shopConfiguration,
         ModuleConfiguration $moduleConfigurationToMerge

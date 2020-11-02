@@ -18,17 +18,12 @@ class AdminThemeBridge implements AdminThemeBridgeInterface
 
     /**
      * AdminThemeBridge constructor.
-     *
-     * @param string $activeThemeName
      */
     public function __construct(string $activeThemeName)
     {
         $this->activeThemeName = $activeThemeName;
     }
 
-    /**
-     * @return string
-     */
     public function getActiveTheme(): string
     {
         return $this->activeThemeName;

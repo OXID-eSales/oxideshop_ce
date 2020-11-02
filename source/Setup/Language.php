@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,42 +12,42 @@ namespace OxidEsales\EshopCommunity\Setup;
 use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 
 /**
- * Setup language manager class
+ * Setup language manager class.
  */
 class Language extends Core
 {
     /**
-     * Language translations array
+     * Language translations array.
      *
      * @var array
      */
     protected $_aLangData = null;
 
     /**
-     * Returns setup interface language id
+     * Returns setup interface language id.
      *
      * @return string
      */
     public function getLanguage()
     {
         /** @var Session $oSession */
-        $oSession = $this->getInstance("Session");
+        $oSession = $this->getInstance('Session');
         /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
+        $oUtils = $this->getInstance('Utilities');
 
-        $iLanguage = $oUtils->getRequestVar("setup_lang", "post");
+        $iLanguage = $oUtils->getRequestVar('setup_lang', 'post');
 
         if (isset($iLanguage)) {
             $oSession->setSessionParam('setup_lang', $iLanguage);
-            $iLanguageSubmit = $oUtils->getRequestVar("setup_lang_submit", "post");
+            $iLanguageSubmit = $oUtils->getRequestVar('setup_lang_submit', 'post');
             if (isset($iLanguageSubmit)) {
                 //updating setup language, so disabling redirect to next step, just reloading same step
-                $_GET['istep'] = $_POST['istep'] = $this->getInstance("Setup")->getStep('STEP_WELCOME');
+                $_GET['istep'] = $_POST['istep'] = $this->getInstance('Setup')->getStep('STEP_WELCOME');
             }
-        } elseif ($oSession->getSessionParam('setup_lang') === null) {
+        } elseif (null === $oSession->getSessionParam('setup_lang')) {
             $aLangs = ['en', 'de'];
             $sBrowserLang = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
-            $sBrowserLang = (in_array($sBrowserLang, $aLangs)) ? $sBrowserLang : $aLangs[0];
+            $sBrowserLang = (\in_array($sBrowserLang, $aLangs, true)) ? $sBrowserLang : $aLangs[0];
             $oSession->setSessionParam('setup_lang', $sBrowserLang);
         }
 
@@ -53,7 +55,7 @@ class Language extends Core
     }
 
     /**
-     * Translates passed index
+     * Translates passed index.
      *
      * @param string $sTextIdent translation index
      *
@@ -61,7 +63,7 @@ class Language extends Core
      */
     public function getText($sTextIdent)
     {
-        if ($this->_aLangData === null) {
+        if (null === $this->_aLangData) {
             $this->_aLangData = [];
             $sLangFilePath = getShopBasePath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
@@ -75,7 +77,7 @@ class Language extends Core
     }
 
     /**
-     * Translates module name
+     * Translates module name.
      *
      * @param string $sModuleName name of module
      *

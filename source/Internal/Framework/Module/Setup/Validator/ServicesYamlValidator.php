@@ -12,16 +12,20 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Webmozart\PathUtil\Path;
 
 class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
 {
-    /** @var BasicContextInterface  */
+    /**
+     * @var BasicContextInterface
+     */
     private $basicContext;
 
-    /** @var ProjectYamlDaoInterface  */
+    /**
+     * @var ProjectYamlDaoInterface
+     */
     private $projectYamlDao;
 
     public function __construct(
@@ -33,11 +37,9 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
     }
 
     /**
-     * @param ModuleConfiguration $configuration
-     * @param int $shopId
      * @throws \Throwable
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         $projectYaml = $this->projectYamlDao->loadProjectConfigFile();
         $originalProjectYaml = clone $projectYaml;
@@ -61,7 +63,6 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
     }
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      * @throws \Exception
      */
     private function buildContainer(): \Symfony\Component\DependencyInjection\ContainerBuilder
@@ -72,16 +73,16 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
             $definition->setPublic(true);
         }
         $container->compile();
+
         return $container;
     }
 
     /**
-     * Try to fetch all services defined
+     * Try to fetch all services defined.
      *
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @throws \Exception
      */
-    private function checkContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
+    private function checkContainer(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $definitionKey => $definition) {
             $container->get($definitionKey);

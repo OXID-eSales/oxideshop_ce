@@ -12,9 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Directory\Service;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NoPermissionDirectoryException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
-use Webmozart\PathUtil\Path;
-use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use Webmozart\PathUtil\Path;
 
 class DirectoryValidator implements DirectoryValidatorInterface
 {
@@ -25,13 +25,10 @@ class DirectoryValidator implements DirectoryValidatorInterface
         'out/pictures/media/',
         'out/media/',
         'log/',
-        '../var/'
+        '../var/',
     ];
 
     /**
-     * @param string $shopSourcePath
-     * @param string $compileDirectory
-     *
      * @throws NoPermissionDirectoryException
      * @throws NonExistenceDirectoryException
      */
@@ -45,9 +42,6 @@ class DirectoryValidator implements DirectoryValidatorInterface
     }
 
     /**
-     * @param string $shopSourcePath
-     * @param string $compileDirectory
-     *
      * @throws NotAbsolutePathException
      */
     public function checkPathIsAbsolute(string $shopSourcePath, string $compileDirectory): void
@@ -61,26 +55,18 @@ class DirectoryValidator implements DirectoryValidatorInterface
     }
 
     /**
-     * @param array $directories
-     *
-     * @return void
      * @throws NonExistenceDirectoryException
      */
     private function checkDirectoriesExistent(array $directories): void
     {
         foreach ($directories as $directory) {
             if (!is_dir($directory)) {
-                throw new NonExistenceDirectoryException(
-                    NonExistenceDirectoryException::NON_EXISTENCE_DIRECTORY . ': ' . $directory
-                );
+                throw new NonExistenceDirectoryException(NonExistenceDirectoryException::NON_EXISTENCE_DIRECTORY . ': ' . $directory);
             }
         }
     }
 
     /**
-     * @param array $directories
-     *
-     * @return void
      * @throws NoPermissionDirectoryException
      */
     private function checkDirectoriesPermission(array $directories): void
@@ -89,18 +75,11 @@ class DirectoryValidator implements DirectoryValidatorInterface
 
         foreach ($subDirectories as $subDirectory) {
             if (!is_readable($subDirectory) || !is_writable($subDirectory)) {
-                throw new NoPermissionDirectoryException(
-                    NoPermissionDirectoryException::NO_PERMISSION_DIRECTORY . ': ' . $subDirectory
-                );
+                throw new NoPermissionDirectoryException(NoPermissionDirectoryException::NO_PERMISSION_DIRECTORY . ': ' . $subDirectory);
             }
         }
     }
 
-    /**
-     * @param array $directories
-     *
-     * @return array
-     */
     private function getDirectoriesAndSubDirectories(array $directories): array
     {
         foreach ($directories as $directory) {
@@ -112,7 +91,7 @@ class DirectoryValidator implements DirectoryValidatorInterface
 
             foreach ($recursiveIterator as $path => $dir) {
                 if ($dir->isDir()) {
-                    $directories[] = rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+                    $directories[] = rtrim($path, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
                 }
             }
         }
@@ -120,15 +99,9 @@ class DirectoryValidator implements DirectoryValidatorInterface
         return $directories;
     }
 
-    /**
-     * @param string $shopSourcePath
-     * @param string $compileDirectory
-     *
-     * @return array
-     */
     private function getDirectories(string $shopSourcePath, string $compileDirectory): array
     {
-        $shopSourcePath = rtrim($shopSourcePath, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
+        $shopSourcePath = rtrim($shopSourcePath, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
 
         $directories = array_map(
             static function ($value) use ($shopSourcePath) {
@@ -137,7 +110,7 @@ class DirectoryValidator implements DirectoryValidatorInterface
             self::DIRECTORIES_LIST
         );
 
-        $directories[] = rtrim($compileDirectory, DIRECTORY_SEPARATOR) .  DIRECTORY_SEPARATOR;
+        $directories[] = rtrim($compileDirectory, \DIRECTORY_SEPARATOR) . \DIRECTORY_SEPARATOR;
 
         return $directories;
     }

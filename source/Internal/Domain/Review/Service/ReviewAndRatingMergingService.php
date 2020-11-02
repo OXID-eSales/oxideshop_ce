@@ -19,9 +19,6 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
     /**
      * Merges Reviews and Ratings to Collection of ReviewAndRating view objects.
      *
-     * @param ArrayCollection $reviews
-     * @param ArrayCollection $ratings
-     *
      * @return ArrayCollection
      */
     public function mergeReviewAndRating(ArrayCollection $reviews, ArrayCollection $ratings)
@@ -35,9 +32,6 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
     }
 
     /**
-     * @param ArrayCollection $reviews
-     * @param ArrayCollection $ratings
-     *
      * @return array
      */
     private function getReviewDataWithRating(ArrayCollection $reviews, ArrayCollection $ratings)
@@ -46,13 +40,13 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
 
         foreach ($reviews as $review) {
             $ratingAndReview = [
-                'reviewId'      => $review->getId(),
-                'text'          => $review->getText(),
-                'createdAt'     => $review->getCreatedAt(),
-                'objectId'      => $review->getObjectId(),
-                'objectType'    => $review->getType(),
-                'rating'        => false,
-                'ratingId'      => false,
+                'reviewId' => $review->getId(),
+                'text' => $review->getText(),
+                'createdAt' => $review->getCreatedAt(),
+                'objectId' => $review->getObjectId(),
+                'objectType' => $review->getType(),
+                'rating' => false,
+                'ratingId' => false,
             ];
 
             foreach ($ratings as $rating) {
@@ -71,9 +65,6 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
     }
 
     /**
-     * @param ArrayCollection $reviews
-     * @param ArrayCollection $ratings
-     *
      * @return array
      */
     private function getRatingWithoutReviewData(ArrayCollection $reviews, ArrayCollection $ratings)
@@ -83,13 +74,13 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
         foreach ($ratings as $rating) {
             if ($this->isRatingWithoutReview($rating, $reviews)) {
                 $ratingList[] = [
-                    'ratingId'      => $rating->getId(),
-                    'reviewId'      => false,
-                    'rating'        => $rating->getRating(),
-                    'text'          => '',
-                    'objectId'      => $rating->getObjectId(),
-                    'objectType'    => $rating->getType(),
-                    'createdAt'     => $rating->getCreatedAt(),
+                    'ratingId' => $rating->getId(),
+                    'reviewId' => false,
+                    'rating' => $rating->getRating(),
+                    'text' => '',
+                    'objectId' => $rating->getObjectId(),
+                    'objectType' => $rating->getType(),
+                    'createdAt' => $rating->getCreatedAt(),
                 ];
             }
         }
@@ -99,9 +90,6 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
 
     /**
      * Returns true if Rating doesn't belong to any review.
-     *
-     * @param Rating          $rating
-     * @param ArrayCollection $reviews
      *
      * @return bool
      */
@@ -121,9 +109,6 @@ class ReviewAndRatingMergingService implements ReviewAndRatingMergingServiceInte
 
     /**
      * Returns true if Rating belongs to Review.
-     *
-     * @param Review $review
-     * @param Rating $rating
      *
      * @return bool
      */

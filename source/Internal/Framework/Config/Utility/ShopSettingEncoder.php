@@ -11,15 +11,14 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Utility;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Exception\InvalidShopSettingValueException;
-
-use function unserialize;
 use function serialize;
+use function unserialize;
 
 class ShopSettingEncoder implements ShopSettingEncoderInterface
 {
     /**
-     * @param string $encodingType
-     * @param mixed  $value
+     * @param mixed $value
+     *
      * @return mixed
      */
     public function encode(string $encodingType, $value)
@@ -32,7 +31,7 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
                 $encodedValue = serialize($value);
                 break;
             case ShopSettingType::BOOLEAN:
-                $encodedValue = $value === true ? '1' : '';
+                $encodedValue = true === $value ? '1' : '';
                 break;
             default:
                 $encodedValue = $value;
@@ -42,8 +41,8 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
     }
 
     /**
-     * @param string $encodingType
-     * @param mixed  $value
+     * @param mixed $value
+     *
      * @return mixed
      */
     public function decode(string $encodingType, $value)
@@ -51,10 +50,12 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
         switch ($encodingType) {
             case ShopSettingType::ARRAY:
             case ShopSettingType::ASSOCIATIVE_ARRAY:
-                $decodedValue = unserialize($value, ['allowed_classes' => false]);
+                $decodedValue = unserialize($value, [
+                    'allowed_classes' => false,
+                ]);
                 break;
             case ShopSettingType::BOOLEAN:
-                $decodedValue = ($value === 'true' || $value === '1');
+                $decodedValue = ('true' === $value || '1' === $value);
                 break;
             default:
                 $decodedValue = $value;
@@ -65,14 +66,13 @@ class ShopSettingEncoder implements ShopSettingEncoderInterface
 
     /**
      * @param mixed $value
+     *
      * @throws InvalidShopSettingValueException
      */
-    private function validateSettingValue($value)
+    private function validateSettingValue($value): void
     {
-        if (is_object($value)) {
-            throw new InvalidShopSettingValueException(
-                'Shop setting value must not be an object.'
-            );
+        if (\is_object($value)) {
+            throw new InvalidShopSettingValueException('Shop setting value must not be an object.');
         }
     }
 }

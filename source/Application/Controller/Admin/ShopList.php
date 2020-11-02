@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin shop list manager.
@@ -16,11 +16,13 @@ use oxRegistry;
  */
 class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
-    /** New Shop indicator. */
-    const NEW_SHOP_ID = '-1';
+    /**
+     * New Shop indicator.
+     */
+    public const NEW_SHOP_ID = '-1';
 
     /**
-     * Forces main frame update is set TRUE
+     * Forces main frame update is set TRUE.
      *
      * @var bool
      */
@@ -41,7 +43,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
     protected $_sListClass = 'oxshop';
 
     /**
-     * Navigation frame reload marker
+     * Navigation frame reload marker.
      *
      * @var bool
      */
@@ -59,8 +61,8 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
 
         parent::render();
 
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != self::NEW_SHOP_ID) {
+        $soxId = $this->_aViewData['oxid'] = $this->getEditObjectId();
+        if (isset($soxId) && self::NEW_SHOP_ID !== $soxId) {
             // load object
             $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
             if (!$oShop->load($soxId)) {
@@ -78,11 +80,11 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
 
         if ($this->_aViewData['updatenav']) {
             //skipping requirements checking when reloading nav frame
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("navReload", true);
+            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('navReload', true);
         }
 
         //making sure we really change shops on low level
-        if ($soxId && $soxId != self::NEW_SHOP_ID) {
+        if ($soxId && self::NEW_SHOP_ID !== $soxId) {
             $myConfig->setShopId($soxId);
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $soxId);
         }
@@ -101,7 +103,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
         $this->_aWhere = parent::buildWhere();
         if (!\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('malladmin')) {
             // we only allow to see our shop
-            $this->_aWhere[getViewName("oxshops") . ".oxid"] = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("actshop");
+            $this->_aWhere[getViewName('oxshops') . '.oxid'] = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('actshop');
         }
 
         return $this->_aWhere;
@@ -110,7 +112,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
     /**
      * Set to view data if update navigation menu.
      */
-    protected function updateNavigation()
+    protected function updateNavigation(): void
     {
     }
 }

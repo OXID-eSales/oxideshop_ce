@@ -49,7 +49,7 @@ class ApplyModulesConfigurationCommand extends Command
         $this->moduleStateService = $moduleStateService;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Applies configuration for installed modules.')
         ->addArgument(
@@ -63,7 +63,7 @@ class ApplyModulesConfigurationCommand extends Command
     {
         $shopId = $input->getArgument(Executor::SHOP_ID_PARAMETER_OPTION_NAME);
         if ($shopId) {
-            $this->applyModulesConfigurationForOneShop($output, (int) $shopId);
+            $this->applyModulesConfigurationForOneShop($output, (int)$shopId);
         } else {
             $this->applyModulesConfigurationForAllShops($output);
         }
@@ -113,7 +113,7 @@ class ApplyModulesConfigurationCommand extends Command
     private function deactivateNotConfiguredActivateModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
         if (
-            $moduleConfiguration->isConfigured() === false
+            false === $moduleConfiguration->isConfigured()
             && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)
         ) {
             $this->moduleActivationService->deactivate($moduleConfiguration->getId(), $shopId);
@@ -123,8 +123,8 @@ class ApplyModulesConfigurationCommand extends Command
     private function reactivateConfiguredActiveModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
         if (
-            $moduleConfiguration->isConfigured() === true
-            && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId) === true
+            true === $moduleConfiguration->isConfigured()
+            && true === $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)
         ) {
             $this->moduleActivationService->deactivate($moduleConfiguration->getId(), $shopId);
             $this->moduleActivationService->activate($moduleConfiguration->getId(), $shopId);
@@ -134,8 +134,8 @@ class ApplyModulesConfigurationCommand extends Command
     private function activateConfiguredNotActiveModules(ModuleConfiguration $moduleConfiguration, int $shopId): void
     {
         if (
-            $moduleConfiguration->isConfigured() === true
-            && $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId) === false
+            true === $moduleConfiguration->isConfigured()
+            && false === $this->moduleStateService->isActive($moduleConfiguration->getId(), $shopId)
         ) {
             $this->moduleActivationService->activate($moduleConfiguration->getId(), $shopId);
         }

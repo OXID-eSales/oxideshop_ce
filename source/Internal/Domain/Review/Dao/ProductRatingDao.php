@@ -9,11 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\ProductRatingDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 class ProductRatingDao implements ProductRatingDaoInterface
 {
@@ -27,10 +26,6 @@ class ProductRatingDao implements ProductRatingDaoInterface
      */
     private $productRatingMapper;
 
-    /**
-     * @param QueryBuilderFactoryInterface     $queryBuilderFactory
-     * @param ProductRatingDataMapperInterface $productRatingMapper
-     */
     public function __construct(
         QueryBuilderFactoryInterface $queryBuilderFactory,
         ProductRatingDataMapperInterface $productRatingMapper
@@ -39,10 +34,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
         $this->productRatingMapper = $productRatingMapper;
     }
 
-    /**
-     * @param ProductRating $productRating
-     */
-    public function update(ProductRating $productRating)
+    public function update(ProductRating $productRating): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -59,6 +51,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
      * @param string $productId
      *
      * @return ProductRating
+     *
      * @throws InvalidObjectIdDaoException
      */
     public function getProductRatingById($productId)
@@ -70,7 +63,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->select([
                 'OXID',
                 'OXRATING',
-                'OXRATINGCNT'
+                'OXRATINGCNT',
             ])
             ->from('oxarticles')
             ->where('oxid = :productId')
@@ -88,9 +81,9 @@ class ProductRatingDao implements ProductRatingDaoInterface
      *
      * @throws InvalidObjectIdDaoException
      */
-    private function validateProductId($productId)
+    private function validateProductId($productId): void
     {
-        if (empty($productId) || !is_string($productId)) {
+        if (empty($productId) || !\is_string($productId)) {
             throw new InvalidObjectIdDaoException();
         }
     }

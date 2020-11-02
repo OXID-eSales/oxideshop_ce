@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxSysRequirements;
 
 /**
  * Collects System information.
@@ -30,11 +30,11 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
         $this->_aViewData['aInfo'] = $oSysReq->getSystemInfo();
         $this->_aViewData['aCollations'] = $oSysReq->checkCollation();
 
-        return "sysreq_main.tpl";
+        return 'sysreq_main.tpl';
     }
 
     /**
-     * Returns module state
+     * Returns module state.
      *
      * @param int $iModuleState state integer value
      *
@@ -56,11 +56,12 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
                 $sClass = 'fail';
                 break;
         }
+
         return $sClass;
     }
 
     /**
-     * Returns hint URL
+     * Returns hint URL.
      *
      * @param string $sIdent Module ident
      *
@@ -74,7 +75,7 @@ class SystemRequirementsMain extends \OxidEsales\Eshop\Application\Controller\Ad
     }
 
     /**
-     * return missing template blocks
+     * return missing template blocks.
      *
      * @see \OxidEsales\Eshop\Core\SystemRequirements::getMissingTemplateBlocks
      *

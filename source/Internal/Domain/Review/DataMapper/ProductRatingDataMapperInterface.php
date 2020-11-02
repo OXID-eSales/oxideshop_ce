@@ -13,25 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 
 interface ProductRatingDataMapperInterface
 {
-    /**
-     * @param ProductRating $productRating
-     * @param array         $data
-     *
-     * @return ProductRating
-     */
     public function map(ProductRating $productRating, array $data): ProductRating;
 
-    /**
-     * @param ProductRating $productRating
-     *
-     * @return array
-     */
     public function getData(ProductRating $productRating): array;
 
-    /**
-     * @param ProductRating $productRating
-     *
-     * @return array
-     */
     public function getPrimaryKey(ProductRating $productRating): array;
 }

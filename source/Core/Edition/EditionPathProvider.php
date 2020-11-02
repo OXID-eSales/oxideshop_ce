@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,18 +12,20 @@ namespace OxidEsales\EshopCommunity\Core\Edition;
 /**
  * Class is responsible for returning directories paths according edition.
  *
- * @internal Do not make a module extension for this class.
- * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
+ * @internal do not make a module extension for this class
  *
+ * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  * @deprecated since v6.0.0-rc.2 (2017-08-24); Use \OxidEsales\Facts\Facts instead.
  */
 class EditionPathProvider
 {
-    const SETUP_DIRECTORY = 'Setup';
+    public const SETUP_DIRECTORY = 'Setup';
 
-    const DATABASE_SQL_DIRECTORY = 'Sql';
+    public const DATABASE_SQL_DIRECTORY = 'Sql';
 
-    /** @var EditionRootPathProvider */
+    /**
+     * @var EditionRootPathProvider
+     */
     private $editionRootPathProvider;
 
     /**
@@ -40,7 +44,7 @@ class EditionPathProvider
     public function getSetupDirectory()
     {
         return $this->getEditionRootPathProvider()->getDirectoryPath()
-        . static::SETUP_DIRECTORY . DIRECTORY_SEPARATOR;
+        . static::SETUP_DIRECTORY . \DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -50,7 +54,7 @@ class EditionPathProvider
      */
     public function getDatabaseSqlDirectory()
     {
-        return $this->getSetupDirectory() . static::DATABASE_SQL_DIRECTORY . DIRECTORY_SEPARATOR;
+        return $this->getSetupDirectory() . static::DATABASE_SQL_DIRECTORY . \DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -61,8 +65,8 @@ class EditionPathProvider
     public function getViewsDirectory()
     {
         return $this->getEditionRootPathProvider()->getDirectoryPath()
-        . 'Application' . DIRECTORY_SEPARATOR
-        . 'views' . DIRECTORY_SEPARATOR;
+        . 'Application' . \DIRECTORY_SEPARATOR
+        . 'views' . \DIRECTORY_SEPARATOR;
     }
 
     /**

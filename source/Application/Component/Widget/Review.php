@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 /**
- * Product reviews widget
+ * Product reviews widget.
  */
 class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetController
 {
@@ -19,7 +21,9 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_user' => 1];
+    protected $_aComponentNames = [
+        'oxcmp_user' => 1,
+    ];
 
     /**
      * Current class template name.
@@ -32,7 +36,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      * Executes parent::render().
      * Returns name of template file to render.
      *
-     * @return  string  current template file name
+     * @return string current template file name
      */
     public function render()
     {
@@ -42,7 +46,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns review type
+     * Template variable getter. Returns review type.
      *
      * @return string
      */
@@ -52,7 +56,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns article id
+     * Template variable getter. Returns article id.
      *
      * @return string
      */
@@ -62,7 +66,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns article nid
+     * Template variable getter. Returns article nid.
      *
      * @return string
      */
@@ -72,7 +76,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns recommlist id
+     * Template variable getter. Returns recommlist id.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -84,7 +88,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns whether user can rate
+     * Template variable getter. Returns whether user can rate.
      *
      * @return string
      */
@@ -94,7 +98,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns review user id
+     * Template variable getter. Returns review user id.
      *
      * @return string
      */
@@ -104,7 +108,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     }
 
     /**
-     * Template variable getter. Returns active object's reviews from parent class
+     * Template variable getter. Returns active object's reviews from parent class.
      *
      * @return array
      */

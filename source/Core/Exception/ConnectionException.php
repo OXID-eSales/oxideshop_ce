@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,7 +14,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
  * - no connection, proxy problem, wrong configuration, etc.
  * - ipayment server
  * - online vat id check
- * - db server
+ * - db server.
  */
 class ConnectionException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
@@ -24,31 +26,31 @@ class ConnectionException extends \OxidEsales\Eshop\Core\Exception\StandardExcep
     protected $type = 'oxConnectionException';
 
     /**
-     * Address value
+     * Address value.
      *
      * @var string
      */
     private $_sAddress;
 
     /**
-     * connection error as given by connect method
+     * connection error as given by connect method.
      *
      * @var string
      */
     private $_sConnectionError;
 
     /**
-     * Enter address of the external server which caused the exception
+     * Enter address of the external server which caused the exception.
      *
      * @param string $sAdress Externalserver address
      */
-    public function setAdress($sAdress)
+    public function setAdress($sAdress): void
     {
         $this->_sAddress = $sAdress;
     }
 
     /**
-     * Gives address of the external server which caused the exception
+     * Gives address of the external server which caused the exception.
      *
      * @return string
      */
@@ -58,17 +60,17 @@ class ConnectionException extends \OxidEsales\Eshop\Core\Exception\StandardExcep
     }
 
     /**
-     * Sets the connection error returned by the connect function
+     * Sets the connection error returned by the connect function.
      *
      * @param string $sConnError connection error
      */
-    public function setConnectionError($sConnError)
+    public function setConnectionError($sConnError): void
     {
         $this->_sConnectionError = $sConnError;
     }
 
     /**
-     * Gives the connection error returned by the connect function
+     * Gives the connection error returned by the connect function.
      *
      * @return string
      */
@@ -79,17 +81,17 @@ class ConnectionException extends \OxidEsales\Eshop\Core\Exception\StandardExcep
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */
     public function getString()
     {
-        return __CLASS__ . '-' . parent::getString() . " Connection Adress --> " . $this->_sAddress . "\n" . "Connection Error --> " . $this->_sConnectionError;
+        return __CLASS__ . '-' . parent::getString() . ' Connection Adress --> ' . $this->_sAddress . "\n" . 'Connection Error --> ' . $this->_sConnectionError;
     }
 
     /**
-     * Override of oxException::getValues()
+     * Override of oxException::getValues().
      *
      * @return array
      */

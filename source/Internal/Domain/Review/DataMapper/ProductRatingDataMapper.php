@@ -13,12 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 
 class ProductRatingDataMapper implements ProductRatingDataMapperInterface
 {
-    /**
-     * @param ProductRating $productRating
-     * @param array         $data
-     *
-     * @return ProductRating
-     */
     public function map(ProductRating $productRating, array $data): ProductRating
     {
         $productRating
@@ -29,25 +23,15 @@ class ProductRatingDataMapper implements ProductRatingDataMapperInterface
         return $productRating;
     }
 
-    /**
-     * @param ProductRating $productRating
-     *
-     * @return array
-     */
     public function getData(ProductRating $productRating): array
     {
         return [
-            'OXID'        => $productRating->getProductId(),
-            'OXRATING'    => $productRating->getRatingAverage(),
+            'OXID' => $productRating->getProductId(),
+            'OXRATING' => $productRating->getRatingAverage(),
             'OXRATINGCNT' => $productRating->getRatingCount(),
         ];
     }
 
-    /**
-     * @param ProductRating $productRating
-     *
-     * @return array
-     */
     public function getPrimaryKey(ProductRating $productRating): array
     {
         return [

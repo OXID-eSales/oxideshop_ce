@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -28,9 +30,10 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
     protected $_oPaymentInfo = null;
 
     /**
-     * Last error nr. For backward compatibility must be >3
+     * Last error nr. For backward compatibility must be >3.
      *
      * @abstract
+     *
      * @var string
      */
     protected $_iLastErrorNo = 4;
@@ -39,6 +42,7 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      * Last error text.
      *
      * @abstract
+     *
      * @var string
      */
     protected $_sLastError = null;
@@ -48,16 +52,16 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      *
      * @param object $oUserpayment User payment object
      */
-    public function setPaymentParams($oUserpayment)
+    public function setPaymentParams($oUserpayment): void
     {
         // store data
-        $this->_oPaymentInfo = & $oUserpayment;
+        $this->_oPaymentInfo = &$oUserpayment;
     }
 
     /**
      * Executes payment, returns true on success.
      *
-     * @param double $dAmount Goods amount
+     * @param float  $dAmount Goods amount
      * @param object $oOrder  User ordering object
      *
      * @return bool
@@ -73,7 +77,7 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
 
         // proceed with no payment
         // used for other countries
-        if (@$this->_oPaymentInfo->oxuserpayments__oxpaymentsid->value == 'oxempty') {
+        if ('oxempty' === @$this->_oPaymentInfo->oxuserpayments__oxpaymentsid->value) {
             return true;
         }
 
@@ -104,6 +108,7 @@ class PaymentGateway extends \OxidEsales\Eshop\Core\Base
      * Returns true is payment active.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isActive" in next major
      */
     protected function _isActive() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

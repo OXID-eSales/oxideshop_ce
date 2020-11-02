@@ -20,7 +20,6 @@ class ProductRatingBridge implements ProductRatingBridgeInterface
 
     /**
      * ProductRatingBridge constructor.
-     * @param ProductRatingServiceInterface $productRatingService
      */
     public function __construct(ProductRatingServiceInterface $productRatingService)
     {
@@ -30,7 +29,7 @@ class ProductRatingBridge implements ProductRatingBridgeInterface
     /**
      * @param string $productId
      */
-    public function updateProductRating($productId)
+    public function updateProductRating($productId): void
     {
         $this->productRatingService->updateProductRating($productId);
     }

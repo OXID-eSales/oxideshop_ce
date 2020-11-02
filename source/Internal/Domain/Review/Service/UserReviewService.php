@@ -21,7 +21,6 @@ class UserReviewService implements UserReviewServiceInterface
 
     /**
      * UserReviewService constructor.
-     * @param ReviewDaoInterface $reviewDao
      */
     public function __construct(ReviewDaoInterface $reviewDao)
     {

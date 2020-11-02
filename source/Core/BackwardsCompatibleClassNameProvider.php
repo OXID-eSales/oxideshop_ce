@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,12 +12,15 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Forms real class name for edition based classes.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class BackwardsCompatibleClassNameProvider
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     private $classMap;
 
     /**
@@ -37,7 +42,7 @@ class BackwardsCompatibleClassNameProvider
     public function getClassName($classAlias)
     {
         $className = $classAlias;
-        if (array_key_exists($classAlias, $this->classMap)) {
+        if (\array_key_exists($classAlias, $this->classMap)) {
             $className = $this->classMap[$classAlias];
         }
 
@@ -47,7 +52,7 @@ class BackwardsCompatibleClassNameProvider
     /**
      * Method returns class alias by given class name.
      *
-     * @param string $className with namespace.
+     * @param string $className with namespace
      *
      * @return string|null
      */
@@ -57,9 +62,9 @@ class BackwardsCompatibleClassNameProvider
          * Sanitize input: class names in namespaces should not, but may include a leading backslash
          */
         $className = ltrim($className, '\\');
-        $classAlias = array_search($className, $this->classMap);
+        $classAlias = array_search($className, $this->classMap, true);
 
-        if ($classAlias === false) {
+        if (false === $classAlias) {
             $classAlias = null;
         }
 

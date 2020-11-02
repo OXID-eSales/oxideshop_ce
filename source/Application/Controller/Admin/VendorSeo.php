@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,18 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
-
 /**
- * Vendor seo config class
+ * Vendor seo config class.
  */
 class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
 {
     /**
-     * Updating showsuffix field
-     *
-     * @return null
+     * Updating showsuffix field.
      */
     public function save()
     {
@@ -27,7 +24,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
         if ($oVendor->load($this->getEditObjectId())) {
             $sShowSuffixField = 'oxvendor__oxshowsuffix';
             $blShowSuffixParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('blShowSuffix');
-            $oVendor->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int) $blShowSuffixParameter);
+            $oVendor->$sShowSuffixField = new \OxidEsales\Eshop\Core\Field((int)$blShowSuffixParameter);
             $oVendor->save();
         }
 
@@ -35,9 +32,10 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
     }
 
     /**
-     * Returns current object type seo encoder object
+     * Returns current object type seo encoder object.
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderVendor
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getEncoder" in next major
      */
     protected function _getEncoder() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -46,7 +44,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
     }
 
     /**
-     * This SEO object supports suffixes so return TRUE
+     * This SEO object supports suffixes so return TRUE.
      *
      * @return bool
      */
@@ -56,7 +54,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
     }
 
     /**
-     * Returns true if SEO object id has suffix enabled
+     * Returns true if SEO object id has suffix enabled.
      *
      * @return bool
      */
@@ -64,14 +62,15 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
     {
         $oVendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
         if ($oVendor->load($this->getEditObjectId())) {
-            return (bool) $oVendor->oxvendor__oxshowsuffix->value;
+            return (bool)$oVendor->oxvendor__oxshowsuffix->value;
         }
     }
 
     /**
-     * Returns url type
+     * Returns url type.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getType" in next major
      */
     protected function _getType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -80,7 +79,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
     }
 
     /**
-     * Returns seo uri
+     * Returns seo uri.
      *
      * @return string
      */

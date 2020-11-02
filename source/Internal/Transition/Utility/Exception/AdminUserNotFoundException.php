@@ -10,9 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception;
 
 /**
- * Class AdminUserNotFoundException
- *
- * @package OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception
+ * Class AdminUserNotFoundException.
  */
 class AdminUserNotFoundException extends \Exception
 {

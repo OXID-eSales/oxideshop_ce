@@ -13,20 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfig
 
 interface ProjectYamlDaoInterface
 {
-    /**
-     * @param string $path
-     *
-     * @return DIConfigWrapper
-     */
     public function loadDIConfigFile(string $path): DIConfigWrapper;
 
-    /**
-     * @return DIConfigWrapper
-     */
     public function loadProjectConfigFile(): DIConfigWrapper;
 
-    /**
-     * @param DIConfigWrapper $config
-     */
     public function saveProjectConfigFile(DIConfigWrapper $config);
 }

@@ -30,7 +30,7 @@ class BeforeHeadersSendEvent extends Event
     /**
      * BeforeHeadersSendEvent constructor.
      *
-     * @param ShopControl               $shopControl ShopControl object
+     * @param ShopControl    $shopControl ShopControl object
      * @param BaseController $controller  Controller
      */
     public function __construct(
@@ -43,8 +43,6 @@ class BeforeHeadersSendEvent extends Event
 
     /**
      * Getter for ShopControl object.
-     *
-     * @return ShopControl
      */
     public function getShopControl(): ShopControl
     {
@@ -53,8 +51,6 @@ class BeforeHeadersSendEvent extends Event
 
     /**
      * Getter for controller object.
-     *
-     * @return BaseController
      */
     public function getController(): BaseController
     {

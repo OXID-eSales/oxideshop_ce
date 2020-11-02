@@ -10,10 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
 
 use Doctrine\DBAL\Logging\SQLLogger;
-use Psr\Log\LoggerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
-use OxidEsales\Eshop\Core\Registry;
+use Psr\Log\LoggerInterface;
 
 class QueryLogger implements SQLLogger
 {
@@ -34,10 +33,6 @@ class QueryLogger implements SQLLogger
 
     /**
      * QueryLogger constructor.
-     *
-     * @param QueryFilterInterface      $queryFilter
-     * @param ContextInterface $context
-     * @param LoggerInterface  $psrLogger
      */
     public function __construct(
         QueryFilterInterface $queryFilter,
@@ -52,11 +47,9 @@ class QueryLogger implements SQLLogger
     /**
      * Logs an SQL statement somewhere.
      *
-     * @param string              $query  The query to be executed.
-     * @param mixed[]|null        $params The query parameters.
-     * @param int[]|string[]|null $types  The query parameter types.
-     *
-     * @return void
+     * @param string              $query  the query to be executed
+     * @param mixed[]|null        $params the query parameters
+     * @param int[]|string[]|null $types  the query parameter types
      */
     public function startQuery($query, ?array $params = null, ?array $types = null): void
     {
@@ -68,8 +61,6 @@ class QueryLogger implements SQLLogger
 
     /**
      * Marks the last started query as stopped. This can be used for timing of queries.
-     *
-     * @return void
      */
     public function stopQuery(): void
     {
@@ -78,8 +69,6 @@ class QueryLogger implements SQLLogger
     /**
      * Get first entry from backtrace that is not connected to database.
      * This has to be the origin of the query.
-     *
-     * @return array
      */
     private function getQueryTrace(): array
     {
@@ -87,7 +76,7 @@ class QueryLogger implements SQLLogger
 
         foreach ((new \Exception())->getTrace() as $item) {
             if (
-                (false === stripos($item['class'], get_class($this))) &&
+                (false === stripos($item['class'], static::class)) &&
                 (false === stripos($item['class'], 'Doctrine'))
             ) {
                 $queryTraceItem = $item;
@@ -101,42 +90,32 @@ class QueryLogger implements SQLLogger
     /**
      * Collect query information.
      *
-     * @param string $query  The query to be executed.
-     * @param array  $params The query parameters.
-     *
-     * @return array
+     * @param string $query  the query to be executed
+     * @param array  $params the query parameters
      */
     private function getQueryData($query, array $params = null): array
     {
         $backTraceInfo = $this->getQueryTrace();
-        $queryData = [
-            'adminUserId' => $this->getAdminUserIdIfExists(),
-            'shopId'      => $this->context->getCurrentShopId(),
-            'class'       => $backTraceInfo['class'] ?? '',
-            'function'    => $backTraceInfo['function'] ?? '',
-            'file'        => $backTraceInfo['file'] ?? '',
-            'line'        => $backTraceInfo['line'] ?? '',
-            'query'       => $query,
-            'params'      => serialize($params)
-        ];
 
-        return $queryData;
+        return [
+            'adminUserId' => $this->getAdminUserIdIfExists(),
+            'shopId' => $this->context->getCurrentShopId(),
+            'class' => $backTraceInfo['class'] ?? '',
+            'function' => $backTraceInfo['function'] ?? '',
+            'file' => $backTraceInfo['file'] ?? '',
+            'line' => $backTraceInfo['line'] ?? '',
+            'query' => $query,
+            'params' => serialize($params),
+        ];
     }
 
-    /**
-     * @return bool
-     */
     private function filterPass(string $query): bool
     {
         return $this->queryFilter->shouldLogQuery($query, $this->context->getSkipLogTags());
     }
 
     /**
-     * Assemble log message
-     *
-     * @param array $queryData
-     *
-     * @return string
+     * Assemble log message.
      */
     private function getLogMessage(array $queryData): string
     {
@@ -149,9 +128,6 @@ class QueryLogger implements SQLLogger
         return $message . PHP_EOL;
     }
 
-    /**
-     * @return string
-     */
     private function getAdminUserIdIfExists(): string
     {
         try {

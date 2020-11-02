@@ -11,8 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
 interface ExtensionChainServiceInterface
 {
-    /**
-     * @param int $shopId
-     */
     public function updateChain(int $shopId);
 }

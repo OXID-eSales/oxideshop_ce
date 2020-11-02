@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * User details.
@@ -24,49 +25,49 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     protected $_sThisTemplate = 'page/checkout/user.tpl';
 
     /**
-     * Order step marker
+     * Order step marker.
      *
      * @var bool
      */
     protected $_blIsOrderStep = true;
 
     /**
-     * Revers of option blOrderDisWithoutReg
+     * Revers of option blOrderDisWithoutReg.
      *
      * @var array
      */
     protected $_blShowNoRegOpt = null;
 
     /**
-     * Selected Address
+     * Selected Address.
      *
      * @var object
      */
     protected $_sSelectedAddress = null;
 
     /**
-     * Login option
+     * Login option.
      *
-     * @var integer
+     * @var int
      */
     protected $_iOption = null;
 
     /**
-     * Country list
+     * Country list.
      *
      * @var object
      */
     protected $_oCountryList = null;
 
     /**
-     * Order remark
+     * Order remark.
      *
      * @var string
      */
     protected $_sOrderRemark = null;
 
     /**
-     * Wishlist user id
+     * Wishlist user id.
      *
      * @var string
      */
@@ -78,7 +79,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      * available - loads user delivery address data (oxAddress). Returns
      * name template file to render user::_sThisTemplate.
      *
-     * @return  string  $this->_sThisTemplate   current template file name
+     * @return string $this->_sThisTemplate   current template file name
      */
     public function render()
     {
@@ -107,13 +108,13 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     }
 
     /**
-     * Template variable getter. Returns reverse option blOrderDisWithoutReg
+     * Template variable getter. Returns reverse option blOrderDisWithoutReg.
      *
      * @return bool
      */
     public function getShowNoRegOption()
     {
-        if ($this->_blShowNoRegOpt === null) {
+        if (null === $this->_blShowNoRegOpt) {
             $this->_blShowNoRegOpt = !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderDisWithoutReg');
         }
 
@@ -121,17 +122,17 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     }
 
     /**
-     * Template variable getter. Returns user login option
+     * Template variable getter. Returns user login option.
      *
-     * @return integer
+     * @return int
      */
     public function getLoginOption()
     {
-        if ($this->_iOption === null) {
+        if (null === $this->_iOption) {
             // passing user chosen option value to display correct content
             $option = Registry::getConfig()->getRequestParameter('option');
             // if user chosen "Option 2"" - we should show user details only if he is authorized
-            if ($option == 2 && !$this->getUser()) {
+            if (2 === $option && !$this->getUser()) {
                 $option = 0;
             }
             $this->_iOption = $option;
@@ -141,14 +142,14 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     }
 
     /**
-     * Template variable getter. Returns order remark
+     * Template variable getter. Returns order remark.
      *
      * @return string
      */
     public function getOrderRemark()
     {
         $config = Registry::getConfig();
-        if ($this->_sOrderRemark === null) {
+        if (null === $this->_sOrderRemark) {
             // if already connected, we can use the session
             if ($this->getUser()) {
                 $orderRemark = Registry::getSession()->getVariable('ordrem');
@@ -164,14 +165,14 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     }
 
     /**
-     * Template variable getter. Returns if user subscribed for newsletter
+     * Template variable getter. Returns if user subscribed for newsletter.
      *
      * @return bool
      */
     public function isNewsSubscribed()
     {
-        if ($this->_blNewsSubscribed === null) {
-            if (($isSubscribedToNews = Registry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
+        if (null === $this->_blNewsSubscribed) {
+            if (null === ($isSubscribedToNews = Registry::getConfig()->getRequestParameter('blnewssubscribed'))) {
                 $isSubscribedToNews = false;
             }
             if (($user = $this->getUser())) {
@@ -180,7 +181,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
             $this->_blNewsSubscribed = $isSubscribedToNews;
         }
 
-        if (is_null($this->_blNewsSubscribed)) {
+        if (null === $this->_blNewsSubscribed) {
             $this->_blNewsSubscribed = false;
         }
 
@@ -188,7 +189,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     }
 
     /**
-     * Template variable getter. Checks to show or not shipping address entry form
+     * Template variable getter. Checks to show or not shipping address entry form.
      *
      * @return bool
      */
@@ -198,7 +199,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     }
 
     /**
-     * Return true if user wants to change his billing address
+     * Return true if user wants to change his billing address.
      *
      * @return bool
      */
@@ -235,7 +236,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $basket = $session->getBasket();
-        if ($basket && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blEnableDownloads")) {
+        if ($basket && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blEnableDownloads')) {
             if ($basket->hasDownloadableProducts()) {
                 return true;
             }

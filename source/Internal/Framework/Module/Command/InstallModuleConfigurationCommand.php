@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\PathNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,10 +36,6 @@ class InstallModuleConfigurationCommand extends Command
      */
     private $context;
 
-    /**
-     * @param ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
-     * @param BasicContextInterface $context
-     */
     public function __construct(
         ModuleConfigurationInstallerInterface $moduleConfigurationInstaller,
         BasicContextInterface $context
@@ -51,7 +47,7 @@ class InstallModuleConfigurationCommand extends Command
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function configure(): void
     {
@@ -78,9 +74,6 @@ class InstallModuleConfigurationCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
      * @throws \Throwable
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -107,24 +100,18 @@ class InstallModuleConfigurationCommand extends Command
         return 0;
     }
 
-    /**
-     * @param InputInterface $input
-     * @return string
-     */
     private function getModuleSourcePath(InputInterface $input): string
     {
         return $this->getAbsolutePath($input->getArgument('module-source-path'));
     }
 
     /**
-     * @param InputInterface $input
-     * @return string
      * @throws ModuleTargetPathIsMissingException
      */
     private function getModuleTargetPath(InputInterface $input): string
     {
         $moduleTargetPath = $input->getArgument('module-target-path');
-        if ($moduleTargetPath !== null) {
+        if (null !== $moduleTargetPath) {
             return $this->getAbsolutePath($moduleTargetPath);
         }
 
@@ -136,10 +123,6 @@ class InstallModuleConfigurationCommand extends Command
         throw new ModuleTargetPathIsMissingException();
     }
 
-    /**
-     * @param string $path
-     * @return bool
-     */
     private function isDirectoryInsideShopModulesDirectory(string $path): bool
     {
         if (Path::isRelative($path)) {
@@ -149,20 +132,13 @@ class InstallModuleConfigurationCommand extends Command
         return Path::isBasePath($this->context->getModulesPath(), $path);
     }
 
-    /**
-     * @param string $path
-     */
-    private function validatePath(string $path)
+    private function validatePath(string $path): void
     {
         if (!file_exists($path) || !is_dir($path)) {
             throw PathNotFoundException::byPath($path);
         }
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
     private function getAbsolutePath(string $path): string
     {
         return Path::isRelative($path)

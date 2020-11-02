@@ -11,7 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Utility\Url;
 
 class UrlParser implements UrlParserInterface
 {
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function getPathWithoutTrailingSlash(string $url): string
     {
         return $this->removeTrailingSlash(
@@ -19,19 +21,11 @@ class UrlParser implements UrlParserInterface
         );
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
     private function getPath(string $url): string
     {
         return (string)parse_url($url, PHP_URL_PATH);
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
     private function removeTrailingSlash(string $path): string
     {
         return rtrim($path, '/');

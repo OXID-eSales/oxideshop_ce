@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,10 +19,12 @@ use OxidEsales\Eshop\Core\ShopIdCalculator;
  */
 class ShopController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {
-    const CURRENT_TEMPLATE = 'shop.tpl';
+    public const CURRENT_TEMPLATE = 'shop.tpl';
 
-    /** @deprecated since 6.0 (2016-07-25); Instead use ShopIdCalculator::BASE_SHOP_ID */
-    const SHOP_ID = ShopIdCalculator::BASE_SHOP_ID;
+    /**
+     * @deprecated since 6.0 (2016-07-25); Instead use ShopIdCalculator::BASE_SHOP_ID
+     */
+    public const SHOP_ID = ShopIdCalculator::BASE_SHOP_ID;
 
     /**
      * Executes parent method parent::render() and returns name of template

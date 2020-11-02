@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,26 +10,28 @@
 namespace OxidEsales\EshopCommunity\Core\Module;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
 /**
  * Module class.
  *
  * @deprecated since v6.4.0 (2019-03-22); Use service 'OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface'.
- * @internal Do not make a module extension for this class.
+ *
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class Module extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Metadata version as defined in metadata.php
+     * Metadata version as defined in metadata.php.
      */
     protected $metaDataVersion;
 
@@ -36,7 +40,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getMetaDataVersion()
     {
-        if ($this->metaDataVersion === null) {
+        if (null === $this->metaDataVersion) {
             $metadataPath = $this->getModuleFullPath($this->getId()) . '/metadata.php';
             $this->includeModuleMetaData($metadataPath);
         }
@@ -47,46 +51,46 @@ class Module extends \OxidEsales\Eshop\Core\Base
     /**
      * @param mixed $metaDataVersion
      */
-    public function setMetaDataVersion($metaDataVersion)
+    public function setMetaDataVersion($metaDataVersion): void
     {
         $this->metaDataVersion = $metaDataVersion;
     }
 
     /**
-     * Modules info array
+     * Modules info array.
      *
      * @var array
      */
     protected $_aModule = [];
 
     /**
-     * Defines if module has metadata file or not
+     * Defines if module has metadata file or not.
      *
      * @var bool
      */
     protected $_blMetadata = false;
 
     /**
-     * Defines if module is registered in metadata or legacy storage
+     * Defines if module is registered in metadata or legacy storage.
      *
      * @var bool
      */
     protected $_blRegistered = false;
 
     /**
-     * Set passed module data
+     * Set passed module data.
      *
      * @param array $aModule module data
      */
-    public function setModuleData($aModule)
+    public function setModuleData($aModule): void
     {
         $this->_aModule = $aModule;
     }
 
     /**
-     * Get the modules metadata array
+     * Get the modules metadata array.
      *
-     * @return  array Module meta data array
+     * @return array Module meta data array
      */
     public function getModuleData()
     {
@@ -94,7 +98,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Load module info
+     * Load module info.
      *
      * @param string $moduleId
      *
@@ -122,7 +126,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Load module by dir name
+     * Load module by dir name.
      *
      * @param string $sModuleDir Module dir name
      *
@@ -133,8 +137,8 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $sModuleId = null;
         $aModulePaths = $this->getModulePaths();
 
-        if (is_array($aModulePaths)) {
-            $sModuleId = array_search($sModuleDir, $aModulePaths);
+        if (\is_array($aModulePaths)) {
+            $sModuleId = array_search($sModuleDir, $aModulePaths, true);
         }
 
         // if no module id defined, using module dir as id
@@ -146,7 +150,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get module description
+     * Get module description.
      *
      * @return string
      */
@@ -154,11 +158,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
 
-        return $this->getInfo("description", $iLang);
+        return $this->getInfo('description', $iLang);
     }
 
     /**
-     * Get module title
+     * Get module title.
      *
      * @return string
      */
@@ -166,11 +170,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
     {
         $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
 
-        return $this->getInfo("title", $iLang);
+        return $this->getInfo('title', $iLang);
     }
 
     /**
-     * Get module ID
+     * Get module ID.
      *
      * @return string
      */
@@ -209,7 +213,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getControllers()
     {
-        if (isset($this->_aModule['controllers']) && ! is_array($this->_aModule['controllers'])) {
+        if (isset($this->_aModule['controllers']) && !\is_array($this->_aModule['controllers'])) {
             throw new \InvalidArgumentException('Value for metadata key "controllers" must be an array');
         }
 
@@ -221,7 +225,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getSmartyPluginDirectories()
     {
-        if (isset($this->_aModule['smartyPluginDirectories']) && !is_array($this->_aModule['smartyPluginDirectories'])) {
+        if (isset($this->_aModule['smartyPluginDirectories']) && !\is_array($this->_aModule['smartyPluginDirectories'])) {
             throw new \InvalidArgumentException('Value for metadata key "smartyPluginDirectories" must be an array');
         }
 
@@ -229,7 +233,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get module ID
+     * Get module ID.
      *
      * @param string $module extension full path
      *
@@ -243,16 +247,16 @@ class Module extends \OxidEsales\Eshop\Core\Base
         if (!$moduleId) {
             $modulePaths = $this->getModulePaths();
 
-            if (is_array($modulePaths)) {
+            if (\is_array($modulePaths)) {
                 foreach ($modulePaths as $id => $path) {
-                    if (strpos($moduleFile, $path . "/") === 0) {
+                    if (0 === strpos($moduleFile, $path . '/')) {
                         $moduleId = $id;
                     }
                 }
             }
         }
         if (!$moduleId) {
-            $moduleId = substr($moduleFile, 0, strpos($moduleFile, "/"));
+            $moduleId = substr($moduleFile, 0, strpos($moduleFile, '/'));
         }
         if (!$moduleId) {
             $moduleId = $moduleFile;
@@ -307,7 +311,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     public function getInfo($sName, $iLang = null)
     {
         if (isset($this->_aModule[$sName])) {
-            if ($iLang !== null && is_array($this->_aModule[$sName])) {
+            if (null !== $iLang && \is_array($this->_aModule[$sName])) {
                 $sValue = null;
 
                 $sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($iLang);
@@ -332,13 +336,13 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Check if extension is active
+     * Check if extension is active.
      *
      * @return bool
      */
     public function isActive()
     {
-        if ($this->getId() === null) {
+        if (null === $this->getId()) {
             return false;
         }
 
@@ -363,7 +367,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if module is registered in any way
+     * Checks if module is registered in any way.
      *
      * @return bool
      */
@@ -373,7 +377,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if module has metadata
+     * Checks if module has metadata.
      *
      * @return bool
      */
@@ -390,15 +394,15 @@ class Module extends \OxidEsales\Eshop\Core\Base
     public function getMetadataPath()
     {
         $sModulePath = $this->getModuleFullPath();
-        if (substr($sModulePath, -1) != DIRECTORY_SEPARATOR) {
-            $sModulePath .= DIRECTORY_SEPARATOR;
+        if (\DIRECTORY_SEPARATOR !== substr($sModulePath, -1)) {
+            $sModulePath .= \DIRECTORY_SEPARATOR;
         }
 
         return $sModulePath . 'metadata.php';
     }
 
     /**
-     * Get module dir
+     * Get module dir.
      *
      * @param string $sModuleId Module ID
      *
@@ -434,7 +438,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns full module path
+     * Returns full module path.
      *
      * @param string $sModuleId
      *
@@ -454,7 +458,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get module id's with path
+     * Get module id's with path.
      *
      * @return array
      */
@@ -480,7 +484,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplates($sModuleId = null)
     {
-        if (is_null($sModuleId)) {
+        if (null === $sModuleId) {
             $sModuleId = $this->getId();
         }
 
@@ -490,33 +494,29 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
 
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = :oxmodule AND oxshopid = :oxshopid", [
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol('SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = :oxmodule AND oxshopid = :oxshopid', [
             ':oxmodule' => $sModuleId,
-            ':oxshopid' => $sShopId
+            ':oxshopid' => $sShopId,
         ]);
     }
 
     /**
-     * Include data from metadata.php
+     * Include data from metadata.php.
      *
      * @param string $metadataPath Path to metadata.php
      */
-    protected function includeModuleMetaData($metadataPath)
+    protected function includeModuleMetaData($metadataPath): void
     {
         include $metadataPath;
 
         /**
-         * metadata.php should include a variable called $sMetadataVersion
+         * metadata.php should include a variable called $sMetadataVersion.
          */
-
         if (isset($sMetadataVersion)) {
             $this->setMetaDataVersion($sMetadataVersion);
         }
     }
 
-    /**
-     * @return array
-     */
     private function getInstalledModuleConfigurations(): array
     {
         $shopConfiguration = $this->getShopConfiguration();
@@ -524,34 +524,28 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $shopConfiguration->getModuleConfigurations();
     }
 
-    /**
-     * @return ShopConfiguration
-     */
     private function getShopConfiguration(): ShopConfiguration
     {
         $container = $this->getContainer();
+
         return $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
     }
 
     /**
-     * Convert ModuleConfiguration to Array
-     *
-     * @param ModuleConfiguration $configuration
-     *
-     * @return array
+     * Convert ModuleConfiguration to Array.
      */
     private function convertModuleConfigurationToArray(ModuleConfiguration $configuration): array
     {
         $data = [
-            'id'          => $configuration->getId(),
-            'version'     => $configuration->getVersion(),
-            'title'       => $configuration->getTitle(),
+            'id' => $configuration->getId(),
+            'version' => $configuration->getVersion(),
+            'title' => $configuration->getTitle(),
             'description' => $configuration->getDescription(),
-            'lang'        => $configuration->getLang(),
-            'thumbnail'   => $configuration->getThumbnail(),
-            'author'      => $configuration->getAuthor(),
-            'url'         => $configuration->getUrl(),
-            'email'       => $configuration->getEmail(),
+            'lang' => $configuration->getLang(),
+            'thumbnail' => $configuration->getThumbnail(),
+            'author' => $configuration->getAuthor(),
+            'url' => $configuration->getUrl(),
+            'email' => $configuration->getEmail(),
         ];
 
         foreach ($this->convertModuleSettingsToArray($configuration) as $key => $value) {
@@ -561,11 +555,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertModuleSettingsToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -582,11 +571,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertClassExtensionsToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -598,11 +582,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertTemplatesToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -614,11 +593,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertSmartyPluginDirectoriesToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -630,11 +604,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertControllersToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -645,10 +614,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
 
         return $data;
     }
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @return array
-     */
+
     private function convertTemplateBlocksToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -659,10 +625,10 @@ class Module extends \OxidEsales\Eshop\Core\Base
                 'block' => $templateBlock->getBlockName(),
                 'file' => $templateBlock->getModuleTemplatePath(),
             ];
-            if ($templateBlock->getTheme() !== '') {
+            if ('' !== $templateBlock->getTheme()) {
                 $data[$key]['theme'] = $templateBlock->getTheme();
             }
-            if ($templateBlock->getPosition() !== 0) {
+            if (0 !== $templateBlock->getPosition()) {
                 $data[$key]['position'] = $templateBlock->getPosition();
             }
         }
@@ -670,11 +636,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertEventsToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -686,11 +647,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertClassesWithoutNamespaceToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];
@@ -702,11 +658,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertSettingsToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];

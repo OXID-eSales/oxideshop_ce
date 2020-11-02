@@ -13,8 +13,6 @@ interface SmartySecuritySettingsDataProviderInterface
 {
     /**
      * Return smarty security settings.
-     *
-     * @return array
      */
     public function getSecuritySettings(): array;
 }

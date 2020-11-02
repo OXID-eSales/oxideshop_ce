@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -14,34 +16,35 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class UtilsObject
 {
     /**
-     * Cache class names
+     * Cache class names.
      *
      * @var array
      */
     protected $_aClassNameCache = [];
 
     /**
-     * The array of already loaded articles
+     * The array of already loaded articles.
      *
      * @var array
      */
     protected static $_aLoadedArticles = [];
 
     /**
-     * The array of already initialised instances
+     * The array of already initialised instances.
      *
      * @var array
      */
     protected static $_aInstanceCache = [];
 
     /**
-     * Class instance array
+     * Class instance array.
      *
      * @var array
      */
@@ -54,13 +57,19 @@ class UtilsObject
      */
     protected static $_instance = null;
 
-    /** @var BackwardsCompatibleClassNameProvider */
+    /**
+     * @var BackwardsCompatibleClassNameProvider
+     */
     private $classNameProvider = null;
 
-    /** @var ModuleChainsGenerator */
+    /**
+     * @var ModuleChainsGenerator
+     */
     private $moduleChainsGenerator = null;
 
-    /** @var ShopIdCalculator */
+    /**
+     * @var ShopIdCalculator
+     */
     private $shopIdCalculator = null;
 
     /**
@@ -80,14 +89,14 @@ class UtilsObject
     }
 
     /**
-     * Returns object instance
+     * Returns object instance.
      *
      * @return UtilsObject
      */
     public static function getInstance()
     {
         // disable caching for test modules
-        if (defined('OXID_PHP_UNIT')) {
+        if (\defined('OXID_PHP_UNIT')) {
             static::$_instance = null;
         }
 
@@ -105,7 +114,7 @@ class UtilsObject
      * @param string $className Class name expected to be later supplied over oxNew
      * @param object $instance  Instance object
      */
-    public static function setClassInstance($className, $instance)
+    public static function setClassInstance($className, $instance): void
     {
         //Get storage key as the class might be aliased.
         $storageKey = Registry::getStorageKey($className);
@@ -114,24 +123,23 @@ class UtilsObject
     }
 
     /**
-     * Resets previously set instances
+     * Resets previously set instances.
      */
-    public static function resetClassInstances()
+    public static function resetClassInstances(): void
     {
         static::$_aClassInstances = [];
     }
 
     /**
-     * Resets instance cache
+     * Resets instance cache.
      *
      * @param string $className class name in the cache
-     *
-     * @return null
      */
-    public function resetInstanceCache($className = null)
+    public function resetInstanceCache($className = null): void
     {
         if ($className && isset(static::$_aInstanceCache[$className])) {
             unset(static::$_aInstanceCache[$className]);
+
             return;
         }
 
@@ -140,11 +148,12 @@ class UtilsObject
 
         if ($className && isset(static::$_aInstanceCache[$storageKey])) {
             unset(static::$_aInstanceCache[$storageKey]);
+
             return;
         }
 
         //looping due to possible memory "leak".
-        if (is_array(static::$_aInstanceCache)) {
+        if (\is_array(static::$_aInstanceCache)) {
             foreach (static::$_aInstanceCache as $key => $instance) {
                 unset(static::$_aInstanceCache[$key]);
             }
@@ -175,7 +184,7 @@ class UtilsObject
      *
      * @deprecated use ModuleVariablesLocator::setModuleVariable()
      */
-    public function setModuleVar($variableName, $value)
+    public function setModuleVar($variableName, $value): void
     {
         $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVariable($variableName, $value);
     }
@@ -193,7 +202,7 @@ class UtilsObject
      */
     public function oxNew($className, ...$arguments)
     {
-        $argumentsCount = count($arguments);
+        $argumentsCount = \count($arguments);
         $shouldUseCache = $this->shouldCacheObject($className, $arguments);
         if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
             $className = strtolower($className);
@@ -203,24 +212,24 @@ class UtilsObject
         $storageKey = Registry::getStorageKey($className);
 
         //UtilsObject::$_aClassInstances is only intended to be used in unit tests.
-        if (defined('OXID_PHP_UNIT') && isset(static::$_aClassInstances[$storageKey])) {
+        if (\defined('OXID_PHP_UNIT') && isset(static::$_aClassInstances[$storageKey])) {
             return static::$_aClassInstances[$storageKey];
         }
-        if (!defined('OXID_PHP_UNIT') && $shouldUseCache) {
+        if (!\defined('OXID_PHP_UNIT') && $shouldUseCache) {
             $cacheKey = ($argumentsCount) ? $storageKey . md5(serialize($arguments)) : $storageKey;
             if (isset(static::$_aInstanceCache[$cacheKey])) {
                 return clone static::$_aInstanceCache[$cacheKey];
             }
         }
 
-        if (!defined('OXID_PHP_UNIT') && isset($this->_aClassNameCache[$className])) {
+        if (!\defined('OXID_PHP_UNIT') && isset($this->_aClassNameCache[$className])) {
             $realClassName = $this->_aClassNameCache[$className];
         } else {
             $realClassName = $this->getClassName($className);
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
             if (!class_exists($realClassName)) {
-                $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
-                /** Use setMessage here instead of passing it in constructor in order to test exception message */
+                $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
+                /* Use setMessage here instead of passing it in constructor in order to test exception message */
                 $exception->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $realClassName);
                 throw $exception;
             }
@@ -258,11 +267,11 @@ class UtilsObject
         $classNameProvider = $this->getClassNameProvider();
 
         $class = $classNameProvider->getClassName($classAlias);
-        /**
+        /*
          * Backwards compatibility for ox... classes,
          * when a class is instance build upon the unified namespace
          */
-        if ($class == $classAlias) {
+        if ($class === $classAlias) {
             $classAlias = $classNameProvider->getClassAliasName($class);
         }
 
@@ -272,7 +281,7 @@ class UtilsObject
     /**
      * Method returns class alias by given class name.
      *
-     * @param string $className with namespace.
+     * @param string $className with namespace
      *
      * @return string|null
      */
@@ -284,7 +293,7 @@ class UtilsObject
     /**
      * Returns shop id.
      *
-     * @deprecated use \OxidEsales\Eshop\Core\Config::getShopId() or \OxidEsales\Eshop\Core\ShopIdCalculator::getShopId instead.
+     * @deprecated use \OxidEsales\Eshop\Core\Config::getShopId() or \OxidEsales\Eshop\Core\ShopIdCalculator::getShopId instead
      *
      * @return string
      */
@@ -296,9 +305,9 @@ class UtilsObject
     /**
      * Resets module variables cache.
      *
-     * @deprecated use ModuleVariablesLocator::resetModuleVars instead.
+     * @deprecated use ModuleVariablesLocator::resetModuleVars instead
      */
-    public static function resetModuleVars()
+    public static function resetModuleVars(): void
     {
         ModuleVariablesLocator::resetModuleVariables();
     }
@@ -308,10 +317,11 @@ class UtilsObject
      */
     protected function getClassNameProvider()
     {
-        if (is_null($this->classNameProvider)) {
+        if (null === $this->classNameProvider) {
             $backwardsCompatibleClassMap = include 'Autoload/BackwardsCompatibilityClassMap.php';
             $this->classNameProvider = new BackwardsCompatibleClassNameProvider($backwardsCompatibleClassMap);
         }
+
         return $this->classNameProvider;
     }
 
@@ -320,11 +330,12 @@ class UtilsObject
      */
     protected function getModuleChainsGenerator()
     {
-        if (is_null($this->moduleChainsGenerator)) {
+        if (null === $this->moduleChainsGenerator) {
             $subShopSpecificCache = new \OxidEsales\Eshop\Core\SubShopSpecificFileCache($this->getShopIdCalculator());
             $moduleVariablesLocator = new \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator($subShopSpecificCache, $this->getShopIdCalculator());
             $this->moduleChainsGenerator = new \OxidEsales\Eshop\Core\Module\ModuleChainsGenerator($moduleVariablesLocator);
         }
+
         return $this->moduleChainsGenerator;
     }
 
@@ -333,10 +344,11 @@ class UtilsObject
      */
     protected function getShopIdCalculator()
     {
-        if (is_null($this->shopIdCalculator)) {
+        if (null === $this->shopIdCalculator) {
             $moduleVariablesCache = new \OxidEsales\Eshop\Core\FileCache();
             $this->shopIdCalculator = new \OxidEsales\Eshop\Core\ShopIdCalculator($moduleVariablesCache);
         }
+
         return $this->shopIdCalculator;
     }
 
@@ -351,6 +363,6 @@ class UtilsObject
      */
     protected function shouldCacheObject($className, $arguments)
     {
-        return count($arguments) < 2 && (!isset($arguments[0]) || is_scalar($arguments[0]));
+        return \count($arguments) < 2 && (!isset($arguments[0]) || is_scalar($arguments[0]));
     }
 }

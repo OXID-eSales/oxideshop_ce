@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,18 +9,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxAddress;
-use oxArticleInputException;
-use oxBasket;
-use oxBasketContentMarkGenerator;
+use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
-use oxNoArticleException;
-use oxOrder;
-use oxOutOfStockException;
-use oxRegistry;
-use oxUtilsObject;
-use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 
 /**
  * Order manager. Arranges user ordering data, checks/validates
@@ -27,70 +20,70 @@ use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
-     * Payment object
+     * Payment object.
      *
      * @var object
      */
     protected $_oPayment = null;
 
     /**
-     * Active basket
+     * Active basket.
      *
      * @var \OxidEsales\Eshop\Application\Model\Basket
      */
     protected $_oBasket = null;
 
     /**
-     * Order user remark
+     * Order user remark.
      *
      * @var string
      */
     protected $_sOrderRemark = null;
 
     /**
-     * Basket articlelist
+     * Basket articlelist.
      *
      * @var object
      */
     protected $_oBasketArtList = null;
 
     /**
-     * Remote Address
+     * Remote Address.
      *
      * @var string
      */
     protected $_sRemoteAddress = null;
 
     /**
-     * Delivery address
+     * Delivery address.
      *
      * @var \OxidEsales\Eshop\Application\Model\Address
      */
     protected $_oDelAddress = null;
 
     /**
-     * Shipping set
+     * Shipping set.
      *
      * @var object
      */
     protected $_oShipSet = null;
 
     /**
-     * Config option "blConfirmAGB"
+     * Config option "blConfirmAGB".
      *
      * @var bool
      */
     protected $_blConfirmAGB = null;
 
     /**
-     * Config option "blShowOrderButtonOnTop"
+     * Config option "blShowOrderButtonOnTop".
      *
      * @var bool
      */
     protected $_blShowOrderButtonOnTop = null;
 
     /**
-     * Boolean of option "blConfirmAGB" error
+     * Boolean of option "blConfirmAGB" error.
      *
      * @var bool
      */
@@ -104,14 +97,14 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     protected $_sThisTemplate = 'page/checkout/order.tpl';
 
     /**
-     * Order step marker
+     * Order step marker.
      *
      * @var bool
      */
     protected $_blIsOrderStep = true;
 
     /**
-     * Count of wrapping + cards options
+     * Count of wrapping + cards options.
      */
     protected $_iWrapCnt = null;
 
@@ -120,7 +113,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * recalculate, sets back basket to session \OxidEsales\Eshop\Core\Session::setBasket(), executes
      * parent::init().
      */
-    public function init()
+    public function init(): void
     {
         // disabling performance control variable
         \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', false);
@@ -238,13 +231,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns payment object
+     * Template variable getter. Returns payment object.
      *
      * @return object
      */
     public function getPayment()
     {
-        if ($this->_oPayment === null) {
+        if (null === $this->_oPayment) {
             $this->_oPayment = false;
 
             $oBasket = $this->getBasket();
@@ -272,13 +265,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns active basket
+     * Template variable getter. Returns active basket.
      *
      * @return \OxidEsales\Eshop\Application\Model\Basket
      */
     public function getBasket()
     {
-        if ($this->_oBasket === null) {
+        if (null === $this->_oBasket) {
             $this->_oBasket = false;
             $session = \OxidEsales\Eshop\Core\Registry::getSession();
             if ($oBasket = $session->getBasket()) {
@@ -290,7 +283,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns execution function name
+     * Template variable getter. Returns execution function name.
      *
      * @return string
      */
@@ -300,13 +293,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns user remark
+     * Template variable getter. Returns user remark.
      *
      * @return string
      */
     public function getOrderRemark()
     {
-        if ($this->_sOrderRemark === null) {
+        if (null === $this->_sOrderRemark) {
             $this->_sOrderRemark = false;
             if ($sRemark = Registry::getSession()->getVariable('ordrem')) {
                 $this->_sOrderRemark = Registry::getConfig()->checkParamSpecialChars($sRemark);
@@ -317,13 +310,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns basket article list
+     * Template variable getter. Returns basket article list.
      *
      * @return object
      */
     public function getBasketArticles()
     {
-        if ($this->_oBasketArtList === null) {
+        if (null === $this->_oBasketArtList) {
             $this->_oBasketArtList = false;
             if ($oBasket = $this->getBasket()) {
                 $this->_oBasketArtList = $oBasket->getBasketArticles();
@@ -334,13 +327,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns delivery address
+     * Template variable getter. Returns delivery address.
      *
      * @return \OxidEsales\Eshop\Application\Model\Address|null
      */
     public function getDelAddress()
     {
-        if ($this->_oDelAddress === null) {
+        if (null === $this->_oDelAddress) {
             $this->_oDelAddress = false;
             $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             $this->_oDelAddress = $oOrder->getDelAddressInfo();
@@ -350,13 +343,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns shipping set
+     * Template variable getter. Returns shipping set.
      *
      * @return object
      */
     public function getShipSet()
     {
-        if ($this->_oShipSet === null) {
+        if (null === $this->_oShipSet) {
             $this->_oShipSet = false;
             if ($oBasket = $this->getBasket()) {
                 $oShipSet = oxNew(\OxidEsales\Eshop\Application\Model\DeliverySet::class);
@@ -370,13 +363,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns if option "blConfirmAGB" is on
+     * Template variable getter. Returns if option "blConfirmAGB" is on.
      *
      * @return bool
      */
     public function isConfirmAGBActive()
     {
-        if ($this->_blConfirmAGB === null) {
+        if (null === $this->_blConfirmAGB) {
             $this->_blConfirmAGB = false;
             $this->_blConfirmAGB = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blConfirmAGB');
         }
@@ -385,7 +378,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns if option "blConfirmAGB" was not set
+     * Template variable getter. Returns if option "blConfirmAGB" was not set.
      *
      * @return bool
      */
@@ -395,13 +388,13 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns if option "blShowOrderButtonOnTop" is on
+     * Template variable getter. Returns if option "blShowOrderButtonOnTop" is on.
      *
      * @return bool
      */
     public function showOrderButtonOnTop()
     {
-        if ($this->_blShowOrderButtonOnTop === null) {
+        if (null === $this->_blShowOrderButtonOnTop) {
             $this->_blShowOrderButtonOnTop = false;
             $this->_blShowOrderButtonOnTop = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowOrderButtonOnTop');
         }
@@ -410,7 +403,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Returns wrapping options availability state (TRUE/FALSE)
+     * Returns wrapping options availability state (TRUE/FALSE).
      *
      * @return bool
      */
@@ -420,7 +413,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             return false;
         }
 
-        if ($this->_iWrapCnt === null) {
+        if (null === $this->_iWrapCnt) {
             $this->_iWrapCnt = 0;
 
             $oWrap = oxNew(\OxidEsales\Eshop\Application\Model\Wrapping::class);
@@ -428,7 +421,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
 
-        return (bool) $this->_iWrapCnt;
+        return (bool)$this->_iWrapCnt;
     }
 
     /**
@@ -451,7 +444,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Return error number
+     * Return error number.
      *
      * @return int
      */
@@ -461,7 +454,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Return users setted delivery address md5
+     * Return users setted delivery address md5.
      *
      * @return string
      */
@@ -497,9 +490,10 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * additional parameters), otherwise - returns string "payment" with additional
      * error parameters.
      *
-     * @param integer $iSuccess status code
+     * @param int $iSuccess status code
      *
-     * @return  string  $sNextStep  partial parameter url for next step
+     * @return string partial parameter url for next step
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getNextStep" in next major
      */
     protected function _getNextStep($iSuccess) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -508,27 +502,27 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
         //little trick with switch for multiple cases
         switch (true) {
-            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_MAILINGERROR):
+            case \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_MAILINGERROR === $iSuccess:
                 $sNextStep = 'thankyou?mailerror=1';
                 break;
-            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_INVALIDDELADDRESSCHANGED):
+            case \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_INVALIDDELADDRESSCHANGED === $iSuccess:
                 $sNextStep = 'order?iAddressError=1';
                 break;
-            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_BELOWMINPRICE):
+            case \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_BELOWMINPRICE === $iSuccess:
                 $sNextStep = 'order';
                 break;
-            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_PAYMENTERROR):
+            case \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_PAYMENTERROR === $iSuccess:
                 // no authentication, kick back to payment methods
                 Registry::getSession()->setVariable('payerror', 2);
                 $sNextStep = 'payment?payerror=2';
                 break;
-            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS):
+            case \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_ORDEREXISTS === $iSuccess:
                 break; // reload blocker activ
-            case (is_numeric($iSuccess) && $iSuccess > 3):
+            case is_numeric($iSuccess) && $iSuccess > 3:
                 Registry::getSession()->setVariable('payerror', $iSuccess);
                 $sNextStep = 'payment?payerror=' . $iSuccess;
                 break;
-            case (!is_numeric($iSuccess) && $iSuccess):
+            case !is_numeric($iSuccess) && $iSuccess:
                 //instead of error code getting error text and setting payerror to -1
                 Registry::getSession()->setVariable('payerror', -1);
                 $iSuccess = urlencode($iSuccess);
@@ -545,6 +539,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Validates whether necessary terms and conditions checkboxes were checked.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "validateTermsAndConditions" in next major
      */
     protected function _validateTermsAndConditions() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

@@ -27,8 +27,6 @@ class SmartyBuilder implements SmartyBuilderInterface
     /**
      * Sets properties of smarty object.
      *
-     * @param array $settings
-     *
      * @return self
      */
     public function setSettings(array $settings)
@@ -36,22 +34,21 @@ class SmartyBuilder implements SmartyBuilderInterface
         foreach ($settings as $key => $value) {
             $this->smarty->$key = $value;
         }
+
         return $this;
     }
 
     /**
      * Sets security options of smarty object.
      *
-     * @param array $settings
-     *
      * @return self
      */
     public function setSecuritySettings(array $settings)
     {
         foreach ($settings as $key => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 foreach ($value as $subKey => $subValue) {
-                    if (is_array($subValue)) {
+                    if (\is_array($subValue)) {
                         $originalSettings = $this->smarty->{$key}[$subKey];
                         $this->smarty->{$key}[$subKey] = array_merge($originalSettings, $subValue);
                     } else {
@@ -62,13 +59,12 @@ class SmartyBuilder implements SmartyBuilderInterface
                 $this->smarty->$key = $value;
             }
         }
+
         return $this;
     }
 
     /**
      * Registers a resource of smarty object.
-     *
-     * @param array $resourcesToRegister
      *
      * @return self
      */
@@ -77,13 +73,12 @@ class SmartyBuilder implements SmartyBuilderInterface
         foreach ($resourcesToRegister as $key => $resources) {
             $this->smarty->register_resource($key, $resources);
         }
+
         return $this;
     }
 
     /**
      * Register prefilters of smarty object.
-     *
-     * @param array $prefilters
      *
      * @return self
      */
@@ -95,30 +90,27 @@ class SmartyBuilder implements SmartyBuilderInterface
                 $this->smarty->register_prefilter($prefilter);
             }
         }
+
         return $this;
     }
 
     /**
      * Register plugins of smarty object.
      *
-     * @param array $plugins
-     *
      * @return self
      */
     public function registerPlugins(array $plugins)
     {
-        if (is_array($plugins)) {
+        if (\is_array($plugins)) {
             $this->smarty->plugins_dir = array_merge(
                 $plugins,
                 $this->smarty->plugins_dir
             );
         }
+
         return $this;
     }
 
-    /**
-     * @return \Smarty
-     */
     public function getSmarty(): \Smarty
     {
         return $this->smarty;

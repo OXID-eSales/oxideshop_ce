@@ -37,10 +37,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
         $this->context = $context;
     }
 
-    /**
-     * @param string $serviceDir
-     */
-    public function addImport(string $serviceDir)
+    public function addImport(string $serviceDir): void
     {
         if (!realpath($serviceDir)) {
             throw new NoServiceYamlException();
@@ -51,10 +48,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
 
-    /**
-     * @param string $serviceDir
-     */
-    public function removeImport(string $serviceDir)
+    public function removeImport(string $serviceDir): void
     {
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
 
@@ -64,9 +58,9 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     }
 
     /**
-     * Checks if the import files exist and if not removes them
+     * Checks if the import files exist and if not removes them.
      */
-    public function removeNonExistingImports()
+    public function removeNonExistingImports(): void
     {
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
 
@@ -86,7 +80,6 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
     /**
      * @param $fileName
-     * @return string
      */
     private function getAbsolutePath($fileName): string
     {
@@ -96,14 +89,10 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
         );
     }
 
-    /**
-     * @param string $serviceDir
-     * @return string
-     */
     private function getServiceRelativeFilePath(string $serviceDir): string
     {
         return Path::makeRelative(
-            $serviceDir . DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME,
+            $serviceDir . \DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME,
             Path::getDirectory($this->context->getGeneratedServicesFilePath())
         );
     }

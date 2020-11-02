@@ -20,8 +20,6 @@ class ShopAdapter implements ShopAdapterInterface
 {
     /**
      * @param string $string
-     *
-     * @return string
      */
     public function translateString($string): string
     {
@@ -30,10 +28,7 @@ class ShopAdapter implements ShopAdapterInterface
         return $lang->translateString($string);
     }
 
-    /**
-     * @param string $moduleId
-     */
-    public function invalidateModuleCache(string $moduleId)
+    public function invalidateModuleCache(string $moduleId): void
     {
         /**
          * @TODO we have to implement it in ModuleCacheServiceInterface or use ModuleCache::resetCache() method.
@@ -48,22 +43,16 @@ class ShopAdapter implements ShopAdapterInterface
 
         ModuleVariablesLocator::resetModuleVariables();
 
-        if (extension_loaded('apc') && ini_get('apc.enabled')) {
+        if (\extension_loaded('apc') && ini_get('apc.enabled')) {
             apc_clear_cache();
         }
     }
 
-    /**
-     * @return string
-     */
     public function generateUniqueId(): string
     {
         return Registry::getUtilsObject()->generateUId();
     }
 
-    /**
-     * @return array
-     */
     public function getShopControllerClassMap(): array
     {
         $shopControllerMapProvider = oxNew(ShopControllerMapProvider::class);
@@ -71,48 +60,31 @@ class ShopAdapter implements ShopAdapterInterface
         return $shopControllerMapProvider->getControllerMap();
     }
 
-    /**
-     * @param string $namespace
-     * @return bool
-     */
     public function isNamespace(string $namespace): bool
     {
         return NamespaceInformationProvider::isNamespacedClass($namespace);
     }
 
-    /**
-     * @param string $namespace
-     * @return bool
-     */
     public function isShopUnifiedNamespace(string $namespace): bool
     {
         return NamespaceInformationProvider::classBelongsToShopUnifiedNamespace($namespace);
     }
 
-    /**
-     * @param string $namespace
-     * @return bool
-     */
     public function isShopEditionNamespace(string $namespace): bool
     {
         return NamespaceInformationProvider::classBelongsToShopEditionNamespace($namespace);
     }
 
-    /**
-     * @return \Smarty
-     */
     public function getSmartyInstance(): \Smarty
     {
         return Registry::getUtilsView()->getSmarty();
     }
 
-    /**
-     * @return bool
-     */
     public function validateShopId(int $shopId): bool
     {
         $shopModel = oxNew(Shop::class);
         $shopModel->load($shopId);
+
         return $shopModel->isLoaded();
     }
 }

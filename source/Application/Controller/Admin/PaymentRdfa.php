@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,10 +10,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use oxRegistry;
-use oxDb;
 use stdClass;
-use oxField;
 
 /**
  * Admin article RDFa payment manager.
@@ -25,42 +24,44 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      *
      * @var string
      */
-    protected $_sThisTemplate = "payment_rdfa.tpl";
+    protected $_sThisTemplate = 'payment_rdfa.tpl';
 
     /**
      * Predefined RDFa payment methods
-     * 0 value have general payments
+     * 0 value have general payments.
      *
      * @var array
      */
-    protected $_aRDFaPayments = ["ByBankTransferInAdvance" => 0,
-                                      "ByInvoice"               => 0,
-                                      "Cash"                    => 0,
-                                      "CheckInAdvance"          => 0,
-                                      "COD"                     => 0,
-                                      "DirectDebit"             => 0,
-                                      "GoogleCheckout"          => 0,
-                                      "PayPal"                  => 0,
-                                      "PaySwarm"                => 0];
+    protected $_aRDFaPayments = [
+        'ByBankTransferInAdvance' => 0,
+        'ByInvoice' => 0,
+        'Cash' => 0,
+        'CheckInAdvance' => 0,
+        'COD' => 0,
+        'DirectDebit' => 0,
+        'GoogleCheckout' => 0,
+        'PayPal' => 0,
+        'PaySwarm' => 0,
+    ];
 
     /**
-     * Saves changed mapping configurations
+     * Saves changed mapping configurations.
      */
-    public function save()
+    public function save(): void
     {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
-        $aRDFaPayments = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("ardfapayments");
+        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editval');
+        $aRDFaPayments = (array)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('ardfapayments');
 
         // Delete old mappings
         $oDb = DatabaseProvider::getDb();
         $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = :oxpaymentid AND OXTYPE = 'rdfapayment'", [
-            ':oxpaymentid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")
+            ':oxpaymentid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'),
         ]);
 
         // Save new mappings
         foreach ($aRDFaPayments as $sPayment) {
             $oMapping = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-            $oMapping->init("oxobject2payment");
+            $oMapping->init('oxobject2payment');
             $oMapping->assign($aParams);
             $oMapping->oxobject2payment__oxobjectid = new \OxidEsales\Eshop\Core\Field($sPayment);
             $oMapping->save();
@@ -80,7 +81,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $oPayment = new stdClass();
             $oPayment->name = $sName;
             $oPayment->type = $iType;
-            $oPayment->checked = in_array($sName, $aAssignedRDFaPayments);
+            $oPayment->checked = \in_array($sName, $aAssignedRDFaPayments, true);
             $aRDFaPayments[] = $oPayment;
         }
 
@@ -88,7 +89,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     }
 
     /**
-     * Returns array of RDFa payments which are assigned to current payment
+     * Returns array of RDFa payments which are assigned to current payment.
      *
      * @return array
      */
@@ -98,7 +99,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $aRDFaPayments = [];
         $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid = :oxpaymentid and oxtype = "rdfapayment" ';
         $rs = $oDb->select($sSelect, [
-            ':oxpaymentid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("oxid")
+            ':oxpaymentid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid'),
         ]);
         if ($rs && $rs->count()) {
             while (!$rs->EOF) {

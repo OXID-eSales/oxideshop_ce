@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,14 +10,13 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Password reminder page.
  * Collects toparticle, bargain article list. There is a form with entry
  * field to enter login name (usually email). After user enters required
  * information and submits "Request Password" button mail is sent to users email.
- * OXID eShop -> MY ACCOUNT -> "Forgot your password? - click here."
+ * OXID eShop -> MY ACCOUNT -> "Forgot your password? - click here.".
  */
 class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -34,21 +35,21 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     protected $_sForgotEmail = null;
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
-     * Update link expiration status
+     * Update link expiration status.
      *
      * @var bool
      */
     protected $_blUpdateLinkStatus = null;
 
     /**
-     * Sign if to load and show bargain action
+     * Sign if to load and show bargain action.
      *
      * @var bool
      */
@@ -61,7 +62,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
      * Template variables:
      * <b>sendForgotMail</b>
      */
-    public function forgotPassword()
+    public function forgotPassword(): void
     {
         $sEmail = Registry::getConfig()->getRequestParameter('lgn_usr');
         $this->_sForgotEmail = $sEmail;
@@ -72,8 +73,8 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
         if ($sEmail) {
             $iSuccess = $oEmail->sendForgotPwdEmail($sEmail);
         }
-        if ($iSuccess !== true) {
-            $sError = ($iSuccess === false) ? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
+        if (true !== $iSuccess) {
+            $sError = (false === $iSuccess) ? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
             Registry::getUtilsView()->addErrorToDisplay($sError);
             $this->_sForgotEmail = false;
         }
@@ -81,7 +82,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
 
     /**
      * Checks if password is fine and updates old one with new
-     * password. On success user is redirected to success page
+     * password. On success user is redirected to success page.
      *
      * @return string
      */
@@ -122,27 +123,27 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     }
 
     /**
-     * If user password update was successfull - setting success status
+     * If user password update was successfull - setting success status.
      *
      * @return bool
      */
     public function updateSuccess()
     {
-        return (bool) Registry::getConfig()->getRequestParameter('success');
+        return (bool)Registry::getConfig()->getRequestParameter('success');
     }
 
     /**
-     * Notifies that password update form must be shown
+     * Notifies that password update form must be shown.
      *
      * @return bool
      */
     public function showUpdateScreen()
     {
-        return (bool) $this->getUpdateId();
+        return (bool)$this->getUpdateId();
     }
 
     /**
-     * Returns special id used for password update functionality
+     * Returns special id used for password update functionality.
      *
      * @return string
      */
@@ -152,7 +153,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     }
 
     /**
-     * Returns password update link expiration status
+     * Returns password update link expiration status.
      *
      * @return bool
      */
@@ -166,7 +167,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     }
 
     /**
-     * Template variable getter. Returns searched article list
+     * Template variable getter. Returns searched article list.
      *
      * @return string
      */
@@ -194,7 +195,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     }
 
     /**
-     * Get password reminder page title
+     * Get password reminder page title.
      *
      * @return string
      */

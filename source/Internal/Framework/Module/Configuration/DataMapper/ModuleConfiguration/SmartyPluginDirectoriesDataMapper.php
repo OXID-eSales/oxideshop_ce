@@ -35,13 +35,10 @@ class SmartyPluginDirectoriesDataMapper implements ModuleConfigurationDataMapper
         if (isset($data[self::MAPPING_KEY])) {
             $this->setSmartyPluginDirectory($moduleConfiguration, $data[self::MAPPING_KEY]);
         }
+
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $directories
-     */
     private function setSmartyPluginDirectory(ModuleConfiguration $moduleConfiguration, array $directories): void
     {
         foreach ($directories as $directory) {
@@ -51,11 +48,6 @@ class SmartyPluginDirectoriesDataMapper implements ModuleConfigurationDataMapper
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     *
-     * @return array
-     */
     private function getSmartyPluginDirectory(ModuleConfiguration $configuration): array
     {
         $directories = [];

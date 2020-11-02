@@ -27,22 +27,17 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class ContainerBuilder
 {
-
     /**
      * @var BasicContextInterface
      */
     private $context;
 
-    /**
-     * @param BasicContextInterface $context
-     */
     public function __construct(BasicContextInterface $context)
     {
         $this->context = $context;
     }
 
     /**
-     * @return SymfonyContainerBuilder
      * @throws \Exception
      */
     public function getContainer(): SymfonyContainerBuilder
@@ -59,10 +54,9 @@ class ContainerBuilder
     /**
      * Loads a 'project.yaml' file if it can be found in the shop directory.
      *
-     * @param SymfonyContainerBuilder $symfonyContainer
      * @throws \Exception
      */
-    private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer)
+    private function loadProjectServices(SymfonyContainerBuilder $symfonyContainer): void
     {
         $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
         try {
@@ -81,7 +75,7 @@ class ContainerBuilder
     /**
      * Removes imports from modules that have deleted on the file system.
      */
-    private function cleanupProjectYaml()
+    private function cleanupProjectYaml(): void
     {
         $projectYamlDao = new ProjectYamlDao($this->context, new Filesystem());
         $yamlImportService = new ProjectYamlImportService($projectYamlDao, $this->context);
@@ -89,10 +83,9 @@ class ContainerBuilder
     }
 
     /**
-     * @param SymfonyContainerBuilder $symfonyContainer
      * @throws \Exception
      */
-    private function loadEditionServices(SymfonyContainerBuilder $symfonyContainer)
+    private function loadEditionServices(SymfonyContainerBuilder $symfonyContainer): void
     {
         foreach ($this->getEditionsRootPaths() as $path) {
             $servicesLoader = new YamlFileLoader($symfonyContainer, new FileLocator($path));
@@ -100,9 +93,6 @@ class ContainerBuilder
         }
     }
 
-    /**
-     * @return array
-     */
     private function getEditionsRootPaths(): array
     {
         $allEditionPaths = [

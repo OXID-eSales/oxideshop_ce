@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
-use oxDb;
 
 /**
  * Admin order list manager.
@@ -36,7 +35,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @var string
      */
-    protected $_sDefSortField = "oxorderdate";
+    protected $_sDefSortField = 'oxorderdate';
 
     /**
      * Executes parent method parent::render() and returns name of template
@@ -49,32 +48,35 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         parent::render();
 
         $folders = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aOrderfolder');
-        $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("folder");
+        $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
         // first display new orders
-        if (!$folder && is_array($folders)) {
+        if (!$folder && \is_array($folders)) {
             $names = array_keys($folders);
             $folder = $names[0];
         }
 
-        $search = ['oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT'];
-        $searchQuery = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("addsearch");
-        $searchField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("addsearchfld");
+        $search = [
+            'oxorderarticles' => 'ARTID',
+            'oxpayments' => 'PAYMENT',
+        ];
+        $searchQuery = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addsearch');
+        $searchField = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('addsearchfld');
 
-        $this->_aViewData["folder"] = $folder ? $folder : -1;
-        $this->_aViewData["addsearchfld"] = $searchField ? $searchField : -1;
-        $this->_aViewData["asearch"] = $search;
-        $this->_aViewData["addsearch"] = $searchQuery;
-        $this->_aViewData["afolder"] = $folders;
+        $this->_aViewData['folder'] = $folder ?: -1;
+        $this->_aViewData['addsearchfld'] = $searchField ?: -1;
+        $this->_aViewData['asearch'] = $search;
+        $this->_aViewData['addsearch'] = $searchQuery;
+        $this->_aViewData['afolder'] = $folders;
 
-        return "order_list.tpl";
+        return 'order_list.tpl';
     }
 
     /**
-     * Cancels order and its order articles
+     * Cancels order and its order articles.
      *
      * @deprecated since 6.0 (2015-09-17); use self::cancelOrder().
      */
-    public function storno()
+    public function storno(): void
     {
         $this->cancelOrder();
     }
@@ -83,7 +85,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      * Cancels order and its order articles
      * Calls init() to reload list items after cancellation.
      */
-    public function cancelOrder()
+    public function cancelOrder(): void
     {
         $order = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
         if ($order->load($this->getEditObjectId())) {
@@ -96,14 +98,14 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     }
 
     /**
-     * Returns sorting fields array
+     * Returns sorting fields array.
      *
      * @return array
      */
     public function getListSorting()
     {
         $sorting = parent::getListSorting();
-        if (isset($sorting["oxorder"]["oxbilllname"])) {
+        if (isset($sorting['oxorder']['oxbilllname'])) {
             $this->_blDesc = false;
         }
 
@@ -111,15 +113,17 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
     }
 
     /**
-     * Adding folder check
+     * Adding folder check.
      *
      * @param array  $whereQuery SQL condition array
      * @param string $fullQuery  SQL query string
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
-    protected function _prepareWhereQuery($whereQuery, $fullQuery) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _prepareWhereQuery($whereQuery, $fullQuery)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $query = parent::_prepareWhereQuery($whereQuery, $fullQuery);
@@ -127,11 +131,11 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $folders = $config->getConfigParam('aOrderfolder');
         $folder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
         // Searching for empty oxfolder fields
-        if ($folder && $folder != '-1') {
-            $query .= " and ( oxorder.oxfolder = " . $database->quote($folder) . " )";
-        } elseif (!$folder && is_array($folders)) {
+        if ($folder && '-1' !== $folder) {
+            $query .= ' and ( oxorder.oxfolder = ' . $database->quote($folder) . ' )';
+        } elseif (!$folder && \is_array($folders)) {
             $folderNames = array_keys($folders);
-            $query .= " and ( oxorder.oxfolder = " . $database->quote($folderNames[0]) . " )";
+            $query .= ' and ( oxorder.oxfolder = ' . $database->quote($folderNames[0]) . ' )';
         }
 
         return $query;
@@ -143,9 +147,11 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      * @param object $listObject list main object
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "buildSelectString" in next major
      */
-    protected function _buildSelectString($listObject = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _buildSelectString($listObject = null)
     {
         $query = parent::_buildSelectString($listObject);
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -157,13 +163,13 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         if ($searchQuery) {
             switch ($searchField) {
                 case 'oxorderarticles':
-                    $queryPart = "oxorder left join oxorderarticles on oxorderarticles.oxorderid=oxorder.oxid where ( oxorderarticles.oxartnum like " . $database->quote("%{$searchQuery}%") . " or oxorderarticles.oxtitle like " . $database->quote("%{$searchQuery}%") . " ) and ";
+                    $queryPart = 'oxorder left join oxorderarticles on oxorderarticles.oxorderid=oxorder.oxid where ( oxorderarticles.oxartnum like ' . $database->quote("%{$searchQuery}%") . ' or oxorderarticles.oxtitle like ' . $database->quote("%{$searchQuery}%") . ' ) and ';
                     break;
                 case 'oxpayments':
-                    $queryPart = "oxorder left join oxpayments on oxpayments.oxid=oxorder.oxpaymenttype where oxpayments.oxdesc like " . $database->quote("%{$searchQuery}%") . " and ";
+                    $queryPart = 'oxorder left join oxpayments on oxpayments.oxid=oxorder.oxpaymenttype where oxpayments.oxdesc like ' . $database->quote("%{$searchQuery}%") . ' and ';
                     break;
                 default:
-                    $queryPart = "oxorder where oxorder.oxpaid like " . $database->quote("%{$searchQuery}%") . " and ";
+                    $queryPart = 'oxorder where oxorder.oxpaid like ' . $database->quote("%{$searchQuery}%") . ' and ';
                     break;
             }
             $query = str_replace('oxorder where', $queryPart, $query);

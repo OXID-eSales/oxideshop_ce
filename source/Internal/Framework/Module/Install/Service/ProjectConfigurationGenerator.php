@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInterface
 {
@@ -28,8 +28,6 @@ class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInte
 
     /**
      * DefaultProjectConfigurationGenerator constructor.
-     * @param ProjectConfigurationDaoInterface $projectConfigurationDao
-     * @param BasicContextInterface            $context
      */
     public function __construct(
         ProjectConfigurationDaoInterface $projectConfigurationDao,
@@ -47,9 +45,6 @@ class ProjectConfigurationGenerator implements ProjectConfigurationGeneratorInte
         $this->projectConfigurationDao->save($this->createProjectConfiguration());
     }
 
-    /**
-     * @return ProjectConfiguration
-     */
     private function createProjectConfiguration(): ProjectConfiguration
     {
         $projectConfiguration = new ProjectConfiguration();

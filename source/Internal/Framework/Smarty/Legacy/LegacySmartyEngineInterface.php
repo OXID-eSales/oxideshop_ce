@@ -10,18 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy;
 
 /**
- * Class LegacySmartyEngineInterface
+ * Class LegacySmartyEngineInterface.
+ *
  * @internal
  */
 interface LegacySmartyEngineInterface
 {
-    /**
-     * @return \Smarty
-     */
     public function getSmarty(): \Smarty;
 
-    /**
-     * @param \Smarty $smarty
-     */
     public function setSmarty(\Smarty $smarty);
 }

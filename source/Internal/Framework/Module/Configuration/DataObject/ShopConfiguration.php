@@ -13,7 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\
 
 class ShopConfiguration
 {
-    /** @var ModuleConfiguration[] */
+    /**
+     * @var ModuleConfiguration[]
+     */
     private $moduleConfigurations = [];
 
     /**
@@ -31,9 +33,6 @@ class ShopConfiguration
     }
 
     /**
-     * @param string $moduleId
-     *
-     * @return ModuleConfiguration
      * @throws ModuleConfigurationNotFoundException
      */
     public function getModuleConfiguration(string $moduleId): ModuleConfiguration
@@ -53,7 +52,6 @@ class ShopConfiguration
     }
 
     /**
-     * @param ModuleConfiguration $moduleConfiguration
      * @return $this
      */
     public function addModuleConfiguration(ModuleConfiguration $moduleConfiguration)
@@ -64,11 +62,9 @@ class ShopConfiguration
     }
 
     /**
-     * @param string $moduleId
-     *
      * @throws ModuleConfigurationNotFoundException
      */
-    public function deleteModuleConfiguration(string $moduleId)
+    public function deleteModuleConfiguration(string $moduleId): void
     {
         if (\array_key_exists($moduleId, $this->moduleConfigurations)) {
             $this->removeModuleExtensionFromClassChain($moduleId);
@@ -78,42 +74,26 @@ class ShopConfiguration
         }
     }
 
-    /**
-     * @return array
-     */
     public function getModuleIdsOfModuleConfigurations(): array
     {
         return array_keys($this->moduleConfigurations);
     }
 
-    /**
-     * @param ClassExtensionsChain $chain
-     */
-    public function setClassExtensionsChain(ClassExtensionsChain $chain)
+    public function setClassExtensionsChain(ClassExtensionsChain $chain): void
     {
         $this->chain = $chain;
     }
 
-    /**
-     * @return ClassExtensionsChain
-     */
     public function getClassExtensionsChain(): ClassExtensionsChain
     {
         return $this->chain;
     }
 
-    /**
-     * @param string $moduleId
-     * @return bool
-     */
     public function hasModuleConfiguration(string $moduleId): bool
     {
         return isset($this->moduleConfigurations[$moduleId]);
     }
 
-    /**
-     * @param string $moduleId
-     */
     private function removeModuleExtensionFromClassChain(string $moduleId): void
     {
         $moduleConfiguration = $this->moduleConfigurations[$moduleId];

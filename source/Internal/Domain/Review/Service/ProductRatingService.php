@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Service;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\RatingDaoInterface;
 
 class ProductRatingService implements ProductRatingServiceInterface
 {
@@ -31,10 +31,6 @@ class ProductRatingService implements ProductRatingServiceInterface
 
     /**
      * ProductRatingService constructor.
-     *
-     * @param RatingDaoInterface               $ratingDao
-     * @param ProductRatingDaoInterface        $productRatingDao
-     * @param RatingCalculatorServiceInterface $ratingCalculator
      */
     public function __construct(
         RatingDaoInterface $ratingDao,
@@ -49,7 +45,7 @@ class ProductRatingService implements ProductRatingServiceInterface
     /**
      * @param string $productId
      */
-    public function updateProductRating($productId)
+    public function updateProductRating($productId): void
     {
         $ratings = $this
             ->ratingDao

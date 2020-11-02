@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Domain\Review\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataMapper\RatingDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\Rating;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 class RatingDao implements RatingDaoInterface
 {
@@ -26,10 +26,6 @@ class RatingDao implements RatingDaoInterface
      */
     private $ratingDataMapper;
 
-    /**
-     * @param QueryBuilderFactoryInterface $queryBuilderFactory
-     * @param RatingDataMapperInterface    $ratingDataMapper
-     */
     public function __construct(
         QueryBuilderFactoryInterface $queryBuilderFactory,
         RatingDataMapperInterface $ratingDataMapper
@@ -58,10 +54,7 @@ class RatingDao implements RatingDaoInterface
         return $this->mapRatings($queryBuilder->execute()->fetchAll());
     }
 
-    /**
-     * @param Rating $rating
-     */
-    public function delete(Rating $rating)
+    public function delete(Rating $rating): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
@@ -89,8 +82,8 @@ class RatingDao implements RatingDaoInterface
             ->orderBy('r.oxtimestamp', 'DESC')
             ->setParameters(
                 [
-                    'productId'     => $productId,
-                    'productType'   => 'oxarticle',
+                    'productId' => $productId,
+                    'productType' => 'oxarticle',
                 ]
             );
 

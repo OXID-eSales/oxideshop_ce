@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -28,28 +30,28 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     protected $_sThisTemplate = 'page/checkout/basket.tpl';
 
     /**
-     * Order step marker
+     * Order step marker.
      *
      * @var bool
      */
     protected $_blIsOrderStep = true;
 
     /**
-     * all basket articles
+     * all basket articles.
      *
      * @var object
      */
     protected $_oBasketArticles = null;
 
     /**
-     * Similar List
+     * Similar List.
      *
      * @var object
      */
     protected $_oSimilarList = null;
 
     /**
-     * Recomm List
+     * Recomm List.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -59,28 +61,28 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
     /**
      * First basket product object. It is used to load
-     * recommendation list info and similar product list
+     * recommendation list info and similar product list.
      *
      * @var \OxidEsales\EshopCommunity\Application\Model\Article
      */
     protected $_oFirstBasketProduct = null;
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
     protected $_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
 
     /**
-     * Wrapping objects list
+     * Wrapping objects list.
      *
      * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected $_oWrappings = null;
 
     /**
-     * Card objects list
+     * Card objects list.
      *
      * @var \OxidEsales\Eshop\Core\Model\ListModel
      */
@@ -100,7 +102,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * Returns name of template file basket::_sThisTemplate (for Search
      * engines return "content.tpl" template to avoid fake orders etc).
      *
-     * @return  string   $this->_sThisTemplate  current template file name
+     * @return string $this->_sThisTemplate  current template file name
      */
     public function render()
     {
@@ -115,13 +117,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * Return the current articles from the basket
+     * Return the current articles from the basket.
      *
      * @return object|bool
      */
     public function getBasketArticles()
     {
-        if ($this->_oBasketArticles === null) {
+        if (null === $this->_oBasketArticles) {
             $this->_oBasketArticles = false;
 
             // passing basket articles
@@ -135,17 +137,17 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * return the basket articles
+     * return the basket articles.
      *
      * @return object|bool
      */
     public function getFirstBasketProduct()
     {
-        if ($this->_oFirstBasketProduct === null) {
+        if (null === $this->_oFirstBasketProduct) {
             $this->_oFirstBasketProduct = false;
 
             $aBasketArticles = $this->getBasketArticles();
-            if (is_array($aBasketArticles) && $oProduct = reset($aBasketArticles)) {
+            if (\is_array($aBasketArticles) && $oProduct = reset($aBasketArticles)) {
                 $this->_oFirstBasketProduct = $oProduct;
             }
         }
@@ -154,13 +156,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * return the similar articles
+     * return the similar articles.
      *
      * @return object|bool
      */
     public function getBasketSimilarList()
     {
-        if ($this->_oSimilarList === null) {
+        if (null === $this->_oSimilarList) {
             $this->_oSimilarList = false;
 
             // similar product info
@@ -181,7 +183,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function getSimilarRecommListIds()
     {
-        if ($this->_aSimilarRecommListIds === null) {
+        if (null === $this->_aSimilarRecommListIds) {
             $this->_aSimilarRecommListIds = false;
 
             if ($oProduct = $this->getFirstBasketProduct()) {
@@ -193,7 +195,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * return the Link back to shop
+     * return the Link back to shop.
      *
      * @return bool
      */
@@ -202,20 +204,19 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $iNewBasketItemMessage = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage');
         $sBackToShop = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_backtoshop');
 
-        return ($iNewBasketItemMessage == 3 && $sBackToShop);
+        return 3 === $iNewBasketItemMessage && $sBackToShop;
     }
 
     /**
-     * Assigns voucher to current basket
-     *
-     * @return null
+     * Assigns voucher to current basket.
      */
-    public function addVoucher()
+    public function addVoucher(): void
     {
         $session = Registry::getSession();
         if (!$session->checkSessionChallenge()) {
             $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+
             return;
         }
 
@@ -228,16 +229,15 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * Removes voucher from basket (calls \OxidEsales\Eshop\Application\Model\Basket::removeVoucher())
-     *
-     * @return null
+     * Removes voucher from basket (calls \OxidEsales\Eshop\Application\Model\Basket::removeVoucher()).
      */
-    public function removeVoucher()
+    public function removeVoucher(): void
     {
         $session = Registry::getSession();
         if (!$session->checkSessionChallenge()) {
             $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+
             return;
         }
 
@@ -252,13 +252,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Redirects user back to previous part of shop (list, details, ...) from basket.
      * Used with option "Display Message when Product is added to Cart" set to "Open Basket"
-     * ($myConfig->iNewBasketItemMessage == 3)
+     * ($myConfig->iNewBasketItemMessage == 3).
      *
-     * @return string   $sBackLink  back link
+     * @return string back link
      */
     public function backToShop()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        if (3 === \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage')) {
             $oSession = \OxidEsales\Eshop\Core\Registry::getSession();
             if ($sBackLink = $oSession->getVariable('_backtoshop')) {
                 $oSession->deleteVariable('_backtoshop');
@@ -269,9 +269,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * Returns a name of the view variable containing the error/exception messages
-     *
-     * @return null
+     * Returns a name of the view variable containing the error/exception messages.
      */
     public function getErrorDestination()
     {
@@ -279,7 +277,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * Returns wrapping options availability state (TRUE/FALSE)
+     * Returns wrapping options availability state (TRUE/FALSE).
      *
      * @return bool
      */
@@ -289,7 +287,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             return false;
         }
 
-        if ($this->_iWrapCnt === null) {
+        if (null === $this->_iWrapCnt) {
             $this->_iWrapCnt = 0;
 
             $oWrap = oxNew(Wrapping::class);
@@ -297,17 +295,17 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
 
-        return (bool) $this->_iWrapCnt;
+        return (bool)$this->_iWrapCnt;
     }
 
     /**
-     * Return basket wrappings list if available
+     * Return basket wrappings list if available.
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getWrappingList()
     {
-        if ($this->_oWrappings === null) {
+        if (null === $this->_oWrappings) {
             $this->_oWrappings = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load wrapping papers
@@ -320,13 +318,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * Returns greeting cards list if available
+     * Returns greeting cards list if available.
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getCardList()
     {
-        if ($this->_oCards === null) {
+        if (null === $this->_oCards) {
             $this->_oCards = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load gift cards
@@ -346,12 +344,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      * oBasket::giftmessage, oBasket::chosencard). Then sets
      * basket back to session (\OxidEsales\Eshop\Core\Session::setBasket()).
      */
-    public function changeWrapping()
+    public function changeWrapping(): void
     {
         $session = Registry::getSession();
         if (!$session->checkSessionChallenge()) {
             $this->getContainer()->get(LoggerInterface::class)->warning('EXCEPTION_NON_MATCHING_CSRF_TOKEN');
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_NON_MATCHING_CSRF_TOKEN');
+
             return;
         }
 
@@ -380,7 +379,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
         $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
         $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('CART', $iBaseLanguage, false);
-        $aPath['link']  = $this->getLink();
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;
@@ -400,15 +399,16 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * Sets basket wrapping
+     * Sets basket wrapping.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket
      * @param array                                      $aWrapping
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setWrappingInfo" in next major
      */
-    protected function _setWrappingInfo($oBasket, $aWrapping) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setWrappingInfo($oBasket, $aWrapping): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (is_array($aWrapping) && count($aWrapping)) {
+        if (\is_array($aWrapping) && \count($aWrapping)) {
             foreach ($oBasket->getContents() as $sKey => $oBasketItem) {
                 if (isset($aWrapping[$sKey])) {
                     $oBasketItem->setWrapping($aWrapping[$sKey]);

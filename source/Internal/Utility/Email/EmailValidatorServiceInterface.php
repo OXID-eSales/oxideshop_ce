@@ -13,8 +13,6 @@ interface EmailValidatorServiceInterface
 {
     /**
      * @param mixed $email
-     *
-     * @return bool
      */
     public function isEmailValid($email): bool;
 }

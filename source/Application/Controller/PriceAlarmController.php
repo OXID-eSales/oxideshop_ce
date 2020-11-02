@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -45,7 +47,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
     /**
      * Price alarm status.
      *
-     * @var integer
+     * @var int
      */
     protected $_iPriceAlarmStatus = null;
 
@@ -56,7 +58,7 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
      * (oxpricealarm::save()). Sends pricealarm notification mail
      * to shop owner.
      *
-     * @return  bool    false on error
+     * @return bool false on error
      */
     public function addme()
     {
@@ -89,17 +91,17 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
 
         // Send Email
         $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-        $this->_iPriceAlarmStatus = (int) $oEmail->sendPricealarmNotification($aParams, $oAlarm);
+        $this->_iPriceAlarmStatus = (int)$oEmail->sendPricealarmNotification($aParams, $oAlarm);
     }
 
     /**
-     * Template variable getter. Returns bid price
+     * Template variable getter. Returns bid price.
      *
      * @return string
      */
     public function getBidPrice()
     {
-        if ($this->_sBidPrice === null) {
+        if (null === $this->_sBidPrice) {
             $this->_sBidPrice = false;
 
             $aParams = $this->_getParams();
@@ -112,13 +114,13 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Template variable getter. Returns active article
+     * Template variable getter. Returns active article.
      *
      * @return object
      */
     public function getProduct()
     {
-        if ($this->_oArticle === null) {
+        if (null === $this->_oArticle) {
             $this->_oArticle = false;
             $aParams = $this->_getParams();
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
@@ -130,9 +132,10 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Returns params (article id, bid price)
+     * Returns params (article id, bid price).
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getParams" in next major
      */
     private function _getParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -141,9 +144,9 @@ class PriceAlarmController extends \OxidEsales\Eshop\Application\Controller\Fron
     }
 
     /**
-     * Return pricealarm status (if it was send)
+     * Return pricealarm status (if it was send).
      *
-     * @return integer
+     * @return int
      */
     public function getPriceAlarmStatus()
     {

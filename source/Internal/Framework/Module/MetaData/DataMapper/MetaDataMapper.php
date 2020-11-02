@@ -17,8 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Template;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\TemplateBlock;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
@@ -32,8 +32,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
 
     /**
      * MetaDataMapper constructor.
-     *
-     * @param MetaDataSchemaValidatorInterface $validator
      */
     public function __construct(MetaDataSchemaValidatorInterface $validator)
     {
@@ -41,9 +39,6 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
     }
 
     /**
-     * @param array $metaData
-     *
-     * @return ModuleConfiguration
      * @throws UnsupportedMetaDataValueTypeException
      */
     public function fromData(array $metaData): ModuleConfiguration
@@ -73,16 +68,9 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             $moduleConfiguration->setTitle($moduleData[MetaDataProvider::METADATA_TITLE]);
         }
 
-        $moduleConfiguration = $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
-
-        return $moduleConfiguration;
+        return $this->mapModuleConfigurationSettings($moduleConfiguration, $metaData);
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array $metaData
-     * @return ModuleConfiguration
-     */
     private function mapModuleConfigurationSettings(
         ModuleConfiguration $moduleConfiguration,
         array $metaData
@@ -137,7 +125,7 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
                     $templateBlockData[TemplateBlocksMappingKeys::MODULE_TEMPLATE_PATH]
                 );
                 if (isset($templateBlockData[TemplateBlocksMappingKeys::POSITION])) {
-                    $templateBlock->setPosition((int) $templateBlockData[TemplateBlocksMappingKeys::POSITION]);
+                    $templateBlock->setPosition((int)$templateBlockData[TemplateBlocksMappingKeys::POSITION]);
                 }
                 if (isset($templateBlockData[TemplateBlocksMappingKeys::THEME])) {
                     $templateBlock->setTheme($templateBlockData[TemplateBlocksMappingKeys::THEME]);
@@ -146,15 +134,10 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
             }
         }
 
-        $moduleConfiguration = $this->mapSettings($moduleConfiguration, $moduleData);
-
-        return $moduleConfiguration;
+        return $this->mapSettings($moduleConfiguration, $moduleData);
     }
 
-    /**
-     * @param array $data
-     */
-    private function validateParameterFormat(array $data)
+    private function validateParameterFormat(array $data): void
     {
         $mandatoryKeys = [
             MetaDataProvider::METADATA_METADATA_VERSION,
@@ -162,17 +145,13 @@ class MetaDataMapper implements MetaDataToModuleConfigurationDataMapperInterface
         ];
         foreach ($mandatoryKeys as $mandatoryKey) {
             if (false === \array_key_exists($mandatoryKey, $data)) {
-                throw new \InvalidArgumentException(
-                    'The key "' . $mandatoryKey . '" must be present in the array passed in the parameter'
-                );
+                throw new \InvalidArgumentException('The key "' . $mandatoryKey . '" must be present in the array passed in the parameter');
             }
         }
     }
 
     /**
-     * @param ModuleConfiguration $moduleConfiguration
      * @param $moduleData
-     * @return ModuleConfiguration
      */
     private function mapSettings(ModuleConfiguration $moduleConfiguration, $moduleData): ModuleConfiguration
     {

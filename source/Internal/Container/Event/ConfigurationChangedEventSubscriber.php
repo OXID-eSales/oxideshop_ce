@@ -25,19 +25,15 @@ class ConfigurationChangedEventSubscriber implements EventSubscriberInterface
         $this->containerCache = $containerCache;
     }
 
-    /**
-     * @param ProjectYamlChangedEvent $event
-     */
-    public function resetContainer(ProjectYamlChangedEvent $event)
+    public function resetContainer(ProjectYamlChangedEvent $event): void
     {
         $this->containerCache->invalidate();
     }
 
-    /**
-     * @return array
-     */
     public static function getSubscribedEvents(): array
     {
-        return [ProjectYamlChangedEvent::NAME => 'resetContainer'];
+        return [
+            ProjectYamlChangedEvent::NAME => 'resetContainer',
+        ];
     }
 }

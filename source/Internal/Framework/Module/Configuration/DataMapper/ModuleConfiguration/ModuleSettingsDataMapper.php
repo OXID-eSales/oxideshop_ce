@@ -37,10 +37,6 @@ class ModuleSettingsDataMapper implements ModuleConfigurationDataMapperInterface
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @return array
-     */
     private function mapSettingsToData(ModuleConfiguration $configuration): array
     {
         $data = [];
@@ -68,11 +64,6 @@ class ModuleSettingsDataMapper implements ModuleConfigurationDataMapperInterface
         return $data;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param array $data
-     * @return ModuleConfiguration
-     */
     private function mapSettingsFromData(ModuleConfiguration $configuration, array $data): ModuleConfiguration
     {
         if (isset($data[self::MAPPING_KEY])) {

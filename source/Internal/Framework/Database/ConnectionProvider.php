@@ -19,7 +19,7 @@ class ConnectionProvider implements ConnectionProviderInterface
 
     public function get(): Connection
     {
-        if ($this->connection === null) {
+        if (null === $this->connection) {
             $database = DatabaseProvider::getDb();
             $r = new \ReflectionMethod(Database::class, 'getConnection');
             $r->setAccessible(true);

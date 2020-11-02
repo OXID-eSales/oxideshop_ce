@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,14 +21,14 @@ class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
      */
     protected function validateTemplateEngine($templateEngine)
     {
-        return ($templateEngine instanceof Smarty);
+        return $templateEngine instanceof Smarty;
     }
 
     /**
      * @param object $newItem
      * @param Smarty $templateEngine
      */
-    protected function loadArticleObject($newItem, $templateEngine)
+    protected function loadArticleObject($newItem, $templateEngine): void
     {
         // loading article object here because on some system passing article by session causes problems
         $newItem->oArticle = oxNew(Article::class);
@@ -40,15 +42,12 @@ class InsertNewBasketItemLogicSmarty extends AbstractInsertNewBasketItemLogic
     }
 
     /**
-     * @param string $templateName
      * @param Smarty $templateEngine
      *
      * @return string
      */
     protected function renderTemplate(string $templateName, $templateEngine)
     {
-        $renderedTemplate = $templateEngine->fetch($templateName);
-
-        return $renderedTemplate;
+        return $templateEngine->fetch($templateName);
     }
 }

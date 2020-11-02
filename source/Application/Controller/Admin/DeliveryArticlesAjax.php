@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,53 +9,54 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
-
 /**
- * Class manages delivery articles
+ * Class manages delivery articles.
  */
 class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxartnum', 'oxarticles', 1, 0, 0],
-        ['oxtitle', 'oxarticles', 1, 1, 0],
-        ['oxean', 'oxarticles', 1, 0, 0],
-        ['oxmpn', 'oxarticles', 0, 0, 0],
-        ['oxprice', 'oxarticles', 0, 0, 0],
-        ['oxstock', 'oxarticles', 0, 0, 0],
-        ['oxid', 'oxarticles', 0, 0, 1]
-    ],
-                                 'container2' => [
-                                     ['oxartnum', 'oxarticles', 1, 0, 0],
-                                     ['oxtitle', 'oxarticles', 1, 1, 0],
-                                     ['oxean', 'oxarticles', 1, 0, 0],
-                                     ['oxmpn', 'oxarticles', 0, 0, 0],
-                                     ['oxprice', 'oxarticles', 0, 0, 0],
-                                     ['oxstock', 'oxarticles', 0, 0, 0],
-                                     ['oxid', 'oxobject2delivery', 0, 0, 1]
-                                 ]
+    protected $_aColumns = [
+        // field , table,         visible, multilanguage, ident
+        'container1' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1],
+        ],
+        'container2' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxobject2delivery', 0, 0, 1],
+        ],
     ];
 
     /**
-     * If true extended column selection will be build
+     * If true extended column selection will be build.
      *
      * @var bool
      */
     protected $_blAllowExtColumns = true;
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $request = \OxidEsales\Eshop\Core\Registry::getRequest();
@@ -73,7 +76,7 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $sQAdd .= $config->getConfigParam('blVariantsSelection') ? '' : "and $sArtTable.oxparentid = '' ";
         } else {
             // selected category ?
-            if ($sSynchDelId && $sDelId != $sSynchDelId) {
+            if ($sSynchDelId && $sDelId !== $sSynchDelId) {
                 $sQAdd = " from $sO2CView left join $sArtTable on ";
                 $sQAdd .= $config->getConfigParam('blVariantsSelection') ? " ( $sArtTable.oxid=$sO2CView.oxobjectid or $sArtTable.oxparentid=$sO2CView.oxobjectid)" : " $sArtTable.oxid=$sO2CView.oxobjectid ";
                 $sQAdd .= "where $sO2CView.oxcatnid = " . $oDb->quote($sDelId);
@@ -83,7 +86,7 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             }
         }
 
-        if ($sSynchDelId && $sSynchDelId != $sDelId) {
+        if ($sSynchDelId && $sSynchDelId !== $sDelId) {
             $sQAdd .= 'and ' . $sArtTable . '.oxid not in ( ';
             $sQAdd .= 'select oxobject2delivery.oxobjectid from oxobject2delivery ';
             $sQAdd .= 'where oxobject2delivery.oxdeliveryid = ' . $oDb->quote($sSynchDelId) . ' and oxobject2delivery.oxtype = "oxarticles" ) ';
@@ -93,7 +96,7 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     }
 
     /**
-     * Adds filter SQL to current query
+     * Adds filter SQL to current query.
      *
      * @param string $sQ query to add filter condition
      *
@@ -110,25 +113,25 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     }*/
 
     /**
-     * Removes article from delivery configuration
+     * Removes article from delivery configuration.
      */
-    public function removeArtFromDel()
+    public function removeArtFromDel(): void
     {
         $aChosenArt = $this->_getActionIds('oxobject2delivery.oxid');
         // removing all
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sQ = parent::_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            $sQ = parent::_addFilter('delete oxobject2delivery.* ' . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif (is_array($aChosenArt)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ") ";
+        } elseif (\is_array($aChosenArt)) {
+            $sQ = 'delete from oxobject2delivery where oxobject2delivery.oxid in (' . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aChosenArt)) . ') ';
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
     /**
-     * Adds article to delivery configuration
+     * Adds article to delivery configuration.
      */
-    public function addArtToDel()
+    public function addArtToDel(): void
     {
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -139,13 +142,13 @@ class DeliveryArticlesAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $aChosenArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
+        if ($soxId && '-1' !== $soxId && \is_array($aChosenArt)) {
             foreach ($aChosenArt as $sChosenArt) {
                 $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new \OxidEsales\Eshop\Core\Field($soxId);
                 $oObject2Delivery->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenArt);
-                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field("oxarticles");
+                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field('oxarticles');
                 $oObject2Delivery->save();
             }
         }

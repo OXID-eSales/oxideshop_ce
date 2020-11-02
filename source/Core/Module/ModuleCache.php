@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,7 +15,9 @@ use OxidEsales\Eshop\Core\Registry;
  * Module cache events handler class.
  *
  * @deprecated since v6.4.0 (2019-03-22); ModuleCache moved to Internal\Framework\Module package.
- * @internal Do not make a module extension for this class.
+ *
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleCache extends \OxidEsales\Eshop\Core\Base
@@ -25,8 +29,6 @@ class ModuleCache extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Sets dependencies.
-     *
-     * @param \OxidEsales\Eshop\Core\Module\Module $_oModule
      */
     public function __construct(\OxidEsales\Eshop\Core\Module\Module $_oModule)
     {
@@ -38,7 +40,7 @@ class ModuleCache extends \OxidEsales\Eshop\Core\Base
      *
      * @param \OxidEsales\Eshop\Core\Module\Module $oModule
      */
-    public function setModule($oModule)
+    public function setModule($oModule): void
     {
         $this->_oModule = $oModule;
     }
@@ -54,9 +56,9 @@ class ModuleCache extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Resets template, language and menu xml cache
+     * Resets template, language and menu xml cache.
      */
-    public function resetCache()
+    public function resetCache(): void
     {
         $aTemplates = $this->getModule()->getTemplates();
         $oUtils = Registry::getUtils();
@@ -70,12 +72,13 @@ class ModuleCache extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Cleans PHP APC cache
+     * Cleans PHP APC cache.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "clearApcCache" in next major
      */
-    protected function _clearApcCache() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _clearApcCache(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (extension_loaded('apc') && ini_get('apc.enabled')) {
+        if (\extension_loaded('apc') && ini_get('apc.enabled')) {
             apc_clear_cache();
         }
     }

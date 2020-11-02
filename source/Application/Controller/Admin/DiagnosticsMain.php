@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,9 +10,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Module\Module;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Checks Version of System files.
@@ -19,72 +21,75 @@ use OxidEsales\Eshop\Core\Registry;
 class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
     /**
-     * error tag
+     * error tag.
      *
-     * @var boolean
+     * @var bool
      */
     protected $_blError = false;
 
     /**
-     * error message
+     * error message.
      *
      * @var string
      */
     protected $_sErrorMessage = null;
 
     /**
-     * Diagnostic check object
+     * Diagnostic check object.
      *
      * @var mixed
      */
     protected $_oDiagnostics = null;
 
     /**
-     * Smarty renderer
+     * Smarty renderer.
      *
      * @var mixed
      */
     protected $_oRenderer = null;
 
     /**
-     * Result output object
+     * Result output object.
      *
      * @var mixed
      */
     protected $_oOutput = null;
 
     /**
-     * Variable for storing shop root directory
+     * Variable for storing shop root directory.
      *
      * @var mixed|string
      */
     protected $_sShopDir = '';
 
     /**
-     * Error status getter
+     * Error status getter.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "hasError" in next major
      */
-    protected function _hasError() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _hasError()
     {
         return $this->_blError;
     }
 
     /**
-     * Error status getter
+     * Error status getter.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getErrorMessage" in next major
      */
-    protected function _getErrorMessage() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getErrorMessage()
     {
         return $this->_sErrorMessage;
     }
 
-
     /**
-     * Calls parent constructor and initializes checker object
+     * Calls parent constructor and initializes checker object.
      */
     public function __construct()
     {
@@ -106,18 +111,18 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $this->_aViewData['sErrorMessage'] = $this->_getErrorMessage();
         }
 
-        return "diagnostics_form.tpl";
+        return 'diagnostics_form.tpl';
     }
 
     /**
-     * Checks system file versions
+     * Checks system file versions.
      */
-    public function startDiagnostics()
+    public function startDiagnostics(): void
     {
-        $sReport = "";
+        $sReport = '';
 
         $aDiagnosticsResult = $this->_runBasicDiagnostics();
-        $sReport .= $this->_oRenderer->renderTemplate("diagnostics_main.tpl", $aDiagnosticsResult);
+        $sReport .= $this->_oRenderer->renderTemplate('diagnostics_main.tpl', $aDiagnosticsResult);
 
         $this->_oOutput->storeResult($sReport);
 
@@ -127,12 +132,14 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     /**
      * Performs main system diagnostic.
-     * Shop and module details, database health, php parameters, server information
+     * Shop and module details, database health, php parameters, server information.
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "runBasicDiagnostics" in next major
      */
-    protected function _runBasicDiagnostics() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _runBasicDiagnostics()
     {
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);
@@ -143,7 +150,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             oxNew(\OxidEsales\Eshop\Core\ShopVersion::class)->getVersion()
         );
 
-        /**
+        /*
          * Shop
          */
         if ($this->getParam('runAnalysis')) {
@@ -151,7 +158,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $aViewData['aShopDetails'] = $oDiagnostics->getShopDetails();
         }
 
-        /**
+        /*
          * Modules
          */
         if ($this->getParam('oxdiag_frm_modules')) {
@@ -159,7 +166,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $aViewData['mylist'] = $this->getInstalledModules();
         }
 
-        /**
+        /*
          * Health
          */
         if ($this->getParam('oxdiag_frm_health')) {
@@ -169,7 +176,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $aViewData['aCollations'] = $oSysReq->checkCollation();
         }
 
-        /**
+        /*
          * PHP info
          * Fetches a hand full of php configuration parameters and collects their values.
          */
@@ -179,7 +186,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $aViewData['sPhpDecoder'] = $oDiagnostics->getPhpDecoder();
         }
 
-        /**
+        /*
          * Server info
          */
         if ($this->getParam('oxdiag_frm_server')) {
@@ -192,24 +199,24 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     }
 
     /**
-     * Downloads result of system file check
+     * Downloads result of system file check.
      */
-    public function downloadResultFile()
+    public function downloadResultFile(): void
     {
         $this->_oOutput->downloadResultFile();
         exit(0);
     }
 
     /**
-     * Checks system file versions
+     * Checks system file versions.
      *
      * @return string
      */
     public function getSupportContactForm()
     {
         $aLinks = [
-            "de" => "https://www.oxid-esales.com/oxid-welt/support/supportanfrage/",
-            "en" => "https://www.oxid-esales.com/en/oxid-world/support/support-offer/"
+            'de' => 'https://www.oxid-esales.com/oxid-welt/support/supportanfrage/',
+            'en' => 'https://www.oxid-esales.com/en/oxid-world/support/support-offer/',
         ];
 
         $oLang = Registry::getLang();
@@ -217,15 +224,15 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $iLangId = $oLang->getTplLanguage();
         $sLangCode = $aLanguages[$iLangId]->abbr;
 
-        if (!array_key_exists($sLangCode, $aLinks)) {
-            $sLangCode = "de";
+        if (!\array_key_exists($sLangCode, $aLinks)) {
+            $sLangCode = 'de';
         }
 
         return $aLinks[$sLangCode];
     }
 
     /**
-     * Request parameter getter
+     * Request parameter getter.
      *
      * @param string $name
      *
@@ -238,9 +245,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         return $request->getRequestEscapedParameter($name);
     }
 
-    /**
-     * @return array
-     */
     private function getInstalledModules(): array
     {
         $container = ContainerFactory::getInstance()->getContainer();

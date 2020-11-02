@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,16 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-use oxField;
-
 /**
- * Class manages deliveryset users
+ * Class manages deliveryset users.
  */
 class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
@@ -34,27 +33,29 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             ['oxbirthdate', 'oxuser', 0, 0, 0],
             ['oxid', 'oxuser', 0, 0, 1],
         ],
-         'container2' => [
-             ['oxusername', 'oxuser', 1, 0, 0],
-             ['oxlname', 'oxuser', 0, 0, 0],
-             ['oxfname', 'oxuser', 0, 0, 0],
-             ['oxstreet', 'oxuser', 0, 0, 0],
-             ['oxstreetnr', 'oxuser', 0, 0, 0],
-             ['oxcity', 'oxuser', 0, 0, 0],
-             ['oxzip', 'oxuser', 0, 0, 0],
-             ['oxfon', 'oxuser', 0, 0, 0],
-             ['oxbirthdate', 'oxuser', 0, 0, 0],
-             ['oxid', 'oxobject2delivery', 0, 0, 1],
-         ]
+        'container2' => [
+            ['oxusername', 'oxuser', 1, 0, 0],
+            ['oxlname', 'oxuser', 0, 0, 0],
+            ['oxfname', 'oxuser', 0, 0, 0],
+            ['oxstreet', 'oxuser', 0, 0, 0],
+            ['oxstreetnr', 'oxuser', 0, 0, 0],
+            ['oxcity', 'oxuser', 0, 0, 0],
+            ['oxzip', 'oxuser', 0, 0, 0],
+            ['oxfon', 'oxuser', 0, 0, 0],
+            ['oxbirthdate', 'oxuser', 0, 0, 0],
+            ['oxid', 'oxobject2delivery', 0, 0, 1],
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
@@ -69,10 +70,10 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             if (!$myConfig->getConfigParam('blMallUsers')) {
                 $sQAdd .= "and $sUserTable.oxshopid = '" . $myConfig->getShopId() . "' ";
             }
-        } elseif ($sSynchId && $sSynchId != $sId) {
+        } elseif ($sSynchId && $sSynchId !== $sId) {
             // selected group ?
             $sQAdd = " from oxobject2group left join $sUserTable on $sUserTable.oxid = oxobject2group.oxobjectid ";
-            $sQAdd .= " where oxobject2group.oxgroupsid = " . $oDb->quote($sId);
+            $sQAdd .= ' where oxobject2group.oxgroupsid = ' . $oDb->quote($sId);
             if (!$myConfig->getConfigParam('blMallUsers')) {
                 $sQAdd .= "and $sUserTable.oxshopid = '" . $myConfig->getShopId() . "' ";
             }
@@ -84,7 +85,7 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $sQAdd .= "and oxobject2delivery.oxobjectid = $sUserTable.oxid and oxobject2delivery.oxtype = 'oxdelsetu' ";
         }
 
-        if ($sSynchId && $sSynchId != $sId) {
+        if ($sSynchId && $sSynchId !== $sId) {
             $sQAdd .= "and $sUserTable.oxid not in ( select $sUserTable.oxid from oxobject2delivery, $sUserTable where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchId);
             $sQAdd .= "and oxobject2delivery.oxobjectid = $sUserTable.oxid and oxobject2delivery.oxtype = 'oxdelsetu' ) ";
         }
@@ -93,24 +94,24 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
     }
 
     /**
-     * Removes users for delivery sets config
+     * Removes users for delivery sets config.
      */
-    public function removeUserFromSet()
+    public function removeUserFromSet(): void
     {
         $aRemoveGroups = $this->_getActionIds('oxobject2delivery.oxid');
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('all')) {
-            $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            $sQ = $this->_addFilter('delete oxobject2delivery.* ' . $this->_getQuery());
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
-        } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ") ";
+        } elseif ($aRemoveGroups && \is_array($aRemoveGroups)) {
+            $sQ = 'delete from oxobject2delivery where oxobject2delivery.oxid in (' . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aRemoveGroups)) . ') ';
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->Execute($sQ);
         }
     }
 
     /**
-     * Adds users for delivery sets config
+     * Adds users for delivery sets config.
      */
-    public function addUserToSet()
+    public function addUserToSet(): void
     {
         $aChosenUsr = $this->_getActionIds('oxuser.oxid');
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
@@ -120,13 +121,13 @@ class DeliverySetUsersAjax extends \OxidEsales\Eshop\Application\Controller\Admi
             $sUserTable = $this->_getViewName('oxuser');
             $aChosenUsr = $this->_getAll($this->_addFilter("select $sUserTable.oxid " . $this->_getQuery()));
         }
-        if ($soxId && $soxId != "-1" && is_array($aChosenUsr)) {
+        if ($soxId && '-1' !== $soxId && \is_array($aChosenUsr)) {
             foreach ($aChosenUsr as $sChosenUsr) {
                 $oObject2Delivery = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
                 $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new \OxidEsales\Eshop\Core\Field($soxId);
                 $oObject2Delivery->oxobject2delivery__oxobjectid = new \OxidEsales\Eshop\Core\Field($sChosenUsr);
-                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field("oxdelsetu");
+                $oObject2Delivery->oxobject2delivery__oxtype = new \OxidEsales\Eshop\Core\Field('oxdelsetu');
                 $oObject2Delivery->save();
             }
         }

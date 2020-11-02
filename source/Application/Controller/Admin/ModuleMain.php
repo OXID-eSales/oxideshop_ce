@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -26,8 +28,8 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
      */
     public function render()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("moduleId")) {
-            $sModuleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("moduleId");
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('moduleId')) {
+            $sModuleId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('moduleId');
         } else {
             $sModuleId = $this->getEditObjectId();
         }
@@ -38,9 +40,9 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             if ($oModule->load($sModuleId)) {
                 $iLang = \OxidEsales\Eshop\Core\Registry::getLang()->getTplLanguage();
 
-                $this->_aViewData["oModule"] = $oModule;
-                $this->_aViewData["sModuleName"] = basename($oModule->getInfo("title", $iLang));
-                $this->_aViewData["sModuleId"] = str_replace("/", "_", $oModule->getModulePath());
+                $this->_aViewData['oModule'] = $oModule;
+                $this->_aViewData['sModuleName'] = basename($oModule->getInfo('title', $iLang));
+                $this->_aViewData['sModuleId'] = str_replace('/', '_', $oModule->getModulePath());
             } else {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
             }
@@ -52,14 +54,13 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     }
 
     /**
-     * Activate module
-     *
-     * @return null
+     * Activate module.
      */
-    public function activateModule()
+    public function activateModule(): void
     {
         if (Registry::getConfig()->isDemoShop()) {
             Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+
             return;
         }
 
@@ -78,14 +79,13 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     }
 
     /**
-     * Deactivate module
-     *
-     * @return null
+     * Deactivate module.
      */
-    public function deactivateModule()
+    public function deactivateModule(): void
     {
         if (Registry::getConfig()->isDemoShop()) {
             Registry::getUtilsView()->addErrorToDisplay('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE');
+
             return;
         }
 

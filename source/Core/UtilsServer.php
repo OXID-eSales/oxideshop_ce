@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,62 +9,63 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Application\Model\User;
 
 /**
- * Server data manipulation class
+ * Server data manipulation class.
  */
 class UtilsServer extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * user cookies
+     * user cookies.
      *
      * @var array
      */
     protected $_aUserCookie = [];
 
     /**
-     * Session cookie parameter name
+     * Session cookie parameter name.
      *
      * @var string
      */
     protected $_sSessionCookiesName = 'aSessionCookies';
 
     /**
-     * Session stored cookies
+     * Session stored cookies.
      *
      * @var array
      */
     protected $_sSessionCookies = [];
 
     /**
-     * sets cookie
+     * sets cookie.
      *
      * @param string $sName       cookie name
      * @param string $sValue      value
      * @param int    $iExpire     expire time
      * @param string $sPath       The path on the server in which the cookie will be available on
-     * @param string $sDomain     The domain that the cookie is available.
+     * @param string $sDomain     the domain that the cookie is available
      * @param bool   $blToSession is true, records cookie information to session
      * @param bool   $blSecure    if true, transfer cookie only via SSL
      * @param bool   $blHttpOnly  if true, only accessible via HTTP
      *
      * @return bool
      */
-    public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
+    public function setOxCookie($sName, $sValue = '', $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
     {
         if ($blToSession && !$this->isAdmin()) {
             $this->_saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
 
-        if (defined('OXID_PHP_UNIT') || php_sapi_name() === 'cli') {
+        if (\defined('OXID_PHP_UNIT') || \PHP_SAPI === 'cli') {
             // do NOT set cookies in php unit or in cli because it would issue warnings
             return;
         }
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         //if shop runs in https only mode we can set secure flag to all cookies
-        $blSecure = $blSecure || ($config->isSsl() && $config->getSslShopUrl() == $config->getShopUrl());
+        $blSecure = $blSecure || ($config->isSsl() && $config->getSslShopUrl() === $config->getShopUrl());
+
         return setcookie(
             $sName,
             $sValue,
@@ -77,14 +80,15 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     protected $_blSaveToSession = null;
 
     /**
-     * Checks if cookie must be saved to session in order to transfer it to different domain
+     * Checks if cookie must be saved to session in order to transfer it to different domain.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "mustSaveToSession" in next major
      */
     protected function _mustSaveToSession() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_blSaveToSession === null) {
+        if (null === $this->_blSaveToSession) {
             $this->_blSaveToSession = false;
 
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
@@ -95,9 +99,9 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
                 $sSslHost = parse_url($sSslUrl, PHP_URL_HOST);
 
                 // testing if domains matches..
-                if ($sHost != $sSslHost) {
+                if ($sHost !== $sSslHost) {
                     $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
-                    $this->_blSaveToSession = $oUtils->extractDomain($sHost) != $oUtils->extractDomain($sSslHost);
+                    $this->_blSaveToSession = $oUtils->extractDomain($sHost) !== $oUtils->extractDomain($sSslHost);
                 }
             }
         }
@@ -106,11 +110,12 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns session cookie key
+     * Returns session cookie key.
      *
      * @param bool $blGet mode - true - get, false - set cookie
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSessionCookieKey" in next major
      */
     protected function _getSessionCookieKey($blGet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -126,21 +131,27 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Copies cookie info to session
+     * Copies cookie info to session.
      *
      * @param string $sName   cookie name
      * @param string $sValue  cookie value
      * @param int    $iExpire expiration time
      * @param string $sPath   cookie path
      * @param string $sDomain cookie domain
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "saveSessionCookie" in next major
      */
-    protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if ($this->_mustSaveToSession()) {
-            $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
+            $aCookieData = [
+                'value' => $sValue,
+                'expire' => $iExpire,
+                'path' => $sPath,
+                'domain' => $sDomain,
+            ];
 
-            $aSessionCookies = (array) \OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
+            $aSessionCookies = (array)\OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
             $aSessionCookies[$this->_getSessionCookieKey(false)][$sName] = $aCookieData;
 
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable($this->_sSessionCookiesName, $aSessionCookies);
@@ -148,9 +159,9 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Stored all session cookie info to cookies
+     * Stored all session cookie info to cookies.
      */
-    public function loadSessionCookies()
+    public function loadSessionCookies(): void
     {
         if (($aSessionCookies = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName))) {
             $sKey = $this->_getSessionCookieKey(true);
@@ -172,11 +183,12 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * Returns cookie path. If user did not set path, or set it to null, according to php
      * documentation empty string will be returned, marking to skip argument. Additionally
      * path can be defined in config.inc.php file as "sCookiePath" param. Please check cookie
-     * documentation for more details about current parameter
+     * documentation for more details about current parameter.
      *
      * @param string $sPath user defined cookie path
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCookiePath" in next major
      */
     protected function _getCookiePath($sPath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -184,27 +196,28 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         if ($aCookiePaths = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aCookiePaths')) {
             // in case user wants to have shop specific setup
             $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-            $sPath = isset($aCookiePaths[$sShopId]) ? $aCookiePaths[$sShopId] : $sPath;
+            $sPath = $aCookiePaths[$sShopId] ?? $sPath;
         }
 
         // from php doc: .. You may also replace an argument with an empty string ("") in order to skip that argument..
-        return $sPath ? $sPath : "";
+        return $sPath ? $sPath : '';
     }
 
     /**
      * Returns domain that cookie available. If user did not set domain, or set it to null, according to php
      * documentation empty string will be returned, marking to skip argument. Additionally domain can be defined
      * in config.inc.php file as "sCookieDomain" param. Please check cookie documentation for more details about
-     * current parameter
+     * current parameter.
      *
-     * @param string $sDomain the domain that the cookie is available.
+     * @param string $sDomain the domain that the cookie is available
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getCookieDomain" in next major
      */
     protected function _getCookieDomain($sDomain) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sDomain = $sDomain ? $sDomain : "";
+        $sDomain = $sDomain ? $sDomain : '';
 
         // on special cases, like separate domain for SSL, cookies must be defined on domain specific path
         // please have a look at
@@ -212,7 +225,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             if ($aCookieDomains = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aCookieDomains')) {
                 // in case user wants to have shop specific setup
                 $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-                $sDomain = isset($aCookieDomains[$sShopId]) ? $aCookieDomains[$sShopId] : $sDomain;
+                $sDomain = $aCookieDomains[$sShopId] ?? $sDomain;
             }
         }
 
@@ -221,7 +234,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns cookie $sName value.
-     * If optional parameter $sName is not set then getCookie() returns whole cookie array
+     * If optional parameter $sName is not set then getCookie() returns whole cookie array.
      *
      * @param string $sName cookie param name
      *
@@ -242,26 +255,26 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns remote IP address
+     * Returns remote IP address.
      *
      * @return string
      */
     public function getRemoteAddress()
     {
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-            $sIP = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $sIP = $_SERVER['HTTP_X_FORWARDED_FOR'];
             $sIP = preg_replace('/,.*$/', '', $sIP);
-        } elseif (isset($_SERVER["HTTP_CLIENT_IP"])) {
-            $sIP = $_SERVER["HTTP_CLIENT_IP"];
+        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+            $sIP = $_SERVER['HTTP_CLIENT_IP'];
         } else {
-            $sIP = $_SERVER["REMOTE_ADDR"];
+            $sIP = $_SERVER['REMOTE_ADDR'];
         }
 
         return $sIP;
     }
 
     /**
-     * returns a server constant
+     * returns a server constant.
      *
      * @param string $sServVar optional - which server var should be returned, if null returns whole $_SERVER
      *
@@ -282,20 +295,20 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Sets user info into cookie
+     * Sets user info into cookie.
      *
-     * @param string  $userName     user name
-     * @param string  $passwordHash password hash
-     * @param int     $shopId       shop ID (default null)
-     * @param integer $timeout      timeout value (default 31536000)
-     * @param string  $salt
+     * @param string $userName     user name
+     * @param string $passwordHash password hash
+     * @param int    $shopId       shop ID (default null)
+     * @param int    $timeout      timeout value (default 31536000)
+     * @param string $salt
      */
-    public function setUserCookie($userName, $passwordHash, $shopId = null, $timeout = 31536000, $salt = User::USER_COOKIE_SALT)
+    public function setUserCookie($userName, $passwordHash, $shopId = null, $timeout = 31536000, $salt = User::USER_COOKIE_SALT): void
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $shopId ?? $myConfig->getShopId();
         $sSslUrl = $myConfig->getSslShopUrl();
-        if (stripos($sSslUrl, 'https') === 0) {
+        if (0 === stripos($sSslUrl, 'https')) {
             $blSsl = true;
         } else {
             $blSsl = false;
@@ -307,16 +320,16 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Deletes user cookie data
+     * Deletes user cookie data.
      *
      * @param string $sShopId shop ID (default null)
      */
-    public function deleteUserCookie($sShopId = null)
+    public function deleteUserCookie($sShopId = null): void
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sShopId = (!$sShopId) ? \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId() : $sShopId;
         $sSslUrl = $myConfig->getSslShopUrl();
-        if (stripos($sSslUrl, 'https') === 0) {
+        if (0 === stripos($sSslUrl, 'https')) {
             $blSsl = true;
         } else {
             $blSsl = false;
@@ -328,7 +341,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns cookie stored used login data
+     * Returns cookie stored used login data.
      *
      * @param string $sShopId shop ID (default null)
      *
@@ -339,14 +352,14 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $myConfig = Registry::getConfig();
         $sShopId = (!$sShopId) ? $myConfig->getShopId() : $sShopId;
         // check for SSL connection
-        if (!$myConfig->isSsl() && $this->getOxCookie('oxid_' . $sShopId . '_autologin') == '1') {
+        if (!$myConfig->isSsl() && '1' === $this->getOxCookie('oxid_' . $sShopId . '_autologin')) {
             $sSslUrl = rtrim($myConfig->getSslShopUrl(), '/') . $_SERVER['REQUEST_URI'];
-            if (stripos($sSslUrl, 'https') === 0) {
+            if (0 === stripos($sSslUrl, 'https')) {
                 \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($sSslUrl, true, 302);
             }
         }
 
-        if (array_key_exists($sShopId, $this->_aUserCookie) && $this->_aUserCookie[$sShopId] !== null) {
+        if (\array_key_exists($sShopId, $this->_aUserCookie) && null !== $this->_aUserCookie[$sShopId]) {
             return $this->_aUserCookie[$sShopId] ? $this->_aUserCookie[$sShopId] : null;
         }
 
@@ -355,23 +368,23 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Checks if current client ip is in trusted IPs list.
-     * IP list is defined in config file as "aTrustedIPs" parameter
+     * IP list is defined in config file as "aTrustedIPs" parameter.
      *
      * @return bool
      */
     public function isTrustedClientIp()
     {
         $blTrusted = false;
-        $aTrustedIPs = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aTrustedIPs");
-        if (count($aTrustedIPs)) {
-            $blTrusted = in_array($this->getRemoteAddress(), $aTrustedIPs);
+        $aTrustedIPs = (array)\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aTrustedIPs');
+        if (\count($aTrustedIPs)) {
+            $blTrusted = \in_array($this->getRemoteAddress(), $aTrustedIPs, true);
         }
 
         return $blTrusted;
     }
 
     /**
-     * Removes MSIE(\s)?(\S)*(\s) from browser agent information
+     * Removes MSIE(\s)?(\S)*(\s) from browser agent information.
      *
      * @param string $sAgent browser user agent idenfitier
      *
@@ -380,14 +393,14 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function processUserAgentInfo($sAgent)
     {
         if ($sAgent) {
-            $sAgent = Str::getStr()->preg_replace("/MSIE(\s)?(\S)*(\s)/", "", (string) $sAgent);
+            $sAgent = Str::getStr()->preg_replace("/MSIE(\s)?(\S)*(\s)/", '', (string)$sAgent);
         }
 
         return $sAgent;
     }
 
     /**
-     * Compares current URL to supplied string
+     * Compares current URL to supplied string.
      *
      * @param string $sURL URL
      *
@@ -396,7 +409,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isCurrentUrl($sURL)
     {
         // Missing protocol, cannot proceed, assuming true.
-        if (!$sURL || (strpos($sURL, "http") !== 0)) {
+        if (!$sURL || (0 !== strpos($sURL, 'http'))) {
             return true;
         }
 
@@ -418,21 +431,21 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * the protocol is optional (www.domain.com/shop/)
      * but the protocol relative syntax (//www.domain.com/shop/) is not yet supported.
      *
-     * @param string $sURL        URL to check if is same as request.
-     * @param string $sServerHost request host.
+     * @param string $sURL        URL to check if is same as request
+     * @param string $sServerHost request host
      *
      * @return bool true if $sURL is equal to current page URL
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isCurrentUrl" in next major
      */
     public function _isCurrentUrl($sURL, $sServerHost) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // #4010: force_sid added in https to every link
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);
-        $sUrlHost = isset($matches[3]) ? $matches[3] : null;
+        $sUrlHost = $matches[3] ?? null;
 
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
-        $sRealHost =  isset($matches[3]) ? $matches[3] : null;
-
+        $sRealHost = $matches[3] ?? null;
 
         //fetch the path from SCRIPT_NAME and ad it to the $sServerHost
         $sScriptName = $this->getServerVar('SCRIPT_NAME');
@@ -442,9 +455,9 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $sCurrentHost = str_replace('/', '', $sCurrentHost);
         $sURL = str_replace('/', '', $sURL);
 
-        if ($sURL && $sCurrentHost && strpos($sURL, $sCurrentHost) !== false) {
+        if ($sURL && $sCurrentHost && false !== strpos($sURL, $sCurrentHost)) {
             //bug fix #0002991
-            if ($sUrlHost == $sRealHost) {
+            if ($sUrlHost === $sRealHost) {
                 return true;
             }
         }

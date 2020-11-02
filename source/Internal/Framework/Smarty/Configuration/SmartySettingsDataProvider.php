@@ -21,8 +21,6 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
 
     /**
      * SmartySettingsDataProvider constructor.
-     *
-     * @param SmartyContextInterface $context
      */
     public function __construct(SmartyContextInterface $context)
     {
@@ -30,13 +28,12 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
     }
 
     /**
-     * Define and return basic smarty settings
-     *
-     * @return array
+     * Define and return basic smarty settings.
      */
     public function getSettings(): array
     {
         $compilePath = $this->getTemplateCompilePath();
+
         return [
             'caching' => false,
             'left_delimiter' => '[{',
@@ -48,15 +45,13 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
             'default_template_handler_func' => [Registry::getUtilsView(), '_smartyDefaultTemplateHandler'],
             'debugging' => $this->context->getTemplateEngineDebugMode(),
             'compile_check' => $this->context->getTemplateCompileCheckMode(),
-            'php_handling' => (int) $this->context->getTemplatePhpHandlingMode(),
-            'security' => false
+            'php_handling' => (int)$this->context->getTemplatePhpHandlingMode(),
+            'security' => false,
         ];
     }
 
     /**
-     * Returns a full path to Smarty compile dir
-     *
-     * @return string
+     * Returns a full path to Smarty compile dir.
      */
     private function getTemplateCompilePath(): string
     {
@@ -65,8 +60,6 @@ class SmartySettingsDataProvider implements SmartySettingsDataProviderInterface
 
     /**
      * Get template compile id.
-     *
-     * @return string
      */
     private function getTemplateCompileId(): string
     {

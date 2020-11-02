@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,7 +17,7 @@ interface ClassNameResolverInterface
     /**
      * Map argument classId to related className.
      *
-     * @param string $classId Class id.
+     * @param string $classId class id
      *
      * @return string|null
      */
@@ -24,7 +26,7 @@ interface ClassNameResolverInterface
     /**
      * Map argument className to related classId.
      *
-     * @param string $className Class name.
+     * @param string $className class name
      *
      * @return string|null
      */

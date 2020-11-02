@@ -31,8 +31,6 @@ class ContactFormConfigurationFactory implements FormConfigurationFactoryInterfa
 
     /**
      * ContactFormConfigurationFactory constructor.
-     * @param FormFieldsConfigurationDataProviderInterface $contactFormConfigurationDataProvider
-     * @param ContextInterface                             $context
      */
     public function __construct(
         FormFieldsConfigurationDataProviderInterface $contactFormConfigurationDataProvider,
@@ -41,7 +39,6 @@ class ContactFormConfigurationFactory implements FormConfigurationFactoryInterfa
         $this->contactFormConfigurationDataProvider = $contactFormConfigurationDataProvider;
         $this->context = $context;
     }
-
 
     /**
      * @return FormConfigurationInterface
@@ -64,6 +61,7 @@ class ContactFormConfigurationFactory implements FormConfigurationFactoryInterfa
 
     /**
      * @param array $fieldConfigurationData
+     *
      * @return FieldConfiguration
      */
     private function getFieldConfiguration($fieldConfigurationData)
@@ -80,14 +78,13 @@ class ContactFormConfigurationFactory implements FormConfigurationFactoryInterfa
     }
 
     /**
-     * @param FieldConfigurationInterface $fieldConfiguration
      * @return bool
      */
     private function isFieldRequired(FieldConfigurationInterface $fieldConfiguration)
     {
-        return in_array(
+        return \in_array(
             $fieldConfiguration->getName(),
-            $this->context->getRequiredContactFormFields()
+            $this->context->getRequiredContactFormFields(), true
         );
     }
 }

@@ -11,10 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator
 
 interface MetaDataSchemaValidatorInterface
 {
-    /**
-     * @param string $metaDataFilePath
-     * @param string $metaDataVersion
-     * @param array  $metaData
-     */
     public function validate(string $metaDataFilePath, string $metaDataVersion, array $metaData);
 }

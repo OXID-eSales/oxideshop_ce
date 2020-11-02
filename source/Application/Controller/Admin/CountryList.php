@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -50,7 +52,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         parent::render();
 
-        return "country_list.tpl";
+        return 'country_list.tpl';
     }
 
     /**
@@ -73,10 +75,12 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     /**
      * Getter for the second sort field name (for getting the expected order out of the database).
      *
-     * @return string The name of the field we want to be the second order by argument.
+     * @return string the name of the field we want to be the second order by argument
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSecondSortFieldName" in next major
      */
-    protected function _getSecondSortFieldName() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getSecondSortFieldName()
     {
         return $this->sSecondDefSortField;
     }

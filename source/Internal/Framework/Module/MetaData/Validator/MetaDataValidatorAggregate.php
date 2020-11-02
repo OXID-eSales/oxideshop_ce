@@ -24,10 +24,7 @@ class MetaDataValidatorAggregate implements MetaDataValidatorInterface
         $this->metaDataValidators = $metaDataValidators;
     }
 
-    /**
-     * @param array $metaData
-     */
-    public function validate(array $metaData)
+    public function validate(array $metaData): void
     {
         foreach ($this->metaDataValidators as $metaDataValidator) {
             $metaDataValidator->validate($metaData);

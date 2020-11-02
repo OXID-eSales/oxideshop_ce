@@ -13,15 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ModuleConfigurationHandlerInterface
 {
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
     public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId);
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
     public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId);
 }

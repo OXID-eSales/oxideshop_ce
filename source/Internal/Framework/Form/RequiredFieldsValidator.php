@@ -17,7 +17,6 @@ class RequiredFieldsValidator implements FormValidatorInterface
     private $errors = [];
 
     /**
-     * @param FormInterface $form
      * @return bool
      */
     public function isValid(FormInterface $form)
@@ -25,7 +24,7 @@ class RequiredFieldsValidator implements FormValidatorInterface
         $isValid = true;
 
         foreach ($form->getFields() as $field) {
-            if ($field->isRequired() === true && !$field->getValue()) {
+            if (true === $field->isRequired() && !$field->getValue()) {
                 $this->addError();
                 $isValid = false;
 
@@ -47,7 +46,7 @@ class RequiredFieldsValidator implements FormValidatorInterface
     /**
      * Add error.
      */
-    private function addError()
+    private function addError(): void
     {
         $this->errors[] = 'ERROR_MESSAGE_INPUT_NOTALLFIELDS';
     }

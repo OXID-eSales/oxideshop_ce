@@ -15,21 +15,19 @@ use PDO;
 
 class DatabaseChecker implements DatabaseCheckerInterface
 {
-
     /**
      * @var BasicContextInterface
      */
     private $basicContext;
 
-    /**
-     * @param BasicContextInterface $basicContext
-     */
     public function __construct(BasicContextInterface $basicContext)
     {
         $this->basicContext = $basicContext;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function canCreateDatabase(
         string $host,
         int $port,
@@ -47,21 +45,15 @@ class DatabaseChecker implements DatabaseCheckerInterface
         throw new DatabaseExistsAndNotEmptyException("Database `$name` already exists and is not empty");
     }
 
-    /**
-     * @param string $host
-     * @param int    $port
-     * @param string $user
-     * @param string $password
-     *
-     * @return PDO
-     */
     private function getDatabaseConnection(string $host, int $port, string $user, string $password): PDO
     {
         return new \PDO(
             sprintf('mysql:host=%s;port=%s', $host, $port),
             $user,
             $password,
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+            [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            ]
         );
     }
 }

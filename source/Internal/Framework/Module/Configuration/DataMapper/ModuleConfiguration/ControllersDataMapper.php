@@ -37,10 +37,6 @@ class ControllersDataMapper implements ModuleConfigurationDataMapperInterface
         return $moduleConfiguration;
     }
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param array               $controllers
-     */
     private function setControllers(ModuleConfiguration $moduleConfiguration, array $controllers): void
     {
         foreach ($controllers as $id => $controllerClassNamespace) {
@@ -51,11 +47,6 @@ class ControllersDataMapper implements ModuleConfigurationDataMapperInterface
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     *
-     * @return array
-     */
     private function getControllers(ModuleConfiguration $configuration): array
     {
         $controllers = [];

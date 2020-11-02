@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingUpdateCallException;
+use OxidEsales\EshopCommunity\Internal\Framework\Event\ShopAwareInterface;
 
 class DIServiceWrapper
 {
@@ -20,23 +20,28 @@ class DIServiceWrapper
     private const SET_CONTEXT_METHOD = 'setContext';
     public const SET_CONTEXT_PARAMETER = '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface';
 
-    /** @var  string $id */
+    /**
+     * @var string
+     */
     private $id;
 
-    /** @var  array $serviceArguments */
+    /**
+     * @var array
+     */
     private $serviceArguments;
 
-    /** @var  string $class */
+    /**
+     * @var string
+     */
     private $class;
 
-    /** @var  array $calls */
+    /**
+     * @var array
+     */
     private $calls = [];
 
     /**
      * DIServiceWrapper constructor.
-     *
-     * @param string $id
-     * @param array  $serviceArguments
      */
     public function __construct(string $id, array $serviceArguments)
     {
@@ -63,7 +68,7 @@ class DIServiceWrapper
 
     private function setCalls(): void
     {
-        if (array_key_exists(self::CALLS_SECTION, $this->serviceArguments)) {
+        if (\array_key_exists(self::CALLS_SECTION, $this->serviceArguments)) {
             $this->calls = $this->serviceArguments[self::CALLS_SECTION];
         }
     }
@@ -71,6 +76,7 @@ class DIServiceWrapper
     public function getServiceAsArray(): array
     {
         $this->updateCalls();
+
         return $this->serviceArguments;
     }
 
@@ -86,7 +92,8 @@ class DIServiceWrapper
         if (!$this->hasClass()) {
             return false;
         }
-        return in_array(ShopAwareInterface::class, class_implements($this->getClass()), true);
+
+        return \in_array(ShopAwareInterface::class, class_implements($this->getClass()), true);
     }
 
     public function addActiveShops(array $shops): array
@@ -97,6 +104,7 @@ class DIServiceWrapper
         $newActiveShops = array_merge($currentlyActiveShops, $shops);
         $setActiveShopsCall->setParameter(0, $newActiveShops);
         $this->updateCall($setActiveShopsCall);
+
         return $newActiveShops;
     }
 
@@ -106,7 +114,7 @@ class DIServiceWrapper
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
         $newActiveShops = [];
         foreach ($currentlyActiveShops as $shopId) {
-            if (array_search($shopId, $shops) === false) {
+            if (false === array_search($shopId, $shops, true)) {
                 $newActiveShops[] = $shopId;
             }
         }
@@ -121,7 +129,8 @@ class DIServiceWrapper
         $this->addShopAwareCallsIfMissing();
         $setActiveShopsCall = $this->getCall(self::SET_ACTIVE_SHOPS_METHOD);
         $currentlyActiveShops = $setActiveShopsCall->getParameter(0);
-        return count($currentlyActiveShops) > 0;
+
+        return \count($currentlyActiveShops) > 0;
     }
 
     public function getKey(): string
@@ -135,9 +144,10 @@ class DIServiceWrapper
      */
     public function checkClassExists(): bool
     {
-        if (! $this->hasClass()) {
+        if (!$this->hasClass()) {
             return true;
         }
+
         return class_exists($this->getClass());
     }
 
@@ -178,9 +188,6 @@ class DIServiceWrapper
         return false;
     }
 
-    /**
-     * @param DICallWrapper $call
-     */
     private function addCall(DICallWrapper $call): void
     {
         $this->calls[] = $call->getCallAsArray();
@@ -191,18 +198,18 @@ class DIServiceWrapper
      */
     private function updateCall(DICallWrapper $call): void
     {
-        $callsCount = count($this->calls);
+        $callsCount = \count($this->calls);
 
-        for ($i = 0; $i < $callsCount; $i++) {
+        for ($i = 0; $i < $callsCount; ++$i) {
             $existingCall = new DICallWrapper($this->calls[$i]);
             if ($existingCall->getMethodName() === $call->getMethodName()) {
                 $this->calls[$i] = $call->getCallAsArray();
+
                 return;
             }
         }
         throw new MissingUpdateCallException();
     }
-
 
     /**
      * @throws MissingUpdateCallException

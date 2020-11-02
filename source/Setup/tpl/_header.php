@@ -1,10 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
-
 $facts = new \OxidEsales\Facts\Facts();
 
 ?>
@@ -12,7 +11,7 @@ $facts = new \OxidEsales\Facts\Facts();
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title><?php $this->getText('HEADER_META_MAIN_TITLE'); ?> - <?php echo($this->getTitle()) ?></title>
+    <title><?php $this->getText('HEADER_META_MAIN_TITLE'); ?> - <?php echo $this->getTitle(); ?></title>
     <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
     <script language="JavaScript">
     <!--
@@ -85,7 +84,7 @@ $facts = new \OxidEsales\Facts\Facts();
     </style>
 
     <?php
-    if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+    if (null !== ($iRedir2Step = $this->getNextSetupStep())) {
         ?><meta http-equiv="refresh" content="3; URL=index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>"><?php
     }
     ?>
@@ -103,20 +102,20 @@ $facts = new \OxidEsales\Facts\Facts();
                 continue;
             }
 
-            $blAct = (floor($this->getCurrentSetupStep() / 100) == ($iTab / 100));
+            $blAct = (floor($this->getCurrentSetupStep() / 100) === ($iTab / 100));
             $iStepId = floor($iTab / 100) - 1;
-            $iCntr++;
+            ++$iCntr;
 
             $sTabClass = $sTabLinkOpen = $sTabLinkClose = '';
             if ($blAct) {
-                $sTabClass     = 'act';
-                $sTabLinkOpen  = '<a href="index.php?istep=' . $iTab . '&sid=' . $this->getSid(false) . '">';
+                $sTabClass = 'act';
+                $sTabLinkOpen = '<a href="index.php?istep=' . $iTab . '&sid=' . $this->getSid(false) . '">';
                 $sTabLinkClose = '</a>';
             }
             ?>
             <dl class="tab <?php echo $sTabClass; ?>">
-                <dt><?php echo $sTabLinkOpen ?><?php echo $iCntr ,'. ',$this->getText('TAB_' . $iStepId . '_TITLE', false); ?><?php echo $sTabLinkClose?></dt>
-                <dd><?php echo $sTabLinkOpen ?><?php $this->getText('TAB_' . $iStepId . '_DESC'); ?><?php echo $sTabLinkClose?></dd>
+                <dt><?php echo $sTabLinkOpen; ?><?php echo $iCntr ,'. ',$this->getText('TAB_' . $iStepId . '_TITLE', false); ?><?php echo $sTabLinkClose; ?></dt>
+                <dd><?php echo $sTabLinkOpen; ?><?php $this->getText('TAB_' . $iStepId . '_DESC'); ?><?php echo $sTabLinkClose; ?></dd>
             </dl>
             <?php
         endforeach;
@@ -133,7 +132,7 @@ $facts = new \OxidEsales\Facts\Facts();
         ?><br><br><?php
     }
 
-    if (($iRedir2Step = $this->getNextSetupStep()) !== null) {
+    if (null !== ($iRedir2Step = $this->getNextSetupStep())) {
         ?><br><br><?php $this->getText('HEADER_TEXT_SETUP_NOT_RUNS_AUTOMATICLY'); ?>
         <a href="index.php?istep=<?php echo $iRedir2Step; ?>&sid=<?php $this->getSid(); ?>" id="continue"><b><?php $this->getText('HERE'); ?></b></a>.<br><br><?php
     }

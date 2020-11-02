@@ -11,10 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Resolver;
 
 interface TemplateNameResolverInterface
 {
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
     public function resolve(string $name): string;
 }

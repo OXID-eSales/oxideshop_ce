@@ -14,15 +14,15 @@ use OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParserInterface;
 class HtaccessUpdater implements HtaccessUpdaterInterface
 {
     private const REWRITE_BASE_FOR_EMPTY_PATH = '/';
-    /** @var HtaccessDaoFactoryInterface */
+    /**
+     * @var HtaccessDaoFactoryInterface
+     */
     private $htaccessDaoFactory;
-    /** @var UrlParserInterface */
+    /**
+     * @var UrlParserInterface
+     */
     private $urlParser;
 
-    /**
-     * @param HtaccessDaoFactoryInterface $htaccessDaoFactory
-     * @param UrlParserInterface $urlParser
-     */
     public function __construct(
         HtaccessDaoFactoryInterface $htaccessDaoFactory,
         UrlParserInterface $urlParser
@@ -31,7 +31,9 @@ class HtaccessUpdater implements HtaccessUpdaterInterface
         $this->urlParser = $urlParser;
     }
 
-    /** @inheritDoc */
+    /**
+     * {@inheritdoc}
+     */
     public function updateRewriteBaseDirective(string $url): void
     {
         $this->htaccessDaoFactory->createRootHtaccessDao()->setRewriteBase(
@@ -39,10 +41,6 @@ class HtaccessUpdater implements HtaccessUpdaterInterface
         );
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
     private function getRewriteBase(string $url): string
     {
         return $this->urlParser->getPathWithoutTrailingSlash($url) ?: self::REWRITE_BASE_FOR_EMPTY_PATH;

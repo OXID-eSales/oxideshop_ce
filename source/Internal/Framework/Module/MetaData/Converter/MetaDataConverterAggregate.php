@@ -21,10 +21,6 @@ class MetaDataConverterAggregate implements MetaDataConverterInterface
         $this->converters = $converters;
     }
 
-    /**
-     * @param array $metaData
-     * @return array
-     */
     public function convert(array $metaData): array
     {
         foreach ($this->converters as $converter) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,8 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * Online check base request class.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  *
  * @ignore   This class will not be included in documentation.
@@ -74,6 +77,7 @@ class OnlineRequest
      * Takes cluster id from configuration if set, otherwise generates it.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getClusterId" in next major
      */
     private function _getClusterId() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -84,7 +88,7 @@ class OnlineRequest
         if (!$sClusterId) {
             $oUUIDGenerator = oxNew(\OxidEsales\Eshop\Core\UniversallyUniqueIdGenerator::class);
             $sClusterId = $oUUIDGenerator->generate();
-            $oConfig->saveShopConfVar("str", 'sClusterId', $sClusterId, $sBaseShop);
+            $oConfig->saveShopConfVar('str', 'sClusterId', $sClusterId, $sBaseShop);
         }
 
         return $sClusterId;

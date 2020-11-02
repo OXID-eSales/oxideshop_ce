@@ -13,18 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ProjectConfigurationDaoInterface
 {
-    /**
-     * @return ProjectConfiguration
-     */
     public function getConfiguration(): ProjectConfiguration;
 
-    /**
-     * @param ProjectConfiguration $configuration
-     */
     public function save(ProjectConfiguration $configuration);
 
-    /**
-     * @return bool
-     */
     public function isConfigurationEmpty(): bool;
 }

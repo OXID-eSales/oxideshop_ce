@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,41 +13,44 @@ use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 
 /**
- * Setup View class
+ * Setup View class.
  */
 class View extends Core
 {
     /**
-     * View title
+     * View title.
      *
      * @var string
      */
     protected $_sTitle = null;
 
     /**
-     * Messages which should be displayed in current view
+     * Messages which should be displayed in current view.
      *
      * @var array
      */
     protected $_aMessages = [];
 
     /**
-     * View parameters array
+     * View parameters array.
      *
      * @var array
      */
     protected $_aViewParams = [];
 
-    /** @var string */
+    /**
+     * @var string
+     */
     private $templateFileName = 'default.php';
 
     /**
      * Defines name of template to be used in display method.
      *
      * @param string $templateFileName
+     *
      * @throws TemplateNotFoundException
      */
-    public function setTemplateFileName($templateFileName)
+    public function setTemplateFileName($templateFileName): void
     {
         if (!file_exists($this->getPathToTemplateFileName($templateFileName))) {
             throw new TemplateNotFoundException($templateFileName);
@@ -55,9 +60,9 @@ class View extends Core
     }
 
     /**
-     * Displays current setup step template
+     * Displays current setup step template.
      */
-    public function display()
+    public function display(): void
     {
         ob_start();
         $templateFilePath = $this->getPathToActiveTemplateFileName();
@@ -74,17 +79,17 @@ class View extends Core
     }
 
     /**
-     * @param string $templateFileName Name of the template file.
+     * @param string $templateFileName name of the template file
      *
      * @return string
      */
     private function getPathToTemplateFileName($templateFileName)
     {
-        return implode(DIRECTORY_SEPARATOR, [__DIR__, "tpl", $templateFileName]);
+        return implode(\DIRECTORY_SEPARATOR, [__DIR__, 'tpl', $templateFileName]);
     }
 
     /**
-     * Returns current page title
+     * Returns current page title.
      *
      * @return string
      */
@@ -94,17 +99,17 @@ class View extends Core
     }
 
     /**
-     * Sets current page title id
+     * Sets current page title id.
      *
      * @param string $sTitleId title id
      */
-    public function setTitle($sTitleId)
+    public function setTitle($sTitleId): void
     {
         $this->_sTitle = $sTitleId;
     }
 
     /**
-     * Returns messages array
+     * Returns messages array.
      *
      * @return array
      */
@@ -114,12 +119,12 @@ class View extends Core
     }
 
     /**
-     * Sets message to view
+     * Sets message to view.
      *
      * @param string $sMessage   message to write to view
      * @param bool   $blOverride if TRUE cleanups previously defined messages [optional]
      */
-    public function setMessage($sMessage, $blOverride = false)
+    public function setMessage($sMessage, $blOverride = false): void
     {
         if ($blOverride) {
             $this->_aMessages = [];
@@ -129,7 +134,7 @@ class View extends Core
     }
 
     /**
-     * Translates text
+     * Translates text.
      *
      * @param string $sTextId translation ident
      * @param bool   $blPrint if true - prints requested value [optional]
@@ -138,38 +143,36 @@ class View extends Core
      */
     public function getText($sTextId, $blPrint = true)
     {
-        $sText = $this->getInstance("Language")->getText($sTextId);
+        $sText = $this->getInstance('Language')->getText($sTextId);
 
         return $blPrint ? print($sText) : $sText;
     }
 
     /**
-     * Prints session id
+     * Prints session id.
      *
      * @param bool $blPrint if true - prints requested value [optional]
-     *
-     * @return null
      */
     public function getSid($blPrint = true)
     {
-        $sSid = $this->getInstance("Session")->getSid();
+        $sSid = $this->getInstance('Session')->getSid();
 
         return $blPrint ? print($sSid) : $sSid;
     }
 
     /**
-     * Sets view parameter value
+     * Sets view parameter value.
      *
      * @param string $sName  parameter name
      * @param mixed  $sValue parameter value
      */
-    public function setViewParam($sName, $sValue)
+    public function setViewParam($sName, $sValue): void
     {
         $this->_aViewParams[$sName] = $sValue;
     }
 
     /**
-     * Returns view parameter value
+     * Returns view parameter value.
      *
      * @param string $sName view parameter name
      *
@@ -186,7 +189,7 @@ class View extends Core
     }
 
     /**
-     * Returns passed setup step number
+     * Returns passed setup step number.
      *
      * @param string $sStepId setup step id
      * @param bool   $blPrint if true - prints requested value [optional]
@@ -195,63 +198,61 @@ class View extends Core
      */
     public function getSetupStep($sStepId, $blPrint = true)
     {
-        $sStep = $this->getInstance("Setup")->getStep($sStepId);
+        $sStep = $this->getInstance('Setup')->getStep($sStepId);
 
         return $blPrint ? print($sStep) : $sStep;
     }
 
     /**
-     * Returns next setup step id
+     * Returns next setup step id.
      *
      * @return int
      */
     public function getNextSetupStep()
     {
-        return $this->getInstance("Setup")->getNextStep();
+        return $this->getInstance('Setup')->getNextStep();
     }
 
     /**
-     * Returns current setup step id
-     *
-     * @return null
+     * Returns current setup step id.
      */
     public function getCurrentSetupStep()
     {
-        return $this->getInstance("Setup")->getCurrentStep();
+        return $this->getInstance('Setup')->getCurrentStep();
     }
 
     /**
-     * Returns all setup process steps
+     * Returns all setup process steps.
      *
      * @return array
      */
     public function getSetupSteps()
     {
-        return $this->getInstance("Setup")->getSteps();
+        return $this->getInstance('Setup')->getSteps();
     }
 
     /**
      * If demo data installation is OFF, tries to delete demo pictures also
      * checks if setup deletion is ON and deletes setup files if possible,
-     * return deletion status
+     * return deletion status.
      *
-     * @param array $aSetupConfig if to delete setup directory.
-     * @param array $aDemoConfig  database and demo data configuration.
+     * @param array $aSetupConfig if to delete setup directory
+     * @param array $aDemoConfig  database and demo data configuration
      *
      * @return bool
      */
     public function isDeletedSetup($aSetupConfig, $aDemoConfig)
     {
         /** @var Utilities $oUtils */
-        $oUtils = $this->getInstance("Utilities");
+        $oUtils = $this->getInstance('Utilities');
         $sPath = getShopBasePath();
 
-        if (!isset($aDemoConfig['dbiDemoData']) || $aDemoConfig['dbiDemoData'] != '1') {
+        if (!isset($aDemoConfig['dbiDemoData']) || '1' !== $aDemoConfig['dbiDemoData']) {
             // "/generated" cleanup
-            $oUtils->removeDir($sPath . "out/pictures/generated", true);
+            $oUtils->removeDir($sPath . 'out/pictures/generated', true);
 
             // "/master" cleanup, leaving nopic
-            $oUtils->removeDir($sPath . "out/pictures/master", true, 1, ["nopic.jpg"]);
+            $oUtils->removeDir($sPath . 'out/pictures/master', true, 1, ['nopic.jpg']);
         }
 
         if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
@@ -265,7 +266,7 @@ class View extends Core
     }
 
     /**
-     * Returns or prints url for info about missing web service configuration
+     * Returns or prints url for info about missing web service configuration.
      *
      * @param string $sIdent  module identifier
      * @param bool   $blPrint prints result if TRUE
@@ -283,7 +284,7 @@ class View extends Core
     /**
      * Sends content headers.
      */
-    public function sendHeaders()
+    public function sendHeaders(): void
     {
         header('Content-Type: text/html; charset=utf-8');
     }

@@ -17,12 +17,12 @@ class FormConfiguration implements FormConfigurationInterface
     private $fieldConfigurations = [];
 
     /**
-     * @param FieldConfigurationInterface $fieldConfiguration
      * @return self
      */
     public function addFieldConfiguration(FieldConfigurationInterface $fieldConfiguration)
     {
         $this->fieldConfigurations[] = $fieldConfiguration;
+
         return $this;
     }
 

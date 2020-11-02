@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
 interface ContactFormMessageBuilderInterface
 {
     /**
-     * @param FormInterface $form
      * @return string
      */
     public function getContent(FormInterface $form);

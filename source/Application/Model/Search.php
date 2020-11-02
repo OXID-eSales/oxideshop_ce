@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,23 +9,20 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
-
 /**
- * Implements search
+ * Implements search.
  */
 class Search extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * Active language id
+     * Active language id.
      *
      * @var int
      */
     protected $_iLanguage = 0;
 
     /**
-     * Class constructor. Executes search lenguage setter
+     * Class constructor. Executes search lenguage setter.
      */
     public function __construct()
     {
@@ -31,11 +30,11 @@ class Search extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Search language setter. If no param is passed, will be taken default shop language
+     * Search language setter. If no param is passed, will be taken default shop language.
      *
      * @param string $iLanguage string (default null)
      */
-    public function setLanguage($iLanguage = null)
+    public function setLanguage($iLanguage = null): void
     {
         if (!isset($iLanguage)) {
             $this->_iLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
@@ -45,7 +44,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns a list of articles according to search parameters. Returns matched
+     * Returns a list of articles according to search parameters. Returns matched.
      *
      * @param string|false $sSearchParamForQuery       query parameter
      * @param string|false $sInitialSearchCat          initial category to seearch in
@@ -58,7 +57,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
     public function getSearchArticles($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false)
     {
         // sets active page
-        $this->iActPage = (int) \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
+        $this->iActPage = (int)\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('pgNr');
         $this->iActPage = ($this->iActPage < 0) ? 0 : $this->iActPage;
 
         // load only articles which we show on screen
@@ -93,7 +92,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $sSelect = $this->_getSearchSelect($sSearchParamForQuery, $sInitialSearchCat, $sInitialSearchVendor, $sInitialSearchManufacturer, false);
         if ($sSelect) {
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
-            $sSelect = "select count( " . getViewName('oxarticles', $this->_iLanguage) . ".oxid ) $sPartial ";
+            $sSelect = 'select count( ' . getViewName('oxarticles', $this->_iLanguage) . ".oxid ) $sPartial ";
 
             $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
         }
@@ -102,7 +101,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns the appropriate SQL select for a search according to search parameters
+     * Returns the appropriate SQL select for a search according to search parameters.
      *
      * @param string|false $sSearchParamForQuery       query parameter
      * @param string|false $sInitialSearchCat          initial category to search in
@@ -111,6 +110,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      * @param string|false $sSortBy                    sort by
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSearchSelect" in next major
      */
     protected function _getSearchSelect($sSearchParamForQuery = false, $sInitialSearchCat = false, $sInitialSearchVendor = false, $sInitialSearchManufacturer = false, $sSortBy = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -130,10 +130,10 @@ class Search extends \OxidEsales\Eshop\Core\Base
 
             $sQ = "select 1 from $sCatTable 
                 where $sCatTable.oxid = :oxid ";
-            $sQ .= "and " . $oCategory->getSqlActiveSnippet();
+            $sQ .= 'and ' . $oCategory->getSqlActiveSnippet();
 
             $params = [
-                ':oxid' => $sInitialSearchCat
+                ':oxid' => $sInitialSearchCat,
             ];
 
             if (!$oDb->getOne($sQ, $params)) {
@@ -149,10 +149,10 @@ class Search extends \OxidEsales\Eshop\Core\Base
 
             $sQ = "select 1 from $sVndTable 
                 where $sVndTable.oxid = :oxid ";
-            $sQ .= "and " . $oVendor->getSqlActiveSnippet();
+            $sQ .= 'and ' . $oVendor->getSqlActiveSnippet();
 
             $params = [
-                ':oxid' => $sInitialSearchVendor
+                ':oxid' => $sInitialSearchVendor,
             ];
 
             if (!$oDb->getOne($sQ, $params)) {
@@ -168,10 +168,10 @@ class Search extends \OxidEsales\Eshop\Core\Base
 
             $sQ = "select 1 from $sManTable 
                 where $sManTable.oxid = :oxid ";
-            $sQ .= "and " . $oManufacturer->getSqlActiveSnippet();
+            $sQ .= 'and ' . $oManufacturer->getSqlActiveSnippet();
 
             $params = [
-                ':oxid' => $sInitialSearchManufacturer
+                ':oxid' => $sInitialSearchManufacturer,
             ];
 
             if (!$oDb->getOne($sQ, $params)) {
@@ -217,11 +217,11 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $sSelect .= " and {$sArticleTable}.oxparentid = '' and {$sArticleTable}.oxissearch = 1 ";
 
         if ($sInitialSearchVendor) {
-            $sSelect .= " and {$sArticleTable}.oxvendorid = " . $oDb->quote($sInitialSearchVendor) . " ";
+            $sSelect .= " and {$sArticleTable}.oxvendorid = " . $oDb->quote($sInitialSearchVendor) . ' ';
         }
 
         if ($sInitialSearchManufacturer) {
-            $sSelect .= " and {$sArticleTable}.oxmanufacturerid = " . $oDb->quote($sInitialSearchManufacturer) . " ";
+            $sSelect .= " and {$sArticleTable}.oxmanufacturerid = " . $oDb->quote($sInitialSearchManufacturer) . ' ';
         }
 
         $sSelect .= $sWhere;
@@ -239,6 +239,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
      * @param string $sSearchString searching string
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getWhere" in next major
      */
     protected function _getWhere($sSearchString) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -249,7 +250,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $sArticleTable = getViewName('oxarticles', $this->_iLanguage);
 
         $aSearchCols = $myConfig->getConfigParam('aSearchCols');
-        if (!(is_array($aSearchCols) && count($aSearchCols))) {
+        if (!(\is_array($aSearchCols) && \count($aSearchCols))) {
             return '';
         }
 
@@ -259,7 +260,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $myUtilsString = \OxidEsales\Eshop\Core\Registry::getUtilsString();
 
         foreach ($aSearch as $sSearchString) {
-            if (!strlen($sSearchString)) {
+            if (!\strlen($sSearchString)) {
                 continue;
             }
 
@@ -309,10 +310,11 @@ class Search extends \OxidEsales\Eshop\Core\Base
         $descriptionJoin = '';
         $searchColumns = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aSearchCols');
 
-        if (is_array($searchColumns) && in_array('oxlongdesc', $searchColumns)) {
+        if (\is_array($searchColumns) && \in_array('oxlongdesc', $searchColumns, true)) {
             $viewName = getViewName('oxartextends', $this->_iLanguage);
             $descriptionJoin = " LEFT JOIN {$viewName } ON {$table}.oxid={$viewName }.oxid ";
         }
+
         return $descriptionJoin;
     }
 
@@ -321,17 +323,18 @@ class Search extends \OxidEsales\Eshop\Core\Base
      * Needed in case of searching for data in table oxartextends or its views.
      *
      * @param string $table
-     * @param string $field Chose table depending on field.
+     * @param string $field chose table depending on field
      *
      * @return string
      */
     protected function getSearchField($table, $field)
     {
-        if ($field == 'oxlongdesc') {
+        if ('oxlongdesc' === $field) {
             $searchField = getViewName('oxartextends', $this->_iLanguage) . ".{$field}";
         } else {
             $searchField = "{$table}.{$field}";
         }
+
         return $searchField;
     }
 }

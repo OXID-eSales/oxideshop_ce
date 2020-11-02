@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -16,7 +18,8 @@ use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
  * HTTP GET/POST Parameters, inside form actions or with oxid_include_widget.
  * Those controllers are specified e.g. inside a form action with a controller key which is mapped to its class.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ShopControllerMapProvider implements ControllerMapProviderInterface
@@ -288,7 +291,7 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
     ];
 
     /**
-     * All available controller maps will be merged together like this: CE <- PE <- EE
+     * All available controller maps will be merged together like this: CE <- PE <- EE.
      *
      * @return array Edition specific mapping of controller keys to classes
      */

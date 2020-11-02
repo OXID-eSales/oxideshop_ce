@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,8 +9,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
 use stdClass;
 
 /**
@@ -17,7 +17,7 @@ use stdClass;
 class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * Class constructor
+     * Class constructor.
      */
     public function __construct()
     {
@@ -25,15 +25,15 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Load all attributes by article Id's
+     * Load all attributes by article Id's.
      *
      * @param array $aIds article id's
      *
-     * @return array $aAttributes;
+     * @return array;
      */
     public function loadAttributesByIds($aIds)
     {
-        if (!count($aIds)) {
+        if (!\count($aIds)) {
             return;
         }
 
@@ -44,25 +44,26 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $sSelect = "select $sAttrViewName.oxid, $sAttrViewName.oxtitle, {$sViewName}.oxvalue, {$sViewName}.oxobjectid ";
         $sSelect .= "from {$sViewName} left join $sAttrViewName on $sAttrViewName.oxid = {$sViewName}.oxattrid ";
-        $sSelect .= "where {$sViewName}.oxobjectid in ( " . $oxObjectIdsSql . " ) ";
+        $sSelect .= "where {$sViewName}.oxobjectid in ( " . $oxObjectIdsSql . ' ) ';
         $sSelect .= "order by {$sViewName}.oxpos, $sAttrViewName.oxpos";
 
         return $this->_createAttributeListFromSql($sSelect);
     }
 
     /**
-     * Fills array with keys and products with value
+     * Fills array with keys and products with value.
      *
      * @param string $sSelect SQL select
      *
-     * @return array $aAttributes
+     * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "createAttributeListFromSql" in next major
      */
     protected function _createAttributeListFromSql($sSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aAttributes = [];
         $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sSelect);
-        if ($rs != false && $rs->count() > 0) {
+        if (false !== $rs && $rs->count() > 0) {
             while (!$rs->EOF) {
                 if (!isset($aAttributes[$rs->fields[0]])) {
                     $aAttributes[$rs->fields[0]] = new stdClass();
@@ -81,12 +82,12 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Load attributes by article Id
+     * Load attributes by article Id.
      *
      * @param string $sArticleId article id
      * @param string $sParentId  article parent id
      */
-    public function loadAttributes($sArticleId, $sParentId = null)
+    public function loadAttributes($sArticleId, $sParentId = null): void
     {
         if ($sArticleId) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -100,12 +101,12 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";
 
             $aAttributes = $oDb->getAll($sSelect, [
-                ':oxobjectid' => $sArticleId
+                ':oxobjectid' => $sArticleId,
             ]);
 
             if ($sParentId) {
                 $aParentAttributes = $oDb->getAll($sSelect, [
-                    ':oxobjectid' => $sParentId
+                    ':oxobjectid' => $sParentId,
                 ]);
                 $aAttributes = $this->_mergeAttributes($aAttributes, $aParentAttributes);
             }
@@ -115,12 +116,12 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Load displayable in baskte/order attributes by article Id
+     * Load displayable in baskte/order attributes by article Id.
      *
      * @param string $sArtId    article ids
      * @param string $sParentId parent id
      */
-    public function loadAttributesDisplayableInBasket($sArtId, $sParentId = null)
+    public function loadAttributesDisplayableInBasket($sArtId, $sParentId = null): void
     {
         if ($sArtId) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
@@ -134,12 +135,12 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";
 
             $aAttributes = $oDb->getAll($sSelect, [
-                ':oxobjectid' => $sArtId
+                ':oxobjectid' => $sArtId,
             ]);
 
             if ($sParentId) {
                 $aParentAttributes = $oDb->getAll($sSelect, [
-                    ':oxobjectid' => $sParentId
+                    ':oxobjectid' => $sParentId,
                 ]);
                 $aAttributes = $this->_mergeAttributes($aAttributes, $aParentAttributes);
             }
@@ -149,10 +150,10 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * get category attributes by category Id
+     * get category attributes by category Id.
      *
-     * @param string  $sCategoryId category Id
-     * @param integer $iLang       language No
+     * @param string $sCategoryId category Id
+     * @param int    $iLang       language No
      *
      * @return object
      */
@@ -164,7 +165,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
         $oArtList->loadCategoryIDs($sCategoryId, $aSessionFilter);
 
         // Only if we have articles
-        if (count($oArtList) > 0) {
+        if (\count($oArtList) > 0) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sArtIds = '';
             foreach (array_keys($oArtList->getArray()) as $sId) {
@@ -178,16 +179,16 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sO2ATbl = getViewName('oxobject2attribute', $iLang);
             $sC2ATbl = getViewName('oxcategory2attribute', $iLang);
 
-            $sSelect = "SELECT DISTINCT att.oxid, att.oxtitle, o2a.oxvalue " .
+            $sSelect = 'SELECT DISTINCT att.oxid, att.oxtitle, o2a.oxvalue ' .
                        "FROM $sAttTbl as att, $sO2ATbl as o2a ,$sC2ATbl as c2a " .
                        "WHERE att.oxid = o2a.oxattrid AND c2a.oxobjectid = :oxobjectid AND c2a.oxattrid = att.oxid AND o2a.oxvalue !='' AND o2a.oxobjectid IN ($sArtIds) " .
-                       "ORDER BY c2a.oxsort , att.oxpos, att.oxtitle, o2a.oxvalue";
+                       'ORDER BY c2a.oxsort , att.oxpos, att.oxtitle, o2a.oxvalue';
 
             $rs = $oDb->select($sSelect, [
-                ':oxobjectid' => $sCategoryId
+                ':oxobjectid' => $sCategoryId,
             ]);
 
-            if ($rs != false && $rs->count() > 0) {
+            if (false !== $rs && $rs->count() > 0) {
                 while (!$rs->EOF && list($sAttId, $sAttTitle, $sAttValue) = $rs->fields) {
                     if (!$this->offsetExists($sAttId)) {
                         $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
@@ -212,24 +213,25 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Merge attribute arrays
+     * Merge attribute arrays.
      *
      * @param array $aAttributes       array of attributes
      * @param array $aParentAttributes array of parent article attributes
      *
-     * @return array $aAttributes
+     * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "mergeAttributes" in next major
      */
     protected function _mergeAttributes($aAttributes, $aParentAttributes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (count($aParentAttributes)) {
+        if (\count($aParentAttributes)) {
             $aAttrIds = [];
             foreach ($aAttributes as $aAttribute) {
                 $aAttrIds[] = $aAttribute['OXID'];
             }
 
             foreach ($aParentAttributes as $aAttribute) {
-                if (!in_array($aAttribute['OXID'], $aAttrIds)) {
+                if (!\in_array($aAttribute['OXID'], $aAttrIds, true)) {
                     $aAttributes[] = $aAttribute;
                 }
             }

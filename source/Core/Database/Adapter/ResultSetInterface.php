@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,22 +10,21 @@
 namespace OxidEsales\EshopCommunity\Core\Database\Adapter;
 
 /**
- * Interface ResultSetInterface
+ * Interface ResultSetInterface.
  *
  * @deprecated since v6.5.0 (2019-09-24); Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
  */
 interface ResultSetInterface extends \Traversable, \Countable
 {
-
     /**
      * Closes the cursor, enabling the statement to be executed again.
      *
-     * @return boolean Returns true on success or false on failure.
+     * @return bool returns true on success or false on failure
      */
     public function close();
 
     /**
-     * Returns an array containing all of the result set rows
+     * Returns an array containing all of the result set rows.
      *
      * @return array
      */
@@ -38,9 +39,9 @@ interface ResultSetInterface extends \Traversable, \Countable
     public function fetchRow();
 
     /**
-     * Returns the number of columns in the result set
+     * Returns the number of columns in the result set.
      *
-     * @return integer Returns the number of columns in the result set represented by the PDOStatement object.
+     * @return int returns the number of columns in the result set represented by the PDOStatement object
      */
     public function fieldCount();
 }

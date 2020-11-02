@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Current user Data Maintenance form.
@@ -31,16 +32,16 @@ class AccountUserController extends \OxidEsales\Eshop\Application\Controller\Acc
      * If user is not logged in - returns name of template
      * \OxidEsales\Eshop\Application\Controller\AccountUserController::_sThisLoginTemplate, or if user is already
      * logged in additionally loads user delivery address info and forms country list. Returns name of template
-     * \OxidEsales\Eshop\Application\Controller\AccountUserController::_sThisTemplate
+     * \OxidEsales\Eshop\Application\Controller\AccountUserController::_sThisTemplate.
      *
-     * @return  string  $_sThisTemplate current template file name
+     * @return string current template file name
      */
     public function render()
     {
         parent::render();
 
         // is logged in ?
-        if (!($this->getUser())) {
+        if (!$this->getUser()) {
             return $this->_sThisTemplate = $this->_sThisLoginTemplate;
         }
 
@@ -48,7 +49,7 @@ class AccountUserController extends \OxidEsales\Eshop\Application\Controller\Acc
     }
 
     /**
-     * Template variable getter. Checks to show or not shipping address entry form
+     * Template variable getter. Checks to show or not shipping address entry form.
      *
      * @return bool
      */

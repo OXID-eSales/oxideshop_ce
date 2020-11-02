@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -15,16 +17,15 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingB
  */
 class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-
     /**
-     * Shop control variable
+     * Shop control variable.
      *
      * @var string
      */
     protected $_blDisableShopCheck = true;
 
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
@@ -40,7 +41,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Calls parent::assign and assigns review writer data
+     * Calls parent::assign and assigns review writer data.
      *
      * @param array $dbRecord database record
      *
@@ -53,11 +54,11 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
         if (isset($this->oxreviews__oxuserid) && $this->oxreviews__oxuserid->value) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $params = [
-                ':oxid' => $this->oxreviews__oxuserid->value
+                ':oxid' => $this->oxreviews__oxuserid->value,
             ];
 
-            $firstName = $oDb->getOne("SELECT oxfname FROM oxuser 
-                WHERE oxid = :oxid", $params);
+            $firstName = $oDb->getOne('SELECT oxfname FROM oxuser 
+                WHERE oxid = :oxid', $params);
 
             $this->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($firstName);
         }
@@ -86,6 +87,7 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data fiels in DB. Returns true on success.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -97,12 +99,12 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * get oxList of reviews for given object ids and type
+     * get oxList of reviews for given object ids and type.
      *
-     * @param string  $sType       type of given ids
-     * @param mixed   $aIds        given object ids to load, can be array or just one id, given as string
-     * @param boolean $blLoadEmpty true if want to load empty text reviews
-     * @param int     $iLoadInLang language to select for loading
+     * @param string $sType       type of given ids
+     * @param mixed  $aIds        given object ids to load, can be array or just one id, given as string
+     * @param bool   $blLoadEmpty true if want to load empty text reviews
+     * @param int    $iLoadInLang language to select for loading
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
@@ -113,13 +115,13 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $params = [
             ':oxtype' => $sType,
-            ':oxlang' => is_null($iLoadInLang) ? (int) \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang
+            ':oxlang' => null === $iLoadInLang ? (int)\OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage() : (int)$iLoadInLang,
         ];
 
-        if (is_array($aIds) && count($aIds)) {
-            $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . " )";
-        } elseif (is_string($aIds) && $aIds) {
-            $sObjectIdWhere = "oxreviews.oxobjectid = :oxobjectid";
+        if (\is_array($aIds) && \count($aIds)) {
+            $sObjectIdWhere = 'oxreviews.oxobjectid in ( ' . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ' )';
+        } elseif (\is_string($aIds) && $aIds) {
+            $sObjectIdWhere = 'oxreviews.oxobjectid = :oxobjectid';
             $params[':oxobjectid'] = $aIds;
         } else {
             return $oRevs;
@@ -156,23 +158,23 @@ class Review extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Retuns review object type
+     * Retuns review object type.
      *
      * @return string
      */
     public function getObjectType()
     {
-        return is_object($this->oxreviews__oxtype) ? $this->oxreviews__oxtype->value : $this->oxreviews__oxtype;
+        return \is_object($this->oxreviews__oxtype) ? $this->oxreviews__oxtype->value : $this->oxreviews__oxtype;
     }
 
     /**
-     * Retuns review object id
+     * Retuns review object id.
      *
      * @return string
      */
     public function getObjectId()
     {
-        return is_object($this->oxreviews__oxobjectid) ? $this->oxreviews__oxobjectid->value : $this->oxreviews__oxobjectid;
+        return \is_object($this->oxreviews__oxobjectid) ? $this->oxreviews__oxobjectid->value : $this->oxreviews__oxobjectid;
     }
 
     /**

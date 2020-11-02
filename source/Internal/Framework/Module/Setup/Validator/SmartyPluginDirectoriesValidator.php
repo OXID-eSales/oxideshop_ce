@@ -25,23 +25,17 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
      */
     private $modulePathResolver;
 
-    /**
-     * @param ModulePathResolverInterface $modulePathResolver
-     */
     public function __construct(ModulePathResolverInterface $modulePathResolver)
     {
         $this->modulePathResolver = $modulePathResolver;
     }
 
     /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     *
      * @throws DirectoryNotExistentException
      * @throws DirectoryNotReadableException
      * @throws ModuleSettingNotValidException
      */
-    public function validate(ModuleConfiguration $configuration, int $shopId)
+    public function validate(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($configuration->hasSmartyPluginDirectories()) {
             $directories = [];
@@ -51,13 +45,7 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
             }
 
             if ($this->isEmptyArray($directories)) {
-                throw new ModuleSettingNotValidException(
-                    'Module setting ' .
-                    SmartyPluginDirectoriesDataMapper::MAPPING_KEY .
-                    ' must be of type array but ' .
-                    gettype($directories[0]) .
-                    ' given'
-                );
+                throw new ModuleSettingNotValidException('Module setting ' . SmartyPluginDirectoriesDataMapper::MAPPING_KEY . ' must be of type array but ' . \gettype($directories[0]) . ' given');
             }
 
             $fullPathToModule = $this->modulePathResolver->getFullModulePathFromConfiguration(
@@ -66,28 +54,19 @@ class SmartyPluginDirectoriesValidator implements ModuleConfigurationValidatorIn
             );
 
             foreach ($directories as $directory) {
-                $fullPathSmartyPluginDirectory = $fullPathToModule . DIRECTORY_SEPARATOR . $directory;
+                $fullPathSmartyPluginDirectory = $fullPathToModule . \DIRECTORY_SEPARATOR . $directory;
                 if (!is_dir($fullPathSmartyPluginDirectory)) {
-                    throw new DirectoryNotExistentException(
-                        'Directory ' . $fullPathSmartyPluginDirectory . ' does not exist.'
-                    );
+                    throw new DirectoryNotExistentException('Directory ' . $fullPathSmartyPluginDirectory . ' does not exist.');
                 }
                 if (!is_readable($fullPathSmartyPluginDirectory)) {
-                    throw new DirectoryNotReadableException(
-                        'Directory ' . $fullPathSmartyPluginDirectory . ' not readable.'
-                    );
+                    throw new DirectoryNotReadableException('Directory ' . $fullPathSmartyPluginDirectory . ' not readable.');
                 }
             }
         }
     }
 
-    /**
-     * @param array $directories
-     *
-     * @return bool
-     */
     private function isEmptyArray(array $directories): bool
     {
-        return count($directories) === 1 && $directories[0] === '';
+        return 1 === \count($directories) && '' === $directories[0];
     }
 }

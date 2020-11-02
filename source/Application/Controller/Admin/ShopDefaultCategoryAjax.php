@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,34 +9,35 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxField;
-
 /**
- * Class controls article assignment to attributes
+ * Class controls article assignment to attributes.
  */
 class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxtitle', 'oxcategories', 1, 1, 0],
-        ['oxdesc', 'oxcategories', 1, 1, 0],
-        ['oxid', 'oxcategories', 0, 0, 0],
-        ['oxid', 'oxcategories', 0, 0, 1]
-    ]
+    protected $_aColumns = [
+        // field , table,         visible, multilanguage, ident
+        'container1' => [
+            ['oxtitle', 'oxcategories', 1, 1, 0],
+            ['oxdesc', 'oxcategories', 1, 1, 0],
+            ['oxid', 'oxcategories', 0, 0, 0],
+            ['oxid', 'oxcategories', 0, 0, 1],
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oCat->setLanguage(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('editlanguage'));
@@ -45,9 +48,9 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
     }
 
     /**
-     * Removing article from corssselling list
+     * Removing article from corssselling list.
      */
-    public function unassignCat()
+    public function unassignCat(): void
     {
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
@@ -58,9 +61,9 @@ class ShopDefaultCategoryAjax extends \OxidEsales\Eshop\Application\Controller\A
     }
 
     /**
-     * Adding article to corssselling list
+     * Adding article to corssselling list.
      */
-    public function assignCat()
+    public function assignCat(): void
     {
         $sChosenCat = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxcatid');
         $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');

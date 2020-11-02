@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Contact\Form;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Form\FormInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 
 class ContactFormMessageBuilder implements ContactFormMessageBuilderInterface
 {
@@ -21,7 +21,6 @@ class ContactFormMessageBuilder implements ContactFormMessageBuilderInterface
 
     /**
      * ContactFormMessageBuilder constructor.
-     * @param ShopAdapterInterface $shopAdapter
      */
     public function __construct(ShopAdapterInterface $shopAdapter)
     {
@@ -29,7 +28,6 @@ class ContactFormMessageBuilder implements ContactFormMessageBuilderInterface
     }
 
     /**
-     * @param FormInterface $form
      * @return string
      */
     public function getContent(FormInterface $form)

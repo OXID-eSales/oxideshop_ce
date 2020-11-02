@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -24,7 +26,7 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
     /**
      * If active load components
-     * Widgets loads active view components
+     * Widgets loads active view components.
      *
      * @var array
      */
@@ -32,9 +34,9 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
     /**
      * Sets self::$_aCollectedComponentNames to null, as views and widgets
-     * controllers loads different components and calls parent::init()
+     * controllers loads different components and calls parent::init().
      */
-    public function init()
+    public function init(): void
     {
         self::$_aCollectedComponentNames = null;
 
@@ -58,10 +60,12 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
 
     /**
      * In widgets we do not need to parse seo and do any work related to that
-     * Shop main control is responsible for that, and that has to be done once
+     * Shop main control is responsible for that, and that has to be done once.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "processRequest" in next major
      */
-    protected function _processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _processRequest(): void
     {
     }
 }

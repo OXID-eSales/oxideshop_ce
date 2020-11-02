@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,7 +15,7 @@ use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException;
 
 /**
- * Database connection class
+ * Database connection class.
  *
  * @deprecated since v6.5.0 (2019-09-24); Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
  */
@@ -22,20 +24,20 @@ class DatabaseProvider
     /**
      * @var int Fetch mode - numeric
      */
-    const FETCH_MODE_NUM = DatabaseInterface::FETCH_MODE_NUM;
+    public const FETCH_MODE_NUM = DatabaseInterface::FETCH_MODE_NUM;
 
     /**
      * @var int Fetch mode - associative
      */
-    const FETCH_MODE_ASSOC = DatabaseInterface::FETCH_MODE_ASSOC;
+    public const FETCH_MODE_ASSOC = DatabaseInterface::FETCH_MODE_ASSOC;
 
     /**
-     * @var null|DatabaseProvider A singleton instance of this class or a sub class of this class
+     * @var DatabaseProvider|null A singleton instance of this class or a sub class of this class
      */
     protected static $instance = null;
 
     /**
-     * @var null|DatabaseInterface Database connection object
+     * @var DatabaseInterface|null Database connection object
      */
     protected static $db = null;
 
@@ -45,7 +47,7 @@ class DatabaseProvider
     protected static $tblDescCache = [];
 
     /**
-     * @var null|ConfigFile Database type
+     * @var ConfigFile|null Database type
      */
     protected $configFile;
 
@@ -67,13 +69,13 @@ class DatabaseProvider
      */
     public function __clone()
     {
-        throw new \Exception("This object is a singleton, thou shalt not clone.");
+        throw new \Exception('This object is a singleton, thou shalt not clone.');
     }
 
     /**
      * Returns the singleton instance of this class or of a sub class of this class.
      *
-     * @return DatabaseProvider The singleton instance.
+     * @return DatabaseProvider the singleton instance
      */
     public static function getInstance()
     {
@@ -89,7 +91,7 @@ class DatabaseProvider
      *
      * @param int $fetchMode The fetch mode. Default is numeric (0).
      *
-     * @throws DatabaseConnectionException Error while initiating connection to DB.
+     * @throws DatabaseConnectionException error while initiating connection to DB
      *
      * @return DatabaseInterface
      */
@@ -99,7 +101,7 @@ class DatabaseProvider
             $databaseFactory = static::getInstance();
             static::$db = $databaseFactory->createDatabase();
 
-            /** Post connect actions will be taken only once per connection */
+            /* Post connect actions will be taken only once per connection */
             $databaseFactory->onPostConnect();
         }
 
@@ -128,11 +130,9 @@ class DatabaseProvider
     }
 
     /**
-     * Sets class properties needed for a successful database connection
-     *
-     * @param \OxidEsales\Eshop\Core\ConfigFile $configFile
+     * Sets class properties needed for a successful database connection.
      */
-    public function setConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
+    public function setConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile): void
     {
         $this->configFile = $configFile;
     }
@@ -140,7 +140,7 @@ class DatabaseProvider
     /**
      * Extracts and returns table metadata from DB.
      *
-     * @param string $tableName Name of table to invest.
+     * @param string $tableName name of table to invest
      *
      * @return array
      */
@@ -157,7 +157,7 @@ class DatabaseProvider
     /**
      * Flush the table description cache of this class.
      */
-    public function flushTableDescriptionCache()
+    public function flushTableDescriptionCache(): void
     {
         self::$tblDescCache = [];
     }
@@ -188,10 +188,10 @@ class DatabaseProvider
         /** Call to fetchConfigFile redirects to setup wizard, if shop has not been configured. */
         $configFile = $this->fetchConfigFile();
 
-        /** Validate the configuration file */
+        /* Validate the configuration file */
         $this->validateConfigFile($configFile);
 
-        /** Set config file to be able to read shop configuration within the class */
+        /* Set config file to be able to read shop configuration within the class */
         $this->setConfigFile($configFile);
 
         /** @var array $connectionParameters Parameters needed for the database connection */
@@ -208,7 +208,7 @@ class DatabaseProvider
      * Post connect hook. This method is called only once per connection right after the connection to the database has
      * been established.
      */
-    protected function onPostConnect()
+    protected function onPostConnect(): void
     {
         // @todo Set database logging from iDebug
     }
@@ -222,33 +222,26 @@ class DatabaseProvider
      */
     protected function fetchConfigFile()
     {
-        /**
-         * Do the configuration of the database connection parameters
+        /*
+         * Do the configuration of the database connection parameters.
          */
         /** @var ConfigFile $configFile */
-        $configFile = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
-
-        return $configFile;
+        return Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class);
     }
 
     /**
      * Validate configuration file.
      * The parameters are validated and on failure the method behaves like this:
-     * - if the shop is has not been configured yet, throws a DatabaseNotConfiguredException
-     *
-     * @param \OxidEsales\Eshop\Core\ConfigFile $configFile
+     * - if the shop is has not been configured yet, throws a DatabaseNotConfiguredException.
      *
      * @throws DatabaseNotConfiguredException
      */
-    protected function validateConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile)
+    protected function validateConfigFile(\OxidEsales\Eshop\Core\ConfigFile $configFile): void
     {
         $isDatabaseConfigured = $this->isDatabaseConfigured($configFile);
 
         if (!$isDatabaseConfigured) {
-            throw new \OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException(
-                'The database connection has not been configured in config.inc.php',
-                0
-            );
+            throw new \OxidEsales\Eshop\Core\Exception\DatabaseNotConfiguredException('The database connection has not been configured in config.inc.php', 0);
         }
     }
 
@@ -261,69 +254,57 @@ class DatabaseProvider
     {
         /** Collect the parameters, that are necessary to initialize the database connection: */
 
-        /**
-         * @var string $databaseDriver At the moment the database adapter uses always 'pdo_mysql'.
-         */
+        /** @var string $databaseDriver at the moment the database adapter uses always 'pdo_mysql' */
         $databaseDriver = $this->getConfigParam('dbType');
         /**
          * @var string $databaseHost The database host to connect to.
-         * Be aware, that the connection between the MySQL client and the server is unencrypted.
+         *             Be aware, that the connection between the MySQL client and the server is unencrypted.
          */
         $databaseHost = $this->getConfigParam('dbHost');
-        /**
-         * @var integer $databasePort TCP port to connect to.
-         */
-        $databasePort = (int) $this->getConfigParam('dbPort');
+        /** @var int $databasePort TCP port to connect to */
+        $databasePort = (int)$this->getConfigParam('dbPort');
         if (!$databasePort) {
             $databasePort = 3306;
         }
-        /**
-         * @var string $databaseName The name of the database or scheme to connect to.
-         */
+        /** @var string $databaseName the name of the database or scheme to connect to */
         $databaseName = $this->getConfigParam('dbName');
-        /**
-         * @var string $databaseUser The user id of the database user.
-         */
+        /** @var string $databaseUser the user id of the database user */
         $databaseUser = $this->getConfigParam('dbUser');
-        /**
-         * @var string $databasePassword The password of the database user.
-         */
+        /** @var string $databasePassword the password of the database user */
         $databasePassword = $this->getConfigParam('dbPwd');
-        /**
-         * @var string $databaseDriverOptions The options to pass to the database driver.
-         */
+        /** @var string $databaseDriverOptions the options to pass to the database driver */
         $databaseDriverOptions = $this->getConfigParam('dbDriverOptions');
-        if (!is_array($databaseDriverOptions)) {
-            $databaseDriverOptions = array();
+        if (!\is_array($databaseDriverOptions)) {
+            $databaseDriverOptions = [];
         }
-        /**
-         * @var string $databaseUnixSocket The unix_socket path.
-         */
+        /** @var string $databaseUnixSocket the unix_socket path */
         $databaseUnixSocket = $this->getConfigParam('dbUnixSocket');
 
         $connectionParameters = [
             'default' => [
-                'databaseDriver'        => $databaseDriver,
-                'databaseHost'          => $databaseHost,
-                'databasePort'          => $databasePort,
-                'databaseName'          => $databaseName,
-                'databaseUser'          => $databaseUser,
-                'databasePassword'      => $databasePassword,
+                'databaseDriver' => $databaseDriver,
+                'databaseHost' => $databaseHost,
+                'databasePort' => $databasePort,
+                'databaseName' => $databaseName,
+                'databaseUser' => $databaseUser,
+                'databasePassword' => $databasePassword,
                 'databaseDriverOptions' => $databaseDriverOptions,
-                'databaseUnixSocket'    => $databaseUnixSocket,
+                'databaseUnixSocket' => $databaseUnixSocket,
             ],
         ];
 
         /**
          * The charset has to be set during the connection to the database.
          */
-        $charset = (string) $this->getConfigParam('dbCharset');
+        $charset = (string)$this->getConfigParam('dbCharset');
         //backwards compatibility with old config files.
-        if (null == $charset) {
+        if (null === $charset) {
             $charset = 'utf8';
         }
 
-        $connectionParameters['default'] = array_merge($connectionParameters['default'], ['connectionCharset' => $charset]);
+        $connectionParameters['default'] = array_merge($connectionParameters['default'], [
+            'connectionCharset' => $charset,
+        ]);
 
         return $connectionParameters;
     }
@@ -331,7 +312,7 @@ class DatabaseProvider
     /**
      * Return local config value by given name.
      *
-     * @param string $configVar returning config name.
+     * @param string $configVar returning config name
      *
      * @return mixed
      */
@@ -343,8 +324,6 @@ class DatabaseProvider
     /**
      * Return false if the database connection has not been configured in the eShop configuration file.
      *
-     * @param \OxidEsales\Eshop\Core\ConfigFile $config
-     *
      * @return bool
      */
     protected function isDatabaseConfigured(\OxidEsales\Eshop\Core\ConfigFile $config)
@@ -352,7 +331,7 @@ class DatabaseProvider
         $isValid = true;
 
         // If the shop has not been configured yet the hostname has the format '<dbHost>'
-        if (false  !== strpos($config->getVar('dbHost'), '<')) {
+        if (false !== strpos($config->getVar('dbHost'), '<')) {
             $isValid = false;
         }
 

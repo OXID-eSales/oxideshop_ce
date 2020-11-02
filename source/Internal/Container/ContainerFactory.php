@@ -46,7 +46,7 @@ class ContainerFactory
      */
     public function getContainer()
     {
-        if ($this->symfonyContainer === null) {
+        if (null === $this->symfonyContainer) {
             $this->initializeContainer();
         }
 
@@ -57,7 +57,7 @@ class ContainerFactory
      * Loads container from cache if available, otherwise
      * create the container from scratch.
      */
-    private function initializeContainer()
+    private function initializeContainer(): void
     {
         if ($this->cache->exists()) {
             $this->symfonyContainer = $this->cache->get();
@@ -67,7 +67,7 @@ class ContainerFactory
         }
     }
 
-    private function getCompiledSymfonyContainer()
+    private function getCompiledSymfonyContainer(): void
     {
         $containerBuilder = (new ContainerBuilderFactory())->create();
         $this->symfonyContainer = $containerBuilder->getContainer();
@@ -79,16 +79,17 @@ class ContainerFactory
      */
     public static function getInstance()
     {
-        if (self::$instance === null) {
-            self::$instance = new ContainerFactory();
+        if (null === self::$instance) {
+            self::$instance = new self();
         }
+
         return self::$instance;
     }
 
     /**
      * Forces reload of the ContainerFactory on next request.
      */
-    public static function resetContainer()
+    public static function resetContainer(): void
     {
         self::getInstance()->cache->invalidate();
         self::$instance = null;

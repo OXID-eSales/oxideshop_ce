@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -18,28 +20,28 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Number of possible compare pages.
      *
-     * @var integer
+     * @var int
      */
     protected $_iCntPages = 1;
 
     /**
      * Number of user's orders.
      *
-     * @var integer
+     * @var int
      */
     protected $_iOrderCnt = null;
 
     /**
      * Number of articles per page.
      *
-     * @var integer
+     * @var int
      */
     protected $_iArticlesPerPage = 3;
 
     /**
      * Number of user's orders.
      *
-     * @var integer
+     * @var int
      */
     protected $_iCompItemsCnt = null;
 
@@ -65,7 +67,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_oAttributeList = null;
 
     /**
-     * Recomendation list
+     * Recomendation list.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -74,14 +76,14 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_oRecommList = null;
 
     /**
-     * Page navigation
+     * Page navigation.
      *
      * @var object
      */
     protected $_oPageNavigation = null;
 
     /**
-     * Sign if to load and show bargain action
+     * Sign if to load and show bargain action.
      *
      * @var bool
      */
@@ -104,9 +106,9 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_aSimilarRecommListIds = null;
 
     /**
-     * moves current article to the left in compare items array
+     * moves current article to the left in compare items array.
      */
-    public function moveLeft() //#777C
+    public function moveLeft(): void //#777C
     {
         $sArticleId = Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
@@ -114,7 +116,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             $blFound = false;
             foreach ($aItems as $sOxid => $sVal) {
-                if ($sOxid == $sArticleId) {
+                if ($sOxid === $sArticleId) {
                     $blFound = true;
                 }
                 if (!$blFound) {
@@ -125,9 +127,9 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
             if ($sPrevArticleId) {
                 $aNewItems = [];
                 foreach ($aItems as $sOxid => $sVal) {
-                    if ($sOxid == $sPrevArticleId) {
+                    if ($sOxid === $sPrevArticleId) {
                         $aNewItems[$sArticleId] = true;
-                    } elseif ($sOxid == $sArticleId) {
+                    } elseif ($sOxid === $sArticleId) {
                         $aNewItems[$sPrevArticleId] = true;
                     } else {
                         $aNewItems[$sOxid] = true;
@@ -140,9 +142,9 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * moves current article to the right in compare items array
+     * moves current article to the right in compare items array.
      */
-    public function moveRight() //#777C
+    public function moveRight(): void //#777C
     {
         $sArticleId = Registry::getConfig()->getRequestParameter('aid');
         if ($sArticleId && ($aItems = $this->getCompareItems())) {
@@ -154,7 +156,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
                     $sNextArticleId = $sOxid;
                     $blFound = false;
                 }
-                if ($sOxid == $sArticleId) {
+                if ($sOxid === $sArticleId) {
                     $blFound = true;
                 }
             }
@@ -162,9 +164,9 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
             if ($sNextArticleId) {
                 $aNewItems = [];
                 foreach ($aItems as $sOxid => $sVal) {
-                    if ($sOxid == $sArticleId) {
+                    if ($sOxid === $sArticleId) {
                         $aNewItems[$sNextArticleId] = true;
-                    } elseif ($sOxid == $sNextArticleId) {
+                    } elseif ($sOxid === $sNextArticleId) {
                         $aNewItems[$sArticleId] = true;
                     } else {
                         $aNewItems[$sOxid] = true;
@@ -176,35 +178,35 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * changes default template for compare in popup
+     * changes default template for compare in popup.
      */
-    public function inPopup() // #777C
+    public function inPopup(): void // #777C
     {
         $this->_sThisTemplate = 'compare_popup.tpl';
         $this->_iArticlesPerPage = -1;
     }
 
     /**
-     * Articlelist count in comparison setter
+     * Articlelist count in comparison setter.
      *
-     * @param integer $iCount compare items count
+     * @param int $iCount compare items count
      */
-    public function setCompareItemsCnt($iCount)
+    public function setCompareItemsCnt($iCount): void
     {
         $this->_iCompItemsCnt = $iCount;
     }
 
     /**
-     * Template variable getter. Returns article list count in comparison
+     * Template variable getter. Returns article list count in comparison.
      *
-     * @return integer
+     * @return int
      */
     public function getCompareItemsCnt()
     {
-        if ($this->_iCompItemsCnt === null) {
+        if (null === $this->_iCompItemsCnt) {
             $this->_iCompItemsCnt = 0;
             if ($aItems = $this->getCompareItems()) {
-                $this->_iCompItemsCnt = count($aItems);
+                $this->_iCompItemsCnt = \count($aItems);
             }
         }
 
@@ -212,15 +214,13 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Compare item $_aCompItems getter
-     *
-     * @return null
+     * Compare item $_aCompItems getter.
      */
     public function getCompareItems()
     {
-        if ($this->_aCompItems === null) {
+        if (null === $this->_aCompItems) {
             $aItems = Registry::getSession()->getVariable('aFiltcompproducts');
-            if (is_array($aItems) && count($aItems)) {
+            if (\is_array($aItems) && \count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
         }
@@ -229,45 +229,45 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Compare item $_aCompItems setter
+     * Compare item $_aCompItems setter.
      *
      * @param array $aItems compare items i new order
      */
-    public function setCompareItems($aItems)
+    public function setCompareItems($aItems): void
     {
         $this->_aCompItems = $aItems;
         Registry::getSession()->setVariable('aFiltcompproducts', $aItems);
     }
 
     /**
-     *  $_iArticlesPerPage setter
+     *  $_iArticlesPerPage setter.
      *
      * @param int $iNumber article count in compare page
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setArticlesPerPage" in next major
      */
-    protected function _setArticlesPerPage($iNumber) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setArticlesPerPage($iNumber): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_iArticlesPerPage = $iNumber;
     }
 
     /**
-     *  turn off paging
+     *  turn off paging.
      */
-    public function setNoPaging()
+    public function setNoPaging(): void
     {
         $this->_setArticlesPerPage(0);
     }
 
-
     /**
      * Template variable getter. Returns comparison's article
-     * list in order per page
+     * list in order per page.
      *
      * @return object
      */
     public function getCompArtList()
     {
-        if ($this->_oArtList === null) {
+        if (null === $this->_oArtList) {
             if (($aItems = $this->getCompareItems())) {
                 // counts how many pages
                 $oList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
@@ -287,13 +287,13 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns attribute list
+     * Template variable getter. Returns attribute list.
      *
      * @return object
      */
     public function getAttributeList()
     {
-        if ($this->_oAttributeList === null) {
+        if (null === $this->_oAttributeList) {
             $this->_oAttributeList = false;
             if ($oArtList = $this->getCompArtList()) {
                 $aProductIds = array_keys($oArtList);
@@ -319,7 +319,7 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
      */
     public function getSimilarRecommListIds()
     {
-        if ($this->_aSimilarRecommListIds === null) {
+        if (null === $this->_aSimilarRecommListIds) {
             $this->_aSimilarRecommListIds = false;
 
             if ($oArtList = $this->getCompArtList()) {
@@ -331,13 +331,13 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns page navigation
+     * Template variable getter. Returns page navigation.
      *
      * @return object
      */
     public function getPageNavigation()
     {
-        if ($this->_oPageNavigation === null) {
+        if (null === $this->_oPageNavigation) {
             $this->_oPageNavigation = false;
             $this->_oPageNavigation = $this->generatePageNavigation();
         }
@@ -346,12 +346,13 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Cuts page articles
+     * Cuts page articles.
      *
      * @param array  $aItems article array
      * @param object $oList  article list array
      *
-     * @return array $aNewItems
+     * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "removeArticlesFromPage" in next major
      */
     protected function _removeArticlesFromPage($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -364,23 +365,24 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $aNewItems = [];
         $iActPage = $this->getActPage();
         $maxPageIndex = $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage;
-        for ($i = $this->_iArticlesPerPage * $iActPage; $i < $maxPageIndex; $i++) {
+        for ($i = $this->_iArticlesPerPage * $iActPage; $i < $maxPageIndex; ++$i) {
             if (!isset($aKeys[$i])) {
                 break;
             }
-            $aNewItems[$aKeys[$i]] = & $aItems[$aKeys[$i]];
+            $aNewItems[$aKeys[$i]] = &$aItems[$aKeys[$i]];
         }
 
         return $aNewItems;
     }
 
     /**
-     * Changes order of list elements
+     * Changes order of list elements.
      *
      * @param array  $aItems article array
      * @param object $oList  article list array
      *
-     * @return array $oNewList
+     * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "changeArtListOrder" in next major
      */
     protected function _changeArtListOrder($aItems, $oList) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -395,18 +397,18 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
                 continue;
             }
 
-            $iCnt++;
+            ++$iCnt;
             $oNewList[$sOxid] = $oList[$sOxid];
 
             // hide arrow if article is first in the list
             $oNewList[$sOxid]->hidePrev = false;
-            if ($iActPage == 0 && $iCnt == 1) {
+            if (0 === $iActPage && 1 === $iCnt) {
                 $oNewList[$sOxid]->hidePrev = true;
             }
 
             // hide arrow if article is last in the list
             $oNewList[$sOxid]->hideNext = false;
-            if (($iActPage + 1) == $this->_iCntPages && $iCnt == count($aItems)) {
+            if (($iActPage + 1) === $this->_iCntPages && $iCnt === \count($aItems)) {
                 $oNewList[$sOxid]->hideNext = true;
             }
         }
@@ -415,13 +417,11 @@ class CompareController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * changes default template for compare in popup
-     *
-     * @return null
+     * changes default template for compare in popup.
      */
     public function getOrderCnt()
     {
-        if ($this->_iOrderCnt === null) {
+        if (null === $this->_iOrderCnt) {
             $this->_iOrderCnt = 0;
             if ($oUser = $this->getUser()) {
                 $this->_iOrderCnt = $oUser->getOrderCount();

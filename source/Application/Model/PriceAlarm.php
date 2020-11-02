@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxRegistry;
-use oxField;
 
 /**
  * PriceAlarm manager.
@@ -17,56 +16,56 @@ use oxField;
 class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxpricealarm';
 
     /**
-     * Article object
+     * Article object.
      *
      * @var object
      */
     protected $_oArticle = null;
 
     /**
-     * Formatted original article price
+     * Formatted original article price.
      *
      * @var string
      */
     protected $_fPrice = null;
 
     /**
-     * Original article price
+     * Original article price.
      *
-     * @var double
+     * @var float
      */
     protected $_dPrice = null;
 
     /**
-     * Full article title
+     * Full article title.
      *
      * @var string
      */
     protected $_sTitle = null;
 
     /**
-     * Currency object
+     * Currency object.
      *
      * @var object
      */
     protected $_oCurrency = null;
 
     /**
-     * Customer proposed price
+     * Customer proposed price.
      *
      * @var string
      */
     protected $_fProposedPrice = null;
 
     /**
-     * PriceAlarm status
+     * PriceAlarm status.
      *
      * @var int
      */
@@ -86,6 +85,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Inserts object data into DB, returns true on success.
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "insert" in next major
      */
     protected function _insert() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -97,13 +97,13 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Loads pricealarm article
+     * Loads pricealarm article.
      *
      * @return object
      */
     public function getArticle()
     {
-        if ($this->_oArticle == null) {
+        if (null === $this->_oArticle) {
             $this->_oArticle = false;
             $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
             if ($oArticle->load($this->oxpricealarm__oxartid->value)) {
@@ -115,13 +115,13 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns formatted pricealarm article original price
+     * Returns formatted pricealarm article original price.
      *
      * @return string
      */
     public function getFPrice()
     {
-        if ($this->_fPrice == null) {
+        if (null === $this->_fPrice) {
             $this->_fPrice = false;
             if ($dArtPrice = $this->getPrice()) {
                 $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
@@ -134,13 +134,13 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns pricealarm article original price
+     * Returns pricealarm article original price.
      *
-     * @return double
+     * @return float
      */
     public function getPrice()
     {
-        if ($this->_dPrice == null) {
+        if (null === $this->_dPrice) {
             $this->_dPrice = false;
             if ($oArticle = $this->getArticle()) {
                 $myUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
@@ -159,20 +159,20 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns pricealarm article full title
+     * Returns pricealarm article full title.
      *
      * @return string
      */
     public function getTitle()
     {
-        if ($this->_sTitle == null) {
+        if (null === $this->_sTitle) {
             $this->_sTitle = false;
             if ($oArticle = $this->getArticle()) {
                 $this->_sTitle = $oArticle->oxarticles__oxtitle->value;
                 if ($oArticle->oxarticles__oxparentid->value && !$oArticle->oxarticles__oxtitle->value) {
                     $oParent = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
                     $oParent->load($oArticle->oxarticles__oxparentid->value);
-                    $this->_sTitle = $oParent->oxarticles__oxtitle->value . " " . $oArticle->oxarticles__oxvarselect->value;
+                    $this->_sTitle = $oParent->oxarticles__oxtitle->value . ' ' . $oArticle->oxarticles__oxvarselect->value;
                 }
             }
         }
@@ -181,13 +181,13 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns pricealarm currency object
+     * Returns pricealarm currency object.
      *
      * @return object
      */
     public function getPriceAlarmCurrency()
     {
-        if ($this->_oCurrency == null) {
+        if (null === $this->_oCurrency) {
             $this->_oCurrency = false;
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $oThisCurr = $myConfig->getCurrencyObject($this->oxpricealarm__oxcurrency->value);
@@ -206,13 +206,13 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns formatted proposed price
+     * Returns formatted proposed price.
      *
      * @return string
      */
     public function getFProposedPrice()
     {
-        if ($this->_fProposedPrice == null) {
+        if (null === $this->_fProposedPrice) {
             $this->_fProposedPrice = false;
             if ($oThisCurr = $this->getPriceAlarmCurrency()) {
                 $myLang = \OxidEsales\Eshop\Core\Registry::getLang();
@@ -224,13 +224,13 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns pricealarm status
+     * Returns pricealarm status.
      *
-     * @return integer
+     * @return int
      */
     public function getPriceAlarmStatus()
     {
-        if ($this->_iStatus == null) {
+        if (null === $this->_iStatus) {
             // neutral status
             $this->_iStatus = 0;
 
@@ -241,7 +241,7 @@ class PriceAlarm extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
 
             // suggestion to user is sent
-            if ($this->oxpricealarm__oxsended->value != "0000-00-00 00:00:00") {
+            if ('0000-00-00 00:00:00' !== $this->oxpricealarm__oxsended->value) {
                 $this->_iStatus = 2;
             }
         }

@@ -14,16 +14,12 @@ interface SmartyBuilderInterface
     /**
      * Sets properties of smarty object.
      *
-     * @param array $settings
-     *
      * @return self
      */
     public function setSettings(array $settings);
 
     /**
      * Sets security options of smarty object.
-     *
-     * @param array $settings
      *
      * @return self
      */
@@ -32,16 +28,12 @@ interface SmartyBuilderInterface
     /**
      * Registers a resource of smarty object.
      *
-     * @param array $resourcesToRegister
-     *
      * @return self
      */
     public function registerResources(array $resourcesToRegister);
 
     /**
      * Register prefilters of smarty object.
-     *
-     * @param array $prefilters
      *
      * @return self
      */
@@ -50,14 +42,9 @@ interface SmartyBuilderInterface
     /**
      * Register plugins of smarty object.
      *
-     * @param array $plugins
-     *
      * @return self
      */
     public function registerPlugins(array $plugins);
 
-    /**
-     * @return \Smarty
-     */
     public function getSmarty(): \Smarty;
 }

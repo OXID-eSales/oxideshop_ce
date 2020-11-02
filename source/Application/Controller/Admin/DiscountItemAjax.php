@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,16 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxDb;
-
 /**
- * Class manages discount articles
+ * Class manages discount articles.
  */
 class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax
 {
     /**
-     * Columns array
+     * Columns array.
      *
      * @var array
      */
@@ -29,26 +28,28 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             ['oxmpn', 'oxarticles', 0, 0, 0],
             ['oxprice', 'oxarticles', 0, 0, 0],
             ['oxstock', 'oxarticles', 0, 0, 0],
-            ['oxid', 'oxarticles', 0, 0, 1]
+            ['oxid', 'oxarticles', 0, 0, 1],
         ],
-         'container2' => [
-             ['oxartnum', 'oxarticles', 1, 0, 0],
-             ['oxtitle', 'oxarticles', 1, 1, 0],
-             ['oxean', 'oxarticles', 1, 0, 0],
-             ['oxmpn', 'oxarticles', 0, 0, 0],
-             ['oxprice', 'oxarticles', 0, 0, 0],
-             ['oxstock', 'oxarticles', 0, 0, 0],
-             ['oxitmartid', 'oxdiscount', 0, 0, 1]
-         ]
+        'container2' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 1, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxitmartid', 'oxdiscount', 0, 0, 1],
+        ],
     ];
 
     /**
-     * Returns SQL query for data to fetc
+     * Returns SQL query for data to fetc.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQuery" in next major
      */
-    protected function _getQuery() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQuery()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -67,15 +68,15 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             //#6027
             //if we have variants then depending on config option the parent may be non buyable
             //when the checkbox is checked, blVariantParentBuyable is true.
-            $sQAdd .= $oConfig->getConfigParam('blVariantParentBuyable') ?  '' : "and $sArticleTable.oxvarcount = 0";
+            $sQAdd .= $oConfig->getConfigParam('blVariantParentBuyable') ? '' : "and $sArticleTable.oxvarcount = 0";
         } else {
             // selected category ?
-            if ($sSynchOxid && $sOxid != $sSynchOxid) {
+            if ($sSynchOxid && $sOxid !== $sSynchOxid) {
                 $sQAdd = " from $sO2CView left join $sArticleTable on ";
                 $sQAdd .= $oConfig->getConfigParam('blVariantsSelection') ? "($sArticleTable.oxid=$sO2CView.oxobjectid or $sArticleTable.oxparentid=$sO2CView.oxobjectid)" : " $sArticleTable.oxid=$sO2CView.oxobjectid ";
                 $sQAdd .= " where $sO2CView.oxcatnid = " . $oDb->quote($sOxid) . " and $sArticleTable.oxid is not null ";
                 //#6027
-                $sQAdd .= $oConfig->getConfigParam('blVariantParentBuyable') ?  '' : " and $sArticleTable.oxvarcount = 0";
+                $sQAdd .= $oConfig->getConfigParam('blVariantParentBuyable') ? '' : " and $sArticleTable.oxvarcount = 0";
 
                 // resetting
                 $sId = null;
@@ -85,12 +86,12 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
             }
         }
 
-        if ($sSynchOxid && $sSynchOxid != $sOxid) {
+        if ($sSynchOxid && $sSynchOxid !== $sOxid) {
             // performance
             $sSubSelect = " select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
             $sSubSelect .= " and $sDiscTable.oxid = " . $oDb->quote($sSynchOxid);
 
-            if (stristr($sQAdd, 'where') === false) {
+            if (false === stristr($sQAdd, 'where')) {
                 $sQAdd .= ' where ';
             } else {
                 $sQAdd .= ' and ';
@@ -102,45 +103,47 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
     }
 
     /**
-     * Removes selected article (articles) from discount list
+     * Removes selected article (articles) from discount list.
      */
-    public function removeDiscArt()
+    public function removeDiscArt(): void
     {
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('oxid');
         $aChosenArt = $this->_getActionIds('oxdiscount.oxitmartid');
-        if (is_array($aChosenArt)) {
+        if (\is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = '' where oxid = :oxid and oxitmartid = :oxitmartid";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [
                 ':oxid' => $soxId,
-                ':oxitmartid' => reset($aChosenArt)
+                ':oxitmartid' => reset($aChosenArt),
             ]);
         }
     }
 
     /**
-     * Adds selected article (articles) to discount list
+     * Adds selected article (articles) to discount list.
      */
-    public function addDiscArt()
+    public function addDiscArt(): void
     {
         $aChosenArt = $this->_getActionIds('oxarticles.oxid');
         $soxId = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('synchoxid');
-        if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
-            $sQ = "update oxdiscount set oxitmartid = :oxitmartid where oxid = :oxid";
+        if ($soxId && '-1' !== $soxId && \is_array($aChosenArt)) {
+            $sQ = 'update oxdiscount set oxitmartid = :oxitmartid where oxid = :oxid';
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [
                 ':oxitmartid' => reset($aChosenArt),
-                ':oxid' => $soxId
+                ':oxid' => $soxId,
             ]);
         }
     }
 
     /**
      * Formats and returns chunk of SQL query string with definition of
-     * fields to load from DB. Adds subselect to get variant title from parent article
+     * fields to load from DB. Adds subselect to get variant title from parent article.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getQueryCols" in next major
      */
-    protected function _getQueryCols() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getQueryCols()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sLangTag = \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageTag();
@@ -157,7 +160,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
             $sCol = $aCol[0];
 
-            if ($oConfig->getConfigParam('blVariantsSelection') && $aCol[0] == 'oxtitle') {
+            if ($oConfig->getConfigParam('blVariantsSelection') && 'oxtitle' === $aCol[0]) {
                 $sVarSelect = "$sViewTable.oxvarselect" . $sLangTag;
                 $sQ .= " IF( $sViewTable.$sCol != '', $sViewTable.$sCol, CONCAT((select oxart.$sCol from $sViewTable as oxart where oxart.oxid = $sViewTable.oxparentid),', ',$sVarSelect)) as _" . $iCnt;
             } else {

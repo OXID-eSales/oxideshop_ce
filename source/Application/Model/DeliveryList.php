@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,44 +9,41 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxRegistry;
-
 /**
  * Delivery list manager.
  */
 class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * Session user Id
+     * Session user Id.
      *
      * @var string
      */
     protected $_sUserId = null;
 
     /**
-     * Performance - load or not delivery list
+     * Performance - load or not delivery list.
      *
      * @var bool
      */
     protected $_blPerfLoadDelivery = null;
 
     /**
-     * Deliveries list
+     * Deliveries list.
      *
      * @var array
      */
     protected $_aDeliveries = [];
 
     /**
-     * User object
+     * User object.
      *
      * @var \OxidEsales\Eshop\Application\Model\User
      */
     protected $_oUser = null;
 
     /**
-     * Home country info array
+     * Home country info array.
      *
      * @var array
      */
@@ -52,15 +51,14 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Collect fitting deliveries sets instead of fitting deliveries
-     * Default is false
+     * Default is false.
      *
      * @var bool
      */
     protected $_blCollectFittingDeliveriesSets = false;
 
-
     /**
-     * Calls parent constructor and sets home country
+     * Calls parent constructor and sets home country.
      */
     public function __construct()
     {
@@ -71,13 +69,13 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Home country setter
+     * Home country setter.
      *
      * @param string $sHomeCountry home country id
      */
-    public function setHomeCountry($sHomeCountry)
+    public function setHomeCountry($sHomeCountry): void
     {
-        if (is_array($sHomeCountry)) {
+        if (\is_array($sHomeCountry)) {
             $this->_sHomeCountry = current($sHomeCountry);
         } else {
             $this->_sHomeCountry = $sHomeCountry;
@@ -85,7 +83,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Returns active delivery list
+     * Returns active delivery list.
      *
      * Loads all active delivery in list. Additionally
      * checks if set has user customized parameters like
@@ -97,12 +95,13 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      * @param string                                   $sDelSet    user chosen delivery set
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getList" in next major
      */
     protected function _getList($oUser = null, $sCountryId = null, $sDelSet = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ($oUser === null) {
+        if (null === $oUser) {
             $oUser = $this->getUser();
         } else {
             //set user
@@ -131,13 +130,14 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Creates delivery list filter SQL to load current state delivery list
+     * Creates delivery list filter SQL to load current state delivery list.
      *
      * @param \OxidEsales\Eshop\Application\Model\User $oUser      session user object
      * @param string                                   $sCountryId user country id
      * @param string                                   $sDelSet    user chosen delivery set
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getFilterSelect" in next major
      */
     protected function _getFilterSelect($oUser, $sCountryId, $sDelSet) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -146,7 +146,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         $sTable = getViewName('oxdelivery');
         $sQ = "select $sTable.* from ( select distinct $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid ";
-        $sQ .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = " . $oDb->quote($sDelSet) . " ";
+        $sQ .= 'where ' . $this->getBaseObject()->getSqlActiveSnippet() . ' and oxdel2delset.oxdelsetid = ' . $oDb->quote($sDelSet) . ' ';
 
         // defining initial filter parameters
         $sUserId = null;
@@ -162,7 +162,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         $aIds = [];
-        if (count($aGroupIds)) {
+        if (\count($aGroupIds)) {
             foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
             }
@@ -172,9 +172,9 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sGroupTable = getViewName('oxgroups');
         $sCountryTable = getViewName('oxcountry');
 
-        $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
-        $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
-        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ") )" : '0';
+        $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ')' : '0';
+        $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ')' : '0';
+        $sGroupSql = \count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in (" . implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . ') )' : '0';
 
         $sQ .= " order by $sTable.oxsort asc ) as $sTable where (
             select
@@ -240,7 +240,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
 
             foreach ($aDeliveries as $sDeliveryId => $oDelivery) {
                 // skipping that was checked and didn't fit before
-                if (in_array($sDeliveryId, $aSkipDeliveries)) {
+                if (\in_array($sDeliveryId, $aSkipDeliveries, true)) {
                     continue;
                 }
 
@@ -276,7 +276,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         }
 
         //return deliveries sets if found
-        if ($this->_blCollectFittingDeliveriesSets && count($aFittingDelSets)) {
+        if ($this->_blCollectFittingDeliveriesSets && \count($aFittingDelSets)) {
             //resetting getting delivery sets list instead of deliveries before return
             $this->_blCollectFittingDeliveriesSets = false;
 
@@ -292,7 +292,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Checks if deliveries in list fits for current basket and delivery set
+     * Checks if deliveries in list fits for current basket and delivery set.
      *
      * @param \OxidEsales\Eshop\Application\Model\Basket $oBasket        shop basket
      * @param \OxidEsales\Eshop\Application\Model\User   $oUser          session user
@@ -317,8 +317,6 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         return $blHas;
     }
 
-    /**/
-
     /**
      * Get current user object. If user is not set, try to get current user.
      *
@@ -334,32 +332,32 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Set current user object
+     * Set current user object.
      *
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      */
-    public function setUser($oUser)
+    public function setUser($oUser): void
     {
         $this->_oUser = $oUser;
     }
 
     /**
      * Force or not to collect deliveries sets instead of deliveries when
-     * getting deliveries list in getDeliveryList()
+     * getting deliveries list in getDeliveryList().
      *
      * @param bool $blCollectFittingDeliveriesSets collect deliveries sets or not
      */
-    public function setCollectFittingDeliveriesSets($blCollectFittingDeliveriesSets = false)
+    public function setCollectFittingDeliveriesSets($blCollectFittingDeliveriesSets = false): void
     {
         $this->_blCollectFittingDeliveriesSets = $blCollectFittingDeliveriesSets;
     }
 
     /**
-     * Load oxDeliveryList for product
+     * Load oxDeliveryList for product.
      *
      * @param object $oProduct oxArticle object
      */
-    public function loadDeliveryListForProduct($oProduct)
+    public function loadDeliveryListForProduct($oProduct): void
     {
         $dPrice = $oProduct->getPrice()->getBruttoPrice();
         $dSize = $oProduct->getSize();
@@ -369,7 +367,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         $params = [];
 
         $sQ = "select $sTable.* from $sTable";
-        $sQ .= " where " . $this->getBaseObject()->getSqlActiveSnippet();
+        $sQ .= ' where ' . $this->getBaseObject()->getSqlActiveSnippet();
         $sQ .= " and ($sTable.oxdeltype != 'a' || ( $sTable.oxparam <= 1 && $sTable.oxparamend >= 1))";
         if ($dPrice) {
             $sQ .= " and ($sTable.oxdeltype != 'p' || ( $sTable.oxparam <= :dprice && $sTable.oxparamend >= :dprice))";

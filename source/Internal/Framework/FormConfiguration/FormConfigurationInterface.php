@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\FormConfiguration;
 interface FormConfigurationInterface
 {
     /**
-     * @param FieldConfigurationInterface $fieldConfiguration
      * @return self
      */
     public function addFieldConfiguration(FieldConfigurationInterface $fieldConfiguration);

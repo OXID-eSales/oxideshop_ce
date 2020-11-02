@@ -11,8 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
 interface SmartyPrefiltersDataProviderInterface
 {
-    /**
-     * @return array
-     */
     public function getPrefilterPlugins(): array;
 }

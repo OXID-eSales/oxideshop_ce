@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin systeminfo manager.
@@ -25,11 +25,11 @@ class ToolsController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     public function render()
     {
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
+            return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit('Access denied !');
         }
 
         parent::render();
 
-        return "tools.tpl";
+        return 'tools.tpl';
     }
 }

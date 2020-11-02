@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -19,9 +21,8 @@ class SetupControllerExitException extends \Exception
     /**
      * SetupControllerExitException constructor.
      *
-     * @param string          $message
-     * @param int             $code
-     * @param \Exception|null $previous
+     * @param string $message
+     * @param int    $code
      */
     public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
@@ -35,7 +36,7 @@ class SetupControllerExitException extends \Exception
     /**
      * Getter for template file name.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getTemplateFileName()
     {

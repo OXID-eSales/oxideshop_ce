@@ -11,8 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration;
 
 interface SmartyPluginsDataProviderInterface
 {
-    /**
-     * @return array
-     */
     public function getPlugins(): array;
 }

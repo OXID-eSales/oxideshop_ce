@@ -10,8 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
 /**
- * Class AdminNavigationFileLocator
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
+ * Class AdminNavigationFileLocator.
  */
 class AdminNavigationFileLocator implements NavigationFileLocatorInterface
 {
@@ -22,8 +21,6 @@ class AdminNavigationFileLocator implements NavigationFileLocatorInterface
 
     /**
      * AdminNavigationFileLocator constructor.
-     *
-     * @param iterable $menuFileLocators
      */
     public function __construct(iterable $menuFileLocators = [])
     {
@@ -43,6 +40,7 @@ class AdminNavigationFileLocator implements NavigationFileLocatorInterface
         foreach ($this->menuFileLocators as $locator) {
             $menuFilePaths[] = $locator->locate();
         }
+
         return array_merge([], ...$menuFilePaths);
     }
 }

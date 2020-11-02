@@ -16,19 +16,10 @@ interface ModuleFilesInstallerInterface
     /**
      * Copies package from vendor directory to eShop source directory.
      * Even copies if the target directory is already present.
-     *
-     * @param OxidEshopPackage $package
      */
     public function install(OxidEshopPackage $package): void;
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function uninstall(OxidEshopPackage $package): void;
 
-    /**
-     * @param OxidEshopPackage $package
-     * @return bool
-     */
     public function isInstalled(OxidEshopPackage $package): bool;
 }

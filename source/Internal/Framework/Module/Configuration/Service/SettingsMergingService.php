@@ -15,12 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 
 class SettingsMergingService implements SettingsMergingServiceInterface
 {
-    /**
-     * @param ShopConfiguration   $shopConfiguration
-     * @param ModuleConfiguration $moduleConfigurationToMerge
-     *
-     * @return ModuleConfiguration
-     */
     public function merge(
         ShopConfiguration $shopConfiguration,
         ModuleConfiguration $moduleConfigurationToMerge
@@ -40,6 +34,7 @@ class SettingsMergingService implements SettingsMergingServiceInterface
                 $moduleConfigurationToMerge->setModuleSettings($mergedModuleSettings);
             }
         }
+
         return $moduleConfigurationToMerge;
     }
 
@@ -62,24 +57,19 @@ class SettingsMergingService implements SettingsMergingServiceInterface
         return $settingsToMerge;
     }
 
-    /**
-     * @param Setting $existingSetting
-     * @param Setting $settingToMerge
-     * @return bool
-     */
     private function shouldMerge(Setting $existingSetting, Setting $settingToMerge): bool
     {
-        $shouldMerge = $existingSetting->getValue() !== null &&
+        $shouldMerge = null !== $existingSetting->getValue() &&
             $existingSetting->getName() === $settingToMerge->getName() &&
             $existingSetting->getType() === $settingToMerge->getType();
 
         if (
-            $shouldMerge === true
+            true === $shouldMerge
             && !empty($settingToMerge->getConstraints())
-            && ($settingToMerge->getType() === 'select')
+            && ('select' === $settingToMerge->getType())
         ) {
             $resultPosition = array_search($existingSetting->getValue(), $settingToMerge->getConstraints(), true);
-            $shouldMerge = $resultPosition !== false;
+            $shouldMerge = false !== $resultPosition;
         }
 
         return $shouldMerge;

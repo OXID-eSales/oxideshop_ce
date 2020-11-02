@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,9 +15,8 @@ namespace OxidEsales\EshopCommunity\Core\Contract;
  */
 interface IConfigurable
 {
-
     /**
-     * Sets configuration object
+     * Sets configuration object.
      *
      * @param \OxidEsales\Eshop\Core\Config $oConfig Configraution object
      *
@@ -26,7 +27,7 @@ interface IConfigurable
     public function setConfig(\OxidEsales\Eshop\Core\Config $oConfig);
 
     /**
-     * Returns active configuration object
+     * Returns active configuration object.
      *
      * @abstract
      *

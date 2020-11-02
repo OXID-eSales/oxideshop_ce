@@ -20,17 +20,12 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
 
     /**
      * ProjectConfigurationDataMapper constructor.
-     * @param ShopConfigurationDataMapperInterface $shopConfigurationDataMapper
      */
     public function __construct(ShopConfigurationDataMapperInterface $shopConfigurationDataMapper)
     {
         $this->shopConfigurationDataMapper = $shopConfigurationDataMapper;
     }
 
-    /**
-     * @param ProjectConfiguration $configuration
-     * @return array
-     */
     public function toData(ProjectConfiguration $configuration): array
     {
         $data = [];
@@ -40,10 +35,6 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
         return $data;
     }
 
-    /**
-     * @param array $data
-     * @return ProjectConfiguration
-     */
     public function fromData(array $data): ProjectConfiguration
     {
         $projectConfiguration = new ProjectConfiguration();
@@ -52,22 +43,14 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
         return $projectConfiguration;
     }
 
-    /**
-     * @param ProjectConfiguration $projectConfiguration
-     * @param array                $data
-     */
-    private function setProjectConfiguration(ProjectConfiguration $projectConfiguration, array $data)
+    private function setProjectConfiguration(ProjectConfiguration $projectConfiguration, array $data): void
     {
         if (isset($data['shops'])) {
             $this->setShopsConfiguration($projectConfiguration, $data['shops']);
         }
     }
 
-    /**
-     * @param ProjectConfiguration $projectConfiguration
-     * @param array                $shopsData
-     */
-    private function setShopsConfiguration(ProjectConfiguration $projectConfiguration, array $shopsData)
+    private function setShopsConfiguration(ProjectConfiguration $projectConfiguration, array $shopsData): void
     {
         foreach ($shopsData as $shopId => $shopData) {
             $projectConfiguration->addShopConfiguration(
@@ -77,11 +60,6 @@ class ProjectConfigurationDataMapper implements ProjectConfigurationDataMapperIn
         }
     }
 
-    /**
-     * @param ProjectConfiguration $projectConfiguration
-     *
-     * @return array
-     */
     private function getShopsConfigurationData(ProjectConfiguration $projectConfiguration): array
     {
         $data = [];

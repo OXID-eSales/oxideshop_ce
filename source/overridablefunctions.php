@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,14 +15,11 @@ if (!defined('ESHOP_CONFIG_FILE')) {
 }
 
 if (!function_exists('redirectIfShopNotConfigured')) {
-    /**
-     * @return null
-     */
-    function redirectIfShopNotConfigured()
+    function redirectIfShopNotConfigured(): void
     {
         $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
 
-        if (file_exists($configFileName) && strpos(file_get_contents($configFileName), '<dbHost') === false) {
+        if (file_exists($configFileName) && false === strpos(file_get_contents($configFileName), '<dbHost')) {
             return;
         }
 
@@ -30,9 +29,9 @@ if (!function_exists('redirectIfShopNotConfigured')) {
             ESHOP_CONFIG_FILE
         );
 
-        header("HTTP/1.1 302 Found");
-        header("Location: Setup/index.php");
-        header("Connection: close");
+        header('HTTP/1.1 302 Found');
+        header('Location: Setup/index.php');
+        header('Connection: close');
 
         die($message);
     }
@@ -52,20 +51,19 @@ if (!function_exists('getShopBasePath')) {
 
 if (!function_exists('error_404_handler')) {
     /**
-     * error_404_handler handler for 404 (page not found) error
+     * error_404_handler handler for 404 (page not found) error.
      *
      * @param string $sUrl url wich was given, can be not specified in some cases
      */
-    function error_404_handler($sUrl = '')
+    function error_404_handler($sUrl = ''): void
     {
         Registry::getUtils()->handlePageNotFoundError($sUrl);
     }
 }
 
 if (!function_exists('isSearchEngineUrl')) {
-
     /**
-     * Returns search engine url status
+     * Returns search engine url status.
      *
      * @return bool
      */
@@ -77,11 +75,11 @@ if (!function_exists('isSearchEngineUrl')) {
 
 if (!function_exists('startProfile')) {
     /**
-     * Start profiling
+     * Start profiling.
      *
      * @param string $sProfileName name of profile
      */
-    function startProfile($sProfileName)
+    function startProfile($sProfileName): void
     {
         global $aStartTimes;
         global $executionCounts;
@@ -91,18 +89,18 @@ if (!function_exists('startProfile')) {
         if (!isset($aStartTimes[$sProfileName])) {
             $aStartTimes[$sProfileName] = 0;
         }
-        $executionCounts[$sProfileName]++;
+        ++$executionCounts[$sProfileName];
         $aStartTimes[$sProfileName] = microtime(true);
     }
 }
 
 if (!function_exists('stopProfile')) {
     /**
-     * Stop profiling
+     * Stop profiling.
      *
      * @param string $sProfileName name of profile
      */
-    function stopProfile($sProfileName)
+    function stopProfile($sProfileName): void
     {
         global $aProfileTimes;
         global $aStartTimes;
@@ -114,9 +112,8 @@ if (!function_exists('stopProfile')) {
 }
 
 if (!function_exists('getLangTableIdx')) {
-
     /**
-     * Returns language table index
+     * Returns language table index.
      *
      * @param int $iLangId language id
      *
@@ -124,20 +121,17 @@ if (!function_exists('getLangTableIdx')) {
      */
     function getLangTableIdx($iLangId)
     {
-        $iLangPerTable = Registry::getConfig()->getConfigParam("iLangPerTable");
+        $iLangPerTable = Registry::getConfig()->getConfigParam('iLangPerTable');
         //#0002718 min language count per table 2
         $iLangPerTable = ($iLangPerTable > 1) ? $iLangPerTable : 8;
 
-        $iTableIdx = (int) ($iLangId / $iLangPerTable);
-
-        return $iTableIdx;
+        return (int)($iLangId / $iLangPerTable);
     }
 }
 
 if (!function_exists('getLangTableName')) {
-
     /**
-     * Returns language table name
+     * Returns language table name.
      *
      * @param string $sTable  table name
      * @param int    $iLangId language id
@@ -147,9 +141,9 @@ if (!function_exists('getLangTableName')) {
     function getLangTableName($sTable, $iLangId)
     {
         $iTableIdx = getLangTableIdx($iLangId);
-        if ($iTableIdx && in_array($sTable, Registry::getLang()->getMultiLangTables())) {
-            $sLangTableSuffix = Registry::getConfig()->getConfigParam("sLangTableSuffix");
-            $sLangTableSuffix = $sLangTableSuffix ? $sLangTableSuffix : "_set";
+        if ($iTableIdx && in_array($sTable, Registry::getLang()->getMultiLangTables(), true)) {
+            $sLangTableSuffix = Registry::getConfig()->getConfigParam('sLangTableSuffix');
+            $sLangTableSuffix = $sLangTableSuffix ? $sLangTableSuffix : '_set';
 
             $sTable .= $sLangTableSuffix . $iTableIdx;
         }
@@ -159,9 +153,8 @@ if (!function_exists('getLangTableName')) {
 }
 
 if (!function_exists('getViewName')) {
-
     /**
-     * Return the view name of the given table if a view exists, otherwise the table name itself
+     * Return the view name of the given table if a view exists, otherwise the table name itself.
      *
      * @param string $table      table name
      * @param int    $languageId language id [optional]
@@ -181,7 +174,7 @@ if (!function_exists('getViewName')) {
 
 if (!function_exists('getRequestUrl')) {
     /**
-     * Returns request url, which was executed to render current page view
+     * Returns request url, which was executed to render current page view.
      *
      * @param string $sParams     Parameters to object
      * @param bool   $blReturnUrl If return url
@@ -198,7 +191,7 @@ if (!function_exists('getRequestUrl')) {
 
 if (!function_exists('getLogger')) {
     /**
-     * Returns the Logger
+     * Returns the Logger.
      *
      * @return \Psr\Log\LoggerInterface
      */

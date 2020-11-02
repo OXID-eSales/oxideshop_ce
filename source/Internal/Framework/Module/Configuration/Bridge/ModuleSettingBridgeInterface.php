@@ -12,9 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Brid
 interface ModuleSettingBridgeInterface
 {
     /**
-     * @param string $name
      * @param bool|int|string|array $value
-     * @param string $moduleId
      */
     public function save(string $name, $value, string $moduleId): void;
 

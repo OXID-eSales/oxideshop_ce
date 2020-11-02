@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -9,8 +11,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 use OxidEsales\EshopCommunity\Internal\Domain\Contact\Form\ContactFormBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Form\FormField;
 
 /**
  * Contact window.
@@ -45,7 +47,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     /**
      * Contact email send status.
      *
-     * @var null|int
+     * @var int|null
      */
     protected $_blContactSendStatus = null;
 
@@ -57,7 +59,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     protected $_sThisTemplate = 'page/info/contact.tpl';
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
@@ -113,13 +115,13 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns entered user data
+     * Template variable getter. Returns entered user data.
      *
      * @return object
      */
     public function getUserData()
     {
-        if ($this->_oUserData === null) {
+        if (null === $this->_oUserData) {
             $this->_oUserData = Registry::getConfig()->getRequestParameter('editval');
         }
 
@@ -127,13 +129,13 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns entered contact subject
+     * Template variable getter. Returns entered contact subject.
      *
      * @return object
      */
     public function getContactSubject()
     {
-        if ($this->_sContactSubject === null) {
+        if (null === $this->_sContactSubject) {
             $this->_sContactSubject = Registry::getConfig()->getRequestParameter('c_subject');
         }
 
@@ -141,13 +143,13 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns entered message
+     * Template variable getter. Returns entered message.
      *
      * @return object
      */
     public function getContactMessage()
     {
-        if ($this->_sContactMessage === null) {
+        if (null === $this->_sContactMessage) {
             $this->_sContactMessage = Registry::getConfig()->getRequestParameter('c_message');
         }
 
@@ -155,9 +157,9 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
     }
 
     /**
-     * Template variable getter. Returns status if email was send succesfull
+     * Template variable getter. Returns status if email was send succesfull.
      *
-     * @return null|int
+     * @return int|null
      */
     public function getContactSendStatus()
     {
@@ -180,13 +182,13 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         return [
             [
                 'title' => $title,
-                'link'  => $this->getLink(),
-            ]
+                'link' => $this->getLink(),
+            ],
         ];
     }
 
     /**
-     * Page title
+     * Page title.
      *
      * @return string
      */
@@ -204,12 +206,12 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
         $personData = $request->getRequestEscapedParameter('editval');
 
         return [
-            'email'         => $personData['oxuser__oxusername'],
-            'firstName'     => $personData['oxuser__oxfname'],
-            'lastName'      => $personData['oxuser__oxlname'],
-            'salutation'    => $personData['oxuser__oxsal'],
-            'subject'       => $request->getRequestEscapedParameter('c_subject'),
-            'message'       => $request->getRequestEscapedParameter('c_message'),
+            'email' => $personData['oxuser__oxusername'],
+            'firstName' => $personData['oxuser__oxfname'],
+            'lastName' => $personData['oxuser__oxlname'],
+            'salutation' => $personData['oxuser__oxsal'],
+            'subject' => $request->getRequestEscapedParameter('c_subject'),
+            'message' => $request->getRequestEscapedParameter('c_message'),
         ];
     }
 
@@ -220,7 +222,7 @@ class ContactController extends \OxidEsales\Eshop\Application\Controller\Fronten
      * @param string $subject
      * @param string $message
      */
-    private function sendContactMail($email, $subject, $message)
+    private function sendContactMail($email, $subject, $message): void
     {
         $mailer = oxNew(Email::class);
 

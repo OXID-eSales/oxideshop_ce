@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,18 +10,18 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Module\ModuleTemplatePathCalculator;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use stdClass;
-use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
+use stdClass;
 
 //max integer
-define('MAX_64BIT_INTEGER', '18446744073709551615');
+\define('MAX_64BIT_INTEGER', '18446744073709551615');
 
 /**
  * Main shop configuration class.
@@ -30,70 +32,70 @@ class Config extends \OxidEsales\Eshop\Core\Base
     // so for backwards compatibility. names starts without underscore
 
     /**
-     * Database host name
+     * Database host name.
      *
      * @var string
      */
     protected $dbHost = null;
 
     /**
-     * Database name
+     * Database name.
      *
      * @var string
      */
     protected $dbName = null;
 
     /**
-     * Database user name
+     * Database user name.
      *
      * @var string
      */
     protected $dbUser = null;
 
     /**
-     * Database user password
+     * Database user password.
      *
      * @var string
      */
     protected $dbPwd = null;
 
     /**
-     * Database driver type
+     * Database driver type.
      *
      * @var string
      */
     protected $dbType = null;
 
     /**
-     * Shop Url
+     * Shop Url.
      *
      * @var string
      */
     protected $sShopURL = null;
 
     /**
-     * Shop SSL mode Url
+     * Shop SSL mode Url.
      *
      * @var string
      */
     protected $sSSLShopURL = null;
 
     /**
-     * Shops admin SSL mode Url
+     * Shops admin SSL mode Url.
      *
      * @var string
      */
     protected $sAdminSSLURL = null;
 
     /**
-     * Shops install directory
+     * Shops install directory.
      *
      * @var string
      */
     protected $sShopDir = null;
 
     /**
-     * Shops compile directory
+     * Shops compile directory.
      *
      * @var string
      */
@@ -109,21 +111,21 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *   4 = SQL + smarty + shop template data
      *   5 = Delivery Cost calculation info
      *   6 = SMTP Debug Messages
-     *   7 = Slow SQL query indication
+     *   7 = Slow SQL query indication.
      *
      * @var int
      */
     protected $iDebug = null;
 
     /**
-     * Administrator email address, used to send critical notices
+     * Administrator email address, used to send critical notices.
      *
      * @var string
      */
     protected $sAdminEmail = null;
 
     /**
-     * Use cookies
+     * Use cookies.
      *
      * @var bool
      */
@@ -141,7 +143,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected $blNativeImages = true;
 
     /**
-     * Names of tables which are multi-shop
+     * Names of tables which are multi-shop.
+     *
      * @var array
      */
     protected $aMultiShopTables = [
@@ -161,7 +164,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     ];
 
     /**
-     * Application starter instance
+     * Application starter instance.
      *
      * @var OxidStartController
      */
@@ -177,7 +180,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Active Views object array. Object has setters/getters for these properties:
      *   _sClass - name of current view class
-     *   _sFnc   - name of current action function
+     *   _sFnc   - name of current action function.
      *
      * @var array
      */
@@ -191,98 +194,98 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected $_aGlobalParams = [];
 
     /**
-     * Shop config parameters storage array
+     * Shop config parameters storage array.
      *
      * @var array
      */
     protected $_aConfigParams = [];
 
     /**
-     * Theme config parameters storage array
+     * Theme config parameters storage array.
      *
      * @var array
      */
     protected $_aThemeConfigParams = [];
 
     /**
-     * Current language Id
+     * Current language Id.
      *
      * @var int
      */
     protected $_iLanguageId = null;
 
     /**
-     * Current shop Id
+     * Current shop Id.
      *
      * @var int
      */
     protected $_iShopId = null;
 
     /**
-     * Out dir name
+     * Out dir name.
      *
      * @var string
      */
     protected $_sOutDir = 'out';
 
     /**
-     * Image dir name
+     * Image dir name.
      *
      * @var string
      */
     protected $_sImageDir = 'img';
 
     /**
-     * Dyn Image dir name
+     * Dyn Image dir name.
      *
      * @var string
      */
     protected $_sPictureDir = 'pictures';
 
     /**
-     * Master pictures dir name
+     * Master pictures dir name.
      *
      * @var string
      */
     protected $_sMasterPictureDir = 'master';
 
     /**
-     * Template dir name
+     * Template dir name.
      *
      * @var string
      */
     protected $_sTemplateDir = 'tpl';
 
     /**
-     * Resource dir name
+     * Resource dir name.
      *
      * @var string
      */
     protected $_sResourceDir = 'src';
 
     /**
-     * Modules dir name
+     * Modules dir name.
      *
      * @var string
      */
     protected $_sModulesDir = 'modules';
 
     /**
-     * Whether shop is in SSL mode
+     * Whether shop is in SSL mode.
      *
      * @var bool
      */
     protected $_blIsSsl = null;
 
     /**
-     * Absolute image dirs for each shops
+     * Absolute image dirs for each shops.
      *
      * @var array
      */
     protected $_aAbsDynImageDir = [];
 
     /**
-     * Active currency object
+     * Active currency object.
      *
      * @var array
      */
@@ -291,28 +294,28 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Indicates if Config::init() method has been already run.
      * Is checked for loading config variables on demand.
-     * Used in Config::getConfigParam() method
+     * Used in Config::getConfigParam() method.
      *
      * @var bool
      */
     protected $_blInit = false;
 
     /**
-     * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
+     * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables.
      *
      * @var string
      */
-    const OXMODULE_THEME_PREFIX = 'theme:';
+    public const OXMODULE_THEME_PREFIX = 'theme:';
 
     /**
-     * prefix for oxModule field for modules in oxConfig and oxConfigDisplay tables
+     * prefix for oxModule field for modules in oxConfig and oxConfigDisplay tables.
      *
      * @var string
      */
-    const OXMODULE_MODULE_PREFIX = 'module:';
+    public const OXMODULE_MODULE_PREFIX = 'module:';
 
     /**
-     * Returns config parameter value if such parameter exists
+     * Returns config parameter value if such parameter exists.
      *
      * @param string $name    config parameter name
      * @param mixed  $default default value if no config var is found default null
@@ -335,12 +338,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Stores config parameter value in config
+     * Stores config parameter value in config.
      *
      * @param string $name  config parameter name
      * @param mixed  $value config parameter value
      */
-    public function setConfigParam($name, $value)
+    public function setConfigParam($name, $value): void
     {
         if (isset($this->_aConfigParams[$name])) {
             $this->_aConfigParams[$name] = $value;
@@ -353,9 +356,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Parse SEO url parameters.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "processSeoCall" in next major
      */
-    protected function _processSeoCall() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _processSeoCall(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // TODO: refactor shop bootstrap and parse url params as soon as possible
         if (isSearchEngineUrl()) {
@@ -364,12 +368,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Initialize configuration variables
+     * Initialize configuration variables.
      *
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseException
+     *
      * @param int $shopId
      */
-    public function initVars($shopId)
+    public function initVars($shopId): void
     {
         $this->_loadVarsFromFile();
 
@@ -380,7 +385,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if (empty($shopId) || !$configLoaded) {
             // if no config values where loaded (some problems with DB), throwing an exception
             $exception = new \OxidEsales\Eshop\Core\Exception\DatabaseException(
-                "Unable to load shop config values from database",
+                'Unable to load shop config values from database',
                 0,
                 new \Exception()
             );
@@ -388,22 +393,22 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         // loading theme config options
-        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+        $this->_loadVarsFromDb($shopId, null, self::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
 
         // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
         if ($this->getConfigParam('sCustomTheme')) {
-            $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+            $this->_loadVarsFromDb($shopId, null, self::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
         }
 
         // loading all modules config
-        $this->_loadVarsFromDb($shopId, null, Config::OXMODULE_MODULE_PREFIX . '%');
+        $this->_loadVarsFromDb($shopId, null, self::OXMODULE_MODULE_PREFIX . '%');
 
         $this->loadAdditionalConfiguration();
 
         // Admin handling
         $this->setConfigParam('blAdmin', isAdmin());
 
-        if (defined('OX_ADMIN_DIR')) {
+        if (\defined('OX_ADMIN_DIR')) {
             $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
         }
 
@@ -411,11 +416,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Starts session manager
-     *
-     * @return null
+     * Starts session manager.
      */
-    public function init()
+    public function init(): void
     {
         // Duplicated init protection
         if ($this->_blInit) {
@@ -441,7 +444,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Reloads all configuration.
      */
-    public function reinitialize()
+    public function reinitialize(): void
     {
         $this->_blInit = false;
         $this->init();
@@ -450,14 +453,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Load any additional configuration on Config::init.
      */
-    protected function loadAdditionalConfiguration()
+    protected function loadAdditionalConfiguration(): void
     {
     }
 
     /**
      * Initializes main shop tasks - processing of SEO calls, starting of session.
      */
-    protected function initializeShop()
+    protected function initializeShop(): void
     {
         $this->_processSeoCall();
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
@@ -465,10 +468,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Loads vars from default config file
+     * Loads vars from default config file.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadVarsFromFile" in next major
      */
-    protected function _loadVarsFromFile() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _loadVarsFromFile(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //config variables from config.inc.php takes priority over the ones loaded from db
         include getShopBasePath() . '/config.inc.php';
@@ -486,53 +490,55 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Set important defaults.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setDefaults" in next major
      */
-    protected function _setDefaults() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setDefaults(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->setConfigParam('sTheme', 'azure');
 
-        if (is_null($this->getConfigParam('sDefaultLang'))) {
+        if (null === $this->getConfigParam('sDefaultLang')) {
             $this->setConfigParam('sDefaultLang', 0);
         }
 
-        if (is_null($this->getConfigParam('blLogChangesInAdmin'))) {
+        if (null === $this->getConfigParam('blLogChangesInAdmin')) {
             $this->setConfigParam('blLogChangesInAdmin', false);
         }
 
-        if (is_null($this->getConfigParam('blCheckTemplates'))) {
+        if (null === $this->getConfigParam('blCheckTemplates')) {
             $this->setConfigParam('blCheckTemplates', false);
         }
 
-        if (is_null($this->getConfigParam('blAllowArticlesubclass'))) {
+        if (null === $this->getConfigParam('blAllowArticlesubclass')) {
             $this->setConfigParam('blAllowArticlesubclass', false);
         }
 
-        if (is_null($this->getConfigParam('iAdminListSize'))) {
+        if (null === $this->getConfigParam('iAdminListSize')) {
             $this->setConfigParam('iAdminListSize', 9);
         }
 
         // #1173M  for EE - not all pic are deleted
-        if (is_null($this->getConfigParam('iPicCount'))) {
+        if (null === $this->getConfigParam('iPicCount')) {
             $this->setConfigParam('iPicCount', 12);
         }
 
-        if (is_null($this->getConfigParam('iZoomPicCount'))) {
+        if (null === $this->getConfigParam('iZoomPicCount')) {
             $this->setConfigParam('iZoomPicCount', 4);
         }
 
-        if (is_null($this->getConfigParam('iDebug'))) {
+        if (null === $this->getConfigParam('iDebug')) {
             $this->setConfigParam('iDebug', $this->isProductiveMode() ? 0 : -1);
         }
 
-        $this->setConfigParam('sCoreDir', __DIR__ . DIRECTORY_SEPARATOR);
+        $this->setConfigParam('sCoreDir', __DIR__ . \DIRECTORY_SEPARATOR);
     }
 
     /**
-     * Loads vars from custom config file
+     * Loads vars from custom config file.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadCustomConfig" in next major
      */
-    protected function _loadCustomConfig() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _loadCustomConfig(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $custConfig = getShopBasePath() . '/cust_config.inc.php';
         if (is_readable($custConfig)) {
@@ -541,13 +547,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Load config values from DB
+     * Load config values from DB.
      *
      * @param int    $shopId   shop ID to load parameters
      * @param array  $onlyVars array of params to load (optional)
      * @param string $module   module vars to load, empty for base options
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadVarsFromDb" in next major
      */
     protected function _loadVarsFromDb($shopId, $onlyVars = null, $module = '') // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -556,14 +563,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $params = [
             ':oxshopid' => $shopId,
-            ':oxmodule' => $module
+            ':oxmodule' => $module,
         ];
 
-        $select = "
+        $select = '
             SELECT oxvarname, oxvartype, oxvarvalue
             FROM oxconfig
             WHERE oxshopid = :oxshopid AND oxmodule LIKE :oxmodule
-        ";
+        ';
         $select .= $this->_getConfigParamsSelectSnippet($onlyVars);
 
         $result = $db->getAll($select, $params);
@@ -581,21 +588,22 @@ class Config extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return (bool) count($result);
+        return (bool)\count($result);
     }
 
     /**
-     * Allow loading from some vars only from baseshop
+     * Allow loading from some vars only from baseshop.
      *
      * @param array $vars
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getConfigParamsSelectSnippet" in next major
      */
     protected function _getConfigParamsSelectSnippet($vars) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $select = '';
-        if (is_array($vars) && !empty($vars)) {
+        if (\is_array($vars) && !empty($vars)) {
             foreach ($vars as &$field) {
                 $field = '"' . $field . '"';
             }
@@ -607,20 +615,19 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Sets config variable to config object, first unserializing it by given type.
-     * sShopURL and sSSLShopURL are skipped for admin or when URL values are not set
+     * sShopURL and sSSLShopURL are skipped for admin or when URL values are not set.
      *
      * @param string $varName variable name
      * @param string $varType variable type - arr, aarr, bool or str
      * @param string $varVal  serialized by type value
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "setConfVarFromDb" in next major
      */
-    protected function _setConfVarFromDb($varName, $varType, $varVal) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setConfVarFromDb($varName, $varType, $varVal): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         if (
-            ($varName == 'sShopURL' || $varName == 'sSSLShopURL') &&
-            (!$varVal || $this->isAdmin() === true)
+            ('sShopURL' === $varName || 'sSSLShopURL' === $varName) &&
+            (!$varVal || true === $this->isAdmin())
         ) {
             return;
         }
@@ -631,7 +638,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
                 $this->setConfigParam($varName, unserialize($varVal));
                 break;
             case 'bool':
-                $this->setConfigParam($varName, ($varVal == 'true' || $varVal == '1'));
+                $this->setConfigParam($varName, ('true' === $varVal || '1' === $varVal));
                 break;
             default:
                 $this->setConfigParam($varName, $varVal);
@@ -641,8 +648,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Unsets all session data.
-     *
-     * @return null
      */
     public function pageClose()
     {
@@ -660,24 +665,25 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * use $raw very carefully if you want to get unescaped
      * parameter.
      *
-     * @param string $name Name of parameter.
-     * @param bool   $raw  Get unescaped parameter.
+     * @param string $name name of parameter
+     * @param bool   $raw  get unescaped parameter
      *
-     * @deprecated on b-dev (2015-06-10); Use Request::getRequestEscapedParameter().
+     * @deprecated on b-dev (2015-06-10); Use Request::getRequestEscapedParameter()
      *
      * @return mixed
      */
     public function getRequestParameter($name, $raw = false)
     {
         $request = Registry::get(\OxidEsales\Eshop\Core\Request::class);
+
         return $raw ? $request->getRequestParameter($name) : $request->getRequestEscapedParameter($name);
     }
 
     /**
      * Returns escaped value of parameter stored in POST,GET.
      *
-     * @param string $name         Name of parameter.
-     * @param string $defaultValue Default value if no value provided.
+     * @param string $name         name of parameter
+     * @param string $defaultValue default value if no value provided
      *
      * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
      *
@@ -691,8 +697,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns raw value of parameter stored in POST,GET.
      *
-     * @param string $name         Name of parameter.
-     * @param string $defaultValue Default value if no value provided.
+     * @param string $name         name of parameter
+     * @param string $defaultValue default value if no value provided
      *
      * @deprecated on 6.0.0 (2016-05-16); use OxidEsales\Eshop\Core\Request::getRequestEscapedParameter()
      *
@@ -721,17 +727,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getRequestControllerClass()
     {
         $controllerId = $this->getRequestControllerId();
-        $controllerClass = Registry::getControllerClassNameResolver()->getClassNameById($controllerId);
 
-        return $controllerClass;
+        return Registry::getControllerClassNameResolver()->getClassNameById($controllerId);
     }
 
     /**
-     * Returns uploaded file parameter
+     * Returns uploaded file parameter.
      *
      * @param string $paramName param name
-     *
-     * @return null
      */
     public function getUploadedFile($paramName)
     {
@@ -739,18 +742,18 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Sets global parameter value
+     * Sets global parameter value.
      *
      * @param string $name  name of parameter
      * @param mixed  $value value to store
      */
-    public function setGlobalParameter($name, $value)
+    public function setGlobalParameter($name, $value): void
     {
         $this->_aGlobalParams[$name] = $value;
     }
 
     /**
-     * Returns global parameter value
+     * Returns global parameter value.
      *
      * @param string $name name of cached parameter
      *
@@ -780,11 +783,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Active Shop id setter
+     * Active Shop id setter.
      *
-     * @param int    $shopId shop id
+     * @param int $shopId shop id
      */
-    public function setShopId($shopId)
+    public function setShopId($shopId): void
     {
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $session->setVariable('actshop', $shopId);
@@ -798,7 +801,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopId()
     {
-        if (is_null($this->_iShopId)) {
+        if (null === $this->_iShopId) {
             $shopId = $this->calculateActiveShopId();
             $this->setShopId($shopId);
 
@@ -812,45 +815,45 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Set is shop url
+     * Set is shop url.
      *
      * @param bool $isSsl - state bool value
      */
-    public function setIsSsl($isSsl = false)
+    public function setIsSsl($isSsl = false): void
     {
         $this->_blIsSsl = $isSsl;
     }
 
     /**
      * Checks if WEB session is SSL.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "checkSsl" in next major
      */
-    protected function _checkSsl() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _checkSsl(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $myUtilsServer = Registry::getUtilsServer();
         $serverVars = $myUtilsServer->getServerVar();
         $httpsServerVar = $myUtilsServer->getServerVar('HTTPS');
 
         $this->setIsSsl();
-        if (isset($httpsServerVar) && ($httpsServerVar === 'on' || $httpsServerVar === 'ON' || $httpsServerVar == '1')) {
+        if (isset($httpsServerVar) && ('on' === $httpsServerVar || 'ON' === $httpsServerVar || '1' === $httpsServerVar)) {
             // "1&1" hoster provides "1"
             $this->setIsSsl($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL'));
             if ($this->isAdmin() && !$this->_blIsSsl) {
                 //#4026
-                $this->setIsSsl(!is_null($this->getConfigParam('sAdminSSLURL')));
+                $this->setIsSsl(null !== $this->getConfigParam('sAdminSSLURL'));
             }
         }
 
         //additional special handling for profihost customers
         if (
             isset($serverVars['HTTP_X_FORWARDED_SERVER']) &&
-            (strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'ssl') !== false ||
-             strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de') !== false)
+            (false !== strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'ssl') ||
+             false !== strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de'))
         ) {
             $this->setIsSsl(true);
         }
     }
-
 
     /**
      * Checks if WEB session is SSL. Returns true if yes.
@@ -859,7 +862,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function isSsl()
     {
-        if (is_null($this->_blIsSsl)) {
+        if (null === $this->_blIsSsl) {
             $this->_checkSsl();
         }
 
@@ -868,17 +871,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Checks if shop runs in https only mode
-     * https only mode means there is no http url but only a https url
+     * https only mode means there is no http url but only a https url.
      *
      * @return bool
      */
     public function isHttpsOnly()
     {
-        return $this->isSsl() && $this->getSslShopUrl() == $this->getShopUrl();
+        return $this->isSsl() && $this->getSslShopUrl() === $this->getShopUrl();
     }
 
     /**
-     * Compares current URL to supplied string
+     * Compares current URL to supplied string.
      *
      * @param string $url URL
      *
@@ -888,11 +891,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         /** @var UtilsServer $utilsServer */
         $utilsServer = Registry::getUtilsServer();
+
         return $utilsServer->isCurrentUrl($url);
     }
 
     /**
-     * Compares current protocol to supplied url string
+     * Compares current protocol to supplied url string.
      *
      * @param string $url URL
      *
@@ -901,25 +905,25 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function isCurrentProtocol($url)
     {
         // Missing protocol, cannot proceed, assuming true.
-        if (!$url || (strpos($url, "http") !== 0)) {
+        if (!$url || (0 !== strpos($url, 'http'))) {
             return true;
         }
 
-        return (strpos($url, "https:") === 0) == $this->isSsl();
+        return (0 === strpos($url, 'https:')) === $this->isSsl();
     }
 
     /**
-     * Returns config sShopURL or sMallShopURL if secondary shop
+     * Returns config sShopURL or sMallShopURL if secondary shop.
      *
      * @param int  $lang  language
-     * @param bool $admin if set true, function returns shop url without checking language/subshops for different url.
+     * @param bool $admin if set true, function returns shop url without checking language/subshops for different url
      *
      * @return string
      */
     public function getShopUrl($lang = null, $admin = null)
     {
         $url = null;
-        $admin = isset($admin) ? $admin : $this->isAdmin();
+        $admin = $admin ?? $this->isAdmin();
 
         if (!$admin) {
             $url = $this->getShopUrlByLanguage($lang);
@@ -936,7 +940,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns config sSSLShopURL or sMallSSLShopURL if secondary shop
+     * Returns config sSSLShopURL or sMallSSLShopURL if secondary shop.
      *
      * @param int $lang language (default is null)
      *
@@ -967,7 +971,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns utils dir URL
+     * Returns utils dir URL.
      *
      * @return string
      */
@@ -978,7 +982,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns SSL or non SSL shop URL without index.php depending on Mall
-     * affecting environment is admin mode and current ssl usage status
+     * affecting environment is admin mode and current ssl usage status.
      *
      * @param bool $admin if admin
      *
@@ -986,7 +990,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getCurrentShopUrl($admin = null)
     {
-        if ($admin === null) {
+        if (null === $admin) {
             $admin = $this->isAdmin();
         }
         if ($admin) {
@@ -1006,7 +1010,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns SSL or not SSL shop URL with index.php and sid
+     * Returns SSL or not SSL shop URL with index.php and sid.
      *
      * @param int $lang language (optional)
      *
@@ -1041,7 +1045,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param int   $languageId    language
      * @param bool  $inAdmin       if admin
-     * @param array $urlParameters parameters which should be added to URL.
+     * @param array $urlParameters parameters which should be added to URL
      *
      * @return string
      */
@@ -1058,9 +1062,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $urlLang = $utilsUrl->getUrlLanguageParameter($languageId);
         $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlLang, true);
 
-        $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlParameters, true, true);
-
-        return $widgetUrl;
+        return $utilsUrl->appendUrl($widgetUrl, $urlParameters, true, true);
     }
 
     /**
@@ -1087,7 +1089,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return (int) $curr;
+        return (int)$curr;
     }
 
     /**
@@ -1097,7 +1099,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getActShopCurrencyObject()
     {
-        if ($this->_oActCurrencyObject === null) {
+        if (null === $this->_oActCurrencyObject) {
             $cur = $this->getShopCurrency();
             $currencies = $this->getCurrencyArray();
             if (!isset($currencies[$cur])) {
@@ -1111,11 +1113,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Sets the actual currency
+     * Sets the actual currency.
      *
      * @param int $cur 0 = EUR, 1 = GBP, 2 = CHF
      */
-    public function setActShopCurrency($cur)
+    public function setActShopCurrency($cur): void
     {
         $currencies = $this->getCurrencyArray();
         if (isset($currencies[$cur])) {
@@ -1126,7 +1128,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns path to out dir
+     * Returns path to out dir.
      *
      * @param bool $absolute mode - absolute/relative path
      *
@@ -1142,7 +1144,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns path to out dir
+     * Returns path to out dir.
      *
      * @param bool $absolute mode - absolute/relative path
      *
@@ -1158,7 +1160,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns path to translations dir
+     * Returns path to translations dir.
      *
      * @param string $file     File name
      * @param string $dir      Directory name
@@ -1178,7 +1180,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns path to out dir
+     * Returns path to out dir.
      *
      * @param bool $absolute mode - absolute/relative path
      *
@@ -1194,7 +1196,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns url to out dir
+     * Returns url to out dir.
      *
      * @param bool $ssl       Whether to force ssl
      * @param bool $admin     Whether to force admin
@@ -1204,8 +1206,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getOutUrl($ssl = null, $admin = null, $nativeImg = false)
     {
-        $ssl = is_null($ssl) ? $this->isSsl() : $ssl;
-        $admin = is_null($admin) ? $this->isAdmin() : $admin;
+        $ssl = null === $ssl ? $this->isSsl() : $ssl;
+        $admin = null === $admin ? $this->isAdmin() : $admin;
 
         if ($ssl) {
             if ($nativeImg && !$admin) {
@@ -1224,7 +1226,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns files or folders path in out dir
+     * Finds and returns files or folders path in out dir.
      *
      * @param string $file       File name
      * @param string $dir        Directory name
@@ -1239,7 +1241,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreCust = false)
     {
-        if (is_null($theme)) {
+        if (null === $theme) {
             $theme = $this->getConfigParam('sTheme');
         }
 
@@ -1247,7 +1249,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $theme = $this->getContainer()->get(AdminThemeBridgeInterface::class)->getActiveTheme();
         }
 
-        if ($dir != $this->_sTemplateDir) {
+        if ($dir !== $this->_sTemplateDir) {
             $base = $this->getOutDir($absolute);
             $absBase = $this->getOutDir();
         } else {
@@ -1257,17 +1259,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $langAbbr = '-';
         // false means skip language folder check
-        if ($lang !== false) {
+        if (false !== $lang) {
             $language = Registry::getLang();
 
-            if (is_null($lang)) {
+            if (null === $lang) {
                 $lang = $language->getEditLanguage();
             }
 
             $langAbbr = $language->getLanguageAbbr($lang);
         }
 
-        if (is_null($shop)) {
+        if (null === $shop) {
             $shop = $this->getShopId();
         }
 
@@ -1275,7 +1277,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $path = "{$theme}/{$shop}/{$langAbbr}/{$dir}/{$file}";
         $cacheKey = $path . "_{$ignoreCust}{$absolute}";
 
-        if (($return = Registry::getUtils()->fromStaticCache($cacheKey)) !== null) {
+        if (null !== ($return = Registry::getUtils()->fromStaticCache($cacheKey))) {
             return $return;
         }
 
@@ -1283,7 +1285,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         // Check for custom template
         $customTheme = $this->getConfigParam('sCustomTheme');
-        if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
+        if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme !== $theme) {
             $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute);
         }
 
@@ -1299,7 +1301,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //test theme language level ..
         $path = "$theme/$langAbbr/$dir/$file";
-        if (!$return && $lang !== false && is_readable($absBase . $path)) {
+        if (!$return && false !== $lang && is_readable($absBase . $path)) {
             $return = $base . $path;
         }
 
@@ -1311,7 +1313,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //test out language level ..
         $path = "$langAbbr/$dir/$file";
-        if (!$return && $lang !== false && is_readable($absBase . $path)) {
+        if (!$return && false !== $lang && is_readable($absBase . $path)) {
             $return = $base . $path;
         }
 
@@ -1356,7 +1358,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns file or folder url in out dir
+     * Finds and returns file or folder url in out dir.
      *
      * @param string $file      File name
      * @param string $dir       Directory name
@@ -1379,7 +1381,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns image files or folders path
+     * Finds and returns image files or folders path.
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
@@ -1392,7 +1394,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns image folder url
+     * Finds and returns image folder url.
      *
      * @param bool   $admin     Whether to force admin
      * @param bool   $ssl       Whether to force ssl
@@ -1403,13 +1405,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getImageUrl($admin = false, $ssl = null, $nativeImg = null, $file = null)
     {
-        $nativeImg = is_null($nativeImg) ? $this->getConfigParam('blNativeImages') : $nativeImg;
+        $nativeImg = null === $nativeImg ? $this->getConfigParam('blNativeImages') : $nativeImg;
 
         return $this->getUrl($file, $this->_sImageDir, $admin, $ssl, $nativeImg);
     }
 
     /**
-     * Finds and returns image folders path
+     * Finds and returns image folders path.
      *
      * @param bool $admin Whether to force admin
      *
@@ -1421,7 +1423,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns product pictures files or folders path
+     * Finds and returns product pictures files or folders path.
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
@@ -1437,7 +1439,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns master pictures folder path
+     * Finds and returns master pictures folder path.
      *
      * @param bool $admin Whether to force admin
      *
@@ -1445,11 +1447,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getMasterPictureDir($admin = false)
     {
-        return $this->getDir(null, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $admin);
+        return $this->getDir(null, $this->_sPictureDir . '/' . $this->_sMasterPictureDir, $admin);
     }
 
     /**
-     * Finds and returns master picture path
+     * Finds and returns master picture path.
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
@@ -1458,11 +1460,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getMasterPicturePath($file, $admin = false)
     {
-        return $this->getDir($file, $this->_sPictureDir . "/" . $this->_sMasterPictureDir, $admin);
+        return $this->getDir($file, $this->_sPictureDir . '/' . $this->_sMasterPictureDir, $admin);
     }
 
     /**
-     * Finds and returns product picture file or folder url
+     * Finds and returns product picture file or folder url.
      *
      * @param string $file   File name
      * @param bool   $admin  Whether to force admin
@@ -1473,7 +1475,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getPictureUrl($file, $admin = false, $ssl = null, $lang = null, $shopId = null, $defPic = "master/nopic.jpg")
+    public function getPictureUrl($file, $admin = false, $ssl = null, $lang = null, $shopId = null, $defPic = 'master/nopic.jpg')
     {
         if ($altUrl = Registry::getPictureHandler()->getAltImageUrl('', $file, $ssl)) {
             return $altUrl;
@@ -1491,7 +1493,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns product pictures folders path
+     * Finds and returns product pictures folders path.
      *
      * @param bool $admin Whether to force admin
      *
@@ -1528,7 +1530,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get module template calculator object
+     * Get module template calculator object.
      *
      * @return ModuleTemplatePathCalculator
      */
@@ -1538,7 +1540,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns templates folders path
+     * Finds and returns templates folders path.
      *
      * @param bool $admin Whether to force admin
      *
@@ -1550,7 +1552,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns template file or folder url
+     * Finds and returns template file or folder url.
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
@@ -1565,7 +1567,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns base template folder url
+     * Finds and returns base template folder url.
      *
      * @param bool $admin Whether to force admin
      *
@@ -1578,7 +1580,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns resource (css, js, etc..) files or folders path
+     * Finds and returns resource (css, js, etc..) files or folders path.
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
@@ -1591,7 +1593,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns path to modules dir
+     * Returns path to modules dir.
      *
      * @param bool $absolute mode - absolute/relative path
      *
@@ -1607,7 +1609,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns resource (css, js, etc..) file or folder url
+     * Finds and returns resource (css, js, etc..) file or folder url.
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
@@ -1624,7 +1626,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Finds and returns resource (css, js, etc..) folders path
+     * Finds and returns resource (css, js, etc..) folders path.
      *
      * @param bool $admin Whether to force admin
      *
@@ -1636,16 +1638,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns array of available currencies
+     * Returns array of available currencies.
      *
-     * @param integer $currency Active currency number (default null)
+     * @param int $currency Active currency number (default null)
      *
      * @return stdClass[]
      */
     public function getCurrencyArray($currency = null)
     {
         $confCurrencies = $this->getConfigParam('aCurrencies');
-        if (!is_array($confCurrencies)) {
+        if (!\is_array($confCurrencies)) {
             return [];
         }
 
@@ -1669,7 +1671,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
                     $cur->side = trim($curValues[6]);
                 }
 
-                if (isset($currency) && $key == $currency) {
+                if (isset($currency) && $key === $currency) {
                     $cur->selected = 1;
                 } else {
                     $cur->selected = 0;
@@ -1697,7 +1699,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $search = $this->getCurrencyArray();
         foreach ($search as $cur) {
-            if ($cur->name == $name) {
+            if ($cur->name === $name) {
                 return $cur;
             }
         }
@@ -1722,26 +1724,26 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getEdition()
     {
-        return "CE";
+        return 'CE';
     }
 
     /**
-     * Returns full eShop edition name
+     * Returns full eShop edition name.
      *
      * @return string
      */
     public function getFullEdition()
     {
         $edition = $this->getEdition();
-        if ($edition == "CE") {
-            $edition = "Community Edition";
+        if ('CE' === $edition) {
+            $edition = 'Community Edition';
         }
 
         return $edition;
     }
 
     /**
-     * Returns shops version number (eg. '4.4.2')
+     * Returns shops version number (eg. '4.4.2').
      *
      * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
      *
@@ -1759,9 +1761,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getPackageInfo()
     {
-        $fileName = $this->getConfigParam('sShopDir') . "/pkg.info";
+        $fileName = $this->getConfigParam('sShopDir') . '/pkg.info';
         $rev = @file_get_contents($fileName);
-        $rev = str_replace("\n", "<br>", $rev);
+        $rev = str_replace("\n", '<br>', $rev);
 
         if (!$rev) {
             return false;
@@ -1771,7 +1773,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Counts OXID mandates
+     * Counts OXID mandates.
      *
      * @return int
      */
@@ -1795,9 +1797,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *  0 - version is bellow 2.2
      *  1 - Demo or unlicensed
      *  2 - Pro
-     *  3 - Enterprise
+     *  3 - Enterprise.
      */
-    public function detectVersion()
+    public function detectVersion(): void
     {
     }
 
@@ -1811,7 +1813,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param int    $shopId  Shop ID, default is current shop
      * @param string $module  Module name (empty for base options)
      */
-    public function saveShopConfVar($varType, $varName, $varVal, $shopId = null, $module = '')
+    public function saveShopConfVar($varType, $varName, $varVal, $shopId = null, $module = ''): void
     {
         switch ($varType) {
             case 'arr':
@@ -1820,13 +1822,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
                 break;
             case 'bool':
                 //config param
-                $varVal = (($varVal == 'true' || $varVal) && $varVal && strcasecmp($varVal, "false"));
+                $varVal = (('true' === $varVal || $varVal) && $varVal && strcasecmp($varVal, 'false'));
                 //db value
-                $value = $varVal ? "1" : "";
+                $value = $varVal ? '1' : '';
                 break;
             case 'num':
                 //config param
-                $varVal = $varVal != '' ? Registry::getUtils()->string2Float($varVal) : '';
+                $varVal = '' !== $varVal ? Registry::getUtils()->string2Float($varVal) : '';
                 $value = $varVal;
                 break;
             default:
@@ -1839,22 +1841,22 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         // Update value only for current shop
-        if ($shopId == $this->getShopId()) {
+        if ($shopId === $this->getShopId()) {
             $this->setConfigParam($varName, $varVal);
         }
 
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $newOXID = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
 
-        $query = "delete from oxconfig where oxshopid = :oxshopid and oxvarname = :oxvarname and oxmodule = :oxmodule";
+        $query = 'delete from oxconfig where oxshopid = :oxshopid and oxvarname = :oxvarname and oxmodule = :oxmodule';
         $db->execute($query, [
             ':oxshopid' => $shopId,
             ':oxvarname' => $varName,
-            ':oxmodule' => $module ?: ''
+            ':oxmodule' => $module ?: '',
         ]);
 
-        $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
-                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, :value)";
+        $query = 'insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
+                  values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, :value)';
         $db->execute($query, [
             ':oxid' => $newOXID,
             ':oxshopid' => $shopId,
@@ -1882,29 +1884,29 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $shopId = $this->getShopId();
         }
 
-        if ($shopId == $this->getShopId() && (!$module || $module == Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'))) {
+        if ($shopId === $this->getShopId() && (!$module || $module === self::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'))) {
             $varValue = $this->getConfigParam($varName);
-            if ($varValue !== null) {
+            if (null !== $varValue) {
                 return $varValue;
             }
         }
 
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
 
-        $query = "select oxvartype, oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname";
+        $query = 'select oxvartype, oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname';
         $rs = $db->select($query, [
             ':oxshopid' => $shopId,
             ':oxmodule' => $module,
-            ':oxvarname' => $varName
+            ':oxvarname' => $varName,
         ]);
 
-        if ($rs != false && $rs->count() > 0) {
+        if (false !== $rs && $rs->count() > 0) {
             return $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
         }
     }
 
     /**
-     * Decodes and returns database value
+     * Decodes and returns database value.
      *
      * @param string $type       parameter type
      * @param mixed  $mOrigValue parameter db value
@@ -1917,10 +1919,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
         switch ($type) {
             case 'arr':
             case 'aarr':
-                $value = unserialize($mOrigValue, ['allowed_classes' => false]);
+                $value = unserialize($mOrigValue, [
+                    'allowed_classes' => false,
+                ]);
                 break;
             case 'bool':
-                $value = ($mOrigValue == 'true' || $mOrigValue == '1');
+                $value = ('true' === $mOrigValue || '1' === $mOrigValue);
                 break;
         }
 
@@ -1928,7 +1932,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns true if current active shop is in productive mode or false if not
+     * Returns true if current active shop is in productive mode or false if not.
      *
      * @return bool
      */
@@ -1937,8 +1941,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $productive = $this->getConfigParam('blProductive');
         if (!isset($productive)) {
             $query = 'select oxproductive from oxshops where oxid = :oxid';
-            $productive = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [
-                ':oxid' => $this->getShopId()
+            $productive = (bool)\OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [
+                ':oxid' => $this->getShopId(),
             ]);
             $this->setConfigParam('blProductive', $productive);
         }
@@ -1947,7 +1951,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Function returns default shop ID
+     * Function returns default shop ID.
      *
      * @return string
      */
@@ -1957,15 +1961,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Loads and returns active shop object
+     * Loads and returns active shop object.
      *
      * @return Shop
      */
     public function getActiveShop()
     {
         if (
-            $this->_oActShop && $this->_iShopId == $this->_oActShop->getId() &&
-            $this->_oActShop->getLanguage() == Registry::getLang()->getBaseLanguage()
+            $this->_oActShop && $this->_iShopId === $this->_oActShop->getId() &&
+            $this->_oActShop->getLanguage() === Registry::getLang()->getBaseLanguage()
         ) {
             return $this->_oActShop;
         }
@@ -1977,16 +1981,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns active view object. If this object was not defined - returns oxubase object
+     * Returns active view object. If this object was not defined - returns oxubase object.
      *
      * @return FrontendController
      */
     public function getActiveView()
     {
-        if (count($this->_aActiveViews)) {
+        if (\count($this->_aActiveViews)) {
             $actView = end($this->_aActiveViews);
         }
-        if (!isset($actView) || $actView == null) {
+        if (!isset($actView) || null === $actView) {
             $actView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
             $this->_aActiveViews[] = $actView;
         }
@@ -2001,7 +2005,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getTopActiveView()
     {
-        if (count($this->_aActiveViews)) {
+        if (\count($this->_aActiveViews)) {
             return reset($this->_aActiveViews);
         } else {
             return $this->getActiveView();
@@ -2019,31 +2023,29 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * View object setter
+     * View object setter.
      *
      * @param object $view view object
      */
-    public function setActiveView($view)
+    public function setActiveView($view): void
     {
         $this->_aActiveViews[] = $view;
     }
 
     /**
-     * Drop last active view object
+     * Drop last active view object.
      */
-    public function dropLastActiveView()
+    public function dropLastActiveView(): void
     {
         array_pop($this->_aActiveViews);
     }
 
     /**
-     * Check if there is more than one active view
-     *
-     * @return null
+     * Check if there is more than one active view.
      */
     public function hasActiveViewsChain()
     {
-        return (count($this->_aActiveViews) > 1);
+        return \count($this->_aActiveViews) > 1;
     }
 
     /**
@@ -2059,7 +2061,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $names = [];
 
-        if (is_array($this->getActiveViewsList())) {
+        if (\is_array($this->getActiveViewsList())) {
             foreach ($this->getActiveViewsList() as $view) {
                 $names[] = $view->getClassName();
             }
@@ -2069,7 +2071,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get active views class id list
+     * Get active views class id list.
      *
      * @return array
      */
@@ -2077,7 +2079,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $ids = [];
 
-        if (is_array($this->getActiveViewsList())) {
+        if (\is_array($this->getActiveViewsList())) {
             foreach ($this->getActiveViewsList() as $view) {
                 $ids[] = $view->getClassKey();
             }
@@ -2098,14 +2100,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function isUtf()
     {
-        if ($this->getConfigParam('iUtfMode') !== null) {
-            return (bool) $this->getConfigParam('iUtfMode');
+        if (null !== $this->getConfigParam('iUtfMode')) {
+            return (bool)$this->getConfigParam('iUtfMode');
         }
+
         return true;
     }
 
     /**
-     * Returns log files storage path
+     * Returns log files storage path.
      *
      * @return string
      */
@@ -2115,7 +2118,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns true if option is theme option
+     * Returns true if option is theme option.
      *
      * @param string $name option name
      *
@@ -2123,11 +2126,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function isThemeOption($name)
     {
-        return (bool) isset($this->_aThemeConfigParams[$name]);
+        return (bool)isset($this->_aThemeConfigParams[$name]);
     }
 
     /**
-     * Returns  SSL or non SSL shop main URL without index.php
+     * Returns  SSL or non SSL shop main URL without index.php.
      *
      * @return string
      */
@@ -2137,7 +2140,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Get parsed modules
+     * Get parsed modules.
      *
      * @return array
      */
@@ -2147,7 +2150,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Parse array of module chains to nested array
+     * Parse array of module chains to nested array.
      *
      * @deprecated on 6.0.0 (2017-03-09); use OxidEsales\Eshop\Core\ModuleList::parseModuleChains() instead.
      *
@@ -2158,35 +2161,37 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function parseModuleChains($modules)
     {
         $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
+
         return $moduleList->parseModuleChains($modules);
     }
 
     /**
-     * Return active shop ids
+     * Return active shop ids.
      *
      * @return array
      */
     public function getShopIds()
     {
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol("SELECT `oxid` FROM `oxshops`");
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getCol('SELECT `oxid` FROM `oxshops`');
     }
 
     /**
      * Function returns shop url by given language.
-     * #680 per language another URL
+     * #680 per language another URL.
      *
-     * @param integer $lang Language id.
-     * @param bool    $ssl  Whether to use ssl.
+     * @param int  $lang language id
+     * @param bool $ssl  whether to use ssl
      *
-     * @return null|string
+     * @return string|null
      */
     public function getShopUrlByLanguage($lang, $ssl = false)
     {
         $configParameter = $ssl ? 'aLanguageSSLURLs' : 'aLanguageURLs';
-        $lang = isset($lang) ? $lang : Registry::getLang()->getBaseLanguage();
+        $lang = $lang ?? Registry::getLang()->getBaseLanguage();
         $languageURLs = $this->getConfigParam($configParameter);
         if (isset($lang) && isset($languageURLs[$lang]) && !empty($languageURLs[$lang])) {
             $languageURLs[$lang] = Registry::getUtils()->checkUrlEndingSlash($languageURLs[$lang]);
+
             return $languageURLs[$lang];
         }
     }
@@ -2196,7 +2201,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param bool $ssl
      *
-     * @return null|string
+     * @return string|null
      */
     public function getMallShopUrl($ssl = false)
     {
@@ -2212,22 +2217,22 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * At this point everything has crashed already and not much of shop business logic is left to call.
      * So just go straight and call the ExceptionHandler.
      *
-     * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
      * @deprecated underscore prefix violates PSR12, will be renamed to "handleDbConnectionException" in next major
      */
-    protected function _handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $exceptionHandler = $this->getExceptionHandler();
         $exceptionHandler->handleDatabaseException($exception);
     }
 
     /**
-     * Redirect to start page and display the error
+     * Redirect to start page and display the error.
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "handleCookieException" in next major
      */
-    protected function _handleCookieException($ex) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _handleCookieException($ex): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $this->_processSeoCall();
 
@@ -2247,7 +2252,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $parameterName  Name
      * @param mixed  $parameterValue Value (can be string, integer or array)
      */
-    public function saveSystemConfigParameter($parameterType, $parameterName, $parameterValue)
+    public function saveSystemConfigParameter($parameterType, $parameterName, $parameterValue): void
     {
         $this->saveShopConfVar($parameterType, $parameterName, $parameterValue, $this->getBaseShopId());
     }
@@ -2267,9 +2272,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns whether given shop id is valid.
      *
-     * @param int    $shopId
+     * @param int $shopId
      *
      * @return bool
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "isValidShopId" in next major
      */
     protected function _isValidShopId($shopId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -2288,7 +2294,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Check and get template path by Edition if exists
+     * Check and get template path by Edition if exists.
      *
      * @param string $templateName
      *
@@ -2304,27 +2310,25 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function getExceptionHandler()
     {
-        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
-
-        return $exceptionHandler;
+        return new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
     }
 
     /**
      * Inform respective services if shop/module/theme related configuration data was changed in database.
      *
-     * @param string  $varName   Variable name
-     * @param integer $shopId    Shop id
-     * @param string  $extension Module or theme name in case of extension config change
+     * @param string $varName   Variable name
+     * @param int    $shopId    Shop id
+     * @param string $extension Module or theme name in case of extension config change
      */
-    protected function informServicesAfterConfigurationChanged($varName, $shopId, $extension = '')
+    protected function informServicesAfterConfigurationChanged($varName, $shopId, $extension = ''): void
     {
         if (empty($extension)) {
-            $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int) $shopId));
+            $this->dispatchEvent(new ShopConfigurationChangedEvent($varName, (int)$shopId));
         } elseif (false !== strpos($extension, self::OXMODULE_MODULE_PREFIX)) {
             $moduleId = str_replace(self::OXMODULE_MODULE_PREFIX, '', $extension);
-            $this->dispatchEvent(new SettingChangedEvent($varName, (int) $shopId, $moduleId));
+            $this->dispatchEvent(new SettingChangedEvent($varName, (int)$shopId, $moduleId));
         } elseif (false !== strpos($extension, self::OXMODULE_THEME_PREFIX)) {
-            $this->dispatchEvent(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
+            $this->dispatchEvent(new ThemeSettingChangedEvent($varName, (int)$shopId, $extension));
         }
     }
 }

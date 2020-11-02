@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -23,21 +25,29 @@ use OxidEsales\Eshop\Core\SystemRequirements;
  */
 class ModuleStateMapGenerator
 {
-    const MODULE_ID_KEY = 'module';
-    const MODULE_STATE_KEY = 'state';
-    const MODULE_NAME_KEY = 'modulename';
-    const MODULE_STATE_HTML_CLASS_KEY = 'class';
+    public const MODULE_ID_KEY = 'module';
+    public const MODULE_STATE_KEY = 'state';
+    public const MODULE_NAME_KEY = 'modulename';
+    public const MODULE_STATE_HTML_CLASS_KEY = 'class';
 
-    /** @var array Raw array taken from `SystemRequirements::getSystemInfo` */
+    /**
+     * @var array Raw array taken from `SystemRequirements::getSystemInfo`
+     */
     private $systemRequirementsInfo = [];
 
-    /** @var \Closure Change given module state into HTML class to be displayed during Setup */
+    /**
+     * @var \Closure Change given module state into HTML class to be displayed during Setup
+     */
     private $moduleStateHtmlClassConvertFunction = null;
 
-    /** @var \Closure Translate module id into module name */
+    /**
+     * @var \Closure Translate module id into module name
+     */
     private $moduleNameTranslateFunction = null;
 
-    /** @var \Closure Translate module group id into module name */
+    /**
+     * @var \Closure Translate module group id into module name
+     */
     private $moduleGroupNameTranslateFunction = null;
 
     /**
@@ -56,24 +66,23 @@ class ModuleStateMapGenerator
      * In case a function is not set it will be just skipped.
      *
      * @return array Module State Map in a form of
-     * [
-     *   'Translated group name' => [
-     *     MODULE_ID_KEY => 'moduleId',
-     *     MODULE_STATE_KEY => 'moduleState',
-     *     MODULE_NAME_KEY => 'Translated module name',
-     *     MODULE_STATE_HTML_CLASS_KEY => 'html class',
-     *   ],
-     *   ...
-     * ]
+     *               [
+     *               'Translated group name' => [
+     *               MODULE_ID_KEY => 'moduleId',
+     *               MODULE_STATE_KEY => 'moduleState',
+     *               MODULE_NAME_KEY => 'Translated module name',
+     *               MODULE_STATE_HTML_CLASS_KEY => 'html class',
+     *               ],
+     *               ...
+     *               ]
      */
     public function getModuleStateMap()
     {
         $moduleStateMap = $this->convertFromSystemRequirementsInfo();
         $moduleStateMap = $this->applyModuleStateHtmlClassConvertFunction($moduleStateMap);
         $moduleStateMap = $this->applyModuleNameTranslateFunction($moduleStateMap);
-        $moduleStateMap = $this->applyModuleGroupNameTranslateFunction($moduleStateMap);
 
-        return $moduleStateMap;
+        return $this->applyModuleGroupNameTranslateFunction($moduleStateMap);
     }
 
     /**
@@ -100,9 +109,9 @@ class ModuleStateMapGenerator
     /**
      * Apply function which converts module state into HTML class of given state.
      *
-     * @param array $moduleStateMap An array of format described in `getModuleStateMap`.
+     * @param array $moduleStateMap an array of format described in `getModuleStateMap`
      *
-     * @return array An array of format described in `getModuleStateMap`.
+     * @return array an array of format described in `getModuleStateMap`
      */
     private function applyModuleStateHtmlClassConvertFunction($moduleStateMap)
     {
@@ -121,9 +130,9 @@ class ModuleStateMapGenerator
     /**
      * Apply function which translates module id into module name.
      *
-     * @param array $moduleStateMap An array of format described in `getModuleStateMap`.
+     * @param array $moduleStateMap an array of format described in `getModuleStateMap`
      *
-     * @return array An array of format described in `getModuleStateMap`.
+     * @return array an array of format described in `getModuleStateMap`
      */
     private function applyModuleNameTranslateFunction($moduleStateMap)
     {
@@ -142,9 +151,9 @@ class ModuleStateMapGenerator
     /**
      * Apply function which translates module group id into module group name.
      *
-     * @param array $moduleStateMap An array of format described in `getModuleStateMap`.
+     * @param array $moduleStateMap an array of format described in `getModuleStateMap`
      *
-     * @return array An array of format described in `getModuleStateMap`.
+     * @return array an array of format described in `getModuleStateMap`
      */
     private function applyModuleGroupNameTranslateFunction($moduleStateMap)
     {
@@ -170,9 +179,10 @@ class ModuleStateMapGenerator
      * Single argument is given to the provided function as the state of module.
      *
      * @param \Closure $function
+     *
      * @throws \Exception
      */
-    public function setModuleStateHtmlClassConvertFunction($function)
+    public function setModuleStateHtmlClassConvertFunction($function): void
     {
         $this->validateClosure($function);
         $this->moduleStateHtmlClassConvertFunction = $function;
@@ -184,9 +194,10 @@ class ModuleStateMapGenerator
      * Single argument is given to the provided function as the module id.
      *
      * @param \Closure $function
+     *
      * @throws \Exception
      */
-    public function setModuleNameTranslateFunction($function)
+    public function setModuleNameTranslateFunction($function): void
     {
         $this->validateClosure($function);
         $this->moduleNameTranslateFunction = $function;
@@ -198,9 +209,10 @@ class ModuleStateMapGenerator
      * Single argument is given to the provided function as the module group id.
      *
      * @param \Closure $function
+     *
      * @throws \Exception
      */
-    public function setModuleGroupNameTranslateFunction($function)
+    public function setModuleGroupNameTranslateFunction($function): void
     {
         $this->validateClosure($function);
         $this->moduleGroupNameTranslateFunction = $function;
@@ -209,8 +221,9 @@ class ModuleStateMapGenerator
     /**
      * Yield with [groupId, module_info_array] by iterating through given module state map.
      *
-     * @param array $moduleStateMap An array of format described in `getModuleStateMap`.
-     * @return \Generator Iterator which yields [groupId, module_info_array].
+     * @param array $moduleStateMap an array of format described in `getModuleStateMap`
+     *
+     * @return \Generator iterator which yields [groupId, module_info_array]
      */
     private function iterateThroughModuleStateMapByGroup($moduleStateMap)
     {
@@ -223,7 +236,8 @@ class ModuleStateMapGenerator
      * Yield with [groupId, moduleIndex of module_info_array, module_info_array] by iterating through
      * given module state map.
      *
-     * @param array $moduleStateMap An array of format described in `getModuleStateMap`.
+     * @param array $moduleStateMap an array of format described in `getModuleStateMap`
+     *
      * @return \Generator Iterator which yields [groupId, moduleIndex of module_info_array, module_info_array]
      */
     private function iterateThroughModuleStateMap($moduleStateMap)
@@ -238,12 +252,12 @@ class ModuleStateMapGenerator
     /**
      * Apply filter function to update the contents of module state map.
      *
-     * @param array    $moduleStateMap               An array of format described in `getModuleStateMap`.
-     * @param \Closure $helpFunction                 Help function which will be passed to moduleStateMapUpdateFunction
-     *                                               as 2nd argument.
-     * @param \Closure $moduleStateMapUpdateFunction Function which will be used to modify contents of module state map.
+     * @param array    $moduleStateMap               an array of format described in `getModuleStateMap`
+     * @param \Closure $helpFunction                 help function which will be passed to moduleStateMapUpdateFunction
+     *                                               as 2nd argument
+     * @param \Closure $moduleStateMapUpdateFunction function which will be used to modify contents of module state map
      *
-     * @return array An array of format described in `getModuleStateMap`.
+     * @return array an array of format described in `getModuleStateMap`
      */
     private function applyModuleStateMapFilterFunction($moduleStateMap, $helpFunction, $moduleStateMapUpdateFunction)
     {
@@ -261,11 +275,11 @@ class ModuleStateMapGenerator
     /**
      * Validate input to check if it's a Closure.
      *
-     * @param \Closure $object Given input argument to check.
+     * @param \Closure $object given input argument to check
      *
-     * @throws \Exception Thrown when given argument does not match a Closure object.
+     * @throws \Exception thrown when given argument does not match a Closure object
      */
-    private function validateClosure($object)
+    private function validateClosure($object): void
     {
         if (!$object instanceof \Closure) {
             throw new \Exception('Given argument must be an instance of Closure.');

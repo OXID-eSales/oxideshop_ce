@@ -13,15 +13,20 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\MissingSe
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
 use Psr\Container\ContainerInterface;
 
-use function array_key_exists;
-
 class DIConfigWrapper
 {
     private const SERVICE_SECTION = 'services';
     private const RESOURCE_KEY = 'resource';
     private const IMPORTS_SECTION = 'imports';
 
-    private $sectionDefaults = [self::SERVICE_SECTION => ['_defaults' => ['public' => false, 'autowire' => true]]];
+    private $sectionDefaults = [
+        self::SERVICE_SECTION => [
+            '_defaults' => [
+                'public' => false,
+                'autowire' => true,
+            ],
+        ],
+    ];
 
     /**
      * @var array
@@ -30,18 +35,12 @@ class DIConfigWrapper
 
     /**
      * DIConfigWrapper constructor.
-     *
-     * @param array $configArray
      */
     public function __construct(array $configArray)
     {
         $this->configArray = $configArray;
     }
 
-    /**
-     * @param string $importFilePath
-     * @return void
-     */
     public function addImport(string $importFilePath): void
     {
         $this->addSectionIfMissing(static::IMPORTS_SECTION);
@@ -50,25 +49,22 @@ class DIConfigWrapper
                 return;
             }
         }
-        $this->configArray[static::IMPORTS_SECTION][] = [static::RESOURCE_KEY => $importFilePath];
+        $this->configArray[static::IMPORTS_SECTION][] = [
+            static::RESOURCE_KEY => $importFilePath,
+        ];
     }
 
-    /**
-     * @return array
-     */
     public function getImportFileNames(): array
     {
         $importFileNames = [];
         foreach ($this->getImports() as $import) {
             $importFileNames[] = $import[static::RESOURCE_KEY];
         }
+
         return $importFileNames;
     }
 
-    /**
-     * @param string $importFilePath
-     */
-    public function removeImport(string $importFilePath)
+    public function removeImport(string $importFilePath): void
     {
         $imports = [];
         foreach ($this->getImports() as $import) {
@@ -79,11 +75,6 @@ class DIConfigWrapper
         $this->configArray[static::IMPORTS_SECTION] = $imports;
     }
 
-    /**
-     * @param string $serviceKey
-     *
-     * @return bool
-     */
     public function hasService(string $serviceKey): bool
     {
         try {
@@ -91,13 +82,11 @@ class DIConfigWrapper
         } catch (MissingServiceException $e) {
             return false;
         }
+
         return true;
     }
 
     /**
-     * @param string $serviceKey
-     *
-     * @return DIServiceWrapper
      * @throws MissingServiceException
      */
     public function getService(string $serviceKey): DIServiceWrapper
@@ -111,18 +100,12 @@ class DIConfigWrapper
         throw new MissingServiceException("Service $serviceKey not found");
     }
 
-    /**
-     * @param DIServiceWrapper $service
-     */
-    public function addOrUpdateService(DIServiceWrapper $service)
+    public function addOrUpdateService(DIServiceWrapper $service): void
     {
         $this->addSectionIfMissing(static::SERVICE_SECTION);
         $this->configArray[static::SERVICE_SECTION][$service->getKey()] = $service->getServiceAsArray();
     }
 
-    /**
-     * @return array
-     */
     public function getConfigAsArray(): array
     {
         $this->cleanUpConfig();
@@ -131,11 +114,9 @@ class DIConfigWrapper
     }
 
     /**
-     * @param ContainerInterface $container
-     *
      * @throws SystemServiceOverwriteException
      */
-    public function checkServices(ContainerInterface $container)
+    public function checkServices(ContainerInterface $container): void
     {
         /** @var DIServiceWrapper $service */
         foreach ($this->getServices() as $service) {
@@ -152,25 +133,21 @@ class DIConfigWrapper
      * but is removed from autoloading. In this case, the
      * services.yaml file should not be evaluated in any
      * way.
-     *
-     * @return bool
      */
     public function checkServiceClassesCanBeLoaded(): bool
     {
         foreach ($this->getServices() as $service) {
-            if (! $service->checkClassExists()) {
+            if (!$service->checkClassExists()) {
                 return false;
             }
         }
+
         return true;
     }
 
-    /**
-     * @return array
-     */
     private function getImports(): array
     {
-        if (!array_key_exists(static::IMPORTS_SECTION, $this->configArray)) {
+        if (!\array_key_exists(static::IMPORTS_SECTION, $this->configArray)) {
             return [];
         }
 
@@ -182,43 +159,44 @@ class DIConfigWrapper
      */
     public function getServices(): array
     {
-        if (!array_key_exists(static::SERVICE_SECTION, $this->configArray)) {
+        if (!\array_key_exists(static::SERVICE_SECTION, $this->configArray)) {
             return [];
         }
         $services = [];
         foreach ($this->configArray[$this::SERVICE_SECTION] as $serviceId => $serviceArguments) {
             $services[] = new DIServiceWrapper($serviceId, $serviceArguments ?? []);
         }
+
         return $services;
     }
 
     /**
      * Removes not activated services and
-     * empty import or service sections from the array
+     * empty import or service sections from the array.
      */
-    private function cleanUpConfig()
+    private function cleanUpConfig(): void
     {
         $this->removeInactiveServices();
         $this->removeEmptySections();
     }
 
     /**
-     * Removes section entries when they are empty
+     * Removes section entries when they are empty.
      */
-    private function removeEmptySections()
+    private function removeEmptySections(): void
     {
         $sections = [static::IMPORTS_SECTION, static::SERVICE_SECTION];
         foreach ($sections as $section) {
             if (
-                array_key_exists($section, $this->configArray) &&
-                (!$this->configArray[$section] || !count($this->configArray[$section]))
+                \array_key_exists($section, $this->configArray) &&
+                (!$this->configArray[$section] || !\count($this->configArray[$section]))
             ) {
                 unset($this->configArray[$section]);
             }
         }
     }
 
-    private function removeInactiveServices()
+    private function removeInactiveServices(): void
     {
         /** @var DIServiceWrapper $service */
         foreach ($this->getServices() as $service) {
@@ -228,10 +206,7 @@ class DIConfigWrapper
         }
     }
 
-    /**
-     * @param DIServiceWrapper $service
-     */
-    private function removeService(DIServiceWrapper $service)
+    private function removeService(DIServiceWrapper $service): void
     {
         unset($this->configArray['services'][$service->getKey()]);
     }
@@ -239,10 +214,10 @@ class DIConfigWrapper
     /**
      * @param string $section
      */
-    private function addSectionIfMissing($section)
+    private function addSectionIfMissing($section): void
     {
-        if (!array_key_exists($section, $this->configArray)) {
-            if (array_key_exists($section, $this->sectionDefaults)) {
+        if (!\array_key_exists($section, $this->configArray)) {
+            if (\array_key_exists($section, $this->sectionDefaults)) {
                 $this->configArray[$section] = $this->sectionDefaults[$section];
             } else {
                 $this->configArray[$section] = [];

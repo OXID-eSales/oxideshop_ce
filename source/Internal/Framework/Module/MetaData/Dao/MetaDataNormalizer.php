@@ -9,16 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao;
 
-use function is_string;
-
 class MetaDataNormalizer implements MetaDataNormalizerInterface
 {
     /**
-     * Normalize the array aModule in metadata.php
-     *
-     * @param array $data
-     *
-     * @return array
+     * Normalize the array aModule in metadata.php.
      */
     public function normalizeData(array $data): array
     {
@@ -47,10 +41,6 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         return $normalizedMetaData;
     }
 
-    /**
-     * @param array $metadataModuleSettings
-     * @return array
-     */
     private function convertModuleSettingConstraintsToArray(array $metadataModuleSettings): array
     {
         foreach ($metadataModuleSettings as $key => $setting) {
@@ -62,16 +52,11 @@ class MetaDataNormalizer implements MetaDataNormalizerInterface
         return $metadataModuleSettings;
     }
 
-    /**
-     * @param array  $normalizedMetaData
-     * @param string $fieldName
-     * @return array
-     */
     private function normalizeMultiLanguageField(array $normalizedMetaData, string $fieldName): array
     {
         $title = $normalizedMetaData[$fieldName];
 
-        if (is_string($title)) {
+        if (\is_string($title)) {
             $defaultLanguage = $normalizedMetaData[MetaDataProvider::METADATA_LANG] ?? 'en';
             $normalizedTitle = [
                 $defaultLanguage => $title,

@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * EMOS PHP Bib 2
+ * EMOS PHP Bib 2.
  *
  * Copyright (c) 2004 - 2007 ECONDA GmbH Karlsruhe
  * All rights reserved.
@@ -63,51 +65,51 @@ namespace OxidEsales\EshopCommunity\Core\Smarty\Plugin;
 class EmosItem
 {
     /**
-     * unique Identifier of a product e.g. article number
+     * unique Identifier of a product e.g. article number.
      *
      * @var string
      */
-    public $productId = "NULL";
+    public $productId = 'NULL';
 
     /**
-     * the name of a product
+     * the name of a product.
      *
      * @var string
      */
-    public $productName = "NULL";
+    public $productName = 'NULL';
 
     /**
-     * the price of the product, it is your choice wether its gross or net
+     * the price of the product, it is your choice wether its gross or net.
      *
      * @var string
      */
-    public $price = "NULL";
+    public $price = 'NULL';
 
     /**
      * the product group for this product, this is a drill down dimension
      * or tree-like structure
      * so you might want to use it like this:
-     * productgroup/subgroup/subgroup/product
+     * productgroup/subgroup/subgroup/product.
      *
      * @var string
      */
-    public $productGroup = "NULL";
+    public $productGroup = 'NULL';
 
     /**
      * the quantity / number of products viewed/bought etc..
      *
      * @var string
      */
-    public $quantity = "NULL";
+    public $quantity = 'NULL';
 
     /**
      * variant of the product e.g. size, color, brand ....
      * remember to keep the order of theses variants allways the same
-     * decide which variant is which feature and stick to it
+     * decide which variant is which feature and stick to it.
      *
      * @var string
      */
-    public $variant1 = "NULL";
-    public $variant2 = "NULL";
-    public $variant3 = "NULL";
+    public $variant1 = 'NULL';
+    public $variant2 = 'NULL';
+    public $variant3 = 'NULL';
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -13,24 +15,31 @@ use OxidEsales\Eshop\Core\Registry;
 /**
  * Forms path to module block template.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class ModuleTemplateBlockPathFormatter
 {
-    /** @var string Module id */
+    /**
+     * @var string Module id
+     */
     private $moduleId;
 
-    /** @var string Path to module file name which defines content to place in Shop block */
+    /**
+     * @var string Path to module file name which defines content to place in Shop block
+     */
     private $fileName;
 
-    /** @var string Path to modules directory inside the shop. */
+    /**
+     * @var string path to modules directory inside the shop
+     */
     private $modulesPath;
 
     /**
      * @param string $path
      */
-    public function setModulesPath($path)
+    public function setModulesPath($path): void
     {
         $this->modulesPath = $path;
     }
@@ -38,7 +47,7 @@ class ModuleTemplateBlockPathFormatter
     /**
      * @param string $moduleId
      */
-    public function setModuleId($moduleId)
+    public function setModuleId($moduleId): void
     {
         $this->moduleId = $moduleId;
     }
@@ -54,7 +63,7 @@ class ModuleTemplateBlockPathFormatter
     /**
      * @param string $fileName
      */
-    public function setFileName($fileName)
+    public function setFileName($fileName): void
     {
         $this->fileName = $fileName;
     }
@@ -68,7 +77,7 @@ class ModuleTemplateBlockPathFormatter
      */
     public function getPath()
     {
-        if (is_null($this->moduleId) || is_null($this->fileName)) {
+        if (null === $this->moduleId || null === $this->fileName) {
             throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class);
         }
 
@@ -77,16 +86,16 @@ class ModuleTemplateBlockPathFormatter
         // for < 4.6 modules, since 4.7/5.0 insert in oxtplblocks the full file name and path
         if (basename($fileName) === $fileName) {
             // for 4.5 modules, since 4.6 insert in oxtplblocks the full file name
-            if (substr($fileName, -4) !== '.tpl') {
-                $fileName = $fileName . ".tpl";
+            if ('.tpl' !== substr($fileName, -4)) {
+                $fileName = $fileName . '.tpl';
             }
 
             $fileName = "out/blocks/$fileName";
         }
 
-        $activeModuleInfo = (array) Registry::getConfig()->getConfigParam('aModulePaths');
+        $activeModuleInfo = (array)Registry::getConfig()->getConfigParam('aModulePaths');
 
-        if (!array_key_exists($this->moduleId, $activeModuleInfo)) {
+        if (!\array_key_exists($this->moduleId, $activeModuleInfo)) {
             throw oxNew(\oxException::class, 'Module: ' . $this->moduleId . ' is not active.');
         }
 

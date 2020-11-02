@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,19 +9,21 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
-use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 
 /**
  * Manages object (users, discounts, deliveries...) assignment to groups.
  */
 class Object2Group extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-    /** @var boolean Load the relation even if from other shop */
+    /**
+     * @var bool Load the relation even if from other shop
+     */
     protected $_blDisableShopCheck = true;
 
-    /** @var string Current class name */
+    /**
+     * @var string Current class name
+     */
     protected $_sClassName = 'oxobject2group';
 
     /**
@@ -47,7 +51,7 @@ class Object2Group extends \OxidEsales\Eshop\Core\Model\BaseModel
         try {
             return parent::save();
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseErrorException $exception) {
-            if ($exception->getCode() !== \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE) {
+            if (\OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database::DUPLICATE_KEY_ERROR_CODE !== $exception->getCode()) {
                 throw $exception;
             }
         }

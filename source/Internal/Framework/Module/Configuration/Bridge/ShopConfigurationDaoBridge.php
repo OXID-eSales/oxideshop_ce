@@ -33,10 +33,6 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
 
     /**
      * ShopConfigurationDaoBridge constructor.
-     *
-     * @param ContextInterface                         $context
-     * @param ShopConfigurationDaoInterface            $shopConfigurationDao
-     * @param ShopEnvironmentConfigurationDaoInterface $shopEnvironmentConfigurationDao
      */
     public function __construct(
         ContextInterface $context,
@@ -48,9 +44,6 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
         $this->shopEnvironmentConfigurationDao = $shopEnvironmentConfigurationDao;
     }
 
-    /**
-     * @return ShopConfiguration
-     */
     public function get(): ShopConfiguration
     {
         return $this->shopConfigurationDao->get(
@@ -58,10 +51,7 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
         );
     }
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     */
-    public function save(ShopConfiguration $shopConfiguration)
+    public function save(ShopConfiguration $shopConfiguration): void
     {
         $this->shopConfigurationDao->save(
             $shopConfiguration,

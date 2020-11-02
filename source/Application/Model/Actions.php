@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,24 +9,17 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxField;
-use oxRegistry;
-use oxUtilsUrl;
-use oxUtilsView;
-use oxUtilsFile;
-
 /**
  * Article actions manager. Collects and keeps actions of chosen article.
  */
 class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
-    protected $_sClassName = "oxactions";
+    protected $_sClassName = 'oxactions';
 
     /**
      * Class constructor. Executes oxActions::init(), initiates parent constructor.
@@ -32,24 +27,24 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function __construct()
     {
         parent::__construct();
-        $this->init("oxactions");
+        $this->init('oxactions');
     }
 
     /**
-     * Adds an article to this actions
+     * Adds an article to this actions.
      *
      * @param string $articleId id of the article to be added
      */
-    public function addArticle($articleId)
+    public function addArticle($articleId): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sQ = "select max(oxsort) 
+        $sQ = 'select max(oxsort) 
                 from oxactions2article 
-                where oxactionid = :oxactionid and oxshopid = :oxshopid";
+                where oxactionid = :oxactionid and oxshopid = :oxshopid';
 
         $params = [
             ':oxactionid' => $this->getId(),
-            ':oxshopid' => $this->getShopId()
+            ':oxshopid' => $this->getShopId(),
         ];
         $iSort = ((int)$oDb->getOne($sQ, $params)) + 1;
 
@@ -63,7 +58,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Removes an article from this actions
+     * Removes an article from this actions.
      *
      * @param string $articleId id of the article to be removed
      *
@@ -73,14 +68,14 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         // remove actions from articles also
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = "delete from oxactions2article where oxactionid = :oxactionid and oxartid = :oxartid and oxshopid = :oxshopid";
+        $sDelete = 'delete from oxactions2article where oxactionid = :oxactionid and oxartid = :oxartid and oxshopid = :oxshopid';
         $iRemovedArticles = $oDb->execute($sDelete, [
             ':oxactionid' => $this->getId(),
             ':oxartid' => $articleId,
-            ':oxshopid' => $this->getShopId()
+            ':oxshopid' => $this->getShopId(),
         ]);
 
-        return (bool) $iRemovedArticles;
+        return (bool)$iRemovedArticles;
     }
 
     /**
@@ -101,17 +96,17 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         // remove actions from articles also
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sDelete = "delete from oxactions2article where oxactionid = :oxactionid and oxshopid = :oxshopid";
+        $sDelete = 'delete from oxactions2article where oxactionid = :oxactionid and oxshopid = :oxshopid';
         $oDb->execute($sDelete, [
             ':oxactionid' => $articleId,
-            ':oxshopid' => $this->getShopId()
+            ':oxshopid' => $this->getShopId(),
         ]);
 
         return parent::delete($articleId);
     }
 
     /**
-     * return time left until finished
+     * return time left until finished.
      *
      * @return int
      */
@@ -124,7 +119,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * return time left until start
+     * return time left until start.
      *
      * @return int
      */
@@ -139,10 +134,10 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * start the promotion NOW!
      */
-    public function start()
+    public function start(): void
     {
         $this->oxactions__oxactivefrom = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
-        if ($this->oxactions__oxactiveto->value && ($this->oxactions__oxactiveto->value != '0000-00-00 00:00:00')) {
+        if ($this->oxactions__oxactiveto->value && ('0000-00-00 00:00:00' !== $this->oxactions__oxactiveto->value)) {
             $iNow = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();
             $iTo = strtotime($this->oxactions__oxactiveto->value);
             if ($iNow > $iTo) {
@@ -155,14 +150,14 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * stop the promotion NOW!
      */
-    public function stop()
+    public function stop(): void
     {
         $this->oxactions__oxactiveto = new \OxidEsales\Eshop\Core\Field(date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
         $this->save();
     }
 
     /**
-     * check if this action is active
+     * check if this action is active.
      *
      * @return bool
      */
@@ -171,8 +166,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if (
             !(
             $this->oxactions__oxactive->value
-              && $this->oxactions__oxtype->value == 2
-              && $this->oxactions__oxactivefrom->value != '0000-00-00 00:00:00'
+              && 2 === $this->oxactions__oxtype->value
+              && '0000-00-00 00:00:00' !== $this->oxactions__oxactivefrom->value
             )
         ) {
             return false;
@@ -183,7 +178,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             return false;
         }
 
-        if ($this->oxactions__oxactiveto->value != '0000-00-00 00:00:00') {
+        if ('0000-00-00 00:00:00' !== $this->oxactions__oxactiveto->value) {
             $iTo = strtotime($this->oxactions__oxactiveto->value);
             if ($iNow > $iTo) {
                 return false;
@@ -194,7 +189,7 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * get long description, parsed through smarty
+     * get long description, parsed through smarty.
      *
      * @return string
      */
@@ -202,11 +197,12 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         /** @var \OxidEsales\Eshop\Core\UtilsView $oUtilsView */
         $oUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
+
         return $oUtilsView->parseThroughSmarty($this->oxactions__oxlongdesc->getRawValue(), $this->getId() . $this->getLanguage(), null, true);
     }
 
     /**
-     * return assigned banner article
+     * return assigned banner article.
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
      */
@@ -229,30 +225,27 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         return null;
     }
 
-
     /**
      * Fetch the oxobjectid of the article corresponding this action.
      *
-     * @return string The id of the oxobjectid belonging to this action.
+     * @return string the id of the oxobjectid belonging to this action
      */
     protected function fetchBannerArticleId()
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        $articleId = $database->getOne(
+        return $database->getOne(
             'select oxobjectid from oxobject2action ' .
             'where oxactionid = :oxactionid and oxclass = :oxclass',
             [
                 ':oxactionid' => $this->getId(),
-                ':oxclass' => 'oxarticle'
+                ':oxclass' => 'oxarticle',
             ]
         );
-
-        return $articleId;
     }
 
     /**
-     * Returns assigned banner article picture url
+     * Returns assigned banner article picture url.
      *
      * @return string
      */

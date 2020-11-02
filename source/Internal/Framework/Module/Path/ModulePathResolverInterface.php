@@ -11,11 +11,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Path;
 
 interface ModulePathResolverInterface
 {
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
-     * @return string
-     */
     public function getFullModulePathFromConfiguration(string $moduleId, int $shopId): string;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,7 +10,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * Class dealing with regular string handling
+ * Class dealing with regular string handling.
  */
 class StrRegular
 {
@@ -20,14 +22,14 @@ class StrRegular
     protected $_sEncoding = 'ISO8859-15';
 
     /**
-     * Language specific characters (currently german; storen in octal form)
+     * Language specific characters (currently german; storen in octal form).
      *
      * @var array
      */
     protected $_aUmls = ["\344", "\366", "\374", "\304", "\326", "\334", "\337"];
 
     /**
-     * oxUtilsString::$_aUmls equivalent in entities form
+     * oxUtilsString::$_aUmls equivalent in entities form.
      *
      * @var array
      */
@@ -41,7 +43,7 @@ class StrRegular
     }
 
     /**
-     * PHP strlen() function wrapper
+     * PHP strlen() function wrapper.
      *
      * @param string $sStr string to measure its length
      *
@@ -49,11 +51,11 @@ class StrRegular
      */
     public function strlen($sStr)
     {
-        return strlen($sStr);
+        return \strlen($sStr);
     }
 
     /**
-     * PHP substr() function wrapper
+     * PHP substr() function wrapper.
      *
      * @param string $sStr    value to truncate
      * @param int    $iStart  start position
@@ -63,14 +65,15 @@ class StrRegular
      */
     public function substr($sStr, $iStart, $iLength = null)
     {
-        if (is_null($iLength)) {
+        if (null === $iLength) {
             return substr($sStr, $iStart);
         }
+
         return substr($sStr, $iStart, $iLength);
     }
 
     /**
-     * PHP strpos() function wrapper
+     * PHP strpos() function wrapper.
      *
      * @param string $sHaystack value to search in
      * @param string $sNeedle   value to search for
@@ -82,7 +85,7 @@ class StrRegular
     {
         $iPos = false;
         if ($sHaystack && $sNeedle) {
-            if (is_null($iOffset)) {
+            if (null === $iOffset) {
                 $iPos = strpos($sHaystack, $sNeedle);
             } else {
                 $iPos = strpos($sHaystack, $sNeedle, $iOffset);
@@ -93,7 +96,7 @@ class StrRegular
     }
 
     /**
-     * PHP strstr() function wrapper
+     * PHP strstr() function wrapper.
      *
      * @param string $sHaystack string searching in
      * @param string $sNeedle   string to search
@@ -106,7 +109,7 @@ class StrRegular
     }
 
     /**
-     * PHP multi byte compliant strtolower() function wrapper
+     * PHP multi byte compliant strtolower() function wrapper.
      *
      * @param string $sString string being lower cased
      *
@@ -118,7 +121,7 @@ class StrRegular
     }
 
     /**
-     * PHP strtolower() function wrapper
+     * PHP strtolower() function wrapper.
      *
      * @param string $sString string being lower cased
      *
@@ -130,7 +133,7 @@ class StrRegular
     }
 
     /**
-     * PHP htmlspecialchars() function wrapper
+     * PHP htmlspecialchars() function wrapper.
      *
      * @param string $sString    string being converted
      * @param int    $iQuotStyle quoting rule
@@ -143,7 +146,7 @@ class StrRegular
     }
 
     /**
-     * PHP htmlentities() function wrapper
+     * PHP htmlentities() function wrapper.
      *
      * @param string $sString    string being converted
      * @param int    $iQuotStyle quoting rule
@@ -156,7 +159,7 @@ class StrRegular
     }
 
     /**
-     * PHP html_entity_decode() function wrapper
+     * PHP html_entity_decode() function wrapper.
      *
      * @param string $sString    string being converted
      * @param int    $iQuotStyle quoting rule
@@ -171,7 +174,7 @@ class StrRegular
     }
 
     /**
-     * PHP preg_split() function wrapper
+     * PHP preg_split() function wrapper.
      *
      * @param string $sPattern pattern to search for, as a string
      * @param string $sString  input string
@@ -188,7 +191,7 @@ class StrRegular
     }
 
     /**
-     * PHP preg_replace() function wrapper
+     * PHP preg_replace() function wrapper.
      *
      * @param mixed  $sPattern pattern to search for, as a string
      * @param mixed  $sString  string to replace
@@ -206,7 +209,7 @@ class StrRegular
     }
 
     /**
-     * PHP preg_replace() function wrapper
+     * PHP preg_replace() function wrapper.
      *
      * @param mixed    $pattern  pattern to search for, as a string
      * @param callable $callback Callback function
@@ -224,7 +227,7 @@ class StrRegular
     }
 
     /**
-     * PHP preg_match() function wrapper
+     * PHP preg_match() function wrapper.
      *
      * @param string $sPattern pattern to search for, as a string
      * @param string $sSubject input string
@@ -242,7 +245,7 @@ class StrRegular
     }
 
     /**
-     * PHP preg_match_all() function wrapper
+     * PHP preg_match_all() function wrapper.
      *
      * @param string $sPattern pattern to search for, as a string
      * @param string $sSubject input string
@@ -260,7 +263,7 @@ class StrRegular
     }
 
     /**
-     * PHP ucfirst() function wrapper
+     * PHP ucfirst() function wrapper.
      *
      * @param string $sSubject input string
      *
@@ -274,7 +277,7 @@ class StrRegular
     }
 
     /**
-     * PHP wordwrap() function wrapper
+     * PHP wordwrap() function wrapper.
      *
      * @param string $sString input string
      * @param int    $iLength column width
@@ -291,7 +294,7 @@ class StrRegular
     /**
      * Recodes and returns passed input:
      * if $blToHtmlEntities == true  ä -> &auml;
-     * if $blToHtmlEntities == false &auml; -> ä
+     * if $blToHtmlEntities == false &auml; -> ä.
      *
      * @param string $sInput           text to recode
      * @param bool   $blToHtmlEntities recode direction
@@ -302,8 +305,8 @@ class StrRegular
      */
     public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = [], $aUmlEntities = [])
     {
-        $aUmls = (count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
-        $aUmlEntities = (count($aUmlEntities) > 0)
+        $aUmls = (\count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
+        $aUmlEntities = (\count($aUmlEntities) > 0)
             ? array_merge($this->_aUmlEntities, $aUmlEntities)
             : $this->_aUmlEntities;
 
@@ -313,7 +316,7 @@ class StrRegular
     }
 
     /**
-     * Checks if string has special chars
+     * Checks if string has special chars.
      *
      * @param string $sStr string to search in
      *
@@ -321,12 +324,12 @@ class StrRegular
      */
     public function hasSpecialChars($sStr)
     {
-        return $this->preg_match("/(" . implode("|", $this->_aUmls) . "|(&amp;))/", $sStr);
+        return $this->preg_match('/(' . implode('|', $this->_aUmls) . '|(&amp;))/', $sStr);
     }
 
     /**
      * Replaces special characters with passed char.
-     * Special chars are: \n \r \t x95 xa0 ;
+     * Special chars are: \n \r \t x95 xa0 ;.
      *
      * @param string $sStr      string to cleanup
      * @param mixed  $sCleanChr which character should be used as a replacement (default is empty space)
@@ -339,7 +342,7 @@ class StrRegular
     }
 
     /**
-     * wrapper for json encode, which does not work with non utf8 characters
+     * wrapper for json encode, which does not work with non utf8 characters.
      *
      * @param mixed $data data to encode
      *
@@ -347,13 +350,13 @@ class StrRegular
      */
     public function jsonEncode($data)
     {
-        if (is_array($data)) {
-            $ret = "";
+        if (\is_array($data)) {
+            $ret = '';
             $blWasOne = false;
             $blNumerical = true;
             reset($data);
             while ($blNumerical && $key = key($data)) {
-                $blNumerical = !is_string($key);
+                $blNumerical = !\is_string($key);
             }
             if ($blNumerical) {
                 return '[' . implode(',', array_map([$this, 'jsonEncode'], $data)) . ']';
@@ -367,10 +370,10 @@ class StrRegular
                     $ret .= '"' . addslashes($key) . '":' . $this->jsonEncode($val);
                 }
 
-                return "{" . $ret . "}";
+                return '{' . $ret . '}';
             }
         } else {
-            return '"' . addcslashes((string) $data, "\r\n\t\"\\") . '"';
+            return '"' . addcslashes((string)$data, "\r\n\t\"\\") . '"';
         }
     }
 
@@ -386,7 +389,7 @@ class StrRegular
      */
     public function strip_tags($sString, $sAllowableTags = '')
     {
-        if (stripos($sAllowableTags, '<style>') === false) {
+        if (false === stripos($sAllowableTags, '<style>')) {
             // strip style tags with definitions within
             $sString = $this->preg_replace("'<style[^>]*>.*</style>'siU", '', $sString);
         }
@@ -396,12 +399,12 @@ class StrRegular
 
     /**
      * Compares two strings. Case sensitive.
-     * For use in sorting with reverse order
+     * For use in sorting with reverse order.
      *
      * @param string $sStr1 String to compare
      * @param string $sStr2 String to compare
      *
-     * @return int > 0 if str1 is less than str2; < 0 if str1 is greater than str2, and 0 if they are equal.
+     * @return int > 0 if str1 is less than str2; < 0 if str1 is greater than str2, and 0 if they are equal
      */
     public function strrcmp($sStr1, $sStr2)
     {

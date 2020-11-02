@@ -24,9 +24,6 @@ use Symfony\Component\Config\Definition\NodeInterface;
 
 class TreeBuilderFactory implements TreeBuilderFactoryInterface
 {
-    /**
-     * @return NodeInterface
-     */
     public function create(): NodeInterface
     {
         $treeBuilder = new TreeBuilder('shopConfiguration');

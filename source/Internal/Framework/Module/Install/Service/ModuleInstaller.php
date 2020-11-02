@@ -45,11 +45,6 @@ class ModuleInstaller implements ModuleInstallerInterface
 
     /**
      * ModuleInstaller constructor.
-     * @param ModuleInstallerInterface $bootstrapModuleInstaller
-     * @param ModuleActivationServiceInterface $moduleActivationService
-     * @param ModuleConfigurationDaoInterface $moduleConfigurationDao
-     * @param ShopConfigurationDaoInterface $shopConfigurationDao
-     * @param ModuleStateServiceInterface $moduleStateService
      */
     public function __construct(
         ModuleInstallerInterface $bootstrapModuleInstaller,
@@ -65,17 +60,12 @@ class ModuleInstaller implements ModuleInstallerInterface
         $this->moduleStateService = $moduleStateService;
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     */
     public function install(OxidEshopPackage $package): void
     {
         $this->bootstrapModuleInstaller->install($package);
     }
 
     /**
-     * @param OxidEshopPackage $package
-     *
      * @throws ModuleSetupException
      */
     public function uninstall(OxidEshopPackage $package): void
@@ -86,19 +76,12 @@ class ModuleInstaller implements ModuleInstallerInterface
         $this->bootstrapModuleInstaller->uninstall($package);
     }
 
-    /**
-     * @param OxidEshopPackage $package
-     *
-     * @return bool
-     */
     public function isInstalled(OxidEshopPackage $package): bool
     {
         return $this->bootstrapModuleInstaller->isInstalled($package);
     }
 
     /**
-     * @param string $moduleId
-     *
      * @throws ModuleSetupException
      */
     private function deactivateModule(string $moduleId): void

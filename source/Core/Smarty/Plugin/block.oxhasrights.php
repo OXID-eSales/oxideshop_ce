@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 /**
- * Smarty {oxhasrights}{/oxhasrights} block plugin
+ * Smarty {oxhasrights}{/oxhasrights} block plugin.
  *
  * Type:     block function<br>
  * Name:     oxhasrights<br>
@@ -17,7 +19,7 @@
  * @param Smarty $smarty  Clever simulation of a method
  * @param bool   $repeat  Repeat
  *
- * @return string $content re-formatted
+ * @return string re-formatted
  */
 function smarty_block_oxhasrights($params, $content, &$smarty, &$repeat)
 {

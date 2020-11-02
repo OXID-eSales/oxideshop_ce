@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,36 +9,36 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use oxObjectException;
 
 /**
- * Class, responsible for retrieving correct vat for users and articles
+ * Class, responsible for retrieving correct vat for users and articles.
  */
 class VatSelector extends \OxidEsales\Eshop\Core\Base
 {
     /**
-     * State is VAT calculation for category is set
+     * State is VAT calculation for category is set.
      *
      * @var bool
      */
     protected $_blCatVatSet = null;
 
     /**
-     * keeps loaded user Vats for later reusage
+     * keeps loaded user Vats for later reusage.
      *
      * @var array
      */
     protected static $_aUserVatCache = [];
 
     /**
-     * get VAT for user, can NOT be null
+     * get VAT for user, can NOT be null.
      *
      * @param \OxidEsales\Eshop\Application\Model\User $oUser        given  user object
      * @param bool                                     $blCacheReset reset cache
      *
      * @throws oxObjectException if wrong country
-     * @return double|false
+     *
+     * @return float|false
      */
     public function getUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, $blCacheReset = false)
     {
@@ -44,8 +46,8 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
 
         if (!$blCacheReset) {
             if (
-                array_key_exists($cacheId, self::$_aUserVatCache) &&
-                self::$_aUserVatCache[$cacheId] !== null
+                \array_key_exists($cacheId, self::$_aUserVatCache) &&
+                null !== self::$_aUserVatCache[$cacheId]
             ) {
                 return self::$_aUserVatCache[$cacheId];
             }
@@ -71,12 +73,13 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * get vat for user of a foreign country
+     * get vat for user of a foreign country.
      *
      * @param \OxidEsales\Eshop\Application\Model\User    $oUser    given user object
      * @param \OxidEsales\Eshop\Application\Model\Country $oCountry given country object
      *
      * @return mixed
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getForeignCountryUserVat" in next major
      */
     protected function _getForeignCountryUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, \OxidEsales\Eshop\Application\Model\Country $oCountry) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -93,11 +96,12 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * return Vat value for category type assignment only
+     * return Vat value for category type assignment only.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle given article
      *
      * @return float|false
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getVatForArticleCategory" in next major
      */
     protected function _getVatForArticleCategory(\OxidEsales\Eshop\Application\Model\Article $oArticle) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -105,12 +109,12 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sCatT = getViewName('oxcategories');
 
-        if ($this->_blCatVatSet === null) {
+        if (null === $this->_blCatVatSet) {
             $sSelect = "SELECT oxid FROM $sCatT WHERE oxvat IS NOT NULL LIMIT 1";
 
             //no category specific vats in shop?
             //then for performance reasons we just return false
-            $this->_blCatVatSet = (bool) $oDb->getOne($sSelect);
+            $this->_blCatVatSet = (bool)$oDb->getOne($sSelect);
         }
 
         if (!$this->_blCatVatSet) {
@@ -126,9 +130,9 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
                  ORDER BY o2c.oxtime ";
 
         $fVat = $oDb->getOne($sSql, [
-            ':oxobjectid' => $oArticle->getId()
+            ':oxobjectid' => $oArticle->getId(),
         ]);
-        if ($fVat !== false && $fVat !== null) {
+        if (false !== $fVat && null !== $fVat) {
             return $fVat;
         }
 
@@ -136,29 +140,29 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * get VAT for given article, can NOT be null
+     * get VAT for given article, can NOT be null.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle given article
      *
-     * @return double
+     * @return float
      */
     public function getArticleVat(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
-        startProfile("_assignPriceInternal");
+        startProfile('_assignPriceInternal');
         // article has its own VAT ?
 
-        if (($dArticleVat = $oArticle->getCustomVAT()) !== null) {
-            stopProfile("_assignPriceInternal");
+        if (null !== ($dArticleVat = $oArticle->getCustomVAT())) {
+            stopProfile('_assignPriceInternal');
 
             return $dArticleVat;
         }
-        if (($dArticleVat = $this->_getVatForArticleCategory($oArticle)) !== false) {
-            stopProfile("_assignPriceInternal");
+        if (false !== ($dArticleVat = $this->_getVatForArticleCategory($oArticle))) {
+            stopProfile('_assignPriceInternal');
 
             return $dArticleVat;
         }
 
-        stopProfile("_assignPriceInternal");
+        stopProfile('_assignPriceInternal');
 
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('dDefaultVAT');
     }
@@ -166,12 +170,12 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     /**
      * Currently returns vats percent that can be applied for basket
      * item ( executes \OxidEsales\Eshop\Application\Model\VatSelector::getArticleVat()). Can be used to override
-     * basket price calculation behaviour (\OxidEsales\Eshop\Application\Model\Article::getBasketPrice())
+     * basket price calculation behaviour (\OxidEsales\Eshop\Application\Model\Article::getBasketPrice()).
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      * @param \OxidEsales\Eshop\Application\Model\Basket  $oBasket  oxbasket object
      *
-     * @return double
+     * @return float
      */
     public function getBasketItemVat(\OxidEsales\Eshop\Application\Model\Article $oArticle, $oBasket)
     {
@@ -179,11 +183,11 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * get article user vat
+     * get article user vat.
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      *
-     * @return double|false
+     * @return float|false
      */
     public function getArticleUserVat(\OxidEsales\Eshop\Application\Model\Article $oArticle)
     {
@@ -194,7 +198,6 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
         return false;
     }
 
-
     /**
      * Returns country id which VAT should be applied to.
      * Depending on configuration option either user billing country or shipping country (if available) is returned.
@@ -202,11 +205,12 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\User $oUser user object
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getVatCountry" in next major
      */
     protected function _getVatCountry(\OxidEsales\Eshop\Application\Model\User $oUser) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $blUseShippingCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blShippingCountryVat");
+        $blUseShippingCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShippingCountryVat');
 
         if ($blUseShippingCountry) {
             $aAddresses = $oUser->getUserAddresses($oUser->getId());

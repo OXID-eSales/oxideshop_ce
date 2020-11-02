@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -18,12 +20,12 @@ class Header
     /**
      * Sets header.
      *
-     * @param string $header header value.
+     * @param string $header header value
      */
-    public function setHeader($header)
+    public function setHeader($header): void
     {
         $header = str_replace(["\n", "\r"], '', $header);
-        $this->_aHeader[] = (string) $header . "\r\n";
+        $this->_aHeader[] = (string)$header . "\r\n";
     }
 
     /**
@@ -39,7 +41,7 @@ class Header
     /**
      * Outputs HTTP header.
      */
-    public function sendHeader()
+    public function sendHeader(): void
     {
         foreach ($this->_aHeader as $header) {
             if (isset($header)) {
@@ -53,9 +55,9 @@ class Header
      *
      * @todo check browser for different no-cache signs.
      */
-    public function setNonCacheable()
+    public function setNonCacheable(): void
     {
-        $header = "Cache-Control: no-cache;";
+        $header = 'Cache-Control: no-cache;';
         $this->setHeader($header);
     }
 }

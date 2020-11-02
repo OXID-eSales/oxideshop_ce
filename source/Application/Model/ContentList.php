@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,41 +9,39 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
  * Content list manager.
- * Collects list of content
+ * Collects list of content.
  */
 class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * Information content type
+     * Information content type.
      *
      * @var int
      */
-    const TYPE_INFORMATION_CONTENTS = 0;
+    public const TYPE_INFORMATION_CONTENTS = 0;
 
     /**
-     * Main menu list type
+     * Main menu list type.
      *
      * @var int
      */
-    const TYPE_MAIN_MENU_LIST = 1;
+    public const TYPE_MAIN_MENU_LIST = 1;
 
     /**
-     * Main menu list type
+     * Main menu list type.
      *
      * @var int
      */
-    const TYPE_CATEGORY_MENU = 2;
+    public const TYPE_CATEGORY_MENU = 2;
 
     /**
      * Service list.
      *
      * @var int
      */
-    const TYPE_SERVICE_LIST = 3;
+    public const TYPE_SERVICE_LIST = 3;
 
     /**
      * List of services.
@@ -55,7 +55,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param array $aServiceKeys
      */
-    public function setServiceKeys($aServiceKeys)
+    public function setServiceKeys($aServiceKeys): void
     {
         $this->_aServiceKeys = $aServiceKeys;
     }
@@ -79,17 +79,17 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Loads main menue entries and generates list with links
+     * Loads main menue entries and generates list with links.
      */
-    public function loadMainMenulist()
+    public function loadMainMenulist(): void
     {
         $this->_load(self::TYPE_MAIN_MENU_LIST);
     }
 
     /**
-     * Load Array of Menue items and change keys of aList to catid
+     * Load Array of Menue items and change keys of aList to catid.
      */
-    public function loadCatMenues()
+    public function loadCatMenues(): void
     {
         $this->_load(self::TYPE_CATEGORY_MENU);
         $aArray = [];
@@ -109,28 +109,29 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Get data from db
+     * Get data from db.
      *
-     * @param integer $iType - type of content
+     * @param int $iType - type of content
      *
      * @return array
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "loadFromDb" in next major
      */
     protected function _loadFromDb($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSql = $this->_getSQLByType($iType);
-        $aData = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
 
-        return $aData;
+        return \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sSql);
     }
 
     /**
-     * Load category list data
+     * Load category list data.
      *
-     * @param integer $type - type of content
+     * @param int $type - type of content
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "load" in next major
      */
-    protected function _load($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _load($type): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $data = $this->_loadFromDb($type);
         $this->assignArray($data);
@@ -139,7 +140,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Load category list data.
      */
-    public function loadServices()
+    public function loadServices(): void
     {
         $this->_load(self::TYPE_SERVICE_LIST);
         $this->_extractListToArray();
@@ -147,9 +148,10 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
 
     /**
      * Extract oxContentList object to associative array with oxloadid as keys.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "extractListToArray" in next major
      */
-    protected function _extractListToArray() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _extractListToArray(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $aExtractedContents = [];
         foreach ($this as $oContent) {
@@ -162,29 +164,29 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Creates SQL by type.
      *
-     * @param integer $iType type.
+     * @param int $iType type
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getSQLByType" in next major
      */
     protected function _getSQLByType($iType) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $sSQLAdd = '';
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sSQLType = " AND `oxtype` = " . $oDb->quote($iType);
+        $sSQLType = ' AND `oxtype` = ' . $oDb->quote($iType);
 
-        if ($iType == self::TYPE_CATEGORY_MENU) {
+        if (self::TYPE_CATEGORY_MENU === $iType) {
             $sSQLAdd = " AND `oxcatid` IS NOT NULL AND `oxsnippet` = '0'";
         }
 
-        if ($iType == self::TYPE_SERVICE_LIST) {
-            $sIdents = implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($this->getServiceKeys()));
-            $sSQLAdd = " AND OXLOADID IN (" . $sIdents . ")";
+        if (self::TYPE_SERVICE_LIST === $iType) {
+            $sIdents = implode(', ', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($this->getServiceKeys()));
+            $sSQLAdd = ' AND OXLOADID IN (' . $sIdents . ')';
             $sSQLType = '';
         }
         $sViewName = $this->getBaseObject()->getViewName();
-        $sSql = "SELECT * FROM {$sViewName} WHERE `oxactive` = '1' $sSQLType AND `oxshopid` = " . $oDb->quote($this->_sShopID) . " $sSQLAdd ORDER BY `oxloadid`";
 
-        return $sSql;
+        return "SELECT * FROM {$sViewName} WHERE `oxactive` = '1' $sSQLType AND `oxshopid` = " . $oDb->quote($this->_sShopID) . " $sSQLAdd ORDER BY `oxloadid`";
     }
 }

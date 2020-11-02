@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,15 +9,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
- * Class oxUserAddressList
+ * Class oxUserAddressList.
  */
 class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
 {
     /**
-     * Call parent class constructor
+     * Call parent class constructor.
      */
     public function __construct()
     {
@@ -27,7 +27,7 @@ class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @param string $sUserId user id
      */
-    public function load($sUserId)
+    public function load($sUserId): void
     {
         $sViewName = getViewName('oxcountry');
         $oBaseObject = $this->getBaseObject();
@@ -39,7 +39,7 @@ class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
                 LEFT JOIN {$sViewName} AS oxcountry ON oxaddress.oxcountryid = oxcountry.oxid
                 WHERE oxaddress.oxuserid = :oxuserid";
         $this->selectString($sSelect, [
-            ':oxuserid' => $sUserId
+            ':oxuserid' => $sUserId,
         ]);
     }
 }

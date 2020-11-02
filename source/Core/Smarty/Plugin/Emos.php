@@ -1,7 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 /**
- * EMOS PHP Bib 2
+ * EMOS PHP Bib 2.
  *
  * Copyright (c) 2004 - 2007 ECONDA GmbH Karlsruhe
  * All rights reserved.
@@ -55,178 +57,178 @@ class Emos
     /**
      * the EMOS statement consists of 3 parts
      * 1.   the incScript :<code><script type="text/javascript" src="emos2.js"></script>
-     * 2,3. a part before and after this incScript (preScript/postScript)</code>
+     * 2,3. a part before and after this incScript (preScript/postScript)</code>.
      */
 
     /**
-     * Here we store the call to the js lib
+     * Here we store the call to the js lib.
      *
      * @var string
      */
-    protected $_sIncScript = "";
+    protected $_sIncScript = '';
 
     /**
-     * JS format init code goes here
+     * JS format init code goes here.
      *
      * @var string
      */
-    protected $_sPrescript = "";
+    protected $_sPrescript = '';
 
     /**
-     * JS format parameters goes here
+     * JS format parameters goes here.
      *
      * @var string
      */
-    protected $_sPostscript = "";
+    protected $_sPostscript = '';
 
     /**
-     * path to the empos2.js script-file
+     * path to the empos2.js script-file.
      *
      * @var string
      */
-    protected $_sPathToFile = "";
+    protected $_sPathToFile = '';
 
     /**
-     * Name of the script-file
+     * Name of the script-file.
      *
      * @var string
      */
-    protected $_sScriptFileName = "emos2.js";
+    protected $_sScriptFileName = 'emos2.js';
 
     /**
-     * tracker content
+     * tracker content.
      *
      * @var string
      */
-    protected $_content             = null;
+    protected $_content = null;
 
     /**
-     * order process step information
+     * order process step information.
      *
      * @var string
      */
-    protected $_orderProcess        = null;
+    protected $_orderProcess = null;
 
     /**
-     * site ID
+     * site ID.
      *
      * @var string
      */
-    protected $_siteid              = null;
+    protected $_siteid = null;
 
     /**
-     * Language ID
+     * Language ID.
      *
      * @var string
      */
-    protected $_langid              = null;
+    protected $_langid = null;
 
     /**
-     * Country ID
+     * Country ID.
      *
      * @var string
      */
-    protected $_countryid           = null;
+    protected $_countryid = null;
 
     /**
-     * Page ID
+     * Page ID.
      *
      * @var string
      */
-    protected $_pageid              = null;
+    protected $_pageid = null;
 
     /**
-     * Search Query string
+     * Search Query string.
      *
      * @var string
      */
-    protected $_searchQuery         = null;
+    protected $_searchQuery = null;
 
     /**
-     * Number of search hits
+     * Number of search hits.
      *
      * @var int
      */
-    protected $_searchNumberOfHits   = null;
+    protected $_searchNumberOfHits = null;
 
     /**
-     * Register user hash
+     * Register user hash.
      *
      * @var string
      */
-    protected $_registerUser        = null;
+    protected $_registerUser = null;
 
     /**
-     * Registration result
+     * Registration result.
      *
      * @var string
      */
-    protected $_registerResult      = null;
+    protected $_registerResult = null;
 
     /**
-     * Login user hash
+     * Login user hash.
      *
      * @var string
      */
-    protected $_loginUser           = null;
+    protected $_loginUser = null;
 
     /**
-     * Login result
+     * Login result.
      *
      * @var string
      */
-    protected $_loginResult         = null;
+    protected $_loginResult = null;
 
     /**
-     * Contact information
+     * Contact information.
      *
      * @var string
      */
-    protected $_scontact            = null;
+    protected $_scontact = null;
 
     /**
-     * Download file information
+     * Download file information.
      *
      * @var string
      */
-    protected $_download            = null;
+    protected $_download = null;
 
     /**
-     * Billing information
+     * Billing information.
      *
      * @var array
      */
-    protected $_billing            = null;
+    protected $_billing = null;
 
     /**
-     * ec event array
+     * ec event array.
      *
      * @var array
      */
-    protected $_ecEvent             = null;
+    protected $_ecEvent = null;
 
     /**
-     * if we use pretty print, we will set the lineseparator
+     * if we use pretty print, we will set the lineseparator.
      *
      * @var string
      */
-    protected $_br = "";
+    protected $_br = '';
 
     /**
-     * if we use pretty print, we will set the tab here
+     * if we use pretty print, we will set the tab here.
      *
      * @var string
      */
-    protected $_tab = "";
+    protected $_tab = '';
 
     /**
      * Constructor
-     * Sets the path to the emos2.js js-bib and prepares the later calls
+     * Sets the path to the emos2.js js-bib and prepares the later calls.
      *
      * @param string $sPathToFile     The path to the js-bib (/opt/myjs)
      * @param string $sScriptFileName If we want to have annother Filename than emos2.js you can set it here
      */
-    public function __construct($sPathToFile = "", $sScriptFileName = "emos2.js")
+    public function __construct($sPathToFile = '', $sScriptFileName = 'emos2.js')
     {
         $this->_sPathToFile = $sPathToFile;
         $this->_sScriptFileName = $sScriptFileName;
@@ -236,14 +238,14 @@ class Emos
      * switch on pretty printing of generated code. If not called, the output
      * will be in one line of html.
      */
-    public function prettyPrint()
+    public function prettyPrint(): void
     {
         $this->_br .= "\n";
         $this->_tab .= "\t";
     }
 
     /**
-     * returns the whole statement
+     * returns the whole statement.
      *
      * @return string
      */
@@ -257,72 +259,72 @@ class Emos
     }
 
     /**
-     * sets content tracking
+     * sets content tracking.
      *
      * @param string $sContent content to add
      */
-    public function addContent($sContent)
+    public function addContent($sContent): void
     {
         $this->_content = $sContent;
     }
 
     /**
-     * sets orderprocess tracking
+     * sets orderprocess tracking.
      *
      * @param string $sProcessStep process step to add
      */
-    public function addOrderProcess($sProcessStep)
+    public function addOrderProcess($sProcessStep): void
     {
         $this->_orderProcess = $sProcessStep;
     }
 
     /**
-     * sets siteid tracking
+     * sets siteid tracking.
      *
      * @param string $sIiteId site id to add
      */
-    public function addSiteId($sIiteId)
+    public function addSiteId($sIiteId): void
     {
         $this->_siteid = $sIiteId;
     }
 
     /**
-     * sets language tracking
+     * sets language tracking.
      *
      * @param string $sLangId language id to add
      */
-    public function addLangId($sLangId)
+    public function addLangId($sLangId): void
     {
         $this->_langid = $sLangId;
     }
 
     /**
-     * sets country tracking
+     * sets country tracking.
      *
      * @param string $sCountryId country id to add
      */
-    public function addCountryId($sCountryId)
+    public function addCountryId($sCountryId): void
     {
         $this->_countryid = $sCountryId;
     }
 
     /**
-     * adds tracker Page ID
+     * adds tracker Page ID.
      *
      * @param string $sPageId page id to add
      */
-    public function addPageId($sPageId)
+    public function addPageId($sPageId): void
     {
         $this->_pageid = $sPageId;
     }
 
     /**
-     * sets search tracking
+     * sets search tracking.
      *
      * @param string $sQueryString  query string
      * @param int    $iNumberOfHits number of hits
      */
-    public function addSearch($sQueryString, $iNumberOfHits)
+    public function addSearch($sQueryString, $iNumberOfHits): void
     {
         // #4018: The emospro.search string is URL-encoded forwarded to econda instead of URL-escaped
         $this->_searchQuery = $this->_emos_DataFormat($sQueryString);
@@ -331,12 +333,12 @@ class Emos
 
     /**
      * sets registration tracking
-     * The userid gets a md5() to fullfilll german datenschutzgesetz
+     * The userid gets a md5() to fullfilll german datenschutzgesetz.
      *
      * @param string $sUserId user id
      * @param string $sResult registration result
      */
-    public function addRegister($sUserId, $sResult)
+    public function addRegister($sUserId, $sResult): void
     {
         $this->_registerUser = md5($sUserId);
         $this->_registerResult = $sResult;
@@ -344,93 +346,91 @@ class Emos
 
     /**
      * sets login tracking
-     * The userid gets a md5() to fullfilll german datenschutzgesetz
+     * The userid gets a md5() to fullfilll german datenschutzgesetz.
      *
      * @param string $sUserId user id
      * @param string $sResult login result
      */
-    public function addLogin($sUserId, $sResult)
+    public function addLogin($sUserId, $sResult): void
     {
         $this->_loginUser = md5($sUserId);
         $this->_loginResult = $sResult;
     }
 
     /**
-     * sets contact tracking
+     * sets contact tracking.
      *
      * @param string $sContactType contant type
      */
-    public function addContact($sContactType)
+    public function addContact($sContactType): void
     {
         $this->_scontact = $sContactType;
     }
 
     /**
-     * sets download tracking
+     * sets download tracking.
      *
      * @param string $sDownloadLabel download label
      */
-    public function addDownload($sDownloadLabel)
+    public function addDownload($sDownloadLabel): void
     {
         $this->_download = $sDownloadLabel;
     }
 
     /**
-     * adds a emosBasket Page Array to the preScript
+     * adds a emosBasket Page Array to the preScript.
      *
      * @param array $aBasket basket items
-     *
-     * @return null
      */
-    public function addEmosBasketPageArray($aBasket)
+    public function addEmosBasketPageArray($aBasket): void
     {
-        if (!is_array($aBasket)) {
+        if (!\is_array($aBasket)) {
             return;
         }
 
         $aBasketItems = [];
         foreach ($aBasket as $oItem) {
             $oItem = $this->_emos_ItemFormat($oItem);
-            $aBasketItems[] = ["buy", $oItem->productId, $oItem->productName,
+            $aBasketItems[] = ['buy', $oItem->productId, $oItem->productName,
                 $oItem->price, $oItem->productGroup, $oItem->quantity,
-                $oItem->variant1, $oItem->variant2, $oItem->variant3 ];
+                $oItem->variant1, $oItem->variant2, $oItem->variant3, ];
         }
 
         $this->_ecEvent = $aBasketItems;
     }
 
     /**
-     * adds a detailView to the preScript
+     * adds a detailView to the preScript.
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to add to view
      */
-    public function addDetailView($oItem)
+    public function addDetailView($oItem): void
     {
-        $this->_setEmosECPageArray($oItem, "view");
+        $this->_setEmosECPageArray($oItem, 'view');
     }
 
     /**
-     * adds a removeFromBasket to the preScript
+     * adds a removeFromBasket to the preScript.
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to remove from basket
      */
-    public function removeFromBasket($oItem)
+    public function removeFromBasket($oItem): void
     {
-        $this->_setEmosECPageArray($oItem, "c_rmv");
+        $this->_setEmosECPageArray($oItem, 'c_rmv');
     }
 
     /**
-     * adds a addToBasket to the preScript
+     * adds a addToBasket to the preScript.
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to add to basket
      */
-    public function addToBasket($oItem)
+    public function addToBasket($oItem): void
     {
-        $this->_setEmosECPageArray($oItem, "c_add");
+        $this->_setEmosECPageArray($oItem, 'c_add');
     }
 
     /**
-     * constructs a emosBillingPageArray of given $sEvent type
+     * constructs a emosBillingPageArray of given $sEvent type.
      *
      * @param string $sBillingId      billing id
      * @param string $sCustomerNumber customer number
@@ -439,13 +439,13 @@ class Emos
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
      */
-    public function addEmosBillingPageArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "")
+    public function addEmosBillingPageArray($sBillingId = '', $sCustomerNumber = '', $iTotal = 0, $sCountry = '', $sCip = '', $sCity = ''): void
     {
         $this->_setEmosBillingArray($sBillingId, $sCustomerNumber, $iTotal, $sCountry, $sCip, $sCity);
     }
 
     /**
-     * set a emosBillingArray
+     * set a emosBillingArray.
      *
      * @param string $sBillingId      billing id
      * @param string $sCustomerNumber customer number
@@ -453,26 +453,27 @@ class Emos
      * @param string $sCountry        customer country title
      * @param string $sCip            customer ip
      * @param string $sCity           customer city title
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setEmosBillingArray" in next major
      */
-    protected function _setEmosBillingArray($sBillingId = "", $sCustomerNumber = "", $iTotal = 0, $sCountry = "", $sCip = "", $sCity = "") // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setEmosBillingArray($sBillingId = '', $sCustomerNumber = '', $iTotal = 0, $sCountry = '', $sCip = '', $sCity = ''): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         /******************* prepare data *************************************/
         /* md5 the customer id to fullfill requirements of german datenschutzgeesetz */
         $sCustomerNumber = md5($sCustomerNumber);
 
         $sCountry = $this->_emos_DataFormat($sCountry);
-        $sCip = $this->_emos_DataFormat($sCip) ;
+        $sCip = $this->_emos_DataFormat($sCip);
         $sCity = $this->_emos_DataFormat($sCity);
 
         /* get a / separated location stzring for later drilldown */
-        $ort = "";
+        $ort = '';
         if ($sCountry) {
             $ort .= "$sCountry/";
         }
 
         if ($sCip) {
-            $ort .= Str::getStr()->substr($sCip, 0, 1) . "/" . Str::getStr()->substr($sCip, 0, 2) . "/";
+            $ort .= Str::getStr()->substr($sCip, 0, 1) . '/' . Str::getStr()->substr($sCip, 0, 2) . '/';
         }
 
         if ($sCity) {
@@ -487,28 +488,28 @@ class Emos
     }
 
     /**
-     * constructs a emosECPageArray of given $sEvent type
+     * constructs a emosECPageArray of given $sEvent type.
      *
-     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem      an instance of class EMOS_Item
-     * @param string    $sEvent     Type of this event ("view","c_rmv","c_add")
+     * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem  an instance of class EMOS_Item
+     * @param string                                        $sEvent Type of this event ("view","c_rmv","c_add")
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "setEmosECPageArray" in next major
      */
-    protected function _setEmosECPageArray($oItem, $sEvent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _setEmosECPageArray($oItem, $sEvent): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $oItem = $this->_emos_ItemFormat($oItem);
 
         $this->_ecEvent = [[$sEvent, $oItem->productId, $oItem->productName,
             $oItem->price, $oItem->productGroup,
             $oItem->quantity, $oItem->variant1,
-            $oItem->variant2, $oItem->variant3]];
+            $oItem->variant2, $oItem->variant3, ]];
     }
 
     /**
-     * formats data/values/params by eliminating named entities and xml-entities
+     * formats data/values/params by eliminating named entities and xml-entities.
      *
      * @param \OxidEsales\Eshop\Core\Smarty\Plugin\EmosItem $oItem item to format its parameters
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "emos_ItemFormat" in next major
      */
     protected function _emos_ItemFormat($oItem) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
@@ -524,17 +525,16 @@ class Emos
     }
 
     /**
-     * formats data/values/params by eliminating named entities and xml-entities
+     * formats data/values/params by eliminating named entities and xml-entities.
      *
      * @param string $sStr data input to format
      *
-     * @return null
      * @deprecated underscore prefix violates PSR12, will be renamed to "emos_DataFormat" in next major
      */
     protected function _emos_DataFormat($sStr) //phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
     {
         //null check
-        if (is_null($sStr)) {
+        if (null === $sStr) {
             return null;
         }
 
@@ -545,84 +545,85 @@ class Emos
         $sStr = trim($sStr);
 
         //2007-05-10 replace translated &nbsp; with spaces
-        $nbsp = chr(0xa0);
-        $sStr = str_replace($nbsp, " ", $sStr);
-        $sStr = str_replace("\"", "", $sStr);
-        $sStr = str_replace("'", "", $sStr);
-        $sStr = str_replace("%", "", $sStr);
-        $sStr = str_replace(",", "", $sStr);
-        $sStr = str_replace(";", "", $sStr);
+        $nbsp = \chr(0xa0);
+        $sStr = str_replace($nbsp, ' ', $sStr);
+        $sStr = str_replace('"', '', $sStr);
+        $sStr = str_replace("'", '', $sStr);
+        $sStr = str_replace('%', '', $sStr);
+        $sStr = str_replace(',', '', $sStr);
+        $sStr = str_replace(';', '', $sStr);
         /* remove unnecessary white spaces*/
         while (true) {
             $sStr_temp = $sStr;
-            $sStr = str_replace("  ", " ", $sStr);
+            $sStr = str_replace('  ', ' ', $sStr);
 
-            if ($sStr == $sStr_temp) {
+            if ($sStr === $sStr_temp) {
                 break;
             }
         }
-        $sStr = str_replace(" / ", "/", $sStr);
-        $sStr = str_replace(" /", "/", $sStr);
-        $sStr = str_replace("/ ", "/", $sStr);
+        $sStr = str_replace(' / ', '/', $sStr);
+        $sStr = str_replace(' /', '/', $sStr);
+        $sStr = str_replace('/ ', '/', $sStr);
 
-        $sStr = Str::getStr()->substr($sStr, 0, 254);
+        return Str::getStr()->substr($sStr, 0, 254);
         //$sStr = rawurlencode( $sStr );
-        return $sStr;
     }
 
     /**
-     * formats up the connector script in a Econda ver 2 JS format
+     * formats up the connector script in a Econda ver 2 JS format.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareScript" in next major
      */
-    public function _prepareScript() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _prepareScript(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $this->_sPrescript =  '<script type="text/javascript">window.emosTrackVersion = 2;</script>' . $this->_br;
+        $this->_sPrescript = '<script type="text/javascript">window.emosTrackVersion = 2;</script>' . $this->_br;
 
-        $this->_sIncScript .= "<script type=\"text/javascript\" " .
-            "src=\"" . $this->_sPathToFile . $this->_sScriptFileName . "\">" .
-            "</script>" . $this->_br;
+        $this->_sIncScript .= '<script type="text/javascript" ' .
+            'src="' . $this->_sPathToFile . $this->_sScriptFileName . '">' .
+            '</script>' . $this->_br;
 
-        $this->_sPostscript  = '<script type="text/javascript"><!--' . $this->_br;
+        $this->_sPostscript = '<script type="text/javascript"><!--' . $this->_br;
         $this->_sPostscript .= $this->_tab . 'var emospro = {};' . $this->_br;
 
-        $this->_sPostscript .= $this->_addJsFormat("content", $this->_content);
-        $this->_sPostscript .= $this->_addJsFormat("orderProcess", $this->_orderProcess);
-        $this->_sPostscript .= $this->_addJsFormat("siteid", $this->_siteid);
-        $this->_sPostscript .= $this->_addJsFormat("langid", $this->_langid);
-        $this->_sPostscript .= $this->_addJsFormat("countryid", $this->_countryid);
-        $this->_sPostscript .= $this->_addJsFormat("pageId", $this->_pageid);
-        $this->_sPostscript .= $this->_addJsFormat("scontact", $this->_scontact);
-        $this->_sPostscript .= $this->_addJsFormat("download", $this->_download);
-        $this->_sPostscript .= $this->_addJsFormat("billing", [$this->_billing]);
+        $this->_sPostscript .= $this->_addJsFormat('content', $this->_content);
+        $this->_sPostscript .= $this->_addJsFormat('orderProcess', $this->_orderProcess);
+        $this->_sPostscript .= $this->_addJsFormat('siteid', $this->_siteid);
+        $this->_sPostscript .= $this->_addJsFormat('langid', $this->_langid);
+        $this->_sPostscript .= $this->_addJsFormat('countryid', $this->_countryid);
+        $this->_sPostscript .= $this->_addJsFormat('pageId', $this->_pageid);
+        $this->_sPostscript .= $this->_addJsFormat('scontact', $this->_scontact);
+        $this->_sPostscript .= $this->_addJsFormat('download', $this->_download);
+        $this->_sPostscript .= $this->_addJsFormat('billing', [$this->_billing]);
 
-        $this->_sPostscript .= $this->_addJsFormat("search", [[$this->_searchQuery, $this->_searchNumberOfHits]]);
-        $this->_sPostscript .= $this->_addJsFormat("register", [[$this->_registerUser, $this->_registerResult]]);
-        $this->_sPostscript .= $this->_addJsFormat("login", [[$this->_loginUser, $this->_loginResult]]);
+        $this->_sPostscript .= $this->_addJsFormat('search', [[$this->_searchQuery, $this->_searchNumberOfHits]]);
+        $this->_sPostscript .= $this->_addJsFormat('register', [[$this->_registerUser, $this->_registerResult]]);
+        $this->_sPostscript .= $this->_addJsFormat('login', [[$this->_loginUser, $this->_loginResult]]);
 
-        $this->_sPostscript .= $this->_addJsFormat("ec_Event", $this->_ecEvent);
+        $this->_sPostscript .= $this->_addJsFormat('ec_Event', $this->_ecEvent);
 
         $this->_sPostscript .= $this->_tab . 'window.emosPropertiesEvent(emospro);' . $this->_br;
         $this->_sPostscript .= '//-->' . $this->_br . '</script>' . $this->_br;
     }
 
     /**
-     * Formats a line in JS format
+     * Formats a line in JS format.
      *
      * @param string $sVarName  Variable name
      * @param mixed  $mContents Variable value
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addJsFormat" in next major
      */
     protected function _addJsFormat($sVarName, $mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         //get the first non array $mContents element
         $mVal = $mContents;
-        while (is_array($mVal)) {
+        while (\is_array($mVal)) {
             $mVal = $mVal[0];
         }
 
-        if (is_null($mVal)) {
+        if (null === $mVal) {
             return;
         }
 
@@ -632,11 +633,12 @@ class Emos
     }
 
     /**
-     * Encode contents $mContents to string for JS export
+     * Encode contents $mContents to string for JS export.
      *
      * @param mixed $mContents Input contents
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "jsEncode" in next major
      */
     protected function _jsEncode($mContents) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore

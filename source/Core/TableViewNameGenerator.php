@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,10 +14,14 @@ namespace OxidEsales\EshopCommunity\Core;
  */
 class TableViewNameGenerator
 {
-    /** @var \OxidEsales\Eshop\Core\Config */
+    /**
+     * @var \OxidEsales\Eshop\Core\Config
+     */
     private $config;
 
-    /** @var \OxidEsales\Eshop\Core\Language */
+    /**
+     * @var \OxidEsales\Eshop\Core\Language
+     */
     private $language;
 
     /**
@@ -52,12 +58,12 @@ class TableViewNameGenerator
 
         if (!$config->getConfigParam('blSkipViewUsage')) {
             $language = $this->getLanguage();
-            $languageId = $languageId !== null ? $languageId : $language->getBaseLanguage();
-            $shopId = $shopId !== null ? $shopId : $config->getShopId();
-            $isMultiLang = in_array($table, $language->getMultiLangTables());
+            $languageId = null !== $languageId ? $languageId : $language->getBaseLanguage();
+            $shopId = null !== $shopId ? $shopId : $config->getShopId();
+            $isMultiLang = \in_array($table, $language->getMultiLangTables(), true);
             $viewSuffix = $this->getViewSuffix($table, $languageId, $shopId, $isMultiLang);
 
-            if ($viewSuffix || (($languageId == -1 || $shopId == -1) && $isMultiLang)) {
+            if ($viewSuffix || ((-1 === $languageId || -1 === $shopId) && $isMultiLang)) {
                 return "oxv_{$table}{$viewSuffix}";
             }
         }
@@ -78,7 +84,7 @@ class TableViewNameGenerator
     protected function getViewSuffix($table, $languageId, $shopId, $isMultiLang)
     {
         $viewSuffix = '';
-        if ($languageId != -1 && $isMultiLang) {
+        if (-1 !== $languageId && $isMultiLang) {
             $languageAbbreviation = $this->getLanguage()->getLanguageAbbr($languageId);
             $viewSuffix .= "_{$languageAbbreviation}";
         }

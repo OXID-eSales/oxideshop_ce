@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,14 +14,18 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
  */
 class OrderArticle extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject
 {
-    /** @var string Database table name. */
+    /**
+     * @var string database table name
+     */
     protected $tableName = 'oxorderarticles';
 
-    /** @var string Shop object name. */
+    /**
+     * @var string shop object name
+     */
     protected $shopObjectName = 'oxorderarticle';
 
     /**
-     * issued before saving an object. can modify aData for saving
+     * issued before saving an object. can modify aData for saving.
      *
      * @param \OxidEsales\Eshop\Core\Model\BaseModel $shopObject        oxBase child for object
      * @param array                                  $data              Data for object
@@ -33,12 +39,12 @@ class OrderArticle extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\Imp
 
         // check if data is not serialized
         $persParamValues = @unserialize($data['OXPERSPARAM']);
-        if (!is_array($persParamValues)) {
+        if (!\is_array($persParamValues)) {
             // data is a string with | separation, prepare for oxid
-            $persParamValues = explode("|", $data['OXPERSPARAM']);
+            $persParamValues = explode('|', $data['OXPERSPARAM']);
             $data['OXPERSPARAM'] = serialize($persParamValues);
         }
-        if (array_key_exists('OXORDERSHOPID', $data)) {
+        if (\array_key_exists('OXORDERSHOPID', $data)) {
             $data['OXORDERSHOPID'] = $this->getOrderShopId($data['OXORDERSHOPID']);
         }
 

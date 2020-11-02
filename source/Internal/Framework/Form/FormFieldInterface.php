@@ -18,6 +18,7 @@ interface FormFieldInterface
 
     /**
      * @param string $name
+     *
      * @return FormFieldInterface
      */
     public function setName($name);
@@ -29,6 +30,7 @@ interface FormFieldInterface
 
     /**
      * @param string $value
+     *
      * @return FormFieldInterface
      */
     public function setValue($value);
@@ -40,9 +42,11 @@ interface FormFieldInterface
 
     /**
      * @param string $label
+     *
      * @return FormFieldInterface
      */
     public function setLabel($label);
+
     /**
      * @return bool
      */
@@ -50,6 +54,7 @@ interface FormFieldInterface
 
     /**
      * @param bool $isRequired
+     *
      * @return FormFieldInterface
      */
     public function setIsRequired($isRequired);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,17 +13,16 @@ use stdClass;
 
 class FormatCurrencyLogic
 {
-
     /**
      * @param string     $sFormat
      * @param string|int $sValue
      *
      * @return string
      */
-    public function numberFormat($sFormat = "EUR@ 1.00@ ,@ .@ EUR@ 2", $sValue = 0)
+    public function numberFormat($sFormat = 'EUR@ 1.00@ ,@ .@ EUR@ 2', $sValue = 0)
     {
         // logic copied from \OxidEsales\Eshop\Core\Config::getCurrencyArray()
-        $sCur = explode("@", $sFormat);
+        $sCur = explode('@', $sFormat);
         $oCur = new stdClass();
         $oCur->id = 0;
         $oCur->name = @trim($sCur[0]);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -8,12 +10,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Wrapping;
-use oxList;
-use oxRegistry;
-use oxUBase;
 
 /**
- * Managing Gift Wrapping
+ * Managing Gift Wrapping.
  */
 class WrappingController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -25,30 +24,30 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
     protected $_sThisTemplate = 'page/checkout/wrapping.tpl';
 
     /**
-     * Basket items array
+     * Basket items array.
      *
      * @var array
      */
     protected $_aBasketItemList = null;
 
     /**
-     * Wrapping objects list
+     * Wrapping objects list.
      */
     protected $_oWrappings = null;
 
     /**
-     * Card objects list
+     * Card objects list.
      */
     protected $_oCards = null;
 
     /**
-     * Returns array of shopping basket articles
+     * Returns array of shopping basket articles.
      *
      * @return array
      */
     public function getBasketItems()
     {
-        if ($this->_aBasketItemList === null) {
+        if (null === $this->_aBasketItemList) {
             $this->_aBasketItemList = false;
 
             // passing basket articles
@@ -62,13 +61,13 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Return basket wrappings list if available
+     * Return basket wrappings list if available.
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getWrappingList()
     {
-        if ($this->_oWrappings === null) {
+        if (null === $this->_oWrappings) {
             $this->_oWrappings = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load wrapping papers
@@ -81,13 +80,13 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Returns greeting cards list if available
+     * Returns greeting cards list if available.
      *
      * @return \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getCardList()
     {
-        if ($this->_oCards === null) {
+        if (null === $this->_oCards) {
             $this->_oCards = new \OxidEsales\Eshop\Core\Model\ListModel();
 
             // load gift cards
@@ -118,7 +117,7 @@ class WrappingController extends \OxidEsales\Eshop\Application\Controller\Fronte
             $session = \OxidEsales\Eshop\Core\Registry::getSession();
             $oBasket = $session->getBasket();
             // setting wrapping info
-            if (is_array($aWrapping) && count($aWrapping)) {
+            if (\is_array($aWrapping) && \count($aWrapping)) {
                 foreach ($oBasket->getContents() as $sKey => $oBasketItem) {
                     // wrapping ?
                     if (isset($aWrapping[$sKey])) {

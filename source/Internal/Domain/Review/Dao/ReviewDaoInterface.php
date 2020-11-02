@@ -23,8 +23,5 @@ interface ReviewDaoInterface
      */
     public function getReviewsByUserId($userId);
 
-    /**
-     * @param Review $review
-     */
     public function delete(Review $review);
 }

@@ -17,21 +17,18 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurationHandlerInterface
 {
-    /** @var ShopConfigurationSettingDaoInterface */
+    /**
+     * @var ShopConfigurationSettingDaoInterface
+     */
     private $shopConfigurationSettingDao;
 
-    /** @param ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao */
     public function __construct(
         ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao
     ) {
         $this->shopConfigurationSettingDao = $shopConfigurationSettingDao;
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleActivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($this->canHandle($configuration)) {
             $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
@@ -54,11 +51,7 @@ class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurati
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @param int                 $shopId
-     */
-    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId)
+    public function handleOnModuleDeactivation(ModuleConfiguration $configuration, int $shopId): void
     {
         if ($this->canHandle($configuration)) {
             $shopConfigurationSetting = $this->getShopConfigurationSetting($shopId);
@@ -72,19 +65,11 @@ class ShopConfigurationSmartyPluginDirectoryHandler implements ModuleConfigurati
         }
     }
 
-    /**
-     * @param ModuleConfiguration $configuration
-     * @return bool
-     */
     private function canHandle(ModuleConfiguration $configuration): bool
     {
         return $configuration->hasSmartyPluginDirectories();
     }
 
-    /**
-     * @param int $shopId
-     * @return ShopConfigurationSetting
-     */
     private function getShopConfigurationSetting(int $shopId): ShopConfigurationSetting
     {
         try {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -11,7 +13,8 @@ namespace OxidEsales\EshopCommunity\Core\Autoload;
  * This class autoloads backwards compatible classes by triggering the composer autoloader via a unified namespace
  * class.
  *
- * @internal Do not make a module extension for this class.
+ * @internal do not make a module extension for this class
+ *
  * @see      https://oxidforge.org/en/core-oxid-eshop-classes-must-not-be-extended.html
  */
 class BackwardsCompatibilityAutoload
@@ -25,7 +28,7 @@ class BackwardsCompatibilityAutoload
      */
     public static function autoload($class)
     {
-        /**
+        /*
          * Classes from unified namespace canot be loaded by this auto loader.
          * Do not try to load them in order to avoid strange errors in edge cases.
          */
@@ -40,7 +43,7 @@ class BackwardsCompatibilityAutoload
     }
 
     /**
-     * Return the name of a Unified Namespace class for a given backwards compatible class
+     * Return the name of a Unified Namespace class for a given backwards compatible class.
      *
      * @param string $bcAlias Name of the backwards compatible class like oxArticle
      *
@@ -50,7 +53,7 @@ class BackwardsCompatibilityAutoload
     {
         $classMap = static::getBackwardsCompatibilityClassMap();
         $bcAlias = strtolower($bcAlias);
-        $result = isset($classMap[$bcAlias]) ? $classMap[$bcAlias] : "";
+        $result = $classMap[$bcAlias] ?? '';
 
         return $result;
     }
@@ -61,7 +64,7 @@ class BackwardsCompatibilityAutoload
      *
      * @param string $class Name of the class to load
      */
-    private static function forceBackwardsCompatiblityClassLoading($class)
+    private static function forceBackwardsCompatiblityClassLoading($class): void
     {
         class_exists($class);
     }
@@ -69,7 +72,7 @@ class BackwardsCompatibilityAutoload
     /**
      * Return the backwards compatible class map.
      *
-     * @return array Mapping of Unified Namespace to backwards compatible classes.
+     * @return array mapping of Unified Namespace to backwards compatible classes
      */
     private static function getBackwardsCompatibilityClassMap()
     {

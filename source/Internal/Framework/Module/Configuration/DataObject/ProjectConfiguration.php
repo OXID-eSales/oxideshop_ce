@@ -13,14 +13,11 @@ use DomainException;
 
 class ProjectConfiguration
 {
-    /** @var ShopConfiguration[] */
+    /**
+     * @var ShopConfiguration[]
+     */
     private $projectConfiguration = [];
 
-    /**
-     * @param int $shopId
-     *
-     * @return ShopConfiguration
-     */
     public function getShopConfiguration(int $shopId): ShopConfiguration
     {
         if (\array_key_exists($shopId, $this->projectConfiguration)) {
@@ -29,34 +26,22 @@ class ProjectConfiguration
         throw new DomainException('There is no configuration for shop id ' . $shopId);
     }
 
-    /**
-     * @return array
-     */
     public function getShopConfigurations(): array
     {
         return $this->projectConfiguration;
     }
 
-    /**
-     * @return array
-     */
     public function getShopConfigurationIds(): array
     {
         return array_keys($this->projectConfiguration);
     }
 
-    /**
-     * @param int               $shopId
-     * @param ShopConfiguration $shopConfiguration
-     */
     public function addShopConfiguration(int $shopId, ShopConfiguration $shopConfiguration): void
     {
         $this->projectConfiguration[$shopId] = $shopConfiguration;
     }
 
     /**
-     * @param int $shopId
-     *
      * @throws DomainException
      */
     public function deleteShopConfiguration(int $shopId): void

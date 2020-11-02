@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 /**
- * Character list for replacement in SEO URL's
+ * Character list for replacement in SEO URL's.
+ *
  * @var array SEO replacement list
  */
 $aSeoReplaceChars = [
@@ -20,5 +23,5 @@ $aSeoReplaceChars = [
 ];
 
 $aLang = [
-    'charset' => "UTF-8",
+    'charset' => 'UTF-8',
 ];

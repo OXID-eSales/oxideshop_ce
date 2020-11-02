@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxRegistry;
-use oxDb;
 
 /**
  * Voucher serie manager.
@@ -41,8 +40,6 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
      * Override delete function so we can delete user group and article or category relations first.
      *
      * @param string $sOxId object ID (default null)
-     *
-     * @return null
      */
     public function delete($sOxId = null)
     {
@@ -64,14 +61,14 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setUserGroups()
     {
-        if ($this->_oGroups === null) {
+        if (null === $this->_oGroups) {
             $this->_oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $this->_oGroups->init('oxgroups');
-            $sViewName = getViewName("oxgroups");
+            $sViewName = getViewName('oxgroups');
             $sSelect = "select gr.* from {$sViewName} as gr, oxobject2group as o2g where
                          o2g.oxobjectid = :oxobjectid and gr.oxid = o2g.oxgroupsid ";
             $this->_oGroups->selectString($sSelect, [
-                ':oxobjectid' => $this->getId()
+                ':oxobjectid' => $this->getId(),
             ]);
         }
 
@@ -81,24 +78,24 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Removes user groups relations.
      */
-    public function unsetUserGroups()
+    public function unsetUserGroups(): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = 'delete from oxobject2group where oxobjectid = :oxobjectid';
         $oDb->execute($sDelete, [
-            ':oxobjectid' => $this->getId()
+            ':oxobjectid' => $this->getId(),
         ]);
     }
 
     /**
      * Removes product or dategory relations.
      */
-    public function unsetDiscountRelations()
+    public function unsetDiscountRelations(): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = 'delete from oxobject2discount where oxobject2discount.oxdiscountid = :oxdiscountid';
         $oDb->execute($sDelete, [
-            ':oxdiscountid' => $this->getId()
+            ':oxdiscountid' => $this->getId(),
         ]);
     }
 
@@ -113,7 +110,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sSelect = 'select * from oxvouchers 
             where oxvoucherserieid = :oxvoucherserieid';
         $oVoucherList->selectString($sSelect, [
-            ':oxvoucherserieid' => $this->getId()
+            ':oxvoucherserieid' => $this->getId(),
         ]);
 
         return $oVoucherList;
@@ -122,12 +119,12 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Deletes assigned voucher list.
      */
-    public function deleteVoucherList()
+    public function deleteVoucherList(): void
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = 'delete from oxvouchers where oxvoucherserieid = :oxvoucherserieid';
         $oDb->execute($sDelete, [
-            ':oxvoucherserieid' => $this->getId()
+            ':oxvoucherserieid' => $this->getId(),
         ]);
     }
 
@@ -144,14 +141,14 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sQuery = 'select count(*) as total from oxvouchers 
             where oxvoucherserieid = :oxvoucherserieid';
         $aStatus['total'] = $oDb->getOne($sQuery, [
-            ':oxvoucherserieid' => $this->getId()
+            ':oxvoucherserieid' => $this->getId(),
         ]);
 
         $sQuery = 'select count(*) as used from oxvouchers 
             where oxvoucherserieid = :oxvoucherserieid 
                 and ((oxorderid is not NULL and oxorderid != "") or (oxdateused is not NULL and oxdateused != 0))';
         $aStatus['used'] = $oDb->getOne($sQuery, [
-            ':oxvoucherserieid' => $this->getId()
+            ':oxvoucherserieid' => $this->getId(),
         ]);
 
         $aStatus['available'] = $aStatus['total'] - $aStatus['used'];
@@ -178,15 +175,15 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sEndDate = $this->oxvoucherseries__oxenddate->value;
 
         //If nothing pass, use current server time
-        if ($sNow == null) {
+        if (null === $sNow) {
             $sNow = date('Y-m-d H:i:s', $oUtilsDate->getTime());
         }
 
         //Check for active status.
         if (
-            ($sBeginDate == '0000-00-00 00:00:00' && $sEndDate == '0000-00-00 00:00:00') || //If both dates are empty => treat it as always active
-            ($sBeginDate == '0000-00-00 00:00:00' && $sNow <= $sEndDate) || //check for end date without start date
-            ($sBeginDate <= $sNow && $sEndDate == '0000-00-00 00:00:00') || //check for start date without end date
+            ('0000-00-00 00:00:00' === $sBeginDate && '0000-00-00 00:00:00' === $sEndDate) || //If both dates are empty => treat it as always active
+            ('0000-00-00 00:00:00' === $sBeginDate && $sNow <= $sEndDate) || //check for end date without start date
+            ($sBeginDate <= $sNow && '0000-00-00 00:00:00' === $sEndDate) || //check for start date without end date
             ($sBeginDate <= $sNow && $sNow <= $sEndDate)
         ) { //check for both start date and end date.
             return $iActive;

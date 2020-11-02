@@ -13,8 +13,5 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 
 interface AdminDaoInterface
 {
-    /**
-     * @param Admin $admin
-     */
     public function create(Admin $admin): void;
 }

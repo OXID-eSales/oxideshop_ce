@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -17,7 +19,7 @@ namespace OxidEsales\EshopCommunity\Core;
 class Str
 {
     /**
-     * Specific string handler
+     * Specific string handler.
      *
      * @var \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
      */
@@ -25,8 +27,6 @@ class Str
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null
      */
     public function __construct()
     {
@@ -53,11 +53,12 @@ class Str
      * possibility to extend it in modules by overriding _getStrHandler() method.
      *
      * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getStrHandler" in next major
      */
     protected function _getStrHandler() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (function_exists('mb_strlen')) {
+        if (\function_exists('mb_strlen')) {
             return oxNew(\OxidEsales\Eshop\Core\StrMb::class);
         }
 

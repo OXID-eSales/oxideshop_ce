@@ -68,6 +68,7 @@ class Review
 
     /**
      * @param int $rating
+     *
      * @return $this
      */
     public function setRating($rating)
@@ -87,6 +88,7 @@ class Review
 
     /**
      * @param string $text
+     *
      * @return $this
      */
     public function setText($text)
@@ -106,6 +108,7 @@ class Review
 
     /**
      * @param string $objectId
+     *
      * @return $this
      */
     public function setObjectId($objectId)
@@ -125,6 +128,7 @@ class Review
 
     /**
      * @param string $userId
+     *
      * @return $this
      */
     public function setUserId($userId)

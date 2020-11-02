@@ -25,17 +25,11 @@ class ServicesCommandsProvider implements CommandsProviderInterface
      */
     private $commands = [];
 
-    /**
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    /**
-     * @return array
-     */
     public function getCommands(): array
     {
         $this->addLazyLoadedCommands();
@@ -49,7 +43,7 @@ class ServicesCommandsProvider implements CommandsProviderInterface
         if ($this->container->has('console.command_loader')) {
             $commandLoader = $this->container->get('console.command_loader');
             foreach ($commandLoader->getNames() as $aliases) {
-                $service =  $commandLoader->get($aliases);
+                $service = $commandLoader->get($aliases);
                 $this->setShopAwareCommands($service);
                 $this->setNonShopAwareCommands($service);
             }
@@ -69,10 +63,8 @@ class ServicesCommandsProvider implements CommandsProviderInterface
 
     /**
      * Set commands for modules.
-     *
-     * @param Command $service
      */
-    private function setShopAwareCommands(Command $service)
+    private function setShopAwareCommands(Command $service): void
     {
         if ($service instanceof AbstractShopAwareCommand && $service->isActive()) {
             $this->commands[] = $service;
@@ -81,10 +73,8 @@ class ServicesCommandsProvider implements CommandsProviderInterface
 
     /**
      * Sets commands which should be shown independently from active shop.
-     *
-     * @param Command $service
      */
-    private function setNonShopAwareCommands(Command $service)
+    private function setNonShopAwareCommands(Command $service): void
     {
         if (!$service instanceof AbstractShopAwareCommand && $service instanceof Command) {
             $this->commands[] = $service;

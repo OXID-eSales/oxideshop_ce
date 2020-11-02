@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
 
 /**
  * Admin article main discount manager.
@@ -28,7 +28,7 @@ class DiscountArticles extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != '-1') {
+        if (isset($soxId) && '-1' !== $soxId) {
             // load object
             $oDiscount = oxNew(\OxidEsales\Eshop\Application\Model\Discount::class);
             $oDiscount->load($soxId);
@@ -40,20 +40,20 @@ class DiscountArticles extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             }
 
             // generating category tree for artikel choose select list
-            $this->_createCategoryTree("artcattree");
+            $this->_createCategoryTree('artcattree');
         }
 
-        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc");
-        if ($iAoc == 1) {
+        $iAoc = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('aoc');
+        if (1 === $iAoc) {
             $oDiscountArticlesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountArticlesAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountArticlesAjax->getColumns();
 
-            return "popups/discount_articles.tpl";
-        } elseif ($iAoc == 2) {
+            return 'popups/discount_articles.tpl';
+        } elseif (2 === $iAoc) {
             $oDiscountCategoriesAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\DiscountCategoriesAjax::class);
             $this->_aViewData['oxajax'] = $oDiscountCategoriesAjax->getColumns();
 
-            return "popups/discount_categories.tpl";
+            return 'popups/discount_categories.tpl';
         }
 
         return 'discount_articles.tpl';

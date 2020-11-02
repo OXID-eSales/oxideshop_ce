@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
-
-use oxRegistry;
-use oxDb;
 
 /**
  * Admin Contents manager.
@@ -37,7 +36,7 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sThisTemplate = "content_list.tpl";
+    protected $_sThisTemplate = 'content_list.tpl';
 
     /**
      * Executes parent method parent::render() and returns current class template
@@ -49,11 +48,11 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
     {
         parent::render();
 
-        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("folder");
-        $sFolder = $sFolder ? $sFolder : -1;
+        $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
+        $sFolder = $sFolder ?: -1;
 
-        $this->_aViewData["folder"] = $sFolder;
-        $this->_aViewData["afolder"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aCMSfolder');
+        $this->_aViewData['folder'] = $sFolder;
+        $this->_aViewData['afolder'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aCMSfolder');
 
         return $this->_sThisTemplate;
     }
@@ -65,18 +64,20 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      * @param string $sqlFull SQL query string
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "prepareWhereQuery" in next major
      */
-    protected function _prepareWhereQuery($aWhere, $sqlFull) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
         $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
         $sFolder = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('folder');
-        $sViewName = getviewName("oxcontents");
+        $sViewName = getviewName('oxcontents');
 
         //searchong for empty oxfolder fields
-        if ($sFolder == 'CMSFOLDER_NONE' || $sFolder == 'CMSFOLDER_NONE_RR') {
+        if ('CMSFOLDER_NONE' === $sFolder || 'CMSFOLDER_NONE_RR' === $sFolder) {
             $sQ .= " and {$sViewName}.oxfolder = '' ";
-        } elseif ($sFolder && $sFolder != '-1') {
+        } elseif ($sFolder && '-1' !== $sFolder) {
             $sFolder = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote($sFolder);
             $sQ .= " and {$sViewName}.oxfolder = {$sFolder}";
         }

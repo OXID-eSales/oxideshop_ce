@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,12 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxField;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxUBase;
-use oxUser;
 
 /**
  * Review of chosen article.
@@ -21,19 +19,19 @@ use oxUser;
 class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleDetailsController
 {
     /**
-     * Review user object
+     * Review user object.
      */
     protected $_oRevUser = null;
 
     /**
-     * Active object ($_oProduct or $_oActiveRecommList)
+     * Active object ($_oProduct or $_oActiveRecommList).
      *
      * @var object
      */
     protected $_oActObject = null;
 
     /**
-     * Active recommendations list
+     * Active recommendations list.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -42,7 +40,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     protected $_oActiveRecommList = null;
 
     /**
-     * Active recommlist's items
+     * Active recommlist's items.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -51,49 +49,49 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     protected $_oActiveRecommItems = null;
 
     /**
-     * Can user rate
+     * Can user rate.
      *
      * @var bool
      */
     protected $_blRate = null;
 
     /**
-     * Array of reviews
+     * Array of reviews.
      *
      * @var array
      */
     protected $_aReviews = null;
 
     /**
-     * CrossSelling articlelist
+     * CrossSelling articlelist.
      *
      * @var object
      */
     protected $_oCrossSelling = null;
 
     /**
-     * Similar products articlelist
+     * Similar products articlelist.
      *
      * @var object
      */
     protected $_oSimilarProducts = null;
 
     /**
-     * Recommlist
+     * Recommlist.
      *
      * @var object
      */
     protected $_oRecommList = null;
 
     /**
-     * Review send status
+     * Review send status.
      *
      * @var bool
      */
     protected $_blReviewSendStatus = null;
 
     /**
-     * Page navigation
+     * Page navigation.
      *
      * @var object
      */
@@ -114,7 +112,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     protected $_sThisLoginTemplate = 'page/review/review_login.tpl';
 
     /**
-     * Current view search engine indexing state
+     * Current view search engine indexing state.
      *
      * @var int
      */
@@ -123,7 +121,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     /**
      * Returns prefix ID used by template engine.
      *
-     * @return  string  $this->_sViewID view id
+     * @return string $this->_sViewID view id
      */
     public function generateViewId()
     {
@@ -133,7 +131,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     /**
      * Executes parent::init(), Loads user chosen product object (with all data).
      */
-    public function init()
+    public function init(): void
     {
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('recommid') && !$this->getActiveRecommList()) {
@@ -151,13 +149,13 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      * \OxidEsales\Eshop\Application\Model\Article::GetSimilarProducts()). Returns name of template file to
      * render review::_sThisTemplate.
      *
-     * @return  string  current template file name
+     * @return string current template file name
      */
     public function render()
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        if (!$oConfig->getConfigParam("bl_perfLoadReviews")) {
+        if (!$oConfig->getConfigParam('bl_perfLoadReviews')) {
             Registry::getUtils()->redirect($oConfig->getShopHomeUrl());
         }
 
@@ -185,11 +183,9 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Saves user review text (oxreview object)
-     *
-     * @return null
+     * Saves user review text (oxreview object).
      */
-    public function saveReview()
+    public function saveReview(): void
     {
         if (!Registry::getSession()->checkSessionChallenge()) {
             return;
@@ -197,16 +193,16 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
 
         if (($oRevUser = $this->getReviewUser()) && $this->canAcceptFormData()) {
             if (($oActObject = $this->_getActiveObject()) && ($sType = $this->_getActiveType())) {
-                if (($dRating = Registry::getConfig()->getRequestParameter('rating')) === null) {
+                if (null === ($dRating = Registry::getConfig()->getRequestParameter('rating'))) {
                     $dRating = Registry::getConfig()->getRequestParameter('artrating');
                 }
 
-                if ($dRating !== null) {
-                    $dRating = (int) $dRating;
+                if (null !== $dRating) {
+                    $dRating = (int)$dRating;
                 }
 
                 //save rating
-                if ($dRating !== null && $dRating >= 1 && $dRating <= 5) {
+                if (null !== $dRating && $dRating >= 1 && $dRating <= 5) {
                     $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
                     if ($oRating->allowRating($oRevUser->getId(), $sType, $oActObject->getId())) {
                         $oRating->oxratings__oxuserid = new Field($oRevUser->getId());
@@ -221,14 +217,14 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
                     }
                 }
 
-                if (($sReviewText = trim((string) Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
+                if (($sReviewText = trim((string)Registry::getConfig()->getRequestParameter('rvw_txt', true)))) {
                     $oReview = oxNew(\OxidEsales\Eshop\Application\Model\Review::class);
                     $oReview->oxreviews__oxobjectid = new Field($oActObject->getId());
                     $oReview->oxreviews__oxtype = new Field($sType);
                     $oReview->oxreviews__oxtext = new Field($sReviewText, Field::T_RAW);
                     $oReview->oxreviews__oxlang = new Field(Registry::getLang()->getBaseLanguage());
                     $oReview->oxreviews__oxuserid = new Field($oRevUser->getId());
-                    $oReview->oxreviews__oxrating = new Field(($dRating !== null) ? $dRating : null);
+                    $oReview->oxreviews__oxrating = new Field((null !== $dRating) ? $dRating : null);
                     $oReview->save();
 
                     $this->_blReviewSendStatus = true;
@@ -238,13 +234,13 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Returns review user object
+     * Returns review user object.
      *
      * @return \OxidEsales\Eshop\Application\Model\User
      */
     public function getReviewUser()
     {
-        if ($this->_oRevUser === null) {
+        if (null === $this->_oRevUser) {
             $this->_oRevUser = false;
             $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
 
@@ -263,7 +259,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns review user id
+     * Template variable getter. Returns review user id.
      *
      * @return string
      */
@@ -273,14 +269,15 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns active object (oxarticle or oxrecommlist)
+     * Template variable getter. Returns active object (oxarticle or oxrecommlist).
      *
      * @return object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveObject" in next major
      */
     protected function _getActiveObject() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_oActObject === null) {
+        if (null === $this->_oActObject) {
             $this->_oActObject = false;
 
             if (($oProduct = $this->getProduct())) {
@@ -296,9 +293,10 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns active type (oxarticle or oxrecommlist)
+     * Template variable getter. Returns active type (oxarticle or oxrecommlist).
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getActiveType" in next major
      */
     protected function _getActiveType() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
@@ -313,7 +311,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns active recommlist
+     * Template variable getter. Returns active recommlist.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -325,7 +323,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
             return false;
         }
 
-        if ($this->_oActiveRecommList === null) {
+        if (null === $this->_oActiveRecommList) {
             $this->_oActiveRecommList = false;
 
             if ($sRecommId = Registry::getConfig()->getRequestParameter('recommid')) {
@@ -340,13 +338,13 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns if user can rate
+     * Template variable getter. Returns if user can rate.
      *
      * @return bool
      */
     public function canRate()
     {
-        if ($this->_blRate === null) {
+        if (null === $this->_blRate) {
             $this->_blRate = false;
             if (($oActObject = $this->_getActiveObject()) && ($oRevUser = $this->getReviewUser())) {
                 $oRating = oxNew(\OxidEsales\Eshop\Application\Model\Rating::class);
@@ -362,13 +360,13 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns active object's reviews
+     * Template variable getter. Returns active object's reviews.
      *
      * @return array
      */
     public function getReviews()
     {
-        if ($this->_aReviews === null) {
+        if (null === $this->_aReviews) {
             $this->_aReviews = false;
             if ($oObject = $this->_getActiveObject()) {
                 $this->_aReviews = $oObject->getReviews();
@@ -379,7 +377,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns recommlists
+     * Template variable getter. Returns recommlists.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -387,7 +385,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      */
     public function getRecommList()
     {
-        if ($this->_oRecommList === null) {
+        if (null === $this->_oRecommList) {
             $this->_oRecommList = false;
             if ($oProduct = $this->getProduct()) {
                 $oRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
@@ -399,7 +397,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns active recommlist's items
+     * Template variable getter. Returns active recommlist's items.
      *
      * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
      *
@@ -407,11 +405,11 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
      */
     public function getActiveRecommItems()
     {
-        if ($this->_oActiveRecommItems === null) {
+        if (null === $this->_oActiveRecommItems) {
             $this->_oActiveRecommItems = false;
             if ($oActiveRecommList = $this->getActiveRecommList()) {
                 // sets active page
-                $iActPage = (int) Registry::getConfig()->getRequestParameter('pgNr');
+                $iActPage = (int)Registry::getConfig()->getRequestParameter('pgNr');
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
@@ -433,7 +431,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns review send status
+     * Template variable getter. Returns review send status.
      *
      * @return bool
      */
@@ -443,13 +441,13 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns page navigation
+     * Template variable getter. Returns page navigation.
      *
      * @return object
      */
     public function getPageNavigation()
     {
-        if ($this->_oPageNavigation === null) {
+        if (null === $this->_oPageNavigation) {
             $this->_oPageNavigation = false;
             // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
             if ($this->getActiveRecommList()) {
@@ -462,7 +460,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * Template variable getter. Returns additional params for url
+     * Template variable getter. Returns additional params for url.
      *
      * @return string
      */
@@ -479,7 +477,7 @@ class ReviewController extends \OxidEsales\Eshop\Application\Controller\ArticleD
     }
 
     /**
-     * returns additional url params for dynamic url building
+     * returns additional url params for dynamic url building.
      *
      * @return string
      */

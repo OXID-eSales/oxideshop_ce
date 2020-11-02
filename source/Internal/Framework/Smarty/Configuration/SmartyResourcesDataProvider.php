@@ -13,8 +13,6 @@ class SmartyResourcesDataProvider implements SmartyResourcesDataProviderInterfac
 {
     /**
      * Returns an array of resources.
-     *
-     * @return array
      */
     public function getResources(): array
     {
@@ -23,9 +21,8 @@ class SmartyResourcesDataProvider implements SmartyResourcesDataProviderInterfac
                 'ox_get_template',
                 'ox_get_timestamp',
                 'ox_get_secure',
-                'ox_get_trusted'
-
-            ]
+                'ox_get_trusted',
+            ],
         ];
     }
 }

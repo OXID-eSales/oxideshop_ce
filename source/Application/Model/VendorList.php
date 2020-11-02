@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
 namespace OxidEsales\EshopCommunity\Application\Model;
-
-use oxRegistry;
-use oxField;
 
 /**
  * Vendor list manager.
@@ -31,21 +30,21 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected $_aPath = [];
 
     /**
-     * To show vendor article count or not
+     * To show vendor article count or not.
      *
      * @var bool
      */
     protected $_blShowVendorArticleCnt = false;
 
     /**
-     * Active vendor object
+     * Active vendor object.
      *
      * @var \OxidEsales\Eshop\Application\Model\Vendor
      */
     protected $_oClickedVendor = null;
 
     /**
-     * Calls parent constructor and defines if Article vendor count is shown
+     * Calls parent constructor and defines if Article vendor count is shown.
      */
     public function __construct()
     {
@@ -54,19 +53,19 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Enables/disables vendor article count calculation
+     * Enables/disables vendor article count calculation.
      *
      * @param bool $blShowVendorArticleCnt to show article count or not
      */
-    public function setShowVendorArticleCnt($blShowVendorArticleCnt = false)
+    public function setShowVendorArticleCnt($blShowVendorArticleCnt = false): void
     {
         $this->_blShowVendorArticleCnt = $blShowVendorArticleCnt;
     }
 
     /**
-     * Loads simple vendor list
+     * Loads simple vendor list.
      */
-    public function loadVendorList()
+    public function loadVendorList(): void
     {
         $oBaseObject = $this->getBaseObject();
         $sFieldList = $oBaseObject->getSelectFields();
@@ -85,19 +84,18 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Creates fake root for vendor tree, and ads category list fileds for each vendor item
+     * Creates fake root for vendor tree, and ads category list fileds for each vendor item.
      *
      * @param string $sLinkTarget  Name of class, responsible for category rendering
      * @param string $sActCat      Active category
      * @param string $sShopHomeUrl base shop url ($myConfig->getShopHomeUrl())
      */
-    public function buildVendorTree($sLinkTarget, $sActCat, $sShopHomeUrl)
+    public function buildVendorTree($sLinkTarget, $sActCat, $sShopHomeUrl): void
     {
         $sActCat = str_replace('v_', '', $sActCat);
 
         //Load vendor list
         $this->loadVendorList();
-
 
         //Create fake vendor root category
         $this->_oRoot = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
@@ -109,12 +107,12 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         foreach ($this as $sVndId => $oVendor) {
             // storing active vendor object
-            if ($sVndId == $sActCat) {
+            if ($sVndId === $sActCat) {
                 $this->setClickVendor($oVendor);
             }
 
             $this->_addCategoryFields($oVendor);
-            if ($sActCat == $oVendor->oxvendor__oxid->value) {
+            if ($sActCat === $oVendor->oxvendor__oxid->value) {
                 $this->_aPath[] = $oVendor;
             }
         }
@@ -123,7 +121,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Root vendor list node (which usually is a manually prefilled object) getter
+     * Root vendor list node (which usually is a manually prefilled object) getter.
      *
      * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
@@ -133,7 +131,7 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Returns vendor path array
+     * Returns vendor path array.
      *
      * @return array
      */
@@ -143,14 +141,15 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Adds category specific fields to vendor object
+     * Adds category specific fields to vendor object.
      *
      * @param object $oVendor vendor object
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "addCategoryFields" in next major
      */
-    protected function _addCategoryFields($oVendor) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _addCategoryFields($oVendor): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $oVendor->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field("v_" . $oVendor->oxvendor__oxid->value);
+        $oVendor->oxcategories__oxid = new \OxidEsales\Eshop\Core\Field('v_' . $oVendor->oxvendor__oxid->value);
         $oVendor->oxcategories__oxicon = $oVendor->oxvendor__oxicon;
         $oVendor->oxcategories__oxtitle = $oVendor->oxvendor__oxtitle;
         $oVendor->oxcategories__oxdesc = $oVendor->oxvendor__oxshortdesc;
@@ -160,17 +159,17 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Sets active (open) vendor object
+     * Sets active (open) vendor object.
      *
      * @param \OxidEsales\Eshop\Application\Model\Vendor $oVendor active vendor
      */
-    public function setClickVendor($oVendor)
+    public function setClickVendor($oVendor): void
     {
         $this->_oClickedVendor = $oVendor;
     }
 
     /**
-     * returns active (open) vendor object
+     * returns active (open) vendor object.
      *
      * @return \OxidEsales\Eshop\Application\Model\Vendor
      */
@@ -180,10 +179,11 @@ class VendorList extends \OxidEsales\Eshop\Core\Model\ListModel
     }
 
     /**
-     * Processes vendor category URLs
+     * Processes vendor category URLs.
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "seoSetVendorData" in next major
      */
-    protected function _seoSetVendorData() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _seoSetVendorData(): void // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         // only when SEO id on and in front end
         if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && !$this->isAdmin()) {

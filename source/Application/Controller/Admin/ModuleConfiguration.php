@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -22,7 +24,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
  */
 class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
-    /** @var string Template name. */
+    /**
+     * @var string template name
+     */
     protected $_sModule = 'shop_config.tpl';
 
     /**
@@ -50,8 +54,8 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             if (!empty($moduleConfiguration->getModuleSettings())) {
                 $formatModuleSettings = $this->formatModuleSettingsForTemplate($moduleConfiguration->getModuleSettings());
 
-                $this->_aViewData["var_constraints"] = $formatModuleSettings['constraints'];
-                $this->_aViewData["var_grouping"] = $formatModuleSettings['grouping'];
+                $this->_aViewData['var_constraints'] = $formatModuleSettings['constraints'];
+                $this->_aViewData['var_grouping'] = $formatModuleSettings['grouping'];
 
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $formatModuleSettings['vars'][$sType];
@@ -71,13 +75,14 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     }
 
     /**
-     * return module filter for config variables
+     * return module filter for config variables.
      *
      * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Framework\Module package
      *
      * @return string
      */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getModuleForConfigVars()
     {
         return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
     }
@@ -87,7 +92,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      * Return value is a map:
      *      'vars'        => config variable values as array[type][name] = value
      *      'constraints' => constraints list as array[name] = constraint
-     *      'grouping'    => grouping info as array[name] = grouping
+     *      'grouping'    => grouping info as array[name] = grouping.
      *
      * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Framework\Module package
      *
@@ -95,41 +100,42 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @return array
      */
-    public function _loadMetadataConfVars($aModuleSettings) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    public function _loadMetadataConfVars($aModuleSettings)
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
         $aConfVars = [
-            "bool"     => [],
-            "str"      => [],
-            "arr"      => [],
-            "aarr"     => [],
-            "select"   => [],
-            "password" => [],
+            'bool' => [],
+            'str' => [],
+            'arr' => [],
+            'aarr' => [],
+            'select' => [],
+            'password' => [],
         ];
         $aVarConstraints = [];
         $aGrouping = [];
 
         $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
 
-        if (is_array($aModuleSettings)) {
+        if (\is_array($aModuleSettings)) {
             foreach ($aModuleSettings as $aValue) {
-                $sName = $aValue["name"];
-                $sType = $aValue["type"];
+                $sName = $aValue['name'];
+                $sType = $aValue['type'];
                 $sValue = null;
-                if (is_null($oConfig->getConfigParam($sName))) {
-                    switch ($aValue["type"]) {
-                        case "arr":
-                            $sValue = $this->_arrayToMultiline($aValue["value"]);
+                if (null === $oConfig->getConfigParam($sName)) {
+                    switch ($aValue['type']) {
+                        case 'arr':
+                            $sValue = $this->_arrayToMultiline($aValue['value']);
                             break;
-                        case "aarr":
-                            $sValue = $this->_aarrayToMultiline($aValue["value"]);
+                        case 'aarr':
+                            $sValue = $this->_aarrayToMultiline($aValue['value']);
                             break;
-                        case "bool":
-                            $sValue = filter_var($aValue["value"], FILTER_VALIDATE_BOOLEAN);
+                        case 'bool':
+                            $sValue = filter_var($aValue['value'], FILTER_VALIDATE_BOOLEAN);
                             break;
                         default:
-                            $sValue = $aValue["value"];
+                            $sValue = $aValue['value'];
                             break;
                     }
                     $sValue = Str::getStr()->htmlentities($sValue);
@@ -138,20 +144,22 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
                     $sValue = $aDbVariables['vars'][$sDbType][$sName];
                 }
 
-                $sGroup = $aValue["group"];
+                $sGroup = $aValue['group'];
 
-                $sConstraints = "";
-                if ($aValue["constraints"]) {
-                    $sConstraints = $aValue["constraints"];
-                } elseif ($aValue["constrains"]) {
-                    $sConstraints = $aValue["constrains"];
+                $sConstraints = '';
+                if ($aValue['constraints']) {
+                    $sConstraints = $aValue['constraints'];
+                } elseif ($aValue['constrains']) {
+                    $sConstraints = $aValue['constrains'];
                 }
 
                 $aConfVars[$sType][$sName] = $sValue;
                 $aVarConstraints[$sName] = $sConstraints;
                 if ($sGroup) {
                     if (!isset($aGrouping[$sGroup])) {
-                        $aGrouping[$sGroup] = [$sName => $sType];
+                        $aGrouping[$sGroup] = [
+                            $sName => $sType,
+                        ];
                     } else {
                         $aGrouping[$sGroup][$sName] = $sType;
                     }
@@ -160,16 +168,16 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         }
 
         return [
-            'vars'        => $aConfVars,
+            'vars' => $aConfVars,
             'constraints' => $aVarConstraints,
-            'grouping'    => $aGrouping,
+            'grouping' => $aGrouping,
         ];
     }
 
     /**
-     * Saves shop configuration variables
+     * Saves shop configuration variables.
      */
-    public function saveConfVars()
+    public function saveConfVars(): void
     {
         $this->resetContentCache();
 
@@ -196,27 +204,20 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         }
     }
 
-    /**
-     * @return string
-     */
     private function getSelectedModuleId(): string
     {
         $moduleId = $this->_sEditObjectId
             ?? Registry::getRequest()->getRequestEscapedParameter('oxid')
             ?? Registry::getSession()->getVariable('saved_oxid');
 
-        if ($moduleId === null) {
+        if (null === $moduleId) {
             throw new \InvalidArgumentException('Module id not found.');
         }
 
         return $moduleId;
     }
 
-    /**
-     * @param string $moduleId
-     * @param array  $variables
-     */
-    private function saveModuleConfigVariables(string $moduleId, array $variables)
+    private function saveModuleConfigVariables(string $moduleId, array $variables): void
     {
         $moduleConfigurationDaoBridge = $this->getContainer()->get(ModuleConfigurationDaoBridgeInterface::class);
         $moduleConfiguration = $moduleConfigurationDaoBridge->get($moduleId);
@@ -225,13 +226,13 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             foreach ($variables as $name => $value) {
                 foreach ($moduleConfiguration->getModuleSettings() as $moduleSetting) {
                     if ($moduleSetting->getName() === $name) {
-                        if ($moduleSetting->getType() === 'aarr') {
+                        if ('aarr' === $moduleSetting->getType()) {
                             $value = $this->_multilineToAarray($value);
                         }
-                        if ($moduleSetting->getType() === 'arr') {
+                        if ('arr' === $moduleSetting->getType()) {
                             $value = $this->_multilineToArray($value);
                         }
-                        if ($moduleSetting->getType() === 'bool') {
+                        if ('bool' === $moduleSetting->getType()) {
                             $value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
                         }
                         $moduleSetting->setValue($value);
@@ -243,9 +244,6 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         }
     }
 
-    /**
-     * @return array
-     */
     private function getConfigVariablesFromRequest(): array
     {
         $settings = [];
@@ -265,16 +263,15 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
     /**
      * @param Setting[] $moduleSettings
-     * @return array
      */
     private function formatModuleSettingsForTemplate(array $moduleSettings): array
     {
         $confVars = [
-            'bool'     => [],
-            'str'      => [],
-            'arr'      => [],
-            'aarr'     => [],
-            'select'   => [],
+            'bool' => [],
+            'str' => [],
+            'arr' => [],
+            'aarr' => [],
+            'select' => [],
             'password' => [],
         ];
         $constraints = [];
@@ -285,7 +282,7 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             $valueType = $setting->getType();
             $value = null;
 
-            if ($setting->getValue() !== null) {
+            if (null !== $setting->getValue()) {
                 switch ($setting->getType()) {
                     case 'arr':
                         $value = $this->_arrayToMultiline($setting->getValue());
@@ -305,13 +302,14 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
 
             $group = $setting->getGroupName();
 
-
             $confVars[$valueType][$name] = $value;
             $constraints[$name] = $setting->getConstraints() ?? '';
 
             if ($group) {
                 if (!isset($grouping[$group])) {
-                    $grouping[$group] = [$name => $valueType];
+                    $grouping[$group] = [
+                        $name => $valueType,
+                    ];
                 } else {
                     $grouping[$group][$name] = $valueType;
                 }
@@ -319,22 +317,24 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         }
 
         return [
-            'vars'        => $confVars,
+            'vars' => $confVars,
             'constraints' => $constraints,
-            'grouping'    => $grouping,
+            'grouping' => $grouping,
         ];
     }
 
     /**
      * Convert metadata type to DB type.
      *
-     * @param string $type Metadata type.
+     * @param string $type metadata type
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getDbConfigTypeName" in next major
      */
-    private function _getDbConfigTypeName($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    private function _getDbConfigTypeName($type)
     {
-        return $type === 'password' ? 'str' : $type;
+        return 'password' === $type ? 'str' : $type;
     }
 }

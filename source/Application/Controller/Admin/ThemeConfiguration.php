@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -7,11 +9,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxConfig;
 use oxAdminDetails;
-use oxException;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Admin article main deliveryset manager.
@@ -42,12 +41,12 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
         if ($oTheme->load($sTheme)) {
-            $this->_aViewData["oTheme"] = $oTheme;
+            $this->_aViewData['oTheme'] = $oTheme;
 
             try {
                 $aDbVariables = $this->loadConfVars($sShopId, $this->_getModuleForConfigVars());
-                $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
-                $this->_aViewData["var_grouping"] = $aDbVariables['grouping'];
+                $this->_aViewData['var_constraints'] = $aDbVariables['constraints'];
+                $this->_aViewData['var_grouping'] = $aDbVariables['grouping'];
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                 }
@@ -63,14 +62,16 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
     }
 
     /**
-     * return theme filter for config variables
+     * return theme filter for config variables.
      *
      * @return string
+     *
      * @deprecated underscore prefix violates PSR12, will be renamed to "getModuleForConfigVars" in next major
      */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getModuleForConfigVars()
     {
-        if ($this->_sTheme === null) {
+        if (null === $this->_sTheme) {
             $this->_sTheme = $this->getEditObjectId();
         }
 
@@ -78,9 +79,9 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
     }
 
     /**
-     * Saves shop configuration variables
+     * Saves shop configuration variables.
      */
-    public function saveConfVars()
+    public function saveConfVars(): void
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -92,7 +93,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = $myConfig->getRequestParameter($sParam);
-            if (is_array($aConfVars)) {
+            if (\is_array($aConfVars)) {
                 foreach ($aConfVars as $sName => $sValue) {
                     $myConfig->saveShopConfVar(
                         $sType,

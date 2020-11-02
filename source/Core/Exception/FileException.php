@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -10,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 /**
  * exception for invalid or non existin external files, e.g.:
  * - file does not exist
- * - file is not valid xml
+ * - file is not valid xml.
  */
 class FileException extends \OxidEsales\Eshop\Core\Exception\StandardException
 {
@@ -29,24 +31,24 @@ class FileException extends \OxidEsales\Eshop\Core\Exception\StandardException
     protected $_sErrFileName;
 
     /**
-     * Error occured with the file, if provided
+     * Error occured with the file, if provided.
      *
      * @var string
      */
     protected $_sFileError;
 
     /**
-     *  Sets the file name of the file related to the exception
+     *  Sets the file name of the file related to the exception.
      *
      * @param string $sFileName file name
      */
-    public function setFileName($sFileName)
+    public function setFileName($sFileName): void
     {
         $this->_sErrFileName = $sFileName;
     }
 
     /**
-     * Gives file name related to the exception
+     * Gives file name related to the exception.
      *
      * @return string
      */
@@ -56,17 +58,17 @@ class FileException extends \OxidEsales\Eshop\Core\Exception\StandardException
     }
 
     /**
-     * sets the error returned by the file operation
+     * sets the error returned by the file operation.
      *
      * @param string $sFileError Error
      */
-    public function setFileError($sFileError)
+    public function setFileError($sFileError): void
     {
         $this->_sFileError = $sFileError;
     }
 
     /**
-     * return the file error
+     * return the file error.
      *
      * @return string
      */
@@ -77,17 +79,17 @@ class FileException extends \OxidEsales\Eshop\Core\Exception\StandardException
 
     /**
      * Get string dump
-     * Overrides oxException::getString()
+     * Overrides oxException::getString().
      *
      * @return string
      */
     public function getString()
     {
-        return __CLASS__ . '-' . parent::getString() . " Faulty File --> " . $this->_sErrFileName . "\n" . "Error Code --> " . $this->_sFileError;
+        return __CLASS__ . '-' . parent::getString() . ' Faulty File --> ' . $this->_sErrFileName . "\n" . 'Error Code --> ' . $this->_sFileError;
     }
 
     /**
-     * Override of oxException::getValues()
+     * Override of oxException::getValues().
      *
      * @return array
      */

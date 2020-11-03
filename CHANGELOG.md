@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Console Shop installer
 - Example dist files for translations in Application/translations folder [PR-826](https://github.com/OXID-eSales/oxideshop_ce/pull/826)
 - Support for single language map file in translations directory [PR-449](https://github.com/OXID-eSales/oxideshop_ce/pull/449).
+- Setting tracking URL per Shipping Method
 
 ### Changed
 - Source/Application/views/admin/tpl/shop_license.tpl

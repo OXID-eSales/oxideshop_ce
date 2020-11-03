@@ -629,6 +629,7 @@ $aLang = [
     'DELIVERYSET_MAIN_ALLDELIVERYCOST'          => 'All Shipping Cost Rules',
     'DELIVERYSET_MAIN_SELDELIVERYCOST'          => 'Assigned Shipping Cost Rules',
     'DELIVERYSET_MAIN_ASSIGNDELIVERY'           => 'Assign Shipping Cost Rules',
+    'DELIVERYSET_MAIN_TRACKINGURL'              => 'Tracking URL',
     'DELIVERYSET_PAYMENT_ALLPAYMENTS'           => 'All Payment Methods',
     'DELIVERYSET_PAYMENT_SELPAYMENTS'           => 'Assigned Payment Methods',
     'DELIVERYSET_PAYMENT_ASSIGNPAYMENT'         => 'Assign Payment Methods',

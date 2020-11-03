@@ -68,6 +68,22 @@
                 [{oxinputhelp ident="HELP_DELIVERYSET_MAIN_POS"}]
                 </td>
             </tr>
+            <tr>
+                <td class="edittext" width="140">
+                    [{oxmultilang ident="DELIVERYSET_MAIN_TRACKINGURL"}]
+                </td>
+                <td class="edittext" width="250">
+                    <input
+                    type="text"
+                    class="editinput"
+                    size="50"
+                    maxlength="[{$edit->oxdeliveryset__oxtrackingurl->fldmax_length}]"
+                    name="editval[oxdeliveryset__oxtrackingurl]"
+                    value="[{$edit->oxdeliveryset__oxtrackingurl->value}]"
+                    [{$readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_PARCELSERVICE"}]
+                </td>
+            </tr>
         [{/block}]
         <tr><td colspan="2">&nbsp;</td></tr>
         [{if $oxid != "-1"}]

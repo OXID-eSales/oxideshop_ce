@@ -9,23 +9,24 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use Exception;
 use oxArticleHelper;
-use \oxdeliverylist;
+use oxDb;
+use oxdeliverylist;
 use oxEmailHelper;
-use \oxField;
+use oxField;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\Payment;
-use OxidEsales\Eshop\Application\Model\UserPayment;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
+use OxidEsales\EshopCommunity\Application\Model\DeliverySet;
 use oxOrder;
-use \stdClass;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
-use OxidEsales\EshopCommunity\Application\Model\PaymentGateway;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxEmailHelper.php';
 
@@ -3645,6 +3646,39 @@ class OrderTest extends \OxidTestCase
         $oOrder->oxorder__oxtrackcode = new \OxidEsales\Eshop\Core\Field(123);
         $this->assertEquals('http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=ID', $oOrder->getShipmentTrackingUrl());
     }
+
+    public function testGetShipmentTrackingUrlWithEmptyDeliverySetUrl(): void
+    {
+        $defaultTrackingUrl = 'http://DEFAULT.com';
+        $deliverySetTrackingUrl = '';
+        $this->setConfigParam('sParcelService', "$defaultTrackingUrl&id=##ID##");
+        $order = oxNew(Order::class);
+        $order->oxorder__oxtrackcode = new Field(123);
+        $deliverySet = oxNew(DeliverySet::class);
+        $deliverySet->oxdeliveryset__oxtrackingurl = new Field($deliverySetTrackingUrl);
+        $order->_oDelSet = $deliverySet;
+
+        $url = $order->getShipmentTrackingUrl();
+
+        $this->assertStringContainsString($defaultTrackingUrl, $url);
+    }
+
+    public function testGetShipmentTrackingUrlWithDeliverySetUrl(): void
+    {
+        $defaultTrackingUrl = 'http://DEFAULT.com';
+        $deliverySetTrackingUrl = 'http://DS.com';
+        $this->setConfigParam('sParcelService', $defaultTrackingUrl);
+        $order = oxNew(Order::class);
+        $order->oxorder__oxtrackcode = new Field(123);
+        $deliverySet = oxNew(DeliverySet::class);
+        $deliverySet->oxdeliveryset__oxtrackingurl = new Field("$deliverySetTrackingUrl&id=##ID##");
+        $order->_oDelSet = $deliverySet;
+
+        $url = $order->getShipmentTrackingUrl();
+
+        $this->assertStringContainsString($deliverySetTrackingUrl, $url);
+    }
+
 
     /**
      * Testing oxOrder::_convertVat( $sVat )

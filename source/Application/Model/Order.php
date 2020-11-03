@@ -2293,16 +2293,21 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getShipmentTrackingUrl()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         if ($this->_sShipTrackUrl === null) {
-            $sParcelService = $oConfig->getConfigParam('sParcelService');
-            $sTrackingCode = $this->getTrackCode();
-            if ($sParcelService && $sTrackingCode) {
-                $this->_sShipTrackUrl = str_replace("##ID##", $sTrackingCode, $sParcelService);
+            $trackingUrl = $this->getTrackingUrl();
+            $trackingCode = $this->getTrackCode();
+            if ($trackingUrl && $trackingCode) {
+                $this->_sShipTrackUrl = str_replace('##ID##', $trackingCode, $trackingUrl);
             }
         }
 
         return $this->_sShipTrackUrl;
+    }
+
+    private function getTrackingUrl(): string
+    {
+        $deliverySetTrackingUrl = $this->getDelSet()->getFieldData('oxtrackingurl');
+        return (string) $deliverySetTrackingUrl ?: Registry::getConfig()->getConfigParam('sParcelService');
     }
 
     /**

@@ -629,6 +629,7 @@ $aLang = [
     'DELIVERYSET_MAIN_ALLDELIVERYCOST'          => 'Alle Versandkostenregeln',
     'DELIVERYSET_MAIN_SELDELIVERYCOST'          => 'Zugeordnete Versandkostenregeln',
     'DELIVERYSET_MAIN_ASSIGNDELIVERY'           => 'Versandkostenregeln zuordnen',
+    'DELIVERYSET_MAIN_TRACKINGURL'              => 'Tracking-URL',
     'DELIVERYSET_PAYMENT_ALLPAYMENTS'           => 'Alle Zahlungsarten',
     'DELIVERYSET_PAYMENT_SELPAYMENTS'           => 'Zugeordnete Zahlungsarten',
     'DELIVERYSET_PAYMENT_ASSIGNPAYMENT'         => 'Zahlungsarten zuordnen',

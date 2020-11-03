@@ -50,8 +50,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `_appendModuleLangFiles()`
         - `_getActiveModuleInfo()`
         - `_getDisabledModuleInfo()`
-        - `getModuleTranslationPathFinder()`
-    
+        - `getModuleTranslationPathFinder()`        
+- `OxidEsales\EshopCommunity\Core\Utils::getRemoteCachePath()`
+- `OxidEsales\EshopCommunity\Core\ViewConfig::getServiceUrl()`
+- `OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree::$_sDynIncludeUrl`
+- Language constants
+    - `DYN_ECONDA_ACTIVE`
+    - `DYN_ECONDA_ATTENTION`
+    - `DYN_ECONDA_COPY_FILE`
+    - `DYNSCREEN_TITLE`
+    - `DYNSCREEN_LIST_SERVICE`
+    - `LOAD_DYN_CONTENT_NOTICE`
+    - `DYNSCREEN_LOCAL_TITLE`
+    - `DYNSCREEN_LOCAL_TEXT`
+    - `mxdynscreenlocal`
+
 ### Fixed
 - Impossible save module settings from the admin area if module has services.yaml [#0007180](https://bugs.oxid-esales.com/view.php?id=7180)
 - Collect unique article ids for seo links update [#0007167](https://bugs.oxid-esales.com/view.php?id=7167)

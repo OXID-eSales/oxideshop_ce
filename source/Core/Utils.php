@@ -769,6 +769,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sRemote the file
      * @param string $sLocal  the address of the remote source
      *
+     * @deprecated 6.6.0 dynpages will be removed on the next major
+     *
      * @return mixed
      */
     public function getRemoteCachePath($sRemote, $sLocal)

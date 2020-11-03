@@ -1053,6 +1053,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns service url
      *
+     * @deprecated 6.6.0 dynpages will be removed on the next major
+     *
      * @return string
      */
     public function getServiceUrl()

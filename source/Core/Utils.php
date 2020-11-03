@@ -764,63 +764,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * If $sLocal file is older than 24h or does not exist, tries to
-     * download it from $sRemote and save it as $sLocal
-     *
-     * @param string $sRemote the file
-     * @param string $sLocal  the address of the remote source
-     *
-     * @deprecated 6.6.0 dynpages will be removed on the next major
-     *
-     * @return mixed
-     */
-    public function getRemoteCachePath($sRemote, $sLocal)
-    {
-        clearstatcache();
-        if (file_exists($sLocal) && filemtime($sLocal) && filemtime($sLocal) > time() - 86400) {
-            return $sLocal;
-        }
-        $hRemote = @fopen($sRemote, "rb");
-        $blSuccess = false;
-        if (is_resource($hRemote) && $hLocal = @fopen($sLocal, "wb")) {
-            stream_copy_to_stream($hRemote, $hLocal);
-            fclose($hRemote);
-            fclose($hLocal);
-            $blSuccess = true;
-        } else {
-            // try via fsockopen
-            $aUrl = @parse_url($sRemote);
-            if (!empty($aUrl["host"])) {
-                $sPath = $aUrl["path"];
-                if (empty($sPath)) {
-                    $sPath = "/";
-                }
-                $sHost = $aUrl["host"];
-
-                $hSocket = @fsockopen($sHost, 80, $iErrorNumber, $iErrStr, 5);
-                if ($hSocket) {
-                    fputs($hSocket, "GET " . $sPath . " HTTP/1.0\r\nHost: $sHost\r\n\r\n");
-                    $headers = stream_get_line($hSocket, 4096, "\r\n\r\n");
-                    if (($hLocal = @fopen($sLocal, "wb")) !== false) {
-                        rewind($hLocal);
-                        // does not copy all the data
-                        // stream_copy_to_stream($hSocket, $hLocal);
-                        fwrite($hLocal, stream_get_contents($hSocket));
-                        fclose($hLocal);
-                        fclose($hSocket);
-                        $blSuccess = true;
-                    }
-                }
-            }
-        }
-        if ($blSuccess || file_exists($sLocal)) {
-            return $sLocal;
-        }
-
-        return false;
-    }
-
-    /**
      * Checks if preview mode is ON
      *
      * @return bool

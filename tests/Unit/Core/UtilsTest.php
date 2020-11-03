@@ -789,28 +789,6 @@ class UtilsTest extends \OxidTestCase
         }
     }
 
-    /**
-     * @group slow-tests
-     */
-    public function testGetRemoteCachePath()
-    {
-        $vfsStream = $this->getVfsStreamWrapper();
-        $file = \org\bovigo\vfs\vfsStream::newFile('actions_main.inc.php')->withContent('')->at($vfsStream->getRoot());
-        $tempFile = $vfsStream->getRootPath() . 'actions_main.inc.php';
-
-        $file->lastModified(time());
-        $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
-
-        //ensure that file is older than 24h
-        $this->activateTheme('azure');
-        $file->lastModified(time() - 90000);
-        $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath($this->getConfig()->getShopURL(), $tempFile));
-
-        $file->lastModified(time() - 90000);
-        $this->assertEquals($tempFile, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', $tempFile));
-        $this->assertEquals(false, oxRegistry::getUtils()->GetRemoteCachePath('http://www.blafoo.null', 'misc/blafoo.test'));
-    }
-
     public function testCheckAccessRights()
     {
         $mySession = oxRegistry::getSession();

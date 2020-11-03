@@ -2090,20 +2090,6 @@ class ViewConfigTest extends \OxidTestCase
     }
 
     /**
-     * oxViewconfig::getServiceUrl() test case
-     *
-     * @return null
-     */
-    public function testGetServiceUrl()
-    {
-        $sTest = "testServiceUrl";
-
-        $oViewConf = oxNew('oxViewConfig');
-        $oViewConf->setViewConfigParam('sServiceUrl', $sTest);
-        $this->assertEquals($sTest, $oViewConf->getServiceUrl());
-    }
-
-    /**
      * oxViewconfig::isMultiShop() test case
      *
      * @return null

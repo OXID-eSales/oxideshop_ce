@@ -29,6 +29,8 @@ class NavigationTree extends Base
     /**
      * Dynamix XML path
      *
+     * @deprecated 6.6.0 dynpages will be removed on the next major
+     *
      * @var string
      */
     protected $_sDynIncludeUrl = null;

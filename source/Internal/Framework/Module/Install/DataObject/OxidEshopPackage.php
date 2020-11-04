@@ -12,14 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject
 class OxidEshopPackage
 {
     /**
-     * If blacklist-filter is given, it will be used to filter out unwanted files and directories while the copy from
-     * source-directory to target-directory takes place.
-     *
-     * @var array
-     */
-    private $blackListFilters = [];
-
-    /**
      * If source-directory is given, the value defines which directory will be used to define where the files
      * and directories will be picked from. When the parameter is not given, the root directory of the module is used
      * instead.
@@ -66,26 +58,6 @@ class OxidEshopPackage
         return !empty($this->sourceDirectory)
             ? $this->packagePath . DIRECTORY_SEPARATOR . $this->sourceDirectory
             : $this->packagePath;
-    }
-
-    /**
-     * @deprecated 6.6.0
-     *
-     * @return array
-     */
-    public function getBlackListFilters(): array
-    {
-        return $this->blackListFilters;
-    }
-
-    /**
-     * @deprecated 6.6.0
-     *
-     * @param array $filters
-     */
-    public function setBlackListFilters(array $filters)
-    {
-        $this->blackListFilters = $filters;
     }
 
     /**

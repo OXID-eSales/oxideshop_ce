@@ -27,17 +27,10 @@ class ModuleFilesInstallerTest extends TestCase
     {
         $packageName = 'myvendor/mymodule';
         $packagePath = '/var/www/vendor/myvendor/mymodule';
-        $blackListFilters = [
-            "CHANGELOG.md",
-            "composer.json",
-            "CONTRIBUTING.md",
-            "README.md"
-        ];
 
         $package = new OxidEshopPackage($packageName, $packagePath);
         $package->setTargetDirectory('myvendor/myinstallationpath');
         $package->setSourceDirectory('src/mymodule');
-        $package->setBlackListFilters($blackListFilters);
 
         vfsStream::setup();
         $context = $this->getContext();
@@ -47,11 +40,6 @@ class ModuleFilesInstallerTest extends TestCase
             ->expects($this->once())
             ->method('in')
             ->with('/var/www/vendor/myvendor/mymodule/src/mymodule')
-            ->willReturn($finder);
-
-        $finder
-            ->expects($this->exactly(count($blackListFilters)))
-            ->method('notName')
             ->willReturn($finder);
 
         $finderFactory = $this->getMockBuilder(FinderFactoryInterface::class)->getMock();

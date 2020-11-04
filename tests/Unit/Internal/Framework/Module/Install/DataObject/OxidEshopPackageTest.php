@@ -58,15 +58,6 @@ class OxidEshopPackageTest extends TestCase
         );
     }
 
-    public function testGetBlackListFilters()
-    {
-        $package = $this->getPackage();
-        $this->assertSame(
-            ['blackDir'],
-            $package->getBlackListFilters()
-        );
-    }
-
     private function getPackage(): OxidEshopPackage
     {
         $package = new OxidEshopPackage(
@@ -74,7 +65,6 @@ class OxidEshopPackageTest extends TestCase
             'pathToPackage'
         );
         $package->setTargetDirectory('customTargetDir');
-        $package->setBlackListFilters(['blackDir']);
         $package->setSourceDirectory('customSourceDir');
 
         return $package;

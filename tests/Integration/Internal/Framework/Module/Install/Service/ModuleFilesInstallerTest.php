@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Install\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\TwoStarsWithinBlacklistFilterException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -107,93 +106,6 @@ final class ModuleFilesInstallerTest extends TestCase
             $this->modulePackagePath . '/CustomSourceDirectory/metadata.php',
             $this->getModulesPath() . '/custom-test-directory/metadata.php'
         );
-    }
-
-    public function testBlacklistIsEmpty(): void
-    {
-        $installer = $this->getFilesInstaller();
-        $package = $this->createPackage();
-        $package->setBlackListFilters([]);
-
-        $installer->install($package);
-
-        $this->assertFileExists($this->getTestedModuleInstallPath() . '/readme.txt');
-    }
-
-    public function testBlacklistWithFile(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setBlackListFilters(['readme.txt']);
-
-        $installer->install($package);
-
-        $this->assertFileExists($this->modulePackagePath . '/readme.txt');
-        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/readme.txt');
-    }
-
-    public function testBlacklistWithDirectory(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setBlackListFilters(['bl-list-1']);
-
-        $installer->install($package);
-
-        $this->assertDirectoryExists($this->modulePackagePath . '/bl-list-1');
-        $this->assertDirectoryDoesNotExist($this->getTestedModuleInstallPath() . '/bl-list-1');
-    }
-
-    public function testBlacklistWithSubdirectory(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setBlackListFilters(['bl-list-2/bl-sub-2']);
-
-        $installer->install($package);
-
-        $this->assertDirectoryExists($this->getTestedModuleInstallPath() . '/bl-list-2');
-        $this->assertDirectoryDoesNotExist($this->getTestedModuleInstallPath() . '/bl-list-2/bl-sub-2');
-    }
-
-    public function testBlacklistWithSubdirectoryAndOneFile(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setBlackListFilters(['bl-list-3/bl-sub-3/bl-3-1.txt']);
-
-        $installer->install($package);
-
-        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/bl-list-3/bl-sub-3/bl-3-1.txt');
-        $this->assertFileExists($this->getTestedModuleInstallPath() . '/bl-list-3/bl-sub-3/bl-3-2.php');
-    }
-
-    public function testBlacklistWithMultiFiles(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setBlackListFilters(['*.txt']);
-
-        $installer->install($package);
-
-        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/readme.txt');
-        $this->assertFileDoesNotExist($this->getTestedModuleInstallPath() . '/bl-list-3/bl-sub-3/bl-3-1.txt');
-    }
-
-    public function testBlacklistWithTwoStarts(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setBlackListFilters(['bl-list-1/**/*']);
-
-        $this->expectException(TwoStarsWithinBlacklistFilterException::class);
-        $installer->install($package);
     }
 
     public function testUninstall(): void

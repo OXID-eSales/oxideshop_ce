@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FinderFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\TwoStarsWithinBlacklistFilterException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use Symfony\Component\Filesystem\Filesystem;
@@ -51,7 +50,7 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
      */
     public function install(OxidEshopPackage $package): void
     {
-        $finder = $this->getFinder($package->getPackageSourcePath(), $package->getBlackListFilters());
+        $finder = $this->getModuleSourcePathFinder($package->getPackageSourcePath());
 
         $this->fileSystemService->mirror(
             $package->getPackageSourcePath(),
@@ -80,52 +79,15 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
 
     /**
      * @param string $sourceDirectory
-     * @param array  $blackListFilters
      *
      * @return Finder
-     * @throws TwoStarsWithinBlacklistFilterException
      */
-    private function getFinder(string $sourceDirectory, array $blackListFilters): Finder
+    private function getModuleSourcePathFinder(string $sourceDirectory): Finder
     {
         $finder = $this->finderFactory->create();
         $finder->in($sourceDirectory);
 
-        foreach ($blackListFilters as $filter) {
-            $this->checkTwoStars($filter);
-
-            if ($this->isAFilenameInTheRootOfModule($filter)) {
-                $finder->notName($filter);
-            } else {
-                $finder->notPath($filter);
-            }
-        }
-
         return $finder;
-    }
-
-    /**
-     * @param string $filter
-     *
-     * @throws TwoStarsWithinBlacklistFilterException
-     */
-    private function checkTwoStars(string $filter): void
-    {
-        if (strpos($filter, '**') !== false) {
-            throw new TwoStarsWithinBlacklistFilterException(
-                "Invalid 'blacklist-filter' value in composer.json. "
-                . "Glob patterns (**) are not allowed here: $filter"
-            );
-        }
-    }
-
-    /**
-     * @param string $filter
-     *
-     * @return bool
-     */
-    private function isAFilenameInTheRootOfModule(string $filter): bool
-    {
-        return Path::hasExtension($filter) && !Path::getDirectory($filter);
     }
 
     /**

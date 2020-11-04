@@ -69,6 +69,8 @@ class OxidEshopPackage
     }
 
     /**
+     * @deprecated 6.6.0
+     *
      * @return array
      */
     public function getBlackListFilters(): array
@@ -77,6 +79,8 @@ class OxidEshopPackage
     }
 
     /**
+     * @deprecated 6.6.0
+     *
      * @param array $filters
      */
     public function setBlackListFilters(array $filters)

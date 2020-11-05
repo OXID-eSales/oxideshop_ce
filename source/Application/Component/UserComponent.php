@@ -305,9 +305,16 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $session->deleteVariable('dynvalue');
 
         // resetting & recalc basket
-        if (($oBasket = $session->getBasket())) {
+        if ($oBasket = $session->getBasket()) {
             $oBasket->resetUserInfo();
             $oBasket->onUpdate();
+            
+            // resetting voucher reservations
+            if ($aVouchers = $oBasket->getVouchers()) {
+                foreach ($aVouchers as $sVoucherId => $oVoucher) {
+                    $oBasket->removeVoucher($sVoucherId);
+                }
+            }
         }
 
         $session->delBasket();

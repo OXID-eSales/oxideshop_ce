@@ -2307,7 +2307,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     private function getTrackingUrl(): string
     {
         $deliverySetTrackingUrl = $this->getDelSet()->getFieldData('oxtrackingurl');
-        return (string) $deliverySetTrackingUrl ?: Registry::getConfig()->getConfigParam('sParcelService');
+        return (string) ($deliverySetTrackingUrl ?: Registry::getConfig()->getConfigParam('sParcelService'));
     }
 
     /**

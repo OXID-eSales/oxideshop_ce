@@ -3647,6 +3647,22 @@ class OrderTest extends \OxidTestCase
         $this->assertEquals('http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=ID', $oOrder->getShipmentTrackingUrl());
     }
 
+    public function testGetShipmentTrackingUrlWithNullValues(): void
+    {
+        $defaultTrackingUrl = null;
+        $deliverySetTrackingUrl = null;
+        $this->setConfigParam('sParcelService', $defaultTrackingUrl);
+        $order = oxNew(Order::class);
+        $order->oxorder__oxtrackcode = new Field(123);
+        $deliverySet = oxNew(DeliverySet::class);
+        $deliverySet->oxdeliveryset__oxtrackingurl = new Field($deliverySetTrackingUrl);
+        $order->_oDelSet = $deliverySet;
+
+        $url = $order->getShipmentTrackingUrl();
+
+        $this->assertNull($url);
+    }
+
     public function testGetShipmentTrackingUrlWithEmptyDeliverySetUrl(): void
     {
         $defaultTrackingUrl = 'http://DEFAULT.com';

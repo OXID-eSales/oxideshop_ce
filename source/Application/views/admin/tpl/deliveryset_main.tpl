@@ -81,7 +81,7 @@
                     name="editval[oxdeliveryset__oxtrackingurl]"
                     value="[{$edit->oxdeliveryset__oxtrackingurl->value}]"
                     [{$readonly}]>
-                    [{oxinputhelp ident="HELP_SHOP_CONFIG_PARCELSERVICE"}]
+                    [{oxinputhelp ident="HELP_DELIVERYSET_MAIN_TRACKINGURL"}]
                 </td>
             </tr>
         [{/block}]

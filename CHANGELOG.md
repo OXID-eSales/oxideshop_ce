@@ -275,6 +275,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Language Constants:
     - `NAVIGATION_NEWVERSIONAVAILABLE`
     - `UPDATEAPP_DIRNOTDELETED_WARNING`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplatePathCalculator`
+- `\OxidEsales\EshopCommunity\Core\Config::getModuleTemplatePathCalculator()`
+- `\OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Handler\TemplatesModuleSettingHandler`
+- `\OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting::MODULE_TEMPLATES`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter`
+- Config option `aModuleTemplates`
 - Support of metadata version 1, 1.1 and 1.2
   - Class: 
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassWithoutNamespace`

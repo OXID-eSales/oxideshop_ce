@@ -72,6 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Impossible save module settings from the admin area if module has services.yaml [#0007180](https://bugs.oxid-esales.com/view.php?id=7180)
 - Collect unique article ids for seo links update [#0007167](https://bugs.oxid-esales.com/view.php?id=7167)
 - Fix OXID in _set tables has wrong collation [#0007084](https://bugs.oxid-esales.com/view.php?id=7084)
+- Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
 
 ## [6.5.6] - 2020-07-16
 

@@ -171,7 +171,10 @@ class BasicContext implements BasicContextInterface
         return 'oxconfig';
     }
 
-    private function getCacheDirectory(): string
+    /**
+     * @return string
+     */
+    public function getCacheDirectory(): string
     {
         return (new ConfigFile())->getVar('sCompileDir');
     }

@@ -98,4 +98,9 @@ interface BasicContextInterface
      * @return string
      */
     public function getConfigTableName(): string;
+
+    /**
+     * @return string
+     */
+    public function getCacheDirectory(): string;
 }

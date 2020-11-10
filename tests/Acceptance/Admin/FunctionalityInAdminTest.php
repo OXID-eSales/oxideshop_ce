@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -666,61 +667,6 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-     * Administer Products -> Products (variants should inherit parents selection lists)
-     *
-     * @group main
-     */
-    public function testVariantsInheritsSelectionLists()
-    {
-        //assigning selection list to parent product
-        $this->loginAdmin("Administer Products", "Products");
-        $this->changeAdminListLanguage("Deutsch");
-        $this->openListItem("1002", '[oxarticles][oxartnum]');
-        $this->assertEquals("[DE 2] Test product 2 šÄßüл", $this->getValue("editval[oxarticles__oxtitle]"));
-        $this->openTab("Selection");
-        $this->click("//input[@value='Assign Selection Lists']");
-        $this->usePopUp();
-        $this->type("_0", "*test");
-        $this->keyUp("_0", "t");
-        $this->assertElementText("test selection list [DE] šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->dragAndDrop("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]", "container2");
-        $this->assertElementText("test selection list [DE] šÄßüл", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->close();
-        $this->selectWindow(null);
-        $this->windowMaximize();
-        $this->openTab("Main");
-        //checking if selection list is assigned to variant also
-        $this->selectAndWaitFrame("art_variants", "label=- var1 [DE]", "list");
-        $this->assertEquals("1002-1", $this->getValue("editval[oxarticles__oxartnum]"));
-        $this->openTab("Selection");
-        $this->click("//input[@value='Assign Selection Lists']");
-        $this->usePopUp();
-        $this->assertEquals("test selection list [DE] šÄßüл", $this->getText("//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]"));
-        $this->close();
-        //checking if in frontend it is displayed correctly
-        $this->selectWindow(null);
-        $this->clearCache();
-        $this->openShop();
-        $this->searchFor("1002");
-        $this->clickAndWait("searchList_1");
-
-        $this->assertEquals("selvar1 [EN] šÄßüл +1,00 € selvar2 [EN] šÄßüл selvar3 [EN] šÄßüл -2,00 € selvar4 [EN] šÄßüл +2%", $this->clearString($this->getText("//div[@id='productSelections']//ul")));
-        $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
-        $this->selectVariant("variants", "1", "var1 [EN] šÄßüл", "var1 [EN] šÄßüл");
-        $this->selectVariant("productSelections", "1", "selvar3 [EN] šÄßüл -2,00 €", "var1 [EN] šÄßüл");
-        $this->clickAndWait("toBasket");
-        $this->selectVariant("productSelections", "1", "selvar2 [EN] šÄßüл", "var1 [EN] šÄßüл");
-        $this->clickAndWait("toBasket");
-        $this->openBasket();
-        $this->assertEquals("Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]/div")));
-        $this->assertElementPresent("cartItemSelections_1");
-        $this->assertEquals("test selection list [EN] šÄßüл: selvar3 [EN] šÄßüл -2,00 €", $this->getText("//div[@id='cartItemSelections_1']//p"));
-        $this->assertEquals("Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='cartItem_2']/td[3]/div")));
-        $this->assertElementPresent("cartItemSelections_2");
-        $this->assertEquals("test selection list [EN] šÄßüл: selvar2 [EN] šÄßüл", $this->getText("//div[@id='cartItemSelections_2']//p"));
-    }
-
-    /**
      * Core settings -> Settings -> Active Category at Start
      * NOTE: according to comment in 0004482 in azure theme to mark some category in category tree (list) on first page is not needed.
      *
@@ -1318,40 +1264,6 @@ class FunctionalityInAdminTest extends AdminTestCase
         $this->openTab("Stock");
         $this->assertEquals("8", $this->getValue("editval[oxarticles__oxstock]"));
     }
-
-
-    /**
-     * checking does work in frontend multidimensional variants which have stock prices
-     *
-     * @group adminFunctionality
-     */
-    public function testMultidimensionalVariantsWhichHaveStockPrices()
-    {
-        $this->loginAdmin("Administer Products", "Products");
-        $this->type("where[oxarticles][oxartnum]", "3570");
-        $this->clickAndWait("//input[@name='submitit']");
-        $this->clickAndWaitFrame("link=3570", "edit");
-        $this->openTab("Variants");
-        $this->waitForElement("test_variant.4");
-        $this->clickAndWaitFrame("//tr[@id='test_variant.4']/td[1]/a", 'list');
-        $this->openTab("Stock");
-        $this->waitForElement("test_editlanguage");
-        $this->type("editval[oxprice2article__oxamount]", "1");
-        $this->type("editval[oxprice2article__oxamountto]", "5");
-        $this->type("editval[price]", "10");
-        $this->clickAndWait("/descendant::input[@name='save'][2]");
-        $this->clearCache();
-        $this->openShop();
-        $this->searchFor("3570");
-        $this->clickAndWait("searchList_1");
-        $this->assertEquals("Kuyichi Jeans ANNA", $this->getText("//h1"));
-        $this->selectVariant("variants", 1, "W 30/L 30", "W 30/L 30");
-        $this->selectVariant("variants", 2, "Blue", "W 30/L 30, Blue");
-        $this->assertEquals("10,00 € *", $this->getText("//label[@id='productPrice']"));
-        $this->selectVariant("variants", 2, "Smoke Gray", "W 30/L 30, Smoke Gray");
-        $this->assertEquals("99,90 € *", $this->getText("//label[@id='productPrice']"));
-    }
-
 
     /**
      * checking if Display attribute's value for products in checkout is on

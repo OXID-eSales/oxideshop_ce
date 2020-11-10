@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -25,14 +26,21 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
     /** @var BasicContextInterface */
     private $basicContext;
 
+    /**
+     * @var TemplateCacheServiceInterface
+     */
+    private $templateCacheService;
+
     public function __construct(
         ShopAdapterInterface $shopAdapter,
         Filesystem $fileSystem,
-        BasicContextInterface $basicContext
+        BasicContextInterface $basicContext,
+        TemplateCacheServiceInterface $templateCacheService
     ) {
         $this->shopAdapter = $shopAdapter;
         $this->fileSystem = $fileSystem;
         $this->basicContext = $basicContext;
+        $this->templateCacheService = $templateCacheService;
     }
 
     /**
@@ -41,6 +49,7 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
      */
     public function invalidate(string $moduleId, int $shopId): void
     {
+        $this->templateCacheService->invalidateTemplateCache();
         $this->shopAdapter->invalidateModuleCache($moduleId);
         $this->fileSystem->remove($this->getModulePathCacheDirectory($shopId));
     }

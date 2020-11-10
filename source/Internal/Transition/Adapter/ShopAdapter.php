@@ -38,11 +38,8 @@ class ShopAdapter implements ShopAdapterInterface
         /**
          * @TODO we have to implement it in ModuleCacheServiceInterface or use ModuleCache::resetCache() method.
          */
-        $module = oxNew(Module::class);
 
-        $templates = $module->getTemplates($moduleId);
         $utils = Registry::getUtils();
-        $utils->resetTemplateCache($templates);
         $utils->resetLanguageCache();
         $utils->resetMenuCache();
 

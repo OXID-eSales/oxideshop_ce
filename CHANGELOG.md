@@ -254,7 +254,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
-## [6.6.0] - unreleased
+## [6.6.0] - 2020-11-10
 
 ### Added
 - Add remove module configuration command

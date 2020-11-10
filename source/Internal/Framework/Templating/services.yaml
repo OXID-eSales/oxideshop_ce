@@ -52,3 +52,9 @@ services:
       - { name: 'oxid.menu.file.locator', priority: -255 }
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheService
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+      - '@oxid_esales.symfony.file_system'
+    public: true

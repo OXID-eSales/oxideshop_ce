@@ -302,15 +302,8 @@ class BasicContextStub implements BasicContextInterface
     }
 
     /**
-     * @param int $shopId
-     *
      * @return string
      */
-    public function getModulePathCacheFilePath(int $shopId): string
-    {
-        return $this->cacheDirectory;
-    }
-
     public function getCacheDirectory(): string
     {
         return $this->cacheDirectory;

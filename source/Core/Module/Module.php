@@ -691,22 +691,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    private function convertClassesWithoutNamespaceToArray(ModuleConfiguration $moduleConfiguration): array
-    {
-        $data = [];
-
-        foreach ($moduleConfiguration->getClassesWithoutNamespace() as $class) {
-            $data[$class->getShopClass()] = $class->getModuleClass();
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     *
-     * @return array
-     */
     private function convertSettingsToArray(ModuleConfiguration $moduleConfiguration): array
     {
         $data = [];

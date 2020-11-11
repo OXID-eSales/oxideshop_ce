@@ -1070,13 +1070,11 @@ class Language extends \OxidEsales\Eshop\Core\Base
             . 'views' . DIRECTORY_SEPARATOR
             . $theme . DIRECTORY_SEPARATOR;
 
-        $themeMapLocations = [
+        return [
             $themeDirectory . $languageAbbreviation, // for backwards compatibility
             $themeDirectory . 'translations' . DIRECTORY_SEPARATOR . $languageAbbreviation,
             $themeDirectory . 'translations'
         ];
-
-        return $themeMapLocations;
     }
 
     /**

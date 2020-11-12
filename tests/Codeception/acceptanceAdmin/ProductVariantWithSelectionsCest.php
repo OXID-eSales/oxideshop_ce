@@ -19,21 +19,22 @@ final class ProductVariantWithSelectionsCest
         $I->wantToTest('product variant inherits selections from its parent');
 
         $admin = $I->loginAdmin();
-        $productList = $admin->openProducts();
-        $productList->switchLanguage('Deutsch');
+        $products = $admin->openProducts();
+        $productsMainPage = $products->switchLanguage('Deutsch');
 
-        $parentMain = $productList->filterByArtNum('1002');
-        $parentSelection = $parentMain->openSelectionTab();
-        $parentAssignSelections = $parentSelection->openAssignSelectionListPopup();
+        $parentMainPage = $productsMainPage->find($productsMainPage->searchNumberInput, '1002');
+        $parentSelectionPage = $parentMainPage->openSelectionTab();
+        $parentAssignSelections = $parentSelectionPage->openAssignSelectionListPopup();
         $parentAssignSelections->assignSelectionByTitle('test selection list [DE] šÄßüл');
         $I->closeTab();
-        $parentVariant = $parentMain->openVariantsTab();
 
-        $variantMain = $parentVariant->openEditProductVariant(1);
-        $variantMain->seeInArtNum('1002-1');
-        $variantSelection = $variantMain->openSelectionTab();
-        $variantAssignSelections = $variantSelection->openAssignSelectionListPopup();
-        $variantAssignSelections->seeInAssignedList('test selection list [DE] šÄßüл');
+        $parentVariantPage = $parentSelectionPage->openVariantsTab();
+        $variantMainPage = $parentVariantPage->openEditProductVariant(1);
+        $I->seeInField($variantMainPage->numberInput, '1002-1');
+
+        $variantSelectionPage = $variantMainPage->openSelectionTab();
+        $variantAssignSelections = $variantSelectionPage->openAssignSelectionListPopup();
+        $I->see('test selection list [DE] šÄßüл', $variantAssignSelections->assignedList);
         $I->closeTab();
     }
 }

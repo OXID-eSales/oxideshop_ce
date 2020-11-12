@@ -11,10 +11,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
+    ModuleConfiguration\ModuleSettingsDataMapper};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -35,12 +38,10 @@ final class ModuleConfigurationInstallerTest extends TestCase
      * @see TestData/TestModule/metadata.php
      */
     private $testModuleId = 'test-module';
-    /**
-     * @var ProjectConfigurationDaoInterface
-     */
+    /** @var ProjectConfigurationDaoInterface */
     private $projectConfigurationDao;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 
@@ -57,6 +58,14 @@ final class ModuleConfigurationInstallerTest extends TestCase
         $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
 
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
+    }
+
+    /** @doesNotPerformAssertions */
+    public function testInstallWithPreExistingEnvironmentFile(): void
+    {
+        $this->configureModuleInEnvironmentFile();
+        $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
     }
 
     public function testInstallWithTwoShopsWillKeepSeparateModuleConfigurationsPerShop(): void
@@ -208,5 +217,26 @@ final class ModuleConfigurationInstallerTest extends TestCase
         $projectConfiguration->addShopConfiguration(2, $shopConfigurationWithoutChain);
 
         $this->projectConfigurationDao->save($projectConfiguration);
+    }
+
+    private function configureModuleInEnvironmentFile(): void
+    {
+        $storage = $this->get(FileStorageFactoryInterface::class)
+            ->create(
+                $this->get(ContextInterface::class)
+                    ->getProjectConfigurationDirectory() . 'environment/1.yaml'
+            );
+
+        $storage->save([
+            'modules' => [
+                $this->testModuleId => [
+                    ModuleSettingsDataMapper::MAPPING_KEY => [
+                        'settingToOverwrite' => [
+                            'value' => 'overwrittenValue',
+                        ]
+                    ]
+                ]
+            ]
+        ]);
     }
 }

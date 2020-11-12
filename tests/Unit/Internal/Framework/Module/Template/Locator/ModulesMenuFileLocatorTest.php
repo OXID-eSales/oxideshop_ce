@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Locator;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Template\Locator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\ModulesMenuFileLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\Locator\ModulesMenuFileLocator;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\Filesystem\Filesystem;

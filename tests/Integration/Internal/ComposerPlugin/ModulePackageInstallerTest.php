@@ -40,7 +40,7 @@ final class ModulePackageInstallerTest extends TestCase
     public function testModuleNotInstalledByDefault(): void
     {
         $installer = $this->getPackageInstaller($this->packageName);
-        $this->assertFalse($installer->isInstalled());
+        $this->assertFalse($installer->isInstalled($this->modulePackagePath));
     }
 
     public function testModuleIsInstalledAfterInstallProcess()
@@ -48,7 +48,7 @@ final class ModulePackageInstallerTest extends TestCase
         $installer = $this->getPackageInstaller($this->packageName);
         $installer->install($this->modulePackagePath);
 
-        $this->assertTrue($installer->isInstalled());
+        $this->assertTrue($installer->isInstalled($this->modulePackagePath));
     }
 
     public function testModuleFilesAreCopiedAfterInstallProcess(): void
@@ -73,7 +73,7 @@ final class ModulePackageInstallerTest extends TestCase
         $this->activateTestModule($package);
         $installer->uninstall($this->modulePackagePath);
 
-        $this->assertFalse($installer->isInstalled());
+        $this->assertFalse($installer->isInstalled($this->modulePackagePath));
     }
 
     public function testModuleInstallDoesNotUseMainContainer(): void

@@ -399,7 +399,7 @@ class Email extends PHPMailer
      *
      * @return TemplateRendererInterface
      */
-    private function getRenderer()
+    protected function getRenderer()
     {
         $bridge = $this->getContainer()->get(TemplateRendererBridgeInterface::class);
         $bridge->setEngine($this->_getSmarty());

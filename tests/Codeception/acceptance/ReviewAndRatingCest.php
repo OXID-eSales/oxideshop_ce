@@ -53,40 +53,42 @@ final class ReviewAndRatingCest
         $I->wantToTest('if parent reviews are shown correctly for variant product');
         $I->updateConfigInDatabase('bl_perfLoadReviews', true, 'bool');
 
-        $reviewData = [
+        $parentReview = [
             'text' => 'review for parent product šÄßüл',
             'rating' => 3,
+            'created' => '2020-12-12 12:12:12',
         ];
-
-        $reviewData2 = [
+        $variantReview = [
             'text' => 'review for var1 šÄßüл',
             'rating' => 3,
+            'created' => '2020-11-11 11:11:11',
         ];
 
         $userData = $this->getExistingUserData();
-        $this->prepareReviewDataForProduct($I, '1002', 'testUser', $reviewData);
-        $this->prepareReviewDataForProduct($I, '1002-1', 'testUser', $reviewData2);
+        $this->prepareReviewDataForProduct($I, '1002', 'testUser', $parentReview);
+        $this->prepareReviewDataForProduct($I, '1002-1', 'testUser', $variantReview);
 
         $detailsPage = $productNavigation->openProductDetailsPage('1002');
         $I->see(Translator::translate('MESSAGE_LOGIN_TO_WRITE_REVIEW'));
         $detailsPage->seeUserProductReviewAndRating(
             1,
             $userData['userName'],
-            $reviewData['text'],
-            $reviewData['rating']
+            $parentReview['text'],
+            $parentReview['rating']
         );
         $detailsPage->selectVariant(1, 'var1 [EN] šÄßüл');
+        /** reviews with bigger OXCREATE go to the top of the list */
         $detailsPage->seeUserProductReviewAndRating(
             1,
             $userData['userName'],
-            $reviewData['text'],
-            $reviewData['rating']
+            $parentReview['text'],
+            $parentReview['rating']
         );
         $detailsPage->seeUserProductReviewAndRating(
             2,
             $userData['userName'],
-            $reviewData2['text'],
-            $reviewData2['rating']
+            $variantReview['text'],
+            $variantReview['rating']
         );
         $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
         $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
@@ -164,7 +166,7 @@ final class ReviewAndRatingCest
             'OXUSERID' => $userId,
             'OXLANG' => '1',
             'OXRATING' => $review['rating'],
-            'OXCREATE' => date('Y-m-d H:i:s'),
+            'OXCREATE' => $review['created'],
         ];
 
         $I->haveInDatabase('oxreviews', $reviewData);

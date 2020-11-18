@@ -182,6 +182,7 @@ final class ReviewAndRatingCest
         $review = [
             'text' => 'some-text',
             'rating' => 123,
+            'created' => date('Y-m-d H:i:s'),
         ];
         while ($cnt > 0) {
             $this->prepareReviewDataForProduct($I, '1000', $userId, $review);

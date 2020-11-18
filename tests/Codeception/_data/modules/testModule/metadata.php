@@ -8,14 +8,14 @@
 $sMetadataVersion = '2.1';
 
 $aModule = [
-    'id' => 'codeception/test-module-1',
+    'id' => 'codeception/testModule',
     'title' => 'Codeception test module #1',
     'description' => 'Working module configuration with possible data types in settings',
     'thumbnail' => '',
     'version' => '1.0',
     'author' => 'OXID',
     'extend' => [
-        'content' => 'test-module-1/Controller/ContentController'
+        'content' => \OxidEsales\EshopCommunity\Tests\Codeception\_data\modules\testModule\Controller\ContentController::class
     ],
     'settings' => [
         /** Group of empty values */

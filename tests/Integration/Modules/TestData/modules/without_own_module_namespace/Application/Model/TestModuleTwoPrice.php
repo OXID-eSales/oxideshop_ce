@@ -4,6 +4,8 @@
  * See LICENSE file for license details.
  */
 
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\without_own_module_namespace\Application\Model;
+
 class TestModuleTwoPrice extends testmoduletwoprice_parent
 {
 

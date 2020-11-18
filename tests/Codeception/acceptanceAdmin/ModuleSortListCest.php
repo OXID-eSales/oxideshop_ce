@@ -15,31 +15,31 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 final class ModuleSortListCest
 {
     private $module;
-    private $testModule1Id = 'codeception/test-module-1';
-    private $testModule1Path = __DIR__ . '/../_data/modules/test-module-1';
+    private $testModuleId = 'codeception/testModule';
+    private $testModulePath = __DIR__ . '/../_data/modules/testModule';
     private $testModuleWithProblemsId = 'codeception/test-module-problems';
     private $testModuleWithProblemsPath = __DIR__ . '/../_data/modules/test-module-problems';
 
     /** @param AcceptanceAdminTester $I */
-    public function moduleSortList(AcceptanceAdminTester $I): void
+    public function moduleClassExtensionsArePresentOnInstalledModulePage(AcceptanceAdminTester $I): void
     {
-        $I->wantToTest('module sort list functionality with valid module');
-        $I->installModule($this->testModule1Path);
-        $I->deactivateModule($this->testModule1Id);
+        $I->wantToTest('module class extensions are present on installed modules page for active and inactive module');
+        $I->installModule($this->testModulePath);
+        $I->deactivateModule($this->testModuleId);
         $this->selectModule($I, 'Codeception test module #1');
         $this->module->openModuleTab('Installed Shop Modules');
 
         $I->seeElement('li#OxidEsales---Eshop---Application---Controller---ContentController');
-        $I->seeElement('li#test-module-1\/Controller\/ContentController .disabled');
+        $I->seeElement('li#OxidEsales\\\EshopCommunity\\\Tests\\\Codeception\\\_data\\\modules\\\testModule\\\Controller\\\ContentController .disabled');
 
         $this->activateSelectedModule($I);
         $this->module->openModuleTab('Installed Shop Modules');
 
         $I->seeElement('li#OxidEsales---Eshop---Application---Controller---ContentController');
-        $I->seeElement('li#test-module-1\/Controller\/ContentController');
-        $I->dontSeeElement('li#test-module-1\/Controller\/ContentController .disabled');
+        $I->seeElement('li#OxidEsales\\\EshopCommunity\\\Tests\\\Codeception\\\_data\\\modules\\\testModule\\\Controller\\\ContentController');
+        $I->dontSeeElement('li#OxidEsales\\\EshopCommunity\\\Tests\\\Codeception\\\_data\\\modules\\\testModule\\\Controller\\\ContentController .disabled');
 
-        $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
+        $I->uninstallModule($this->testModulePath, $this->testModuleId);
     }
 
     /** @param AcceptanceAdminTester $I */

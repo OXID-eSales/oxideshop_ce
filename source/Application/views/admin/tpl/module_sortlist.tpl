@@ -40,9 +40,6 @@
                                                 <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$mFile}]</li>
                                             [{/if}]
                                         [{/foreach}]
-                                        [{foreach from=$aModules.files item=sFile key=sClassName}]
-                                            <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
-                                        [{/foreach}]
                                     </ul>
                                 </td>
                             </tr>

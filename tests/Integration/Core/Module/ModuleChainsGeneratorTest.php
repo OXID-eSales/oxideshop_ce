@@ -15,6 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\chainTestModuleClasses\FirstUser;
+use OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\chainTestModuleClasses\FourthUser;
+use OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\chainTestModuleClasses\SecondUser;
+use OxidEsales\EshopCommunity\Tests\Integration\Core\Module\Fixtures\chainTestModuleClasses\ThirdUser;
 use OxidEsales\TestingLibrary\UnitTestCase;
 
 /**
@@ -36,19 +40,12 @@ class ModuleChainsGeneratorTest extends UnitTestCase
      *
      * @dataProvider dataProviderTestCreateClassChain
      *
-     * @param $mockedModules
      * @param $modulesArray
      * @param $expectedResult
      * @param $message
      */
-    public function testCreateClassChain($mockedModules, $modulesArray, $expectedResult, $message)
+    public function testCreateClassChain($modulesArray, $expectedResult, $message)
     {
-        $classFilePaths = [];
-        foreach ($mockedModules as $mockedModule) {
-            $classFilePaths[] = $this->createModuleClassFile($mockedModule);
-            $this->assertNotFalse(current($classFilePaths), 'Class file could not be created');
-        }
-
         /** @var ModuleVariablesLocator|\PHPUnit\Framework\MockObject\MockObject $moduleVariablesLocatorMock */
         $moduleVariablesLocatorMock = $this->getMock(ModuleVariablesLocator::class, array(), array(), '', false);
 
@@ -61,10 +58,6 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         $moduleChainsGeneratorMock->expects($this->any())->method('getClassExtensionChain')->will($this->returnValue($modulesArray));
         $class = $moduleChainsGeneratorMock->createClassChain(\OxidEsales\Eshop\Application\Model\User::class, 'oxuser');
 
-        foreach ($classFilePaths as $classFilePath) {
-            $this->assertTrue(unlink($classFilePath), 'Class file could not be deleted');
-        }
-
         $this->assertSame(basename($expectedResult), $class, $message);
     }
 
@@ -73,19 +66,12 @@ class ModuleChainsGeneratorTest extends UnitTestCase
      *
      * @dataProvider dataProviderTestCreateClassChain
      *
-     * @param $mockedModules
      * @param $modulesArray
      * @param $expectedResult
      * @param $message
      */
-    public function testGetActiveChain($mockedModules, $modulesArray, $expectedResult, $message)
+    public function testGetActiveChain($modulesArray, $expectedResult, $message)
     {
-        $classFilePaths = [];
-        foreach ($mockedModules as $mockedModule) {
-            $classFilePaths[] = $this->createModuleClassFile($mockedModule);
-            $this->assertNotFalse(current($classFilePaths), 'Class file could not be created');
-        }
-
         /** @var ModuleVariablesLocator|\PHPUnit\Framework\MockObject\MockObject $moduleVariablesLocatorMock */
         $moduleVariablesLocatorMock = $this->getMock(ModuleVariablesLocator::class, array(), array(), '', false);
 
@@ -97,10 +83,6 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         $moduleChainsGeneratorMock = $this->getMock(ModuleChainsGenerator::class, ['getClassExtensionChain'], [$moduleVariablesLocatorMock]);
         $moduleChainsGeneratorMock->expects($this->any())->method('getClassExtensionChain')->will($this->returnValue($modulesArray));
         $chain = $moduleChainsGeneratorMock->getActiveChain(\OxidEsales\Eshop\Application\Model\User::class, 'oxuser');
-
-        foreach ($classFilePaths as $classFilePath) {
-            $this->assertTrue(unlink($classFilePath), 'Class file could not be deleted');
-        }
 
         //verify that the chain is filled and that the last class in chain is as expected
         $this->assertEquals(4, count($chain), $message);
@@ -139,14 +121,14 @@ class ModuleChainsGeneratorTest extends UnitTestCase
     public function dataProviderTestCreateClassChain()
     {
         $mockedModules = [
-            'module_1' => 'oe/testmoduleone/application/model/oemoduleoneuser',
-            'module_2' => 'oe/testmoduletwo/application/model/oemoduletwouser',
-            'module_3' => 'oe/testmodulethree/application/model/oemodulethreeuser',
-            'module_4' => 'oe/testmodulefour/application/model/oemodulefouruser',
+            'module_1' => FirstUser::class,
+            'module_2' => SecondUser::class,
+            'module_3' => ThirdUser::class,
+            'module_4' => FourthUser::class,
         ];
 
         return [
-            ['mockedModules'  => $mockedModules,
+            [
              'modulesArray'   => [
                  'oxuser'                                       => $mockedModules['module_1'] . '&' . $mockedModules['module_2'],
                  \OxidEsales\Eshop\Application\Model\User::class => $mockedModules['module_3'] . '&' . $mockedModules['module_4'],
@@ -154,7 +136,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
              'expectedResult' => $mockedModules['module_4'],
              'message'        => 'oemodulefouruser is the last class in the chain'
             ],
-            ['mockedModules'  => $mockedModules,
+            [
              'modulesArray'   => [
                  \OxidEsales\Eshop\Application\Model\User::class => $mockedModules['module_3'] . '&' . $mockedModules['module_4'],
                  'oxuser'                                       => $mockedModules['module_1'] . '&' . $mockedModules['module_2'],
@@ -162,7 +144,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
              'expectedResult' => $mockedModules['module_2'],
              'message'        => 'oemoduletwouser is the last class in the chain'
             ],
-            ['mockedModules'  => $mockedModules,
+            [
              'modulesArray'   => [
                  \OxidEsales\Eshop\Application\Model\User::class => $mockedModules['module_3'] . '&' . $mockedModules['module_4'],
                  'oxuser'                                       => $mockedModules['module_2'] . '&' . $mockedModules['module_1'],
@@ -170,7 +152,7 @@ class ModuleChainsGeneratorTest extends UnitTestCase
              'expectedResult' => $mockedModules['module_1'],
              'message'        => 'oemoduleoneuser is the last class in the chain'
             ],
-            ['mockedModules'  => $mockedModules,
+            [
              'modulesArray'   => [
                  'oxuser'                                       => $mockedModules['module_1'] . '&' . $mockedModules['module_2'],
                  \OxidEsales\Eshop\Application\Model\User::class => $mockedModules['module_4'] . '&' . $mockedModules['module_3'],
@@ -253,34 +235,6 @@ class ModuleChainsGeneratorTest extends UnitTestCase
         }
 
         return $this->moduleChainsGenerator;
-    }
-
-
-    protected function createModuleClassFile($extensionPath)
-    {
-        $modulesDirectory = Registry::get("oxConfigFile")->getVar("sShopDir");
-        $moduleClassFilePath = "$modulesDirectory/modules/$extensionPath.php";
-        if (!is_dir(dirname($moduleClassFilePath))) {
-            if (!mkdir(dirname($moduleClassFilePath), 0755, true)) {
-                return false;
-            }
-        }
-
-        $class = basename($extensionPath);
-        $classDefinition = <<<EOT
-<?php
-/**
- * Copyright © OXID eSales AG. All rights reserved.
- * See LICENSE file for license details.
- */
-class $class extends {$class}_parent {}
-EOT;
-
-        if (!file_put_contents($moduleClassFilePath, $classDefinition)) {
-            return false;
-        }
-
-        return $moduleClassFilePath;
     }
 
     private function removeTestModule(string $moduleId)

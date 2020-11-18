@@ -268,21 +268,15 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
      */
     public function getDeletedExtensions()
     {
-        $oModuleValidatorFactory = $this->getModuleValidatorFactory();
-        $oModuleMetadataValidator = $oModuleValidatorFactory->getModuleMetadataValidator();
         $aModulesIds = $this->getModuleIds();
         $oModule = $this->getModule();
         $aDeletedExt = [];
 
         foreach ($aModulesIds as $sModuleId) {
             $oModule->setModuleData(['id' => $sModuleId]);
-            if (!$oModuleMetadataValidator->validate($oModule)) {
-                $aDeletedExt[$sModuleId]['files'] = [$sModuleId . '/metadata.php'];
-            } else {
-                $aInvalidExtensions = $this->_getInvalidExtensions($sModuleId);
-                if ($aInvalidExtensions) {
-                    $aDeletedExt[$sModuleId]['extensions'] = $aInvalidExtensions;
-                }
+            $aInvalidExtensions = $this->_getInvalidExtensions($sModuleId);
+            if ($aInvalidExtensions) {
+                $aDeletedExt[$sModuleId]['extensions'] = $aInvalidExtensions;
             }
         }
 
@@ -439,16 +433,6 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Gets module validator factory.
-     *
-     * @return \OxidEsales\Eshop\Core\Module\ModuleValidatorFactory
-     */
-    public function getModuleValidatorFactory()
-    {
-        return oxNew(\OxidEsales\Eshop\Core\Module\ModuleValidatorFactory::class);
-    }
-
-    /**
      * Returns module ids which have extensions or files.
      *
      * @return array
@@ -543,36 +527,15 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
 
         foreach ($extendedShopClasses as $extendedShopClass => $moduleClasses) {
             foreach ($moduleClasses as $moduleClass) {
-                if (\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($moduleClass)) {
-                    /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
-                    $composerClassLoader = include VENDOR_PATH . 'autoload.php';
-                    if (!$composerClassLoader->findFile($moduleClass)) {
-                        $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
-                    }
-                } else {
-                    /** Note: $aDeletedExt is passed by reference */
-                    $this->backwardsCompatibleGetInvalidExtensions($moduleClass, $invalidModuleClasses, $extendedShopClass);
+                /** @var \Composer\Autoload\ClassLoader $composerClassLoader */
+                $composerClassLoader = include VENDOR_PATH . 'autoload.php';
+                if (!$composerClassLoader->findFile($moduleClass)) {
+                    $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
                 }
             }
         }
 
         return $invalidModuleClasses;
-    }
-
-    /**
-     * Backwards compatible version of self::_getInvalidExtensions()
-     *
-     * @param string $moduleClass          The module class, which extends a given shop class
-     * @param array  $invalidModuleClasses The Collection of module classes , which are marked as deleted
-     *                                     Note: This parameter is passed by reference
-     * @param string $extendedShopClass    The shop class, which is extended by the module class
-     */
-    private function backwardsCompatibleGetInvalidExtensions($moduleClass, &$invalidModuleClasses, $extendedShopClass)
-    {
-        $moduleClassFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $moduleClass . '.php';
-        if (!is_readable($moduleClassFile)) {
-            $invalidModuleClasses[$extendedShopClass][] = $moduleClass;
-        }
     }
 
     /**

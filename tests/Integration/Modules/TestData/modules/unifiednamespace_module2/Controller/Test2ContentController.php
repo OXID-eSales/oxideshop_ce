@@ -4,6 +4,8 @@
  * See LICENSE file for license details.
  */
 
+namespace OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module2\Controller;
+
 /**
  * CMS - loads pages and displays it
  */

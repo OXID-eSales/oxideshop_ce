@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFi
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+use Webmozart\PathUtil\Path;
 
 final class ModuleFilesInstallerTest extends TestCase
 {
@@ -21,15 +22,6 @@ final class ModuleFilesInstallerTest extends TestCase
 
     private $modulePackagePath = __DIR__ . '/../../TestData/TestModule';
     private $packageName = 'TestModule';
-
-    public function tearDown(): void
-    {
-        $fileSystem = $this->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->getTestedModuleInstallPath());
-        $fileSystem->remove($this->getModulesPath() . '/custom-test-directory/');
-
-        parent::tearDown();
-    }
 
     public function testModuleNotInstalledByDefault(): void
     {
@@ -50,7 +42,7 @@ final class ModuleFilesInstallerTest extends TestCase
         $this->assertTrue($installer->isInstalled($package));
     }
 
-    public function testModuleFilesAreCopiedAfterInstallProcess(): void
+    public function testModuleAssertsAreLinkedAfterInstallProcess(): void
     {
         $installer = $this->getFilesInstaller();
         $package = $this->createPackage();
@@ -58,53 +50,8 @@ final class ModuleFilesInstallerTest extends TestCase
         $installer->install($package);
 
         $this->assertFileEquals(
-            $this->modulePackagePath . '/metadata.php',
-            $this->getTestedModuleInstallPath() . '/metadata.php'
-        );
-    }
-
-    public function testModuleFilesAreCopiedAfterInstallProcessWithCustomTargetDirectory(): void
-    {
-        $installer = $this->getFilesInstaller();
-        $package = $this->createPackage();
-        $package->setTargetDirectory('custom-test-directory');
-
-        $installer->install($package);
-
-        $this->assertFileEquals(
-            $this->modulePackagePath . '/metadata.php',
-            $this->getModulesPath() . '/custom-test-directory/metadata.php'
-        );
-    }
-
-    public function testModuleFilesAreCopiedAfterInstallProcessWithCustomSourceDirectory(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setSourceDirectory('CustomSourceDirectory');
-
-        $installer->install($package);
-
-        $this->assertFileEquals(
-            $this->modulePackagePath . '/CustomSourceDirectory/metadata.php',
-            $this->getTestedModuleInstallPath() . '/metadata.php'
-        );
-    }
-
-    public function testModuleFilesAreCopiedAfterInstallProcessWithCustomSourceDirectoryAndCustomTargetDirectory(): void
-    {
-        $installer = $this->getFilesInstaller();
-
-        $package = $this->createPackage();
-        $package->setSourceDirectory('CustomSourceDirectory');
-        $package->setTargetDirectory('custom-test-directory');
-
-        $installer->install($package);
-
-        $this->assertFileEquals(
-            $this->modulePackagePath . '/CustomSourceDirectory/metadata.php',
-            $this->getModulesPath() . '/custom-test-directory/metadata.php'
+            $this->modulePackagePath . '/assets/some.css',
+            $this->getTestModuleAssetsPath() . '/some.css'
         );
     }
 
@@ -119,11 +66,6 @@ final class ModuleFilesInstallerTest extends TestCase
         $this->assertFalse($installer->isInstalled($package));
     }
 
-    private function getModulesPath(): string
-    {
-        return $this->get(ContextInterface::class)->getModulesPath();
-    }
-
     private function getFilesInstaller(): ModuleFilesInstallerInterface
     {
         return $this->get(ModuleFilesInstallerInterface::class);
@@ -134,8 +76,13 @@ final class ModuleFilesInstallerTest extends TestCase
         return new OxidEshopPackage($this->packageName, $this->modulePackagePath);
     }
 
-    private function getTestedModuleInstallPath(): string
+    private function getTestModuleAssetsPath(): string
     {
-        return $this->getModulesPath() . DIRECTORY_SEPARATOR . $this->packageName;
+        return Path::join(
+            $this->get(ContextInterface::class)->getOutPath(),
+            'modules',
+            'test-module',
+            'assets'
+        );
     }
 }

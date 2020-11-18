@@ -54,22 +54,6 @@ class ModuleInstallerTest extends TestCase
         );
     }
 
-    public function testUninstallModuleWithCustomSourcePath(): void
-    {
-        $package = new OxidEshopPackage('withCustomSource', __DIR__ . '/Fixtures/testModuleWithCustomSource');
-        $package->setSourceDirectory('customSourcePath');
-        $package->setTargetDirectory('oeTest/customSourcePath');
-
-        $moduleInstaller = $this->get(ModuleInstallerInterface::class);
-        $moduleInstaller->install($package);
-
-        $moduleInstaller->uninstall($package);
-
-        $this->assertFalse(
-            $moduleInstaller->isInstalled($package)
-        );
-    }
-
     private function installModule(): void
     {
         $installService = $this->get(ModuleInstallerInterface::class);

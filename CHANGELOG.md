@@ -124,6 +124,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockContentReader`
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockPathFormatter`
 - `\OxidEsales\EshopCommunity\Core\UtilsView::_getTemplateBlock()`
+- `\OxidEsales\Eshop\Core\Contract\IModuleValidator`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator`
+- `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory`
 - Removed deprecated getSession and setSession usages around the code
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`

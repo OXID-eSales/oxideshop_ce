@@ -51,17 +51,6 @@ final class ModulePackageInstallerTest extends TestCase
         $this->assertTrue($installer->isInstalled($this->modulePackagePath));
     }
 
-    public function testModuleFilesAreCopiedAfterInstallProcess(): void
-    {
-        $installer = $this->getPackageInstaller($this->packageName);
-        $installer->install($this->modulePackagePath);
-
-        $this->assertFileEquals(
-            $this->modulePackagePath . '/metadata.php',
-            $this->getModulesPath() . '/' . $this->packageName . '/metadata.php'
-        );
-    }
-
     public function testModuleUninstall(): void
     {
         $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->packageName);

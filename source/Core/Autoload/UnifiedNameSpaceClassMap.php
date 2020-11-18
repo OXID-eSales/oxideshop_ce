@@ -2344,12 +2344,6 @@ return [
         'isInterface'      => true,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Contract\IModuleValidator'                            => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\IModuleValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => true,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Contract\ISelectList'                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ISelectList::class,
         'isAbstract'       => false,
@@ -2842,23 +2836,11 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleMetadataValidator'                       => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Module\ModuleTemplateBlockRepository'                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleTemplateBlockRepository::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Module\ModuleValidatorFactory'                        => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Module\ModuleVariablesLocator'                        => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator::class,

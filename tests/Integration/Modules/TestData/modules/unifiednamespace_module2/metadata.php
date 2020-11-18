@@ -32,8 +32,8 @@ $aModule = array(
     'url'         => 'www.johndoe.com',
     'email'       => 'john@doe.com',
     'extend'      => array(
-        'content' => 'oeTest/unifiednamespace_module2/Controller/Test2ContentController',
-        'test2content' => 'oeTest/unifiednamespace_module2/Model/Test2Content.php',
+        'content' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module2\Controller\Test2ContentController::class,
+        'test2content' => \OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module2\Model\Test2Content::class,
     ),
     'templates'   => array(),
     'blocks'      => array(),

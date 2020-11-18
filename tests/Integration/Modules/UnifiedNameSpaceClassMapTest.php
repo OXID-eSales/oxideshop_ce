@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
 use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module1\Controller\Test1ContentController;
+use OxidEsales\EshopCommunity\Tests\Integration\Modules\TestData\modules\unifiednamespace_module2\Controller\Test2ContentController;
+
 /**
  * Class UnifiedNameSpaceClassMapTest
  *
@@ -99,7 +101,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
             array(
                 'modulesToActivate'          => array('unifiednamespace_module1', 'unifiednamespace_module2'),
                 'expectedInheritanceChain'   => array(
-                    'Test2ContentController',
+                    Test2ContentController::class,
                     Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
@@ -111,7 +113,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                     'OxidEsales\EshopCommunity\Core\Base',
                 ),
                 'expectedInheritanceChainPE' => array(
-                    'Test2ContentController',
+                    Test2ContentController::class,
                     Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',
@@ -126,7 +128,7 @@ class UnifiedNameSpaceClassMapTest extends BaseModuleTestCase
                     'OxidEsales\EshopCommunity\Core\Base',
                 ),
                 'expectedInheritanceChainEE' => array(
-                    'Test2ContentController',
+                    Test2ContentController::class,
                     Test1ContentController::class,
                     'OxidEsales\Eshop\Application\Controller\ContentController',
                     'OxidEsales\EshopCommunity\Application\Controller\ContentController',

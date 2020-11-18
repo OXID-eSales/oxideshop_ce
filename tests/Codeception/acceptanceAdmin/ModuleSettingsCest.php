@@ -13,8 +13,8 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ModuleSettingsCest
 {
-    private $testModule1Id = 'codeception/test-module-1';
-    private $testModule1Path = __DIR__ . '/../_data/modules/test-module-1';
+    private $testModule1Id = 'codeception/testModule';
+    private $testModule1Path = __DIR__ . '/../_data/modules/testModule';
 
     /** @param AcceptanceAdminTester $I */
     public function _before(AcceptanceAdminTester $I)

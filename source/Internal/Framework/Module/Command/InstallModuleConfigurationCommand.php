@@ -22,9 +22,6 @@ class InstallModuleConfigurationCommand extends Command
 {
     public const MESSAGE_INSTALLATION_WAS_SUCCESSFUL = 'Module configuration has been installed.';
     public const MESSAGE_INSTALLATION_FAILED = 'An error occurred while installing module configuration.';
-    public const MESSAGE_TARGET_PATH_IS_REQUIRED = 'The given module source path is not inside the shop modules ' .
-    'directory. Please provide a second parameter with the modules ' .
-    'target path inside the shop modules directory.';
 
     /**
      * @var ModuleConfigurationInstallerInterface
@@ -89,13 +86,8 @@ class InstallModuleConfigurationCommand extends Command
             $moduleSourcePath = $this->getModuleSourcePath($input);
             $this->validatePath($moduleSourcePath);
 
-            $moduleTargetPath = $this->getModuleTargetPath($input);
-            $this->validatePath($moduleTargetPath);
-
-            $this->moduleConfigurationInstaller->install($moduleSourcePath, $moduleTargetPath);
+            $this->moduleConfigurationInstaller->install($moduleSourcePath, $moduleSourcePath);
             $output->writeln('<info>' . self::MESSAGE_INSTALLATION_WAS_SUCCESSFUL . '</info>');
-        } catch (ModuleTargetPathIsMissingException $exception) {
-            $output->writeln('<error>' . self::MESSAGE_TARGET_PATH_IS_REQUIRED . '</error>');
         } catch (PathNotFoundException $exception) {
             $output->writeln('<error>' . self::MESSAGE_INSTALLATION_FAILED . ': ' . $exception->getMessage() . '</error>');
         } catch (\Throwable $throwable) {
@@ -114,26 +106,6 @@ class InstallModuleConfigurationCommand extends Command
     private function getModuleSourcePath(InputInterface $input): string
     {
         return $this->getAbsolutePath($input->getArgument('module-source-path'));
-    }
-
-    /**
-     * @param InputInterface $input
-     * @return string
-     * @throws ModuleTargetPathIsMissingException
-     */
-    private function getModuleTargetPath(InputInterface $input): string
-    {
-        $moduleTargetPath = $input->getArgument('module-target-path');
-        if ($moduleTargetPath !== null) {
-            return $this->getAbsolutePath($moduleTargetPath);
-        }
-
-        $moduleSourcePath = $this->getModuleSourcePath($input);
-        if ($this->isDirectoryInsideShopModulesDirectory($moduleSourcePath)) {
-            return $moduleSourcePath;
-        }
-
-        throw new ModuleTargetPathIsMissingException();
     }
 
     /**

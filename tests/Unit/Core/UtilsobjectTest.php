@@ -112,41 +112,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertEquals('bbb', $oArticle->aaa);
     }
 
-    public function testOxNewClassExtendingWhenClassesExists()
-    {
-        $structure = array(
-            'modules' => array(
-                'oxNewDummyModule.php' => '<?php class oxNewDummyModule {}',
-                'oxNewDummyUserModule.php' => '<?php class oxNewDummyUserModule extends oxNewDummyUserModule_parent {}',
-                'oxNewDummyUserModule2.php' => '<?php class oxNewDummyUserModule2 extends oxNewDummyUserModule2_parent {}',
-            )
-        );
-        $vfsStream = $this->getVfsStreamWrapper();
-        $vfsStream->createStructure($structure);
-        $fakeShopDir = $vfsStream->getRootPath();
-
-        $aModules = array(strtolower('oxNewDummyModule') => 'oxNewDummyUserModule&oxNewDummyUserModule2');
-
-        include_once $fakeShopDir . "/modules/oxNewDummyModule.php";
-
-        $config = $this->getConfig();
-
-        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
-        $config->setConfigParam("aModules", $aModules);
-
-        $configFile = oxRegistry::get("oxConfigFile");
-        $realShopDir = $configFile->getVar('sShopDir');
-        $configFile->setVar('sShopDir', $fakeShopDir);
-
-        $oNewDummyModule = oxNew("oxNewDummyModule");
-
-        $configFile->setVar('sShopDir', $realShopDir);
-
-        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyModule);
-        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyUserModule);
-        $this->assertTrue($oNewDummyModule instanceof \oxNewDummyUserModule2);
-    }
-
     public function testOxNewClassExtendingWhenClassesDoesNotExists()
     {
         /**
@@ -240,19 +205,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
     }
-
-    public function testGetClassName_classNotExist_originalClassReturn()
-    {
-        $sClassName = 'oxorder';
-        $sClassNameExpect = 'oxorder';
-
-        $sClassNameWhichExtends = 'oemodulenameoxorder_different2';
-        $oUtilsObject = $this->prepareFakeModuleNonExistentClass($sClassName, $sClassNameWhichExtends);
-        $this->assertEquals($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
-        $expectedExceptionClass = SystemComponentException::class;
-        $this->assertLoggedException($expectedExceptionClass);
-    }
-    
     
     public function testGetClassName_classNotExistDoNotDisableModuleOnError_errorThrow()
     {

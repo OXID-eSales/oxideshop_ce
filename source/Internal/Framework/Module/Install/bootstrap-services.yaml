@@ -12,7 +12,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleFilesInstaller
     arguments:
       $fileSystemService: '@oxid_esales.symfony.file_system'
-      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface:

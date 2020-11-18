@@ -282,10 +282,6 @@ class ModuleChainsGenerator
      */
     protected function createClassExtension($parentClass, $moduleClass)
     {
-        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($moduleClass)) {
-            return $this->backwardsCompatibleCreateClassExtension($parentClass, $moduleClass);
-        }
-
         /**
          * Test if the class file could be loaded
          */
@@ -305,65 +301,6 @@ class ModuleChainsGenerator
         $moduleClassParentAlias = $moduleClass . "_parent";
         if (!class_exists($moduleClassParentAlias, false)) {
             class_alias($parentClass, $moduleClassParentAlias);
-        }
-
-        return true;
-    }
-
-    /**
-     * Backwards compatible self::createClassExtension
-     *
-     * @param string $parentClass     Name of the parent class
-     * @param string $moduleClassPath Path of the module class as it is defined in metadata.php 'extend' section.
-     *                                This is not a valid file system path
-     *
-     * @return bool
-     *
-     * @deprecated since v6.0 (2017-03-14); This method will be removed in the future.
-     */
-    private function backwardsCompatibleCreateClassExtension($parentClass, $moduleClassPath)
-    {
-        $moduleClass = basename($moduleClassPath);
-        /**
-         * Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
-         * So do not try to get "sShopDir" like this:
-         * $modulesDirectory = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("sShopDir");
-         */
-        $modulesDirectory = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar("sShopDir");
-        $moduleClassFile = "$modulesDirectory/modules/$moduleClassPath.php";
-        $moduleClassParentAlias = $moduleClass . "_parent";
-
-        /**
-         * Test if the class file could be read
-         */
-        if (
-            !$this->isUnitTest() && // In unit test some classes are created dynamically, so the files would not exist :-(
-            !is_readable($moduleClassFile)
-        ) {
-            $this->handleSpecialCases($parentClass);
-            $this->onModuleExtensionCreationError($moduleClass);
-
-            return false;
-        }
-
-        if (!class_exists($moduleClass, false)) {
-            /**
-             * Create parent alias before trying to load the module class as the class extends this alias
-             */
-            if (!class_exists($moduleClassParentAlias, false)) {
-                class_alias($parentClass, $moduleClassParentAlias);
-            }
-            include_once $moduleClassFile;
-
-            /**
-             * Test if the class could be loaded
-             */
-            if (!class_exists($moduleClass, false)) {
-                $this->handleSpecialCases($parentClass);
-                $this->onModuleExtensionCreationError($moduleClassPath);
-
-                return false;
-            }
         }
 
         return true;

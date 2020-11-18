@@ -50,8 +50,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     {
         $this->installTestModuleFiles();
 
-        $context = $this->get(ContextInterface::class);
-        $consoleOutput = $this->executeModuleInstallCommand($context->getModulesPath() . '/' . $this->moduleTargetPath);
+        $consoleOutput = $this->executeModuleInstallCommand($this->getTestModuleSourcePath());
 
         $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
 
@@ -66,10 +65,8 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     {
         $this->installTestModuleFiles();
 
-        $context = $this->get(ContextInterface::class);
-
         $relativeModulePath = Path::makeRelative(
-            $context->getModulesPath() . '/' . $this->moduleTargetPath,
+            $this->getTestModuleSourcePath(),
             $this->workingDirectory
         );
 
@@ -85,64 +82,9 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         );
     }
 
-    public function testInstallFromNotModulesDirectoryWithProvidedAbsoluteTargetPath()
-    {
-        $context = $this->get(ContextInterface::class);
-
-        $consoleOutput = $this->executeModuleInstallCommand(
-            $this->getTestModuleSourcePath(),
-            $context->getModulesPath() . '/' . $this->moduleTargetPath
-        );
-
-        $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
-
-        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->testModuleId, $this->shopId);
-        $this->assertSame(
-            $this->moduleTargetPath,
-            $moduleConfiguration->getPath()
-        );
-    }
-
-    public function testInstallFromNotModulesDirectoryWithProvidedRelativeTargetPath()
-    {
-        $context = $this->get(ContextInterface::class);
-
-        $relativeModulePath = Path::makeRelative(
-            $context->getModulesPath() . '/' . $this->moduleTargetPath,
-            $this->workingDirectory
-        );
-
-        $consoleOutput = $this->executeModuleInstallCommand(
-            $this->getTestModuleSourcePath(),
-            $relativeModulePath
-        );
-
-        $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_WAS_SUCCESSFUL, $consoleOutput);
-
-        $moduleConfiguration = $this->get(ModuleConfigurationDaoInterface::class)->get($this->testModuleId, $this->shopId);
-        $this->assertSame(
-            $this->moduleTargetPath,
-            $moduleConfiguration->getPath()
-        );
-    }
-
-    public function testInstallFromNotModulesDirectoryWithoutProvidedTargetPath()
-    {
-        $consoleOutput = $this->executeModuleInstallCommand($this->getTestModuleSourcePath());
-
-        $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_TARGET_PATH_IS_REQUIRED, $consoleOutput);
-    }
-
     public function testInstallWithWrongModuleSourcePath()
     {
         $consoleOutput = $this->executeModuleInstallCommand('fakePath');
-
-        $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);
-    }
-
-    public function testInstallWithWrongModuleTargetPath()
-    {
-        $consoleOutput = $this->executeModuleInstallCommand($this->getTestModuleSourcePath(), 'fakePath');
 
         $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);
     }

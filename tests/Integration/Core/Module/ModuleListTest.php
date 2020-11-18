@@ -149,43 +149,6 @@ class ModuleListTest extends TestCase
         );
     }
 
-    public function testGetDeletedExtensionsForModuleWithNoMetadata()
-    {
-        $shopConfigurationDao = $this->container->get(ShopConfigurationDaoBridgeInterface::class);
-        $shopConfiguration = $shopConfigurationDao->get();
-
-        $moduleWhichHasNoMetadata = new ModuleConfiguration();
-        $moduleWhichHasNoMetadata
-            ->setId('moduleWhichHasNoMetadata')
-            ->setPath('moduleWhichHasNoMetadata')
-            ->setModuleSource('test');
-
-        $shopConfiguration->addModuleConfiguration($moduleWhichHasNoMetadata);
-        $shopConfigurationDao->save($shopConfiguration);
-
-        $this->container->get(ModuleActivationBridgeInterface::class)->activate(
-            'moduleWhichHasNoMetadata',
-            Registry::getConfig()->getShopId()
-        );
-
-        $moduleExtensions = [
-            Article::class => 'moduleWhichHasNoMetadata/anyExtension',
-        ];
-
-        Registry::getConfig()->setConfigParam('aModules', $moduleExtensions);
-
-        $expectedDeletedExtensions = array(
-            'moduleWhichHasNoMetadata' => array(
-                'files' => array('moduleWhichHasNoMetadata/metadata.php')
-            ),
-        );
-
-        $this->assertEquals(
-            $expectedDeletedExtensions,
-            oxNew(ModuleList::class)->getDeletedExtensions()
-        );
-    }
-
     public function testGetDeletedExtensionsWithMissingExtensions()
     {
         $moduleId = 'InvalidNamespaceModule';

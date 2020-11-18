@@ -5,4 +5,5 @@ imports:
     - { resource: ../Framework/Module/Install/bootstrap-services.yaml }
     - { resource: ../Framework/Module/MetaData/bootstrap-services.yaml }
     - { resource: ../Framework/Module/Configuration/bootstrap-services.yaml }
+    - { resource: ../Framework/Module/Path/bootstrap-services.yaml }
     - { resource: ../Transition/Utility/bootstrap-services.yaml }

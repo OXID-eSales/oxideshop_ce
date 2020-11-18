@@ -31,6 +31,9 @@ services:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.module.configuration.node'
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
 
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationExtenderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentConfigurationExtender
+
   oxid_esales.module.configuration.node:
     class: Symfony\Component\Config\Definition\NodeInterface
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Definition\TreeBuilderFactoryInterface', 'create']

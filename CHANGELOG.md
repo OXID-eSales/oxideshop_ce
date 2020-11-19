@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Shop-setup command does not add admin user
 - Module template file path should be registered in metadata.php as a relative path to the module root directory 
 - Change default value for `oxpublic` field in `oxuserbaskets` table from `1` to `0`
+- Don't copy module files to the `source/modules` directory
+- Copy module assets to the shop out directory
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

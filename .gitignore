@@ -1,6 +1,5 @@
 # Shop configuration
 /source/config.inc.php
-/source/config.inc.php.test
 
 # Log
 !/source/log/

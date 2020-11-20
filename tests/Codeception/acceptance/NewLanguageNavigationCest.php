@@ -39,9 +39,13 @@ final class NewLanguageNavigationCest
     /** @param AcceptanceTester $I */
     public function _after(AcceptanceTester $I)
     {
-        $I->updateConfigInDatabase('aLanguages', $this->languages);
-        $I->updateConfigInDatabase('aLanguageParams', $this->languageParams);
-        $I->regenerateDatabaseViews();
+        if (isset($this->languages)) {
+            $I->updateConfigInDatabase('aLanguages', $this->languages);
+            $I->regenerateDatabaseViews();
+        }
+        if (isset($this->languageParams)) {
+            $I->updateConfigInDatabase('aLanguageParams', $this->languageParams);
+        }
     }
 
     /** @param AcceptanceTester $I */

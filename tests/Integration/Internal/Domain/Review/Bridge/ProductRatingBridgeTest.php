@@ -20,8 +20,6 @@ class ProductRatingBridgeTest extends IntegrationTestCase
 {
     public function testUpdateProductRating()
     {
-        $this->createTestProduct();
-        $this->createTestRatings();
 
         $productRatingBridge = $this->getProductRatingBridge();
         $productRatingBridge->updateProductRating('testProduct');
@@ -38,34 +36,6 @@ class ProductRatingBridgeTest extends IntegrationTestCase
             3,
             $productRating->getRatingCount()
         );
-    }
-
-    private function createTestProduct()
-    {
-        $product = oxNew(Article::class);
-        $product->setId('testProduct');
-        $product->save();
-    }
-
-    private function createTestRatings()
-    {
-        $rating = oxNew(Rating::class);
-        $rating->oxratings__oxobjectid = new Field('testProduct');
-        $rating->oxratings__oxtype = new Field('oxarticle');
-        $rating->oxratings__oxrating = new Field(3);
-        $rating->save();
-
-        $rating = oxNew(Rating::class);
-        $rating->oxratings__oxobjectid = new Field('testProduct');
-        $rating->oxratings__oxtype = new Field('oxarticle');
-        $rating->oxratings__oxrating = new Field(4);
-        $rating->save();
-
-        $rating = oxNew(Rating::class);
-        $rating->oxratings__oxobjectid = new Field('testProduct');
-        $rating->oxratings__oxtype = new Field('oxarticle');
-        $rating->oxratings__oxrating = new Field(5);
-        $rating->save();
     }
 
     private function getProductRatingBridge()

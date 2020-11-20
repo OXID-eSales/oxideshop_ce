@@ -9,17 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Utils\Database\FixtureLoader;
-use OxidEsales\EshopCommunity\Tests\Utils\Database\TestDatabaseHandler;
 use OxidEsales\EshopCommunity\Tests\Utils\Traits\CachingTrait;
 use OxidEsales\EshopCommunity\Tests\Utils\Traits\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Utils\Traits\DatabaseTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
@@ -28,50 +26,26 @@ class IntegrationTestCase extends TestCase
 {
     use ContainerTrait;
     use CachingTrait;
+    use DatabaseTrait;
 
     const TESTVENDOR = 'oeTest';
 
-    protected static $initialized = false;
+    private $connectionProvider;
 
     public function setUp(): void
     {
-        if (!self::$initialized) {
-            TestDatabaseHandler::init();
-            // Do something once here for _all_ test subclasses.
-            self::$initialized = true;
-        }
         parent::setUp();
         $this->cleanupCaching();
-        FixtureLoader::getInstance()->reset();
-        FixtureLoader::getInstance()->loadBasicFixtures();
+        $this->beginTransaction();
         $this->activateModules();
     }
 
     public function tearDown(): void
     {
         $this->deactivateModules();
+        $this->rollBackTransaction();
         $this->cleanupCaching();
         parent::tearDown();
-    }
-
-    public function loadFixtures(array $fixtureFiles)
-    {
-        FixtureLoader::getInstance()->loadFixtures($fixtureFiles);
-    }
-
-    public function cleanupTable($tablename)
-    {
-        FixtureLoader::getInstance()->cleanupTable($tablename);
-    }
-
-    public function loadFixture($fixtureFile)
-    {
-        $this->loadFixtures([$fixtureFile]);
-    }
-
-    public function cleanupFixtureTables()
-    {
-        FixtureLoader::getInstance()->cleanupFixtureTables();
     }
 
     private function activateModules()

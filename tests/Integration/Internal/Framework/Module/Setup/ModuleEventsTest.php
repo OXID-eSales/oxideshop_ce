@@ -25,6 +25,12 @@ class ModuleEventsTest extends IntegrationTestCase
     private $shopId = 1;
     private $testModuleId = 'testModuleId';
 
+    public function tearDown(): void
+    {
+
+        parent::tearDown();
+    }
+
     public function testActivationEventWasExecuted()
     {
         $moduleConfiguration = $this->getTestModuleConfiguration();

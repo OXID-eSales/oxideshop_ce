@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class BasicContextTest extends TestCase
+final class BasicContextTest extends IntegrationTestCase
 {
     /**
      * @var BasicContextInterface

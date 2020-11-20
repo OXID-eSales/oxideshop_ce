@@ -15,9 +15,12 @@
       <directory suffix=".php">./source/Internal</directory>
     </include>
   </coverage>
+  <extensions>
+    <extension class="OxidEsales\EshopCommunity\Tests\Utils\Extension\PHPUnitExtension"/>
+  </extensions>
   <testsuites>
-    <testsuite name="Unit">
-      <directory suffix="Test.php">tests/Unit</directory>
+    <testsuite name="Integration">
+      <directory suffix="Test.php">tests/Integration</directory>
     </testsuite>
   </testsuites>
 </phpunit>

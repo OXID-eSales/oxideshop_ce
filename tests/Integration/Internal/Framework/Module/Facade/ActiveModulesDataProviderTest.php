@@ -19,7 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActi
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Utils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Webmozart\PathUtil\Path;
 

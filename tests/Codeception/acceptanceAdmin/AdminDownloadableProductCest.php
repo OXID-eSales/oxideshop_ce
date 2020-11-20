@@ -29,10 +29,35 @@ final class AdminDownloadableProductCest
     /** @param AcceptanceAdminTester $I */
     public function _before(AcceptanceAdminTester $I)
     {
+
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => $this->productData['id']]);
         $userId = $I->grabFromDatabase('oxuser', 'OXID', ['OXUSERNAME' => 'user@oxid-esales.com']);
-        $this->orderId = $I->grabFromDatabase('oxorder', 'OXID', ['oxuserid' => $userId]);
-        $articleId = $I->grabFromDatabase('oxorderarticles', 'OXID', ['OXORDERID' => $this->orderId]);
+        //$this->orderId = $I->grabFromDatabase('oxorder', 'OXID', ['oxuserid' => $userId]);
+       // $articleId = $I->grabFromDatabase('oxorderarticles', 'OXID', ['OXORDERID' => $this->orderId]);
+        $articleId = $this->productData['id'];
+
+        $this->orderId = "testorder";
+        $I->haveInDatabase(
+            'oxorder',
+            [
+                'OXID' => $this->orderId,
+                'OXSHOPID' => 1,
+                'OXUSERID' => $userId,
+                'OXORDERDATE' => '2011-03-30 10:55:13',
+                'OXORDERNR' => 1,
+                'OXFOLDER' => 'ORDERFOLDER_NEW'
+            ]
+        );
+        $I->haveInDatabase(
+            'oxorderarticles',
+            [
+                'OXID' => $articleId,
+                'OXORDERID' => $this->orderId,
+                'OXAMOUNT' => 1,
+                'OXARTNUM' => $articleId,
+                'OXTITLE' => $this->productData['title'],
+            ]
+        );
 
         $I->haveInDatabase(
             'oxorderfiles',

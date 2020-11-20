@@ -11,8 +11,6 @@ use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\Codeception\Module\Translation\Translator;
-use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Core\ViewConfig;
 
 class GiftRegistryCest
 {

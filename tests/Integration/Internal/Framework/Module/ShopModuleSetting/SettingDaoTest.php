@@ -27,12 +27,6 @@ class SettingDaoTest extends IntegrationTestCase
 {
     const TESTPREFIX = 'test';
 
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->cleanupTable('oxconfigdisplay');
-    }
-
     /**
      * @dataProvider settingValueDataProvider
      *

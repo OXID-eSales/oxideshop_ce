@@ -16,6 +16,7 @@ final class UninstallModuleConfigurationCommandTest extends ModuleCommandsTestCa
 {
     public function tearDown(): void
     {
+        parent::tearDown();
         $this->cleanupTestData();
     }
     

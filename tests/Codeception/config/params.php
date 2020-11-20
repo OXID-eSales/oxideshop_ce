@@ -7,7 +7,7 @@
 
 namespace OxidEsales\DoctrineMigrationWrapper;
 
-use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Facts\Config\ConfigFile;
 use OxidEsales\Facts\Facts;
 
 $facts = new Facts();
@@ -30,7 +30,7 @@ return [
     'DB_HOST' => $facts->getDatabaseHost(),
     'DB_PORT' => $facts->getDatabasePort(),
     'DUMP_PATH' => getTestDataDumpFilePath(),
-    'DUMP_PATH2' => getTestDataDumpFilePath2(),
+    'FIXTURES_PATH' => getTestFixtureSqlFilePath(),
     'MYSQL_CONFIG_PATH' => getMysqlConfigPath(),
     'SELENIUM_SERVER_PORT' => $selenium_server_port,
     'SELENIUM_SERVER_HOST' => $selenium_server_host,
@@ -40,13 +40,14 @@ return [
 
 function getTestDataDumpFilePath()
 {
-    return getShopTestPath() . '/Codeception/_data/dump-2.sql';
+    return getShopTestPath() . '/Codeception/_data/generated/shop-dump.sql';
 }
 
-function getTestDataDumpFilePath2()
+function getTestFixtureSqlFilePath()
 {
-    return getShopTestPath() . '/Codeception/_data/dump-3.sql';
+    return getShopTestPath() . '/Codeception/_data/dump.sql';
 }
+
 function getShopSuitePath($facts)
 {
     $testSuitePath = getenv('TEST_SUITE');
@@ -70,8 +71,7 @@ function getShopTestPath()
 
 function getMysqlConfigPath()
 {
-    $facts = new Facts();
-    $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
+    $configFile = new ConfigFile();
 
     $generator = new \OxidEsales\EshopCommunity\Tests\Utils\Database\DatabaseDefaultsFileGenerator($configFile);
 

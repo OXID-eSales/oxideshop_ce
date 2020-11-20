@@ -36,8 +36,7 @@ trait CachingTrait
     private function removeTmpDir()
     {
         $basicContext = new BasicContext();
-        $tmpDir = Path::join($basicContext->getSourcePath(), 'tmp');
-        $this->rrmdir($tmpDir);
+        $this->rrmdir($basicContext->getCacheDirectory());
     }
 
     private function removeClassCaches()

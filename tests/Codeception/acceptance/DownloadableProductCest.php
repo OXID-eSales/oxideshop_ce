@@ -30,7 +30,7 @@ final class DownloadableProductCest
         $I->updateConfigInDatabase('blEnableIntangibleProdAgreement', true, 'bool');
 
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1002-1']);
-        $I->haveInDatabase(
+        /*$I->haveInDatabase(
             'oxcontents',
             [
                 'OXID' => 'testdownloadProductCest',
@@ -47,7 +47,7 @@ final class DownloadableProductCest
                 'OXCATID' => '30e44ab83fdee7564.23264141',
                 'OXFOLDER' => 'CMSFOLDER_USERINFO',
                 'OXTERMVERSION' => '',
-            ]);
+            ]);*/
     }
 
     /** @param AcceptanceTester $I */

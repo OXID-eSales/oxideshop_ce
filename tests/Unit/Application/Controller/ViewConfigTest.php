@@ -11,11 +11,26 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ViewConfig;
 use OxidEsales\EshopCommunity\Application\Model\CountryList;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use oxTestModules;
 use stdClass;
+use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\PathUtil\Path;
 
 class ViewConfigTest extends \OxidTestCase
 {
+    protected function setUp(): void
+    {
+        $this->addTestModuleAssets();
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->removeTestModuleAssets();
+        parent::tearDown();
+    }
 
     /**
      * oxViewConfig::getHelpPageLink() test case
@@ -461,24 +476,20 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetModulePath()
     {
-        $config = $this->fakeModuleStructure();
-
         $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
-        $fakeShopDirectory = $config->getConfigParam('sShopDir');
-        $this->assertEquals($fakeShopDirectory . "modules/test1/out", $viewConfig->getModulePath('test1', 'out'));
-        $this->assertEquals($fakeShopDirectory . "modules/test1/out/", $viewConfig->getModulePath('test1', '/out/'));
+
+        $this->assertEquals($this->getTestModuleAssetsDirectory() . "/out", $viewConfig->getModulePath('testModule', 'out'));
+        $this->assertEquals($this->getTestModuleAssetsDirectory() . "/out/", $viewConfig->getModulePath('testModule', '/out/'));
 
         $this->assertEquals(
-            $fakeShopDirectory . "modules/test1/out/blocks/test2.tpl",
-            $viewConfig->getModulePath('test1', 'out/blocks/test2.tpl')
+            $this->getTestModuleAssetsDirectory() . "/some.css",
+            $viewConfig->getModulePath('testModule', 'some.css')
         );
 
         $this->assertEquals(
-            $fakeShopDirectory . "modules/test1/out/blocks/test2.tpl",
-            $viewConfig->getModulePath('test1', '/out/blocks/test2.tpl')
+            $this->getTestModuleAssetsDirectory() . "/some.css",
+            $viewConfig->getModulePath('testModule', '/some.css')
         );
-        Registry::set(Config::class, null);
     }
 
     /**
@@ -493,12 +504,12 @@ class ViewConfigTest extends \OxidTestCase
         $config->setConfigParam('iDebug', -1);
 
         $fakeShopDirectory = $config->getConfigParam('sShopDir');
-        $message = "Requested file not found for module test1";
+        $message = "Requested file not found for module testModule";
         $this->expectException('\OxidEsales\EshopCommunity\Core\Exception\FileException');
         $this->expectExceptionMessage($message);
 
         $viewConfig = oxNew(ViewConfig::class);
-        $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl');
+        $viewConfig->getModulePath('testModule', '/non_existing_template.tpl');
     }
 
     /**
@@ -513,7 +524,7 @@ class ViewConfigTest extends \OxidTestCase
         Registry::getConfig()->setConfigParam("iDebug", 0);
 
         $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
-        $modulePath = $viewConfig->getModulePath('test1', '/out/blocks/non_existing_template.tpl');
+        $modulePath = $viewConfig->getModulePath('testModule', '/non_existing_template.tpl');
 
         $this->assertEquals('', $modulePath);
 
@@ -531,22 +542,21 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetModuleUrl()
     {
-        $config = $this->fakeModuleStructure();
-
         $viewConfig = oxNew(ViewConfig::class);
+        $config = Registry::getConfig();
 
         $baseUrl = $config->getCurrentShopUrl();
-        $this->assertEquals("{$baseUrl}modules/test1/out", $viewConfig->getModuleUrl('test1', 'out'));
-        $this->assertEquals("{$baseUrl}modules/test1/out/", $viewConfig->getModuleUrl('test1', '/out/'));
+        $this->assertEquals("{$baseUrl}out/modules/testModule/assets/out", $viewConfig->getModuleUrl('testModule', 'out'));
+        $this->assertEquals("{$baseUrl}out/modules/testModule/assets/out/", $viewConfig->getModuleUrl('testModule', '/out/'));
         $this->assertEquals(
-            "{$baseUrl}modules/test1/out/blocks/test2.tpl",
-            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl')
+            "{$baseUrl}out/modules/testModule/assets/some.css",
+            $viewConfig->getModuleUrl('testModule', 'some.css')
         );
         $this->assertEquals(
-            "{$baseUrl}modules/test1/out/blocks/test2.tpl",
-            $viewConfig->getModuleUrl('test1', '/out/blocks/test2.tpl')
+            "{$baseUrl}out/modules/testModule/assets/some.css",
+            $viewConfig->getModuleUrl('testModule', '/some.css')
         );
-        $this->assertEquals("{$baseUrl}modules/test1/", $viewConfig->getModuleUrl('test1'));
+        $this->assertEquals("{$baseUrl}out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
 
         //test if the subject under test still generates a valid module url in admin mode
         $config->setAdminMode(true);
@@ -558,20 +568,20 @@ class ViewConfigTest extends \OxidTestCase
         //because of browser security restrictions take effect when loading resources from differt domains
         $adminUrlWithoutAdminPath = $baseUrl;
         $this->assertEquals(
-            "{$adminUrlWithoutAdminPath}modules/test1/out/blocks/test2.tpl",
-            $viewConfig->getModuleUrl('test1', 'out/blocks/test2.tpl')
+            "{$adminUrlWithoutAdminPath}out/modules/testModule/assets/some.css",
+            $viewConfig->getModuleUrl('testModule', 'some.css')
         );
 
         //Test when sShopURL is set and not sSSLShopURL, nor sAdminSSLURL
         $config->setConfigParam('sSSLShopURL', '');
         $config->setConfigParam('sAdminSSLURL', '');
         $config->setConfigParam('sShopURL', 'http://shop.localhost.local/');
-        $this->assertEquals("http://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+        $this->assertEquals("http://shop.localhost.local/out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
 
         //Test when sSSLShopURL is set and sAdminSSLURL is not set
         $config->setIsSsl(true);
         $config->setConfigParam('sSSLShopURL', 'https://shop.localhost.local/');
-        $this->assertEquals("https://shop.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+        $this->assertEquals("https://shop.localhost.local/out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
 
         //Test if getModuleUrl returns the right url if adminssl url is set
         $config->setConfigParam('sAdminSSLURL', 'https://admin.localhost.local/admin/');
@@ -579,20 +589,15 @@ class ViewConfigTest extends \OxidTestCase
         //Next assert is only to guarantee excpected internal behavior to find problems faster
         $this->assertEquals("https://admin.localhost.local/admin/", $config->getCurrentShopUrl());
         //The module url is expected to start with the admin url but without the admin directory
-        $this->assertEquals("https://admin.localhost.local/modules/test1/", $viewConfig->getModuleUrl('test1'));
+        $this->assertEquals("https://admin.localhost.local/out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
     }
 
     public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()
     {
-        $config = $this->fakeModuleStructure();
-        $fakeShopDirectory = $config->getConfigParam('sShopDir');
-        $message = "Requested file not found for module test1 (" . $fakeShopDirectory .
-                   "modules/test1/out/blocks/non_existing_template.tpl)";
-        $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class);
-        $this->expectExceptionMessage($message);
-
         $viewConfig = oxNew(ViewConfig::class);
-        $viewConfig->getModuleUrl('test1', '/out/blocks/non_existing_template.tpl');
+
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class);
+        $viewConfig->getModuleUrl('testModule', '/non_existing_template.tpl');
     }
 
     /**
@@ -2236,51 +2241,43 @@ class ViewConfigTest extends \OxidTestCase
         $this->assertEquals($this->getConfig()->getEdition(), $oViewConfig->getEdition());
     }
 
-    /**
-     * fakes a module directory structure in a virtual filesystem
-     * and applies that fake structure to the current config object
-     *
-     * @return \oxConfig config object that uses fake structure
-     */
-    private function fakeModuleStructure()
+    private function addTestModuleAssets(): void
     {
-        $config = $this->getConfig();
-        $config->setConfigParam("iDebug", -1);
+        $filesystem = $this->getFilesystem();
 
-        $fakeShopDirectory = $this->createModuleStructure();
-        $config->setConfigParam("sShopDir", $fakeShopDirectory);
+        $filesystem->mkdir(Path::join(
+            $this->getTestModuleAssetsDirectory(),
+            'out'
+        ));
 
-        return $config;
-    }
-
-
-    /**
-     * Creates module structure for testing.
-     *
-     * @return string Path to modules root.
-     */
-    private function createModuleStructure()
-    {
-        $structure = array(
-            'log' => array('oxideshop.log' => ''),
-            'modules' => array(
-                'test1' => array(
-                    'out' => array(
-                        'blocks' => array(
-                            'test2.tpl' => '*this is module test block*'
-                        ),
-                        'lang'   => array(
-                            'de' => array(
-                                'test_lang.php' => ''
-                            )
-                        )
-                    )
-                )
+        $filesystem->touch(
+            Path::join(
+                $this->getTestModuleAssetsDirectory(),
+                'some.css'
             )
         );
-        $vfsStream = $this->getVfsStreamWrapper();
-        $vfsStream->createStructure($structure);
+    }
 
-        return $vfsStream->getRootPath();
+    private function removeTestModuleAssets(): void
+    {
+        $this->getFilesystem()->remove($this->getTestModuleAssetsDirectory());
+    }
+
+    /**
+     * @return string
+     */
+    private function getTestModuleAssetsDirectory(): string
+    {
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ModuleAssetsPathResolverBridgeInterface::class)
+            ->getAssetsPath('testModule');
+    }
+
+    private function getFilesystem(): Filesystem
+    {
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get('oxid_esales.symfony.file_system');
     }
 }

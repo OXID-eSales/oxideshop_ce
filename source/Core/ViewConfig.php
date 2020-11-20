@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 
 /**
@@ -1139,29 +1140,31 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     /**
      * return path to the requested module file
      *
-     * @param string $sModule module name (directory name in modules dir)
-     * @param string $sFile   file name to lookup
-     *
-     * @throws \OxidEsales\EshopCommunity\Core\Exception\FileException
+     * @param string $moduleId
+     * @param string $filePath
      *
      * @return string
+     *@throws \OxidEsales\EshopCommunity\Core\Exception\FileException
+     *
      */
-    public function getModulePath($sModule, $sFile = '')
+    public function getModulePath(string $moduleId, string $filePath = ''): string
     {
-        if (!$sFile || ($sFile[0] != '/')) {
-            $sFile = '/' . $sFile;
+        if (!$filePath || ($filePath[0] != '/')) {
+            $filePath = '/' . $filePath;
         }
-        $oModule = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
-        $sModulePath = $oModule->getModulePath($sModule);
-        $sFile = Registry::getConfig()->getModulesDir() . $sModulePath . $sFile;
-        if (file_exists($sFile) || is_dir($sFile)) {
-            return $sFile;
+
+        $filePath =
+            $this->getContainer()->get(ModuleAssetsPathResolverBridgeInterface::class)->getAssetsPath($moduleId) .
+            $filePath;
+
+        if (file_exists($filePath) || is_dir($filePath)) {
+            return $filePath;
         } else {
             /**
              * Do not call oxNew in the exception handling of the module subsystem system, as the same module system will be
              * involved when calling oxNew
              */
-            $exception = new \OxidEsales\Eshop\Core\Exception\FileException("Requested file not found for module $sModule ($sFile)");
+            $exception = new \OxidEsales\Eshop\Core\Exception\FileException("Requested file not found for module $moduleId ($filePath)");
             if (Registry::getConfig()->getConfigParam('iDebug')) {
                 throw $exception;
             } else {

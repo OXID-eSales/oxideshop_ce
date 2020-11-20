@@ -8,3 +8,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolver
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridge
+    public: true

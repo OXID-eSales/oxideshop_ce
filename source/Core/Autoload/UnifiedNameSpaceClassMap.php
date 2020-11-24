@@ -3274,10 +3274,4 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator'          => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleSmartyPluginDirectoryValidator::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
 ];

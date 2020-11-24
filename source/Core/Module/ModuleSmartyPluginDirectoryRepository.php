@@ -27,9 +27,6 @@ class ModuleSmartyPluginDirectoryRepository
      */
     const STORAGE_KEY = 'moduleSmartyPluginDirectories';
 
-    /** @var Config  */
-    private $config;
-
     /**
      * @var EshopModuleVariablesLocator
      *
@@ -38,25 +35,14 @@ class ModuleSmartyPluginDirectoryRepository
     private $moduleVariablesLocator;
 
     /**
-     * @var EshopModule
-     */
-    private $module;
-
-    /**
      * ModuleSmartyPluginDirectoryRepository constructor.
      *
-     * @param Config                      $config                 For database connection
      * @param EshopModuleVariablesLocator $moduleVariablesLocator For caching
-     * @param EshopModule                 $module
      */
     public function __construct(
-        Config $config,
-        EshopModuleVariablesLocator $moduleVariablesLocator,
-        EshopModule $module
+        EshopModuleVariablesLocator $moduleVariablesLocator
     ) {
-        $this->config = $config;
         $this->moduleVariablesLocator = $moduleVariablesLocator;
-        $this->module = $module;
     }
 
     /**
@@ -64,31 +50,13 @@ class ModuleSmartyPluginDirectoryRepository
      */
     public function get()
     {
-        $smartyPluginDirectories = oxNew(
-            EshopModuleSmartyPluginDirectories::class,
-            $this->module
-        );
+        $smartyPluginDirectories = oxNew(EshopModuleSmartyPluginDirectories::class);
 
         $smartyPluginDirectories->set(
             $this->getSmartyPluginDirectoriesFromModuleVariablesLocator()
         );
 
         return $smartyPluginDirectories;
-    }
-
-    /**
-     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
-     *             Use appropriate Dao to save them.
-     *
-     * @param EshopModuleSmartyPluginDirectories $moduleSmartyPluginDirectories
-     */
-    public function save(EshopModuleSmartyPluginDirectories $moduleSmartyPluginDirectories)
-    {
-        $this->config->saveShopConfVar(
-            'aarr',
-            self::STORAGE_KEY,
-            $moduleSmartyPluginDirectories->getWithRelativePath()
-        );
     }
 
     /**

@@ -40,7 +40,7 @@ class ModuleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
 
                 $this->_aViewData["oModule"] = $oModule;
                 $this->_aViewData["sModuleName"] = basename($oModule->getInfo("title", $iLang));
-                $this->_aViewData["sModuleId"] = str_replace("/", "_", $oModule->getModulePath());
+                $this->_aViewData["sModuleId"] = $oModule->getId();
             } else {
                 \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_MODULE_NOT_LOADED'));
             }

@@ -201,40 +201,6 @@ class ModuleListTest extends \OxidTestCase
     }
 
     /**
-     * @param string $vendorDirectoryName
-     * @param bool   $isVendor
-     * @dataProvider providerIsVendorDir
-     */
-    public function testIsVendorDir($vendorDirectoryName, $isVendor)
-    {
-        $structure = [
-            'modules' => [
-                'module1' => [
-                    'metadata.php' => '<?php'
-                ],
-                'vendor1' => [
-                    'module2' => [
-                        'metadata.php' => '<?php'
-                    ]
-                ],
-                'notVendor' => [
-                    'someDirectory' => [
-                        'file.php' => '<?php'
-                    ]
-                ]
-            ]
-        ];
-        $vfsStream = $this->getVfsStreamWrapper();
-        $vfsStream->createStructure($structure);
-
-        $this->getConfig()->setConfigParam('sShopDir', $vfsStream->getRootPath());
-        $modulesDir = $this->getConfig()->getModulesDir();
-        $moduleList = oxNew('oxModuleList');
-
-        $this->assertSame($isVendor, $moduleList->_isVendorDir($modulesDir . "/$vendorDirectoryName"));
-    }
-
-    /**
      * ModuleList::parseModuleChains() test case, empty
      *
      * @return null

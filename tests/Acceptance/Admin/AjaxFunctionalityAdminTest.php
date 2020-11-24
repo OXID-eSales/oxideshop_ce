@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\Admin;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AdminTestCase;
 
@@ -1846,7 +1847,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
      * Activates module with ajax functionality.
      * Checks that ajax call succeed.
      */
-    public function testOxAjaxContainerClassResolution()
+    public function testOxAjaxContainerClassResolution(): void
     {
         $this->installModule('oxid/test11');
 
@@ -1873,7 +1874,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->close();
     }
 
-    private function activateModule($moduleName)
+    private function activateModule($moduleName): void
     {
         $this->clickAndWait("link={$moduleName}");
         $this->frame("edit");
@@ -1881,15 +1882,14 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
         $this->assertElementPresent("//form[@id='myedit']//input[@value='Deactivate']");
     }
 
-    private function installModule(string $path)
+    private function installModule(string $path): void
     {
-        $moduleConfigurationInstaller = ContainerFactory::getInstance()
+        $moduleInstaller = ContainerFactory::getInstance()
             ->getContainer()
-            ->get(ModuleConfigurationInstallerInterface::class);
+            ->get('oxid_esales.module.install.service.bootstrap_module_installer');
 
-        $moduleConfigurationInstaller->install(
-            __DIR__ . '/testData/modules/' . $path,
-            $path
+        $moduleInstaller->install(
+            new OxidEshopPackage($path, __DIR__ . '/testData/modules/' . $path)
         );
     }
 }

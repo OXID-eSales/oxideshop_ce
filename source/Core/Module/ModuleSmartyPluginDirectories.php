@@ -7,7 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Module\Module as EshopModule;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ActiveModulesDataProviderBridgeInterface;
+use Webmozart\PathUtil\Path;
 
 /**
  * Class ModuleSmartyPluginDirectories
@@ -19,40 +21,10 @@ use OxidEsales\Eshop\Core\Module\Module as EshopModule;
  */
 class ModuleSmartyPluginDirectories
 {
-
-    /**
-     * @var EshopModule
-     *
-     * Needed to get the absolute path to a module directory
-     */
-    private $module = null;
-
     /**
      * @var array
      */
     private $moduleSmartyPluginDirectories = [];
-
-    /**
-     * SmartyPluginDirectoryBridge constructor.
-     *
-     * @param EshopModule $module
-     */
-    public function __construct(EshopModule $module)
-    {
-        $this->module = $module;
-    }
-
-    /**
-     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
-     *             Use appropriate Dao to add them.
-     *
-     * @param array  $moduleSmartyPluginDirectories
-     * @param string $moduleId
-     */
-    public function add($moduleSmartyPluginDirectories, $moduleId)
-    {
-        $this->moduleSmartyPluginDirectories[$moduleId] = $moduleSmartyPluginDirectories;
-    }
 
     /**
      *
@@ -67,45 +39,31 @@ class ModuleSmartyPluginDirectories
     }
 
     /**
-     * Delete the smarty plugin directories for the module, given by its ID
-     *
-     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
-     *             Use appropriate Dao to remove them.
-     *
-     * @param string $moduleId The ID of the module, for which we want to delete the controllers from the storage.
-     */
-    public function remove($moduleId)
-    {
-        unset($this->moduleSmartyPluginDirectories[$moduleId]);
-    }
-
-    /**
-     * @deprecated since v6.4.0 (2019-05-24); Module smarty plugins directory are stored in project configuration file now.
-     *             Use appropriate Dao to get them.
-     *
-     * @return array The smarty plugin directories of all modules with absolute path as numeric array
-     */
-    public function getWithRelativePath()
-    {
-        return $this->moduleSmartyPluginDirectories;
-    }
-
-    /**
      * @return array
      */
     public function getWithFullPath()
     {
         $smartyPluginDirectoriesWithFullPath = [];
-        $smartyPluginDirectories = $this->getWithRelativePath();
 
-        foreach ($smartyPluginDirectories as $moduleId => $smartyDirectoriesOfOneModule) {
-            foreach ($smartyDirectoriesOfOneModule as $smartyPluginDirectory) {
-                $smartyPluginDirectoriesWithFullPath[] = $this->module->getModuleFullPath($moduleId) .
-                                                         DIRECTORY_SEPARATOR .
-                                                         $smartyPluginDirectory;
+        foreach ($this->getActiveModulePaths() as $moduleId => $modulePath) {
+            if (isset($this->moduleSmartyPluginDirectories[$moduleId])) {
+                foreach ($this->moduleSmartyPluginDirectories[$moduleId] as $smartyPluginDirectory) {
+                    $smartyPluginDirectoriesWithFullPath[] = Path::join($modulePath, $smartyPluginDirectory);
+                }
             }
         }
 
         return $smartyPluginDirectoriesWithFullPath;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getActiveModulePaths(): array
+    {
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(ActiveModulesDataProviderBridgeInterface::class)
+            ->getModulePaths();
     }
 }

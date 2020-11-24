@@ -129,6 +129,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\Eshop\Core\Contract\IModuleValidator`
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleMetadataValidator`
 - `\OxidEsales\EshopCommunity\Core\Module\ModuleValidatorFactory`
+- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectoryValidator`
+- `\OxidEsales\EshopCommunity\Core\Module\Module::getMetaDataVersion()`
+- `\OxidEsales\EshopCommunity\Core\Module\Module::getMetadataPath()`
+- `\OxidEsales\EshopCommunity\Core\Module\Module::getModulePath()`
+- `\OxidEsales\EshopCommunity\Core\Module\Module::getModuleFullPath()`
+- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::add()`
+- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::remove()`
+- `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath()`
+- `\OxidEsales\EshopCommunity\Core\Config::getModulesDir()`
 - Removed deprecated getSession and setSession usages around the code
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`

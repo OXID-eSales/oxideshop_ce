@@ -866,9 +866,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         return oxNew(
             ModuleSmartyPluginDirectoryRepository::class,
-            \OxidEsales\Eshop\Core\Registry::getConfig(),
-            $moduleVariablesLocator,
-            oxNew(Module::class)
+            $moduleVariablesLocator
         );
     }
 

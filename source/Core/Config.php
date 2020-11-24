@@ -1582,22 +1582,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns path to modules dir
-     *
-     * @param bool $absolute mode - absolute/relative path
-     *
-     * @return string
-     */
-    public function getModulesDir($absolute = true)
-    {
-        if ($absolute) {
-            return $this->getConfigParam('sShopDir') . $this->_sModulesDir . '/';
-        } else {
-            return $this->_sModulesDir . '/';
-        }
-    }
-
-    /**
      * Finds and returns resource (css, js, etc..) file or folder url
      *
      * @param string $file  File name

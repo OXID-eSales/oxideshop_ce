@@ -32,19 +32,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     protected $metaDataVersion;
 
     /**
-     * @return mixed
-     */
-    public function getMetaDataVersion()
-    {
-        if ($this->metaDataVersion === null) {
-            $metadataPath = $this->getModuleFullPath($this->getId()) . '/metadata.php';
-            $this->includeModuleMetaData($metadataPath);
-        }
-
-        return $this->metaDataVersion;
-    }
-
-    /**
      * @param mixed $metaDataVersion
      */
     public function setMetaDataVersion($metaDataVersion)
@@ -380,77 +367,6 @@ class Module extends \OxidEsales\Eshop\Core\Base
     public function hasMetadata()
     {
         return $this->_blMetadata;
-    }
-
-    /**
-     * Get full path to module metadata file.
-     *
-     * @return string
-     */
-    public function getMetadataPath()
-    {
-        $sModulePath = $this->getModuleFullPath();
-        if (substr($sModulePath, -1) != DIRECTORY_SEPARATOR) {
-            $sModulePath .= DIRECTORY_SEPARATOR;
-        }
-
-        return $sModulePath . 'metadata.php';
-    }
-
-    /**
-     * Get module dir
-     *
-     * @param string $sModuleId Module ID
-     *
-     * @return string
-     */
-    public function getModulePath($sModuleId = null)
-    {
-        if (!$sModuleId) {
-            $sModuleId = $this->getId();
-        }
-
-        /**
-         * This method is called in active module templates during the frontend runtime.
-         * Reading the whole shop configuration from the yml file on every request may
-         * lead to performance issues. That's why we check first if a path exists in the
-         * database and only if no check the shop configuration.
-         */
-        $activeModulePathsFromDatabase = Registry::getConfig()->getConfigParam('aModulePaths');
-        if (isset($activeModulePathsFromDatabase[$sModuleId])) {
-            return $activeModulePathsFromDatabase[$sModuleId];
-        }
-
-        $aModulePaths = $this->getModulePaths();
-
-        $sModulePath = (isset($aModulePaths[$sModuleId])) ? $aModulePaths[$sModuleId] : '';
-
-        // if still no module dir, try using module ID as dir name
-        if (!$sModulePath && is_dir(\OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $sModuleId)) {
-            $sModulePath = $sModuleId;
-        }
-
-        return $sModulePath;
-    }
-
-    /**
-     * Returns full module path
-     *
-     * @param string $sModuleId
-     *
-     * @return string
-     */
-    public function getModuleFullPath($sModuleId = null)
-    {
-        if (!$sModuleId) {
-            $sModuleId = $this->getId();
-        }
-
-        if ($sModuleDir = $this->getModulePath($sModuleId)) {
-            return \OxidEsales\Eshop\Core\Registry::getConfig()->getModulesDir() . $sModuleDir;
-        }
-
-        return false;
     }
 
     /**

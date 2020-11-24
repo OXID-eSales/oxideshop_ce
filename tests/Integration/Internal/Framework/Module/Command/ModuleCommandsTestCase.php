@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Command;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
@@ -19,7 +18,6 @@ use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Console\Conso
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -48,8 +46,14 @@ class ModuleCommandsTestCase extends TestCase
 
     protected function cleanupTestData(): void
     {
-        $fileSystem = new Filesystem();
-        $fileSystem->remove(Path::join(Registry::getConfig()->getModulesDir(), $this->moduleId));
+        $this
+            ->get(ModuleInstallerInterface::class)
+            ->uninstall(
+                new OxidEshopPackage(
+                    $this->moduleId,
+                    Path::join($this->modulesPath, $this->moduleId)
+                )
+            );
 
         $activeModules = new ShopConfigurationSetting();
         $activeModules

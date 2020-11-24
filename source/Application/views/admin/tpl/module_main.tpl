@@ -19,7 +19,7 @@
         <tr>
             <td width="245" valign="top">
                 [{if $oModule->getInfo('thumbnail')}]
-                    <img src="[{$oViewConf->getBaseDir()}]/modules/[{$oModule->getModulePath()}]/[{$oModule->getInfo('thumbnail')}]" hspace="20" vspace="10"></td>
+                    <img src="[{$oViewConf->getModuleUrl($oModule->getId(), $oModule->getInfo('thumbnail'))}]" hspace="20" vspace="10"></td>
                 [{else}]
                     <img src="[{$oViewConf->getResourceUrl()}]bg/module.png" hspace="20" vspace="10">
                 [{/if}]

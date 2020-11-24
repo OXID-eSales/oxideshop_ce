@@ -7,14 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
+use Webmozart\PathUtil\Path;
+
 /**
  * Including pictures generator functions file
  */
 require_once __DIR__ . "/utils/oxpicgenerator.php";
 
-/**
- * Image manipulation class
- */
 class UtilsPic extends \OxidEsales\Eshop\Core\Base
 {
     /**
@@ -67,65 +67,48 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Removes picture file from disk.
-     *
-     * @param string $sPicName        name of picture
-     * @param string $sAbsDynImageDir the absolute image diectory, where to delete the given image ($myConfig->getPictureDir(false))
-     *
-     * @return null
+     * @param $filename
+     * @param $masterImagePath
+     * @return bool
      * @deprecated underscore prefix violates PSR12, will be renamed to "deletePicture" in next major
      */
-    protected function _deletePicture($sPicName, $sAbsDynImageDir) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _deletePicture($filename, $masterImagePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $blDeleted = false;
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        if ($this->isPlaceholderImage($filename) || \OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
+            return false;
+        }
+        $removed = $this->removeMasterFile(Path::join($masterImagePath, $filename));
 
-        if (
-            !$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
-                                         strpos($sPicName, 'nopic_ico.jpg') === false)
-        ) {
-            $sFile = "$sAbsDynImageDir/$sPicName";
-
-            if (file_exists($sFile) && is_file($sFile)) {
-                $blDeleted = unlink($sFile);
-            }
-
-            if (!$myConfig->getConfigParam('sAltImageUrl')) {
-                // deleting various size generated images
-                $sGenPath = str_replace('/master/', '/generated/', $sAbsDynImageDir);
-                $aFiles = glob("{$sGenPath}*/{$sPicName}");
-                if (is_array($aFiles)) {
-                    foreach ($aFiles as $sFile) {
-                        $blDeleted = unlink($sFile);
-                    }
+        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sAltImageUrl')) {
+            $generatedImagePath = str_replace('/master/', '/generated/', $masterImagePath);
+            $files = glob("{$generatedImagePath}*/{$filename}");
+            if (\is_array($files)) {
+                foreach ($files as $file) {
+                    $removed = unlink($file);
                 }
             }
         }
-
-        return $blDeleted;
+        return $removed;
     }
-
 
     /**
      * Checks if current picture file is used in more than one table entry, returns
      * true if one, false if more than one.
      *
-     * @param string $sPicName Name of picture file
-     * @param string $sTable   in which table
-     * @param string $sField   table field value
+     * @param string $filename Name of picture file
+     * @param string $tabl   in which table
+     * @param string $field   table field value
      *
      * @return bool
      * @deprecated underscore prefix violates PSR12, will be renamed to "isPicDeletable" in next major
      */
-    protected function _isPicDeletable($sPicName, $sTable, $sField) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _isPicDeletable($filename, $tabl, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if (!$sPicName || strpos($sPicName, 'nopic.jpg') !== false || strpos($sPicName, 'nopic_ico.jpg') !== false) {
+        if (!$filename || $this->isPlaceholderImage($filename)) {
             return false;
         }
-
-        $iCountUsed = $this->fetchIsImageDeletable($sPicName, $sTable, $sField);
-
-        return $iCountUsed > 1 ? false : true;
+        $usageCount = $this->fetchIsImageDeletable($filename, $tabl, $field);
+        return $usageCount <= 1;
     }
 
     /**
@@ -265,5 +248,31 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         }
 
         return $blSuccess;
+    }
+
+    /**
+     * @param string $filename
+     * @return bool
+     */
+    private function isPlaceholderImage(string $filename): bool
+    {
+        return strpos($filename, 'nopic.jpg') !== false || strpos($filename, 'nopic_ico.jpg') !== false;
+    }
+
+    /**
+     * @param string $filepath
+     * @return bool
+     */
+    private function removeMasterFile(string $filepath): bool
+    {
+        $removed = false;
+        try {
+            if ($this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->exists($filepath)) {
+                $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->remove($filepath);
+                $removed = true;
+            }
+        } catch (\Throwable $exception) {
+        }
+        return $removed;
     }
 }

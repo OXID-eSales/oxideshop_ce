@@ -1,7 +1,15 @@
 services:
   _defaults:
     autowire: true
-    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandlerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler
+    arguments:
+      - "@oxid_esales.symfony.file_system"
+
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridge
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\FileGeneratorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\CsvFileGenerator

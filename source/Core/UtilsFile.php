@@ -8,10 +8,9 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
+use Webmozart\PathUtil\Path;
 
-/**
- * File manipulation utility class
- */
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
     /**
@@ -344,60 +343,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Copy file from source to target location
-     *
-     * @param string $sSource file location
-     * @param string $sTarget file location
-     *
-     * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "copyFile" in next major
-     */
-    protected function _copyFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        if (!is_dir(dirname($sTarget))) {
-            mkdir(dirname($sTarget), 0744, true);
-        }
-
-        $blDone = true;
-        if ($sSource !== $sTarget) {
-            $blDone = copy($sSource, $sTarget);
-        }
-
-        if ($blDone) {
-            $blDone = @chmod($sTarget, 0644);
-        }
-
-        return $blDone;
-    }
-
-    /**
-     * Moves image from source to target location
-     *
-     * @param string $sSource image location
-     * @param string $sTarget image copy location
-     *
-     * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "moveImage" in next major
-     */
-    protected function _moveImage($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        if (!is_dir(dirname($sTarget))) {
-            mkdir(dirname($sTarget), 0744, true);
-        }
-
-        $blDone = true;
-        if ($sSource !== $sTarget) {
-            $blDone = move_uploaded_file($sSource, $sTarget);
-        }
-
-        if ($blDone) {
-            $blDone = @chmod($sTarget, 0644);
-        }
-
-        return $blDone;
-    }
-
-    /**
      * Uploaded file processor (filters, etc), sets configuration parameters to
      * passed object and returns it.
      *
@@ -450,12 +395,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                     $sProcessPath = $sTmpFolder . basename($sSource);
 
                     if ($sProcessPath) {
-                        if ($blUseMasterImage) {
-                            //using master image as source, so only copying it to
-                            $blMoved = $this->_copyFile($sSource, $sImagePath . $sValue);
-                        } else {
-                            $blMoved = $this->_moveImage($sSource, $sImagePath . $sValue);
-                        }
+                        $destination = Path::join("$sImagePath$sValue");
+                        $blMoved = $blUseMasterImage
+                            ? $this->copyMasterImage($sSource, $destination)
+                            : $this->uploadMasterImage($sSource, $destination);
 
                         if ($blMoved) {
                             // New image successfully add.
@@ -560,7 +503,8 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
 
         $sFileName = $this->_getUniqueFileName($sBasePath . $sUploadPath, $sFileName, $sExt);
 
-        if ($this->_moveImage($aFileInfo['tmp_name'], $sBasePath . $sUploadPath . "/" . $sFileName)) {
+        $destination = Path::join($sBasePath, $sUploadPath, $sFileName);
+        if ($this->uploadMasterImage($aFileInfo['tmp_name'], $destination)) {
             return $sFileName;
         }
 
@@ -568,36 +512,31 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if file with same name does not exist, if exists - addes number prefix
-     * to file name Returns unique file name.
-     *
-     * @param string $sFilePath file storage path/folder (e.g. /htdocs/out/img/)
-     * @param string $sFileName name of file (e.g. picture1)
-     * @param string $sFileExt  file extension (e.g. gif)
-     * @param string $sSufix    file name sufix (e.g. _ico)
-     * @param bool   $blUnique  TRUE - generates unique file name, FALSE - just glues given parts of file name
-     *
+     * @param string $directory
+     * @param string $filename
+     * @param string $extension
+     * @param string $suffix
+     * @param bool $unique
      * @return string
      * @deprecated underscore prefix violates PSR12, will be renamed to "getUniqueFileName" in next major
      */
-    protected function _getUniqueFileName($sFilePath, $sFileName, $sFileExt, $sSufix = "", $blUnique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getUniqueFileName($directory, $filename, $extension, $suffix = "", $unique = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sFilePath = $this->normalizeDir($sFilePath);
-        $iFileCounter = 0;
-        $sTempFileName = $sFileName;
-        $oStr = Str::getStr();
-
-        //file exists ?
-        while ($blUnique && file_exists($sFilePath . "/" . $sFileName . $sSufix . "." . $sFileExt)) {
-            $iFileCounter++;
-
-            //removing "(any digit)" from file name end
-            $sTempFileName = $oStr->preg_replace("/\(" . $iFileCounter . "\)/", "", $sTempFileName);
-
-            $sFileName = $sTempFileName . "($iFileCounter)";
+        if (!$unique) {
+            return "$filename$suffix.$extension";
         }
-
-        return $sFileName . $sSufix . "." . $sFileExt;
+        $directory = $this->normalizeDir($directory);
+        $fileCounter = 0;
+        $temporaryName = $filename;
+        $stringHandler = Str::getStr();
+        $masterImageHandler = $this->getContainer()->get(MasterImageHandlerBridgeInterface::class);
+        while ($masterImageHandler->exists(Path::join($directory, "$filename$suffix.$extension"))) {
+            $fileCounter++;
+            //removing "(any digit)" from file name end
+            $temporaryName = $stringHandler->preg_replace("/\($fileCounter\)/", '', $temporaryName);
+            $filename = "{$temporaryName}($fileCounter)";
+        }
+        return "$filename$suffix.$extension";
     }
 
     /**
@@ -667,5 +606,37 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             }
         }
         return false;
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @return bool
+     */
+    private function copyMasterImage(string $source, string $destination): bool
+    {
+        $copied = false;
+        try {
+            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->copy($source, $destination);
+            $copied = true;
+        } catch (\Throwable $exception) {
+        }
+        return $copied;
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     * @return bool
+     */
+    private function uploadMasterImage(string $source, string $destination): bool
+    {
+        $uploaded = false;
+        try {
+            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->upload($source, $destination);
+            $uploaded = true;
+        } catch (\Throwable $exception) {
+        }
+        return $uploaded;
     }
 }

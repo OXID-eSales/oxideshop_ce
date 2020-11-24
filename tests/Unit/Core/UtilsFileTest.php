@@ -80,63 +80,6 @@ class UtilsFileTest extends \OxidTestCase
         $this->assertTrue($aCache[$sName2]);
     }
 
-    public function testProcessFilesCallState()
-    {
-        $oObject = oxNew('oxbase');
-        $oObject->testfield = $this->getMock(\OxidEsales\Eshop\Core\Field::class, array('setValue'));
-        $oObject->testfield->expects($this->once())->method('setValue')->with($this->equalTo('testfilename'));
-
-        $aFiles = array();
-        $aFiles['myfile']['name']['gif@testfield'] = 'testfilename.gif';
-        $aFiles['myfile']['tmp_name']['gif@testfield'] = 'testimagesource/testfilename';
-
-        $oUtilsFile = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array('_prepareImageName', '_getImagePath', '_moveImage'));
-        $oUtilsFile->expects($this->once())->method('_prepareImageName')->with($this->equalTo('testfilename.gif'), $this->equalTo('gif'), $this->equalTo($this->getConfig()->isDemoShop()))->will($this->returnValue('testfilename'));
-        $oUtilsFile->expects($this->once())->method('_getImagePath')->with($this->equalTo('gif'))->will($this->returnValue('testimagepath/'));
-        $oUtilsFile->expects($this->once())->method('_moveImage')->with($this->equalTo('testimagesource/testfilename'), $this->equalTo('testimagepath/testfilename'))->will($this->returnValue(true));
-
-        $oUtilsFile->processFiles($oObject, $aFiles);
-    }
-
-    public function testProcessFiles()
-    {
-        oxTestModules::addFunction('oxUtilspic', 'resizeImage', '{return true;}');
-
-        $_FILES['myfile']['name'] = array('P1@oxarticles__oxpic1' => 'testname.gif');
-        $_FILES['myfile']['tmp_name'] = array('P1@oxarticles__oxpic1' => 'testimagesource');
-        $_FILES['myfile']['error'] = array('P1@oxarticles__oxpic1' => 0);
-
-        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPictureDir'));
-        $oConfig->expects($this->once())->method('getPictureDir')->will($this->returnValue('pictures_dir'));
-
-        /** @var oxUtilsFile|PHPUnit\Framework\MockObject\MockObject $oUtilsFile */
-        $oUtilsFile = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array("_moveImage"));
-        $oUtilsFile->expects($this->once())->method('_moveImage')->will($this->returnValue(true));
-
-        Registry::set(Config::class, $oConfig);
-        $oUtilsFile->processFiles(oxNew('oxArticle'));
-    }
-
-    public function testProcessNonImageFiles()
-    {
-        $_FILES['myfile']['name'] = array('FL@oxarticles__oxfile' => 'testname.pdf');
-        $_FILES['myfile']['tmp_name'] = array('FL@oxarticles__oxfile' => 'testpdfsource');
-        $_FILES['myfile']['error'] = array('P1@oxarticles__oxpic1' => 0);
-
-        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPictureDir'));
-        $oConfig->expects($this->once())->method('getPictureDir')->will($this->returnValue('pictures_dir'));
-
-        /** @var oxUtilsFile|PHPUnit\Framework\MockObject\MockObject $oUtilsFile */
-        $oUtilsFile = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array("_moveImage", "_copyFile"));
-        $oUtilsFile->expects($this->once())->method('_moveImage')->will($this->returnValue(true));
-        $oUtilsFile->expects($this->never())->method('_copyFile')->will($this->returnValue(false));
-
-        Registry::set(Config::class, $oConfig);
-        $oUtilsFile->processFiles();
-    }
-
     public function testProcessFilesSkipBadFiles()
     {
         $this->expectException('oxFileException');
@@ -366,27 +309,6 @@ class UtilsFileTest extends \OxidTestCase
             '',
             $oUF->translateError(-1, 'fileName')
         );
-    }
-
-    public function testProcessFilesNewCounter()
-    {
-        oxTestModules::addFunction('oxUtilspic', 'resizeImage', '{return true;}');
-
-        $_FILES['myfile']['name'] = array('P1@oxarticles__oxpic1' => 'testname.gif', 'P1@oxarticles__oxpic2' => 'testname2.gif');
-        $_FILES['myfile']['tmp_name'] = array('P1@oxarticles__oxpic1' => 'testimagesource', 'P1@oxarticles__oxpic2' => 'testimagesource2');
-
-        /** @var oxConfig|PHPUnit\Framework\MockObject\MockObject $oConfig */
-        $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getPictureDir'));
-        $oConfig->expects($this->any())->method('getPictureDir')->will($this->returnValue('pictures_dir'));
-
-        /** @var oxUtilsFile|PHPUnit\Framework\MockObject\MockObject $oUtilsFile */
-        $oUtilsFile = $this->getMock(\OxidEsales\Eshop\Core\UtilsFile::class, array("_moveImage"));
-        $oUtilsFile->expects($this->any())->method('_moveImage')->will($this->returnValue(true));
-
-        Registry::set(Config::class, $oConfig);
-        $oUtilsFile->processFiles(oxNew('oxArticle'));
-
-        $this->assertEquals($oUtilsFile->getNewFilesCounter(), 2, "Check how much new files add.");
     }
 
     // 20070720-AS - End setup

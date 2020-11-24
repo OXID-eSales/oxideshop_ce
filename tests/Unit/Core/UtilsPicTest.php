@@ -8,65 +8,29 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use oxField;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use oxRegistry;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\UtilsPic;
+use OxidEsales\EshopCommunity\Core\Registry;
 use oxTestModules;
 use stdClass;
+use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\PathUtil\Path;
 
-class UtilsPicTest extends \OxidTestCase
+final class UtilsPicTest extends \OxidTestCase
 {
+    private $testPicture = 'test.jpg';
+    private $testPicturePlaceholder = 'nopic.jpg';
+    private $testPicturePlaceholderIco = 'nopic_ico.jpg';
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        // preparing data for spec test
-        switch ($this->getName()) {
-            case "testDeletePictureExisting":
-                $myConfig = $this->getConfig();
-
-                // setup-> create a copy of a picture and delete this one for successful test
-                $sOrigTestPicFile = "detail1_z3_ico_th.jpg";
-                $sOrigTestIconFile = "detail1_z3_ico_th.jpg"; // we simply fake an icon file by copying the same
-                $sCloneTestPicFile = "CCdetail1_z3_ico_th.jpg";
-                $sCloneTestIconFile = "CCdetail1_z3_ico_th.jpg";
-
-                $sDir = $myConfig->getPictureDir(false) . "master/product/thumb/";
-
-                copy($sDir . $sOrigTestPicFile, $sDir . $sCloneTestPicFile);
-                copy($sDir . $sOrigTestIconFile, $sDir . $sCloneTestIconFile);
-
-                break;
-        }
+        $this->prepareTestDirectories();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
-        // preparing data for spec test
-        switch ($this->getName()) {
-            case "testDeletePictureExisting":
-                $myConfig = $this->getConfig();
-
-                // setup-> create a copy of a picture and delete this one for successful test
-                $sCloneTestPicFile = "CC1672_th.jpg";
-                $sCloneTestIconFile = "CC1672_th_ico.jpg";
-
-                $sDir = $myConfig->getPictureDir(false) . "/master/product/thumb/";
-
-                @unlink($sDir . $sCloneTestPicFile);
-                @unlink($sDir . $sCloneTestIconFile);
-
-                break;
-        }
+        $this->clearTestDirectories();
         parent::tearDown();
     }
 
@@ -117,7 +81,9 @@ class UtilsPicTest extends \OxidTestCase
             $this->fail($sMsg);
         }
         //actual test
-        if (!(\OxidEsales\Eshop\Core\Registry::getUtilsPic()->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight))) {
+        $resizeResult = Registry::getUtilsPic()
+            ->resizeImage($sDir . $sTestImageFile, $sDir . $sTestImageFileResized, $iWidth, $iHeight);
+        if (!$resizeResult) {
             $this->fail("Failed to call resizeImage()");
         }
 
@@ -129,7 +95,6 @@ class UtilsPicTest extends \OxidTestCase
         $iImageResizedWidth = $aImageSizeResized[0];
         $iImageResizedHeight = $aImageSizeResized[1];
         if (($iImageResizedWidth == $iWidth) && ($iImageResizedHeight == $iHeight)) {
-            //echo "Width: $iImageResizedWidth - Height: $iImageResizedHeight";
             unlink($sDir . $sTestImageFileResized);
 
             return true;
@@ -139,53 +104,60 @@ class UtilsPicTest extends \OxidTestCase
         return false;
     }
 
-    /**
-     * Testing image deletion code
-     */
-    // no deletion in demoshop is allowed
-    public function testDeletePictureDemoshop()
+    public function testDeletePictureWithDemoShop(): void
     {
-        //$oConfig = $this->getMock( 'oxconfig', array( 'hasModule' ) );
-        $oConfig = $this->getMock('oxconfig');
+        $testPicturePath = Path::join(__DIR__, $this->testPicture);
+        touch($testPicturePath);
+        $config = $this->createConfiguredMock(Config::class, ['isDemoShop' => true]);
+        Registry::set(Config::class, $config);
 
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        $result = (new UtilsPic())->UNITdeletePicture($this->testPicture, __DIR__);
 
-        $this->assertFalse($oUtilsPic->UNITdeletePicture('xxx', 'yyy'));
+        $this->assertFileExists($testPicturePath);
+        $this->assertFalse($result);
     }
 
-    // blank (nopic) images are not allowed to be deleted
-    public function testDeletePictureBlankImages()
+    public function testDeletePictureWithPlaceholderImage(): void
     {
-        //$oConfig = $this->getMock( 'oxconfig', array( 'hasModule' ) );
-        //$oConfig->expects( $this->exactly( 2 ) )->method( 'hasModule')->will( $this->returnValue( false ) );
-        $oConfig = $this->getMock('oxconfig');
+        $placeholderPicturePath = Path::join(__DIR__, $this->testPicturePlaceholder);
+        touch($placeholderPicturePath);
 
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        $result = (new UtilsPic())->UNITdeletePicture($this->testPicturePlaceholder, __DIR__);
 
-        $this->assertFalse($oUtilsPic->UNITdeletePicture('nopic.jpg', 'yyy'));
-        $this->assertFalse($oUtilsPic->UNITdeletePicture('nopic_ico.jpg', 'yyy'));
+        $this->assertFileExists($placeholderPicturePath);
+        $this->assertFalse($result);
     }
 
-    // deleting non existing
-    public function testDeletePictureNonExisting()
+    public function testDeletePictureWithPlaceholderIconImage(): void
     {
-        //$oConfig = $this->getMock( 'oxconfig', array( 'hasModule' ) );
-        //$oConfig->expects( $this->once() )->method( 'hasModule')->will( $this->returnValue( false ) );
-        $oConfig = $this->getMock('oxconfig');
+        $placeholderPictureIcoPath = Path::join(__DIR__, $this->testPicturePlaceholderIco);
+        touch($placeholderPictureIcoPath);
 
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('getConfig'));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
+        $result = (new UtilsPic())->UNITdeletePicture($this->testPicturePlaceholderIco, __DIR__);
 
-        $this->assertFalse($oUtilsPic->UNITdeletePicture(time(), 'yyy'));
+        $this->assertFileExists($placeholderPictureIcoPath);
+        $this->assertFalse($result);
     }
 
-    // deleting existing
-    public function testDeletePictureExisting()
+    public function testDeletePictureWithMissingFile(): void
     {
-        $oUtilsPic = oxNew('oxutilspic');
-        $this->assertTrue($oUtilsPic->UNITdeletePicture('CCdetail1_z3_ico_th.jpg', $this->getConfig()->getPictureDir(false) . "master/product/thumb/"));
+        $nonExistingDirectory = Path::join('non', 'existing', 'directory');
+
+        $result = (new UtilsPic())->UNITdeletePicture('some-filename.jpg', $nonExistingDirectory);
+
+        $this->assertFalse($result);
+    }
+
+    public function testDeletePictureWithExistingFile(): void
+    {
+        $masterPicturesPath = Path::join(__DIR__, 'testFiles', 'master', 'product');
+        $testPicturePath = Path::join($masterPicturesPath, $this->testPicture);
+        touch($testPicturePath);
+
+        $result = (new UtilsPic())->UNITdeletePicture($this->testPicture, $masterPicturesPath);
+
+        $this->assertFileDoesNotExist($testPicturePath);
+        $this->assertTrue($result);
     }
 
     /**
@@ -212,7 +184,7 @@ class UtilsPicTest extends \OxidTestCase
      */
     public function testIsPicDeletable($filename, $response, $expectedResult)
     {
-        $utilsPicMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('fetchIsImageDeletable'));
+        $utilsPicMock = $this->getMock(UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->method('fetchIsImageDeletable')->willReturn($response);
 
         $this->assertEquals($expectedResult, $utilsPicMock->UNITisPicDeletable($filename, 'test', 'file'));
@@ -223,7 +195,7 @@ class UtilsPicTest extends \OxidTestCase
      */
     public function testIsPicDeletableNoPic()
     {
-        $utilsPicMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('fetchIsImageDeletable'));
+        $utilsPicMock = $this->getMock(UtilsPic::class, array('fetchIsImageDeletable'));
         $utilsPicMock->expects($this->never())->method('fetchIsImageDeletable');
 
         $this->assertEquals(false, $utilsPicMock->UNITisPicDeletable('nopic.jpg', 'test', 'file'));
@@ -235,7 +207,7 @@ class UtilsPicTest extends \OxidTestCase
     // bad input
     public function testOverwritePicBadInput()
     {
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         $blFalse = $oUtilsPic->overwritePic(new stdClass(), 'xxx', 'xxx', '', '', '', '');
@@ -245,7 +217,7 @@ class UtilsPicTest extends \OxidTestCase
     // params are not ok
     public function testOverwritePicBadParams()
     {
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->never())->method('safePictureDelete');
 
         $oObject = new stdClass();
@@ -262,7 +234,7 @@ class UtilsPicTest extends \OxidTestCase
         $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->will($this->returnValue('/test_image_dir/'));
         oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->once())->method('safePictureDelete')->with($this->equalTo('yyy'), $this->equalTo('yyy/test_image_dir/'), $this->equalTo('oxtbl'), $this->equalTo('oxpic'))->will($this->returnValue(true));
 
         $oObject = new stdClass();
@@ -279,7 +251,7 @@ class UtilsPicTest extends \OxidTestCase
         $oFiles->expects($this->atLeastOnce())->method('getImageDirByType')->will($this->returnValue('/testType_dir/'));
         oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('safePictureDelete'));
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('safePictureDelete'));
         $oUtilsPic->expects($this->once())->method('safePictureDelete')->with($this->equalTo('testPictureName'), $this->equalTo('testAbsPath/testType_dir/'));
 
         $oObject = new stdclass();
@@ -294,7 +266,7 @@ class UtilsPicTest extends \OxidTestCase
     // deeper code must not allow deletion
     public function testSafePictureDeleteMustFailDeletion()
     {
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
         $oUtilsPic->expects($this->once())->method('_isPicDeletable')->will($this->returnValue(false));
         $oUtilsPic->expects($this->never())->method('_deletePicture');
 
@@ -304,7 +276,7 @@ class UtilsPicTest extends \OxidTestCase
     //
     public function testSafePictureDeleteMustSucceed()
     {
-        $oUtilsPic = $this->getMock(\OxidEsales\Eshop\Core\UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
+        $oUtilsPic = $this->getMock(UtilsPic::class, array('_isPicDeletable', '_deletePicture'));
         $oUtilsPic->expects($this->once())->method('_isPicDeletable')->will($this->returnValue(true));
         $oUtilsPic->expects($this->once())->method('_deletePicture')->will($this->returnValue(true));
 
@@ -354,5 +326,16 @@ class UtilsPicTest extends \OxidTestCase
         unlink($sDir . $sTestImageFileResized);
 
         return false;
+    }
+
+    private function prepareTestDirectories(): void
+    {
+        (new Filesystem())->mkdir(Path::join(__DIR__, 'testFiles', 'master', 'product'));
+        (new Filesystem())->mkdir(Path::join(__DIR__, 'testFiles', 'generated', 'product'));
+    }
+
+    private function clearTestDirectories(): void
+    {
+        (new Filesystem())->remove(Path::join(__DIR__, 'testFiles'));
     }
 }

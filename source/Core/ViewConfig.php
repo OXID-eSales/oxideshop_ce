@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
@@ -1138,13 +1139,13 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
 
     /**
-     * return path to the requested module file
+     * Return path to the requested module file
      *
      * @param string $moduleId
      * @param string $filePath
      *
      * @return string
-     *@throws \OxidEsales\EshopCommunity\Core\Exception\FileException
+     * @throws FileException
      *
      */
     public function getModulePath(string $moduleId, string $filePath = ''): string
@@ -1153,29 +1154,14 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $filePath = '/' . $filePath;
         }
 
-        $filePath =
-            $this->getContainer()->get(ModuleAssetsPathResolverBridgeInterface::class)->getAssetsPath($moduleId) .
-            $filePath;
+        $filePath = $this
+            ->getContainer()
+            ->get(ModuleAssetsPathResolverBridgeInterface::class)
+            ->getAssetsPath($moduleId) . $filePath;
 
-        if (file_exists($filePath) || is_dir($filePath)) {
-            return $filePath;
-        } else {
-            /**
-             * Do not call oxNew in the exception handling of the module subsystem system, as the same module system will be
-             * involved when calling oxNew
-             */
-            $exception = new \OxidEsales\Eshop\Core\Exception\FileException("Requested file not found for module $moduleId ($filePath)");
-            if (Registry::getConfig()->getConfigParam('iDebug')) {
-                throw $exception;
-            } else {
-                /**
-                 * This error should be reported, as it will be the cause of an unexpected behavior of the shop an the
-                 * operator should be given a chance to analyse the issue.
-                 */
-                \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
-                return '';
-            }
-        }
+        $this->validateModuleFile($filePath, $moduleId);
+
+        return $filePath;
     }
 
     /**
@@ -1519,5 +1505,22 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getSession()
     {
         return \OxidEsales\Eshop\Core\Registry::getSession();
+    }
+
+    /**
+     * @param string $filePath
+     * @param string $moduleId
+     * @throws FileException
+     */
+    private function validateModuleFile(string $filePath, string $moduleId): void
+    {
+        if (!file_exists($filePath)) {
+            $exception = new FileException("Requested file not found for module $moduleId ($filePath)");
+            if (Registry::getConfig()->getConfigParam('iDebug')) {
+                throw $exception;
+            } else {
+                Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            }
+        }
     }
 }

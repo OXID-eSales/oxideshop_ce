@@ -524,13 +524,8 @@ class ViewConfigTest extends \OxidTestCase
         Registry::getConfig()->setConfigParam("iDebug", 0);
 
         $viewConfig = oxNew(\OxidEsales\Eshop\Core\ViewConfig::class);
-        $modulePath = $viewConfig->getModulePath('testModule', '/non_existing_template.tpl');
+        $viewConfig->getModulePath('testModule', '/non_existing_template.tpl');
 
-        $this->assertEquals('', $modulePath);
-
-        /**
-         * Although no exception is thrown, the underlying error will be logged in oxideshop.log
-         */
         $expectedExceptionClass = \OxidEsales\Eshop\Core\Exception\FileException::class;
         $this->assertLoggedException($expectedExceptionClass);
     }

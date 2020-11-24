@@ -59,6 +59,8 @@ class OxidEshopPackage
     }
 
     /**
+     * @deprecated Will be removed in next major
+     *
      * @return string
      */
     public function getPackageSourcePath(): string
@@ -89,6 +91,8 @@ class OxidEshopPackage
     }
 
     /**
+     * @deprecated Will be removed in next major
+     *
      * @return string
      */
     public function getTargetDirectory(): string
@@ -97,6 +101,8 @@ class OxidEshopPackage
     }
 
     /**
+     * @deprecated Will be removed in next major
+     *
      * @param string $path
      */
     public function setTargetDirectory(string $path)
@@ -105,6 +111,8 @@ class OxidEshopPackage
     }
 
     /**
+     * @deprecated Will be removed in next major
+     *
      * @return string
      */
     public function getSourceDirectory(): string
@@ -113,6 +121,8 @@ class OxidEshopPackage
     }
 
     /**
+     * @deprecated Will be removed in next major
+     *
      * @param string $sourceDirectory
      */
     public function setSourceDirectory(string $sourceDirectory)

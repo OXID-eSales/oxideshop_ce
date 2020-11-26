@@ -1607,6 +1607,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param bool $absolute mode - absolute/relative path
      *
+     * @deprecated 6.7.0 Module files won't be stored in the source directory
+     *
      * @return string
      */
     public function getModulesDir($absolute = true)

@@ -308,6 +308,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (($oBasket = $session->getBasket())) {
             $oBasket->resetUserInfo();
             $oBasket->onUpdate();
+
+            // resetting voucher reservations
+            if ($vouchers = $oBasket->getVouchers()) {
+                foreach ($vouchers as $voucherId => $voucher) {
+                    $oBasket->removeVoucher($voucherId);
+                }
+            }
         }
 
         $session->delBasket();

@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::setTargetDirectory()`
         - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getSourceDirectory()`
 
+### Fixed
+- Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
+
 ## [6.6.0] - 2020-11-10
 
 ### Added

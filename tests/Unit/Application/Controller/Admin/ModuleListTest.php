@@ -44,10 +44,6 @@ class ModuleListTest extends \OxidTestCase
     {
         $modulesDirectory = __DIR__ . '/../../../testData/modules/';
 
-        /** @var oxConfig|MockObject $config */
-        $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getModulesDir'));
-        $config->expects($this->any())->method('getModulesDir')->will($this->returnValue($modulesDirectory));
-
         $container = ContainerFactory::getInstance()->getContainer();
 
         $container->get(ModuleInstallerInterface::class)->install(
@@ -55,7 +51,6 @@ class ModuleListTest extends \OxidTestCase
         );
 
         $oView = oxNew('Module_List');
-        Registry::set(Config::class, $config);
         $this->assertEquals('module_list.tpl', $oView->render());
 
         $aViewData = $oView->getViewData();

@@ -43,8 +43,7 @@ final class ViewConfigTest extends TestCase
 
     private function installModule(string $id): void
     {
-        $package = new OxidEshopPackage($id, __DIR__ . '/Module/Fixtures/' . $id);
-        $package->setTargetDirectory('oeTest/' . $id);
+        $package = new OxidEshopPackage(__DIR__ . '/Module/Fixtures/' . $id);
 
         $this->container->get(ModuleInstallerInterface::class)
             ->install($package);

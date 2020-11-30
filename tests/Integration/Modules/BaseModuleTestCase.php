@@ -7,11 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-
     /**
      * @var ContainerBuilder
      */
@@ -40,18 +39,10 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
         $environment->clean();
     }
 
-    protected function tearDown(): void
-    {
-        $this->removeTestModules();
-
-        parent::tearDown();
-    }
-
-    protected function installAndActivateModule(string $moduleId, int $shopId = 1)
+    protected function installAndActivateModule(string $moduleId, int $shopId = 1): void
     {
         $installService = $this->container->get(ModuleInstallerInterface::class);
-        $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestData/modules/' . $moduleId);
-        $package->setTargetDirectory('oeTest/' . $moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId);
         $installService->install($package);
 
         $activationService = $this->container->get(ModuleActivationBridgeInterface::class);
@@ -61,10 +52,13 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
     /**
      * Deactivates module.
      *
-     * @param \OxidEsales\Eshop\Core\Module\Module $module
-     * @param string   $moduleId
+     * @param Module $module
+     * @param null   $moduleId
+     * @param int    $shopId
+     *
+     * @throws \Exception
      */
-    protected function deactivateModule($module, $moduleId = null, int $shopId = 1)
+    protected function deactivateModule(Module $module, $moduleId = null, int $shopId = 1): void
     {
         if (!$moduleId) {
             $moduleId = $module->getId();
@@ -80,7 +74,7 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
      *
      * @param array $expectedResult
      */
-    protected function runAsserts($expectedResult)
+    protected function runAsserts(array $expectedResult): void
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
 
@@ -124,11 +118,5 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
                 'Config values does not match expectations'
             );
         }
-    }
-
-    private function removeTestModules()
-    {
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

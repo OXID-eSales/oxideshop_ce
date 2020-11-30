@@ -47,7 +47,7 @@ class ModuleListTest extends \OxidTestCase
         $container = ContainerFactory::getInstance()->getContainer();
 
         $container->get(ModuleInstallerInterface::class)->install(
-            new OxidEshopPackage('testmodule', $modulesDirectory . 'testmodule')
+            new OxidEshopPackage($modulesDirectory . 'testmodule')
         );
 
         $oView = oxNew('Module_List');

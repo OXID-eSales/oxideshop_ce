@@ -12,9 +12,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Webmozart\PathUtil\Path;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Service\{
@@ -63,13 +62,12 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
 
     /**
      * @param string $moduleSourcePath
-     * @param string $moduleTargetPath
      */
-    public function install(string $moduleSourcePath, string $moduleTargetPath): void
+    public function install(string $moduleSourcePath): void
     {
         $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleSourcePath);
 
-        $moduleConfiguration->setPath($this->getModuleRelativePath($moduleTargetPath));
+        $moduleConfiguration->setPath($this->getModuleSourceRelativePath($moduleSourcePath));
         $moduleConfiguration->setModuleSource($this->getModuleSourceRelativePath($moduleSourcePath));
 
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
@@ -79,11 +77,13 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     }
 
     /**
-     * @param string $modulePath
+     * @param string $moduleSourcePath
+     *
+     * @throws ModuleConfigurationNotFoundException
      */
-    public function uninstall(string $modulePath): void
+    public function uninstall(string $moduleSourcePath): void
     {
-        $moduleConfiguration = $this->metadataModuleConfigurationDao->get($modulePath);
+        $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleSourcePath);
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
 
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
@@ -97,6 +97,8 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
 
     /**
      * @param string $moduleId
+     *
+     * @throws ModuleConfigurationNotFoundException
      */
     public function uninstallById(string $moduleId): void
     {
@@ -112,18 +114,16 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     }
 
     /**
-     * @param string $moduleFullPath
+     * @param string $moduleSourcePath
      *
      * @return bool
-     * @throws InvalidMetaDataException
      */
-    public function isInstalled(string $moduleFullPath): bool
+    public function isInstalled(string $moduleSourcePath): bool
     {
-        $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleFullPath);
+        $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleSourcePath);
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();
 
         foreach ($projectConfiguration->getShopConfigurations() as $shopConfiguration) {
-            /** @var $shopConfiguration ShopConfiguration */
             if ($shopConfiguration->hasModuleConfiguration($moduleConfiguration->getId())) {
                 return true;
             }
@@ -151,16 +151,10 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     }
 
     /**
-     * @param string $moduleTargetPath
+     * @param string $moduleSourcePath
+     *
      * @return string
      */
-    private function getModuleRelativePath(string $moduleTargetPath): string
-    {
-        return Path::isRelative($moduleTargetPath)
-            ? $moduleTargetPath
-            : Path::makeRelative($moduleTargetPath, $this->context->getModulesPath());
-    }
-
     private function getModuleSourceRelativePath(string $moduleSourcePath): string
     {
         return Path::makeRelative($moduleSourcePath, $this->context->getShopRootPath());

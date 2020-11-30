@@ -32,13 +32,6 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
             ->generate();
     }
 
-    protected function tearDown(): void
-    {
-        $this->removeTestModules();
-
-        parent::tearDown();
-    }
-
     /**
      * Tests if module was activated.
      */
@@ -102,8 +95,7 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
     {
         $installService = ContainerFactory::getInstance()->getContainer()->get(ModuleInstallerInterface::class);
 
-        $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestData/modules/' . $moduleId);
-        $package->setTargetDirectory('oeTest/' . $moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId);
         $installService->install($package);
     }
 
@@ -112,11 +104,5 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $activationService = ContainerFactory::getInstance()->getContainer()->get(ModuleActivationBridgeInterface::class);
 
         $activationService->activate($moduleId, 1);
-    }
-
-    private function removeTestModules()
-    {
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

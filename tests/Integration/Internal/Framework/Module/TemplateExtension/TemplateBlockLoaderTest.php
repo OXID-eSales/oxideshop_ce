@@ -45,7 +45,7 @@ final class TemplateBlockLoaderTest extends TestCase
     private function installTestModule(): void
     {
         $this->get(ModuleInstallerInterface::class)->install(
-            new OxidEshopPackage('testModule', __DIR__ . '/Fixtures/testModule')
+            new OxidEshopPackage(__DIR__ . '/Fixtures/testModule')
         );
     }
 }

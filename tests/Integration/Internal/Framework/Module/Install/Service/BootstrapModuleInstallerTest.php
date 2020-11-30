@@ -24,7 +24,7 @@ class BootstrapModuleInstallerTest extends TestCase
 
     public function testUninstall(): void
     {
-        $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->moduleId);
 
         $this->installModule($package);
         $this->activateTestModule($package);
@@ -43,8 +43,7 @@ class BootstrapModuleInstallerTest extends TestCase
     private function installModule(OxidEshopPackage $package): void
     {
         $installService = $this->get(ModuleInstallerInterface::class);
-        $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->moduleId);
-        $package->setTargetDirectory('oeTest/' . $this->moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->moduleId);
         $installService->install($package);
     }
 

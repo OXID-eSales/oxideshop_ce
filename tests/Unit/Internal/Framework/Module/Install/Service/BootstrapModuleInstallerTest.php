@@ -21,7 +21,7 @@ class BootstrapModuleInstallerTest extends TestCase
     public function testInstallTriggersAllInstallers()
     {
         $path = 'packagePath';
-        $package = new OxidEshopPackage('dummy', $path);
+        $package = new OxidEshopPackage($path);
 
         $moduleFilesInstaller = $this->getMockBuilder(ModuleFilesInstallerInterface::class)->getMock();
         $moduleFilesInstaller
@@ -59,7 +59,7 @@ class BootstrapModuleInstallerTest extends TestCase
 
         $this->assertSame(
             $moduleInstalled,
-            $moduleInstaller->isInstalled(new OxidEshopPackage('dummy', 'somePath'))
+            $moduleInstaller->isInstalled(new OxidEshopPackage('somePath'))
         );
     }
 

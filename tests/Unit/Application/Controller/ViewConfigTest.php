@@ -35,22 +35,22 @@ class ViewConfigTest extends \OxidTestCase
     /**
      * oxViewConfig::getHelpPageLink() test case
      *
-     * @return null
+     * @return void
      */
-    public function testGetHelpPageLink()
+    public function testGetHelpPageLink(): void
     {
         $sShopUrl = $this->getConfig()->getConfigParam("sShopURL");
 
         $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getActiveClassName"));
-        $oViewConfig->expects($this->once())->method("getActiveClassName")->will($this->returnValue("start"));
+        $oViewConfig->expects(self::once())->method("getActiveClassName")->willReturn("start");
         $this->assertEquals($sShopUrl . "Hilfe-Die-Startseite/", $oViewConfig->getHelpPageLink());
 
         $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getActiveClassName"));
-        $oViewConfig->expects($this->once())->method("getActiveClassName")->will($this->returnValue("alist"));
+        $oViewConfig->expects(self::once())->method("getActiveClassName")->willReturn("alist");
         $this->assertEquals($sShopUrl . "Hilfe-Die-Produktliste/", $oViewConfig->getHelpPageLink());
 
         $oViewConfig = $this->getMock(\OxidEsales\Eshop\Core\ViewConfig::class, array("getActiveClassName"));
-        $oViewConfig->expects($this->once())->method("getActiveClassName")->will($this->returnValue("details"));
+        $oViewConfig->expects(self::once())->method("getActiveClassName")->willReturn("details");
         $this->assertEquals($sShopUrl . "Hilfe-Main/", $oViewConfig->getHelpPageLink());
     }
 

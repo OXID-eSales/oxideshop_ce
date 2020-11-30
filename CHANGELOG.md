@@ -233,7 +233,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Module blacklist-filter functionality
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getBlackListFilters()`
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::setBlackListFilters()`
-    
+- Support for Module source-directory and target-directory in composer.json
+    - Method:
+        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::filterInactiveExtensions()`
+        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getDisabledModuleIds()`
+        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::getModuleDirectoryByModuleId()`
+        - `OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::disableModule()`
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getPackageSourcePath()`
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getTargetDirectory()`
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::setTargetDirectory()`
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getSourceDirectory()`
+    - Class:
+        - `OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

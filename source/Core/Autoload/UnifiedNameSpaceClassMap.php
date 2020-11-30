@@ -2818,12 +2818,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Module\ModuleExtensionsCleaner'                       => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Module\ModuleInstaller'                               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Module\ModuleInstaller::class,
         'isAbstract'       => false,

@@ -50,7 +50,6 @@ class ModuleCommandsTestCase extends TestCase
             ->get(ModuleInstallerInterface::class)
             ->uninstall(
                 new OxidEshopPackage(
-                    $this->moduleId,
                     Path::join($this->modulesPath, $this->moduleId)
                 )
             );
@@ -69,12 +68,7 @@ class ModuleCommandsTestCase extends TestCase
     {
         $this
             ->get(ModuleInstallerInterface::class)
-            ->install(
-                new OxidEshopPackage(
-                    $this->moduleId,
-                    Path::join($this->modulesPath, $this->moduleId)
-                )
-            );
+            ->install(new OxidEshopPackage(Path::join($this->modulesPath, $this->moduleId)));
     }
 
     protected function executeCommand(string $command, array $input = []): string

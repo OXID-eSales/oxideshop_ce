@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIServic
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Event\ServicesYamlConfigurationErrorEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ServicesYamlConfigurationError;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidModuleServicesException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -119,7 +119,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
             $moduleConfig = $this->getModuleConfig($moduleConfigFile);
         } catch (NoServiceYamlException $e) {
             return;
-        } catch (ServicesYamlConfigurationError $e) {
+        } catch (InvalidModuleServicesException $e) {
             // it could never have been activated so there is nothing to deactivate
             // and we can safely ignore this deactivation request
             return;
@@ -168,7 +168,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
      *
      * @return DIConfigWrapper
      * @throws NoServiceYamlException
-     * @throws ServicesYamlConfigurationError
+     * @throws InvalidModuleServicesException
      */
     private function getModuleConfig(string $moduleConfigFile): DIConfigWrapper
     {
@@ -185,7 +185,7 @@ class ModuleServicesActivationService implements ModuleServicesActivationService
                 ),
                 ServicesYamlConfigurationErrorEvent::NAME
             );
-            throw new ServicesYamlConfigurationError();
+            throw new InvalidModuleServicesException();
         }
 
         return $moduleConfig;

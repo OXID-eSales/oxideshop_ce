@@ -13,14 +13,13 @@ interface ModuleConfigurationInstallerInterface
 {
     /**
      * @param string $moduleSourcePath
-     * @param string $moduleTargetPath
      */
-    public function install(string $moduleSourcePath, string $moduleTargetPath): void;
+    public function install(string $moduleSourcePath): void;
 
     /**
-     * @param string $modulePath
+     * @param string $moduleSourcePath
      */
-    public function uninstall(string $modulePath): void;
+    public function uninstall(string $moduleSourcePath): void;
 
     /**
      * @param string $moduleId
@@ -28,8 +27,9 @@ interface ModuleConfigurationInstallerInterface
     public function uninstallById(string $moduleId): void;
 
     /**
-     * @param string $packagePath
+     * @param string $moduleSourcePath
+     *
      * @return bool
      */
-    public function isInstalled(string $packagePath): bool;
+    public function isInstalled(string $moduleSourcePath): bool;
 }

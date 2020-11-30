@@ -26,7 +26,6 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     
     private $shopId;
     private $testModuleId = 'testmodule';
-    private $moduleTargetPath = 'testmodule';
     private $workingDirectoryBackup;
     private $workingDirectory;
 
@@ -89,15 +88,11 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
         $this->assertStringContainsString(InstallModuleConfigurationCommand::MESSAGE_INSTALLATION_FAILED, $consoleOutput);
     }
 
-    private function executeModuleInstallCommand(string $moduleSourcePath, string $moduleTargetPath = null): string
+    private function executeModuleInstallCommand(string $moduleSourcePath): string
     {
         $input = [
             'module-source-path' => $moduleSourcePath,
         ];
-
-        if ($moduleTargetPath) {
-            $input['module-target-path'] = $moduleTargetPath;
-        }
 
         return $this->executeCommand('oe:module:install-configuration', $input);
     }
@@ -105,7 +100,7 @@ class InstallModuleConfigurationCommandTest extends ModuleCommandsTestCase
     private function installTestModuleFiles()
     {
         $this->get(ModuleFilesInstallerInterface::class)->install(
-            new OxidEshopPackage($this->testModuleId, $this->getTestModuleSourcePath())
+            new OxidEshopPackage($this->getTestModuleSourcePath())
         );
     }
 

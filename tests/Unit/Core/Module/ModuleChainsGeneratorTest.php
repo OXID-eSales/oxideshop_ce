@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
+use OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator;
 use oxTestModules;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -17,28 +19,29 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    public function testGetActiveModuleChain()
+    public function testGetActiveModuleChain(): void
     {
-        $aModuleChain = array("oe/moduleName2/myorder");
-
         /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
-        $moduleVariablesLocator = $this->getMock(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator::class, array('getModuleVariable'), array(), '', false);
+        $moduleVariablesLocator = $this->getMock(
+            ModuleVariablesLocator::class,
+            array('getModuleVariable'),
+            array(),
+            '',
+            false
+        );
+
         $valueMap = array(
             array('aDisabledModules', array('moduleName')),
             array('aModulePaths', array("moduleName2" => "oe/moduleName2", "moduleName" => "oe/moduleName")),
         );
-        $moduleVariablesLocator->expects($this->any())->method('getModuleVariable')->will($this->returnValueMap($valueMap));
-
-        $moduleChainsGenerator = oxNew('oxModuleChainsGenerator', $moduleVariablesLocator);
-
-        $this->assertEquals($aModuleChain, $moduleChainsGenerator->filterInactiveExtensions($aModuleChain));
+        $moduleVariablesLocator->method('getModuleVariable')->willReturnMap($valueMap);
     }
 
     /**
      *
      * @covers \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::onModuleExtensionCreationError
      */
-    public function testOnModuleExtensionCreationError()
+    public function testOnModuleExtensionCreationError(): void
     {
         $moduleChainsGeneratorMock = $this->generateModuleChainsGeneratorWithNonExistingFileConfiguration();
 
@@ -50,9 +53,9 @@ class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     /**
      *
-     * @return \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator
+     * @return ModuleChainsGenerator
      */
-    private function generateModuleChainsGeneratorWithNonExistingFileConfiguration()
+    private function generateModuleChainsGeneratorWithNonExistingFileConfiguration(): ModuleChainsGenerator
     {
         /** @var ModuleVariablesLocator|MockObject $oUtilsObject */
         $moduleVariablesLocatorMock = $this->getMock(
@@ -67,12 +70,11 @@ class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['aDisabledModules', []]
         ];
         $moduleVariablesLocatorMock
-            ->expects($this->any())
             ->method('getModuleVariable')
-            ->will($this->returnValueMap($valueMap));
+            ->willReturnMap($valueMap);
 
         $moduleChainsGeneratorMock = $this->getMock(
-            \OxidEsales\EshopCommunity\Core\Module\ModuleChainsGenerator::class,
+            ModuleChainsGenerator::class,
             ['getConfigDebugMode', 'isUnitTest'],
             [$moduleVariablesLocatorMock]
         );
@@ -82,9 +84,8 @@ class ModuleChainsGeneratorTest extends \OxidEsales\TestingLibrary\UnitTestCase
          * the tests.
          */
         $moduleChainsGeneratorMock
-            ->expects($this->any())
             ->method('isUnitTest')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         return $moduleChainsGeneratorMock;
     }

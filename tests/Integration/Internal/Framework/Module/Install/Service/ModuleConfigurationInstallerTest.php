@@ -17,8 +17,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -31,8 +31,6 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
     /** @var string  */
     private $modulePath;
-    /** @var string */
-    private $moduleTargetPath = 'targetPath';
     /**
      * @var string
      * @see TestData/TestModule/metadata.php
@@ -55,7 +53,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
     public function testInstall(): void
     {
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+        $configurationInstaller->install($this->modulePath);
 
         $this->assertProjectConfigurationHasModuleConfigurationForAllShops();
     }
@@ -65,7 +63,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
     {
         $this->configureModuleInEnvironmentFile();
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+        $configurationInstaller->install($this->modulePath);
     }
 
     public function testInstallWithTwoShopsWillKeepSeparateModuleConfigurationsPerShop(): void
@@ -78,7 +76,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
 
-        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+        $configurationInstaller->install($this->modulePath);
         $moduleConfigurationDao = $this->get(ModuleConfigurationDaoInterface::class);
 
         $moduleConfigurationShop1 = $moduleConfigurationDao->get($this->testModuleId, $shopId1);
@@ -91,7 +89,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
         $testedSettingShop2->setValue($settingValueShop2);
         $moduleConfigurationDao->save($moduleConfigurationShop2, $shopId2);
 
-        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+        $configurationInstaller->install($this->modulePath);
 
         $actualSettingValueShop1 = $moduleConfigurationDao->get($this->testModuleId, $shopId1)
             ->getModuleSetting($testedSettingName)
@@ -107,7 +105,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
     public function testUninstall(): void
     {
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+        $configurationInstaller->install($this->modulePath);
 
         $configurationInstaller->uninstall($this->modulePath);
 
@@ -117,7 +115,7 @@ final class ModuleConfigurationInstallerTest extends TestCase
     public function testUninstallById(): void
     {
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $configurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+        $configurationInstaller->install($this->modulePath);
 
         $configurationInstaller->uninstallById($this->testModuleId);
 
@@ -132,53 +130,17 @@ final class ModuleConfigurationInstallerTest extends TestCase
             $moduleConfigurationInstaller->isInstalled($this->modulePath)
         );
 
-        $moduleConfigurationInstaller->install($this->modulePath, $this->moduleTargetPath);
+        $moduleConfigurationInstaller->install($this->modulePath);
 
         $this->assertTrue(
             $moduleConfigurationInstaller->isInstalled($this->modulePath)
         );
     }
 
-    public function testModuleTargetPathIsSetToModuleConfigurations(): void
-    {
-        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $moduleConfigurationInstaller->install($this->modulePath, 'myModules/TestModule');
-
-        $shopConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration()
-            ->getShopConfiguration(1);
-
-        $this->assertSame(
-            'myModules/TestModule',
-            $shopConfiguration->getModuleConfiguration($this->testModuleId)->getPath()
-        );
-    }
-
-    public function testModuleTargetPathIsSetToModuleConfigurationsIfAbsolutePathGiven(): void
-    {
-        $modulesPath = $this->get(ContextInterface::class)->getModulesPath();
-
-        $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $moduleConfigurationInstaller->install($this->modulePath, $modulesPath . '/myModules/TestModule');
-
-        $shopConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration()
-            ->getShopConfiguration(1);
-
-        $this->assertSame(
-            'myModules/TestModule',
-            $shopConfiguration->getModuleConfiguration($this->testModuleId)->getPath()
-        );
-    }
-
     public function testRelativeModuleSourcePathIsSetToModuleConfigurations(): void
     {
-        $modulesPath = $this->get(ContextInterface::class)->getModulesPath();
-
         $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $moduleConfigurationInstaller->install($this->modulePath, $modulesPath . '/myModules/TestModule');
+        $moduleConfigurationInstaller->install($this->modulePath);
 
         $shopConfiguration = $this
             ->projectConfigurationDao

@@ -29,12 +29,10 @@ final class ModulePackageInstallerTest extends TestCase
     private $packageName = 'test-module-package-installation';
     private $moduleId = 'testModule';
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
-        $fileSystem = $this->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->getModulesPath() . '/' . $this->packageName);
-
-        parent::tearDown();
+        $installer = $this->getPackageInstaller($this->packageName);
+        $installer->uninstall($this->modulePackagePath);
     }
 
     public function testModuleNotInstalledByDefault(): void
@@ -43,7 +41,7 @@ final class ModulePackageInstallerTest extends TestCase
         $this->assertFalse($installer->isInstalled($this->modulePackagePath));
     }
 
-    public function testModuleIsInstalledAfterInstallProcess()
+    public function testModuleIsInstalledAfterInstallProcess(): void
     {
         $installer = $this->getPackageInstaller($this->packageName);
         $installer->install($this->modulePackagePath);
@@ -53,8 +51,7 @@ final class ModulePackageInstallerTest extends TestCase
 
     public function testModuleUninstall(): void
     {
-        $package = new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->packageName);
-        $package->setTargetDirectory('oeTest/' . $this->moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->packageName);
 
         $installer = $this->getPackageInstaller($this->packageName);
 
@@ -87,14 +84,6 @@ final class ModulePackageInstallerTest extends TestCase
         $this->assertFileDoesNotExist(
             $this->get(ContextInterface::class)->getContainerCacheFilePath()
         );
-    }
-
-    /**
-     * @return string
-     */
-    private function getModulesPath(): string
-    {
-        return $this->get(ContextInterface::class)->getModulesPath();
     }
 
     /**

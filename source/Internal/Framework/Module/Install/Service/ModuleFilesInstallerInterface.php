@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 interface ModuleFilesInstallerInterface
 {
     /**
-     * Copies package from vendor directory to eShop source directory.
-     * Even copies if the target directory is already present.
-     *
      * @param OxidEshopPackage $package
      */
     public function install(OxidEshopPackage $package): void;

@@ -90,8 +90,7 @@ class ModuleMigrationsTest extends TestCase
      */
     private function installModule(string $moduleId): void
     {
-        $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
-        $package->setTargetDirectory('oeTest/'. $moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $moduleId);
         $this->getModuleInstaller()->install($package);
     }
 
@@ -100,8 +99,7 @@ class ModuleMigrationsTest extends TestCase
      */
     private function removeTestModule(string $moduleId): void
     {
-        $package = new OxidEshopPackage($moduleId, __DIR__ . '/Fixtures/' . $moduleId);
-        $package->setTargetDirectory('oeTest/'. $moduleId);
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $moduleId);
         $this->getModuleInstaller()->uninstall($package);
     }
 

@@ -58,7 +58,6 @@ class ModuleInstallerTest extends TestCase
     {
         $installService = $this->get(ModuleInstallerInterface::class);
         $package = $this->getOxidEshopPackage();
-        $package->setTargetDirectory('oeTest/' . $this->moduleId);
         $installService->install($package);
     }
 
@@ -74,6 +73,6 @@ class ModuleInstallerTest extends TestCase
      */
     private function getOxidEshopPackage(): OxidEshopPackage
     {
-        return new OxidEshopPackage($this->moduleId, __DIR__ . '/Fixtures/' . $this->moduleId);
+        return new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->moduleId);
     }
 }

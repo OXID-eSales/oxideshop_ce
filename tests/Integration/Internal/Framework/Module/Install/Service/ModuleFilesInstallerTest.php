@@ -73,7 +73,7 @@ final class ModuleFilesInstallerTest extends TestCase
 
     private function createPackage(): OxidEshopPackage
     {
-        return new OxidEshopPackage($this->packageName, $this->modulePackagePath);
+        return new OxidEshopPackage($this->modulePackagePath);
     }
 
     private function getTestModuleAssetsPath(): string

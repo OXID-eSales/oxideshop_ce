@@ -7,9 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception;
 
-class ModuleTargetPathIsMissingException extends \Exception
+class InvalidModuleServicesException extends \Exception
 {
-
 }

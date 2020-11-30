@@ -92,7 +92,7 @@ final class ModuleConfigurationTest extends UnitTestCase
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $container->get(ModuleInstallerInterface::class)->install(
-            new OxidEshopPackage('testModule', __DIR__ . '/Fixtures/testModule/')
+            new OxidEshopPackage(__DIR__ . '/Fixtures/testModule/')
         );
     }
 
@@ -112,7 +112,7 @@ final class ModuleConfigurationTest extends UnitTestCase
     {
         $container = ContainerFactory::getInstance()->getContainer();
         $container->get(ModuleInstallerInterface::class)->uninstall(
-            new OxidEshopPackage('testModule', __DIR__ . '/Fixtures/testModule/')
+            new OxidEshopPackage(__DIR__ . '/Fixtures/testModule/')
         );
     }
 }

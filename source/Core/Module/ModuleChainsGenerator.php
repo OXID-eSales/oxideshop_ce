@@ -7,16 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\Module;
 
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSetupException;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
-use Psr\Container\ContainerInterface;
-
 /**
  * Generates class chains for extended classes by modules.
  * IMPORTANT: Due to the way the shop is prepared for testing, you must not use Registry::getConfig() in this class.
@@ -132,26 +122,6 @@ class ModuleChainsGenerator
     }
 
     /**
-     * Checks if module is disabled, added to aDisabledModules config.
-     *
-     * @deprecated since v6.4 (2019-05-22); There are only extensions of active modules in the class chain.
-     *
-     * @param array $classChain Module names
-     *
-     * @return array
-     */
-    public function filterInactiveExtensions($classChain)
-    {
-        $disabledModules = $this->getDisabledModuleIds();
-
-        foreach ($disabledModules as $disabledModuleId) {
-            $classChain = $this->cleanModuleFromClassChain($disabledModuleId, $classChain);
-        }
-
-        return $classChain;
-    }
-
-    /**
      * Clean classes from chain for given module id.
      * Classes might be in module chain by path (old way) or by module namespace(new way).
      * This function removes all classes from class chain for classes inside a deactivated module's directory.
@@ -180,53 +150,6 @@ class ModuleChainsGenerator
         }
 
         return $classChain;
-    }
-
-    /**
-     * Get Ids of all deactivated module.
-     * If none are deactivated, returns an empty array.
-     *
-     * @deprecated since v6.4 (2019-05-22); Use ShopConfigurationDaoBridgeInterface instead to get inactive modules.
-     *
-     * @return array
-     */
-    public function getDisabledModuleIds()
-    {
-        $moduleStateService = $this->getModuleStateService();
-        $moduleConfigurations = $this->getShopConfigurationDaoBridge()
-            ->get()
-            ->getModuleConfigurations();
-
-        $disabledModuleIds = [];
-
-        foreach ($moduleConfigurations as $moduleConfiguration) {
-            if (!$moduleStateService->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {
-                $disabledModuleIds[] = $moduleConfiguration->getId();
-            }
-        }
-
-        return $disabledModuleIds;
-    }
-
-    /**
-     * Get module path relative to source/modules for given module id.
-     *
-     * @deprecated since v6.4 (2019-05-22); Use ShopConfigurationDaoBridgeInterface instead.
-     *
-     * @param string $moduleId
-     *
-     * @return string
-     */
-    public function getModuleDirectoryByModuleId($moduleId)
-    {
-        try {
-            $moduleConfiguration = $this->getModuleConfigurationDaoBridge()->get($moduleId);
-            $moduleDirectory = $moduleConfiguration->getPath();
-        } catch (ModuleConfigurationNotFoundException $domainException) {
-            return $moduleId;
-        }
-
-        return $moduleDirectory;
     }
 
     /**
@@ -358,39 +281,6 @@ class ModuleChainsGenerator
     }
 
     /**
-     * If the module is found in configuration, return value is always true. Independent if the module was in a active
-     * or inactive state previously.
-     *
-     * @deprecated since v6.4.0 (2019-05-20). Use ModuleActivationServiceInterface instead.
-     *
-     * @param string $modulePath Full module path
-     *
-     * @return bool
-     */
-    public function disableModule($modulePath)
-    {
-        $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
-        $moduleId = $module->getIdByPath($modulePath);
-
-        if (false === $module->load($moduleId)) {
-            return false;
-        }
-
-        try {
-            $this
-                ->getModuleActivationBridge()
-                ->deactivate(
-                    $moduleId,
-                    Registry::getConfig()->getShopId()
-                );
-        } catch (ModuleSetupException $moduleSetupException) {
-            return true;
-        }
-
-        return true;
-    }
-
-    /**
      * Getter for ModuleVariablesLocator.
      *
      * @return \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
@@ -409,9 +299,7 @@ class ModuleChainsGenerator
      */
     protected function getClassExtensionChain(\OxidEsales\Eshop\Core\Module\ModuleVariablesLocator $variablesLocator)
     {
-        $modules = (array) $variablesLocator->getModuleVariable('aModules');
-
-        return $modules;
+        return (array) $variablesLocator->getModuleVariable('aModules');
     }
 
     /**
@@ -422,48 +310,5 @@ class ModuleChainsGenerator
     protected function isUnitTest()
     {
         return defined('OXID_PHP_UNIT');
-    }
-
-    /**
-     * @return ModuleActivationBridgeInterface
-     */
-    private function getModuleActivationBridge(): ModuleActivationBridgeInterface
-    {
-        return $this->getContainer()
-            ->get(ModuleActivationBridgeInterface::class);
-    }
-
-    /**
-     * @return ModuleConfigurationDaoBridgeInterface
-     */
-    private function getModuleConfigurationDaoBridge(): ModuleConfigurationDaoBridgeInterface
-    {
-        return $this->getContainer()
-            ->get(ModuleConfigurationDaoBridgeInterface::class);
-    }
-
-    /**
-     * @return ShopConfigurationDaoBridgeInterface
-     */
-    private function getShopConfigurationDaoBridge(): ShopConfigurationDaoBridgeInterface
-    {
-        return $this->getContainer()
-            ->get(ShopConfigurationDaoBridgeInterface::class);
-    }
-
-    /**
-     * @return ModuleStateServiceInterface
-     */
-    private function getModuleStateService(): ModuleStateServiceInterface
-    {
-        return $this->getContainer()->get(ModuleStateServiceInterface::class);
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    private function getContainer(): ContainerInterface
-    {
-        return ContainerFactory::getInstance()->getContainer();
     }
 }

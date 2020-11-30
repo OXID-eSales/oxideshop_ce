@@ -1889,7 +1889,7 @@ class AjaxFunctionalityAdminTest extends AdminTestCase
             ->get('oxid_esales.module.install.service.bootstrap_module_installer');
 
         $moduleInstaller->install(
-            new OxidEshopPackage($path, __DIR__ . '/testData/modules/' . $path)
+            new OxidEshopPackage(__DIR__ . '/testData/modules/' . $path)
         );
     }
 }

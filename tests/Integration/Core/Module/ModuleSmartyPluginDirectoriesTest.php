@@ -38,8 +38,6 @@ class ModuleSmartyPluginDirectoriesTest extends TestCase
     {
         $this->deactivateTestModule();
 
-        $this->removeTestModules();
-
         $this->container
             ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
@@ -106,8 +104,7 @@ class ModuleSmartyPluginDirectoriesTest extends TestCase
     private function activateTestModule()
     {
         $id = 'with_metadata_v21';
-        $package = new OxidEshopPackage($id, __DIR__ . '/Fixtures/' . $id);
-        $package->setTargetDirectory('oeTest/' . $id);
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $id);
 
         $this->container->get(ModuleInstallerInterface::class)
             ->install($package);
@@ -122,11 +119,5 @@ class ModuleSmartyPluginDirectoriesTest extends TestCase
         $this->container
             ->get(ModuleActivationBridgeInterface::class)
             ->deactivate('with_metadata_v21', Registry::getConfig()->getShopId());
-    }
-
-    private function removeTestModules()
-    {
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

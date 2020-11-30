@@ -25,7 +25,7 @@ final class ModuleSettingBridgeTest extends TestCase
         $modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 
         $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
-        $configurationInstaller->install($modulePath, 'targetPath');
+        $configurationInstaller->install($modulePath);
 
         parent::setUp();
     }

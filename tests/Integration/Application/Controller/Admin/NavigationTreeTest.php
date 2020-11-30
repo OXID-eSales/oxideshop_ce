@@ -155,7 +155,7 @@ final class NavigationTreeTest extends TestCase
     private function getTestPackage(string $moduleName): OxidEshopPackage
     {
         $packageFixturePath = __DIR__ . "/Fixtures/$moduleName/";
-        return new OxidEshopPackage($this->testPackageNames[$moduleName], $packageFixturePath);
+        return new OxidEshopPackage($packageFixturePath);
     }
 
     private function generateUniquePackageNames(): void

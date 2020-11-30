@@ -37,8 +37,6 @@ class ModuleTest extends TestCase
     {
         parent::tearDown();
 
-        $this->removeTestModules();
-
         $this->container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
 
@@ -164,8 +162,7 @@ class ModuleTest extends TestCase
 
     private function installModule(string $id)
     {
-        $package = new OxidEshopPackage($id, __DIR__ . '/Fixtures/' . $id);
-        $package->setTargetDirectory('oeTest/' . $id);
+        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $id);
 
         $this->container->get(ModuleInstallerInterface::class)
             ->install($package);
@@ -181,12 +178,6 @@ class ModuleTest extends TestCase
     {
         return $this->container->get(ModuleConfigurationDaoBridgeInterface::class)
             ->get($moduleId);
-    }
-
-    private function removeTestModules()
-    {
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 
     public function testHasMetadataReturnsTrue()

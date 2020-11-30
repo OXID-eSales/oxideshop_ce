@@ -26,7 +26,6 @@ class BasicContextStub implements BasicContextInterface
     private $configurableServicesFilePath;
     private $professionalEditionRootPath;
     private $sourcePath;
-    private $modulesPath;
     private $shopRootPath;
     private $configFilePath;
     private $projectConfigurationDirectory;
@@ -50,7 +49,6 @@ class BasicContextStub implements BasicContextInterface
         $this->configurableServicesFilePath = $basicContext->getConfigurableServicesFilePath();
         $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
-        $this->modulesPath = $basicContext->getModulesPath();
         $this->configFilePath = $basicContext->getConfigFilePath();
         $this->shopRootPath = $basicContext->getShopRootPath();
         $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
@@ -195,22 +193,6 @@ class BasicContextStub implements BasicContextInterface
     public function getAllShopIds(): array
     {
         return [$this->getDefaultShopId()];
-    }
-
-    /**
-     * @return string
-     */
-    public function getModulesPath(): string
-    {
-        return $this->modulesPath;
-    }
-
-    /**
-     * @param string $path
-     */
-    public function setModulesPath(string $path): void
-    {
-        $this->modulesPath = $path;
     }
 
     /**

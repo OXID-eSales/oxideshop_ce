@@ -111,13 +111,6 @@ class ModuleInheritanceTest extends UnitTestCase
         $environment->clean();
     }
 
-    protected function tearDown(): void
-    {
-        $this->removeTestModules();
-
-        parent::tearDown();
-    }
-
     /**
      * This test covers the PHP inheritance between one module class and one shop class.
      *
@@ -199,8 +192,7 @@ class ModuleInheritanceTest extends UnitTestCase
         $installService = $this->container->get(ModuleInstallerInterface::class);
 
         foreach ($modulesToActivate as $moduleId) {
-            $package = new OxidEshopPackage($moduleId, __DIR__ . '/TestDataInheritance/modules/' . $moduleId);
-            $package->setTargetDirectory('oeTest/' . $moduleId);
+            $package = new OxidEshopPackage(__DIR__ . '/TestDataInheritance/modules/' . $moduleId);
             $installService->install($package);
         }
     }
@@ -458,11 +450,5 @@ class ModuleInheritanceTest extends UnitTestCase
         $container->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
 
         return $container;
-    }
-
-    private function removeTestModules()
-    {
-        $fileSystem = $this->container->get('oxid_esales.symfony.file_system');
-        $fileSystem->remove($this->container->get(ContextInterface::class)->getModulesPath() . '/oeTest/');
     }
 }

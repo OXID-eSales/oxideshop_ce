@@ -12,6 +12,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidModuleServicesException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use Webmozart\PathUtil\Path;
@@ -24,12 +26,17 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
     /** @var ProjectYamlDaoInterface  */
     private $projectYamlDao;
 
+    /** @var ModulePathResolverInterface */
+    private $modulePathResolver;
+
     public function __construct(
         BasicContextInterface $basicContext,
-        ProjectYamlDaoInterface $projectYamlDao
+        ProjectYamlDaoInterface $projectYamlDao,
+        ModulePathResolverInterface $modulePathResolver
     ) {
         $this->basicContext = $basicContext;
         $this->projectYamlDao = $projectYamlDao;
+        $this->modulePathResolver = $modulePathResolver;
     }
 
     /**
@@ -44,7 +51,10 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
 
         try {
             $projectYaml->addImport(
-                Path::join($this->basicContext->getModulesPath(), $configuration->getPath(), 'services.yaml')
+                Path::join(
+                    $this->modulePathResolver->getFullModulePathFromConfiguration($configuration->getId(), $shopId),
+                    'services.yaml'
+                )
             );
             $this->projectYamlDao->saveProjectConfigFile($projectYaml);
 
@@ -53,7 +63,11 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
         } catch (NoServiceYamlException $e) {
             return;
         } catch (\Throwable $e) {
-            throw $e;
+            throw new InvalidModuleServicesException(
+                "Service Yaml for moduleId of [" . $configuration->getId() . "] is invalid",
+                0,
+                $e
+            );
         } finally {
             // Restore the old settings
             $this->projectYamlDao->saveProjectConfigFile($originalProjectYaml);

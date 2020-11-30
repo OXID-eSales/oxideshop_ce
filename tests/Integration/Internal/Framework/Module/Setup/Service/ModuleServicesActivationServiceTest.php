@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDaoI
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIServiceWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ServicesYamlConfigurationError;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidModuleServicesException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationService;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateService;
@@ -225,7 +225,7 @@ class ModuleServicesActivationServiceTest extends TestCase
 
     public function testActivateServicesWithConfigurationError()
     {
-        $this->expectException(ServicesYamlConfigurationError::class);
+        $this->expectException(InvalidModuleServicesException::class);
 
         $moduleConfig = new DIConfigWrapper(['services' => ['testeventsubscriber' => ['class' => 'some/not/existing/class'],
                                                             'otherservice' => ['class' => 'also/not/existing/class']]]);

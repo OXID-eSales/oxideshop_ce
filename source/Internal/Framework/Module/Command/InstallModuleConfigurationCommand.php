@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Exception\PathNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,20 +28,12 @@ class InstallModuleConfigurationCommand extends Command
     private $moduleConfigurationInstaller;
 
     /**
-     * @var BasicContextInterface
-     */
-    private $context;
-
-    /**
      * @param ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
-     * @param BasicContextInterface $context
      */
     public function __construct(
-        ModuleConfigurationInstallerInterface $moduleConfigurationInstaller,
-        BasicContextInterface $context
+        ModuleConfigurationInstallerInterface $moduleConfigurationInstaller
     ) {
         $this->moduleConfigurationInstaller = $moduleConfigurationInstaller;
-        $this->context = $context;
 
         parent::__construct();
     }
@@ -64,13 +55,6 @@ class InstallModuleConfigurationCommand extends Command
                 'module-source-path',
                 InputArgument::REQUIRED,
                 'Path to module source, e.g. vendor/my_vendor/my_module;'
-                . ' If the module source path is in source/modules directory, e.g. source/modules/vendor/my_module 
-                then module-target-path is optional'
-            )
-            ->addArgument(
-                'module-target-path',
-                InputArgument::OPTIONAL,
-                'Path to module target, e.g. source/modules/vendor/my_module'
             );
     }
 
@@ -86,7 +70,7 @@ class InstallModuleConfigurationCommand extends Command
             $moduleSourcePath = $this->getModuleSourcePath($input);
             $this->validatePath($moduleSourcePath);
 
-            $this->moduleConfigurationInstaller->install($moduleSourcePath, $moduleSourcePath);
+            $this->moduleConfigurationInstaller->install($moduleSourcePath);
             $output->writeln('<info>' . self::MESSAGE_INSTALLATION_WAS_SUCCESSFUL . '</info>');
         } catch (PathNotFoundException $exception) {
             $output->writeln('<error>' . self::MESSAGE_INSTALLATION_FAILED . ': ' . $exception->getMessage() . '</error>');
@@ -108,18 +92,6 @@ class InstallModuleConfigurationCommand extends Command
         return $this->getAbsolutePath($input->getArgument('module-source-path'));
     }
 
-    /**
-     * @param string $path
-     * @return bool
-     */
-    private function isDirectoryInsideShopModulesDirectory(string $path): bool
-    {
-        if (Path::isRelative($path)) {
-            $path = Path::join($this->context->getShopRootPath(), $path);
-        }
-
-        return Path::isBasePath($this->context->getModulesPath(), $path);
-    }
 
     /**
      * @param string $path

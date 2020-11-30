@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
 
+- Deprecated
+- `Path` parameter from moduleConfiguration:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getPath()`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setPath()`
+
 ## [6.6.0] - 2020-11-10
 
 ### Added

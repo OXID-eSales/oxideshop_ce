@@ -71,13 +71,11 @@ final class ModulesDataProviderTest extends TestCase
         $activeModule = new ModuleConfiguration();
         $activeModule
             ->setId($this->activeModuleId)
-            ->setPath($this->activeModulePath)
             ->setModuleSource($this->activeModuleSource);
 
         $inactiveModule = new ModuleConfiguration();
         $inactiveModule
             ->setId($this->inactiveModuleId)
-            ->setPath($this->inactiveModulePath)
             ->setModuleSource($this->inactiveModuleSource);
 
         /** @var ShopConfigurationDaoInterface $dao */

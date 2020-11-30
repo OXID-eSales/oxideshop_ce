@@ -153,8 +153,8 @@ class ModuleTest extends TestCase
 
         $this->assertSame(
             [
-                'with_class_extensions' => $this->getModuleConfiguration('with_class_extensions')->getPath(),
-                'with_metadata_v21'     => $this->getModuleConfiguration('with_metadata_v21')->getPath(),
+                'with_class_extensions' => $this->getModuleConfiguration('with_class_extensions')->getModuleSource(),
+                'with_metadata_v21'     => $this->getModuleConfiguration('with_metadata_v21')->getModuleSource(),
             ],
             $module->getModulePaths()
         );

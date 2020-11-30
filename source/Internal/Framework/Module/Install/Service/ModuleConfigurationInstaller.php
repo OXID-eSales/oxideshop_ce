@@ -67,7 +67,6 @@ class ModuleConfigurationInstaller implements ModuleConfigurationInstallerInterf
     {
         $moduleConfiguration = $this->metadataModuleConfigurationDao->get($moduleSourcePath);
 
-        $moduleConfiguration->setPath($this->getModuleSourceRelativePath($moduleSourcePath));
         $moduleConfiguration->setModuleSource($this->getModuleSourceRelativePath($moduleSourcePath));
 
         $projectConfiguration = $this->projectConfigurationDao->getConfiguration();

@@ -28,11 +28,6 @@ class ModuleConfiguration
     /**
      * @var string
      */
-    private $path;
-
-    /**
-     * @var string
-     */
     private $moduleSource;
 
     /**
@@ -126,24 +121,6 @@ class ModuleConfiguration
     {
         $this->id = $id;
 
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param string $path
-     * @return ModuleConfiguration
-     */
-    public function setPath(string $path): ModuleConfiguration
-    {
-        $this->path = $path;
         return $this;
     }
 

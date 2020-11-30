@@ -35,7 +35,7 @@ class ModulePathHandler implements ModuleConfigurationHandlerInterface
         $pathsSetting = $this->getShopConfigurationSetting($shopId);
         $paths = $pathsSetting->getValue();
 
-        $paths[$configuration->getId()] = $configuration->getPath();
+        $paths[$configuration->getId()] = $configuration->getModuleSource();
         $pathsSetting->setValue($paths);
 
         $this->shopConfigurationSettingDao->save($pathsSetting);

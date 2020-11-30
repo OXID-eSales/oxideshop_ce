@@ -27,7 +27,7 @@ final class ShopConfigurationEventsHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testId')
-            ->setPath('testPath')
+            ->setModuleSource('testPath')
             ->addEvent($event);
 
         $handler = new ShopConfigurationEventsHandler($shopConfigurationSettingDao);
@@ -63,7 +63,7 @@ final class ShopConfigurationEventsHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('moduleToDeactivate')
-            ->setPath('testPath')
+            ->setModuleSource('testPath')
             ->addEvent($event);
 
         $handler = new ShopConfigurationEventsHandler($shopConfigurationSettingDao);

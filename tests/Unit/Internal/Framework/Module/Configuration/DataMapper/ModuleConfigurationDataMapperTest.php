@@ -32,7 +32,6 @@ class ModuleConfigurationDataMapperTest extends TestCase
     {
         $configurationData = [
             'id'          => 'moduleId',
-            'path'        => 'relativePath',
             'moduleSource' => 'relativePath',
             'version'     => '7.0',
             'configured'  => true,

@@ -379,7 +379,7 @@ class Module extends \OxidEsales\Eshop\Core\Base
         $moduleConfigurations = $this->getInstalledModuleConfigurations();
         $paths = [];
         foreach ($moduleConfigurations as $moduleConfiguration) {
-            $paths[$moduleConfiguration->getId()] = $moduleConfiguration->getPath();
+            $paths[$moduleConfiguration->getId()] = $moduleConfiguration->getModuleSource();
         }
 
         return $paths;

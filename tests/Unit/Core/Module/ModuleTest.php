@@ -445,7 +445,6 @@ class ModuleTest extends \OxidTestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModule')
-            ->setPath('oe/testModule')
             ->setModuleSource('oe/testModule');
 
         $container = ContainerFactory::getInstance()->getContainer();

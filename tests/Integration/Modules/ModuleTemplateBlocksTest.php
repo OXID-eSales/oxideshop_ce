@@ -237,7 +237,6 @@ class ModuleTemplateBlocksTest extends UnitTestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId($this->activeModuleId)
-            ->setPath('somePath')
             ->setModuleSource($relativeModulePath);
 
         ContainerFactory::getInstance()

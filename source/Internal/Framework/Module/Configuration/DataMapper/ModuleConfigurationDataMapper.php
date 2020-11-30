@@ -30,7 +30,6 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     {
         $data = [
             'id' => $configuration->getId(),
-            'path' => $configuration->getPath(),
             'moduleSource' => $configuration->getModuleSource(),
             'version' => $configuration->getVersion(),
             'configured' => $configuration->isConfigured(),
@@ -60,7 +59,6 @@ class ModuleConfigurationDataMapper implements ModuleConfigurationDataMapperInte
     {
         $moduleConfiguration
             ->setId($data['id'])
-            ->setPath($data['path'])
             ->setModuleSource($data['moduleSource'])
             ->setVersion($data['version'])
             ->setConfigured($data['configured'])

@@ -117,7 +117,6 @@ class ModuleEventsTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId($this->testModuleId);
         $moduleConfiguration
-            ->setPath('TestModule')
             ->setModuleSource('test');
 
         return $moduleConfiguration;

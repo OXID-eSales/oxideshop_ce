@@ -132,7 +132,6 @@ class ProjectConfigurationDaoTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testModuleConfiguration')
-            ->setPath('somePath')
             ->setModuleSource('test')
             ->setVersion('v2.1')
             ->setDescription([

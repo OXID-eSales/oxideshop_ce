@@ -25,7 +25,7 @@ final class ModulePathHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testId')
-            ->setPath('testPath');
+            ->setModuleSource('testPath');
 
         $handler = new ModulePathHandler($shopConfigurationSettingDao);
         $handler->handleOnModuleActivation($moduleConfiguration, 1);
@@ -55,7 +55,7 @@ final class ModulePathHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('moduleToDeactivate')
-            ->setPath('testPath');
+            ->setModuleSource('testPath');
 
         $handler = new ModulePathHandler($shopConfigurationSettingDao);
         $handler->handleOnModuleDeactivation($moduleConfiguration, 1);

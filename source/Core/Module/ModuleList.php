@@ -112,7 +112,7 @@ class ModuleList extends \OxidEsales\Eshop\Core\Base
         $modulePaths = [];
 
         foreach ($this->getDisabledModuleConfigurations() as $moduleConfiguration) {
-            $modulePaths[$moduleConfiguration->getId()] = $moduleConfiguration->getPath();
+            $modulePaths[$moduleConfiguration->getId()] = $moduleConfiguration->getModuleSource();
         }
 
         return $modulePaths;

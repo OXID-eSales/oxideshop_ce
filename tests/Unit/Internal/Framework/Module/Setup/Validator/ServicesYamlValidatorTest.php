@@ -49,7 +49,7 @@ class ServicesYamlValidatorTest extends TestCase
 
     public function testValidateNoServicesYaml(): void
     {
-        $this->moduleConfiguration->setPath('.');
+        $this->moduleConfiguration->setModuleSource('.');
         $this->moduleConfiguration->setId($this->testModuleId);
         $this->modulePathResolver->method('getFullModulePathFromConfiguration')
             ->willReturn(Path::join(__DIR__, 'Fixtures', 'ModuleWithNoServices'));
@@ -59,7 +59,7 @@ class ServicesYamlValidatorTest extends TestCase
 
     public function testWithCorrectServiceYaml(): void
     {
-        $this->moduleConfiguration->setPath('Working');
+        $this->moduleConfiguration->setModuleSource('Working');
         $this->moduleConfiguration->setId("testId");
         $this->modulePathResolver->method('getFullModulePathFromConfiguration')
             ->willReturn(Path::join(__DIR__, 'Fixtures', 'ModuleWithCorrectServiceYaml'));
@@ -69,7 +69,6 @@ class ServicesYamlValidatorTest extends TestCase
 
     public function testWithWrongServiceYaml(): void
     {
-        $this->moduleConfiguration->setPath('NotWorking');
         $this->moduleConfiguration->setModuleSource('NotWorking');
         $this->moduleConfiguration->setId($this->testModuleId);
         $this->modulePathResolver

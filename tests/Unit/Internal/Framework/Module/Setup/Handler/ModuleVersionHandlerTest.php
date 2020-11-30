@@ -25,7 +25,7 @@ final class ModuleVersionHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('testId')
-            ->setPath('testPath')
+            ->setModuleSource('testPath')
             ->setVersion('0.0.1');
 
         $handler = new ModuleVersionHandler($shopConfigurationSettingDao);
@@ -56,7 +56,7 @@ final class ModuleVersionHandlerTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId('moduleToDeactivate')
-            ->setPath('testPath')
+            ->setModuleSource('testPath')
             ->setVersion('0.0.2');
 
         $handler = new ModuleVersionHandler($shopConfigurationSettingDao);

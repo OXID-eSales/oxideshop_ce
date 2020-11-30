@@ -589,6 +589,8 @@ class ViewConfigTest extends \OxidTestCase
 
     public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()
     {
+        Registry::getConfig()->setConfigParam("iDebug", -1);
+
         $viewConfig = oxNew(ViewConfig::class);
 
         $this->expectException(\OxidEsales\Eshop\Core\Exception\FileException::class);

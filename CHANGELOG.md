@@ -245,6 +245,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getSourceDirectory()`
     - Class:
         - `OxidEsales\EshopCommunity\Core\Module\ModuleExtensionsCleaner`
+- `Path` parameter from moduleConfiguration:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getPath()`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setPath()`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

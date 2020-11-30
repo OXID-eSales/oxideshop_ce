@@ -140,14 +140,12 @@ final class ActiveModulesDataProviderTest extends TestCase
         $activeModule = new ModuleConfiguration();
         $activeModule
             ->setId($this->activeModuleId)
-            ->setPath($this->activeModulePath)
             ->setModuleSource($this->activeModuleSource)
             ->addTemplate(new ModuleConfiguration\Template('activeTemplate', 'activeTemplatePath'));
 
         $inactiveModule = new ModuleConfiguration();
         $inactiveModule
             ->setId($this->inactiveModuleId)
-            ->setPath($this->inactiveModulePath)
             ->setModuleSource($this->inactiveModuleSource)
             ->addTemplate(new ModuleConfiguration\Template('inactiveTemplate', 'inactiveTemplatePath'));
 

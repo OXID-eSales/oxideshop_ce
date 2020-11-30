@@ -41,7 +41,6 @@ final class ShopConfigurationDaoTest extends TestCase
         $module = new ModuleConfiguration();
         $module
             ->setId('test')
-            ->setPath('test')
             ->setModuleSource('test');
 
         $shopConfigurationWithModule = new ShopConfiguration();
@@ -227,7 +226,6 @@ final class ShopConfigurationDaoTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration
             ->setId($this->testModuleId)
-            ->setPath('test')
             ->setModuleSource('test')
             ->addModuleSetting($originalModuleSetting);
         $shopConfiguration = new ShopConfiguration();

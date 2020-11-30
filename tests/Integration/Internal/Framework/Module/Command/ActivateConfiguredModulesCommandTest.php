@@ -116,7 +116,6 @@ final class ActivateConfiguredModulesCommandTest extends ModuleCommandsTestCase
         $moduleToActivate = new ModuleConfiguration();
         $moduleToActivate
             ->setId($this->moduleId)
-            ->setPath(Path::join($this->modulesPath, $this->moduleId))
             ->setModuleSource(Path::join($this->modulesPath, $this->moduleId))
             ->setModuleSettings($settings)
             ->setConfigured($isConfigured);

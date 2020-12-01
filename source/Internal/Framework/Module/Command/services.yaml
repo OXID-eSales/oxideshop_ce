@@ -12,15 +12,13 @@ services:
     tags:
       - { name: 'console.command', command: 'oe:module:deactivate' }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Command\InstallModuleConfigurationCommand:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\InstallModuleConfigurationCommand
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleInstallCommand:
     tags:
-      - { name: 'console.command', command: 'oe:module:install-configuration' }
+      - { name: 'console.command', command: 'oe:module:install' }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Command\UninstallModuleConfigurationCommand:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\UninstallModuleConfigurationCommand
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleUninstallCommand:
     tags:
-      - { name: 'console.command', command: 'oe:module:uninstall-configuration' }
+      - { name: 'console.command', command: 'oe:module:uninstall' }
 
   oxid_esales.command.apply_modules_configuration_command:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ApplyModulesConfigurationCommand

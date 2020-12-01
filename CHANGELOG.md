@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Psalm static analysis tool [PR-766](https://github.com/OXID-eSales/oxideshop_ce/pull/766)
 - New module configuration option `moduleSource`
 - Console Shop installer
+- Console module installer commands:
+    - `oe:module:install`
+    - `oe:module:uninstall`
 - Example dist files for translations in Application/translations folder [PR-826](https://github.com/OXID-eSales/oxideshop_ce/pull/826)
 - Support for single language map file in translations directory [PR-449](https://github.com/OXID-eSales/oxideshop_ce/pull/449).
 - Setting tracking URL per Shipping Method
@@ -248,6 +251,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Path` parameter from moduleConfiguration:
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getPath()`
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setPath()`
+- Console commands for module configuration management: 
+    - `oe:module:install-configuration`
+    - `oe:module:uninstall-configuration`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

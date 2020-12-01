@@ -39,7 +39,7 @@ final class ModuleSortListCest
         $I->seeElement('li#OxidEsales\\\EshopCommunity\\\Tests\\\Codeception\\\_data\\\modules\\\testModule\\\Controller\\\ContentController');
         $I->dontSeeElement('li#OxidEsales\\\EshopCommunity\\\Tests\\\Codeception\\\_data\\\modules\\\testModule\\\Controller\\\ContentController .disabled');
 
-        $I->uninstallModule($this->testModulePath, $this->testModuleId);
+        $I->uninstallModule($this->testModuleId);
     }
 
     /** @param AcceptanceAdminTester $I */
@@ -66,7 +66,7 @@ final class ModuleSortListCest
         $I->seeElement('#module_activate');
         $I->dontSeeElement('#module_deactivate');
 
-        $I->uninstallModule($this->testModuleWithProblemsPath, $this->testModuleWithProblemsId);
+        $I->uninstallModule($this->testModuleWithProblemsId);
     }
 
     /**

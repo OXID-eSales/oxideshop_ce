@@ -27,7 +27,7 @@ final class ModuleActivationCest
     public function _after(AcceptanceAdminTester $I)
     {
         $I->deactivateModule($this->testModule1Id);
-        $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
+        $I->uninstallModule($this->testModule1Id);
     }
 
 

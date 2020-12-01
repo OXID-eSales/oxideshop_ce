@@ -2240,6 +2240,8 @@ class ViewConfigTest extends \OxidTestCase
 
     private function addTestModuleAssets(): void
     {
+        $this->removeTestModuleAssets();
+
         $filesystem = $this->getFilesystem();
 
         $filesystem->mkdir(Path::join(

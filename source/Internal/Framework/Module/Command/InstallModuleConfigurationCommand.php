@@ -17,6 +17,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\PathUtil\Path;
 
+/**
+ * @deprecated command will be superseded by oe:module:install in next major
+ */
 class InstallModuleConfigurationCommand extends Command
 {
     const MESSAGE_INSTALLATION_WAS_SUCCESSFUL = 'Module configuration has been installed.';

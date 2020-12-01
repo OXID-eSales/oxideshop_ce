@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `Path` parameter from moduleConfiguration:
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getPath()`
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setPath()`
+- Console commands for module configuration management:
+    - `oe:module:install-configuration`
+    - `oe:module:uninstall-configuration`
 
 ### Fixed
 - Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)

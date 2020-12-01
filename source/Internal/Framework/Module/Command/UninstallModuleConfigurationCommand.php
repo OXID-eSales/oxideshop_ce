@@ -15,6 +15,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @deprecated command will be superseded by oe:module:uninstall in next major
+ */
 class UninstallModuleConfigurationCommand extends Command
 {
     const MESSAGE_REMOVE_WAS_SUCCESSFULL = 'Module configuration for module %s has been removed.';

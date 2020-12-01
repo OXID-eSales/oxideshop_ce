@@ -52,7 +52,8 @@
 	"oxid-esales/codeception-modules": "dev-extract_traditional_tests",
         "oxid-esales/codeception-page-objects": "dev-master",
        "phpunit/phpunit": "^9",
-	"codeception/module-asserts": "^1.1"
+	"codeception/module-asserts": "^1.1",
+        "oxid-esales/developer-tools": "dev-master-add-reset-database-command"
     },
     "autoload": {
         "psr-4": {
@@ -95,20 +96,6 @@
                 "Core/**/*",
                 "Internal/**/*"
             ]
-        }
-    },
-    "repositories": {
-        "oxid-esales/oxideshop-ee": {
-            "type": "vcs",
-            "url": "https://github.com/OXID-eSales/oxideshop_ee"
-        },
-        "oxid-esales/oxideshop-pe": {
-            "type": "vcs",
-            "url": "https://github.com/OXID-eSales/oxideshop_pe"
-        },
-        "oxid-esales/testing-utils": {
-            "type": "git",
-            "url": "https://github.com/OXID-eSales/testing-utils"
         }
     }
 }

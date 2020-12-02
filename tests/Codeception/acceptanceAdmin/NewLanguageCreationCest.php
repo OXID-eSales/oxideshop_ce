@@ -13,28 +13,6 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class NewLanguageCreationCest
 {
-
-    /** @var string */
-    private $languages;
-
-    /** @var string */
-    private $languageParams;
-
-    /** @param AcceptanceAdminTester $I */
-    public function _before(AcceptanceAdminTester $I)
-    {
-        $this->languages = $I->grabConfigValueFromDatabase('aLanguages', 1)['value'];
-        $this->languageParams = $I->grabConfigValueFromDatabase('aLanguageParams', 1)['value'];
-    }
-
-    /** @param AcceptanceAdminTester $I */
-    public function _after(AcceptanceAdminTester $I)
-    {
-        $I->updateConfigInDatabase('aLanguages', $this->languages);
-        $I->updateConfigInDatabase('aLanguageParams', $this->languageParams);
-        $I->regenerateDatabaseViews();
-    }
-
     /** @param AcceptanceAdminTester $I */
     public function newLanguageCreation(AcceptanceAdminTester $I): void
     {

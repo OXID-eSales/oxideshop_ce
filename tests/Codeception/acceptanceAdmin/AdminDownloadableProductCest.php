@@ -15,24 +15,19 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class AdminDownloadableProductCest
 {
-    /**
-     * @var string
-     */
-    private $orderId;
-
     /** @param AcceptanceAdminTester $I */
     public function _before(AcceptanceAdminTester $I)
     {
         $I->updateInDatabase('oxarticles', ['oxisdownloadable' => 1], ['oxartnum' => '1208']);
         $userId = $I->grabFromDatabase('oxuser', 'OXID', ['OXUSERNAME' => 'user@oxid-esales.com']);
-        $this->orderId = $I->grabFromDatabase('oxorder', 'OXID', ['oxuserid' => $userId]);
-        $articleId = $I->grabFromDatabase('oxorderarticles', 'OXID', ['OXORDERID' => $this->orderId]);
+        $orderId = $I->grabFromDatabase('oxorder', 'OXID', ['oxuserid' => $userId]);
+        $articleId = $I->grabFromDatabase('oxorderarticles', 'OXID', ['OXORDERID' => $orderId]);
 
         $I->haveInDatabase(
             'oxorderfiles',
             [
                 'OXID' => "testdownloadProductCest",
-                'OXORDERID' => $this->orderId,
+                'OXORDERID' => $orderId,
                 'OXFILENAME' => 'testFile3',
                 'OXFILEID' => '1000l',
                 'OXSHOPID' => 1,
@@ -57,17 +52,6 @@ final class AdminDownloadableProductCest
                 'OXSTOREHASH' => 'e48a1b571bd2d2e60fb2d9b1b76b35d5',
             ]
         );
-    }
-
-    /** @param AcceptanceAdminTester $I */
-    public function _after(AcceptanceAdminTester $I)
-    {
-        $I->updateConfigInDatabase('blEnableDownloads', "false", 'bool');
-        $I->updateConfigInDatabase('iMaxDownloadsCount', "0", 'str');
-        $I->updateConfigInDatabase('iLinkExpirationTime', "168", 'str');
-        $I->updateConfigInDatabase('iMaxDownloadsCountUnregistered', "1", 'str');
-        $I->deleteFromDatabase('oxorder', ['OXID' => $this->orderId]);
-        $I->deleteFromDatabase('oxorderarticles', ['OXORDERID' => $this->orderId]);
     }
 
     /** @param AcceptanceAdminTester $I */

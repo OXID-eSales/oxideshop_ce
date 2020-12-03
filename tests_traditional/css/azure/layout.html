@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Layout</title>
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/libs/anythingslider.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/libs/jscrollpane.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/libs/superfish.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/ie7.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/ie8.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/oxid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/reset.css" />
+</head>
+<style>
+body {
+	background: url(bg.png);
+}
+
+.testHead {
+	text-align: center;
+	padding: 1em;
+}
+
+.testHeadSub {
+	text-align: center;
+	padding: 1em;
+}
+
+.testBrowser {
+	background: url(bg.png);
+	width: 1024px;
+	height: 800px;
+	margin: 1em auto;
+	border: 1em solid #888;
+	border-top: 5em solid #888;
+	overflow: auto;
+}
+
+.testDebug {
+	background: #fff;
+}
+
+.testDebug:hover {
+	background: #f6f;
+}
+
+.h100 {
+	min-height: 100px;
+}
+
+.h200 {
+	min-height: 200px;
+}
+
+.h300 {
+	min-height: 300px;
+}
+
+.h400 {
+	min-height: 400px;
+}
+
+.h500 {
+	min-height: 500px;
+}
+
+.h600 {
+	min-height: 600px;
+}
+
+.h700 {
+	min-height: 700px;
+}
+
+.h800 {
+	min-height: 800px;
+}
+</style>
+<body>
+    <h1 class="testHead">Layout</h1>
+
+    <h2 class="testHeadSub">Page</h2>
+    <div class="testBrowser">
+        <div id="page" class="pageLayout testDebug h800"></div>
+    </div>
+
+    <h2 class="testHeadSub">No Sidebar</h2>
+    <div class="testBrowser">
+        <div id="page" class="pageLayout h800">
+            <div id="header" class="testDebug h100"></div>
+            <div id="content" class="testDebug h600"></div>
+            <div id="footer" class="testDebug h100"></div>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Left Sidebar</h2>
+    <div class="testBrowser">
+        <div id="page" class="pageLayout sidebarLeft h800">
+            <div id="header" class="testDebug h100"></div>
+            <div id="sidebar" class="testDebug h600"></div>
+            <div id="content" class="testDebug h600"></div>
+            <div id="footer" class="testDebug h100"></div>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Right Sidebar</h2>
+    <div class="testBrowser">
+        <div id="page" class="pageLayout sidebarRight h800">
+            <div id="header" class="testDebug h100"></div>
+            <div id="sidebar" class="testDebug h600"></div>
+            <div id="content" class="testDebug h600"></div>
+            <div id="footer" class="testDebug h100"></div>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Start Page</h2>
+    <div class="testBrowser">
+        <div id="page" class="pageLayout sidebarRight h800">
+            <div id="header" class="testDebug h100"></div>
+            <div class="oxSlider testDebug h100"></div>
+            <div id="sidebar" class="testDebug h600"></div>
+            <div id="content" class=" h600">
+                <div class="promoBoxes clear">
+                    <div class="specBox  testDebug h100"></div>
+                    <div class="specCatBox  testDebug h100"></div>
+                </div>
+                <div class="itemSlider h100"></div>
+                <h2 class="sectionHead clear"></h2>
+                <ul id="newItems" class="infogridView clear">
+                    <li class="productData testDebug h100"></li>
+                    <li class="productData testDebug h100"></li>
+                    <li class="productData testDebug h100"></li>
+                    <li class="productData testDebug h100"></li>
+                    <li class="productData testDebug h100"></li>
+                    <li class="productData testDebug h100"></li>
+                    <li class="productData testDebug h100"></li>
+                    <li class="productData testDebug h100"></li>
+                </ul>
+            </div>
+            <div id="footer" class="testDebug h100"></div>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Category page</h2>
+    <div class="testBrowser">
+        <div id="page" class="pageLayout sidebarLeft h800">
+            <div id="header" class="testDebug h100"></div>
+            <div id="breadCrumb" class="testDebug">&nbsp;</div>
+            <div id="sidebar" class="testDebug h600"></div>
+            <div id="content" class=" h600">
+                <div class="categoryPicture testDebug h100"></div>
+                <ul class="subcatList clear">
+                    <li></li>
+                    <li>
+                        <div class="box testDebug h200"></div>
+                        <div class="box testDebug h200"></div>
+                        <div class="box testDebug h200"></div>
+                        <div class="box testDebug h200"></div></li>
+                    <li></li>
+                    <li></li>
+                    <li>
+                        <div class="box testDebug h200"></div>
+                        <div class="box testDebug h200"></div>
+                        <div class="box testDebug h200"></div>
+                        <div class="box testDebug h200"></div></li>
+                    <li></li>
+                </ul>
+            </div>
+            <div id="footer" class="testDebug h100"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# This file is auto-generated during the composer install
+mandatory_parameters:
+    shop_path: source
+    shop_tests_path: tests
+    partial_module_paths: null
+optional_parameters:
+    shop_url: null
+    shop_serial: 'EJPK4-RSURS-R3S54-CL948-AH5QM-J5QNW'
+    enable_varnish: false
+    is_subshop: false
+    install_shop: true
+    remote_server_dir: null
+    shop_setup_path: null
+    restore_shop_after_tests_suite: false
+    test_database_name: null
+    restore_after_acceptance_tests: true
+    restore_after_unit_tests: true
+    tmp_path: /tmp/oxid_test_library/
+    database_restoration_class: DatabaseRestorer
+    activate_all_modules: false
+    run_tests_for_shop: true
+    run_tests_for_modules: false
+    screen_shots_path: null
+    screen_shots_url: null
+    browser_name: firefox
+    selenium_server_ip: 127.0.0.1
+    selenium_server_port: '4444'
+    additional_test_paths: 'vendor/oxid-esales/oxideshop-ee/Tests'
+    retry_times_after_test_fail: 2

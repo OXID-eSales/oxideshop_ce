@@ -1,0 +1,16 @@
+<?php
+/**
+ * Copyright ? OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+/**
+ * Returns data for Trusted shops testing.
+ * It should be changed in case you want to run Trusted shops acceptance tests.
+ */
+return array(
+    'trustedShopsIdForLanguageDe' => '',
+    'trustedShopsIdForLanguageEn' => '',
+    'userName' => '',
+    'password' => ''
+);

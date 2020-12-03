@@ -1,0 +1,1841 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Elements</title>
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/libs/anythingslider.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/libs/jscrollpane.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/libs/superfish.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/ie7.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/ie8.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/oxid.css" />
+    <link rel="stylesheet" type="text/css" href="../../../source/out/azure/src/css/reset.css" />
+</head>
+<style>
+body {background:url(bg.png);}
+.testHead{text-align:center;padding:1em;}
+.testHeadSub{text-align:center;padding:1em;}
+.testColumn{float:left;}
+
+</style>
+<body>
+
+    <h1 class="testHead">Header</h1>
+
+
+    <div id="page">
+        <h2 class="testHeadSub">Logo</h2>
+        <div id="header" class="clear">
+            <a id="logo" href="#" title=""><img src="../../../source/out/azure/img/logo_ee.png"></a>
+        </div>
+
+
+        <h2 class="testHeadSub">Dropdowns</h2>
+        <div id="header" class="clear"  style="margin-bottom:75px;">
+
+            <div class="topPopList" style="width:0px;">
+                <p class="selectedValue" id="languageTrigger"><a hreflang="en" href="#" title="English" class="flag en"><span style="background-image:url('../../../source/out/azure/img/lang/en.png')">English</span></a></p>
+                <div class="flyoutBox" style="display:block">
+                    <ul class="corners" id="languages">
+                        <li class="active"><a hreflang="en" href="#" title="English" class="flag en"><span style="background-image:url('../../../source/out/azure/img/lang/en.png')">English</span></a></li>
+                        <li><a hreflang="de" href="#" title="Deutsch" class="flag de "><span style="background-image:url('../../../source/out/azure/img/lang/de.png')">Deutsch</span></a></li>
+                        <li><a hreflang="en" href="#" title="English" class="flag en selected"><span style="background-image:url('../../../source/out/azure/img/lang/en.png')">English</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="topPopList">
+                <p class="selectedValue" id="languageTrigger"><a hreflang="en" href="#" title="English" class="flag en"><span style="background-image:url('../../../source/out/azure/img/lang/en.png')">English</span></a></p>
+                <div class="flyoutBox">
+                    <ul class="corners" id="languages">
+                        <li class="active"><a hreflang="en" href="#" title="English" class="flag en"><span style="background-image:url('../../../source/out/azure/img/lang/en.png')">English</span></a></li>
+                        <li><a hreflang="de" href="#" title="Deutsch" class="flag de "><span style="background-image:url('../../../source/out/azure/img/lang/de.png')">Deutsch</span></a></li>
+                        <li><a hreflang="en" href="#" title="English" class="flag en selected"><span style="background-image:url('../../../source/out/azure/img/lang/en.png')">English</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topPopList" style="width:75px;">
+                <p class="selectedValue" id="currencyTrigger"><a rel="nofollow" title="EUR" href="#"><span>EUR</span></a></p>
+                <div class="flyoutBox" style="display: block;">
+                    <ul class="corners" id="currencies">
+                        <li class="active"><a rel="nofollow" title="EUR" href="#"><span>EUR</span></a></li>
+                        <li><a rel="nofollow" title="EUR" href="#" class="selected"><span>EUR</span></a></li>
+                        <li><a rel="nofollow" title="GBP" href="#"><span>GBP</span></a></li>
+                        <li><a rel="nofollow" title="CHF" href="#"><span>CHF</span></a></li>
+                        <li><a rel="nofollow" title="USD" href="#"><span>USD</span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="topPopList">
+                <p class="selectedValue" id="currencyTrigger"><a rel="nofollow" title="EUR" href="#"><span>EUR</span></a></p>
+                <div class="flyoutBox">
+                    <ul class="corners" id="currencies">
+                        <li class="active"><a rel="nofollow" title="EUR" href="#"><span>EUR</span></a></li>
+                        <li><a rel="nofollow" title="EUR" href="#" class="selected"><span>EUR</span></a></li>
+                        <li><a rel="nofollow" title="GBP" href="#"><span>GBP</span></a></li>
+                        <li><a rel="nofollow" title="CHF" href="#"><span>CHF</span></a></li>
+                        <li><a rel="nofollow" title="USD" href="#"><span>USD</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topPopList" style="width:200px;">
+                <p class="selectedValue " id="servicesTrigger"><a rel="nofollow" href="#"><span>Account</span></a></p>
+                <div class="flyoutBox" style="display: block;width:200px;">
+                    <ul class="corners flyoutMenu" id="services">
+                        <li class="active"><a href="#"><span>Account</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My account</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Product Compare</span><span class="counter FXgradOrange">1</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Wish List</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Gift Registry</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Listmania List</span></a></li>
+                    </ul>
+                </div>
+             </div>
+             <div class="topPopList">
+                <p class="selectedValue hasNotifications" id="servicesTrigger"><a rel="nofollow" href="#"><span>Account</span></a><span class="counter FXgradOrange">1</span></p>
+                <div class="flyoutBox">
+                    <ul class="corners flyoutMenu" id="services">
+                        <li class="active"><a href="#"><span>Account</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My account</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Product Compare</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Wish List</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Gift Registry</span></a></li>
+                        <li><a rel="nofollow" href="#"><span>My Listmania List</span></a></li>
+                    </ul>
+                </div>
+             </div>
+
+            <ul id="topMenu">
+                <li class="login flyout"><a title="Login" class="trigger" id="loginBoxOpener" href="#">Login</a></li>
+                <li class="login flyout logged">Hello, <a href="#">John Doe</a> <a title="Logout" href="#" class="logoutLink" id="logoutLink">Logout</a></li>
+                <li><a title="Register" href="../../../source/en/open-account/" id="registerLink">Register</a></li>
+            </ul>
+
+             <ul id="topMenu" style="width:50px;">
+                <li class="login flyout">
+                    <a title="Login" class="trigger" id="loginBoxOpener" href="#">Login</a>
+                    <form method="post" action="#" name="login" id="login">
+                        <div class="loginBox popBox" id="loginBox" style="display: block;">
+                            <div class="loginForm corners fx-gradient-bg">
+                                <h4>Login</h4>
+                                <p><input type="text" class="textbox innerLabel " value="Email address" name="lgn_usr" id="loginEmail"></p>
+                                <p><input type="password" value="Password" class="textbox passwordbox innerLabel" name="lgn_pwd"><strong><a title="Forgot password?" href="#" class="forgotPasswordOpener">?</a></strong></p>
+                                <p class="errorMsg" id="errorBadLogin">Wrong e-Mail or password!</p>
+                                <p class="checkFields clear"><input type="checkbox" id="remember" name="lgn_cook" value="1" class="checkbox"><label for="remember">Remember me</label></p>
+                                <p><button class="submitButton" type="submit">Login</button></p>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+
+        </div>
+
+        <h2 class="testHeadSub">Navigation</h2>
+        <div id="header" class="clear" style="margin-bottom:75px;">
+
+            <ul class="sf-menu sf-js-enabled" id="navigation">
+               <li class="current"><a href="#" class="current">Home</a></li>
+               <li><a href="#">Level 1</a></li>
+               <li><a href="#">Level 1</a></li>
+               <li class="current sfHover">
+                   <a href="#" class="current sf-with-ul">Level 1<span class="sf-sub-indicator"> »</span></a>
+                   <ul style="float: none; width: 12em; display: block; visibility: visible; margin-left: -39px;">
+                       <li class="current" style="white-space: normal; float: left; width: 100%;"><a href="#" class="current" style="float: none; width: auto;">Level 2</a></li>
+                       <li style="white-space: normal; float: left; width: 100%;"><a href="#" style="float: none; width: auto;">Level 2</a></li>
+                       <li style="white-space: normal; float: left; width: 100%;"><a href="#" style="float: none; width: auto;">Level 2</a></li>
+                   </ul>
+               </li>
+               <li><a href="#">Level 1</a></li>
+               <li><a href="#">Level 1</a></li>
+               <li><a href="#">Level 1</a></li>
+               <li><a href="#">Level 1</a></li>
+               <li><a href="#">Level 1</a></li>
+            </ul>
+        </div>
+
+
+        <h2 class="testHeadSub">Basket</h2>
+        <div id="header" class="clear" style="margin-bottom:100px;">
+            <div class="basketBox" id="miniBasket">
+                <div class="basketFlyout corners" id="basketFlyout" style="display: block;">
+                    <p class="title"> <strong>3 Items in Cart:</strong> <img class="closePop" alt="" src="../../../source/out/azure/img/x.png"></p>
+                    <ul>
+                        <li><a title="Product 1" href="#"> <span class="item">Product 1</span> <strong class="price">1,1 €</strong></a></li>
+                        <li><a title="Product 2" href="#"> <span class="item">Product 2</span> <strong class="price">22,22 €</strong></a></li>
+                        <li><a title="Product 3" href="#"> <span class="item">Product 3</span> <strong class="price">333,333 €</strong></a></li>
+                    </ul>
+                    <p class="totals"><span class="item">Total</span><strong class="price">123,123 €</strong></p>
+                    <hr>
+                    <p class="functions clear">
+                        <a class="submitButton largeButton" href="#">Checkout</a>
+                        <a class="textButton" href="#">Display Cart</a>
+                    </p>
+                </div>
+                <span class="counter FXgradOrange">
+                    <span id="countValue" style="display: inline; opacity: 1;">3</span>
+                </span>
+                <img alt="Basket" class="minibasketIcon" src="../../../source/out/azure/img/basket.png">
+            </div>
+
+            <div class="basketBox" id="miniBasket"  style="margin-right:350px;">
+                <span class="counter FXgradOrange">
+                    <span id="countValue" style="display: inline; opacity: 1;">3</span>
+                </span>
+                <img alt="Basket" class="minibasketIcon" src="../../../source/out/azure/img/basket.png">
+            </div>
+
+            <div class="basketBox" id="miniBasket"  style="margin-right:450px;">
+                <span class="counter FXgradOrange">
+                    <span id="newItemMsg">New item was added to cart</span>
+                </span>
+                <img alt="Basket" class="minibasketIcon" src="../../../source/out/azure/img/basket.png">
+            </div>
+        </div>
+		<h2 class="testHeadSub">Search</h2>
+		<div id="header" class="clear" style="margin-bottom:0px;height:50px;">
+		    <div class="searchBox" style="top:0px;left:43%">
+		        <input type="text" value="Search" title="Search" name="searchparam" id="searchParam" class="textbox innerLabel">
+		        <input type="button" value="" class="searchSubmit">
+		    </div>
+		</div>
+    </div>
+
+    <hr>
+    <h2 class="testHeadSub">Breadcrumb</h2>
+    <div id="page">
+        <div id="breadCrumb"><span>You are here:</span>&nbsp;/&nbsp;<a title="Category 1" href="#">Category 1</a>&nbsp;/&nbsp;<a title="SubCategoty 1" href="#">SubCategoty 1</a></div>
+    </div>
+
+    <hr>
+
+    <h1 class="testHead">Sidebar</h1>
+
+
+    <div id="page">
+
+        <!-------------------------------------------------------------------->
+        <div id="sidebar">
+            <h2 class="testHeadSub">Image content</h2>
+
+            <a id="adminBanner" href="#" rel="nofollow"><img src="../../../source/out/azure/img/admin-banner.jpg"></a>
+
+            <div class="box">
+                <h3> Partner box</h3>
+                <div class="content shoplupe">
+                    <p class="shoplupe">
+                        <a href="#"><img alt="Shoplupe" src="../../../source/out/azure/img/shoplupe.jpg"></a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-------------------------------------------------------------------->
+        <div id="sidebar">
+        <h2 class="testHeadSub">Text content</h2>
+
+            <div class="box">
+                <h3> Box and more <a href="#" class="rss external"><img src="../../../source/out/azure/img/rss.png"><span class="FXgradOrange corners glowShadow">RSS</span></a></h3>
+                <div class="content">
+                  Content content content content content content content content content
+                  <br><a class="readMore" href="#">More content ...</a>
+                </div>
+            </div>
+
+            <div class="box">
+                <h3 class="lightHead">Light head box</h3>
+                <div class="content">
+                  Content content content content content content content content content
+                </div>
+            </div>
+
+            <div class="box">
+                <h3>News box</h3>
+                <ul class="content">
+                    <li>News 1 <br><a href="#" class="readMore">More about news 1 ...</a> </li>
+                    <li>News 2 <br><a href="#" class="readMore">More about news 2 ...</a> </li>
+                    <li>News 3 <br><a href="#" class="readMore">More about news 3 ...</a> </li>
+                </ul>
+            </div>
+
+            <div class="box">
+                <h3>Tag box</h3>
+                <div class="content">
+                    <a class="tagitem_100" href="#">100</a>
+                    <a class="tagitem_200" href="#">200</a>
+                    <a class="tagitem_300" href="#">300</a>
+                    <a class="tagitem_400" href="#">400</a>
+                    <a class="tagitem_500" href="#">500</a>
+                    <a class="tagitem_600" href="#">600</a>
+                    <a class="tagitem_700" href="#">700</a>
+                    <a class="tagitem_800" href="#">800</a>
+                    <a class="tagitem_900" href="#">900</a>
+                    <br>
+                    <a class="readMore" href="#">More tags ...</a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-------------------------------------------------------------------->
+        <div id="sidebar">
+        <h2 class="testHeadSub">Category tree</h2>
+
+        <div class="categoryBox">
+            <ul id="tree" class="tree">
+                <li class="exp">
+                    <a href="#"><i></i>Level 1 </a>
+                    <ul>
+                        <li class=""><a href="#"><i></i>Level 2 </a></li>
+                        <li class="exp">
+                            <a href="#"><i></i>Level 2 </a>
+                            <ul>
+                                <li class=""><a href="#"><i></i>Level 3 </a></li>
+                                <li class=""><a href="#"><i></i>Level 3 </a></li>
+                                <li class="exp">
+                                    <a href="#"><i></i>Level 3 </a>
+                                    <ul>
+                                        <li class="end"><a href="#"><i></i>Level 4 </a></li>
+                                        <li class="end"><a href="#"><i></i>Level 4 </a></li>
+                                        <li class="active end"><a href="#"><i></i>Level 4 </a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class=""><a href="#"><i></i>Level 2 </a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="categoryTagsBox">
+                <h3>Category Tags</h3>
+                <div class="categoryTags">
+                    <a class="tagitem_100" href="#">100</a>
+                    <a class="tagitem_200" href="#">200</a>
+                    <a class="tagitem_300" href="#">300</a>
+                    <a class="tagitem_400" href="#">400</a>
+                    <a class="tagitem_500" href="#">500</a>
+                    <a class="tagitem_600" href="#">600</a>
+                    <a class="tagitem_700" href="#">700</a>
+                    <a class="tagitem_800" href="#">800</a>
+                    <a class="tagitem_900" href="#">900</a>
+                    <br>
+                    <a class="readMore" href="#">More tags ...</a>
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <!-------------------------------------------------------------------->
+        <div id="sidebar">
+            <h2 class="testHeadSub">Promo list</h2>
+
+
+            <div class="box">
+                <h3>Product list</h3>
+                <ul class="articleBox featuredList">
+                    <!-- pr 1 -->
+                    <li class="articleImage showImage">
+                        <div align="center"><a href="#" class="articleBoxImage"><img alt="" src="../../../source/out/pictures/icon/spleene_spx_1_ico.jpg"></a></div>
+                    </li>
+                    <li class="articleTitle titleOn">
+                        <a href="#">Product 1 <br><strong>1,1 €</strong></a>
+                    </li>
+                    <!-- pr 2 -->
+                    <li class="articleTitle titleOn">
+                        <a href="#">Product 2 <br><strong>22,22 €</strong></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="box">
+                <h3>Listmania box</h3>
+                <a href="#" class="featured"><img src="../../../source/out/pictures/icon/spleene_spx_1_ico.jpg"></a>
+                <ul class="featuredList">
+                    <li>
+                        <a href="#"><b>Product 1</b></a>
+                        <div class="desc">Description for product 1 ...</div>
+                    </li>
+                    <li>
+                        <a href="#"><b>Product 2</b></a>
+                        <div class="desc">Description for product 2 ...</div>
+                    </li>
+                    <li>
+                        <form class="recommendationsSearchForm">
+                            <label class="onTop">Search</label>
+                            <input type="text" name="searchrecomm" value="" class="searchInput">
+                            <button class="submitButton largeButton" type="submit">Search</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-------------------------------------------------------------------->
+        <div id="sidebar">
+            <h2 class="testHeadSub">Account</h2>
+            <ul class="tree sidebarMenu corners">
+                <li><a rel="nofollow" href="#">Account 1</a></li>
+                <li class="active"><a rel="nofollow" href="#">Account 2</a></li>
+                <li><a rel="nofollow" href="#">Account 3</a></li>
+                <li><a rel="nofollow" href="#">Account 4</a></li>
+                <li><a rel="nofollow" href="#">Account 5</a></li>
+                <li><a rel="nofollow" href="#">Account 6</a></li>
+                <li><a rel="nofollow" href="#">Account 7</a></li>
+                <li><a rel="nofollow" href="#">Account 8</a></li>
+          </ul>
+
+
+        </div>
+    </div>
+
+
+
+    <hr>
+    <h1 class="testHead">Start</h1>
+
+    <h2 class="testHeadSub">Promotion Slider</h2>
+
+    <div id="page">
+       <div class="oxSlider">
+           <img height="220" width="7" alt="" class="promoShadow shadowLeft" src="../../../source/out/azure/img/promo-shadowleft.png">
+           <img height="220" width="7" alt="" class="promoShadow shadowRight" src="../../../source/out/azure/img/promo-shadowright.png">
+           <div class="anythingSlider anythingSlider-default activeSlider" style="width: 940px; height: 220px;">
+               <span class="arrow back" style="display: none; opacity: 0.7;"><a href="#">«</a></span>
+               <span class="arrow forward" style="display: none; opacity: 0.7;"><a href="#">»</a></span>
+               <div class="anythingWindow">
+                   <ul id="promotionSlider" class="anythingBase" style="width: 5640px;">
+                       <li style="width: 940px; height: 220px;" class="cloned panel">
+                           <span style="width: 100%; height: 100%;">
+                               <span class="promoBox" style="visibility: hidden;">
+                                    <strong class="promoPrice" style="height: 17px; line-height: 17px;">269,00 €</strong>
+                                    <strong class="promoTitle">Wetsuit NPX ASSASSIN</strong>
+                                </span>
+                               <img height="220" width="940" src="../../../source/out/pictures/promo/surfer_wave(1)_promo.jpg">
+                           </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="anythingControls" style="left: 412.5px;">
+                   <a class="start-stop playing" href="#" style="display: none;">Stop</a>
+                   <ul class="thumbNav" style="display: none; opacity: 0.7;">
+                       <li><a href="#" class="panel1 cur" rel="nofolow">1</a></li>
+                       <li><a href="#" class="panel2" rel="nofolow">2</a></li>
+                       <li><a href="#" class="panel3" rel="nofolow">3</a></li>
+                       <li><a href="#" class="panel4" rel="nofolow">4</a></li>
+                   </ul>
+               </div>
+           </div>
+        </div>
+
+        <div class="oxSlider">
+           <img height="220" width="7" alt="" class="promoShadow shadowLeft" src="../../../source/out/azure/img/promo-shadowleft.png">
+           <img height="220" width="7" alt="" class="promoShadow shadowRight" src="../../../source/out/azure/img/promo-shadowright.png">
+           <div class="anythingSlider anythingSlider-default activeSlider" style="width: 940px; height: 220px;">
+               <span class="arrow back" style="display: block; opacity: 0.7;"><a href="#">«</a></span>
+               <span class="arrow forward" style="display: block; opacity: 0.7;"><a href="#">»</a></span>
+               <div class="anythingWindow">
+                   <ul id="promotionSlider" class="anythingBase" style="width: 5640px;">
+                       <li style="width: 940px; height: 220px;" class="cloned panel">
+                           <span style="width: 100%; height: 100%;">
+                               <span class="promoBox" style="visibility: visible;">
+                                    <strong class="promoPrice" style="height: 17px; line-height: 17px;">123,00 €</strong>
+                                    <strong class="promoTitle">Promo Product 1</strong>
+                               </span>
+                               <img height="220" width="940" src="../../../source/out/pictures/promo/surfer_wave(1)_promo.jpg">
+                           </span>
+                       </li>
+                    </ul>
+                </div>
+                <div class="anythingControls" style="left: 412.5px;">
+                   <a class="start-stop playing" href="#" style="display: none;">Stop</a>
+                   <ul class="thumbNav" style="display: block; opacity: 0.7;">
+                       <li><a href="#" class="panel1 cur" rel="nofolow">1</a></li>
+                       <li><a href="#" class="panel2" rel="nofolow">2</a></li>
+                       <li><a href="#" class="panel3" rel="nofolow">3</a></li>
+                       <li><a href="#" class="panel4" rel="nofolow">4</a></li>
+                   </ul>
+               </div>
+           </div>
+        </div>
+
+        <h2 class="testHeadSub">Promotion boxes</h2>
+        <div id="page" class="pageLayout sidebarRight">
+            <div id="content">
+                <div class="promoBoxes clear">
+
+                    <div class="specBox" id="specBox">
+                        <div class="specBoxTitles rightShadow">
+                            <h3><strong>Week's Special</strong></h3>
+                            <a class="title" href="#" id="titleBargain_1">Promo Product 1</a>
+                        </div>
+                        <div class="specBoxInfo">
+                            <div id="priceBargain_1" class="price ">
+                                <div class="hoverInfo" style="">
+                                    <span class="priceOld">RRP <del>999,99 €</del></span>
+                                    <span class="priceValue">123,90 € *</span>
+                                    <a title="add to Cart" class="toCart button" href="#">add to Cart</a>
+                                </div>
+                            </div>
+                            <a href="#"><img class="picture" alt="" src="../../../source/out/pictures/0/p1170221_1_th.jpg"></a>
+                        </div>
+                    </div>
+
+                    <div class="specCatBox linkAll box" id="specCatBox">
+                        <h2 class="sectionHead">Promo Category</h2>
+                        <a class="viewAllHover glowShadow corners" href="W" style="display: block; margin-left: -71px;"><span>View all products</span></a>
+                        <img alt="Wakeboards" src="../../../source/out/pictures/icon/cat_promo_wakeboards_pico.jpg">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <h2 class="testHeadSub">Brands slider</h2>
+        <div id="page" class="pageLayout sidebarRight">
+            <div id="content">
+                <div class="itemSlider">
+                <a rel="nofollow" href="#" class="prevItem slideNav"><strong>Our<br>brands</strong><span>«</span></a>
+                <a rel="nofollow" href="#" class="nextItem slideNav"><span>»</span></a>
+                <div id="manufacturerSlider" style="visibility: visible; overflow: hidden; position: relative; z-index: 2; left: 0px; width: 744px;">
+                    <ul style="margin: 0pt; padding: 0pt; position: relative; list-style-type: none; z-index: 1; width: 2728px; left: 0px;">
+                        <li style="overflow: hidden; float: left; width: 124px; height: 148px;">
+                            <a href="#" class="viewAllHover"><span>View all products</span></a>
+                            <a class="sliderHover" href="#"></a>
+                            <img src="../../../source/out/pictures/icon/ion_logo_black_1_mico.png" alt="ION">
+                        </li>
+                        <li style="overflow: hidden; float: left; width: 124px; height: 148px;">
+                            <a href="#" class="viewAllHover"><span>View all products</span></a>
+                            <a class="sliderHover" href="#"></a>
+                            <img src="../../../source/out/pictures/icon/ion_logo_black_1_mico.png" alt="ION">
+                        </li>
+                        <li style="overflow: hidden; float: left; width: 124px; height: 148px;">
+                            <a href="#" class="viewAllHover"><span>View all products</span></a>
+                            <a class="sliderHover" href="#"></a>
+                            <img src="../../../source/out/pictures/icon/ion_logo_black_1_mico.png" alt="ION">
+                        </li>
+                        <li style="overflow: hidden; float: left; width: 124px; height: 148px;">
+                            <a href="#" class="viewAllHover"><span>View all products</span></a>
+                            <a class="sliderHover" href="#"></a>
+                            <img src="../../../source/out/pictures/icon/ion_logo_black_1_mico.png" alt="ION">
+                        </li>
+                        <li style="overflow: hidden; float: left; width: 124px; height: 148px;">
+                            <a href="#" class="viewAllHover"><span>View all products</span></a>
+                            <a class="sliderHover" href="#"></a>
+                            <img src="../../../source/out/pictures/icon/ion_logo_black_1_mico.png" alt="ION">
+                        </li>
+                        <li style="overflow: hidden; float: left; width: 124px; height: 148px;">
+                            <a href="#" class="viewAllHover"><span>View all products</span></a>
+                            <a class="sliderHover" href="#"></a>
+                            <img src="../../../source/out/pictures/icon/ion_logo_black_1_mico.png" alt="ION">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+   </div>
+
+   <h2 class="testHeadSub">Headlines and content</h2>
+   <div id="page" class="pageLayout">
+       <div id="content">
+
+           <h2 class="sectionHead clear">
+               <span>section Headline</span>
+               <a title="RSS" href="#" id="rssNewestProducts" class="rss external"><img alt="RSS" src="../../../source/out/azure/img/rss.png"><span class="FXgradOrange corners glowShadow">RSS</span></a>
+           </h2>
+
+           <br>
+
+           <h1 class="pageHead"><strong>page Headline</strong></h1>
+
+           <br>
+           <h3 class="lightHead sectionHead clear">Light section Headline</h3>
+
+           <h3 class="blockHead">Block headline</h3>
+            <div class="status error corners">
+                <p>Error message</p>
+            </div>
+
+            <div class="status success corners">
+                <p>Success message</p>
+            </div>
+           <br>
+           <div class="widgetBoxBottomRound bottomRound">
+            lore lore lore
+           </div>
+
+           <br>
+
+           <div class="widgetBox">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas auctor lectus vel eros faucibus elementum.
+                Maecenas vehicula sagittis nibh, ut condimentum dolor condimentum nec.
+                Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                Sed augue velit, vulputate et ullamcorper nec, posuere quis massa.
+                Sed eros odio, euismod vel consectetur quis, imperdiet sed dolor.
+                Duis sodales, enim sit amet aliquam pretium, enim ante interdum ipsum, ut condimentum neque mauris nec lacus.
+            </div>
+
+            <div class="widgetBox reviews">
+                <h4>Comments</h4>
+                <a class="writeReviewLink" href="#">Add comments</a>
+                <dl>
+                    <dt>Omen at 10.10.2010</dt>
+                    <dd>
+                        Sed eros odio, euismod vel consectetur quis, imperdiet sed dolor.
+                        Duis sodales, enim sit amet aliquam pretium, enim ante interdum ipsum, ut condimentum neque mauris nec lacus.
+                    </dd>
+                </dl>
+            </div>
+
+            <br>
+
+            <div class="tabbedWidgetBox">
+                <ul class="tabs clear">
+                    <li><a href="#">Kommentare</a></li>
+                    <li><a href="#">Invite</a></li>
+                    <li class="selected"><a href="#">Livestream</a></li>
+                </ul>
+                <div class="widgetBoxBottomRound reviews">
+                    <h4>Comments</h4>
+                    <a class="writeReviewLink" href="#">Add comments</a>
+                    <dl>
+                        <dt>Omen at 10.10.2010</dt>
+                        <dd>
+                            Sed eros odio, euismod vel consectetur quis, imperdiet sed dolor.
+                            Duis sodales, enim sit amet aliquam pretium, enim ante interdum ipsum, ut condimentum neque mauris nec lacus.
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h2 class="testHeadSub">Form</h2>
+    <div id="page" class="pageLayout">
+       <div id="content">
+            <form>
+                <ul class="form clear">
+                    <li class="formTitle">Form title</li>
+                    <li>
+                        <label>Simple label:</label><input type="text">
+                    </li>
+                    <li class="oxInValid">
+                        <label>Simple label:</label><input type="text">
+                        <p class="oxValidateError" style="display: block;">
+                            <span style="display: inline;">Error message</span>
+                        </p>
+                    </li>
+                    <li><label>Simple label:</label>
+                        <select>
+                            <option selected="selected">Test data</option>
+                            <option>Test data</option>
+                            <option>Test data</option>
+                        </select>
+                    </li>
+                    <li class="oxInValid"><label>Simple label:</label>
+                        <select>
+                            <option selected="selected">Test data</option>
+                            <option>Test data</option>
+                            <option>Test data</option>
+                        </select>
+                        <p class="oxValidateError" style="display: block;">
+                            <span style="display: inline;">Error message</span>
+                        </p>
+                    </li>
+                    <li><label class="req">Required label:</label><textarea class="areabox"></textarea></li>
+                    <li class="oxInValid"><label class="req">Required label:</label><textarea class="areabox"></textarea>
+                        <p class="oxValidateError" style="display: block;">
+                            <span style="display: inline;">Error message</span>
+                        </p>
+
+                    </li>
+                    <li class="formNote">Form note text text text text text text</li>
+                    <li class="formSubmit">
+                        <button class="submitButton" type="button">Form submit button</button>
+                    </li>
+
+                </ul>
+            </form>
+       </div>
+    </div>
+
+    <hr>
+    <h2 class="testHeadSub">Order steps</h2>
+    <div id="page" class="pageLayout">
+       <div id="content">
+
+            <ul class="checkoutSteps clear">
+                <li class="step1">
+                    <span><a href="#" rel="nofollow">1. Cart</a></span>
+                </li>
+                <li class="step2">
+                    <span><a href="#" rel="nofollow">2. Address</a></span>
+                </li>
+                <li class="step3">
+                    <span><a href="#" rel="nofollow">3. Pay</a></span>
+                </li>
+                <li class="step4">
+                    <span><a href="#" id="orderStep" rel="nofollow">4. Order</a></span>
+                </li>
+                <li class="step5 defaultLast">
+                    <span>Ready!</span>
+                </li>
+            </ul>
+
+
+            <br>
+
+            <ul class="checkoutSteps clear">
+                <li class="step1 active">
+                    <span><a href="#" rel="nofollow">1. Cart</a></span>
+                </li>
+                <li class="step2">
+                    <span><a href="#" rel="nofollow">2. Address</a></span>
+                </li>
+                <li class="step3">
+                    <span><a href="#" rel="nofollow">3. Pay</a></span>
+                </li>
+                <li class="step4">
+                    <span><a href="#" id="orderStep" rel="nofollow">4. Order</a></span>
+                </li>
+                <li class="step5 defaultLast">
+                    <span>Ready!</span>
+                </li>
+            </ul>
+
+            <br>
+
+            <ul class="checkoutSteps clear">
+                <li class="step1 passed">
+                    <span><a href="#" rel="nofollow">1. Cart</a></span>
+                </li>
+                <li class="step2 active">
+                    <span><a href="#" rel="nofollow">2. Address</a></span>
+                </li>
+                <li class="step3">
+                    <span><a href="#" rel="nofollow">3. Pay</a></span>
+                </li>
+                <li class="step4">
+                    <span><a href="#" id="orderStep" rel="nofollow">4. Order</a></span>
+                </li>
+                <li class="step5 defaultLast">
+                    <span>Ready!</span>
+                </li>
+            </ul>
+
+            <br>
+
+            <ul class="checkoutSteps clear">
+                <li class="step1 passed">
+                    <span><a href="#" rel="nofollow">1. Cart</a></span>
+                </li>
+                <li class="step2 passed">
+                    <span><a href="#" rel="nofollow">2. Address</a></span>
+                </li>
+                <li class="step3 active">
+                    <span><a href="#" rel="nofollow">3. Pay</a></span>
+                </li>
+                <li class="step4">
+                    <span><a href="#" id="orderStep" rel="nofollow">4. Order</a></span>
+                </li>
+                <li class="step5 defaultLast">
+                    <span>Ready!</span>
+                </li>
+            </ul>
+
+            <br>
+
+            <ul class="checkoutSteps clear">
+                <li class="step1 passed">
+                    <span><a href="#" rel="nofollow">1. Cart</a></span>
+                </li>
+                <li class="step2 passed">
+                    <span><a href="#" rel="nofollow">2. Address</a></span>
+                </li>
+                <li class="step3 passed">
+                    <span><a href="#" rel="nofollow">3. Pay</a></span>
+                </li>
+                <li class="step4 active">
+                    <span><a href="#" id="orderStep" rel="nofollow">4. Order</a></span>
+                </li>
+                <li class="step5 defaultLast">
+                    <span>Ready!</span>
+                </li>
+            </ul>
+
+            <br>
+
+            <ul class="checkoutSteps clear">
+                <li class="step1 passed">
+                    <span><a href="#" rel="nofollow">1. Cart</a></span>
+                </li>
+                <li class="step2 passed">
+                    <span><a href="#" rel="nofollow">2. Address</a></span>
+                </li>
+                <li class="step3 passed">
+                    <span><a href="#" rel="nofollow">3. Pay</a></span>
+                </li>
+                <li class="step4 passed">
+                    <span><a href="#" id="orderStep" rel="nofollow">4. Order</a></span>
+                </li>
+                <li class="step5 activeLast">
+                    <span>Ready!</span>
+                </li>
+            </ul>
+
+            <div class="checkoutOptions clear">
+                <div id="optionNoRegistration" class="lineBox option" style="height: 94px;">
+                    <h3>Option 1</h3>
+                    <p>Desctiption</p>
+                </div>
+
+                <div id="optionRegistration" class="lineBox option" style="height: 94px;">
+                    <h3>Option 2</h3>
+                    <p>Description</p>
+                </div>
+                <div id="optionLogin" class="lineBox option" style="height: 94px;">
+                    <h3>Option 3</h3>
+                    <p>Description</p>
+                 </div>
+            </div>
+            <h3 class="section">
+                <strong>Section title</strong>
+                <button class="submitButton largeButton" type="button">button label</button>
+            </h3>
+            <br>
+            <div id="thankyouPage">
+                <h3 class="blockHead">Thankyou page title</h3>
+            </div>
+            <br>
+            <br>
+            <div class="checkoutColumns clear">
+                <div class="column">
+                    <h3 class="blockHead">Column 1</h3>
+                    <p>
+                        Description
+                    </p>
+                </div>
+                <div class="column">
+                    <h3 class="blockHead">Column 2</h3>
+                    <p>
+                        Description
+                    </p>
+                </div>
+            </div>
+
+            <div class="lineBox clear">
+                <form id="orderConfirmAgbTop">
+                    <span class="agb">
+                        <input type="checkbox" value="1" name="ord_agb" class="checkbox" id="checkAgbTop">
+                        I agree to the <a class="fontunderline" href="#" rel="nofollow">Terms and Conditions</a>.&nbsp;
+                        I have been informed about my <a href="#" rel="nofollow">Right to Cancel</a>.
+                        <p class="errorMsg" style="display:block">Please read and confirm our terms and conditions.</p>
+
+                    </span>
+                    <button class="submitButton largeButton nextStep" type="button">Submit Order</button>
+                </form>
+            </div>
+            <div class="lineBox clear">
+                <span class="title">Check the bottom<span>
+                </span></span>
+            </div>
+
+            <div class="lineBox clear">
+                <a id="paymentBackStepBottom" class="submitButton" href="#">Previous Step</a>
+                <button id="paymentNextStepBottom" class="submitButton nextStep" name="userform" type="submit">Next Step</button>
+            </div>
+
+            <div class="lineBox clear">
+                <a id="paymentBackStepBottom" class="submitButton largeButton" href="#">Previous Step</a>
+                <button id="paymentNextStepBottom" class="submitButton nextStep largeButton" name="userform" type="submit">Next Step</button>
+            </div>
+            <br>
+
+            <table id="basket" class="basketitems">
+                <colgroup>
+                    <col width="30">
+                    <col width="110">
+                    <col>
+                    <col width="120">
+                    <col width="60">
+                    <col width="90">
+                    <col width="60">
+                    <col width="90">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Wrapping</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>VAT</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tr id="cartItem_1">
+                    <td class="checkbox"><input type="checkbox" value="1"></td>
+                    <td class="basketImage">
+                        <a rel="nofollow" href="#" class="image">
+                            <img alt="Transport container BARREL" src="../../../source/out/pictures/icon/mikejucker_textilcontainer_1_ico.jpg">
+                        </a>
+                    </td>
+                    <td>
+                        <div>
+                            <a href="#" rel="nofollow">Transport container BARREL</a>
+                        </div>
+                        <div>
+                            Art.No.: 3788
+                        </div>
+                    </td>
+                    <td>
+                        <a title="add" href="#" rel="nofollow" class="wrappingTrigger">add</a>
+                    </td>
+                    <td class="quantity">
+                        <p>
+                            <strong>Details:</strong>
+                            <input type="text" value="ghh" class="textbox persParam">
+                        </p>
+                        <p>
+                            <input type="text" size="2" value="1" class="textbox" id="am_1">
+                        </p>
+                    </td>
+                    <td>24,95&nbsp;€</td>
+                    <td>19%</td>
+                    <td class="total">24,95&nbsp;€</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td colspan="3" id="orderCardTitle">
+                        Greeting Card "The bomb"<br>
+                        <b>Your Message:</b><br>
+                        <div id="orderCardText"></div>
+                    </td>
+                    <td class="orderprice" id="orderCardPrice">2,50&nbsp;€</td>
+                    <td class="vat_order"></td>
+                    <td align="right" class="totalprice" id="orderCardTotalPrice">2,50&nbsp;€</td>
+                </tr>
+            </table>
+            <div class="clear">
+                <div class="basketFunctions" id="basketFn">
+                <input type="checkbox" title="All" id="checkAll" name="checkAll">
+                <button name="removeBtn" id="basketRemoveAll"><span>All</span></button>
+                <button name="removeBtn" type="submit" id="basketRemove"><span>remove</span></button>
+                <button name="updateBtn" type="submit" id="basketUpdate"><span>update</span></button>
+                </div>
+                <div class="summary" id="basketSummary">
+                   <table>
+                       <tr>
+                            <th scope="col">Total Products (net):</th>
+                            <td>25,16&nbsp;€</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">plus VAT&nbsp;19% Amount:</th>
+                            <td>4,78&nbsp;€</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Total Products (gross):</th>
+                            <td>29,94&nbsp;€</td>
+                        </tr>
+                        <tr>
+                            <th scope="col">Gift Wrapping/Greeting Card</th>
+                            <td>5,45 €</td>
+                        </tr>
+                        <tr>
+                            <th scope="col"><b>Grand Total:</b></th>
+                            <td><b>35,39&nbsp;€</b></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <form class="left oxValidate">
+                <div id="coupon" class="couponBox">
+                    <label>Enter Coupon Number:</label>
+                    <input type="text" class="textbox oxValidate oxValidate_notEmpty" size="20">
+                    <button class="submitButton largeButton" type="button">Submit Coupon</button>
+                    <p class="oxValidateError">
+                        <span class="oxError_notEmpty">Specify a value for this required field.</span>
+                    </p>
+                    <input type="hidden" value="basket">
+                </div>
+
+                <div id="coupon" class="couponBox oxInValid">
+                    <label>Enter Coupon Number:</label>
+                    <input type="text" class="textbox oxValidate oxValidate_notEmpty" size="20">
+                    <button class="submitButton largeButton" type="button">Submit Coupon</button>
+                    <p class="oxValidateError" style="display:block">
+                        <span class="oxError_notEmpty" style="display:inline">Specify a value for this required field.</span>
+                    </p>
+                    <input type="hidden" value="basket">
+                </div>
+            </form>
+            <div class="agb">
+                <h3 class="section">
+                    <strong>Terms and Conditions and Right to Cancel</strong>
+                </h3>
+                <input type="checkbox" class="checkbox">
+                I agree to the <a class="fontunderline" href="#" rel="nofollow" id="test_OrderOpenAGBBottom">Terms and Conditions</a>.&nbsp;
+                I have been informed about my <a href="#" rel="nofollow" id="test_OrderOpenWithdrawalBottom">Right to Cancel</a>.
+                <p class="errorMsg" style="display: block;">Please read and confirm our terms and conditions.</p>
+            </div>
+        </div>
+
+   </div>
+   </div>
+
+
+    <hr>
+    <h1 class="testHead">List</h1>
+    <div id="page" class="pageLayout sidebarRight">
+
+        <h2 class="testHeadSub">Sub categories</h2>
+        <div id="content">
+
+            <ul class="subcatList clear">
+                <li></li>
+                <li>
+                    <div class="box">
+                        <h3><a href="#" id="moreSubCat_1">Category 1</a></h3>
+                        <ul class="content" style="height: 146px;">
+                            <li class="subcatPic"><a href="#"><img alt="" src="../../../source/out/pictures/icon/fuer_sie_1(2)_cico.jpg"></a></li>                                                                                                                                                                                               <li>
+                            <li><a href="#"><strong>SubCategory 1</strong></a></li>                                                                                                                                                                                           <li>
+                            <li><a href="#"><strong>SubCategory 2</strong></a></li>
+                        </ul>
+                    </div>
+                    <div class="box">
+                        <h3><a href="#" id="moreSubCat_2">Category 2</a></h3>
+                        <div class="content catPicOnly" style="height: 166px;">
+                            <div class="subcatPic">
+                                <a href="#"><img alt="" src="../../../source/out/pictures/icon/access_1_cico.jpg"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3><a href="#" id="moreSubCat_3">Category 3</a></h3>
+                        <div class="content catPicOnly">
+                            <div class="subcatPic">
+                                <a href="#"><img alt="" src="../../../source/out/pictures/icon/neopren_1_cico.jpg"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h3><a href="#" id="moreSubCat_4">Category 4</a></h3>
+                        <div class="content catPicOnly">
+                            <div class="subcatPic">
+                                <a href="#"><img alt="" src="../../../source/out/pictures/icon/bekleidung_sonstiges_1_cico.jpg"></a>
+                            </div>
+                        </div>
+                    </div>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Locator</h2>
+    <div id="page" class="pageLayout sidebarRight">
+        <div id="content">
+
+            <div class="hreview-aggregate hproduct" id="details">
+                <h2 class="pageHead category">Category 1</h2>
+                <div class="detailsParams listRefine bottomRound">
+                    <div id="detailsItemsPager" class="pager refineParams clear">
+                        <a href="#" class="prev" id="linkPrevArticle">Previous Product</a>
+                        <span class="page">PRODUCT 10 OF 12</span>
+                        <a class="next" href="#" id="linkNextArticle">Next Product</a>
+                    </div>
+                </div>
+            </div>
+
+            <h1 class="pageHead">Category 1 <a title="" href="#" id="rssActiveCategory" class="rss external"><img alt="" src="../../../source/out/azure/img/rss.png"><span class="FXgradOrange corners glowShadow">RSS</span></a></h1>
+            <div class="listRefine clear bottomRound">
+                <form id="filterList" name="_filterlist" action="#" method="post">
+                    <div class="listFilter fnSubmit clear">
+                        <div class="dropDown">
+                            <p class="underlined">
+                                <label>Filter 1: </label>
+                                <span>Please choose</span>
+                            </p>
+                            <ul class="drop FXgradGreyLight shadow" style="display: none;">
+                                    <li><a href="#" rel="value-1">Value 1</a></li>
+                                    <li><a href="#" rel="value-2">Value 2</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropDown">
+                            <p class="underlined">
+                                <label>Filter 2: </label>
+                                <span>Please choose</span>
+                            </p>
+                            <ul class="drop FXgradGreyLight shadow" style="display: none;">
+                                    <li><a href="#" rel="value-1">Value 1</a></li>
+                                    <li><a href="#" rel="value-2">Value 2</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="refineParams clear">
+
+                    <div id="itemsPager" class="pager ">
+                        <a class="page active" href="#">1</a>
+                        <a class="page" href="#">2</a>
+                        <a href="#" class="next">Next</a>
+                    </div>
+
+                    <div id="sortItems" class="dropDown">
+                        <p class="underlined">
+                            <label>Sort by:</label>
+                            <span>Choose</span>
+                        </p>
+                        <ul class="drop FXgradGreyLight shadow" style="display: none;">
+                            <li class="asc"><a href="#"><span>Title</span></a></li>
+                            <li class="desc"><a href="#"><span>Title</span></a></li>
+                            <li class="asc"><a href="#"><span>Price</span></a></li>
+                            <li class="desc"><a href="#"><span>Price</span></a></li>
+                        </ul>
+                    </div>
+                    <div id="itemsPerPage" class="dropDown">
+                        <p class="underlined">
+                            <label>Products per page:</label>
+                            <span>12</span>
+                        </p>
+                        <ul class="drop FXgradGreyLight shadow" style="display: none;">
+                            <li><a class="selected" rel="nofollow" href="#">12</a></li>
+                            <li><a rel="nofollow" href="#">16</a></li>
+                            <li><a rel="nofollow" href="#">24</a></li>
+                            <li><a rel="nofollow" href="#">32</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="viewOptions" class="dropDown">
+                        <p class="underlined">
+                            <label>View:</label>
+                            <span>Grid</span>
+                        </p>
+                        <ul class="drop FXgradGreyLight shadow" style="display: none;">
+                            <li><a href="#">Double grid</a></li>
+                            <li><a class="selected" href="#">Grid</a></li>
+                            <li><a href="#">Line</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <h1 class="pageHead">Category 1 <a title="" href="#" id="rssActiveCategory" class="rss external"><img alt="" src="../../../source/out/azure/img/rss.png"><span class="FXgradOrange corners glowShadow">RSS</span></a></h1>
+
+            <div class="listRefine clear bottomRound" style="margin-bottom:100px;">
+                <div class="refineParams clear">
+                    <div id="sortItems" class="dropDown" style="margin-right:0px;">
+                        <p class="underlined">
+                            <label>Sort by:</label>
+                            <span>Choose</span>
+                        </p>
+                        <ul class="drop FXgradGreyLight shadow" style="width: 142px; display: block;">
+                            <li class="value">
+                                <p class="">
+                                    <label>Sort by:</label>
+                                    <span>Choose</span>
+                                </p>
+                            </li>
+                            <li class="asc"><a href="#"><span>Title</span></a></li>
+                            <li class="desc"><a href="#"><span>Title</span></a></li>
+                            <li class="asc"><a href="#"><span>Price</span></a></li>
+                            <li class="desc"><a href="#"><span>Price</span></a></li>
+                        </ul>
+                    </div>
+                    <div id="itemsPerPage" class="dropDown" style="margin-right:30px;">
+                        <p class="underlined">
+                            <label>Products per page:</label>
+                            <span>12</span>
+                        </p>
+                        <ul class="drop FXgradGreyLight shadow" style="width: 177px; display: block;">
+                            <li class="value">
+                                <p class="">
+                                    <label>Products per page:</label>
+                                    <span>12</span>
+                                </p>
+                            </li>
+                            <li><a class="selected" rel="nofollow" href="#">12</a></li>
+                            <li><a rel="nofollow" href="#">16</a></li>
+                            <li><a rel="nofollow" href="#">24</a></li>
+                            <li><a rel="nofollow" href="#">32</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="viewOptions" class="dropDown" style="margin-right:70px;">
+                        <p class="underlined">
+                            <label>View:</label>
+                            <span>Grid</span>
+                        </p>
+                        <ul class="drop FXgradGreyLight shadow" style="width: 177px; display: block;">
+                            <li class="value">
+                                <p class="">
+                                    <label>View:</label>
+                                    <span>Grid</span>
+                                </p>
+                            </li>
+                            <li><a href="#">Double grid</a></li>
+                            <li><a class="selected" href="#">Grid</a></li>
+                            <li><a href="#">Line</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Product grid view</h2>
+    <div id="page" class="pageLayout sidebarRight">
+        <div id="content">
+
+            <ul id="productList" class="gridView clear">
+                <li class="productData">
+                    <a title="" class="titleBlock title fn" href="#" id="productList_1"> Product 1 <div class="gridPicture"><img alt="" src="../../../source/out/pictures/0/core_gts_1_th.jpg"></div></a>
+                    <div class="priceBlock">
+                        <span class="priceOld"> RRP <del>999,00 €</del></span>
+                        <strong>123,00 € *</strong>
+                        <a title="To cart" class="toCart button" href="#">To cart</a>
+                    </div>
+                </li>
+                <li class="productData">
+                    <a title="" class="titleBlock title fn" href="#" id="productList_2"> Product 2 <div class="gridPicture"><img alt="" src="../../../source/out/pictures/0/nkb_evo_2010_1_th.jpg"></div></a>
+                    <div class="priceBlock">
+                        <strong>123,00 € *</strong>
+                        <span class="pricePerUnit" id="productPricePerUnit_1">30 g | 0,42 €/g</span>
+                        <a title="To cart" class="toCart button" href="#">To cart</a>
+                    </div>
+                </li>
+                <li class="productData">
+                    <a title="" class="titleBlock title fn" href="#" id="productList_3"> Product 3 <div class="gridPicture"><img alt="" src="../../../source/out/pictures/0/core_riot_xr_1_th"></div></a>
+                    <div class="priceBlock">
+                        <strong>123,00 € *</strong>
+                        <a class="toCart button" href="#">more Info</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Product double grid view</h2>
+    <div id="page" class="pageLayout sidebarRight">
+        <div id="content">
+
+            <ul id="productList" class="infogridView clear">
+                <li class="productData">
+                    <form method="post" action="#" name="tobasketproductList_1">
+                        <a class="gridPicture" href="#"><img alt="" src="../../../source/out/pictures/0/core_gts_1_th.jpg"></a>
+                        <div class="listDetails">
+                            <div class="titleBox">
+                                <a title="Kite CORE GTS" class="title fn" href="#" id="productList_1">Product 1</a>
+                            </div>
+                            <div class="selectorsBox"></div>
+                            <div class="priceBox">
+                                <div class="content">
+                                    <span class="oldPrice">RRP <del>999,00 €</del></span>
+                                        <span class="price">879,00 € *</span>
+                                </div>
+                            </div>
+                            <div class="buttonBox"><button class="submitButton largeButton" type="submit">To cart</button></div>
+                        </div>
+                    </form>
+                </li>
+                <li class="productData">
+                    <form method="post" action="#" name="tobasketproductList_2">
+                        <a class="gridPicture" href="#"><img alt="Kite CORE GTS" src="../../../source/out/pictures/0/nkb_evo_2010_1_th.jpg"></a>
+                        <div class="listDetails">
+                            <div class="titleBox">
+                                <a title="Kite CORE GTS" class="title fn" href="#" id="productList_1">Product 2</a>
+                            </div>
+                            <div class="selectorsBox"></div>
+                            <div class="priceBox">
+                                <div class="content">
+                                    <span class="price">879,00 € *</span>
+                                </div>
+                            </div>
+                            <div class="buttonBox"><button class="submitButton largeButton" type="submit">To cart</button></div>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">Product line view</h2>
+    <div id="page" class="pageLayout sidebarRight">
+        <div id="content">
+
+            <ul id="productList" class="lineView clear">
+                <li class="productData">
+                    <form class="oxProductForm" method="post" action="#" name="tobasket.productList_1">
+                        <div class="pictureBox">
+                            <a title="Kite CORE GTS" class="title" href="#"><img alt="Kite CORE GTS" src="../../../source/out/pictures/0/core_gts_1_th.jpg"></a>
+                        </div>
+                        <div class="infoBox">
+                            <div class="info">
+                                <a title="" class="title" href="#" id="productList_1">Product 1</a>
+                                <div class="variants"></div>
+                            </div>
+                            <div class="description">The sports version of the GT</div>
+                        </div>
+                        <div class="functions">
+                            <span class="oldPrice">RRP <del>999,00 €</del></span>
+                            <span class="price" id="productPrice_productList_1">879,00 € *</span>
+                            <div class="tobasketFunction clear">
+                                <input type="text" class="textbox" autocomplete="off" size="3" value="1" name="am" id="amountToBasket_productList_1">
+                                <button class="submitButton largeButton" type="submit" id="toBasket_productList_1">add to Cart</button>
+                            </div>
+                       </div>
+                </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="testHeadSub">List paging</h2>
+    <div id="page" class="pageLayout sidebarRight">
+        <div id="content">
+            <div class="refineParams clear bottomParams">
+                <div id="itemsPagerbottom" class="pager lineBox">
+                    <a class="page active" href="#">1</a>
+                    <a class="page" href="#">2</a>
+                    <a href="#" class="next">Next</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h1 class="testHead">Details</h1>
+    <h2 class="testHead">Picture</h2>
+    <div id="page" class="pageLayout sidebarRight" style="height:410px">
+        <div id="content">
+            <div id="productInfo">
+                <div id="detailsMain">
+                    <div class="detailsInfo clear">
+                        <a id="zoomTrigger" href="#" rel="nofollow" alt="Zoom">Zoom</a>
+                        <div class="picture">
+                            <div style="top: 0px; z-index: 99; position: relative;" id="wrap"><a rel="adjustY:-2, zoomWidth:'354', fixZoomWindow:'390', trImg:'../../../source/out/azure/img/dot.png', loadingText:'Loading...'" id="zoom1" class="cloud-zoom" href="../../../source/out/pictures/master/1/core_gts_1.jpg" style="position: relative; display: block;">
+                                <img alt="Kite CORE GTS " src="../../../source/out/pictures/1/core_gts_1.jpg" style="display: inline-block;" />
+                            <div style="z-index: 98; position: absolute; width: 180.992px; height: 173.835px; opacity: 0.5; left: 151px; top: 24px; background-position: -131px -23px;" class="cloud-zoom-lens"></div></a><div style="background-image: url(&quot;../../../source/out/azure/img/dot.png&quot;); z-index: 999; position: absolute; width: 340px; height: 340px; left: 20px; top: 1px; cursor: move;" class="mousetrap"></div><div style="position: absolute; left: 390px; top: -2px; width: 354px; height: 340px; background-image: url(&quot;../../../source/out/pictures/master/1/core_gts_1.jpg&quot;); z-index: 99; background-position: -256px -43px;" class="cloud-zoom-big" id="cloud-zoom-big"></div></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="testHead">Main info</h2>
+    <div id="page" class="pageLayout sidebarRight" style="height:440px">
+        <div id="content">
+            <div id="productInfo">
+                <div id="detailsMain">
+                    <form>
+                    <div class="detailsInfo clear">
+                        <div class="information" style="float:left;width:300px;height:400px">
+                            <h1 id="productTitle">
+                                <span>Kite CORE GTS </span>
+                            </h1>
+                            <a id="productLinks" href="#priceinfo" class="selector corners FXgradBlueDark" style="top: -3px; left: 151px;"><img alt="Select" longdesc="../../../source/out/azure/img/selectbutton.png" src="../../../source/out/azure/img/selectbutton.png"></a>
+                            <span class="itemCode" id="productArtnum">Art.No.: 1208</span>
+                            <div class="rating clear">
+                                <ul class="rating" id="itemRating">
+                                    <li style="width: 60%;" class="currentRate">
+                                        <a title="Rate this product !"></a>
+                                        <span title="100" class="value-title"></span>
+                                    </li>
+                                    <li class="s1">
+                                        <a title="Rate this product !" href="#review" rel="nofollow" class="ox-write-review ox-rateindex-1"></a>
+                                    </li>
+                                    <li class="s2">
+                                        <a title="Rate this product !" href="#review" rel="nofollow" class="ox-write-review ox-rateindex-2"></a>
+                                    </li>
+                                    <li class="s3">
+                                        <a title="Rate this product !" href="#review" rel="nofollow" class="ox-write-review ox-rateindex-3"></a>
+                                    </li>
+                                    <li class="s4">
+                                        <a title="Rate this product !" href="#review" rel="nofollow" class="ox-write-review ox-rateindex-4"></a>
+                                    </li>
+                                    <li class="s5">
+                                        <a class="ox-write-review ox-rateindex-5" title="Rate this product !" href="#review" rel="nofollow"> </a>
+                                    </li>
+                                    <li class="ratingValue">
+                                        <a href="#" rel="nofollow" class="rates" id="itemRatingText">
+                                            (<span class="count">2</span>)
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="productShortdesc" class="shortDescription description">Short sleeve shirt for men</div>
+                            <div class="selectorsBox fnSubmit clear" id="variants">
+                                <div id="selectlist_0" class="dropDown">
+                                    <p class="selectorLabel underlined">
+                                        <label>Size:</label>
+                                        <span>Please choose</span>
+                                    </p>
+                                    <input type="hidden" value="" name="varselid[0]">
+                                    <ul class="drop vardrop FXgradGreyLight shadow" style="width: 210px; display: none;">
+                                        <li class="">
+                                            <a class="" href="#" rel="8a34d35131d5f014799a4115a815116d">W 32/L 32</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="selectlist_1" class="dropDown">
+                                    <p class="selectorLabel">
+                                        <label>Color:</label>
+                                        <span>Please choose</span>
+                                    </p>
+                                    <input type="hidden" value="" name="varselid[1]">
+                                    <ul class="drop vardrop FXgradGreyLight shadow" style="width: 210px; display: block;">
+                                        <li class="value">
+                                            <p class="selectorLabel">
+                                                <label>Color:</label>
+                                                <span>Please choose</span>
+                                            </p>
+                                        </li>
+                                        <li class="">
+                                            <a class="" href="#" rel="9594eec95be70e7b1710f730fdda33d9">Blue</a>
+                                        </li>
+                                        <li class="">
+                                            <a class="" href="#" rel="9594eec95be70e7b1710f730fdda33d9">Green</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="tobasket" style="top:230px;width:500px">
+                                <p class="oldPrice">
+                                    <strong>RRP <del>999,00 €</del></strong>
+                                </p>
+                                <div class="tobasketFunction clear">
+                                    <label class="price" id="productPrice">
+                                        <strong>879,00 € *</strong>
+                                    </label>
+                                    <a id="amountPrice" href="#priceinfo" class="selector corners FXgradBlueDark" style="left: 82px; position: static;"><img alt="Select" longdesc="../../../source/out/azure/img/selectbutton.png" src="../../../source/out/azure/img/selectbutton.png"></a>
+
+                                    <input type="text" class="textbox" autocomplete="off" size="3" value="1" name="am" id="amountToBasket">
+                                    <button class="submitButton largeButton" type="submit" id="toBasket">add to Cart</button>
+                                    <button class="submitButton largeButton" disabled="disabled" type="submit" id="toBasket">add to Cart</button>
+                                </div>
+                                <div class="additionalInfo clear">
+                                    <span class="stockFlag onStock">Ready for shipping</span>
+                                    <span id="productDeliveryTime">Delivery time: 1 - 3 weeks</span>
+                                </div>
+                                <div class="additionalInfo clear">
+                                    <span class="stockFlag lowStock">Low stock - order quickly !</span>
+                                </div>
+                                <div class="additionalInfo clear">
+                                    <span class="stockFlag notOnStock">Not in stock</span>
+                                </div>
+                                <div class="social">
+                                  <div class="socialButton"></div>
+                                  <div class="socialButton"> </div>
+                                </div>
+                            </div>
+
+                            <div class="tobasket" style="top:230px;left:440px;width:500px">
+                                <p class="oldPrice">
+                                    <strong>RRP <del>999,00 €</del></strong>
+                                </p>
+                                <div class="tobasketFunction clear">
+                                    <label class="price" id="productPrice">
+                                        <strong>879,00 € *</strong>
+                                    </label>
+                                    <a id="amountPrice" href="#priceinfo" class="selector corners FXgradBlueDark selected" style="left: 92px; position: absolute;"><img alt="Select" longdesc="../../../source/out/azure/img/selectbutton-on.png" src="../../../source/out/azure/img/selectbutton-on.png"></a>
+                                    <ul id="priceinfo" class="pricePopup Links corners shadow" style="top: 13px; left: 82px; width: 220px; display: block;">
+                                        <li><span><h4>Block price</h4></span></li>
+                                        <li><label>from</label><span>pcs</span></li>
+                                        <li><label>5</label><span>27,90 €</span></li>
+                                        <li><label>10</label><span>25,90 €</span></li>
+                                        <li><label>20</label><span>21,90 €</span></li>
+                                    </ul>
+                                    <input type="text" class="textbox" autocomplete="off" size="3" value="1" name="am" id="amountToBasket">
+                                    <button class="submitButton largeButton" type="submit" id="toBasket">add to Cart</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="information" style="float:left;width:300px">
+                            <h1 id="productTitle">
+                                <span>Kite CORE GTS </span>
+                            </h1>
+                            <a id="productLinks" href="#priceinfo" class="selector corners FXgradBlueDark" style="top: -3px; left: 151px;"><img alt="Select" longdesc="../../../source/out/azure/img/selectbutton-on.png" src="../../../source/out/azure/img/selectbutton-on.png"></a>
+                            <ul class="actionLinks corners shadow" style="top: -7px; left: 0px; padding-top: 31px; width: 270px; display: block; height: auto; opacity: 1;">
+                                <li>
+                                    <span>
+                                        <a rel="nofollow" href="#" class="" id="addToCompare">compare</a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span><a href="#" rel="nofollow" id="suggest">recommend</a></span>
+                                </li>
+                                <li>
+                                    <span>
+                                        <a class="details" href="#" rel="nofollow" id="recommList">Add to Listmania List</a>
+                                    </span>
+                                </li>
+                                <li><span><a rel="nofollow" href="#" id="linkToNoticeList">Add to Wish List</a></span></li>
+                                <li><span><a rel="nofollow" href="#" id="linkToWishList">Add to Gift Registry</a></span></li>
+                                <li><a href="#" rel="nofollow" class="priceAlarmLink" id="priceAlarmLink"><b>[!]</b> Wished Price</a></li>
+                            </ul>
+
+                        </div>
+
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="testHead">More picture thumbnails</h2>
+    <div id="page" class="pageLayout sidebarRight" style="height:200px">
+        <div id="content">
+            <div id="productInfo">
+                <div id="detailsMain">
+                    <div class="otherPictures">
+                        <div class="shadowLine"></div>
+                        <ul class="clear">
+                            <li>
+                                <a href="#" class="cloud-zoom-gallery">
+                                    <span class="marker"><img alt="" src="../../../source/out/azure/img/marker.png"></span>
+                                    <span class="artIcon"><img alt="" src="../../../source/out/pictures/1/img_0027_1_ico.jpg"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="cloud-zoom-gallery">
+                                    <span class="marker"><img alt="" src="../../../source/out/azure/img/marker.png"></span>
+                                    <span class="artIcon"><img alt="" src="../../../source/out/pictures/2/img_0030_ico.jpg"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="cloud-zoom-gallery">
+                                    <span class="marker"><img alt="" src="../../../source/out/azure/img/marker.png"></span>
+                                    <span class="artIcon"><img alt="" src="../../../source/out/pictures/3/img_0032_ico.jpg"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="cloud-zoom-gallery" >
+                                    <span class="marker"><img alt="" src="../../../source/out/azure/img/marker.png"></span>
+                                    <span class="artIcon"><img alt="" src="../../../source/out/pictures/4/img_0019_1_ico.jpg"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="cloud-zoom-gallery">
+                                    <span class="marker"><img alt="" src="../../../source/out/azure/img/marker.png"></span>
+                                    <span class="artIcon"><img alt="" src="../../../source/out/pictures/5/img_0022_ico.jpg"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="cloud-zoom-gallery">
+                                    <span class="marker"><img alt="" src="../../../source/out/azure/img/marker.png"></span>
+                                    <span class="artIcon"><img alt="" src="../../../source/out/pictures/6/img_0024_ico.jpg"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h1 class="testHead">Account</h1>
+    <h2 class="testHead">Order list</h2>
+      <div id="page" class="pageLayout sidebarRight">
+        <div id="content">
+            <ul class="orderList">
+                <li>
+                    <table class="orderitems">
+                        <colgroup><col width="50%" span="2"></colgroup>
+                        <tr>
+                            <td valign="top">
+                                <dl>
+                                    <dt title="Order Date:">
+                                        <strong>May 25, 2011</strong>
+                                        <span>12:33:58</span>
+                                    </dt>
+                                    <dd>
+                                        <strong>Status:</strong>
+                                        <span>
+                                            <span class="note">Not yet shipped.</span>
+                                        </span>
+                                    </dd>
+                                    <dd>
+                                        <strong>Order No.:</strong>
+                                        <span>2</span>
+                                    </dd>
+                                    <dd>
+                                        <strong>Shipment to:</strong>
+                                        <span>John Doe</span>
+                                    </dd>
+                                </dl>
+                            </td>
+                            <td valign="top">
+                                <h3>Cart:</h3>
+                                <table class="form orderhistory">
+                                    <colgroup><col width="98%"><col width="1%"></colgroup>
+                                    <tr>
+                                        <td>
+                                            <a class="artlink" href="#">
+                                                Transport container BARREL  <span class="amount"> - 1 qty.</span>
+                                            </a>
+                                        </td>
+                                        <td align="right"></td>
+                                    </tr>
+                                    <tr>                                                                                                                                                                                                            <tr id="accOrderAmount_2_2">
+                                        <td>
+                                            <a class="artlink" href="#">
+                                                Sticker set MIX  <span class="amount"> - 1 qty.</span>
+                                            </a>
+                                        </td>
+                                        <td align="right"></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+
+    <h2 class="testHead">Compare</h2>
+    <div id="page" class="pageLayout sidebarRight">
+        <div id="content">
+            <table id="compareList">
+            <tr>
+                <td style="vertical-align:top;">
+                    <div style="overflow: hidden;" id="compareFirstCol">
+                        <table style="width:200px; border-collapse:collapse;">
+                        <tr id="firstDataTr">
+                            <td class="firstCol" style="height: 461px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="firstCol" style="height: 33px;">Product Attributes</td>
+                        </tr>
+                        <tr>
+                            <td id="cmpAttrTitle_1" class="firstCol" style="height: 32px;">Included in delivery:</td>
+                        </tr>
+                        <tr>
+                            <td id="cmpAttrTitle_2" class="firstCol" style="height: 44px;">Area of Application:</td>
+                        </tr>
+                        </table>
+                    </div>
+                </td>
+                <td style="vertical-align:top;">
+                    <div style="overflow: hidden; width: 545px; position: relative; padding: 0px;" id="compareDataDiv">
+                        <div class="jspContainer" style="width: 545px; height: 570px;"><div class="jspPane" style="padding: 0px; top: 0px; width: 545px;">
+                            <table>
+                                <tr id="firstTr">
+                                    <td valign="top">
+                                        <div class="lineBox clear">
+                                            <span>Move</span>
+                                            <a class="navigation moveNext" href="#" rel="nofollow">»</a>
+                                        </div>
+                                        <div class="compareItem">
+                                            <a rel="product" class="picture url" href="#">
+                                                <img alt="Kite LIQUID FORCE ENVY " src="../../../source/out/pictures/0/lf_envy_2010_1_th.jpg" class="photo">
+                                            </a>
+                                            <strong class="title">
+                                                <a rel="product" href="#" class="fn">Kite LIQUID FORCE ENVY </a>
+                                            </strong>
+                                            <span class="identifier">
+                                                <span title="sku" class="type">Art.No.:</span>
+                                                <span class="value">1204</span>
+                                            </span>
+                                            <form method="post">
+                                                <div class="variants"></div>
+                                                <div class="tobasket">
+                                                    <div class="tobasketFunction clear">
+                                                        <label class="price" id="productPrice">
+                                                            <strong>1.019,00 €</strong>
+                                                        </label>
+                                                        <p class="fn clear">
+                                                            <input type="text" title="Quantity:" class="textbox" autocomplete="off" size="3" value="1" name="am">
+                                                            <button class="submitButton largeButton" type="button">add to Cart</button>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td valign="top">
+                                        <div class="lineBox clear">
+                                            <a class="navigation movePrev" href="#" rel="nofollow">«</a>
+                                            <span>Move</span>
+                                            <a class="navigation moveNext" href="#" rel="nofollow">»</a>
+                                        </div>
+                                        <div class="compareItem">
+                                            <a rel="product" class="picture url" href="#">
+                                                <img alt="Kite RRD PASSION 2010 " src="../../../source/out/pictures/0/rrd_passion_2010_1_th.jpg" class="photo">
+                                            </a>
+                                            <strong class="title">
+                                                <a rel="product" href="#" class="fn">Kite RRD PASSION 2010 </a>
+                                            </strong>
+                                            <span class="identifier">
+                                                <span title="sku" class="type">Art.No.:</span>
+                                                <span class="value">1206</span>
+                                            </span>
+                                            <form>
+                                                <div class="variants"></div>
+                                                <div class="tobasket">
+                                                    <div class="tobasketFunction clear">
+                                                        <label class="price" id="productPrice">
+                                                            <strong>589,00 €</strong>
+                                                        </label>
+                                                        <p class="fn clear">
+                                                            <input type="text" title="Quantity:" class="textbox" autocomplete="off" size="3" value="1" name="am">
+                                                            <button class="submitButton largeButton" type="button">add to Cart</button>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center">
+                                        <form>
+                                            <div>
+                                                <button name="send" type="button" class="submitButton">remove</button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td align="center">
+                                        <form>
+                                            <div>
+                                                <button name="send" type="submit" class="submitButton">remove</button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <div>kite, bag, CPR control system, pump</div>
+                                    </td>
+                                    <td valign="top">
+                                        <div>kite, bag</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">
+                                        <div>Allround</div>
+                                    </td>
+                                    <td valign="top">
+                                        <div>Freeride</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+
+    <hr>
+    <h1 class="testHead">Footer</h1>
+
+    <div id="page">
+        <div id="footer">
+            <div class="corners" id="panel">
+                <div class="bar">
+                    <form method="post">
+                        <div class="newsletter corners">
+                            <label>Newsletter</label>
+                            <input type="text" value="" name="editval[oxuser__oxusername]" class="textbox">
+                            <button type="submit" class="submitButton largeButton">Subscribe</button>
+                       </div>
+                    </form>
+                    <div class="deliveryinfo">
+                        <a rel="nofollow" href="#">* All prices incl. VAT, plus Shipping</a>
+                    </div>
+                </div>
+
+                <dl id="footerServices" class="services" style="height: 280px;">
+                    <dt>SERVICE</dt>
+                    <dd>
+                        <ul class="list services">
+                            <li><a href="#">Service 1</a></li>
+                            <li><a href="#">Service 2</a></li>
+                            <li><a href="#">Service 3</a></li>
+                            <li><a href="#">Service 4</a></li>
+                            <li><a rel="nofollow" href="#">Service 5</a></li>
+                            <li><a rel="nofollow" href="#">Service 6</a></li>
+                            <li><a rel="nofollow" href="#">Service 7</a></li>
+                            <li><a rel="nofollow" href="#">Service 8</a></li>
+                            <li><a rel="nofollow" href="#">Service 9</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+
+                <dl id="footerServices" class="services" style="height: 280px;">
+                    <dt>INFORMATION</dt>
+                    <dd>
+                        <ul class="list services">
+                            <li><a href="#">Information 1</a></li>
+                            <li><a href="#">Information 2</a></li>
+                            <li><a href="#">Information 3</a></li>
+                            <li><a href="#">Information 4</a></li>
+                            <li><a rel="nofollow" href="#">Information 5</a></li>
+                            <li><a rel="nofollow" href="#">Information 6</a></li>
+                            <li><a rel="nofollow" href="#">Information 7</a></li>
+                            <li><a rel="nofollow" href="#">Information 8</a></li>
+                            <li><a rel="nofollow" href="#">Information 9</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+
+                <dl id="footerManufacturers" class="manufacturers" style="height: 280px;">
+                    <dt>BRANDS</dt>
+                    <dd>
+                        <ul class="list services">
+                            <li><a href="#">Brand 1</a></li>
+                            <li><a href="#">Brand 2</a></li>
+                            <li><a href="#">Brand 3</a></li>
+                            <li><a href="#">Brand 4</a></li>
+                            <li><a href="#">Brand 5</a></li>
+                            <li><a href="#">Brand 6</a></li>
+                            <li><a href="#">Brand 7</a></li>
+                            <li><a href="#">Brand 8</a></li>
+                            <li><a href="#">Brand 9</a></li>
+                        </ul>
+                    </dd>
+                </dl>
+
+
+                <dl id="footerCategories" class="categories" style="height: 280px;">
+                    <dt>CATEGORIES</dt>
+                    <dd>
+                        <ul class="list services">
+                            <li><a href="#">Category 1</a></li>
+                            <li><a href="#">Category 2</a></li>
+                            <li><a href="#">Category 3</a></li>
+                            <li><a href="#">Category 4</a></li>
+                            <li><a href="#">Category 5</a></li>
+                            <li><a href="#">Category 6</a></li>
+                            <li><a href="#">Category 7</a></li>
+                            <li><a href="#">Category 8</a></li>
+                            <li><a href="#">Category 9</a></li>
+                        </ul>
+                    </dd>
+                  </dl>
+
+              </div>
+            <div class="copyright"><img src="../../../source/out/azure/img/logo_small.png"></div>
+            <div class="text">
+                <div>OXID Online Shop - All about watersports, sportswear and fashion </div>
+                <p>Extensive product range and fast shipping guaranteed! </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OX>
+    <OXMENU id="NAVIGATION_ESHOPADMIN">
+        <MAINMENU id="mxextensions">
+            <SUBMENU id="mxmodule" cl="module" list="module_list">
+                <TAB id="tbclmodule_testtab" cl="module_sortlist" />
+            </SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+</OX>

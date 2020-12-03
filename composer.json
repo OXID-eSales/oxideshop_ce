@@ -35,8 +35,8 @@
         "phpspec/prophecy-phpunit": "^2.0"
     },
     "require-dev": {
-        "mikey179/vfsstream": "~1.4.0",
         "oxid-esales/flow-theme": "dev-master",
+        "mikey179/vfsstream": "~1.6.8",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-master",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "dev-master",
@@ -51,7 +51,7 @@
         "vimeo/psalm": "^3.8",
 	"oxid-esales/codeception-modules": "dev-extract_traditional_tests",
         "oxid-esales/codeception-page-objects": "dev-master",
-       "phpunit/phpunit": "^9",
+       "phpunit/phpunit": "9.2.6",
 	"codeception/module-asserts": "^1.1",
         "oxid-esales/developer-tools": "dev-master-add-reset-database-command"
     },
@@ -62,7 +62,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "OxidEsales\\EshopCommunity\\Tests\\": "./tests"
+            "OxidEsales\\EshopCommunity\\Tests\\": ["./tests", "./tests_traditional/"]
         }
     },
     "minimum-stability": "dev",

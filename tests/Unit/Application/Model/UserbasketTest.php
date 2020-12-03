@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
 use \oxDb;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use \oxRegistry;
 use \oxTestModules;
@@ -78,11 +79,9 @@ class UserbasketTest extends \OxidTestCase
     }
 
     /**
-     * Testing use case:
-     *
-     * Previously gift registry was public by default, now it is not. Bug or feature?
+     * Basket must be private by default
      */
-    public function testIfNewlyCreatedBasketIsByDefaultPublic()
+    public function testIfNewlyCreatedBasketIsByDefaultPrivate()
     {
         // deleting for lighter teardown
         $oUserBasket = oxNew('oxUserBasket');
@@ -95,7 +94,33 @@ class UserbasketTest extends \OxidTestCase
 
         $oLoadedBasket = oxNew('oxUserBasket');
         $oLoadedBasket->load("testUserBasket");
-        $this->assertEquals(1, $oLoadedBasket->oxuserbaskets__oxpublic->value);
+        $this->assertEquals(0, $oLoadedBasket->oxuserbaskets__oxpublic->value);
+    }
+
+    public function testIfNewlyCreatedNoticeListIsByDefaultPublic()
+    {
+        $newUserBasket = oxNew('oxUserBasket');
+        $newUserBasket->setId("noticelist");
+        $newUserBasket->oxuserbaskets__oxtitle = new Field('noticelist', Field::T_RAW);
+        $newUserBasket->save();
+
+        $userBasket = oxNew('oxUserBasket');
+        $userBasket->load("noticelist");
+
+        $this->assertEquals(1, $userBasket->oxuserbaskets__oxpublic->value);
+    }
+
+    public function testIfNewlyCreatedWishListIsByDefaultPublic()
+    {
+        $newUserBasket = oxNew('oxUserBasket');
+        $newUserBasket->setId("wishlist");
+        $newUserBasket->oxuserbaskets__oxtitle = new Field('wishlist', Field::T_RAW);
+        $newUserBasket->save();
+
+        $userBasket = oxNew('oxUserBasket');
+        $userBasket->load("wishlist");
+
+        $this->assertEquals(1, $userBasket->oxuserbaskets__oxpublic->value);
     }
 
     /**

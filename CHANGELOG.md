@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Email validation service moved to Utility `OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidationService`
 - Shop-setup command does not add admin user
 - Module template file path should be registered in metadata.php as a relative path to the module root directory 
+- Change default value for `oxpublic` field in `oxuserbaskets` table from `1` to `0`
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

@@ -1557,7 +1557,7 @@ CREATE TABLE `oxuserbaskets` (
   `OXUSERID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'User id (oxuser)',
   `OXTITLE` varchar(255) NOT NULL default '' COMMENT 'Basket title',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  `OXPUBLIC` tinyint(1) DEFAULT '1' NOT NULL COMMENT 'Is public',
+  `OXPUBLIC` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'Is public',
   `OXUPDATE` INT NOT NULL default 0 COMMENT 'Update timestamp',
   PRIMARY KEY  (`OXID`),
   KEY `OXUPDATE` (`OXUPDATE`),

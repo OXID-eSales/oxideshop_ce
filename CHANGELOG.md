@@ -6,25 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.7.0] - Unreleased
 
-### Fixed
-- Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
-
 ### Deprecated
-- `\OxidEsales\EshopCommunity\Core\Config::getModulesDir()`
 - Support for Module source-directory and target-directory in composer.json
     - Method:
         - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getPackageSourcePath()`
         - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getTargetDirectory()`
         - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::setTargetDirectory()`
         - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getSourceDirectory()`
-
-### Fixed
-- Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
-
-- Deprecated
+- `OxidEsales\EshopCommunity\Core\Config::getModulesDir()`
 - `Path` parameter from moduleConfiguration:
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getPath()`
     - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setPath()`
+
+### Fixed
+- Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
 
 ## [6.6.0] - 2020-11-10
 

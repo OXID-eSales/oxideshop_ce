@@ -1,0 +1,47 @@
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="bootstrap.php"
+         cacheTokens="true"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         forceCoversAnnotation="false"
+         printerClass="\OxidEsales\TestingLibrary\Printer"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         verbose="false">
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true"
+                   processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../source/Application</directory>
+            <directory suffix=".php">../source/Core</directory>
+            <directory suffix=".php">../source/Internal</directory>
+            <directory suffix=".php">../source/bin</directory>
+            <directory suffix=".php">../source/migration</directory>
+            <directory suffix=".php">../source/modules</directory>
+            <directory suffix=".php">../source/Setup/Controller</directory>
+            <directory suffix=".php">../source/Setup/Exception</directory>
+            <file>../source/Setup/Core.php</file>
+            <file>../source/Setup/Database.php</file>
+            <file>../source/Setup/Language.php</file>
+            <file>../source/Setup/Session.php</file>
+            <file>../source/Setup/Setup.php</file>
+            <file>../source/Setup/Utilities.php</file>
+            <file>../source/Setup/View.php</file>
+            <exclude>
+                <directory suffix=".php">../source/Application/views</directory>
+                <directory suffix=".php">../source/Application/translations</directory>
+                <directory suffix=".php">../source/Core/Smarty</directory>
+                <file>../source/Core/Autoload/UnifiedNameSpaceClassMap.php</file>
+                <file>../source/Setup/De/lang.php</file>
+                <file>../source/Setup/En/lang.php</file>
+                <file>../source/Application/Controller/Admin/ShopCountries.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

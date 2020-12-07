@@ -667,47 +667,6 @@ class FunctionalityInAdminTest extends AdminTestCase
     }
 
     /**
-     * Core settings -> Settings -> Active Category at Start
-     * NOTE: according to comment in 0004482 in azure theme to mark some category in category tree (list) on first page is not needed.
-     *
-     * @group adminFunctionality
-     */
-    public function testActiveCategoryAtStart()
-    {
-        $this->openShop();
-        $this->assertElementNotPresent("test_BoxLeft_Cat_testcategory0_sub1");
-        $this->loginAdmin("Master Settings", "Core Settings");
-        $this->openTab("Settings");
-        $this->click("link=Shop frontend");
-        $this->assertElementPresent("//input[@value='---']");
-        $this->click("//input[@value='---']");
-        $this->usePopUp();
-        $this->assertEquals("", $this->getText("defcat_title"));
-        $this->type("_0", "test");
-        $this->keyUp("_0", "t");
-        $this->assertElementText("Test category 0 [EN] šÄßüл", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
-        $this->assertEquals("Test category 0 [EN] šÄßüл", $this->getText("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]"));
-        $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getText("//div[@id='container1_c']/table/tbody[2]/tr[2]/td[1]"));
-        $this->click("//div[@id='container1_c']/table/tbody[2]/tr[2]/td[1]");
-        $this->click("saveBtn");
-        $this->waitForItemAppear("_defcat");
-        $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getText("defcat_title"));
-        $this->click("remBtn");
-        $this->waitForItemDisappear("_defcat");
-        $this->assertEquals("", $this->getText("defcat_title"));
-        $this->click("saveBtn");
-        $this->waitForItemAppear("_defcat");
-        $this->assertEquals("Test category 1 [EN] šÄßüл", $this->getText("defcat_title"));
-        $this->close();
-        $this->selectWindow(null);
-        $this->windowMaximize();
-        $this->frame("relative=top");
-        $this->openTab("Settings");
-        $this->click("link=Shop frontend");
-        $this->assertElementPresent("//input[@value='Test category 1 [EN] šÄßüл']");
-    }
-
-    /**
      * checking how help popups are working
      *
      * @group adminFunctionality

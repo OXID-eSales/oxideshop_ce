@@ -8,12 +8,12 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatCurrencyLogic;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class FormatCurrencyLogicTest
  */
-class FormatCurrencyLogicTest extends UnitTestCase
+class FormatCurrencyLogicTest extends TestCase
 {
 
     /** @var FormatCurrencyLogic */

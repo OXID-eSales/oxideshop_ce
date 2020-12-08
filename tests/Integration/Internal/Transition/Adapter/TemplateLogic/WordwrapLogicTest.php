@@ -8,12 +8,12 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\WordwrapLogic;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class WordwrapLogicTest
  */
-class WordwrapLogicTest extends UnitTestCase
+class WordwrapLogicTest extends TestCase
 {
 
     /** @var WordwrapLogic */

@@ -21,6 +21,9 @@ use Psr\Log\LoggerInterface;
  */
 final class ControllersValidatorTest extends TestCase
 {
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidationWithCorrectSetting(): void
     {
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();

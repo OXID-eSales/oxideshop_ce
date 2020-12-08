@@ -8,12 +8,12 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class TranslateSalutationLogic
  */
-class TranslateSalutationLogicTest extends UnitTestCase
+class TranslateSalutationLogicTest extends TestCase
 {
 
     /** @var TranslateSalutationLogic */

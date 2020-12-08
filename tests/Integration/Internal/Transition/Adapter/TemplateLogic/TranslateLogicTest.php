@@ -9,9 +9,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\Templ
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
-class TranslateLogicTest extends UnitTestCase
+class TranslateLogicTest extends TestCase
 {
     /** @var TranslateFilterLogic */
     private $multiLangFilterLogic;

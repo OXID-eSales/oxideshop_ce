@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 class PasswordPolicyTest extends TestCase
 {
     /**
-     *
+     * @doesNotPerformAssertions
      */
     public function testPasswordPolicyAcceptsUtf8EncodedStrings()
     {

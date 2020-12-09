@@ -69,7 +69,9 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->_blNewBasket = false;
 
         if (!isset($this->oxuserbaskets__oxpublic->value)) {
-            $this->oxuserbaskets__oxpublic = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $public = in_array($this->oxuserbaskets__oxtitle->value, ['noticelist', 'wishlist']);
+
+            $this->oxuserbaskets__oxpublic = new \OxidEsales\Eshop\Core\Field($public, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         $iTime = \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime();

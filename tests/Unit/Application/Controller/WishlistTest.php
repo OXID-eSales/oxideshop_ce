@@ -113,7 +113,7 @@ class WishlistTest extends \OxidTestCase
         $myDB = oxDb::getDB(oxDB::FETCH_MODE_ASSOC);
 
         // adding article to basket
-        $sQ = 'insert into oxuserbaskets ( oxid, oxuserid, oxtitle ) values ( "_testBasketId1", "' . $this->_oUser->getId() . '", "wishlist" ) ';
+        $sQ = 'insert into oxuserbaskets ( oxid, oxuserid, oxtitle, oxpublic ) values ( "_testBasketId1", "' . $this->_oUser->getId() . '", "wishlist", 1 ) ';
         $myDB->Execute($sQ);
 
         $sQ = 'insert into oxuserbasketitems ( oxid, oxbasketid, oxartid, oxamount ) values ( "_testId1", "_testBasketId1", "1126", "1" ) ';

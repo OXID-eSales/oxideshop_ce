@@ -328,6 +328,46 @@ final class ProductDetailsPageCest
             ->seeMiniBasketContains([$basketItemToCheck1, $basketItemToCheck2], '366,00 €', '6');
     }
 
+    public function selectProductVariantsWithSelectionLists(AcceptanceTester $I): void
+    {
+        $I->wantToTest('add to cart with product variant/selection list combinations');
+
+        $productId = '1002';
+        $productName = 'Test product 2 [EN] šÄßüл';
+        $variant1Name = 'var1 [EN] šÄßüл';
+        $variant2Name = 'var2 [EN] šÄßüл';
+        $selectionListsTitle = 'test selection list [EN] šÄßüл';
+        $selectionList2Value = 'selvar2 [EN] šÄßüл';
+        $selectionList3Value = 'selvar3 [EN] šÄßüл';
+
+        $data = [
+            'OXID' => 'testattributes1',
+            'OXOBJECTID' => $productId,
+            'OXSELNID' => 'testsellist',
+            'OXSORT' => 0,
+        ];
+        $I->haveInDatabase('oxobject2selectlist', $data);
+
+        $productNavigation = new ProductNavigation($I);
+        $detailsPage = $productNavigation->openProductDetailsPage($productId);
+
+        $detailsPage = $detailsPage->selectVariant(1, $variant1Name);
+        $detailsPage->selectSelectionListItem($selectionList2Value);
+        $detailsPage->addProductToBasket(1);
+
+        $detailsPage = $detailsPage->selectVariant(1, $variant2Name);
+        $detailsPage->selectSelectionListItem($selectionList3Value);
+        $detailsPage->addProductToBasket(2);
+
+        $detailsPage->openBasket();
+
+        $I->see("$productName, $variant1Name");
+        $I->see("$selectionListsTitle: $selectionList2Value");
+
+        $I->see("$productName, $variant2Name");
+        $I->see("$selectionListsTitle: $selectionList3Value");
+    }
+
     /**
      * @group product
      * @group accessories

@@ -11,17 +11,14 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Password\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Container\ContainerInterface;
 
 /**
  *
  */
-class PasswordServiceBridgeTest extends TestCase
+class PasswordServiceBridgeTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     /**
      * End-to-end test for the PasswordService bridge
      */

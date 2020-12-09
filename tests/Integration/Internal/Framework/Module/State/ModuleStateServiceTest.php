@@ -12,21 +12,20 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
  */
-class ModuleStateServiceTest extends TestCase
+class ModuleStateServiceTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     private $moduleStateService;
 
     public function setup(): void
     {
+        parent::setUp();
+
         $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
         /** @var ContextStub $contextStub */
@@ -40,8 +39,6 @@ class ModuleStateServiceTest extends TestCase
         if ($this->moduleStateService->isActive('testModuleId', 2)) {
             $this->moduleStateService->setDeactivated('testModuleId', 2);
         }
-
-        parent::setUp();
     }
 
     public function testSetActive()

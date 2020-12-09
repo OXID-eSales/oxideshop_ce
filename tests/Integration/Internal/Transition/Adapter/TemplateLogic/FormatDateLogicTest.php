@@ -5,10 +5,11 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,13 +17,13 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatDateLogic
  */
-class FormatDateLogicTest extends TestCase
+class FormatDateLogicTest extends IntegrationTestCase
 {
 
     /** @var FormatDateLogic */
     private $formDateLogic;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->formDateLogic = new FormatDateLogic();

@@ -11,16 +11,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\TemplateExtension\TemplateBlockExtensionDaoInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * @internal
  */
-class TemplateBlockDaoTest extends TestCase
+class TemplateBlockDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     public function testAddTemplateBlock()
     {
         $templateBlock = new TemplateBlockExtension();

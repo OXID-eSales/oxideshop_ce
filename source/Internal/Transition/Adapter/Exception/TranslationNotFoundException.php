@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Exception;
+
+/**
+ * Class TranslationNotFoundException
+ *
+ * @package OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\Exception
+ */
+class TranslationNotFoundException extends \Exception
+{
+}

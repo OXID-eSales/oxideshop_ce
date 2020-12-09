@@ -5,25 +5,19 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 /**
  * Class TranslateSalutationLogic
  */
-class TranslateSalutationLogicTest extends TestCase
+class TranslateSalutationLogicTest extends IntegrationTestCase
 {
-
-    /** @var TranslateSalutationLogic */
-    private $translateSalutationLogic;
-
-    protected function setUp(): void
-    {
-        $this->translateSalutationLogic = new TranslateSalutationLogic();
-    }
-
     /**
      * Provides data for testTranslateSalutation
      *
@@ -48,7 +42,20 @@ class TranslateSalutationLogicTest extends TestCase
      */
     public function testTranslateSalutation(string $ident, int $languageId, string $expected): void
     {
-        $this->setLanguage($languageId);
-        $this->assertEquals($expected, $this->translateSalutationLogic->translateSalutation($ident));
+        $translateSalutationLogic = new TranslateSalutationLogic($this->getTranslator($languageId));
+        $this->assertEquals($expected, $translateSalutationLogic->translateSalutation($ident));
+    }
+
+    /**
+     * @param $languageId
+     * @return LegacyTemplateTranslator
+     */
+    private function getTranslator($languageId)
+    {
+        $language = Registry::getLang();
+        $language->setTplLanguage($languageId);
+        $language->setAdminMode(false);
+        Registry::set(Language::class, $language);
+        return new LegacyTemplateTranslator();
     }
 }

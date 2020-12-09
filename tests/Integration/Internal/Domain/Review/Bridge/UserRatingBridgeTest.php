@@ -16,8 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingService;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
+class UserRatingBridgeTest extends IntegrationTestCase
 {
     public function testDeleteRating()
     {

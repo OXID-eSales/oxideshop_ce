@@ -7,14 +7,15 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database\Logger;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Database\Logger;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use PHPUnit\Framework\TestCase;
 
-class DatabaseLoggerFactoryTest extends \PHPUnit\Framework\TestCase
+class DatabaseLoggerFactoryTest extends TestCase
 {
     public function testCreationForAdminLogEnabled()
     {

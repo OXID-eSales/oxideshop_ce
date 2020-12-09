@@ -19,16 +19,16 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Webmozart\PathUtil\Path;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
-final class ShopConfigurationDaoTest extends TestCase
+final class ShopConfigurationDaoTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
+    /**
+     * @var string
+     */
     private $testModuleId = 'testModuleId';
     private $testedSetting = 'settingToOverwrite';
     private $originalValue = 'some-original-value';

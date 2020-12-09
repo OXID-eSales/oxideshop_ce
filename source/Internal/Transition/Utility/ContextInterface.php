@@ -59,4 +59,9 @@ interface ContextInterface extends BasicContextInterface
      * @throws AdminUserNotFoundException
      */
     public function getAdminUserId(): string;
+
+    /**
+     * @return bool
+     */
+    public function isShopInProductiveMode(): bool;
 }

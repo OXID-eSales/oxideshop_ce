@@ -5,11 +5,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,7 +18,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic
  */
-class ScriptLogicTest extends TestCase
+class ScriptLogicTest extends IntegrationTestCase
 {
 
     /** @var Config */
@@ -35,6 +36,7 @@ class ScriptLogicTest extends TestCase
      */
     public function setup(): void
     {
+        parent::setUp();
         $this->config = Registry::getConfig();
         $this->oldIDebug = $this->config->getConfigParam("iDebug");
         $this->config->setConfigParam("iDebug", -1);
@@ -46,9 +48,10 @@ class ScriptLogicTest extends TestCase
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->config->setConfigParam("iDebug", $this->oldIDebug);
+        parent::tearDown();
     }
 
     public function testIncludeFileNotExists(): void

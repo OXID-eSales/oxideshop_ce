@@ -7,31 +7,38 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\TranslatorInterface;
+
 class TranslateSalutationLogic
 {
     /**
-     * @param string $sIdent
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * TranslateSalutationLogic constructor.
+     * @param TranslatorInterface           $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
+     * @param string $ident
      *
      * @return string
      */
-    public function translateSalutation(string $sIdent = null): string
+    public function translateSalutation(string $ident = ''): string
     {
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $iLang = $oLang->getTplLanguage();
-
-        if (!isset($iLang)) {
-            $iLang = $oLang->getBaseLanguage();
-            if (!isset($iLang)) {
-                $iLang = 0;
-            }
-        }
-
+        $translation = '';
         try {
-            $sTranslation = $oLang->translateString($sIdent, $iLang, $oLang->isAdmin());
+            $translation = $this->translator->translate($ident);
         } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $oEx) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
 
-        return $sTranslation ?: '';
+        return $translation;
     }
 }

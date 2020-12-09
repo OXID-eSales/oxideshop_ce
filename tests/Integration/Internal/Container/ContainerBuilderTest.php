@@ -11,12 +11,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Container;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Edition\EditionSelector;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 
-class ContainerBuilderTest extends TestCase
+class ContainerBuilderTest extends IntegrationTestCase
 {
     public function testWhenCeServicesLoaded()
     {

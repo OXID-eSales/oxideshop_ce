@@ -33,7 +33,7 @@
         "oxid-esales/oxideshop-demodata-installer": "^v1.1.2",
         "oxid-esales/oxideshop-composer-plugin": "^v5.0.1",
         "oxid-esales/oxideshop-unified-namespace-generator": "^2.0.0",
-        "oxid-esales/testing-library": "^v7.1.1",
+        "oxid-esales/testing-library": "dev-b-6.2.x",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^4.0",
         "oxid-esales/azure-theme": "^v1.4.1",

@@ -13,6 +13,15 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class NewCMSCreationCest
 {
+    /** @var string */
+    private $ident = "newcmscontent";
+
+    /** @param AcceptanceAdminTester $I */
+    public function _after(AcceptanceAdminTester $I)
+    {
+        $I->deleteFromDatabase('oxcontents', ['oxloadid' => $this->ident]);
+    }
+
     /**
      * @param AcceptanceAdminTester $I
      *
@@ -24,13 +33,12 @@ final class NewCMSCreationCest
 
         $title = "New CMS Content";
         $content = "This is a new CMS content";
-        $ident = "newcmscontent";
 
         $adminPanel = $I->loginAdmin();
         $languages = $adminPanel->openCMSPages();
-        $languages->createNewCMS($title, $ident, $content);
+        $languages->createNewCMS($title, $this->ident, $content);
         $languages->find("where[oxcontents][oxtitle]", $title);
 
-        $I->assertEquals($title, $I->grabFromDatabase("oxcontents", "oxtitle", ["oxloadid" => $ident]));
+        $I->assertEquals($title, $I->grabFromDatabase("oxcontents", "oxtitle", ["oxloadid" => $this->ident]));
     }
 }

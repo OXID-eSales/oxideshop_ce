@@ -26,8 +26,7 @@ class GiftRegistryCest
         $I->wantToTest('if product gift registry functionality is enabled');
 
         //(Use gift registry) is enabled again
-        $I->updateConfigInDatabase('bl_showWishlist', true);
-
+        $I->updateConfigInDatabase('bl_showWishlist', true, 'bool');
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',

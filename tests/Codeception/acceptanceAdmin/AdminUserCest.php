@@ -210,7 +210,7 @@ final class AdminUserCest
                 'OXSTREETNR'  => $userAddress->getStreetNumber(),
                 'OXADDINFO'   => $userAddress->getAdditionalInfo(),
                 'OXCITY'      => $userAddress->getCity(),
-                'OXCOUNTRYID' => 'a7c40f632e04633c9.47194042',
+                'OXCOUNTRYID' => 'testcountry_be',
                 'OXSTATEID'   => $userAddress->getStateId(),
                 'OXZIP'       => $userAddress->getZip(),
                 'OXFON'       => $userAddress->getPhone(),

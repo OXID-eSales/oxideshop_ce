@@ -6,6 +6,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler
     arguments:
       - "@oxid_esales.symfony.file_system"
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
 
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridge

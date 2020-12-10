@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
+use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -267,6 +268,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     {
         $removed = false;
         try {
+            $filepath = $this->makePathRelativeToShopSource($filepath);
             if ($this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->exists($filepath)) {
                 $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->remove($filepath);
                 $removed = true;
@@ -274,5 +276,14 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         } catch (\Throwable $exception) {
         }
         return $removed;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function makePathRelativeToShopSource(string $path): string
+    {
+        return Path::makeRelative($path, (new Facts())->getSourcePath());
     }
 }

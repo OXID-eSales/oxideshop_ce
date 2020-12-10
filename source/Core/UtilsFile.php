@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
+use OxidEsales\Facts\Facts;
 use Webmozart\PathUtil\Path;
 
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
@@ -530,7 +531,11 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $temporaryName = $filename;
         $stringHandler = Str::getStr();
         $masterImageHandler = $this->getContainer()->get(MasterImageHandlerBridgeInterface::class);
-        while ($masterImageHandler->exists(Path::join($directory, "$filename$suffix.$extension"))) {
+        while (
+            $masterImageHandler->exists(
+                $this->makePathRelativeToShopSource(Path::join($directory, "$filename$suffix.$extension"))
+            )
+        ) {
             $fileCounter++;
             //removing "(any digit)" from file name end
             $temporaryName = $stringHandler->preg_replace("/\($fileCounter\)/", '', $temporaryName);
@@ -617,7 +622,11 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $copied = false;
         try {
-            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->copy($source, $destination);
+            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)
+                ->copy(
+                    $source,
+                    $this->makePathRelativeToShopSource($destination)
+                );
             $copied = true;
         } catch (\Throwable $exception) {
         }
@@ -633,10 +642,23 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $uploaded = false;
         try {
-            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)->upload($source, $destination);
+            $this->getContainer()->get(MasterImageHandlerBridgeInterface::class)
+                ->upload(
+                    $source,
+                    $this->makePathRelativeToShopSource($destination)
+                );
             $uploaded = true;
         } catch (\Throwable $exception) {
         }
         return $uploaded;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function makePathRelativeToShopSource(string $path): string
+    {
+        return Path::makeRelative($path, (new Facts())->getSourcePath());
     }
 }

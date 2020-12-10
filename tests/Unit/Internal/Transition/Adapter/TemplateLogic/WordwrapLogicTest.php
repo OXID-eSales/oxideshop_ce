@@ -8,14 +8,13 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\WordwrapLogic;
-use OxidEsales\TestingLibrary\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class WordwrapLogicTest
  */
-class WordwrapLogicTest extends UnitTestCase
+class WordwrapLogicTest extends TestCase
 {
-
     /** @var WordwrapLogic */
     private $wordWrapLogic;
 
@@ -49,9 +48,10 @@ class WordwrapLogicTest extends UnitTestCase
      *
      * @dataProvider nonAsciiProvider
      */
-    public function testWordWrapWithNonAscii($expected, $string, $length = 80, $wrapper = "\n", $cut = false)
+    public function testWordWrapWithNonAscii(string $expected, string $string, $length = 80, $wrapper = "\n", $cut = false
+    ): void
     {
-        $this->assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
+        self::assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
     }
 
     /**
@@ -89,8 +89,8 @@ class WordwrapLogicTest extends UnitTestCase
      *
      * @dataProvider asciiProvider
      */
-    public function testWordWrapAscii($expected, $string, $length = 80, $wrapper = "\n", $cut = false)
+    public function testWordWrapAscii(string $expected, string $string, $length = 80, $wrapper = "\n", $cut = false): void
     {
-        $this->assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
+        self::assertEquals($expected, $this->wordWrapLogic->wordWrap($string, $length, $wrapper, $cut));
     }
 }

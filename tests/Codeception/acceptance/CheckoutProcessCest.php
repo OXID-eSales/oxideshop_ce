@@ -79,6 +79,9 @@ final class CheckoutProcessCest
     public function createOrder(AcceptanceTester $I)
     {
         $I->wantToTest('simple order steps (without any special cases)');
+        
+        $I->retry(3, 2000);
+
         $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
         $basket = new Basket($I);

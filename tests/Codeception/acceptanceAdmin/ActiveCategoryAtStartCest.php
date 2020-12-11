@@ -37,8 +37,9 @@ final class ActiveCategoryAtStartCest
         $I->closeTab();
         $I->switchToPreviousTab();
         
-        $I->reloadPage();
-       
+        $I->clearShopCache();
+        $adminPanel = $I->loginAdmin();
+        
         $coreSettings = $adminPanel->openCoreSettings();
         $settingsTab = $coreSettings->openSettingsTab();
 

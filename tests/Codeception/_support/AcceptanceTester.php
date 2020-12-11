@@ -31,6 +31,7 @@ use OxidEsales\Codeception\Page\Home;
 class AcceptanceTester extends Actor
 {
     use _generated\AcceptanceTesterActions;
+    use \Codeception\Lib\Actor\Shared\Retry;
 
     /**
      * Open shop first page.

@@ -32,6 +32,7 @@ use OxidEsales\Codeception\Admin\AdminPanel;
 class AcceptanceAdminTester extends Actor
 {
     use _generated\AcceptanceAdminTesterActions;
+    use \Codeception\Lib\Actor\Shared\Retry;
 
     public function openAdmin(): AdminLoginPage
     {

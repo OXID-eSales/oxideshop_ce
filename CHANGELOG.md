@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support for PHP v7.1, v7.2
 - Support for MySQL v5.5, v5.6
+- Resetting the PHP error reporting level in the ShopControl class [PR-728](https://github.com/OXID-eSales/oxideshop_ce/pull/728)
 - Database encoding:
     - Changed database fields:
         - `oxvalue` field in `oxconfig` table changed from `blob` to `text`

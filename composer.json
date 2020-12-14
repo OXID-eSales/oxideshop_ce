@@ -31,19 +31,19 @@
         "symfony/finder": "^5.0.4",
         "symfony/filesystem": "^5.0.4",
         "codeception/module-webdriver": "^1.0",
-        "codeception/module-db": "^1.0"
-    },
-    "require-dev": {
+        "codeception/module-db": "^1.0",
         "oxid-esales/flow-theme": "dev-master",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-master",
         "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
         "oxid-esales/oxideshop-demodata-installer": "dev-master",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/oxideshop-unified-namespace-generator": "dev-master",
+        "oxid-esales/oxideshop-facts": "dev-master"
+    },
+    "require-dev": {
         "incenteev/composer-parameter-handler": "2.1.x-dev",
         "oxid-esales/oxideshop-ide-helper": "dev-master",
         "oxid-esales/azure-theme": "dev-master",
-        "oxid-esales/oxideshop-facts": "dev-master",
         "oxid-esales/testing-library": "dev-master",
         "squizlabs/php_codesniffer": "^3.5.4",
         "composer/composer": "^1",

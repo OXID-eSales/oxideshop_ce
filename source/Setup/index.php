@@ -8,9 +8,6 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 require_once '../bootstrap.php';
-
-error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
-
 require_once 'functions.php';
 
 $oDispatcher = new Dispatcher();

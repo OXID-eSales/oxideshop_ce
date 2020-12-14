@@ -1357,7 +1357,7 @@ class Email extends PHPMailer
             $fileUtils = \OxidEsales\Eshop\Core\Registry::getUtilsFile();
             $reSetBody = false;
 
-            // preparing imput
+            // preparing input
             $dynImageDir = $fileUtils->normalizeDir($dynImageDir);
             $imageDir = $fileUtils->normalizeDir($imageDir);
             $imageDirNoSSL = $fileUtils->normalizeDir($imageDirNoSSL);
@@ -1371,7 +1371,7 @@ class Email extends PHPMailer
                 foreach ($matches as $image) {
                     $imageName = $image[1];
                     $fileName = '';
-                    if (strpos($imageName, $dynImageDir) === 0) {
+                    if (is_string($dynImageDir) && strpos($imageName, $dynImageDir) === 0) {
                         $fileName = $fileUtils->normalizeDir($absDynImageDir) . str_replace($dynImageDir, '', $imageName);
                     } elseif (strpos($imageName, $imageDir) === 0) {
                         $fileName = $fileUtils->normalizeDir($absImageDir) . str_replace($imageDir, '', $imageName);

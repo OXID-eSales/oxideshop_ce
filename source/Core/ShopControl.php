@@ -587,8 +587,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         //session is started, a possible SeoUrl is decoded, globals and environment variables are set.
         $config->init();
 
-        error_reporting($this->_getErrorReportingLevel());
-
         $runOnceExecuted = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('blRunOnceExecuted');
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
@@ -606,29 +604,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('blRunOnceExecuted', true);
         }
-    }
-
-    /**
-     * Returns error reporting level.
-     * Returns disabled error logging if server is misconfigured #2015 E_NONE replaced with 0.
-     *
-     * @return int
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getErrorReportingLevel" in next major
-     */
-    protected function _getErrorReportingLevel() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $errorReporting = E_ALL ^ E_NOTICE;
-        // some 3rd party libraries still use deprecated functions
-        if (defined('E_DEPRECATED')) {
-            $errorReporting = $errorReporting ^ E_DEPRECATED;
-        }
-
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isProductiveMode() && !ini_get('log_errors')) {
-            $errorReporting = 0;
-        }
-
-
-        return $errorReporting;
     }
 
     /**

@@ -90,7 +90,7 @@ class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
 
         $aIds = array();
         for ($i = 0; $i < 100; $i++) {
-            $aIds[] = $oGenerator->generateV5('seed', 'salt' . $i);
+            $aIds[] = $oGenerator->generateV5('feed', 'salt' . $i);
         }
 
         $this->assertEquals(100, count(array_unique($aIds)));
@@ -105,7 +105,7 @@ class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
 
         $aIds = array();
         for ($i = 0; $i < 100; $i++) {
-            $aIds[] = $oGenerator->generateV5('seed' . $i, 'salt');
+            $aIds[] = $oGenerator->generateV5('feed' . $i, 'salt');
         }
 
         $this->assertEquals(100, count(array_unique($aIds)));
@@ -118,8 +118,8 @@ class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
     {
         $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
 
-        $sId1 = $oGenerator->generateV5('seed', 'salt');
-        $sId2 = $oGenerator->generateV5('seed', 'salt');
+        $sId1 = $oGenerator->generateV5('feed', 'salt');
+        $sId2 = $oGenerator->generateV5('feed', 'salt');
 
         $this->assertEquals($sId1, $sId2);
     }
@@ -130,7 +130,7 @@ class UniversallyUniqueIdGeneratorTest extends \OxidTestCase
     public function testUUIDV5Structure()
     {
         $oGenerator = oxNew('oxUniversallyUniqueIdGenerator');
-        $sId = $oGenerator->generateV5('seed', 'salt');
+        $sId = $oGenerator->generateV5('feed', 'salt');
 
         $this->assertMatchesRegularExpression('/^[\w]{8}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{12}$/', $sId);
     }

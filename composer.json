@@ -34,7 +34,7 @@
         "codeception/module-db": "^1.0",
         "oxid-esales/flow-theme": "dev-master",
         "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-master",
-        "oxid-esales/oxideshop-db-views-generator": "^v1.2.0",
+        "oxid-esales/oxideshop-db-views-generator": "dev-master",
         "oxid-esales/oxideshop-demodata-installer": "dev-master",
         "oxid-esales/oxideshop-composer-plugin": "dev-master",
         "oxid-esales/oxideshop-unified-namespace-generator": "dev-master",

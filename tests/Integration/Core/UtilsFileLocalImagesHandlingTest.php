@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Core\UtilsFile;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler as LocalImageHandler;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandlerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -186,7 +186,7 @@ class UtilsFileLocalImagesHandlingTest extends UnitTestCase
 
     private function checkImageHandlerIsTestable(): void
     {
-        if (\get_class($this->get(MasterImageHandlerInterface::class)) !== LocalImageHandler::class) {
+        if (\get_class($this->get(ImageHandlerInterface::class)) !== LocalImageHandler::class) {
             $this->markTestSkipped('This test runs only when local filesystem is used for image storage.');
         }
     }

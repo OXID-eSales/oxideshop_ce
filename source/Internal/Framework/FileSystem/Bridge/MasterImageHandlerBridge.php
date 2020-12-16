@@ -9,40 +9,40 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge;
 
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandlerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface;
 
 class MasterImageHandlerBridge implements MasterImageHandlerBridgeInterface
 {
-    /** @var MasterImageHandlerInterface */
-    private $masterFileHandler;
+    /** @var ImageHandlerInterface */
+    private $masterImageHandler;
 
     public function __construct(
-        MasterImageHandlerInterface $filesystem
+        ImageHandlerInterface $masterImageHandler
     ) {
-        $this->masterFileHandler = $filesystem;
+        $this->masterImageHandler = $masterImageHandler;
     }
 
     /** @inheritdoc */
     public function copy(string $source, string $destination): void
     {
-        $this->masterFileHandler->copy($source, $destination);
+        $this->masterImageHandler->copy($source, $destination);
     }
 
     /** @inheritdoc */
     public function upload(string $source, string $destination): void
     {
-        $this->masterFileHandler->upload($source, $destination);
+        $this->masterImageHandler->upload($source, $destination);
     }
 
     /** @inheritdoc */
     public function remove(string $path): void
     {
-        $this->masterFileHandler->remove($path);
+        $this->masterImageHandler->remove($path);
     }
 
     /** @inheritdoc */
     public function exists(string $path): bool
     {
-        return $this->masterFileHandler->exists($path);
+        return $this->masterImageHandler->exists($path);
     }
 }

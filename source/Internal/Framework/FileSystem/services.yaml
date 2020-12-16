@@ -2,7 +2,7 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandlerInterface:
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler
     arguments:
       - "@oxid_esales.symfony.file_system"

@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem;
 
-interface MasterImageHandlerInterface
+interface ImageHandlerInterface
 {
     public function copy(string $source, string $destination): void;
 

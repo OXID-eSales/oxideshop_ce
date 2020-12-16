@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
-class MasterImageHandler implements MasterImageHandlerInterface
+class MasterImageHandler implements ImageHandlerInterface
 {
     /** @var Filesystem */
     private $filesystem;

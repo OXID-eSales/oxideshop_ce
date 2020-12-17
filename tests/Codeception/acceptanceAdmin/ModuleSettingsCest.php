@@ -54,8 +54,10 @@ final class ModuleSettingsCest
     public function moduleSettingsForm(AcceptanceAdminTester $I): void
     {
         $I->wantToTest('module settings are loaded from metadata');
-        $this->selectModule($I, 'Codeception test module #1');
-        $this->module->openModuleTab('Settings');
+        $adminPanel = $I->loginAdmin();
+        $moduleList = $adminPanel->openModules();
+        $module =  $moduleList->selectModule('Codeception test module #1');
+        $module->openModuleTab('Settings');
 
         $I->click($I->see('Filled Settings Group'));
         $this->checkFilledInitialSettingsLoaded($I);
@@ -68,7 +70,7 @@ final class ModuleSettingsCest
         $I->seeInField('confstrs[testEmptyStrConfig]', '');
         $I->seeInField('confarrs[testEmptyArrConfig]', '');
         $I->seeInField('confaarrs[testEmptyAArrConfig]', '');
-        $I->seeInField('confselects[testEmptySelectConfig]', 0);
+        $I->seeOptionIsSelected('confselects[testEmptySelectConfig]', 'Option 0');
         $I->seeInField('confpassword[testEmptyPasswordConfig]', '');
     }
 
@@ -79,7 +81,7 @@ final class ModuleSettingsCest
         $I->seeInField('confstrs[testFilledStrConfig]', 'testStr');
         $I->seeInField('confarrs[testFilledArrConfig]', "option1\noption2");
         $I->seeInField('confaarrs[testFilledAArrConfig]', "key1 => option1\nkey2 => option2");
-        $I->seeInField('confselects[testFilledSelectConfig]', 2);
+        $I->seeOptionIsSelected('confselects[testEmptySelectConfig]', 'Option 0');
         $I->dontSee('confpassword[testFilledPasswordConfig]');
         $I->seeInField('confpassword[testFilledPasswordConfig]', '');
     }
@@ -102,7 +104,7 @@ final class ModuleSettingsCest
         $I->seeInField('confstrs[testEmptyStrConfig]', 'new-string');
         $I->seeInField('confarrs[testEmptyArrConfig]', "new-option-1\nnew-option-2");
         $I->seeInField('confaarrs[testEmptyAArrConfig]', "key1 => new-option-1\nkey2 => new-option-2");
-        $I->seeInField('confselects[testEmptySelectConfig]', 2);
+        $I->seeOptionIsSelected('confselects[testEmptySelectConfig]', 'Option 2');
         $I->dontSee('confpassword[testEmptyPasswordConfig]');
         $I->seeInField('confpassword[testEmptyPasswordConfig]', '');
     }

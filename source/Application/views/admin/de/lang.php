@@ -660,7 +660,7 @@ $aLang = [
     'DYNBASE_DO_SUCCESS'                             => 'Erfolg! Sie können Ihre Exportdatei <a href="%s" target="_blank">hier</a> herunterladen.',
     'DYNBASE_DO_LINK'                                => 'Der Partner kann diese Datei auch selbst abholen - bitte teilen Sie folgenden Link mit: ',
     'EDITOR_PLAINTEXT_HINT'                          => '<b>Anmerkung:</b> Wenn Sie Zeilenumbrüche unverändert übernehmen möchten (z. B. für plaintext E-Mail), dann benutzen Sie "Source" anstatt "Design".',
-    'ALTERNATIVE_IMAGE_SERVER_NOTE'                  => '<b>Hinweis:</b> Der Shop ist konfiguriert, Artikelbilder von einem externen Server zu laden. Dateien werden aber nicht zu diesem Speicherort hochgeladen. Stellen Sie bitte die manuelle Synchronisation sicher.',
+    'ALTERNATIVE_IMAGE_SERVER_NOTE'                  => '<b>Hinweis:</b> Der Shop ist konfiguriert, Artikelbilder von einem externen Server zu laden (%s). Wenn Sie eine Komponente installiert haben, die den Datei-Upload übernimmt, werden die Bilder hochgeladen, falls nicht, müssen Sie sich selbst um den Upload auf den externen Server kümmern.',
     'EXCEPTION_USER_USEREXISTS'                      => 'Dieser Benutzer existiert bereits!',
     'EXCEPTION_CONNECTION_NODB'                      => 'Keine Verbindung zur Datenbank möglich!',
     'EXCEPTION_ACCESSRIGHT_ACCESSDENIED'             => 'Zugriff verweigert, keine ausreichende Rechte!',

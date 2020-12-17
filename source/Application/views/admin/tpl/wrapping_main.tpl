@@ -37,7 +37,15 @@ function DeletePic( sField )
 <input type="hidden" name="editval[oxwrapping__oxid]" value="[{$oxid}]">
 
 [{if $oViewConf->isAltImageServerConfigured()}]
-    <div class="warning">[{oxmultilang ident="ALTERNATIVE_IMAGE_SERVER_NOTE"}] [{oxinputhelp ident="HELP_ALTERNATIVE_IMAGE_SERVER_NOTE"}]</div>
+    [{assign var="oConfig" value=$oViewConf->getConfig()}]
+
+    [{if $oConfig->getConfigParam('sAltImageUrl')}]
+        [{assign var="imageUrl" value=$oConfig->getConfigParam('sAltImageUrl')}]
+    [{else}]
+        [{assign var="imageUrl" value=$oConfig->getConfigParam('sSSLAltImageUrl')}]
+    [{/if}]
+
+    <div class="warning">[{oxmultilang ident="ALTERNATIVE_IMAGE_SERVER_NOTE" args=$imageUrl}] [{oxinputhelp ident="HELP_ALTERNATIVE_IMAGE_SERVER_NOTE"}]</div>
 [{/if}]
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">

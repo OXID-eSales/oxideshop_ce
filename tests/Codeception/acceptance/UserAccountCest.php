@@ -15,6 +15,20 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 
 final class UserAccountCest
 {
+    public function _after(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    {
+        $this->cleanUpUserData($I);
+    }
+
+    protected function cleanUpUserData(AcceptanceTester $I)
+    {
+        /** Change Germany and Belgium data to original. */
+        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f632e04633c9.47194042']);
+        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f631fc920687.20179984']);
+        $userData = $this->getExistingUserData();
+        $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
+    }
+
     /**
      * @group myAccount
      *
@@ -193,14 +207,13 @@ final class UserAccountCest
     /**
      * @group myAccount
      *
-     * @after cleanUpUserData
-     *
      * @param AcceptanceTester $I
      */
     public function changeUserBillingAddress(AcceptanceTester $I)
     {
         $start = new Start($I);
         $I->wantToTest('user billing address in my account');
+        $I->retry(3, 2000);
 
         $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
         $I->updateConfigInDatabase('blVatIdCheckDisabled', true, 'bool');
@@ -247,8 +260,10 @@ final class UserAccountCest
     public function modifyUserShippingAddress(AcceptanceTester $I)
     {
         $start = new Start($I);
-        $I->wantToTest('user shipping address in my account');
+        $I->wantToTest('modify user shipping address in my account');
 
+        $I->retry(2, 3000);
+        
         $userData = $this->getExistingUserData();
 
         $userAddressPage = $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword'])
@@ -259,7 +274,6 @@ final class UserAccountCest
         $I->see('Germany', $userAddressPage->billCountryId);
         $I->see(Translator::translate('PLEASE_SELECT_STATE'), $userAddressPage->billStateId);
 
-        //create first new delivery address
         $deliveryAddressData = $this->getUserAddressData('1_2');
 
         $userAddressPage = $userAddressPage
@@ -268,28 +282,48 @@ final class UserAccountCest
             ->saveAddress()
             ->validateUserDeliveryAddress($deliveryAddressData);
 
-        //create second new delivery address
-        $deliveryAddressData = $this->getUserAddressData('1_3');
-        $userAddressPage = $userAddressPage
-            ->selectNewShippingAddress()
-            ->enterShippingAddressData($deliveryAddressData)
-            ->saveAddress();
-        $I->seeElement(sprintf($userAddressPage->shippingAddress, 3));
-
-        //change existing delivery address
         $deliveryAddressData = $this->getUserAddressData('1_4');
 
         $userAddressPage->selectShippingAddress(1)
             ->enterShippingAddressData($deliveryAddressData)
             ->saveAddress()
-            ->validateUserDeliveryAddress($deliveryAddressData, 1);
+            ->validateUserDeliveryAddress($deliveryAddressData);
+    }
 
-        $userAddressPage->seeNumberOfShippingAddresses(2)
-            ->selectShippingAddress(2)
-            ->deleteShippingAddress(2)
-            ->seeNumberOfShippingAddresses(1);
+    /**
+     * @group myAccount
+     *
+     * @param AcceptanceTester $I
+     */
+    public function createAndDeleteUserShippingAddress(AcceptanceTester $I)
+    {
+        $start = new Start($I);
+        $I->wantToTest('user shipping address create and delete');
 
-        $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
+        $I->retry(3, 2000);
+        
+        $userData = $this->getExistingUserData();
+
+        $userAddressPage = $start->loginOnStartPage($userData['userLoginName'], $userData['userPassword'])
+            ->openAccountPage()
+            ->openUserAddressPage()
+            ->seeNumberOfShippingAddresses(0)
+            ->openUserBillingAddressForm();
+        $I->see('Germany', $userAddressPage->billCountryId);
+        $I->see(Translator::translate('PLEASE_SELECT_STATE'), $userAddressPage->billStateId);
+
+        $deliveryAddressData = $this->getUserAddressData('1_2');
+
+        $userAddressPage = $userAddressPage
+            ->openShippingAddressForm()
+            ->enterShippingAddressData($deliveryAddressData)
+            ->saveAddress()
+            ->validateUserDeliveryAddress($deliveryAddressData);
+
+        $userAddressPage->seeNumberOfShippingAddresses(1)
+            ->selectShippingAddress(1)
+            ->deleteShippingAddress(1)
+            ->seeNumberOfShippingAddresses(0);
     }
 
 
@@ -330,19 +364,5 @@ final class UserAccountCest
             $addressData['stateId'] = 'Berlin';
         }
         return $addressData;
-    }
-
-    public function _failed(AcceptanceTester $I) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $this->cleanUpUserData($I);
-    }
-
-    protected function cleanUpUserData(AcceptanceTester $I)
-    {
-        /** Change Germany and Belgium data to original. */
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f632e04633c9.47194042']);
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f631fc920687.20179984']);
-        $userData = $this->getExistingUserData();
-        $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
     }
 }

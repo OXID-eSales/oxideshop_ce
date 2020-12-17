@@ -42,3 +42,5 @@ modules:
             paths: 'Application/views/flow/translations'
         - \OxidEsales\Codeception\Module\FlowTheme:
             depends: \OxidEsales\Codeception\Module\Database
+step_decorators:
+    - \Codeception\Step\Retry

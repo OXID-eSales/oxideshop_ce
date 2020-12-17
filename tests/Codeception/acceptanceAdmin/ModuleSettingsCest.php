@@ -9,12 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\CodeceptionAdmin;
 
-use Codeception\Util\Fixtures;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 
 final class ModuleSettingsCest
 {
-    private $module;
     private $testModule1Id = 'codeception/test-module-1';
     private $testModule1Path = __DIR__ . '/../_data/modules/test-module-1';
 
@@ -25,8 +23,10 @@ final class ModuleSettingsCest
         $I->installModule($this->testModule1Path);
         $I->activateModule($this->testModule1Id);
 
-        $this->selectModule($I, 'Codeception test module #1');
-        $this->module->openModuleTab('Settings');
+        $adminPanel = $I->loginAdmin();
+        $moduleList = $adminPanel->openModules();
+        $module =  $moduleList->selectModule('Codeception test module #1');
+        $module->openModuleTab('Settings');
 
         $I->click($I->see('Empty Settings Group'));
         $this->checkEmptyInitialSettingsLoaded($I);
@@ -45,42 +45,27 @@ final class ModuleSettingsCest
         $I->uninstallModule($this->testModule1Path, $this->testModule1Id);
     }
 
-    /**
-     * @param AcceptanceAdminTester $I
-     * @param string $moduleName
-     */
-    private function selectModule(AcceptanceAdminTester $I, string $moduleName): void
-    {
-        $userData = Fixtures::get('adminUser');
-
-        $loginPage = $I->openAdmin();
-        $loginPage->login($userData['userLoginName'], $userData['userPassword']);
-
-        $moduleList = $loginPage->openModules();
-        $this->module = $moduleList->selectModule($moduleName);
-    }
-
     /** @param AcceptanceAdminTester $I */
     private function checkEmptyInitialSettingsLoaded(AcceptanceAdminTester $I): void
     {
         $I->dontSeeCheckboxIsChecked('confbools[testEmptyBoolConfig]');
-        $I->canSeeInField('confstrs[testEmptyStrConfig]', '');
-        $I->canSeeInField('confarrs[testEmptyArrConfig]', '');
-        $I->canSeeInField('confaarrs[testEmptyAArrConfig]', '');
-        $I->canSeeInField('confselects[testEmptySelectConfig]', 0);
-        $I->canSeeInField('confpassword[testEmptyPasswordConfig]', '');
+        $I->seeInField('confstrs[testEmptyStrConfig]', '');
+        $I->seeInField('confarrs[testEmptyArrConfig]', '');
+        $I->seeInField('confaarrs[testEmptyAArrConfig]', '');
+        $I->seeInField('confselects[testEmptySelectConfig]', 0);
+        $I->seeInField('confpassword[testEmptyPasswordConfig]', '');
     }
 
     /** @param AcceptanceAdminTester $I */
     private function checkFilledInitialSettingsLoaded(AcceptanceAdminTester $I): void
     {
         $I->seeCheckboxIsChecked('confbools[testFilledBoolConfig]');
-        $I->canSeeInField('confstrs[testFilledStrConfig]', 'testStr');
-        $I->canSeeInField('confarrs[testFilledArrConfig]', "option1\noption2");
-        $I->canSeeInField('confaarrs[testFilledAArrConfig]', "key1 => option1\nkey2 => option2");
-        $I->canSeeInField('confselects[testFilledSelectConfig]', 2);
+        $I->seeInField('confstrs[testFilledStrConfig]', 'testStr');
+        $I->seeInField('confarrs[testFilledArrConfig]', "option1\noption2");
+        $I->seeInField('confaarrs[testFilledAArrConfig]', "key1 => option1\nkey2 => option2");
+        $I->seeInField('confselects[testFilledSelectConfig]', 2);
         $I->dontSee('confpassword[testFilledPasswordConfig]');
-        $I->canSeeInField('confpassword[testFilledPasswordConfig]', '');
+        $I->seeInField('confpassword[testFilledPasswordConfig]', '');
     }
 
     /** @param AcceptanceAdminTester $I */
@@ -98,11 +83,11 @@ final class ModuleSettingsCest
     private function checkModifiedSettingsNotEmpty(AcceptanceAdminTester $I): void
     {
         $I->seeCheckboxIsChecked('confbools[testEmptyBoolConfig]');
-        $I->canSeeInField('confstrs[testEmptyStrConfig]', 'new-string');
-        $I->canSeeInField('confarrs[testEmptyArrConfig]', "new-option-1\nnew-option-2");
-        $I->canSeeInField('confaarrs[testEmptyAArrConfig]', "key1 => new-option-1\nkey2 => new-option-2");
-        $I->canSeeInField('confselects[testEmptySelectConfig]', 2);
+        $I->seeInField('confstrs[testEmptyStrConfig]', 'new-string');
+        $I->seeInField('confarrs[testEmptyArrConfig]', "new-option-1\nnew-option-2");
+        $I->seeInField('confaarrs[testEmptyAArrConfig]', "key1 => new-option-1\nkey2 => new-option-2");
+        $I->seeInField('confselects[testEmptySelectConfig]', 2);
         $I->dontSee('confpassword[testEmptyPasswordConfig]');
-        $I->canSeeInField('confpassword[testEmptyPasswordConfig]', '');
+        $I->seeInField('confpassword[testEmptyPasswordConfig]', '');
     }
 }

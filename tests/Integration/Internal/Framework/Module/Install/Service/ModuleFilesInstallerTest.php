@@ -81,8 +81,7 @@ final class ModuleFilesInstallerTest extends TestCase
         return Path::join(
             $this->get(ContextInterface::class)->getOutPath(),
             'modules',
-            'test-module',
-            'assets'
+            'test-module'
         );
     }
 }

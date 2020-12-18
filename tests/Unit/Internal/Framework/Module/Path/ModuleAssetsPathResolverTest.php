@@ -26,7 +26,7 @@ final class ModuleAssetsPathResolverTest extends TestCase
         $pathResolver = new ModuleAssetsPathResolver($context->reveal());
 
         $this->assertEquals(
-            'outDirectory/modules/moduleId/assets',
+            'outDirectory/modules/moduleId',
             $pathResolver->getAssetsPath('moduleId')
         );
     }

@@ -29,8 +29,7 @@ class ModuleAssetsPathResolver implements ModuleAssetsPathResolverInterface
         return Path::join(
             $this->context->getOutPath(),
             'modules',
-            $moduleId,
-            'assets'
+            $moduleId
         );
     }
 }

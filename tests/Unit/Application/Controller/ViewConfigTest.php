@@ -541,17 +541,17 @@ class ViewConfigTest extends \OxidTestCase
         $config = Registry::getConfig();
 
         $baseUrl = $config->getCurrentShopUrl();
-        $this->assertEquals("{$baseUrl}out/modules/testModule/assets/out", $viewConfig->getModuleUrl('testModule', 'out'));
-        $this->assertEquals("{$baseUrl}out/modules/testModule/assets/out/", $viewConfig->getModuleUrl('testModule', '/out/'));
+        $this->assertEquals("{$baseUrl}out/modules/testModule/out", $viewConfig->getModuleUrl('testModule', 'out'));
+        $this->assertEquals("{$baseUrl}out/modules/testModule/out/", $viewConfig->getModuleUrl('testModule', '/out/'));
         $this->assertEquals(
-            "{$baseUrl}out/modules/testModule/assets/some.css",
+            "{$baseUrl}out/modules/testModule/some.css",
             $viewConfig->getModuleUrl('testModule', 'some.css')
         );
         $this->assertEquals(
-            "{$baseUrl}out/modules/testModule/assets/some.css",
+            "{$baseUrl}out/modules/testModule/some.css",
             $viewConfig->getModuleUrl('testModule', '/some.css')
         );
-        $this->assertEquals("{$baseUrl}out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
+        $this->assertEquals("{$baseUrl}out/modules/testModule/", $viewConfig->getModuleUrl('testModule'));
 
         //test if the subject under test still generates a valid module url in admin mode
         $config->setAdminMode(true);
@@ -563,7 +563,7 @@ class ViewConfigTest extends \OxidTestCase
         //because of browser security restrictions take effect when loading resources from differt domains
         $adminUrlWithoutAdminPath = $baseUrl;
         $this->assertEquals(
-            "{$adminUrlWithoutAdminPath}out/modules/testModule/assets/some.css",
+            "{$adminUrlWithoutAdminPath}out/modules/testModule/some.css",
             $viewConfig->getModuleUrl('testModule', 'some.css')
         );
 
@@ -571,12 +571,12 @@ class ViewConfigTest extends \OxidTestCase
         $config->setConfigParam('sSSLShopURL', '');
         $config->setConfigParam('sAdminSSLURL', '');
         $config->setConfigParam('sShopURL', 'http://shop.localhost.local/');
-        $this->assertEquals("http://shop.localhost.local/out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
+        $this->assertEquals("http://shop.localhost.local/out/modules/testModule/", $viewConfig->getModuleUrl('testModule'));
 
         //Test when sSSLShopURL is set and sAdminSSLURL is not set
         $config->setIsSsl(true);
         $config->setConfigParam('sSSLShopURL', 'https://shop.localhost.local/');
-        $this->assertEquals("https://shop.localhost.local/out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
+        $this->assertEquals("https://shop.localhost.local/out/modules/testModule/", $viewConfig->getModuleUrl('testModule'));
 
         //Test if getModuleUrl returns the right url if adminssl url is set
         $config->setConfigParam('sAdminSSLURL', 'https://admin.localhost.local/admin/');
@@ -584,7 +584,7 @@ class ViewConfigTest extends \OxidTestCase
         //Next assert is only to guarantee excpected internal behavior to find problems faster
         $this->assertEquals("https://admin.localhost.local/admin/", $config->getCurrentShopUrl());
         //The module url is expected to start with the admin url but without the admin directory
-        $this->assertEquals("https://admin.localhost.local/out/modules/testModule/assets/", $viewConfig->getModuleUrl('testModule'));
+        $this->assertEquals("https://admin.localhost.local/out/modules/testModule/", $viewConfig->getModuleUrl('testModule'));
     }
 
     public function testGetModuleUrlExceptionThrownWhenPathNotFoundAndDebugEnabled()

@@ -37,7 +37,6 @@ class ModuleInstallCommand extends Command
     protected function configure(): void
     {
         $this->setDescription('Install module assets and configuration')
-            ->addUsage('oe:module:install vendor/my_vendor/my_module')
             ->addArgument(
                 'module-path',
                 InputArgument::REQUIRED,

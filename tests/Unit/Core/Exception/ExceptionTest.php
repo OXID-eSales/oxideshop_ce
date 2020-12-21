@@ -8,8 +8,9 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ExceptionTest extends UnitTestCase
 {
     public function testConstruct(): void
     {
@@ -52,14 +53,14 @@ class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testGetString(): void
     {
-        $message = 'Erik was here..';
+        $message = uniqid('some-message-', true);
         $testObject = oxNew('oxException', $message);
-        $this->assertEquals(StandardException::class, get_class($testObject));
+        $this->assertEquals(StandardException::class, \get_class($testObject));
         $testObject->setRenderer();
         $testObject->setNotCaught();
         $out = $testObject->getString();
-        $this->assertStringContainsString($message, $out);
-        $this->assertStringContainsString(__FUNCTION__, $out);
+        $this->assertContains($message, $out);
+        $this->assertContains(__FUNCTION__, $out);
     }
 
     public function testGetValues(): void

@@ -1,13 +1,16 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Exception;
 
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
+class ExceptionTest extends UnitTestCase
 {
 
     // 1. testing constructor works .. ok, its a pseudo test ;-)
@@ -73,17 +76,16 @@ class ExceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue($testObject->isNotCaught());
     }
 
-    // We check on class name and message only - rest is not checked yet
-    public function testGetString()
+    public function testGetString(): void
     {
-        $message = 'Erik was here..';
+        $message = uniqid('some-message-', true);
         $testObject = oxNew('oxException', $message);
-        $this->assertEquals(\OxidEsales\Eshop\Core\Exception\StandardException::class, get_class($testObject));
+        $this->assertEquals(StandardException::class, \get_class($testObject));
         $testObject->setRenderer();
         $testObject->setNotCaught();
-        $sStringOut = $testObject->getString(); // (string)$oTestObject; is not PHP 5.2 compatible (__toString() for string convertion is PHP >= 5.2
-        $this->assertContains($message, $sStringOut);
-        $this->assertContains('oxException', $sStringOut);
+        $out = $testObject->getString();
+        $this->assertContains($message, $out);
+        $this->assertContains(__FUNCTION__, $out);
     }
 
     public function testGetValues()

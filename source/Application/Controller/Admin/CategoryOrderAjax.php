@@ -7,9 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Object2Category;
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use oxRegistry;
-use oxDb;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class manages category articles order
@@ -195,7 +195,7 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                 $sO2CView = $this->_getViewName('oxobject2category');
                 $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid = :oxcatnid and $sO2CView.oxobjectid in (" . implode(", ", DatabaseProvider::getDb()->quoteArray($aNewOrder)) . " )";
                 $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-                $oList->init("oxbase", "oxobject2category");
+                $oList->init($this->getObject2CategoryClass(), 'oxobject2category');
                 $oList->selectString($sSelect, [
                     ':oxcatnid' => $oCategory->getId()
                 ]);
@@ -255,5 +255,10 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      */
     protected function onCategoryChange($categoryId)
     {
+    }
+
+    private function getObject2CategoryClass(): string
+    {
+        return Registry::getUtilsObject()->getClassName(Object2Category::class);
     }
 }

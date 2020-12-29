@@ -290,7 +290,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     
 ### Security
 
-## [6.6.1] - Unreleased
+
+## [6.7.0] - Unreleased
+
+### Deprecated
+- Support for Module source-directory and target-directory in composer.json
+    - Method:
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getPackageSourcePath()`
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getTargetDirectory()`
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::setTargetDirectory()`
+        - `OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage::getSourceDirectory()`
+- `OxidEsales\EshopCommunity\Core\Config::getModulesDir()`
+- `Path` parameter from moduleConfiguration:
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::getPath()`
+    - `OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration::setPath()`
+- Console commands for module configuration management:
+    - `oe:module:install-configuration`
+    - `oe:module:uninstall-configuration`
 
 ### Fixed
 - Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
@@ -1281,7 +1297,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/b-6.2.x...master
-[6.6.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...b-6.2.x
+[6.7.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...v6.7.0
 [6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.6.0
 [6.5.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.5...v6.5.6
 [6.5.5]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.4...v6.5.5

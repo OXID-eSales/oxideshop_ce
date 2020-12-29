@@ -125,6 +125,8 @@ class ModuleConfiguration
     }
 
     /**
+     * @deprecated 6.6.1 `path` parameter will be removed from moduleConfiguration in the next major version
+     *
      * @return string
      */
     public function getModuleSource(): string

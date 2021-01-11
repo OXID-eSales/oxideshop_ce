@@ -586,9 +586,7 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
      */
     public function testGetColhWithNonReadStatementThrowsException()
     {
-        $expectedExceptionClass = $this->getDatabaseExceptionClassName();
-
-        $this->expectException($expectedExceptionClass);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->database->getCol("INSERT INTO " . self::TABLE_NAME . " VALUES ('a', 'b')");
     }

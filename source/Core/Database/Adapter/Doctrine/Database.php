@@ -595,10 +595,8 @@ class Database implements DatabaseInterface
         // END deprecated
 
         $result = null;
-        $check = ltrim($query, " \t\n\r\0\x0B(");
-        if (!(stripos($check, 'select') === 0 || stripos($check, 'show') === 0)) {
-            throw new \InvalidArgumentException('Function select is only for read operations select or show');
-        }
+
+        $this->checkIfSqlIsReadOnly($query);
         try {
             /**
              * Be aware that Connection::executeQuery is a method specifically for READ operations only.
@@ -620,6 +618,17 @@ class Database implements DatabaseInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function checkIfSqlIsReadOnly($query): void
+    {
+        $check = ltrim($query, " \t\n\r\0\x0B(");
+        if (!(stripos($check, 'select') === 0 || stripos($check, 'show') === 0)) {
+            throw new \InvalidArgumentException("Function is only for read operations select or show");
+        }
     }
 
     private function checkForMultipleQueries($query, $parameters): string
@@ -726,6 +735,7 @@ class Database implements DatabaseInterface
         $parameters = $this->assureParameterIsAnArray($parameters);
         // END deprecated
 
+        $this->checkIfSqlIsReadOnly($query);
         $result = [];
 
         try {

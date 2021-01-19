@@ -621,7 +621,7 @@ class Database implements DatabaseInterface
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     private function checkIfSqlIsReadOnly($query): void
     {

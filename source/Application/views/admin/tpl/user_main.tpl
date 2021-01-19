@@ -221,7 +221,7 @@ function chkInsert()
                 [{oxmultilang ident="USER_MAIN_NEWPASSWORD"}]
                 </td>
                 <td class="edittext"><br>
-                <input type="password" class="editinput" size="15" name="newPassword" value="" [{$readonly}]>
+                <input type="password" class="editinput" size="15" name="newPassword" value="" autocomplete="new-password" [{$readonly}]>
                 [{oxinputhelp ident="HELP_USER_MAIN_NEWPASSWORD"}]
                 </td>
             </tr>

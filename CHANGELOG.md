@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)
+- Remove wrong docblock on OrderArticle model assign method [PR-850](https://github.com/OXID-eSales/oxideshop_ce/pull/850)
 
 ## [6.6.0] - 2020-11-10
 

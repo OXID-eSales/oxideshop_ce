@@ -14,7 +14,6 @@
             <directory name="source/Setup/" />
             <file name="source/config.inc.php" />
             <file name="source/oxseo.php" />
-            <directory name="vendor/" />
         </ignoreFiles>
     </projectFiles>
 </psalm>

@@ -114,8 +114,6 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
 
     /**
      * Assigns DB field values to object fields.
-     *
-     * @param string $dbRecord DB record
      */
     public function assign($dbRecord)
     {

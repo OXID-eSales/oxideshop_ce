@@ -20,7 +20,7 @@ class NewsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         // cleaning
@@ -48,7 +48,7 @@ class NewsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->aNews as $oNew) {
             $oNew->delete();

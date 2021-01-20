@@ -17,7 +17,7 @@ class UserlistTest extends \OxidTestCase
      *
      * @return null
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $oUser = oxNew('oxuser');
@@ -69,7 +69,7 @@ class UserlistTest extends \OxidTestCase
      *
      * @return null
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $oUser = oxNew('oxuser');
         $oUser->delete('user1');

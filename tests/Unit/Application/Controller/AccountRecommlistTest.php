@@ -23,7 +23,7 @@ class AccountRecommlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $myDB = oxDb::getDB();
@@ -44,7 +44,7 @@ class AccountRecommlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDB()->execute('delete from oxrecommlists');
         oxDb::getDB()->execute('delete from oxobject2list');

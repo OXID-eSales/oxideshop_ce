@@ -17,7 +17,7 @@ class OrderarticlelistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup()
+    protected function setup(): void
     {
         parent::setUp();
         $oOrder = oxNew(Order::class);
@@ -46,7 +46,7 @@ class OrderarticlelistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxorderarticles');
         $this->cleanUpTable('oxorder');

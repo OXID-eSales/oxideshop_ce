@@ -26,7 +26,7 @@ class SessionTest extends UnitTestCase
     /**
      * Fixture setUp.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ class SessionTest extends UnitTestCase
     /**
     * Fixture tearDown.
     */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
 

@@ -45,7 +45,7 @@ class OrderTest extends BaseTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->reset();

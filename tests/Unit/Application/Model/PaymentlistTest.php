@@ -31,7 +31,7 @@ class PaymentlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -175,7 +175,7 @@ class PaymentlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->getName() != "testGetPaymentListWithSomeWrongData") {
             // enabling default payments

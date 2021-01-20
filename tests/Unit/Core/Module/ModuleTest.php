@@ -22,7 +22,7 @@ class ModuleTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxconfig');
         $this->cleanUpTable('oxconfigdisplay');
@@ -500,14 +500,13 @@ class ModuleTest extends \OxidTestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     *
      * @param string $invalidValue
      *
      * @dataProvider invalidSmartyPluginDirectoriesValueProvider
      */
     public function testGetSmartyPluginDirectoriesWithInvalidValue($invalidValue)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $module = oxNew(Module::class);
         $module->setModuleData(['smartyPluginDirectories' => $invalidValue]);
 

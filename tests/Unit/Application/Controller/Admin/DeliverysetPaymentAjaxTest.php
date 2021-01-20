@@ -19,7 +19,7 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -38,7 +38,7 @@ class DeliverysetPaymentAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxobject2payment where oxid='_testDeliverysetPayment1'");
         oxDb::getDb()->execute("delete from oxobject2payment where oxid='_testDeliverysetPayment2'");

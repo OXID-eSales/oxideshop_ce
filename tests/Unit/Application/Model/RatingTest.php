@@ -16,7 +16,7 @@ class RatingTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $oDB = oxDb::getDb();
@@ -32,7 +32,7 @@ class RatingTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
         $myConfig = $this->getConfig();

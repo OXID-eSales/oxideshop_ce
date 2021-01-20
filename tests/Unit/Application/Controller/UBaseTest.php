@@ -36,7 +36,7 @@ class UBaseTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         oxUBaseHelper::resetComponentNames();
 
@@ -56,7 +56,7 @@ class UBaseTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // restoring
         $_SERVER["REQUEST_METHOD"] = $this->_sRequestMethod;

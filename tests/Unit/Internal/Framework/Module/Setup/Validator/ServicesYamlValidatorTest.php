@@ -28,7 +28,7 @@ class ServicesYamlValidatorTest extends TestCase
     /** @var ModuleConfigurationDaoInterface | MockObject */
     private $moduleConfigurationDao;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 

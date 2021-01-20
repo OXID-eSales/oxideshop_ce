@@ -223,7 +223,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup()
+    protected function setup(): void
     {
         self::$count++;
 
@@ -246,7 +246,7 @@ class BaseTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxactions');
         $this->cleanUpTable('oxattribute');
@@ -505,7 +505,7 @@ class BaseTest extends \OxidTestCase
         $oBase->setClassVar("_blUseLazyLoading", true);
         $oBase->init("oxarticles");
         $oBase->setId("test");
-        $this->assertNull($oBase->oxarticles__oxtitle->value);
+        $this->assertNull($oBase->oxarticles__oxtitle);
     }
 
     /**
@@ -932,11 +932,11 @@ class BaseTest extends \OxidTestCase
      */
     public function testAssignWithoutShopId()
     {
-        $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $oBase->oxactions__oxid = new oxField("oxstart", oxField::T_RAW);
         $select = "select * from oxactions where oxid = 'oxstart'";
+        $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $rs = $oDB->select($select);
         $oBase->assign($rs->fields);
         $this->assertEquals($oBase->getId(), "oxstart");
@@ -1168,7 +1168,7 @@ class BaseTest extends \OxidTestCase
         $oBase->load("2000");
 
         $this->assertEquals("2000", $oBase->getId());
-        $sFakeValue = $oBase->oxarticles__oxnonexistingfield->value;
+        $sFakeValue = $oBase->oxarticles__oxnonexistingfield;
         $aFieldList = $oBase->getClassVar("_aFieldNames");
         $this->assertFalse(isset($aFieldList["oxnonexistingfield"]));
     }

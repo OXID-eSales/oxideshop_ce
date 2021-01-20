@@ -19,7 +19,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -29,7 +29,7 @@ class SeoEncoderManufacturerTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         modDB::getInstance()->cleanup();
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');

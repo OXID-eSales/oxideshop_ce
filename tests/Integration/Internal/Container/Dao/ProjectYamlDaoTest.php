@@ -30,7 +30,7 @@ final class ProjectYamlDaoTest extends TestCase
      */
     private $dao;
 
-    public function setUp()
+    public function setup(): void
     {
         $contextStub = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()
@@ -45,7 +45,7 @@ final class ProjectYamlDaoTest extends TestCase
         );
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $projectFilePath = $this->getTestGeneratedServicesFilePath();

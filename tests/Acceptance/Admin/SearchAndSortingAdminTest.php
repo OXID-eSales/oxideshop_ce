@@ -15,7 +15,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
     /**
      * Sets default language to English.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->getTranslator()->setLanguage(1);
@@ -24,7 +24,7 @@ class SearchAndSortingAdminTest extends AdminTestCase
     /**
      * TearDown
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $queries = array();
         $queries[] = "UPDATE oxcategories set OXSORT = (OXSORT-500)";

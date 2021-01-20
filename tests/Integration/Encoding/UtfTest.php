@@ -48,7 +48,7 @@ class UtfTest extends \OxidTestCase
     /**
      * Sets up test
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -59,7 +59,7 @@ class UtfTest extends \OxidTestCase
     /**
      * Cleans up database.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->getConfig()->setConfigParam('sTheme', $this->_sOrigTheme);
 
@@ -1787,14 +1787,14 @@ class UtfTest extends \OxidTestCase
         $utilsObjectInstanceMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, array('generateUID'));
         $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
 
-        $sBodyToReturn = "agentūлитовfür <img src=\"__imagedir__/stars.jpg\" alt=\"agentūлитовfür\">";
+        $sBodyToReturn = "agentūлитовfür <img src=\"" . __DIR__ . "/Fixtures/stars.jpg\" alt=\"agentūлитовfür\">";
         $sBodyToSet = "agentūлитовfür <img src=\"cid:xxx\" alt=\"agentūлитовfür\">";
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('getBody', 'setBody', 'getUtilsObjectInstance'));
         $oEmail->expects($this->once())->method('getBody')->will($this->returnValue($sBodyToReturn));
         $oEmail->expects($this->once())->method('setBody')->with($this->equalTo($sBodyToSet));
         $oEmail->expects($this->once())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectInstanceMock));
-        $oEmail->UNITincludeImages("__imagedir__", null, null, $this->getConfig()->getImageDir());
+        $oEmail->UNITincludeImages(__DIR__ . "/Fixtures", null, null, $this->getConfig()->getImageDir());
     }
 
     public function testOxEmailSetBody()

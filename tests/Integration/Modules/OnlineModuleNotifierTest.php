@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class OnlineModuleNotifierTest extends BaseModuleTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         ContainerFactory::getInstance()
@@ -30,7 +30,7 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
             ->generate();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->removeTestModules();
 

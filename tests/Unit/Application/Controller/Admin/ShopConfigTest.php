@@ -12,11 +12,11 @@ use \oxTestModules;
  */
 class ShopConfigTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         $this->setAdminMode(true);
 
-        return parent::setUp();
+        parent::setUp();
     }
 
     /**

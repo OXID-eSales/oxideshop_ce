@@ -393,9 +393,6 @@ class MetaDataMapperTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException  UnsupportedMetaDataValueTypeException
-     */
     public function testModuleWithSurplusData(): void
     {
         $this->expectException(UnsupportedMetaDataKeyException::class);

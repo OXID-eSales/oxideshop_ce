@@ -17,7 +17,7 @@ class InternationalTest extends AcceptanceTestCase
     /** @var string Language id. In international edition English ID is 0. */
     protected $translateLanguageId = 0;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->markTestSkipped('This functionality was removed and should be cleaned up with the story OXDEV-1595');
         parent::setUp();

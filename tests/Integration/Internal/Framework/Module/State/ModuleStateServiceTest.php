@@ -21,7 +21,7 @@ class ModuleStateServiceTest extends TestCase
 
     private $moduleStateService;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
@@ -60,11 +60,9 @@ class ModuleStateServiceTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
-     */
     public function testSetActiveIfActiveStateIsAlreadySet()
     {
+        $this->expectException(\OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException::class);
         $this->moduleStateService->setActive('testModuleId', 1);
         $this->moduleStateService->setActive('testModuleId', 1);
     }
@@ -80,11 +78,11 @@ class ModuleStateServiceTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException
-     */
     public function testSetDeactivatedIfActiveStateIsNotSet()
     {
+        $this->expectException(
+            \OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException::class
+        );
         $this->moduleStateService = $this->get(ModuleStateServiceInterface::class);
 
         $this->moduleStateService->setDeactivated('testModuleId', 1);

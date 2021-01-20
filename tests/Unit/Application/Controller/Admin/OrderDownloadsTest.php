@@ -22,7 +22,7 @@ class OrderDownloadsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $myConfig = $this->getConfig();
@@ -65,7 +65,7 @@ class OrderDownloadsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDB()->execute('delete from oxorderfiles where oxid="_testOrderFile"');
 

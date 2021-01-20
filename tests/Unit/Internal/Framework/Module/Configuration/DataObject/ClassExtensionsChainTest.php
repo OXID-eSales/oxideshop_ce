@@ -135,8 +135,6 @@ class ClassExtensionsChainTest extends TestCase
     }
 
     /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException
-     *
      * @dataProvider invalidExtensionProvider
      *
      * @param ClassExtension $extension
@@ -152,6 +150,9 @@ class ClassExtensionsChainTest extends TestCase
                     'extension2',
                 ]
             ]
+        );
+        $this->expectException(
+            \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException::class
         );
         $chain->removeExtension($extension);
     }

@@ -17,7 +17,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $myDB = DatabaseProvider::getDb();
@@ -32,7 +32,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $myDB = DatabaseProvider::getDb();
         $sDelete = 'delete from oxrecommlists where oxid like "testlist%" ';

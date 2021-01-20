@@ -28,7 +28,7 @@ class ListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->_oList = oxNew("oxlist");
@@ -40,7 +40,7 @@ class ListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxactions');
         parent::tearDown();

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\MetaData\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -40,14 +41,12 @@ class MetaDataSchemataProviderTest extends TestCase
         $this->assertEquals($this->schemaVersion21, $actualSchema21);
     }
 
-    /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException
-     */
     public function testGetFlippedMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion()
     {
         $unsupportedVersion = '0.0';
         $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataVersionException::class);
         $metaDataSchema->getFlippedMetaDataSchemaForVersion($unsupportedVersion);
     }
 
@@ -67,18 +66,16 @@ class MetaDataSchemataProviderTest extends TestCase
         $this->assertSame($expectedSchema20, $actualSchema20);
     }
 
-    /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException
-     */
     public function testGetMetadataSchemaForVersionThrowsExceptionOnUnsupportedVersion()
     {
         $unsupportedVersion = '0.0';
         $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataVersionException::class);
         $metaDataSchema->getMetaDataSchemaForVersion($unsupportedVersion);
     }
 
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->schemaVersion20 = [

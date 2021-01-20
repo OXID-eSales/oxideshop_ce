@@ -25,7 +25,7 @@ class PaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->cleanUpTable('oxobject2group', 'oxgroupsid');
         parent::tearDown();
@@ -73,13 +73,10 @@ class PaymentTest extends \OxidTestCase
                         'oxidnewsletter',
                         'oxidadmin');
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             $aArray,
             $oPayment->getGroups()->arrayKeys(),
-            "Groups are not as expected.",
-            0.0,
-            10,
-            true
+            "Groups are not as expected."
         );
     }
 

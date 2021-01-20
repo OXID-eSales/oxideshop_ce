@@ -14,7 +14,7 @@ use OxidEsales\TestingLibrary\UnitTestCase;
  */
 class SortingValidatorTest extends UnitTestCase
 {
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->setAllowedSortingColumns();

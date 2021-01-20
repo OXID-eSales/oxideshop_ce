@@ -20,7 +20,7 @@ class ControllerProviderCacheTest extends UnitTestCase
      *
      * Calls parent method first.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 

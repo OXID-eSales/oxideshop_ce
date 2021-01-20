@@ -14,7 +14,6 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider invalidProductIdsProvider
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException
      */
     public function testGetProductByIdWithInvalidId($invalidProductId)
     {
@@ -25,6 +24,8 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
             $queryBuilderFactory,
             $mapper
         );
+
+        $this->expectException(\OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException::class);
 
         $productRatingDao->getProductRatingById($invalidProductId);
     }

@@ -73,7 +73,7 @@ class SeoEncoderTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');
         oxDb::getDb()->execute('delete from oxobject2seodata');
@@ -92,7 +92,7 @@ class SeoEncoderTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // deleting seo entries
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');

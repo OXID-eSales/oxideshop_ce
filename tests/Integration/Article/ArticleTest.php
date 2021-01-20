@@ -15,7 +15,7 @@ class ArticleTest extends \OxidTestCase
     /**
      * Test setup
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->addTableForCleanup('oxarticles');

@@ -18,7 +18,7 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -32,7 +32,7 @@ class DiscountGroupsAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxobject2discount where oxdiscountid like '_test%'");
 

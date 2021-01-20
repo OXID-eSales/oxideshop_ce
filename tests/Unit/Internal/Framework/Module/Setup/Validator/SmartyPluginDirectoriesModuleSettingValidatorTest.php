@@ -11,8 +11,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverI
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\SmartyPluginDirectoriesValidator;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotReadableException;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\SmartyPluginDirectory;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException;
 
 class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
 {
@@ -23,7 +26,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     /** @var ModulePathResolverInterface */
     private $modulePathResolver = null;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
@@ -46,9 +49,6 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException
-     */
     public function testValidateThrowsExceptionIfNotExistingDirectoryConfigured()
     {
         $this->createModuleStructure();
@@ -63,12 +63,10 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory('notExistingDirectory'));
         $moduleConfiguration->setId("smartyTestModule");
 
+        $this->expectException(DirectoryNotExistentException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotReadableException
-     */
     public function testValidateThrowsExceptionIfNonReadableDirectoryConfigured()
     {
         $this->createModuleStructure();
@@ -85,12 +83,10 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory('smarty'));
         $moduleConfiguration->setId("smartyTestModule");
 
+        $this->expectException(DirectoryNotReadableException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\ModuleSettingNotValidException
-     */
     public function testValidateThrowsExceptionIfNotArrayConfigured()
     {
         $validator = new SmartyPluginDirectoriesValidator($this->modulePathResolver);
@@ -99,6 +95,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory(''));
         $moduleConfiguration->setId("smartyTestModule");
 
+        $this->expectException(ModuleSettingNotValidException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 

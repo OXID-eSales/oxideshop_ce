@@ -17,7 +17,7 @@ class ArticleSelectionAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 

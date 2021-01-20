@@ -53,7 +53,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
     /**
      * Fixture setUp.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -66,7 +66,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
     /*
     * Fixture tearDown.
     */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxuser');

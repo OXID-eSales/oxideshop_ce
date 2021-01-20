@@ -448,9 +448,11 @@ class SystemRequirementsTest extends \OxidTestCase
     public function providerCheckPhpVersion()
     {
         return array(
-            array('7.0.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
+            array('7.2.0', SystemRequirements::MODULE_STATUS_BLOCKS_SETUP),
             array('7.4.0', SystemRequirements::MODULE_STATUS_OK),
-            array('7.9.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
+            array('7.9.0', SystemRequirements::MODULE_STATUS_OK),
+            array('8.0.1', SystemRequirements::MODULE_STATUS_OK),
+            array('8.9.0', SystemRequirements::MODULE_STATUS_FITS_MINIMUM_REQUIREMENTS)
         );
     }
 

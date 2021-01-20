@@ -18,7 +18,7 @@ class MoredetailsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         oxTestModules::addFunction('oxSeoEncoderManufacturer', '_saveToDb', '{return null;}');

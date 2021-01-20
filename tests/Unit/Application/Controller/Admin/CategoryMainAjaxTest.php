@@ -21,7 +21,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -52,7 +52,7 @@ class CategoryMainAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->addTeardownSql("delete from oxarticles where oxid like '_test%'");
         $this->addTeardownSql("delete from oxobject2category where oxobjectid like '_test%'");

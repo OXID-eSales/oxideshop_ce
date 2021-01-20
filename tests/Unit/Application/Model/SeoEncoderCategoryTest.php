@@ -21,7 +21,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class SeoEncoderCategoryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         modDB::getInstance()->cleanup();
         // deleting seo entries

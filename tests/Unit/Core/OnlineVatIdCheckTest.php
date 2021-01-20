@@ -14,7 +14,7 @@ class OnlineVatIdCheckTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 

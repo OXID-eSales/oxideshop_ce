@@ -18,7 +18,7 @@ class ProjectConfigurationTest extends TestCase
     /** @var ProjectConfiguration */
     private $projectConfiguration;
 
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->projectConfiguration = new ProjectConfiguration();

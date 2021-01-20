@@ -50,11 +50,10 @@ class ScriptLogicTest extends TestCase
 
     /**
      * @covers ScriptLogic::include
-     *
-     * @expectedException \PHPUnit\Framework\Error\Warning
      */
     public function testIncludeFileNotExists(): void
     {
+        $this->expectWarning();
         $this->scriptLogic->include('somescript.js');
     }
 

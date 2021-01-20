@@ -25,7 +25,7 @@ class ShopAwareEventsTest extends \PHPUnit\Framework\TestCase
      */
     private $dispatcher;
 
-    public function setUp()
+    public function setup(): void
     {
         $context = $this->getMockBuilder(BasicContext::class)
             ->disableOriginalConstructor()

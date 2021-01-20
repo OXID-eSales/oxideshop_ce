@@ -26,7 +26,7 @@ class AdditionalTablesTest extends MultilanguageTestCase
     /**
      * Fixture setUp.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
     }
@@ -34,7 +34,7 @@ class AdditionalTablesTest extends MultilanguageTestCase
     /**
      * Fixture tearDown.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->setConfigParam('aMultiLangTables', array());
         $this->updateViews();

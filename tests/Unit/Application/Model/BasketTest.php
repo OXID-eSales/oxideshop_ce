@@ -55,7 +55,7 @@ class BasketTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -268,7 +268,7 @@ class BasketTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // deleting articles+variants
         if ($this->oArticle) {
@@ -2461,7 +2461,7 @@ class BasketTest extends \OxidTestCase
         $this->assertTrue($oProdPrice instanceof pricelist);
 
         $this->assertEquals(20 * 19, $oProdPrice->getBruttoSum(), 'brutto sum');
-        $this->assertEquals(20 * 19 / 1.19, $oProdPrice->getNettoSum(), 'netto sum', 0.01);
+        $this->assertEqualsWithDelta(20 * 19 / 1.19, $oProdPrice->getNettoSum(), 0.01, 'netto sum');
         $this->assertEquals(array(19 => 20 * 19 - 20 * 19 / 1.19), $oProdPrice->getVatInfo(false), 'get vat info');
         $this->assertEquals(array(19 => 20 * 19), $oProdPrice->getPriceInfo(), 'get price info');
         $this->assertEquals(19, $oProdPrice->getMostUsedVatPercent());
@@ -2954,7 +2954,7 @@ class BasketTest extends \OxidTestCase
         //asserting first discount values
         $this->assertEquals('Test discount title 2', $aDiscounts['_testDiscountId2']->sDiscount);
         //checking 15 % discount (discountable items price = 79.5)
-        $this->assertEquals(11.925, $aDiscounts['_testDiscountId2']->dDiscount, '', 0.0001);
+        $this->assertEqualsWithDelta(11.925, $aDiscounts['_testDiscountId2']->dDiscount, 0.0001);
     }
 
     /**

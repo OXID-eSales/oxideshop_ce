@@ -12,7 +12,7 @@ use \oxTestModules;
 
 class UtilsViewTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
@@ -30,7 +30,7 @@ class UtilsViewTest extends \OxidTestCase
         $expectedTemplateDirs = $this->getTemplateDirsAzure();
         $utilsView = $this->getUtilsViewMockNotAdmin();
 
-        $this->assertArraySubset($expectedTemplateDirs, $utilsView->getTemplateDirs());
+        $this->assertArraySubsetOxid($expectedTemplateDirs, $utilsView->getTemplateDirs());
     }
 
     public function testGetTemplateDirsOnlyAzure()
@@ -60,7 +60,7 @@ class UtilsViewTest extends \OxidTestCase
 
         $utilsView = $this->getUtilsViewMockNotAdmin();
 
-        $this->assertArraySubset($dirs, $utilsView->getTemplateDirs());
+        $this->assertArraySubsetOxid($dirs, $utilsView->getTemplateDirs());
     }
 
     public function testGetEditionTemplateDirsOnlyAzure()
@@ -95,7 +95,7 @@ class UtilsViewTest extends \OxidTestCase
 
         $utilsView = $this->getUtilsViewMockBeAdmin();
 
-        $this->assertArraySubset($dirs, $utilsView->getTemplateDirs());
+        $this->assertArraySubsetOxid($dirs, $utilsView->getTemplateDirs());
     }
 
     public function testGetEditionTemplateDirsForAdminOnlyAzure()
@@ -140,7 +140,7 @@ class UtilsViewTest extends \OxidTestCase
         $utilsView->setTemplateDir("testDir2");
         $utilsView->setTemplateDir("testDir1");
 
-        $this->assertArraySubset($aDirs, $utilsView->getTemplateDirs());
+        $this->assertArraySubsetOxid($aDirs, $utilsView->getTemplateDirs());
     }
 
     public function testSetTemplateDirOnlyAzure()
@@ -372,7 +372,7 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($varValue, $smarty->$varName, $varName);
         }
 
-        $this->assertArraySubset($templateDirs, $smarty->template_dir);
+        $this->assertArraySubsetOxid($templateDirs, $smarty->template_dir);
     }
 
     /**
@@ -463,7 +463,7 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
         }
 
-        $this->assertArraySubset($aTemplatesDir, $oSmarty->template_dir);
+        $this->assertArraySubsetOxid($aTemplatesDir, $oSmarty->template_dir);
     }
 
     // non demo mode

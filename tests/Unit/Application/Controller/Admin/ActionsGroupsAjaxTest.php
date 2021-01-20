@@ -18,7 +18,7 @@ class ActionsGroupsAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class ActionsGroupsAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxobject2action where oxactionid='_testGroupDelete'");
         oxDb::getDb()->execute("delete from oxobject2action where oxactionid='_testGroupDeleteAll'");

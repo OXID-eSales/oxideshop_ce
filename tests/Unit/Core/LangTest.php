@@ -18,7 +18,7 @@ class LangTest extends \OxidTestCase
     /**
      * @inheritdoc
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -35,7 +35,7 @@ class LangTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // cleanup
         oxRegistry::getUtils()->oxResetFileCache();
@@ -146,7 +146,7 @@ class LangTest extends \OxidTestCase
         $languagePaths = $language->UNITgetLangFilesPathArray($languageId);
 
         foreach ($languagePaths as $languagePath) {
-            $this->assertContains(
+            $this->assertStringContainsString(
                 '/' . $currentLanguageAbbreviation . '/',
                 $languagePath,
                 "The path" . $languagePath . "contains a different language than " .  $currentLanguageAbbreviation . "."

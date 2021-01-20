@@ -16,7 +16,7 @@ class MediaurlTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ class MediaurlTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxmediaurls');
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . '/out/media/test.jpg';
@@ -48,7 +48,7 @@ class MediaurlTest extends \OxidTestCase
             unlink($sFilePath);
         }
 
-        return parent::tearDown();
+        parent::tearDown();
     }
 
     public function testGetHtml()

@@ -19,7 +19,7 @@ final class ShopConfigurationTest extends TestCase
     /** @var ShopConfiguration */
     private $shopConfiguration;
 
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->shopConfiguration = new ShopConfiguration();

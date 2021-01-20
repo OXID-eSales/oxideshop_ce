@@ -44,7 +44,7 @@ class ContentTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->_oObj = oxNew('oxbase');
@@ -71,7 +71,7 @@ class ContentTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_oObj->delete();
         $this->cleanUpTable('oxdelivery');

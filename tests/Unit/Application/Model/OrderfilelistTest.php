@@ -17,7 +17,7 @@ class OrderfilelistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -78,7 +78,7 @@ class OrderfilelistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxorder');
         $this->cleanUpTable('oxorderarticles');

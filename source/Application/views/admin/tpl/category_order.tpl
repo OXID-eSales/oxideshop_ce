@@ -22,7 +22,7 @@
     <input type="hidden" name="oxid" value="[{$oxid}]">
     <input type="hidden" name="editval[category__oxid]" value="[{$oxid}]">
     [{block name="admin_category_order_sort_categories"}]
-        [{oxhasrights object=$edit readonly=$readonly right=$smarty.const.RIGHT_VIEW}]
+        [{oxhasrights object=$edit readonly=$readonly}]
             [{if $oxid != "-1" && !$edit->isDerived()}]
                 <input type="button" value="[{oxmultilang ident="CATEGORY_ORDER_SORTCATEGORIES"}]" class="edittext" onclick="JavaScript:showDialog('&cl=category_order&aoc=1&oxid=[{$oxid}]');">
             [{/if}]

@@ -45,7 +45,7 @@ class ContactFormBridgeTest extends \PHPUnit\Framework\TestCase
 
         $message = $bridge->getContactFormMessage($form);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'marina.ginesta@bcn.cat',
             $message
         );

@@ -21,7 +21,7 @@ use \oxTestModules;
  */
 class LoginTest extends \OxidTestCase
 {
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
@@ -34,7 +34,7 @@ class LoginTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
         oxDb::getDb()->execute("delete from oxremark where oxparentid = '_testUserId'");

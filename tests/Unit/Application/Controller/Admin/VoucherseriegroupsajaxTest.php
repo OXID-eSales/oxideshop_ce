@@ -19,7 +19,7 @@ class VoucherseriegroupsajaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ class VoucherseriegroupsajaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDB()->execute("delete from oxobject2group where oxid like '\_test%'");
         oxDb::getDB()->execute("delete from oxobject2group where oxobjectid like '\_test%'");

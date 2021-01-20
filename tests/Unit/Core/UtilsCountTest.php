@@ -17,7 +17,7 @@ class UtilsCountTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $oPriceCat = oxNew('oxcategory');
@@ -47,7 +47,7 @@ class UtilsCountTest extends \OxidTestCase
         oxRegistry::getUtils()->toFileCache('aLocalCatCache', '');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         foreach ($this->categories as $category) {
             /** @var oxCategory $category */

@@ -14,9 +14,10 @@ use \oxNewDummyUserModule_parent;
 use \oxNewDummyUserModule2_parent;
 use \oemodulenameoxorder_parent;
 use \oxAttribute;
-use \oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use oxUtilsObject;
 use \oxTestModules;
+use Psr\Log\Test\TestLogger;
 
 class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
 {
@@ -66,14 +67,15 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Tear down the fixture.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\modOxUtilsObject_oxUtilsObject::class);
 
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
 
-        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $this->getConfigParam('sShopDir'));
+        Registry::get("oxConfigFile")->setVar("sShopDir", $this->getConfigParam('sShopDir'));
+        Registry::set('logger', getLogger());
 
         parent::tearDown();
     }
@@ -147,10 +149,10 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $config = $this->getConfig();
 
-        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
+        Registry::getUtilsObject()->setModuleVar("aModules", $aModules);
         $config->setConfigParam("aModules", $aModules);
 
-        $configFile = oxRegistry::get("oxConfigFile");
+        $configFile = Registry::get("oxConfigFile");
         $realShopDir = $configFile->getVar('sShopDir');
         $configFile->setVar('sShopDir', $fakeShopDir);
 
@@ -169,7 +171,6 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
          * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
          * existing file we expect an error to be thrown
          */
-        $this->expectException(\PHPUnit\Framework\Error\Warning::class);
 
         $structure = array(
             'modules' => array(
@@ -187,10 +188,13 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $config = $this->getConfig();
 
-        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
+        Registry::getUtilsObject()->setModuleVar("aModules", $aModules);
+        $logger = new TestLogger();
+        Registry::set('logger', $logger);
+        
         $config->setConfigParam("aModules", $aModules);
 
-        $configFile = oxRegistry::get("oxConfigFile");
+        $configFile = Registry::get("oxConfigFile");
         $realShopDir = $configFile->getVar('sShopDir');
         $configFile->setVar('sShopDir', $fakeShopDir);
 
@@ -201,6 +205,12 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue($oNewDummyModule instanceof \oxNewDummyModule);
         $this->assertTrue($oNewDummyModule instanceof \oxNewDummyUserModule);
         $this->assertFalse($oNewDummyModule instanceof \oxNewDummyUserModule2);
+
+        $this->assertTrue(
+            $logger->hasErrorThatContains(
+                'Module class notExistingClass not found. Module ID notExistingClass'
+            )
+        );
     }
 
     public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
@@ -216,8 +226,8 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testGenerateUid()
     {
-        $id1 = oxRegistry::getUtilsObject()->generateUid();
-        $id2 = oxRegistry::getUtilsObject()->generateUid();
+        $id1 = Registry::getUtilsObject()->generateUid();
+        $id2 = Registry::getUtilsObject()->generateUid();
         $this->assertNotEquals($id1, $id2);
     }
 
@@ -296,14 +306,14 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function _prepareFakeModule($class, $extension)
     {
         $wrapper = $this->getVfsStreamWrapper();
-        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        Registry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
                 $extension . '.php' => "<?php class $extension extends {$extension}_parent {}"
             )
         ));
 
-        $oUtilsObject = oxRegistry::getUtilsObject();
+        $oUtilsObject = Registry::getUtilsObject();
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;
@@ -321,14 +331,14 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function prepareFakeModuleNonExistentClass($class, $extension)
     {
         $wrapper = $this->getVfsStreamWrapper();
-        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        Registry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
                 $extension . '.php' => "<?php class {$extension}NonExistent extends {$extension}_parent {}"
             )
         ));
 
-        $oUtilsObject = oxRegistry::getUtilsObject();
+        $oUtilsObject = Registry::getUtilsObject();
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;

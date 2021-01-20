@@ -94,7 +94,7 @@ class BasketitemTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -106,7 +106,7 @@ class BasketitemTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxwrapping');
         $this->cleanUpTable('oxarticles');

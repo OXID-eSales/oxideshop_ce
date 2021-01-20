@@ -20,7 +20,7 @@ class SeoEncoderRecommTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -30,7 +30,7 @@ class SeoEncoderRecommTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // deleting seo entries
         oxDb::getDb()->execute('delete from oxseo where oxtype != "static"');

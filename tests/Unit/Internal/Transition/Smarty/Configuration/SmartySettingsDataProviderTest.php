@@ -43,7 +43,7 @@ class SmartySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
 
         $smartyContextMock
             ->method('getTemplateEngineDebugMode')
-            ->willReturn('2');
+            ->willReturn(true);
 
         $smartyContextMock
             ->method('getTemplateCompileDirectory')
@@ -59,7 +59,7 @@ class SmartySettingsDataProviderTest extends \PHPUnit\Framework\TestCase
 
         $smartyContextMock
             ->method('getTemplatePhpHandlingMode')
-            ->willReturn(true);
+            ->willReturn(1);
 
         $smartyContextMock
             ->method('getTemplateCompileId')

@@ -8,8 +8,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 use Exception;
 use oxDb;
 use OxidEsales\EshopCommunity\Setup\Database;
+use OxidEsales\EshopCommunity\Setup\Utilities;
 use PDO;
-use PHPUnit\Framework\MockObject\MockObject;
 use StdClass;
 
 require_once getShopBasePath() . '/Setup/functions.php';
@@ -62,7 +62,7 @@ class DatabaseTest extends \OxidTestCase
     /**
      * Resets logged queries.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->loggedQueries = new StdClass();
@@ -326,9 +326,6 @@ class DatabaseTest extends \OxidTestCase
      */
     public function testSaveShopSettings()
     {
-        $utils = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Utilities', array("generateUid"));
-        $utils->expects($this->any())->method("generateUid")->will($this->returnValue("testid"));
-
         $session = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', array("setSessionParam", "getSessionParam"), array(), '', null);
 
         $map = array(
@@ -344,19 +341,24 @@ class DatabaseTest extends \OxidTestCase
 
 
         $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
-        $setup->expects($this->any())->method("getShopId");
+        $setup->expects($this->any())->method("getShopId")->will($this->returnValue(1));
 
         /** @var Database|PHPUnit\Framework\MockObject\MockObject $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
         $map = array(
-            array('Utilities', $utils),
+            array('Utilities', new Utilities()),
             array('Session', $session),
             array('Setup', $setup)
         );
         $database->expects($this->any())->method("getInstance")->will($this->returnValueMap($map));
         $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
 
-        $database->saveShopSettings(array());
+        $database->saveShopSettings(
+            [
+                'check_for_updates' => false,
+                'sShopLang' => 'English'
+            ]
+        );
     }
 
     /**

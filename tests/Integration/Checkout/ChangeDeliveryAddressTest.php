@@ -15,7 +15,7 @@ class ChangeDeliveryAddressTest extends \OxidTestCase
     /**
      * Fixture setUp.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
     }
@@ -23,7 +23,7 @@ class ChangeDeliveryAddressTest extends \OxidTestCase
     /**
      * Fixture tearDown.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxuser');
         $this->cleanUpTable('oxuserbaskets');

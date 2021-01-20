@@ -82,14 +82,13 @@ class ExceptionHandlerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     }
 
     /**
-     * @expectedException \Exception
-     *
      * @dataProvider dataProviderTestHandleUncaughtExceptionDebugStatus
      *
      * @param $debug
      */
     public function testHandleUncaughtExceptionWillAlwaysWriteToLogFile($debug)
     {
+        $this->expectException(\Exception::class);
         $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
         $logger
             ->expects($this->atLeastOnce())

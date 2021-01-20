@@ -70,7 +70,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->setPrefix('oxid');
@@ -85,7 +85,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         modDB::getInstance()->cleanup();
         // deleting seo entries

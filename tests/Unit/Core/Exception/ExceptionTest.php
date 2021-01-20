@@ -47,7 +47,7 @@ class ExceptionTest extends UnitTestCase
         $file = file_get_contents(OX_LOG_FILE);
         file_put_contents(OX_LOG_FILE, '');
 
-        $this->assertContains($message, $file);
+        $this->assertStringContainsString($message, $file);
     }
 
     // Test set & get message
@@ -84,8 +84,8 @@ class ExceptionTest extends UnitTestCase
         $testObject->setRenderer();
         $testObject->setNotCaught();
         $out = $testObject->getString();
-        $this->assertContains($message, $out);
-        $this->assertContains(__FUNCTION__, $out);
+        $this->assertStringContainsString($message, $out);
+        $this->assertStringContainsString(__FUNCTION__, $out);
     }
 
     public function testGetValues()

@@ -11,7 +11,7 @@ abstract class AdminTestCase extends AcceptanceTestCase
     /**
      * Restores database after every test.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->waitForFrameToLoad('basefrm');
         parent::tearDown();

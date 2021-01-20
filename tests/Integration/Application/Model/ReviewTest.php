@@ -44,8 +44,7 @@ class ReviewTest extends UnitTestCase
 
         $reviewAndRatingList = $review->getReviewAndRatingListByUserId('testUser');
 
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $reviewAndRatingList
         );
 

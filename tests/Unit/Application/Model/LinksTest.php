@@ -17,7 +17,7 @@ class LinksTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->_oxLinks = oxNew("oxlinks", getViewName('oxlinks'));
@@ -31,7 +31,7 @@ class LinksTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $sDelete = "delete from oxlinks where oxid='" . $this->_oxLinks->getId() . "'";
         oxDb::getDb()->Execute($sDelete);

@@ -21,7 +21,7 @@ class ArticleReviewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -38,7 +38,7 @@ class ArticleReviewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxreviews');
         parent::tearDown();

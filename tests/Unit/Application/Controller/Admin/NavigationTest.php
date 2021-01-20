@@ -233,7 +233,7 @@ class NavigationTest extends \OxidTestCase
 
         $actual =  $controllerMock->UNITcheckVersion();
 
-        $this->assertContains($currentVersion, $actual);
-        $this->assertContains($latestVersion, $actual);
+        $this->assertStringContainsString($currentVersion, $actual);
+        $this->assertStringContainsString($latestVersion, $actual);
     }
 }

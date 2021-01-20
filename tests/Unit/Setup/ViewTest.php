@@ -138,7 +138,7 @@ class ViewTest extends \OxidTestCase
     /**
      * Testing view::isDeletedSetup()
      */
-    public function testIsDeletedSetup()
+    public function testIsDeletedsetup(): void
     {
         $sPath = getShopBasePath();
 

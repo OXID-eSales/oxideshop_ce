@@ -50,7 +50,7 @@ class ModuleAutoload
      *
      * Make method private to ensure Singleton pattern
      */
-    private function __wakeup()
+    public function __wakeup()
     {
     }
 

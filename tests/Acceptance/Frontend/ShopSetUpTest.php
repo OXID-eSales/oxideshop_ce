@@ -53,7 +53,7 @@ class ShopSetUpTest extends FrontendTestCase
     /** @var int How much more time wait for these tests. */
     protected $_iWaitTimeMultiplier = 7;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->preventModuleVersionNotify = false;
         parent::setUp();
@@ -61,7 +61,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->restoreModifiedFiles();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->restoreModifiedFiles();
 
@@ -737,7 +737,7 @@ class ShopSetUpTest extends FrontendTestCase
      *
      * @group setup
      */
-    public function testSystemRequirementsPageCanContinueWithSetup()
+    public function testSystemRequirementsPageCanContinueWithsetUp(): void
     {
         $this->goToSetup();
         $this->assertTextNotPresent(
@@ -773,9 +773,9 @@ class ShopSetUpTest extends FrontendTestCase
     {
         $this->goToSetup();
 
-        $this->assertContains("Server configuration", $this->getText("//li[@class='group'][1]"));
-        $this->assertContains("PHP configuration", $this->getText("//li[@class='group'][2]"));
-        $this->assertContains("PHP extensions", $this->getText("//li[@class='group'][3]"));
+        $this->assertStringContainsString("Server configuration", $this->getText("//li[@class='group'][1]"));
+        $this->assertStringContainsString("PHP configuration", $this->getText("//li[@class='group'][2]"));
+        $this->assertStringContainsString("PHP extensions", $this->getText("//li[@class='group'][3]"));
     }
 
     /**
@@ -825,7 +825,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Check if shop automatically redirects to setup when you're trying to set it up for the first time
      */
-    public function goToSetup()
+    public function goTosetUp(): void
     {
         if (!$this->isPackage()) {
             $sUrl = $this->getTestConfig()->getShopUrl() . 'Setup/index.php?istep=100';
@@ -1221,11 +1221,12 @@ class ShopSetUpTest extends FrontendTestCase
         $contents = <<<'EOL'
 <?php
 namespace OxidEsales\EshopCommunity\Migrations;
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 class Version20170101 extends AbstractMigration {
-public function up(Schema $schema) {$this->addSql('INVALID_SQL_SYNTAX');}
-public function down(Schema $schema) {}
+public function up(Schema $schema): void {$this->addSql('INVALID_SQL_SYNTAX');}
+public function down(Schema $schema): void {}
+public function isTransactional(): bool {return false;}
 }
 EOL;
         file_put_contents($this->getInvalidMigrationFilePath(), $contents);

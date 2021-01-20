@@ -20,7 +20,7 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -43,7 +43,7 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("delete from oxobject2delivery where oxid='_testDeliveryUser1'");
         oxDb::getDb()->execute("delete from oxobject2delivery where oxid='_testDeliveryUser2'");

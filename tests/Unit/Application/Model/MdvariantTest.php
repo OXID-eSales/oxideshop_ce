@@ -24,7 +24,7 @@ class MdvariantTest extends \OxidTestCase
      *
      * @return null;
      */
-    public function setup()
+    public function setup(): void
     {
         parent::setUp();
 

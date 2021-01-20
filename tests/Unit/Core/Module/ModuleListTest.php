@@ -17,7 +17,7 @@ class ModuleListTest extends \OxidTestCase
      *
      * @return null
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
     }
@@ -27,7 +27,7 @@ class ModuleListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxconfig');
         $this->cleanUpTable('oxconfigdisplay');

@@ -29,7 +29,7 @@ class UtilitiesTest extends \OxidTestCase
     /**
      * Test setup
      */
-    protected function setUp()
+    protected function setup(): void
     {
         // backup..
         $this->_sPathTranslated = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;
@@ -47,7 +47,7 @@ class UtilitiesTest extends \OxidTestCase
     /**
      * Test teardown
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if (isset($_POST["testPostVarName"])) {
             unset($_POST["testPostVarName"]);
@@ -223,7 +223,7 @@ class UtilitiesTest extends \OxidTestCase
 
         $destinationFile = $destinationDirectory . '/config.inc.php';
         file_put_contents($destinationFile, file_get_contents($originalFile));
-        $this->assertNotContains($password, $destinationFile);
+        $this->assertStringNotContainsString($password, $destinationFile);
 
         $configParameters = [
             'sShopDir' => $destinationDirectory,

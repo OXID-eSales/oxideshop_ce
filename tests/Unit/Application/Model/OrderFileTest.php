@@ -15,7 +15,7 @@ class OrderFileTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDB()->execute('delete from `oxorderfiles` ');
 

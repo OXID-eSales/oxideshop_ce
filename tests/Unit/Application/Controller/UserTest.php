@@ -23,7 +23,7 @@ class UserTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -36,7 +36,7 @@ class UserTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->_oUser) {
             $this->_oUser->delete();

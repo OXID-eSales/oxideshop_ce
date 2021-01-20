@@ -26,7 +26,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 {
     private $container;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
         $this->container = ContainerFactory::getInstance()->getContainer();
@@ -35,7 +35,7 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
             ->generate();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->removeTestModules();
         parent::tearDown();

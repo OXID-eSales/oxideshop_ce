@@ -29,7 +29,7 @@ class DetailsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxrecommlists');
         $this->cleanUpTable('oxobject2list');

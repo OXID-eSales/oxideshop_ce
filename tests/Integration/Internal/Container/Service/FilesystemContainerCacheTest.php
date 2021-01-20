@@ -18,7 +18,7 @@ final class FilesystemContainerCacheTest extends TestCase
 {
     use ContainerTrait;
 
-    protected function setUp()
+    protected function setup(): void
     {
         $this->get(ContainerCacheInterface::class)->invalidate();
         parent::setUp();

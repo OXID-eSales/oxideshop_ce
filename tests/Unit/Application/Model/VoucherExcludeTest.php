@@ -20,7 +20,7 @@ class VoucherExcludeTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         /*
 
@@ -350,7 +350,7 @@ class VoucherExcludeTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $sDeleteSeries            = "DELETE FROM `oxvoucherseries`   WHERE `OXID` LIKE 'test_%';";
         $sDeleteVouchers          = "DELETE FROM `oxvouchers`        WHERE `OXID` LIKE 'test_%';";

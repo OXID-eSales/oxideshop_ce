@@ -15,7 +15,7 @@ class FileTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         $oDb = oxDb::getDb();
         $sQ = "insert into oxfiles (oxid, OXARTID, OXFILENAME, OXSTOREHASH) values ('testId1','_testProd1','testFile','testFileH')";
@@ -26,7 +26,7 @@ class FileTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxDb::getDb()->execute("TRUNCATE TABLE `oxfiles`");
         $this->cleanUpTable('oxorder');

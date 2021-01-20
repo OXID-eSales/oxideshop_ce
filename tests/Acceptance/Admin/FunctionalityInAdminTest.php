@@ -19,7 +19,7 @@ class FunctionalityInAdminTest extends AdminTestCase
     /**
      * Restore translation error value as some case might change it.
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         $this->errorsInPage["ERROR: Tran"] = $this->translationError;

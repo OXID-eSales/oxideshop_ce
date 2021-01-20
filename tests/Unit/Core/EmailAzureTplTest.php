@@ -23,7 +23,7 @@ class EmailAzureTplTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -92,7 +92,7 @@ class EmailAzureTplTest extends \OxidTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // reload smarty
         \OxidEsales\Eshop\Core\Registry::getUtilsView()->getSmarty(true);
@@ -414,7 +414,7 @@ class EmailAzureTplTest extends \OxidTestCase
         $this->checkMailFields($aFields, $oEmail);
 
         //checking if mail body is in english
-        $this->assertContains('The following products have been ordered in testShopName right now:', $oEmail->getBody());
+        $this->assertStringContainsString('The following products have been ordered in testShopName right now:', $oEmail->getBody());
     }
 
     /**

@@ -24,7 +24,7 @@ class GroupsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $group = oxNew('oxgroups');
@@ -39,7 +39,7 @@ class GroupsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $group = oxNew('oxgroups');
         $group->delete('testgroup');

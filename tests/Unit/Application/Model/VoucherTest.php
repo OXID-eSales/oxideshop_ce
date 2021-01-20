@@ -27,7 +27,7 @@ class VoucherTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $myConfig = $this->getConfig();
@@ -71,7 +71,7 @@ class VoucherTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         if ($this->_sTestUserId) {
             $oUser = oxNew('oxuser');

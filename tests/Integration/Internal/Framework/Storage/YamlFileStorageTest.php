@@ -95,11 +95,9 @@ class YamlFileStorageTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
-     */
     public function testStorageWithCorruptedFile()
     {
+        $this->expectException(\Symfony\Component\Yaml\Exception\ParseException::class);
         $filePath = $this->getFilePath();
         $yamlContent = "\t";
 

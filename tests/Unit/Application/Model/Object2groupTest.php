@@ -18,7 +18,7 @@ class Object2groupTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $oNews = oxNew('oxnews');
@@ -38,7 +38,7 @@ class Object2groupTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oDB = oxDb::getDb();
         $sDelete = "delete from oxnews where oxid='" . $this->_sObjID . "'";

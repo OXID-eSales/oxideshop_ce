@@ -17,7 +17,7 @@ final class ModuleSettingBridgeTest extends TestCase
 {
     use ContainerTrait;
 
-    public function setUp()
+    public function setup(): void
     {
         $modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
 

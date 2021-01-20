@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\ConfigFile;
@@ -21,7 +21,7 @@ class Version20180703135728 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $facts = new Facts();
         $configFile = new ConfigFile($facts->getSourcePath() . '/config.inc.php');
@@ -60,8 +60,13 @@ class Version20180703135728 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+    }
+
+    public function isTransactional(): bool
+    {
+        return false;
     }
 }

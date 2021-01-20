@@ -45,7 +45,7 @@ class OrderRecalculationTest extends \OxidTestCase
     /**
      * Fixture setUp.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -58,7 +58,7 @@ class OrderRecalculationTest extends \OxidTestCase
     /*
     * Fixture tearDown.
     */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxorder');

@@ -26,6 +26,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Controller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\Event;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
 
 /**
  * @internal
@@ -34,9 +35,6 @@ class ProjectConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException
-     */
     public function testProjectConfigurationGetterThrowsExceptionIfStorageIsEmpty(): void
     {
         $vfsStreamDirectory = vfsStream::setup();
@@ -56,6 +54,7 @@ class ProjectConfigurationDaoTest extends TestCase
             $this->get('oxid_esales.symfony.file_system')
         );
 
+        $this->expectException(ProjectConfigurationIsEmptyException::class);
         $projectConfigurationDao->getConfiguration();
     }
 

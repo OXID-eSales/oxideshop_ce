@@ -18,7 +18,7 @@ class WordwrapLogicTest extends UnitTestCase
     /** @var WordwrapLogic */
     private $wordWrapLogic;
 
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->wordWrapLogic = new WordwrapLogic();

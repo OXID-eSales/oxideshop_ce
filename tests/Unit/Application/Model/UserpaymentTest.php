@@ -22,7 +22,7 @@ class UserpaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -39,7 +39,7 @@ class UserpaymentTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_oUpay->delete('_testOxId');
         $this->_oUpay->delete('_testOxId2');

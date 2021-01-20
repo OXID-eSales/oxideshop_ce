@@ -36,7 +36,7 @@ class ActionsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $this->_oAction = oxNew('oxActions');
@@ -64,7 +64,7 @@ class ActionsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_oAction->delete();
         $this->_oPromo->delete();

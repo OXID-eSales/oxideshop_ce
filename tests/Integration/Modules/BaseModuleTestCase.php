@@ -28,7 +28,7 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
     /**
      * Ensure a clean environment before each test
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -38,7 +38,7 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
         $environment->clean();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->removeTestModules();
 

@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ClassExtensionsValidator;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration\ClassExtension;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
 
 /**
  * @internal
@@ -42,9 +43,6 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException
-     */
     public function testNamespaceOfPatchedClassMustNotBeShopEditionNamespace()
     {
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
@@ -58,13 +56,12 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->addClassExtension(new ClassExtension('shopClass', 'moduleClass'));
 
+        
         $validator = new ClassExtensionsValidator($shopAdapter);
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException
-     */
     public function testNamespaceOfPatchedClassIsShopUnifiedNamespaceButClassDoesNotExist()
     {
         $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
@@ -83,6 +80,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->addClassExtension(new ClassExtension('nonExistentClass', 'moduleClass'));
 
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 }

@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 //THIS FILE IS IN LATIN1 AND NOT IN UTF
@@ -26,7 +28,7 @@ class StrMbTest extends \OxidTestCase
     /** @var oxStrMb */
     protected $_oSubj = null;
 
-    public function setup()
+    public function setup(): void
     {
         parent::setUp();
         $this->_oSubj = oxNew('oxStrMb');

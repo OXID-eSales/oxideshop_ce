@@ -44,7 +44,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
     /**
      * @inheritdoc
      */
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
@@ -56,7 +56,7 @@ class AccountReviewControllerTest extends \OxidEsales\TestingLibrary\UnitTestCas
      *
      * @throws \Exception
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->getUser(self::TESTUSER_ID)->delete();
 

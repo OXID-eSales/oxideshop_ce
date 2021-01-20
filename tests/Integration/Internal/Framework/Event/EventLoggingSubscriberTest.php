@@ -22,7 +22,7 @@ class EventLoggingSubscriberTest extends UnitTestCase
 
     private $testlog = __DIR__ . DIRECTORY_SEPARATOR . 'test.log';
 
-    public function setUp()
+    public function setup(): void
     {
         $containerBuilder = new ContainerBuilder(new BasicContextStub());
         $this->container = $containerBuilder->getContainer();
@@ -31,7 +31,7 @@ class EventLoggingSubscriberTest extends UnitTestCase
         $this->container->compile();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         if (file_exists($this->testlog)) {
             unlink($this->testlog);

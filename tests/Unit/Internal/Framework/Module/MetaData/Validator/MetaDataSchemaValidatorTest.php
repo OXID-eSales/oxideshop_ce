@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Configu
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataKeyException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use PHPUnit\Framework\TestCase;
 
@@ -19,9 +21,6 @@ class MetaDataSchemaValidatorTest extends TestCase
     private $metaDataSchemaVersion20;
     private $metaDataSchemaVersion21;
 
-    /**
-     * @expectedException \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException
-     */
     public function testValidateThrowsExceptionOnUnsupportedMetaDataVersion()
     {
         $metaDataToValidate = [];
@@ -29,6 +28,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataVersionException::class);
         $validator->validate('path/to/metadata.php', '1.2', $metaDataToValidate);
     }
 
@@ -133,9 +133,6 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    /**
-     * @expectedException  \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException
-     */
     public function testValidateThrowsExceptionOnUnsupportedMetaDataValueType()
     {
         $metaDataToValidate = [
@@ -145,6 +142,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataValueTypeException::class);
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
@@ -184,7 +182,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 

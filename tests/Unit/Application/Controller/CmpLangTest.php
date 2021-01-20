@@ -20,7 +20,7 @@ class CmpLangTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -35,7 +35,7 @@ class CmpLangTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRegistry::getUtils()->seoIsActive(true);
         parent::tearDown();

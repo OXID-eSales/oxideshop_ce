@@ -19,7 +19,7 @@ class ClearcookiesTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
     }
@@ -29,7 +29,7 @@ class ClearcookiesTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }

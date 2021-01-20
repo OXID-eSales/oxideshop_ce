@@ -18,7 +18,7 @@ abstract class MultilanguageTestCase extends \OxidTestCase
     /**
      * Fixture setUp.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -29,7 +29,7 @@ abstract class MultilanguageTestCase extends \OxidTestCase
     /**
     * Fixture tearDown.
     */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRegistry::getLang()->setBaseLanguage($this->originalBaseLanguageId);
         $this->storeLanguageConfiguration($this->originalLanguageArray);

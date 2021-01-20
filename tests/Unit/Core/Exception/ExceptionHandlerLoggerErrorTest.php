@@ -43,7 +43,7 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
     /** @var Config */
     private $configInstance;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 
@@ -71,7 +71,7 @@ class ExceptionHandlerLoggerErrorTest extends \OxidEsales\TestingLibrary\UnitTes
 
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Registry::set(Config::class, $this->configInstance);
 

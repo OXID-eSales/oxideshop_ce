@@ -17,7 +17,7 @@ class ContentlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         // creating demo content
@@ -38,7 +38,7 @@ class ContentlistTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->getConfig()->setShopId($this->_sShopId);
         // deleting ..

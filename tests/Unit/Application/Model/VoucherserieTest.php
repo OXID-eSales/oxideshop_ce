@@ -21,7 +21,7 @@ class VoucherserieTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         $myConfig = $this->getConfig();
@@ -64,7 +64,7 @@ class VoucherserieTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $oSerie = oxNew('oxvoucherserie');
         foreach ($this->_aIds as $sOxid) {

@@ -2354,12 +2354,6 @@ class Email extends PHPMailer
     private function idnToAscii($idn)
     {
         if (function_exists('idn_to_ascii')) {
-            // for old PHP versions support
-            // remove it after the PHP 7.1 support is dropped
-            if (defined('INTL_IDNA_VARIANT_UTS46')) {
-                return idn_to_ascii($idn, 0, INTL_IDNA_VARIANT_UTS46);
-            }
-
             return idn_to_ascii($idn);
         }
 

@@ -99,7 +99,8 @@ class ModuleInheritanceTest extends UnitTestCase
     /**
      * Ensure a clean environment before each test
      */
-    protected function setUp() {
+    protected function setUp(): void
+    {
         parent::setUp();
 
         $this->container = $this->getContainer();
@@ -108,7 +109,7 @@ class ModuleInheritanceTest extends UnitTestCase
         $environment->clean();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->removeTestModules();
 

@@ -12,7 +12,7 @@ use \oxRegistry;
 
 class WidgetControlTest extends \OxidTestCase
 {
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

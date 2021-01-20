@@ -27,7 +27,7 @@ class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
     public function testIfTemplateDoNotExists(): void
     {
         $name = 'not_existing_template.tpl';
-        $locator = $this->getFileLocatorMock(false);
+        $locator = $this->getFileLocatorMock('');
         $nameResolver = $this->getTemplateNameResolverMock($name);
         $loader = new TemplateLoader($locator, $nameResolver);
 
@@ -72,7 +72,7 @@ class TemplateLoaderTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(TemplateFileNotFoundException::class);
         $name = 'not_existing_template.tpl';
-        $locator = $this->getFileLocatorMock(false);
+        $locator = $this->getFileLocatorMock('');
         $nameResolver = $this->getTemplateNameResolverMock($name);
         $loader = new TemplateLoader($locator, $nameResolver);
         $loader->getPath($name);

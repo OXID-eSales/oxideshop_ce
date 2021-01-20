@@ -37,7 +37,7 @@ class ListUserTest extends \OxidTestCase
         $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListUser::class, array("getNavigation"));
-        $oView->expects($this->at($iCnt++))->method('getNavigation')->will($this->returnValue($oNavTree));
+        $oView->expects($this->once())->method('getNavigation')->will($this->returnValue($oNavTree));
         $this->assertEquals("list_user.tpl", $oView->render());
     }
 }

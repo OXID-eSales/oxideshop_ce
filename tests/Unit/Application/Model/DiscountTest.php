@@ -96,7 +96,7 @@ class DiscountTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->_removeDiscounts();
 
@@ -1057,7 +1057,7 @@ class DiscountTest extends \OxidTestCase
     public function testGetNextOxsortReturnsIncrementedValue()
     {
         $shopId = 1;
-        $query = 'SELECT MAX(oxsort) FROM oxdiscount';
+        $query = 'SELECT MAX(oxsort) FROM oxdiscount WHERE OXSHOPID = ?';
         $currentValue = oxDb::getDb()->getOne($query, [$shopId]);
 
         $oDiscount = oxNew('oxDiscount');

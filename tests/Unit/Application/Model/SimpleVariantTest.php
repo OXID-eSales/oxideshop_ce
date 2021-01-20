@@ -20,7 +20,7 @@ class SimpleVariantTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxdiscount');
         oxTestModules::cleanAllModules();

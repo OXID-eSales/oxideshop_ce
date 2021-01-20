@@ -160,7 +160,7 @@ class CategoryListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -182,7 +182,7 @@ class CategoryListTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxcategories');
         oxRemClassModule('modContentListEE_oxcategorylist');
@@ -306,7 +306,7 @@ class CategoryListTest extends \OxidTestCase
 
         $sExpSql = "order by oxrootid asc, oxleft asc";
 
-        $this->assertContains($sExpSql, $sCurSql);
+        $this->assertStringContainsString($sExpSql, $sCurSql);
     }
 
     /**
@@ -325,7 +325,7 @@ class CategoryListTest extends \OxidTestCase
 
         $sExpSql = "where 1  order";
 
-        $this->assertContains($sExpSql, $sCurSql);
+        $this->assertStringContainsString($sExpSql, $sCurSql);
     }
 
     /**
@@ -346,7 +346,7 @@ class CategoryListTest extends \OxidTestCase
 
         $sExpSql = "where 1  order";
 
-        $this->assertContains($sExpSql, $sCurSql);
+        $this->assertStringContainsString($sExpSql, $sCurSql);
     }
 
     /**
@@ -366,7 +366,7 @@ class CategoryListTest extends \OxidTestCase
 
         $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? "and oxv_oxcategories_1.oxshopid = '1'" : "and oxcategories.oxshopid = '1'";
 
-        $this->assertNotContains($sExpSql, $sCurSql);
+        $this->assertStringNotContainsString($sExpSql, $sCurSql);
     }
 
     /**
@@ -388,7 +388,7 @@ class CategoryListTest extends \OxidTestCase
 
         $sExpSql = $this->getTestConfig()->getShopEdition() === 'EE' ? ",not ($sViewName.oxactive " . $this->_oList->UNITgetSqlRightsSnippet() . ") as oxppremove" : ",not $sViewName.oxactive as oxppremove";
 
-        $this->assertContains($sExpSql, $sCurSql);
+        $this->assertStringContainsString($sExpSql, $sCurSql);
     }
 
     /**
@@ -511,7 +511,7 @@ class CategoryListTest extends \OxidTestCase
         $sCurSql = $this->_oList->UNITgetSelectString();
         $sExpSql = "where 1  order";
 
-        $this->assertContains($sExpSql, $sCurSql);
+        $this->assertStringContainsString($sExpSql, $sCurSql);
     }
 
     /**

@@ -7,10 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use Doctrine\DBAL\Exception\ConnectionException;
 use oxRegistry;
 use oxDb;
 use oxNoJsValidator;
 use Exception;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
 
 /**
  * Admin article main selectlist manager.
@@ -399,20 +401,19 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         //creating new multilingual fields with new id over whole DB
         $oDbMeta = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
 
-        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->startTransaction();
+        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $db->startTransaction();
         try {
             $oDbMeta->addNewLangToDb();
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
+            $db->commitTransaction();
         } catch (Exception $oEx) {
-            \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
-
+            if (!$oEx instanceof \PDOException) {
+                $db->rollbackTransaction();
+            }
             //show warning
-            echo $oEx->getMessage();
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_ERROR_ADDING_MULTILANG_FIELDS');
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx);
-
-            return;
         }
     }
 

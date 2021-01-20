@@ -8,7 +8,7 @@ namespace OxidEsales\EshopCommunity\Tests\Acceptance;
 
 abstract class FrontendTestCase extends AcceptanceTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 

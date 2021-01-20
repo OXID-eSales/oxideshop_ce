@@ -50,7 +50,7 @@ class UtilsTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         oxRegistry::getUtils()->commitFileCache();
 

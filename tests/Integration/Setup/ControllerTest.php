@@ -31,7 +31,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * The standard set up method.
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
 
@@ -41,7 +41,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * The standard tear down method.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->unsetPost();
 
@@ -61,7 +61,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNull($view->getViewParam('aDB'));
         }
@@ -82,7 +82,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('The installed MySQL version does not fit system requirements!', $view->getMessages()[0]);
+            $this->assertStringContainsString('The installed MySQL version does not fit system requirements!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNull($view->getViewParam('aDB'));
         }
@@ -105,7 +105,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNotNull($view->getViewParam('aDB'));
 
@@ -130,9 +130,9 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[1]);
-            $this->assertContains('ow=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to overwrite all existing data and install anyway click', $view->getMessages()[1]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[1]);
             $this->assertNull($view->getViewParam('blCreated'));
             $this->assertNotNull($view->getViewParam('aDB'));
         }
@@ -154,9 +154,9 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
-            $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
-            $this->assertContains('owrec=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to install anyway click', $view->getMessages()[1]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[1]);
             $this->assertNull($view->getViewParam('aDB')); //we never got that far
         }
     }
@@ -178,11 +178,11 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[1]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[2]);
-            $this->assertContains('owrec=1', $view->getMessages()[2]);
-            $this->assertContains('ow=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[1]);
+            $this->assertStringContainsString('If you want to overwrite all existing data and install anyway click', $view->getMessages()[2]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[2]);
             $this->assertNull($view->getViewParam('aDB'));  //we never got that far
         }
     }
@@ -221,10 +221,10 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway', $view->getMessages()[1]);
-            $this->assertNotContains('owrec=1', $view->getMessages()[1]);
-            $this->assertContains('ow=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to overwrite all existing data and install anyway', $view->getMessages()[1]);
+            $this->assertStringNotContainsString('owrec=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[1]);
             $this->assertNotNull($view->getViewParam('aDB'));
         }
     }
@@ -245,11 +245,11 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
             $controller->dbCreate();
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[1]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[2]);
-            $this->assertContains('owrec=1', $view->getMessages()[2]);
-            $this->assertContains('ow=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[1]);
+            $this->assertStringContainsString('If you want to overwrite all existing data and install anyway click', $view->getMessages()[2]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[2]);
         }
     }
 
@@ -271,9 +271,9 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
-            $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
-            $this->assertContains('owrec=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('WARNING: A bug in MySQL 5.6 may lead to problems in OXID eShop Enterprise Edition', $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to install anyway click', $view->getMessages()[1]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[1]);
         }
     }
 
@@ -294,7 +294,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
+            $this->assertStringContainsString('bail out before we do harm while testing', $view->getMessages()[0]);
         }
     }
 
@@ -314,7 +314,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
         } catch (\OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
+            $this->assertStringContainsString('bail out before we do harm while testing', $view->getMessages()[0]);
         }
     }
 

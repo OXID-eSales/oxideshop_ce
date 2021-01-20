@@ -12,7 +12,7 @@ class ModuleDataTest extends BaseModuleTestCase
 {
     protected $testModuleDirectory;
 
-    public function setUp()
+    public function setup(): void
     {
         parent::setUp();
 

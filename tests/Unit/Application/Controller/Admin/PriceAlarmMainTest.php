@@ -40,7 +40,7 @@ class PriceAlarmMainTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         $this->tearDown();
         parent::setUp();
@@ -53,7 +53,7 @@ class PriceAlarmMainTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->cleanUpTable('oxpricealarm');
         $this->cleanUpTable('oxarticles');

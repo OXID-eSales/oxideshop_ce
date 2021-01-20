@@ -185,7 +185,7 @@ class SessionTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setup(): void
     {
         parent::setUp();
         //creating new instance
@@ -197,7 +197,7 @@ class SessionTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         //removing oxUtils module
         oxRemClassModule('testUtils');

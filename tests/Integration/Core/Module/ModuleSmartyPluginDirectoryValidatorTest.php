@@ -13,14 +13,11 @@ use OxidEsales\TestingLibrary\UnitTestCase;
 
 class ModuleSmartyPluginDirectoryValidatorTest extends UnitTestCase
 {
-    /**
-     * @expectedException \OxidEsales\Eshop\Core\Exception\ModuleValidationException
-     */
     public function testNonExistingDirectoriesValidation()
     {
+        $this->expectException(\OxidEsales\Eshop\Core\Exception\ModuleValidationException::class);
         $directories = $this->getModuleSmartyPluginDirectories();
         $directories->add(['fakeDir'], 'id');
-        ;
 
         $validator = oxNew(ModuleSmartyPluginDirectoryValidator::class);
         $validator->validate($directories);

@@ -76,7 +76,7 @@ class SetupTest extends \OxidTestCase
     /**
      * Testing Setup::alreadySetUp()
      */
-    public function testAlreadySetUp()
+    public function testAlreadysetup(): void
     {
         $core = new Core();
         /** @var Setup $oSetup */

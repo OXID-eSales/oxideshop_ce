@@ -21,11 +21,9 @@ use PHPUnit\Framework\TestCase;
  */
 class SettingDaoTest extends TestCase
 {
-    /**
-     * @expectedException \Exception
-     */
     public function testRollbackTransactionOnSave()
     {
+        $this->expectException(\Exception::class);
         $queryBuilderFactory = $this->getMockBuilder(QueryBuilderFactoryInterface::class)->getMock();
         $queryBuilderFactory
             ->method('create')

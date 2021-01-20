@@ -92,7 +92,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     /**
      * Initialize database table before every test
      */
-    public function setUp()
+    public function setup(): void
     {
         /** Set a user-defined error handler in order to handle errors triggered with trigger_error */
         $this->errors = array();
@@ -108,7 +108,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     /**
      * Set up before beginning with tests
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -118,7 +118,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     /**
      * Empty database table after every test
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->truncateTestTable();
         $this->closeConnection();
@@ -132,7 +132,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
     /**
      * Tear down after all tests are done
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::removeDatabaseTable();
 
@@ -148,7 +148,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
      * @param integer $errorLine    Error line
      * @param array   $errorContext Error context
      */
-    public function errorHandler($errorLevel, $errorMessage, $errorFile, $errorLine, $errorContext)
+    public function errorHandler($errorLevel, $errorMessage, $errorFile = '', $errorLine = 0, $errorContext = [])
     {
         $this->errors[] = compact(
             "errorLevel",

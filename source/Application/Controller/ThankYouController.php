@@ -278,7 +278,7 @@ class ThankYouController extends \OxidEsales\Eshop\Application\Controller\Fronte
      */
     public function getOrder()
     {
-        if ($this->_oOrder === null) {
+        if (!isset($this->_oOrder)) {
             $this->_oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
             // loading order sometimes needed in template
             if ($sOrderId = $this->getBasket()->getOrderId()) {

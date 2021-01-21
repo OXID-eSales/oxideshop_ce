@@ -99,7 +99,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
         $sArtTitleField = "{$sArtTable}.oxtitle";
 
         // if searching in article title field, updating sql for this case
-        if ($this->_aWhere[$sArtTitleField]) {
+        if (isset($this->_aWhere[$sArtTitleField]) && $this->_aWhere[$sArtTitleField]) {
             $sSqlForTitle = " (CONCAT( {$sArtTable}.oxtitle, if(isnull(oxparentarticles.oxtitle), '', oxparentarticles.oxtitle), {$sArtTable}.oxvarselect)) ";
             $sSql = Str::getStr()->preg_replace("/{$sArtTable}\.oxtitle\s+like/", "$sSqlForTitle like", $sSql);
         }

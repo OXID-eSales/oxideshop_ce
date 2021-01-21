@@ -54,7 +54,7 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             $context = [
                 "oViewConf" => $this->_aViewData["oViewConf"],
                 "oView" => $this->_aViewData["oView"],
-                "shop" => $this->_aViewData["shop"],
+                "shop" => $this->_aViewData["shop"] ?? 1,
                 "isdemo" => $myConfig->isDemoShop(),
                 "aSystemInfo" => $aSystemInfo
             ];

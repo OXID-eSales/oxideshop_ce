@@ -110,7 +110,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
 
         // check only for users with password during registration
         // if user wants to change user name - we must check if passwords are ok before changing
-        if ($user->oxuser__oxpassword->value && $login != $user->oxuser__oxusername->value) {
+        if (isset($user->oxuser__oxpassword->value) && $user->oxuser__oxpassword->value && $login != $user->oxuser__oxusername->value) {
             // on this case password must be taken directly from request
             $newPassword = (isset($invAddress['oxuser__oxpassword']) && $invAddress['oxuser__oxpassword']) ? $invAddress['oxuser__oxpassword'] : \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('user_password');
             if (!$newPassword) {

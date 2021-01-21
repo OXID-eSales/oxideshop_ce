@@ -76,7 +76,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
 
         $this->updateNavigation();
 
-        if ($this->_aViewData['updatenav']) {
+        if (isset($this->_aViewData['updatenav']) && $this->_aViewData['updatenav']) {
             //skipping requirements checking when reloading nav frame
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("navReload", true);
         }

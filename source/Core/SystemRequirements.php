@@ -965,32 +965,33 @@ class SystemRequirements
     /**
      * Parses and calculates given string form byte size value
      *
-     * @param string $sBytes string form byte value (64M, 32K etc)
+     * @param string $bytes string form byte value (64M, 32K etc)
      *
      * @return int
      * @deprecated underscore prefix violates PSR12, will be renamed to "getBytes" in next major
      */
-    protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getBytes($bytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sBytes = trim($sBytes);
-        $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
+        $bytes = trim($bytes);
+        $intBytes = (int)$bytes;
+        $sLast = strtolower($bytes[strlen($bytes) - 1]);
         switch ($sLast) {
             // The 'G' modifier is available since PHP 5.1.0
             // gigabytes
             case 'g':
-                $sBytes *= 1024;
+                $intBytes *= 1024;
             // megabytes
             // no break
             case 'm':
-                $sBytes *= 1024;
+                $intBytes *= 1024;
             // kilobytes
             // no break
             case 'k':
-                $sBytes *= 1024;
+                $intBytes *= 1024;
                 break;
         }
 
-        return $sBytes;
+        return $intBytes;
     }
 
     /**

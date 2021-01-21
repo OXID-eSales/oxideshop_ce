@@ -327,42 +327,45 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Returns maximum allowed size of upload file and formatted size equivalent
      *
-     * @param int  $iMaxFileSize recommended maximum size of file (normalu value is taken from php ini, otherwise sets 2MB)
-     * @param bool $blFormatted  Return formated
+     * @param string $maxFileSize recommended maximum size of file (normalu value is taken from php ini, otherwise sets 2MB)
+     * @param bool $isFormatted Return formated
      *
      * @return array
      * @deprecated underscore prefix violates PSR12, will be renamed to "getMaxUploadFileInfo" in next major
      */
-    protected function _getMaxUploadFileInfo($iMaxFileSize, $blFormatted = false) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getMaxUploadFileInfo(
+        $maxFileSize,
+        $isFormatted = false
+    ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $iMaxFileSize = $iMaxFileSize ? $iMaxFileSize : '2M';
+        $maxFileSize = $maxFileSize ? trim($maxFileSize) : '2M';
 
         // processing config
-        $iMaxFileSize = (int) trim($iMaxFileSize);
-        $sParam = strtolower($iMaxFileSize[strlen($iMaxFileSize) - 1]);
+        $intMaxFileSize = (int)$maxFileSize;
+        $sParam = strtolower($maxFileSize[strlen($maxFileSize) - 1]);
         switch ($sParam) {
             case 'g':
-                $iMaxFileSize *= 1024;
+                $intMaxFileSize *= 1024;
             // no break
             case 'm':
-                $iMaxFileSize *= 1024;
+                $intMaxFileSize *= 1024;
             // no break
             case 'k':
-                $iMaxFileSize *= 1024;
+                $intMaxFileSize *= 1024;
         }
 
         // formatting
-        $aMarkers = ['KB', 'MB', 'GB'];
+        $markers = ['KB', 'MB', 'GB'];
         $sFormattedMaxSize = '';
 
-        $iSize = floor($iMaxFileSize / 1024);
-        while ($iSize && current($aMarkers)) {
-            $sFormattedMaxSize = $iSize . " " . current($aMarkers);
-            $iSize = floor($iSize / 1024);
-            next($aMarkers);
+        $size = floor($intMaxFileSize / 1024);
+        while ($size && current($markers)) {
+            $sFormattedMaxSize = $size . " " . current($markers);
+            $size = floor($size / 1024);
+            next($markers);
         }
 
-        return [$iMaxFileSize, $sFormattedMaxSize];
+        return [$intMaxFileSize, $sFormattedMaxSize];
     }
 
     /**

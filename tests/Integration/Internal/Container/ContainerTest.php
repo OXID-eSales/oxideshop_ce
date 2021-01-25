@@ -59,7 +59,9 @@ final class ContainerTest extends TestCase
         $testContainer = (new TestContainerFactory())->create();
         $testContainer->compile();
         foreach ($testContainer->getDefinitions() as $key => $definition) {
-            $testContainer->get($key);
+            if ($definition->isPublic()) {
+                $testContainer->get($key);
+            }
         };
         $this->assertTrue(true);
     }

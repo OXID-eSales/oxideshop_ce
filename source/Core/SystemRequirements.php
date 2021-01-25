@@ -970,28 +970,28 @@ class SystemRequirements
      * @return int
      * @deprecated underscore prefix violates PSR12, will be renamed to "getBytes" in next major
      */
-    protected function _getBytes($bytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $bytes = trim($bytes);
-        $intBytes = (int)$bytes;
-        $sLast = strtolower($bytes[strlen($bytes) - 1]);
+        $sBytes = trim($sBytes);
+        $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
+        $sBytes = (int)$sBytes;
         switch ($sLast) {
             // The 'G' modifier is available since PHP 5.1.0
             // gigabytes
             case 'g':
-                $intBytes *= 1024;
+                $sBytes *= 1024;
             // megabytes
             // no break
             case 'm':
-                $intBytes *= 1024;
+                $sBytes *= 1024;
             // kilobytes
             // no break
             case 'k':
-                $intBytes *= 1024;
+                $sBytes *= 1024;
                 break;
         }
 
-        return $intBytes;
+        return $sBytes;
     }
 
     /**

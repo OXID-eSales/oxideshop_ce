@@ -42,7 +42,7 @@ if (!isset($aSetupConfig['blDelSetupDir']) || $aSetupConfig['blDelSetupDir']) {
   </tr>
   <tr>
     <td><?php $this->getText('STEP_4_ADMIN_LOGIN_NAME'); ?>:</td>
-    <td>&nbsp;&nbsp;<input size="40" name="aAdminData[sLoginName]" class="editinput" value="<?php echo($aAdminData['sLoginName']);?>"> </td>
+    <td>&nbsp;&nbsp;<input size="40" name="aAdminData[sLoginName]" class="editinput" value="<?php echo isset($aAdminData['sLoginName']) ? $aAdminData['sLoginName'] : ''; ?>"> </td>
   </tr>
   <tr>
     <td><?php $this->getText('STEP_4_ADMIN_PASS'); ?>:</td>

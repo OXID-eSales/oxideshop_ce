@@ -972,9 +972,6 @@ class SystemRequirements
      */
     protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        echo "~~~~~\n";
-        var_dump($sBytes);
-
         $sBytes = trim($sBytes);
         $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
         $sBytes = (int)$sBytes;
@@ -993,8 +990,6 @@ class SystemRequirements
                 $sBytes *= 1024;
                 break;
         }
-
-        var_dump($sBytes);
 
         return $sBytes;
     }

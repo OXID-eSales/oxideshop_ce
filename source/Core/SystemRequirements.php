@@ -712,7 +712,7 @@ class SystemRequirements
 
             $iMemLimit = $this->_getBytes($sMemLimit);
 
-            if ($iMemLimit === '-1') {
+            if ($iMemLimit === -1) {
                 // -1 is equivalent to no memory limit
                 $iModStat = 2;
             } else {
@@ -972,6 +972,9 @@ class SystemRequirements
      */
     protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
+        echo "~~~~~\n";
+        var_dump($sBytes);
+
         $sBytes = trim($sBytes);
         $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
         $sBytes = (int)$sBytes;
@@ -990,6 +993,8 @@ class SystemRequirements
                 $sBytes *= 1024;
                 break;
         }
+
+        var_dump($sBytes);
 
         return $sBytes;
     }

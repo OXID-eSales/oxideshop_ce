@@ -416,9 +416,11 @@ class Module extends \OxidEsales\Eshop\Core\Base
      * Include data from metadata.php
      *
      * @param string $metadataPath Path to metadata.php
+     *
      */
     protected function includeModuleMetaData($metadataPath)
     {
+        $sMetadataVersion = null;
         include $metadataPath;
 
         /**

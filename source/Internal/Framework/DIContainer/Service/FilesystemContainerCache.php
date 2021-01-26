@@ -32,6 +32,9 @@ class FilesystemContainerCache implements ContainerCacheInterface
         file_put_contents($this->context->getContainerCacheFilePath(), $dumper->dump());
     }
 
+    /**
+     * @psalm-suppress UndefinedClass
+     */
     public function get(): ContainerInterface
     {
         include_once $this->context->getContainerCacheFilePath();

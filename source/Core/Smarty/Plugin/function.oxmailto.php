@@ -12,6 +12,8 @@
  * @param Smarty &$oSmarty smarty object
  *
  * @return string
+ *
+ * @psalm-suppress UndefinedFunction
  */
 function smarty_function_oxmailto($aParams, &$oSmarty)
 {

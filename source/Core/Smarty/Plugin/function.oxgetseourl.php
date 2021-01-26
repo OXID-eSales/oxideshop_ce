@@ -16,6 +16,8 @@
  * @param Smarty &$smarty clever simulation of a method
  *
  * @return string
+ *
+ * @psalm-suppress UndefinedFunction
  */
 function smarty_function_oxgetseourl($params, &$smarty)
 {

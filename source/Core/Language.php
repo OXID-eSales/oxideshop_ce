@@ -1049,6 +1049,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             }
 
             if ($mapFile) {
+                $aMap = [];
                 include $mapFile;
                 $this->_aLangMap[$key] = $aMap;
             }

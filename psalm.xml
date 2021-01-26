@@ -16,4 +16,7 @@
             <file name="source/oxseo.php" />
         </ignoreFiles>
     </projectFiles>
+    <issueHandlers>
+        <InvalidThrow errorLevel="suppress" />
+    </issueHandlers>
 </psalm>

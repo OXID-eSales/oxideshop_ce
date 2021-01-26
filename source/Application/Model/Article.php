@@ -1026,7 +1026,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
                 if ($dMinPrice != $dMaxPrice) {
                     $this->setRangePrice();
-                } elseif (!$this->isParentNotBuyable() && $dMinPrice != $dPrice) {
+                } elseif (!$this->isParentNotBuyable() && $dPrice != $dMinPrice) {
                     $this->setRangePrice();
                 }
             }

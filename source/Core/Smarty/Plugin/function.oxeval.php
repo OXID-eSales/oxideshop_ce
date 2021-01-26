@@ -16,6 +16,8 @@
  * @param smarty &$oSmarty smarty object
  *
  * @return string
+ *
+ * @psalm-suppress UndefinedFunction
  */
 function smarty_function_oxeval($aParams, &$oSmarty)
 {

@@ -1500,7 +1500,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
         $titleParts = array_filter($titleParts);
 
-        return implode(' | ', $titleParts);
+        return Str::getStr()->htmlspecialchars(implode(' | ', $titleParts));
     }
 
 

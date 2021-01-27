@@ -2433,6 +2433,23 @@ class UBaseTest extends \OxidTestCase
         $this->assertEquals($sTitle, $oUBase->getPageTitle());
     }
 
+    public function testGetPageTitleConvertsSpecialCharacters(): void
+    {
+        $controller = $this
+            ->getMockBuilder(FrontendController::class)
+            ->setMethods(['getTitle', 'getTitlePrefix', 'getTitleSuffix'])
+            ->getMock();
+
+        $controller
+            ->method('getTitle')
+            ->willReturn('some " thing');
+
+        $this->assertEquals(
+            'some &quot; thing',
+            $controller->getPageTitle()
+        );
+    }
+
     public function providerGetUserSelectedSortingValidSorting()
     {
         return [

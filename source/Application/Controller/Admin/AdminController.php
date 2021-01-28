@@ -333,11 +333,10 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @return array
      * @deprecated underscore prefix violates PSR12, will be renamed to "getMaxUploadFileInfo" in next major
      */
-    protected function _getMaxUploadFileInfo(
+    protected function _getMaxUploadFileInfo( // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         $maxFileSize,
         $isFormatted = false
-    ) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
+    ) {
         $maxFileSize = $maxFileSize ? trim($maxFileSize) : '2M';
 
         // processing config

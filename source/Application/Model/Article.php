@@ -1947,7 +1947,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns T price
      *
-     * @return \OxidEsales\Eshop\Core\Price
+     * @return \OxidEsales\Eshop\Core\Price|null
      */
     public function getTPrice()
     {

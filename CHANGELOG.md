@@ -266,6 +266,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-808](https://github.com/OXID-eSales/oxideshop_ce/pull/808)
     - [PR-827](https://github.com/OXID-eSales/oxideshop_ce/pull/827)
 - Fix special chars escape problem in simplexml::addChild [PR-793](https://github.com/OXID-eSales/oxideshop_ce/pull/793)
+- Fix new version check url protocol [PR-852](https://github.com/OXID-eSales/oxideshop_ce/pull/852)
 - Improved various docs, variable and other coding style problems:
     - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
     - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)

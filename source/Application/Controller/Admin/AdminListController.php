@@ -144,7 +144,11 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
     public function getListFilter()
     {
         if ($this->_aListFilter === null) {
-            $this->_aListFilter = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("where");
+            $request = \OxidEsales\Eshop\Core\Registry::getRequest();
+            $filter = $request->getRequestParameter("where");
+            $request->checkParamSpecialChars($filter);
+
+            $this->_aListFilter = $filter;
         }
 
         return $this->_aListFilter;

@@ -201,7 +201,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $edition = Registry::getConfig()->getEdition();
-        $query = 'http://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
+        $query = 'https://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
         $latestVersion = Registry::getUtilsFile()->readRemoteFileAsString($query);
         if ($latestVersion) {
             $currentVersion = Registry::getConfig()->getVersion();

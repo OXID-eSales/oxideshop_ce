@@ -153,7 +153,7 @@ final class VouchersForSpecificCategoriesAndProductsAndUserGroupsTest extends Un
         $basket->addToBasket(self::FIRST_ARTICLE_ID, 1);
         $basket->calculateBasket(true);
         $this->assertSame(11.76, $basket->getNettoSum());
-
+        $this->expectException(\OxidEsales\EshopCommunity\Core\Exception\VoucherException::class);
         $basket->addVoucher(self::FIRST_VOUCHER_NUMBER);
         $basket->calculateBasket(true);
         $this->assertSame(11.76, $basket->getNettoSum());

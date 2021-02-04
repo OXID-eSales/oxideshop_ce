@@ -73,7 +73,7 @@ abstract class BaseRegistrator
             trigger_error($error, E_USER_WARNING);
         }
 
-        return $url ? "$url?$parameters" : '';
+        return $url . ($parameters ? '?' . $parameters : '');
     }
 
     /**
@@ -81,11 +81,16 @@ abstract class BaseRegistrator
      *
      * @param string $file path to file
      *
-     * @return int|bool UNIX-timestamp or false
+     * @return string UNIX-timestamp or empty string
      */
     protected function getFileModificationTime($file)
     {
-        return filemtime($file);
+        $result = '';
+        if (file_exists($file)) {
+            $result = filemtime($file);
+        }
+
+        return $result;
     }
 
     /**

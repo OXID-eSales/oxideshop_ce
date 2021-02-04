@@ -59,7 +59,7 @@ abstract class BaseRegistrator
         $url = $parts[0];
         $parameters = $parts[1] ?? '';
         if (empty($parameters)) {
-            if (Registry::getUtilsUrl()->isCurrentShopHost($url)) {
+            if (preg_match('#^(https?:)?//#', $fullUrl) && Registry::getUtilsUrl()->isCurrentShopHost($url)) {
                 $path = $this->getPathByUrl($url);
             } else {
                 $path = $this->config->getResourcePath($url, $this->config->isAdmin());

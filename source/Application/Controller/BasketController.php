@@ -224,7 +224,12 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         }
 
         $oBasket = $session->getBasket();
-        $oBasket->addVoucher(Registry::getConfig()->getRequestParameter('voucherNr'));
+        try {
+            $oBasket->addVoucher(Registry::getConfig()->getRequestParameter('voucherNr'));
+        } catch (\OxidEsales\Eshop\Core\Exception\VoucherException $oEx) {
+            // problems adding voucher
+            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
+        }
     }
 
     /**

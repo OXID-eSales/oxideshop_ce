@@ -15,8 +15,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceAdminTester;
 final class AdminRemoveUserOrderCest
 {
     private $orderId = 'justSomeOxorderId';
-    private $orderArticleId = 'justSomeCxorderArticleID';
-
+    private $orderArticleId = 'justSomeOxorderArticleID';
 
     /** @param AcceptanceAdminTester $I */
     public function _before(AcceptanceAdminTester $I)

@@ -267,6 +267,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-827](https://github.com/OXID-eSales/oxideshop_ce/pull/827)
 - Fix special chars escape problem in simplexml::addChild [PR-793](https://github.com/OXID-eSales/oxideshop_ce/pull/793)
 - Fix new version check url protocol [PR-852](https://github.com/OXID-eSales/oxideshop_ce/pull/852)
+- Timestamp is now added for css and js files included from module [#0005746](https://bugs.oxid-esales.com/view.php?id=5746) [PR-493](https://github.com/OXID-eSales/oxideshop_ce/pull/493)
 - Improved various docs, variable and other coding style problems:
     - [PR-741](https://github.com/OXID-eSales/oxideshop_ce/pull/741)
     - [PR-761](https://github.com/OXID-eSales/oxideshop_ce/pull/761)

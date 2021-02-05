@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core\ViewHelper;
 
 /**
- * Class for preparing JavaScript.
+ * Class for preparing Stylesheets.
  */
 class StyleRenderer
 {

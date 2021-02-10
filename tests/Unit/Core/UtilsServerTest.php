@@ -7,10 +7,12 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\Eshop\Application\Model\User;
 use \oxRegistry;
-use \oxTestModules;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 
 class UtilsServerTest extends \OxidTestCase
 {
+    use ContainerTrait;
 
     /**
      * Tear down the fixture.
@@ -252,17 +254,21 @@ class UtilsServerTest extends \OxidTestCase
     public function testGetSetAndDeleteUserCookie()
     {
         $this->setTime(0);
-        $sCryptedVal = 'admin@@@' . crypt('admin', User::USER_COOKIE_SALT);
-        $oUtils = oxNew('oxutilsserver');
 
-        $this->assertNull($oUtils->getUserCookie());
+        $utils = oxNew('oxutilsserver');
 
-        $oUtils->setUserCookie('admin', 'admin', null, 31536000, User::USER_COOKIE_SALT);
-        $this->assertEquals($sCryptedVal, $oUtils->getUserCookie());
+        $this->assertNull($utils->getUserCookie());
 
+        $utils->setUserCookie('admin', 'admin', null, 31536000, User::USER_COOKIE_SALT);
 
-        $oUtils->deleteUserCookie();
-        $this->assertNull($oUtils->getUserCookie());
+        $aData = explode('@@@', $utils->getUserCookie());
+
+        $this->assertTrue(
+            $this->get(PasswordServiceBridgeInterface::class)->verifyPassword('admin' . User::USER_COOKIE_SALT, $aData[1])
+        );
+
+        $utils->deleteUserCookie();
+        $this->assertNull($utils->getUserCookie());
     }
 
     /**

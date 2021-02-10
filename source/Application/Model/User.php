@@ -1612,6 +1612,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oConfig = $this->getConfig();
         $sShopID = $oConfig->getShopId();
         if (($sSet = Registry::getUtilsServer()->getUserCookie($sShopID))) {
+            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $aData = explode('@@@', $sSet);
             $sUser = $aData[0];
@@ -1621,8 +1622,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
-                    $sTest = crypt($rs->fields[1], static::USER_COOKIE_SALT);
-                    if ($sTest == $sPWD) {
+                    if ($passwordServiceBridge->verifyPassword($rs->fields[1] . static::USER_COOKIE_SALT, $sPWD)) {
                         // found
                         $sUserID = $rs->fields[0];
                         break;

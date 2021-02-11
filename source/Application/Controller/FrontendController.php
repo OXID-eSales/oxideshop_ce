@@ -1506,8 +1506,9 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         $titleParts[] = $this->getTitlePageSuffix();
 
         $titleParts = array_filter($titleParts);
+        $title = implode(' | ', $titleParts);
 
-        return Str::getStr()->htmlspecialchars(implode(' | ', $titleParts));
+        return $this->replaceDoubleQuotesWithHTMLCharacters($title);
     }
 
 
@@ -3049,5 +3050,14 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     {
         $allowedSortOrders = array_merge((new SortingValidator())->getSortingOrders(), ['']);
         return in_array(strtolower($sortOrder), $allowedSortOrders);
+    }
+
+    /**
+     * @param string $title
+     * @return string
+     */
+    private function replaceDoubleQuotesWithHTMLCharacters(string $title): string
+    {
+        return str_replace('"', '&quot;', $title);
     }
 }

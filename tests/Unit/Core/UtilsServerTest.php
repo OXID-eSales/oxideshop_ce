@@ -1,19 +1,16 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use OxidEsales\Eshop\Application\Model\User;
 use \oxRegistry;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 
 class UtilsServerTest extends \OxidTestCase
 {
-    use ContainerTrait;
-
     /**
      * Tear down the fixture.
      *
@@ -246,29 +243,6 @@ class UtilsServerTest extends \OxidTestCase
         ;
         $this->assertEquals($sValue, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar($sName));
         $this->assertEquals($_SERVER, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar());
-    }
-
-    /**
-     * Testing user cookie setter, getter and deletion functionality
-     */
-    public function testGetSetAndDeleteUserCookie()
-    {
-        $this->setTime(0);
-
-        $utils = oxNew('oxutilsserver');
-
-        $this->assertNull($utils->getUserCookie());
-
-        $utils->setUserCookie('admin', 'admin', null, 31536000, User::USER_COOKIE_SALT);
-
-        $aData = explode('@@@', $utils->getUserCookie());
-
-        $this->assertTrue(
-            $this->get(PasswordServiceBridgeInterface::class)->verifyPassword('admin' . User::USER_COOKIE_SALT, $aData[1])
-        );
-
-        $utils->deleteUserCookie();
-        $this->assertNull($utils->getUserCookie());
     }
 
     /**

@@ -972,12 +972,22 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function getPicturesProduct()
     {
+        $product = $this->getProduct();
+
         $variantSelections = $this->getVariantSelections();
         if ($variantSelections && $variantSelections['oActiveVariant'] && !$variantSelections['blPerfectFit']) {
             return $variantSelections['oActiveVariant'];
         }
 
-        return $this->getProduct();
+        if ($product->isParentNotBuyable()) {
+            /** @var ArticleList $variantList */
+            $variantList = $product->getVariants(true);
+            if (!empty($variantList)) {
+                return $variantList->current();
+            }
+        }
+
+        return $product;
     }
 
     /**

@@ -850,12 +850,22 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      */
     public function getPicturesProduct()
     {
+        $oProduct = $this->getProduct();
+
         $aVariantSelections = $this->getVariantSelections();
         if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && !$aVariantSelections['blPerfectFit']) {
-            return $aVariantSelections['oActiveVariant'];
+            $oProduct = $aVariantSelections['oActiveVariant'];
         }
 
-        return $this->getProduct();
+        if ($oProduct->isParentNotBuyable() && $oProduct->hasMdVariants()) {
+            /** @var ArticleList $aVariantList */
+            $aVariantList = $oProduct->getVariants(true);
+            if (!empty($aVariantList)) {
+                return $aVariantList->current();
+            }
+        }
+
+        return $oProduct;
     }
 
     /**

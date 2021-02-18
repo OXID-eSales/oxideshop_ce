@@ -113,6 +113,26 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     }
 
     /**
+     * Returns pictures product object
+     *
+     * @return Article
+     */
+    public function getPicturesProduct()
+    {
+        /** @var Article $oProduct */
+        $oProduct = $this->getProduct();
+        if ($oProduct->isParentNotBuyable()) {
+            /** @var ArticleList $aVariantList */
+            $aVariantList = $oProduct->getVariants(true);
+            if (!empty($aVariantList)) {
+                return $aVariantList->current();
+            }
+        }
+
+        return $oProduct;
+    }
+
+    /**
      * get link of current top view
      *
      * @param int $iLang requested language

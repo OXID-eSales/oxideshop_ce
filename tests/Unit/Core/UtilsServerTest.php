@@ -7,13 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use OxidEsales\Eshop\Application\Model\User;
 use \oxRegistry;
-use \oxTestModules;
 
 class UtilsServerTest extends \OxidTestCase
 {
-
     /**
      * Tear down the fixture.
      *
@@ -246,25 +243,6 @@ class UtilsServerTest extends \OxidTestCase
         ;
         $this->assertEquals($sValue, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar($sName));
         $this->assertEquals($_SERVER, \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getServerVar());
-    }
-
-    /**
-     * Testing user cookie setter, getter and deletion functionality
-     */
-    public function testGetSetAndDeleteUserCookie()
-    {
-        $this->setTime(0);
-        $sCryptedVal = 'admin@@@' . crypt('admin', User::USER_COOKIE_SALT);
-        $oUtils = oxNew('oxutilsserver');
-
-        $this->assertNull($oUtils->getUserCookie());
-
-        $oUtils->setUserCookie('admin', 'admin', null, 31536000, User::USER_COOKIE_SALT);
-        $this->assertEquals($sCryptedVal, $oUtils->getUserCookie());
-
-
-        $oUtils->deleteUserCookie();
-        $this->assertNull($oUtils->getUserCookie());
     }
 
     /**

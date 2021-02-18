@@ -1888,30 +1888,6 @@ class CreatingItemsAdminTest extends AdminTestCase
     }
 
     /**
-     * creating Newsletter
-     *
-     * @group creatingitems
-     */
-    public function testCreateNewsletter()
-    {
-        $this->loginAdmin("Customer Info", "Newsletter");
-        $this->type("where[oxnewsletter][oxtitle]", "title");
-        $this->clickAndWait("submitit");
-        $this->assertElementNotPresent("link=title");
-        $this->frame("edit");
-        $this->clickCreateNewItem();
-        $this->assertEquals("", $this->getValue("editval[oxnewsletter__oxtitle]"));
-        $this->assertEquals("", $this->getEditorValue("oxnewsletter__oxtemplate"));
-        $this->type("editval[oxnewsletter__oxtitle]", "title_šÄßüл");
-        $this->typeToEditor("oxnewsletter__oxtemplate", "sample text_šÄßüл");
-        $this->clickAndWaitFrame("save", "list");
-        $this->assertEquals("title_šÄßüл", $this->getValue("editval[oxnewsletter__oxtitle]"));
-        $this->assertEquals("sample text_šÄßüл", $this->getEditorValue("oxnewsletter__oxtemplate"));
-        $this->frame("list");
-        $this->assertElementPresent("link=title_šÄßüл");
-    }
-
-    /**
      * creating Links
      *
      * @group creatingitems

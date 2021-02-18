@@ -499,19 +499,6 @@ REPLACE INTO `oxuserpayments` (`OXID`,             `OXUSERID`,  `OXPAYMENTSID`, 
                              ('oxuserpayments10', 'testuser6', 'oxidinvoice',   ''),
                              ('oxuserpayments11', 'testuser2', 'oxidinvoice',   '');
 
-#Newsletter templates demodata
-REPLACE INTO `oxnewsletter` (`OXID`,             `OXSHOPID`,   `OXTITLE`,                      `OXTEMPLATE`, `OXPLAINTEMPLATE`) VALUES
-                           ('testnewsletter1',  1, '2 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter2',  1, '5 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter3',  1, '[last] Test Newsletter šÄßüл', '',           ''),
-                           ('testnewsletter4',  1, '1 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter5',  1, '9 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter6',  1, '4 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter7',  1, '8 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter8',  1, '3 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter9',  1, '6 Test Newsletter šÄßüл',      '',           ''),
-                           ('testnewsletter10', 1, '7 Test Newsletter šÄßüл',      '',           '');
-
 #recommendation lists demodata
 REPLACE INTO `oxrecommlists` (`OXID`,       `OXSHOPID`,   `OXUSERID`, `OXAUTHOR`,      `OXTITLE`,      `OXDESC`,            `OXRATINGCNT`, `OXRATING`) VALUES
                             ('testrecomm', 1, 'testuser', 'recomm author', 'recomm title', 'recom introduction', 0,             0);

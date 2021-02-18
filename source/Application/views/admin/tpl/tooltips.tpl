@@ -51,7 +51,6 @@ function popDown(currElem)
 <span class="popUpStyle" id="item_delete" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_ITEMDELETE"}]</span>
 <span class="popUpStyle" id="item_storno" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_ITEMSTORNO"}]</span>
 <span class="popUpStyle" id="payment_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWPAYMENT"}]</span>
-<span class="popUpStyle" id="newsletter_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWNEWSLETTER"}]</span>
 <span class="popUpStyle" id="addsumtype" style="position: absolute;visibility: hidden; z-index: 1;">[{oxmultilang ident="TOOLTIPS_ADDSUMTYPE"}]</span>
 <span class="popUpStyle" id="addsumitmtype" style="position: absolute;visibility: hidden; z-index: 1;">[{oxmultilang ident="TOOLTIPS_ADDSUMITMTYPE"}]</span>
 <span class="popUpStyle" id="shop_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWSHOP"}]</span>
@@ -95,7 +94,6 @@ function popDown(currElem)
 <span class="popUpStyle" id="searchfieldoxshortdesc" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_ARTLIST_SEARCHFIELDOXSHORTDESC"}]</span>
 <span class="popUpStyle" id="item_storno" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_ITEMSTORNO"}]</span>
 <span class="popUpStyle" id="payment_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWPAYMENT"}]</span>
-<span class="popUpStyle" id="newsletter_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWNEWSLETTER"}]</span>
 <span class="popUpStyle" id="addsumtype" style="position: absolute;visibility: hidden; z-index: 1;">[{oxmultilang ident="TOOLTIPS_ADDSUMTYPE"}]</span>
 <span class="popUpStyle" id="addsumitmtype" style="position: absolute;visibility: hidden; z-index: 1;">[{oxmultilang ident="TOOLTIPS_ADDSUMITMTYPE"}]</span>
 <span class="popUpStyle" id="shop_new" style="position: absolute;visibility: hidden;top:0;left:0;">[{oxmultilang ident="TOOLTIPS_NEWSHOP"}]</span>

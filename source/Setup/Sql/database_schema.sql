@@ -727,23 +727,6 @@ CREATE TABLE `oxmediaurls` (
 ) ENGINE = InnoDB COMMENT 'Stores objects media';
 
 #
-# Table structure for table `oxnewsletter`
-#
-
-DROP TABLE IF EXISTS `oxnewsletter`;
-
-CREATE TABLE `oxnewsletter` (
-  `OXID` char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Newsletter id',
-  `OXSHOPID` int(11) NOT NULL default '1' COMMENT 'Shop id (oxshops)',
-  `OXTITLE` varchar(255) NOT NULL default '' COMMENT 'Title',
-  `OXTEMPLATE` mediumtext NOT NULL COMMENT 'HTML template',
-  `OXPLAINTEMPLATE` mediumtext NOT NULL COMMENT 'Plain template',
-  `OXSUBJECT` varchar(255) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Subject',
-  `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  PRIMARY KEY  (`OXID`)
-) ENGINE=InnoDB COMMENT 'Templates for sending newsletters';
-
-#
 # Table structure for table `oxnewssubscribed`
 #
 

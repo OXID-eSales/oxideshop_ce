@@ -832,27 +832,6 @@ class UtfTest extends \OxidTestCase
         $this->assertEquals($sExpt, $oMedia->getHtml());
     }
 
-    public function testOxNewsletterSetParamsPlusSaveLoadFor()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-
-        $oActView = oxNew('oxUBase');
-        $oActView->addGlobalParams();
-        $this->getConfig()->setActiveView($oActView);
-
-        $sValue = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = $this->getConfig()->getImageUrl(false) . ' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-
-        $oNewsletter = oxNew('oxNewsletter');
-        $oNewsletter->oxnewsletter__oxtemplate = new oxField($sValue, oxField::T_RAW);
-        $oNewsletter->oxnewsletter__oxplaintemplate = new oxField($sValue, oxField::T_RAW);
-        $oNewsletter->prepare('oxdefaultadmin');
-
-        $this->assertTrue(strcmp($oNewsletter->getHtmlText(), $sResult) === 0, $oNewsletter->getHtmlText() . " != $sResult");
-        $this->assertTrue(strcmp($oNewsletter->getPlainText(), $sResult) === 0, $oNewsletter->getPlainText() . " != $sResult");
-    }
 
     public function testOxNewsSubscribedUpdateSubscription()
     {

@@ -769,25 +769,9 @@ $aLang = [
     'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'             => 'Die permanente Systemgesundheitsprüfung wurde deaktiviert. Sie können diese auf der Registerkarte Perform. unter Stammdaten -> Grundeinstellungen aktivieren. Um dennoch zu prüfen, klicken Sie bitte hier: ',
     'NAVIGATION_SHOPFRONT'                           => 'Startseite des Shops',
 
-    // @deprecated Functionality for Newsletter management will be removed.
-    'NEWSLETTER_DONE_NEWSSEND'                           => 'Ihr Newsletter wurde versendet.',
-    'NEWSLETTER_DONE_GOTONEWSLETTER'                     => 'gehen Sie zu Newsletter',
-    'NEWSLETTER_DONE_TITLE'                              => 'oxid Newsletter',
-    // END deprecated
     'NEWSLETTER_LIST_MENUITEM'                           => 'Kundeninformation',
     'NEWSLETTER_LIST_MENUSUBITEM'                        => 'Newsletter',
-    // @deprecated Functionality for Newsletter management will be removed.
-    'NEWSLETTER_MAIN_MODEL'                              => 'Vorlage',
-    'NEWSLETTER_PLAIN_TEXT'                              => 'Plain-Text-Vorlage',
-    'NEWSLETTER_PREVIEW_PLAINTEXT'                       => 'PLAIN TEXT',
-    'NEWSLETTER_PREVIEW_HTML'                            => 'HTML',
-    'NEWSLETTER_SELECTION_USEDGROUP'                     => 'Verwendete Benutzergruppen',
-    'NEWSLETTER_SELECTION_SELMAILRESAVER'                => 'Ausgewählte E-Mail Empfänger',
-    'NEWSLETTER_SELECTION_SENDNEWS'                      => 'Newsletter senden',
-    'NEWSLETTER_SEND_TITLE'                              => 'oxid Newsletter',
-    'NEWSLETTER_SEND_SEND1'                              => 'Gesendet',
-    'NEWSLETTER_SEND_SEND2'                              => 'von insgesamt',
-    // END deprecated
+
     'ORDER_ARTICLE_YOUWANTTODELETE'                      => 'Wollen Sie diesen Artikel wirklich löschen?',
     'ORDER_ARTICLE_YOUWANTTOSTORNO'                      => 'Wollen Sie diesen Artikel wirklich stornieren?',
     'ORDER_ARTICLE_ENETTO'                               => 'eNetto',
@@ -1042,7 +1026,7 @@ $aLang = [
     'SHOP_CONFIG_DISABLEARTDUBLICATES'                        => 'Wenn Artikel kopiert werden: Kopierten Artikel <b>nicht</b> auf "Aktiv" setzen',
     'SHOP_CONFIG_EXPORTNUMBEROFLINES'                         => 'Anzahl von Zeilen im CSV, die pro Tick exportiert werden',
     'SHOP_CONFIG_MWSTSETTING'                                 => 'MwSt.-Einstellungen für XML-Export',
-    'SHOP_CONFIG_NUMBEROFEMAILSPERTICK'                       => 'Anzahl von E-Mails, die der Newsletter pro Tick verschickt',
+    'SHOP_CONFIG_NUMBEROFEMAILSPERTICK'                       => 'Anzahl von E-Mails, die pro Tick verschickt werden',
     'SHOP_CONFIG_UPDATEVIEWS'                                 => 'Datenbank Views müssen aktualisiert werden!',
     'SHOP_CONFIG_ASSIGNDEFAULTCAT'                            => 'Aktive Kategorie setzen',
     'SHOP_CONFIG_UNASSIGNDEFAULTCAT'                          => 'Zuordnung löschen',
@@ -1285,9 +1269,6 @@ $aLang = [
     'TOOLTIPS_NEWUSERPAYMENT'                 => 'Neue Zahlungsart',
     'TOOLTIPS_NEWREMARK'                      => 'Notiz anfügen',
     'TOOLTIPS_NEWPAYMENT'                     => 'Neue Zahlungsart anlegen',
-    // @deprecated Functionality for Newsletter management will be removed.
-    'TOOLTIPS_NEWNEWSLETTER'                  => 'Neue Newsletter Vorlage',
-    // END deprecated
     'TOOLTIPS_NEWSHOP'                        => 'Neuen Shop anlegen',
     'TOOLTIPS_NEWUSERGROUP'                   => 'Neue Benutzergruppe anlegen',
     'TOOLTIPS_NEWCATEGORY'                    => 'Neue Kategorie anlegen',
@@ -1628,13 +1609,7 @@ $aLang = [
     'tbclvendor_seo'           => 'SEO',
     'tbclmanufacturer_seo'     => 'SEO',
     'tbclorder_iPayment'       => 'IPayment',
-    //  newsletter_list',
-    // @deprecated Functionality for Newsletter management will be removed.
-    'tbclnewsletter_main'      => 'HTML',
-    'tbclnewsletter_plain'     => 'Text',
-    'tbclnewsletter_preview'   => 'Vorschau',
-    'tbclnewsletter_selection' => 'Versenden',
-    // END deprecated
+    'tbclnewsletter_main'      => 'Stamm',
     'tbcl_main'                => 'Stamm',
     'tbcladminlinks_mall'      => 'Mall',
     'tbcldelivery_mall'        => 'Mall',
@@ -1823,9 +1798,6 @@ $aLang = [
     'DELIVERY_RDFA_FEDERALEXPRESS'             => 'FedEx',
     'DELIVERY_RDFA_UPS'                        => 'UPS',
     'SHOP_SYSTEM_SHOWREMEMBERME'               => 'Option "Passwort merken" beim Login anzeigen',
-    // @deprecated Functionality for Newsletter management will be removed.
-    'NEWSLETTER_SUBJECT'                       => 'Betreff',
-    // END deprecated
 
     'SHOP_PERF_SEO_CACHE'                        => 'SEO Cache aktivieren',
     'SHOP_PERF_SYSREQ_CHECK'                     => 'Meldungen der Systemgesundheitsprüfung auf der Startseite aktivieren',

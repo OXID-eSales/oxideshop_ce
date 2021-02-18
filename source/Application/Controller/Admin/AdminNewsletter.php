@@ -9,8 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 /**
  * Admin newsletter manager.
- * Returns template, that arranges two other templates ("newsletter_list.tpl"
- * and "newsletter_main.tpl") to frame.
+ * Returns template, that arranges template ("newsletter_main.tpl") to frame.
  * Admin Menu: Customer Info -> Newsletter.
  */
 class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController

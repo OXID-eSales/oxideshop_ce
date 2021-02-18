@@ -2666,56 +2666,6 @@ class SearchAndSortingAdminTest extends AdminTestCase
     }
 
     /**
-     * searching and sorting Newsletter
-     *
-     * @group search_sort
-     */
-    public function testSearchSortNewsletter()
-    {
-        $this->loginAdmin("Customer Info", "Newsletter");
-        //search
-        $this->type("where[oxnewsletter][oxtitle]", "newsletter 1 šÄßüл");
-        $this->clickAndWait("submitit");
-        $this->assertEquals("1 Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
-        $this->type("where[oxnewsletter][oxtitle]", "newsletter [last");
-        $this->clickAndWait("submitit");
-        $this->assertEquals("[last] Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertElementNotPresent("//tr[@id='row.2']/td[1]");
-        $this->assertEquals("newsletter [last", $this->getValue("where[oxnewsletter][oxtitle]"));
-        $this->type("where[oxnewsletter][oxtitle]", "");
-        $this->clickAndWait("submitit");
-        //sorting
-        $this->clickAndWait("link=Title");
-        $this->assertEquals("1 Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertEquals("2 Test Newsletter šÄßüл", $this->getText("//tr[@id='row.2']/td[1]"));
-        $this->assertEquals("3 Test Newsletter šÄßüл", $this->getText("//tr[@id='row.3']/td[1]"));
-        $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        $this->clickAndWait("nav.next");
-        $this->assertEquals("[last] Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->clickAndWait("nav.prev");
-        $this->assertEquals("1 Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        $this->clickAndWait("nav.last");
-        $this->assertEquals("[last] Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertEquals("Page 2 / 2", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.2'][@class='pagenavigation pagenavigationactive']");
-        $this->clickAndWait("nav.first");
-        $this->assertEquals("1 Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-        $this->assertEquals("Page 1 / 2", $this->getText("nav.site"));
-        $this->assertElementPresent("//a[@id='nav.page.1'][@class='pagenavigation pagenavigationactive']");
-        //removing last element to check navigation
-        $this->clickAndWait("nav.last");
-        $this->clickDeleteListItem(1);
-        $this->assertElementNotPresent("nav.page.1");
-        $this->assertEquals("1 Test Newsletter šÄßüл", $this->getText("//tr[@id='row.1']/td[1]"));
-    }
-
-    /**
      * searchingLinks
      *
      * @group search_sort

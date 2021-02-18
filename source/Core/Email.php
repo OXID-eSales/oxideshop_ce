@@ -18,8 +18,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * Mailing manager.
- * Collects mailing configuration, other parameters, performs mailing functions
- * (newsletters, ordering, registration emails, etc.).
+ * Collects mailing configuration, other parameters, performs mailing functions (ordering, registration emails, etc.).
  */
 class Email extends PHPMailer
 {
@@ -851,44 +850,6 @@ class Email extends PHPMailer
         $url .= ($confirmCode) ? '&amp;confirm=' . $confirmCode : "";
 
         return $url;
-    }
-
-    /**
-     * @deprecated Functionality for Newsletter management will be removed.
-     * Sets mailer additional settings and sends "newsletter" mail to user.
-     * Returns true on success.
-     *
-     * @param \OxidEsales\Eshop\Application\Model\Newsletter $newsLetter newsletter object
-     * @param \OxidEsales\Eshop\Application\Model\User       $user       user object
-     * @param string                                         $subject    user defined subject [optional]
-     *
-     * @return bool
-     */
-    public function sendNewsletterMail($newsLetter, $user, $subject = null)
-    {
-        // shop info
-        $shop = $this->_getShop();
-
-        //set mail params (from, fromName, smtp)
-        $this->_setMailParams($shop);
-
-        $body = $newsLetter->getHtmlText();
-
-        if (!empty($body)) {
-            $this->setBody($body);
-            $this->setAltBody($newsLetter->getPlainText());
-        } else {
-            $this->isHTML(false);
-            $this->setBody($newsLetter->getPlainText());
-        }
-
-        $this->setSubject(($subject !== null) ? $subject : $newsLetter->oxnewsletter__oxtitle->getRawValue());
-
-        $fullName = $user->oxuser__oxfname->getRawValue() . " " . $user->oxuser__oxlname->getRawValue();
-        $this->setRecipient($user->oxuser__oxusername->value, $fullName);
-        $this->setReplyTo($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
-
-        return $this->send();
     }
 
     /**

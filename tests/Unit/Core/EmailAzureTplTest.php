@@ -546,39 +546,6 @@ class EmailAzureTplTest extends \OxidTestCase
     }
 
     /**
-     * Test sending newsletter mail to user
-     */
-    public function testSendNewsletterMail()
-    {
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $this->markTestSkipped('This test is for Community and Professional editions only.');
-        }
-
-        $oNewsletter = $this->getMock(\OxidEsales\Eshop\Application\Model\Newsletter::class, array("getHtmlText"));
-        $oNewsletter->expects($this->once())->method("getHtmlText")->will($this->returnValue("testNewsletterHtmlText"));
-        $oNewsletter->oxnewsletter__oxtitle = new oxField('testNewsletterTitle', oxField::T_RAW);
-
-        $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_sendMail", "_getShop"));
-        $oEmail->expects($this->once())->method('_sendMail')->will($this->returnValue(true));
-        $oEmail->expects($this->once())->method('_getShop')->will($this->returnValue($this->_oShop));
-
-        $blRet = $oEmail->sendNewsletterMail($oNewsletter, $this->_oUser);
-        $this->assertTrue($blRet, 'Newsletter mail was not sent to user');
-
-        // check mail fields
-        $aFields['sRecipient'] = 'username@useremail.nl';
-        $aFields['sRecipientName'] = 'testUserFName testUserLName';
-        $aFields['sSubject'] = 'testNewsletterTitle';
-        $aFields['sBody'] = 'testNewsletterHtmlText';
-        $aFields['sFrom'] = 'orderemail@orderemail.nl';
-        $aFields['sFromName'] = 'testShopName';
-        $aFields['sReplyTo'] = 'orderemail@orderemail.nl';
-        $aFields['sReplyToName'] = 'testShopName';
-
-        $this->checkMailFields($aFields, $oEmail);
-    }
-
-    /**
      * Test sending order
      */
     public function testSendSendedNowMail()

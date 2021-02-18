@@ -11,6 +11,7 @@ use oxDb;
 use oxField;
 
 /**
+ * @deprecated Functionality for Newsletter management will be removed.
  * Class manages newsletter user groups rights
  */
 class NewsletterSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admin\ListComponentAjax

@@ -794,11 +794,14 @@ $aLang = [
     'NAVIGATION_SYSREQ_MESSAGE_INACTIVE'             => "The permanent system health check has been deactivated. You can re-activate it in the Perform. tab at Master settings -> Core settings. To check it anyway, please click on this link: ",
     'NAVIGATION_SHOPFRONT'                           => "Shop's start page",
 
+    // @deprecated Functionality for Newsletter management will be removed.
     'NEWSLETTER_DONE_NEWSSEND'                           => 'Your Newsletter has been sent.',
     'NEWSLETTER_DONE_GOTONEWSLETTER'                     => 'go to Newsletter ',
     'NEWSLETTER_DONE_TITLE'                              => 'OXID Newsletter',
+    // END deprecated
     'NEWSLETTER_LIST_MENUITEM'                           => 'Customer Information',
     'NEWSLETTER_LIST_MENUSUBITEM'                        => 'Newsletter',
+    // @deprecated Functionality for Newsletter management will be removed.
     'NEWSLETTER_MAIN_MODEL'                              => 'Sample',
     'NEWSLETTER_PLAIN_TEXT'                              => 'Plain Text Sample',
     'NEWSLETTER_PREVIEW_PLAINTEXT'                       => 'PLAIN TEXT',
@@ -809,6 +812,7 @@ $aLang = [
     'NEWSLETTER_SEND_TITLE'                              => 'OXID Newsletter',
     'NEWSLETTER_SEND_SEND1'                              => 'Send',
     'NEWSLETTER_SEND_SEND2'                              => 'of overall',
+    // END deprecated
     'ORDER_ARTICLE_YOUWANTTODELETE'                      => 'Do you really want to delete this product?',
     'ORDER_ARTICLE_YOUWANTTOSTORNO'                      => 'Do you really want to cancel this product?',
     'ORDER_ARTICLE_ENETTO'                               => 'Net',
@@ -1330,7 +1334,9 @@ $aLang = [
     'TOOLTIPS_NEWUSERPAYMENT'                 => 'Create new Payment Method',
     'TOOLTIPS_NEWREMARK'                      => 'Add Note',
     'TOOLTIPS_NEWPAYMENT'                     => 'Create new Payment Method',
+    // @deprecated Functionality for Newsletter management will be removed.
     'TOOLTIPS_NEWNEWSLETTER'                  => 'New Newsletter Sample',
+    // END deprecated
     'TOOLTIPS_NEWSHOP'                        => 'Create New Shop',
     'TOOLTIPS_NEWUSERGROUP'                   => 'Create New User Group',
     'TOOLTIPS_NEWCATEGORY'                    => 'Create New Category',
@@ -1598,9 +1604,11 @@ $aLang = [
     'tbclorder_iPayment'       => 'IPayment',
     // newsletter_list',
     'tbclnewsletter_main'      => 'HTML',
+    // @deprecated Functionality for Newsletter management will be removed.
     'tbclnewsletter_plain'     => 'TEXT',
     'tbclnewsletter_preview'   => 'Preview',
     'tbclnewsletter_selection' => 'Selection',
+    // END deprecated
     'tbcl_main'                => 'Main',
     'tbcladminlinks_mall'      => 'Mall',
     'tbcldelivery_mall'        => 'Mall',
@@ -1902,7 +1910,9 @@ $aLang = [
     'DELIVERY_RDFA_FEDERALEXPRESS'             => 'FedEx',
     'DELIVERY_RDFA_UPS'                        => 'UPS',
     'SHOP_SYSTEM_SHOWREMEMBERME'               => 'Show "Remember me" option in login box',
+    // @deprecated Functionality for Newsletter management will be removed.
     'NEWSLETTER_SUBJECT'                       => 'Subject',
+    // END deprecated
 
     'SHOP_PERF_SEO_CACHE'                        => 'Enable SEO cache',
     'SHOP_PERF_SYSREQ_CHECK'                     => 'Enable system health messages at the start page',

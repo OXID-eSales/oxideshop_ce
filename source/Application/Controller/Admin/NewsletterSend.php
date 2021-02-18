@@ -13,6 +13,7 @@ use oxField;
 use oxAdminDetails;
 
 /**
+ * @deprecated Functionality for Newsletter management will be removed.
  * Newsletter sending manager.
  * Performs sending of newsletter to selected user groups.
  */

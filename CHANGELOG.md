@@ -41,6 +41,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Console commands for module configuration management:
     - `oe:module:install-configuration`
     - `oe:module:uninstall-configuration`
+- Management of Newsletter emails:
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterList`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterMain::save()`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPlain`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPreview`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelection`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelectionAjax`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSend`
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountNewsletterController::_blNewsletter`
+    - `OxidEsales\EshopCommunity\Application\Model\Newsletter`
+    - `OxidEsales\EshopCommunity\Core\Email::sendNewsletterMail()`
+    - Language constants
+        - `NEWSLETTER_DONE_NEWSSEND`
+        - `NEWSLETTER_DONE_GOTONEWSLETTE`
+        - `NEWSLETTER_DONE_TITLE`
+        - `NEWSLETTER_SUBJECT`
+        - `NEWSLETTER_MAIN_MODEL`
+        - `NEWSLETTER_PLAIN_TEXT`
+        - `NEWSLETTER_PREVIEW_PLAINTEXT`
+        - `NEWSLETTER_PREVIEW_HTML`
+        - `NEWSLETTER_SELECTION_SELMAILRESAVER`
+        - `tbclnewsletter_plain`
+        - `tbclnewsletter_preview`
+        - `tbclnewsletter_selection`
+
 
 ### Fixed
 - Reset voucher reservations after logout [PR-845](https://github.com/OXID-eSales/oxideshop_ce/pull/845)

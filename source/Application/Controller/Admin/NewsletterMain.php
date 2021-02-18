@@ -47,6 +47,7 @@ class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     }
 
     /**
+     * @deprecated Functionality for Newsletter management will be removed.
      * Saves newsletter HTML format text.
      */
     public function save()

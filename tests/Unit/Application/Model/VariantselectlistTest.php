@@ -72,4 +72,19 @@ class VariantselectlistTest extends \OxidTestCase
         $this->assertNotInstanceOf('oxSelection', $aSelections["test4"]);
         $this->assertNotInstanceOf('oxSelection', $aSelections["test5"]);
     }
+
+    public function testGetActiveSelectionSingleSelection()
+    {
+        $list = new VariantSelectList('test', 1);
+        $list->addVariant('testName', 'testValue', false, false);
+        $this->assertInstanceOf(Selection::class, $list->getActiveSelection());
+    }
+
+    public function testGetActiveSelectionMultipleSelections()
+    {
+        $list = new VariantSelectList('test', 1);
+        $list->addVariant('testName', 'testValue', false, false);
+        $list->addVariant('otherTestName', 'otherTestValue', false, false);
+        $this->assertNull($list->getActiveSelection());
+    }
 }

@@ -107,6 +107,9 @@ class VariantSelectList implements \OxidEsales\Eshop\Core\Contract\ISelectList
      */
     public function getActiveSelection()
     {
+        if (count($this->_aList) === 1) {
+            $this->_oActiveSelection = array_values($this->_aList)[0];
+        }
         return $this->_oActiveSelection;
     }
 

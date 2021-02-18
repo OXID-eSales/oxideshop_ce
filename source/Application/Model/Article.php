@@ -1710,6 +1710,19 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         return $oVariants;
     }
 
+    public function getSingleVariant()
+    {
+        $variant_selection = $this->getVariantSelections();
+        if (!is_array($variant_selection) || count($variant_selection['rawselections']) != 1) {
+            return false;
+        }
+        $article_ids = array_keys($variant_selection['rawselections']);
+        $article = oxNew(Article::class);
+        $article->load($article_ids[0]);
+
+        return $article;
+    }
+
     /**
      * Loads and returns article category object. First tries to load
      * assigned category and is such category does not exist, tries to

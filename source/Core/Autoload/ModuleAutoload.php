@@ -46,15 +46,6 @@ class ModuleAutoload
     }
 
     /**
-     * Magic wakeup method.
-     *
-     * Make method private to ensure Singleton pattern
-     */
-    public function __wakeup()
-    {
-    }
-
-    /**
      * Tries to autoload given class. If class was not found in module files array,
      * checks module extensions.
      *

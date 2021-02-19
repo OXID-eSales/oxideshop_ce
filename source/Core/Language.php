@@ -1482,9 +1482,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @return array
      * @deprecated underscore prefix violates PSR12, will be renamed to "getLanguageIdsFromLanguagesArray" in next major
      */
-    protected function _getLanguageIdsFromLanguagesArray(array $aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function _getLanguageIdsFromLanguagesArray($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return array_keys($aLanguages);
+        return is_array($aLanguages) ? array_keys($aLanguages) : [];
     }
 
     /**

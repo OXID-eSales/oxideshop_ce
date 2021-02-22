@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -140,6 +141,9 @@ class DatabaseTest extends UnitTestCase
                 "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE '\';';",
             ],
             [
+                "SELECT * FROM oxid.oxcontents where OXCONTENT LIKE ';\'';",
+            ],
+            [
                 'SELECT * FROM oxid.oxcontents where OXCONTENT LIKE "%&nbsp;%";',
             ],
             [
@@ -179,6 +183,43 @@ class DatabaseTest extends UnitTestCase
                     OR oxv_oxarticles_1_de.oxsearchkeys LIKE '%lederg&uuml;rtel%'
                     OR oxv_oxarticles_1_de.oxartnum LIKE '%ledergürtel%'
                     OR oxv_oxarticles_1_de.oxartnum LIKE '%lederg&uuml;rtel%'))"
+            ],
+            [
+                "SELECT 
+                    `oxv_oxarticles_de`.`oxid`, oxv_oxarticles_de.oxtimestamp
+                FROM
+                    oxv_oxarticles_de
+                WHERE
+                    (oxv_oxarticles_de.oxactive = 1
+                        AND oxv_oxarticles_de.oxhidden = 0
+                        AND (oxv_oxarticles_de.oxstockflag != 2
+                        OR (oxv_oxarticles_de.oxstock + oxv_oxarticles_de.oxvarstock) > 0)
+                        AND IF(oxv_oxarticles_de.oxvarcount = 0,
+                        1,
+                        (SELECT 
+                                1
+                            FROM
+                                oxv_oxarticles_de AS art
+                            WHERE
+                                art.oxparentid = oxv_oxarticles_de.oxid
+                                    AND art.oxactive = 1
+                                    AND (art.oxstockflag != 2 OR art.oxstock > 0)
+                            LIMIT 1)))
+                        AND oxv_oxarticles_de.oxparentid = ''
+                        AND oxv_oxarticles_de.oxissearch = 1
+                        AND ((oxv_oxarticles_de.oxtitle LIKE '%test\"%'
+                        OR oxv_oxarticles_de.oxshortdesc LIKE '%test\"%'
+                        OR oxv_oxarticles_de.oxsearchkeys LIKE '%test\"%'
+                        OR oxv_oxarticles_de.oxartnum LIKE '%test\"%')
+                        OR (oxv_oxarticles_de.oxtitle LIKE '%test2%'
+                        OR oxv_oxarticles_de.oxshortdesc LIKE '%test2%'
+                        OR oxv_oxarticles_de.oxsearchkeys LIKE '%test2%'
+                        OR oxv_oxarticles_de.oxartnum LIKE '%test2%')
+                        OR (oxv_oxarticles_de.oxtitle LIKE '%&#x84;%'
+                        OR oxv_oxarticles_de.oxshortdesc LIKE '%&#x84;%'
+                        OR oxv_oxarticles_de.oxsearchkeys LIKE '%&#x84;%'
+                        OR oxv_oxarticles_de.oxartnum LIKE '%&#x84;%'))
+                LIMIT 10 OFFSET 0"
             ]
         ];
     }

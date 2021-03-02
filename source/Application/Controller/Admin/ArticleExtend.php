@@ -288,7 +288,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
                 $resultFromDatabase->fetchRow();
             }
         }
-        $this->_aViewData['bundle_artnum'] = $articleNumber;
-        $this->_aViewData['bundle_title'] = $articleTitle;
+        $this->_aViewData['bundle_artnum'] = $articleNumber ?? null;
+        $this->_aViewData['bundle_title'] = $articleTitle ?? null;
     }
 }

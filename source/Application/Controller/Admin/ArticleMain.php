@@ -74,7 +74,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
 
             // #381A
-            $this->_formJumpList($oArticle, $oParentArticle);
+            $this->_formJumpList($oArticle, $oParentArticle ?? null);
 
             //hook for modules
             $oArticle = $this->customizeArticleInformation($oArticle);

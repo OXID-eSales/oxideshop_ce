@@ -7,8 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
+use OxidEsales\Eshop\Core\Registry;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -38,7 +40,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     public function resizeImage($sSrc, $sTarget, $iDesiredWidth, $iDesiredHeight)
     {
         if (file_exists($sSrc) && ($aImageInfo = @getimagesize($sSrc))) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $myConfig = Registry::getConfig();
             list($iWidth, $iHeight) = calcImageSize($iDesiredWidth, $iDesiredHeight, $aImageInfo[0], $aImageInfo[1]);
 
             return $this->_resize($aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, getGdVersion(), $myConfig->getConfigParam('blDisableTouch'), $myConfig->getConfigParam('sDefaultImageQuality'));
@@ -75,12 +77,12 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
      */
     protected function _deletePicture($filename, $masterImagePath) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->isPlaceholderImage($filename) || \OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
+        if ($this->isPlaceholderImage($filename) || Registry::getConfig()->isDemoShop()) {
             return false;
         }
         $removed = $this->removeMasterFile(Path::join($masterImagePath, $filename));
 
-        if (!\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sAltImageUrl')) {
+        if (!Registry::getConfig()->getConfigParam('sAltImageUrl')) {
             $generatedImagePath = str_replace('/master/', '/generated/', $masterImagePath);
             $files = glob("{$generatedImagePath}*/{$filename}");
             if (\is_array($files)) {
@@ -153,7 +155,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
             isset($oObject->{$sPic}) &&
             ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
         ) {
-            $sImgDir = $sAbsDynImageDir . \OxidEsales\Eshop\Core\Registry::getUtilsFile()->getImageDirByType($sPicType);
+            $sImgDir = $sAbsDynImageDir . Registry::getUtilsFile()->getImageDirByType($sPicType);
             return $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
         }
 
@@ -274,6 +276,9 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
                 $removed = true;
             }
         } catch (\Throwable $exception) {
+            $ex = oxNew(ExceptionToDisplay::class);
+            $ex->setMessage($exception->getMessage());
+            Registry::getUtilsView()->addErrorToDisplay($ex, false);
         }
         return $removed;
     }

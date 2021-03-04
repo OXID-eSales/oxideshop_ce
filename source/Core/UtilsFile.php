@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
 use OxidEsales\Facts\Facts;
@@ -118,7 +120,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function __construct()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         if ($iPicCount = $myConfig->getConfigParam('iPicCount')) {
             $this->_iMaxPicImgCount = $iPicCount;
@@ -276,7 +278,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             if (isset($sFileType)) {
                 // unallowed files ?
                 if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
-                    \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
+                    Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
                 }
 
                 // removing file type
@@ -308,7 +310,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $sFolder = array_key_exists($sType, $this->_aTypeToPath) ? $this->_aTypeToPath[$sType] : '0';
 
-        return $this->normalizeDir(\OxidEsales\Eshop\Core\Registry::getConfig()->getPictureDir(false)) . "{$sFolder}/";
+        return $this->normalizeDir(Registry::getConfig()->getPictureDir(false)) . "{$sFolder}/";
     }
 
     /**
@@ -324,7 +326,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getImageSize($sImgType, $iImgNum, $sImgConf) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         switch ($sImgConf) {
             case 'aDetailImageSizes':
@@ -358,7 +360,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $aFiles = $aFiles ? $aFiles : $_FILES;
         if (isset($aFiles['myfile']['name'])) {
-            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $oConfig = Registry::getConfig();
 
             // A. protection for demoshops - strictly defining allowed file extensions
             $blDemo = (bool) $oConfig->isDemoShop();
@@ -370,7 +372,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $aSource = $aFiles['myfile']['tmp_name'];
             $aError = $aFiles['myfile']['error'];
 
-            $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
+            $oEx = oxNew(ExceptionToDisplay::class);
             // process all files
             foreach ($aFiles['myfile']['name'] as $sKey => $sValue) {
                 $sSource = $aSource[$sKey];
@@ -386,7 +388,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 if (UPLOAD_ERR_OK !== $iError && UPLOAD_ERR_NO_FILE !== $iError) {
                     $sErrorsDescription = $this->translateError($iError);
                     $oEx->setMessage($sErrorsDescription);
-                    \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
+                    Registry::getUtilsView()->addErrorToDisplay($oEx, false);
                 }
 
                 // checking file type and building final file name
@@ -429,7 +431,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     public function checkFile($sFile)
     {
-        $aCheckCache = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("checkcache");
+        $aCheckCache = Registry::getSession()->getVariable("checkcache");
 
         if (isset($aCheckCache[$sFile])) {
             return $aCheckCache[$sFile];
@@ -441,7 +443,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
 
         $aCheckCache[$sFile] = $blRet;
-        \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("checkcache", $aCheckCache);
+        Registry::getSession()->setVariable("checkcache", $aCheckCache);
 
         return $blRet;
     }
@@ -473,7 +475,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $aFileInfo = $_FILES[$sFileName];
 
-        $sBasePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sShopDir');
+        $sBasePath = Registry::getConfig()->getConfigParam('sShopDir');
 
         //checking params
         if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
@@ -495,7 +497,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $sExt = $aPathInfo['extension'];
         $sFileName = $aPathInfo['filename'];
 
-        $aAllowedUploadTypes = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aAllowedUploadTypes');
+        $aAllowedUploadTypes = (array) Registry::getConfig()->getConfigParam('aAllowedUploadTypes');
         $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
 
         if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {
@@ -629,6 +631,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 );
             $copied = true;
         } catch (\Throwable $exception) {
+            $this->addErrorMessageToDisplay($exception->getMessage());
         }
         return $copied;
     }
@@ -649,8 +652,16 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                 );
             $uploaded = true;
         } catch (\Throwable $exception) {
+            $this->addErrorMessageToDisplay($exception->getMessage());
         }
         return $uploaded;
+    }
+
+    private function addErrorMessageToDisplay($message): void
+    {
+        $exception = oxNew(ExceptionToDisplay::class);
+        $exception->setMessage($message);
+        Registry::getUtilsView()->addErrorToDisplay($exception, false);
     }
 
     /**

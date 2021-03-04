@@ -55,8 +55,8 @@ class Registry
     /**
      * Instance setter
      *
-     * @param string $className Class name
-     * @param object $instance  Object instance
+     * @param class-string $className Class name
+     * @param null|object  $instance  Object instance
      *
      * @static
      *

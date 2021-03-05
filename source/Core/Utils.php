@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Exception\RedirectException;
 use stdClass;
 
 /**
@@ -997,19 +998,20 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sUrl               URL to be redirected
      * @param bool   $blAddRedirectParam add "redirect" param
      * @param int    $iHeaderCode        header code, default 302
-     *
-     * @return null or exit
+     * @throws RedirectException
+     * @return no-return
      */
     public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 302)
     {
         //preventing possible cyclic redirection
         //#M341 and check only if redirect parameter must be added
-        if ($blAddRedirectParam && \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter('redirected')) {
-            return;
+        $redirectCount = \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestParameter('redirected', 0);
+        if ($blAddRedirectParam && $redirectCount > 3) {
+            throw new RedirectException("to manny redirects");
         }
 
         if ($blAddRedirectParam) {
-            $sUrl = $this->_addUrlParameters($sUrl, ['redirected' => 1]);
+            $sUrl = $this->_addUrlParameters($sUrl, ['redirected' => $redirectCount + 1]);
         }
 
         $sUrl = str_ireplace("&amp;", "&", $sUrl);

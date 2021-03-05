@@ -10,3 +10,4 @@ imports:
   - { resource: DIContainer/services.yaml }
   - { resource: Smarty/services.yaml }
   - { resource: Migration/services.yaml }
+  - { resource: FileSystem/services.yaml }

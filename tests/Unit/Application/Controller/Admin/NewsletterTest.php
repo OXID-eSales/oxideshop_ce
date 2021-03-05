@@ -7,17 +7,32 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\EshopCommunity\Application\Controller\Admin\AdminNewsletter;
+use Prophecy\PhpUnit\ProphecyTrait;
+
 /**
  * Tests for Admin_Newsletter class
  */
 class NewsletterTest extends \OxidTestCase
 {
+    use ProphecyTrait;
+
     /**
      * Admin_News::Render() test case
      */
-    public function testRender()
+    public function testRender(): void
     {
         $oView = oxNew('Admin_Newsletter');
         $this->assertEquals('newsletter.tpl', $oView->render());
+    }
+
+    public function testIfExportRecipientsGenerateCSVFile(): void
+    {
+        $adminNewsletter = $this->getMockBuilder(AdminNewsletter::class)
+            ->onlyMethods(['export'])
+            ->getMock();
+
+        $adminNewsletter->expects($this->once())->method('export');
+        $adminNewsletter->export();
     }
 }

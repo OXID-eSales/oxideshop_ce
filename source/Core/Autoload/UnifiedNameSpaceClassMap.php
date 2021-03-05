@@ -964,12 +964,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Controller\Admin\NewsletterMain'               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterMain::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo'                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ObjectSeo::class,
         'isAbstract'       => false,

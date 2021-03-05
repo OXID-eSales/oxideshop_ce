@@ -147,8 +147,7 @@
             </SUBMENU>
         </MAINMENU>
         <MAINMENU id="mxcustnews">
-            <SUBMENU id="mxnewsletter" cl="admin_newsletter">
-                <TAB id="tbclnewsletter_main" cl="newsletter_main" />
+            <SUBMENU id="mxnewsletter" cl="admin_newsletter" >
             </SUBMENU>
             <SUBMENU id="mxurls" cl="admin_links" list="adminlinks_list">
                 <TAB id="tbcladminlinks_main" cl="adminlinks_main" />

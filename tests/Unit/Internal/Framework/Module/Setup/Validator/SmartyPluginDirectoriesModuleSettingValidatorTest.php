@@ -35,7 +35,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
     }
 
-    public function testValidate()
+    public function testValidate(): void
     {
         $this->createModuleStructure();
 
@@ -52,7 +52,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    public function testValidateThrowsExceptionIfNotExistingDirectoryConfigured()
+    public function testValidateThrowsExceptionIfNotExistingDirectoryConfigured(): void
     {
         $this->expectException(DirectoryNotExistentException::class);
         $this->createModuleStructure();
@@ -71,7 +71,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    public function testValidateThrowsExceptionIfNonReadableDirectoryConfigured()
+    public function testValidateThrowsExceptionIfNonReadableDirectoryConfigured(): void
     {
         $this->expectException(DirectoryNotReadableException::class);
         $this->createModuleStructure();
@@ -92,7 +92,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $validator->validate($moduleConfiguration, 1);
     }
 
-    public function testValidateThrowsExceptionIfNotArrayConfigured()
+    public function testValidateThrowsExceptionIfNotArrayConfigured(): void
     {
         $this->expectException(ModuleSettingNotValidException::class);
         
@@ -123,7 +123,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         }
     }
 
-    private function changePermissionsOfSmartyPluginDirectoryToNonReadable()
+    private function changePermissionsOfSmartyPluginDirectoryToNonReadable(): void
     {
         $this->vfsStreamDirectory
             ->getChild('modules')
@@ -132,7 +132,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
             ->chmod(0000);
     }
 
-    private function assertSmartyPluginDirectoryIsNonReadable()
+    private function assertSmartyPluginDirectoryIsNonReadable(): void
     {
         $this->assertFalse(
             $this->vfsStreamDirectory

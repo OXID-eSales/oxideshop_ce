@@ -186,7 +186,6 @@ return [
     'module_sortlist' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ModuleSortList',
     'navigation' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NavigationController',
     'oxnavigationtree' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NavigationTree',
-    'newsletter_main' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsletterMain',
     'object_seo' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\ObjectSeo',
     'order_address' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\OrderAddress',
     'order_article' => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\OrderArticle',

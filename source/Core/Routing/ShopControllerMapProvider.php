@@ -62,7 +62,6 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
         'module_main' => Controller\Admin\ModuleMain::class,
         'module_sortlist' => Controller\Admin\ModuleSortList::class,
         'navigation' => Controller\Admin\NavigationController::class,
-        'newsletter_main' => Controller\Admin\NewsletterMain::class,
         'order_address' => Controller\Admin\OrderAddress::class,
         'order_article' => Controller\Admin\OrderArticle::class,
         'order_downloads' => Controller\Admin\OrderDownloads::class,

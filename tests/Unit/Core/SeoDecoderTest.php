@@ -273,12 +273,9 @@ class SeoDecoderTest extends \OxidTestCase
             $oDb->Execute('insert into oxseo (oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype) values ("aa", "' . md5('uragarana/') . '", "' . $iShopId . '", 1, "std", "uragarana/", "oxarticle")');
 
             $this->assertEquals(array('lang' => 1), $oD->decodeUrl('Uragarana/'));
-        } catch (Exception $e) {
-        }
-        oxTestModules::cleanUp();
-        $oDb->Execute("delete from oxseo where oxstdurl='std'");
-        if ($e) {
-            throw $e;
+        } finally {
+            oxTestModules::cleanUp();
+            $oDb->Execute("delete from oxseo where oxstdurl='std'");
         }
     }
 
@@ -338,12 +335,9 @@ class SeoDecoderTest extends \OxidTestCase
             $_SERVER = array('SCRIPT_URI' => 'sRe', 'SCRIPT_NAME' => 'sPoxseo.phpa');
             $oD->processSeoCall();
             $this->assertEquals(array('test' => 'test', 'was' => 'was'), $_GET);
-        } catch (Exception $e) {
-        }
-        $_GET = $aG;
-        $_SERVER = $aS;
-        if ($e) {
-            throw $e;
+        } finally {
+            $_GET = $aG;
+            $_SERVER = $aS;
         }
     }
 
@@ -352,21 +346,15 @@ class SeoDecoderTest extends \OxidTestCase
      */
     public function testProcessSeoCallUsingSeoHistory()
     {
-        oxTestModules::addFunction("oxutils", "redirect", "{ throw new Exception( 'yyy' );}");
+        oxTestModules::addFunction("oxutils", "redirect", "{ throw new Exception( 'test exception' );}");
 
         $oEncoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getParams', 'decodeUrl', '_decodeOldUrl'));
         $oEncoder->expects($this->once())->method('_getParams')->will($this->returnValue('xxx'));
         $oEncoder->expects($this->once())->method('decodeUrl')->with($this->equalTo('xxx'))->will($this->returnValue(false));
         $oEncoder->expects($this->once())->method('_decodeOldUrl')->with($this->equalTo('xxx'))->will($this->returnValue('yyy'));
 
-        try {
-            $oEncoder->processSeoCall();
-        } catch (Exception $oE) {
-            if ($oE->getMessage() == 'yyy') {
-                return;
-            }
-        }
-        $this->fail('error running testProcessSeoCallUsingSeoHistory');
+        $this->expectExceptionMessage('test exception');
+        $oEncoder->processSeoCall();
     }
 
     /**

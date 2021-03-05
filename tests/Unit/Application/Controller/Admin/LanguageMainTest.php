@@ -19,21 +19,11 @@ class LanguageMainTest extends \OxidTestCase
 
     /**
      * Language_Main::Render() test case
-     *
-     * @return null
      */
     public function testRender()
     {
-        // testing..
         $oView = oxNew('Language_Main');
         $sTplName = $oView->render();
-
-        // testing view data
-        $aViewData = $oView->getViewData();
-        $this->assertNull($aViewData["allowSharedEdit"]);
-        $this->assertNull($aViewData["malladmin"]);
-
-        $this->assertNull($aViewData["updatelist"]);
 
         $this->assertEquals('language_main.tpl', $sTplName);
     }
@@ -96,6 +86,8 @@ class LanguageMainTest extends \OxidTestCase
         $aLangData['urls'] = array(0 => "", 1 => "testBaseUrl");
         $aLangData['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
 
+        $aNewParams['baseurl'] = 'testUrl';
+        $aNewParams['basesslurl'] = 'testUrl';
         $aNewParams['abbr'] = 'fr';
         $aNewParams['active'] = 1;
         $aNewParams['default'] = false;

@@ -945,7 +945,6 @@ class BasketTest extends \OxidTestCase
     {
         $oBasket = oxNew('oxBasket');
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
-        $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $this->assertEquals(20, $oBasketItem->getAmount());
         $this->assertEquals(200, $oBasketItem->getWeight());
         $this->assertEquals($this->oArticle->getId(), $oBasketItem->getProductId());

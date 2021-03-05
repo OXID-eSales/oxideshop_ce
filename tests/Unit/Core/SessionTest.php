@@ -47,7 +47,7 @@ class UtilsServerHelper extends oxUtilsServer
             return $this->_aCookieVars;
         }
 
-        if ($this->_aCookieVars[$sVar]) {
+        if ($this->_aCookieVars[$sVar] ?? null) {
             return $this->_aCookieVars[$sVar];
         }
 
@@ -246,7 +246,6 @@ class SessionTest extends \OxidTestCase
         $oSession->setVar('actshop', null);
         $oSession->setVar('lang', null);
         $oSession->setVar('currency', null);
-        $oSession->setVar('language', $myConfig->sDefaultLang);
         $oSession->setVar('tpllanguage', null);
     }
 
@@ -807,7 +806,6 @@ class SessionTest extends \OxidTestCase
         $oSession->setVar('actshop', null);
         $oSession->setVar('lang', null);
         $oSession->setVar('currency', null);
-        $oSession->setVar('language', $myConfig->sDefaultLang);
         $oSession->setVar('tpllanguage', null);
     }
 
@@ -851,7 +849,6 @@ class SessionTest extends \OxidTestCase
         $oSession->setVar('actshop', null);
         $oSession->setVar('lang', null);
         $oSession->setVar('currency', null);
-        $oSession->setVar('language', $myConfig->sDefaultLang);
         $oSession->setVar('tpllanguage', null);
     }
 

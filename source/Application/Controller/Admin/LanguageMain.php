@@ -340,7 +340,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $iTotal = count($aBaseId);
 
         //getting first available id
-        while ($iNewId <= $iTotal) {
+        while ($iNewId <= $iTotal - 1) {
             if ($iNewId !== $aBaseId[$iNewId]) {
                 break;
             }

@@ -792,6 +792,7 @@ class DeliveryTest extends \OxidTestCase
         // test for delivery by amount
         $oDelivery = oxNew('oxDelivery');
         $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
+        $oDelivery->oxdelivery__oxfixed = new oxField('p', oxField::T_RAW);
 
         $aBasketContents[0] = $this->_oBasketItem;
         $aBasketContents[1] = $this->_oBasketItem;

@@ -97,7 +97,7 @@ class BasketTest extends BaseTestCase
      */
     public function testBasketCalculation($testCase)
     {
-        if ($testCase['skipped'] == 1) {
+        if (isset($testCase['skipped']) && $testCase['skipped'] == 1) {
             $this->markTestSkipped("testcase is skipped");
         }
         // gathering data arrays
@@ -128,7 +128,7 @@ class BasketTest extends BaseTestCase
         }
 
         // Total discounts
-        $expectedDiscounts = $expected['totals']['discounts'];
+        $expectedDiscounts = $expected['totals']['discounts'] ?? null;
         $expectedDiscountCount = (is_array($expectedDiscounts)) ? count($expectedDiscounts) : 0;
         $productDiscounts = $basket->getDiscounts();
         $productDiscountsCount = (is_array($productDiscounts)) ? count($productDiscounts) : 0;
@@ -140,7 +140,7 @@ class BasketTest extends BaseTestCase
         }
 
         // Total vats
-        $expectedVats = $expected['totals']['vats'];
+        $expectedVats = $expected['totals']['vats'] ?? null;
         $expectedVatsCount = (is_array($expectedVats)) ? count($expectedVats) : 0;
         $productVats = $basket->getProductVats();
         $productVatsCount = (is_array($productVats)) ? count($productVats) : 0;
@@ -152,7 +152,7 @@ class BasketTest extends BaseTestCase
         }
 
         // Wrapping costs
-        $expectedWrappings = $expected['totals']['wrapping'];
+        $expectedWrappings = $expected['totals']['wrapping'] ?? null;
         if (!empty($expectedWrappings)) {
             $this->assertEquals(
                 $expectedWrappings['brutto'],
@@ -160,19 +160,19 @@ class BasketTest extends BaseTestCase
                 "Total wrappings brutto price"
             );
             $this->assertEquals(
-                $expectedWrappings['netto'],
+                $expectedWrappings['netto'] ?? null,
                 $basket->getWrappCostNet(),
                 "Total wrappings netto price"
             );
             $this->assertEquals(
-                $expectedWrappings['vat'],
+                $expectedWrappings['vat'] ?? null,
                 $basket->getWrappCostVat(),
                 "Total wrappings vat price"
             );
         }
 
         // Giftcard costs
-        $expectedCards = $expected['totals']['giftcard'];
+        $expectedCards = $expected['totals']['giftcard'] ?? null;
         if (!empty($expectedCards)) {
             $this->assertEquals(
                 $expectedCards['brutto'],
@@ -180,19 +180,19 @@ class BasketTest extends BaseTestCase
                 "Total giftcard brutto price"
             );
             $this->assertEquals(
-                $expectedCards['netto'],
+                $expectedCards['netto'] ?? null,
                 $basket->getGiftCardCostNet(),
                 "Total giftcard netto price"
             );
             $this->assertEquals(
-                $expectedCards['vat'],
+                $expectedCards['vat'] ?? null,
                 $basket->getGiftCardCostVat(),
                 "Total giftcard vat price"
             );
         }
 
         // Delivery costs
-        $expectedDeliveryCosts = $expected['totals']['delivery'];
+        $expectedDeliveryCosts = $expected['totals']['delivery'] ?? null;
         if (!empty($expectedDeliveryCosts)) {
             $this->assertEquals(
                 $expectedDeliveryCosts['brutto'],
@@ -200,39 +200,39 @@ class BasketTest extends BaseTestCase
                 "Delivery total brutto price"
             );
             $this->assertEquals(
-                $expectedDeliveryCosts['netto'],
+                $expectedDeliveryCosts['netto'] ?? null,
                 $basket->getDelCostNet(),
                 "Delivery total netto price"
             );
             $this->assertEquals(
-                $expectedDeliveryCosts['vat'],
+                $expectedDeliveryCosts['vat'] ?? null,
                 $basket->getDelCostVat(),
                 "Delivery total vat price"
             );
         }
 
         // Payment costs
-        $expectedPayments = $expected['totals']['payment'];
+        $expectedPayments = $expected['totals']['payment'] ?? null;
         if (!empty($expectedPayments)) {
             $this->assertEquals(
-                $expectedPayments['brutto'],
+                $expectedPayments['brutto'] ?? null,
                 number_format(round($basket->getPaymentCosts(), 2), 2, ',', '.'),
                 "Payment total brutto price"
             );
             $this->assertEquals(
-                $expectedPayments['netto'],
+                $expectedPayments['netto'] ?? null,
                 $basket->getPayCostNet(),
                 "Payment total netto price"
             );
             $this->assertEquals(
-                $expectedPayments['vat'],
+                $expectedPayments['vat'] ?? null,
                 $basket->getPayCostVat(),
                 "Payment total vat price"
             );
         }
 
         // Vouchers
-        $expectedVouchers = $expected['totals']['voucher'];
+        $expectedVouchers = $expected['totals']['voucher'] ?? null;
         if (!empty($expectedVouchers)) {
             $this->assertEquals(
                 $expectedVouchers['brutto'],

@@ -428,8 +428,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             if (!$basketItem) {
                 $info = $basket->getBasketSummary();
-                $productAmount = $info->aArticles[$data['id']];
-                $products[$addProductId]['am'] = isset($productAmount) ? $productAmount : 0;
+                $products[$addProductId]['am'] = $info->aArticles[$data['id']] ?? 0;
             }
         }
 

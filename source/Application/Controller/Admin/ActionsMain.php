@@ -183,7 +183,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $formData['oxactions__oxid'] = null;
         }
 
-        if (!$formData['oxactions__oxactive']) {
+        if (!isset($formData['oxactions__oxactive']) || !$formData['oxactions__oxactive']) {
             $formData['oxactions__oxactive'] = 0;
         }
 

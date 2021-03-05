@@ -1273,7 +1273,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getArticleUser() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        if ($this->_oUser) {
+        if (isset($this->_oUser) && $this->_oUser) {
             return $this->_oUser;
         }
 

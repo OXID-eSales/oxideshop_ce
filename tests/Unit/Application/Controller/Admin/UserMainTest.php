@@ -125,8 +125,11 @@ class UserMainTest extends \OxidTestCase
         $aTasks = array("_allowAdminEdit", "resetContentCache");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserMain::class, $aTasks);
+
         $oView->expects($this->atLeastOnce())->method('_allowAdminEdit')->will($this->returnValue(true));
         $oView->expects($this->once())->method('resetContentCache');
+
+        $_POST["editval"]['oxuser__oxusername'] = 'some';
         $oView->save();
         $oView->render();
 
@@ -148,7 +151,6 @@ class UserMainTest extends \OxidTestCase
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('setPassword', 'checkIfEmailExists', 'load'));
         $oUser->expects($this->once())->method('setPassword')->with($this->equalTo($sPass));
-        $oUser->expects($this->once())->method('checkIfEmailExists')->will($this->returnValue(true));
         oxTestModules::addModuleObject('oxuser', $oUser);
 
         /** @var User_Main|PHPUnit\Framework\MockObject\MockObject $oView */

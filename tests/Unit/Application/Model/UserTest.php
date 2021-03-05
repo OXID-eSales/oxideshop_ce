@@ -198,6 +198,9 @@ class UserTest extends \OxidTestCase
         $sUserName = $sUserName ? $sUserName : 'test' . $iLastNr . '@oxid-esales.com';
         $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);
         $oUser->oxuser__oxpassword = new oxField(crc32($sUserName), oxField::T_RAW);
+        $oUser->oxuser__oxsal = new oxField('mr', oxField::T_RAW);
+        $oUser->oxuser__oxfname = new oxField($sUserName, oxField::T_RAW);
+        $oUser->oxuser__oxlname = new oxField($sUserName, oxField::T_RAW);
         $oUser->oxuser__oxcountryid = new oxField("testCountry", oxField::T_RAW);
         $oUser->save();
 
@@ -247,9 +250,11 @@ class UserTest extends \OxidTestCase
 
         $aDynValues = $oPayment->getDynValues();
         foreach ($aDynValues as $key => $oVal) {
-            $oVal = new oxField($aDynValue[$oVal->name], oxField::T_RAW);
-            $oPayment->setDynValue($key, $oVal);
-            $aDynVal[$oVal->name] = $oVal->value;
+            if (isset($aDynValue[$oVal->name])) {
+                $oVal = new oxField($aDynValue[$oVal->name], oxField::T_RAW);
+                $oPayment->setDynValue($key, $oVal);
+                $aDynVal[$oVal->name] = $oVal->value;
+            }
         }
 
         $sDynValues = '';
@@ -880,7 +885,7 @@ class UserTest extends \OxidTestCase
     public function testGetNewsSubscriptionNoUserEmptySubscription()
     {
         $oUser = oxNew('oxUser');
-        $this->assertNull($oUser->getNewsSubscription()->oxnewssubscribed__oxid->value);
+        $this->assertFalse($oUser->getNewsSubscription()->oxnewssubscribed__oxid);
     }
 
     // 2. loading subscription by user id
@@ -1050,6 +1055,7 @@ class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxpassword = new oxField('somePassword', oxField::T_RAW);
+        $oUser->oxuser__oxusername = new oxField('someName', oxField::T_RAW);
         $oUser->oxuser__oxrights = new oxField(null, oxField::T_RAW);
         $oUser->oxuser__oxregister = new oxField(0, oxField::T_RAW);
         $oUser->save();
@@ -1064,6 +1070,7 @@ class UserTest extends \OxidTestCase
 
         $oUser = oxNew('oxUser');
         $oUser->setId($oUser->getId());
+        $oUser->oxuser__oxusername = new oxField('someName', oxField::T_RAW);
         $oUser->save();
     }
 

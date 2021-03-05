@@ -14,55 +14,6 @@ use OxidEsales\EshopCommunity\Tests\Acceptance\FrontendTestCase;
 class NavigationFrontendTest extends FrontendTestCase
 {
     /**
-     * Switching languages in frontend
-     *
-     * @group frontend
-     */
-    public function testFrontendLanguages()
-    {
-        $this->openShop();
-        $this->assertElementPresent("//p[@id='languageTrigger']//*[text()='English']");
-        $this->assertFalse($this->isVisible("languages"));
-        $this->assertTextPresent("%JUST_ARRIVED%");
-        $this->assertElementPresent("link=About Us");
-        $this->assertElementNotPresent("link=%IMPRESSUM%");
-        $this->assertElementNotPresent("link=Test category 0 [DE] šÄßüл");
-
-        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $this->assertElementPresent("link=Test product 0 [EN] šÄßüл");
-
-        $this->clickAndWait("link=Manufacturer [EN] šÄßüл");
-        $this->assertElementPresent("link=Test product 1 [EN] šÄßüл");
-
-        $this->click("languageTrigger");
-        $this->waitForItemAppear("languages");
-        $this->assertElementPresent("//ul[@id='languages']/li[@class='active']//*[text()='English']");
-        $this->assertElementPresent("//ul[@id='languages']/li[2]//*[text()='Deutsch']");
-        $this->assertElementPresent("//ul[@id='languages']/li[3]//*[text()='English']");
-
-        $this->clickAndWait("//ul[@id='languages']/li[2]/a");
-        $this->getTranslator()->setLanguage(0);
-        $this->assertFalse($this->isVisible("//ul[@id='languages']"));
-        $this->assertElementPresent("//p[@id='languageTrigger']//*[text()='Deutsch']");
-
-        $this->clickAndWait("//ul[@id='languages']/li[2]/a");
-        $this->assertElementPresent("//p[@id='languageTrigger']//*[text()='Deutsch']");
-        $this->assertElementPresent("link=[DE 1] Test product 1 šÄßüл");
-
-        $this->clickAndWait("link=Test category 0 [DE] šÄßüл");
-        $this->assertElementPresent("link=[DE 4] Test product 0 šÄßüл");
-
-        $this->clickAndWait("link=Manufacturer [DE] šÄßüл");
-        $this->assertElementPresent("link=[DE 1] Test product 1 šÄßüл");
-        $this->assertElementPresent("link=%IMPRESSUM%");
-
-        $this->clickAndWait("link=%HOME%");
-        $this->assertTextPresent("%JUST_ARRIVED%");
-        $this->assertElementNotPresent("link=About Us");
-        $this->assertElementNotPresent("link=Test category 0 [EN] šÄßüл");
-    }
-
-    /**
      * switching currencies in frontend
      *
      * @group main

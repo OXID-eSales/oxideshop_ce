@@ -998,8 +998,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param string $sUrl               URL to be redirected
      * @param bool   $blAddRedirectParam add "redirect" param
      * @param int    $iHeaderCode        header code, default 302
-     * @throws RedirectException
-     * @return no-return
+     * @throws RedirectException When redirect cycle is detected
+     * @return no-return Method does never return
      */
     public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 302)
     {

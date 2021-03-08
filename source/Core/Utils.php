@@ -1007,7 +1007,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         //#M341 and check only if redirect parameter must be added
         $redirectCount = \OxidEsales\Eshop\Core\Registry::getRequest()->getRequestParameter('redirected', 0);
         if ($blAddRedirectParam && $redirectCount > 3) {
-            throw new RedirectException("to manny redirects");
+            throw new RedirectException("Too many previous redirects were detected when forwarding to $url. OXID eShop allows a maximum of 3 redirects to ensure a good user experience");
         }
 
         if ($blAddRedirectParam) {

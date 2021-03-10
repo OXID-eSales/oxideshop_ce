@@ -19,6 +19,7 @@ class SmartyBuilder implements SmartyBuilderInterface
     public function __construct()
     {
         $this->smarty = new \Smarty();
+        $this->smarty->error_reporting = E_ALL & ~E_NOTICE & ~E_WARNING;
     }
 
     /**

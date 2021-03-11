@@ -179,12 +179,13 @@ class OrderTest extends \OxidTestCase
 
     public function testValidateOrder()
     {
-        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket"));
+        $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("validateStock", "validateDelivery", "validatePayment", "validateDeliveryAddress", "validateBasket", "validateVouchers"));
         $oOrder->expects($this->once())->method('validateStock');
         $oOrder->expects($this->once())->method('validateDelivery');
         $oOrder->expects($this->once())->method('validatePayment');
         $oOrder->expects($this->once())->method('validateDeliveryAddress');
         $oOrder->expects($this->once())->method('validateBasket');
+        $oOrder->expects($this->once())->method('validateVouchers');
         $this->assertNull($oOrder->validateOrder(0, 0));
 
         // stock check failed

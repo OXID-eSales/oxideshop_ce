@@ -11,5 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem\HeaderGenerato
 
 interface HeaderGeneratorInterface
 {
+    /**
+     * @param string $filename
+     */
     public function generate(string $filename): void;
 }

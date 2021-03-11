@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Application\Model\NewsletterRecipients;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\FileGeneratorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\HeaderGenerator\Bridge\HeaderGeneratorBridgeInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Admin newsletter manager.
@@ -28,27 +29,27 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     public function export(): void
     {
-        $this->setCSVHeader();
-        $this->generateCSV((new NewsletterRecipients())->getNewsletterRecipients());
+        $container = ContainerFactory::getInstance()->getContainer();
+
+        $this->setCSVHeader($container);
+
+        $newsletterRecipients = new NewsletterRecipients();
+        $newsletterRecipientsList = $newsletterRecipients->getNewsletterRecipients();
+        $this->generateCSV($container, $newsletterRecipientsList);
+
         exit();
     }
 
-    private function setCSVHeader(): void
+    private function setCSVHeader(ContainerInterface $container): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $filename = "Export_recipients_" . date("Y-m-d") . ".csv";
         $csvHeader = $container->get(HeaderGeneratorBridgeInterface::class);
+
+        $filename = "Export_recipients_" . date("Y-m-d") . ".csv";
         $csvHeader->generate($filename);
     }
 
-    /**
-     * @param array $data
-     *
-     * @return void
-     */
-    public function generateCSV(array $data): void
+    private function generateCSV(ContainerInterface $container, array $data): void
     {
-        $container = ContainerFactory::getInstance()->getContainer();
         $csvGenerator = $container->get(FileGeneratorBridgeInterface::class);
         $csvGenerator->generate("php://output", $data);
     }

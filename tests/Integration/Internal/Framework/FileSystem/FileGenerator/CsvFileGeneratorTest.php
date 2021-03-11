@@ -23,18 +23,28 @@ class CsvFileGeneratorTest extends TestCase
 
     private $filename = __DIR__ . DIRECTORY_SEPARATOR . 'test.csv';
 
+    /** @var Filesystem  */
+    private $filesystem;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->filesystem = $this->get('oxid_esales.symfony.file_system');
+    }
+
     public function tearDown(): void
     {
         parent::tearDown();
-        $this->getFilesystem()->remove($this->filename);
+
+        $this->filesystem->remove($this->filename);
     }
 
     public function testGenerate(): void
     {
-        $filesystem = $this->getFilesystem();
         $csvGenerator = new CsvFileGenerator();
 
-        $filesystem->touch($this->filename);
+        $this->filesystem->touch($this->filename);
 
         $csvGenerator->generate($this->filename, [
             0 => [
@@ -43,11 +53,6 @@ class CsvFileGeneratorTest extends TestCase
             ]
         ]);
 
-        $this->assertEquals("Salutation,Name\nMR,John\n",file_get_contents($this->filename));
-    }
-
-    private function getFilesystem(): Filesystem
-    {
-        return $this->get('oxid_esales.symfony.file_system');
+        $this->assertEquals("Salutation,Name\nMR,John\n", file_get_contents($this->filename));
     }
 }

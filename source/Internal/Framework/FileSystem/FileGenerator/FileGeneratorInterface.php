@@ -11,5 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator;
 
 interface FileGeneratorInterface
 {
+    /**
+     * @param string $filename
+     * @param array  $data
+     */
     public function generate(string $filename, array $data): void;
 }

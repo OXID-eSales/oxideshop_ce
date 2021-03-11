@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactory;
 
@@ -16,9 +17,7 @@ class NewsletterRecipients
 {
     public function getNewsletterRecipients(): array
     {
-        $connectionProvider = new ConnectionProvider();
-        $queryBuilderFactory = new QueryBuilderFactory($connectionProvider);
-        $queryBuilder = $queryBuilderFactory->create();
+        $queryBuilder = $this->getQueryBuilder();
 
         $queryBuilder
             ->select([
@@ -41,5 +40,13 @@ class NewsletterRecipients
             ->orderBy('u.oxcreate', 'DESC');
 
         return $queryBuilder->execute()->fetchAllAssociative();
+    }
+
+    private function getQueryBuilder(): QueryBuilder
+    {
+        $connectionProvider = new ConnectionProvider();
+        $queryBuilderFactory = new QueryBuilderFactory($connectionProvider);
+
+        return$queryBuilderFactory->create();
     }
 }

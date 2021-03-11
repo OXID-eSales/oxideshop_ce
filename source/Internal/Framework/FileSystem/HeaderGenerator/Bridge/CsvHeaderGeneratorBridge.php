@@ -23,6 +23,9 @@ class CsvHeaderGeneratorBridge implements HeaderGeneratorBridgeInterface
         $this->headerGenerator = $headerGenerator;
     }
 
+    /**
+     * @param string $filename
+     */
     public function generate(string $filename): void
     {
         $this->headerGenerator->generate($filename);

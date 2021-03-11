@@ -95,7 +95,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
     public function testValidateThrowsExceptionIfNotArrayConfigured(): void
     {
         $this->expectException(ModuleSettingNotValidException::class);
-        
+
         $validator = new SmartyPluginDirectoriesValidator($this->modulePathResolver);
 
         $moduleConfiguration = new ModuleConfiguration();

@@ -28,7 +28,8 @@ class NewsletterTest extends UnitTestCase
                 'Opt-In state'         => "subscribed",
                 'Country'              => "Deutschland",
                 'Assigned user groups' => "malladmin"
-            ], (New NewsletterRecipients())->getNewsletterRecipients()
+            ],
+            (new NewsletterRecipients())->getNewsletterRecipients()
         );
     }
 }

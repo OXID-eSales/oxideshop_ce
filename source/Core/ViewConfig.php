@@ -1258,6 +1258,19 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
 
     /**
+     * return config-param value
+     *
+     * @param string $sName param name
+     *
+     * @return mixed
+     */
+    public function getConfigParam($sName)
+    {
+        return Registry::getConfig()->getConfigParam($sName);
+    }
+
+
+    /**
      * Returns true if selection lists must be displayed in details page
      *
      * @return bool

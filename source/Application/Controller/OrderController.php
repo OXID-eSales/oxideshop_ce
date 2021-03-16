@@ -517,6 +517,9 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_BELOWMINPRICE):
                 $sNextStep = 'order';
                 break;
+            case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_VOUCHERERROR):
+                $sNextStep = 'basket';
+                break;
             case ($iSuccess === \OxidEsales\Eshop\Application\Model\Order::ORDER_STATE_PAYMENTERROR):
                 // no authentication, kick back to payment methods
                 Registry::getSession()->setVariable('payerror', 2);

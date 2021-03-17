@@ -677,7 +677,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function handleRoutingException($exception)
     {
-        getLogger()->warning($exception->getMessage());
+        \OxidEsales\Eshop\Core\Registry::getLogger()->warning($exception->getMessage());
         error_404_handler();
     }
 

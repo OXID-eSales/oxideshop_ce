@@ -99,34 +99,37 @@ class ShopControlTest extends \OxidTestCase
 
     /**
      * Testing oxShopControl::start()
-     *
+     * @dataProvider unknownControllerClass
      * @return null
      */
-    public function testStartSystemComponentExceptionHandled_NotDebugMode()
+    public function testStartUnknownController_Redirect404($controllerName)
     {
-        $logger = $this->getMock(LoggerInterface::class);
-        $logger
-            ->expects($this->once())
-            ->method('error');
+        Registry::set(\OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver::class, null); //reset
+
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger->expects($this->once())
+               ->method('warning');
 
         Registry::set('logger', $logger);
 
-        Registry::get("oxConfigFile")->setVar('iDebug', 0);
+        $utils = $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock();
+        $utils
+            ->expects($this->once())
+            ->method('handlePageNotFoundError');
 
-        $componentException = $this->getMock(oxSystemComponentException::class);
+        Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
 
-        $oxUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("redirect"));
-        $oxUtils->expects($this->atLeastOnce())->method("redirect");
-        oxTestModules::addModuleObject("oxUtils", $oxUtils);
+        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, ["runOnce", "handleSystemException"], [], '', false);
+        
+        $oControl->start($controllerName, 'functionToLoad');
+    }
 
-        $oxUtilsView = $this->getMock(\OxidEsales\Eshop\Core\UtilsView::class, array("addErrorToDisplay"));
-        $oxUtilsView->expects($this->never())->method("addErrorToDisplay")->with($componentException);
-        oxTestModules::addModuleObject("oxUtilsView", $oxUtilsView);
-
-        $oControl = $this->getMock(\OxidEsales\Eshop\Core\ShopControl::class, array("runOnce", "process"), array(), '', false);
-        $oControl->expects($this->any())->method('process')->will($this->throwException($componentException));
-
-        $oControl->start('classToLoad', 'functionToLoad');
+    public function unknownControllerClass()
+    {
+        return [
+            'unknown controller class' => ['unknownClass'],
+            'any oxid class not allowed' => [\OxidEsales\Eshop\Core\Utils::class],
+        ];
     }
 
     /**
@@ -401,14 +404,14 @@ class ShopControlTest extends \OxidTestCase
             ->withConsecutive(
                 [
                     'errors',
-                    array(
-                        'other'   => array('test1', 'test3'),
-                        'default' => array('test2', 'test4'),
-                    )
+                array(
+                'other'   => array('test1', 'test3'),
+                'default' => array('test2', 'test4'),
+                )
 
                 ],
                 [$controllerClassName, $this->anything()]
-            );
+        );
 
         $oOut->method('sendHeaders')->will($this->returnValue(null));
         $oOut->method('flushOutput')->will($this->returnValue(null));

@@ -71,7 +71,7 @@ class ContainerFactory
     {
         $containerBuilder = (new ContainerBuilderFactory())->create();
         $this->symfonyContainer = $containerBuilder->getContainer();
-        $this->symfonyContainer->compile();
+        $this->symfonyContainer->compile(true);
     }
 
     /**

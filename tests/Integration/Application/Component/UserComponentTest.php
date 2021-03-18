@@ -394,7 +394,7 @@ class UserComponentTest extends \OxidTestCase
 
         $oCU = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser', 'getSession'));
         $oCU->expects($this->never())->method('getUser')->will($this->returnValue(false));
-        $oCU->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oS));
+        $oCU->method('getSession')->will($this->returnValue($oS));
 
         $this->assertSame(null, $oCU->UNITchangeUser_noRedirect());
 
@@ -404,7 +404,7 @@ class UserComponentTest extends \OxidTestCase
 
         $oCU = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser', 'getSession'));
         $oCU->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(false));
-        $oCU->expects($this->atLeastOnce())->method('getSession')->will($this->returnValue($oS));
+        $oCU->method('getSession')->will($this->returnValue($oS));
 
         $this->assertSame(null, $oCU->UNITchangeUser_noRedirect());
     }
@@ -919,6 +919,7 @@ class UserComponentTest extends \OxidTestCase
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('onUpdate'));
         $oBasket->expects($this->once())->method('onUpdate');
         $oSession = $this->getMock(\OxidEsales\Eshop\Core\Session::class, array('getBasket', 'checkSessionChallenge'));
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $oSession);
         $oSession->expects($this->atLeastOnce())->method('getBasket')->will($this->returnValue($oBasket));
         $oSession->expects($this->atLeastOnce())->method('checkSessionChallenge')->will($this->returnValue(true));
         $aMockFnc = array('getSession', 'getUser', '_getDelAddressData');
@@ -1511,6 +1512,7 @@ class UserComponentTest extends \OxidTestCase
         $this->setRequestParameter('blshowshipaddress', true);
 
         $session = $this->getMock(\OxidEsales\Eshop\Core\Session::class, ['checkSessionChallenge']);
+        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Session::class, $session);
         $session
             ->expects($this->atLeastOnce())
             ->method('checkSessionChallenge')

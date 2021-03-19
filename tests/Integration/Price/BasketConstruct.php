@@ -32,12 +32,12 @@ class BasketConstruct
     public function calculateBasket($testCase)
     {
         // gather data from test case
-        $articles = $testCase['articles'];
-        $discounts = $testCase['discounts'];
-        $costs = $testCase['costs'];
-        $options = $testCase['options'];
-        $userData = $testCase['user'];
-        $categories = $testCase['categories'];
+        $articles = $testCase['articles'] ?? null;
+        $discounts = $testCase['discounts'] ?? null;
+        $costs = $testCase['costs'] ?? null;
+        $options = $testCase['options'] ?? null;
+        $userData = $testCase['user'] ?? null;
+        $categories = $testCase['categories'] ?? null;
         // set custom configs
         $this->setOptions($options);
 
@@ -51,16 +51,16 @@ class BasketConstruct
         $this->_setDiscounts($discounts);
 
         // create & set wrappings
-        $wrapping = $this->_setWrappings($costs['wrapping']);
+        $wrapping = $this->_setWrappings($costs['wrapping'] ?? null);
 
         // create & set delivery costs
-        $delivery = $this->_setDeliveryCosts($costs['delivery']);
+        $delivery = $this->_setDeliveryCosts($costs['delivery'] ?? null);
 
         // create & set payment costs
-        $payment = $this->_setPayments($costs['payment']);
+        $payment = $this->_setPayments($costs['payment'] ?? null);
 
         // create & set vouchers
-        $voucherIDs = $this->_setVouchers($costs['voucherserie']);
+        $voucherIDs = $this->_setVouchers($costs['voucherserie'] ?? null);
 
         // basket preparation
         $basket = oxNew('oxBasket');
@@ -76,7 +76,7 @@ class BasketConstruct
 
         // group setup
         try {
-            $this->createGroup($testCase['group']);
+            $this->createGroup($testCase['group'] ?? null);
         } catch (\OxidEsales\Eshop\Core\Exception\DatabaseErrorException $exception) {
             /** We will ignore exceptions that occur because of duplicate keys (MySQL Error 1062)  */
             if ($exception->getCode() != 1062) {
@@ -92,12 +92,12 @@ class BasketConstruct
             $orderArticle = $basket->addToBasket($article['id'], $article['amount']);
             // adding wrapping if need
             if (!empty($wrapping)) {
-                $orderArticle->setWrapping($wrapping[$article['id']]);
+                $orderArticle->setWrapping($wrapping[$article['id']] ?? null);
             }
         }
 
         // try to add card
-        $wrapping['card'] ? $basket->setCardId($wrapping['card']) : '';
+        isset($wrapping['card']) && $wrapping['card'] ? $basket->setCardId($wrapping['card']) : '';
 
         // try to add delivery
         if (!empty($delivery)) {
@@ -181,17 +181,17 @@ class BasketConstruct
                 }
             }
             $article->save();
-            if ($articleData['scaleprices']) {
+            if (isset($articleData['scaleprices']) && $articleData['scaleprices']) {
                 $this->_createScalePrices(array($articleData['scaleprices']));
             }
-            if ($articleData['field2shop']) {
+            if (isset($articleData['field2shop']) && $articleData['field2shop']) {
                 $this->_createField2Shop($article, $articleData['field2shop']);
             }
-            if ($articleData['inheritToShops']) {
+            if (isset($articleData['inheritToShops']) && $articleData['inheritToShops']) {
                 $this->_inheritToShops($article, $articleData['inheritToShops']);
             }
             $result[$outerKey]['id'] = $articleData['oxid'];
-            $result[$outerKey]['amount'] = $articleData['amount'];
+            $result[$outerKey]['amount'] = $articleData['amount'] ?? null;
         }
 
         return $result;
@@ -298,7 +298,7 @@ class BasketConstruct
                 }
             }
             $card->save();
-            if ($wrapping['oxarticles']) {
+            if (isset($wrapping['oxarticles']) && $wrapping['oxarticles']) {
                 foreach ($wrapping['oxarticles'] as $sArtId) {
                     $result[$sArtId] = $card->getId();
                 }
@@ -476,7 +476,7 @@ class BasketConstruct
                 $config->setConfigParam($key, $value);
             }
         }
-        if ($options['activeCurrencyRate']) {
+        if (isset($options['activeCurrencyRate']) && $options['activeCurrencyRate']) {
             // load active currencies, change if set option
             $currencies = $config->getConfigParam("aCurrencies");
             $currencies[0] = "EUR@ " . $options['activeCurrencyRate'] . "@ ,@ .@ €@ 2";
@@ -512,7 +512,7 @@ class BasketConstruct
      */
     public function createObj2Obj($data, $object2ObjectTable)
     {
-        $newData = is_array($data[0]) ? $data : array($data);
+        $newData = is_array($data[0] ?? null) ? $data : array($data);
         foreach ($newData as $values) {
             $object = oxNew('oxBase');
             $object->init($object2ObjectTable);
@@ -539,7 +539,7 @@ class BasketConstruct
                 for ($i = 0; $i < $count; $i++) {
                     $connection = array(
                         'oxgroupsid' => $group->getId(),
-                        'oxobjectid' => $groupData['oxobject2group'][$i]
+                        'oxobjectid' => $groupData['oxobject2group'][$i] ?? null
                     );
                     $this->createObj2Obj($connection, 'oxobject2group');
                 }
@@ -563,7 +563,7 @@ class BasketConstruct
         }
         /** @var oxBase $object */
         $object = new $objectClass();
-        if ($data['oxid']) {
+        if (isset($data['oxid']) && $data['oxid']) {
             $object->setId($data['oxid']);
         }
         foreach ($data as $key => $value) {

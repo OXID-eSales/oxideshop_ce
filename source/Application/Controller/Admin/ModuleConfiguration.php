@@ -178,17 +178,16 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
         $this->_sModuleId = $moduleId;
 
         try {
-            $moduleActivationBridge = $this->getContainer()->get(ModuleActivationBridgeInterface::class);
-            $moduleWasActiveBeforeSaving = $moduleActivationBridge->isActive($moduleId, $shopId);
+            $moduleWasActiveBeforeSaving = $this->getContainer()->get(ModuleActivationBridgeInterface::class)->isActive($moduleId, $shopId);
 
             if ($moduleWasActiveBeforeSaving) {
-                $moduleActivationBridge->deactivate($moduleId, $shopId);
+                $this->getContainer()->get(ModuleActivationBridgeInterface::class)->deactivate($moduleId, $shopId);
             }
 
             $this->saveModuleConfigVariables($moduleId, $this->getConfigVariablesFromRequest());
 
             if ($moduleWasActiveBeforeSaving) {
-                $moduleActivationBridge->activate($moduleId, $shopId);
+                $this->getContainer()->get(ModuleActivationBridgeInterface::class)->activate($moduleId, $shopId);
             }
         } catch (\Throwable $throwable) {
             Registry::getUtilsView()->addErrorToDisplay($throwable);

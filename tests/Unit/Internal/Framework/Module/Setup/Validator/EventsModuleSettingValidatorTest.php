@@ -39,6 +39,7 @@ class EventsModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addEvent(new Event('onActivate', 'SomeNamespace\\class::noCallableMethod'));
         $moduleConfiguration->addEvent(new Event('onDeactivate', 'SomeNamespace\\class::noCallableMethod'));
 
+        $this->expectException(ModuleSettingNotValidException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 

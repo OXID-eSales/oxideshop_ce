@@ -23,7 +23,7 @@ final class BasicContextTest extends TestCase
      */
     private $basicContext;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         $this->basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 

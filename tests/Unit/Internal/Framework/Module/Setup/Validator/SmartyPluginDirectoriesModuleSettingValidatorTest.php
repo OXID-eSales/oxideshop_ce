@@ -67,6 +67,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory('notExistingDirectory'));
         $moduleConfiguration->setId("smartyTestModule");
 
+        $this->expectException(DirectoryNotExistentException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 
@@ -87,6 +88,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory('smarty'));
         $moduleConfiguration->setId("smartyTestModule");
 
+        $this->expectException(DirectoryNotReadableException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 
@@ -100,6 +102,7 @@ class SmartyPluginDirectoriesModuleSettingValidatorTest extends TestCase
         $moduleConfiguration->addSmartyPluginDirectory(new SmartyPluginDirectory(''));
         $moduleConfiguration->setId("smartyTestModule");
 
+        $this->expectException(ModuleSettingNotValidException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 

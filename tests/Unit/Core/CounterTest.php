@@ -7,13 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use \oxDb;
-
 class CounterTest extends \OxidTestCase
 {
     protected function tearDown(): void
     {
-        oxDb::getDb("delete from oxcounters");
+        \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute('delete from oxcounters');
 
         parent::tearDown();
     }

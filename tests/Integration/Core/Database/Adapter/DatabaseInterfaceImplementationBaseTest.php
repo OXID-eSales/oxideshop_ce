@@ -149,7 +149,7 @@ abstract class DatabaseInterfaceImplementationBaseTest extends UnitTestCase
      * @param integer $errorLine    Error line
      * @param array   $errorContext Error context
      */
-    public function errorHandler($errorLevel, $errorMessage, $errorFile, $errorLine, $errorContext)
+    public function errorHandler($errorLevel, $errorMessage, $errorFile = '', $errorLine = 0, $errorContext = [])
     {
         $this->errors[] = compact(
             "errorLevel",

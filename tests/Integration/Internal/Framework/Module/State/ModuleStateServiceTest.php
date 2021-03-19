@@ -66,6 +66,7 @@ class ModuleStateServiceTest extends TestCase
 
     public function testSetActiveIfActiveStateIsAlreadySet()
     {
+        $this->expectException(\OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateIsAlreadySetException::class);
         $this->moduleStateService->setActive('testModuleId', 1);
         $this->expectException(ModuleStateIsAlreadySetException::class);
         $this->moduleStateService->setActive('testModuleId', 1);

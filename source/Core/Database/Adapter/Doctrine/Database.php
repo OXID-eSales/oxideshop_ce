@@ -636,7 +636,7 @@ class Database implements DatabaseInterface
         if ($parameters !== [] || strrpos($query, ';', -1) === false) {
             return $query;
         }
-        $queries = preg_split('~(\"[^\\\\"]*\"|' . "\'[^\\\\']*\'|`[^\\`]*`)(*SKIP)(*F)|(?<=;)(?![ ]*$)~", $query);
+        $queries = preg_split('~(\"[^\\\\"]*\"|' . "\'[^\\\\']*\'|\'.+\'|`[^\\`]*`)(*SKIP)(*F)|(?<=;)(?![ ]*$)~", $query);
         if (count($queries) > 1) {
             Registry::getLogger()->error('More than one query within one statement', [$query]);
         }

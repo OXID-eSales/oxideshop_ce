@@ -16,6 +16,7 @@ use oxOutOfStockException;
 use oxField;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
+use OxidEsales\Eshop\Application\Model\Voucher as EshopVoucherModel;
 
 /**
  * Order manager.
@@ -79,6 +80,13 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var int
      */
     const ORDER_STATE_BELOWMINPRICE = 8;
+
+    /**
+     * Voucher cannot be applied
+     *
+     * @var int
+     */
+    const ORDER_STATE_VOUCHERERROR = 9;
 
     /**
      * Skip update fields
@@ -2068,7 +2076,24 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             $iValidState = $this->validateBasket($oBasket);
         }
 
+        if (!$iValidState) {
+            // validating vouchers
+            $iValidState = $this->validateVouchers($oBasket);
+        }
+
         return $iValidState;
+    }
+
+    public function validateVouchers($basket)
+    {
+        $voucherIds = array_keys($basket->getVouchers());
+        foreach ($voucherIds as $voucherId) {
+            $voucher = oxNew(EshopVoucherModel::class);
+            $voucher->load($voucherId);
+            if ($voucher->getFieldData('oxorderid')) {
+                return self::ORDER_STATE_VOUCHERERROR;
+            }
+        }
     }
 
     /**

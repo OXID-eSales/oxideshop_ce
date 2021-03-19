@@ -48,6 +48,7 @@ class ShopSettingEncoderTest extends TestCase
         $this->expectException(InvalidShopSettingValueException::class);
         $shopSettingEncoder = new ShopSettingEncoder();
 
+        $this->expectException(InvalidShopSettingValueException::class);
         $shopSettingEncoder->encode('object', new \stdClass());
     }
 

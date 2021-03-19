@@ -30,6 +30,8 @@ class ProductRatingDaoTest extends \PHPUnit\Framework\TestCase
             $mapper
         );
 
+        $this->expectException(\OxidEsales\EshopCommunity\Internal\Framework\Dao\InvalidObjectIdDaoException::class);
+
         $productRatingDao->getProductRatingById($invalidProductId);
     }
 

@@ -33,7 +33,7 @@ class ServicesYamlValidatorTest extends TestCase
      */
     private $context;
 
-    public function setup(): void
+    public function setUp(): void
     {
         parent::setUp();
 

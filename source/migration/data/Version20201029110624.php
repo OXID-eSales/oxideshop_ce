@@ -24,4 +24,9 @@ final class Version20201029110624 extends AbstractMigration
         $table = $schema->getTable('oxuser');
         $table->dropIndex('oxrights');
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

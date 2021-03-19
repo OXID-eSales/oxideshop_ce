@@ -49,6 +49,7 @@ class MetaDataSchemataProviderTest extends TestCase
         $unsupportedVersion = '0.0';
         $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataVersionException::class);
         $metaDataSchema->getFlippedMetaDataSchemaForVersion($unsupportedVersion);
     }
 
@@ -74,6 +75,7 @@ class MetaDataSchemataProviderTest extends TestCase
         $unsupportedVersion = '0.0';
         $metaDataSchema = new MetaDataSchemataProvider($this->metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataVersionException::class);
         $metaDataSchema->getMetaDataSchemaForVersion($unsupportedVersion);
     }
 

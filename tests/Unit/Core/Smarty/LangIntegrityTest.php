@@ -690,11 +690,11 @@ class LangIntegrityTest extends \OxidTestCase
     private function _getLangFileContents($sTheme, $sLang, $sFilePattern = '*lang.php')
     {
         $aFileContent = array();
-        $sMask = $sFile = $this->_getLanguageFilePath($sTheme, $sLang, $sFilePattern);
+        $sMask = $this->_getLanguageFilePath($sTheme, $sLang, $sFilePattern);
         foreach (glob($sMask) as $sFile) {
             if (is_readable($sFile)) {
                 include $sFile;
-                $aFileContent[$sFile] .= file_get_contents($sFile) . PHP_EOL . PHP_EOL;
+                $aFileContent[$sFile] = file_get_contents($sFile) . PHP_EOL . PHP_EOL;
             }
         }
 
@@ -1142,7 +1142,7 @@ EOD;
         $pathItems = explode(DIRECTORY_SEPARATOR, $filePath);
 
         $pathGlobItems = array_map(function ($pathItem) {
-            $firstLetter = $pathItem[0];
+            $firstLetter = substr($pathItem, 0, 1);
 
             if ($firstLetter) {
                 // Convert 'word' to '[Ww]ord'

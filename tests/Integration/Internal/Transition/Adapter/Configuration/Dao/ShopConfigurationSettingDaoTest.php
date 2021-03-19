@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Dao;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
@@ -50,6 +51,7 @@ class ShopConfigurationSettingDaoTest extends TestCase
         $this->expectException(EntryDoesNotExistDaoException::class);
         $settingDao = $this->getConfigurationSettingDao();
 
+        $this->expectException(EntryDoesNotExistDaoException::class);
         $settingDao->get('onExistentSetting', 1);
     }
 

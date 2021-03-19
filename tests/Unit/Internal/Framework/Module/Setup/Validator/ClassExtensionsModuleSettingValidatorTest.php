@@ -60,7 +60,9 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->addClassExtension(new ClassExtension('shopClass', 'moduleClass'));
 
+        
         $validator = new ClassExtensionsValidator($shopAdapter);
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 
@@ -83,6 +85,7 @@ class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->addClassExtension(new ClassExtension('nonExistentClass', 'moduleClass'));
 
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
         $validator->validate($moduleConfiguration, 1);
     }
 }

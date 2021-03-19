@@ -187,7 +187,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Basket currency
      *
-     * @var object
+     * @var stdClass
      */
     protected $_oCurrency = null;
 
@@ -1103,6 +1103,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                         if (!$this->_blSkipVouchersAvailabilityChecking) {
                             $oVoucher->checkBasketVoucherAvailability($this->_aVouchers, $dPrice);
                             $oVoucher->checkUserAvailability($this->getBasketUser());
+                            $oVoucher->markAsReserved();
                         }
 
                         // assigning real voucher discount value as this is the only place where real value is calculated
@@ -2204,7 +2205,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Set basket currency
      *
-     * @param object $oCurrency currency object
+     * @param stdClass $oCurrency currency object
      */
     public function setBasketCurrency($oCurrency)
     {
@@ -2214,7 +2215,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Basket currency getter
      *
-     * @return object
+     * @return stdClass
      */
     public function getBasketCurrency()
     {

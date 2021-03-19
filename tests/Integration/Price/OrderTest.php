@@ -95,13 +95,13 @@ class OrderTest extends BaseTestCase
      */
     public function testOrderCalculation($testCase)
     {
-        if ($testCase['skipped'] == 1) {
+        if (isset($testCase['skipped']) && $testCase['skipped'] == 1) {
             $this->markTestSkipped("testcase is skipped");
         }
         // expectations
         $expected = $testCase['expected'];
         // actions
-        $actions = $testCase['actions'];
+        $actions = $testCase['actions'] ?? null;
 
         // load calculated basket from provided data
         $basketConstruct = new BasketConstruct();
@@ -181,23 +181,23 @@ class OrderTest extends BaseTestCase
 
         $this->assertEquals($expectedTotals['totalBrutto'], $order->getFormattedTotalBrutSum(), "Product Gross Price #$approach");
 
-        if ($expectedTotals['voucher']) {
+        if ($expectedTotals['voucher'] ?? null) {
             $this->assertEquals($expectedTotals['voucher']['brutto'], $order->getFormattedTotalVouchers(), "Voucher costs #$approach");
         }
 
-        if ($expectedTotals['delivery']) {
+        if ($expectedTotals['delivery'] ?? null) {
             $this->assertEquals($expectedTotals['delivery']['brutto'], $order->getFormattedeliveryCost(), "Shipping costs #$approach");
         }
 
-        if ($expectedTotals['wrapping']) {
+        if ($expectedTotals['wrapping'] ?? null) {
             $this->assertEquals($expectedTotals['wrapping']['brutto'], $order->getFormattedWrapCost(), "Wrapping costs #$approach");
         }
 
-        if ($expectedTotals['giftcard']) {
+        if ($expectedTotals['giftcard'] ?? null) {
             $this->assertEquals($expectedTotals['giftcard']['brutto'], $order->getFormattedGiftCardCost(), "Giftcard costs #$approach");
         }
 
-        if ($expectedTotals['payment']) {
+        if ($expectedTotals['payment'] ?? null) {
             $this->assertEquals($expectedTotals['payment']['brutto'], $order->getFormattedPayCost(), "Charge Payment Method #$approach");
         }
         $this->assertEquals($expectedTotals['grandTotal'], $order->getFormattedTotalOrderSum(), "Sum total #$approach");

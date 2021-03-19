@@ -660,7 +660,7 @@ class BasketReservationStockUpdateTest extends \OxidTestCase
         $basketContents = $basket->getContents();
         $basketItemId = $basket->getItemKey($this->testArticleId);
 
-        if (is_a($basketContents[$basketItemId], \OxidEsales\Eshop\Application\Model\BasketItem::class)) {
+        if (isset($basketContents[$basketItemId]) && is_a($basketContents[$basketItemId], \OxidEsales\Eshop\Application\Model\BasketItem::class)) {
             $return = $basketContents[$basketItemId]->getAmount();
         }
         return $return;

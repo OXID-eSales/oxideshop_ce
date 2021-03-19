@@ -78,7 +78,7 @@ class PriceTest extends BaseTestCase
      */
     public function testPrice($aTestCase)
     {
-        if ($aTestCase['skipped'] == 1) {
+        if (isset($aTestCase['skipped']) && $aTestCase['skipped'] == 1) {
             $this->markTestSkipped("testcase is skipped");
         }
 
@@ -88,13 +88,13 @@ class PriceTest extends BaseTestCase
         // load calculated basket from provided data
         $oConstruct = new BasketConstruct();
         // create shops
-        $iActiveShopId = $oConstruct->createShop($aTestCase['shop']);
+        $iActiveShopId = $oConstruct->createShop($aTestCase['shop'] ?? null);
 
         // create user if specified
-        $oUser = $oConstruct->createObj($aTestCase['user'], "oxuser", "oxuser");
+        $oUser = $oConstruct->createObj($aTestCase['user'] ?? null, "oxuser", "oxuser");
 
         // create group and assign
-        $oConstruct->createGroup($aTestCase['group']);
+        $oConstruct->createGroup($aTestCase['group'] ?? null);
 
         // user login
         if ($oUser) {
@@ -106,13 +106,13 @@ class PriceTest extends BaseTestCase
         $oConstruct->setOptions($aTestCase['options']);
 
         // create categories
-        $oConstruct->setCategories($aTestCase['categories']);
+        $oConstruct->setCategories($aTestCase['categories'] ?? null);
 
         // create articles
         $articlesData = $oConstruct->getArticles($aTestCase['articles']);
 
         // apply discounts
-        $oConstruct->setDiscounts($aTestCase['discounts']);
+        $oConstruct->setDiscounts($aTestCase['discounts'] ?? null);
 
         // set active shop
         if ($iActiveShopId != 1) {
@@ -121,7 +121,7 @@ class PriceTest extends BaseTestCase
 
         // iteration through expectations
         foreach ($articlesData as $articleData) {
-            $expected = $aExpected[$articleData['id']];
+            $expected = $aExpected[$articleData['id']] ?? null;
             if (empty($expected)) {
                 continue;
             }

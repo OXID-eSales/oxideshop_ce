@@ -23,7 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
  */
 class OnlineModuleNotifierTest extends BaseModuleTestCase
 {
-    public function setup(): void
+    public function setUp(): void
     {
         parent::setUp();
         ContainerFactory::getInstance()

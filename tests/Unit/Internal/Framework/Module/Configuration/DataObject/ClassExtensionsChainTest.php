@@ -155,6 +155,9 @@ class ClassExtensionsChainTest extends TestCase
                 ]
             ]
         );
+        $this->expectException(
+            \OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ExtensionNotInChainException::class
+        );
         $chain->removeExtension($extension);
     }
 

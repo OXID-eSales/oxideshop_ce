@@ -29,6 +29,7 @@ class PluginSmartyOxScriptTest extends \OxidTestCase
 
         $this->getConfig()->setConfigParam("iDebug", -1);
 
+        $this->expectWarning();
         $oSmarty = new Smarty();
         $this->assertEquals('', smarty_function_oxscript(array('include' => 'somescript.js'), $oSmarty));
     }

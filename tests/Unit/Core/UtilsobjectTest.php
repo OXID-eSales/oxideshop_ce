@@ -15,9 +15,10 @@ use \oxNewDummyUserModule_parent;
 use \oxNewDummyUserModule2_parent;
 use \oemodulenameoxorder_parent;
 use \oxAttribute;
-use \oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 use oxUtilsObject;
 use \oxTestModules;
+use Psr\Log\Test\TestLogger;
 
 class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
 {
@@ -74,7 +75,8 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('testArticle');
 
-        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $this->getConfigParam('sShopDir'));
+        Registry::get("oxConfigFile")->setVar("sShopDir", $this->getConfigParam('sShopDir'));
+        Registry::set('logger', getLogger());
 
         parent::tearDown();
     }
@@ -136,10 +138,13 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $config = $this->getConfig();
 
-        oxRegistry::getUtilsObject()->setModuleVar("aModules", $aModules);
+        Registry::getUtilsObject()->setModuleVar("aModules", $aModules);
+        $logger = new TestLogger();
+        Registry::set('logger', $logger);
+
         $config->setConfigParam("aModules", $aModules);
 
-        $configFile = oxRegistry::get("oxConfigFile");
+        $configFile = Registry::get("oxConfigFile");
         $realShopDir = $configFile->getVar('sShopDir');
         $configFile->setVar('sShopDir', $fakeShopDir);
 
@@ -150,6 +155,12 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue($oNewDummyModule instanceof \oxNewDummyModule);
         $this->assertTrue($oNewDummyModule instanceof \oxNewDummyUserModule);
         $this->assertFalse($oNewDummyModule instanceof \oxNewDummyUserModule2);
+
+        $this->assertTrue(
+            $logger->hasErrorThatContains(
+                'Module class notExistingClass not found. Module ID notExistingClass'
+            )
+        );
     }
 
     public function testOxNewCreationOfNonExistingClassContainsClassNameInExceptionMessage()
@@ -165,8 +176,8 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
      */
     public function testGenerateUid()
     {
-        $id1 = oxRegistry::getUtilsObject()->generateUid();
-        $id2 = oxRegistry::getUtilsObject()->generateUid();
+        $id1 = Registry::getUtilsObject()->generateUid();
+        $id2 = Registry::getUtilsObject()->generateUid();
         $this->assertNotEquals($id1, $id2);
     }
 
@@ -205,7 +216,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $this->assertSame($sClassNameExpect, $oUtilsObject->getClassName($sClassName));
     }
-    
+
     public function testGetClassName_classNotExistDoNotDisableModuleOnError_errorThrow()
     {
         $sClassName = 'oxorder';
@@ -232,14 +243,14 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function _prepareFakeModule($class, $extension)
     {
         $wrapper = $this->getVfsStreamWrapper();
-        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        Registry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
                 $extension . '.php' => "<?php class $extension extends {$extension}_parent {}"
             )
         ));
 
-        $oUtilsObject = oxRegistry::getUtilsObject();
+        $oUtilsObject = Registry::getUtilsObject();
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;
@@ -257,14 +268,14 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
     private function prepareFakeModuleNonExistentClass($class, $extension)
     {
         $wrapper = $this->getVfsStreamWrapper();
-        oxRegistry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
+        Registry::get("oxConfigFile")->setVar("sShopDir", $wrapper->getRootPath());
         $wrapper->createStructure(array(
             'modules' => array(
                 $extension . '.php' => "<?php class {$extension}NonExistent extends {$extension}_parent {}"
             )
         ));
 
-        $oUtilsObject = oxRegistry::getUtilsObject();
+        $oUtilsObject = Registry::getUtilsObject();
         $oUtilsObject->setModuleVar('aModules', array($class => $extension));
 
         return $oUtilsObject;

@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaD
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataNormalizer;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
@@ -36,6 +37,8 @@ class MetaDataProviderTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $metaDataProvider = $this->createMetaDataProvider();
+
+        $this->expectException(\InvalidArgumentException::class);
         $metaDataProvider->getData('non existing file');
     }
 
@@ -43,15 +46,13 @@ class MetaDataProviderTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $metaDataProvider = $this->createMetaDataProvider();
+        $this->expectException(\InvalidArgumentException::class);
         $metaDataProvider->getData(__DIR__);
     }
 
     /**
      * @dataProvider missingMetaDataVariablesDataProvider
-     *
      * @param string $metaDataContent
-     *
-     * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException
      */
     public function testGetDataThrowsExceptionOnMissingMetaDataVariables(string $metaDataContent)
     {
@@ -61,6 +62,8 @@ class MetaDataProviderTest extends TestCase
             throw new \RuntimeException('Could not write to ' . $metaDataFilePath);
         }
         $metaDataProvider = $this->createMetaDataProvider();
+
+        $this->expectException(InvalidMetaDataException::class);
         $metaDataProvider->getData($metaDataFilePath);
     }
 
@@ -86,9 +89,6 @@ class MetaDataProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @throws \OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException
-     */
     public function testGetDataProvidesConfiguredMetadataId()
     {
         $moduleId = 'test_module';

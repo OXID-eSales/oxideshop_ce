@@ -466,6 +466,39 @@ final class CheckoutProcessCest
         $orderPage->seeOnBreadCrumb($breadCrumb);
     }
 
+    public function checkAttributesInBasket(AcceptanceTester $I): void
+    {
+        $I->wantToTest('Check if attributes are visible in basket');
+
+        $I->updateInDatabase('oxattribute', ['OXDISPLAYINBASKET' => 1], ['OXID' => '9438ac75bac3e344628b14bf7ed82c15']);
+        $I->haveInDatabase(
+            'oxobject2attribute',
+            [
+                'OXID' => '1001attribute',
+                'OXOBJECTID' => '1001',
+                'OXATTRID' => '9438ac75bac3e344628b14bf7ed82c15',
+                'OXVALUE' => 'Schwarz',
+                'OXVALUE_1' => 'Black',
+            ]
+        );
+
+        $basket = new Basket($I);
+
+        $basketItem1 = [
+            'id' => '1001',
+            'title' => 'Test product 1 [EN] šÄßüл',
+            'amount' => 1,
+            'totalPrice' => '100,00 €'
+        ];
+
+        $homePage = $I->openShop();
+
+        $basket->addProductToBasket($basketItem1['id'], 1);
+
+        $homePage->openMiniBasket()->openBasketDisplay();
+
+        $I->see('Black', "#table_cartItem_1");
+    }
 
     /**
      * @return mixed

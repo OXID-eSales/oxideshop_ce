@@ -947,7 +947,7 @@ class BasketTest extends \OxidTestCase
     public function testAddToBasketAddingTwiceAncCheckingAmounts()
     {
         $oBasket = oxNew('oxBasket');
-        $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
+        $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $oBasketItem = $oBasket->addToBasket($this->oArticle->getId(), 10, null, null, false, true);
         $this->assertEquals(20, $oBasketItem->getAmount());
         $this->assertEquals(200, $oBasketItem->getWeight());

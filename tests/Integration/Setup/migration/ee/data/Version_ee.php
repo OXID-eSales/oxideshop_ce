@@ -15,4 +15,9 @@ class Version_ee extends AbstractMigration
     public function down(Schema $schema): void
     {
     }
+
+    public function isTransactional(): bool
+    {
+        return false;
+    }
 }

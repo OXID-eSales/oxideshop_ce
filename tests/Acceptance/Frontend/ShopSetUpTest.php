@@ -739,7 +739,7 @@ class ShopSetUpTest extends FrontendTestCase
      *
      * @group setup
      */
-    public function testSystemRequirementsPageCanContinueWithSetup()
+    public function testSystemRequirementsPageCanContinueWithsetUp(): void
     {
         $this->goToSetup();
         $this->assertTextNotPresent(
@@ -827,7 +827,7 @@ class ShopSetUpTest extends FrontendTestCase
     /**
      * Check if shop automatically redirects to setup when you're trying to set it up for the first time
      */
-    public function goToSetup()
+    public function goTosetUp(): void
     {
         if (!$this->isPackage()) {
             $sUrl = $this->getTestConfig()->getShopUrl() . 'Setup/index.php?istep=100';
@@ -1228,6 +1228,7 @@ use Doctrine\DBAL\Schema\Schema;
 class Version20170101 extends AbstractMigration {
 public function up(Schema $schema): void {$this->addSql('INVALID_SQL_SYNTAX');}
 public function down(Schema $schema): void {}
+public function isTransactional(): bool {return false;}
 }
 EOL;
         file_put_contents($this->getInvalidMigrationFilePath(), $contents);

@@ -167,13 +167,14 @@ class GenericImport
             return $this->returnMessage = 'ERPGENIMPORT_ERROR_USER_NO_RIGHTS';
         }
 
-        $file = @fopen($this->importFilePath, 'r');
+        $file = fopen($this->importFilePath, 'r');
 
-        if (isset($file) && $file) {
+        if (is_resource($file)) {
             $data = [];
             while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
                 $data[] = $this->csvTextConvert($row, false);
             }
+            fclose($file);
 
             if ($this->csvContainsHeader) {
                 array_shift($data);
@@ -188,8 +189,6 @@ class GenericImport
         } else {
             $this->returnMessage = 'ERPGENIMPORT_ERROR_WRONG_FILE';
         }
-
-        @fclose($file);
 
         return $this->returnMessage;
     }

@@ -239,7 +239,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function _getImageInfo() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
         {
-            $info = [];
+            $info = [0, 0, 0];
             if (($uri = $this->_getImageUri())) {
                 $info = explode($this->_sImageInfoSep, basename(dirname($uri)));
             }

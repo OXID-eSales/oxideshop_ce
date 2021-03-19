@@ -65,7 +65,7 @@ final class DynImgGeneratorTest extends \OxidTestCase
         $oGen->expects($this->at(1))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/test4/test.jpg"));
         $oGen->expects($this->at(2))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
 
-        $this->assertEquals(array(), $oGen->UNITgetImageInfo());
+        $this->assertEquals([0 ,0, 0], $oGen->UNITgetImageInfo());
         $this->assertEquals(array("test4"), $oGen->UNITgetImageInfo());
         $this->assertEquals(array("12", "12", "12"), $oGen->UNITgetImageInfo());
     }

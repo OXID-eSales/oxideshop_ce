@@ -69,7 +69,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
     /**
      * Test case that we have no master slave setup.
      */
-    public function testGetMasterNoMasterSlaveSetup()
+    public function testGetMasterNoMasterSlavesetup(): void
     {
         if ('EE' == $this->getTestConfig()->getShopEdition()) {
             $this->markTestSkipped('Test is for CE/PE only.');
@@ -87,7 +87,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
     /**
      * Test case that we have no master slave setup and force master.
      */
-    public function testForceMasterNoMasterSlaveSetup()
+    public function testForceMasterNoMasterSlavesetup(): void
     {
         if ('EE' == $this->getTestConfig()->getShopEdition()) {
             $this->markTestSkipped('Test is for CE/PE only.');
@@ -106,7 +106,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
     /**
      * Test case that we have no master slave setup and force slave.
      */
-    public function testForceSlaveNoMasterSlaveSetup()
+    public function testForceSlaveNoMasterSlavesetup(): void
     {
         if ('EE' == $this->getTestConfig()->getShopEdition()) {
             $this->markTestSkipped('Test is for CE/PE only.');

@@ -246,11 +246,11 @@ final class DatabaseTest extends \OxidTestCase
 
 
         $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
-        $setup->expects($this->any())->method("getShopId");
+        $setup->expects($this->any())->method("getShopId")->will($this->returnValue(1));
 
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
         $map = array(
-            array('Utilities', $utils),
+            array('Utilities', new Utilities()),
             array('Session', $session),
             array('Setup', $setup)
         );

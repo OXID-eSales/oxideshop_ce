@@ -2,7 +2,6 @@
 
 namespace OxidEsales\EshopProfessional\Migrations;
 
-
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -15,5 +14,10 @@ class Version_pe extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+    }
+
+    public function isTransactional(): bool
+    {
+        return false;
     }
 }

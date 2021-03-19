@@ -57,6 +57,7 @@ class ProjectConfigurationDaoTest extends TestCase
             $this->get('oxid_esales.symfony.file_system')
         );
 
+        $this->expectException(ProjectConfigurationIsEmptyException::class);
         $projectConfigurationDao->getConfiguration();
     }
 

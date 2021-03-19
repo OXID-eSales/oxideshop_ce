@@ -22,16 +22,6 @@ use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Application\Model\User;
 
-/*
-class Unit_oxInputValidatorTest_oxutils extends oxutils
-{
-    public function isValidEmail($sEmail)
-    {
-        return false;
-    }
-}
- */
-
 class InputValidatorTest extends UnitTestCase
 {
     private $_validator = null;

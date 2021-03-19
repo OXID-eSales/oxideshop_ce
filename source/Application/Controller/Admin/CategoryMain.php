@@ -295,7 +295,7 @@ class CategoryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         // null values
-        if ($aReqParams['oxcategories__oxvat'] === '') {
+        if (!isset($aReqParams['oxcategories__oxvat']) || $aReqParams['oxcategories__oxvat'] === '') {
             $aReqParams['oxcategories__oxvat'] = null;
         }
 

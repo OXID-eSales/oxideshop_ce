@@ -566,7 +566,7 @@ class ArticleTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetSqlActiveSnippetIfParentWillBeLoadedOnSpecialItsVariantsSetup()
+    public function testGetSqlActiveSnippetIfParentWillBeLoadedOnSpecialItsVariantssetup(): void
     {
         $sArticleId = '_testArticleId';
         $sShopId = $this->getConfig()->getShopId();
@@ -4441,8 +4441,8 @@ class ArticleTest extends \OxidTestCase
         $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
         $article->load($articleId);
 
-        $attributeId = oxDb::getDB()->getOne("SELECT oxattrid FROM oxobject2attribute WHERE oxobjectid = '?'", array($articleId));
-        $expectedValue = oxDb::getDB()->getOne("SELECT oxvalue_1 FROM oxobject2attribute WHERE oxattrid = '?' AND oxobjectid = '$articleId'", array($attributeId, $articleId));
+        $attributeId = oxDb::getDB()->getOne("SELECT oxattrid FROM oxobject2attribute WHERE oxobjectid = ?", array($articleId));
+        $expectedValue = oxDb::getDB()->getOne("SELECT oxvalue_1 FROM oxobject2attribute WHERE oxattrid = ? AND oxobjectid = ?", array($attributeId, $articleId));
 
         $attributeList = $article->getAttributes();
         $attributeValue = $attributeList[$attributeId]->oxattribute__oxvalue->value;

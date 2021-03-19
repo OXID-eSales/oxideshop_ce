@@ -107,7 +107,7 @@ class ConfigTest extends \OxidTestCase
      */
     public function testIsSsl_specialHandling()
     {
-        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( $aA[0] == "HTTPS" ) { return null; } else { return array( "HTTP_X_FORWARDED_SERVER" => "sslsites.de" ); } }');
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return null; } else { return array( "HTTP_X_FORWARDED_SERVER" => "sslsites.de" ); } }');
 
         $oConfig = $this->getMock(Config::class, array('getConfigParam'), array(), '', false);
         $oConfig->expects($this->never())->method('getConfigParam');
@@ -119,7 +119,7 @@ class ConfigTest extends \OxidTestCase
      */
     public function testIsSsl_notSslMode()
     {
-        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( $aA[0] == "HTTPS" ) { return null; } else { return array(); } }');
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return null; } else { return array(); } }');
 
         $oConfig = $this->getMock(Config::class, array('getConfigParam'));
         $oConfig->expects($this->never())->method('getConfigParam');
@@ -132,7 +132,7 @@ class ConfigTest extends \OxidTestCase
      */
     public function testIsSsl_SslMode_NoSslShopUrl()
     {
-        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
 
         $oConfig = $this->getMock(Config::class, array('getConfigParam'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('sSSLShopURL'))->will($this->returnValue(''));
@@ -146,7 +146,7 @@ class ConfigTest extends \OxidTestCase
      */
     public function testIsSsl_SslMode_WithSslShopUrl()
     {
-        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
 
         $oConfig = $this->getMock(Config::class, array('getConfigParam'));
         $oConfig->expects($this->once())->method('getConfigParam')->with($this->equalTo('sSSLShopURL'))->will($this->returnValue('https://eshop/'));
@@ -160,7 +160,7 @@ class ConfigTest extends \OxidTestCase
      */
     public function testIsSsl_SslMode_WithSslShopUrl_forSubshop()
     {
-        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
 
         $oConfig = $this->getMock(Config::class, array('getConfigParam'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('sSSLShopURL'))->will($this->returnValue(''));
@@ -176,14 +176,14 @@ class ConfigTest extends \OxidTestCase
      */
     public function testIsSsl_SslMode_WithDifferentParams()
     {
-        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return 1; } else { return array(); } }');
 
         $oConfig = $this->getMock(Config::class, array('getConfigParam'));
         $oConfig->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('sSSLShopURL'))->will($this->returnValue('https://eshop'));
         $this->assertTrue($oConfig->isSsl());
 
         oxTestModules::cleanUp();
-        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( $aA[0] == "HTTPS" ) { return "on"; } else { return array(); } }');
+        oxTestModules::addFunction("oxUtilsServer", "getServerVar", '{ if ( isset($aA[0]) && $aA[0] == "HTTPS" ) { return "on"; } else { return array(); } }');
         $this->assertTrue($oConfig->isSsl());
     }
 
@@ -1276,11 +1276,13 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
         $sLangDir = $this->_getOutPath($oConfig) . 'img/';
         $sNoLangDir = $this->_getOutPath($oConfig) . 'img/';
+        $failed = false;
 
         try {
             $this->assertEquals($sLangDir, $oConfig->getImageDir());
             $this->assertEquals($sNoLangDir, $oConfig->getImageDir());
         } catch (Exception $e) {
+            $failed = true;
         }
 
         oxRegistry::getLang()->setTplLanguage();
@@ -1293,7 +1295,7 @@ class ConfigTest extends \OxidTestCase
             rmdir($sD);
         }
 
-        if ($e) {
+        if ($failed) {
             throw $e;
         }
     }
@@ -1728,20 +1730,17 @@ class ConfigTest extends \OxidTestCase
         $oConfig->init();
         //$oConfig->setNonPublicVar( '_iLanguageId', null );
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
-
         $this->setRequestParameter( 'changelang', null );
         $this->setRequestParameter( 'lang', 1 );
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
-
         $this->setRequestParameter( 'changelang', null );
         $this->setRequestParameter( 'lang',       null );
         $this->setRequestParameter( 'tpllanguage', 1 );
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
-
         $this->setRequestParameter( 'changelang',  null );
         $this->setRequestParameter( 'lang',        null );
         $this->setRequestParameter( 'tpllanguage', null );
@@ -1749,7 +1748,6 @@ class ConfigTest extends \OxidTestCase
         $oConfig = oxNew('oxConfig');
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
-
         $this->setRequestParameter( 'changelang',  null );
         $this->setRequestParameter( 'lang',        null );
         $this->setRequestParameter( 'tpllanguage', null );
@@ -1774,7 +1772,6 @@ class ConfigTest extends \OxidTestCase
         $oConfig->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
         $oConfig->init();
         $oConfig->setConfigParam( 'aLanguageURLs', array( 1 => 'xxx' ) );
-
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
     }
     */

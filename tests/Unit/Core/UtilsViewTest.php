@@ -108,9 +108,9 @@ class UtilsViewTest extends \OxidTestCase
 
         $utilsView = oxNew(UtilsView::class);
         $utilsView->setAdminMode(true);
-        
+
         $result = $utilsView->getTemplateDirs();
-        
+
         $this->assertArraySubset($result, $dirs);
     }
 
@@ -159,7 +159,7 @@ class UtilsViewTest extends \OxidTestCase
         $utilsView->setTemplateDir("testDir1");
 
         $result = $utilsView->getTemplateDirs();
-        
+
         $this->assertArraySubset($result, $aDirs);
     }
 
@@ -387,7 +387,7 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($varValue, $smarty->$varName, $varName);
         }
 
-        $this->assertArraySubset($templateDirs, $smarty->template_dir);
+        $this->assertArraySubsetOxid($templateDirs, $smarty->template_dir);
     }
 
     /**
@@ -478,7 +478,7 @@ class UtilsViewTest extends \OxidTestCase
             $this->assertEquals($sVarValue, $oSmarty->$sVarName, $sVarName);
         }
 
-        $this->assertArraySubset($aTemplatesDir, $oSmarty->template_dir);
+        $this->assertArraySubsetOxid($aTemplatesDir, $oSmarty->template_dir);
     }
 
     // non demo mode

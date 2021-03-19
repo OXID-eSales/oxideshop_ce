@@ -1337,7 +1337,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return array
      */
-    public function getLanguageIds($iShopId = null)
+    public function getLanguageIds($iShopId = 0)
     {
         if (empty($iShopId) || $iShopId == Registry::getConfig()->getShopId()) {
             $aLanguages = $this->getActiveShopLanguageIds();
@@ -1362,7 +1362,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
         if (is_array($aLangParams)) {
             $aIds = $this->_getLanguageIdsFromLanguageParamsArray($aLangParams);
         } else {
-            $aIds = $this->_getLanguageIdsFromLanguagesArray($oConfig->getConfigParam('aLanguages'));
+            $languages = $oConfig->getConfigParam('aLanguages');
+            $aIds = $this->_getLanguageIdsFromLanguagesArray(
+                is_array($languages) ? $languages : []
+            );
         }
 
         return $aIds;
@@ -1469,6 +1472,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function _getLanguageIdsFromLanguagesArray($aLanguages) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return array_keys($aLanguages);
+        return is_array($aLanguages) ? array_keys($aLanguages) : [];
     }
 }

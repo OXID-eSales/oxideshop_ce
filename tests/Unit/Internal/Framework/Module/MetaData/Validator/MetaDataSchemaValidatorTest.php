@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\Unsup
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataSchemataProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataValueTypeException;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataSchemaValidator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\UnsupportedMetaDataVersionException;
 use PHPUnit\Framework\TestCase;
@@ -31,6 +33,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataVersionException::class);
         $validator->validate('path/to/metadata.php', '1.2', $metaDataToValidate);
     }
 
@@ -145,6 +148,7 @@ class MetaDataSchemaValidatorTest extends TestCase
         $metaDataSchemata = new MetaDataSchemataProvider($this->metaDataSchemata);
         $validator = new MetaDataSchemaValidator($metaDataSchemata);
 
+        $this->expectException(UnsupportedMetaDataValueTypeException::class);
         $validator->validate('path/to/metadata.php', '2.0', $metaDataToValidate);
     }
 

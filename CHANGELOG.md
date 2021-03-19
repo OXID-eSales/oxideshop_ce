@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Change default value for `oxpublic` field in `oxuserbaskets` table from `1` to `0`
 - Don't copy module files to the `source/modules` directory
 - Copy module assets to the shop out directory
+- Updated a list of bots (aRobots array in config) [PR-853](https://github.com/OXID-eSales/oxideshop_ce/pull/853)
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

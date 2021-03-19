@@ -70,7 +70,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->setPrefix('oxid');

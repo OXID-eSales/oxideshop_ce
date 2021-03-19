@@ -19,7 +19,7 @@ class VoucherseriegroupsajaxTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

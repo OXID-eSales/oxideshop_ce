@@ -18,7 +18,7 @@ class Object2groupTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $oNews = oxNew('oxnews');

@@ -62,7 +62,7 @@ class DatabaseTest extends \OxidTestCase
     /**
      * Resets logged queries.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->loggedQueries = new StdClass();

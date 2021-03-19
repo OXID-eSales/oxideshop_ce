@@ -29,7 +29,7 @@ class UtilitiesTest extends \OxidTestCase
     /**
      * Test setup
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         // backup..
         $this->_sPathTranslated = isset($_SERVER['PATH_TRANSLATED']) ? $_SERVER['PATH_TRANSLATED'] : null;

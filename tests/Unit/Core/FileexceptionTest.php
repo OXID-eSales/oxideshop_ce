@@ -17,7 +17,7 @@ class FileexceptionTest extends \OxidEsales\TestingLibrary\UnitTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->testObject = oxNew(\OxidEsales\Eshop\Core\Exception\FileException::class, $this->message);

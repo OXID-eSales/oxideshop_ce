@@ -48,7 +48,7 @@ class UtfTest extends \OxidTestCase
     /**
      * Sets up test
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -17,7 +17,7 @@ class LinksTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oxLinks = oxNew("oxlinks", getViewName('oxlinks'));

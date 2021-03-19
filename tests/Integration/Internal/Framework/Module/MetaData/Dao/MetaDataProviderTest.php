@@ -168,7 +168,7 @@ class MetaDataProviderTest extends TestCase
         );
     }
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

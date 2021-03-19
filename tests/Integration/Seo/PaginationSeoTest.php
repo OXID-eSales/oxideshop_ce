@@ -50,7 +50,7 @@ class PaginationSeoTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Sets up test
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

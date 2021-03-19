@@ -36,7 +36,7 @@ class UBaseTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         oxUBaseHelper::resetComponentNames();
 

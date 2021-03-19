@@ -20,7 +20,7 @@ class ModuleConfigurationDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         $this->prepareProjectConfiguration();
 

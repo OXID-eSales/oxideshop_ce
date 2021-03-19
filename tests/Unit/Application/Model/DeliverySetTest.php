@@ -16,7 +16,7 @@ class DeliverySetTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $oDelSet = oxNew('oxdeliveryset');

@@ -28,7 +28,7 @@ class SearchTest extends UnitTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oSearchHandler = oxNew('oxSearch');

@@ -15,7 +15,7 @@ class TranslateLogicTest extends UnitTestCase
     /** @var TranslateFilterLogic */
     private $multiLangFilterLogic;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->multiLangFilterLogic = new TranslateFilterLogic();

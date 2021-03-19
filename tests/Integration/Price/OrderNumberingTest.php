@@ -30,7 +30,7 @@ class OrderNumberingTest extends BaseTestCase
      *
      * @see OxidTestCase::setUp()
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         oxDb::getDb()->execute('DELETE FROM `oxuser` WHERE oxusername = \'admin\'');

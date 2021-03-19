@@ -28,7 +28,7 @@ abstract class BaseModuleTestCase extends \OxidEsales\TestingLibrary\UnitTestCas
     /**
      * Ensure a clean environment before each test
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

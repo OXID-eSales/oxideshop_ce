@@ -28,7 +28,7 @@ class PriceTest extends BaseTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->resetDatabase();

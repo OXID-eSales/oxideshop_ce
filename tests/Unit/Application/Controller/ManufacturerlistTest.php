@@ -20,7 +20,7 @@ class ManufacturerlistTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         oxTestModules::addFunction('oxSeoEncoderManufacturer', '_saveToDb', '{return null;}');

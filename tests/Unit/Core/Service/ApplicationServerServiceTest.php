@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
  */
 class ApplicationServerServiceTest extends \OxidEsales\TestingLibrary\UnitTestCase
 {
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

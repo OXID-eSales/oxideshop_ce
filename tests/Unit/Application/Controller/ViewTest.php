@@ -59,7 +59,7 @@ class ViewTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->_oView = oxNew('oxView');

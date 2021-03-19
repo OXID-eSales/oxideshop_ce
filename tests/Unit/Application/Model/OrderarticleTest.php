@@ -30,7 +30,7 @@ class OrderarticleTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

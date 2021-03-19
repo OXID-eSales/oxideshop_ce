@@ -37,7 +37,7 @@ class GetManufacturerSeoTest extends UnitTestCase
     /**
      * Sets up test
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

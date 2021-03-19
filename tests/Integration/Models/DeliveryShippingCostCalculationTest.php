@@ -53,7 +53,7 @@ class DeliveryShippingCostCalculationTest extends \OxidTestCase
     /**
      * Fixture setUp.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

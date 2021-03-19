@@ -49,7 +49,7 @@ class VendorTest extends \OxidTestCase
     /**
      * Test setup
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         // test require icon for vendors
         if (in_array($this->getName(), ['testGetIconUrlNewPath', 'testGetIconUrl'])) {

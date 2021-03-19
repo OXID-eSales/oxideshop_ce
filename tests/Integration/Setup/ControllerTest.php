@@ -31,7 +31,7 @@ class ControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * The standard set up method.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

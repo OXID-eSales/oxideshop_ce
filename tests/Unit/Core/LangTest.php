@@ -18,7 +18,7 @@ class LangTest extends \OxidTestCase
     /**
      * @inheritdoc
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

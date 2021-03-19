@@ -40,7 +40,7 @@ class PriceAlarmMainTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         $this->tearDown();
         parent::setUp();

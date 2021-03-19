@@ -24,7 +24,7 @@ class Argon2IPasswordHashServiceTest extends TestCase
      * due to skipTestIfArgon2IAvailable(). As a fast solution we skip all
      * tests of this class until Argon2I will be available.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         $this->markTestSkipped("Argon2I not available currently on PHP 7.2.");
     }

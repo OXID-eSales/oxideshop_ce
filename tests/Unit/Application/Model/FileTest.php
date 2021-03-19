@@ -15,7 +15,7 @@ class FileTest extends \OxidTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         $oDb = oxDb::getDb();
         $sQ = "insert into oxfiles (oxid, OXARTID, OXFILENAME, OXSTOREHASH) values ('testId1','_testProd1','testFile','testFileH')";

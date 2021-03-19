@@ -34,7 +34,7 @@ class _oxI18n extends \oxI18n
 
 class I18ntest extends \OxidTestCase
 {
-    protected function setup(): void
+    protected function setUp(): void
     {
         if ($this->getName() == "testMultilangObjectDeletion") {
             $this->_insertTestLanguage();

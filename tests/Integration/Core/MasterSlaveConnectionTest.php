@@ -23,7 +23,7 @@ class MasterSlaveConnectionTest extends UnitTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

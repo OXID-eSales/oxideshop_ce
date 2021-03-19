@@ -13,7 +13,7 @@ use \oxRegistry;
 
 class EmosadapterTest extends \OxidTestCase
 {
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         oxDb::getDb()->execute("delete from oxuserbasketitems");

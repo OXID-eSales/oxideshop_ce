@@ -17,7 +17,7 @@ class CompareControllerTest extends \OxidEsales\TestingLibrary\UnitTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setup(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $myDB = DatabaseProvider::getDb();

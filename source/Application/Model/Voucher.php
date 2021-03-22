@@ -78,7 +78,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
             //voucher timeout for 3 hours
             if ($blCheckavalability) {
                 $iTime = time() - $this->_getVoucherTimeout();
-                $sQ .= " and {$sViewName}.oxreserved < '{$iTime}' ";
+                $sQ .= " and {$sViewName}.oxreserved < '{$iTime}' order by {$sViewName}.oxreserved asc ";
             }
 
             $sQ .= " limit 1 FOR UPDATE";

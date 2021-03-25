@@ -204,7 +204,9 @@ return [
     'news_mall'                           => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsMall',
     'news_text'                           => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsText',
     'newsletter_list'                     => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsletterList',
+    // @deprecated will be removed in next major version
     'newsletter_main'                     => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsletterMain',
+    // END deprecated
     'newsletter_plain'                    => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsletterPlain',
     'newsletter_preview'                  => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsletterPreview',
     'newsletter_selection'                => 'OxidEsales\\Eshop\\Application\\Controller\\Admin\\NewsletterSelection',

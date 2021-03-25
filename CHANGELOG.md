@@ -23,7 +23,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.7.1] - 2021-04-13
 
 ### Fixed
-- Fix order remark create date reset during review saving in admin with German time format [#0007217](https://bugs.oxid-esales.com/view.php?id=7217) [PR-857](https://github.com/OXID-eSales/oxideshop_ce/pull/857) 
+- Fix order remark create date reset during review saving in admin with German time format [#0007217](https://bugs.oxid-esales.com/view.php?id=7217) [PR-857](https://github.com/OXID-eSales/oxideshop_ce/pull/857)
+
+### Deprecated
+- Management of Newsletter emails:
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterList`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterMain::save()`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPlain`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPreview`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelection`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelectionAjax`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSend`
+    - `OxidEsales\EshopCommunity\Application\Controller\AccountNewsletterController::_blNewsletter`
+    - `OxidEsales\EshopCommunity\Application\Model\Newsletter`
+    - `OxidEsales\EshopCommunity\Core\Email::sendNewsletterMail()`
+    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterMain`
+    - Language constants
+        - `NEWSLETTER_DONE_NEWSSEND`
+        - `NEWSLETTER_DONE_GOTONEWSLETTE`
+        - `NEWSLETTER_DONE_TITLE`
+        - `NEWSLETTER_SUBJECT`
+        - `NEWSLETTER_MAIN_MODEL`
+        - `NEWSLETTER_PLAIN_TEXT`
+        - `NEWSLETTER_PREVIEW_PLAINTEXT`
+        - `NEWSLETTER_PREVIEW_HTML`
+        - `NEWSLETTER_SELECTION_SELMAILRESAVER`
+        - `tbclnewsletter_plain`
+        - `tbclnewsletter_preview`
+        - `tbclnewsletter_selection`
+        - `tbclnewsletter_main`
 
 ## [6.7.0] - 2021-03-25
 
@@ -41,30 +69,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Console commands for module configuration management:
     - `oe:module:install-configuration`
     - `oe:module:uninstall-configuration`
-- Management of Newsletter emails:
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterList`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterMain::save()`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPlain`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPreview`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelection`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSelectionAjax`
-    - `OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterSend`
-    - `OxidEsales\EshopCommunity\Application\Controller\AccountNewsletterController::_blNewsletter`
-    - `OxidEsales\EshopCommunity\Application\Model\Newsletter`
-    - `OxidEsales\EshopCommunity\Core\Email::sendNewsletterMail()`
-    - Language constants
-        - `NEWSLETTER_DONE_NEWSSEND`
-        - `NEWSLETTER_DONE_GOTONEWSLETTE`
-        - `NEWSLETTER_DONE_TITLE`
-        - `NEWSLETTER_SUBJECT`
-        - `NEWSLETTER_MAIN_MODEL`
-        - `NEWSLETTER_PLAIN_TEXT`
-        - `NEWSLETTER_PREVIEW_PLAINTEXT`
-        - `NEWSLETTER_PREVIEW_HTML`
-        - `NEWSLETTER_SELECTION_SELMAILRESAVER`
-        - `tbclnewsletter_plain`
-        - `tbclnewsletter_preview`
-        - `tbclnewsletter_selection`
 
 
 ### Fixed

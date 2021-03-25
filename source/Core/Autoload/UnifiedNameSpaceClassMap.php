@@ -1046,7 +1046,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterMain::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Controller\Admin\NewsletterPlain'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\NewsletterPlain::class,

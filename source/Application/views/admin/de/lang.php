@@ -1705,8 +1705,8 @@ $aLang = [
     'tbclmanufacturer_seo'     => 'SEO',
     'tbclorder_iPayment'       => 'IPayment',
     //  newsletter_list',
-    'tbclnewsletter_main'      => 'HTML',
     // @deprecated Functionality for Newsletter management will be removed.
+    'tbclnewsletter_main'      => 'HTML',
     'tbclnewsletter_plain'     => 'Text',
     'tbclnewsletter_preview'   => 'Vorschau',
     'tbclnewsletter_selection' => 'Versenden',

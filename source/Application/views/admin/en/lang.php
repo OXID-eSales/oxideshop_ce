@@ -1603,8 +1603,8 @@ $aLang = [
     /* tabs */
     'tbclorder_iPayment'       => 'IPayment',
     // newsletter_list',
-    'tbclnewsletter_main'      => 'HTML',
     // @deprecated Functionality for Newsletter management will be removed.
+    'tbclnewsletter_main'      => 'HTML',
     'tbclnewsletter_plain'     => 'TEXT',
     'tbclnewsletter_preview'   => 'Preview',
     'tbclnewsletter_selection' => 'Selection',

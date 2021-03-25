@@ -66,7 +66,9 @@ class ShopControllerMapProvider implements \OxidEsales\Eshop\Core\Contract\Contr
         'news_main_ajax'                       => \OxidEsales\Eshop\Application\Controller\Admin\NewsMainAjax::class,
         'news_text'                            => \OxidEsales\Eshop\Application\Controller\Admin\NewsText::class,
         'newsletter_list'                      => \OxidEsales\Eshop\Application\Controller\Admin\NewsletterList::class,
+        // @deprecated will be removed in next major version
         'newsletter_main'                      => \OxidEsales\Eshop\Application\Controller\Admin\NewsletterMain::class,
+        // END deprecated
         'newsletter_plain'                     => \OxidEsales\Eshop\Application\Controller\Admin\NewsletterPlain::class,
         'newsletter_preview'                   => \OxidEsales\Eshop\Application\Controller\Admin\NewsletterPreview::class,
         'newsletter_selection'                 => \OxidEsales\Eshop\Application\Controller\Admin\NewsletterSelection::class,

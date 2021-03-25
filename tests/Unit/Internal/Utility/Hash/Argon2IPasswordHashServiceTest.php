@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Utility\Hash\Service;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\Argon2IPasswordHashService;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface;
+use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -53,24 +54,6 @@ class Argon2IPasswordHashServiceTest extends TestCase
         $hash_2 = $passwordHashService->hash($password);
 
         $this->assertNotSame($hash_1, $hash_2);
-    }
-
-    /**
-     * Invalid values as a memory cost value of 2^32 + 1 can cause the method hash to fail.
-     */
-    public function testHashThrowsExceptionOnInvalidSettings()
-    {
-        $this->expectWarning(\PHPUnit\Framework\Error\Warning::class);
-        $passwordPolicyMock = $this->getPasswordPolicyMock();
-
-        $passwordHashService = new Argon2IPasswordHashService(
-            $passwordPolicyMock,
-            1 << 32, // The value 2^32 is out of range and will produce a PHP Warning.
-            PASSWORD_ARGON2_DEFAULT_TIME_COST,
-            PASSWORD_ARGON2_DEFAULT_THREADS
-        );
-
-        $passwordHashService->hash('secret');
     }
 
     public function testPasswordNeedsRehashReturnsTrueOnChangedAlgorithm()

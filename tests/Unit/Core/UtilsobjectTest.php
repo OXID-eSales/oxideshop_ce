@@ -7,17 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use \oxarticle;
+use oemodulenameoxorder_parent;
+use oxAttribute;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\UtilsObject;
-use \oxNewDummyUserModule_parent;
-use \oxNewDummyUserModule2_parent;
-use \oemodulenameoxorder_parent;
-use \oxAttribute;
-use OxidEsales\Eshop\Core\Registry;
-use oxUtilsObject;
-use \oxTestModules;
+use oxNewDummyUserModule2_parent;
+use oxNewDummyUserModule_parent;
 use Psr\Log\Test\TestLogger;
 
 class modOxUtilsObject_oxUtilsObject extends \oxUtilsObject
@@ -116,12 +113,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testOxNewClassExtendingWhenClassesDoesNotExists()
     {
-        /**
-         * Real error handling on missing files is disabled for the tests, but when the shop tries to include that not
-         * existing file we expect an error to be thrown
-         */
-        $this->expectWarning();
-
+        $this->expectException(SystemComponentException::class);
         $structure = array(
             'modules' => array(
                 'oxNewDummyModule.php' => '<?php class oxNewDummyModule {}',

@@ -902,6 +902,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testAssignWithoutShopId()
     {
+        $oDB = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
         $oBase = new _oxBase();
         $oBase->init("oxactions");
         $oBase->oxactions__oxid = new oxField("oxtopstart", oxField::T_RAW);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
@@ -12,8 +13,8 @@ use Exception;
 use oxDb;
 use OxidEsales\EshopCommunity\Setup\Database;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
+use OxidEsales\EshopCommunity\Setup\Utilities;
 use PDO;
-use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject as Mock;
 use StdClass;
 

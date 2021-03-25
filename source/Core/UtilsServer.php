@@ -7,8 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 
 /**
  * Server data manipulation class

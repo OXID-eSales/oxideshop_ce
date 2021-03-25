@@ -21,7 +21,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Example dist files for translations in Application/translations folder [PR-826](https://github.com/OXID-eSales/oxideshop_ce/pull/826)
 - Support for single language map file in translations directory [PR-449](https://github.com/OXID-eSales/oxideshop_ce/pull/449).
 - Setting tracking URL per Shipping Method
-- Support PHP 8.0
 
 ### Changed
 - Source/Application/views/admin/tpl/shop_license.tpl
@@ -49,7 +48,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\ViewConfig::getConfig`
 
 ### Removed
-- Support for PHP v7.1, v7.2
 - Support for MySQL v5.5, v5.6
 - Resetting the PHP error reporting level in the ShopControl class [PR-728](https://github.com/OXID-eSales/oxideshop_ce/pull/728)
 - Database encoding:
@@ -291,8 +289,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - [PR-825](https://github.com/OXID-eSales/oxideshop_ce/pull/825)
     - [PR-834](https://github.com/OXID-eSales/oxideshop_ce/pull/834)
     - [PR-842](https://github.com/OXID-eSales/oxideshop_ce/pull/842)
-    
-### Security
+
+## [6.8.0] - Unreleased
+
+### Added
+- Support PHP 8.0
+
+### Removed
+- Support PHP 7.1 and 7.2
 
 ## [6.7.0] - 2021-03-25
 
@@ -1304,7 +1308,8 @@ See
 - [OXID eShop v6.0.0 Beta1: Overview of Changes](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-overview-of-changes.html)
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
-[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/b-6.3.x...master
+[7.0.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...master
+[6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.0...v6.8.0
 [6.7.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...v6.7.0
 [6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.6.0
 [6.5.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.5...v6.5.6

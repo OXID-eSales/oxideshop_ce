@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.7.0] - Unreleased
+## [6.7.0] - 2021-03-25
+
+### Added
+- OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ShopModuleCacheService
 
 ### Added
 - Support PHP 8.0
@@ -29,6 +32,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Remove wrong docblock on OrderArticle model assign method [PR-850](https://github.com/OXID-eSales/oxideshop_ce/pull/850)
 - Disable browser autocomplete for user passwords in admin interface [PR-851](https://github.com/OXID-eSales/oxideshop_ce/pull/851)
 - Do not reuse already initialized widget control on widget loading [PR-757](https://github.com/OXID-eSales/oxideshop_ce/pull/757)
+- Module template cache is not cleared on deactivation
+- Wrong voucher calculation - discount sharing between user's baskets [#0006854](https://bugs.oxid-esales.com/view.php?id=6854)
 
 ### Removed
 - Support PHP 7.1 and 7.2

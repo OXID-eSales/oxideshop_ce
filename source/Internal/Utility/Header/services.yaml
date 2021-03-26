@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Utility\Header\HeaderGeneratorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Utility\Header\CsvHeaderGenerator
+
+  OxidEsales\EshopCommunity\Internal\Utility\Header\Bridge\HeaderGeneratorBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Utility\Header\Bridge\CsvHeaderGeneratorBridge
+    public: true

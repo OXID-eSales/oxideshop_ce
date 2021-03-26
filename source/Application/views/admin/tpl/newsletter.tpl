@@ -6,7 +6,7 @@
     [{assign var="readonly" value=""}]
     [{/if}]
 
-<form name="export_recipients" id="export_recipients" action="[{$oViewConf->getSelfLink()}]" method="post"
+<form name="export_recipients" id="export_recipients" action="[{$oViewConf->getSelfLink()}]" method="get"
       onSubmit="copyLongDesc( 'oxnewsletter__oxtemplate' );">
     [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="cl" value="admin_newsletter">

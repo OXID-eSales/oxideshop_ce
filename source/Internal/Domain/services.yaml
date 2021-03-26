@@ -3,3 +3,4 @@ imports:
     - { resource: Authentication/services.yaml }
     - { resource: Contact/services.yaml }
     - { resource: Admin/services.yaml }
+    - { resource: Newsletter/services.yaml }

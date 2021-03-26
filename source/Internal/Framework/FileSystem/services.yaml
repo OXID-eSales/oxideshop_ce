@@ -9,10 +9,3 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\FileGeneratorBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\CsvFileGeneratorBridge
     public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\HeaderGenerator\HeaderGeneratorInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\HeaderGenerator\CsvHeaderGenerator
-
-  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\HeaderGenerator\Bridge\HeaderGeneratorBridgeInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\HeaderGenerator\Bridge\CsvHeaderGeneratorBridge
-    public: true

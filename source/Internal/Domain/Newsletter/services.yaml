@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipientsDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipientsDao
+
+  OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Bridge\NewsletterRecipientsDaoBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Bridge\NewsletterRecipientsDaoBridge
+    public: true

@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\FileSystem\HeaderGenerator;
+namespace OxidEsales\EshopCommunity\Internal\Utility\Header;
 
 interface HeaderGeneratorInterface
 {

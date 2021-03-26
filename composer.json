@@ -34,7 +34,7 @@
         "oxid-esales/oxideshop-facts": "^2.3.1"
     },
     "require-dev": {
-        "oxid-esales/testing-library": "dev-b-6.2.x",
+        "oxid-esales/testing-library": "^v7.3.0",
         "incenteev/composer-parameter-handler": "~v2.0",
         "oxid-esales/oxideshop-ide-helper": "^4.0",
         "oxid-esales/azure-theme": "^v1.4.1",

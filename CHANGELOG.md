@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.7.0] - 2021-03-25
 
-### Added
-- OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ShopModuleCacheService
-
 ### Deprecated
 - Support for Module source-directory and target-directory in composer.json
     - Method:

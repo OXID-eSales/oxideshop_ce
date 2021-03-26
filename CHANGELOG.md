@@ -730,13 +730,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - Was `HELP_ENERAL_NAME` changed to `HELP_GENERAL_NAME`
 - Drop support for PHP 7.0
 - Use user from Order::validateOrder method in validatePayment as well [PR-706](https://github.com/OXID-eSales/oxideshop_ce/pull/706)
-- Methods in the following classes return information based on the project configuration. [See documentation about module installation](https://docs.oxid-esales.com/developer/en/6.2/modules/installation/)
+- Methods in the following classes return information based on the project configuration. [See documentation about module installation](https://docs.oxid-esales.com/developer/en/6.2/development/modules_components_themes/module/installation_setup/)
     - `\OxidEsales\EshopCommunity\source\Module\Core\Module`
     - `\OxidEsales\EshopCommunity\source\Module\Core\ModuleList`
 - The variable `aDisabledModules` in database table `oxconfig` isn't used anymore.
 - The variable `aModulePaths` in database table `oxconfig`: Module path will be added on module activation and removed on module deactivation.
 - The classes in the folder `Core/Module/` now mainly use the project configuration as a basis for information.
-- File `metadata.php` in a module: the key `id` is mandatory and custom php code won't be executed any more. [See Metadata documentation](https://docs.oxid-esales.com/developer/en/6.2/modules/skeleton/metadataphp/)
+- File `metadata.php` in a module: the key `id` is mandatory and custom php code won't be executed any more. [See Metadata documentation](https://docs.oxid-esales.com/developer/en/6.2/development/modules_components_themes/module/skeleton/metadataphp/) 
 - Running tests on travis against all php versions [PR-700](https://github.com/OXID-eSales/oxideshop_ce/pull/700)
 - Travis runs phpcs and tests scripts with calling the php directly, not relying on script shebang anymore.
 - Updated Yui library components to version 2.9

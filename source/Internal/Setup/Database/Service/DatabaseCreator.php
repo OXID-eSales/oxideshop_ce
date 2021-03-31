@@ -41,8 +41,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
         if ($this->isDatabaseExist($name)) {
             throw new DatabaseExistsException();
         }
-
-        $this->dbConnection->exec('CREATE DATABASE ' . $name . ' CHARACTER SET utf8 COLLATE utf8_general_ci;');
+        $this->dbConnection->exec('CREATE DATABASE `' . $name . '` CHARACTER SET utf8 COLLATE utf8_general_ci;');
     }
 
     /**

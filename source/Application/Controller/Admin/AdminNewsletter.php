@@ -78,25 +78,15 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $result = [];
 
         foreach ($newsletterRecipient as $index => $value) {
-            $result[$index][$value::SALUTATION] = $this->sanitizeSemicolon($value->getSalutation());
-            $result[$index][$value::FIRST_NAME] = $this->sanitizeSemicolon($value->getFistName());
-            $result[$index][$value::LAST_NAME] = $this->sanitizeSemicolon($value->getLastName());
-            $result[$index][$value::EMAIL] = $this->sanitizeSemicolon($value->getEmail());
+            $result[$index][$value::SALUTATION] = $value->getSalutation();
+            $result[$index][$value::FIRST_NAME] = $value->getFistName();
+            $result[$index][$value::LAST_NAME] = $value->getLastName();
+            $result[$index][$value::EMAIL] = $value->getEmail();
             $result[$index][$value::OPT_IN_STATE] = $value->getOtpInState();
-            $result[$index][$value::COUNTRY] = $this->sanitizeSemicolon($value->getCountry());
+            $result[$index][$value::COUNTRY] = $value->getCountry();
             $result[$index][$value::ASSIGNED_USER_GROUPS] = $value->getUserGroups();
         }
 
         return $result;
-    }
-
-    /**
-     * @param string $str
-     *
-     * @return string
-     */
-    private function sanitizeSemicolon(string $str): string
-    {
-        return trim($str, ";");
     }
 }

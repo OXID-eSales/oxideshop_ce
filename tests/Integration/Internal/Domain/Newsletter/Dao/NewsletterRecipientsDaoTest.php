@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Newsletter\Dao;
 
-use Doctrine\DBAL\Exception;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipientsDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataObject\NewsletterRecipient;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
@@ -67,7 +66,6 @@ class NewsletterRecipientsDaoTest extends TestCase
             ],
             $recipientsList
         );
-
     }
 
     /**
@@ -79,7 +77,7 @@ class NewsletterRecipientsDaoTest extends TestCase
     {
         $result = [];
 
-        foreach ($newsletterRecipient as $index=>$value) {
+        foreach ($newsletterRecipient as $index => $value) {
             $result[$index][$value::SALUTATION] = $value->getSalutation();
             $result[$index][$value::FIRST_NAME] = $value->getFistName();
             $result[$index][$value::LAST_NAME] = $value->getLastName();
@@ -95,8 +93,6 @@ class NewsletterRecipientsDaoTest extends TestCase
     private function prepareTestData(): void
     {
         $shopAdapter = $this->get(ShopAdapterInterface::class);
-
-        // add test User
 
         $testUserId = 'test_user';
 
@@ -118,8 +114,6 @@ class NewsletterRecipientsDaoTest extends TestCase
 
         $queryBuilder->execute();
 
-        // add Test groups
-
         $queryBuilder
             ->insert('oxgroups')
             ->values([
@@ -134,7 +128,6 @@ class NewsletterRecipientsDaoTest extends TestCase
 
         $queryBuilder->execute();
 
-
         $queryBuilder
             ->insert('oxgroups')
             ->values([
@@ -148,9 +141,6 @@ class NewsletterRecipientsDaoTest extends TestCase
             ]);
 
         $queryBuilder->execute();
-
-        // attach test groups to test user
-
 
         $queryBuilder
             ->insert('oxobject2group')
@@ -168,7 +158,6 @@ class NewsletterRecipientsDaoTest extends TestCase
 
         $queryBuilder->execute();
 
-
         $queryBuilder
             ->insert('oxobject2group')
             ->values([
@@ -185,15 +174,10 @@ class NewsletterRecipientsDaoTest extends TestCase
 
         $queryBuilder->execute();
 
-
-        // add oxnewssubscribed data
-
-
         $queryBuilder
             ->delete('oxnewssubscribed');
 
         $queryBuilder->execute();
-
 
         $queryBuilder
             ->insert('oxnewssubscribed')
@@ -219,6 +203,5 @@ class NewsletterRecipientsDaoTest extends TestCase
             ]);
 
         $queryBuilder->execute();
-
     }
 }

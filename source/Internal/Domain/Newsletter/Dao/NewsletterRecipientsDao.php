@@ -43,7 +43,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
             $recipient->setFistName($row['Firstname']);
             $recipient->setLastName($row['Lastname']);
             $recipient->setEmail($row['Email']);
-            $recipient->setOtpInState($this->getOptInstate($row['OptInState']));
+            $recipient->setOtpInState($row['OptInState']);
             $recipient->setCountry($row['Country']);
             $groups = implode(",", $this->getUserGroups($row['UserId']));
             $recipient->setUserGroups($groups);
@@ -102,17 +102,5 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
             ->setParameters(['userId' => $userId]);
 
         return $queryBuilder->execute()->fetchFirstColumn();
-    }
-
-    private function getOptInstate(string $state): string
-    {
-        switch ($state) {
-            case "1":
-                return "subscribed";
-            case "2":
-                return "not confirmed";
-            default:
-                return "not subscribed";
-        }
     }
 }

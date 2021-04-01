@@ -54,6 +54,16 @@ class NewsletterRecipient
     public const COUNTRY = 'Country';
     public const ASSIGNED_USER_GROUPS = 'Assigned user groups';
 
+    private const OPT_IN_STATE_SUBSCRIBED = 'subscribed';
+    private const OPT_IN_STATE_NOT_CONFIRMED = 'not confirmed';
+    private const OPT_IN_STATE_NOT_SUBSCRIBED = 'not subscribed';
+
+    private $otpInStateList = [
+        '0' => self::OPT_IN_STATE_NOT_SUBSCRIBED,
+        '1' => self::OPT_IN_STATE_SUBSCRIBED,
+        '2' => self::OPT_IN_STATE_NOT_CONFIRMED
+    ];
+
     /**
      * @return string
      */
@@ -149,9 +159,20 @@ class NewsletterRecipient
      */
     public function setOtpInState(string $otpInState): NewsletterRecipient
     {
-        $this->otpInState = $otpInState;
+        $this->otpInState = self::OPT_IN_STATE_NOT_SUBSCRIBED;
+        if (array_key_exists($otpInState, $this->otpInStateList)) {
+            $this->otpInState = $this->otpInStateList[$otpInState];
+        }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOtpInStateAsNumber(): string
+    {
+        return array_search($this->otpInState, $this->otpInStateList);
     }
 
     /**

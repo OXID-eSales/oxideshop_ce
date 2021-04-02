@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support PHP 7.1 and 7.2
 
+## [6.7.1] - Unreleased
+
+### Fixed
+- Fix order remark create date reset during review saving in admin with German time format [#0007217](https://bugs.oxid-esales.com/view.php?id=7217) [PR-857](https://github.com/OXID-eSales/oxideshop_ce/pull/857) 
+
 ## [6.7.0] - 2021-03-25
 
 ### Deprecated
@@ -1023,7 +1028,7 @@ See
 - [OXID eShop v6.0.0 Beta1: Detailed Code Changelog](https://oxidforge.org/en/oxid-eshop-v6-0-0-beta1-detailed-code-changelog.html)
 
 [6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.0...v6.8.0
-[6.7.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...v6.7.0
+[6.7.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.0...b-6.2.x
 [6.7.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...v6.7.0
 [6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.6.0
 [6.5.6]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.5...v6.5.6

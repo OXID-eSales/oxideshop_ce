@@ -49,7 +49,9 @@ class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($blRet = parent::load($oxID)) {
             // convert date's to international format
-            $this->oxremark__oxcreate = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxremark__oxcreate->value), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->assign([
+                'oxcreate'    => \OxidEsales\Eshop\Core\Registry::getUtilsDate()->formatDBDate($this->oxremark__oxcreate->value)
+            ]);
         }
 
         return $blRet;

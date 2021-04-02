@@ -2542,6 +2542,12 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
+    'OxidEsales\Eshop\Core\Exception\LanguageNotFoundException'                          => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\Exception\LanguageNotFoundException::class,
+        'isAbstract'       => false,
+        'isInterface'      => false,
+        'isDeprecated'     => false
+    ],
     'OxidEsales\Eshop\Core\Exception\LanguageException'                          => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Exception\LanguageException::class,
         'isAbstract'       => false,

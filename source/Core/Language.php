@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use stdClass;
@@ -66,7 +67,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @var array
      */
-    protected $_aLangAbbr = null;
+    protected $_aLangAbbr = [];
 
     /**
      * registered additional language filesets to load
@@ -368,16 +369,23 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     public function getLanguageAbbr($iLanguage = null)
     {
-        if ($this->_aLangAbbr === null) {
+        if ($this->_aLangAbbr === []) {
             $this->_aLangAbbr = $this->getLanguageIds();
         }
 
         $iLanguage = isset($iLanguage) ? (int) $iLanguage : $this->getBaseLanguage();
         if (isset($this->_aLangAbbr[$iLanguage])) {
-            $iLanguage = $this->_aLangAbbr[$iLanguage];
+            return $this->_aLangAbbr[$iLanguage];
         }
 
-        return $iLanguage;
+        throw new LanguageNotFoundException(
+            'Could not find language abbreviation for language-id ' . $iLanguage . '! '
+            . (
+                count($this->_aLangAbbr) === 0
+                ? 'No languages available'
+                : 'Available languages: ' . implode(', ', $this->_aLangAbbr)
+            )
+        );
     }
 
     /**

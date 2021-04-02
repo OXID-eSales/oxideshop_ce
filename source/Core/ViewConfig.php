@@ -889,9 +889,13 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActLanguageId()
     {
-        if (($sValue = $this->getViewConfigParam('lang')) === null) {
-            $iLang = Registry::getConfig()->getRequestParameter('lang');
-            $sValue = ($iLang !== null) ? $iLang : \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $sValue = $this->getViewConfigParam('lang');
+        if ($sValue === null) {
+            $languageService = \OxidEsales\Eshop\Core\Registry::getLang();
+            $request = \OxidEsales\Eshop\Core\Registry::getRequest();
+
+            $iLang = $request->getRequestParameter('lang');
+            $sValue = ($iLang !== null) ? $languageService->validateLanguage($iLang) : $languageService->getBaseLanguage();
             $this->setViewConfigParam('lang', $sValue);
         }
 

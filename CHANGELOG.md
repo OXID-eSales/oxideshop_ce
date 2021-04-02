@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Don't copy module files to the `source/modules` directory
 - Copy module assets to the shop out directory
 - Updated a list of bots (aRobots array in config) [PR-853](https://github.com/OXID-eSales/oxideshop_ce/pull/853)
+- Throw exception in getLanguageAbbr method if no abbreviation is available by specific id [PR-802](https://github.com/OXID-eSales/oxideshop_ce/pull/802)
 
 ### Deprecated
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getConfig`

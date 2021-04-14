@@ -146,11 +146,9 @@ class FunctionsTest extends \OxidTestCase
     public function testError_404_handler()
     {
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array('handlePageNotFoundError'));
-        $oUtils->expects($this->at(0))->method('handlePageNotFoundError')->with($this->equalTo(''));
-        $oUtils->expects($this->at(1))->method('handlePageNotFoundError')->with($this->equalTo('asd'));
+        $oUtils->method('handlePageNotFoundError')->with($this->equalTo('asd'));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        error_404_handler();
         error_404_handler('asd');
     }
 }

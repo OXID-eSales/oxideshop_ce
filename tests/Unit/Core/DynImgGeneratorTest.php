@@ -41,8 +41,9 @@ final class DynImgGeneratorTest extends \OxidTestCase
     public function testGetImageName(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
-        $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/test4/test.jpg"));
-        $oGen->expects($this->at(1))->method('_getImageUri')->will($this->returnValue(""));
+        $oGen
+            ->method('_getImageUri')
+            ->willReturnOnConsecutiveCalls('/test1/test2/test3/test4/test.jpg', '');
 
         $this->assertEquals("test.jpg", $oGen->UNITgetImageName());
         $this->assertEquals("", $oGen->UNITgetImageName());
@@ -51,8 +52,9 @@ final class DynImgGeneratorTest extends \OxidTestCase
     public function testGetImageMasterPath(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
-        $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue(""));
-        $oGen->expects($this->at(1))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/test4/test.jpg"));
+        $oGen
+            ->method('_getImageUri')
+            ->willReturnOnConsecutiveCalls('', '/test1/test2/test3/test4/test.jpg');
 
         $this->assertFalse($oGen->UNITgetImageMasterPath());
         $this->assertEquals("/master/test2/test3/", $oGen->UNITgetImageMasterPath());
@@ -61,9 +63,13 @@ final class DynImgGeneratorTest extends \OxidTestCase
     public function testGetImageInfo(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
-        $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue(""));
-        $oGen->expects($this->at(1))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/test4/test.jpg"));
-        $oGen->expects($this->at(2))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
+        $oGen
+            ->method('_getImageUri')
+            ->willReturnOnConsecutiveCalls(
+                '',
+                '/test1/test2/test3/test4/test.jpg',
+                '/test1/test2/test3/12_12_12/test.jpg'
+            );
 
         $this->assertEquals([0 ,0, 0], $oGen->UNITgetImageInfo());
         $this->assertEquals(array("test4"), $oGen->UNITgetImageInfo());
@@ -73,7 +79,7 @@ final class DynImgGeneratorTest extends \OxidTestCase
     public function testGetImageTarget(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri"));
-        $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
+        $oGen->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
 
         $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/test.jpg", $oGen->UNITgetImageTarget());
     }
@@ -81,8 +87,8 @@ final class DynImgGeneratorTest extends \OxidTestCase
     public function testGetNopicImageTarget(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageUri", "_getImageName"));
-        $oGen->expects($this->at(0))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
-        $oGen->expects($this->at(1))->method('_getImageName')->will($this->returnValue("test.jpg"));
+        $oGen->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
+        $oGen->method('_getImageName')->will($this->returnValue("test.jpg"));
 
         $this->assertEquals(getShopBasePath() . "/test1/test2/test3/12_12_12/nopic.jpg", $oGen->UNITgetNopicImageTarget());
     }
@@ -106,13 +112,16 @@ final class DynImgGeneratorTest extends \OxidTestCase
 
     public function testIsValidPath(): void
     {
-        $i = 0;
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageInfo"));
-        $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(false));
-        $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(1, 2, 3)));
-        $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(4, 5, 6)));
-        $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(7, 8, 75)));
-        $oGen->expects($this->at($i++))->method('_getImageInfo')->will($this->returnValue(array(56, 42, 75)));
+        $oGen
+            ->method('_getImageInfo')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 75],
+                [56, 42, 75]
+            );
 
         // missing image info
         $this->assertFalse($oGen->UNITisValidPath("any/path"));
@@ -133,13 +142,17 @@ final class DynImgGeneratorTest extends \OxidTestCase
     public function testGetImageType(): void
     {
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageName"));
-        $oGen->expects($this->at(0))->method('_getImageName')->will($this->returnValue("test.jpg"));
-        $oGen->expects($this->at(1))->method('_getImageName')->will($this->returnValue("test.jpeg"));
-        $oGen->expects($this->at(2))->method('_getImageName')->will($this->returnValue("test.png"));
-        $oGen->expects($this->at(3))->method('_getImageName')->will($this->returnValue("test.gif"));
-        $oGen->expects($this->at(4))->method('_getImageName')->will($this->returnValue("test"));
-        $oGen->expects($this->at(5))->method('_getImageName')->will($this->returnValue("test.php"));
-        $oGen->expects($this->at(6))->method('_getImageName')->will($this->returnValue("test.exe"));
+        $oGen
+            ->method('_getImageName')
+            ->willReturnOnConsecutiveCalls(
+                'test.jpg',
+                'test.jpeg',
+                'test.png',
+                'test.gif',
+                'test',
+                'test.php',
+                'test.exe'
+            );
 
         $this->assertEquals("jpeg", $oGen->UNITgetImageType());
         $this->assertEquals("jpeg", $oGen->UNITgetImageType());
@@ -318,10 +331,12 @@ final class DynImgGeneratorTest extends \OxidTestCase
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
         $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
         $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
-        // Validate the source image
-        $oGen->expects($this->at(0))->method('validateImageFileExtension')->will($this->returnValue(true));
-        // Validate the target image
-        $oGen->expects($this->at(1))->method('validateImageFileExtension')->will($this->returnValue(false));
+        $oGen
+            ->method('validateImageFileExtension')
+            ->willReturnOnConsecutiveCalls(
+                true,
+                false
+            );
 
         $this->assertFalse($oGen->UNITgenerateImage('source.sourcejpg', 'target.targetjpg'));
     }
@@ -332,8 +347,12 @@ final class DynImgGeneratorTest extends \OxidTestCase
         $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
         $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
         $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
-        $oGen->expects($this->at(0))->method('validateImageFileExtension')->will($this->returnValue(true));
-        $oGen->expects($this->at(1))->method('validateImageFileExtension')->will($this->returnValue(true));
+        $oGen
+            ->method('validateImageFileExtension')
+            ->willReturnOnConsecutiveCalls(
+                true,
+                true
+            );
 
         $this->assertFalse($oGen->UNITgenerateImage('source.jpg', 'target.png'));
     }
@@ -353,34 +372,46 @@ final class DynImgGeneratorTest extends \OxidTestCase
         $this->assertSame("target.jpg", $oGen->UNITgenerateImage('source.jpg', 'target.jpg'));
     }
 
+    public function testGetImagePathNopicImageTarget(): void
+    {
+        $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageMasterPath", "_getImageName", "_getImageTarget", "_getNopicImageTarget", "_generateImage", "_getImageType", "_setHeader", "_getHeaders"));
+
+        $oGen->method('_getImageMasterPath')->will($this->returnValue("/test/"));
+        $oGen->method('_getImageName')->will($this->returnValue("test.jpg"));
+        $oGen->method('_getNopicImageTarget')->will($this->returnValue("nopicimagetarget"));
+        $oGen->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
+
+        $this->assertFalse($oGen->getImagePath());
+    }
+
     public function testGetImagePath(): void
     {
         $sDir = basename($this->getConfig()->getPictureDir(false));
-        $i = 0;
 
         $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageMasterPath", "_getImageName", "_getImageTarget", "_getNopicImageTarget", "_generateImage", "_getImageType", "_setHeader", "_getHeaders"));
 
-        $oGen->expects($this->at($i++))->method('_getImageMasterPath')->will($this->returnValue("/test/"));
-        $oGen->expects($this->at($i++))->method('_getImageName')->will($this->returnValue("test.jpg"));
-        $oGen->expects($this->at($i++))->method('_getNopicImageTarget')->will($this->returnValue("nopicimagetarget"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
+        $oGen->method('_getImageMasterPath')->will($this->returnValue("out/" . $sDir . "/master/"));
+        $oGen->method('_getImageName')->will($this->returnValue("nopic.jpg"));
+        $oGen->method('_getImageTarget')->will($this->returnValue("best.jpg"));
+        $oGen->method('_generateImage')->will($this->returnValue("best.jpg"));
+        $oGen->method('_getImageType')->will($this->returnValue("jpg"));
 
-        $oGen->expects($this->at($i++))->method('_getImageMasterPath')->will($this->returnValue("out/" . $sDir . "/master/"));
-        $oGen->expects($this->at($i++))->method('_getImageName')->will($this->returnValue("nopic.jpg"));
-        $oGen->expects($this->at($i++))->method('_getImageTarget')->will($this->returnValue("best.jpg"));
-        $oGen->expects($this->at($i++))->method('_generateImage')->will($this->returnValue("best.jpg"));
-        $oGen->expects($this->at($i++))->method('_getImageType')->will($this->returnValue("jpg"));
-
-        $oGen->expects($this->at($i++))->method('_getImageMasterPath')->will($this->returnValue("out/" . $sDir . "/master/product/1/"));
-        $oGen->expects($this->at($i++))->method('_getImageName')->will($this->returnValue("best.jpg"));
-        $oGen->expects($this->at($i++))->method('_getNopicImageTarget')->will($this->returnValue("nopic.jpg"));
-        $oGen->expects($this->at($i++))->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
-        $oGen->expects($this->at($i++))->method('_generateImage')->will($this->returnValue("best.jpg"));
-        $oGen->expects($this->at($i++))->method('_getImageType')->will($this->returnValue("jpg"));
-
-        $this->assertFalse($oGen->getImagePath());
         $this->assertEquals("best.jpg", $oGen->getImagePath());
+    }
+
+    public function testGetImagePathWith404Header(): void
+    {
+        $sDir = basename($this->getConfig()->getPictureDir(false));
+
+        $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, array("_getImageMasterPath", "_getImageName", "_getImageTarget", "_getNopicImageTarget", "_generateImage", "_getImageType", "_setHeader", "_getHeaders"));
+
+        $oGen->method('_getImageMasterPath')->will($this->returnValue("out/" . $sDir . "/master/product/1/"));
+        $oGen->method('_getImageName')->will($this->returnValue("best.jpg"));
+        $oGen->method('_getNopicImageTarget')->will($this->returnValue("nopic.jpg"));
+        $oGen->method('_setHeader')->with($this->equalTo("HTTP/1.1 404 Not Found"));
+        $oGen->method('_generateImage')->will($this->returnValue("best.jpg"));
+        $oGen->method('_getImageType')->will($this->returnValue("jpg"));
+
         $this->assertEquals("best.jpg", $oGen->getImagePath());
     }
 }

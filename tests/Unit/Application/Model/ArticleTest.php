@@ -6542,8 +6542,13 @@ class ArticleTest extends \OxidTestCase
     public function testHasMasterImage_hasImage()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getMasterPicturePath"));
-        $oConfig->expects($this->at(0))->method('getMasterPicturePath')->with($this->equalTo('product/1/testPic1.jpg'))->will($this->returnValue(true));
-        $oConfig->expects($this->at(1))->method('getMasterPicturePath')->with($this->equalTo('product/2/testPic2.jpg'))->will($this->returnValue(true));
+        $oConfig
+            ->method('getMasterPicturePath')
+            ->withConsecutive(['product/1/testPic1.jpg'], ['product/2/testPic2.jpg'])
+            ->willReturnOnConsecutiveCalls(
+                true,
+                true
+            );
 
         $oArticle = $this->getProxyClass("oxarticle");
         Registry::set(Config::class, $oConfig);

@@ -352,10 +352,9 @@ class ShopControlTest extends \OxidTestCase
         $aTasks = array("isAdmin", "_log", "_startMonitor", "_stopMonitor", '_getOutputManager', '_getErrors', '_executeMaintenanceTasks');
 
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, array('output', 'flushOutput', 'sendHeaders', 'setOutputFormat'));
-        $oOut->expects($this->at(0))->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
-        $oOut->expects($this->at(1))->method('sendHeaders')->will($this->returnValue(null));
-        $oOut->expects($this->at(3))->method('output')->with($this->equalTo($controllerClassName), $this->anything());
-        $oOut->expects($this->at(4))->method('flushOutput')->will($this->returnValue(null));
+        $oOut->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
+        $oOut->method('sendHeaders')->will($this->returnValue(null));
+        $oOut->method('flushOutput')->will($this->returnValue(null));
 
         $oSmarty = $this->getSmartyMock($this->getTemplateName($controllerClassName));
 
@@ -396,19 +395,23 @@ class ShopControlTest extends \OxidTestCase
         $aTasks = array("isAdmin", "_log", "_startMonitor", "getConfig", "_stopMonitor", '_getOutputManager', '_getErrors', '_executeMaintenanceTasks');
 
         $oOut = $this->getMock(\OxidEsales\Eshop\Core\Output::class, array('output', 'flushOutput', 'sendHeaders', 'setOutputFormat'));
-        $oOut->expects($this->at(0))->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
-        $oOut->expects($this->at(1))->method('output')->with(
-            $this->equalTo('errors'),
-            $this->equalTo(
-                array(
-                'other'   => array('test1', 'test3'),
-                'default' => array('test2', 'test4'),
-                )
-            )
-        );
-        $oOut->expects($this->at(2))->method('sendHeaders')->will($this->returnValue(null));
-        $oOut->expects($this->at(3))->method('output')->with($this->equalTo($controllerClassName), $this->anything());
-        $oOut->expects($this->at(4))->method('flushOutput')->will($this->returnValue(null));
+        $oOut->method('setOutputFormat')->with($this->equalTo(oxOutput::OUTPUT_FORMAT_JSON));
+        $oOut
+            ->method('output')
+            ->withConsecutive(
+                [
+                    'errors',
+                    array(
+                        'other'   => array('test1', 'test3'),
+                        'default' => array('test2', 'test4'),
+                    )
+
+                ],
+                [$controllerClassName, $this->anything()]
+            );
+
+        $oOut->method('sendHeaders')->will($this->returnValue(null));
+        $oOut->method('flushOutput')->will($this->returnValue(null));
 
         $oSmarty = $this->getSmartyMock('page/info/content.tpl');
 

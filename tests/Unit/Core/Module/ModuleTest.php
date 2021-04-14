@@ -46,24 +46,6 @@ class ModuleTest extends \OxidTestCase
     }
 
     /**
-     * oxModule::loadByDir()
-     *
-     * @return null
-     */
-    public function testLoadByDir()
-    {
-        $aModulesPaths = array("testModuleId" => "test/path");
-        $oModule = $this->getMock(\OxidEsales\Eshop\Core\Module\Module::class, array("load", "getModulePaths"));
-        $oModule->expects($this->at(0))->method('getModulePaths')->will($this->returnValue($aModulesPaths));
-        $oModule->expects($this->at(1))->method('load')->with($this->equalTo("noSuchTest/path"))->will($this->returnValue(false));
-        $oModule->expects($this->at(2))->method('getModulePaths')->will($this->returnValue($aModulesPaths));
-        $oModule->expects($this->at(3))->method('load')->with($this->equalTo("testModuleId"))->will($this->returnValue(true));
-
-        $this->assertFalse($oModule->loadByDir("noSuchTest/path"));
-        $this->assertTrue($oModule->loadByDir("test/path"));
-    }
-
-    /**
      * oxModule::getInfo() test case
      *
      * @return null

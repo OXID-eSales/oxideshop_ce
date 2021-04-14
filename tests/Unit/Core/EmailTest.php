@@ -157,10 +157,8 @@ final class EmailTest extends \OxidTestCase
 
         /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('getBody', 'addEmbeddedImage', 'setBody', 'getUtilsObjectInstance'));
-        $email->expects($this->at(1))->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
-        $email->expects($this->at(2))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'stars.jpg'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
-        $email->expects($this->at(3))->method('addEmbeddedImage')->with($this->equalTo($imageDirectory . 'logo.png'), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/png'))->will($this->returnValue(true));
-        $email->expects($this->at(4))->method('addEmbeddedImage')->with($this->equalTo($config->getPictureDir(false) . 'generated/product/thumb/185_150_75/' . $imageFile), $this->equalTo('xxx'), $this->equalTo("image"), $this->equalTo("base64"), $this->equalTo('image/jpeg'))->will($this->returnValue(true));
+        $email->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
+        $email->method('addEmbeddedImage')->will($this->returnValue(true));
         $email->expects($this->once())->method('getBody')->will($this->returnValue($body));
         $email->expects($this->once())->method('setBody')->with($this->equalTo($generatedEmailBody));
 
@@ -674,12 +672,9 @@ final class EmailTest extends \OxidTestCase
     public function testSendMailErrorMsg()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $email->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
-        $email->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
-        $email->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
-        $email->expects($this->at(3))->method('_sendMailErrorMsg');
-        $email->expects($this->at(4))->method('_sendMail')->will($this->returnValue(false));
-        $email->expects($this->at(5))->method('_sendMailErrorMsg');
+        $email->method('getRecipient')->will($this->returnValue([1]));
+        $email->method('getMailer')->will($this->returnValue("smtp"));
+        $email->method('_sendMail')->will($this->returnValue(false));
 
         $this->assertFalse($email->send());
     }
@@ -687,11 +682,15 @@ final class EmailTest extends \OxidTestCase
     public function testSendMailErrorMsg_failsOnlySmtp()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $email->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
-        $email->expects($this->at(1))->method('getMailer')->will($this->returnValue("smtp"));
-        $email->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
-        $email->expects($this->at(3))->method('_sendMailErrorMsg');
-        $email->expects($this->at(4))->method('_sendMail')->will($this->returnValue(true));
+        $email->method('getRecipient')->will($this->returnValue([1]));
+        $email->method('getMailer')->will($this->returnValue("smtp"));
+
+        $email
+            ->method('_sendMail')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                true
+            );
 
         $this->assertTrue($email->send());
     }
@@ -699,10 +698,10 @@ final class EmailTest extends \OxidTestCase
     public function testSendMailErrorMsg_failsMail()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("getRecipient", "getMailer", "_sendMail", "_sendMailErrorMsg"));
-        $email->expects($this->at(0))->method('getRecipient')->will($this->returnValue([1]));
-        $email->expects($this->at(1))->method('getMailer')->will($this->returnValue("mail"));
-        $email->expects($this->at(2))->method('_sendMail')->will($this->returnValue(false));
-        $email->expects($this->at(3))->method('_sendMailErrorMsg');
+        $email->method('getRecipient')->will($this->returnValue([1]));
+        $email->method('getMailer')->will($this->returnValue("mail"));
+        $email->method('_sendMail')->will($this->returnValue(false));
+        $email->method('_sendMailErrorMsg');
 
         $this->assertFalse($email->send());
     }
@@ -883,16 +882,10 @@ final class EmailTest extends \OxidTestCase
     public function testSetSmtpProtocol()
     {
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('set'));
-        $email->expects($this->at(0))->method('set')
-            ->with(
-                $this->equalTo('SMTPSecure'),
-                $this->equalTo('ssl')
-            );
-        $email->expects($this->at(1))->method('set')
-            ->with(
-                $this->equalTo('SMTPSecure'),
-                $this->equalTo('tls')
-            );
+        $email
+            ->method('set')
+            ->withConsecutive(['SMTPSecure', 'ssl'], ['SMTPSecure', 'tls']);
+
         $this->assertEquals("hostname:23", $email->UNITsetSmtpProtocol('ssl://hostname:23'));
         $this->assertEquals("hostname:23", $email->UNITsetSmtpProtocol('tls://hostname:23'));
         $this->assertEquals("ssx://hostname:23", $email->UNITsetSmtpProtocol('ssx://hostname:23'));

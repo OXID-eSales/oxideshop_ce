@@ -148,9 +148,18 @@ class ViewTest extends \OxidTestCase
         $blDelSetupDir = ["blDelSetupDir" => true];
 
         $oInst2 = $this->getMock("Utilities", array("removeDir"));
-        $oInst2->expects($this->at(0))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/generated"), $this->equalTo(true))->will($this->returnValue(true));
-        $oInst2->expects($this->at(1))->method("removeDir")->with($this->equalTo($sPath . "out/pictures/master"), $this->equalTo(true), $this->equalTo(1), $this->equalTo(array("nopic.jpg")))->will($this->returnValue(true));
-        $oInst2->expects($this->at(2))->method("removeDir")->with($this->equalTo($sPath . "Setup"), $this->equalTo(true))->will($this->returnValue(true));
+        $oInst2
+            ->method('removeDir')
+            ->withConsecutive(
+                [$sPath . "out/pictures/generated", true],
+                [$sPath . "out/pictures/master", true],
+                [$sPath . "Setup", true]
+            )
+            ->willReturnOnConsecutiveCalls(
+                true,
+                true,
+                true
+            );
 
         $oSetupView = $this->getMock(\OxidEsales\EshopCommunity\Setup\View::class, array("getInstance"));
         $oSetupView->expects($this->atLeastOnce())->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($oInst2));

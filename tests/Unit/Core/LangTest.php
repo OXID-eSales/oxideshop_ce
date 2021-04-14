@@ -1269,8 +1269,13 @@ class LangTest extends \OxidTestCase
         $languageIds = array(0 => 'de', 1 => 'en');
 
         $config = $this->getMockBuilder(\OxidEsales\Eshop\Core\Config::class)->setMethods(['getConfigParam'])->getMock();
-        $config->expects($this->at(0))->method('getConfigParam')->with($this->equalTo('aLanguageParams'))->will($this->returnValue(null));
-        $config->expects($this->at(1))->method('getConfigParam')->with($this->equalTo('aLanguages'))->will($this->returnValue($languageIds));
+        $config
+            ->method('getConfigParam')
+            ->withConsecutive(['aLanguageParams'], ['aLanguages'])
+            ->willReturnOnConsecutiveCalls(
+                null,
+                $languageIds
+            );
 
         $language = oxNew(\OxidEsales\Eshop\Core\Language::class);
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);

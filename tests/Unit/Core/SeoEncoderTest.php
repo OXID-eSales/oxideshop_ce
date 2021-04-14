@@ -434,8 +434,12 @@ class SeoEncoderTest extends \OxidTestCase
         $oCategory->load($sCategoryId);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getActiveCategory"));
-        $oView->expects($this->at(0))->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $oView->expects($this->at(1))->method('getActiveCategory')->will($this->returnValue($oPriceCategory));
+        $oView
+            ->method('getActiveCategory')
+            ->willReturnOnConsecutiveCalls(
+                $oCategory,
+                $oPriceCategory
+            );
 
         $oConfig->dropLastActiveView();
         $oConfig->setActiveView($oView);
@@ -525,8 +529,12 @@ class SeoEncoderTest extends \OxidTestCase
         $oCategory->load($sCategoryId);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getActiveCategory"));
-        $oView->expects($this->at(0))->method('getActiveCategory')->will($this->returnValue($oCategory));
-        $oView->expects($this->at(1))->method('getActiveCategory')->will($this->returnValue($oPriceCategory));
+        $oView
+            ->method('getActiveCategory')
+            ->willReturnOnConsecutiveCalls(
+                $oCategory,
+                $oPriceCategory
+            );
 
         $oConfig->dropLastActiveView();
         $oConfig->setActiveView($oView);

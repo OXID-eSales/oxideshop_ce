@@ -46,14 +46,14 @@ class ArticleSeoTest extends \OxidTestCase
         $productId = $this->ensureProductIdExists();
 
         $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleVendorUri"));
-        $seoEncoder->expects($this->at(0))->method('getArticleVendorUri')->will($this->returnValue("ArticleVendorUri"));
+        $seoEncoder->method('getArticleVendorUri')->will($this->returnValue("ArticleVendorUri"));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
 
-        $oView->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
-        $oView->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
-        $oView->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxvendor"));
-        $oView->expects($this->at(3))->method('getEditLang')->will($this->returnValue(0));
+        $oView->method('getEditObjectId')->will($this->returnValue($productId));
+        $oView->method('_getEncoder')->will($this->returnValue($seoEncoder));
+        $oView->method('getActCatType')->will($this->returnValue("oxvendor"));
+        $oView->method('getEditLang')->will($this->returnValue(0));
 
         $this->assertEquals("ArticleVendorUri", $oView->getEntryUri());
     }
@@ -66,14 +66,14 @@ class ArticleSeoTest extends \OxidTestCase
         $productId = $this->ensureProductIdExists();
 
         $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleManufacturerUri"));
-        $seoEncoder->expects($this->at(0))->method('getArticleManufacturerUri')->will($this->returnValue("ArticleManufacturerUri"));
+        $seoEncoder->method('getArticleManufacturerUri')->will($this->returnValue("ArticleManufacturerUri"));
 
         $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang"));
 
-        $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
-        $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
-        $view->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
-        $view->expects($this->at(3))->method('getEditLang')->will($this->returnValue(0));
+        $view->method('getEditObjectId')->will($this->returnValue($productId));
+        $view->method('_getEncoder')->will($this->returnValue($seoEncoder));
+        $view->method('getActCatType')->will($this->returnValue("oxmanufacturer"));
+        $view->method('getEditLang')->will($this->returnValue(0));
 
         $this->assertEquals("ArticleManufacturerUri", $view->getEntryUri());
     }
@@ -86,15 +86,15 @@ class ArticleSeoTest extends \OxidTestCase
         $productId = $this->ensureProductIdExists();
 
         $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleUri"));
-        $seoEncoder->expects($this->at(0))->method('getArticleUri')->will($this->returnValue("ArticleUri"));
+        $seoEncoder->method('getArticleUri')->will($this->returnValue("ArticleUri"));
 
         $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
 
-        $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
-        $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
-        $view->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxsomething"));
-        $view->expects($this->at(3))->method('getActCatId')->will($this->returnValue(true));
-        $view->expects($this->at(4))->method('getEditLang')->will($this->returnValue(0));
+        $view->method('getEditObjectId')->will($this->returnValue($productId));
+        $view->method('_getEncoder')->will($this->returnValue($seoEncoder));
+        $view->method('getActCatType')->will($this->returnValue("oxsomething"));
+        $view->method('getActCatId')->will($this->returnValue(true));
+        $view->method('getEditLang')->will($this->returnValue(0));
 
         $this->assertEquals("ArticleUri", $view->getEntryUri());
     }
@@ -107,15 +107,15 @@ class ArticleSeoTest extends \OxidTestCase
         $productId = $this->ensureProductIdExists();
 
         $seoEncoder = $this->getMock(\OxidEsales\Eshop\Application\Model\SeoEncoderCategory::class, array("getArticleMainUri"));
-        $seoEncoder->expects($this->at(0))->method('getArticleMainUri')->will($this->returnValue("ArticleMainUri"));
+        $seoEncoder->method('getArticleMainUri')->will($this->returnValue("ArticleMainUri"));
 
         $view = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("getEditObjectId", "_getEncoder", "getActCatType", "getEditLang", "getActCatId"));
 
-        $view->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue($productId));
-        $view->expects($this->at(1))->method('_getEncoder')->will($this->returnValue($seoEncoder));
-        $view->expects($this->at(2))->method('getActCatType')->will($this->returnValue("oxsomething"));
-        $view->expects($this->at(3))->method('getActCatId')->will($this->returnValue(false));
-        $view->expects($this->at(4))->method('getEditLang')->will($this->returnValue(0));
+        $view->method('getEditObjectId')->will($this->returnValue($productId));
+        $view->method('_getEncoder')->will($this->returnValue($seoEncoder));
+        $view->method('getActCatType')->will($this->returnValue("oxsomething"));
+        $view->method('getActCatId')->will($this->returnValue(false));
+        $view->method('getEditLang')->will($this->returnValue(0));
 
         $this->assertEquals("ArticleMainUri", $view->getEntryUri());
     }
@@ -434,15 +434,13 @@ class ArticleSeoTest extends \OxidTestCase
         oxDb::getDb()->execute($sQ);
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo::class, array("_getSaveObjectId", "getActCatId", "getEditLang", "processParam"));
-        $oView->expects($this->at(0))->method('_getSaveObjectId')->will($this->returnValue("objectid"));
-        $oView->expects($this->at(1))->method('getEditLang')->will($this->returnValue(0));
-        $oView->expects($this->at(2))->method('getActCatId')->will($this->returnValue("catid"));
-        $oView->expects($this->at(3))->method('processParam')->will($this->returnValue("catid"));
+        $oView
+            ->method('_getSaveObjectId')
+            ->willReturnOnConsecutiveCalls('objectid', 'nonexistingobjectid');
 
-        $oView->expects($this->at(4))->method('_getSaveObjectId')->will($this->returnValue("nonexistingobjectid"));
-        $oView->expects($this->at(5))->method('getEditLang')->will($this->returnValue(0));
-        $oView->expects($this->at(6))->method('getActCatId')->will($this->returnValue("catid"));
-        $oView->expects($this->at(7))->method('processParam')->will($this->returnValue("catid"));
+        $oView->method('getEditLang')->will($this->returnValue(0));
+        $oView->method('getActCatId')->will($this->returnValue("catid"));
+        $oView->method('processParam')->will($this->returnValue("catid"));
 
         $this->assertTrue($oView->isEntryFixed());
         $this->assertFalse($oView->isEntryFixed());

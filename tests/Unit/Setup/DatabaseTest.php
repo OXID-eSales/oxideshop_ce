@@ -60,10 +60,13 @@ final class DatabaseTest extends \OxidTestCase
 
         /** @var Database|Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance"));
-
-        $at = 0;
-        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($setup));
-        $database->expects($this->at($at))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($language));
+        $database
+            ->method('getInstance')
+            ->withConsecutive(['Setup'], ['Language'])
+            ->willReturnOnConsecutiveCalls(
+                $setup,
+                $language
+            );
 
         $this->expectException('Exception');
         $database->queryFile(time());
@@ -76,14 +79,12 @@ final class DatabaseTest extends \OxidTestCase
     {
         /** @var Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getDatabaseVersion", "parseQuery", "execSql"));
+        $database
+            ->method('execSql')
+            ->withConsecutive(["SET @@session.sql_mode = ''"], [1], [2], [3]);
 
-        $at = 0;
-        $database->expects($this->at($at++))->method("getDatabaseVersion")->will($this->returnValue("5.1"));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo("SET @@session.sql_mode = ''"));
-        $database->expects($this->at($at++))->method("parseQuery")->will($this->returnValue(array(1, 2, 3)));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo(1));
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo(2));
-        $database->expects($this->at($at))->method("execSql")->with($this->equalTo(3));
+        $database->method("getDatabaseVersion")->will($this->returnValue("5.1"));
+        $database->method("parseQuery")->will($this->returnValue(array(1, 2, 3)));
 
         $database->queryFile(getShopBasePath() . '/config.inc.php');
     }
@@ -173,9 +174,14 @@ final class DatabaseTest extends \OxidTestCase
 
         /** @var Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance"));
-        $database->expects($this->at(0))->method("execSql")->will($this->throwException(new Exception()));
-        $database->expects($this->at(1))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($oSetup));
-        $database->expects($this->at(2))->method("getInstance")->with($this->equalTo("Language"))->will($this->returnValue($oLang));
+        $database->method("execSql")->will($this->throwException(new Exception()));
+        $database
+            ->method('getInstance')
+            ->withConsecutive(['Setup'], ['Language'])
+            ->willReturnOnConsecutiveCalls(
+                $oSetup,
+                $oLang
+            );
 
         $this->expectException('Exception');
 
@@ -278,19 +284,21 @@ final class DatabaseTest extends \OxidTestCase
         $utils = $this->getMock("Utilities", array("generateUID"));
         $utils->expects($this->once())->method("generateUID")->will($this->returnValue($uniqueId));
 
-        $at = 0;
         /** @var Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getInstance", "execSql"));
-
-        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Setup"))->will($this->returnValue($setup));
-
-        $database->expects($this->at($at++))->method("getInstance")->with($this->equalTo("Utilities"))->will($this->returnValue($utils));
+        $database
+            ->method('getInstance')
+            ->withConsecutive(['Setup'], ['Utilities'])
+            ->willReturnOnConsecutiveCalls(
+                $setup,
+                $utils
+            );
 
         $passSalt = hash('sha512', $password . $uniqueId);
         $query = "insert into oxuser (oxid, oxusername, oxpassword, oxpasssalt, oxrights, oxshopid)
                              values(:oxid, :oxusername, :oxpassword, :oxpasssalt, 'malladmin', :oxshopid)";
 
-        $database->expects($this->at($at++))->method("execSql")->with($this->equalTo
+        $database->method("execSql")->with($this->equalTo
         (
             $query,
             [

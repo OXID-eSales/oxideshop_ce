@@ -47,7 +47,7 @@ class ListReviewTest extends \OxidTestCase
         $oNavTree->expects($this->once())->method('getDomXml')->will($this->returnValue(new DOMDocument()));
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ListReview::class, array("getNavigation"));
-        $oView->expects($this->at(0))->method('getNavigation')->will($this->returnValue($oNavTree));
+        $oView->expects($this->atLeastOnce())->method('getNavigation')->will($this->returnValue($oNavTree));
         $this->assertEquals("list_review.tpl", $oView->render());
     }
 

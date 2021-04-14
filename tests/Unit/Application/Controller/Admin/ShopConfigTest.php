@@ -53,45 +53,14 @@ class ShopConfigTest extends \OxidTestCase
         $aTasks[] = "_getModuleForConfigVars";
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
-        $oConfig->expects($this->at(0))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo("bool"),
-                $this->equalTo("varnamebool"),
-                $this->equalTo(true),
-                $this->equalTo("testId"),
-                $this->equalTo('theme:mytheme')
-            );
-        $oConfig->expects($this->at(1))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo("str"),
-                $this->equalTo("varnamestr"),
-                $this->equalTo("string"),
-                $this->equalTo("testId"),
-                $this->equalTo('theme:mytheme')
-            );
-        $oConfig->expects($this->at(2))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo("arr"),
-                $this->equalTo("varnamearr"),
-                $this->equalTo(array("a", "b", "c")),
-                $this->equalTo("testId"),
-                $this->equalTo('theme:mytheme')
-            );
-        $oConfig->expects($this->at(3))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo("aarr"),
-                $this->equalTo("varnameaarr"),
-                $this->equalTo(array("a" => "b", "c" => "d")),
-                $this->equalTo("testId"),
-                $this->equalTo('theme:mytheme')
-            );
-        $oConfig->expects($this->at(4))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo("select"),
-                $this->equalTo("varnamesel"),
-                $this->equalTo("a"),
-                $this->equalTo("testId"),
-                $this->equalTo('theme:mytheme')
+        $oConfig
+            ->method('saveShopConfVar')
+            ->withConsecutive(
+                ['bool', 'varnamebool', true, 'testId', 'theme:mytheme'],
+                ['str', 'varnamestr', 'string', 'testId', 'theme:mytheme'],
+                ['arr', 'varnamearr', ["a", "b", "c"], 'testId', 'theme:mytheme'],
+                ['aarr', 'varnameaarr', ["a" => "b", "c" => "d"], 'testId', 'theme:mytheme'],
+                ['select', 'varnamesel', "a", 'testId', 'theme:mytheme'],
             );
 
         // testing..

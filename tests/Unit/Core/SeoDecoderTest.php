@@ -149,52 +149,36 @@ class SeoDecoderTest extends \OxidTestCase
     public function testDecodeSimpleUrlForManufacturer()
     {
         $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getObjectUrl'));
-        $oDecoder->expects($this->at(0))->method('_getObjectUrl')
-            ->with(
-                $this->equalTo('manufacturer'),
-                $this->equalTo('oxcategories'),
-                $this->equalTo(0),
-                $this->equalTo('oxcategory')
+        $oDecoder
+            ->method('_getObjectUrl')
+            ->withConsecutive(
+                ['manufacturer', 'oxcategories', 0, 'oxcategory'],
+                ['manufacturer', 'oxmanufacturers', 0, 'oxmanufacturer']
             )
-            ->will($this->returnValue(null));
-        $oDecoder->expects($this->at(1))->method('_getObjectUrl')
-            ->with(
-                $this->equalTo('manufacturer'),
-                $this->equalTo('oxmanufacturers'),
-                $this->equalTo(0),
-                $this->equalTo('oxmanufacturer')
-            )
-            ->will($this->returnValue('manufacturerseourl'));
+            ->willReturnOnConsecutiveCalls(
+                null,
+                'manufacturerseourl'
+            );
+
         $this->assertEquals('manufacturerseourl', $oDecoder->UNITdecodeSimpleUrl('manufacturer'));
     }
 
     public function testDecodeSimpleUrlForVendor()
     {
         $oDecoder = $this->getMock(\OxidEsales\Eshop\Core\SeoDecoder::class, array('_getObjectUrl'));
-        $oDecoder->expects($this->at(0))->method('_getObjectUrl')
-            ->with(
-                $this->equalTo('vendor'),
-                $this->equalTo('oxcategories'),
-                $this->equalTo(0),
-                $this->equalTo('oxcategory')
+        $oDecoder
+            ->method('_getObjectUrl')
+            ->withConsecutive(
+                ['vendor', 'oxcategories', 0, 'oxcategory'],
+                ['vendor', 'oxmanufacturers', 0, 'oxmanufacturer'],
+                ['vendor', 'oxvendor', 0, 'oxvendor']
             )
-            ->will($this->returnValue(null));
-        $oDecoder->expects($this->at(1))->method('_getObjectUrl')
-            ->with(
-                $this->equalTo('vendor'),
-                $this->equalTo('oxmanufacturers'),
-                $this->equalTo(0),
-                $this->equalTo('oxmanufacturer')
-            )
-            ->will($this->returnValue(null));
-        $oDecoder->expects($this->at(2))->method('_getObjectUrl')
-            ->with(
-                $this->equalTo('vendor'),
-                $this->equalTo('oxvendor'),
-                $this->equalTo(0),
-                $this->equalTo('oxvendor')
-            )
-            ->will($this->returnValue('vendorseourl'));
+            ->willReturnOnConsecutiveCalls(
+                null,
+                null,
+                'vendorseourl'
+            );
+
         $this->assertEquals('vendorseourl', $oDecoder->UNITdecodeSimpleUrl('vendor'));
     }
 

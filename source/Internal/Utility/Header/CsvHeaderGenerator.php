@@ -16,10 +16,9 @@ class CsvHeaderGenerator implements HeaderGeneratorInterface
      */
     public function generate(string $filename): void
     {
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Pragma: no-cache");
         header("Expires: 0");
-        header("Content-Disposition: attachment");
-        header("Content-Type: text/csv");
+        header('Content-Type: text/csv; charset=utf-8');
         header("Content-Disposition: attachment;filename={$filename}");
     }
 }

@@ -31,7 +31,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
      * @return NewsletterRecipient[]
      * @throws Exception
      */
-    public function get(int $shopId): array
+    public function getNewsletterRecipients(int $shopId): array
     {
         $recipientList = [];
 
@@ -45,8 +45,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
             $recipient->setEmail($row['Email']);
             $recipient->setOtpInState($row['OptInState']);
             $recipient->setCountry($row['Country']);
-            $groups = implode(",", $this->getUserGroups($row['UserId']));
-            $recipient->setUserGroups($groups);
+            $recipient->setUserGroups((string)$row['Groups']);
             $recipientList[] = $recipient;
         }
 
@@ -64,43 +63,25 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->select([
-                'n.OXSAL as Salutation',
-                'n.OXFNAME as Firstname',
-                'n.OXLNAME as Lastname',
-                'u.OXUSERNAME as Email',
-                'n.OXDBOPTIN AS OptInState',
-                'c.OXTITLE as Country',
-                'u.oxid as UserId'
+                'n.oxsal AS Salutation',
+                'n.oxfname AS Firstname',
+                'n.oxlname AS Lastname',
+                'u.oxusername AS Email',
+                'n.oxdboptin AS OptInState',
+                'c.oxtitle AS Country',
+                'group_concat(g.oxtitle) AS Groups'
             ])
             ->from('oxnewssubscribed', 'n')
             ->join('n', 'oxuser', 'u', 'u.oxid=n.oxuserid')
-            ->join('u', 'oxcountry', 'c', 'u.OXCOUNTRYID=c.OXID')
+            ->join('u', 'oxcountry', 'c', 'u.oxcountryid=c.oxid')
+            ->leftJoin('u', 'oxobject2group', 'o2g', 'u.oxid=o2g.oxobjectid')
+            ->leftJoin('o2g', 'oxgroups', 'g', 'o2g.oxgroupsid=g.oxid')
             ->where('n.oxshopid = :shopId')
             ->setParameters(["shopId" => $shopId])
-            ->orderBy('u.oxcreate', 'DESC');
+            ->groupBy('u.oxid')
+            ->orderBy('g.oxtitle', 'ASC')
+            ->addOrderBy('u.oxcreate', 'ASC');
 
         return $queryBuilder->execute()->fetchAllAssociative();
-    }
-
-    /**
-     * @param string $userId
-     *
-     * @return array
-     * @throws Exception
-     */
-    private function getUserGroups(string $userId): array
-    {
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder
-            ->select([
-                'g.oxtitle'
-            ])
-            ->from('oxgroups', 'g')
-            ->leftJoin('g', 'oxobject2group', 'objg', 'g.oxid=objg.oxgroupsid')
-            ->where('objg.oxobjectid = :userId')
-            ->orderBy('g.oxid')
-            ->setParameters(['userId' => $userId]);
-
-        return $queryBuilder->execute()->fetchFirstColumn();
     }
 }

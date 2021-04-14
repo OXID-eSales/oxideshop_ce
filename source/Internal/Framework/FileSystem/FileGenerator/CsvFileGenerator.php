@@ -22,10 +22,8 @@ class CsvFileGenerator implements FileGeneratorInterface
     {
         $file = fopen($filename, 'wb');
 
-        fputcsv($file, array_keys($data[0]), ";");
-
         foreach ($data as $value) {
-            fputcsv($file, $value, ";", '"', ";");
+            fputcsv($file, $value);
         }
         fclose($file);
     }

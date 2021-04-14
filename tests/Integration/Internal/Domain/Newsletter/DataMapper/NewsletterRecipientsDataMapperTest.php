@@ -7,25 +7,28 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Newsletter\Dao;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Newsletter\DataMapper;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipientsDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Bridge\NewsletterRecipientsDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataObject\NewsletterRecipient;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
-class NewsletterRecipientsDaoTest extends TestCase
+/**
+ * Class NewsletterRecipientsDataMapperTest
+ */
+class NewsletterRecipientsDataMapperTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testGetNewsletterRecipients(): void
+    public function testMapRecipientListDataToArray(): void
     {
-        $recipientsList = $this->get(NewsletterRecipientsDataMapperInterface::class)->mapRecipientListDataToArray(
-            $this->get(NewsletterRecipientsDaoInterface::class)->getNewsletterRecipients(1)
-        );
+        $recipientsList = $this->get(NewsletterRecipientsDaoBridgeInterface::class);
+        $data = $recipientsList->getNewsletterRecipients(1);
 
-        $this->assertContains(
+        $mappedArray = [
             [
                 NewsletterRecipientsDataMapper::SALUTATION           => "MR",
                 NewsletterRecipientsDataMapper::FIRST_NAME           => "John",
@@ -34,8 +37,13 @@ class NewsletterRecipientsDaoTest extends TestCase
                 NewsletterRecipientsDataMapper::OPT_IN_STATE         => "subscribed",
                 NewsletterRecipientsDataMapper::COUNTRY              => "Deutschland",
                 NewsletterRecipientsDataMapper::ASSIGNED_USER_GROUPS => "Auslandskunde,Shop-Admin"
-            ],
-            $recipientsList
+            ]
+        ];
+
+        $this->assertEquals(
+            $mappedArray,
+            $this->get(NewsletterRecipientsDataMapperInterface::class)->mapRecipientListDataToArray($data)
         );
+
     }
 }

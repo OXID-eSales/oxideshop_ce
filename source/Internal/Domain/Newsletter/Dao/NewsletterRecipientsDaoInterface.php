@@ -16,5 +16,5 @@ interface NewsletterRecipientsDaoInterface
      *
      * @return array
      */
-    public function get(int $shopId): array;
+    public function getNewsletterRecipients(int $shopId): array;
 }

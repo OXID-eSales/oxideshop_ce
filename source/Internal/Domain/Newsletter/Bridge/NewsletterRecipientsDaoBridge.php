@@ -33,8 +33,8 @@ class NewsletterRecipientsDaoBridge implements NewsletterRecipientsDaoInterface
      *
      * @return array
      */
-    public function get(int $shopId): array
+    public function getNewsletterRecipients(int $shopId): array
     {
-        return $this->newsletterRecipientsDao->get($shopId);
+        return $this->newsletterRecipientsDao->getNewsletterRecipients($shopId);
     }
 }

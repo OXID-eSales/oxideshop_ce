@@ -362,8 +362,13 @@ class ViewTest extends \OxidTestCase
         oxAddClassModule("oxUtilsHelper", "oxutils");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->will($this->returnValue('oxid.php'));
+        $oConfig
+            ->method('getConfigParam')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                'oxid.php'
+            );
+
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(false));
         $oConfig->expects($this->never())->method('getSslShopUrl');
         $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue('shopurl/'));
@@ -374,8 +379,12 @@ class ViewTest extends \OxidTestCase
         $this->assertEquals('shopurl/index.php?cl=details&' . $this->getSession()->sid(), oxUtilsHelper::$sRedirectUrl);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->will($this->returnValue('oxid.php'));
+        $oConfig
+            ->method('getConfigParam')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                'oxid.php'
+            );
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(false));
         $oConfig->expects($this->never())->method('getSslShopUrl');
         $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue('shopurl/'));
@@ -393,8 +402,12 @@ class ViewTest extends \OxidTestCase
         oxAddClassModule("oxUtilsHelper", "oxutils");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
-        $oConfig->expects($this->at(0))->method('getConfigParam')->will($this->returnValue(false));
-        $oConfig->expects($this->at(1))->method('getConfigParam')->will($this->returnValue('oxid.php'));
+        $oConfig
+            ->method('getConfigParam')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                'oxid.php'
+            );
         $oConfig->expects($this->once())->method('isSsl')->will($this->returnValue(true));
         $oConfig->expects($this->once())->method('getSslShopUrl')->will($this->returnValue('SSLshopurl/'));
         $oConfig->expects($this->never())->method('getShopUrl');

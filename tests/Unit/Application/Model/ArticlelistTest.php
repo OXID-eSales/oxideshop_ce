@@ -2016,8 +2016,8 @@ EOT;
     public function testupdateUpcomingPrices()
     {
         $oList = $this->getMock(\OxidEsales\Eshop\Application\Model\ArticleList::class, array("_canUpdatePrices", "renewPriceUpdateTime"));
-        $oList->expects($this->at(0))->method("_canUpdatePrices")->will($this->returnValue(true));
-        $oList->expects($this->at(1))->method("renewPriceUpdateTime")->will($this->returnValue(true));
+        $oList->expects($this->atLeastOnce())->method("_canUpdatePrices")->will($this->returnValue(true));
+        $oList->expects($this->atLeastOnce())->method("renewPriceUpdateTime")->will($this->returnValue(true));
 
         $oList->updateUpcomingPrices();
         $oList->updateUpcomingPrices(true);

@@ -2036,10 +2036,12 @@ class UserTest extends \OxidTestCase
         $oConfig->setConfigParam('blOrderOptInEmail', true);
 
         $oSubscription = $this->getMock(\OxidEsales\Eshop\Application\Model\NewsSubscribed::class, array('getOptInStatus', 'setOptInStatus'));
-        $oSubscription->expects($this->at(0))->method('getOptInStatus')->will($this->returnValue(0));
-        $oSubscription->expects($this->at(1))->method('setOptInStatus')->with($this->equalTo(2));
-        $oSubscription->expects($this->at(2))->method('getOptInStatus')->will($this->returnValue(2));
-        $oSubscription->expects($this->at(3))->method('setOptInStatus')->with($this->equalTo(2));
+        $oSubscription
+            ->method('getOptInStatus')
+            ->willReturnOnConsecutiveCalls(
+                0,
+                2
+            );
 
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getNewsSubscription', 'addToGroup', 'removeFromGroup'));
         $oUser->expects($this->any())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
@@ -2793,26 +2795,15 @@ class UserTest extends \OxidTestCase
 
         /** @var oxState|PHPUnit\Framework\MockObject\MockObject $oStateMock */
         $oStateMock = $this->getMock(\OxidEsales\Eshop\Application\Model\State::class, array('getTitleById'));
-
-        $oStateMock->expects($this->at(0))
+        $oStateMock
             ->method('getTitleById')
-            ->with($iStateId)
-            ->will($this->returnValue('Kalifornien'));
-
-        $oStateMock->expects($this->at(1))
-            ->method('getTitleById')
-            ->with($iAlternateStateId)
-            ->will($this->returnValue('Alaska'));
-
-        $oStateMock->expects($this->at(2))
-            ->method('getTitleById')
-            ->with($iStateId)
-            ->will($this->returnValue('California'));
-
-        $oStateMock->expects($this->at(3))
-            ->method('getTitleById')
-            ->with($iAlternateStateId)
-            ->will($this->returnValue('Alaska'));
+            ->withConsecutive([$iStateId], [$iAlternateStateId], [$iStateId], [$iAlternateStateId])
+            ->willReturnOnConsecutiveCalls(
+                'Kalifornien',
+                'Alaska',
+                'California',
+                'Alaska'
+            );
 
         /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUserMock */
         $oUserMock = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('_getStateObject', 'getStateId'));

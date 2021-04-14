@@ -509,10 +509,10 @@ class DbMetaDataHandlerTest extends \OxidTestCase
         /** @var oxDbMetaDataHandler|PHPUnit\Framework\MockObject\MockObject $oDbMeta */
         $oDbMeta = $this->getMock(\OxidEsales\Eshop\Core\DbMetaDataHandler::class, array('addNewMultilangField'));
 
-        $iIndex = 0;
-        foreach ($aTablesList as $sTableName) {
-            $oDbMeta->expects($this->at($iIndex++))->method('addNewMultilangField')->with($this->equalTo($sTableName));
-        }
+        $firstTableName = reset($aTablesList);
+        $oDbMeta
+            ->method('addNewMultilangField')
+            ->withConsecutive([$firstTableName]);
 
         $oDbMeta->addNewLangToDb();
     }
@@ -610,8 +610,12 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     {
         $oDbMeta = $this->getMock(\OxidEsales\Eshop\Core\DbMetaDataHandler::class, array('getAllTables', 'resetMultilangFields'));
         $oDbMeta->expects($this->once())->method('getAllTables')->will($this->returnValue(array("testTable1", "testTable2")));
-        $oDbMeta->expects($this->at(1))->method('resetMultilangFields')->with($this->equalTo(1), $this->equalTo("testTable1"));
-        $oDbMeta->expects($this->at(2))->method('resetMultilangFields')->with($this->equalTo(1), $this->equalTo("testTable2"));
+        $oDbMeta
+            ->method('resetMultilangFields')
+            ->withConsecutive(
+                [1, 'testTable1'],
+                [1, 'testTable2'],
+            );
 
         $oDbMeta->resetLanguage(1, "testDbMetaDataHandler");
     }
@@ -649,20 +653,21 @@ class DbMetaDataHandlerTest extends \OxidTestCase
     {
         /** @var oxDbMetaDataHandler $oHandler */
         $oHandler = $this->getMock(\OxidEsales\Eshop\Core\DbMetaDataHandler::class, array('getFields'));
-        $oHandler->expects($this->at(0))->method('getFields')->will($this->returnValue(
-            array(
-                'OXID' => 'oxarticles.OXID',
-                'OXVARNAME_1' => 'oxarticles.OXVARNAME_1',
-                'OXVARSELECT_1' => 'oxarticles.OXVARSELECT_1'
-            )
-        ));
-        $oHandler->expects($this->at(1))->method('getFields')->will($this->returnValue(
-            array(
-                'OXID' => 'oxarticles_set1.OXID',
-                'OXVARNAME_8' => 'oxarticles_set1.OXVARNAME_8',
-                'OXVARSELECT_8' => 'oxarticles_set1.OXVARSELECT_8'
-            )
-        ));
+        $oHandler
+            ->method('getFields')
+            ->willReturnOnConsecutiveCalls(
+                [
+                    'OXID' => 'oxarticles.OXID',
+                    'OXVARNAME_1' => 'oxarticles.OXVARNAME_1',
+                    'OXVARSELECT_1' => 'oxarticles.OXVARSELECT_1'
+                ],
+                [
+                    'OXID' => 'oxarticles_set1.OXID',
+                    'OXVARNAME_8' => 'oxarticles_set1.OXVARNAME_8',
+                    'OXVARSELECT_8' => 'oxarticles_set1.OXVARSELECT_8'
+                ]
+            );
+
         $aExpectedResult = array(
             'OXID' => 'oxarticles.OXID',
             'OXVARNAME' => 'oxarticles_set1.OXVARNAME_8',

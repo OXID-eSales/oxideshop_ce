@@ -119,8 +119,13 @@ class CategorySeoTest extends \OxidTestCase
         $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\CategorySeo::class, array("getEditObjectId"));
-        $oView->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue("_test1"));
-        $oView->expects($this->at(1))->method('getEditObjectId')->will($this->returnValue("_test2"));
+        $oView
+            ->method('getEditObjectId')
+            ->willReturnOnConsecutiveCalls(
+                '_test1',
+                '_test2'
+            );
+
         $this->assertTrue($oView->isEntrySuffixed());
         $this->assertFalse($oView->isEntrySuffixed());
     }

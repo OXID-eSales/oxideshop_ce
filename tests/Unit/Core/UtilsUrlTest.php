@@ -400,10 +400,16 @@ class UtilsUrlTest extends \OxidTestCase
         $oUtils = oxNew('oxUtilsUrl');
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array('getServerVar'));
-        $oUtilsServer->expects($this->at(0))->method('getServerVar')->with($this->equalTo("HTTPS"))->will($this->returnValue($sHttps));
-        $oUtilsServer->expects($this->at(1))->method('getServerVar')->with($this->equalTo("HTTP_X_FORWARDED_PROTO"))->will($this->returnValue($sHttpXForwarded));
-        $oUtilsServer->expects($this->at(2))->method('getServerVar')->with($this->equalTo("HTTP_HOST"))->will($this->returnValue($sHttpHost));
-        $oUtilsServer->expects($this->at(3))->method('getServerVar')->with($this->equalTo("REQUEST_URI"))->will($this->returnValue($sRequestUri));
+        $oUtilsServer
+            ->method('getServerVar')
+            ->withConsecutive(['HTTPS'], ['HTTP_X_FORWARDED_PROTO'], ['HTTP_HOST'], ['REQUEST_URI'])
+            ->willReturnOnConsecutiveCalls(
+                $sHttps,
+                $sHttpXForwarded,
+                $sHttpHost,
+                $sRequestUri
+            );
+
         oxTestModules::addModuleObject('oxUtilsServer', $oUtilsServer);
 
         $this->assertEquals($sResult, $oUtils->getCurrentUrl());

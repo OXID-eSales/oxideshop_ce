@@ -77,10 +77,14 @@ class UtilsServerTest extends \OxidTestCase
     public function testGetSessionCookieKey()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("isSsl"));
-        $oConfig->expects($this->at(0))->method('isSsl')->will($this->returnValue(true));
-        $oConfig->expects($this->at(1))->method('isSsl')->will($this->returnValue(false));
-        $oConfig->expects($this->at(2))->method('isSsl')->will($this->returnValue(true));
-        $oConfig->expects($this->at(3))->method('isSsl')->will($this->returnValue(false));
+        $oConfig
+            ->method('isSsl')
+            ->willReturnOnConsecutiveCalls(
+                true,
+                false,
+                true,
+                false
+            );
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("getConfig"));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
@@ -121,9 +125,7 @@ class UtilsServerTest extends \OxidTestCase
         $this->getSession()->setVariable('aSessionCookies', $aVal);
 
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array("_getSessionCookieKey", "setOxCookie"));
-        $oUtilsServer->expects($this->at(0))->method('_getSessionCookieKey')->will($this->returnValue("key"));
-        $oUtilsServer->expects($this->at(1))->method('setOxCookie')->with($this->equalTo("var1"), $this->equalTo("val1"), $this->equalTo(123), $this->equalTo("path1"), $this->equalTo("domain1"), $this->equalTo(false));
-        $oUtilsServer->expects($this->at(2))->method('setOxCookie')->with($this->equalTo("var2"), $this->equalTo("val2"), $this->equalTo(321), $this->equalTo("path2"), $this->equalTo("domain2"), $this->equalTo(false));
+        $oUtilsServer->method('_getSessionCookieKey')->will($this->returnValue("key"));
         $oUtilsServer->loadSessionCookies();
 
         $this->assertEquals(array(), oxRegistry::getSession()->getVariable('aSessionCookies'));

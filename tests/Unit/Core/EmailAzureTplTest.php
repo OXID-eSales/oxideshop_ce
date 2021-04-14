@@ -377,9 +377,9 @@ class EmailAzureTplTest extends \OxidTestCase
         $oBasket->setCost('oxdelivery', new oxPrice(6626));
 
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Model\Order::class, array("getOrderUser", "getBasket", "getPayment"));
-        $oOrder->expects($this->any())->method('getOrderUser')->will($this->returnValue($this->_oUser));
-        $oOrder->expects($this->any())->method('getBasket')->will($this->returnValue($oBasket));
-        $oOrder->expects($this->any())->method('getPayment')->will($this->returnValue($oPayment));
+        $oOrder->method('getOrderUser')->will($this->returnValue($this->_oUser));
+        $oOrder->method('getBasket')->will($this->returnValue($oBasket));
+        $oOrder->method('getPayment')->will($this->returnValue($oPayment));
 
         $oOrder->oxorder__oxbillcompany = new oxField('');
         $oOrder->oxorder__oxbillfname = new oxField('');
@@ -394,10 +394,15 @@ class EmailAzureTplTest extends \OxidTestCase
         $oShop_en->oxshops__oxordersubject = new oxField('testOrderSubject_en', oxField::T_RAW);
 
         $oEmail = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array("_getShop", "_sendMail"));
-        $oEmail->expects($this->at(0))->method('_getShop')->will($this->returnValue($this->_oShop));
-        $oEmail->expects($this->at(1))->method('_getShop')->with($this->equalTo(1))->will($this->returnValue($oShop_en));
-        $oEmail->expects($this->at(2))->method('_getShop')->will($this->returnValue($this->_oShop));
-        $oEmail->expects($this->at(3))->method('_getShop')->will($this->returnValue($this->_oShop));
+        $oEmail
+            ->method('_getShop')
+            ->willReturnOnConsecutiveCalls(
+                $this->_oShop,
+                $oShop_en,
+                $this->_oShop,
+                $this->_oShop
+            );
+
         $oEmail->expects($this->any())->method('_sendMail')->will($this->returnValue(true));
 
         $blRet = $oEmail->sendOrderEmailToOwner($oOrder);

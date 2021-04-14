@@ -1271,8 +1271,12 @@ class UtilsTest extends \OxidTestCase
     public function testProcessCache()
     {
         $oUtils = $this->getMock(\OxidEsales\Eshop\Core\Utils::class, array("getCacheMeta"));
-        $oUtils->expects($this->at(0))->method('getCacheMeta')->will($this->returnValue(false));
-        $oUtils->expects($this->at(1))->method('getCacheMeta')->will($this->returnValue(array("serialize" => false)));
+        $oUtils
+            ->method('getCacheMeta')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                ["serialize" => false]
+            );
 
         $this->assertEquals(serialize(123), $oUtils->UNITprocessCache(123, 123));
         $this->assertNotEquals(serialize(123), $oUtils->UNITprocessCache(123, 123));

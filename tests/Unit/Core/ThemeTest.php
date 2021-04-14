@@ -54,26 +54,18 @@ class ThemeTest extends \OxidTestCase
     public function testActivateMain()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('saveShopConfVar'));
-        $oConfig->expects($this->at(0))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo('str'),
-                $this->equalTo('sTheme'),
-                $this->equalTo('currentT')
-            )
-            ->will($this->returnValue(null));
+        $oConfig->method('saveShopConfVar')->will($this->returnValue(null));
 
-        $oConfig->expects($this->at(1))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo('str'),
-                $this->equalTo('sCustomTheme'),
-                $this->equalTo('')
-            )
-            ->will($this->returnValue(null));
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('checkForActivationErrors', 'getConfig', 'getInfo'));
-        $oTheme->expects($this->at(0))->method('checkForActivationErrors')->will($this->returnValue(false));
-        $oTheme->expects($this->at(1))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue(''));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('currentT'));
+        $oTheme->method('checkForActivationErrors')->will($this->returnValue(false));
+        $oTheme
+            ->method('getInfo')
+            ->withConsecutive(['parentTheme'], ['id'])
+            ->willReturnOnConsecutiveCalls(
+                '',
+                'currentT'
+            );
+
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
         $oTheme->activate();
     }
@@ -81,34 +73,24 @@ class ThemeTest extends \OxidTestCase
     public function testActivateChild()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('saveShopConfVar'));
-        $oConfig->expects($this->at(0))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo('str'),
-                $this->equalTo('sTheme'),
-                $this->equalTo('parentT')
-            )
-            ->will($this->returnValue(null));
+        $oConfig->method('saveShopConfVar')->will($this->returnValue(null));
 
-        $oConfig->expects($this->at(1))->method('saveShopConfVar')
-            ->with(
-                $this->equalTo('str'),
-                $this->equalTo('sCustomTheme'),
-                $this->equalTo('currentT')
-            )
-            ->will($this->returnValue(null));
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('checkForActivationErrors', 'getConfig', 'getInfo'));
-        $oTheme->expects($this->at(0))->method('checkForActivationErrors')->will($this->returnValue(false));
-        $oTheme->expects($this->at(1))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue('parentT'));
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
-        $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('currentT'));
+        $oTheme->method('checkForActivationErrors')->will($this->returnValue(false));
+        $oTheme
+            ->method('getInfo')
+            ->withConsecutive(['parentTheme'], ['id'])
+            ->willReturnOnConsecutiveCalls(
+                'parentT',
+                'currentT'
+            );
         $oTheme->activate();
     }
 
     public function testGetActiveThemeIdCustom()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oConfig->expects($this->at(0))->method('getConfigParam')
+        $oConfig->method('getConfigParam')
             ->with(
                 $this->equalTo('sCustomTheme')
             )
@@ -122,16 +104,14 @@ class ThemeTest extends \OxidTestCase
     public function testGetActiveThemeIdMain()
     {
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam'));
-        $oConfig->expects($this->at(0))->method('getConfigParam')
-            ->with(
-                $this->equalTo('sCustomTheme')
-            )
-            ->will($this->returnValue(''));
-        $oConfig->expects($this->at(1))->method('getConfigParam')
-            ->with(
-                $this->equalTo('sTheme')
-            )
-            ->will($this->returnValue('maint'));
+        $oConfig
+            ->method('getConfigParam')
+            ->withConsecutive(['sCustomTheme'], ['sTheme'])
+            ->willReturnOnConsecutiveCalls(
+                '',
+                'maint'
+            );
+
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getConfig'));
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $oConfig);
 
@@ -142,7 +122,7 @@ class ThemeTest extends \OxidTestCase
     public function testGetParentNull()
     {
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo'));
-        $oTheme->expects($this->any())->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue(''));
+        $oTheme->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue(''));
         $this->assertNull($oTheme->getParent());
     }
 
@@ -244,57 +224,88 @@ class ThemeTest extends \OxidTestCase
 
 
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo', 'getParent'));
-        $oTheme->expects($this->at(0))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('asd'));
-        $oTheme->expects($this->at(1))->method('getParent')->will($this->returnValue(null));
-        $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue('asd'));
+        $oTheme
+            ->method('getInfo')
+            ->withConsecutive(['id'], ['parentTheme'])
+            ->willReturnOnConsecutiveCalls(
+                'asd',
+                'asd'
+            );
+
         $this->assertEquals('EXCEPTION_PARENT_THEME_NOT_FOUND', $oTheme->checkForActivationErrors());
 
 
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo', 'getParent'));
-        $oTheme->expects($this->at(0))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('asd'));
-        $oTheme->expects($this->at(1))->method('getParent')->will($this->returnValue(null));
-        $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue(''));
+        $oTheme
+            ->method('getInfo')
+            ->withConsecutive(['id'], ['parentTheme'])
+            ->willReturnOnConsecutiveCalls(
+                'asd',
+                ''
+            );
+
         $this->assertFalse($oTheme->checkForActivationErrors());
     }
 
     public function testCheckForActivationErrorsCheckParent()
     {
         $oParent = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo'));
-        $oParent->expects($this->at(0))->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue(''));
+        $oParent->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue(''));
 
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo', 'getParent'));
-        $oTheme->expects($this->at(0))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('asd'));
-        $oTheme->expects($this->at(1))->method('getParent')->will($this->returnValue($oParent));
+        $oTheme->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('asd'));
+        $oTheme->method('getParent')->will($this->returnValue($oParent));
         $this->assertEquals('EXCEPTION_PARENT_VERSION_UNSPECIFIED', $oTheme->checkForActivationErrors());
 
         ////
         $oParent = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo'));
-        $oParent->expects($this->at(0))->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue('5'));
+        $oParent->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue('5'));
 
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo', 'getParent'));
-        $oTheme->expects($this->at(0))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('asd'));
-        $oTheme->expects($this->at(1))->method('getParent')->will($this->returnValue($oParent));
-        $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('parentVersions'))->will($this->returnValue(''));
+        $oTheme
+            ->method('getInfo')
+            ->withConsecutive(['id'], ['parentVersions'])
+            ->willReturnOnConsecutiveCalls(
+                'asd',
+                ''
+            );
+
+        $oTheme->method('getParent')->will($this->returnValue($oParent));
+
         $this->assertEquals('EXCEPTION_UNSPECIFIED_PARENT_VERSIONS', $oTheme->checkForActivationErrors());
 
         ////
         $oParent = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo'));
-        $oParent->expects($this->at(0))->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue('5'));
+        $oParent->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue('5'));
 
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo', 'getParent'));
-        $oTheme->expects($this->at(0))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('asd'));
-        $oTheme->expects($this->at(1))->method('getParent')->will($this->returnValue($oParent));
-        $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('parentVersions'))->will($this->returnValue(array(1, 2)));
+        $oTheme
+            ->method('getInfo')
+            ->withConsecutive(['id'], ['parentVersions'])
+            ->willReturnOnConsecutiveCalls(
+                'asd',
+                [1, 2]
+            );
+
+        $oTheme->method('getParent')->will($this->returnValue($oParent));
+
         $this->assertEquals('EXCEPTION_PARENT_VERSION_MISMATCH', $oTheme->checkForActivationErrors());
 
         ////
         $oParent = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo'));
-        $oParent->expects($this->at(0))->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue('5'));
+        $oParent->method('getInfo')->with($this->equalTo('version'))->will($this->returnValue('5'));
 
         $oTheme = $this->getMock(\OxidEsales\Eshop\Core\Theme::class, array('getInfo', 'getParent'));
-        $oTheme->expects($this->at(0))->method('getInfo')->with($this->equalTo('id'))->will($this->returnValue('asd'));
-        $oTheme->expects($this->at(1))->method('getParent')->will($this->returnValue($oParent));
-        $oTheme->expects($this->at(2))->method('getInfo')->with($this->equalTo('parentVersions'))->will($this->returnValue(array(1, 2, 5)));
+        $oTheme
+            ->method('getInfo')
+            ->withConsecutive(['id'], ['parentVersions'])
+            ->willReturnOnConsecutiveCalls(
+                'asd',
+                [1, 2, 5]
+            );
+
+        $oTheme->method('getParent')->will($this->returnValue($oParent));
+
         $this->assertFalse($oTheme->checkForActivationErrors());
     }
 

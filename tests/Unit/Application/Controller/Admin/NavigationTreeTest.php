@@ -306,8 +306,9 @@ class NavigationTreeTest extends \OxidTestCase
         $oDomElemFrom->attributes = array($oAttr1, $oAttr2);
 
         $oDomElemTo = $this->getMock("stdClass", array("setAttribute"));
-        $oDomElemTo->expects($this->at(0))->method('setAttribute')->with($this->equalTo('nodeName1'), $this->equalTo('nodeValue1'));
-        $oDomElemTo->expects($this->at(1))->method('setAttribute')->with($this->equalTo('nodeName2'), $this->equalTo('nodeValue2'));
+        $oDomElemTo
+            ->method('setAttribute')
+            ->withConsecutive(['nodeName1', 'nodeValue1'], ['nodeName2', 'nodeValue2']);
 
         $oNavTree = oxNew('oxnavigationtree');
         $oNavTree->UNITcopyAttributes($oDomElemTo, $oDomElemFrom);
@@ -337,8 +338,13 @@ class NavigationTreeTest extends \OxidTestCase
         $oDom->loadXML($sXml);
 
         $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("_hasGroup"));
-        $oNavTree->expects($this->at(0))->method('_hasGroup')->will($this->returnValue(false));
-        $oNavTree->expects($this->at(1))->method('_hasGroup')->will($this->returnValue(true));
+        $oNavTree
+            ->method('_hasGroup')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                true
+            );
+
         $oNavTree->UNITcheckGroups($oDom);
         $this->assertEquals(str_replace(array("\t", " ", "\n", "\r"), "", $sResXml), str_replace(array("\t", " ", "\n", "\r"), "", $oDom->saveXML()));
     }
@@ -480,8 +486,12 @@ class NavigationTreeTest extends \OxidTestCase
         $oDom->loadXML($sXml);
 
         $oNavTree = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\NavigationTree::class, array("_hasRights"));
-        $oNavTree->expects($this->at(0))->method('_hasRights')->will($this->returnValue(false));
-        $oNavTree->expects($this->at(1))->method('_hasRights')->will($this->returnValue(true));
+        $oNavTree
+            ->method('_hasRights')
+            ->willReturnOnConsecutiveCalls(
+                false,
+                true
+            );
         $oNavTree->UNITcheckRights($oDom);
         $this->assertEquals(str_replace(array("\t", " ", "\n", "\r"), "", $sResXml), str_replace(array("\t", " ", "\n", "\r"), "", $oDom->saveXML()));
     }
@@ -829,11 +839,15 @@ class NavigationTreeTest extends \OxidTestCase
         $oCurNode2->length = 1;
 
         $oXPathTo = $this->getMock("stdClass", array("query"));
-        $oXPathTo->expects($this->at(0))->method('query')->will($this->returnValue($oCurNode1));
-        $oXPathTo->expects($this->at(1))->method('query')->will($this->returnValue($oCurNode2));
+        $oXPathTo
+            ->method('query')
+            ->willReturnOnConsecutiveCalls(
+                $oCurNode1,
+                $oCurNode2
+            );
 
         $oDomDocTo = $this->getMock("stdClass", array("importNode"));
-        $oDomDocTo->expects($this->at(0))->method('importNode');
+        $oDomDocTo->expects($this->atLeastOnce())->method('importNode');
 
         $oDomElemFrom = new stdClass();
         $oDomElemFrom->childNodes = array($oNode1, $oNode2);

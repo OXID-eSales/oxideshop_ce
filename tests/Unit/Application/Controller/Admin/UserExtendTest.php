@@ -60,7 +60,7 @@ class UserExtendTest extends \OxidTestCase
         // testing..
         try {
             $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\UserExtend::class, array("_allowAdminEdit"));
-            $oView->expects($this->at(0))->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
+            $oView->expects($this->atLeastOnce())->method('_allowAdminEdit')->with($this->equalTo("testId"))->will($this->returnValue(true));
             $oView->save();
         } catch (Exception $oExcp) {
             $this->assertEquals("save", $oExcp->getMessage(), "Error in User_Extend::save()");

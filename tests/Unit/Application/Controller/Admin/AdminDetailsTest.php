@@ -247,8 +247,13 @@ class AdminDetailsTest extends \OxidTestCase
         }
 
         $oAdminDetails = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController::class, array('resetCounter'));
-        $oAdminDetails->expects($this->at(0))->method('resetCounter')->with($this->equalTo("vendorArticle"), $this->equalTo("ID1"));
-        $oAdminDetails->expects($this->at(1))->method('resetCounter')->with($this->equalTo("manufacturerArticle"), $this->equalTo("ID2"));
+        $oAdminDetails
+            ->method('resetCounter')
+            ->withConsecutive(['vendorArticle'], ['manufacturerArticle'])
+            ->willReturnOnConsecutiveCalls(
+                'ID1',
+                'ID2'
+            );
 
         $aIds = array("vendor" => array("ID1" => "1"), "manufacturer" => array("ID2" => "2"));
 

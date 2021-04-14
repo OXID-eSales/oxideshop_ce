@@ -139,26 +139,15 @@ class AddressTest extends \OxidTestCase
 
         /** @var oxState|PHPUnit\Framework\MockObject\MockObject $oStateMock */
         $oStateMock = $this->getMock(\OxidEsales\Eshop\Application\Model\State::class, array('getTitleById'));
-
-        $oStateMock->expects($this->at(0))
+        $oStateMock
             ->method('getTitleById')
-            ->with($iStateId)
-            ->will($this->returnValue('Kalifornien'));
-
-        $oStateMock->expects($this->at(1))
-            ->method('getTitleById')
-            ->with($iAlternateStateId)
-            ->will($this->returnValue('Alaska'));
-
-        $oStateMock->expects($this->at(2))
-            ->method('getTitleById')
-            ->with($iStateId)
-            ->will($this->returnValue('California'));
-
-        $oStateMock->expects($this->at(3))
-            ->method('getTitleById')
-            ->with($iAlternateStateId)
-            ->will($this->returnValue('Alaska'));
+            ->withConsecutive([$iStateId], [$iAlternateStateId], [$iStateId], [$iAlternateStateId])
+            ->willReturnOnConsecutiveCalls(
+                'Kalifornien',
+                'Alaska',
+                'California',
+                'Alaska'
+            );
 
         /** @var oxUser|PHPUnit\Framework\MockObject\MockObject $oUserMock */
         $oAddressMock = $this->getMock(\OxidEsales\Eshop\Application\Model\Address::class, array('_getStateObject', 'getStateId'));

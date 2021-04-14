@@ -61,10 +61,15 @@ class LanguageMainTest extends \OxidTestCase
         $aLangData['sslUrls'] = array(0 => "", 1 => "testBaseSslUrl");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
-        $oConfig->expects($this->at(0))->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aLanguageParams'), $this->equalTo($aLangData['params']));
-        $oConfig->expects($this->at(1))->method('saveShopConfVar')->with($this->equalTo('aarr'), $this->equalTo('aLanguages'), $this->equalTo($aLangData['lang']));
-        $oConfig->expects($this->at(2))->method('saveShopConfVar')->with($this->equalTo('arr'), $this->equalTo('aLanguageURLs'), $this->equalTo($aLangData['urls']));
-        $oConfig->expects($this->at(3))->method('saveShopConfVar')->with($this->equalTo('arr'), $this->equalTo('aLanguageSSLURLs'), $this->equalTo($aLangData['sslUrls']));
+        $oConfig
+            ->method('saveShopConfVar')
+            ->withConsecutive(
+                ['aarr', 'aLanguageParams', $aLangData['params']],
+                ['aarr', 'aLanguages', $aLangData['lang']],
+                ['arr', 'aLanguageURLs', $aLangData['urls']],
+                ['arr', 'aLanguageSSLURLs', $aLangData['sslUrls']]
+            );
+
         $oConfig->setConfigParam("blAllowSharedEdit", true);
 
         $oMainLang = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\LanguageMain::class, array("_validateInput", "getConfig", "_getLanguages"), array(), '', false);
@@ -237,7 +242,7 @@ class LanguageMainTest extends \OxidTestCase
         $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("saveShopConfVar"));
-        $oConfig->expects($this->at(0))->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(1));
+        $oConfig->expects($this->atLeastOnce())->method('saveShopConfVar')->with($this->equalTo('str'), $this->equalTo('sDefaultLang'), $this->equalTo(1));
 
         /** @var MockObject|Language_Main $oView */
         $oView = $this->getMock($this->getProxyClassName('Language_Main'), array("getConfig"), array(), '', false);

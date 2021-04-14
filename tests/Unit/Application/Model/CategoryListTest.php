@@ -848,12 +848,12 @@ class CategoryListTest extends \OxidTestCase
     public function testBuildTree()
     {
         $oCatList = $this->getMock($this->classForMock, array('load', '_ppRemoveInactiveCategories', '_ppAddPathInfo', '_ppAddContentCategories', '_ppBuildTree', '_ppLoadFullCategory'));
-        $oCatList->expects($this->at(0))->method('load');
-        $oCatList->expects($this->at(1))->method('_ppRemoveInactiveCategories');
-        $oCatList->expects($this->at(2))->method('_ppLoadFullCategory');
-        $oCatList->expects($this->at(3))->method('_ppAddPathInfo');
-        $oCatList->expects($this->at(4))->method('_ppAddContentCategories');
-        $oCatList->expects($this->at(5))->method('_ppBuildTree');
+        $oCatList->expects($this->atLeastOnce())->method('load');
+        $oCatList->expects($this->atLeastOnce())->method('_ppRemoveInactiveCategories');
+        $oCatList->expects($this->atLeastOnce())->method('_ppLoadFullCategory');
+        $oCatList->expects($this->atLeastOnce())->method('_ppAddPathInfo');
+        $oCatList->expects($this->atLeastOnce())->method('_ppAddContentCategories');
+        $oCatList->expects($this->atLeastOnce())->method('_ppBuildTree');
 
         $oCatList->buildTree($this->_sActCat, false, false);
 

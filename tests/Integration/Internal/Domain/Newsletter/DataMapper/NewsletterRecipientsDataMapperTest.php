@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Newsletter
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Bridge\NewsletterRecipientsDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataObject\NewsletterRecipient;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -30,13 +29,22 @@ class NewsletterRecipientsDataMapperTest extends TestCase
 
         $mappedArray = [
             [
-                NewsletterRecipientsDataMapper::SALUTATION           => "MR",
-                NewsletterRecipientsDataMapper::FIRST_NAME           => "John",
-                NewsletterRecipientsDataMapper::LAST_NAME            => "Doe",
-                NewsletterRecipientsDataMapper::EMAIL                => "admin",
-                NewsletterRecipientsDataMapper::OPT_IN_STATE         => "subscribed",
-                NewsletterRecipientsDataMapper::COUNTRY              => "Deutschland",
-                NewsletterRecipientsDataMapper::ASSIGNED_USER_GROUPS => "Auslandskunde,Shop-Admin"
+                NewsletterRecipientsDataMapper::SALUTATION,
+                NewsletterRecipientsDataMapper::FIRST_NAME,
+                NewsletterRecipientsDataMapper::LAST_NAME,
+                NewsletterRecipientsDataMapper::EMAIL,
+                NewsletterRecipientsDataMapper::OPT_IN_STATE,
+                NewsletterRecipientsDataMapper::COUNTRY,
+                NewsletterRecipientsDataMapper::ASSIGNED_USER_GROUPS,
+            ],
+            [
+                "MR",
+                "John",
+                "Doe",
+                "admin",
+                "subscribed",
+                "Deutschland",
+                "Shop-Admin,Auslandskunde"
             ]
         ];
 

@@ -25,15 +25,26 @@ class NewsletterRecipientsDaoTest extends TestCase
             $this->get(NewsletterRecipientsDaoInterface::class)->getNewsletterRecipients(1)
         );
 
-        $this->assertContains(
+        $this->assertEquals(
             [
-                NewsletterRecipientsDataMapper::SALUTATION           => "MR",
-                NewsletterRecipientsDataMapper::FIRST_NAME           => "John",
-                NewsletterRecipientsDataMapper::LAST_NAME            => "Doe",
-                NewsletterRecipientsDataMapper::EMAIL                => "admin",
-                NewsletterRecipientsDataMapper::OPT_IN_STATE         => "subscribed",
-                NewsletterRecipientsDataMapper::COUNTRY              => "Deutschland",
-                NewsletterRecipientsDataMapper::ASSIGNED_USER_GROUPS => "Auslandskunde,Shop-Admin"
+                [
+                    NewsletterRecipientsDataMapper::SALUTATION,
+                    NewsletterRecipientsDataMapper::FIRST_NAME,
+                    NewsletterRecipientsDataMapper::LAST_NAME,
+                    NewsletterRecipientsDataMapper::EMAIL,
+                    NewsletterRecipientsDataMapper::OPT_IN_STATE,
+                    NewsletterRecipientsDataMapper::COUNTRY,
+                    NewsletterRecipientsDataMapper::ASSIGNED_USER_GROUPS,
+                ],
+                [
+                    "MR",
+                    "John",
+                    "Doe",
+                    "admin",
+                    "subscribed",
+                    "Deutschland",
+                    "Shop-Admin,Auslandskunde"
+                ]
             ],
             $recipientsList
         );

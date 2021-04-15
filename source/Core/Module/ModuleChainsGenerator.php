@@ -272,7 +272,7 @@ class ModuleChainsGenerator
     {
         $moduleId = "(module id not availible)";
         if (class_exists("\OxidEsales\Eshop\Core\Module\Module", false)) {
-            $module = oxNew(\OxidEsales\Eshop\Core\Module\Module::class);
+            $module = new \OxidEsales\Eshop\Core\Module\Module();
             $moduleId = $module->getIdByPath($moduleClass);
         }
         $message = sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);

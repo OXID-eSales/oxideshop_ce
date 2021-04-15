@@ -736,7 +736,6 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\InputException $oEx) {
             Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
-            Registry::getUtilsView()->addErrorToDisplay($oEx, false, true, 'input_not_all_fields');
 
             return;
         } catch (\OxidEsales\Eshop\Core\Exception\ConnectionException $oEx) {

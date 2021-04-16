@@ -1,14 +1,15 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
-use \oxFileException;
-use \Exception;
-use \oxRegistry;
-use \oxTestModules;
+use Exception;
+use oxRegistry;
+use oxTestModules;
 
 class UtilsFileTest extends \OxidTestCase
 {
@@ -249,16 +250,6 @@ class UtilsFileTest extends \OxidTestCase
         $oUtilsFile = oxNew('oxUtilsFile');
         $this->assertEquals("", $oUtilsFile->readRemoteFileAsString(getShopBasePath() . time()));
         $this->assertEquals("<?php", substr($oUtilsFile->readRemoteFileAsString(getShopBasePath() . "index.php"), 0, 5));
-    }
-
-
-    public function testHandleUploadedWrongFileType()
-    {
-        $aFiles['name'] = 'testfile';
-        $aFiles['tmp_name'] = 'testfile';
-
-        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
-        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->handleUploadedFile($aFiles, '/out/media/');
     }
 
     public function testProcessFileEmpty()

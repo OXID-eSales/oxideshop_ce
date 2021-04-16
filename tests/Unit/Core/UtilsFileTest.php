@@ -196,16 +196,6 @@ class UtilsFileTest extends \OxidTestCase
         $this->assertEquals("<?php", substr($oUtilsFile->readRemoteFileAsString(getShopBasePath() . "index.php"), 0, 5));
     }
 
-
-    public function testHandleUploadedWrongFileType()
-    {
-        $aFiles['name'] = 'testfile';
-        $aFiles['tmp_name'] = 'testfile';
-
-        $this->expectException('OxidEsales\EshopCommunity\Core\Exception\StandardException');
-        \OxidEsales\Eshop\Core\Registry::getUtilsFile()->handleUploadedFile($aFiles, '/out/media/');
-    }
-
     public function testProcessFileEmpty()
     {
         $this->expectException('OxidEsales\EshopCommunity\Core\Exception\StandardException');

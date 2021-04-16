@@ -29,13 +29,17 @@ class MasterImageHandler implements ImageHandlerInterface
         $this->context = $context;
     }
 
+    /** @inheritDoc */
     public function copy(string $source, string $destination): void
     {
         $destinationPath = $this->getAbsolutePath($destination);
+        $destinationDirectory = \dirname($destinationPath);
+        $this->filesystem->mkdir($destinationDirectory, 0744);
         $this->filesystem->copy($source, $destinationPath, true);
         $this->filesystem->chmod($destinationPath, 0644);
     }
 
+    /** @inheritDoc */
     public function upload(string $source, string $destination): void
     {
         $destinationPath = $this->getAbsolutePath($destination);
@@ -47,16 +51,22 @@ class MasterImageHandler implements ImageHandlerInterface
         $this->filesystem->chmod($destinationPath, 0644);
     }
 
+    /** @inheritDoc */
     public function remove(string $path): void
     {
         $this->filesystem->remove($this->getAbsolutePath($path));
     }
 
+    /** @inheritDoc */
     public function exists(string $path): bool
     {
         return $this->filesystem->exists($this->getAbsolutePath($path));
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
     private function getAbsolutePath(string $path): string
     {
         return Path::join($this->context->getSourcePath(), $path);

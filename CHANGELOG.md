@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Example dist files for translations in Application/translations folder [PR-826](https://github.com/OXID-eSales/oxideshop_ce/pull/826)
 - Support for single language map file in translations directory [PR-449](https://github.com/OXID-eSales/oxideshop_ce/pull/449).
 - Setting tracking URL per Shipping Method
+- Possibility to switch file storage for uploaded files by implementing `OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface`
 - Add functionality to export newsletter recipients in Admin area
 
 ### Changed
@@ -42,6 +43,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Change default value for `oxpublic` field in `oxuserbaskets` table from `1` to `0`
 - Don't copy module files to the `source/modules` directory
 - Copy module assets to the shop out directory
+- Method `OxidEsales\EshopCommunity\Core\UtilsFile::processFiles` will try to store files externally if alternative image URL is configured
 - Updated a list of bots (aRobots array in config) [PR-853](https://github.com/OXID-eSales/oxideshop_ce/pull/853)
 - Throw exception in getLanguageAbbr method if no abbreviation is available by specific id [PR-802](https://github.com/OXID-eSales/oxideshop_ce/pull/802)
 

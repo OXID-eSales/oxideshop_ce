@@ -45,9 +45,15 @@ class ModuleFilesInstaller implements ModuleFilesInstallerInterface
      */
     public function install(OxidEshopPackage $package): void
     {
+        $symlinkFile = $this->getModuleAssetsPath($package);
+        $modulesAssetsDirectory = Path::getDirectory($symlinkFile);
+        $relativePathToPackageAssets = Path::makeRelative(
+            Path::join($package->getPackagePath(), '/assets'),
+            $modulesAssetsDirectory
+        );
         $this->fileSystemService->symlink(
-            Path::join($package->getPackagePath(), 'assets'),
-            $this->getModuleAssetsPath($package),
+            $relativePathToPackageAssets,
+            $symlinkFile,
             true
         );
     }

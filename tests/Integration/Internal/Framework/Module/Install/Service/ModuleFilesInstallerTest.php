@@ -23,6 +23,13 @@ final class ModuleFilesInstallerTest extends TestCase
     private $modulePackagePath = __DIR__ . '/../../TestData/TestModule';
     private $packageName = 'TestModule';
 
+    protected function tearDown(): void
+    {
+        $this->cleanupTestData();
+
+        parent::tearDown();
+    }
+
     public function testModuleNotInstalledByDefault(): void
     {
         $installer = $this->getFilesInstaller();
@@ -66,6 +73,16 @@ final class ModuleFilesInstallerTest extends TestCase
         $this->assertFalse($installer->isInstalled($package));
     }
 
+    public function testInstallCreatesRelativeSymlink(): void
+    {
+        $installer = $this->getFilesInstaller();
+        $package = $this->createPackage();
+
+        $installer->install($package);
+
+        $this->assertTrue(Path::isRelative(readlink($this->getTestModuleAssetsPath())));
+    }
+
     private function getFilesInstaller(): ModuleFilesInstallerInterface
     {
         return $this->get(ModuleFilesInstallerInterface::class);
@@ -83,5 +100,10 @@ final class ModuleFilesInstallerTest extends TestCase
             'modules',
             'test-module'
         );
+    }
+
+    private function cleanupTestData(): void
+    {
+        $this->getFilesInstaller()->uninstall($this->createPackage());
     }
 }

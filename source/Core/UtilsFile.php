@@ -350,7 +350,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sTarget file location
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "copyFile" in next major
+     * @deprecated method will be removed in next major
      */
     protected function _copyFile($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
@@ -377,7 +377,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * @param string $sTarget image copy location
      *
      * @return bool
-     * @deprecated underscore prefix violates PSR12, will be renamed to "moveImage" in next major
+     * @deprecated method will be removed in next major
      */
     protected function _moveImage($sSource, $sTarget) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {

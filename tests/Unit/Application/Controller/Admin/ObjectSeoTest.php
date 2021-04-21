@@ -229,28 +229,6 @@ class ObjectSeoTest extends \OxidTestCase
     }
 
     /**
-     * Object_Seo::isEntryFixed() test case
-     *
-     * @return null
-     */
-    public function isEntryFixed()
-    {
-        $ShopId = $this->getConfig()->getShopId();
-        $iLang = 0;
-        $sQ = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed ) values
-                                 ( 'objectid', 'ident', '{$ShopId}', '{$iLang}', 'stdurl', 'seourl', 'type', 1 )";
-        oxDb::getDb()->execute($sQ);
-
-
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo::class, array("getEditObjectId"));
-        $oView->expects($this->at(0))->method('getEditObjectId')->will($this->returnValue("objectid"));
-        $oView->expects($this->at(1))->method('getEditObjectId')->will($this->returnValue("notexistingobjectid"));
-
-        $this->assertTrue($oView->isEntryFixed());
-        $this->assertFalse($oView->isEntryFixed());
-    }
-
-    /**
      * Object_Seo::getActCatType() test case
      *
      * @return null

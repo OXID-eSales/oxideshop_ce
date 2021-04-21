@@ -243,50 +243,6 @@ final class DynImgGeneratorTest extends \OxidTestCase
         ];
     }
 
-    public function __testGenerateImageFromSource(): void
-    {
-        $oGen = $this->getMock(\OxidEsales\Eshop\Core\DynamicImageGenerator::class, [
-            '_getImageType',
-            '_generatePng',
-            '_generateJpg',
-            '_generateGif',
-            '_getImageUri',
-            'validateGdVersion',
-            'validateFileExist',
-            '_isTargetPathValid',
-            'validateImageFileExtension'
-        ]);
-        $oGen->expects($this->any())->method('validateGdVersion')->will($this->returnValue(true));
-        $oGen->expects($this->any())->method('validateFileExist')->will($this->returnValue(true));
-        $oGen->expects($this->any())->method('_isTargetPathValid')->will($this->returnValue(true));
-        $oGen->expects($this->any())->method('validateImageFileExtension')->with('jpg')->will($this->returnValue(true));
-
-        $oGen->expects($this->at(0))->method('_getImageType')->will($this->returnValue("png"));
-        $oGen->expects($this->at(1))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.png"));
-        $oGen->expects($this->at(2))->method('_generatePng')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.png"));
-
-        $oGen->expects($this->at(3))->method('_getImageType')->will($this->returnValue("jpeg"));
-        $oGen->expects($this->at(4))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpg"));
-        $oGen->expects($this->at(5))->method('_generateJpg')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.jpg"));
-
-        $oGen->expects($this->at(6))->method('_getImageType')->will($this->returnValue("jpeg"));
-        $oGen->expects($this->at(7))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.jpeg"));
-        $oGen->expects($this->at(8))->method('_generateJpg')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.jpg"));
-
-        $oGen->expects($this->at(9))->method('_getImageType')->will($this->returnValue("gif"));
-        $oGen->expects($this->at(10))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/test.gif"));
-        $oGen->expects($this->at(11))->method('_generateGif')->with($this->equalTo("source"), $this->equalTo("target"), $this->equalTo("12"), $this->equalTo("12"))->will($this->returnValue("test.gif"));
-
-        $oGen->expects($this->at(12))->method('_getImageType')->will($this->returnValue("unknown"));
-        $oGen->expects($this->at(13))->method('_getImageUri')->will($this->returnValue("/test1/test2/test3/12_12_12/unknown"));
-
-        $this->assertEquals("test.png", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
-        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
-        $this->assertEquals("test.jpg", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
-        $this->assertEquals("test.gif", $oGen->UNITgenerateImage("source.jpg", "target.jpg"));
-        $this->assertFalse($oGen->UNITgenerateImage("source.jpg", "target.jpg"));
-    }
-
     public function testGenerateImageGdVersionValidation(): void
     {
         $oGen = $this->getMock(DynamicImageGenerator::class, ['validateGdVersion']);

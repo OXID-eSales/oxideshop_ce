@@ -132,13 +132,13 @@ class ShopSeoTest extends \OxidTestCase
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ShopSeo::class, array("_cleanupUrl"));
         $oView
             ->method('_cleanupUrl')
-            ->willReturnOnConsecutiveCalls(
-                'stdurl',
-                'seourl1;',
-                'seourl2'
+            ->withConsecutive(
+                ['stdurl'],
+                ['seourl1'],
+                ['seourl2']
             );
 
-        $aUrls = $oView->UNITprocessUrls($aUrls);
+        $oView->UNITprocessUrls($aUrls);
     }
 
     /**

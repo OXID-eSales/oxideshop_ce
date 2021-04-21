@@ -30,10 +30,10 @@ class ClearcookiesTest extends \OxidTestCase
         $oUtilsServer = $this->getMock(\OxidEsales\Eshop\Core\UtilsServer::class, array('setOxCookie'));
         $oUtilsServer
             ->method('setOxCookie')
-            ->willReturnOnConsecutiveCalls(
-                'shop',
-                'language',
-                'displayedCookiesNotification'
+            ->withConsecutive(
+                ['shop'],
+                ['language'],
+                ['displayedCookiesNotification']
             );
 
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\UtilsServer::class, $oUtilsServer);

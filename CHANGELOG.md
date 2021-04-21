@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Use not extended OxidEsales\Eshop\Core\Module\Module in module chain generator error case. [PR-863](https://github.com/OXID-eSales/oxideshop_ce/pull/863)
 - Remove duplicated/redundant error message in case of InputException in UserComponent. [PR-713](https://github.com/OXID-eSales/oxideshop_ce/pull/713)
+- Docblock in SystemInfoController. [PR-864](https://github.com/OXID-eSales/oxideshop_ce/pull/864)
 
 ## [6.8.0] - 2021-04-13
 

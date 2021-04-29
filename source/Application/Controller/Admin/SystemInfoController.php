@@ -12,8 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 
 /**
  * Admin systeminfo manager.
- * Returns template, that arranges two other templates ("delivery_list.tpl"
- * and "delivery_main.tpl") to frame.
+ * Returns template "systeminfo.tpl" and phphinfo() result to frame.
  */
 class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
 {

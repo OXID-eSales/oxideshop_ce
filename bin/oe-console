@@ -6,6 +6,7 @@
  */
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Executor;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -54,6 +55,7 @@ foreach ($container->getParameter('console.command.ids') as $id) {
 
 $application = new Application();
 $application->setCommandLoader($commandLoader);
+$application->setDispatcher($container->get(EventDispatcherInterface::class));
 $application->addCommands(
     $idCommands
 );

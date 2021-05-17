@@ -44,7 +44,7 @@
         "incenteev/composer-parameter-handler": "2.1.x-dev",
         "oxid-esales/oxideshop-ide-helper": "dev-master",
         "oxid-esales/azure-theme": "dev-master",
-        "oxid-esales/testing-library": "dev-master",
+        "oxid-esales/testing-library": "dev-master-update_to_php8-OXDEV-4533",
         "squizlabs/php_codesniffer": "^3.5.4",
         "composer/composer": "^1",
         "vimeo/psalm": "^4.4.1"

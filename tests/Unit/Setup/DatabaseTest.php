@@ -193,9 +193,6 @@ final class DatabaseTest extends \OxidTestCase
      */
     public function testSaveShopSettings(): void
     {
-        $utils = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Utilities', array("generateUid"));
-        $utils->method("generateUid")->will($this->returnValue("testid"));
-
         $session = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', array("setSessionParam", "getSessionParam"), array(), '', null);
 
         $map = array(
@@ -207,23 +204,28 @@ final class DatabaseTest extends \OxidTestCase
         } else {
             $map[] = array('send_technical_information_to_oxid', false);
         }
-        $session->method("getSessionParam")->will($this->returnValueMap($map));
+        $session->method("getSessionParam")->willReturnMap($map);
 
 
         $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
-        $setup->method("getShopId");
+        $setup->method("getShopId")->willReturn(1);
 
         /** @var Mock $database */
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
         $map = array(
-            array('Utilities', $utils),
+            array('Utilities', new Utilities()),
             array('Session', $session),
             array('Setup', $setup)
         );
-        $database->method("getInstance")->will($this->returnValueMap($map));
-        $database->method("getConnection")->will($this->returnValue($this->createConnection()));
+        $database->method("getInstance")->willReturnMap($map);
+        $database->method("getConnection")->willReturn($this->createConnection());
 
-        $database->saveShopSettings(array());
+        $database->saveShopSettings(
+            [
+                'check_for_updates' => false,
+                'sShopLang' => 'English'
+            ]
+        );
     }
 
 
@@ -231,12 +233,12 @@ final class DatabaseTest extends \OxidTestCase
     {
         // change aLanguageParams value
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("getConnection"));
-        $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
+        $database->method("getConnection")->willReturn($this->createConnection());
         $database->execSql("update oxconfig SET OXVARVALUE='test' where oxvarname='aLanguageParams'");
 
         // saveShopSettings
         $utils = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Utilities', array("generateUid"));
-        $utils->expects($this->any())->method("generateUid")->will($this->returnValue("testid"));
+        $utils->method("generateUid")->willReturn("testid");
 
         $session = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Session', array("setSessionParam", "getSessionParam"), array(), '', null);
 
@@ -249,11 +251,11 @@ final class DatabaseTest extends \OxidTestCase
         } else {
             $map[] = array('send_technical_information_to_oxid', false);
         }
-        $session->expects($this->any())->method("getSessionParam")->will($this->returnValueMap($map));
+        $session->method("getSessionParam")->willReturnMap($map);
 
 
         $setup = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Setup', array("getShopId"));
-        $setup->expects($this->any())->method("getShopId")->will($this->returnValue(1));
+        $setup->method("getShopId")->willReturn(1);
 
         $database = $this->getMock('OxidEsales\\EshopCommunity\\Setup\\Database', array("execSql", "getInstance", "getConnection"));
         $map = array(
@@ -261,11 +263,16 @@ final class DatabaseTest extends \OxidTestCase
             array('Session', $session),
             array('Setup', $setup)
         );
-        $database->expects($this->any())->method("getInstance")->will($this->returnValueMap($map));
-        $database->expects($this->any())->method("getConnection")->will($this->returnValue($this->createConnection()));
+        $database->method("getInstance")->willReturnMap($map);
+        $database->method("getConnection")->willReturn($this->createConnection());
 
         $this->expectException(LanguageParamsException::class);
-        $database->saveShopSettings(array());
+        $database->saveShopSettings(
+            [
+                'check_for_updates' => false,
+                'sShopLang'         => 'English'
+            ]
+        );
     }
 
     /**

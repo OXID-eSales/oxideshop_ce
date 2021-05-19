@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\acceptance;
 
 use OxidEsales\Codeception\Module\Translation\Translator;
+use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\AcceptanceTester;
 
 final class PrivateSalesBasketCest
@@ -81,20 +82,26 @@ final class PrivateSalesBasketCest
         $I->updateConfigInDatabase('iPsBasketReservationTimeout', '10', 'str');
 
         $I->clearShopCache();
-        $homePage = $I->openShop();
 
-        $homePage->openCategoryPage('Test category 0 [EN] šÄßüл')
-            ->openDetailsPage(1)
-            ->addProductToBasket(2);
+        $productNavigation = new ProductNavigation($I);
 
-        $homePage->seeCountdownWithinBasket();
+        $productData = [
+            'id' => '1000',
+            'title' => 'Test product 0 [EN] šÄßüл',
+            'description' => 'Test product 0 short desc [EN] šÄßüл',
+            'price' => '50,00 € *'
+        ];
+
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+
+        $I->see($productData['title']);
+
+        $detailsPage->addProductToBasket(2)->seeCountdownWithinBasket();
 
         $I->openShop()->searchFor('1000');
         $I->see(Translator::translate('NO_ITEMS_FOUND'));
         //we need to wait for the timeout
-        $I->wait(10);
-
-        $I->dontSee("expired products are still visible in basket popup...", "modalbasketFlyout");
+        $I->wait(12);
 
         $homePage = $I->openShop();
         $homePage->checkBasketEmpty();

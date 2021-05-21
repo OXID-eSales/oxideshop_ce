@@ -154,7 +154,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
     protected function fetchExistsActivePromotion()
     {
         $query = "select 1 from " . getViewName('oxactions') . " 
-            where oxtypex = :oxtype and oxactive = :oxactive and oxshopid = :oxshopid 
+            where oxtype = :oxtype and oxactive = :oxactive and oxshopid = :oxshopid 
             limit 1";
 
         return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [

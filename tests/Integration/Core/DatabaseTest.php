@@ -174,17 +174,6 @@ class DatabaseTest extends UnitTestCase
     /**
      * Test default connection encoding is utf8
      */
-    public function testDefaultDatabaseConnectionEncoding()
-    {
-        $connection = DatabaseProvider::getDb();
-
-        $result = $connection->getRow("SHOW VARIABLES LIKE  'character_set_connection';");
-        $this->assertSame("utf8", $result[1]);
-    }
-
-    /**
-     * Test default connection encoding is utf8
-     */
     public function testSpecificDatabaseConnectionEncoding()
     {
         $configFile = Registry::get(ConfigFile::class);

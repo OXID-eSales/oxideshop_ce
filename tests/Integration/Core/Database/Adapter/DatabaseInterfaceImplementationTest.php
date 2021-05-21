@@ -1133,26 +1133,6 @@ abstract class DatabaseInterfaceImplementationTest extends DatabaseInterfaceImpl
         $this->assertEquals(array(self::FIXTURE_OXID_1, self::FIXTURE_OXUSERID_1), $result);
     }
 
-    public function testCharsetIsUtf8()
-    {
-        $character_set = 'utf8';
-
-        $configFile = Registry::get('oxConfigFile');
-        $this->resetDbProperty(oxDb::getInstance());
-        $database = oxDb::getInstance();
-        $database->setConfigFile($configFile);
-        $databaseConnection = $database::getDb(oxDb::FETCH_MODE_ASSOC);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_client\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_results\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_results is ' . $character_set);
-
-        $actualResult = $databaseConnection->getRow('SHOW VARIABLES LIKE \'character_set_connection\'');
-        $this->assertEquals($character_set, $actualResult['Value'], 'As shop is in utf-8 mode, character_set_client is ' . $character_set);
-    }
-
     public function testMetaColumnsMethod()
     {
         $metaColumnsTestTable = self::TABLE_NAME . '_testmetacolumns';

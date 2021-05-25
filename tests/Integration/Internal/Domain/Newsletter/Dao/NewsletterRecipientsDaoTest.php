@@ -68,7 +68,7 @@ class NewsletterRecipientsDaoTest extends TestCase
                 ],
                 [
                     "MR",
-                    "John",
+                    "christine's welt\"",
                     "Doe",
                     "test_user@test.com",
                     "subscribed",
@@ -155,7 +155,7 @@ class NewsletterRecipientsDaoTest extends TestCase
                 'id'    => $shopAdapter->generateUniqueId(),
                 'userId' => $testUserId,
                 'sal' => "MR",
-                'fistname' => "John",
+                'fistname' => "christine&#039;s welt&quot;",
                 'lastname' => "Doe",
                 'email' => "test_user@test.com",
                 'otpInState' => "1",

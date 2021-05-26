@@ -1,23 +1,26 @@
 <?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
 
-use \oxcmp_user;
-use \Exception;
-use \oxField;
+use Exception;
+use oxcmp_user;
+use oxDb;
+use oxException;
+use oxField;
 use OxidEsales\Eshop\Application\Component\UserComponent;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
-use \oxUser;
-use \oxException;
-use \oxDb;
-use \oxRegistry;
-use \oxTestModules;
+use oxRegistry;
+use oxTestModules;
+use oxUser;
 
 class modcmp_user_parent
 {
@@ -1667,6 +1670,37 @@ class UserComponentTest extends \OxidTestCase
         $userComponent->deleteShippingAddress();
 
         $this->assertSame($isPossibleToLoadAddressAfterDeletion, oxNew(Address::class)->load($addressId));
+    }
+
+    public function testGetLogoutLinkWithUnsecureLocationInRequestWillReturnLocalTemplateName(): void
+    {
+        $unsecureLocation = '/some/unsecure/location';
+        $templateName = 'start.tpl';
+        $remoteUrl = "$unsecureLocation/$templateName";
+        $userComponent = $this->createPartialMock(modcmp_user::class, [
+            'getConfig',
+        ]);
+        $configMock = $this->createMock(Config::class);
+        $configMock->method('getRequestParameter')
+            ->withConsecutive(
+                ['anid'],
+                ['cnid'],
+                ['mnid'],
+                ['tpl']
+            )
+            ->willReturnOnConsecutiveCalls(
+                null,
+                null,
+                null,
+                $remoteUrl
+            );
+        $userComponent->method('getConfig')
+            ->willReturn($configMock);
+
+        $logoutLink = $userComponent->getLogoutLink();
+
+        $this->assertStringContainsString($templateName, $logoutLink);
+        $this->assertStringNotContainsString($unsecureLocation, $logoutLink);
     }
 
     /**

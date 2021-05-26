@@ -26,9 +26,6 @@ class SettingDaoTest extends TestCase
 {
     use ContainerTrait;
 
-    /**
-     * @expectedException \Exception
-     */
     public function testRollbackTransactionOnSave()
     {
         $this->expectException(\Exception::class);

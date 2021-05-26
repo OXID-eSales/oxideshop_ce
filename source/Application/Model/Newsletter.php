@@ -13,6 +13,7 @@ use oxDb;
 use OxidEsales\Eshop\Application\Model\User;
 
 /**
+ * @deprecated Functionality for Newsletter management will be removed.
  * Newsletter manager.
  * Performs creation of newsletter text, assign newsletter to user groups,
  * deletes and etc.

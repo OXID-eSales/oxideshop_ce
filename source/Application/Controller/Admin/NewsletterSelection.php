@@ -11,6 +11,7 @@ use oxRegistry;
 use oxDb;
 
 /**
+ * @deprecated Functionality for Newsletter management will be removed.
  * Newsletter user group selection manager.
  * Adds/removes chosen user group to/from newsletter mailing.
  * Admin Menu: Customer Info -> Newsletter -> Selection.

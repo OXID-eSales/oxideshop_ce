@@ -26,6 +26,7 @@ class AccountNewsletterController extends \OxidEsales\Eshop\Application\Controll
     protected $_sThisTemplate = 'page/account/newsletter.tpl';
 
     /**
+     * @deprecated Property is not used and will be removed.
      * Whether the newsletter option had been changed.
      *
      * @var bool

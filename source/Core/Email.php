@@ -854,6 +854,7 @@ class Email extends PHPMailer
     }
 
     /**
+     * @deprecated Functionality for Newsletter management will be removed.
      * Sets mailer additional settings and sends "newsletter" mail to user.
      * Returns true on success.
      *

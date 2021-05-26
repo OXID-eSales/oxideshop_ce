@@ -13,6 +13,8 @@ use oxRegistry;
  * Admin article main newsletter manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer Info -> Newsletter -> Main.
+ *
+ * @deprecated Will be removed in next major
  */
 class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {
@@ -47,6 +49,7 @@ class NewsletterMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     }
 
     /**
+     * @deprecated Functionality for Newsletter management will be removed.
      * Saves newsletter HTML format text.
      */
     public function save()

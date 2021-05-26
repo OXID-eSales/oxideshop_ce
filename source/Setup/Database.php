@@ -369,11 +369,11 @@ class Database extends Core
         $this->execSql("delete from oxconfig where oxvarname = 'blSendShopDataToOxid'");
         $this->execSql(
             "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                             values(':oxid', ':oxshopid', 'blSendShopDataToOxid', 'bool', ':oxvarvalue')",
+                             values(:oxid, :oxshopid, 'blSendShopDataToOxid', 'bool', :oxvarvalue)",
             [
-                "oxid" => $sID,
-                "oxshopid" => $baseShopId,
-                "oxvarvalue" => $blSendShopDataToOxid
+                ":oxid" => $sID,
+                ":oxshopid" => $baseShopId,
+                ":oxvarvalue" => (bool) $blSendShopDataToOxid
             ]
         );
     }

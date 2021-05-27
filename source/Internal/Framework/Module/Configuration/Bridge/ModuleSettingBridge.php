@@ -32,21 +32,14 @@ class ModuleSettingBridge implements ModuleSettingBridgeInterface
      */
     private $settingDao;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
     public function __construct(
         ContextInterface $context,
         ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        SettingDaoInterface $settingDao,
-        EventDispatcherInterface $eventDispatcher
+        SettingDaoInterface $settingDao
     ) {
         $this->context = $context;
         $this->moduleConfigurationDao = $moduleConfigurationDao;
         $this->settingDao = $settingDao;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -61,15 +54,6 @@ class ModuleSettingBridge implements ModuleSettingBridgeInterface
         $setting->setValue($value);
         $this->settingDao->save($setting, $moduleId, $this->context->getCurrentShopId());
         $this->moduleConfigurationDao->save($moduleConfiguration, $this->context->getCurrentShopId());
-
-        $this->eventDispatcher->dispatch(
-            new SettingChangedEvent(
-                $name,
-                $this->context->getCurrentShopId(),
-                $moduleId
-            ),
-            SettingChangedEvent::NAME
-        );
     }
 
     /**

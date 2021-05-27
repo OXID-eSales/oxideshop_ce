@@ -10,11 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Event\SettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\TransactionServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use function is_string;
 
@@ -46,24 +48,32 @@ class SettingDao implements SettingDaoInterface
     private $transactionService;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @param QueryBuilderFactoryInterface $queryBuilderFactory
      * @param ContextInterface             $context
      * @param ShopSettingEncoderInterface  $shopSettingEncoder
      * @param ShopAdapterInterface         $shopAdapter
      * @param TransactionServiceInterface  $transactionService
+     * @param EventDispatcherInterface     $eventDispatcher
      */
     public function __construct(
         QueryBuilderFactoryInterface $queryBuilderFactory,
         ContextInterface $context,
         ShopSettingEncoderInterface $shopSettingEncoder,
         ShopAdapterInterface $shopAdapter,
-        TransactionServiceInterface $transactionService
+        TransactionServiceInterface $transactionService,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->context = $context;
         $this->shopSettingEncoder = $shopSettingEncoder;
         $this->shopAdapter = $shopAdapter;
         $this->transactionService = $transactionService;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -88,6 +98,8 @@ class SettingDao implements SettingDaoInterface
             $this->saveDataToOxConfigDisplayTable($moduleSetting, $moduleId);
 
             $this->transactionService->commit();
+
+            $this->dispatchEvent($moduleSetting, $moduleId, $shopId);
         } catch (\Throwable $throwable) {
             $this->transactionService->rollback();
             throw $throwable;
@@ -319,5 +331,22 @@ class SettingDao implements SettingDaoInterface
     private function getPrefixedModuleId(string $moduleId): string
     {
         return 'module:' . $moduleId;
+    }
+
+    /**
+     * @param Setting $shopModuleSetting
+     * @param string  $moduleId
+     * @param int     $shopId
+     */
+    private function dispatchEvent(Setting $shopModuleSetting, string $moduleId, int $shopId)
+    {
+        $this->eventDispatcher->dispatch(
+            SettingChangedEvent::NAME,
+            new SettingChangedEvent(
+                $shopModuleSetting->getName(),
+                $shopId,
+                $moduleId
+            )
+        );
     }
 }

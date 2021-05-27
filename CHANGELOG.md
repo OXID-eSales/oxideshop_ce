@@ -329,6 +329,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Remove duplicated/redundant error message in case of InputException in UserComponent. [PR-713](https://github.com/OXID-eSales/oxideshop_ce/pull/713)
 - Docblock in SystemInfoController. [PR-864](https://github.com/OXID-eSales/oxideshop_ce/pull/864)
 - Typo in Model/ActionList::fetchExistsActivePromotion method SQL. [PR-867](https://github.com/OXID-eSales/oxideshop_ce/pull/867)
+- SettingChangedEvent dispatch moved to module setting dao, so its triggered during module settings change in admin. [PR-860](https://github.com/OXID-eSales/oxideshop_ce/pull/860)
 
 ## [6.8.0] - 2021-04-13
 

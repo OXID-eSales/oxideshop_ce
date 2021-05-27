@@ -82,7 +82,7 @@ class ConfigFileDao implements ConfigFileDaoInterface
     private function checkPlaceholderPresent(string $placeholder, string $fileContents): void
     {
         if (strpos($fileContents, $placeholder) === false) {
-            throw new FileNotEditableException("Value for $placeholder can not be set as the placeholder was not found in the configuration file (".$this->context->getConfigFilePath().")");
+            throw new FileNotEditableException("Value for $placeholder can not be set as the placeholder was not found in the configuration file (" . $this->context->getConfigFilePath() . ")");
         }
     }
 }

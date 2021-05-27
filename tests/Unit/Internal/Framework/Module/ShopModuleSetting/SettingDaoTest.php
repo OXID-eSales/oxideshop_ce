@@ -68,8 +68,8 @@ class SettingDaoTest extends TestCase
             ->method('dispatch')
             ->with(
                 //In the new version of EventDispatcher the entries have to be flipped.
-                $this->stringContains(SettingChangedEvent::NAME),
-                $this->isInstanceOf(SettingChangedEvent::class)
+                $this->isInstanceOf(SettingChangedEvent::class),
+                $this->stringContains(SettingChangedEvent::NAME)
             );
 
         $shopModuleSettingDao = new SettingDao(

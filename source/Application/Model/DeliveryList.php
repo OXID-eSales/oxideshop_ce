@@ -233,6 +233,8 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         $aFittingDelSets = [];
         $aDelSetList = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\DeliverySetList::class)->getDeliverySetList($oUser, $sDelCountry, $sDelSet);
 
+	$this->_aDeliveries = [];
+
         // must choose right delivery set to use its delivery list
         foreach ($aDelSetList as $sDeliverySetId => $oDeliverySet) {
             // loading delivery list to check if some of them fits

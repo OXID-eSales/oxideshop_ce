@@ -1699,8 +1699,8 @@ class UserComponentTest extends \OxidTestCase
 
         $logoutLink = $userComponent->getLogoutLink();
 
-        $this->assertStringContainsString($templateName, $logoutLink);
-        $this->assertStringNotContainsString($unsecureLocation, $logoutLink);
+        $this->assertContains($templateName, $logoutLink);
+        $this->assertNotContains($unsecureLocation, $logoutLink);
     }
 
     /**

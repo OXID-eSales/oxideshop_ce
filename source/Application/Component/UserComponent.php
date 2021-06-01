@@ -818,7 +818,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if ($sParam = $oConfig->getRequestParameter('mnid')) {
             $sLogoutLink .= '&amp;mnid=' . $sParam;
         }
-        if ($sParam = $oConfig->getRequestParameter('tpl')) {
+        if ($sParam = basename($oConfig->getRequestParameter('tpl'))) {
             $sLogoutLink .= '&amp;tpl=' . $sParam;
         }
         if ($sParam = $oConfig->getRequestParameter('oxloadid')) {

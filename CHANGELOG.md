@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 - Support PHP 7.1 and 7.2
 
+## [6.7.2] - Unreleased
+
+### Fixed
+- Usage of `tpl` request parameter in `Application\Component\UserComponent`
+
 ## [6.7.1] - 2021-04-13
 
 ### Fixed
@@ -1067,6 +1072,7 @@ See
 
 [6.8.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.8.0...b-6.3.x
 [6.8.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.8.0
+[6.7.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.1...v6.7.2
 [6.7.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.7.0...v6.7.1
 [6.7.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.6.0...v6.7.0
 [6.6.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.5.6...v6.6.0

@@ -1692,8 +1692,7 @@ class UserComponentTest extends \OxidTestCase
                 null,
                 $remoteUrl
             );
-        $userComponent->method('getConfig')
-            ->willReturn($configMock);
+        Registry::set(Config::class, $configMock);
 
         $logoutLink = $userComponent->getLogoutLink();
 

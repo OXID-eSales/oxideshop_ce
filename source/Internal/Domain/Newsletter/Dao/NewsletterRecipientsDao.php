@@ -45,7 +45,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
             $recipient->setEmail($row['Email']);
             $recipient->setOtpInState($row['OptInState']);
             $recipient->setCountry($row['Country']);
-            $recipient->setUserGroups($this->decodeHtmlEntities((string)$row['Groups']));
+            $recipient->setUserGroups($this->decodeHtmlEntities((string)$row['UserGroups']));
             $recipientList[] = $recipient;
         }
 
@@ -73,13 +73,13 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->select([
-                'n.oxsal AS Salutation',
-                'n.oxfname AS Firstname',
-                'n.oxlname AS Lastname',
+                'ANY_VALUE(n.oxsal) AS Salutation',
+                'ANY_VALUE(n.oxfname) AS Firstname',
+                'ANY_VALUE(n.oxlname) AS Lastname',
                 'u.oxusername AS Email',
-                'n.oxdboptin AS OptInState',
+                'ANY_VALUE(n.oxdboptin) AS OptInState',
                 'c.oxtitle AS Country',
-                'group_concat(g.oxtitle) AS Groups'
+                'GROUP_CONCAT(g.oxtitle ORDER BY g.oxtitle ASC) AS UserGroups'
             ])
             ->from('oxnewssubscribed', 'n')
             ->join('n', 'oxuser', 'u', 'u.oxid=n.oxuserid')
@@ -89,7 +89,6 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
             ->where('n.oxshopid = :shopId')
             ->setParameters(["shopId" => $shopId])
             ->groupBy('u.oxid')
-            ->orderBy('g.oxtitle', 'ASC')
             ->addOrderBy('u.oxcreate', 'ASC');
 
         return $queryBuilder->execute()->fetchAllAssociative();

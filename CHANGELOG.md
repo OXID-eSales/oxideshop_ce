@@ -333,6 +333,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Typo in Model/ActionList::fetchExistsActivePromotion method SQL. [PR-867](https://github.com/OXID-eSales/oxideshop_ce/pull/867)
 - SettingChangedEvent dispatch moved to module setting dao, so its triggered during module settings change in admin. [PR-860](https://github.com/OXID-eSales/oxideshop_ce/pull/860)
 
+### Deprecated
+- Method
+    - `OxidEsales\EshopCommunity\Core\UtilsFile::_copyFile`
+    - `OxidEsales\EshopCommunity\Core\UtilsFile::_moveImage`
+
 ## [6.8.0] - 2021-04-13
 
 ### Added

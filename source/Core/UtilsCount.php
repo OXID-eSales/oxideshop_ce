@@ -135,7 +135,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         // we use distinct if article is assigned to category twice
         $sQ = "SELECT COUNT( DISTINCT $sTable.`oxid` )
                FROM $sO2CView
-                   INNER JOIN $sTable ON $sO2CView.`oxobjectid` = $sTable.`oxid` AND $sTable.`oxparentid` = ''
+                   INNER JOIN $sTable ON $sO2CView.`oxobjectid` = $sTable.`oxid` 
                WHERE $sO2CView.`oxcatnid` = :oxcatnid AND " . $oArticle->getSqlActiveSnippet();
 
         $aCache[$sCatId][$sActIdent] = $oDb->getOne($sQ, [

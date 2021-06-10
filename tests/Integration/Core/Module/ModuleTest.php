@@ -16,10 +16,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\Mod
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-class ModuleTest extends TestCase
+class ModuleTest extends UnitTestCase
 {
     private $container;
 

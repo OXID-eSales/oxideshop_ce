@@ -14,9 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\TestingLibrary\UnitTestCase;
 
-final class ViewConfigTest extends TestCase
+final class ViewConfigTest extends UnitTestCase
 {
     private $container;
 

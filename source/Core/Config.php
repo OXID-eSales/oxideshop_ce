@@ -2062,24 +2062,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns true if current installation works in utf-8 mode, or false if not.
-     *
-     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
-     *
-     * CAUTION: if you use this deprecated feature, you have to be sure, that there is a iUtfMode in your config.inc.php,
-     *          otherwise the result of this method is always true.
-     *
-     * @return bool
-     */
-    public function isUtf()
-    {
-        if ($this->getConfigParam('iUtfMode') !== null) {
-            return (bool) $this->getConfigParam('iUtfMode');
-        }
-        return true;
-    }
-
-    /**
      * Returns log files storage path
      *
      * @return string

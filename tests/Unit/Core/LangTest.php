@@ -348,17 +348,6 @@ class LangTest extends \OxidTestCase
         $this->assertEquals($aResult, $oLangFilesData);
     }
 
-    public function testRecodeLangArray()
-    {
-        $aLang['ACCOUNT_MAIN_BACKTOSHOP'] = "Zurück zum Shop";
-        $aRecoded['ACCOUNT_MAIN_BACKTOSHOP'] = iconv('ISO-8859-15', 'UTF-8', $aLang['ACCOUNT_MAIN_BACKTOSHOP']);
-
-        $oLang = oxNew('oxLang');
-        $aResult = $oLang->UNITrecodeLangArray($aLang, 'ISO-8859-15');
-        $this->assertNotEquals($aLang, $aResult);
-        $this->assertEquals($aRecoded, $aResult);
-    }
-
     public function testTranslateStringWithGeneratedLangFile()
     {
         $oLang = oxNew('oxLang');

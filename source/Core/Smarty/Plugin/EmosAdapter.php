@@ -200,26 +200,6 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks whether shop is in utf, if not - iconv string for using with econda json_encode
-     *
-     * @deprecated since 6.0 (2016-12-07) As the shop installation is utf-8, this method will be removed.
-     *
-     * @param string $sContent
-     *
-     * @return string
-     */
-    protected function _convertToUtf($sContent) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        if (!$myConfig->isUtf()) {
-            $sContent = iconv(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset'), 'UTF-8', $sContent);
-        }
-
-        return $sContent;
-    }
-
-
-    /**
      * Returns formatted product title
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oProduct product which title must be prepared

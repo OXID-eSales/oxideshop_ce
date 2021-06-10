@@ -288,6 +288,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `tbclnewsletter_plain`
         - `tbclnewsletter_preview`
         - `tbclnewsletter_selection`
+- iUtfMode in config.inc.php and config, as the shop will always use UTF-8.
       
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

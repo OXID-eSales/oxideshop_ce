@@ -1333,20 +1333,6 @@ class ArticleTest extends \OxidTestCase
     }
 
     /**
-     * Test assign get persistent parameters.
-     *
-     * @return null
-     */
-    public function testAssignGetPersParams()
-    {
-        $oArticle = $this->_createArticle('_testArt');
-        $aParam = array('_testArt' => 'test1', '2001' => 'test2');
-        $this->getSession()->setVariable('persparam', $aParam);
-        $oArticle->UNITassignPersistentParam();
-        $this->assertEquals('test1', $oArticle->getPersParams());
-    }
-
-    /**
      * Test get admin variants.
      *
      * @return null

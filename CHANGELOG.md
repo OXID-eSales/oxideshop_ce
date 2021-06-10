@@ -145,6 +145,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::remove()`
 - `\OxidEsales\Eshop\Core\Module\ModuleSmartyPluginDirectories::getWithRelativePath()`
 - `\OxidEsales\EshopCommunity\Core\Config::getModulesDir()`
+- `\OxidEsales\EshopCommunity\Application\Model\Article::getPersParams()`
+- `\OxidEsales\EshopCommunity\Application\Model\Article::_assignPersistentParam()`
+- `\OxidEsales\EshopCommunity\Application\Model\Article::$_aPersistParam`
 - Removed deprecated getSession and setSession usages around the code
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`

@@ -89,13 +89,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     protected $_dArticleVat = null;
 
     /**
-     * Persistent Parameter.
-     *
-     * @var array
-     */
-    protected $_aPersistParam = null;
-
-    /**
      * Status of article - buyable/not buyable.
      *
      * @var bool
@@ -792,18 +785,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     }
 
     /**
-     * Get persistent parameters
-     *
-     * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.
-     *
-     * @return array
-     */
-    public function getPersParams()
-    {
-        return $this->_aPersistParam;
-    }
-
-    /**
      * Checks whether article is inluded in comparison list
      *
      * @return bool
@@ -1121,7 +1102,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         $this->_assignStock();
-        $this->_assignPersistentParam();
         $this->_assignDynImageDir();
         $this->_assignComparisonListFlag();
 
@@ -4556,20 +4536,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         //setting to non buyable when variant list is empty (for example not loaded or inactive) and $this is non buyable parent
         if (!$this->_blNotBuyable && $this->_blNotBuyableParent && $this->oxarticles__oxvarcount->value == 0) {
             $this->setBuyableState(false);
-        }
-    }
-
-    /**
-     * Assigns persistent param to article.
-     *
-     * @deprecated on b-dev (2015-11-30); Not used anymore. Setting pers params to session was removed since 2.7.
-     */
-    protected function _assignPersistentParam() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        // Persistent Parameter Handling
-        $aPersParam = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('persparam');
-        if (isset($aPersParam) && isset($aPersParam[$this->getId()])) {
-            $this->_aPersistParam = $aPersParam[$this->getId()];
         }
     }
 

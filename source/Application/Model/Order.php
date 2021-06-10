@@ -866,9 +866,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 $oOrderArticle->oxorderarticles__oxtitle = new \OxidEsales\Eshop\Core\Field(trim($oProduct->oxarticles__oxtitle->getRawValue()), \OxidEsales\Eshop\Core\Field::T_RAW);
 
                 // copying persistent parameters ...
-                if (!is_array($aPersParams = $oProduct->getPersParams())) {
-                    $aPersParams = $oContent->getPersParams();
-                }
+                $aPersParams = $oContent->getPersParams();
                 if (is_array($aPersParams) && count($aPersParams)) {
                     $oOrderArticle->oxorderarticles__oxpersparam = new \OxidEsales\Eshop\Core\Field(serialize($aPersParams), \OxidEsales\Eshop\Core\Field::T_RAW);
                 }

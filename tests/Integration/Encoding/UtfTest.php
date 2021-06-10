@@ -243,16 +243,6 @@ class UtfTest extends \OxidTestCase
         $this->assertEquals($sResult, $oArticle->getLongDesc());
     }
 
-    public function testOxArticleGetPersParam()
-    {
-        $aPersParam = array('_testArticle' => 'sėkme Литовские für');
-        $this->getSession()->setVariable('persparam', $aPersParam);
-        $oArticle = oxNew('oxArticle');
-        $oArticle->setId('_testArticle');
-        $oArticle->UNITassignPersistentParam();
-        $this->assertEquals($aPersParam['_testArticle'], $oArticle->getPersParams());
-    }
-
     public function testOxArticleListLoadCategoryIds()
     {
         // choosing category id

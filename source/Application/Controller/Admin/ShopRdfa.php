@@ -75,42 +75,4 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
 
         return $aCustomers;
     }
-
-    /**
-     * Submits shop main page to web search engines.
-     *
-     * @deprecated since v6.0-rc.3 (2017-10-16); GR-Notify registration feature is removed.
-     */
-    public function submitUrl()
-    {
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aSubmitUrl");
-        if ($aParams['url']) {
-            $sNotificationUrl = "http://gr-notify.appspot.com/submit?uri=" . urlencode($aParams['url']) . "&agent=oxid";
-            if ($aParams['email']) {
-                $sNotificationUrl .= "&contact=" . urlencode($aParams['email']);
-            }
-            $aHeaders = $this->getHttpResponseCode($sNotificationUrl);
-            if (substr($aHeaders[2], -4) === "True") {
-                $this->_aViewData["submitMessage"] = 'SHOP_RDFA_SUBMITED_SUCCESSFULLY';
-            } else {
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(substr($aHeaders[3], strpos($aHeaders[3], ":") + 2));
-            }
-        } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('SHOP_RDFA_MESSAGE_NOURL');
-        }
-    }
-
-    /**
-     * Returns an array with the headers
-     *
-     * @param string $sURL target URL
-     *
-     * @deprecated since v6.0-rc.3 (2017-10-16); GR-Notify registration feature is removed.
-     *
-     * @return array
-     */
-    public function getHttpResponseCode($sURL)
-    {
-        return get_headers($sURL);
-    }
 }

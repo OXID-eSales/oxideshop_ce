@@ -388,10 +388,6 @@ function _groupExp(el) {
 
 </form>
 <br><br>
-[{* @deprecated since v6.0-rc.3 (2017-10-16); GR-Notify registration feature is removed. *}]
-[{block name="admin_shop_rdfa_submiturl"}]
-[{/block}]
-
 
 [{include file="bottomnaviitem.tpl"}]
 [{include file="bottomitem.tpl"}]

@@ -71,16 +71,6 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
 
     /**
      * Cancels order and its order articles
-     *
-     * @deprecated since 6.0 (2015-09-17); use self::cancelOrder().
-     */
-    public function storno()
-    {
-        $this->cancelOrder();
-    }
-
-    /**
-     * Cancels order and its order articles
      * Calls init() to reload list items after cancellation.
      */
     public function cancelOrder()

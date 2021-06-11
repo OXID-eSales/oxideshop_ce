@@ -148,6 +148,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Application\Model\Article::getPersParams()`
 - `\OxidEsales\EshopCommunity\Application\Model\Article::_assignPersistentParam()`
 - `\OxidEsales\EshopCommunity\Application\Model\Article::$_aPersistParam`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\OrderList::storno()`
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\ShopController::SHOP_ID`
 - Removed deprecated getSession and setSession usages around the code
 - Removed deprecated global function getRequestUrl()
 - Removed deprecated global function cmpart()

@@ -19,9 +19,6 @@ class ShopController extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 {
     const CURRENT_TEMPLATE = 'shop.tpl';
 
-    /** @deprecated since 6.0 (2016-07-25); Instead use ShopIdCalculator::BASE_SHOP_ID */
-    const SHOP_ID = ShopIdCalculator::BASE_SHOP_ID;
-
     /**
      * Executes parent method parent::render() and returns name of template
      * file "shop.tpl".
@@ -31,7 +28,7 @@ class ShopController extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     public function render()
     {
         parent::render();
-        $this->_aViewData['currentadminshop'] = static::SHOP_ID;
+        $this->_aViewData['currentadminshop'] = ShopIdCalculator::BASE_SHOP_ID;
 
         return static::CURRENT_TEMPLATE;
     }

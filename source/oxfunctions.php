@@ -69,25 +69,6 @@ function debug($mVar)
 }
 
 /**
- * Sorting for crossselling
- *
- * @param object $a first compare item
- * @param object $b second compre item
- *
- * @deprecated since v6.0.0 (2016-05-16); Moved as anonymous function to Article class.
- *
- * @return integer
- */
-function cmpart($a, $b)
-{
-    if ($a->cnt == $b->cnt) {
-        return 0;
-    }
-
-    return ($a->cnt < $b->cnt) ? -1 : 1;
-}
-
-/**
  * Creates and returns new object. If creation is not available, dies and outputs
  * error message.
  *
@@ -104,32 +85,6 @@ function oxNew($className, ...$args)
     stopProfile('oxNew');
 
     return $object;
-}
-
-/**
- * Returns current DB handler
- *
- * @param bool $blAssoc data fetch mode
- *
- * @deprecated since v6.0.0 (2016-05-16); Use \OxidEsales\Eshop\Core\DatabaseProvider::getDb().
- *
- * @return \OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface
- */
-function getDb($blAssoc = true)
-{
-    return \OxidEsales\Eshop\Core\DatabaseProvider::getDb($blAssoc);
-}
-
-/**
- * Returns string handler
- *
- * @deprecated since v6.0.0 (2016-05-16); Use \OxidEsales\Eshop\Core\Str::getStr().
- *
- * @return \OxidEsales\Eshop\Core\StrMb|\OxidEsales\Eshop\Core\StrRegular
- */
-function getStr()
-{
-    return \OxidEsales\Eshop\Core\Str::getStr();
 }
 
 /**

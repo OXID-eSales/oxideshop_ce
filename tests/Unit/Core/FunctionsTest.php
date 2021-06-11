@@ -67,25 +67,6 @@ class FunctionsTest extends \OxidTestCase
         $this->assertFalse(isSearchEngineUrl());
     }
 
-    /**
-     * Testing sorting utility function
-     */
-    public function testCmpart()
-    {
-        $oA = new stdClass();
-        $oA->cnt = 10;
-
-        $oB = new stdClass();
-        $oB->cnt = 10;
-
-        $this->assertTrue(cmpart($oA, $oB) == 0);
-
-        $oA->cnt = 10;
-        $oB->cnt = 20;
-
-        $this->assertTrue(cmpart($oA, $oB) == -1);
-    }
-
     public function testOxNewWithExistingClassName()
     {
         $article = oxNew('oxArticle');

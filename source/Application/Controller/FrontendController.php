@@ -14,6 +14,7 @@ use oxCategory;
 use oxCategoryList;
 use oxContent;
 use oxDb;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Price;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
@@ -483,23 +484,23 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     protected function _processRequest() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         $utils = Registry::getUtils();
-
+        $requestUrl = Registry::get(Request::class)->getRequestUrl();
         // non admin, request is not empty and was not processed by seo engine
-        if (!isSearchEngineUrl() && $utils->seoIsActive() && ($requestUrl = getRequestUrl())) {
+        if (!isSearchEngineUrl() && $utils->seoIsActive() && $requestUrl) {
             // fetching standard url and looking for it in seo table
-            if ($this->_canRedirect() && ($redirectUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->fetchSeoUrl($requestUrl))) {
-                $utils->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getCurrentShopUrl() . $redirectUrl, false, 301);
+            if ($this->_canRedirect() && ($redirectUrl = Registry::getSeoEncoder()->fetchSeoUrl($requestUrl))) {
+                $utils->redirect(Registry::getConfig()->getCurrentShopUrl() . $redirectUrl, false, 301);
             } elseif (VIEW_INDEXSTATE_INDEX == $this->noIndex()) {
                 // forcing to set no index/follow meta
                 $this->_forceNoIndex();
 
-                if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blSeoLogging')) {
-                    $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-                    $languageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+                if (Registry::getConfig()->getConfigParam('blSeoLogging')) {
+                    $shopId = Registry::getConfig()->getShopId();
+                    $languageId = Registry::getLang()->getBaseLanguage();
                     $id = md5(strtolower($requestUrl) . $shopId . $languageId);
 
                     // logging "not found" url
-                    $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+                    $database = DatabaseProvider::getDb();
                     $database->execute(
                         "replace oxseologs ( oxstdurl, oxident, oxshopid, oxlang ) values ( ?, ?, ?, ? ) ",
                         [$requestUrl, $id, $shopId, $languageId]
@@ -1451,7 +1452,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if (is_array($sorting)) {
             $sortDir = isset($sorting['sortdir']) ? $sorting['sortdir'] : '';
             if ($this->isAllowedSortingOrder($sortDir)) {
-                $sortBy = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteIdentifier($sorting['sortby']);
+                $sortBy = DatabaseProvider::getDb()->quoteIdentifier($sorting['sortby']);
                 return trim($sortBy . ' ' . $sortDir);
             }
         }

@@ -149,6 +149,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Application\Model\Article::_assignPersistentParam()`
 - `\OxidEsales\EshopCommunity\Application\Model\Article::$_aPersistParam`
 - Removed deprecated getSession and setSession usages around the code
+- Removed deprecated global function getRequestUrl()
+- Removed deprecated global function cmpart()
+- Removed deprecated global function getDb()
+- Removed deprecated global function getStr()
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
 - PHP version checker

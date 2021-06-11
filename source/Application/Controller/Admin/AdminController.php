@@ -105,7 +105,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         if ($oShop = $this->_getEditShop($myConfig->getShopId())) {
             // passing shop info
             $this->_sShopTitle = $oShop->oxshops__oxname->getRawValue();
-            $this->_sShopVersion = oxNew(ShopVersion::class)->getVersion();
         }
     }
 

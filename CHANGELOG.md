@@ -295,11 +295,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `tbclnewsletter_plain`
         - `tbclnewsletter_preview`
         - `tbclnewsletter_selection`
+- GetShopVersion method and attribute from AdminController
+- `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::_getShopVersionNr()`
+- `\OxidEsales\Eshop\Application\Controller\Admin\AdminController::$_sShopVersion`
 - iUtfMode in config.inc.php and config, as the shop will always use UTF-8.
 - `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::submitUrl()`, because GR-Notify page feature was removed.
 - `\OxidEsales\EshopCommunity\Application\Model::_getAmountPriceList()`, use buildAmountPriceList().
 - `\OxidEsales\EshopCommunity\Application\Component\UserComponent::_changeUser_noRedirect()`, use changeUserWithoutRedirect()
-      
+
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)
 - Refactor calls to deprecated `getStr` [PR-758](https://github.com/OXID-eSales/oxideshop_ce/pull/758)

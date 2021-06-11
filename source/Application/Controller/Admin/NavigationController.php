@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
  * Administrator GUI navigation manager class.
@@ -47,7 +48,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
 
             // version patch string
-            $this->_aViewData["sVersion"] = $this->_sShopVersion;
+            $this->_aViewData["sVersion"] = ShopVersion::getVersion();
 
             //checking requirements if this is not nav frame reload
             if (!Registry::getConfig()->getRequestParameter("navReload")) {

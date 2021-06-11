@@ -66,15 +66,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected $_sShopTitle = " - ";
 
     /**
-     * Shop Version
-     *
-     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
-     *
-     * @var string
-     */
-    protected $_sShopVersion = null;
-
-    /**
      * Session user rights
      *
      * @var string
@@ -210,18 +201,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     protected function _getServiceProtocol() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
         return \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl() ? 'https' : 'http';
-    }
-
-    /**
-     * Returns shop version
-     *
-     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
-     *
-     * @return string
-     */
-    protected function _getShopVersionNr() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return oxNew(ShopVersion::class)->getVersion();
     }
 
     /**

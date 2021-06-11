@@ -360,21 +360,21 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * Executes blUserRegistered = oxcmp_user::_changeUser_noRedirect().
+     * Executes blUserRegistered = oxcmp_user::changeUserWithoutRedirect().
      * if this returns true - returns "payment" (this redirects to
      * payment page), else returns blUserRegistered value.
      *
-     * @see oxcmp_user::_changeUser_noRedirect()
+     * @see oxcmp_user::changeUserWithoutRedirect()
      *
      * @return  mixed    redirection string or true if user is registered, false otherwise
      */
     public function changeUser()
     {
-        return ($this->_changeUser_noRedirect() === true) ? 'payment' : false;
+        return ($this->changeUserWithoutRedirect() === true) ? 'payment' : false;
     }
 
     /**
-     * Executes oxcmp_user::_changeuser_noredirect().
+     * Executes oxcmp_user::changeUserWithoutRedirect().
      * returns "account_user" (this redirects to billing and shipping settings page) on success
      *
      * @return null
@@ -385,7 +385,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // on selecting delivery address
         // We do redirect only on success not to loose errors.
 
-        if ($this->_changeUser_noRedirect()) {
+        if ($this->changeUserWithoutRedirect()) {
             return 'account_user';
         }
     }
@@ -648,26 +648,6 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         $oSession->setVariable('blshowshipaddress', $blShow);
-    }
-
-    /**
-     * Mostly used for customer profile editing screen (OXID eShop ->
-     * MY ACCOUNT). Checks if oUser is set (oxcmp_user::oUser) - if
-     * not - executes oxcmp_user::_loadSessionUser(). If user unchecked newsletter
-     * subscription option - removes him from this group. There is an
-     * additional MUST FILL fields checking. Function returns true or false
-     * according to user data submission status.
-     *
-     * Session variables:
-     * <b>ordrem</b>
-     *
-     * @deprecated since v6.0.0 (2017-02-27); Use changeUserWithoutRedirect().
-     *
-     * @return  bool true on success, false otherwise
-     */
-    protected function _changeUser_noRedirect() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps,PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->changeUserWithoutRedirect();
     }
 
     /**

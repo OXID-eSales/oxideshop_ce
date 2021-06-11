@@ -401,7 +401,7 @@ class UserComponentTest extends \OxidTestCase
         $oCU = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser'));
         $oCU->expects($this->never())->method('getUser')->will($this->returnValue(false));
 
-        $this->assertSame(null, $oCU->UNITchangeUser_noRedirect());
+        $this->assertSame(null, $oCU->changeUserWithoutRedirect());
 
         $oS = $this->getMock(Session::class, array('checkSessionChallenge'));
         $oS->expects($this->atLeastOnce())->method('checkSessionChallenge')->will($this->returnValue(true));
@@ -410,7 +410,7 @@ class UserComponentTest extends \OxidTestCase
         $oCU = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser'));
         $oCU->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(false));
 
-        $this->assertSame(null, $oCU->UNITchangeUser_noRedirect());
+        $this->assertSame(null, $oCU->changeUserWithoutRedirect());
     }
 
     /**
@@ -700,8 +700,8 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUser()
     {
-        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('_changeUser_noRedirect'));
-        $oUserView->expects($this->once())->method('_changeUser_noRedirect')->will($this->returnValue(true));
+        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('changeUserWithoutRedirect'));
+        $oUserView->expects($this->once())->method('changeUserWithoutRedirect')->will($this->returnValue(true));
         $this->assertEquals('payment', $oUserView->changeUser());
     }
 
@@ -712,8 +712,8 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUserIfNotRegisteredUser()
     {
-        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('_changeUser_noRedirect'));
-        $oUserView->expects($this->once())->method('_changeUser_noRedirect')->will($this->returnValue(false));
+        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('changeUserWithoutRedirect'));
+        $oUserView->expects($this->once())->method('changeUserWithoutRedirect')->will($this->returnValue(false));
         $this->assertFalse($oUserView->changeUser());
     }
 
@@ -724,8 +724,8 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUserTestValues()
     {
-        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('_changeUser_noRedirect'));
-        $oUserView->expects($this->once())->method('_changeUser_noRedirect')->will($this->returnValue(true));
+        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('changeUserWithoutRedirect'));
+        $oUserView->expects($this->once())->method('changeUserWithoutRedirect')->will($this->returnValue(true));
         $this->assertEquals('account_user', $oUserView->changeuser_testvalues());
     }
 
@@ -736,8 +736,8 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUserTestValuesOnError()
     {
-        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('_changeUser_noRedirect'));
-        $oUserView->expects($this->once())->method('_changeUser_noRedirect')->will($this->returnValue(null));
+        $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('changeUserWithoutRedirect'));
+        $oUserView->expects($this->once())->method('changeUserWithoutRedirect')->will($this->returnValue(null));
         $this->assertEquals(null, $oUserView->changeuser_testvalues());
     }
 
@@ -899,7 +899,7 @@ class UserComponentTest extends \OxidTestCase
     }
 
     /**
-     * Test _changeUser_noRedirect()().
+     * Test changeUserWithoutRedirect().
      *
      * @return null
      */
@@ -945,13 +945,13 @@ class UserComponentTest extends \OxidTestCase
         $oUserView->expects($this->atLeastOnce())->method('_getDelAddressData')->will($this->returnValue(null));
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
 
-        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+        $this->assertTrue($oUserView->changeUserWithoutRedirect());
         $this->assertEquals('TestRemark', oxRegistry::getSession()->getVariable('ordrem'));
         $this->assertEquals(1, $oUserView->getNonPublicVar('_blNewsSubscriptionStatus'));
     }
 
     /**
-     * Test _changeUser_noRedirect().
+     * Test changeUserWithoutRedirect().
      *
      * @return null
      */
@@ -964,11 +964,11 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser', '_getDelAddressData'));
         $oUserView->expects($this->atLeastOnce())->method('_getDelAddressData');
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(new oxUser()));
-        $this->assertNull($oUserView->UNITchangeUser_noRedirect());
+        $this->assertNull($oUserView->changeUserWithoutRedirect());
     }
 
     /**
-     * Test _changeUser_noRedirect().
+     * Test changeUserWithoutRedirect().
      *
      * @return null
      */
@@ -981,11 +981,11 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser', '_getDelAddressData'));
         $oUserView->expects($this->atLeastOnce())->method('_getDelAddressData');
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(new oxUser()));
-        $this->assertNull($oUserView->UNITchangeUser_noRedirect());
+        $this->assertNull($oUserView->changeUserWithoutRedirect());
     }
 
     /**
-     * Test _changeUser_noRedirect().
+     * Test changeUserWithoutRedirect().
      *
      * @return null
      */
@@ -998,11 +998,11 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array('getUser', '_getDelAddressData'));
         $oUserView->expects($this->atLeastOnce())->method('_getDelAddressData');
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue(new oxUser()));
-        $this->assertNull($oUserView->UNITchangeUser_noRedirect());
+        $this->assertNull($oUserView->changeUserWithoutRedirect());
     }
 
     /**
-     * Test _changeUser_noRedirect().
+     * Test changeUserWithoutRedirect().
      *
      * @return null
      */
@@ -1059,7 +1059,7 @@ class UserComponentTest extends \OxidTestCase
     }
 
     /**
-     * Test _changeUser_noRedirect().
+     * Test changeUserWithoutRedirect().
      * Change if unsubscription date changes when subscribtion wasn't confirmed.
      *
      * @return null
@@ -1117,7 +1117,7 @@ class UserComponentTest extends \OxidTestCase
     }
 
     /**
-     * Test _changeUser_noRedirect()().
+     * Test changeUserWithoutRedirect().
      *
      * @return null
      */
@@ -1158,7 +1158,7 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('getUser', '_getDelAddressData'));
         $oUserView->expects($this->atLeastOnce())->method('_getDelAddressData')->will($this->returnValue(null));
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+        $this->assertTrue($oUserView->changeUserWithoutRedirect());
 
         $this->assertEquals('oldId', $oUser->oxuser__oxid->value);
         $this->assertEquals('oldPoints', $oUser->oxuser__oxpoints->value);
@@ -1166,7 +1166,7 @@ class UserComponentTest extends \OxidTestCase
     }
 
     /**
-     * Test _changeUser_noRedirect()().
+     * Test changeUserWithoutRedirect().
      *
      * @return null
      */
@@ -1196,7 +1196,7 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('getUser', '_getDelAddressData'));
         $oUserView->expects($this->atLeastOnce())->method('_getDelAddressData')->will($this->returnValue(null));
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($oUser));
-        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+        $this->assertTrue($oUserView->changeUserWithoutRedirect());
         $this->assertEquals('oldId', $oUser->oxuser__oxid->value);
     }
 
@@ -1289,7 +1289,7 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('getUser', '_getBillingAddressData'));
         $oUserView->expects($this->any())->method('_getBillingAddressData')->will($this->returnValue(null));
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($user));
-        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+        $this->assertTrue($oUserView->changeUserWithoutRedirect());
     }
 
     public function testChangeUserDeliveryAddress()
@@ -1346,7 +1346,7 @@ class UserComponentTest extends \OxidTestCase
         $oUserView = $this->getMock($this->getProxyClassName('oxcmp_user'), array('getUser', '_getBillingAddressData'));
         $oUserView->expects($this->any())->method('_getBillingAddressData')->will($this->returnValue(null));
         $oUserView->expects($this->atLeastOnce())->method('getUser')->will($this->returnValue($user));
-        $this->assertTrue($oUserView->UNITchangeUser_noRedirect());
+        $this->assertTrue($oUserView->changeUserWithoutRedirect());
     }
 
     /**
@@ -1420,7 +1420,7 @@ class UserComponentTest extends \OxidTestCase
     }
 
     /**
-     * Test oxcmp_user::_changeUser_noRedirect()
+     * Test oxcmp_user::changeUserWithoutRedirect()
      * #0003680
      */
     public function testChangeUserNoRedirectWithExceptionWillReturnFalse(): void
@@ -1452,7 +1452,7 @@ class UserComponentTest extends \OxidTestCase
         );
         $userComponent->expects($this->atLeastOnce())->method('getUser')->willReturn($user);
 
-        $this->assertFalse($userComponent->UNITchangeUser_noRedirect());
+        $this->assertFalse($userComponent->changeUserWithoutRedirect());
     }
 
     /**
@@ -1551,7 +1551,7 @@ class UserComponentTest extends \OxidTestCase
             ->method('getUser')
             ->will($this->returnValue($user));
 
-        $userComponent->UNITchangeUser_noRedirect();
+        $userComponent->changeUserWithoutRedirect();
     }
 
     /**

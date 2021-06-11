@@ -1424,7 +1424,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
         if ($this->_oAmountPriceInfo === null) {
             $this->_oAmountPriceInfo = [];
-            if (count(($aAmPriceList = $this->_getAmountPriceList()->getArray()))) {
+            if (count(($aAmPriceList = $this->buildAmountPriceList()->getArray()))) {
                 $this->_oAmountPriceInfo = $this->_fillAmountPriceList($aAmPriceList);
             }
         }
@@ -3894,7 +3894,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         startProfile("_getAmountPrice");
 
         $dPrice = $this->_getGroupPrice();
-        $oAmtPrices = $this->_getAmountPriceList();
+        $oAmtPrices = $this->buildAmountPriceList();
         foreach ($oAmtPrices as $oAmPrice) {
             if (
                 $oAmPrice->oxprice2article__oxamount->value <= $amount
@@ -4272,18 +4272,6 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         return $sSelect;
-    }
-
-    /**
-     * Collecting assigned to article amount-price list
-     *
-     * @deprecated on b-dev (2015-04-02); use buildAmountPriceList().
-     *
-     * @return \OxidEsales\Eshop\Application\Model\AmountPriceList
-     */
-    protected function _getAmountPriceList() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->buildAmountPriceList();
     }
 
     /**

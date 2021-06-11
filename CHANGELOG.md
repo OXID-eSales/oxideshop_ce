@@ -293,6 +293,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `tbclnewsletter_selection`
 - iUtfMode in config.inc.php and config, as the shop will always use UTF-8.
 - `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::submitUrl()`, because GR-Notify page feature was removed.
+- `\OxidEsales\EshopCommunity\Application\Model::_getAmountPriceList()`, use buildAmountPriceList().
 - `\OxidEsales\EshopCommunity\Application\Component\UserComponent::_changeUser_noRedirect()`, use changeUserWithoutRedirect()
       
 ### Fixed

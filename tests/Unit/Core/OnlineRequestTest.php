@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Facts\Facts;
+
 /**
  * Class Unit_Core_oxOnlineRequestTest
  *
@@ -36,8 +39,8 @@ class OnlineRequestTest extends \OxidTestCase
         $request = oxNew('oxOnlineRequest');
 
         $this->assertSame('generated_unique_cluster_id', $request->clusterId);
-        $this->assertSame($config->getEdition(), $request->edition);
-        $this->assertSame($config->getVersion(), $request->version);
+        $this->assertSame((new Facts())->getEdition(), $request->edition);
+        $this->assertSame(ShopVersion::getVersion(), $request->version);
         $this->assertSame($config->getShopUrl(), $request->shopUrl);
     }
 }

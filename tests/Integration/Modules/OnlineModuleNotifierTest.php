@@ -7,11 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Modules;
 
+use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\Facts\Facts;
 use oxOnlineModulesNotifierRequest;
 use oxOnlineModuleVersionNotifier;
 use oxOnlineModuleVersionNotifierCaller;
@@ -63,8 +65,8 @@ class OnlineModuleNotifierTest extends BaseModuleTestCase
         $oRequest = oxNew('oxOnlineModulesNotifierRequest');
 
         $sShopUrl = $this->getConfig()->getShopUrl();
-        $oRequest->edition = $this->getConfig()->getEdition();
-        $oRequest->version = $this->getConfig()->getVersion();
+        $oRequest->edition = (new Facts())->getEdition();
+        $oRequest->version = ShopVersion::getVersion();
         $oRequest->shopUrl = $sShopUrl;
         $oRequest->pVersion = '1.1';
         $oRequest->productId = 'eShop';

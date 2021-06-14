@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Delivery_Groups_Ajax class
@@ -35,7 +36,7 @@ class DeliverysetCountryAjaxTest extends \OxidTestCase
         oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry1', oxtitle='_testCountry1'");
         oxDb::getDb()->execute("insert into oxcountry set oxid='_testCountry2', oxtitle='_testCountry2'");
 
-        if ($this->getConfig()->getEdition() === 'EE') :
+        if ((new Facts())->getEdition() === 'EE') :
             $this->setShopIdTest('1');
         endif;
     }

@@ -9,10 +9,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
 use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
+use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\Facts\Facts;
 use \oxOnlineModuleVersionNotifier;
 use \oxOnlineModuleVersionNotifierCaller;
 use \oxRegistry;
@@ -44,8 +46,8 @@ class OnlineModuleNotifierRequestFormationTest extends \OxidTestCase
 
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam('sClusterId', array('generated_unique_cluster_id'));
-        $sEdition = $oConfig->getEdition();
-        $sVersion = $oConfig->getVersion();
+        $sEdition = (new Facts())->getEdition();
+        $sVersion = ShopVersion::getVersion();
         $sShopUrl = $oConfig->getShopUrl();
 
         $sXml = '<?xml version="1.0" encoding="utf-8"?>' . "\n";

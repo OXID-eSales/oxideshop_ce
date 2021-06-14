@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxField;
 use \oxDb;
+use OxidEsales\Facts\Facts;
 use \oxTestModules;
 
 /**
@@ -68,7 +69,7 @@ class OrderListTest extends \OxidTestCase
     {
         oxTestModules::addFunction("oxlang", "isAdmin", "{return 1;}");
         $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_NEW' )";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sExpQ .= " and oxorder.oxshopid = '1'";
         }
         $oOrderList = oxNew('order_list');
@@ -86,7 +87,7 @@ class OrderListTest extends \OxidTestCase
         oxTestModules::addFunction("oxlang", "isAdmin", "{return 1;}");
         $this->setRequestParameter('folder', 'ORDERFOLDER_FINISHED');
         $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_FINISHED' )";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sExpQ .= " and oxorder.oxshopid = '1'";
         }
         $oOrderList = oxNew('order_list');

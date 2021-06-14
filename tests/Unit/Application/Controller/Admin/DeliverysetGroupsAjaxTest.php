@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Delivery_Groups_Ajax class
@@ -35,7 +36,7 @@ class DeliverysetGroupsAjaxTest extends \OxidTestCase
         oxDb::getDb()->execute("insert into oxgroups set oxid='_testGroup1', oxtitle='_testGroup1'");
         oxDb::getDb()->execute("insert into oxgroups set oxid='_testgroup2', oxtitle='_testGroup2'");
 
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->setShopIdTest('1');
         }
     }

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Delivery_Articles_Ajax class
@@ -38,7 +39,7 @@ class DeliveryArticlesAjaxTest extends \OxidTestCase
         oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle1', oxshopid='" . $shopId . "', oxtitle='_testArticle1'");
         oxDb::getDb()->execute("insert into oxarticles set oxid='_testArticle2', oxshopid='" . $shopId . "', oxtitle='_testArticle2'");
 
-        if ($this->getConfig()->getEdition() !== 'EE') {
+        if ((new Facts())->getEdition() !== 'EE') {
             $this->setArticlesViewTable('oxv_oxarticles_de');
             $this->setCategoriesViewTable('oxv_oxcategories_de');
             $this->setObject2CategoryViewTable('oxobject2category');

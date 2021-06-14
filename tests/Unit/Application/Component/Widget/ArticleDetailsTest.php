@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Component\Widget;
 
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\ArticleList;
+use OxidEsales\Facts\Facts;
 use \stdClass;
 use \oxField;
 use \Exception;
@@ -328,7 +329,7 @@ class ArticleDetailsTest extends \OxidTestCase
     public function testGetVariantList()
     {
         $this->setRequestParameter('anid', '2077');
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->setRequestParameter('anid', '2278');
         }
 
@@ -387,7 +388,7 @@ class ArticleDetailsTest extends \OxidTestCase
     public function testGetManufacturer()
     {
         $sManId = '68342e2955d7401e6.18967838';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sManId = '88a996f859f94176da943f38ee067984';
         }
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array('getManufacturerId'));
@@ -411,7 +412,7 @@ class ArticleDetailsTest extends \OxidTestCase
     public function testGetVendor()
     {
         $sVendId = '68342e2955d7401e6.18967838';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sVendId = 'd2e44d9b31fcce448.08890330';
         }
 
@@ -441,7 +442,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $oCategory = $oDetails->getCategory();
 
         $sCatId = "8a142c3e49b5a80c1.23676990";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sCatId = "30e44ab8593023055.23928895";
         }
 
@@ -565,7 +566,7 @@ class ArticleDetailsTest extends \OxidTestCase
         $this->assertTrue($oList instanceof ArticleList);
 
         $iCount = 2;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $iCount = 3;
         }
 

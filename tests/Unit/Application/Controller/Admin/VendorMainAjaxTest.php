@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Attribute_Category_Ajax class
@@ -41,12 +42,12 @@ class VendorMainAjaxTest extends \OxidTestCase
 
     public function getArticleViewTable()
     {
-        return $this->getConfig()->getEdition() === 'EE' ? 'oxv_oxarticles_1_de' : 'oxv_oxarticles_de';
+        return (new Facts())->getEdition() === 'EE' ? 'oxv_oxarticles_1_de' : 'oxv_oxarticles_de';
     }
 
     public function getObject2CategoryViewTable()
     {
-        return $this->getConfig()->getEdition() === 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
+        return (new Facts())->getEdition() === 'EE' ? 'oxv_oxobject2category_1' : 'oxobject2category';
     }
 
     public function getShopId()

@@ -25,6 +25,7 @@ use OxidEsales\EshopCommunity\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\UtilsObject;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\Facts\Facts;
 use \oxnewssubscribed;
 use oxUser;
 use \oxUtilsServer;
@@ -613,7 +614,7 @@ class UserTest extends \OxidTestCase
         $oUser->save();
 
         $oUser = oxNew('oxUser');
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oUser->setMallUsersStatus(true);
         }
         $this->assertFalse($oUser->checkIfEmailExists('admin@oxid.lt'));
@@ -622,7 +623,7 @@ class UserTest extends \OxidTestCase
     public function testCheckIfEmailExistsMallUsersTryingToCreateUserWithNameAdmin()
     {
         $oUser = oxNew('oxUser');
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oUser->setMallUsersStatus(true);
         }
 
@@ -632,7 +633,7 @@ class UserTest extends \OxidTestCase
     public function testCheckIfEmailExistsMallUsersOldEntryWithoutPass()
     {
         $oUser = oxNew('oxUser');
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oUser->setMallUsersStatus(true);
         }
 
@@ -642,7 +643,7 @@ class UserTest extends \OxidTestCase
     public function testCheckIfEmailExistsMallUsersOldEntryWithPass()
     {
         $oUser = oxNew('oxUser');
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oUser->setMallUsersStatus(true);
         }
 

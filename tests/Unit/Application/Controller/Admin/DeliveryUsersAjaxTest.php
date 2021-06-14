@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Delivery_Groups_Ajax class
@@ -35,7 +36,7 @@ class DeliveryUsersAjaxTest extends \OxidTestCase
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser1', oxusername='_testUser1'");
         oxDb::getDb()->execute("insert into oxuser set oxid='_testUser2', oxusername='_testUser2'");
 
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->setShopIdTest('1');
         }
     }

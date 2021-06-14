@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\OnlineInfo;
 
+use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Facts\Facts;
+
 /**
  * Class Integration_OnlineInfo_OnlineLicenseCheckRequestFormationTest
  *
@@ -39,8 +42,8 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
             'lastAdminUsage' => $validNodeTime
         ));
 
-        $edition = $config->getEdition();
-        $version = $config->getVersion();
+        $edition = (new Facts())->getEdition();
+        $version = ShopVersion::getVersion();
         $shopUrl = $config->getShopUrl();
         $iAdminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 
@@ -118,8 +121,8 @@ class OnlineLicenseCheckRequestFormationTest extends \OxidEsales\TestingLibrary\
             'isValid' => true,
         ));
 
-        $edition = $config->getEdition();
-        $version = $config->getVersion();
+        $edition = (new Facts())->getEdition();
+        $version = ShopVersion::getVersion();
         $shopUrl = $config->getShopUrl();
         $adminUsers = $this->getTestConfig()->getShopEdition() == 'EE' ? 6 : 1;
 

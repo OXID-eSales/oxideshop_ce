@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
+use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Facts\Facts;
 use \stdClass;
 
 class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
@@ -168,8 +170,8 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
-        $request->edition = $this->getConfig()->getEdition();
-        $request->version = $this->getConfig()->getVersion();
+        $request->edition = (new Facts())->getEdition();
+        $request->version = ShopVersion::getVersion();
         $request->shopUrl = $this->getConfig()->getShopUrl();
         $request->pVersion = '1.1';
         $request->productId = 'eShop';
@@ -219,8 +221,8 @@ class OnlineLicenseCheckTest extends \OxidEsales\TestingLibrary\UnitTestCase
         \OxidEsales\Eshop\Core\Registry::set(\OxidEsales\Eshop\Core\Config::class, $config);
 
         $request = oxNew(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest::class);
-        $request->edition = $this->getConfig()->getEdition();
-        $request->version = $this->getConfig()->getVersion();
+        $request->edition = (new Facts())->getEdition();
+        $request->version = ShopVersion::getVersion();
         $request->shopUrl = $this->getConfig()->getShopUrl();
         $request->pVersion = '1.1';
         $request->productId = 'eShop';

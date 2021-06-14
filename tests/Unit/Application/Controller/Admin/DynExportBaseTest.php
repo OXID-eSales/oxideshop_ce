@@ -12,6 +12,7 @@ use Exception;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use oxDb;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
+use OxidEsales\Facts\Facts;
 use oxRegistry;
 use oxTestModules;
 use stdClass;
@@ -297,7 +298,7 @@ class DynExportBaseTest extends \OxidTestCase
     {
         $sOxid = '1126';
         $sCatString = 'Geschenke/Bar-Equipment';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sCatString = 'Party/Bar-Equipment';
         }
 
@@ -719,7 +720,7 @@ class DynExportBaseTest extends \OxidTestCase
         $sProdId = '8a142c4113f3b7aa3.13470399';
         $sParentId = '2077';
         $sTitle = 'violett';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sProdId = '1661-02';
             $sParentId = '1661';
             $sTitle = 'Bayer';

@@ -19,6 +19,7 @@ use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
+use OxidEsales\Facts\Facts;
 use oxRegistry;
 use oxTestModules;
 use oxUser;
@@ -204,7 +205,7 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testLogoutForLoginFeature()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Skip CE/PE related tests for EE edition");
         }
 
@@ -669,7 +670,7 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testLogout()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Skip CE/PE related tests for EE edition");
         }
 
@@ -905,7 +906,7 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUserNoRedirect()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Skip CE/PE related tests for EE edition");
         }
 
@@ -1489,7 +1490,7 @@ class UserComponentTest extends \OxidTestCase
      */
     public function testChangeUserNoRedirectAddressTrimming()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Skip CE/PE related tests for EE edition");
         }
 

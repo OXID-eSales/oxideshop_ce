@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Curl;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\OnlineCaller;
+use OxidEsales\Eshop\Core\ShopVersion;
 
 /**
  * Admin shop license setting manager.
@@ -34,8 +35,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
      */
     public function render()
     {
-        $myConfig = Registry::getConfig();
-        if ($myConfig->isDemoShop()) {
+        if (Registry::getConfig()->isDemoShop()) {
             /** @var SystemComponentException $oSystemComponentException */
             $oSystemComponentException = oxNew(SystemComponentException::class, "license");
             throw $oSystemComponentException;
@@ -51,7 +51,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
             $this->_aViewData["edit"] = $oShop;
         }
 
-        $this->_aViewData["version"] = $myConfig->getVersion();
+        $this->_aViewData["version"] = ShopVersion::getVersion();
 
         $this->_aViewData['aCurVersionInfo'] = $this->_fetchCurVersionInfo($this->versionCheckLink);
 
@@ -106,7 +106,7 @@ class ShopLicense extends \OxidEsales\Eshop\Application\Controller\Admin\ShopCon
         $curl = oxNew(Curl::class);
         $curl->setMethod("POST");
         $curl->setUrl(sprintf('%s/%s', $url, $this->getLanguageAbbreviation()));
-        $curl->setParameters(["myversion" => Registry::getConfig()->getVersion()]);
+        $curl->setParameters(["myversion" => ShopVersion::getVersion()]);
         $curl->setOption(
             Curl::CONNECT_TIMEOUT_OPTION,
             OnlineCaller::CURL_CONNECT_TIMEOUT

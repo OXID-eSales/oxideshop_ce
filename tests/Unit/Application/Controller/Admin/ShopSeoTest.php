@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 use \Exception;
 use \oxDb;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\Facts\Facts;
 use \oxTestModules;
 
 /**
@@ -37,7 +38,7 @@ class ShopSeoTest extends \OxidTestCase
     public function testRender()
     {
         $shopId = ShopIdCalculator::BASE_SHOP_ID;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $shopId = 1;
         }
         $oView = $this->getProxyClass("Shop_Seo");

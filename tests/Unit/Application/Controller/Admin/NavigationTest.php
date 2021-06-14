@@ -11,6 +11,7 @@ use Exception;
 use OxidEsales\Eshop\Application\Controller\Admin\NavigationController;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\ShopVersion;
 use oxRegistry;
 use oxTestModules;
 use stdClass;
@@ -215,17 +216,14 @@ class NavigationTest extends \OxidTestCase
 
     public function testCheckVersion(): void
     {
-        $currentVersion = '123';
         $latestVersion = '987';
         oxTestModules::addFunction('oxUtilsFile', 'readRemoteFileAsString', "{ return $latestVersion; }");
         oxTestModules::addFunction('oxLang', 'translateString', '{ return "current ver.: %s new ver.: %s"; }');
-        $configMock = $this->createConfiguredMock(Config::class, ['getVersion' => $currentVersion]);
-        $controllerMock = $this->getMock(NavigationController::class, ['getConfig']);
-        Registry::set(Config::class, $configMock);
+        $controllerMock = new NavigationController();
 
         $actual =  $controllerMock->UNITcheckVersion();
 
-        $this->assertStringContainsString($currentVersion, $actual);
+        $this->assertStringContainsString(ShopVersion::getVersion(), $actual);
         $this->assertStringContainsString($latestVersion, $actual);
     }
 }

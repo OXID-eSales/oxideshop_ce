@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Facts\Facts;
 use oxVoucherException;
 use \stdclass;
 use \oxDb;
@@ -1037,7 +1038,7 @@ class VoucherTest extends \OxidTestCase
         }
 
         $sUserId = 'oxdefaultadmin';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sQ = 'select oxid from oxuser where oxid != "oxdefaultadmin" ';
             $sUserId = $myDB->getOne($sQ);
         }

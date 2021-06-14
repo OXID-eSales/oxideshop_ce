@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
+use OxidEsales\Facts\Facts;
 use \oxLinks;
 use \oxAdminView;
 use \stdClass;
@@ -229,7 +230,7 @@ class AdminDetailsTest extends \OxidTestCase
      */
     public function testResetCounts()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped('This test is for Community and Professional editions only.');
         }
 

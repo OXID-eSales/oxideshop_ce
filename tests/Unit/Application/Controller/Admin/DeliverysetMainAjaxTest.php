@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Delivery_Groups_Ajax class
@@ -37,7 +38,7 @@ class DeliverysetMainAjaxTest extends \OxidTestCase
         $this->addTeardownSql("delete from oxdel2delset where oxid like '%_testDelivery%'");
         $this->addTeardownSql("delete from oxdelivery where oxid like '%_testMain%'");
 
-        if ($this->getConfig()->getEdition() !== 'EE') :
+        if ((new Facts())->getEdition() !== 'EE') :
             $this->setDeliveryViewTable('oxv_oxdelivery_de');
         endif;
     }

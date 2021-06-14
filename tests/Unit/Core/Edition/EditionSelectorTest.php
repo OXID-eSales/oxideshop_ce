@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core\Edition;
 
 use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
 use OxidEsales\Eshop\Core\ConfigFile;
@@ -19,7 +20,7 @@ class EditionSelectorTest extends UnitTestCase
     {
         $editionSelector = new EditionSelector();
 
-        $this->assertSame($this->getConfig()->getEdition(), $editionSelector->getEdition());
+        $this->assertSame((new Facts())->getEdition(), $editionSelector->getEdition());
     }
 
     public function testCheckActiveEdition()

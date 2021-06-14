@@ -23,6 +23,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
 use OxidEsales\EshopCommunity\Application\Model\DeliverySet;
+use OxidEsales\Facts\Facts;
 use oxOrder;
 use oxRegistry;
 use oxTestModules;
@@ -2104,7 +2105,7 @@ class OrderTest extends \OxidTestCase
         $oOrderArticle = $oArticles->current();
 
         //check if article info was copied to oxorderarticle
-        $expected = ($this->getConfig()->getEdition() === 'EE') ? '50' : '14';
+        $expected = ((new Facts())->getEdition() === 'EE') ? '50' : '14';
         $this->assertEquals($expected, $oOrderArticle->oxorderarticles__oxstock->value);
     }
 
@@ -2494,7 +2495,7 @@ class OrderTest extends \OxidTestCase
     // FS#1661
     public function testUpdateWishlistRemoveFromWishListVariant()
     {
-        $sArtId = ($this->getConfig()->getEdition() === 'EE') ? '2363' : '2077';
+        $sArtId = ((new Facts())->getEdition() === 'EE') ? '2363' : '2077';
 
         $oBasketItem = $this->getProxyClass("oxBasketItem");
         $oBasketItem->setNonPublicVar('_sProductId', "$sArtId-01");
@@ -3391,7 +3392,7 @@ class OrderTest extends \OxidTestCase
         $oDiscount->oxdiscount__oxaddsumtype = new \OxidEsales\Eshop\Core\Field('itm');
         $oDiscount->oxdiscount__oxaddsum = new \OxidEsales\Eshop\Core\Field(0);
 
-        $itmArtId = ($this->getConfig()->getEdition() === 'EE') ? '1487' : '1126';
+        $itmArtId = ((new Facts())->getEdition() === 'EE') ? '1487' : '1126';
         $oDiscount->oxdiscount__oxitmartid = new \OxidEsales\Eshop\Core\Field($itmArtId);
 
         $oDiscount->oxdiscount__oxitmamount = new \OxidEsales\Eshop\Core\Field(1);

@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Autoload\BackwardsCompatibility;
 
+use OxidEsales\Facts\Facts;
+
 class ForwardCompatibleInstanceOfOxNewClassRealClassName_6_Test extends \OxidEsales\TestingLibrary\UnitTestCase
 {
 
@@ -15,7 +17,7 @@ class ForwardCompatibleInstanceOfOxNewClassRealClassName_6_Test extends \OxidEsa
      */
     public function testForwardCompatibleInstanceOfOxNewClassRealClassName()
     {
-        if ('CE' !== $this->getConfig()->getEdition()) {
+        if ('CE' !== (new Facts())->getEdition()) {
             // $this->markTestSkipped(
             //    'This test will fail on Travis and CI as it MUST run in an own PHP process, which is not possible.'
             //);

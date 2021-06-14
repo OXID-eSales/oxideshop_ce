@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Order;
+use OxidEsales\Facts\Facts;
 use \oxOrder;
 use \oxField;
 use \oxTestModules;
@@ -341,7 +342,7 @@ class OrderArticleTest extends \OxidTestCase
 
         $iCnt = 4;
         $searchArticleNumber = "2077";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $iCnt = 3;
             $searchArticleNumber = "1661";
         }

@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Application\Model\Search;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\TableViewNameGenerator;
+use OxidEsales\Facts\Facts;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use oxRegistry;
 use oxTestModules;
@@ -74,7 +75,7 @@ class SearchTest extends UnitTestCase
     public function testEmptySearchWithCorrectCategory()
     {
         $sID = '8a142c3e49b5a80c1.23676990';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sID = '30e44ab8593023055.23928895';
         }
 
@@ -118,7 +119,8 @@ class SearchTest extends UnitTestCase
     public function testEmptySearchWithCorrectVendor()
     {
         $sID = "68342e2955d7401e6.18967838";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        $edition = (new Facts())->getEdition();
+        if ($edition === 'EE') {
             $sID = "d2e44d9b31fcce448.08890330";
         }
 
@@ -129,7 +131,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ($edition === 'EE') {
             $count = 10;
         }
         $this->assertEquals($count, $oSearchList->count());
@@ -151,7 +153,9 @@ class SearchTest extends UnitTestCase
     public function testEmptySearchWithCorrectManufacturer()
     {
         $sID = "fe07958b49de225bd1dbc7594fb9a6b0";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        $edition = (new Facts())->getEdition();
+
+        if ($edition === 'EE') {
             $sID = "88a996f859f94176da943f38ee067984";
         }
 
@@ -162,7 +166,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ($edition === 'EE') {
             $count = 10;
         }
         $this->assertEquals($count, $oSearchList->count());
@@ -205,7 +209,8 @@ class SearchTest extends UnitTestCase
         oxTestModules::addFunction('oxvendor', 'getSqlActiveSnippet', '{ return "1"; }');
 
         $sID = "68342e2955d7401e6.18967838";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        $edition = (new Facts())->getEdition();
+        if ($edition === 'EE') {
             $sID = "d2e44d9b31fcce448.08890330";
         }
         $sSortBy = "oxprice asc";
@@ -219,7 +224,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ($edition === 'EE') {
             $count = 10;
         }
         $this->assertEquals($count, $oSearchList->count());
@@ -241,7 +246,10 @@ class SearchTest extends UnitTestCase
     public function testEmptySearchWithCorrectManufacturerAndWithSort()
     {
         $sID = "fe07958b49de225bd1dbc7594fb9a6b0";
-        if ($this->getConfig()->getEdition() === 'EE') {
+
+        $edition = (new Facts())->getEdition();
+
+        if ($edition === 'EE') {
             $sID = "88a996f859f94176da943f38ee067984";
         }
         $sSortBy = "oxprice asc";
@@ -255,7 +263,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ($edition === 'EE') {
             $count = 10;
         }
         $this->assertEquals($count, $oSearchList->count());
@@ -296,7 +304,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 8;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $count = 4;
         }
         $this->assertEquals($count, $searchList->count());
@@ -370,7 +378,7 @@ class SearchTest extends UnitTestCase
     public function testSearchWithParamCorrectVendor()
     {
         $sID = "68342e2955d7401e6.18967838";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sID = "d2e44d9b31fcce448.08890330";
         }
 
@@ -392,7 +400,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $count = 10;
         }
 
@@ -415,7 +423,8 @@ class SearchTest extends UnitTestCase
     public function testSearchWithParamCorrectManufacturer()
     {
         $sID = "fe07958b49de225bd1dbc7594fb9a6b0";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        $edition = (new Facts())->getEdition();
+        if ($edition === 'EE') {
             $sID = "88a996f859f94176da943f38ee067984";
         }
 
@@ -437,7 +446,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ($edition === 'EE') {
             $count = 10;
         }
         $this->assertEquals($count, $oSearchList->count());
@@ -461,7 +470,7 @@ class SearchTest extends UnitTestCase
         $sIDVend = "68342e2955d7401e6.18967838";
         $sIDMan = "fe07958b49de225bd1dbc7594fb9a6b0";
         $sIDCat = "8a142c3e4d3253c95.46563530";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDVend = "d2e44d9b31fcce448.08890330";
             $sIDMan = "88a996f859f94176da943f38ee067984";
             $sIDCat = "30e44ab8593023055.23928895";
@@ -486,7 +495,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $count = 8;
         }
         $this->assertEquals($count, $oSearchList->count());
@@ -508,7 +517,7 @@ class SearchTest extends UnitTestCase
     public function testSearchWithParamWrongVendorCorrectCat()
     {
         $sIDCat = "8a142c3e4d3253c95.46563530";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDCat = "30e44ab8593023055.23928895";
         }
 
@@ -524,7 +533,7 @@ class SearchTest extends UnitTestCase
     public function testSearchWithParamWrongManufacturerCorrectCat()
     {
         $sIDCat = "8a142c3e4d3253c95.46563530";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDCat = "30e44ab8593023055.23928895";
         }
 
@@ -540,7 +549,7 @@ class SearchTest extends UnitTestCase
     public function testSearchWithParamCorrectVendorWrongCat()
     {
         $sIDVend = "68342e2955d7401e6.18967838";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDVend = "d2e44d9b31fcce448.08890330";
         }
 
@@ -556,7 +565,7 @@ class SearchTest extends UnitTestCase
     public function testSearchWithParamCorrectManufacturerWrongCat()
     {
         $sIDMan = "fe07958b49de225bd1dbc7594fb9a6b0";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDMan = "88a996f859f94176da943f38ee067984";
         }
 
@@ -573,7 +582,8 @@ class SearchTest extends UnitTestCase
     {
         $sIDVend = "68342e2955d7401e6.18967838";
         $sIDCat = "8a142c3e4d3253c95.46563530";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        $edition = (new Facts())->getEdition();
+        if ($edition === 'EE') {
             $sIDVend = "d2e44d9b31fcce448.08890330";
             $sIDCat = "30e44ab8593023055.23928895";
         }
@@ -598,7 +608,7 @@ class SearchTest extends UnitTestCase
 
         // testing if article count in list is <= 'iNrOfCatArticles' = 10;
         $count = 5;
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ($edition === 'EE') {
             $count = 8;
         }
         $this->assertEquals($count, $oSearchList->count());
@@ -664,7 +674,7 @@ class SearchTest extends UnitTestCase
     public function testGetSearchSelectIllegalVendor()
     {
         $sIDCat = "8a142c3e4d3253c95.46563530";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDCat = "30e44ab8593023055.23928895";
         }
 
@@ -676,7 +686,7 @@ class SearchTest extends UnitTestCase
     public function testGetSearchSelectIllegalManufacturer()
     {
         $sIDCat = "8a142c3e4d3253c95.46563530";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDCat = "30e44ab8593023055.23928895";
         }
 
@@ -702,7 +712,7 @@ class SearchTest extends UnitTestCase
         $sIDVend = "68342e2955d7401e6.18967838";
         $sIDMan = "fe07958b49de225bd1dbc7594fb9a6b0";
         $sIDCat = "8a142c3e4d3253c95.46563530";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sIDVend = "d2e44d9b31fcce448.08890330";
             $sIDMan = "88a996f859f94176da943f38ee067984";
             $sIDCat = "30e44ab8593023055.23928895";
@@ -742,7 +752,7 @@ class SearchTest extends UnitTestCase
     {
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXTITLE`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
                    "values ('_testCat','test','test','1','10','50')";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXTITLE`,`OXACTIVE`,`OXPRICEFROM`," .
                        "`OXPRICETO`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`)
                        values ('_testCat','test','test','1','10','50','','','','')";
@@ -853,7 +863,7 @@ class SearchTest extends UnitTestCase
     public function testSearchWithoutCorrespondingOxArtExtendRecord()
     {
         $sQ = "REPLACE INTO oxarticles (oxid, oxactive, oxissearch, oxtitle) VALUES ('_testArt1', 1, 1, 'searchTestVal')";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sQ = "REPLACE INTO oxarticles (oxid, oxactive, oxissearch, oxshopid, oxtitle) VALUES ('_testArt1', 1, 1, 1, 'searchTestVal')";
         }
         $this->addToDatabase($sQ, 'oxarticles');
@@ -869,7 +879,7 @@ class SearchTest extends UnitTestCase
         $sQ = "REPLACE INTO oxarticles (oxid, oxactive, oxissearch, oxtitle) VALUES ('_testArt1', 1, 1, 'searchTestVal')";
         $sQ2 = "REPLACE INTO oxcategories (oxid, oxactive) VALUES ('_testCatSearch', 1)";
         $sQ3 = "REPLACE INTO oxobject2category (oxid, oxobjectid, oxcatnid) VALUES ('_testOC', '_testArt1', '_testCatSearch')";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sQ = "REPLACE INTO oxarticles (oxid, oxactive, oxissearch, oxshopid, oxtitle) VALUES ('_testArt1', 1, 1, 1, 'searchTestVal')";
             $sQ2 = "REPLACE INTO oxcategories (oxid, oxshopid, oxactive) VALUES ('_testCatSearch', 1, 1)";
             $sQ3 = "REPLACE INTO oxobject2category (oxid, oxshopid, oxobjectid, oxcatnid) VALUES ('_testOC', 1, '_testArt1', '_testCatSearch')";

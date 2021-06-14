@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Attribute_Order_Ajax class
@@ -118,7 +119,7 @@ class AttributeOrderAjaxTest extends \OxidTestCase
     private function getVieTableName()
     {
         $sViewTable = "oxv_oxattribute_de";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sViewTable = "oxv_oxattribute_1_de";
         }
 

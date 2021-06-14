@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\Facts\Facts;
 
 /**
  * View config data access class. Keeps most
@@ -1434,7 +1435,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getEdition()
     {
-        return Registry::getConfig()->getEdition();
+        return (new Facts())->getEdition();
     }
 
     /**

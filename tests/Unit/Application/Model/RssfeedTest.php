@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 use \oxField;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Facts\Facts;
 use oxRssFeed;
 use \stdClass;
 use \oxList;
@@ -662,7 +663,7 @@ class RssfeedTest extends \OxidTestCase
     public function testGetCategoryArticlesTitle()
     {
         $sCatId = '8a142c3e44ea4e714.31136811';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sCatId = '30e44ab83159266c7.83602558';
         }
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 1;}');
@@ -956,7 +957,7 @@ class RssfeedTest extends \OxidTestCase
         $oArt->setId('ajai');
         $oArt->oxarticles__oxtitle = new oxField('tsss');
         $sCheckString = "http://myshop/?cl=rss&amp;fnc=recommlists&amp;anid=ajai&amp;lang=1";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sCheckString .= "&amp;shp=1";
         }
         $this->assertEquals($sCheckString, $oRss->getRecommListsUrl($oArt));
@@ -1108,7 +1109,7 @@ class RssfeedTest extends \OxidTestCase
         $oRecommList->setId('ajai');
         $oRecommList->oxrecommlists__oxtitle = new oxField('tsss');
         $sCheckString = "http://myshop/?cl=rss&amp;fnc=recommlistarts&amp;recommid=ajai&amp;lang=1";
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sCheckString .= "&amp;shp=1";
         }
         $this->assertEquals($sCheckString, $oRss->getRecommListArticlesUrl($oRecommList));

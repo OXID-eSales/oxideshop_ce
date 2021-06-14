@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\Facts\Facts;
 
 /**
  * Administrator GUI navigation manager class.
@@ -201,11 +202,11 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected function _checkVersion() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $edition = Registry::getConfig()->getEdition();
+        $edition = (new Facts())->getEdition();
         $query = 'https://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
         $latestVersion = Registry::getUtilsFile()->readRemoteFileAsString($query);
         if ($latestVersion) {
-            $currentVersion = Registry::getConfig()->getVersion();
+            $currentVersion = ShopVersion::getVersion();
             if (version_compare($currentVersion, $latestVersion, '<')) {
                 return sprintf(
                     Registry::getLang()->translateString('NAVIGATION_NEW_VERSION_AVAILABLE'),

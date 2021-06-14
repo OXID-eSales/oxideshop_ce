@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\ViewConfig;
 use OxidEsales\EshopCommunity\Application\Model\CountryList;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
+use OxidEsales\Facts\Facts;
 use oxTestModules;
 use stdClass;
 use Symfony\Component\Filesystem\Filesystem;
@@ -2235,7 +2236,7 @@ class ViewConfigTest extends \OxidTestCase
     public function testGetEdition()
     {
         $oViewConfig = oxNew('oxViewConfig');
-        $this->assertEquals($this->getConfig()->getEdition(), $oViewConfig->getEdition());
+        $this->assertEquals((new Facts())->getEdition(), $oViewConfig->getEdition());
     }
 
     private function addTestModuleAssets(): void

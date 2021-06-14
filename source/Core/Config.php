@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Template\ModuleTemplatePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\Facts\Facts;
 use stdClass;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
@@ -1689,42 +1690,18 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns OXID eShop edition.
-     *
-     * @deprecated since v6.0.0-rc.2 (2017-08-24); Use \OxidEsales\Facts\Facts::getEdition() instead.
-     *
-     * @return string
-     */
-    public function getEdition()
-    {
-        return "CE";
-    }
-
-    /**
      * Returns full eShop edition name
      *
      * @return string
      */
     public function getFullEdition()
     {
-        $edition = $this->getEdition();
+        $edition = (new Facts())->getEdition();
         if ($edition == "CE") {
             $edition = "Community Edition";
         }
 
         return $edition;
-    }
-
-    /**
-     * Returns shops version number (eg. '4.4.2')
-     *
-     * @deprecated since v6.0.0-rc.2 (2017-08-23); Use  OxidEsales\Eshop\Core\ShopVersion::getVersion() instead.
-     *
-     * @return string
-     */
-    public function getVersion()
-    {
-        return oxNew(\OxidEsales\Eshop\Core\ShopVersion::class)->getVersion();
     }
 
     /**

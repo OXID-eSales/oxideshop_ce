@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core\Controller;
 
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
+use OxidEsales\Facts\Facts;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -664,7 +665,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopEdition()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getEdition();
+        return (new Facts())->getEdition();
     }
 
     /**
@@ -719,7 +720,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isBetaVersion()
     {
-        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'beta') !== false);
+        return (stripos($this->getShopVersion(), 'beta') !== false);
     }
 
     /**
@@ -729,7 +730,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function isRCVersion()
     {
-        return (stripos(\OxidEsales\Eshop\Core\Registry::getConfig()->getVersion(), 'rc') !== false);
+        return (stripos($this->getShopVersion(), 'rc') !== false);
     }
 
     /**

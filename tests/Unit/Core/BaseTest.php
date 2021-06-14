@@ -13,6 +13,7 @@ use oxBaseHelper;
 use oxDb;
 use oxField;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Facts\Facts;
 use oxRegistry;
 use oxUtils;
 use stdClass;
@@ -243,7 +244,7 @@ class BaseTest extends \OxidTestCase
 
     public function getArticlesViewName()
     {
-        $articlesViewName = $this->getConfig()->getEdition() === 'EE' ? 'oxv_oxarticles_1' : 'oxv_oxarticles';
+        $articlesViewName = (new Facts())->getEdition() === 'EE' ? 'oxv_oxarticles_1' : 'oxv_oxarticles';
         return $articlesViewName;
     }
 
@@ -290,7 +291,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testIsDerivedShopIdsMatch()
     {
-        $expected = $this->getConfig()->getEdition() === 'EE' ? false : null;
+        $expected = (new Facts())->getEdition() === 'EE' ? false : null;
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
@@ -309,7 +310,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testIsDerivedShopIdsDeosNotMatch()
     {
-        $expected = $this->getConfig()->getEdition() === 'EE' ? true : null;
+        $expected = (new Facts())->getEdition() === 'EE' ? true : null;
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getShopId'));
         $oConfig->expects($this->any())->method('getShopId')->will($this->returnValue('xxx'));
@@ -1078,7 +1079,7 @@ class BaseTest extends \OxidTestCase
         $oObj->init("oxarticles");
         $oObj->modifyCacheKey(null, true);
 
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $expectedTranslation = 'Champagne Pliers &amp; Bottle Opener PROFI';
         } else {
             $expectedTranslation = 'Champagne Pliers &amp; Bottle Opener';
@@ -1166,7 +1167,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testBuildSelectStringWithoutShopId()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
         }
 
@@ -1184,7 +1185,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testBuildSelectStringWithShopId()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
         }
 
@@ -1209,7 +1210,7 @@ class BaseTest extends \OxidTestCase
         $oDB = oxDb::getDb();
 
         $rs = $oDB->select($sSelect);
-        $expectedCount = $this->getConfig()->getEdition() === 'EE' ? 6 : 1;
+        $expectedCount = (new Facts())->getEdition() === 'EE' ? 6 : 1;
         $this->assertEquals($expectedCount, $rs->count());
     }
 
@@ -1719,7 +1720,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testGetObjectViewName()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
         }
 
@@ -1733,7 +1734,7 @@ class BaseTest extends \OxidTestCase
      */
     public function testGetObjectViewNameForceCoreTblUsage()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped("Test for Community and Professional editions only");
         }
 
@@ -1744,7 +1745,7 @@ class BaseTest extends \OxidTestCase
 
     public function testGetObjectViewNameWithNonMultiShopTable(): void
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $this->markTestSkipped('Test for Community and Professional editions only');
         }
         $shopId = '1';

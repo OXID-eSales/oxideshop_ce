@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Facts\Facts;
+
 /**
  * Online check base request class.
  *
@@ -64,7 +66,7 @@ class OnlineRequest
     {
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->clusterId = $this->_getClusterId();
-        $this->edition = $oConfig->getEdition();
+        $this->edition = (new Facts())->getEdition();
         $this->version = ShopVersion::getVersion();
         $this->shopUrl = $oConfig->getShopUrl();
     }

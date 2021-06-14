@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use modDB;
+use OxidEsales\Facts\Facts;
 use \oxSeoEncoderArticle;
 use \Exception;
 use \oxField;
@@ -707,7 +708,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(1);
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sArtId = '1131';
             $oxtitle = 'Flaschenverschluss-EGO';
         } else {
@@ -736,7 +737,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(1);
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sArtId = '1131';
             $oxtitle = 'Flaschenverschluss-EGO';
         } else {
@@ -765,7 +766,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(0);
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sArtId = '1131';
             $oxtitle = 'Bottle-Cap-EGO';
         } else {
@@ -794,7 +795,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = oxNew('oxArticle');
         $oArticle->setLanguage(0);
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sArtId = '1131';
             $oxtitle = 'Bottle-Cap-EGO';
         } else {
@@ -987,7 +988,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oArticle->load('2363-02');
             $sUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischfussball-BIG-KICK-ohne-Muenzeinwurf.html';
         } else {
@@ -1014,7 +1015,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
 
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oArticle->loadInLang(1, '2363-02');
             $sUrl = "en/" . \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Soccer+Table+BIG+KICK+without+coin+slot.html";
         } else {
@@ -1041,7 +1042,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oArticle->loadInLang(1, '2363-02');
             $sUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . '/Tischfussball-BIG-KICK-ohne-Muenzeinwurf.html';
         } else {
@@ -1065,7 +1066,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
 
         $oArticle = $this->getMock(\OxidEsales\Eshop\Application\Model\Article::class, array("inCategory"));
         $oArticle->expects($this->once())->method('inCategory')->will($this->returnValue(true));
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oArticle->loadInLang(0, '2363-02');
             $sUrl = "en/" . \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value) . "/Soccer+Table+BIG+KICK+without+coin+slot.html";
         } else {
@@ -1095,7 +1096,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
     {
         $oArticle = oxNew('oxArticle');
 
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $oArticle->loadInLang(0, '1889');
             $sExp = "Bierspiel-OANS-ZWOA-GSUFFA";
         } else {
@@ -1115,7 +1116,7 @@ class SeoEncoderArticleTest extends \OxidTestCase
      */
     public function testActicleIsSavedSeoUrlShouldStayTheSame()
     {
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $sArtId = '2363';
         } else {
             $sArtId = '1131';

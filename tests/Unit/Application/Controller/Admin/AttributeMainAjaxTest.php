@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin;
 
 use \oxDb;
+use OxidEsales\Facts\Facts;
 
 /**
  * Tests for Attribute_Category_Ajax class
@@ -28,7 +29,7 @@ class AttributeMainAjaxTest extends \OxidTestCase
     {
         parent::setUp();
 
-        if ($this->getConfig()->getEdition() !== 'EE') {
+        if ((new Facts())->getEdition() !== 'EE') {
             $this->setArticleViewTable('oxv_oxarticles_de');
             $this->setObject2AttributeViewTable('oxv_oxobject2attribute_de');
             $this->setObject2CategoryViewTable('oxv_oxobject2category_de');

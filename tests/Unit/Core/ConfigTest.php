@@ -1777,7 +1777,7 @@ class ConfigTest extends \OxidTestCase
     public function testGetEdition()
     {
         $sEdition = (new Facts())->getEdition();
-        $this->assertEquals($sEdition, $this->getConfig()->getEdition());
+        $this->assertEquals($sEdition, (new Facts())->getEdition());
     }
 
     public function testGetPackageInfo_FileExists()
@@ -1801,7 +1801,7 @@ class ConfigTest extends \OxidTestCase
 
     public function testGetEditionNotEmpty()
     {
-        $this->assertNotEquals('', $this->getConfig()->getEdition());
+        $this->assertNotEquals('', (new Facts())->getEdition());
     }
 
     public function testGetFullEdition()
@@ -1812,25 +1812,21 @@ class ConfigTest extends \OxidTestCase
 
         $sFEdition = $this->getConfig()->getFullEdition();
         $this->assertEquals("Community Edition", $sFEdition);
-
-        $oConfig = $this->getMock(Config::class, array('getEdition'));
-        $oConfig->expects($this->any())->method('getEdition')->will($this->returnValue("Test Edition"));
-        $this->assertEquals("Test Edition", $oConfig->getFullEdition());
     }
 
     public function testGetVersion()
     {
-        $this->assertEquals(oxNew(ShopVersion::class)->getVersion(), $this->getConfig()->getVersion());
+        $this->assertEquals(oxNew(ShopVersion::class)->getVersion(), ShopVersion::getVersion());
     }
 
     public function testGetVersionNotEmpty()
     {
-        $this->assertNotEquals('', $this->getConfig()->getVersion());
+        $this->assertNotEquals('', ShopVersion::getVersion());
     }
 
     public function testCorrectVersion()
     {
-        $this->assertTrue(version_compare($this->getConfig()->getVersion(), '4.9') >= 0);
+        $this->assertTrue(version_compare(ShopVersion::getVersion(), '4.9') >= 0);
     }
 
     public function testGetDir_level5()

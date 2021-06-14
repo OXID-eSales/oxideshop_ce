@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
 use \oxField;
+use OxidEsales\Facts\Facts;
 
 /**
  * Testing oxuserlist class
@@ -89,7 +90,7 @@ class UserlistTest extends \OxidTestCase
     public function testUserListLoadingDisabledShopcheck()
     {
         $iUserCount = '3';
-        if ($this->getConfig()->getEdition() === 'EE') {
+        if ((new Facts())->getEdition() === 'EE') {
             $iUserCount = '8';
         }
 

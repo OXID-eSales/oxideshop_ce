@@ -26,8 +26,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Number of different product type in basket.
      * The value is updated only after recalculating a basket.
      *
-     * @deprecated since v.6.0.0 (2017-08-17); Use getProductsCount() instead.
-     *
      * @var int
      */
     protected $_iProductsCnt = 0;
@@ -36,8 +34,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      * Number of basket items.
      * The value is updated only after recalculating a basket.
      *
-     * @deprecated since v.6.0.0 (2017-08-17); Use getItemsCount() instead.
-     *
      * @var double
      */
     protected $_dItemsCnt = 0.0;
@@ -45,8 +41,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Basket weight.
      * The value is updated only after recalculating a basket.
-     *
-     * @deprecated since v.6.0.0 (2017-08-17); Use getWeight() instead.
      *
      * @var double
      */

@@ -74,7 +74,7 @@ class PaymentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             return "popups/payment_main.tpl";
         }
 
-        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oPayment, "oxpayments__oxlongdesc");
+        $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oPayment, "oxpayments__oxlongdesc");
 
         return "payment_main.tpl";
     }

@@ -80,7 +80,7 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $sCSS = null;
         }
 
-        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oContent, "oxcontents__oxcontent", $sCSS);
+        $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oContent, "oxcontents__oxcontent", $sCSS);
         $this->_aViewData["afolder"] = $myConfig->getConfigParam('aCMSfolder');
 
         return "content_main.tpl";

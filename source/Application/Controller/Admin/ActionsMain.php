@@ -98,7 +98,7 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                     }
                 } else {
                     if ($oPromotion->oxactions__oxtype->value == 2) {
-                        $this->_aViewData["editor"] = $this->_generateTextEditor(
+                        $this->_aViewData["editor"] = $this->generateTextEditor(
                             "100%",
                             300,
                             $oPromotion,

@@ -306,6 +306,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\Eshop\Application\Controller\Admin\ShopRdfa::submitUrl()`, because GR-Notify page feature was removed.
 - `\OxidEsales\EshopCommunity\Application\Model::_getAmountPriceList()`, use buildAmountPriceList().
 - `\OxidEsales\EshopCommunity\Application\Component\UserComponent::_changeUser_noRedirect()`, use changeUserWithoutRedirect()
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::_getPlainEditor()`, use TextEditorHandler::renderPlainTextEditor()
+- `\OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::_generateTextEditor()`, use generateTextEditor()
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

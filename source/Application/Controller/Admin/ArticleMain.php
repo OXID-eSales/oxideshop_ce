@@ -92,7 +92,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
         }
 
-        $this->_aViewData["editor"] = $this->_generateTextEditor(
+        $this->_aViewData["editor"] = $this->generateTextEditor(
             "100%",
             300,
             $oArticle,

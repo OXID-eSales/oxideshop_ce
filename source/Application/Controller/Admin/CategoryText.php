@@ -55,7 +55,7 @@ class CategoryText extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             }
         }
 
-        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oCategory, "oxcategories__oxlongdesc", "list.tpl.css");
+        $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oCategory, "oxcategories__oxlongdesc", "list.tpl.css");
 
         return "category_text.tpl";
     }

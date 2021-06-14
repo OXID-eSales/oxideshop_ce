@@ -73,7 +73,7 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
                 $oLang->setTplLanguage($iOldLang);
             }
 
-            $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oLetter, "oxpricealarm__oxlongdesc", "details.tpl.css");
+            $this->_aViewData["editor"] = $this->generateTextEditor("100%", 300, $oLetter, "oxpricealarm__oxlongdesc", "details.tpl.css");
             $this->_aViewData["edit"] = $oPricealarm;
             $this->_aViewData["actshop"] = $config->getShopId();
         }

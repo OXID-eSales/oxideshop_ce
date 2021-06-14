@@ -57,7 +57,7 @@ class AdminlinksMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         // generate editor
-        $this->_aViewData["editor"] = $this->_generateTextEditor(
+        $this->_aViewData["editor"] = $this->generateTextEditor(
             "100%",
             255,
             $oLinks,

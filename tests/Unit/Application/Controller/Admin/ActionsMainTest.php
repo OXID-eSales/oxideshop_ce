@@ -159,9 +159,9 @@ class ActionsMainTest extends \OxidTestCase
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_generateTextEditor"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "generateTextEditor"));
         $oView->expects($this->once())->method('getViewDataElement')->will($this->returnValue($oPromotion));
-        $oView->expects($this->once())->method('_generateTextEditor')->will($this->returnValue("sHtmlEditor"));
+        $oView->expects($this->once())->method('generateTextEditor')->will($this->returnValue("sHtmlEditor"));
         $sTplName = $oView->render();
 
         $this->assertEquals("actions_main.tpl", $sTplName);
@@ -220,9 +220,9 @@ class ActionsMainTest extends \OxidTestCase
         $oPromotion->oxactions__oxtype = new oxField(2);
 
         // testing..
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "_generateTextEditor"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\Admin\ActionsMain::class, array("getViewDataElement", "generateTextEditor"));
         $oView->expects($this->once())->method('getViewDataElement')->with($this->equalTo("edit"))->will($this->returnValue($oPromotion));
-        $oView->expects($this->once())->method('_generateTextEditor')->with($this->equalTo("100%"), $this->equalTo(300), $this->equalTo($oPromotion), $this->equalTo("oxactions__oxlongdesc"), $this->equalTo("details.tpl.css"));
+        $oView->expects($this->once())->method('generateTextEditor')->with($this->equalTo("100%"), $this->equalTo(300), $this->equalTo($oPromotion), $this->equalTo("oxactions__oxlongdesc"), $this->equalTo("details.tpl.css"));
 
         $sTplName = $oView->render();
 

@@ -109,45 +109,6 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
     }
 
     /**
-     * Returns textarea filled with text to edit.
-     *
-     * @param int                                    $width  editor width
-     * @param int                                    $height editor height
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object object passed to editor
-     * @param string                                 $field  object field which content is passed to editor
-     *
-     * @deprecated since v6.0 (2017-06-29); Please use TextEditorHandler::renderPlainTextEditor() method.
-     *
-     * @return string
-     */
-    protected function _getPlainEditor($width, $height, $object, $field) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $objectValue = $this->_getEditValue($object, $field);
-
-        $textEditor = oxNew(TextEditorHandler::class);
-
-        return $textEditor->renderPlainTextEditor($width, $height, $objectValue, $field);
-    }
-
-    /**
-     * Generates Text editor html code.
-     *
-     * @param int                                    $width      editor width
-     * @param int                                    $height     editor height
-     * @param \OxidEsales\Eshop\Core\Model\BaseModel $object     object passed to editor
-     * @param string                                 $field      object field which content is passed to editor
-     * @param string                                 $stylesheet stylesheet to use in editor
-     *
-     * @deprecated since v6.0 (2017-06-29); Please use generateTextEditor() method.
-     *
-     * @return string Editor output
-     */
-    protected function _generateTextEditor($width, $height, $object, $field, $stylesheet = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->generateTextEditor($width, $height, $object, $field, $stylesheet);
-    }
-
-    /**
      * Generates Text editor html code.
      *
      * @param int                                    $width      editor width

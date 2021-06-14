@@ -308,6 +308,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Application\Component\UserComponent::_changeUser_noRedirect()`, use changeUserWithoutRedirect()
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::_getPlainEditor()`, use TextEditorHandler::renderPlainTextEditor()
 - `\OxidEsales\EshopCommunity\Application\Controller\Admin\AdminDetailsController::_generateTextEditor()`, use generateTextEditor()
+- `\OxidEsales\EshopCommunity\Application\Model\Order::getFormattedeliveryCost()`, use getFormattedDeliveryCost()
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

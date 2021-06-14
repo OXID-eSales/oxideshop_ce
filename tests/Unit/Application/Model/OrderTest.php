@@ -3501,13 +3501,13 @@ class OrderTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetFormattedeliveryCost()
+    public function testGetFormattedDeliveryCost()
     {
         $oOrder = oxNew('oxorder');
         $oOrder->oxorder__oxcurrency = new \OxidEsales\Eshop\Core\Field("EUR");
         $oOrder->oxorder__oxdelcost = new \OxidEsales\Eshop\Core\Field(100);
 
-        return $this->assertEquals("100,00", $oOrder->getFormattedeliveryCost());
+        return $this->assertEquals("100,00", $oOrder->getFormattedDeliveryCost());
     }
 
     /**

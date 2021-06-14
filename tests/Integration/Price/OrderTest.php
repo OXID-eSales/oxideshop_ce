@@ -186,7 +186,7 @@ class OrderTest extends BaseTestCase
         }
 
         if ($expectedTotals['delivery'] ?? null) {
-            $this->assertEquals($expectedTotals['delivery']['brutto'], $order->getFormattedeliveryCost(), "Shipping costs #$approach");
+            $this->assertEquals($expectedTotals['delivery']['brutto'], $order->getFormattedDeliveryCost(), "Shipping costs #$approach");
         }
 
         if ($expectedTotals['wrapping'] ?? null) {

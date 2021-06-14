@@ -57,7 +57,7 @@
   [{/if}]
   <tr>
     <td class="edittext" height="15">[{oxmultilang ident="GENERAL_DELIVERYCOST"}]&nbsp;&nbsp;</td>
-    <td class="edittext" align="right"><b>[{$edit->getFormattedeliveryCost()}]</b></td>
+    <td class="edittext" align="right"><b>[{$edit->getFormattedDeliveryCost()}]</b></td>
     <td class="edittext">&nbsp;<b>[{if $edit->oxorder__oxcurrency->value}] [{$edit->oxorder__oxcurrency->value}] [{else}] [{$currency->name}] [{/if}]</b></td>
   </tr>
   <tr>

@@ -2228,18 +2228,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Get Delivery cost sum formatted
-     *
-     * @deprecated in v5.2.0 on 2014-04-12; Typo use \OxidEsales\Eshop\Application\Model\Order::getFormattedPayCost()
-     *
-     * @return string
-     */
-    public function getFormattedeliveryCost()
-    {
-        return $this->getFormattedDeliveryCost();
-    }
-
-    /**
      * Get pay cost sum formatted
      *
      * @return string

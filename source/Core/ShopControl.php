@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
@@ -741,10 +742,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function handleRoutingException($exception)
     {
-        /**
-         * @todo after removal of the BC layer this method will retrow the exception
-         * throw $exception
-         */
+        \OxidEsales\Eshop\Core\Registry::getLogger()->warning($exception->getMessage());
+        error_404_handler();
     }
 
     /**
@@ -951,10 +950,29 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         try {
             $controllerClass = $this->resolveControllerClass($controllerKey);
         } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
-            $this->handleRoutingException($exception);
-            $controllerClass = $controllerKey;
+            if ($this->isMetadataV1Controller($controllerKey)) {
+                $controllerClass = $controllerKey;
+            } else {
+                $this->handleRoutingException($exception);
+            }
         }
 
         return $controllerClass;
+    }
+
+    /**
+     * @todo Remove function after routing BC is removed
+     *
+     * @param $controllerKey
+     * @return bool
+     */
+    protected function isMetadataV1Controller($controllerKey)
+    {
+        try {
+            $obj = oxNew($controllerKey);
+            return ($obj instanceof BaseController);
+        } catch (\OxidEsales\Eshop\Core\Exception\SystemComponentException $e) {
+            return false;
+        }
     }
 }

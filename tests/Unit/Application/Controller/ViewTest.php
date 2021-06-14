@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use oxSystemComponentException;
 use oxUtilsHelper;
@@ -14,6 +15,7 @@ use \oxView;
 use \oxField;
 use \oxRegistry;
 use \oxTestModules;
+use Psr\Log\LoggerInterface;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
 
@@ -304,21 +306,33 @@ class ViewTest extends \OxidTestCase
         $this->assertNull($oCmp->executeFunction('yyy'));
     }
 
-    public function testExecuteFunctionThrowsExeption()
+    public function testExecuteNonExistsFunctionCall404ErrorHandler()
     {
-        $oView = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\modOxView::class, array('xxx'));
-        $oView->expects($this->never())->method('xxx');
+        //Arrange
+        $oView = new \OxidEsales\Eshop\Core\Controller\BaseController();
+        $_POST['fnc'] = 'unkownFunction';
+        $_GET['fnc'] = 'unkownFunction';
 
+        //Mock Asserts
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $logger->expects($this->once())
+               ->method('warning');
 
-        try {
-            $oView->executeFunction('yyy');
-        } catch (oxSystemComponentException $oEx) {
-            $this->assertEquals("ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND yyy", $oEx->getMessage());
+        Registry::set('logger', $logger);
 
-            return;
-        }
+        $utils = $this->getMockBuilder(\OxidEsales\Eshop\Core\Utils::class)->getMock();
+        $utils
+            ->expects($this->once())
+            ->method('handlePageNotFoundError');
 
-        $this->fail("No exception thrown by executeFunction");
+        Registry::set(\OxidEsales\Eshop\Core\Utils::class, $utils);
+
+        //Act
+        $oView->executeFunction('unkownFunction');
+
+        //Assert
+        $this->assertArrayNotHasKey('fnc', $_POST);
+        $this->assertArrayNotHasKey('fnc', $_GET);
     }
 
     public function testExecuteFunctionExecutesOnlyOnce()

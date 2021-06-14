@@ -416,20 +416,6 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 
         return $blForBasket;
     }
-    /**
-     * Checks if delivery fits for one article
-     *
-     * @deprecated in b-dev since (2015-07-27), use isDeliveryRuleFitByArticle instead
-     *
-     * @param object  $content   shop basket item
-     * @param integer $artAmount product amount
-     *
-     * @return bool
-     */
-    protected function _isForArticle($content, $artAmount) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->isDeliveryRuleFitByArticle($artAmount);
-    }
 
     /**
      * Update total count of product items are covered by current delivery.

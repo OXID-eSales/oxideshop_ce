@@ -1037,7 +1037,7 @@ class DeliveryTest extends \OxidTestCase
         $this->assertFalse($oDelivery->UNITcheckDeliveryAmount(161)); // chf -> 110 eur
     }
 
-    public function testIsForArticle()
+    public function testIsDeliveryRuleFitByArticle()
     {
         $oDelivery = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, array('_checkDeliveryAmount', 'getCalculationRule'));
         $oDelivery->expects($this->once())->method('_checkDeliveryAmount')->will($this->returnValue(true));
@@ -1045,17 +1045,17 @@ class DeliveryTest extends \OxidTestCase
         $oDelivery->expects($this->any())->method('getCalculationRule')->will($this->returnValue($calculateMoreThanOncePerCartRule));
         $oDelivery->load('_testDeliveryId');
         $oDelivery->setblFreeShipping(false);
-        $blReturn = $oDelivery->UNITisForArticle($this->_oBasketItem, 2);
+        $blReturn = $oDelivery->isDeliveryRuleFitByArticle(2);
 
         $this->assertTrue($blReturn);
     }
 
-    public function testIsForArticleIfArticleIsFreeShipped()
+    public function testIsDeliveryRuleFitByArticleIfArticleIsFreeShipped()
     {
         $oDelivery = $this->getProxyClass("oxdelivery");
         $oDelivery->setNonPublicVar("_blFreeShipping", true);
         $oDelivery->load('_testDeliveryId');
-        $blReturn = $oDelivery->UNITisForArticle($this->_oBasketItem, 2);
+        $blReturn = $oDelivery->isDeliveryRuleFitByArticle(2);
         $this->assertFalse($blReturn);
     }
 

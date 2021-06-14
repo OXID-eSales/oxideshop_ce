@@ -1389,7 +1389,7 @@ class VoucherTest extends \OxidTestCase
         $oVoucher->expects($this->once())->method('_getBasketItems')->will($this->returnValue(array($oBasketItem1)));
         $oVoucher->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
 
-        $this->assertEquals(54.5, $oVoucher->UNITgetCategoryDiscoutValue($dPrice));
+        $this->assertEquals(54.5, $oVoucher->UNITgetCategoryDiscountValue($dPrice));
     }
 
     /**

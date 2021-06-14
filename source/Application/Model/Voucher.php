@@ -680,22 +680,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
-     * @deprecated on b-dev (2015-03-31); Use function _getGenericDiscountValue()
-     *
-     * @return double
-     */
-    protected function _getGenericDiscoutValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->_getGenericDiscountValue($dPrice);
-    }
-
-    /**
-     * Returns the discount value used.
-     *
-     * @param double $dPrice price to calculate discount on it
-     *
-     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
-     *
      * @return double
      * @deprecated underscore prefix violates PSR12, will be renamed to "getGenericDiscountValue" in next major
      */
@@ -739,22 +723,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oSeries = $this->getSerie();
 
         return $oSeries->oxvoucherseries__oxdiscounttype->value;
-    }
-
-    /**
-     * Returns the discount value used, if voucher is aplied only for specific products.
-     *
-     * @param double $dPrice price to calculate discount on it
-     *
-     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
-     *
-     * @deprecated on b-dev (2015-03-31); Use function _getProductDiscountValue()
-     *
-     * @return double
-     */
-    protected function _getProductDiscoutValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->_getProductDiscountValue($dPrice);
     }
 
     /**
@@ -821,22 +789,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         return $dVoucher;
-    }
-
-    /**
-     * Returns the discount value used, if voucher is applied only for specific categories.
-     *
-     * @param double $dPrice price to calculate discount on it
-     *
-     * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
-     *
-     * @deprecated on b-dev (2015-03-31); Use function _getCategoryDiscountValue()
-     *
-     * @return double
-     */
-    protected function _getCategoryDiscoutValue($dPrice) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->_getCategoryDiscountValue($dPrice);
     }
 
     /**

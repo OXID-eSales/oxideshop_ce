@@ -64,19 +64,10 @@ class UtilsObject
     private $shopIdCalculator = null;
 
     /**
-     * This class is a singleton and should be instantiated with getInstance().
-     *
-     * @deprecated in v6.0 (2017-02-27) The constructor will be protected in the future. Use getInstance() instead.
-     *
-     * @param BackwardsCompatibleClassNameProvider $classNameProvider
-     * @param ModuleChainsGenerator                $moduleChainsGenerator
-     * @param ShopIdCalculator                     $shopIdCalculator
+     * This class is a singleton and should be instantiated with getInstance()
      */
-    public function __construct($classNameProvider = null, $moduleChainsGenerator = null, $shopIdCalculator = null)
+    protected function __construct()
     {
-        $this->classNameProvider = $classNameProvider;
-        $this->shopIdCalculator = $shopIdCalculator;
-        $this->moduleChainsGenerator = $moduleChainsGenerator;
     }
 
     /**

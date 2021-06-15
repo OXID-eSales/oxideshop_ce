@@ -7,20 +7,18 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
+use Exception;
+use oxField;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\BasketItem;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Application\Model\Payment;
-use oxOutOfStockException;
-use \oxUtils;
-use \oxUtilsObject;
-use \oxOrder;
-use \oxPayment;
-use \Exception;
-use \oxException;
-use \oxField;
-use \oxRegistry;
-use \oxTestModules;
+use oxOrder;
+use oxPayment;
+use oxRegistry;
+use oxTestModules;
+use oxUtils;
+use oxUtilsObject;
 
 /**
  * Test oxUtils module.
@@ -399,7 +397,7 @@ class OrderTest extends \OxidTestCase
         $config->setConfigParam('blConfirmAGB', '1');
         $config->setConfigParam('blConfirmCustInfo', '1');
 
-        $utilsObjectMock = new UtilsObjectHelper();
+        $utilsObjectMock = UtilsObjectHelper::getInstance();
         $order = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, ['getUtilsObjectInstance']);
         $order->expects($this->any())->method('getUtilsObjectInstance')->will($this->returnValue($utilsObjectMock));
 

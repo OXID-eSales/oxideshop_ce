@@ -222,7 +222,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
      */
     protected function assertClassChain(array $fullClassChainToAssert): void
     {
-        $utilsObject = new TestUtilsObject();
+        $utilsObject = TestUtilsObject::getInstance();
         $moduleChainsGenerator = $utilsObject->getTheModuleChainsGenerator();
         $class = Price::class;
         $classAlias = 'oxprice';
@@ -451,7 +451,7 @@ class ModuleNamespaceTest extends BaseModuleTestCase
     ): void {
         $this->installAndActivateModule($moduleNameToBeActivated);
 
-        $utilsObject = new TestUtilsObject();
+        $utilsObject = TestUtilsObject::getInstance();
         $chain = $utilsObject->getTheModuleChainsGenerator();
 
         $this->assertEquals($fullChainToAssert, $chain->getFullChain('OxidEsales\Eshop\Core\Price', 'oxprice'));

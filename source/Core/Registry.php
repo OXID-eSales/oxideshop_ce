@@ -134,7 +134,7 @@ class Registry
      */
     public static function getUtilsObject()
     {
-        return self::getObject(\OxidEsales\Eshop\Core\UtilsObject::class);
+        return \OxidEsales\Eshop\Core\UtilsObject::getInstance();
     }
 
     /**

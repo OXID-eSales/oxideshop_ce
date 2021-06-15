@@ -175,7 +175,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testResetInstanceCacheSingle()
     {
-        $oTestInstance = new modOxUtilsObject_oxUtilsObject();
+        $oTestInstance = modOxUtilsObject_oxUtilsObject::getInstance();
         $aInstanceCache = array("oxArticle" => oxNew('oxArticle'), "oxattribute" => new oxAttribute());
         $oTestInstance->setClassNameCache($aInstanceCache);
 
@@ -189,7 +189,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
     public function testResetInstanceCacheAll()
     {
-        $oTestInstance = new modOxUtilsObject_oxUtilsObject();
+        $oTestInstance = modOxUtilsObject_oxUtilsObject::getInstance();
         $aInstanceCache = array("oxArticle" => oxNew('oxArticle'), "oxattribute" => new oxAttribute());
         $oTestInstance->setClassNameCache($aInstanceCache);
 
@@ -226,7 +226,7 @@ class UtilsobjectTest extends \OxidEsales\TestingLibrary\UnitTestCase
 
         $expectedShopId = ShopIdCalculator::BASE_SHOP_ID;
 
-        $utilsObject = new UtilsObject();
+        $utilsObject = UtilsObject::getInstance();
         $realShopId = $utilsObject->getShopId();
 
         $this->assertSame($expectedShopId, $realShopId);

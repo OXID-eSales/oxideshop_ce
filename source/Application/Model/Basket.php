@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
 /**
@@ -308,7 +309,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     public function isSaveToDataBaseEnabled()
     {
         if (is_null($this->_blSaveToDataBase)) {
-            $this->_blSaveToDataBase = (bool) !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPerfNoBasketSaving');
+            $this->_blSaveToDataBase = (bool) !Registry::getConfig()->getConfigParam('blPerfNoBasketSaving');
         }
 
         return $this->_blSaveToDataBase;
@@ -514,7 +515,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
         // notifying that new basket item was added
         if (!$blBundle) {
-            $this->_addedNewItem($sProductID, $dAmount, $aSel, $aPersParam, $blOverride, $blBundle, $sOldBasketItemId);
+            $this->addedNewItem($blOverride);
         }
 
         // returning basket item object
@@ -1665,18 +1666,6 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                 $oDiscount->fDiscount = $oLang->formatCurrency($oDiscount->dDiscount, $this->getBasketCurrency());
             }
         }
-    }
-
-    /**
-     * Checks whether basket can be saved
-     *
-     * @deprecated in v5.2.0 on 2013-04-28; use \OxidEsales\Eshop\Application\Model\Basket::isSaveToDataBaseEnabled()
-     *
-     * @return bool
-     */
-    protected function _canSaveBasket() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->isSaveToDataBaseEnabled();
     }
 
     /**
@@ -2958,31 +2947,13 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Is called when new basket item is successfully added.
      *
-     * @param string $sProductID       id of product
-     * @param double $dAmount          product amount
-     * @param array  $aSel             product select lists (default null)
-     * @param array  $aPersParam       product persistent parameters (default null)
-     * @param bool   $blOverride       marker to accumulate passed amount or renew (default false)
-     * @param bool   $blBundle         marker if product is bundle or not (default false)
-     * @param string $sOldBasketItemId id if old basket item if to change it
-     *
-     * @deprecated since v.6.0.0 (2017-08-24); Use addedNewItem() instead.
-     */
-    protected function _addedNewItem($sProductID, $dAmount, $aSel, $aPersParam, $blOverride, $blBundle, $sOldBasketItemId) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $this->addedNewItem($blOverride);
-    }
-
-    /**
-     * Is called when new basket item is successfully added.
-     *
      * @param bool $blOverride marker to accumulate passed amount or renew (default false).
      */
     protected function addedNewItem($blOverride)
     {
         if (!$blOverride) {
             $this->_blNewITemAdded = null;
-            \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("blAddedNewItem", true);
+            Registry::getSession()->setVariable("blAddedNewItem", true);
         }
     }
 

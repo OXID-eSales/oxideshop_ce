@@ -317,6 +317,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Config::getVersion()`, use OxidEsales\Eshop\Core\ShopVersion::getVersion()
 - `\OxidEsales\EshopCommunity\Core\Config::getActiveViewsNames()`, use Config::getActiveViewsIds()
 - `\OxidEsales\EshopCommunity\Core\Config::parseModuleChains()`, use OxidEsales\Eshop\Core\ModuleList::parseModuleChains()
+- `\OxidEsales\EshopCommunity\Core\Email::$Version`, use \PHPMailer\PHPMailer\PHPMailer::VERSION
+- `\OxidEsales\EshopCommunity\Core\Email::$SMTP_PORT`, use $smtpPort
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

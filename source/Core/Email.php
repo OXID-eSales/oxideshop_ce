@@ -23,23 +23,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Email extends PHPMailer
 {
     /**
-     * @deprecated since v6.3.2 (2018-12-14); This property will be removed completely. In v6.4 a new version of PHPMailer will be introduced, which uses const VERSION instead.
-     *
-     * The PHPMailer Version number.
-     * @var string
-     */
-    public $Version = PHPMailer::VERSION;
-
-    /**
-     * Default Smtp server port
-     *
-     * @deprecated use $smtpPort instead
-     *
-     * @var int
-     */
-    public $SMTP_PORT = 25;
-
-    /**
      * Default Smtp server port
      *
      * @var int
@@ -493,9 +476,7 @@ class Email extends PHPMailer
         $isSmtp = false;
         if ($smtpHost) {
             $match = [];
-            $smtpPort = isset($this->SMTP_PORT)
-                ? $this->SMTP_PORT
-                : $this->smtpPort;
+            $smtpPort = $this->smtpPort;
             if (Str::getStr()->preg_match('@^(.*?)(:([0-9]+))?$@i', $smtpHost, $match)) {
                 $smtpHost = $match[1];
                 if (isset($match[3]) && (int) $match[3] !== 0) {

@@ -49,7 +49,7 @@ function StornoThisArticle( sID)
     {
         var oDeleteThisArticle = document.getElementById("DeleteThisArticle");
         oDeleteThisArticle.sArtID.value=sID;
-        oDeleteThisArticle.fnc.value='storno';
+        oDeleteThisArticle.fnc.value='cancelOrder';
         oDeleteThisArticle.submit();
     }
 }

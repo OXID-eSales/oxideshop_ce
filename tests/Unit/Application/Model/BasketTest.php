@@ -629,30 +629,6 @@ class BasketTest extends \OxidTestCase
     }
 
     /**
-     * tests oxBasket::_canSaveBasket()
-     *
-     * @return null
-     */
-    public function testCanSaveBasket()
-    {
-        $oBasket = $this->getProxyClass('oxbasket');
-        $this->getConfig()->setConfigParam('blPerfNoBasketSaving', false);
-        $this->assertTrue($oBasket->UNITcanSaveBasket());
-    }
-
-    /**
-     * Negative oxBasket::_canSaveBasket() test
-     *
-     * @return null
-     */
-    public function testCanSaveBasketNegative()
-    {
-        $oBasket = $this->getProxyClass('oxbasket');
-        $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
-        $this->assertFalse($oBasket->UNITcanSaveBasket());
-    }
-
-    /**
      * test the merging of basket
      *
      * @return null
@@ -2178,7 +2154,7 @@ class BasketTest extends \OxidTestCase
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('getBasket'));
         $oUser->expects($this->once())->method('getBasket')->will($this->returnValue($oUserBasket));
 
-        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('getBasketUser', 'addToBasket', '_canSaveBasket'));
+        $oBasket = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modForTestAddBundles::class, array('getBasketUser', 'addToBasket'));
         $oBasket->expects($this->once())->method('getBasketUser')->will($this->returnValue($oUser));
         $oBasket->expects($this->once())->method('addToBasket');
         $oBasket->setVar('aBasketContents', array(new oxbasketitem()));
@@ -4177,18 +4153,17 @@ class BasketTest extends \OxidTestCase
     }
 
     /**
-     * Test case for oxBasket::_addedNewItem(), oxBasket::isNewItemAdded()
+     * Test case for oxBasket::addedNewItem(), oxBasket::isNewItemAdded()
      *
      * @return null
      */
     public function testIsNewItemAdded()
     {
-        $oBasket = oxNew('oxBasket');
+        $oBasket = oxNew('oxbasket');
         $this->assertFalse($oBasket->isNewItemAdded());
         $this->assertNull(oxRegistry::getSession()->getVariable("blAddedNewItem"));
+        $oBasket->addToBasket($this->oArticle->getId(), 10);
 
-        $oBasket = oxNew('oxBasket');
-        $oBasket->UNITaddedNewItem(0, 0, 0, 0, 0, 0, 0);
         $this->assertTrue(oxRegistry::getSession()->getVariable("blAddedNewItem"));
         $this->assertTrue($oBasket->isNewItemAdded());
         $this->assertNull(oxRegistry::getSession()->getVariable("blAddedNewItem"));

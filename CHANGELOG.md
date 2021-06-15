@@ -157,6 +157,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Removed deprecated global function getStr()
 - `OxidEsales\Eshop\Application\Model\UserPayment::$_sPaymentKey`
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
+- `OxidEsales\Eshop\Application\Model\Basket::_canSaveBasket()`, use isSaveToDataBaseEnabled().
+- `OxidEsales\Eshop\Application\Model\Basket::_addedNewItem()`, use addedNewItem().
 - PHP version checker
     - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
     - Language Constants:

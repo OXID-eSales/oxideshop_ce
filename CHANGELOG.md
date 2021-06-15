@@ -320,6 +320,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Email::$Version`, use \PHPMailer\PHPMailer\PHPMailer::VERSION
 - `\OxidEsales\EshopCommunity\Core\Email::$SMTP_PORT`, use $smtpPort
 - `\OxidEsales\EshopCommunity\Core\OnlineModuleVersionNotifier::_getModules()`, use ShopConfigurationDaoBridgeInterface
+- `\OxidEsales\EshopCommunity\Core\ShopControl::$_blHandlerSet`
+- `\OxidEsales\EshopCommunity\Core\ShopControl::_getStartController()`, Use getStartControllerKey()
+- `\OxidEsales\EshopCommunity\Core\ShopControl::_getFrontendStartController()`, Use getFrontendStartControllerKey()
+- `\OxidEsales\EshopCommunity\Core\WidgetControl::$_blHandlerSet`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

@@ -20,16 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 {
     /**
-     * Skip handler set for widget as it already set in oxShopControl.
-     *
-     * @deprecated since v.6.0.0 (2017-10-11); Not used any more, was used in _setDefaultExceptionHandler()
-     * which was already removed.
-     *
-     * @var bool
-     */
-    protected $_blHandlerSet = true;
-
-    /**
      * Skip main tasks as it already handled in oxShopControl.
      *
      * @var bool

@@ -30,16 +30,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *
-     * @deprecated since v.6.0.0 (2017-10-11); Not used any more, was used in _setDefaultExceptionHandler()
-     * which was already removed.
-     *
-     * @var bool
-     */
-    protected $_blHandlerSet = null;
-
-    /**
-     * Used to force handling, it allows other place like widget controller to skip it.
-     *
      * @var bool
      */
     protected $_blMainTasksExecuted = null;
@@ -161,32 +151,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         return 0;
-    }
-
-
-    /**
-     * @deprecated since v6.0 (2017-02-03). Use ShopControl::getStartControllerKey() instead.
-     *
-     * Returns controller class which should be loaded.
-     *
-     * @return string
-     */
-    protected function _getStartController() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $this->getStartControllerKey();
-    }
-
-    /**
-     * @deprecated since v6.0 (2017-02-03). Use ShopControl::getFrontendStartControllerKey() instead.
-     *
-     * Returns which controller should be loaded at shop start.
-     * Check whether we have to display mall start screen or not.
-     *
-     * @return string
-     */
-    protected function _getFrontendStartController() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return 'start';
     }
 
     /**

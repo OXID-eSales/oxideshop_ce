@@ -16,7 +16,7 @@ function StornoThisArticle( sID)
     {
         var oSearch = document.getElementById("search");
         oSearch.oxid.value=sID;
-        oSearch.fnc.value='storno';
+        oSearch.fnc.value='cancelOrder';
 
         var oTransfer = parent.edit.document.getElementById("transfer");
         oTransfer.oxid.value=sID;

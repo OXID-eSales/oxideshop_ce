@@ -570,7 +570,6 @@ class DeliverysetListTest extends \OxidTestCase
 
         $sTable = getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
-                select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' LIMIT 1),
                     0,
                     1) &&
@@ -606,7 +605,6 @@ class DeliverysetListTest extends \OxidTestCase
 
         $sTable = getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . $oList->getBaseObject()->getSqlActiveSnippet() . " and (
-                select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID='_testCoutntryId'),
                     1) &&
@@ -664,7 +662,6 @@ class DeliverysetListTest extends \OxidTestCase
 
         $sTable = getViewName('oxdeliveryset');
         $sTestSQ = "select $sTable.* from $sTable where " . oxRegistry::get("oxDeliverySetList")->getBaseObject()->getSqlActiveSnippet() . " and (
-                select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID='_testCoutntryId'),
                     1) &&

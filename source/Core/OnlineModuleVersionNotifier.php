@@ -116,29 +116,4 @@ class OnlineModuleVersionNotifier
     {
         return $this->_oCaller;
     }
-
-    /**
-     * @deprecated since v6.4.0 (09-08-2019). Use ShopConfigurationDaoBridgeInterface
-     *
-     * Returns shops array of modules.
-     *
-     * @return array
-     */
-    protected function _getModules() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $container = ContainerFactory::getInstance()->getContainer();
-        $shopConfiguration = $container->get(ShopConfigurationDaoBridgeInterface::class)->get();
-
-        $modules = [];
-
-        foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
-            $module = oxNew(Module::class);
-            $module->load($moduleConfiguration->getId());
-            $modules[$moduleConfiguration->getId()] = $module;
-        }
-
-        ksort($modules);
-
-        return $modules;
-    }
 }

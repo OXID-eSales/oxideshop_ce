@@ -315,6 +315,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Application\Model\Voucher::_getCategoryDiscoutValue()`, use getCategoryDiscountValue()
 - `\OxidEsales\EshopCommunity\Core\Config::getEdition()`, use \OxidEsales\Facts\Facts::getEdition()
 - `\OxidEsales\EshopCommunity\Core\Config::getVersion()`, use OxidEsales\Eshop\Core\ShopVersion::getVersion()
+- `\OxidEsales\EshopCommunity\Core\Config::getActiveViewsNames()`, use Config::getActiveViewsIds()
+- `\OxidEsales\EshopCommunity\Core\Config::parseModuleChains()`, use OxidEsales\Eshop\Core\ModuleList::parseModuleChains()
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

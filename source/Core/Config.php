@@ -1999,28 +1999,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @deprecated since v6.0 (2017-02-3). Use Config::getActiveViewsIds() instead.
-     *
-     * NOTE: according to current logic, this returns the view ids.
-     *
-     * Get active views names list
-     *
-     * @return array
-     */
-    public function getActiveViewsNames()
-    {
-        $names = [];
-
-        if (is_array($this->getActiveViewsList())) {
-            foreach ($this->getActiveViewsList() as $view) {
-                $names[] = $view->getClassName();
-            }
-        }
-
-        return $names;
-    }
-
-    /**
      * Get active views class id list
      *
      * @return array
@@ -2077,22 +2055,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->parseModuleChains($this->getConfigParam('aModules'));
-    }
-
-    /**
-     * Parse array of module chains to nested array
-     *
-     * @deprecated on 6.0.0 (2017-03-09); use OxidEsales\Eshop\Core\ModuleList::parseModuleChains() instead.
-     *
-     * @param array $modules Module array (config format)
-     *
-     * @return array
-     */
-    public function parseModuleChains($modules)
-    {
         $moduleList = oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class);
-        return $moduleList->parseModuleChains($modules);
+
+        return $moduleList->parseModuleChains($this->getConfigParam('aModules'));
     }
 
     /**

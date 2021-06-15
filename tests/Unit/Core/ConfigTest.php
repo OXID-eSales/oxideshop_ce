@@ -445,22 +445,6 @@ class ConfigTest extends \OxidTestCase
         $this->assertEquals(array($oView1, $oView2), $oConfig->getActiveViewsList());
     }
 
-    public function testGetActiveViewsNames()
-    {
-        $oConfig = oxNew('oxConfig');
-
-        $oView1 = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
-        $oView1->expects($this->once())->method('getClassName')->will($this->returnValue("testViewName1"));
-
-        $oView2 = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
-        $oView2->expects($this->once())->method('getClassName')->will($this->returnValue("testViewName2"));
-
-        $oConfig->setActiveView($oView1);
-        $oConfig->setActiveView($oView2);
-
-        $this->assertEquals(array("testViewName1", "testViewName2"), $oConfig->getActiveViewsNames());
-    }
-
     /**
      * Test method ActiveViewsIds
      */
@@ -2208,46 +2192,6 @@ class ConfigTest extends \OxidTestCase
         $return = $configMock->getModulesWithExtendedClass();
 
         $this->assertEquals($expected, $return);
-    }
-
-    /**
-     * oxmodule::parseModuleChains() test case, empty
-     *
-     * @return null
-     */
-    public function testParseModuleChainsEmpty()
-    {
-        $oConfig = $this->getProxyClass('oxconfig');
-
-        $aModules = array();
-        $aModulesArray = array();
-        $this->assertEquals($aModulesArray, $oConfig->parseModuleChains($aModules));
-    }
-
-    /**
-     * oxmodule::parseModuleChains() test case, single
-     *
-     * @return null
-     */
-    public function testParseModuleChainsSigle()
-    {
-        $oConfig = $this->getProxyClass('oxconfig');
-        $aModules = array('oxtest' => 'test/mytest');
-        $aModulesArray = array('oxtest' => array('test/mytest'));
-        $this->assertEquals($aModulesArray, $oConfig->parseModuleChains($aModules));
-    }
-
-    /**
-     * oxmodule::parseModuleChains() test case
-     *
-     * @return null
-     */
-    public function testParseModuleChains()
-    {
-        $oConfig = $this->getProxyClass('oxConfig');
-        $aModules = array('oxtest' => 'test/mytest&test1/mytest1');
-        $aModulesArray = array('oxtest' => array('test/mytest', 'test1/mytest1'));
-        $this->assertEquals($aModulesArray, $oConfig->parseModuleChains($aModules));
     }
 
     /**

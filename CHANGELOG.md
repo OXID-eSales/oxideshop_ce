@@ -364,6 +364,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Docblock in SystemInfoController. [PR-864](https://github.com/OXID-eSales/oxideshop_ce/pull/864)
 - Typo in Model/ActionList::fetchExistsActivePromotion method SQL. [PR-867](https://github.com/OXID-eSales/oxideshop_ce/pull/867)
 - SettingChangedEvent dispatch moved to module setting dao, so its triggered during module settings change in admin. [PR-860](https://github.com/OXID-eSales/oxideshop_ce/pull/860)
+- SQL performance issue in oxDeliverySetList::_getFilterSelect [#0006247](https://bugs.oxid-esales.com/view.php?id=6247) [PR-865](https://github.com/OXID-eSales/oxideshop_ce/pull/865)
 
 ### Deprecated
 - Method

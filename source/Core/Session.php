@@ -92,15 +92,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected $_oBasketReservations = null;
 
     /**
-     * Started session marker
-     *
-     * @deprecated since v6.5.1 (2020-01-24); Use Session::isSessionStarted() instead.
-     *
-     * @var bool
-     */
-    protected $_blStarted = false;
-
-    /**
      * Force session start by defined parameter rules.
      * First level array keys are parameters to check which point to
      * array of values which need session.
@@ -334,12 +325,13 @@ class Session extends \OxidEsales\Eshop\Core\Base
             session_cache_limiter('');
         }
 
-        $this->_blStarted = session_start();
+        session_start();
+
         if (!$this->getSessionChallengeToken()) {
             $this->_initNewSessionChallenge();
         }
 
-        return $this->_blStarted;
+        return $this->isSessionStarted();
     }
 
     /**

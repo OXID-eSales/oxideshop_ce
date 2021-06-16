@@ -140,7 +140,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns the difference between stored profiler end time and start time. Works only after _stopMonitor() is called, otherwise returns 0.
+     * Returns the difference between stored profiler end time and start time. Works only after stopMonitoring() is called, otherwise returns 0.
      *
      * @return double
      */
@@ -269,7 +269,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         stopProfile('process');
 
-        $this->_stopMonitor($view->getIsCallForCache(), false, $view->getViewId(), $view->getViewData(), $view);
+        $this->stopMonitoring($view);
 
         $outputManager->flushOutput();
     }
@@ -595,31 +595,16 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * Stops resource monitor, summarizes and outputs values.
      *
-     * @deprecated on b-dev (2015-10-01); Use self::stopMonitoring() instead.
-     *
-     * @param bool               $isCallForCache Is content cache
-     * @param bool               $isCached       Is content cached
-     * @param string             $viewId         View ID
-     * @param array              $viewData       View data
-     * @param FrontendController $view           View object
+     * @param FrontendController $view View object
      */
-    protected function _stopMonitor($isCallForCache = false, $isCached = false, $viewId = null, $viewData = [], $view = null) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
+    protected function stopMonitoring($view = null)
     {
         if (is_null($view)) {
             $controllerKey = $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
             $view = oxNew($controllerClass);
         }
-        $this->stopMonitoring($view);
-    }
 
-    /**
-     * Stops resource monitor, summarizes and outputs values.
-     *
-     * @param FrontendController $view View object
-     */
-    protected function stopMonitoring($view)
-    {
         if ($this->_isDebugMode() && !$this->isAdmin()) {
             $debugLevel = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iDebug');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);

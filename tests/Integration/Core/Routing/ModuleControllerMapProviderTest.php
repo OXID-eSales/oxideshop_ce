@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Routing;
 
-use OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider;
 use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
@@ -75,7 +75,7 @@ class ModuleControllerMapProviderTest extends UnitTestCase
      */
     public function testGetControllerMapWithModules($controllerKeysFromStorage, $expectedControllerKeys)
     {
-        $this->getConfig()->saveShopConfVar('aarr', ClassProviderStorage::STORAGE_KEY, $controllerKeysFromStorage);
+        $this->getConfig()->saveShopConfVar('aarr', ShopConfigurationSetting::MODULE_CONTROLLERS, $controllerKeysFromStorage);
         $this->assertModuleControllersNotCached();
 
         /** @var \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider|\PHPUnit\Framework\MockObject\MockObject $moduleControllerMapProviderMock */
@@ -93,7 +93,7 @@ class ModuleControllerMapProviderTest extends UnitTestCase
     protected function assertModuleControllersCached($expectedControllerKeys)
     {
         $subShopSpecificCache = $this->getFileCache();
-        $this->assertEquals($expectedControllerKeys, $subShopSpecificCache->getFromCache(ClassProviderStorage::STORAGE_KEY));
+        $this->assertEquals($expectedControllerKeys, $subShopSpecificCache->getFromCache(ShopConfigurationSetting::MODULE_CONTROLLERS));
     }
 
     /**
@@ -102,7 +102,7 @@ class ModuleControllerMapProviderTest extends UnitTestCase
     protected function assertModuleControllersNotCached()
     {
         $subShopSpecificCache = $this->getFileCache();
-        $this->assertNull($subShopSpecificCache->getFromCache(ClassProviderStorage::STORAGE_KEY));
+        $this->assertNull($subShopSpecificCache->getFromCache(ShopConfigurationSetting::MODULE_CONTROLLERS));
     }
 
     /**

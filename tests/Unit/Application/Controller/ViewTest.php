@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Controller;
 
 use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\ShopVersion;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use oxSystemComponentException;
 use oxUtilsHelper;
 use \oxView;
@@ -709,7 +710,7 @@ class ViewTest extends \OxidTestCase
         $controllers = ['viewtestmodule' =>
                             ['viewtestsecondmodulecontroller' => \OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\ViewTestSecondModuleController::class]
                        ];
-        $storageKey = \OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage::STORAGE_KEY;
+        $storageKey = ShopConfigurationSetting::MODULE_CONTROLLERS;
         $this->getModuleVariableLocator()->setModuleVariable($storageKey, $controllers);
 
         $this->assertEmpty(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ViewTestModuleControllerResult'));

@@ -2266,12 +2266,6 @@ return [
         'isInterface'      => true,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Contract\ClassProviderStorageInterface'               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ClassProviderStorageInterface::class,
-        'isAbstract'       => false,
-        'isInterface'      => true,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface'              => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Contract\ControllerMapProviderInterface::class,
         'isAbstract'       => false,
@@ -2946,12 +2940,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\Routing\ModuleControllerMapProvider'                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Routing\ModuleControllerMapProvider::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Routing\Module\ClassProviderStorage'                  => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

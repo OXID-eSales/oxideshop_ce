@@ -2,6 +2,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Exception\StandardException;
+
 class InputHelpLogic
 {
     /**
@@ -29,7 +31,7 @@ class InputHelpLogic
         $isAdmin = $config->isAdmin();
         try {
             $translation = $lang->translateString($ident, $tplLanguage, $isAdmin);
-        } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $languageException) {
+        } catch (StandardException $ex) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
 

@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Exception\StandardException;
+
 class TranslateSalutationLogic
 {
     /**
@@ -28,7 +30,7 @@ class TranslateSalutationLogic
 
         try {
             $sTranslation = $oLang->translateString($sIdent, $iLang, $oLang->isAdmin());
-        } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $oEx) {
+        } catch (StandardException $oEx) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
 

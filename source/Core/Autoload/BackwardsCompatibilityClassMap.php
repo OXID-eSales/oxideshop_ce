@@ -452,7 +452,6 @@ return [
     'oxexceptiontodisplay' => 'OxidEsales\\Eshop\\Core\\Exception\\ExceptionToDisplay',
     'oxfileexception' => 'OxidEsales\\Eshop\\Core\\Exception\\FileException',
     'oxinputexception' => 'OxidEsales\\Eshop\\Core\\Exception\\InputException',
-    'oxlanguageexception' => 'OxidEsales\\Eshop\\Core\\Exception\\LanguageException',
     'oxnoarticleexception' => 'OxidEsales\\Eshop\\Core\\Exception\\NoArticleException',
     'oxobjectexception' => 'OxidEsales\\Eshop\\Core\\Exception\\ObjectException',
     'oxoutofstockexception' => 'OxidEsales\\Eshop\\Core\\Exception\\OutOfStockException',

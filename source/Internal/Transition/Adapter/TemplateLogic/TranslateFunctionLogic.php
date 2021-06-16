@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Core\Exception\StandardException;
+
 class TranslateFunctionLogic
 {
     /**
@@ -35,7 +37,7 @@ class TranslateFunctionLogic
             if ('NO_SUFFIX' != $suffix) {
                 $suffixTranslation = $language->translateString($suffix, $tplLang, $isAdmin);
             }
-        } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $oEx) {
+        } catch (StandardException $oEx) {
             // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
         }
         if ($translationNotFound && isset($params['alternative'])) {

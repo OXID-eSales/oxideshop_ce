@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\Eshop\Core\Exception\StandardException;
+
 /**
  * Smarty function
  * -------------------------------------------------------------
@@ -45,7 +47,7 @@ function smarty_function_oxmultilang($params, &$smarty)
         if ('NO_SUFFIX' != $sSuffix) {
             $sSuffixTranslation = $oLang->translateString($sSuffix, $iLang, $blAdmin);
         }
-    } catch (\OxidEsales\Eshop\Core\Exception\LanguageException $oEx) {
+    } catch (StandardException $oEx) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 

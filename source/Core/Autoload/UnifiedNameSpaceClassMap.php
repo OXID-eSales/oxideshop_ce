@@ -2494,12 +2494,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Exception\LanguageException'                          => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Exception\LanguageException::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Exception\ModuleValidationException'                  => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Exception\ModuleValidationException::class,
         'isAbstract'       => false,

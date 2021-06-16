@@ -1500,19 +1500,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Session instance getter
-     *
-     * @deprecated since b-dev (2019-05-20); This method will be removed completely. Extend your views accordingly and use
-     *             $this->setViewData('someVar', 'some Value'); to provide the data to your templates
-     *
-     * @return \OxidEsales\Eshop\Core\Session
-     */
-    public function getSession()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getSession();
-    }
-
-    /**
      * @param string $filePath
      * @param string $moduleId
      * @throws FileException

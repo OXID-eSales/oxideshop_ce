@@ -972,16 +972,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Shows offline page.
-     * @deprecated since v6.0.0 (2016-06-28); Use Utils::showOfflinePage().
-     * @param int $iHeaderCode header code, default 302
-     */
-    public function redirectOffline($iHeaderCode = 302)
-    {
-        $this->showOfflinePage();
-    }
-
-    /**
-     * Shows offline page.
      * Directly displays the offline page to the client (browser)
      * with a 500 status code header.
      */
@@ -1258,28 +1248,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
 
         return $sType;
-    }
-
-    /**
-     * Processes logging.
-     *
-     * @deprecated since v5.3 (2016-06-17); Logging mechanism will change in the future.
-     *
-     * @param string $sText     Log message text
-     * @param bool   $blNewline If true, writes message to new line (default false)
-     */
-    public function logger($sText, $blNewline = false)
-    {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        if ($myConfig->getConfigParam('iDebug') == -2) {
-            if (gettype($sText) != 'string') {
-                $sText = var_export($sText, true);
-            }
-            $logMessage = "----------------------------------------------\n{$sText}" . (($blNewline) ? "\n" : "") . "\n";
-            $logger = Registry::getLogger();
-            $logger->debug($logMessage);
-        }
     }
 
     /**

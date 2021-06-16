@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 
 /**
@@ -33,7 +34,7 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     {
         parent::render();
 
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         // is shop active?
         $oShop = $myConfig->getActiveShop();
@@ -42,7 +43,7 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         if (!$oShop->$sActiveField->value && 'oxstart' != $sClassName && !$this->isAdmin()) {
             // redirect to offline if there is no active shop
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirectOffline();
+            Registry::getUtils()->showOfflinePage();
         }
 
         return $oShop;

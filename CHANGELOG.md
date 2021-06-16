@@ -159,6 +159,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Application\Model\UserPayment::getPaymentKey()`
 - `OxidEsales\Eshop\Application\Model\Basket::_canSaveBasket()`, use isSaveToDataBaseEnabled().
 - `OxidEsales\Eshop\Application\Model\Basket::_addedNewItem()`, use addedNewItem().
+- `OxidEsales\Eshop\Core\Utils::redirectOffline()`, use showOfflinePage().
+- `OxidEsales\Eshop\Core\Utils::logger()`
+- `OxidEsales\Eshop\Core\SystemEventHandler::getConfig()`, use `\OxidEsales\Eshop\Core\Registry::getConfig()`.
 - PHP version checker
     - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
     - Language Constants:

@@ -47,26 +47,14 @@ class modoxdeliverylist_oxorder extends oxdeliverylist
 
 class OrderTest extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
-        oxRemClassModule('Unit\Application\Model\modoxdeliverylist_oxorder');
         $this->cleanUpTable('oxorder');
         $this->cleanUpTable('oxorderarticles');
         $this->cleanUpTable('oxdeliveryset');
@@ -805,7 +793,7 @@ class OrderTest extends \OxidTestCase
 
     public function testGetShippingSetList()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modoxdeliverylist_oxorder::class, 'oxdeliverylist');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modoxdeliverylist_oxorder::class, 'oxdeliverylist');
 
         $oOrder = $this->getProxyClass("oxOrder");
         $oOrder->setId("_testOrderId");
@@ -1841,7 +1829,7 @@ class OrderTest extends \OxidTestCase
     {
         $this->_insertTestOrder();
 
-        oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
+        $this->addClassExtension('modOxUtilsDate', 'oxUtilsDate');
         \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime(100);
 
         $sQ = "select oxorderdate from oxorder where oxid='_testOrderId' ";
@@ -3198,7 +3186,7 @@ class OrderTest extends \OxidTestCase
     public function testSendOrderByEmail()
     {
         oxEmailHelper::$blRetValue = true;
-        oxAddClassModule('oxEmailHelper', 'oxemail');
+        $this->addClassExtension('oxEmailHelper', 'oxemail');
 
         $oUser = oxNew('oxUser');
         $oUser->setId('_testUserId');
@@ -3232,7 +3220,7 @@ class OrderTest extends \OxidTestCase
     public function testSendOrderByEmailWhenMailingFails()
     {
         oxEmailHelper::$blRetValue = false;
-        oxAddClassModule('oxEmailHelper', 'oxemail');
+        $this->addClassExtension('oxEmailHelper', 'oxemail');
 
         $oOrder = $this->getProxyClass("oxOrder");
 

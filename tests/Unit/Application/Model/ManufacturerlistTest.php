@@ -20,22 +20,12 @@ class modUtils_oxManufacturerlist extends oxutils
     }
 }
 
-/**
- * Testing oxManufacturerlist class
- */
 class ManufacturerlistTest extends \OxidTestCase
 {
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         oxTestModules::addFunction('oxManufacturer', 'cleanRootManufacturer', '{oxManufacturer::$_aRootManufacturer = array();}');
         oxNew('oxManufacturer')->cleanRootManufacturer();
-        oxRemClassModule('modUtils_oxManufacturerlist');
 
         parent::tearDown();
     }

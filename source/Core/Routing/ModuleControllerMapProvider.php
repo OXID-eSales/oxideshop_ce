@@ -7,9 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Core\Routing;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\FileCache;
+use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
+use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 
 /**
  * Provide the controller mappings from the metadata of all active modules.
@@ -31,7 +34,8 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
     public function getControllerMap()
     {
         $controllerMap = [];
-        $moduleControllersByModuleId = Registry::getUtilsObject()->getModuleVar(ShopConfigurationSetting::MODULE_CONTROLLERS);
+        $moduleControllersByModuleId = $this->getModuleVariablesLocator()
+            ->getModuleVariable(ShopConfigurationSetting::MODULE_CONTROLLERS);
 
         if (is_array($moduleControllersByModuleId)) {
             $controllerMap = $this->flattenControllersMap($moduleControllersByModuleId);
@@ -52,5 +56,15 @@ class ModuleControllerMapProvider implements ControllerMapProviderInterface
             $moduleControllersFlat = array_merge($moduleControllersFlat, $moduleControllersOfOneModule);
         }
         return $moduleControllersFlat;
+    }
+
+    /** @return ModuleVariablesLocator */
+    private function getModuleVariablesLocator(): ModuleVariablesLocator
+    {
+        $shopIdCalculator = new ShopIdCalculator(
+            new FileCache()
+        );
+        $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
+        return new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
     }
 }

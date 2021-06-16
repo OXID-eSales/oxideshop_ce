@@ -7,11 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
+use oxArticle;
+use oxField;
 use OxidEsales\EshopCommunity\Application\Model\Article;
-use \oxArticle;
-use oxArticleException;
-use \oxField;
-use \stdclass;
+use stdclass;
 
 class modOxArticle_oxUserBasketItem extends oxArticle
 {
@@ -28,12 +27,6 @@ class modOxArticle_oxUserBasketItem extends oxArticle
 
 class UserbasketitemTest extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -72,15 +65,8 @@ class UserbasketitemTest extends \OxidTestCase
         $oO2Sel->save();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
-        oxRemClassModule('modOxArticle_oxUserBasketItem');
-
         $oArticle = oxNew('oxArticle');
         $oArticle->delete('xxx');
 

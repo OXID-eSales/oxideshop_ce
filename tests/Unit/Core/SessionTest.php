@@ -156,10 +156,6 @@ class testSession extends oxSession
     }
 }
 
-
-/**
- * Testing oxsession class
- */
 class SessionTest extends \OxidTestCase
 {
 
@@ -181,32 +177,15 @@ class SessionTest extends \OxidTestCase
      */
     protected $_oOriginalConfig = null;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        //creating new instance
         $this->oSession = oxNew(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class);
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
-        //removing oxUtils module
-        oxRemClassModule('testUtils');
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class);
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\Unit_oxsessionTest_oxUtilsObject::class);
-
         $this->oSession->freeze();
-
         parent::tearDown();
     }
 
@@ -560,7 +539,7 @@ class SessionTest extends \OxidTestCase
      */
     public function testStartSetsSidPriority()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
         $this->oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('isAdmin'));
         $this->oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
         //set parameter
@@ -591,7 +570,7 @@ class SessionTest extends \OxidTestCase
      */
     public function testStartSetsNewSid()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
         $this->oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('isAdmin', 'initNewSession'));
         $this->oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $this->oSession->expects($this->any())->method('initNewSession');
@@ -607,7 +586,7 @@ class SessionTest extends \OxidTestCase
      */
     public function testStartCookiesNotAvailable()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array('isAdmin', '_getCookieSid', '_isSwappedClient', '_allowSessionStart', "_getNewSessionId"));
         $oSession->expects($this->any())->method('_getNewSessionId')->will($this->returnValue("newSessionId"));
         $oSession->expects($this->any())->method('isAdmin')->will($this->returnValue(false));
@@ -708,7 +687,7 @@ class SessionTest extends \OxidTestCase
     public function testIsSwappedClientCookieCheck()
     {
         $myConfig = $this->getConfig();
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
         $this->assertFalse($this->oSession->UNITcheckCookies(null, null));
         $this->assertEquals("oxid", \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('sid_key'));
         $this->assertFalse($this->oSession->UNITcheckCookies("oxid", null));
@@ -885,7 +864,7 @@ class SessionTest extends \OxidTestCase
 
     public function testSetSessionIdForced()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Core\UtilsServerHelper::class, 'oxUtilsServer');
         $this->getConfig()->setConfigParam('blForceSessionStart', 1);
 
         $oSession = $this->getMock(\OxidEsales\EshopCommunity\Tests\Unit\Core\testSession::class, array("_getNewSessionId"));

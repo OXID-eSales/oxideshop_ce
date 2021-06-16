@@ -135,8 +135,8 @@ class OrderTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->setId('_testUserId');
         $oUser->save();
-
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\UtilsHelper::class, 'oxUtils');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\UtilsHelper::class, 'oxUtils');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\UtilsHelper::class, 'oxUtils');
         PaymentHelper::$dBasketPrice = null;
     }
 
@@ -366,7 +366,7 @@ class OrderTest extends \OxidTestCase
      */
     public function testRender()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, Payment::class, true);
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, Payment::class, true);
 
         $config = $this->getConfig();
         $session = oxRegistry::getSession();
@@ -491,7 +491,7 @@ class OrderTest extends \OxidTestCase
         //setting active user
         $this->getSession()->setVariable('usr', '_testUserId');
 
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
 
         $oPrice = $this->getPriceForOrderExecute();
 
@@ -591,7 +591,7 @@ class OrderTest extends \OxidTestCase
     {
         $this->setupConfigForOrderExecute();
 
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\OrderHelper::class, 'oxorder');
 
         $oPrice = $this->getPriceForOrderExecute();
 
@@ -725,7 +725,7 @@ class OrderTest extends \OxidTestCase
         $oBasket->expects($this->once())->method('getPaymentId')->will($this->returnValue('oxidinvoice'));
 
         PaymentHelper::$dBasketPrice = null;
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, 'oxPayment');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper::class, 'oxPayment');
 
         $oOrder = $this->getMock(\OxidEsales\Eshop\Application\Controller\OrderController::class, array('getBasket'));
         $oOrder->expects($this->once())->method('getBasket')->will($this->returnValue($oBasket));

@@ -29,9 +29,6 @@ if (!defined('OX_IS_ADMIN')) {
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxArticleHelper.php';
 
-/**
- * Testing oxArticle class.
- */
 class ArticleTest extends \OxidTestCase
 {
     /**
@@ -48,11 +45,6 @@ class ArticleTest extends \OxidTestCase
      */
     public $oArticle2 = null;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -63,16 +55,10 @@ class ArticleTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('blUseTimeCheck', true);
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->getConfig()->setGlobalParameter('listtype', null);
 
-        oxRemClassModule('oxCacheHelper');
         $this->cleanUpTable('oxobject2attribute');
 
         // ensure modules detached

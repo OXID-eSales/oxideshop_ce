@@ -87,24 +87,11 @@ class oxArticle_Extended extends oxArticle
     }
 }
 
-/**
- * OxDiscountList tester
- */
 class DiscountTest extends \OxidTestCase
 {
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->_removeDiscounts();
-
-        oxRemClassModule('oxArticle_Extended');
-        oxRemClassModule('oxBasket_Extended');
-
         $this->cleanUpTable('oxdiscount');
         $this->cleanUpTable('oxobject2discount');
         parent::tearDown();

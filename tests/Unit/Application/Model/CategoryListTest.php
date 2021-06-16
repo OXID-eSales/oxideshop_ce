@@ -143,9 +143,6 @@ class oxCategoryListHelperLoadCategoryMenusPE extends \oxCategoryList
     }
 }
 
-/**
- * Testing oxCategoryList class
- */
 class CategoryListTest extends \OxidTestCase
 {
     /** @var oxCategoryList  */
@@ -157,11 +154,6 @@ class CategoryListTest extends \OxidTestCase
 
     protected $classForMock;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -179,16 +171,9 @@ class CategoryListTest extends \OxidTestCase
         $this->cleanUpTable('oxcategories');
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->cleanUpTable('oxcategories');
-        oxRemClassModule('modContentListEE_oxcategorylist');
-        oxRemClassModule('modContentListCE_oxcategorylist');
         parent::tearDown();
     }
 
@@ -661,7 +646,7 @@ class CategoryListTest extends \OxidTestCase
         $this->_oList->setVar('iForceLevel', 0);
 
         $moduleName = ($this->getTestConfig()->getShopEdition() === 'EE') ? \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusEE::class : \OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxCategoryListHelperLoadCategoryMenusPE::class;
-        oxAddClassModule($moduleName, 'oxcontentlist');
+        $this->addClassExtension($moduleName, 'oxcontentlist');
 
         $this->_oList->load();
         $this->_oList->UNITppAddContentCategories();

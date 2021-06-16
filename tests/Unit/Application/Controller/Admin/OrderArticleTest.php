@@ -47,17 +47,8 @@ class OrderArticleHelper extends oxOrder
     }
 }
 
-/**
- * Tests for Order_Article class
- */
 class OrderArticleTest extends \OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -96,11 +87,6 @@ class OrderArticleTest extends \OxidTestCase
         $oOrder->save();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $oOrder = oxNew('oxorder');
@@ -110,7 +96,6 @@ class OrderArticleTest extends \OxidTestCase
         $oArticle->delete('_testArticle');
 
         $this->cleanUpTable('oxorder');
-        oxRemClassModule('modOxOrder_orderArticle');
 
         parent::tearDown();
     }
@@ -148,7 +133,7 @@ class OrderArticleTest extends \OxidTestCase
     public function testAddThisArticle2()
     {
         oxTestModules::addFunction("oxUtilsServer", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . $this->getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
 
         $this->setRequestParameter('aid', '2000');
         $this->setRequestParameter('am', 1);
@@ -360,7 +345,7 @@ class OrderArticleTest extends \OxidTestCase
      */
     public function testAddThisArticleWrongArticle()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
 
         $this->setRequestParameter('sArtNum', 'sdasda');
         $this->setRequestParameter('am', 1);
@@ -381,7 +366,7 @@ class OrderArticleTest extends \OxidTestCase
      */
     public function testAddThisArticleWrongAmount()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\Admin\OrderArticleHelper::class, 'oxorder');
 
         $this->setRequestParameter('sArtNum', '2000');
         $this->setRequestParameter('am', 'test');

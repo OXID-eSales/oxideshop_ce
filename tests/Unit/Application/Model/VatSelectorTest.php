@@ -7,16 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use \oxField;
-use oxObjectException;
-use \oxuser;
-use \oxDb;
-use \oxTestModules;
+use oxDb;
+use oxField;
 use oxRegistry;
+use oxTestModules;
+use oxuser;
 
-/**
- * oxvatselector test
- */
 class VatSelectorTest extends \OxidTestCase
 {
     /** @var oxArticle */
@@ -28,9 +24,6 @@ class VatSelectorTest extends \OxidTestCase
     /** @var double */
     private $dDefaultVAT;
 
-    /**
-     * Initialize the fixture.
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -74,9 +67,6 @@ class VatSelectorTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('dDefaultVAT', '99');
     }
 
-    /**
-     * Tear down the fixture.
-     */
     protected function tearDown(): void
     {
         // deleting demo items
@@ -89,8 +79,6 @@ class VatSelectorTest extends \OxidTestCase
 
         oxTestModules::addFunction('oxVatSelector', 'clear', '{ oxVatSelector::$_aUserVatCache = array();}');
         oxNew('oxVatSelector')->clear();
-        oxRemClassModule('oxVatSelector');
-
         parent::tearDown();
     }
 

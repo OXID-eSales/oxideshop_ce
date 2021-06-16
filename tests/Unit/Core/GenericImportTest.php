@@ -28,12 +28,8 @@ class GenericImportTest_oxUtilsServer extends oxUtilsServer
 
 class GenericImportTest extends OxidTestCase
 {
-    /**
-     * Tear down the fixture.
-     */
     protected function tearDown(): void
     {
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class);
         $this->cleanUpTable('oxuser');
         parent::tearDown();
     }
@@ -43,7 +39,7 @@ class GenericImportTest extends OxidTestCase
      */
     public function testInit()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Core\GenericImportTest_oxUtilsServer::class, 'oxUtilsServer');
         $oImport = new GenericImport();
 
         /** @var oxUser|MockObject $oUser */

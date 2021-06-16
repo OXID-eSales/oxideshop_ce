@@ -22,15 +22,21 @@ class BasketreservationTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetReservationsIdInitNew()
+    public function testGetReservationsIdInitNew(): void
     {
         $this->setSessionParam('basketReservationToken', null);
 
-        $utilsObject = $this->getMock(UtilsObject::class, array('generateUId'));
-        $utilsObject->expects($this->once())->method('generateUId')->will($this->returnValue('newvarval'));
+        $utilsObjectMock = $this->getMockBuilder(\OxidEsales\EshopCommunity\Core\UtilsObject::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['generateUId'])
+            ->getMock();
+        $utilsObjectMock
+            ->expects($this->once())
+            ->method('generateUId')
+            ->willReturn('newvarval');
 
         $basketReservation = $this->getMock(BasketReservation::class, array('getUtilsObjectInstance'));
-        $basketReservation->expects($this->any())->method('getUtilsObjectInstance')->willReturn($utilsObject);
+        $basketReservation->expects($this->any())->method('getUtilsObjectInstance')->willReturn($utilsObjectMock);
 
         $this->assertEquals('newvarval', $basketReservation->UNITgetReservationsId());
     }
@@ -41,13 +47,18 @@ class BasketreservationTest extends \OxidTestCase
      *
      * @return null
      */
-    public function testGetReservationsIdReturnInited()
+    public function testGetReservationsIdReturnInited(): void
     {
         $this->getSession()->setVariable('basketReservationToken', 'oldvarval');
 
-        $oUO = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, array('generateUID'));
-        $oUO->expects($this->never())->method('generateUID');
-        oxTestModules::addModuleObject('oxUtilsObject', $oUO);
+        $utilsObjectMock = $this->getMockBuilder(\OxidEsales\EshopCommunity\Core\UtilsObject::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['generateUId'])
+            ->getMock();
+        $utilsObjectMock
+            ->expects($this->never())
+            ->method('generateUId');
+        oxTestModules::addModuleObject('oxUtilsObject', $utilsObjectMock);
 
         $oR = oxNew('oxBasketReservation');
 

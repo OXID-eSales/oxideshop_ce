@@ -22,6 +22,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\RssFeed;
+use OxidEsales\EshopCommunity\Core\UtilsObject;
 use oxLinks;
 use oxList;
 use oxObject2Category;
@@ -41,17 +42,11 @@ use oxUtilsString;
 use stdClass;
 use OxidEsales\EshopCommunity\Application\Model\Attribute;
 
-/**
- * Class Unit_utf8Test
- */
 class UtfTest extends \OxidTestCase
 {
     /** @var string Original theme */
     private $_sOrigTheme;
 
-    /**
-     * Sets up test
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -60,9 +55,6 @@ class UtfTest extends \OxidTestCase
         $this->getConfig()->setConfigParam('sTheme', 'azure');
     }
 
-    /**
-     * Cleans up database.
-     */
     protected function tearDown(): void
     {
         $this->getConfig()->setConfigParam('sTheme', $this->_sOrigTheme);
@@ -1750,10 +1742,15 @@ class UtfTest extends \OxidTestCase
         $this->assertEquals($sResult, $oView->UNITremoveDuplicatedWords($sValue));
     }
 
-    public function testOxEmailIncludeImages()
+    public function testOxEmailIncludeImages(): void
     {
-        $utilsObjectInstanceMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, array('generateUID'));
-        $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
+        $utilsObjectInstanceMock = $this->getMockBuilder(UtilsObject::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['generateUId'])
+            ->getMock();
+        $utilsObjectInstanceMock
+            ->method('generateUId')
+            ->willReturn('xxx');
 
         $sBodyToReturn = "agentūлитовfür <img src=\"" . __DIR__ . "/Fixtures/stars.jpg\" alt=\"agentūлитовfür\">";
         $sBodyToSet = "agentūлитовfür <img src=\"cid:xxx\" alt=\"agentūлитовfür\">";

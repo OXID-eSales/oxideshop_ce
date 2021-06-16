@@ -798,7 +798,7 @@ class DeliverysetListTest extends \OxidTestCase
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
         $oBasket->expects($this->once())->method('getPriceForPayment')->will($this->returnValue(100));
 
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDeliverySetList_paymentList::class, 'oxPaymentList');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDeliverySetList_paymentList::class, 'oxPaymentList');
 
         $oDeliverySetList = oxNew('oxDeliverySetList');
 

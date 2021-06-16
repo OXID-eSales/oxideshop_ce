@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Module\ModuleChainsGenerator;
-use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
@@ -66,7 +65,7 @@ class UtilsObject
     /**
      * This class is a singleton and should be instantiated with getInstance()
      */
-    protected function __construct()
+    private function __construct()
     {
     }
 
@@ -142,33 +141,6 @@ class UtilsObject
         }
 
         static::$_aInstanceCache = [];
-    }
-
-    /**
-     * Returns module variable value from configuration by given name.
-     *
-     * @param string $variableName
-     *
-     * @deprecated use ModuleVariablesLocator::getModuleVariable()
-     *
-     * @return mixed
-     */
-    public function getModuleVar($variableName)
-    {
-        return $this->getModuleChainsGenerator()->getModuleVariablesLocator()->getModuleVariable($variableName);
-    }
-
-    /**
-     * Sets module variable value to configuration by given name.
-     *
-     * @param string $variableName
-     * @param mixed  $value
-     *
-     * @deprecated use ModuleVariablesLocator::setModuleVariable()
-     */
-    public function setModuleVar($variableName, $value)
-    {
-        $this->getModuleChainsGenerator()->getModuleVariablesLocator()->setModuleVariable($variableName, $value);
     }
 
     /**
@@ -270,28 +242,6 @@ class UtilsObject
     public function getClassAliasName($className)
     {
         return $this->getClassNameProvider()->getClassAliasName($className);
-    }
-
-    /**
-     * Returns shop id.
-     *
-     * @deprecated use \OxidEsales\Eshop\Core\Config::getShopId() or \OxidEsales\Eshop\Core\ShopIdCalculator::getShopId instead.
-     *
-     * @return string
-     */
-    public function getShopId()
-    {
-        return $this->getShopIdCalculator()->getShopId();
-    }
-
-    /**
-     * Resets module variables cache.
-     *
-     * @deprecated use ModuleVariablesLocator::resetModuleVars instead.
-     */
-    public static function resetModuleVars()
-    {
-        ModuleVariablesLocator::resetModuleVariables();
     }
 
     /**

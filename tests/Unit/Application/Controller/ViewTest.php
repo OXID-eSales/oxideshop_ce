@@ -52,17 +52,10 @@ class ViewTestSecondModuleController extends BaseController
     }
 }
 
-
-
 class ViewTest extends \OxidTestCase
 {
     protected $_oView = null;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -75,11 +68,6 @@ class ViewTest extends \OxidTestCase
         oxRegistry::getUtils()->seoIsActive(true);
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -339,7 +327,7 @@ class ViewTest extends \OxidTestCase
     {
         $this->getSession()->setId('SID');
 
-        oxAddClassModule("oxUtilsHelper", "oxutils");
+        $this->addClassExtension("oxUtilsHelper", "oxutils");
 
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $config->expects($this->never())->method('isSsl');
@@ -361,7 +349,7 @@ class ViewTest extends \OxidTestCase
     {
         $this->getSession()->setId('SID');
 
-        oxAddClassModule("oxUtilsHelper", "oxutils");
+        $this->addClassExtension("oxUtilsHelper", "oxutils");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig
@@ -401,7 +389,7 @@ class ViewTest extends \OxidTestCase
     {
         $this->getSession()->setId('SID');
 
-        oxAddClassModule("oxUtilsHelper", "oxutils");
+        $this->addClassExtension("oxUtilsHelper", "oxutils");
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl'));
         $oConfig
@@ -424,7 +412,7 @@ class ViewTest extends \OxidTestCase
     {
         $this->getSession()->setId('SID');
 
-        oxAddClassModule("oxUtilsHelper", "oxutils");
+        $this->addClassExtension("oxUtilsHelper", "oxutils");
 
         $config = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('isSsl', 'getSslShopUrl', 'getShopUrl'));
         $config->setConfigParam('sAdminSSLURL', '');
@@ -722,8 +710,7 @@ class ViewTest extends \OxidTestCase
     }
 
     /**
-     * Test helper, easiest way be able to use ModuleVariableLocator::setModuleVariable() without using the
-     * deprecated method UtilsObject::setModuleVar().
+     * Test helper, easiest way be able to use ModuleVariableLocator::setModuleVariable()
      *
      * @return object \OxidEsales\Eshop\Core\Module\ModuleVariablesLocator
      */

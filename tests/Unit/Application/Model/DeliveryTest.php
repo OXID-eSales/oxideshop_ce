@@ -65,15 +65,10 @@ class DeliveryTest extends \OxidTestCase
     public $aArticleIds = array();
     public $aCategoryIds = array();
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, 'oxDelivery');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class, 'oxDelivery');
 
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxobject2delivery');
@@ -136,15 +131,8 @@ class DeliveryTest extends \OxidTestCase
         oxDeliveryHelper::cleanup();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxDelivery::class);
-
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxobject2delivery');
         $this->cleanUpTable('oxarticles');

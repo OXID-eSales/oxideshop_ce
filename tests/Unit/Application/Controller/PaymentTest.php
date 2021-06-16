@@ -409,7 +409,7 @@ class PaymentTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper2::class, 'oxPayment');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper2::class, 'oxPayment');
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
         $oBasket->expects($this->atLeastOnce())->method('getPriceForPayment')->will($this->returnValue(100));
@@ -435,7 +435,7 @@ class PaymentTest extends \OxidTestCase
         $oUser = oxNew('oxUser');
         $oUser->load('oxdefaultadmin');
 
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper2::class, 'oxPayment');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Controller\PaymentHelper2::class, 'oxPayment');
 
         $oBasket = $this->getMock(\OxidEsales\Eshop\Application\Model\Basket::class, array('getPriceForPayment'));
         $oBasket->expects($this->atLeastOnce())->method('getPriceForPayment')->will($this->returnValue(100));

@@ -31,20 +31,12 @@ class contentTest_oxUtilsView extends oxUtilsView
     }
 }
 
-/**
- * Tests for content class
- */
 class ContentTest extends \OxidTestCase
 {
 
     /** @var oxContent  */
     protected $_oObj = null;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -67,18 +59,12 @@ class ContentTest extends \OxidTestCase
         $this->_oObj->load($sOxid);
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->_oObj->delete();
         $this->cleanUpTable('oxdelivery');
         $this->cleanUpTable('oxdel2delset');
         parent::tearDown();
-        oxRemClassModule('contentTest_oxUtilsView');
     }
 
     /**

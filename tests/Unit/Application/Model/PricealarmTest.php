@@ -28,7 +28,7 @@ class PricealarmTest extends \OxidTestCase
 
     public function testInsert()
     {
-        oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
+        $this->addClassExtension('modOxUtilsDate', 'oxUtilsDate');
         \OxidEsales\Eshop\Core\Registry::getUtilsDate()->UNITSetTime(100);
 
         $oAlarm = oxNew('oxpricealarm');

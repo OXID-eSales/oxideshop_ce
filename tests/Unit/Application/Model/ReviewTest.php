@@ -18,11 +18,6 @@ class ReviewTest extends \OxidTestCase
     protected $_iNow = null;
     protected $_iReviewTime = 0;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,19 +32,12 @@ class ReviewTest extends \OxidTestCase
         $this->_oReview->save();
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $myDB = oxDb::getDB();
         $sQ = 'delete from oxuser where oxid="test"';
         $myDB->Execute($sQ);
         $this->cleanUpTable('oxreviews');
-        oxRemClassModule('modOxUtilsDate');
-
         parent::tearDown();
     }
 

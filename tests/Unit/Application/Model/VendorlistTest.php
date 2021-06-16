@@ -13,23 +13,13 @@ use \oxTestModules;
 use oxUtilsHelper;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'oxUtilsHelper.php';
-/**
- * Testing oxvendorlist class
- */
+
 class VendorlistTest extends \OxidTestCase
 {
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         oxTestModules::addFunction('oxVendor', 'cleanRootVendor', '{oxVendor::$_aRootVendor = array();}');
         oxNew('oxvendor')->cleanRootVendor();
-        oxRemClassModule('oxUtilsHelper');
-
         parent::tearDown();
     }
 
@@ -152,7 +142,7 @@ class VendorlistTest extends \OxidTestCase
     public function test_SEOsetVendorData()
     {
         oxUtilsHelper::$sSeoIsActive = true;
-        oxAddClassModule('oxUtilsHelper', 'oxutils');
+        $this->addClassExtension('oxUtilsHelper', 'oxutils');
 
         $oVendorlist = $this->getProxyClass("oxvendorlist");
         $oVendorlist->loadVendorList();

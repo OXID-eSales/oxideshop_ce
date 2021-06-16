@@ -39,11 +39,6 @@ class CategoryTest extends \OxidTestCase
 
     protected $_sCategory = null;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -58,15 +53,9 @@ class CategoryTest extends \OxidTestCase
         $db->Execute('insert into oxcategory2attribute (oxid, oxobjectid, oxattrid, oxsort) values ("test3","' . $this->_sCategory . '","' . $this->_sAttributeD . '", "333")');
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->removeTestData();
-        oxRemClassModule('oxcategoryTest_oxUtilsView');
         parent::tearDown();
     }
 
@@ -277,7 +266,7 @@ class CategoryTest extends \OxidTestCase
 
     public function testAssignParseLongDescInList()
     {
-        oxAddClassModule('oxcategoryTest_oxUtilsView', 'oxUtilsView');
+        $this->addClassExtension('oxcategoryTest_oxUtilsView', 'oxUtilsView');
         $this->getConfig()->setConfigParam('bl_perfParseLongDescinSmarty', true);
 
         $this->_oCategory->oxcategories__oxlongdesc = new oxField('aa[{* smarty comment *}]zz', oxField::T_RAW);

@@ -7,18 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use oxArticleException;
-use oxArticleInputException;
-use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
+use oxArticle;
+use oxBasketItem;
+use oxField;
 use OxidEsales\EshopCommunity\Application\Model\Article;
-use \oxArticle;
-use \oxBasketItem;
-use \oxField;
-use oxNoArticleException;
-use oxOutOfStockException;
-use \stdClass;
-use \oxRegistry;
-use \oxTestModules;
+use OxidEsales\EshopCommunity\Core\Exception\ExceptionToDisplay;
+use oxRegistry;
+use oxTestModules;
+use stdClass;
 
 /**
  * Test oxArticle module - notBuyable
@@ -85,17 +81,8 @@ class modForTestSetAsDiscountArticle extends oxBasketItem
     }
 }
 
-
-/**
- * Testing oxBasketItem class.
- */
 class BasketitemTest extends \OxidTestCase
 {
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -103,11 +90,6 @@ class BasketitemTest extends \OxidTestCase
         oxTestModules::addFunction('oxArticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $this->cleanUpTable('oxwrapping');
@@ -500,18 +482,16 @@ class BasketitemTest extends \OxidTestCase
     {
         $article = $this->createArticle();
 
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\BasketItemTest_ArticleHelper::class, 'oxArticle');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\BasketItemTest_ArticleHelper::class, 'oxArticle');
 
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->getArticle(true, $article->getId());
         } catch (\OxidEsales\EshopCommunity\Core\Exception\ArticleInputException $oEx) {
-            oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\BasketItemTest_ArticleHelper::class);
             return;
         }
 
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\BasketItemTest_ArticleHelper::class);
-        $this->fail('Execption was not thrown when article is not buyable');
+        $this->fail('Exception was not thrown when article is not buyable');
     }
 
     /**
@@ -524,8 +504,6 @@ class BasketitemTest extends \OxidTestCase
         $article = $this->createArticle();
         $oBasketItem = oxNew('oxBasketItem');
         $oBasketItem->getArticle(false, $article->getId());
-
-        oxRemClassModule('modOxArticle_notVisible_oxbasketItem');
     }
 
     /**
@@ -535,19 +513,17 @@ class BasketitemTest extends \OxidTestCase
      */
     public function testGetArticle_notVisibleArticle()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxArticle_notVisible_oxbasketItem::class, 'oxArticle');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\modOxArticle_notVisible_oxbasketItem::class, 'oxArticle');
 
         $article = $this->createArticle();
         $oBasketItem = oxNew('oxBasketItem');
         try {
             $oBasketItem->getArticle(true, $article->getId());
         } catch (\OxidEsales\EshopCommunity\Core\Exception\NoArticleException $oEx) {
-            oxRemClassModule('Unit\Application\Model\modOxArticle_notVisible_oxbasketItem');
             return;
         }
 
-        oxRemClassModule('Unit\Application\Model\modOxArticle_notVisible_oxbasketItem');
-        $this->fail('Execption was not thrown when article is not visible');
+        $this->fail('Exception was not thrown when article is not visible');
     }
 
     /**

@@ -7,27 +7,17 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Application\Model;
 
-use \oxField;
-use \oxRegistry;
-use \oxTestModules;
+use oxField;
+use oxRegistry;
 
-/**
- * OxDiscountList tester
- */
 class DiscountlistTest extends \OxidTestCase
 {
     public $aDiscountIds = array();
     public $aDiscountArtIds = array();
     public $aTransparentDiscountArtIds = array();
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
-        oxRemClassModule('modOxUtilsDate');
         $this->cleanUpTable('oxobject2discount');
         $this->cleanUpTable('oxcategories');
         parent::tearDown();

@@ -346,6 +346,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getClassName()`, use getClassKey()
 - `\OxidEsales\EshopCommunity\Core\ShopControl::_stopMonitor()`, use stopMonitoring()
 - `\OxidEsales\EshopCommunity\Core\Session::$_blStarted`, use isSessionStarted()
+- `OxidEsales\EshopCommunity\Core\UtilsObject`:
+    - Methods:
+        - `getModuleVar`
+        - `setModuleVar`
+        - `resetModuleVars`
+        - `getShopId`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

@@ -52,11 +52,6 @@ class BasketTest extends \OxidTestCase
     public $aDiscounts = array();
     public $blPerfLoadSelectLists;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -73,7 +68,6 @@ class BasketTest extends \OxidTestCase
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
 
         $this->oArticle = oxNew('oxArticle');
-        //$this->oArticle->disableLazyLoading();
         $this->oArticle->Load($sId);
 
         // making copy
@@ -266,11 +260,6 @@ class BasketTest extends \OxidTestCase
         oxDb::getDb()->execute('delete from oxuserbasketitems');
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         // deleting articles+variants
@@ -1682,7 +1671,7 @@ class BasketTest extends \OxidTestCase
      */
     public function testCalcVoucherDiscountSkipChecking()
     {
-        oxAddClassModule('oxVoucherHelper', 'oxvoucher');
+        $this->addClassExtension('oxVoucherHelper', 'oxvoucher');
         oxVoucherHelper::$blCheckWasPerformed = false;
 
         $oPrice = oxNew("oxPrice");
@@ -2011,7 +2000,7 @@ class BasketTest extends \OxidTestCase
      */
     public function testAddVoucherSkipChecking()
     {
-        oxAddClassModule('oxVoucherHelper', 'oxvoucher');
+        $this->addClassExtension('oxVoucherHelper', 'oxvoucher');
         oxVoucherHelper::$blCheckWasPerformed = false;
 
         $sVoucher = key($this->aVouchers);

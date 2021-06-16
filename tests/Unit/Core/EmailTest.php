@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
@@ -14,6 +14,7 @@ use oxField;
 use OxidEsales\Eshop\Application\Model\BasketItem;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Price;
+use OxidEsales\EshopCommunity\Core\UtilsObject;
 use oxPrice;
 use oxRegistry;
 use oxTestModules;
@@ -25,11 +26,6 @@ final class EmailTest extends \OxidTestCase
     protected $shop = null;
     protected $article = null;
 
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -89,11 +85,6 @@ final class EmailTest extends \OxidTestCase
         );
     }
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         $oActShop = $this->getConfig()->getActiveShop();
@@ -129,7 +120,7 @@ final class EmailTest extends \OxidTestCase
         $this->assertEquals($viewData["contentplainident"], "oxregisterplainaltemail");
     }
 
-    public function testIncludeImagesErrorTestCase()
+    public function testIncludeImagesErrorTestCase(): void
     {
         $config = $this->getConfig();
 
@@ -152,8 +143,13 @@ final class EmailTest extends \OxidTestCase
         $generatedEmailBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="logo" align="texttop">';
         $generatedEmailBody .= '<img src="cid:xxx" border="0" hspace="0" vspace="0" alt="' . $title . '" align="texttop">';
 
-        $utilsObjectMock = $this->getMock(\OxidEsales\Eshop\Core\UtilsObject::class, ['generateUId']);
-        $utilsObjectMock->expects($this->any())->method('generateUId')->will($this->returnValue('xxx'));
+        $utilsObjectMock = $this->getMockBuilder(UtilsObject::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['generateUId'])
+            ->getMock();
+        $utilsObjectMock
+            ->method('generateUId')
+            ->willReturn('xxx');
 
         /** @var oxEmail|PHPUnit\Framework\MockObject\MockObject $email */
         $email = $this->getMock(\OxidEsales\Eshop\Core\Email::class, array('getBody', 'addEmbeddedImage', 'setBody', 'getUtilsObjectInstance'));

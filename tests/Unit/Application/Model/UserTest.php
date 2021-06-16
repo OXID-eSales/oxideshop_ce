@@ -116,9 +116,6 @@ class UserTest_oxUtilsServerHelper2 extends oxUtilsServer
     }
 }
 
-/**
- * Testing oxuser class
- */
 class UserTest extends \OxidTestCase
 {
     use ContainerTrait;
@@ -133,11 +130,6 @@ class UserTest extends \OxidTestCase
                                           'kkname'   => 'Test Name',
                                           'kkpruef'  => '123456');
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
     protected function tearDown(): void
     {
         parent::tearDown();
@@ -152,14 +144,6 @@ class UserTest extends \OxidTestCase
 
         $this->getSession()->setVariable('usr', null);
         $this->getSession()->setVariable('auth', null);
-
-        // resetting globally admin mode
-
-        // removing email wrapper module
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class);
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class);
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class);
-        oxRemClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\oxEmailHelper::class);
 
         // removing users
         foreach ($this->_aUsers as $sUserId => $oUser) {
@@ -548,7 +532,10 @@ class UserTest extends \OxidTestCase
     {
         $iCurrTime = time();
 
-        $utilsObjectInstanceMock = $this->getMock(UtilsObject::class, array('generateUID'));
+        $utilsObjectInstanceMock = $this->getMockBuilder(UtilsObject::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['generateUID'])
+            ->getMock();
         $utilsObjectInstanceMock->expects($this->any())->method('generateUID')->will($this->returnValue('xxx'));
         $this->setTime($iCurrTime);
 
@@ -894,7 +881,7 @@ class UserTest extends \OxidTestCase
     // 2. loading subscription by user id
     public function testGetNewsSubscriptionNoUserReturnsByOxid()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class, 'oxnewssubscribed');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class, 'oxnewssubscribed');
         $oUser = oxNew('oxUser');
         $oUser->setId('oxid');
         $this->assertTrue($oUser->getNewsSubscription()->loadFromUserID);
@@ -903,7 +890,7 @@ class UserTest extends \OxidTestCase
     // 3. loading subscription by user email
     public function testGetNewsSubscriptionNoUserReturnsByEmail()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class, 'oxnewssubscribed');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxNewsSubscribed::class, 'oxnewssubscribed');
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new oxField('email', oxField::T_RAW);
         $this->assertTrue($oUser->getNewsSubscription()->loadFromEMail);
@@ -2007,7 +1994,7 @@ class UserTest extends \OxidTestCase
     public function testSetNewsSubscriptionSubscribesWithOptInEmail()
     {
         oxEmailHelper::$blRetValue = true;
-        oxAddClassModule('oxEmailHelper', 'oxemail');
+        $this->addClassExtension('oxEmailHelper', 'oxemail');
 
         $oConfig = $this->getConfig();
         $oConfig->setConfigParam('blOrderOptInEmail', true);
@@ -2058,7 +2045,7 @@ class UserTest extends \OxidTestCase
     public function testSetNewsSubscriptionUnsubscribes()
     {
         oxEmailHelper::$blRetValue = true;
-        oxAddClassModule('oxEmailHelper', 'oxemail');
+        $this->addClassExtension('oxEmailHelper', 'oxemail');
 
         $oConfig = $this->getMock('oxconfig');
 
@@ -2080,7 +2067,7 @@ class UserTest extends \OxidTestCase
      */
     public function testLoadAdminUser()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class, 'oxUtilsServer');
         //not logged in
         $oUser = oxNew('oxUser');
         $this->assertFalse($oUser->loadAdminUser());
@@ -2128,7 +2115,7 @@ class UserTest extends \OxidTestCase
      */
     public function testGetUserNotAdmin()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxutilsserver');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxutilsserver');
         $sShopId = $this->getConfig()->getShopId();
 
         //not logged in
@@ -2160,7 +2147,7 @@ class UserTest extends \OxidTestCase
      */
     public function testLogin_AdminCookieSupport()
     {
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxUtilsServer');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper2::class, 'oxUtilsServer');
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Model\User::class, array('isAdmin'));
         $oUser->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         \OxidEsales\Eshop\Core\Registry::getUtilsServer()->delOxCookie();
@@ -2324,7 +2311,7 @@ class UserTest extends \OxidTestCase
     {
         $oConfig = $this->getConfig();
 
-        oxAddClassModule(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class, 'oxutilsserver');
+        $this->addClassExtension(\OxidEsales\EshopCommunity\Tests\Unit\Application\Model\UserTest_oxUtilsServerHelper::class, 'oxutilsserver');
         $oConfig->setConfigParam('blDemoShop', 1);
         $oConfig->setAdminMode(true);
 

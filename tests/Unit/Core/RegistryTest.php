@@ -426,7 +426,6 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
         $this->assertTrue(Registry::getSession() === Registry::get('oxSession'));
         $this->assertTrue(Registry::getLang() === Registry::get('oxLang'));
         $this->assertTrue(Registry::getUtils() === Registry::get('oxUtils'));
-        $this->assertTrue(Registry::getUtilsObject() === Registry::get('oxUtilsObject'));
     }
 
     /**
@@ -508,7 +507,6 @@ class RegistryTest extends \OxidEsales\TestingLibrary\UnitTestCase
             ['getSession'],
             ['getLang'],
             ['getUtils'],
-            ['getUtilsObject'],
             ['getLogger'],
         ];
     }

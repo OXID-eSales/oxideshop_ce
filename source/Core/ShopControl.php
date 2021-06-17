@@ -250,7 +250,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         if ($config->getRequestParameter('renderPartial')) {
             $outputManager->setOutputFormat(\OxidEsales\Eshop\Core\Output::OUTPUT_FORMAT_JSON);
-            $outputManager->output('errors', $this->_getFormattedErrors($view->getClassName()));
+            $outputManager->output('errors', $this->_getFormattedErrors($view->getClassKey()));
         }
 
         $this->dispatchEvent(new BeforeHeadersSendEvent($this, $view));
@@ -454,11 +454,11 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         // Output processing. This is useful for modules. As sometimes you may want to process output manually.
         $outputManager = $this->_getOutputManager();
-        $viewData = $outputManager->processViewArray($view->getViewData(), $view->getClassName());
+        $viewData = $outputManager->processViewArray($view->getViewData(), $view->getClassKey());
         $view->setViewData($viewData);
 
         //add all exceptions to display
-        $errors = $this->_getErrors($view->getClassName());
+        $errors = $this->_getErrors($view->getClassKey());
         if (is_array($errors) && count($errors)) {
             \OxidEsales\Eshop\Core\Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
@@ -471,7 +471,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $output = $renderer->renderTemplate($templateName, $viewData);
 
         //Output processing - useful for modules as sometimes you may want to process output manually.
-        $output = $outputManager->process($output, $view->getClassName());
+        $output = $outputManager->process($output, $view->getClassKey());
 
         return $outputManager->addVersionTags($output);
     }

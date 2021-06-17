@@ -217,12 +217,12 @@ class ViewTest extends \OxidTestCase
     }
 
     /*
-     * Test set/get class name
+     * Test set/get class key
      */
-    public function testSetGetClassName()
+    public function testSetGetClassKey()
     {
-        $this->_oView->setClassName('123456789');
-        $this->assertEquals('123456789', $this->_oView->getClassName());
+        $this->_oView->setClassKey('123456789');
+        $this->assertEquals('123456789', $this->_oView->getClassKey());
     }
 
     /*
@@ -571,8 +571,8 @@ class ViewTest extends \OxidTestCase
 
     public function testGetActionClassName()
     {
-        $oView = $this->getMock(BaseController::class, array('getClassName'));
-        $oView->expects($this->once())->method('getClassName')->will($this->returnValue('className'));
+        $oView = $this->getMock(BaseController::class, array('getClassKey'));
+        $oView->expects($this->once())->method('getClassKey')->will($this->returnValue('className'));
 
         $this->assertEquals('className', $oView->getActionClassName());
     }

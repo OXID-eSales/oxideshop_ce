@@ -274,7 +274,7 @@ class EmosAdapter extends \OxidEsales\Eshop\Core\Base
         if (strcasecmp('showLogin', (string)$oActView->getFncName()) == 0) {
             $sCl = 'account';
         } else {
-            $sCl = $oActView->getClassName();
+            $sCl = $oActView->getClassKey();
         }
 
         return $sCl ? strtolower($sCl) : 'start';

@@ -920,7 +920,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActiveClassName()
     {
-        return Registry::getConfig()->getActiveView()->getClassName();
+        return Registry::getConfig()->getActiveView()->getClassKey();
     }
 
     /**
@@ -931,7 +931,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getTopActiveClassName()
     {
-        return Registry::getConfig()->getTopActiveView()->getClassName();
+        return Registry::getConfig()->getTopActiveView()->getClassKey();
     }
 
     /**

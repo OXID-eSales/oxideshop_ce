@@ -330,6 +330,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `\OxidEsales\EshopCommunity\Core\ViewConfig::getSession()`
 - `\OxidEsales\EshopCommunity\Core\Routing\Module\ClassProviderStorage`
 - `\OxidEsales\EshopCommunity\Core\Exception\LanguageException`
+- `\OxidEsales\EshopCommunity\Core\Controller\BaseController::setClassName()`, use setClassKey()
+- `\OxidEsales\EshopCommunity\Core\Controller\BaseController::getClassName()`, use getClassKey()
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

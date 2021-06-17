@@ -347,8 +347,8 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetTopActionClassName()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
-        $oView->expects($this->once())->method("getClassName")->will($this->returnValue("testViewClass"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassKey"));
+        $oView->expects($this->once())->method("getClassKey")->will($this->returnValue("testViewClass"));
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTopActiveView"));
         $oConfig->expects($this->once())->method("getTopActiveView")->will($this->returnValue($oView));
@@ -813,8 +813,8 @@ class ViewConfigTest extends \OxidTestCase
      */
     public function testGetTopActiveClassName()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
-        $oView->expects($this->once())->method("getClassName")->will($this->returnValue("testViewClass"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassKey"));
+        $oView->expects($this->once())->method("getClassKey")->will($this->returnValue("testViewClass"));
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getTopActiveView"));
         $oConfig->expects($this->once())->method("getTopActiveView")->will($this->returnValue($oView));
@@ -1904,8 +1904,8 @@ class ViewConfigTest extends \OxidTestCase
     {
         $sTest = "testAbc";
 
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
-        $oView->expects($this->once())->method("getClassName")->will($this->returnValue($sTest));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassKey"));
+        $oView->expects($this->once())->method("getClassKey")->will($this->returnValue($sTest));
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getActiveView"));
         $oConfig->expects($this->once())->method("getActiveView")->will($this->returnValue($oView));

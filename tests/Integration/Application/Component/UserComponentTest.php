@@ -108,8 +108,8 @@ class UserComponentTest extends \OxidTestCase
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array("getShopHomeURL"));
         $oConfig->expects($this->atLeastOnce())->method('getShopHomeURL')->will($this->returnValue("testUrl"));
 
-        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassName", "isEnabledPrivateSales"));
-        $oParent->expects($this->atLeastOnce())->method('getClassName')->will($this->returnValue("test"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassKey", "isEnabledPrivateSales"));
+        $oParent->expects($this->atLeastOnce())->method('getClassKey')->will($this->returnValue("test"));
         $oParent->expects($this->atLeastOnce())->method('isEnabledPrivateSales')->will($this->returnValue(true));
 
         try {
@@ -143,8 +143,8 @@ class UserComponentTest extends \OxidTestCase
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("isTermsAccepted"));
         $oUser->expects($this->any())->method('isTermsAccepted')->will($this->throwException(new Exception("isTermsAccepted")));
 
-        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassName", "isEnabledPrivateSales"));
-        $oParent->expects($this->atLeastOnce())->method('getClassName')->will($this->returnValue("test"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassKey", "isEnabledPrivateSales"));
+        $oParent->expects($this->atLeastOnce())->method('getClassKey')->will($this->returnValue("test"));
         $oParent->expects($this->atLeastOnce())->method('isEnabledPrivateSales')->will($this->returnValue(true));
 
         // testing..
@@ -180,8 +180,8 @@ class UserComponentTest extends \OxidTestCase
         $oUser = $this->getMock(\OxidEsales\Eshop\Application\Component\UserComponent::class, array("isTermsAccepted"));
         $oUser->expects($this->any())->method('isTermsAccepted')->will($this->returnValue(false));
 
-        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassName"));
-        $oParent->expects($this->atLeastOnce())->method('getClassName')->will($this->returnValue("test"));
+        $oParent = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassKey"));
+        $oParent->expects($this->atLeastOnce())->method('getClassKey')->will($this->returnValue("test"));
 
         try {
             // testing..

@@ -339,8 +339,8 @@ class AccountControllerTest extends UnitTestCase
         $oUser = oxNew('oxUser');
         $oUser->oxuser__oxusername = new Field('Jon');
 
-        $oActiveView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getClassName'));
-        $oActiveView->expects($this->any())->method('getClassName')->will($this->returnValue('account'));
+        $oActiveView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array('getClassKey'));
+        $oActiveView->expects($this->any())->method('getClassKey')->will($this->returnValue('account'));
 
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveView'), array(), '', false);
         $oConfig->expects($this->any())->method('getActiveView')->will($this->returnValue($oActiveView));

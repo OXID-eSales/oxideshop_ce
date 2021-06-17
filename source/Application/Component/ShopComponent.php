@@ -39,7 +39,7 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         // is shop active?
         $oShop = $myConfig->getActiveShop();
         $sActiveField = 'oxshops__oxactive';
-        $sClassName = $myConfig->getActiveView()->getClassName();
+        $sClassName = $myConfig->getActiveView()->getClassKey();
 
         if (!$oShop->$sActiveField->value && 'oxstart' != $sClassName && !$this->isAdmin()) {
             // redirect to offline if there is no active shop

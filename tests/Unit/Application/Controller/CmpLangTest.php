@@ -51,7 +51,7 @@ class CmpLangTest extends \OxidTestCase
         $oLangView = oxNew('oxcmp_lang');
 
         $oView = oxNew('oxubase');
-        $oView->setClassName('basket');
+        $oView->setClassKey('basket');
         $oView->setFncName('addVoucher');
         $oConfig = $this->getConfig();
         $oConfig->setActiveView($oView);
@@ -71,7 +71,7 @@ class CmpLangTest extends \OxidTestCase
         $oLangView = oxNew('oxcmp_lang');
 
         $oView = oxNew('oxubase');
-        $oView->setClassName('basket');
+        $oView->setClassKey('basket');
         $oView->setFncName('changebasket');
         $oConfig = $this->getConfig();
         $oConfig->setActiveView($oView);

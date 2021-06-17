@@ -1380,7 +1380,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
 
         $params['listtype'] = $this->getListType();
         $params['ldtype'] = $this->getCustomListDisplayType();
-        $params['actcontrol'] = $this->getClassName();
+        $params['actcontrol'] = $this->getClassKey();
 
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
         $params['recommid'] = $config->getRequestParameter('recommid');
@@ -1640,7 +1640,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     protected function _getRequestParams($addPageNumber = true) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $class = $this->getClassName();
+        $class = $this->getClassKey();
         $function = $this->getFncName();
 
         $forbiddenFunctions = [
@@ -1730,7 +1730,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
      */
     protected function _getSeoRequestParams() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $class = $this->getClassName();
+        $class = $this->getClassKey();
         $function = $this->getFncName();
 
         // #921 S
@@ -1888,7 +1888,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     public function getTitle()
     {
         $language = \OxidEsales\Eshop\Core\Registry::getLang();
-        $translationName = 'PAGE_TITLE_' . strtoupper(\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName());
+        $translationName = 'PAGE_TITLE_' . strtoupper(\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassKey());
         $translated = $language->translateString($translationName, \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage(), false);
 
         return $translationName == $translated ? null : $translated;
@@ -1949,7 +1949,7 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
         if ($this->_sAdditionalParams === null) {
             // #1018A
             $this->_sAdditionalParams = parent::getAdditionalParams();
-            $this->_sAdditionalParams .= 'cl=' . \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getClassName();
+            $this->_sAdditionalParams .= 'cl=' . \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getClassKey();
 
             // #1834M - special char search
             $searchParamForLink = rawurlencode(Registry::getConfig()->getRequestParameter('searchparam', true));

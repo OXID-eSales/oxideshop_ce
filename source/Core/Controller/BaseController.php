@@ -339,39 +339,13 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @deprecated since v6.0 (2017-02-3). Use BaseController::setClassKey() instead.
-     *
-     * NOTE: current usage and name misleading, the shop actually calls this function with the view's class id as argument.
-     *
-     * Current view class name setter.
-     *
-     * @param string $classKey current view class name
-     */
-    public function setClassName($classKey)
-    {
-        $this->_sClass = $classKey;
-        $this->setClassKey($classKey);
-    }
-
-    /**
-     * @deprecated since v6.0 (2017-02-3). Use BaseController::getClassKey() instead.
-     *
-     * Returns class name of current class
-     *
-     * @return string
-     */
-    public function getClassName()
-    {
-        return $this->getClassKey();
-    }
-
-    /**
      * Current view class key setter.
      *
      * @param string $classKey current view class key
      */
     public function setClassKey($classKey)
     {
+        $this->_sClass = $classKey;
         $this->classKey = $classKey;
     }
 
@@ -839,7 +813,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getActionClassName()
     {
-        return $this->getClassName();
+        return $this->getClassKey();
     }
 
     /**

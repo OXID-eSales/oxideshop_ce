@@ -132,13 +132,13 @@ class ArticleBoxTest extends \OxidTestCase
     public function testGetLink()
     {
         $oView = oxNew('aList');
-        $oView->setClassName("alist");
+        $oView->setClassKey("alist");
 
         $this->getConfig()->setActiveView($oView);
 
         $oArticleBox = oxNew('oxwArticleBox');
         $aViewParams = array(
-            "_parent" => $oView->getClassName()
+            "_parent" => $oView->getClassKey()
         );
         $oArticleBox->setViewParameters($aViewParams);
 

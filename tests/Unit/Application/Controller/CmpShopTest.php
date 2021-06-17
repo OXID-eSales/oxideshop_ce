@@ -23,8 +23,8 @@ class CmpShopTest extends \OxidTestCase
      */
     public function testRenderNoActiveShop()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassName"));
-        $oView->expects($this->once())->method('getClassName')->will($this->returnValue("test"));
+        $oView = $this->getMock(\OxidEsales\Eshop\Core\Controller\BaseController::class, array("getClassKey"));
+        $oView->expects($this->once())->method('getClassKey')->will($this->returnValue("test"));
 
         $oShop = oxNew('oxShop');
         $oShop->oxshops__oxactive = new oxField(0);

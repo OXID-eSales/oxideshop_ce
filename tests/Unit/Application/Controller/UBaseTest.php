@@ -851,7 +851,7 @@ class UBaseTest extends \OxidTestCase
         $this->setRequestParameter('searchmanufacturer', 'testmanufact');
         $this->setRequestParameter('mnid', 'testid');
         $oView = oxNew('oxubase');
-        $oView->setClassName('testClass');
+        $oView->setClassKey('testClass');
         $myConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveView'));
         $myConfig->expects($this->once())
             ->method('getActiveView')
@@ -920,8 +920,8 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetSeoRequestParams()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
-        $oView->expects($this->once())->method('getClassName')->will($this->returnValue('testclass'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassKey', 'getFncName'));
+        $oView->expects($this->once())->method('getClassKey')->will($this->returnValue('testclass'));
         $oView->expects($this->once())->method('getFncName')->will($this->returnValue('testfnc'));
 
         $this->setRequestParameter('page', 'testpage');
@@ -1194,8 +1194,8 @@ class UBaseTest extends \OxidTestCase
      */
     public function testGetTitle()
     {
-        $oActiveView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName'));
-        $oActiveView->expects($this->once())->method('getClassName')->will($this->returnValue('links'));
+        $oActiveView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassKey'));
+        $oActiveView->expects($this->once())->method('getClassKey')->will($this->returnValue('links'));
         $oConfig = $this->getMock(\OxidEsales\Eshop\Core\Config::class, array('getActiveView'));
         $oConfig->expects($this->once())->method('getActiveView')->will($this->returnValue($oActiveView));
         $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getConfig'));
@@ -1233,8 +1233,8 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParams()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
-        $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassKey', 'getFncName'));
+        $oView->expects($this->any())->method('getClassKey')->will($this->returnValue('testclass'));
         $oView->expects($this->any())->method('getFncName')->will($this->returnValue('testfunc'));
         $this->setRequestParameter('cnid', 'catid');
         $this->setRequestParameter('mnid', 'manId');
@@ -1258,8 +1258,8 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParamsSkipFnc()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
-        $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassKey', 'getFncName'));
+        $oView->expects($this->any())->method('getClassKey')->will($this->returnValue('testclass'));
         $oView->expects($this->any())->method('getFncName')->will($this->returnValue('tobasket'));
         $this->setRequestParameter('cnid', 'catid');
         $this->setRequestParameter('mnid', 'manId');
@@ -1270,8 +1270,8 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParamsSkipFnc2()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName', 'getFncName'));
-        $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassKey', 'getFncName'));
+        $oView->expects($this->any())->method('getClassKey')->will($this->returnValue('testclass'));
         $oView->expects($this->any())->method('getFncName')->will($this->returnValue('moveleft'));
         $this->setRequestParameter('cnid', 'catid');
         $this->setRequestParameter('mnid', 'manId');
@@ -1282,8 +1282,8 @@ class UBaseTest extends \OxidTestCase
 
     public function testGetRequestParamsWithoutPageNr()
     {
-        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassName'));
-        $oView->expects($this->any())->method('getClassName')->will($this->returnValue('testclass'));
+        $oView = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array('getClassKey'));
+        $oView->expects($this->any())->method('getClassKey')->will($this->returnValue('testclass'));
         $this->setRequestParameter('cnid', 'catid');
         $this->setRequestParameter('pgNr', '2');
 
@@ -1577,8 +1577,8 @@ class UBaseTest extends \OxidTestCase
     {
         $this->setRequestParameter('pgNr', '2');
         $this->setRequestParameter('lang', '1');
-        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassName", "getFncName"));
-        $oUBase->expects($this->any())->method('getClassName')->will($this->returnValue("testclass"));
+        $oUBase = $this->getMock(\OxidEsales\Eshop\Application\Controller\FrontendController::class, array("getClassKey", "getFncName"));
+        $oUBase->expects($this->any())->method('getClassKey')->will($this->returnValue("testclass"));
         $oUBase->expects($this->any())->method('getFncName')->will($this->returnValue("testfnc"));
 
         $this->assertEquals($this->getConfig()->getShopHomeURL() . "cl=testclass&amp;fnc=testfnc", $oUBase->generatePageNavigationUrl());
@@ -2145,7 +2145,7 @@ class UBaseTest extends \OxidTestCase
         $aParams['actcontrol'] = "content";
 
         $oView = oxNew('oxUBase');
-        $oView->setClassName('content');
+        $oView->setClassKey('content');
         $aParameters = $oView->getNavigationParams();
         $this->assertEquals(ksort($aParams), ksort($aParameters));
     }

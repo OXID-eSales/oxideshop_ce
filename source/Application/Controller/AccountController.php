@@ -352,7 +352,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
     {
         $title = parent::getTitle();
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassName() == 'account') {
+        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getClassKey() == 'account') {
             $baseLanguageId = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
             $title = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('PAGE_TITLE_ACCOUNT', $baseLanguageId, false);
             if ($user = $this->getUser()) {

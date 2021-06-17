@@ -75,13 +75,13 @@ class WidgetControlTest extends \OxidTestCase
         $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"));
 
         //checking widget object
-        $this->assertEquals("oxwCookieNote", $oView->getClassName());
+        $this->assertEquals("oxwCookieNote", $oView->getClassKey());
         $this->assertEquals("testFunction", $oView->getFncName());
         $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
 
         // checking active view object
         $this->assertEquals(1, count(Registry::getConfig()->getActiveViewsList()));
-        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassName());
+        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassKey());
     }
 
     /**
@@ -95,7 +95,7 @@ class WidgetControlTest extends \OxidTestCase
         $oView = $oControl->UNITinitializeViewObject("oxwCookieNote", "testFunction", array("testParam" => "testValue"), array("account", "oxubase"));
 
         //checking widget object
-        $this->assertEquals("oxwCookieNote", $oView->getClassName());
+        $this->assertEquals("oxwCookieNote", $oView->getClassKey());
         $this->assertEquals("testFunction", $oView->getFncName());
         $this->assertEquals("testValue", $oView->getViewParameter("testParam"));
 
@@ -103,11 +103,11 @@ class WidgetControlTest extends \OxidTestCase
         $aActiveViews = Registry::getConfig()->getActiveViewsList();
 
         $this->assertEquals(3, count($aActiveViews));
-        $this->assertEquals("account", $aActiveViews[0]->getClassName());
+        $this->assertEquals("account", $aActiveViews[0]->getClassKey());
         $this->assertInstanceOf(BaseController::class, $aActiveViews[1]);
-        $this->assertEquals("oxwCookieNote", $aActiveViews[2]->getClassName());
+        $this->assertEquals("oxwCookieNote", $aActiveViews[2]->getClassKey());
 
-        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassName());
+        $this->assertEquals("oxwCookieNote", Registry::getConfig()->getActiveView()->getClassKey());
     }
 
     /**

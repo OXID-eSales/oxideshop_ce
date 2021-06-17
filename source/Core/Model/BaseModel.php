@@ -217,7 +217,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         $this->_disableLazyLoadingForCaching();
 
         if ($this->_blUseLazyLoading) {
-            $this->_sCacheKey .= $myConfig->getActiveView()->getClassName();
+            $this->_sCacheKey .= $myConfig->getActiveView()->getClassKey();
         } else {
             $this->_sCacheKey .= 'allviews';
         }

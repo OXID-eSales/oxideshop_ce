@@ -133,7 +133,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if ($this->getParent()->isEnabledPrivateSales()) {
             // load session user
             $oUser = $this->getUser();
-            $sClass = $this->getParent()->getClassName();
+            $sClass = $this->getParent()->getClassKey();
 
             // no session user
             if (!$oUser && !in_array($sClass, $this->_aAllowedClasses)) {

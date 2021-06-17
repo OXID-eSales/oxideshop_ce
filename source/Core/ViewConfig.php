@@ -349,24 +349,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns session id
-     *
-     * @deprecated v5.1.0 Use conditional sid getter \OxidEsales\Eshop\Core\Controller\BaseController::getSidForWidget() for widgets instead
-     *
-     * @return string
-     */
-    public function getSessionId()
-    {
-        if (($sValue = $this->getViewConfigParam('sessionid')) === null) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
-            $sValue = $session->getId();
-            $this->setViewConfigParam('sessionid', $sValue);
-        }
-
-        return $sValue;
-    }
-
-    /**
      * Returns forms hidden session parameters
      *
      * @return string

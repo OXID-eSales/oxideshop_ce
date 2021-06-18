@@ -58,6 +58,16 @@ class ActionsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
         }
 
+        if ($this->getViewConfig()->isAltImageServerConfigured()) {
+            $config = Registry::getConfig();
+
+            if ($config->getConfigParam('sAltImageUrl')) {
+                $this->_aViewData["imageUrl"] = $config->getConfigParam('sAltImageUrl');
+            } else {
+                $this->_aViewData["imageUrl"] = $config->getConfigParam('sSSLAltImageUrl');
+            }
+        }
+
         if (Registry::getConfig()->getRequestParameter("aoc")) {
             // generating category tree for select list
             $this->_createCategoryTree("artcattree", $soxId);

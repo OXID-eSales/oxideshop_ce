@@ -104,10 +104,14 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function render()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $config = Registry::getConfig();
+
+        if (Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+            $session = Registry::getSession();
             $session->getBasketReservations()->renewExpiration();
         }
+
+        $this->_aViewData["allowUnevenAmounts"] = $config->getConfigParam('blAllowUnevenAmounts');
 
         parent::render();
 
@@ -125,7 +129,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             $this->_oBasketArticles = false;
 
             // passing basket articles
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             if ($oBasket = $session->getBasket()) {
                 $this->_oBasketArticles = $oBasket->getBasketArticles();
             }
@@ -199,8 +203,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function showBackToShop()
     {
-        $iNewBasketItemMessage = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage');
-        $sBackToShop = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('_backtoshop');
+        $iNewBasketItemMessage = Registry::getConfig()->getConfigParam('iNewBasketItemMessage');
+        $sBackToShop = Registry::getSession()->getVariable('_backtoshop');
 
         return ($iNewBasketItemMessage == 3 && $sBackToShop);
     }
@@ -228,7 +232,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
             $oBasket->addVoucher(Registry::getConfig()->getRequestParameter('voucherNr'));
         } catch (\OxidEsales\Eshop\Core\Exception\VoucherException $oEx) {
             // problems adding voucher
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
+            Registry::getUtilsView()->addErrorToDisplay($oEx, false, true);
         }
     }
 
@@ -263,8 +267,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function backToShop()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
-            $oSession = \OxidEsales\Eshop\Core\Registry::getSession();
+        if (Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+            $oSession = Registry::getSession();
             if ($sBackLink = $oSession->getVariable('_backtoshop')) {
                 $oSession->deleteVariable('_backtoshop');
 
@@ -383,8 +387,8 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $aPaths = [];
         $aPath = [];
 
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('CART', $iBaseLanguage, false);
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = Registry::getLang()->translateString('CART', $iBaseLanguage, false);
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -398,7 +402,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function getBasketContentMarkGenerator()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
 
         /** @var \OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator $oBasketContentMarkGenerator */
         return oxNew(BasketContentMarkGenerator::class, $session->getBasket());

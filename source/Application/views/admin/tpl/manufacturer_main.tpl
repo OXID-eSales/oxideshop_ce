@@ -39,14 +39,6 @@ window.onload = function ()
 <input type="hidden" name="language" value="[{$actlang}]">
 
 [{if $oViewConf->isAltImageServerConfigured()}]
-    [{assign var="oConfig" value=$oViewConf->getConfig()}]
-
-    [{if $oConfig->getConfigParam('sAltImageUrl')}]
-        [{assign var="imageUrl" value=$oConfig->getConfigParam('sAltImageUrl')}]
-    [{else}]
-        [{assign var="imageUrl" value=$oConfig->getConfigParam('sSSLAltImageUrl')}]
-    [{/if}]
-
     <div class="warning">[{oxmultilang ident="ALTERNATIVE_IMAGE_SERVER_NOTE" args=$imageUrl}] [{oxinputhelp ident="HELP_ALTERNATIVE_IMAGE_SERVER_NOTE"}]</div>
 [{/if}]
 

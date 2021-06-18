@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use stdClass;
 
@@ -49,7 +50,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -62,7 +63,17 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             }
         }
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->getViewConfig()->isAltImageServerConfigured()) {
+            $config = Registry::getConfig();
+
+            if ($config->getConfigParam('sAltImageUrl')) {
+                $this->_aViewData["imageUrl"] = $config->getConfigParam('sAltImageUrl');
+            } else {
+                $this->_aViewData["imageUrl"] = $config->getConfigParam('sSSLAltImageUrl');
+            }
+        }
+
+        if (Registry::getConfig()->getRequestParameter("aoc")) {
             $oVendorMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\VendorMainAjax::class);
             $this->_aViewData['oxajax'] = $oVendorMainAjax->getColumns();
 
@@ -82,7 +93,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getConfig()->getRequestParameter("editval");
 
         if (!isset($aParams['oxvendor__oxactive'])) {
             $aParams['oxvendor__oxactive'] = 0;
@@ -103,7 +114,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         $oVendor->setLanguage(0);
         $oVendor->assign($aParams);
         $oVendor->setLanguage($this->_iEditLang);
-        $oVendor = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oVendor);
+        $oVendor = Registry::getUtilsFile()->processFiles($oVendor);
         $oVendor->save();
 
         // set oxid if inserted
@@ -118,7 +129,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getConfig()->getRequestParameter("editval");
 
         if (!isset($aParams['oxvendor__oxactive'])) {
             $aParams['oxvendor__oxactive'] = 0;
@@ -140,7 +151,7 @@ class VendorMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
         $oVendor->setLanguage(0);
         $oVendor->assign($aParams);
         $oVendor->setLanguage($this->_iEditLang);
-        $oVendor = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oVendor);
+        $oVendor = Registry::getUtilsFile()->processFiles($oVendor);
         $oVendor->save();
 
         // set oxid if inserted

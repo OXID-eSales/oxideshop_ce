@@ -279,6 +279,7 @@ class Email extends PHPMailer
 
         //setting default view
         $this->setViewData('oEmailView', $this);
+        $this->setViewData('shopUrl', $myConfig->getShopUrl());
 
         $this->Encoding = 'base64';
     }

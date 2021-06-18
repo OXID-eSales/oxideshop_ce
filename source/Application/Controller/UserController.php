@@ -82,10 +82,10 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function render()
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         if ($this->getIsOrderStep()) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
 
             if ($config->getConfigParam('blPsBasketReservationEnabled')) {
                 $session->getBasketReservations()->renewExpiration();
@@ -101,6 +101,8 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
             }
         }
 
+        $this->_aViewData["deladr"] = $config->getRequestParameter('deladr');
+
         parent::render();
 
         return $this->_sThisTemplate;
@@ -114,7 +116,7 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
     public function getShowNoRegOption()
     {
         if ($this->_blShowNoRegOpt === null) {
-            $this->_blShowNoRegOpt = !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderDisWithoutReg');
+            $this->_blShowNoRegOpt = !Registry::getConfig()->getConfigParam('blOrderDisWithoutReg');
         }
 
         return $this->_blShowNoRegOpt;
@@ -233,9 +235,9 @@ class UserController extends \OxidEsales\Eshop\Application\Controller\FrontendCo
      */
     public function isDownloadableProductWarning()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
         $basket = $session->getBasket();
-        if ($basket && \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blEnableDownloads")) {
+        if ($basket && Registry::getConfig()->getConfigParam("blEnableDownloads")) {
             if ($basket->hasDownloadableProducts()) {
                 return true;
             }

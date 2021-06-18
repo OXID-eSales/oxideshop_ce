@@ -34,11 +34,13 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         parent::render();
         $myUtilsServer = Registry::getUtilsServer();
 
-        $sItem = Registry::getConfig()->getRequestParameter("item");
+        $config = Registry::getConfig();
+
+        $sItem = $config->getRequestParameter("item");
         $sItem = $sItem ? basename($sItem) : false;
         if (!$sItem) {
             $sItem = "nav_frame.tpl";
-            $aFavorites = Registry::getConfig()->getRequestParameter("favorites");
+            $aFavorites = $config->getRequestParameter("favorites");
             if (is_array($aFavorites)) {
                 $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
             }
@@ -52,7 +54,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $this->_aViewData["sVersion"] = ShopVersion::getVersion();
 
             //checking requirements if this is not nav frame reload
-            if (!Registry::getConfig()->getRequestParameter("navReload")) {
+            if (!$config->getRequestParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
                 if ('home.tpl' == $sItem) {
                     $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
@@ -77,7 +79,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             }
 
             // open history node ?
-            $this->_aViewData["blOpenHistory"] = Registry::getConfig()->getRequestParameter('openHistory');
+            $this->_aViewData["blOpenHistory"] = $config->getRequestParameter('openHistory');
         }
 
         $blisMallAdmin = Registry::getSession()->getVariable('malladmin');
@@ -93,6 +95,8 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         }
 
         $this->_aViewData['shoplist'] = $oShoplist;
+        $this->_aViewData["shopURL"] = $config->getShopURL();
+
         return $sItem;
     }
 

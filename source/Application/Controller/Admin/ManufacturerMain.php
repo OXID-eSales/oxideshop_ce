@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use stdClass;
 
@@ -48,7 +49,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             }
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -61,7 +62,17 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
             }
         }
 
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("aoc")) {
+        if ($this->getViewConfig()->isAltImageServerConfigured()) {
+            $config = Registry::getConfig();
+
+            if ($config->getConfigParam('sAltImageUrl')) {
+                $this->_aViewData["imageUrl"] = $config->getConfigParam('sAltImageUrl');
+            } else {
+                $this->_aViewData["imageUrl"] = $config->getConfigParam('sSSLAltImageUrl');
+            }
+        }
+
+        if (Registry::getConfig()->getRequestParameter("aoc")) {
             $oManufacturerMainAjax = oxNew(\OxidEsales\Eshop\Application\Controller\Admin\ManufacturerMainAjax::class);
             $this->_aViewData['oxajax'] = $oManufacturerMainAjax->getColumns();
 
@@ -81,7 +92,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getConfig()->getRequestParameter("editval");
 
         if (!isset($aParams['oxmanufacturers__oxactive'])) {
             $aParams['oxmanufacturers__oxactive'] = 0;
@@ -104,7 +115,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $oManufacturer->setLanguage(0);
         $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oManufacturer);
+        $oManufacturer = Registry::getUtilsFile()->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted
@@ -119,7 +130,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
     public function saveInnLang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getRequestParameter("editval");
+        $aParams = Registry::getConfig()->getRequestParameter("editval");
 
         if (!isset($aParams['oxmanufacturers__oxactive'])) {
             $aParams['oxmanufacturers__oxactive'] = 0;
@@ -142,7 +153,7 @@ class ManufacturerMain extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
         $oManufacturer->setLanguage(0);
         $oManufacturer->assign($aParams);
         $oManufacturer->setLanguage($this->_iEditLang);
-        $oManufacturer = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oManufacturer);
+        $oManufacturer = Registry::getUtilsFile()->processFiles($oManufacturer);
         $oManufacturer->save();
 
         // set oxid if inserted

@@ -944,6 +944,8 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         $oLocator = oxNew(\OxidEsales\Eshop\Application\Component\Locator::class, $this->getListType());
         $oLocator->setLocatorData($oProduct, $this);
 
+        $this->_aViewData["config"] = Registry::getConfig();
+
         return $this->_sThisTemplate;
     }
 

@@ -352,6 +352,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `setModuleVar`
         - `resetModuleVars`
         - `getShopId`
+- `OxidEsales\EshopCommunity\Core\ViewConfig::getConfig()`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

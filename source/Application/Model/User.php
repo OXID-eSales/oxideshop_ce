@@ -1371,23 +1371,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Returns shopselect part of login query sql
-     *
-     * @param object $myConfig shop config
-     * @param string $sShopID  shopid
-     * @param bool   $blAdmin  admin/non admin mode
-     *
-     * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getShopSelect" in next major
-     */
-    protected function _getShopSelect($myConfig, $sShopID, $blAdmin) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $sShopSelect = $this->formQueryPartForAdminView($sShopID, $blAdmin);
-
-        return $sShopSelect;
-    }
-
-    /**
      * Performs user login by username and password. Fetches user data from DB.
      * Registers in session. Returns true on success, FALSE otherwise.
      *
@@ -1638,79 +1621,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         return $sUserID;
-    }
-
-    /**
-     * Login for Ldap
-     *
-     * @param string $sUser       User username
-     * @param string $sPassword   User password
-     * @param string $sShopID     Shop id
-     * @param string $sShopSelect Shop select
-     *
-     * @deprecated v5.3 (2016-10-06); LDAP will be moved to own module.
-     *
-     * @throws $oEx if user is wrong
-     */
-    protected function _ldapLogin($sUser, $sPassword, $sShopID, $sShopSelect) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $aLDAPParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLDAPParams');
-        $oLDAP = oxNew(\OxidEsales\Eshop\Core\LDAP::class, $aLDAPParams['HOST'], $aLDAPParams['PORT']);
-
-        // maybe this is LDAP user but supplied email Address instead of LDAP login
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $ldapSql = "select oxldapkey from oxuser
-            where oxuser.oxactive = :oxactive and oxuser.oxusername = :oxusername $sShopSelect";
-        $sLDAPKey = $oDb->getOne($ldapSql, [
-            ':oxactive' => 1,
-            ':oxusername' => (string) $sUser
-        ]);
-        if (isset($sLDAPKey) && $sLDAPKey) {
-            $sUser = $sLDAPKey;
-        }
-
-        //$throws oxConnectionException
-        $oLDAP->login($sUser, $sPassword, $aLDAPParams['USERQUERY'], $aLDAPParams['BASEDN'], $aLDAPParams['FILTER']);
-
-        $aData = $oLDAP->mapData($aLDAPParams['DATAMAP']);
-        if (isset($aData['OXUSERNAME']) && $aData['OXUSERNAME']) {
-            // login successful
-
-            // check if user is already in database
-            $sSelect = "select oxid from oxuser
-                where oxuser.oxusername = :oxusername $sShopSelect";
-            $sOXID = $oDb->getOne($sSelect, [
-                ':oxusername' => (string) $aData['OXUSERNAME']
-            ]);
-
-            if (!isset($sOXID) || !$sOXID) {
-                // we need to create a new user
-                //$oUser->oxuser__oxid->setValue($oUser->setId());
-                $this->setId();
-
-                // map all user data fields
-                foreach ($aData as $fldname => $value) {
-                    $sField = "oxuser__" . strtolower($fldname);
-                    $this->$sField = new Field($aData[$fldname]);
-                }
-
-                $this->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1);
-                $this->oxuser__oxshopid = new \OxidEsales\Eshop\Core\Field($sShopID);
-                $this->oxuser__oxldapkey = new \OxidEsales\Eshop\Core\Field($sUser);
-                $this->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field("user");
-                $this->setPassword("ldap user");
-
-                $this->save();
-            } else {
-                // LDAP user is already in OXID DB, load it
-                $this->load($sOXID);
-            }
-        } else {
-            /** @var UserException $oEx */
-            $oEx = oxNew(UserException::class);
-            $oEx->setMessage('ERROR_MESSAGE_USER_NOVALUES');
-            throw $oEx;
-        }
     }
 
     /**

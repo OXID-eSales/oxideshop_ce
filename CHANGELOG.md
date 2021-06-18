@@ -165,6 +165,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Core\ViewConfig::getSessionId()`, use `\OxidEsales\Eshop\Core\Controller\BaseController::getSidForWidget()`.
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_getModuleForConfigVars`, use ModuleConfigurationDaoBridgeInterface.
 - `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_loadMetadataConfVars`, use ModuleConfigurationDaoBridgeInterface.
+- LDAP functionality:
+    - Function:
+        - `OxidEsales\Eshop\Application\Model\User::_getShopSelect()`
+        - `OxidEsales\Eshop\Application\Model\User::_ldapLogin()`
+    - Language Constants:
+        - `ERROR_MESSAGE_CONNECTION_NOLDAP`
+        - `ERROR_MESSAGE_CONNECTION_NOLDAPBIND`
+        - `SHOP_SYSTEM_LDAP`
+        - `USER_MAIN_LDAP`
 - PHP version checker
     - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
     - Language Constants:

@@ -1298,10 +1298,6 @@ class UtfTest extends \OxidTestCase
                          'oxuser__oxprivfon', 'oxuser__oxmobfon', 'oxuser__oxurl',
                          'oxuser__oxupdatekey');
 
-        if ($this->getTestConfig()->getShopEdition() == 'EE') {
-            $aFields[] = 'oxuser__oxldapkey';
-        }
-
         $oUser = oxNew('oxuser');
         $oUser->setId('_testUser');
         foreach ($aFields as $sFieldName) {

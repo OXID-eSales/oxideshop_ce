@@ -225,7 +225,6 @@ function chkInsert()
                 [{oxinputhelp ident="HELP_USER_MAIN_NEWPASSWORD"}]
                 </td>
             </tr>
-            [{include file="include/user_main_ldap.tpl"}]
         [{/block}]
         <tr>
             <td class="edittext">

@@ -268,8 +268,6 @@ function editThis( sID )
                 <div class="spacer"></div>
             </dl>
 
-            [{include file="include/ldap_options.tpl"}]
-
             <dl>
                 <dt>
                     <textarea class="txtfield" name=confarrs[aLogSkipTags] [{$readonly}]>[{$confarrs.aLogSkipTags}]</textarea>

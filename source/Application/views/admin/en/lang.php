@@ -1142,7 +1142,6 @@ $aLang = [
     'SHOP_SYSTEM_SMARTYPHPHANDLING_PASSTHRU'             => 'Display code with PHP tags',
     'SHOP_SYSTEM_SMARTYPHPHANDLING_QUOTE'                => 'Display code without PHP tags',
     'SHOP_SYSTEM_SMARTYPHPHANDLING_ALLOW'                => 'Execute the PHP code',
-    'SHOP_SYSTEM_LDAP'                                   => 'Activate LDAP authentification',
     'SHOP_SYSTEM_PLEASE_CHOOSE'                          => 'Please choose',
 
     'SHOP_SEO_SEOMODE'                        => 'Active',
@@ -1327,7 +1326,6 @@ $aLang = [
     'USER_MAIN_NAME'                          => 'Name, Surname',
     'USER_MAIN_STRNR'                         => 'Street, Street No.',
     'USER_MAIN_NEWPASSWORD'                   => 'New Password',
-    'USER_MAIN_LDAP'                          => 'LDAP user',
     'USER_OVERVIEW_GROUPS'                    => 'User Groups',
     'USER_OVERVIEW_LASTITEM'                  => 'Last purchased Products',
     'USER_OVERVIEW_LASTBUY'                   => 'Last Purchase',

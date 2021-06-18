@@ -466,7 +466,6 @@ return [
     'oxhasher' => 'OxidEsales\\Eshop\\Core\\Hasher',
     'oxheader' => 'OxidEsales\\Eshop\\Core\\Header',
     'oxinputvalidator' => 'OxidEsales\\Eshop\\Core\\InputValidator',
-    'oxldap' => 'OxidEsales\\Eshop\\Core\\LDAP',
     'oxlang' => 'OxidEsales\\Eshop\\Core\\Language',
     'oxbase' => 'OxidEsales\\Eshop\\Core\\Model\\BaseModel',
     'oxlist' => 'OxidEsales\\Eshop\\Core\\Model\\ListModel',

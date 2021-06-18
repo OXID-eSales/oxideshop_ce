@@ -71,102 +71,6 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
     }
 
     /**
-     * return module filter for config variables
-     *
-     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Framework\Module package
-     *
-     * @return string
-     */
-    protected function _getModuleForConfigVars() // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return \OxidEsales\Eshop\Core\Config::OXMODULE_MODULE_PREFIX . $this->_sModuleId;
-    }
-
-    /**
-     * Load and parse config vars from metadata.
-     * Return value is a map:
-     *      'vars'        => config variable values as array[type][name] = value
-     *      'constraints' => constraints list as array[name] = constraint
-     *      'grouping'    => grouping info as array[name] = grouping
-     *
-     * @deprecated since v6.4.0 (2019-04-08); it moved to Internal\Framework\Module package
-     *
-     * @param array $aModuleSettings settings array from module metadata
-     *
-     * @return array
-     */
-    public function _loadMetadataConfVars($aModuleSettings) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        $aConfVars = [
-            "bool"     => [],
-            "str"      => [],
-            "arr"      => [],
-            "aarr"     => [],
-            "select"   => [],
-            "password" => [],
-        ];
-        $aVarConstraints = [];
-        $aGrouping = [];
-
-        $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
-
-        if (is_array($aModuleSettings)) {
-            foreach ($aModuleSettings as $aValue) {
-                $sName = $aValue["name"];
-                $sType = $aValue["type"];
-                $sValue = null;
-                if (is_null($oConfig->getConfigParam($sName))) {
-                    switch ($aValue["type"]) {
-                        case "arr":
-                            $sValue = $this->_arrayToMultiline($aValue["value"]);
-                            break;
-                        case "aarr":
-                            $sValue = $this->_aarrayToMultiline($aValue["value"]);
-                            break;
-                        case "bool":
-                            $sValue = filter_var($aValue["value"], FILTER_VALIDATE_BOOLEAN);
-                            break;
-                        default:
-                            $sValue = $aValue["value"];
-                            break;
-                    }
-                    $sValue = Str::getStr()->htmlentities($sValue);
-                } else {
-                    $sDbType = $this->_getDbConfigTypeName($sType);
-                    $sValue = $aDbVariables['vars'][$sDbType][$sName];
-                }
-
-                $sGroup = $aValue["group"];
-
-                $sConstraints = "";
-                if ($aValue["constraints"]) {
-                    $sConstraints = $aValue["constraints"];
-                } elseif ($aValue["constrains"]) {
-                    $sConstraints = $aValue["constrains"];
-                }
-
-                $aConfVars[$sType][$sName] = $sValue;
-                $aVarConstraints[$sName] = $sConstraints;
-                if ($sGroup) {
-                    if (!isset($aGrouping[$sGroup])) {
-                        $aGrouping[$sGroup] = [$sName => $sType];
-                    } else {
-                        $aGrouping[$sGroup][$sName] = $sType;
-                    }
-                }
-            }
-        }
-
-        return [
-            'vars'        => $aConfVars,
-            'constraints' => $aVarConstraints,
-            'grouping'    => $aGrouping,
-        ];
-    }
-
-    /**
      * Saves shop configuration variables
      */
     public function saveConfVars()
@@ -322,18 +226,5 @@ class ModuleConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin
             'constraints' => $constraints,
             'grouping'    => $grouping,
         ];
-    }
-
-    /**
-     * Convert metadata type to DB type.
-     *
-     * @param string $type Metadata type.
-     *
-     * @return string
-     * @deprecated underscore prefix violates PSR12, will be renamed to "getDbConfigTypeName" in next major
-     */
-    private function _getDbConfigTypeName($type) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    {
-        return $type === 'password' ? 'str' : $type;
     }
 }

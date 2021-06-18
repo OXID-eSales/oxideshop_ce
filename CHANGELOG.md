@@ -163,6 +163,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `OxidEsales\Eshop\Core\Utils::logger()`
 - `OxidEsales\Eshop\Core\SystemEventHandler::getConfig()`, use `\OxidEsales\Eshop\Core\Registry::getConfig()`.
 - `OxidEsales\Eshop\Core\ViewConfig::getSessionId()`, use `\OxidEsales\Eshop\Core\Controller\BaseController::getSidForWidget()`.
+- `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_getModuleForConfigVars`, use ModuleConfigurationDaoBridgeInterface.
+- `OxidEsales\EshopCommunity\Application\Controller\Admin\ModuleConfiguration::_loadMetadataConfVars`, use ModuleConfigurationDaoBridgeInterface.
 - PHP version checker
     - `OxidEsales\EshopCommunity\Core\SystemRequirements::checkPhpVersion()`
     - Language Constants:

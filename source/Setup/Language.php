@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-
 /**
  * Setup language manager class
  */
@@ -63,7 +61,7 @@ class Language extends Core
     {
         if ($this->_aLangData === null) {
             $this->_aLangData = [];
-            $sLangFilePath = getShopBasePath() . EditionPathProvider::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
+            $sLangFilePath = getShopBasePath() . self::SETUP_DIRECTORY . '/' . ucfirst($this->getLanguage()) . '/lang.php';
             if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
                 $aLang = [];
                 include $sLangFilePath;

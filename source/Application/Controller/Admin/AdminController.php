@@ -7,12 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
-use OxidEsales\Eshop\Core\ShopVersion;
-use oxDb;
-use oxNavigationTree;
-use oxShop;
-
 /**
  * Main Controller class for admin area.
  */

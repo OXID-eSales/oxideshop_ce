@@ -2380,24 +2380,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Edition\EditionPathProvider'                          => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
-    'OxidEsales\Eshop\Core\Edition\EditionRootPathProvider'                      => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
-    'OxidEsales\Eshop\Core\Edition\EditionSelector'                              => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Edition\EditionSelector::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Core\Email'                                                => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Email::class,
         'isAbstract'       => false,

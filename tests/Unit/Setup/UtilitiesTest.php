@@ -73,19 +73,6 @@ class UtilitiesTest extends \OxidTestCase
     }
 
     /**
-     * Testing Utilities::getFileContents()
-     */
-    public function testUtilitiesGetFileContents()
-    {
-        $utilities = new Utilities();
-
-        $fsStream = $this->getVfsStreamWrapper();
-        $filePath = $fsStream->createFile($utilities->getSetupDirectory() . 'testFileContent', 'test');
-
-        $this->assertEquals(file_get_contents($filePath), $utilities->getFileContents($filePath));
-    }
-
-    /**
      * Testing Utilities::getDefaultPathParams()
      */
     public function testGetDefaultPathParams()

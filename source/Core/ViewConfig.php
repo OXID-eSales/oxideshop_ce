@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
@@ -1319,8 +1318,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         if (is_null($this->_sShopLogo)) {
             $sLogoImage = Registry::getConfig()->getConfigParam('sShopLogo');
             if (empty($sLogoImage)) {
-                $editionSelector = new EditionSelector();
-                $sLogoImage = "logo_" . strtolower($editionSelector->getEdition()) . ".png";
+                $sLogoImage = "logo_" . strtolower((new Facts())->getEdition()) . ".png";
             }
 
             $this->setShopLogo($sLogoImage);

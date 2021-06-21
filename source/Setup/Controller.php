@@ -14,20 +14,14 @@ use OxidEsales\EshopCommunity\Setup\Exception\CommandExecutionFailedException;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use OxidEsales\EshopCommunity\Setup\Exception\SetupControllerExitException;
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
-use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
+use Webmozart\PathUtil\Path;
 
-/**
- * Class holds scripts (controllers) needed to perform shop setup steps
- */
 class Controller extends Core
 {
     /** @var View */
     private $view = null;
 
-    /**
-     * Controller constructor
-     */
     public function __construct()
     {
         $this->view = new View();
@@ -94,14 +88,11 @@ class Controller extends Core
      */
     public function license()
     {
-        $languageId = $this->getLanguageInstance()->getLanguage();
-        $utils = $this->getUtilitiesInstance();
-
         $this->setViewOptions(
             'license.php',
             'STEP_2_TITLE',
             [
-                "aLicenseText" => $utils->getLicenseContent($languageId)
+                "aLicenseText" => $this->getUtilitiesInstance()->getLicenseContent()
             ]
         );
     }
@@ -279,8 +270,9 @@ class Controller extends Core
         }
 
         try {
-            $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
-            $database->queryFile("$baseSqlDir/database_schema.sql");
+            $database->queryFile(
+                $this->getDatabaseSchemaSqlFilePath()
+            );
             $utilities = $this->getUtilitiesInstance();
             $demodataInstallationRequired = $databaseConfigValues['dbiDemoData'];
 
@@ -542,8 +534,6 @@ class Controller extends Core
      */
     private function installShopData($database, $demoDataRequired = 0)
     {
-        $baseSqlDir = $this->getUtilitiesInstance()->getSqlDirectory(EditionSelector::COMMUNITY);
-
         try {
             // If demo data files are provided.
             if ($demoDataRequired && $this->getUtilitiesInstance()->isDemodataPrepared()) {
@@ -554,8 +544,9 @@ class Controller extends Core
                     '/bin/oe-console oe:setup:demodata'
                 );
             } else {
-                $database->queryFile("$baseSqlDir/initial_data.sql");
-
+                $database->queryFile(
+                    $this->getInitialDataSqlFilePath()
+                );
                 $this->getUtilitiesInstance()->executeExternalDatabaseMigrationCommand();
             }
         } catch (Exception $exception) {
@@ -752,5 +743,21 @@ class Controller extends Core
     private function areRequiredParametersFilled($databaseConfigValues): bool
     {
         return $databaseConfigValues['dbHost'] && $databaseConfigValues['dbName'] && $databaseConfigValues['dbPort'];
+    }
+
+    private function getInitialDataSqlFilePath(): string
+    {
+        return Path::join(
+            $this->getUtilitiesInstance()->getSqlDirectory(),
+            'initial_data.sql'
+        );
+    }
+
+    private function getDatabaseSchemaSqlFilePath(): string
+    {
+        return Path::join(
+            $this->getUtilitiesInstance()->getSqlDirectory(),
+            'database_schema.sql'
+        );
     }
 }

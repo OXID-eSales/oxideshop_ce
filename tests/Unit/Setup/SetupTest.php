@@ -9,18 +9,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Setup;
 
 require_once getShopBasePath() . '/Setup/functions.php';
 
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
-use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Setup\Core;
 use OxidEsales\EshopCommunity\Setup\Setup;
 
-/**
- * Setup tests
- */
 class SetupTest extends \OxidTestCase
 {
     /**

@@ -7,10 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
+use OxidEsales\Facts\Facts;
 use stdClass;
 
 /**
@@ -119,10 +119,8 @@ class RssFeed extends \OxidEsales\Eshop\Core\Base
         }
 
         $this->_aChannel['generator'] = $oShop->oxshops__oxname->value;
-
-        $editionSelector = new EditionSelector();
         $this->_aChannel['image']['url'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getImageUrl()
-            . 'logo_' . strtolower($editionSelector->getEdition()) . '.png';
+            . 'logo_' . strtolower((new Facts())->getEdition()) . '.png';
 
         $this->_aChannel['image']['title'] = $this->_aChannel['title'];
         $this->_aChannel['image']['link'] = $this->_aChannel['link'];

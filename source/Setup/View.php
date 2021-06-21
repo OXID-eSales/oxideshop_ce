@@ -7,12 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\EshopCommunity\Setup\Exception\TemplateNotFoundException;
 
-/**
- * Setup View class
- */
 class View extends Core
 {
     /**
@@ -256,7 +252,7 @@ class View extends Core
 
         if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             // removing setup files
-            $blDeleted = $oUtils->removeDir($sPath . EditionPathProvider::SETUP_DIRECTORY, true);
+            $blDeleted = $oUtils->removeDir($sPath . self::SETUP_DIRECTORY, true);
         } else {
             $blDeleted = false;
         }

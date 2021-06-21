@@ -7,9 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance\International;
 
-use OxidEsales\EshopCommunity\Core\Edition\EditionPathProvider;
-use OxidEsales\EshopCommunity\Core\Edition\EditionRootPathProvider;
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
 use OxidEsales\EshopCommunity\Tests\Acceptance\AcceptanceTestCase;
 
 /** Selenium tests for UTF-8 shop version. */

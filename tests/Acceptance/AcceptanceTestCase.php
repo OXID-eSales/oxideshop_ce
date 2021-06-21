@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Acceptance;
 
-use \OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Edition\EditionSelector;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\TestingLibrary\TestSqlPathProvider;
 
 abstract class AcceptanceTestCase extends \OxidEsales\TestingLibrary\AcceptanceTestCase

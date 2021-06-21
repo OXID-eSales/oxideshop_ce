@@ -353,6 +353,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
         - `resetModuleVars`
         - `getShopId`
 - `OxidEsales\EshopCommunity\Core\ViewConfig::getConfig()`
+- Edition Classes:
+    - `OxidEsales\Eshop\Core\Edition\EditionPathProvider`
+    - `OxidEsales\Eshop\Core\Edition\EditionRootPathProvider`
+    - `OxidEsales\Eshop\Core\Edition\EditionSelector`
 
 ### Fixed
 - Fix not working actions and promotions [#0005526](https://bugs.oxid-esales.com/view.php?id=5526)

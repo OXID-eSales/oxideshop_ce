@@ -7,15 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Setup;
 
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
 use OxidEsales\Facts\Facts;
 use oxSystemComponentException;
 
-/**
- * Core setup class, setup instance holder
- */
 class Core
 {
+    protected const SETUP_DIRECTORY = 'Setup';
+
     /**
      * Keeps instance cache
      *
@@ -79,8 +77,8 @@ class Core
         $facts = new Facts();
         $class =  'OxidEsales\\EshopCommunity\\Setup\\' . $sInstanceName;
 
-        $classEnterprise = '\\OxidEsales\\EshopEnterprise\\' . EditionPathProvider::SETUP_DIRECTORY . '\\' . $sInstanceName;
-        $classProfessional = '\\OxidEsales\\EshopProfessional\\' . EditionPathProvider::SETUP_DIRECTORY . '\\' . $sInstanceName;
+        $classEnterprise = '\\OxidEsales\\EshopEnterprise\\' . self::SETUP_DIRECTORY . '\\' . $sInstanceName;
+        $classProfessional = '\\OxidEsales\\EshopProfessional\\' . self::SETUP_DIRECTORY . '\\' . $sInstanceName;
         if (($facts->isProfessional() || $facts->isEnterprise()) && $this->classExists($classProfessional)) {
             $class = $classProfessional;
         }

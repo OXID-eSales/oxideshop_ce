@@ -29,7 +29,7 @@ class UtilitiesTest extends \OxidEsales\TestingLibrary\UnitTestCase
     public function testGetLicenseContent()
     {
         $utilities = new Utilities();
-        $this->assertNotNull($utilities->getLicenseContent('en'));
+        $this->assertNotNull($utilities->getLicenseContent());
     }
 
     public function testExecuteExternalRegenerateViewsCommand()

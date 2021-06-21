@@ -9,27 +9,19 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
-use OxidEsales\Eshop\Core\Edition\EditionRootPathProvider;
-use OxidEsales\Eshop\Core\Edition\EditionPathProvider;
-use OxidEsales\Facts\Facts;
-use OxidEsales\Eshop\Core\Edition\EditionSelector;
 use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Webmozart\PathUtil\Path;
 
-/**
- * Setup utilities class
- */
 class Utilities extends Core
 {
-    const CONFIG_FILE_NAME = 'config.inc.php';
-
-    const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
-
     const DEMODATA_PACKAGE_SOURCE_DIRECTORY = 'src';
-
     const DEMODATA_SQL_FILENAME = 'demodata.sql';
-    const LICENSE_TEXT_FILENAME = "LICENSE";
+    private const DEMODATA_PACKAGE_NAME = 'oxideshop-demodata-%s';
+    private const LICENSE_TEXT_FILENAME = "LICENSE";
+    private const DATABASE_SQL_DIRECTORY = 'Sql';
 
     /**
      * Unable to find file
@@ -131,7 +123,7 @@ class Utilities extends Core
             if ($blBuildPath) {
                 $sExtPath = $sDir . '/' . $sExtPath;
             }
-            if (stristr($sDir, EditionPathProvider::SETUP_DIRECTORY)) {
+            if (stristr($sDir, self::SETUP_DIRECTORY)) {
                 $blBuildPath = true;
             }
         }
@@ -373,23 +365,6 @@ class Utilities extends Core
     }
 
     /**
-     * Returns file contents if file is readable
-     *
-     * @param string $sFile path to file
-     *
-     * @return string|mixed
-     */
-    public function getFileContents($sFile)
-    {
-        $sContents = null;
-        if (file_exists($sFile) && is_readable($sFile)) {
-            $sContents = file_get_contents($sFile);
-        }
-
-        return $sContents;
-    }
-
-    /**
      * Prepares given path parameter to ce compatible with unix format
      *
      * @param string $sPath path to prepare
@@ -489,16 +464,10 @@ class Utilities extends Core
         return $databaseExists;
     }
 
-    /**
-     * Get root directory
-     *
-     * @return string
-     */
-    public function getRootDirectory()
+    /** @return string */
+    public function getRootDirectory(): string
     {
         $facts = new Facts();
-
-        $rootDirectory = '';
         if ($facts->isProfessional()) {
             $rootDirectory = $facts->getProfessionalEditionRootPath();
         } elseif ($facts->isEnterprise()) {
@@ -510,37 +479,14 @@ class Utilities extends Core
         return $rootDirectory;
     }
 
-    /**
-     * Get specific edition sql directory
-     *
-     * @param null|string $edition
-     * @return string
-     */
-    public function getSqlDirectory($edition = null)
+    /** @return string */
+    public function getSqlDirectory(): string
     {
-        $editionPathSelector = $this->getEditionPathProvider($edition);
-        return $editionPathSelector->getDatabaseSqlDirectory();
-    }
-
-    /**
-     * Get setup directory
-     *
-     * @return string
-     */
-    public function getSetupDirectory()
-    {
-        $editionPathSelector = $this->getEditionPathProvider();
-        return $editionPathSelector->getSetupDirectory();
-    }
-
-    /**
-     * @param string $edition
-     * @return EditionPathProvider
-     */
-    private function getEditionPathProvider($edition = null)
-    {
-        $editionPathSelector = new EditionRootPathProvider(new EditionSelector($edition));
-        return new EditionPathProvider($editionPathSelector);
+        return Path::join(
+            (new Facts())->getSourcePath(),
+            self::SETUP_DIRECTORY,
+            self::DATABASE_SQL_DIRECTORY
+        );
     }
 
     /**
@@ -573,29 +519,29 @@ class Utilities extends Core
 
     /**
      * Return full path to demodata package based on current eShop edition.
-     *
      * @return string
      */
-    public function getActiveEditionDemodataPackagePath()
+    public function getActiveEditionDemodataPackagePath(): string
     {
         $facts = new Facts();
-
-        return $this->getVendorDirectory()
-            . EditionRootPathProvider::EDITIONS_DIRECTORY
-            . DIRECTORY_SEPARATOR
-            . sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($facts->getEdition()));
+        return Path::join(
+            $facts->getVendorPath(),
+            Facts::COMPOSER_VENDOR_OXID_ESALES,
+            sprintf(self::DEMODATA_PACKAGE_NAME, strtolower($facts->getEdition()))
+        );
     }
 
-    /**
-     * Returns the contents of license agreement in requested language.
-     *
-     * @param string $languageId
-     * @return string
-     */
-    public function getLicenseContent($languageId)
+    /** @return string */
+    public function getLicenseContent(): string
     {
-        return $this->getFileContents($this->getRootDirectory() . DIRECTORY_SEPARATOR .
-                                      self::LICENSE_TEXT_FILENAME);
+        $licenseFile = Path::join(
+            $this->getRootDirectory(),
+            self::LICENSE_TEXT_FILENAME
+        );
+        if (!is_readable($licenseFile)) {
+            return '';
+        }
+        return (string)file_get_contents($licenseFile);
     }
 
     /**

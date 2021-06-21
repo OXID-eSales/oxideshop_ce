@@ -9,12 +9,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Core;
 
 use OxidEsales\TestingLibrary\UnitTestCase;
 
-/**
- * Test \OxidEsales\Eshop\Core\EditionSelector.
- * Class NamespaceInformationProviderTest
- *
- * @package OxidEsales\EshopCommunity\Tests\Unit\Core
- */
 class NamespaceInformationProviderTest extends UnitTestCase
 {
     /**
